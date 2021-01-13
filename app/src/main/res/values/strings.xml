@@ -1,0 +1,20 @@
+<!--
+  ~  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+  ~   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+  ~
+  ~   SPDX-License-Identifier: EUPL-1.2
+  ~
+  -->
+
+<resources>
+    <string name="app_name">CoronaTester</string>
+    <string name="welcome_header">Welkom op CoronaTester</string>
+    <string name="welcome_subtext">Heb je klachten die passen bij het coronavirus? Maak hier een afspraak voor een test bij een GGD of een commerciele testplaats.\n\nKijk op rijksoverheid.nl/coronatest voor meer informatie over testen op corona.</string>
+
+
+
+
+    <string name="cd_back">Terug</string>
+    <string name="welcome_get_tested_button">Ik wil me laten testen</string>
+    <string name="welcome_about_this_app">Over deze app</string>
+</resources>
