@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+  ~   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+  ~
+  ~   SPDX-License-Identifier: EUPL-1.2
+  ~
+  -->
+
+<resources>
+    <style name="Widget.App.Toolbar.Surface" parent="Widget.MaterialComponents.Toolbar.Surface">
+        <item name="navigationContentDescription">@string/cd_back</item>
+        <item name="navigationIcon">?attr/homeAsUpIndicator</item>
+    </style>
+
+
+    <style name="Widget.App.Button.Primary" parent="@style/Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="colorPrimary">@color/light_blue</item>
+    </style>
+
+    <style name="Widget.App.Button.Secondary" parent="Widget.App.Button.Primary">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.Button.Secondary</item>
+        <item name="rippleColor">?attr/colorSecondaryVariant</item>
+    </style>
+
+    <style name="ThemeOverlay.App.Button.Secondary" parent="">
+        <item name="colorPrimary">@color/color_secondary</item>
+        <item name="colorOnPrimary">@color/light_blue</item>
+    </style>
+
+    <style name="Widget.App.Button.Rounded" parent="Widget.App.Button.Primary">
+        <item name="cornerRadius">24dp</item>
+        <item name="android:paddingStart">24dp</item>
+        <item name="android:paddingEnd">24dp</item>
+    </style>
+</resources>
