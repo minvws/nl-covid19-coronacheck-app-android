@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+  ~   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+  ~
+  ~   SPDX-License-Identifier: EUPL-1.2
+  ~
+  -->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/activity_horizontal_margin">
+
+        <TextView
+            android:id="@+id/about_header"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/welcome_about_this_app"
+            android:textAppearance="@style/TextAppearance.App.Headline1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.10" />
+
+        <TextView
+            android:id="@+id/about_section1_header"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/about_section1_title"
+            android:layout_marginTop="24dp"
+            android:textAppearance="@style/TextAppearance.App.Header1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/about_header"
+            />
+
+        <TextView
+            android:id="@+id/about_section1_subtext"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/about_section1_subtext"
+            android:layout_marginTop="8dp"
+            android:textAppearance="@style/TextAppearance.App.Body1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/about_section1_header"
+            />
+
+
+        <TextView
+            android:id="@+id/about_section2_header"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/about_section2_title"
+            android:layout_marginTop="48dp"
+            android:textAppearance="@style/TextAppearance.App.Header1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/about_section1_subtext"
+            />
+
+        <TextView
+            android:id="@+id/about_section2_subtext"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/about_section2_subtext"
+            android:layout_marginTop="8dp"
+            android:textAppearance="@style/TextAppearance.App.Body1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/about_section2_header"
+            />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
