@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "625955224267",
+    "project_id": "coronatester-productie",
+    "storage_bucket": "coronatester-productie.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:625955224267:android:742af66e140333db97794e",
+        "android_client_info": {
+          "package_name": "nl.rijksoverheid.ctr"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "625955224267-31mjpq204letfa3gd5kbn8knar7aci99.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZGvM8mnW0A6FqHlaBgAPTaUzOUmCnmdU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "625955224267-31mjpq204letfa3gd5kbn8knar7aci99.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
