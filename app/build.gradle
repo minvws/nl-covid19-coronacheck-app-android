@@ -51,33 +51,42 @@ android {
         }
     }
 
+    signingConfigs {
+        firebase {
+            storeFile file('demo_keystore.jks')
+            storePassword 'store_password'
+            keyAlias = 'key_alias'
+            keyPassword 'key_password'
+        }
+    }
+
     flavorDimensions "environment"
     productFlavors {
         localDev {
             dimension "environment"
             buildConfigField "boolean", "FEATURE_LOGGING", "true"
             buildConfigField "boolean", "FEATURE_SSL_PINNING", "false"
-            buildConfigField "String", "BASE_API_URL", "\"https://public.testing.dbco.egeniq.com/\""
+            buildConfigField "String", "BASE_API_URL", "\"coronatester.nl\""
             manifestPlaceholders = [appLabel: "@string/app_name"]
-            //apply plugin: 'com.google.gms.google-services'
-            //apply plugin: 'com.google.firebase.crashlytics'
+            apply plugin: 'com.google.gms.google-services'
+            apply plugin: 'com.google.firebase.crashlytics'
         }
 
         coronatesterTest {
             dimension "environment"
             buildConfigField "boolean", "FEATURE_LOGGING", "true"
             buildConfigField "boolean", "FEATURE_SSL_PINNING", "false"
-            buildConfigField "String", "BASE_API_URL", "\"https://api-test.bco-portaal.nl/\""
+            buildConfigField "String", "BASE_API_URL", "\"coronatester.nl\""
             manifestPlaceholders = [appLabel: "@string/app_name"]
-            //apply plugin: 'com.google.gms.google-services'
-            //apply plugin: 'com.google.firebase.crashlytics'
+            apply plugin: 'com.google.gms.google-services'
+            apply plugin: 'com.google.firebase.crashlytics'
         }
 
-        coronatesterAcceptence {
+        coronatesterAcceptance {
             dimension "environment"
             buildConfigField "boolean", "FEATURE_LOGGING", "false"
             buildConfigField "boolean", "FEATURE_SSL_PINNING", "false"
-            buildConfigField "String", "BASE_API_URL", "\"https://api-test.bco-portaal.nl/\""
+            buildConfigField "String", "BASE_API_URL", "\"coronatester.nl\""
             manifestPlaceholders = [appLabel: "@string/app_name"]
         }
 

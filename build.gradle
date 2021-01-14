@@ -50,8 +50,8 @@ buildscript {
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$androidx_nav_version"
 
         // Not set up yet
-        //classpath "com.google.gms:google-services:$google_services_version"
-        //classpath "com.google.firebase:firebase-crashlytics-gradle:$firebase_crashlytics_version"
+        classpath "com.google.gms:google-services:$google_services_version"
+        classpath "com.google.firebase:firebase-crashlytics-gradle:$firebase_crashlytics_version"
 
     }
 }
