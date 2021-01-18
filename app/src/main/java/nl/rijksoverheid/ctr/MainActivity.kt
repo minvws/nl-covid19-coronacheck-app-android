@@ -8,26 +8,27 @@
 
 package nl.rijksoverheid.ctr
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
+import nl.rijksoverheid.ctr.customer.CustomerActivity
+import nl.rijksoverheid.ctr.databinding.ActivityMainBinding
+import nl.rijksoverheid.ctr.verifier.VerifierActivity
 
 class MainActivity : AppCompatActivity() {
 
-    private var factory: ViewModelFactory? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-    }
 
-    override fun getDefaultViewModelProviderFactory(): ViewModelProvider.Factory {
-        if (factory != null) {
-            return factory as ViewModelFactory
+        val binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        binding.customer.setOnClickListener {
+            startActivity(Intent(this, CustomerActivity::class.java))
         }
-        factory = ViewModelFactory()
-        return factory as ViewModelFactory
-    }
 
+        binding.verifier.setOnClickListener {
+            startActivity(Intent(this, VerifierActivity::class.java))
+        }
+    }
 }

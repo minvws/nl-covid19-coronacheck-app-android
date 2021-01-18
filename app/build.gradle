@@ -26,6 +26,10 @@ android {
     compileSdkVersion 30
     buildToolsVersion "29.0.3"
 
+    buildFeatures {
+        viewBinding true
+    }
+
     defaultConfig {
         applicationId "nl.rijksoverheid.ctr"
         minSdkVersion 21
@@ -157,6 +161,8 @@ dependencies {
 
     implementation 'net.danlew:android.joda:2.10.6.2'
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.0")
+
+    implementation "com.journeyapps:zxing-android-embedded:4.1.0"
 
     testImplementation "junit:junit:$junit_version"
     androidTestImplementation "androidx.test.ext:junit:$androidx_test_ext_junit_version"
