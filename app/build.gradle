@@ -104,7 +104,6 @@ android {
     }
 
 
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -118,7 +117,8 @@ android {
     }
 
     lintOptions {
-        disable "UnsafeExperimentalUsageError", "UnsafeExperimentalUsageWarning",  "NullSafeMutableLiveData"  // disable check in 3-rd party libs
+        disable "UnsafeExperimentalUsageError", "UnsafeExperimentalUsageWarning", "NullSafeMutableLiveData"
+        // disable check in 3-rd party libs
     }
 }
 
@@ -162,7 +162,8 @@ dependencies {
     implementation 'net.danlew:android.joda:2.10.6.2'
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.0")
 
-    implementation "com.journeyapps:zxing-android-embedded:4.1.0"
+    implementation('com.journeyapps:zxing-android-embedded:4.1.0') { transitive = false }
+    implementation 'com.google.zxing:core:3.3.0'
 
     testImplementation "junit:junit:$junit_version"
     androidTestImplementation "androidx.test.ext:junit:$androidx_test_ext_junit_version"
