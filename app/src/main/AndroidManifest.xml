@@ -36,6 +36,12 @@
         <activity
             android:name=".verifier.VerifierActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".qrcodegenerator.QrCodeGeneratorActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".qrcodescanner.QrCodeScannerActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 

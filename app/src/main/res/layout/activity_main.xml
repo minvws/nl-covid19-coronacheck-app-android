@@ -8,15 +8,29 @@
 
     <Button
         android:id="@+id/customer"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="Customer" />
 
     <Button
         android:id="@+id/verifier"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Verifier" />
+
+    <Button
+        android:id="@+id/qrCodeGenerator"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="QR Code Generator" />
+
+    <Button
+        android:id="@+id/qrCodeScanner"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="QR Code Scanner" />
 
 </LinearLayout>
