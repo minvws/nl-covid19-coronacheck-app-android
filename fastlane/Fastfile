@@ -30,7 +30,7 @@ platform :android do
          )
 
         firebase_app_distribution(
-            app: "1:168257592968:android:156fcae99be6d74526493d",
+            app: "1:168257592968:android:c71b4485efc38fbe26493d",
             firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
             groups: "testers",
             release_notes: "Release on test environment via Firebase"
@@ -46,7 +46,7 @@ platform :android do
              )
 
             firebase_app_distribution(
-                app: "1:406021306322:android:27abb9a50f0543152cfa0b",
+                app: "1:406021306322:android:218d712bbe3d55df2cfa0b",
                 firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
                 groups: "testers",
                 release_notes: "Release on acceptance environment via Firebase"

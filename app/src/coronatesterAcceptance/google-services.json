@@ -33,6 +33,35 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:406021306322:android:218d712bbe3d55df2cfa0b",
+        "android_client_info": {
+          "package_name": "nl.rijksoverheid.ctr.acc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "406021306322-hlelp6po11nudbabtn43j5tejkijldt9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1a0OXkEJ9lDld-I2b6GYiNlUghQ5CyHg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "406021306322-hlelp6po11nudbabtn43j5tejkijldt9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"
