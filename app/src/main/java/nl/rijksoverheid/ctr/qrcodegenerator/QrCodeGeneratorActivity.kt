@@ -19,7 +19,7 @@ import kotlin.random.Random
 
 class QrCodeGeneratorActivity : AppCompatActivity() {
 
-    private val alphaNumerics = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ%*+-./:"
+    private val alphaNumerics = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ%*+-./: "
     private lateinit var binding: ActivityQrCodeGeneratorBinding
     private var currentContent = ""
 
@@ -57,7 +57,7 @@ class QrCodeGeneratorActivity : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun generateQrCode() {
-        binding.amountText.text = "${currentContent.length} bytes"
+        binding.amountText.text = "${currentContent.length} chars"
         val barcodeEncoder = BarcodeEncoder()
         val bitmap = barcodeEncoder.encodeBitmap(
             currentContent,

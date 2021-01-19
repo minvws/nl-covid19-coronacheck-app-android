@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.zxing.integration.android.IntentIntegrator
 import nl.rijksoverheid.ctr.databinding.ActivityQrCodeScannerBinding
+import kotlin.math.roundToInt
 
 class QrCodeScannerActivity : AppCompatActivity() {
 
@@ -41,7 +42,7 @@ class QrCodeScannerActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(
                     this,
-                    "Scanned bytes: " + result.contents.toByteArray(Charsets.UTF_8).size,
+                    "Scanned bytes: " + (result.contents.toCharArray().size / 1.4567).roundToInt(),
                     Toast.LENGTH_LONG
                 ).show()
             }
