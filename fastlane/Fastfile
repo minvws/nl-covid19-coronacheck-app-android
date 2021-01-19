@@ -46,7 +46,7 @@ platform :android do
              )
 
             firebase_app_distribution(
-                app: "1:406021306322:android:218d712bbe3d55df2cfa0b",
+                app: "1:406021306322:android:67ba1eb1e9c607502cfa0b",
                 firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
                 groups: "testers",
                 release_notes: "Release on acceptance environment via Firebase"
