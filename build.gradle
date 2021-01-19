@@ -89,23 +89,7 @@ allprojects {
                 freeCompilerArgs += ["-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi"]
             }
         }
-
-        project.plugins.withId("com.android.base") {
-            android {
-                compileSdkVersion 29
-                defaultConfig {
-                    minSdkVersion 23
-                    targetSdkVersion 29
-                }
-                compileOptions {
-                    sourceCompatibility JavaVersion.VERSION_1_8
-                    targetCompatibility JavaVersion.VERSION_1_8
-                }
-            }
-        }
     }
-
-
 }
 
 task clean(type: Delete) {
