@@ -10,14 +10,14 @@ package nl.rijksoverheid.ctr.verifier
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import nl.rijksoverheid.ctr.databinding.ActivityCustomerBinding
+import nl.rijksoverheid.ctr.databinding.ActivityVerifierBinding
 
 class VerifierActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val binding = ActivityCustomerBinding.inflate(layoutInflater)
+        val binding = ActivityVerifierBinding.inflate(layoutInflater)
         setContentView(binding.root)
     }
 

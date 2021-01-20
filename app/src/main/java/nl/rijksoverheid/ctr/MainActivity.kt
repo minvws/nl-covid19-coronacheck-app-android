@@ -11,7 +11,7 @@ package nl.rijksoverheid.ctr
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import nl.rijksoverheid.ctr.customer.CustomerActivity
+import nl.rijksoverheid.ctr.citizen.CitizenActivity
 import nl.rijksoverheid.ctr.databinding.ActivityMainBinding
 import nl.rijksoverheid.ctr.qrcodegenerator.QrCodeGeneratorActivity
 import nl.rijksoverheid.ctr.qrcodescanner.QrCodeScannerActivity
@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.customer.setOnClickListener {
-            startActivity(Intent(this, CustomerActivity::class.java))
+            startActivity(Intent(this, CitizenActivity::class.java))
         }
 
         binding.verifier.setOnClickListener {

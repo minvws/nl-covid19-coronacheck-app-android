@@ -162,6 +162,8 @@ dependencies {
 
 
     implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
+    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.11.0")
+    implementation("com.squareup.moshi:moshi-kotlin:1.11.0")
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp3_version"
     implementation "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:$kotlin_serialization_converter_version"
 
@@ -170,6 +172,7 @@ dependencies {
 
     implementation('com.journeyapps:zxing-android-embedded:4.1.0') { transitive = false }
     implementation 'com.google.zxing:core:3.3.0'
+    implementation 'com.github.joshjdevl.libsodiumjni:libsodium-jni-aar:2.0.1'
 
     testImplementation "junit:junit:$junit_version"
     androidTestImplementation "androidx.test.ext:junit:$androidx_test_ext_junit_version"

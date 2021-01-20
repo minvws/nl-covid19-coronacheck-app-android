@@ -21,7 +21,8 @@
         android:label="${appLabel}"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:replace="android:allowBackup">
         <activity
             android:name="nl.rijksoverheid.ctr.MainActivity"
             android:screenOrientation="portrait">
@@ -31,7 +32,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".customer.CustomerActivity"
+            android:name=".citizen.CitizenActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".verifier.VerifierActivity"
