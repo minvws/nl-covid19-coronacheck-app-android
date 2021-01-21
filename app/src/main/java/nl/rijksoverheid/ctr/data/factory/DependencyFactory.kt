@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.data.factory
 
 import com.goterl.lazycode.lazysodium.LazySodiumAndroid
 import com.goterl.lazycode.lazysodium.SodiumAndroid
+import com.goterl.lazycode.lazysodium.utils.Base64MessageEncoder
 import com.squareup.moshi.Moshi
 import nl.rijksoverheid.ctr.data.api.TestApiClient
 import retrofit2.Retrofit
@@ -30,6 +31,6 @@ class DependencyFactory {
     }
 
     fun getSodium(): LazySodiumAndroid {
-        return LazySodiumAndroid(SodiumAndroid())
+        return LazySodiumAndroid(SodiumAndroid(), Base64MessageEncoder())
     }
 }

@@ -13,7 +13,6 @@ import retrofit2.http.Query
  *
  */
 interface TestApiClient {
-
     @GET("/citizen/get_public_keys/")
     suspend fun getIssuers(): Issuers
 

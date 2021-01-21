@@ -183,7 +183,6 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$androidx_espresso_version"
     androidTestImplementation 'com.microsoft.appcenter:espresso-test-extension:1.4'
 
-
     // Firebase is for the acc builds only
     coronatesterTestImplementation 'com.google.firebase:firebase-crashlytics-ktx:17.3.0'
 }
