@@ -172,7 +172,8 @@ dependencies {
 
     implementation('com.journeyapps:zxing-android-embedded:4.1.0') { transitive = false }
     implementation 'com.google.zxing:core:3.3.0'
-    implementation 'com.github.joshjdevl.libsodiumjni:libsodium-jni-aar:2.0.1'
+    implementation "com.goterl.lazycode:lazysodium-android:4.3.2@aar"
+    implementation 'net.java.dev.jna:jna:5.5.0@aar'
 
     testImplementation "junit:junit:$junit_version"
     androidTestImplementation "androidx.test.ext:junit:$androidx_test_ext_junit_version"

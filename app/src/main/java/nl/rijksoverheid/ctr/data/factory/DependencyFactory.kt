@@ -1,9 +1,12 @@
 package nl.rijksoverheid.ctr.data.factory
 
+import com.goterl.lazycode.lazysodium.LazySodiumAndroid
+import com.goterl.lazycode.lazysodium.SodiumAndroid
 import com.squareup.moshi.Moshi
 import nl.rijksoverheid.ctr.data.api.TestApiClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -24,5 +27,9 @@ class DependencyFactory {
 
     fun getMoshi(): Moshi {
         return Moshi.Builder().build()
+    }
+
+    fun getSodium(): LazySodiumAndroid {
+        return LazySodiumAndroid(SodiumAndroid())
     }
 }
