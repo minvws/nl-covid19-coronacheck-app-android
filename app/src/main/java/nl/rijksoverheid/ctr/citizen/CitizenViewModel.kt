@@ -17,6 +17,7 @@ import nl.rijksoverheid.ctr.data.api.TestApiClient
 import nl.rijksoverheid.ctr.data.models.EventQR
 import nl.rijksoverheid.ctr.data.models.Result
 import nl.rijksoverheid.ctr.data.models.User
+import nl.rijksoverheid.ctr.qrcode.QrCodeTools
 import timber.log.Timber
 
 /*
@@ -30,6 +31,7 @@ class CitizenViewModel(
     private val api: TestApiClient,
     private val moshi: Moshi,
     private val lazySodium: LazySodiumAndroid,
+    private val qrCodeTools: QrCodeTools
 ) : ViewModel() {
 
     val userLiveData = MutableLiveData<Result<User>>()
@@ -54,7 +56,7 @@ class CitizenViewModel(
         }
     }
 
-    fun generateQrCode(eventQrJson: String) {
+    fun generateQrCode(eventQrJson: String, qrCodeWidth: Int, qrCodeHeight: Int) {
         viewModelScope.launch {
             try {
                 val eventQR = moshi.adapter(EventQR::class.java).fromJson(eventQrJson)
@@ -86,8 +88,10 @@ class CitizenViewModel(
                     payload = encryptedPayloadBase64
                 )
 
-                val customerQRJson = customerQR.toJson(moshi)
+                val customerQRBitmap =
+                    qrCodeTools.createQrCode(customerQR.toJson(moshi), qrCodeWidth, qrCodeHeight)
 
+                qrCodeLiveData.postValue(Result.Success(customerQRBitmap))
             } catch (e: Exception) {
 
             }

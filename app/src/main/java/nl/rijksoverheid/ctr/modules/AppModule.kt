@@ -34,5 +34,5 @@ val appModule = module {
     single<QrCodeTools> { ZxingQrCodeTools() }
 
     // ViewModels
-    viewModel { CitizenViewModel(get(), get(), get()) }
+    viewModel { CitizenViewModel(get(), get(), get(), get()) }
 }
