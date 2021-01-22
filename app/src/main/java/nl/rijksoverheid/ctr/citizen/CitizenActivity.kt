@@ -34,7 +34,7 @@ class CitizenActivity : AppCompatActivity() {
         citizenViewModel.userLiveData.observe(this, Observer { userResult ->
             when (userResult) {
                 is Result.Success -> {
-                    onUserLoggedInFake()
+                    onUserLoggedIn()
                 }
                 else -> {
                     // TODO: Handle non success state

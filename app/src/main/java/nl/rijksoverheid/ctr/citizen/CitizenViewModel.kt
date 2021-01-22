@@ -17,6 +17,7 @@ import nl.rijksoverheid.ctr.data.api.TestApiClient
 import nl.rijksoverheid.ctr.data.models.EventQR
 import nl.rijksoverheid.ctr.data.models.Result
 import nl.rijksoverheid.ctr.data.models.User
+import nl.rijksoverheid.ctr.factories.KeyFactory
 import nl.rijksoverheid.ctr.qrcode.QrCodeTools
 import timber.log.Timber
 
@@ -79,7 +80,7 @@ class CitizenViewModel(
                 val encryptedPayloadBase64 = lazySodium.cryptoBoxEasy(
                     payload.toJson(moshi),
                     nonce,
-                    KeyPair(Key.fromBase64String(eventQR.event.publicKey), keyPair.secretKey)
+                    KeyPair(KeyFactory.createKeyFromBase64String(eventQR.event.publicKey), keyPair.secretKey)
                 )
 
                 val customerQR = CustomerQR(

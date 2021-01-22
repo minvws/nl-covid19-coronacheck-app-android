@@ -1,7 +1,6 @@
-package nl.rijksoverheid.ctr.data.models
+package nl.rijksoverheid.ctr.ext
 
 import com.squareup.moshi.Moshi
-import nl.rijksoverheid.ctr.citizen.models.CustomerQR
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -10,8 +9,6 @@ import nl.rijksoverheid.ctr.citizen.models.CustomerQR
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-abstract class JSON {
-    fun toJson(moshi: Moshi): String {
-        return moshi.adapter(javaClass).toJson(this)
-    }
+inline fun <reified O> String.toObject(moshi: Moshi): O {
+    return moshi.adapter(O::class.java).fromJson(this) ?: throw Exception("Failed to create object from json string")
 }
