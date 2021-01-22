@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
     <Button
-        android:id="@+id/customer"
+        android:id="@+id/citizen"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="Citizen" />
@@ -18,20 +18,5 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Agent" />
-
-    <Button
-        android:id="@+id/qrCodeGenerator"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="QR Code Generator"
-        android:visibility="gone" />
-
-    <Button
-        android:id="@+id/qrCodeScanner"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="QR Code Scanner" />
 
 </LinearLayout>

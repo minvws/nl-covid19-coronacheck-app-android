@@ -9,18 +9,17 @@
 package nl.rijksoverheid.ctr.citizen
 
 import android.os.Bundle
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import com.google.zxing.integration.android.IntentIntegrator
 import nl.rijksoverheid.ctr.data.models.Result
 import nl.rijksoverheid.ctr.databinding.ActivityCitizenBinding
-import nl.rijksoverheid.ctr.qrcodescanner.QrCodeScanner
+import nl.rijksoverheid.ctr.qrcode.QrCodeTools
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class CitizenActivity : AppCompatActivity() {
 
-    private val qrCodeScanner: QrCodeScanner = QrCodeScanner()
+    private val qrCodeTools: QrCodeTools by inject()
     private val citizenViewModel: CitizenViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,7 +31,7 @@ class CitizenActivity : AppCompatActivity() {
         citizenViewModel.userLiveData.observe(this, Observer { userResult ->
             when (userResult) {
                 is Result.Success -> {
-                    onUserLoggedInFake()
+                    onUserLoggedIn()
                 }
                 else -> {
                 }
@@ -45,16 +44,9 @@ class CitizenActivity : AppCompatActivity() {
     }
 
     private fun onUserLoggedIn() {
-        val startForResult =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                val result = IntentIntegrator.parseActivityResult(
-                    IntentIntegrator.REQUEST_CODE,
-                    it.resultCode,
-                    it.data
-                )
-                citizenViewModel.generateQrCode(result.contents)
-            }
-        qrCodeScanner.startScanner(this, startForResult)
+        qrCodeTools.launchScanner(this) {
+            citizenViewModel.generateQrCode(it)
+        }
     }
 
     private fun onUserLoggedInFake() {

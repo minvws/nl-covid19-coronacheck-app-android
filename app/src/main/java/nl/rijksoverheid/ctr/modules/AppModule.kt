@@ -6,6 +6,8 @@ import com.goterl.lazycode.lazysodium.utils.Base64MessageEncoder
 import com.squareup.moshi.Moshi
 import nl.rijksoverheid.ctr.citizen.CitizenViewModel
 import nl.rijksoverheid.ctr.data.api.TestApiClient
+import nl.rijksoverheid.ctr.qrcode.QrCodeTools
+import nl.rijksoverheid.ctr.qrcode.ZxingQrCodeTools
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -29,6 +31,7 @@ val appModule = module {
     }
     single { Moshi.Builder().build() }
     single { LazySodiumAndroid(SodiumAndroid(), Base64MessageEncoder()) }
+    single<QrCodeTools> { ZxingQrCodeTools() }
 
     // ViewModels
     viewModel { CitizenViewModel(get(), get(), get()) }

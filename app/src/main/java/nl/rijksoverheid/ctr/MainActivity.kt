@@ -13,8 +13,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import nl.rijksoverheid.ctr.citizen.CitizenActivity
 import nl.rijksoverheid.ctr.databinding.ActivityMainBinding
-import nl.rijksoverheid.ctr.qrcodegenerator.QrCodeGeneratorActivity
-import nl.rijksoverheid.ctr.qrcodescanner.QrCodeScannerActivity
 import nl.rijksoverheid.ctr.verifier.VerifierActivity
 
 class MainActivity : AppCompatActivity() {
@@ -25,20 +23,12 @@ class MainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.customer.setOnClickListener {
+        binding.citizen.setOnClickListener {
             startActivity(Intent(this, CitizenActivity::class.java))
         }
 
         binding.verifier.setOnClickListener {
             startActivity(Intent(this, VerifierActivity::class.java))
-        }
-
-        binding.qrCodeGenerator.setOnClickListener {
-            startActivity(Intent(this, QrCodeGeneratorActivity::class.java))
-        }
-
-        binding.qrCodeScanner.setOnClickListener {
-            startActivity(Intent(this, QrCodeScannerActivity::class.java))
         }
     }
 }

@@ -87,7 +87,6 @@ class CitizenViewModel(
                 )
 
                 val customerQRJson = customerQR.toJson(moshi)
-                Timber.v("DONE")
 
             } catch (e: Exception) {
 
