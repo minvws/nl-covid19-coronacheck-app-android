@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.citizen.models
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import nl.rijksoverheid.ctr.data.models.JSON
 import nl.rijksoverheid.ctr.data.models.TestResults
 
 /*
@@ -17,4 +18,4 @@ data class Payload(
     val time: Long,
     val test: TestResults.TestResult,
     @Json(name = "test_signature") val testSignature: String
-)
+) : JSON()

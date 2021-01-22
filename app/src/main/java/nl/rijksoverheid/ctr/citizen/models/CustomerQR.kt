@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.citizen.models
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import nl.rijksoverheid.ctr.data.models.JSON
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -15,4 +16,4 @@ data class CustomerQR(
     @Json(name = "public_key") val publicKey: String,
     @Json(name = "nonce") val nonce: String,
     @Json(name = "payload") val payload: String
-)
+) : JSON()

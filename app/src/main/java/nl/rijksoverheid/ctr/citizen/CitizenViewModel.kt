@@ -71,10 +71,8 @@ class CitizenViewModel : ViewModel() {
                     testSignature = positiveTestSignature.signature
                 )
 
-                val payloadJson = moshi.adapter(Payload::class.java).toJson(payload)
-
                 val encryptedPayloadBase64 = lazySodium.cryptoBoxEasy(
-                    payloadJson,
+                    payload.toJson(moshi),
                     nonce,
                     KeyPair(Key.fromBase64String(eventQR.event.publicKey), keyPair.secretKey)
                 )
@@ -85,7 +83,7 @@ class CitizenViewModel : ViewModel() {
                     payload = encryptedPayloadBase64
                 )
 
-                val customQrJson = moshi.adapter(CustomerQR::class.java).toJson(customerQR)
+                val customerQRJson = customerQR.toJson(moshi)
 
             } catch (e: Exception) {
 
