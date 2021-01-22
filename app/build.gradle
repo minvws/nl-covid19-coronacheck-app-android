@@ -12,6 +12,7 @@ apply plugin: "kotlin-kapt"
 apply plugin: "androidx.navigation.safeargs.kotlin"
 apply plugin: 'kotlinx-serialization'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'koin'
 
 def getGitHash = { ->
     def stdout = new ByteArrayOutputStream()
@@ -169,6 +170,9 @@ dependencies {
 
     implementation 'net.danlew:android.joda:2.10.6.2'
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.0")
+
+    implementation "org.koin:koin-android:$koin_version"
+    implementation "org.koin:koin-android-viewmodel:$koin_version"
 
     implementation('com.journeyapps:zxing-android-embedded:4.1.0') { transitive = false }
     implementation 'com.google.zxing:core:3.3.0'

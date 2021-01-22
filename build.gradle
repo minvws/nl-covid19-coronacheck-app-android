@@ -36,6 +36,7 @@ buildscript {
     ext.robolectric_version = "4.3.1"
     ext.timber_version = "4.7.1"
     ext.kotlin_serialization_converter_version = "0.8.0"
+    ext.koin_version = "2.2.2"
 
     repositories {
         google()
@@ -52,6 +53,7 @@ buildscript {
         // Not set up yet
         classpath "com.google.gms:google-services:$google_services_version"
         classpath "com.google.firebase:firebase-crashlytics-gradle:$firebase_crashlytics_version"
+        classpath "org.koin:koin-gradle-plugin:$koin_version"
 
     }
 }

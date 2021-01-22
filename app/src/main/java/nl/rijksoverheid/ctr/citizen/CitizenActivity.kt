@@ -10,18 +10,18 @@ package nl.rijksoverheid.ctr.citizen
 
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.google.zxing.integration.android.IntentIntegrator
 import nl.rijksoverheid.ctr.data.models.Result
 import nl.rijksoverheid.ctr.databinding.ActivityCitizenBinding
 import nl.rijksoverheid.ctr.qrcodescanner.QrCodeScanner
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class CitizenActivity : AppCompatActivity() {
 
     private val qrCodeScanner: QrCodeScanner = QrCodeScanner()
-    private val citizenViewModel: CitizenViewModel by viewModels()
+    private val citizenViewModel: CitizenViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

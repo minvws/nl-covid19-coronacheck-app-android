@@ -5,13 +5,15 @@ import android.util.Base64
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.goterl.lazycode.lazysodium.LazySodiumAndroid
 import com.goterl.lazycode.lazysodium.interfaces.SecretBox
 import com.goterl.lazycode.lazysodium.utils.Key
 import com.goterl.lazycode.lazysodium.utils.KeyPair
+import com.squareup.moshi.Moshi
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.citizen.models.CustomerQR
 import nl.rijksoverheid.ctr.citizen.models.Payload
-import nl.rijksoverheid.ctr.data.factory.DependencyFactory
+import nl.rijksoverheid.ctr.data.api.TestApiClient
 import nl.rijksoverheid.ctr.data.models.EventQR
 import nl.rijksoverheid.ctr.data.models.Result
 import nl.rijksoverheid.ctr.data.models.User
@@ -24,11 +26,12 @@ import timber.log.Timber
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class CitizenViewModel : ViewModel() {
+class CitizenViewModel(
+    private val api: TestApiClient,
+    private val moshi: Moshi,
+    private val lazySodium: LazySodiumAndroid,
+) : ViewModel() {
 
-    private val api = DependencyFactory().getTestApiClient()
-    private val moshi = DependencyFactory().getMoshi()
-    private val lazySodium = DependencyFactory().getSodium()
     val userLiveData = MutableLiveData<Result<User>>()
     val qrCodeLiveData = MutableLiveData<Result<Bitmap>>()
 
@@ -84,6 +87,7 @@ class CitizenViewModel : ViewModel() {
                 )
 
                 val customerQRJson = customerQR.toJson(moshi)
+                Timber.v("DONE")
 
             } catch (e: Exception) {
 
