@@ -9,6 +9,7 @@
 package nl.rijksoverheid.ctr
 
 import android.app.Application
+import com.jakewharton.threetenabp.AndroidThreeTen
 import nl.rijksoverheid.ctr.modules.appModule
 import org.koin.core.context.startKoin
 import timber.log.Timber
@@ -18,6 +19,7 @@ class CoronaTesterApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
+        AndroidThreeTen.init(this)
         startKoin {
             modules(appModule)
         }

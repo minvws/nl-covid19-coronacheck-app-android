@@ -1,7 +1,6 @@
 package nl.rijksoverheid.ctr.data.models
 
 import com.squareup.moshi.Moshi
-import nl.rijksoverheid.ctr.citizen.models.CustomerQR
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

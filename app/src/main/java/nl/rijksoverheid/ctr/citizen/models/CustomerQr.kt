@@ -12,7 +12,7 @@ import nl.rijksoverheid.ctr.data.models.JSON
  *
  */
 @JsonClass(generateAdapter = true)
-data class CustomerQR(
+data class CustomerQr(
     @Json(name = "public_key") val publicKey: String,
     @Json(name = "nonce") val nonce: String,
     @Json(name = "payload") val payload: String

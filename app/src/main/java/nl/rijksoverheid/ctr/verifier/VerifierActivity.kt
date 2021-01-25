@@ -12,6 +12,7 @@ import android.graphics.Color
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import com.google.android.material.snackbar.Snackbar
 import nl.rijksoverheid.ctr.data.models.Result
 import nl.rijksoverheid.ctr.databinding.ActivityVerifierBinding
 import nl.rijksoverheid.ctr.qrcode.QrCodeTools
@@ -29,14 +30,21 @@ class VerifierActivity : AppCompatActivity() {
         val binding = ActivityVerifierBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        verifierViewModel.customerAllowedLiveData.observe(this, Observer {
-            when (it) {
+        verifierViewModel.citizenAllowedLiveData.observe(this, Observer { citizenAllowedResult ->
+            when (citizenAllowedResult) {
+                is Result.Loading -> {
+                    // TODO: Handle loading state
+                }
                 is Result.Success -> {
-                    val customerAllowed = it.data
+                    val customerAllowed = citizenAllowedResult.data
                     binding.root.setBackgroundColor(if (customerAllowed) Color.GREEN else Color.RED)
                 }
-                else -> {
-                    // TODO: Handle non success state
+                is Result.Failed -> {
+                    Snackbar.make(
+                        binding.root,
+                        citizenAllowedResult.e.toString(),
+                        Snackbar.LENGTH_LONG
+                    ).show()
                 }
             }
         })
@@ -48,12 +56,12 @@ class VerifierActivity : AppCompatActivity() {
 
     fun onLaunchScanner() {
         qrCodeTools.launchScanner(this) {
-            verifierViewModel.validateCustomer(it)
+            verifierViewModel.validateCitizen(it)
         }
     }
 
     fun onLaunchScannerFake() {
-        verifierViewModel.validateCustomer("{\"public_key\":\"X7iLCgWSppOucv6v/gb/EkFXDrWuISrAg3zbUMgu+RY=\",\"nonce\":\"nayU5cHhsn9s7ewQNZgxBbS28EnoG4nU\",\"payload\":\"WfhOu54nC8Br6RNGffYHFKdaIWd50FCCJ0ntqe1Hvhixp743YjIv1hR4/ZQBX3QUzfgpqIfQCy6hM6m2yDUTmAnqZAUU0Zh1tlINPPus1VGFpMX7DrW1ZneManVIawBRvergDW1VeqeuwZsqQF/t83fr/Pq2rtwf/7EPXQXxF1EmCuusT5jGYAs4dczErxrIzjinAnnS5Yo8D2c+/dJSJQdo6PdwjBD3Lo7gLEML7ISkRuV9+cyZrHz10yNe7VOMSMWfdzCrbDXCzoV28TA6PSwIE9rSTag/wlwSz0l40cV11sT8Fw6n3Xwb9ql6fpbFwdv/ksbMh/arPa27aR9YGJKBDZVm01/xB75O0nhZBelTVjfwS2qYbVo56lUaesZODyrl6CpR68LZEe2e2vIqucCUT+8lgGD4D8h/ZokLUKVb+6dvm04s/kysys0cRCWV\"}")
+        verifierViewModel.validateCitizen("{\"public_key\":\"X7iLCgWSppOucv6v/gb/EkFXDrWuISrAg3zbUMgu+RY=\",\"nonce\":\"nayU5cHhsn9s7ewQNZgxBbS28EnoG4nU\",\"payload\":\"WfhOu54nC8Br6RNGffYHFKdaIWd50FCCJ0ntqe1Hvhixp743YjIv1hR4/ZQBX3QUzfgpqIfQCy6hM6m2yDUTmAnqZAUU0Zh1tlINPPus1VGFpMX7DrW1ZneManVIawBRvergDW1VeqeuwZsqQF/t83fr/Pq2rtwf/7EPXQXxF1EmCuusT5jGYAs4dczErxrIzjinAnnS5Yo8D2c+/dJSJQdo6PdwjBD3Lo7gLEML7ISkRuV9+cyZrHz10yNe7VOMSMWfdzCrbDXCzoV28TA6PSwIE9rSTag/wlwSz0l40cV11sT8Fw6n3Xwb9ql6fpbFwdv/ksbMh/arPa27aR9YGJKBDZVm01/xB75O0nhZBelTVjfwS2qYbVo56lUaesZODyrl6CpR68LZEe2e2vIqucCUT+8lgGD4D8h/ZokLUKVb+6dvm04s/kysys0cRCWV\"}")
     }
 
 }

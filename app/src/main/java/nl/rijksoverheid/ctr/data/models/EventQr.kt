@@ -11,7 +11,7 @@ import com.squareup.moshi.JsonClass
  *
  */
 @JsonClass(generateAdapter = true)
-data class EventQR(
+data class EventQr(
     @Json(name = "event_signature") val eventSignature: String,
     val event: Event
 ) {
@@ -26,7 +26,7 @@ data class EventQR(
         val location: Location,
         val type: Type,
         @Json(name = "valid_tests") val validTests: List<ValidTests>
-    ) {
+    ) : JSON() {
 
         @JsonClass(generateAdapter = true)
         data class Location(

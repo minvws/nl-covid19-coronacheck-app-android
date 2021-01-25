@@ -1,24 +1,19 @@
 package nl.rijksoverheid.ctr.citizen
 
 import android.graphics.Bitmap
-import android.util.Base64
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.goterl.lazycode.lazysodium.LazySodiumAndroid
-import com.goterl.lazycode.lazysodium.interfaces.SecretBox
-import com.goterl.lazycode.lazysodium.utils.Key
-import com.goterl.lazycode.lazysodium.utils.KeyPair
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.launch
-import nl.rijksoverheid.ctr.citizen.models.CustomerQR
-import nl.rijksoverheid.ctr.citizen.models.Payload
 import nl.rijksoverheid.ctr.data.api.TestApiClient
-import nl.rijksoverheid.ctr.data.models.EventQR
+import nl.rijksoverheid.ctr.data.models.EventQr
 import nl.rijksoverheid.ctr.data.models.Result
 import nl.rijksoverheid.ctr.data.models.User
-import nl.rijksoverheid.ctr.factories.KeyFactory
-import nl.rijksoverheid.ctr.qrcode.QrCodeTools
+import nl.rijksoverheid.ctr.usecases.GenerateCitizenQrCodeUseCase
+import nl.rijksoverheid.ctr.usecases.GetValidTestResultForEventUseCase
+import nl.rijksoverheid.ctr.usecases.IsEventQrValidUseCase
+import nl.rijksoverheid.ctr.usecases.IsTestResultSignatureValidUseCase
 import timber.log.Timber
 
 /*
@@ -30,9 +25,11 @@ import timber.log.Timber
  */
 class CitizenViewModel(
     private val api: TestApiClient,
+    private val isEventQrValidUseCase: IsEventQrValidUseCase,
+    private val isTestResultValidUseCase: GetValidTestResultForEventUseCase,
+    private val isTestResultSignatureValidUseCase: IsTestResultSignatureValidUseCase,
+    private val generateCitizenQrCodeUseCase: GenerateCitizenQrCodeUseCase,
     private val moshi: Moshi,
-    private val lazySodium: LazySodiumAndroid,
-    private val qrCodeTools: QrCodeTools
 ) : ViewModel() {
 
     val userLiveData = MutableLiveData<Result<User>>()
@@ -60,43 +57,54 @@ class CitizenViewModel(
     fun generateQrCode(eventQrJson: String, qrCodeWidth: Int, qrCodeHeight: Int) {
         viewModelScope.launch {
             try {
-                val eventQR = moshi.adapter(EventQR::class.java).fromJson(eventQrJson)
+                val eventQR = moshi.adapter(EventQr::class.java).fromJson(eventQrJson)
                     ?: throw Exception("EventQR could not be parsed")
-                val testResults = api.getTestResults(getUserId())
-                val positiveTestResult = testResults.testResults.first { it.result == 0 }
-                val positiveTestSignature =
-                    testResults.testSignatures.first { it.uuid == positiveTestResult.uuid }
+                val issuers = api.getIssuers().issuers
 
-                val keyPair = lazySodium.cryptoBoxKeypair()
-                val nonce = lazySodium.nonce(SecretBox.NONCEBYTES)
-
-                val payload = Payload(
-                    eventUuid = eventQR.event.uuid,
-                    time = System.currentTimeMillis() / 1000,
-                    test = positiveTestResult,
-                    testSignature = positiveTestSignature.signature
+                val eventQrValidResult = isEventQrValidUseCase.isValid(
+                    issuers = issuers,
+                    eventQR = eventQR
                 )
 
-                val encryptedPayloadBase64 = lazySodium.cryptoBoxEasy(
-                    payload.toJson(moshi),
-                    nonce,
-                    KeyPair(KeyFactory.createKeyFromBase64String(eventQR.event.publicKey), keyPair.secretKey)
+                if (eventQrValidResult is IsEventQrValidUseCase.EventQrValidResult.Invalid) {
+                    throw Exception(eventQrValidResult.reason)
+                }
+
+                val testResultValidResult = isTestResultValidUseCase.isValid(
+                    event = eventQR.event,
+                    testResults = api.getTestResults(getUserId())
                 )
 
-                val customerQR = CustomerQR(
-                    publicKey = Base64.encodeToString(keyPair.publicKey.asBytes, Base64.NO_WRAP),
-                    nonce = Base64.encodeToString(nonce, Base64.NO_WRAP),
-                    payload = encryptedPayloadBase64
+                if (testResultValidResult is GetValidTestResultForEventUseCase.TestResultValidResult.Invalid) {
+                    throw Exception(testResultValidResult.reason)
+                }
+
+                val validTestResult =
+                    testResultValidResult as GetValidTestResultForEventUseCase.TestResultValidResult.Valid
+
+                val testResultSignatureValidResult = isTestResultSignatureValidUseCase.isValid(
+                    issuers = issuers,
+                    validTestResultForEvent = validTestResult.testResult,
+                    validTestResultSignature = validTestResult.testResultSignature
                 )
 
-                val customerQRBitmap =
-                    qrCodeTools.createQrCode(customerQR.toJson(moshi), qrCodeWidth, qrCodeHeight)
+                if (testResultSignatureValidResult is IsTestResultSignatureValidUseCase.IsTestResultValidResult.Invalid) {
+                    throw Exception(testResultSignatureValidResult.reason)
+                }
 
-                qrCodeLiveData.postValue(Result.Success(customerQRBitmap))
+                val qrCode = generateCitizenQrCodeUseCase.generateQrCode(
+                    event = eventQR.event,
+                    validTestResult = validTestResult.testResult,
+                    validTestResultSignature = validTestResult.testResultSignature,
+                    qrCodeWidth = qrCodeWidth,
+                    qrCodeHeight = qrCodeHeight
+                )
+
+                qrCodeLiveData.postValue(Result.Success(qrCode))
             } catch (e: Exception) {
-
+                qrCodeLiveData.postValue(Result.Failed(e))
             }
         }
     }
-
 }
+

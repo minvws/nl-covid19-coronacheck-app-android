@@ -13,6 +13,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.Observer
+import com.google.android.material.snackbar.Snackbar
 import nl.rijksoverheid.ctr.data.models.Result
 import nl.rijksoverheid.ctr.databinding.ActivityCitizenBinding
 import nl.rijksoverheid.ctr.qrcode.QrCodeTools
@@ -44,12 +45,16 @@ class CitizenActivity : AppCompatActivity() {
 
         citizenViewModel.qrCodeLiveData.observe(this, Observer { bitmapResult ->
             when (bitmapResult) {
+                is Result.Loading -> {
+                    // TODO: Handle loading state
+                }
                 is Result.Success -> {
                     binding.login.visibility = View.GONE
                     binding.qrCode.setImageBitmap(bitmapResult.data)
                 }
-                else -> {
-                    // TODO: Handle non success state
+                is Result.Failed -> {
+                    Snackbar.make(binding.root, bitmapResult.e.toString(), Snackbar.LENGTH_LONG)
+                        .show()
                 }
             }
         })

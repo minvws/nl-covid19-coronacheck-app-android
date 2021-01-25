@@ -28,5 +28,5 @@ data class TestResults(
         @Json(name = "test_type") val testType: String,
         @Json(name = "date_taken") val dateTaken: Long,
         val result: Int
-    )
+    ) : JSON()
 }

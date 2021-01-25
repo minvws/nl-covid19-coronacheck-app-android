@@ -17,6 +17,6 @@ object KeyFactory {
      * sdk < 26. Base64 from android.util should be used.
      */
     fun createKeyFromBase64String(string: String): Key {
-        return Key.fromBytes(Base64.decode(string, Base64.NO_WRAP))
+        return Key.fromBytes(Base64.decode(string, Base64.DEFAULT))
     }
 }
