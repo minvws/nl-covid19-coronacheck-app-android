@@ -92,7 +92,7 @@ class CitizenViewModel(
                     throw Exception(testResultSignatureValidResult.reason)
                 }
 
-                val qrCode = generateCitizenQrCodeUseCase.generateQrCode(
+                val generateQrCodeResult = generateCitizenQrCodeUseCase.generateQrCode(
                     event = eventQR.event,
                     validTestResult = validTestResult.testResult,
                     validTestResultSignature = validTestResult.testResultSignature,
@@ -100,7 +100,14 @@ class CitizenViewModel(
                     qrCodeHeight = qrCodeHeight
                 )
 
-                qrCodeLiveData.postValue(Result.Success(qrCode))
+                if (generateQrCodeResult is GenerateCitizenQrCodeUseCase.GenerateCitizenQrCodeResult.Failed) {
+                    throw Exception(generateQrCodeResult.reason)
+                }
+
+                val generateQrCodeSuccessResult =
+                    (generateQrCodeResult as GenerateCitizenQrCodeUseCase.GenerateCitizenQrCodeResult.Success)
+
+                qrCodeLiveData.postValue(Result.Success(generateQrCodeSuccessResult.bitmap))
             } catch (e: Exception) {
                 qrCodeLiveData.postValue(Result.Failed(e))
             }

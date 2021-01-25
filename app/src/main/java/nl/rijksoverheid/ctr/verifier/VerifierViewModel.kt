@@ -3,7 +3,6 @@ package nl.rijksoverheid.ctr.verifier
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.goterl.lazycode.lazysodium.LazySodiumAndroid
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.citizen.models.CustomerQr

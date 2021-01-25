@@ -1,13 +1,10 @@
 package nl.rijksoverheid.ctr.modules
 
-import com.goterl.lazycode.lazysodium.LazySodiumAndroid
-import com.goterl.lazycode.lazysodium.SodiumAndroid
 import com.squareup.moshi.Moshi
 import nl.rijksoverheid.ctr.citizen.CitizenViewModel
 import nl.rijksoverheid.ctr.citizen.util.EventUtil
 import nl.rijksoverheid.ctr.crypto.CryptoUtil
 import nl.rijksoverheid.ctr.data.api.TestApiClient
-import nl.rijksoverheid.ctr.encoders.AndroidBase64MessageEncoder
 import nl.rijksoverheid.ctr.qrcode.QrCodeTools
 import nl.rijksoverheid.ctr.qrcode.ZxingQrCodeTools
 import nl.rijksoverheid.ctr.usecases.*
@@ -34,7 +31,6 @@ val appModule = module {
         retroFit.create(TestApiClient::class.java)
     }
     single { Moshi.Builder().build() }
-    single { LazySodiumAndroid(SodiumAndroid(), AndroidBase64MessageEncoder()) }
     single<QrCodeTools> { ZxingQrCodeTools() }
 
     // Utils

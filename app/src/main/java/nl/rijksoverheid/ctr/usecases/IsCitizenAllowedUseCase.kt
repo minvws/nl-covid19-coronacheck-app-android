@@ -1,15 +1,12 @@
 package nl.rijksoverheid.ctr.usecases
 
-import android.util.Base64
-import com.goterl.lazycode.lazysodium.LazySodiumAndroid
-import com.goterl.lazycode.lazysodium.utils.KeyPair
 import com.squareup.moshi.Moshi
 import nl.rijksoverheid.ctr.citizen.models.CustomerQr
 import nl.rijksoverheid.ctr.citizen.models.Payload
 import nl.rijksoverheid.ctr.citizen.util.EventUtil
+import nl.rijksoverheid.ctr.crypto.CryptoUtil
 import nl.rijksoverheid.ctr.data.models.AgentQR
 import nl.rijksoverheid.ctr.ext.toObject
-import nl.rijksoverheid.ctr.factories.KeyFactory
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -19,9 +16,9 @@ import nl.rijksoverheid.ctr.factories.KeyFactory
  *
  */
 class IsCitizenAllowedUseCase(
-    private val lazySodium: LazySodiumAndroid,
     private val moshi: Moshi,
-    private val eventUtil: EventUtil
+    private val eventUtil: EventUtil,
+    private val cryptoUtil: CryptoUtil
 ) {
 
     sealed class IsCitizenAllowedResult {
@@ -34,16 +31,13 @@ class IsCitizenAllowedUseCase(
         agent: AgentQR.Agent
     ): IsCitizenAllowedResult {
         val eventPrivateKey = agent.event.privateKey
-        val decryptionKey = KeyPair(
-            KeyFactory.createKeyFromBase64String(customerQr.publicKey),
-            KeyFactory.createKeyFromBase64String(eventPrivateKey)
-        )
 
-        val payloadDecrypted = lazySodium.cryptoBoxOpenEasy(
-            customerQr.payload,
-            Base64.decode(customerQr.nonce, Base64.NO_WRAP),
-            decryptionKey
-        )
+        val payloadDecrypted = cryptoUtil.boxOpenEasy(
+            cipher = customerQr.payload,
+            nonce = customerQr.nonce,
+            publicKey = customerQr.publicKey,
+            privateKey = eventPrivateKey
+        ) ?: return IsCitizenAllowedResult.NotAllowed("Could not decrypt payload")
 
         val payload = payloadDecrypted.toObject<Payload>(moshi)
 

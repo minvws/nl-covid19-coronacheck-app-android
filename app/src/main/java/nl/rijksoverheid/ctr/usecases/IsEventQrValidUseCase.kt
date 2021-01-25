@@ -24,6 +24,7 @@ class IsEventQrValidUseCase(
     fun isValid(issuers: List<Issuers.Issuer>, eventQR: EventQr): EventQrValidResult {
         val event = eventQR.event
 
+        //TODO: Does not yet work because payload json expects forward slashes
 //        val eventSignatureValid = isSignatureValidUseCase.isValid(
 //            issuers,
 //            eventQR.eventSignature,
