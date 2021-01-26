@@ -20,6 +20,11 @@ platform :android do
 
         deploy_prod
 
+        inform_slack(
+            default_payloads: [:git_author],
+            message: "Successfully distributed Android beta build #{version} (#{build_number}) :rocket:",
+        )
+
     end
 
     private_lane :deploy_test do
@@ -68,6 +73,12 @@ platform :android do
                  groups: "testers",
                  release_notes: "Release on production environment via Firebase"
              )
+    end
+
+    private_lane :inform_slack do |options|
+        unless ENV['SLACK_URL'].nil?
+            slack(options)
+        end
     end
 
 end
