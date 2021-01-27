@@ -37,6 +37,20 @@
         <activity
             android:name=".verifier.VerifierActivity"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name="net.openid.appauth.RedirectUriReceiverActivity"
+            tools:node="replace">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="coronatester-app-dev" />
+            </intent-filter>
+        </activity>
+
     </application>
 
 

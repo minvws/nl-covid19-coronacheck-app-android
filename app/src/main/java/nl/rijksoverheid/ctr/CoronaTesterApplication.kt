@@ -10,7 +10,9 @@ package nl.rijksoverheid.ctr
 
 import android.app.Application
 import com.jakewharton.threetenabp.AndroidThreeTen
-import nl.rijksoverheid.ctr.modules.appModule
+import nl.rijksoverheid.ctr.citizen.citizenModule
+import nl.rijksoverheid.ctr.shared.sharedModule
+import nl.rijksoverheid.ctr.verifier.verifierModule
 import org.koin.core.context.startKoin
 import timber.log.Timber
 
@@ -21,7 +23,7 @@ class CoronaTesterApplication : Application() {
 
         AndroidThreeTen.init(this)
         startKoin {
-            modules(appModule)
+            modules(sharedModule, citizenModule, verifierModule)
         }
 
         if (BuildConfig.DEBUG) {

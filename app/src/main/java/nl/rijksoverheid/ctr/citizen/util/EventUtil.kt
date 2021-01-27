@@ -1,8 +1,8 @@
 package nl.rijksoverheid.ctr.citizen.util
 
-import nl.rijksoverheid.ctr.data.models.AgentQR
-import nl.rijksoverheid.ctr.data.models.EventQr
-import nl.rijksoverheid.ctr.data.models.TestResults
+import nl.rijksoverheid.ctr.shared.models.Agent
+import nl.rijksoverheid.ctr.shared.models.Event
+import nl.rijksoverheid.ctr.shared.models.TestResults
 import org.threeten.bp.OffsetDateTime
 
 /*
@@ -14,21 +14,18 @@ import org.threeten.bp.OffsetDateTime
  */
 class EventUtil {
 
-    sealed class ValidTestResult
-
-    fun timeValid(event: EventQr.Event): Boolean {
+    fun timeValid(event: Event): Boolean {
         return event.validFrom <= OffsetDateTime.now()
             .toEpochSecond() && event.validTo >= OffsetDateTime.now().toEpochSecond()
     }
 
-    fun getValidTestResult(
-        event: EventQr.Event,
+    fun allowedTestResult(
+        event: Event,
         userTestResults: List<TestResults.TestResult>
     ): TestResults.TestResult? {
         event.validTests.forEach { validTestForEvent ->
             userTestResults.forEach { userTestResult ->
-                if (validTestForEvent.uuid == userTestResult.testType && validTestForEvent.maxValdity + userTestResult.dateTaken >= OffsetDateTime.now()
-                        .toEpochSecond() && userTestResult.result == 0
+                if (validTestForEvent.uuid == userTestResult.testType && userTestResult.result == 0
                 ) {
                     return userTestResult
                 }
@@ -37,8 +34,8 @@ class EventUtil {
         return null
     }
 
-    fun checkValidTestResult(
-        event: AgentQR.Agent.Event,
+    fun allowedTestResult(
+        event: Agent.Event,
         userTestResult: TestResults.TestResult
     ): Boolean {
         event.validTests.forEach { validTestForEvent ->
@@ -47,5 +44,4 @@ class EventUtil {
         }
         return false
     }
-
 }
