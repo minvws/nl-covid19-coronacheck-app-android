@@ -67,18 +67,6 @@ android {
 
     flavorDimensions "environment"
     productFlavors {
-        localDev {
-            dimension "environment"
-            buildConfigField "boolean", "FEATURE_LOGGING", "true"
-            buildConfigField "boolean", "FEATURE_SSL_PINNING", "false"
-            buildConfigField "String", "BASE_API_URL", "\"coronatester.nl\""
-            manifestPlaceholders = [appLabel: "@string/app_name_dev"]
-            apply plugin: 'com.google.gms.google-services'
-            apply plugin: 'com.google.firebase.crashlytics'
-            versionNameSuffix "-dev"
-            applicationIdSuffix ".dev"
-        }
-
         coronatesterTest {
             dimension "environment"
             buildConfigField "boolean", "FEATURE_LOGGING", "true"
