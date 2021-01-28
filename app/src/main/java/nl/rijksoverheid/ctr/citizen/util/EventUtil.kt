@@ -26,7 +26,7 @@ class EventUtil {
         event.validTests.forEach { validTestForEvent ->
             userTestResults.forEach { userTestResult ->
                 if (validTestForEvent.uuid == userTestResult.testType && validTestForEvent.maxValdity + userTestResult.dateTaken >= OffsetDateTime.now()
-                        .toEpochSecond() && userTestResult.result == 0
+                        .toEpochSecond()
                 ) {
                     return userTestResult
                 }
