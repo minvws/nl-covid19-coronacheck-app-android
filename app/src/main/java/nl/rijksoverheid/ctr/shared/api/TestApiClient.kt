@@ -21,7 +21,7 @@ interface TestApiClient {
     suspend fun getIssuers(): Issuers
 
     @GET("/citizen/get_test_results/")
-    suspend fun getTestResults(@Query("userUUID") userUUID: String): TestResults
+    suspend fun getTestResults(@Query("access_token") accessToken: String): TestResults
 
     @GET("/verifier/get_event/{id}")
     suspend fun getEvent(@Path("id") id: String): RemoteEvent

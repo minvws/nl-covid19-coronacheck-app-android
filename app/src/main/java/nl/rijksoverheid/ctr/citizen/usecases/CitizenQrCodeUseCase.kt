@@ -29,7 +29,7 @@ class CitizenQrCodeUseCase(
         Timber.i("Received access token $accessToken")
 
         // TODO: Implement correct call that uses the access token
-        val testResults = eventRepository.testResults("ef9f409a-8613-4600-b135-8d2ac12559b3")
+        val testResults = eventRepository.testResults(accessToken)
         val remoteEvent = eventRepository.remoteEvent("d9ff36de-2357-4fa6-a64e-1569aa57bf1c")
         val issuers = eventRepository.issuers()
 

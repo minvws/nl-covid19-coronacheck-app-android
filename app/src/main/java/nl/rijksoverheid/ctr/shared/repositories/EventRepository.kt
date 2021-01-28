@@ -19,8 +19,8 @@ class EventRepository(private val apiClient: TestApiClient) {
         return apiClient.getIssuers()
     }
 
-    suspend fun testResults(uuid: String): TestResults {
-        return apiClient.getTestResults(userUUID = uuid)
+    suspend fun testResults(accessToken: String): TestResults {
+        return apiClient.getTestResults(accessToken = accessToken)
     }
 
     suspend fun remoteEvent(id: String): RemoteEvent {
