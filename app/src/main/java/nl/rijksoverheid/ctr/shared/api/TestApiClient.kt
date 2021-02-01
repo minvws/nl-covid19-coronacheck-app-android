@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.shared.api
 
+import nl.rijksoverheid.ctr.citizen.models.RemoteNonce
 import nl.rijksoverheid.ctr.shared.models.Issuers
 import nl.rijksoverheid.ctr.shared.models.RemoteAgent
 import nl.rijksoverheid.ctr.shared.models.RemoteEvent
@@ -28,4 +29,7 @@ interface TestApiClient {
 
     @GET("verifier/get_agent/{id}")
     suspend fun getAgent(@Path("id") id: String): RemoteAgent
+
+    @GET("/citizen/get_nonce/")
+    suspend fun getNonce(): RemoteNonce
 }

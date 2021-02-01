@@ -13,6 +13,7 @@ import com.jakewharton.threetenabp.AndroidThreeTen
 import nl.rijksoverheid.ctr.citizen.citizenModule
 import nl.rijksoverheid.ctr.shared.sharedModule
 import nl.rijksoverheid.ctr.verifier.verifierModule
+import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import timber.log.Timber
 
@@ -23,6 +24,7 @@ class CoronaTesterApplication : Application() {
 
         AndroidThreeTen.init(this)
         startKoin {
+            androidContext(this@CoronaTesterApplication)
             modules(sharedModule, citizenModule, verifierModule)
         }
 

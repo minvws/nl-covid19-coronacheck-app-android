@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.citizen.usecases
 import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import nl.rijksoverheid.ctr.citizen.repositories.AuthenticationRepository
+import nl.rijksoverheid.ctr.citizen.repositories.CitizenRepository
 import nl.rijksoverheid.ctr.shared.repositories.EventRepository
 import nl.rijksoverheid.ctr.shared.usecases.SignatureValidUseCase
 import timber.log.Timber
@@ -17,6 +18,8 @@ import timber.log.Timber
 class CitizenQrCodeUseCase(
     private val authenticationRepository: AuthenticationRepository,
     private val eventRepository: EventRepository,
+    private val citizenRepository: CitizenRepository,
+    private val commitmentMessageUseCase: CommitmentMessageUseCase,
     private val eventValidUseCase: EventValidUseCase,
     private val allowedTestResultForEventUseCase: AllowedTestResultForEventUseCase,
     private val signatureValidUseCase: SignatureValidUseCase,
@@ -24,11 +27,16 @@ class CitizenQrCodeUseCase(
 ) {
 
     suspend fun qrCode(activity: AppCompatActivity, qrCodeWidth: Int, qrCodeHeight: Int): Bitmap {
-        val accessToken = authenticationRepository.login(activity)
+        val remoteNonce = citizenRepository.remoteNonce()
+        val commitmentMessage = commitmentMessageUseCase.json(
+            nonce =
+            remoteNonce.nonce
+        )
+        Timber.i("Received commitment message $commitmentMessage")
 
+        val accessToken = authenticationRepository.login(activity)
         Timber.i("Received access token $accessToken")
 
-        // TODO: Implement correct call that uses the access token
         val testResults = eventRepository.testResults(accessToken)
         val remoteEvent = eventRepository.remoteEvent("d9ff36de-2357-4fa6-a64e-1569aa57bf1c")
         val issuers = eventRepository.issuers()

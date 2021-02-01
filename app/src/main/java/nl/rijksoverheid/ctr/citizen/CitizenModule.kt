@@ -1,10 +1,12 @@
 package nl.rijksoverheid.ctr.citizen
 
+import androidx.preference.PreferenceManager
+import nl.rijksoverheid.ctr.citizen.persistence.PersistenceManager
+import nl.rijksoverheid.ctr.citizen.persistence.SharedPreferencesPersistenceManager
 import nl.rijksoverheid.ctr.citizen.repositories.AuthenticationRepository
-import nl.rijksoverheid.ctr.citizen.usecases.AllowedTestResultForEventUseCase
-import nl.rijksoverheid.ctr.citizen.usecases.CitizenQrCodeUseCase
-import nl.rijksoverheid.ctr.citizen.usecases.EventValidUseCase
-import nl.rijksoverheid.ctr.citizen.usecases.GenerateCitizenQrCodeUseCase
+import nl.rijksoverheid.ctr.citizen.repositories.CitizenRepository
+import nl.rijksoverheid.ctr.citizen.usecases.*
+import org.koin.android.ext.koin.androidContext
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -17,6 +19,15 @@ import org.koin.dsl.module
  */
 // TODO: Make another sharedModule that shares logic between citizen and verifier
 val citizenModule = module {
+
+    single<PersistenceManager> {
+        SharedPreferencesPersistenceManager(
+            PreferenceManager.getDefaultSharedPreferences(
+                androidContext()
+            )
+        )
+    }
+
     // Use cases
     single {
         EventValidUseCase(
@@ -43,13 +54,22 @@ val citizenModule = module {
             get(),
             get(),
             get(),
+            get(),
+            get(),
             get()
         )
     }
+    single {
+        SecretKeyUseCase(get())
+    }
+    single {
+        CommitmentMessageUseCase(get())
+    }
 
     // ViewModels
-    viewModel { CitizenViewModel(get()) }
+    viewModel { CitizenViewModel(get(), get()) }
 
     // Repositories
     single { AuthenticationRepository() }
+    single { CitizenRepository(get()) }
 }

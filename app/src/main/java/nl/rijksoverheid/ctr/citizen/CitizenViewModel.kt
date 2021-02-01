@@ -6,8 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import nl.rijksoverheid.ctr.shared.models.Result
 import nl.rijksoverheid.ctr.citizen.usecases.CitizenQrCodeUseCase
+import nl.rijksoverheid.ctr.citizen.usecases.SecretKeyUseCase
+import nl.rijksoverheid.ctr.shared.models.Result
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -17,10 +18,17 @@ import nl.rijksoverheid.ctr.citizen.usecases.CitizenQrCodeUseCase
  *
  */
 class CitizenViewModel(
+    private val secretKeyUseCase: SecretKeyUseCase,
     private val citizenQrCodeUseCase: CitizenQrCodeUseCase
 ) : ViewModel() {
 
     val qrCodeLiveData = MutableLiveData<Result<Bitmap>>()
+
+    init {
+        viewModelScope.launch {
+            secretKeyUseCase.persist()
+        }
+    }
 
     fun generateQrCode(activity: AppCompatActivity, qrCodeWidth: Int, qrCodeHeight: Int) {
         viewModelScope.launch {
