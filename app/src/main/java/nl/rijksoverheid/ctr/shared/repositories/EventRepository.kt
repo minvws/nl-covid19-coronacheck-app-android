@@ -4,7 +4,7 @@ import nl.rijksoverheid.ctr.shared.api.TestApiClient
 import nl.rijksoverheid.ctr.shared.models.Issuers
 import nl.rijksoverheid.ctr.shared.models.RemoteAgent
 import nl.rijksoverheid.ctr.shared.models.RemoteEvent
-import nl.rijksoverheid.ctr.shared.models.TestResults
+import nl.rijksoverheid.ctr.shared.models.TestProofsResult
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -19,8 +19,12 @@ class EventRepository(private val apiClient: TestApiClient) {
         return apiClient.getIssuers()
     }
 
-    suspend fun testResults(accessToken: String): TestResults {
-        return apiClient.getTestResults(accessToken = accessToken)
+    suspend fun testProofs(accessToken: String, sToken: String, icm: String): TestProofsResult {
+        return apiClient.getTestProofs(
+            accessToken = accessToken,
+            sToken = sToken,
+            icm = icm
+        )
     }
 
     suspend fun remoteEvent(id: String): RemoteEvent {

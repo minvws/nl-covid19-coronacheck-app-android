@@ -36,11 +36,6 @@ val holderModule = module {
         )
     }
     single {
-        AllowedTestResultForEventUseCase(
-            get()
-        )
-    }
-    single {
         GenerateHolderQrCodeUseCase(
             get(),
             get(),
@@ -56,7 +51,6 @@ val holderModule = module {
             get(),
             get(),
             get(),
-            get()
         )
     }
     single {

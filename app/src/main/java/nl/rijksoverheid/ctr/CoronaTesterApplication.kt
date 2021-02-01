@@ -9,6 +9,7 @@
 package nl.rijksoverheid.ctr
 
 import android.app.Application
+import com.facebook.stetho.Stetho
 import com.jakewharton.threetenabp.AndroidThreeTen
 import nl.rijksoverheid.ctr.holder.holderModule
 import nl.rijksoverheid.ctr.shared.sharedModule
@@ -29,6 +30,7 @@ class CoronaTesterApplication : Application() {
         }
 
         if (BuildConfig.DEBUG) {
+            Stetho.initializeWithDefaults(this)
             Timber.plant(Timber.DebugTree())
         }
     }

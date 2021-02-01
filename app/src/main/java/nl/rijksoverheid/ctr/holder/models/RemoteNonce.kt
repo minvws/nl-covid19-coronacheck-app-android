@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.holder.models
 
+import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 /*
@@ -12,7 +13,7 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class RemoteNonce(
     val nonce: String,
-    val stoken: String
+    @Json(name = "stoken") val sToken: String
 )
 
 

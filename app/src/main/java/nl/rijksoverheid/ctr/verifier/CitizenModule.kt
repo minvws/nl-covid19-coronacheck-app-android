@@ -1,7 +1,6 @@
 package nl.rijksoverheid.ctr.verifier
 
 import nl.rijksoverheid.ctr.verifier.usecases.DecryptHolderQrUseCase
-import nl.rijksoverheid.ctr.verifier.usecases.VerifierAllowsHolderUseCase
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -19,16 +18,7 @@ val verifierModule = module {
             get()
         )
     }
-    single {
-        VerifierAllowsHolderUseCase(
-            get(),
-            get(),
-            get(),
-            get(),
-            get()
-        )
-    }
 
     // ViewModels
-    viewModel { VerifierViewModel(get()) }
+    viewModel { VerifierViewModel() }
 }

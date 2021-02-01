@@ -21,7 +21,6 @@ class HolderQrCodeUseCase(
     private val holderRepository: HolderRepository,
     private val commitmentMessageUseCase: CommitmentMessageUseCase,
     private val eventValidUseCase: EventValidUseCase,
-    private val allowedTestResultForEventUseCase: AllowedTestResultForEventUseCase,
     private val signatureValidUseCase: SignatureValidUseCase,
     private val generateHolderQrCodeUseCase: GenerateHolderQrCodeUseCase
 ) {
@@ -37,7 +36,12 @@ class HolderQrCodeUseCase(
         val accessToken = authenticationRepository.login(activity)
         Timber.i("Received access token $accessToken")
 
-        val testResults = eventRepository.testResults(accessToken)
+        val testResults = eventRepository.testProofs(
+            accessToken = accessToken,
+            sToken = remoteNonce.sToken,
+            icm = commitmentMessage
+        )
+
         val remoteEvent = eventRepository.remoteEvent("d9ff36de-2357-4fa6-a64e-1569aa57bf1c")
         val issuers = eventRepository.issuers()
 
@@ -46,22 +50,13 @@ class HolderQrCodeUseCase(
             remoteEvent = remoteEvent
         )
 
-        val allowedTestResult = allowedTestResultForEventUseCase.get(
-            event = remoteEvent.event,
-            testResults = testResults
-        )
+        throw Exception("Bla")
 
-        signatureValidUseCase.checkValid(
-            issuers = issuers.issuers,
-            signature = allowedTestResult.testResultSignature.signature,
-            data = allowedTestResult.testResult
-        )
-
-        return generateHolderQrCodeUseCase.bitmap(
-            event = remoteEvent.event,
-            allowedTestResult = allowedTestResult,
-            qrCodeWidth = qrCodeWidth,
-            qrCodeHeight = qrCodeHeight
-        )
+//        return generateHolderQrCodeUseCase.bitmap(
+//            event = remoteEvent.event,
+//            allowedTestResult = allowedTestResult,
+//            qrCodeWidth = qrCodeWidth,
+//            qrCodeHeight = qrCodeHeight
+//        )
     }
 }
