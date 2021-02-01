@@ -1,9 +1,9 @@
-package nl.rijksoverheid.ctr.citizen.usecases
+package nl.rijksoverheid.ctr.holder.usecases
 
 import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
-import nl.rijksoverheid.ctr.citizen.repositories.AuthenticationRepository
-import nl.rijksoverheid.ctr.citizen.repositories.CitizenRepository
+import nl.rijksoverheid.ctr.holder.repositories.AuthenticationRepository
+import nl.rijksoverheid.ctr.holder.repositories.HolderRepository
 import nl.rijksoverheid.ctr.shared.repositories.EventRepository
 import nl.rijksoverheid.ctr.shared.usecases.SignatureValidUseCase
 import timber.log.Timber
@@ -15,19 +15,19 @@ import timber.log.Timber
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class CitizenQrCodeUseCase(
+class HolderQrCodeUseCase(
     private val authenticationRepository: AuthenticationRepository,
     private val eventRepository: EventRepository,
-    private val citizenRepository: CitizenRepository,
+    private val holderRepository: HolderRepository,
     private val commitmentMessageUseCase: CommitmentMessageUseCase,
     private val eventValidUseCase: EventValidUseCase,
     private val allowedTestResultForEventUseCase: AllowedTestResultForEventUseCase,
     private val signatureValidUseCase: SignatureValidUseCase,
-    private val generateCitizenQrCodeUseCase: GenerateCitizenQrCodeUseCase
+    private val generateHolderQrCodeUseCase: GenerateHolderQrCodeUseCase
 ) {
 
     suspend fun qrCode(activity: AppCompatActivity, qrCodeWidth: Int, qrCodeHeight: Int): Bitmap {
-        val remoteNonce = citizenRepository.remoteNonce()
+        val remoteNonce = holderRepository.remoteNonce()
         val commitmentMessage = commitmentMessageUseCase.json(
             nonce =
             remoteNonce.nonce
@@ -57,7 +57,7 @@ class CitizenQrCodeUseCase(
             data = allowedTestResult.testResult
         )
 
-        return generateCitizenQrCodeUseCase.bitmap(
+        return generateHolderQrCodeUseCase.bitmap(
             event = remoteEvent.event,
             allowedTestResult = allowedTestResult,
             qrCodeWidth = qrCodeWidth,

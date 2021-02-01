@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.citizen.repositories
+package nl.rijksoverheid.ctr.holder.repositories
 
 import android.net.Uri
 import androidx.activity.result.contract.ActivityResultContracts

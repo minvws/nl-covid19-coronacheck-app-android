@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.citizen.persistence
+package nl.rijksoverheid.ctr.holder.persistence
 
 import android.annotation.SuppressLint
 import android.content.SharedPreferences

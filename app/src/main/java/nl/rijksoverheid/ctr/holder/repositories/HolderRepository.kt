@@ -1,6 +1,6 @@
-package nl.rijksoverheid.ctr.citizen.repositories
+package nl.rijksoverheid.ctr.holder.repositories
 
-import nl.rijksoverheid.ctr.citizen.models.RemoteNonce
+import nl.rijksoverheid.ctr.holder.models.RemoteNonce
 import nl.rijksoverheid.ctr.shared.api.TestApiClient
 
 /*
@@ -10,7 +10,7 @@ import nl.rijksoverheid.ctr.shared.api.TestApiClient
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class CitizenRepository(private val api: TestApiClient) {
+class HolderRepository(private val api: TestApiClient) {
 
     suspend fun remoteNonce(): RemoteNonce {
         return api.getNonce()

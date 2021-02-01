@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.citizen
+package nl.rijksoverheid.ctr.holder
 
 import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
@@ -6,8 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import nl.rijksoverheid.ctr.citizen.usecases.CitizenQrCodeUseCase
-import nl.rijksoverheid.ctr.citizen.usecases.SecretKeyUseCase
+import nl.rijksoverheid.ctr.holder.usecases.HolderQrCodeUseCase
+import nl.rijksoverheid.ctr.holder.usecases.SecretKeyUseCase
 import nl.rijksoverheid.ctr.shared.models.Result
 
 /*
@@ -17,9 +17,9 @@ import nl.rijksoverheid.ctr.shared.models.Result
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class CitizenViewModel(
+class HolderViewModel(
     private val secretKeyUseCase: SecretKeyUseCase,
-    private val citizenQrCodeUseCase: CitizenQrCodeUseCase
+    private val holderQrCodeUseCase: HolderQrCodeUseCase
 ) : ViewModel() {
 
     val qrCodeLiveData = MutableLiveData<Result<Bitmap>>()
@@ -33,7 +33,7 @@ class CitizenViewModel(
     fun generateQrCode(activity: AppCompatActivity, qrCodeWidth: Int, qrCodeHeight: Int) {
         viewModelScope.launch {
             try {
-                val qrCodeBitmap = citizenQrCodeUseCase.qrCode(
+                val qrCodeBitmap = holderQrCodeUseCase.qrCode(
                     activity = activity,
                     qrCodeWidth = qrCodeWidth,
                     qrCodeHeight = qrCodeHeight

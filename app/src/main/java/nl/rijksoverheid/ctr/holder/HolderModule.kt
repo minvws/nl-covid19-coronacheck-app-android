@@ -1,11 +1,11 @@
-package nl.rijksoverheid.ctr.citizen
+package nl.rijksoverheid.ctr.holder
 
 import androidx.preference.PreferenceManager
-import nl.rijksoverheid.ctr.citizen.persistence.PersistenceManager
-import nl.rijksoverheid.ctr.citizen.persistence.SharedPreferencesPersistenceManager
-import nl.rijksoverheid.ctr.citizen.repositories.AuthenticationRepository
-import nl.rijksoverheid.ctr.citizen.repositories.CitizenRepository
-import nl.rijksoverheid.ctr.citizen.usecases.*
+import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
+import nl.rijksoverheid.ctr.holder.persistence.SharedPreferencesPersistenceManager
+import nl.rijksoverheid.ctr.holder.repositories.AuthenticationRepository
+import nl.rijksoverheid.ctr.holder.repositories.HolderRepository
+import nl.rijksoverheid.ctr.holder.usecases.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -17,8 +17,8 @@ import org.koin.dsl.module
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-// TODO: Make another sharedModule that shares logic between citizen and verifier
-val citizenModule = module {
+// TODO: Make another sharedModule that shares logic between holder and verifier
+val holderModule = module {
 
     single<PersistenceManager> {
         SharedPreferencesPersistenceManager(
@@ -41,14 +41,14 @@ val citizenModule = module {
         )
     }
     single {
-        GenerateCitizenQrCodeUseCase(
+        GenerateHolderQrCodeUseCase(
             get(),
             get(),
             get()
         )
     }
     single {
-        CitizenQrCodeUseCase(
+        HolderQrCodeUseCase(
             get(),
             get(),
             get(),
@@ -67,9 +67,9 @@ val citizenModule = module {
     }
 
     // ViewModels
-    viewModel { CitizenViewModel(get(), get()) }
+    viewModel { HolderViewModel(get(), get()) }
 
     // Repositories
     single { AuthenticationRepository() }
-    single { CitizenRepository(get()) }
+    single { HolderRepository(get()) }
 }

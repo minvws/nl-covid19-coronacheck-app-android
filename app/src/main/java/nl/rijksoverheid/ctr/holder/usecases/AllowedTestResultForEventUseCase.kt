@@ -1,6 +1,6 @@
-package nl.rijksoverheid.ctr.citizen.usecases
+package nl.rijksoverheid.ctr.holder.usecases
 
-import nl.rijksoverheid.ctr.citizen.util.EventUtil
+import nl.rijksoverheid.ctr.holder.util.EventUtil
 import nl.rijksoverheid.ctr.shared.models.AllowedTestResult
 import nl.rijksoverheid.ctr.shared.models.Event
 import nl.rijksoverheid.ctr.shared.models.TestResults

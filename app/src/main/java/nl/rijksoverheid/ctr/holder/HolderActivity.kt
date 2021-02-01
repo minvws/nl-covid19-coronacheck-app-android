@@ -6,29 +6,29 @@
  *
  */
 
-package nl.rijksoverheid.ctr.citizen
+package nl.rijksoverheid.ctr.holder
 
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
-import nl.rijksoverheid.ctr.databinding.ActivityCitizenBinding
+import nl.rijksoverheid.ctr.databinding.ActivityHolderBinding
 import nl.rijksoverheid.ctr.shared.models.Result
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class CitizenActivity : AppCompatActivity() {
+class HolderActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityCitizenBinding
-    private val citizenViewModel: CitizenViewModel by viewModel()
+    private lateinit var binding: ActivityHolderBinding
+    private val holderViewModel: HolderViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityCitizenBinding.inflate(layoutInflater)
+        binding = ActivityHolderBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        citizenViewModel.qrCodeLiveData.observe(this, Observer { bitmapResult ->
+        holderViewModel.qrCodeLiveData.observe(this, Observer { bitmapResult ->
             when (bitmapResult) {
                 is Result.Loading -> {
                     // TODO: Handle loading state
@@ -45,7 +45,7 @@ class CitizenActivity : AppCompatActivity() {
         })
 
         binding.login.setOnClickListener {
-            citizenViewModel.generateQrCode(
+            holderViewModel.generateQrCode(
                 activity = this,
                 qrCodeWidth = binding.qrCode.width,
                 qrCodeHeight = binding.qrCode.height

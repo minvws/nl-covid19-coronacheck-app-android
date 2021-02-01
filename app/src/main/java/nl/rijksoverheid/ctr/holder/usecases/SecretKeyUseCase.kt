@@ -1,7 +1,7 @@
-package nl.rijksoverheid.ctr.citizen.usecases
+package nl.rijksoverheid.ctr.holder.usecases
 
 import clmobile.Clmobile
-import nl.rijksoverheid.ctr.citizen.persistence.PersistenceManager
+import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.shared.ext.successString
 
 /*

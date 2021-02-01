@@ -11,7 +11,7 @@ package nl.rijksoverheid.ctr
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import nl.rijksoverheid.ctr.citizen.CitizenActivity
+import nl.rijksoverheid.ctr.holder.HolderActivity
 import nl.rijksoverheid.ctr.databinding.ActivityMainBinding
 import nl.rijksoverheid.ctr.verifier.VerifierActivity
 
@@ -23,8 +23,8 @@ class MainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.citizen.setOnClickListener {
-            startActivity(Intent(this, CitizenActivity::class.java))
+        binding.holder.setOnClickListener {
+            startActivity(Intent(this, HolderActivity::class.java))
         }
 
         binding.verifier.setOnClickListener {

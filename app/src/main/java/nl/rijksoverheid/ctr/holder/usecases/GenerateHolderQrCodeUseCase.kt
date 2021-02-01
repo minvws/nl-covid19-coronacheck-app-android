@@ -1,10 +1,10 @@
-package nl.rijksoverheid.ctr.citizen.usecases
+package nl.rijksoverheid.ctr.holder.usecases
 
 import android.graphics.Bitmap
 import android.util.Base64
 import com.squareup.moshi.Moshi
-import nl.rijksoverheid.ctr.citizen.models.CitizenQr
-import nl.rijksoverheid.ctr.citizen.models.CitizenQrPayload
+import nl.rijksoverheid.ctr.holder.models.HolderQr
+import nl.rijksoverheid.ctr.holder.models.HolderQrPayload
 import nl.rijksoverheid.ctr.shared.models.AllowedTestResult
 import nl.rijksoverheid.ctr.shared.models.Event
 import nl.rijksoverheid.ctr.shared.util.CryptoUtil
@@ -18,7 +18,7 @@ import org.threeten.bp.OffsetDateTime
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class GenerateCitizenQrCodeUseCase(
+class GenerateHolderQrCodeUseCase(
     private val cryptoUtil: CryptoUtil,
     private val moshi: Moshi,
     private val qrCodeUtils: QrCodeUtils
@@ -34,7 +34,7 @@ class GenerateCitizenQrCodeUseCase(
             ?: throw Exception("Failed to generate public and private key")
         val nonce = cryptoUtil.generateNonce()
 
-        val payload = CitizenQrPayload(
+        val payload = HolderQrPayload(
             eventUuid = event.uuid,
             time = OffsetDateTime.now().toEpochSecond(),
             test = allowedTestResult.testResult,
@@ -49,7 +49,7 @@ class GenerateCitizenQrCodeUseCase(
         ) ?: throw Exception("Failed to encrypt payload")
 
 
-        val customerQR = CitizenQr(
+        val customerQR = HolderQr(
             publicKey = Base64.encodeToString(keyPair.first, Base64.NO_WRAP),
             nonce = Base64.encodeToString(nonce, Base64.NO_WRAP),
             payload = newEncryptedPayloadBase64

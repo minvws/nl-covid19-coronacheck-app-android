@@ -1,6 +1,6 @@
 package nl.rijksoverheid.ctr.shared.api
 
-import nl.rijksoverheid.ctr.citizen.models.RemoteNonce
+import nl.rijksoverheid.ctr.holder.models.RemoteNonce
 import nl.rijksoverheid.ctr.shared.models.Issuers
 import nl.rijksoverheid.ctr.shared.models.RemoteAgent
 import nl.rijksoverheid.ctr.shared.models.RemoteEvent
@@ -18,18 +18,18 @@ import retrofit2.http.Query
  */
 interface TestApiClient {
 
-    @GET("/citizen/get_public_keys/")
+    @GET("/holder/get_public_keys/")
     suspend fun getIssuers(): Issuers
 
-    @GET("/citizen/get_test_results/")
+    @GET("/holder/get_test_results/")
     suspend fun getTestResults(@Query("access_token") accessToken: String): TestResults
 
-    @GET("/verifier/get_event/{id}")
+    @GET("/issuer/get_event/{id}")
     suspend fun getEvent(@Path("id") id: String): RemoteEvent
 
-    @GET("verifier/get_agent/{id}")
+    @GET("issuer/get_agent/{id}")
     suspend fun getAgent(@Path("id") id: String): RemoteAgent
 
-    @GET("/citizen/get_nonce/")
+    @GET("/holder/get_nonce/")
     suspend fun getNonce(): RemoteNonce
 }

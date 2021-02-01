@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.citizen.models
+package nl.rijksoverheid.ctr.holder.models
 
 import com.squareup.moshi.JsonClass
 

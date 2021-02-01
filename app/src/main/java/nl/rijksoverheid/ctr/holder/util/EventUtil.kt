@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.citizen.util
+package nl.rijksoverheid.ctr.holder.util
 
 import nl.rijksoverheid.ctr.shared.models.Agent
 import nl.rijksoverheid.ctr.shared.models.Event

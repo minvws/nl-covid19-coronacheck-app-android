@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.shared.models.Result
-import nl.rijksoverheid.ctr.verifier.usecases.VerifierAllowsCitizenUseCase
+import nl.rijksoverheid.ctr.verifier.usecases.VerifierAllowsHolderUseCase
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -15,20 +15,20 @@ import nl.rijksoverheid.ctr.verifier.usecases.VerifierAllowsCitizenUseCase
  *
  */
 class VerifierViewModel(
-    private val verifierAllowsCitizenUseCase: VerifierAllowsCitizenUseCase
+    private val verifierAllowsholderUseCase: VerifierAllowsHolderUseCase
 ) : ViewModel() {
 
-    val citizenAllowedLiveData = MutableLiveData<Result<Boolean>>()
+    val holderAllowedLiveData = MutableLiveData<Result<Boolean>>()
 
-    fun validateCitizen(citizenQrContent: String) {
+    fun validateholder(holderQrContent: String) {
         viewModelScope.launch {
             try {
-                val allowed = verifierAllowsCitizenUseCase.allow(
-                    citizenQrContent = citizenQrContent
+                val allowed = verifierAllowsholderUseCase.allow(
+                    holderQrContent = holderQrContent
                 )
-                citizenAllowedLiveData.postValue(Result.Success(allowed))
+                holderAllowedLiveData.postValue(Result.Success(allowed))
             } catch (e: Exception) {
-                citizenAllowedLiveData.postValue(Result.Failed(e))
+                holderAllowedLiveData.postValue(Result.Failed(e))
             }
         }
     }

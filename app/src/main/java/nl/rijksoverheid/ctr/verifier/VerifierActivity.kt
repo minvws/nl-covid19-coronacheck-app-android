@@ -30,19 +30,19 @@ class VerifierActivity : AppCompatActivity() {
         val binding = ActivityVerifierBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        verifierViewModel.citizenAllowedLiveData.observe(this, Observer { citizenAllowedResult ->
-            when (citizenAllowedResult) {
+        verifierViewModel.holderAllowedLiveData.observe(this, Observer { holderAllowedResult ->
+            when (holderAllowedResult) {
                 is Result.Loading -> {
                     // TODO: Handle loading state
                 }
                 is Result.Success -> {
-                    val customerAllowed = citizenAllowedResult.data
+                    val customerAllowed = holderAllowedResult.data
                     binding.root.setBackgroundColor(if (customerAllowed) Color.GREEN else Color.RED)
                 }
                 is Result.Failed -> {
                     Snackbar.make(
                         binding.root,
-                        citizenAllowedResult.e.toString(),
+                        holderAllowedResult.e.toString(),
                         Snackbar.LENGTH_LONG
                     ).show()
                 }
@@ -56,7 +56,7 @@ class VerifierActivity : AppCompatActivity() {
 
     fun onLaunchScanner() {
         qrCodeUtils.launchScanner(this) {
-            verifierViewModel.validateCitizen(it)
+            verifierViewModel.validateholder(it)
         }
     }
 }

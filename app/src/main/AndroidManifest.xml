@@ -32,7 +32,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".citizen.CitizenActivity"
+            android:name=".holder.HolderActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".verifier.VerifierActivity"

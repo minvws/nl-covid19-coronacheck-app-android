@@ -1,7 +1,7 @@
 package nl.rijksoverheid.ctr.shared
 
 import com.squareup.moshi.Moshi
-import nl.rijksoverheid.ctr.citizen.util.EventUtil
+import nl.rijksoverheid.ctr.holder.util.EventUtil
 import nl.rijksoverheid.ctr.shared.api.TestApiClient
 import nl.rijksoverheid.ctr.shared.repositories.EventRepository
 import nl.rijksoverheid.ctr.shared.usecases.SignatureValidUseCase

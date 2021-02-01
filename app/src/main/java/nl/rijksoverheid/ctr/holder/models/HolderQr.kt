@@ -1,9 +1,8 @@
-package nl.rijksoverheid.ctr.citizen.models
+package nl.rijksoverheid.ctr.holder.models
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import nl.rijksoverheid.ctr.shared.models.JSON
-import nl.rijksoverheid.ctr.shared.models.TestResults
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -13,9 +12,8 @@ import nl.rijksoverheid.ctr.shared.models.TestResults
  *
  */
 @JsonClass(generateAdapter = true)
-data class CitizenQrPayload(
-    @Json(name = "event_uuid") val eventUuid: String,
-    val time: Long,
-    val test: TestResults.TestResult,
-    @Json(name = "test_signature") val testSignature: String
+data class HolderQr(
+    @Json(name = "public_key") val publicKey: String,
+    @Json(name = "nonce") val nonce: String,
+    @Json(name = "payload") val payload: String
 ) : JSON()
