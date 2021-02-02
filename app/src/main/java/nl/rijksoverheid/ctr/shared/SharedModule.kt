@@ -4,6 +4,7 @@ import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.squareup.moshi.Moshi
 import nl.rijksoverheid.ctr.holder.util.EventUtil
 import nl.rijksoverheid.ctr.shared.api.TestApiClient
+import nl.rijksoverheid.ctr.shared.repositories.ConfigRepository
 import nl.rijksoverheid.ctr.shared.repositories.EventRepository
 import nl.rijksoverheid.ctr.shared.usecases.SignatureValidUseCase
 import nl.rijksoverheid.ctr.shared.util.CryptoUtil
@@ -50,4 +51,5 @@ val sharedModule = module {
 
     // Repositories
     single { EventRepository(get()) }
+    single { ConfigRepository(get()) }
 }

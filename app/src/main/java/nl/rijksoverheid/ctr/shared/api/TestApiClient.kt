@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.shared.api
 
 import nl.rijksoverheid.ctr.holder.models.RemoteNonce
+import nl.rijksoverheid.ctr.shared.models.Config
 import nl.rijksoverheid.ctr.shared.models.Issuers
 import nl.rijksoverheid.ctr.shared.models.RemoteAgent
 import nl.rijksoverheid.ctr.shared.models.RemoteEvent
@@ -38,4 +39,10 @@ interface TestApiClient {
 
     @GET("/holder/get_nonce/")
     suspend fun getNonce(): RemoteNonce
+
+    @GET("holder/config")
+    suspend fun getHolderConfig(): Config
+
+    @GET("verifier/config")
+    suspend fun getVerifierConfig(): Config
 }
