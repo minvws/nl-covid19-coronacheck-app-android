@@ -1,7 +1,11 @@
 package nl.rijksoverheid.ctr.shared.api
 
 import nl.rijksoverheid.ctr.holder.models.RemoteNonce
-import nl.rijksoverheid.ctr.shared.models.*
+import nl.rijksoverheid.ctr.shared.models.Issuers
+import nl.rijksoverheid.ctr.shared.models.RemoteAgent
+import nl.rijksoverheid.ctr.shared.models.RemoteEvent
+import okhttp3.ResponseBody
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -20,7 +24,11 @@ interface TestApiClient {
     suspend fun getIssuers(): Issuers
 
     @POST("/holder/get_test_ism/")
-    suspend fun getTestProofs(@Query("access_token") accessToken: String, @Query("stoken") sToken: String, @Query("icm") icm: String): TestProofsResult
+    suspend fun getTestIsm(
+        @Query("access_token") accessToken: String,
+        @Query("stoken") sToken: String,
+        @Query("icm") icm: String
+    ): Response<ResponseBody>
 
     @GET("/issuer/get_event/{id}")
     suspend fun getEvent(@Path("id") id: String): RemoteEvent

@@ -1,11 +1,11 @@
 package nl.rijksoverheid.ctr.verifier.usecases
 
+import android.util.Base64
+import clmobile.Clmobile
 import com.squareup.moshi.Moshi
-import nl.rijksoverheid.ctr.holder.models.HolderQr
-import nl.rijksoverheid.ctr.holder.models.HolderQrPayload
-import nl.rijksoverheid.ctr.shared.ext.toObject
-import nl.rijksoverheid.ctr.shared.models.Agent
+import nl.rijksoverheid.ctr.shared.ext.verify
 import nl.rijksoverheid.ctr.shared.util.CryptoUtil
+import timber.log.Timber
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -14,24 +14,15 @@ import nl.rijksoverheid.ctr.shared.util.CryptoUtil
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class DecryptHolderQrUseCase(
-    private val moshi: Moshi,
-    private val cryptoUtil: CryptoUtil
-) {
+class DecryptHolderQrUseCase {
 
     fun decrypt(
-        holderQr: HolderQr,
-        agent: Agent
-    ): HolderQrPayload {
-        val eventPrivateKey = agent.event.privateKey
-
-        val payloadDecrypted = cryptoUtil.boxOpenEasy(
-            cipher = holderQr.payload,
-            nonce = holderQr.nonce,
-            publicKey = holderQr.publicKey,
-            privateKey = eventPrivateKey
-        ) ?: throw Exception("Could not decrypt payload")
-
-        return payloadDecrypted.toObject(moshi)
+        content: String
+    ): Long {
+        val decodedContent = Base64.decode(content.toByteArray(), Base64.NO_WRAP)
+        val result =
+            Clmobile.verify(CryptoUtil.ISSUER_PK_XML.toByteArray(), decodedContent).verify()
+        Timber.i("QR Code created at ${result.unixTimeSeconds}")
+        return result.unixTimeSeconds
     }
 }

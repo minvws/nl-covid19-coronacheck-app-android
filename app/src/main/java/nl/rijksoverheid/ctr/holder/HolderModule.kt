@@ -51,6 +51,7 @@ val holderModule = module {
             get(),
             get(),
             get(),
+            get()
         )
     }
     single {

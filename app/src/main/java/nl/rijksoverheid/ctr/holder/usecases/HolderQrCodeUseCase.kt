@@ -1,11 +1,15 @@
 package nl.rijksoverheid.ctr.holder.usecases
 
 import android.graphics.Bitmap
+import android.util.Base64
 import androidx.appcompat.app.AppCompatActivity
+import clmobile.Clmobile
 import nl.rijksoverheid.ctr.holder.repositories.AuthenticationRepository
 import nl.rijksoverheid.ctr.holder.repositories.HolderRepository
+import nl.rijksoverheid.ctr.shared.ext.verify
 import nl.rijksoverheid.ctr.shared.repositories.EventRepository
 import nl.rijksoverheid.ctr.shared.usecases.SignatureValidUseCase
+import nl.rijksoverheid.ctr.shared.util.CryptoUtil
 import timber.log.Timber
 
 /*
@@ -22,7 +26,8 @@ class HolderQrCodeUseCase(
     private val commitmentMessageUseCase: CommitmentMessageUseCase,
     private val eventValidUseCase: EventValidUseCase,
     private val signatureValidUseCase: SignatureValidUseCase,
-    private val generateHolderQrCodeUseCase: GenerateHolderQrCodeUseCase
+    private val generateHolderQrCodeUseCase: GenerateHolderQrCodeUseCase,
+    private val secretKeyUseCase: SecretKeyUseCase
 ) {
 
     suspend fun qrCode(activity: AppCompatActivity, qrCodeWidth: Int, qrCodeHeight: Int): Bitmap {
@@ -36,27 +41,28 @@ class HolderQrCodeUseCase(
         val accessToken = authenticationRepository.login(activity)
         Timber.i("Received access token $accessToken")
 
-        val testResults = eventRepository.testProofs(
+        val testIsmJson = eventRepository.testIsmJson(
             accessToken = accessToken,
             sToken = remoteNonce.sToken,
             icm = commitmentMessage
         )
 
-        val remoteEvent = eventRepository.remoteEvent("d9ff36de-2357-4fa6-a64e-1569aa57bf1c")
-        val issuers = eventRepository.issuers()
+        val credentials = Clmobile.createCredential(
+            secretKeyUseCase.json().toByteArray(),
+            testIsmJson.toByteArray()
+        ).verify()
 
-        eventValidUseCase.checkValid(
-            issuers = issuers.issuers,
-            remoteEvent = remoteEvent
+        val proof = Clmobile.discloseAllWithTime(
+            CryptoUtil.ISSUER_PK_XML.toByteArray(),
+            credentials
+        ).verify()
+
+        val base64Qr = Base64.encodeToString(proof, Base64.NO_WRAP)
+
+        return generateHolderQrCodeUseCase.bitmap(
+            data = base64Qr,
+            qrCodeWidth = qrCodeWidth,
+            qrCodeHeight = qrCodeHeight
         )
-
-        throw Exception("Bla")
-
-//        return generateHolderQrCodeUseCase.bitmap(
-//            event = remoteEvent.event,
-//            allowedTestResult = allowedTestResult,
-//            qrCodeWidth = qrCodeWidth,
-//            qrCodeHeight = qrCodeHeight
-//        )
     }
 }

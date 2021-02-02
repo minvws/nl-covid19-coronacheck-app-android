@@ -13,12 +13,9 @@ import org.koin.dsl.module
  */
 val verifierModule = module {
     single {
-        DecryptHolderQrUseCase(
-            get(),
-            get()
-        )
+        DecryptHolderQrUseCase()
     }
 
     // ViewModels
-    viewModel { VerifierViewModel() }
+    viewModel { VerifierViewModel(get()) }
 }
