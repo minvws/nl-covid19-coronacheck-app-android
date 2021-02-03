@@ -5,6 +5,8 @@
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
+include ':shared'
+include ':verifier'
+include ':holder'
 
-include ':app'
 rootProject.name = "CoronaTester"

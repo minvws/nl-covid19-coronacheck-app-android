@@ -1,0 +1,79 @@
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    id "kotlin-kapt"
+    id "koin"
+}
+apply plugin: 'kotlin-android'
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
+
+    buildFeatures {
+        viewBinding true
+    }
+
+    defaultConfig {
+        applicationId "nl.rijksoverheid.ctr.verifier"
+        minSdkVersion 21
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    signingConfigs {
+        release {
+            storeFile file('demo_keystore.jks')
+            storePassword 'store_password'
+            keyAlias = 'key_alias'
+            keyPassword 'key_password'
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+    }
+
+    flavorDimensions "environment"
+    productFlavors {
+        tst {
+            dimension "environment"
+            versionNameSuffix "-test"
+            applicationIdSuffix ".test"
+            manifestPlaceholders = [appLabel: "@string/app_name_test"]
+        }
+        acc {
+            dimension "environment"
+            versionNameSuffix "-acc"
+            applicationIdSuffix ".acc"
+            manifestPlaceholders = [appLabel: "@string/app_name_acc"]
+        }
+        prod {
+            dimension "environment"
+            manifestPlaceholders = [appLabel: "@string/app_name"]
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+    implementation project(path: ':shared')
+}
+repositories {
+    mavenCentral()
+}

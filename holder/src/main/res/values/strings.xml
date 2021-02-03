@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name_dev">Holder (Dev)</string>
+    <string name="app_name_test">Holder (Test)</string>
+    <string name="app_name_acc">Holder (Acc)</string>
+</resources>

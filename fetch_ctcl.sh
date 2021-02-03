@@ -3,5 +3,5 @@ cd tmp-ctcl
 git checkout app-integration
 gomobile bind -target android -o ctcl.aar github.com/minvws/nl-covid19-coronatester-ctcl-core/clmobile
 cd ../
-cp tmp-ctcl/ctcl.aar app/libs 
+cp tmp-ctcl/ctcl.aar shared/libs 
 rm -rf tmp-ctcl
