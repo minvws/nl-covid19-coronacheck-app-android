@@ -3,4 +3,5 @@
     <string name="app_name_dev">Verifier (Dev)</string>
     <string name="app_name_test">Verifier (Test)</string>
     <string name="app_name_acc">Verifier (Acc)</string>
+    <string name="app_name">Verifier</string>
 </resources>

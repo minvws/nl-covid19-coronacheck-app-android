@@ -1,0 +1,53 @@
+name: Build and distribute holder app to Firebase App Distribution
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'holder/**'
+
+jobs:
+  build-and-distribute:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+    - name: Set selected color
+      run: java -version
+    - name: Gradle cache
+      uses: actions/cache@v1
+      with:
+        path: ~/.gradle/caches
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts') }}-${{ hashFiles('buildSrc/src/main/kotlin/**/*.kt') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
+    - name: Gradle cache wrapper
+      uses: actions/cache@v1
+      with:
+        path: ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-wrapper${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-wrapper
+    - name: Upload test flavor to firebase app distribution
+        run: |
+          export FIREBASE_TOKEN=${{ secrets.FIREBASE_CLI_TOKEN }} && \
+          ./gradlew holder:assembleTstRelease appDistributionUploadTstRelease
+    - name: Upload acc flavor to firebase app distribution
+        run: |
+          export FIREBASE_TOKEN=${{ secrets.FIREBASE_CLI_TOKEN }} && \
+          ./gradlew holder:assembleAccRelease appDistributionUploadAccRelease
+    - name: Upload acc flavor to firebase app distribution
+        run: |
+          export FIREBASE_TOKEN=${{ secrets.FIREBASE_CLI_TOKEN }} && \
+          ./gradlew holder:assembleProdRelease appDistributionUploadProdRelease
+    - name: Slack Notification
+      uses: rtCamp/action-slack-notify@v2
+      env:
+        SLACK_WEBHOOK: ${{ secrets.SLACK_URL }}
+        SLACK_MESSAGE: 'New holder app available for android :green_heart:'

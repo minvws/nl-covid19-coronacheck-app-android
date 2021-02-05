@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name_dev">Holder (Dev)</string>
     <string name="app_name_test">Holder (Test)</string>
     <string name="app_name_acc">Holder (Acc)</string>
+    <string name="app_name">Holder</string>
     <string name="onboarding_title">Onboarding</string>
     <string name="onboarding_screen_1_title">Veilig op pad</string>
     <string name="onboarding_screen_1_description">We trekken er weer meer op uit. Doe vlak voor je uitje een coronatest en laat de negatieve testuitslag bij binnenkomst zien. Zo krijgen we corona samen onder controle.</string>
