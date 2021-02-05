@@ -19,11 +19,31 @@ class OnboardingPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment
 
     override fun createFragment(position: Int): Fragment {
         val item = when (position) {
-            0 -> OnboardingItem(0, R.string.onboarding_screen_1_title, R.string.onboarding_screen_1_description)
-            1 -> OnboardingItem(0, R.string.onboarding_screen_2_title, R.string.onboarding_screen_2_description)
-            2 -> OnboardingItem(0, R.string.onboarding_screen_3_title, R.string.onboarding_screen_3_description)
-            3 -> OnboardingItem(0, R.string.onboarding_screen_4_title, R.string.onboarding_screen_4_description)
-            4 -> OnboardingItem(0, R.string.onboarding_screen_5_title, R.string.onboarding_screen_5_description)
+            0 -> OnboardingItem(
+                R.drawable.illustration_onboarding_1,
+                R.string.onboarding_screen_1_title,
+                R.string.onboarding_screen_1_description
+            )
+            1 -> OnboardingItem(
+                R.drawable.illustration_onboarding_2,
+                R.string.onboarding_screen_2_title,
+                R.string.onboarding_screen_2_description
+            )
+            2 -> OnboardingItem(
+                R.drawable.illustration_onboarding_3,
+                R.string.onboarding_screen_3_title,
+                R.string.onboarding_screen_3_description
+            )
+            3 -> OnboardingItem(
+                R.drawable.illustration_onboarding_4,
+                R.string.onboarding_screen_4_title,
+                R.string.onboarding_screen_4_description
+            )
+            4 -> OnboardingItem(
+                R.drawable.illustration_onboarding_5,
+                R.string.onboarding_screen_5_title,
+                R.string.onboarding_screen_5_description
+            )
             else -> throw Exception("Cannot create OnboardingItem for position")
         }
         return OnboardingItemFragment.getInstance(item)

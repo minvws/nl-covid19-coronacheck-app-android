@@ -52,5 +52,8 @@ class OnboardingItemFragment : Fragment(), HideToolbar {
         super.onViewCreated(view, savedInstanceState)
         binding.title.text = getString(item.titleResource)
         binding.description.text = Html.fromHtml(getString(item.descriptionResource))
+        if (item.imageResource != 0) {
+            binding.image.setImageResource(item.imageResource)
+        }
     }
 }
