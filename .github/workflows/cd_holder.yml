@@ -35,17 +35,17 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-gradle-wrapper
     - name: Upload test flavor to firebase app distribution
-        run: |
-          export FIREBASE_TOKEN=${{ secrets.FIREBASE_CLI_TOKEN }} && \
-          ./gradlew holder:assembleTstRelease appDistributionUploadTstRelease
+      run: |
+        export FIREBASE_TOKEN=${{ secrets.FIREBASE_CLI_TOKEN }} && \
+        ./gradlew holder:assembleTstRelease appDistributionUploadTstRelease
     - name: Upload acc flavor to firebase app distribution
-        run: |
-          export FIREBASE_TOKEN=${{ secrets.FIREBASE_CLI_TOKEN }} && \
-          ./gradlew holder:assembleAccRelease appDistributionUploadAccRelease
+      run: |
+        export FIREBASE_TOKEN=${{ secrets.FIREBASE_CLI_TOKEN }} && \
+        ./gradlew holder:assembleAccRelease appDistributionUploadAccRelease
     - name: Upload acc flavor to firebase app distribution
-        run: |
-          export FIREBASE_TOKEN=${{ secrets.FIREBASE_CLI_TOKEN }} && \
-          ./gradlew holder:assembleProdRelease appDistributionUploadProdRelease
+      run: |
+        export FIREBASE_TOKEN=${{ secrets.FIREBASE_CLI_TOKEN }} && \
+        ./gradlew holder:assembleProdRelease appDistributionUploadProdRelease
     - name: Slack Notification
       uses: rtCamp/action-slack-notify@v2
       env:
