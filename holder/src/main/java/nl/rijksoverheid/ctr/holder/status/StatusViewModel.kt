@@ -25,8 +25,8 @@ class StatusViewModel(
     private val appStatusUseCase: AppStatusUseCase
 ) : ViewModel() {
 
-    val appStatusLiveData: MutableLiveData<Result<AppStatus>> = MutableLiveData()
-    val onboardingFinishedLiveData: MutableLiveData<Boolean> = MutableLiveData()
+    val appStatusLiveData = MutableLiveData<Result<AppStatus>>()
+    val onboardingFinishedLiveData = MutableLiveData<Boolean>()
 
     fun getAppStatus() {
         appStatusLiveData.value = Result.Loading()

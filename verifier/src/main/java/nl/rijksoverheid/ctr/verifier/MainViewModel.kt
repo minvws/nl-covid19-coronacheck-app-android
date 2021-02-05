@@ -16,15 +16,15 @@ import nl.rijksoverheid.ctr.verifier.usecases.DecryptHolderQrUseCase
  */
 class MainViewModel(private val decryptHolderQrUseCase: DecryptHolderQrUseCase) : ViewModel() {
 
-    val holderAllowedLiveData = MutableLiveData<nl.rijksoverheid.ctr.shared.models.Result<Boolean>>()
+    val holderAllowedLiveData = MutableLiveData<Result<Boolean>>()
 
     fun validateholder(holderQrContent: String) {
         viewModelScope.launch {
             try {
                 val timestamp = decryptHolderQrUseCase.decrypt(holderQrContent)
-                holderAllowedLiveData.postValue(nl.rijksoverheid.ctr.shared.models.Result.Success(true))
+                holderAllowedLiveData.postValue(Result.Success(true))
             } catch (e: Exception) {
-                holderAllowedLiveData.postValue(nl.rijksoverheid.ctr.shared.models.Result.Failed(e))
+                holderAllowedLiveData.postValue(Result.Failed(e))
             }
         }
     }
