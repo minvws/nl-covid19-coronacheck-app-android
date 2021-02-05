@@ -18,4 +18,7 @@
     <string name="my_qr_title">Mijn QR-code</string>
     <string name="my_qr_description">Laat je QR code scannen voor de ingang van een uitgaansgelegenheid, om naar binnen te mogen.</string>
     <string name="my_qr_no_qr_description">Wil je een bar, event of andere uitgaans- gelegenheid bezoeken? Daar heb je een negatieve testuitslag (geen corona) voor nodig, in de vorm van een QR-code.</string>
+    <string name="dialog_error_title">Er is iets mis gegaan</string>
+    <string name="digid_login_failed">Inloggen met DigiD niet gelukt</string>
+    <string name="ok">Oke</string>
 </resources>

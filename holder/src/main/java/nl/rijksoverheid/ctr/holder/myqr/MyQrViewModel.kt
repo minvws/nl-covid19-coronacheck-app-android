@@ -23,29 +23,13 @@ import nl.rijksoverheid.ctr.shared.models.Result
 class MyQrViewModel(
     private val secretKeyUseCase: SecretKeyUseCase,
     private val holderQrCodeUseCase: HolderQrCodeUseCase,
-    private val authenticationRepository: AuthenticationRepository
 ) : ViewModel() {
 
-    val accessTokenLiveData = MutableLiveData<Result<String>>()
     val qrCodeLiveData = MutableLiveData<Result<Bitmap>>()
 
     init {
         viewModelScope.launch {
             secretKeyUseCase.persist()
-        }
-    }
-
-    fun login(activity: AppCompatActivity) {
-        accessTokenLiveData.value = Result.Loading()
-        viewModelScope.launch {
-            try {
-                val accessToken =  authenticationRepository.login(activity)
-                accessTokenLiveData.value = Result.Success(accessToken)
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    accessTokenLiveData.value = Result.Failed(e)
-                }
-           }
         }
     }
 

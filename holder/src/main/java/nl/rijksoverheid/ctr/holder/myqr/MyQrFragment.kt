@@ -4,9 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMyQrBinding
+import nl.rijksoverheid.ctr.holder.digid.DigiDFragment
 import nl.rijksoverheid.ctr.shared.ext.observeResult
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -17,7 +16,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class MyQrFragment : Fragment() {
+class MyQrFragment : DigiDFragment() {
 
     private lateinit var binding: FragmentMyQrBinding
     private val myQrViewModel: MyQrViewModel by viewModel()
@@ -33,11 +32,12 @@ class MyQrFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        observeResult(myQrViewModel.accessTokenLiveData, {
+
+        observeResult(digidViewModel.accessTokenLiveData, {
             // TODO: Implement loading state
-        }, { accessToken ->
+        }, {
             myQrViewModel.generateQrCode(
-                accessToken,
+                it,
                 binding.existingQr.cardQr.width,
                 binding.existingQr.cardQr.height
             )
@@ -56,7 +56,7 @@ class MyQrFragment : Fragment() {
         })
 
         binding.noQr.getTestResultsButton.setOnClickListener {
-            myQrViewModel.login(requireActivity() as AppCompatActivity)
+            login()
         }
     }
 }

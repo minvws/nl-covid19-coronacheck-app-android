@@ -96,6 +96,7 @@ dependencies {
     implementation 'com.github.openid:AppAuth-Android:41a6aa1'
     implementation "androidx.viewpager2:viewpager2:1.0.0"
 }
+
 repositories {
     mavenCentral()
 }

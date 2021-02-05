@@ -1,10 +1,13 @@
 package nl.rijksoverheid.ctr.holder.repositories
 
+import android.content.Intent
 import android.net.Uri
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import net.openid.appauth.*
-import nl.rijksoverheid.ctr.shared.BuildConfig.*
+import nl.rijksoverheid.ctr.shared.BuildConfig.DIGI_D_BASE_URL
+import nl.rijksoverheid.ctr.shared.BuildConfig.DIGI_D_CLIENT_ID
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
@@ -18,19 +21,14 @@ import kotlin.coroutines.suspendCoroutine
  */
 class AuthenticationRepository {
 
-    suspend fun login(activity: AppCompatActivity): String {
-        val authService = AuthorizationService(activity)
+    suspend fun authResponse(
+        activityResultLauncher: ActivityResultLauncher<Intent>,
+        authService: AuthorizationService
+    ) {
         val authServiceConfiguration = authorizationServiceConfiguration()
         val authRequest = authRequest(serviceConfiguration = authServiceConfiguration)
-        val authResponse = authResponse(
-            activity = activity,
-            authService = authService,
-            authRequest = authRequest
-        )
-        return accessToken(
-            authService = authService,
-            authResponse = authResponse
-        )
+        val authIntent = authService.getAuthorizationRequestIntent(authRequest)
+        activityResultLauncher.launch(authIntent)
     }
 
     private suspend fun authorizationServiceConfiguration(): AuthorizationServiceConfiguration {
@@ -54,34 +52,7 @@ class AuthenticationRepository {
         ).build()
     }
 
-    private suspend fun authResponse(
-        activity: AppCompatActivity,
-        authService: AuthorizationService,
-        authRequest: AuthorizationRequest
-    ): AuthorizationResponse {
-        return suspendCoroutine { continuation ->
-            val startForResult =
-                activity.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                    val intent = it.data
-                    if (intent != null) {
-                        val authResponse = AuthorizationResponse.fromIntent(intent)
-                        val authError = AuthorizationException.fromIntent(intent)
-                        when {
-                            authError != null -> continuation.resumeWithException(authError)
-                            authResponse != null -> continuation.resume(authResponse)
-                            else -> continuation.resumeWithException(Exception("Could not get AuthorizationResponse"))
-                        }
-                    } else {
-                        continuation.resumeWithException(Exception("Could not get AuthorizationResponse"))
-                    }
-                }
-
-            val authIntent = authService.getAuthorizationRequestIntent(authRequest)
-            startForResult.launch(authIntent)
-        }
-    }
-
-    private suspend fun accessToken(
+    suspend fun accessToken(
         authService: AuthorizationService,
         authResponse: AuthorizationResponse
     ): String {
