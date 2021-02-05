@@ -37,15 +37,15 @@ jobs:
     - name: Upload test flavor to firebase app distribution
       run: |
         export FIREBASE_TOKEN=${{ secrets.FIREBASE_CLI_TOKEN }} && \
-        ./gradlew holder:assembleTstRelease appDistributionUploadTstRelease
+        ./gradlew holder:assembleTstRelease holder:appDistributionUploadTstRelease
     - name: Upload acc flavor to firebase app distribution
       run: |
         export FIREBASE_TOKEN=${{ secrets.FIREBASE_CLI_TOKEN }} && \
-        ./gradlew holder:assembleAccRelease appDistributionUploadAccRelease
+        ./gradlew holder:assembleAccRelease holder:appDistributionUploadAccRelease
     - name: Upload acc flavor to firebase app distribution
       run: |
         export FIREBASE_TOKEN=${{ secrets.FIREBASE_CLI_TOKEN }} && \
-        ./gradlew holder:assembleProdRelease appDistributionUploadProdRelease
+        ./gradlew holder:assembleProdRelease holder:appDistributionUploadProdRelease
     - name: Slack Notification
       uses: rtCamp/action-slack-notify@v2
       env:

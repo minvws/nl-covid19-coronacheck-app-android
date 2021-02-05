@@ -8,6 +8,8 @@ plugins {
     id "androidx.navigation.safeargs.kotlin"
 }
 
+def appVersionCode = System.getenv("GITHUB_RUN_NUMBER") != null ? System.getenv("GITHUB_RUN_NUMBER").toInteger() : 1
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
@@ -20,7 +22,7 @@ android {
         applicationId "nl.rijksoverheid.ctr.holder"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 2
+        versionCode appVersionCode
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

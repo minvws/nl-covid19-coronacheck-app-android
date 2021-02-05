@@ -7,6 +7,8 @@ plugins {
 }
 apply plugin: 'kotlin-android'
 
+def appVersionCode = System.getenv("GITHUB_RUN_NUMBER") != null ? System.getenv("GITHUB_RUN_NUMBER").toInteger() : 1
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
@@ -19,7 +21,7 @@ android {
         applicationId "nl.rijksoverheid.ctr.verifier"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 1
+        versionCode appVersionCode
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
