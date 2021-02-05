@@ -3,4 +3,19 @@
     <string name="app_name_dev">Holder (Dev)</string>
     <string name="app_name_test">Holder (Test)</string>
     <string name="app_name_acc">Holder (Acc)</string>
+    <string name="onboarding_title">Onboarding</string>
+    <string name="onboarding_screen_1_title">Veilig op pad</string>
+    <string name="onboarding_screen_1_description">We trekken er weer meer op uit. Doe vlak voor je uitje een coronatest en laat de negatieve testuitslag bij binnenkomst zien. Zo krijgen we corona samen onder controle.</string>
+    <string name="onboarding_screen_2_title">Jouw QR-code op zak</string>
+    <string name="onboarding_screen_2_description">In deze app zet je jouw testuitslag om in een QR-code. Deze laat je scannen bij de ingang van het café, in de rij voor een event of bij andere uitgaansgelegenheden.</string>
+    <string name="onboarding_screen_3_title">Uitslag geldt 2 dagen</string>
+    <string name="onboarding_screen_3_description">Een negatieve testuitslag is 2 dagen geldig. Daarna niet meer. De QR-code verdwijnt dan automatisch uit de app. Nieuwe QR nodig? Laat je dan opnieuw op corona testen.</string>
+    <string name="onboarding_screen_4_title">Een veilig systeem</string>
+    <string name="onboarding_screen_4_description">Er zijn zichtbare en onzichtbare maat-regelen om fraude tegen te gaan. Het is bijvoorbeeld niet mogelijk om een QR code door te sturen, en je kan niet met de QR code van iemand anders naar binnen. </string>
+    <string name="onboarding_screen_5_title">Privacy staat voorop</string>
+    <string name="onboarding_screen_5_description"><![CDATA[Deze app bewaart geen gebruiksdata of locatiegegevens, en geeft deze ook niet aan derden. <br/><br/><a href="google.com">Lees de privacyverklaring</a>]]></string>
+    <string name="onboarding_next">Volgende</string>
+    <string name="my_qr_title">Mijn QR-code</string>
+    <string name="my_qr_description">Laat je QR code scannen voor de ingang van een uitgaansgelegenheid, om naar binnen te mogen.</string>
+    <string name="my_qr_no_qr_description">Wil je een bar, event of andere uitgaans- gelegenheid bezoeken? Daar heb je een negatieve testuitslag (geen corona) voor nodig, in de vorm van een QR-code.</string>
 </resources>

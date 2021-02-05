@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.shared.models
 
 import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -9,6 +10,7 @@ import com.squareup.moshi.Json
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
+@JsonClass(generateAdapter = true)
 data class Config(
     @Json(name = "androidMinimumVersion") val minimumVersion: Int,
     @Json(name = "androidMinimumVersionMessage") val message: String,

@@ -4,6 +4,8 @@ plugins {
     id "kotlin-kapt"
     id "koin"
     id "com.google.firebase.appdistribution"
+    id 'kotlin-parcelize'
+    id "androidx.navigation.safeargs.kotlin"
 }
 
 android {
@@ -18,7 +20,7 @@ android {
         applicationId "nl.rijksoverheid.ctr.holder"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 1
+        versionCode 2
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -51,7 +53,7 @@ android {
             manifestPlaceholders = [appLabel: "@string/app_name_test"]
 
             firebaseAppDistribution {
-                appId = "1:1234567890:android:321abc456def7890"
+                appId = "1:168257592968:android:cbb6d05f4163e39026493d"
                 groups = "testers"
             }
         }
@@ -80,6 +82,7 @@ android {
 dependencies {
     implementation project(path: ':shared')
     implementation 'com.github.openid:AppAuth-Android:41a6aa1'
+    implementation "androidx.viewpager2:viewpager2:1.0.0"
 }
 repositories {
     mavenCentral()

@@ -1,6 +1,5 @@
 package nl.rijksoverheid.ctr.holder.persistence
 
-import android.annotation.SuppressLint
 import android.content.SharedPreferences
 
 /*
@@ -11,23 +10,33 @@ import android.content.SharedPreferences
  *
  */
 interface PersistenceManager {
-    suspend fun saveSecretKeyJson(json: String)
-    suspend fun getSecretKeyJson(): String?
+    fun saveOnboardingFinished()
+    fun getOnboardingFinished(): Boolean
+    fun saveSecretKeyJson(json: String)
+    fun getSecretKeyJson(): String?
 }
 
 class SharedPreferencesPersistenceManager(private val sharedPreferences: SharedPreferences) :
     PersistenceManager {
+
     companion object {
+        const val ONBOARDING_FINISHED = "ONBOARDING_FINISHED"
         const val SECRET_KEY_JSON = "SECRET_KEY_JSON"
     }
 
-    @SuppressLint("ApplySharedPref")
-    override suspend fun saveSecretKeyJson(json: String) {
-        sharedPreferences.edit().putString(SECRET_KEY_JSON, json).commit()
+    override fun saveOnboardingFinished() {
+        sharedPreferences.edit().putBoolean(ONBOARDING_FINISHED, true).apply()
     }
 
-    override suspend fun getSecretKeyJson(): String? {
+    override fun getOnboardingFinished(): Boolean {
+        return sharedPreferences.getBoolean(ONBOARDING_FINISHED, false)
+    }
+
+    override fun saveSecretKeyJson(json: String) {
+        sharedPreferences.edit().putString(SECRET_KEY_JSON, json).apply()
+    }
+
+    override fun getSecretKeyJson(): String? {
         return sharedPreferences.getString(SECRET_KEY_JSON, null)
     }
-
 }

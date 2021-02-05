@@ -1,11 +1,14 @@
-package nl.rijksoverheid.ctr.holder
+package nl.rijksoverheid.ctr.holder.myqr
 
 import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import nl.rijksoverheid.ctr.holder.repositories.AuthenticationRepository
 import nl.rijksoverheid.ctr.holder.usecase.HolderQrCodeUseCase
 import nl.rijksoverheid.ctr.holder.usecase.SecretKeyUseCase
 import nl.rijksoverheid.ctr.shared.models.Result
@@ -17,11 +20,13 @@ import nl.rijksoverheid.ctr.shared.models.Result
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class HolderViewModel(
+class MyQrViewModel(
     private val secretKeyUseCase: SecretKeyUseCase,
-    private val holderQrCodeUseCase: HolderQrCodeUseCase
+    private val holderQrCodeUseCase: HolderQrCodeUseCase,
+    private val authenticationRepository: AuthenticationRepository
 ) : ViewModel() {
 
+    val accessTokenLiveData = MutableLiveData<Result<String>>()
     val qrCodeLiveData = MutableLiveData<Result<Bitmap>>()
 
     init {
@@ -30,11 +35,26 @@ class HolderViewModel(
         }
     }
 
-    fun generateQrCode(activity: AppCompatActivity, qrCodeWidth: Int, qrCodeHeight: Int) {
+    fun login(activity: AppCompatActivity) {
+        accessTokenLiveData.value = Result.Loading()
+        viewModelScope.launch {
+            try {
+                val accessToken =  authenticationRepository.login(activity)
+                accessTokenLiveData.value = Result.Success(accessToken)
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    accessTokenLiveData.value = Result.Failed(e)
+                }
+           }
+        }
+    }
+
+    fun generateQrCode(accessToken: String, qrCodeWidth: Int, qrCodeHeight: Int) {
+        qrCodeLiveData.value = Result.Loading()
         viewModelScope.launch {
             try {
                 val qrCodeBitmap = holderQrCodeUseCase.qrCode(
-                    activity = activity,
+                    accessToken = accessToken,
                     qrCodeWidth = qrCodeWidth,
                     qrCodeHeight = qrCodeHeight
                 )

@@ -1,14 +1,13 @@
 package nl.rijksoverheid.ctr.holder
 
 import androidx.preference.PreferenceManager
+import nl.rijksoverheid.ctr.holder.myqr.MyQrViewModel
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.SharedPreferencesPersistenceManager
 import nl.rijksoverheid.ctr.holder.repositories.AuthenticationRepository
 import nl.rijksoverheid.ctr.holder.repositories.HolderRepository
-import nl.rijksoverheid.ctr.holder.usecase.CommitmentMessageUseCase
-import nl.rijksoverheid.ctr.holder.usecase.GenerateHolderQrCodeUseCase
-import nl.rijksoverheid.ctr.holder.usecase.HolderQrCodeUseCase
-import nl.rijksoverheid.ctr.holder.usecase.SecretKeyUseCase
+import nl.rijksoverheid.ctr.holder.status.StatusViewModel
+import nl.rijksoverheid.ctr.holder.usecase.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -45,7 +44,6 @@ val mainModule = module {
             get(),
             get(),
             get(),
-            get(),
         )
     }
     single {
@@ -54,9 +52,13 @@ val mainModule = module {
     single {
         CommitmentMessageUseCase(get())
     }
+    single {
+        OnboardingUseCase(get())
+    }
 
     // ViewModels
-    viewModel { HolderViewModel(get(), get()) }
+    viewModel { StatusViewModel(get(), get()) }
+    viewModel { MyQrViewModel(get(), get(), get()) }
 
     // Repositories
     single { AuthenticationRepository() }

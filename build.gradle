@@ -22,6 +22,7 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.google.firebase:firebase-appdistribution-gradle:2.0.1'
         classpath "org.koin:koin-gradle-plugin:$koin_version"
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.3.3"
     }
 }
 

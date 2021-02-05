@@ -19,7 +19,6 @@ import timber.log.Timber
  *
  */
 class HolderQrCodeUseCase(
-    private val authenticationRepository: AuthenticationRepository,
     private val eventRepository: EventRepository,
     private val holderRepository: HolderRepository,
     private val commitmentMessageUseCase: CommitmentMessageUseCase,
@@ -27,16 +26,13 @@ class HolderQrCodeUseCase(
     private val secretKeyUseCase: SecretKeyUseCase
 ) {
 
-    suspend fun qrCode(activity: AppCompatActivity, qrCodeWidth: Int, qrCodeHeight: Int): Bitmap {
+    suspend fun qrCode(accessToken: String, qrCodeWidth: Int, qrCodeHeight: Int): Bitmap {
         val remoteNonce = holderRepository.remoteNonce()
         val commitmentMessage = commitmentMessageUseCase.json(
             nonce =
             remoteNonce.nonce
         )
         Timber.i("Received commitment message $commitmentMessage")
-
-        val accessToken = authenticationRepository.login(activity)
-        Timber.i("Received access token $accessToken")
 
         val testIsmJson = eventRepository.testIsmJson(
             accessToken = accessToken,

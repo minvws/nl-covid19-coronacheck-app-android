@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.shared.models
+package nl.rijksoverheid.ctr.holder
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -7,8 +7,4 @@ package nl.rijksoverheid.ctr.shared.models
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-sealed class AppStatus {
-    object ShouldUpdate : AppStatus()
-    object AppDeactivated : AppStatus()
-    object Ok : AppStatus()
-}
+interface HideToolbar

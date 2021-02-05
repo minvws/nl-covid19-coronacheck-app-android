@@ -5,6 +5,7 @@ import com.squareup.moshi.Moshi
 import nl.rijksoverheid.ctr.shared.api.TestApiClient
 import nl.rijksoverheid.ctr.shared.repositories.ConfigRepository
 import nl.rijksoverheid.ctr.shared.repositories.EventRepository
+import nl.rijksoverheid.ctr.shared.usecases.AppStatusUseCase
 import nl.rijksoverheid.ctr.shared.usecases.SignatureValidUseCase
 import nl.rijksoverheid.ctr.shared.util.CryptoUtil
 import nl.rijksoverheid.ctr.shared.util.QrCodeUtils
@@ -45,6 +46,10 @@ val sharedModule = module {
             get(),
             get()
         )
+    }
+
+    single {
+        AppStatusUseCase(get())
     }
 
     // Repositories

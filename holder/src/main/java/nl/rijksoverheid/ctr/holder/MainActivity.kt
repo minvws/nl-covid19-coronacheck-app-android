@@ -11,16 +11,16 @@ package nl.rijksoverheid.ctr.holder
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
-import com.google.android.material.snackbar.Snackbar
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
 import nl.rijksoverheid.ctr.holder.databinding.ActivityMainBinding
-import nl.rijksoverheid.ctr.shared.models.Result
-import org.koin.android.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private val holderViewModel: HolderViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,28 +28,32 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        holderViewModel.qrCodeLiveData.observe(this, Observer { bitmapResult ->
-            when (bitmapResult) {
-                is Result.Loading -> {
-                    // TODO: Handle loading state
-                }
-                is Result.Success -> {
-                    binding.login.visibility = View.GONE
-                    binding.qrCode.setImageBitmap(bitmapResult.data)
-                }
-                is Result.Failed -> {
-                    Snackbar.make(binding.root, bitmapResult.e.toString(), Snackbar.LENGTH_LONG)
-                        .show()
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(R.id.nav_status, R.id.nav_myqr, R.id.nav_onboarding),
+            binding.drawerLayout
+        )
+        binding.toolbar.setupWithNavController(navController, appBarConfiguration)
+
+        supportFragmentManager.registerFragmentLifecycleCallbacks(object :
+            FragmentManager.FragmentLifecycleCallbacks() {
+            override fun onFragmentViewCreated(
+                fm: FragmentManager,
+                f: Fragment,
+                v: View,
+                savedInstanceState: Bundle?
+            ) {
+                when (f) {
+                    is NavHostFragment, is HideToolbar -> {
+                        binding.toolbar.visibility = View.GONE
+                    }
+                    else -> {
+                        binding.toolbar.visibility = View.VISIBLE
+                    }
                 }
             }
-        })
-
-        binding.login.setOnClickListener {
-            holderViewModel.generateQrCode(
-                activity = this,
-                qrCodeWidth = binding.qrCode.width,
-                qrCodeHeight = binding.qrCode.height
-            )
-        }
+        }, true)
     }
 }
