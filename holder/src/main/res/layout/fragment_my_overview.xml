@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fillViewport="true">
 
-    <include
-        android:id="@+id/no_qr"
-        layout="@layout/fragment_my_overview_no_qr" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <include
-        android:id="@+id/existing_qr"
-        layout="@layout/fragment_my_overview_existing_qr"
-        android:visibility="invisible" />
+        <include
+            android:id="@+id/no_qr"
+            layout="@layout/fragment_my_overview_no_qr" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <include
+            android:id="@+id/existing_qr"
+            layout="@layout/fragment_my_overview_existing_qr"
+            android:visibility="invisible" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

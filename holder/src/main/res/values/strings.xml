@@ -15,7 +15,7 @@
     <string name="onboarding_screen_5_title">Privacy staat voorop</string>
     <string name="onboarding_screen_5_description"><![CDATA[Deze app bewaart geen gebruiksdata of locatiegegevens, en geeft deze ook niet aan derden. <br/><br/><a href="google.com">Lees de privacyverklaring</a>]]></string>
     <string name="onboarding_next">Volgende</string>
-    <string name="my_overview">Mijn Overzicht</string>
+    <string name="my_overview">Mijn overzicht</string>
     <string name="my_overview_description">Laat je QR code scannen voor de ingang van een uitgaansgelegenheid, om naar binnen te mogen.</string>
     <string name="my_overview_no_qr_description">Wil je een bar, event of andere uitgaans- gelegenheid bezoeken? Daar heb je een negatieve testuitslag (geen corona) voor nodig, in de vorm van een QR-code.</string>
     <string name="dialog_error_title">Er is iets mis gegaan</string>
@@ -26,4 +26,10 @@
     <string name="frequently_asked_questions">Meest gestelde vragen</string>
     <string name="privacy_statement">Privacy statement</string>
     <string name="terms_of_use">Gebruiksvoorwaarden</string>
+    <string name="my_overview_no_qr_make_appointment_title">Maak een testafspraak</string>
+    <string name="my_overview_no_qr_make_appointment_description">Wil je een QR-code maken? Laat je dan eerst testen.</string>
+    <string name="my_overview_no_qr_make_appointment_button">Maak afspraak</string>
+    <string name="my_overview_no_qr_make_qr_title">Maak een QR-code</string>
+    <string name="my_overview_no_qr_make_qr_description">Heb je je testresultaat al? Laat je negatieve resultaat zien met jouw QR-code.</string>
+    <string name="my_overview_no_qr_make_qr_button">Maak qr-code</string>
 </resources>

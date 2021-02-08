@@ -54,9 +54,5 @@ class MyOverviewFragment : DigiDFragment() {
         }, {
             // TODO: Implement error UI
         })
-
-        binding.noQr.getTestResultsButton.setOnClickListener {
-            login()
-        }
     }
 }
