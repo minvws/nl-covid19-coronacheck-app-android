@@ -21,7 +21,7 @@
             app:layout_constraintTop_toBottomOf="@+id/nav_host_fragment"
             app:layout_constraintTop_toTopOf="parent"
             app:navigationIcon="@drawable/ic_menu"
-            app:title="@string/my_qr_title"
+            app:title="@string/my_overview"
             tools:visibility="visible" />
 
         <androidx.fragment.app.FragmentContainerView
@@ -43,6 +43,8 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:fitsSystemWindows="true" />
+        android:theme="@style/ThemeOverlay.App.NavigationView"
+        app:headerLayout="@layout/header_navigation_drawer"
+        app:menu="@menu/navigation_drawer" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

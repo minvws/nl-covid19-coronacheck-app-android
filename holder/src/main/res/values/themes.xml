@@ -5,9 +5,29 @@
         <item name="colorPrimary">@color/blue</item>
         <item name="colorSecondary">@color/blue</item>
         <item name="colorAccent">@color/blue</item>
+        <item name="colorSurface">@color/blue</item>
+        <item name="colorOnSurface">@color/white</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
         <item name="android:statusBarColor">@color/black_12</item>
         <item name="android:windowBackground">@color/background</item>
+        <item name="android:listDivider">@color/white_20</item>
+        <item name="navigationViewStyle">@style/Widget.App.NavigationView</item>
+        <item name="android:textColorPrimary">@color/black</item>
+    </style>
+
+    <style name="Widget.App.NavigationView" parent="Widget.MaterialComponents.NavigationView">
+        <item name="itemTextColor">@color/white</item>
+    </style>
+
+    <style name="ThemeOverlay.App.NavigationView" parent="">
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="colorControlNormal">@color/white</item>
+        <item name="textAppearanceHeadline6">
+            @style/TextAppearance.MaterialComponents.Headline6.Montserrat
+        </item>
+        <item name="textAppearanceBody1">
+            @style/TextAppearance.MaterialComponents.Body1.Montserrat
+        </item>
     </style>
 
 </resources>

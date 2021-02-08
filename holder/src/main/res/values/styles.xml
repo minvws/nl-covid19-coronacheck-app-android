@@ -16,4 +16,16 @@
         <item name="android:paddingEnd">48dp</item>
         <item name="cornerRadius">26dp</item>
     </style>
+
+    <style name="TextAppearance.MaterialComponents.Headline6.Montserrat" parent="android:TextAppearance">
+        <item name="android:fontFamily">@font/montserrat_bold</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="TextAppearance.MaterialComponents.Body1.Montserrat" parent="android:TextAppearance">
+        <item name="android:fontFamily">@font/montserrat_semibold</item>
+        <item name="android:textColor">@color/white_80</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
 </resources>

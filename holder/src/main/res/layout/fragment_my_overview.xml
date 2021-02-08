@@ -5,11 +5,11 @@
 
     <include
         android:id="@+id/no_qr"
-        layout="@layout/fragment_my_qr_no_qr" />
+        layout="@layout/fragment_my_overview_no_qr" />
 
     <include
         android:id="@+id/existing_qr"
-        layout="@layout/fragment_my_qr_existing_qr"
+        layout="@layout/fragment_my_overview_existing_qr"
         android:visibility="invisible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

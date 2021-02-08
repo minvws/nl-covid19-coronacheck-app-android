@@ -6,6 +6,8 @@
 
     <!-- Palette -->
     <color name="white">#FFFFFF</color>
+    <color name="white_20">#33FFFFFF</color>
+    <color name="white_80">#CCFFFFFF</color>
     <color name="black">#383836</color>
     <color name="blue">#1540eb</color>
     <color name="grey">#8a8a8e</color>

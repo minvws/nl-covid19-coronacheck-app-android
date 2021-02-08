@@ -1,14 +1,10 @@
-package nl.rijksoverheid.ctr.holder.myqr
+package nl.rijksoverheid.ctr.holder.myoverview
 
 import android.graphics.Bitmap
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import nl.rijksoverheid.ctr.holder.repositories.AuthenticationRepository
 import nl.rijksoverheid.ctr.holder.usecase.HolderQrCodeUseCase
 import nl.rijksoverheid.ctr.holder.usecase.SecretKeyUseCase
 import nl.rijksoverheid.ctr.shared.models.Result
@@ -20,7 +16,7 @@ import nl.rijksoverheid.ctr.shared.models.Result
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class MyQrViewModel(
+class MyOverviewViewModel(
     private val secretKeyUseCase: SecretKeyUseCase,
     private val holderQrCodeUseCase: HolderQrCodeUseCase,
 ) : ViewModel() {
