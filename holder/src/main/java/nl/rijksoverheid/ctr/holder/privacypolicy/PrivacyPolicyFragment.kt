@@ -12,6 +12,8 @@ import nl.rijksoverheid.ctr.holder.HideToolbar
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentPrivacyPolicyBinding
 import nl.rijksoverheid.ctr.holder.privacypolicy.models.PrivacyPolicyItem
+import nl.rijksoverheid.ctr.holder.status.StatusViewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -23,6 +25,7 @@ import nl.rijksoverheid.ctr.holder.privacypolicy.models.PrivacyPolicyItem
 class PrivacyPolicyFragment : Fragment(), HideToolbar {
 
     private lateinit var binding: FragmentPrivacyPolicyBinding
+    private val statusViewModel: StatusViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,6 +68,7 @@ class PrivacyPolicyFragment : Fragment(), HideToolbar {
         }
 
         binding.button.setOnClickListener {
+            statusViewModel.setPrivacyPolicyFinished()
             findNavController().navigate(PrivacyPolicyFragmentDirections.actionMyOverview())
         }
 

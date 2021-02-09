@@ -55,5 +55,5 @@ class StatusViewModel(
     }
 
     fun setOnboardingFinished() = introductionUseCase.setOnboardingFinished()
-    fun setPrivacyPolicyFinished() = introductionUseCase.setOnboardingFinished()
+    fun setPrivacyPolicyFinished() = introductionUseCase.setPrivacyPolicyFinished()
 }
