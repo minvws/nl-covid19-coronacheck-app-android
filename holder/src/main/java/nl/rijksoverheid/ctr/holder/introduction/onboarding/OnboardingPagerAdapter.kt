@@ -1,9 +1,10 @@
-package nl.rijksoverheid.ctr.holder.onboarding
+package nl.rijksoverheid.ctr.holder.introduction.onboarding
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.onboarding.models.OnboardingItem
+import nl.rijksoverheid.ctr.holder.introduction.onboarding.OnboardingItemFragment
+import nl.rijksoverheid.ctr.holder.introduction.onboarding.models.OnboardingItem
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

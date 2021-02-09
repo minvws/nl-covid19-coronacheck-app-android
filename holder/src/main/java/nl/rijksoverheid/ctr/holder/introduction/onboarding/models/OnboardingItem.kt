@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.holder.onboarding.models
+package nl.rijksoverheid.ctr.holder.introduction.onboarding.models
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

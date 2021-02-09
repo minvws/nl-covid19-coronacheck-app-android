@@ -7,8 +7,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.holder.BuildConfig
-import nl.rijksoverheid.ctr.holder.status.models.IntroductionState
-import nl.rijksoverheid.ctr.holder.usecase.IntroductionUseCase
 import nl.rijksoverheid.ctr.shared.models.AppStatus
 import nl.rijksoverheid.ctr.shared.models.ConfigType
 import nl.rijksoverheid.ctr.shared.models.Result
@@ -22,12 +20,10 @@ import nl.rijksoverheid.ctr.shared.usecases.AppStatusUseCase
  *
  */
 class StatusViewModel(
-    private val introductionUseCase: IntroductionUseCase,
     private val appStatusUseCase: AppStatusUseCase
 ) : ViewModel() {
 
     val appStatusLiveData = MutableLiveData<Result<AppStatus>>()
-    val introductionStateLiveData = MutableLiveData<IntroductionState>()
 
     fun getAppStatus() {
         appStatusLiveData.value = Result.Loading()
@@ -44,16 +40,4 @@ class StatusViewModel(
             }
         }
     }
-
-    fun getIntroductionState() {
-        introductionStateLiveData.postValue(
-            IntroductionState(
-                onboardingFinished = introductionUseCase.onboardingFinished(),
-                privacyPolicyFinished = introductionUseCase.privacyPolicyFinished()
-            )
-        )
-    }
-
-    fun setOnboardingFinished() = introductionUseCase.setOnboardingFinished()
-    fun setPrivacyPolicyFinished() = introductionUseCase.setPrivacyPolicyFinished()
 }

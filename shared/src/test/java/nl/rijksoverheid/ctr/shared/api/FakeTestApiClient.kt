@@ -30,7 +30,7 @@ abstract class FakeTestApiClient : TestApiClient {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getNonce(): RemoteNonce {
+    override suspend fun getNonce(): nl.rijksoverheid.ctr.holder.models.RemoteNonce {
         TODO("Not yet implemented")
     }
 

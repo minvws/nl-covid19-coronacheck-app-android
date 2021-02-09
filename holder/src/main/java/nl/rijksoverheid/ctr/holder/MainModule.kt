@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.holder
 
 import androidx.preference.PreferenceManager
 import nl.rijksoverheid.ctr.holder.digid.DigiDViewModel
+import nl.rijksoverheid.ctr.holder.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.holder.myoverview.MyOverviewViewModel
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.SharedPreferencesPersistenceManager
@@ -44,7 +45,6 @@ val mainModule = module {
             get(),
             get(),
             get(),
-            get(),
         )
     }
     single {
@@ -58,7 +58,8 @@ val mainModule = module {
     }
 
     // ViewModels
-    viewModel { StatusViewModel(get(), get()) }
+    viewModel { StatusViewModel(get()) }
+    viewModel { IntroductionViewModel(get()) }
     viewModel { MyOverviewViewModel(get(), get()) }
     viewModel { DigiDViewModel(get()) }
 

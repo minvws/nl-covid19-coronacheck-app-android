@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.holder.onboarding
+package nl.rijksoverheid.ctr.holder.introduction.onboarding
 
 import android.graphics.PorterDuff
 import android.os.Bundle
@@ -16,7 +16,7 @@ import androidx.viewpager2.widget.ViewPager2
 import nl.rijksoverheid.ctr.holder.HideToolbar
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentOnboardingBinding
-import nl.rijksoverheid.ctr.holder.status.StatusViewModel
+import nl.rijksoverheid.ctr.holder.introduction.IntroductionViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
 /*
@@ -28,7 +28,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
  */
 class OnboardingFragment : Fragment(), HideToolbar {
 
-    private val statusViewModel: StatusViewModel by viewModel()
+    private val introductionViewModel: IntroductionViewModel by viewModel()
     private lateinit var binding: FragmentOnboardingBinding
 
     override fun onCreateView(
@@ -43,7 +43,10 @@ class OnboardingFragment : Fragment(), HideToolbar {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = OnboardingPagerAdapter(this)
+        val adapter =
+            OnboardingPagerAdapter(
+                this
+            )
         binding.viewPager.adapter = adapter
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
@@ -72,7 +75,7 @@ class OnboardingFragment : Fragment(), HideToolbar {
         binding.button.setOnClickListener {
             val currentItem = binding.viewPager.currentItem
             if (currentItem == adapter.itemCount - 1) {
-                statusViewModel.setOnboardingFinished()
+                introductionViewModel.setOnboardingFinished()
                 findNavController().navigate(OnboardingFragmentDirections.actionPrivacyPolicy())
             } else {
                 binding.viewPager.currentItem = currentItem + 1

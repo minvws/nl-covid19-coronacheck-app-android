@@ -1,10 +1,10 @@
-package nl.rijksoverheid.ctr.holder.privacypolicy
+package nl.rijksoverheid.ctr.holder.introduction.privacypolicy
 
 import android.view.View
 import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.ItemPrivacyPolicyBinding
-import nl.rijksoverheid.ctr.holder.privacypolicy.models.PrivacyPolicyItem
+import nl.rijksoverheid.ctr.holder.introduction.privacypolicy.models.PrivacyPolicyItem
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

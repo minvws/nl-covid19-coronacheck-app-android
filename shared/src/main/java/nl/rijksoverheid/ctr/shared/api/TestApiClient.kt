@@ -37,6 +37,9 @@ interface TestApiClient {
     @GET("/holder/get_nonce/")
     suspend fun getNonce(): RemoteNonce
 
+    @GET("/holder/config_ctp/")
+    suspend fun getConfigCtp(): RemoteTestProviders
+
     @GET("holder/config")
     suspend fun getHolderConfig(): Config
 

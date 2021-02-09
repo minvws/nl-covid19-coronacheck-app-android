@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.holder.privacypolicy
+package nl.rijksoverheid.ctr.holder.introduction.privacypolicy
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,8 +11,8 @@ import com.xwray.groupie.Section
 import nl.rijksoverheid.ctr.holder.HideToolbar
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentPrivacyPolicyBinding
-import nl.rijksoverheid.ctr.holder.privacypolicy.models.PrivacyPolicyItem
-import nl.rijksoverheid.ctr.holder.status.StatusViewModel
+import nl.rijksoverheid.ctr.holder.introduction.IntroductionViewModel
+import nl.rijksoverheid.ctr.holder.introduction.privacypolicy.models.PrivacyPolicyItem
 import org.koin.android.viewmodel.ext.android.viewModel
 
 /*
@@ -25,7 +25,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 class PrivacyPolicyFragment : Fragment(), HideToolbar {
 
     private lateinit var binding: FragmentPrivacyPolicyBinding
-    private val statusViewModel: StatusViewModel by viewModel()
+    private val introductionViewModel: IntroductionViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,15 +47,43 @@ class PrivacyPolicyFragment : Fragment(), HideToolbar {
         }
 
         val adapterItems = listOf(
-            PrivacyPolicyItem(R.drawable.shield, R.string.privacy_policy_1),
-            PrivacyPolicyItem(R.drawable.shield, R.string.privacy_policy_2),
-            PrivacyPolicyItem(R.drawable.shield, R.string.privacy_policy_1),
-            PrivacyPolicyItem(R.drawable.shield, R.string.privacy_policy_2),
-            PrivacyPolicyItem(R.drawable.shield, R.string.privacy_policy_1),
-            PrivacyPolicyItem(R.drawable.shield, R.string.privacy_policy_2),
-            PrivacyPolicyItem(R.drawable.shield, R.string.privacy_policy_1),
-            PrivacyPolicyItem(R.drawable.shield, R.string.privacy_policy_2)
-        ).map { PrivacyPolicyAdapterItem(it) }
+            PrivacyPolicyItem(
+                R.drawable.shield,
+                R.string.privacy_policy_1
+            ),
+            PrivacyPolicyItem(
+                R.drawable.shield,
+                R.string.privacy_policy_2
+            ),
+            PrivacyPolicyItem(
+                R.drawable.shield,
+                R.string.privacy_policy_1
+            ),
+            PrivacyPolicyItem(
+                R.drawable.shield,
+                R.string.privacy_policy_2
+            ),
+            PrivacyPolicyItem(
+                R.drawable.shield,
+                R.string.privacy_policy_1
+            ),
+            PrivacyPolicyItem(
+                R.drawable.shield,
+                R.string.privacy_policy_2
+            ),
+            PrivacyPolicyItem(
+                R.drawable.shield,
+                R.string.privacy_policy_1
+            ),
+            PrivacyPolicyItem(
+                R.drawable.shield,
+                R.string.privacy_policy_2
+            )
+        ).map {
+            PrivacyPolicyAdapterItem(
+                it
+            )
+        }
 
         val adapter = GroupieAdapter()
         val section = Section()
@@ -68,7 +96,7 @@ class PrivacyPolicyFragment : Fragment(), HideToolbar {
         }
 
         binding.button.setOnClickListener {
-            statusViewModel.setPrivacyPolicyFinished()
+            introductionViewModel.setPrivacyPolicyFinished()
             findNavController().navigate(PrivacyPolicyFragmentDirections.actionMyOverview())
         }
 

@@ -2,12 +2,9 @@ package nl.rijksoverheid.ctr.holder.usecase
 
 import android.graphics.Bitmap
 import android.util.Base64
-import androidx.appcompat.app.AppCompatActivity
 import clmobile.Clmobile
-import nl.rijksoverheid.ctr.holder.repositories.AuthenticationRepository
 import nl.rijksoverheid.ctr.holder.repositories.HolderRepository
 import nl.rijksoverheid.ctr.shared.ext.verify
-import nl.rijksoverheid.ctr.shared.repositories.EventRepository
 import nl.rijksoverheid.ctr.shared.util.CryptoUtil
 import timber.log.Timber
 
@@ -19,7 +16,6 @@ import timber.log.Timber
  *
  */
 class HolderQrCodeUseCase(
-    private val eventRepository: EventRepository,
     private val holderRepository: HolderRepository,
     private val commitmentMessageUseCase: CommitmentMessageUseCase,
     private val generateHolderQrCodeUseCase: GenerateHolderQrCodeUseCase,
@@ -34,7 +30,7 @@ class HolderQrCodeUseCase(
         )
         Timber.i("Received commitment message $commitmentMessage")
 
-        val testIsmJson = eventRepository.testIsmJson(
+        val testIsmJson = holderRepository.testIsmJson(
             accessToken = accessToken,
             sToken = remoteNonce.sToken,
             icm = commitmentMessage

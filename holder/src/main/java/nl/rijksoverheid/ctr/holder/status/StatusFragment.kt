@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.holder.HideToolbar
+import nl.rijksoverheid.ctr.holder.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.shared.ext.observeResult
 import nl.rijksoverheid.ctr.shared.models.AppStatus
 import nl.rijksoverheid.ctr.shared.models.AppStatus.AppDeactivated
@@ -21,6 +22,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 class StatusFragment : Fragment(), HideToolbar {
 
     private val statusViewModel: StatusViewModel by viewModel()
+    private val introductionViewModel: IntroductionViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,14 +38,14 @@ class StatusFragment : Fragment(), HideToolbar {
                     // TODO: Implement should update UI
                 }
                 is AppStatus.Ok -> {
-                    statusViewModel.getIntroductionState()
+                    introductionViewModel.getIntroductionState()
                 }
             }
         }, {
             // TODO: Implement error UI
         })
 
-        statusViewModel.introductionStateLiveData.observe(this, Observer { state ->
+        introductionViewModel.introductionStateLiveData.observe(this, Observer { state ->
             state.onboardingFinished
             val direction = when {
                 !state.onboardingFinished -> StatusFragmentDirections.actionOnboarding()

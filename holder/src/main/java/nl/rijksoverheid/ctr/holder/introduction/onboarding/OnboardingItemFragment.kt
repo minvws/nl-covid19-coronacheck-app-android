@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.holder.onboarding
+package nl.rijksoverheid.ctr.holder.introduction.onboarding
 
 import android.os.Bundle
 import android.text.Html
@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.holder.HideToolbar
 import nl.rijksoverheid.ctr.holder.databinding.FragmentOnboardingItemBinding
-import nl.rijksoverheid.ctr.holder.onboarding.models.OnboardingItem
+import nl.rijksoverheid.ctr.holder.introduction.onboarding.models.OnboardingItem
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -24,7 +24,8 @@ class OnboardingItemFragment : Fragment(), HideToolbar {
         private const val EXTRA_ONBOARDING_ITEM = "EXTRA_ONBOARDING_ITEM"
 
         fun getInstance(onboardingItem: OnboardingItem): OnboardingItemFragment {
-            val fragment = OnboardingItemFragment()
+            val fragment =
+                OnboardingItemFragment()
             val bundle = Bundle()
             bundle.putParcelable(EXTRA_ONBOARDING_ITEM, onboardingItem)
             fragment.arguments = bundle
