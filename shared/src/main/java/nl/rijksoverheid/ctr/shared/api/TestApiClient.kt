@@ -24,7 +24,8 @@ interface TestApiClient {
     suspend fun getTestIsm(
         @Query("access_token") accessToken: String,
         @Query("stoken") sToken: String,
-        @Query("icm") icm: String
+        @Query("icm") icm: String,
+        @Query("defaults") defaults: Boolean = true
     ): Response<ResponseBody>
 
     @GET("/issuer/get_event/{id}")

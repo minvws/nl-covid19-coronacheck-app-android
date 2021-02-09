@@ -54,7 +54,7 @@ val mainModule = module {
         CommitmentMessageUseCase(get())
     }
     single {
-        OnboardingUseCase(get())
+        IntroductionUseCase(get())
     }
 
     // ViewModels

@@ -9,8 +9,10 @@ import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class OnboardingUseCase(private val persistenceManager: PersistenceManager) {
+class IntroductionUseCase(private val persistenceManager: PersistenceManager) {
 
     fun onboardingFinished() = persistenceManager.getOnboardingFinished()
     fun setOnboardingFinished() = persistenceManager.saveOnboardingFinished()
+    fun privacyPolicyFinished() = persistenceManager.getPrivacyPolicyFinished()
+    fun setPrivacyPolicyFinished() = persistenceManager.savePrivacyPolicyFinished()
 }

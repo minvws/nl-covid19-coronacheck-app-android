@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Onboarding">
+    <style name="Introduction">
         <item name="android:background">@color/white</item>
     </style>
 
@@ -24,6 +24,11 @@
 
     <style name="App.TextAppearance.MaterialComponents.Body1" parent="TextAppearance.MaterialComponents.Body1">
         <item name="lineHeight">26sp</item>
+    </style>
+
+    <style name="App.TextAppearance.MaterialComponents.Headline5.Montserrat" parent="android:TextAppearance">
+        <item name="android:fontFamily">@font/montserrat_bold</item>
+        <item name="android:textSize">26sp</item>
     </style>
 
     <style name="App.TextAppearance.MaterialComponents.Headline6.Montserrat" parent="android:TextAppearance">

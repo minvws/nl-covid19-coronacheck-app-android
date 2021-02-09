@@ -12,6 +12,8 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.fragment.NavHostFragment
@@ -27,7 +29,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -35,7 +36,7 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
         val appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.nav_status, R.id.nav_my_overview, R.id.nav_settings, R.id.nav_onboarding),
+            setOf(R.id.nav_status, R.id.nav_my_overview, R.id.nav_settings),
             binding.drawerLayout
         )
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
@@ -57,8 +58,10 @@ class MainActivity : AppCompatActivity() {
                     when (f) {
                         is NavHostFragment, is HideToolbar -> {
                             binding.toolbar.visibility = View.GONE
+                            binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
                         }
                         else -> {
+                            binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
                             binding.toolbar.visibility = View.VISIBLE
                         }
                     }
@@ -81,5 +84,13 @@ class MainActivity : AppCompatActivity() {
             .styleTitle(context, R.attr.textAppearanceBody1)
         binding.navView.menu.findItem(R.id.nav_terms_of_use)
             .styleTitle(context, R.attr.textAppearanceBody1)
+    }
+
+    override fun onBackPressed() {
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            binding.drawerLayout.close()
+            return
+        }
+        super.onBackPressed()
     }
 }

@@ -7,7 +7,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.holder.BuildConfig
-import nl.rijksoverheid.ctr.holder.usecase.OnboardingUseCase
+import nl.rijksoverheid.ctr.holder.status.models.IntroductionState
+import nl.rijksoverheid.ctr.holder.usecase.IntroductionUseCase
 import nl.rijksoverheid.ctr.shared.models.AppStatus
 import nl.rijksoverheid.ctr.shared.models.ConfigType
 import nl.rijksoverheid.ctr.shared.models.Result
@@ -21,12 +22,12 @@ import nl.rijksoverheid.ctr.shared.usecases.AppStatusUseCase
  *
  */
 class StatusViewModel(
-    private val onboardingUseCase: OnboardingUseCase,
+    private val introductionUseCase: IntroductionUseCase,
     private val appStatusUseCase: AppStatusUseCase
 ) : ViewModel() {
 
     val appStatusLiveData = MutableLiveData<Result<AppStatus>>()
-    val onboardingFinishedLiveData = MutableLiveData<Boolean>()
+    val introductionStateLiveData = MutableLiveData<IntroductionState>()
 
     fun getAppStatus() {
         appStatusLiveData.value = Result.Loading()
@@ -44,10 +45,15 @@ class StatusViewModel(
         }
     }
 
-    fun getOnboardingFinished() {
-        val onboardingFinished = onboardingUseCase.onboardingFinished()
-        onboardingFinishedLiveData.postValue(onboardingFinished)
+    fun getIntroductionState() {
+        introductionStateLiveData.postValue(
+            IntroductionState(
+                onboardingFinished = introductionUseCase.onboardingFinished(),
+                privacyPolicyFinished = introductionUseCase.privacyPolicyFinished()
+            )
+        )
     }
 
-    fun setOnboardingFinished() = onboardingUseCase.setOnboardingFinished()
+    fun setOnboardingFinished() = introductionUseCase.setOnboardingFinished()
+    fun setPrivacyPolicyFinished() = introductionUseCase.setOnboardingFinished()
 }

@@ -15,6 +15,9 @@
         <item name="toolbarStyle">@style/Widget.App.Toolbar</item>
         <item name="android:textColorPrimary">@color/black</item>
         <item name="textAppearanceBody1">@style/App.TextAppearance.MaterialComponents.Body1</item>
+        <item name="textAppearanceHeadline5">
+            @style/App.TextAppearance.MaterialComponents.Headline5.Montserrat
+        </item>
         <item name="textAppearanceHeadline6">
             @style/App.TextAppearance.MaterialComponents.Headline6.Montserrat
         </item>

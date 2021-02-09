@@ -95,6 +95,8 @@ dependencies {
     implementation project(path: ':shared')
     implementation 'com.github.openid:AppAuth-Android:41a6aa1'
     implementation "androidx.viewpager2:viewpager2:1.0.0"
+    implementation "com.xwray:groupie:2.9.0"
+    implementation "com.xwray:groupie-viewbinding:2.9.0"
 }
 
 repositories {

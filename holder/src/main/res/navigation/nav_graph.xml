@@ -17,7 +17,14 @@
             app:popUpToInclusive="true" />
 
         <action
-            android:id="@+id/action_myqr"
+            android:id="@+id/action_privacy_policy"
+            app:destination="@id/nav_privacy_policy"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/main_nav"
+            app:popUpToInclusive="true" />
+
+        <action
+            android:id="@+id/action_my_overview"
             app:destination="@id/nav_my_overview"
             app:launchSingleTop="true"
             app:popUpTo="@id/main_nav"
@@ -32,8 +39,21 @@
         tools:layout="@layout/fragment_onboarding_item">
 
         <action
-            android:id="@+id/action_myqr"
+            android:id="@+id/action_privacy_policy"
+            app:destination="@id/nav_privacy_policy" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_privacy_policy"
+        android:name="nl.rijksoverheid.ctr.holder.privacypolicy.PrivacyPolicyFragment"
+        android:label=""
+        tools:layout="@layout/fragment_privacy_policy">
+
+        <action
+            android:id="@+id/action_my_overview"
             app:destination="@id/nav_my_overview"
+            app:launchSingleTop="true"
             app:popUpTo="@id/main_nav"
             app:popUpToInclusive="true" />
 

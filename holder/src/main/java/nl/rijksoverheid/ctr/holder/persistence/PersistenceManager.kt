@@ -12,6 +12,8 @@ import android.content.SharedPreferences
 interface PersistenceManager {
     fun saveOnboardingFinished()
     fun getOnboardingFinished(): Boolean
+    fun savePrivacyPolicyFinished()
+    fun getPrivacyPolicyFinished(): Boolean
     fun saveSecretKeyJson(json: String)
     fun getSecretKeyJson(): String?
 }
@@ -21,6 +23,7 @@ class SharedPreferencesPersistenceManager(private val sharedPreferences: SharedP
 
     companion object {
         const val ONBOARDING_FINISHED = "ONBOARDING_FINISHED"
+        const val PRIVACY_POLICY_FINISHED = "PRIVACY_POLICY_FINISHED"
         const val SECRET_KEY_JSON = "SECRET_KEY_JSON"
     }
 
@@ -30,6 +33,14 @@ class SharedPreferencesPersistenceManager(private val sharedPreferences: SharedP
 
     override fun getOnboardingFinished(): Boolean {
         return sharedPreferences.getBoolean(ONBOARDING_FINISHED, false)
+    }
+
+    override fun savePrivacyPolicyFinished() {
+        sharedPreferences.edit().putBoolean(PRIVACY_POLICY_FINISHED, true).apply()
+    }
+
+    override fun getPrivacyPolicyFinished(): Boolean {
+        return sharedPreferences.getBoolean(PRIVACY_POLICY_FINISHED, false)
     }
 
     override fun saveSecretKeyJson(json: String) {

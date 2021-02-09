@@ -36,18 +36,21 @@ class StatusFragment : Fragment(), HideToolbar {
                     // TODO: Implement should update UI
                 }
                 is AppStatus.Ok -> {
-                    statusViewModel.getOnboardingFinished()
+                    statusViewModel.getIntroductionState()
                 }
             }
         }, {
-            val i = 5
             // TODO: Implement error UI
         })
 
-        statusViewModel.onboardingFinishedLiveData.observe(this, Observer { finished ->
-            val directions =
-                if (finished) StatusFragmentDirections.actionMyqr() else StatusFragmentDirections.actionOnboarding()
-            findNavController().navigate(directions)
+        statusViewModel.introductionStateLiveData.observe(this, Observer { state ->
+            state.onboardingFinished
+            val direction = when {
+                !state.onboardingFinished -> StatusFragmentDirections.actionOnboarding()
+                !state.privacyPolicyFinished -> StatusFragmentDirections.actionPrivacyPolicy()
+                else -> StatusFragmentDirections.actionMyOverview()
+            }
+            findNavController().navigate(direction)
         })
 
         statusViewModel.getAppStatus()

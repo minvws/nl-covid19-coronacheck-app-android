@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 import androidx.core.view.forEachIndexed
@@ -41,19 +42,38 @@ class OnboardingFragment : Fragment(), HideToolbar {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         val adapter = OnboardingPagerAdapter(this)
         binding.viewPager.adapter = adapter
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
+                binding.toolbar.visibility = if (position == 0) View.GONE else View.VISIBLE
                 updateCurrentIndicator(position)
             }
         })
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object :
+            OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                val currentItem = binding.viewPager.currentItem
+                if (currentItem == 0) {
+                    findNavController().popBackStack()
+                } else {
+                    binding.viewPager.currentItem = binding.viewPager.currentItem - 1
+                }
+            }
+        })
+
+        binding.toolbar.setNavigationOnClickListener {
+            binding.viewPager.currentItem = binding.viewPager.currentItem - 1
+        }
+
         binding.button.setOnClickListener {
             val currentItem = binding.viewPager.currentItem
             if (currentItem == adapter.itemCount - 1) {
                 statusViewModel.setOnboardingFinished()
-                findNavController().navigate(OnboardingFragmentDirections.actionMyqr())
+                findNavController().navigate(OnboardingFragmentDirections.actionPrivacyPolicy())
             } else {
                 binding.viewPager.currentItem = currentItem + 1
             }

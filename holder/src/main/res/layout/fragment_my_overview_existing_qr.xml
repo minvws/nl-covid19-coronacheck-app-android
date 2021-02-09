@@ -9,20 +9,65 @@
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card"
         android:layout_width="0dp"
-        android:layout_height="350dp"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginVertical="16dp"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="32dp"
         app:cardCornerRadius="16dp"
         app:cardElevation="8dp"
+        app:contentPadding="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ProgressBar
-            android:id="@+id/card_loading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ProgressBar
+                android:id="@+id/card_loading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/card_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/my_overview_existing_qr_title"
+                android:textAlignment="center"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                app:layout_constraintBottom_toTopOf="@+id/card_qr_image"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/card_qr_image"
+                android:layout_width="0dp"
+                android:layout_height="275dp"
+                android:layout_marginVertical="16dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toTopOf="@+id/card_footer"
+                app:layout_constraintEnd_toEndOf="@+id/card_title"
+                app:layout_constraintStart_toStartOf="@+id/card_title"
+                app:layout_constraintTop_toBottomOf="@+id/card_title" />
+
+            <TextView
+                android:id="@+id/card_footer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/my_overview_existing_qr_title"
+                android:textAlignment="center"
+                android:textAppearance="?attr/textAppearanceBody1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/card_qr_image"
+                tools:text="Geldig tot 01-01-2021" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/card_qr"
