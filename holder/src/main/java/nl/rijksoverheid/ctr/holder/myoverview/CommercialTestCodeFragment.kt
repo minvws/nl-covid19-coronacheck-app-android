@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.holder.BaseFragment
 import nl.rijksoverheid.ctr.holder.databinding.FragmentCommercialTestCodeBinding
 import nl.rijksoverheid.ctr.holder.ext.hideKeyboard
+import nl.rijksoverheid.ctr.holder.ext.showKeyboard
 import nl.rijksoverheid.ctr.shared.ext.observeResult
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 
@@ -35,6 +36,7 @@ class CommercialTestCodeFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        showKeyboard(binding.uniqueCodeText)
 
         binding.uniqueCodeText.addTextChangedListener {
             checkEnableButton()
