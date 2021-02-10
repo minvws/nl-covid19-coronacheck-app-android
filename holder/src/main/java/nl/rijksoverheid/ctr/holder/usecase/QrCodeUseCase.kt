@@ -17,7 +17,7 @@ import timber.log.Timber
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class HolderQrCodeUseCase(
+class QrCodeUseCase(
     private val moshi: Moshi,
     private val holderRepository: HolderRepository,
     private val commitmentMessageUseCase: CommitmentMessageUseCase,
@@ -47,6 +47,14 @@ class HolderQrCodeUseCase(
             testIsmJson.toByteArray()
         ).verify()
 
+        return qrCode(
+            credentials = credentials,
+            qrCodeWidth = qrCodeWidth,
+            qrCodeHeight = qrCodeHeight
+        )
+    }
+
+    suspend fun qrCode(credentials: ByteArray, qrCodeWidth: Int, qrCodeHeight: Int): Bitmap {
         val proof = Clmobile.discloseAllWithTime(
             CryptoUtil.ISSUER_PK_XML.toByteArray(),
             credentials

@@ -41,7 +41,7 @@ val mainModule = module {
         )
     }
     single {
-        HolderQrCodeUseCase(
+        QrCodeUseCase(
             get(),
             get(),
             get(),
@@ -62,13 +62,16 @@ val mainModule = module {
         TestProviderUseCase(get())
     }
     single {
-        TestResultUseCase(get(), get())
+        TestResultUseCase(get(), get(), get(), get(), get(), get())
+    }
+    single {
+        LocalTestResultUseCase(get(), get())
     }
 
     // ViewModels
     viewModel { StatusViewModel(get()) }
     viewModel { IntroductionViewModel(get()) }
-    viewModel { QrCodeViewModel(get(), get()) }
+    viewModel { QrCodeViewModel(get(), get(), get()) }
     viewModel { DigiDViewModel(get()) }
     viewModel { TestResultsViewModel(get()) }
 

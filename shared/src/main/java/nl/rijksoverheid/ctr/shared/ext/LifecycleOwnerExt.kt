@@ -12,7 +12,7 @@ import nl.rijksoverheid.ctr.shared.models.Result
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-inline fun <O : Any> LifecycleOwner.observeResult(
+inline fun <O : Any?> LifecycleOwner.observeResult(
     liveData: LiveData<Result<O>>,
     crossinline loading: () -> Unit,
     crossinline success: (O) -> Unit,

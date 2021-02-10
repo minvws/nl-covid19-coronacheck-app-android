@@ -4,11 +4,15 @@ import android.graphics.Bitmap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import nl.rijksoverheid.ctr.holder.usecase.HolderQrCodeUseCase
+import kotlinx.coroutines.withContext
+import nl.rijksoverheid.ctr.holder.models.LocalTestResult
+import nl.rijksoverheid.ctr.holder.usecase.LocalTestResultUseCase
+import nl.rijksoverheid.ctr.holder.usecase.QrCodeUseCase
 import nl.rijksoverheid.ctr.holder.usecase.SecretKeyUseCase
-import nl.rijksoverheid.ctr.shared.models.RemoteTestResult
 import nl.rijksoverheid.ctr.shared.models.Result
+import org.threeten.bp.OffsetDateTime
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -18,30 +22,50 @@ import nl.rijksoverheid.ctr.shared.models.Result
  *
  */
 class QrCodeViewModel(
-    private val secretKeyUseCase: SecretKeyUseCase,
-    private val holderQrCodeUseCase: HolderQrCodeUseCase,
+    secretKeyUseCase: SecretKeyUseCase,
+    private val qrCodeUseCase: QrCodeUseCase,
+    private val localTestResultUseCase: LocalTestResultUseCase
 ) : ViewModel() {
 
+    val localTestResultLiveData = MutableLiveData<Result<LocalTestResult?>>()
     val qrCodeLiveData = MutableLiveData<Result<Bitmap>>()
 
     init {
+        secretKeyUseCase.persist()
+    }
+
+    fun getLocalTestResult(currentDateTime: OffsetDateTime) {
+        localTestResultLiveData.value = Result.Loading()
         viewModelScope.launch {
-            secretKeyUseCase.persist()
+            try {
+                val localTestResult = localTestResultUseCase.get(currentDateTime)
+                withContext(Dispatchers.Main) {
+                    localTestResultLiveData.value = Result.Success(localTestResult)
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    localTestResultLiveData.value = Result.Failed(e)
+                }
+            }
         }
     }
 
-    fun generateQrCode(testResult: RemoteTestResult, qrCodeWidth: Int, qrCodeHeight: Int) {
+    fun generateQrCode(credentials: String, qrCodeWidth: Int, qrCodeHeight: Int) {
         qrCodeLiveData.value = Result.Loading()
         viewModelScope.launch {
             try {
-                val qrCodeBitmap = holderQrCodeUseCase.qrCode(
-                    testResult = testResult,
+                val qrCodeBitmap = qrCodeUseCase.qrCode(
+                    credentials = credentials.toByteArray(),
                     qrCodeWidth = qrCodeWidth,
                     qrCodeHeight = qrCodeHeight
                 )
-                qrCodeLiveData.postValue(Result.Success(qrCodeBitmap))
+                withContext(Dispatchers.Main) {
+                    qrCodeLiveData.value = Result.Success(qrCodeBitmap)
+                }
             } catch (e: Exception) {
-                qrCodeLiveData.postValue(Result.Failed(e))
+                withContext(Dispatchers.Main) {
+                    qrCodeLiveData.value = Result.Failed(e)
+                }
             }
         }
     }

@@ -16,6 +16,8 @@ interface PersistenceManager {
     fun getPrivacyPolicyFinished(): Boolean
     fun saveSecretKeyJson(json: String)
     fun getSecretKeyJson(): String?
+    fun saveLocalTestResultJson(localTestResultJson: String)
+    fun getLocalTestResultJson(): String?
 }
 
 class SharedPreferencesPersistenceManager(private val sharedPreferences: SharedPreferences) :
@@ -25,6 +27,7 @@ class SharedPreferencesPersistenceManager(private val sharedPreferences: SharedP
         const val ONBOARDING_FINISHED = "ONBOARDING_FINISHED"
         const val PRIVACY_POLICY_FINISHED = "PRIVACY_POLICY_FINISHED"
         const val SECRET_KEY_JSON = "SECRET_KEY_JSON"
+        const val LOCAL_TEST_RESULT = "LOCAL_TEST_RESULT"
     }
 
     override fun saveOnboardingFinished() {
@@ -49,5 +52,13 @@ class SharedPreferencesPersistenceManager(private val sharedPreferences: SharedP
 
     override fun getSecretKeyJson(): String? {
         return sharedPreferences.getString(SECRET_KEY_JSON, null)
+    }
+
+    override fun saveLocalTestResultJson(localTestResultJson: String) {
+        sharedPreferences.edit().putString(LOCAL_TEST_RESULT, localTestResultJson).apply()
+    }
+
+    override fun getLocalTestResultJson(): String? {
+        return sharedPreferences.getString(LOCAL_TEST_RESULT, null)
     }
 }

@@ -15,12 +15,14 @@ class SecretKeyUseCase(
     private val persistenceManager: PersistenceManager
 ) {
 
-    suspend fun json(): String {
+    fun json(): String {
         return persistenceManager.getSecretKeyJson()
             ?: throw Exception("Secret key is not yet generated, persist first")
     }
 
-    suspend fun persist() {
-        persistenceManager.saveSecretKeyJson(json = Clmobile.generateHolderSk().successString())
+    fun persist() {
+        if (persistenceManager.getSecretKeyJson() == null) {
+            persistenceManager.saveSecretKeyJson(json = Clmobile.generateHolderSk().successString())
+        }
     }
 }

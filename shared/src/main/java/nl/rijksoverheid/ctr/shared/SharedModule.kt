@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.shared
 
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import nl.rijksoverheid.ctr.shared.api.TestApiClient
 import nl.rijksoverheid.ctr.shared.json.OffsetDateTimeJsonAdapter
 import nl.rijksoverheid.ctr.shared.repositories.ConfigRepository
@@ -35,7 +36,7 @@ val sharedModule = module {
         retroFit.create(TestApiClient::class.java)
     }
     single {
-        Moshi.Builder().add(OffsetDateTimeJsonAdapter()).build()
+        Moshi.Builder().add(KotlinJsonAdapterFactory()).add(OffsetDateTimeJsonAdapter()).build()
     }
     single<QrCodeUtils> { ZxingQrCodeUtils() }
 
