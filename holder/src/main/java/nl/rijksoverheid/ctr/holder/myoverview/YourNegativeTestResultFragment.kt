@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.holder.databinding.FragmentYourNegativeTestResultsBinding
 import nl.rijksoverheid.ctr.shared.ext.observeResult
 import org.koin.android.viewmodel.ext.android.sharedViewModel
@@ -41,8 +42,12 @@ class YourNegativeTestResultFragment : Fragment() {
             binding.rowSubtitle.text =
                 it.result.sampleDate.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM))
         }, {
-            
+
         })
+
+        binding.button.setOnClickListener {
+            findNavController().navigate(YourNegativeTestResultFragmentDirections.actionMyOverview())
+        }
     }
 
 }

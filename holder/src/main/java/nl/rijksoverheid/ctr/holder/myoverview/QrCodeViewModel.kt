@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.holder.usecase.HolderQrCodeUseCase
 import nl.rijksoverheid.ctr.holder.usecase.SecretKeyUseCase
+import nl.rijksoverheid.ctr.shared.models.RemoteTestResult
 import nl.rijksoverheid.ctr.shared.models.Result
 
 /*
@@ -29,12 +30,12 @@ class QrCodeViewModel(
         }
     }
 
-    fun generateQrCode(accessToken: String, qrCodeWidth: Int, qrCodeHeight: Int) {
+    fun generateQrCode(testResult: RemoteTestResult, qrCodeWidth: Int, qrCodeHeight: Int) {
         qrCodeLiveData.value = Result.Loading()
         viewModelScope.launch {
             try {
                 val qrCodeBitmap = holderQrCodeUseCase.qrCode(
-                    accessToken = accessToken,
+                    testResult = testResult,
                     qrCodeWidth = qrCodeWidth,
                     qrCodeHeight = qrCodeHeight
                 )

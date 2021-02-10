@@ -6,8 +6,8 @@ import clmobile.Clmobile
 import com.squareup.moshi.Moshi
 import nl.rijksoverheid.ctr.holder.repositories.HolderRepository
 import nl.rijksoverheid.ctr.shared.ext.verify
+import nl.rijksoverheid.ctr.shared.models.RemoteTestResult
 import nl.rijksoverheid.ctr.shared.util.CryptoUtil
-import org.json.JSONObject
 import timber.log.Timber
 
 /*
@@ -19,32 +19,14 @@ import timber.log.Timber
  */
 class HolderQrCodeUseCase(
     private val moshi: Moshi,
-    private val testProviderUseCase: TestProviderUseCase,
     private val holderRepository: HolderRepository,
     private val commitmentMessageUseCase: CommitmentMessageUseCase,
     private val generateHolderQrCodeUseCase: GenerateHolderQrCodeUseCase,
     private val secretKeyUseCase: SecretKeyUseCase
 ) {
 
-    suspend fun qrCode(accessToken: String, qrCodeWidth: Int, qrCodeHeight: Int): Bitmap {
-        // Hardcoded positive test result
-        val positiveTestResult = JSONObject()
-        positiveTestResult.put("token", "694B1DEAA702")
-        positiveTestResult.put("protocolVersion", "1.0")
-        positiveTestResult.put("providerIdentifier", "BRB")
-        Timber.i("Received positive test result $positiveTestResult")
-
-        val testProvider =
-            testProviderUseCase.testProvider(positiveTestResult.getString("providerIdentifier"))
-                ?: throw Exception("Unknown test provider") // TODO: Catch exception
-        Timber.i("Received test provider $testProvider")
-
-        val testResultJson = holderRepository.remoteTestResult(
-            url = testProvider.resultUrl,
-            token = positiveTestResult.getString("token"),
-            verifierCode = ""
-        ).toJson(moshi)
-        Timber.i("Received test result json $testResultJson")
+    suspend fun qrCode(testResult: RemoteTestResult, qrCodeWidth: Int, qrCodeHeight: Int): Bitmap {
+        val testResultJson = testResult.toJson(moshi)
 
         val remoteNonce = holderRepository.remoteNonce()
         val commitmentMessage = commitmentMessageUseCase.json(

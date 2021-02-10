@@ -1,6 +1,5 @@
 package nl.rijksoverheid.ctr.shared.ext
 
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer

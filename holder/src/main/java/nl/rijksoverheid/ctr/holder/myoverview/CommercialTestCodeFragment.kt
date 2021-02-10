@@ -8,6 +8,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.holder.BaseFragment
 import nl.rijksoverheid.ctr.holder.databinding.FragmentCommercialTestCodeBinding
+import nl.rijksoverheid.ctr.holder.ext.hideKeyboard
 import nl.rijksoverheid.ctr.shared.ext.observeResult
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 
@@ -44,22 +45,23 @@ class CommercialTestCodeFragment : BaseFragment() {
         }
 
         binding.button.setOnClickListener {
+            hideKeyboard()
+
             testResultViewModel.getTestResult(
                 uniqueCode = binding.uniqueCodeText.text.toString(),
                 verificationCode = binding.verificationCodeText.text.toString()
             )
+
+            observeResult(testResultViewModel.testResultLiveData, {
+                presentLoading(true)
+            }, {
+                findNavController().navigate(CommercialTestCodeFragmentDirections.actionYourNegativeResult())
+                presentLoading(false)
+            }, {
+                presentError()
+                presentLoading(false)
+            })
         }
-
-        observeResult(testResultViewModel.testResultLiveData, {
-            presentLoading(true)
-        }, {
-            findNavController().navigate(CommercialTestCodeFragmentDirections.actionYourNegativeResult())
-            presentLoading(false)
-        }, {
-            presentError()
-            presentLoading(false)
-        })
-
     }
 
     private fun checkEnableButton() {

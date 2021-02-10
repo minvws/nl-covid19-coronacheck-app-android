@@ -127,7 +127,20 @@
         android:id="@+id/nav_your_negative_result"
         android:name="nl.rijksoverheid.ctr.holder.myoverview.YourNegativeTestResultFragment"
         android:label=""
-        tools:layout="@layout/fragment_your_negative_test_results" />
+        tools:layout="@layout/fragment_your_negative_test_results">
+
+        <action
+            android:id="@+id/action_my_overview"
+            app:destination="@id/nav_my_overview"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit"
+            app:popUpTo="@id/nav_my_overview"
+            app:popUpToInclusive="true" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/nav_settings"
