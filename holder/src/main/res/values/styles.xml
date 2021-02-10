@@ -5,6 +5,10 @@
         <item name="android:background">@color/white</item>
     </style>
 
+    <style name="Widget.App.TextInputLayout" parent="Widget.Design.TextInputLayout">
+        <item name="boxBackgroundColor">@color/white</item>
+    </style>
+
     <style name="Widget.App.Button.Surface" parent="Widget.App.Button">
         <item name="android:backgroundTint">?colorSurface</item>
         <item name="android:textColor">?colorOnSurface</item>

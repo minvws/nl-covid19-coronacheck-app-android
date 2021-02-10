@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.shared
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.squareup.moshi.Moshi
 import nl.rijksoverheid.ctr.shared.api.TestApiClient
+import nl.rijksoverheid.ctr.shared.json.OffsetDateTimeJsonAdapter
 import nl.rijksoverheid.ctr.shared.repositories.ConfigRepository
 import nl.rijksoverheid.ctr.shared.usecases.AppStatusUseCase
 import nl.rijksoverheid.ctr.shared.usecases.SignatureValidUseCase
@@ -33,7 +34,9 @@ val sharedModule = module {
             .build()
         retroFit.create(TestApiClient::class.java)
     }
-    single { Moshi.Builder().build() }
+    single {
+        Moshi.Builder().add(OffsetDateTimeJsonAdapter()).build()
+    }
     single<QrCodeUtils> { ZxingQrCodeUtils() }
 
     // Utils

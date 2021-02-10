@@ -1,12 +1,11 @@
 package nl.rijksoverheid.ctr.shared.api
 
 import nl.rijksoverheid.ctr.shared.models.*
+import nl.rijksoverheid.ctr.shared.models.post.GetTestIsmPostData
+import nl.rijksoverheid.ctr.shared.models.post.GetTestResultPostData
 import okhttp3.ResponseBody
 import retrofit2.Response
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -19,14 +18,6 @@ interface TestApiClient {
 
     @GET("/holder/get_public_keys/")
     suspend fun getIssuers(): Issuers
-
-    @POST("/holder/get_test_ism/")
-    suspend fun getTestIsm(
-        @Query("access_token") accessToken: String,
-        @Query("stoken") sToken: String,
-        @Query("icm") icm: String,
-        @Query("defaults") defaults: Boolean = true
-    ): Response<ResponseBody>
 
     @GET("/issuer/get_event/{id}")
     suspend fun getEvent(@Path("id") id: String): RemoteEvent
@@ -45,4 +36,16 @@ interface TestApiClient {
 
     @GET("verifier/config")
     suspend fun getVerifierConfig(): Config
+
+    @POST("/holder/get_test_ism/")
+    suspend fun getTestIsm(
+        @Body data: GetTestIsmPostData
+    ): Response<ResponseBody>
+
+    @POST
+    suspend fun getTestResult(
+        @Url url: String,
+        @Header("Authorization") authorization: String,
+        @Body data: GetTestResultPostData
+    ): RemoteTestResult
 }

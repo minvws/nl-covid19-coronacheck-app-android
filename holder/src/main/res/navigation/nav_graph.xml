@@ -63,7 +63,71 @@
         android:id="@+id/nav_my_overview"
         android:name="nl.rijksoverheid.ctr.holder.myoverview.MyOverviewFragment"
         android:label="@string/my_overview"
-        tools:layout="@layout/fragment_my_overview" />
+        tools:layout="@layout/fragment_my_overview">
+
+        <action
+            android:id="@+id/action_choose_provider"
+            app:destination="@id/nav_choose_provider"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_choose_provider"
+        android:name="nl.rijksoverheid.ctr.holder.myoverview.ChooseProviderFragment"
+        android:label="@string/choose_provider_toolbar"
+        tools:layout="@layout/fragment_choose_provider">
+
+        <action
+            android:id="@+id/action_commercial_test_type"
+            app:destination="@id/nav_commercial_test_type"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_commercial_test_type"
+        android:name="nl.rijksoverheid.ctr.holder.myoverview.CommercialTestTypeFragment"
+        android:label=""
+        tools:layout="@layout/fragment_commercial_test_type">
+
+        <action
+            android:id="@+id/action_commercial_test_code"
+            app:destination="@id/nav_commercial_test_code"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_commercial_test_code"
+        android:name="nl.rijksoverheid.ctr.holder.myoverview.CommercialTestCodeFragment"
+        android:label=""
+        tools:layout="@layout/fragment_commercial_test_code">
+
+        <action
+            android:id="@+id/action_your_negative_result"
+            app:destination="@id/nav_your_negative_result"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_your_negative_result"
+        android:name="nl.rijksoverheid.ctr.holder.myoverview.YourNegativeTestResultFragment"
+        android:label=""
+        tools:layout="@layout/fragment_your_negative_test_results" />
 
     <fragment
         android:id="@+id/nav_settings"

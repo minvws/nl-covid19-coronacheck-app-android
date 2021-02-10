@@ -16,7 +16,7 @@ import nl.rijksoverheid.ctr.shared.models.Result
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class MyOverviewViewModel(
+class QrCodeViewModel(
     private val secretKeyUseCase: SecretKeyUseCase,
     private val holderQrCodeUseCase: HolderQrCodeUseCase,
 ) : ViewModel() {

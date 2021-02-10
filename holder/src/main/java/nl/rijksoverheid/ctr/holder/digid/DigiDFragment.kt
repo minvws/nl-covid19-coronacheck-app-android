@@ -6,6 +6,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import net.openid.appauth.AuthorizationService
+import nl.rijksoverheid.ctr.holder.BaseFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.shared.ext.observeResult
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -17,7 +18,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-open class DigiDFragment : Fragment() {
+open class DigiDFragment : BaseFragment() {
 
     protected val digidViewModel: DigiDViewModel by viewModel()
     private val authService by lazy { AuthorizationService(requireActivity()) }
@@ -40,13 +41,5 @@ open class DigiDFragment : Fragment() {
 
     fun login() {
         digidViewModel.login(loginResult, authService)
-    }
-
-    private fun presentError() {
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle(getString(R.string.dialog_error_title))
-            .setMessage(R.string.digid_login_failed)
-            .setPositiveButton(R.string.ok) { dialog, which -> }
-            .show()
     }
 }

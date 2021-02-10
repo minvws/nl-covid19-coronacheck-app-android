@@ -3,7 +3,8 @@ package nl.rijksoverheid.ctr.holder
 import androidx.preference.PreferenceManager
 import nl.rijksoverheid.ctr.holder.digid.DigiDViewModel
 import nl.rijksoverheid.ctr.holder.introduction.IntroductionViewModel
-import nl.rijksoverheid.ctr.holder.myoverview.MyOverviewViewModel
+import nl.rijksoverheid.ctr.holder.myoverview.QrCodeViewModel
+import nl.rijksoverheid.ctr.holder.myoverview.TestResultsViewModel
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.SharedPreferencesPersistenceManager
 import nl.rijksoverheid.ctr.holder.repositories.AuthenticationRepository
@@ -45,6 +46,8 @@ val mainModule = module {
             get(),
             get(),
             get(),
+            get(),
+            get()
         )
     }
     single {
@@ -56,12 +59,19 @@ val mainModule = module {
     single {
         IntroductionUseCase(get())
     }
+    single {
+        TestProviderUseCase(get())
+    }
+    single {
+        TestResultUseCase(get(), get())
+    }
 
     // ViewModels
     viewModel { StatusViewModel(get()) }
     viewModel { IntroductionViewModel(get()) }
-    viewModel { MyOverviewViewModel(get(), get()) }
+    viewModel { QrCodeViewModel(get(), get()) }
     viewModel { DigiDViewModel(get()) }
+    viewModel { TestResultsViewModel(get()) }
 
     // Repositories
     single { AuthenticationRepository() }

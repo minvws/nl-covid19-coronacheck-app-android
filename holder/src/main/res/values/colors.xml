@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="background">#f2f2f7</color>
+    <color name="divider">#d0d0d0</color>
     <color name="onboarding_indicator_selected">@color/grey</color>
     <color name="onboarding_indicator">@color/grey_30</color>
 
@@ -12,5 +12,6 @@
     <color name="blue">#1540eb</color>
     <color name="grey">#8a8a8e</color>
     <color name="grey_30">#4D8A8A8E</color>
+    <color name="grey_light">#f2f2f7</color>
     <color name="black_12">#1e000000</color>
 </resources>
