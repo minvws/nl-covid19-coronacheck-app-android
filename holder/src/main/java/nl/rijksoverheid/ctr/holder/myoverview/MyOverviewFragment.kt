@@ -6,12 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.doOnPreDraw
 import androidx.navigation.fragment.findNavController
+import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMyOverviewBinding
 import nl.rijksoverheid.ctr.holder.digid.DigiDFragment
 import nl.rijksoverheid.ctr.shared.ext.observeResult
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.threeten.bp.OffsetDateTime
-import timber.log.Timber
+import org.threeten.bp.format.DateTimeFormatter
+import org.threeten.bp.format.FormatStyle
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -41,11 +43,9 @@ class MyOverviewFragment : DigiDFragment() {
         }
 
         observeResult(qrCodeViewModel.qrCodeLiveData, {
-            Timber.v("IK KOM HIER #1")
-            binding.noQr.root.visibility = View.GONE
+            binding.noQr.root.visibility = View.INVISIBLE
             binding.existingQr.root.visibility = View.VISIBLE
         }, {
-            Timber.v("IK KOM HIER #2")
             binding.existingQr.cardQrImage.setImageBitmap(it)
         }, {
             binding.noQr.root.visibility = View.VISIBLE
@@ -57,6 +57,12 @@ class MyOverviewFragment : DigiDFragment() {
             observeResult(qrCodeViewModel.localTestResultLiveData, {
             }, { localTestResult ->
                 if (localTestResult != null) {
+                    binding.existingQr.cardFooter.text = getString(
+                        R.string.my_overview_existing_qr_date, localTestResult.sampleDate.format(
+                            DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
+                        )
+                    )
+
                     qrCodeViewModel.generateQrCode(
                         credentials = localTestResult.credentials,
                         qrCodeWidth = binding.existingQr.cardQrImage.width,
