@@ -17,6 +17,7 @@ import nl.rijksoverheid.ctr.holder.HideToolbar
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentOnboardingBinding
 import nl.rijksoverheid.ctr.holder.introduction.IntroductionViewModel
+import nl.rijksoverheid.ctr.verifier.introduction.onboarding.OnboardingFragmentDirections
 import org.koin.android.viewmodel.ext.android.viewModel
 
 /*
@@ -61,7 +62,10 @@ class OnboardingFragment : Fragment(), HideToolbar {
             override fun handleOnBackPressed() {
                 val currentItem = binding.viewPager.currentItem
                 if (currentItem == 0) {
-                    findNavController().popBackStack()
+                    val canPop = findNavController().popBackStack()
+                    if (!canPop) {
+                        requireActivity().finish()
+                    }
                 } else {
                     binding.viewPager.currentItem = binding.viewPager.currentItem - 1
                 }

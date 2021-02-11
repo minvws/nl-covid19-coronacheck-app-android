@@ -4,4 +4,27 @@
     <string name="app_name_test">Verifier (Test)</string>
     <string name="app_name_acc">Verifier (Acc)</string>
     <string name="app_name">Verifier</string>
+    <string name="onboarding_title">Onboarding</string>
+    <string name="onboarding_screen_1_title">De lockdown uit</string>
+    <string name="onboarding_screen_1_description">Om zo veilig mogelijk weer op pad te kunnen is het belangrijk om eerst een coronatest te doen. Alleen met een negatief testresultaat kan toegang verleend worden tot x x en x.</string>
+    <string name="onboarding_screen_2_title">Scan QR-codes</string>
+    <string name="onboarding_screen_2_description">Met deze app kun je [NAAM QR]’s van een negatief testresultaat scannen. Mensen met een geldig [NAAM QR] van een negatief testresultaat kunnen naar binnen. Zonder geldige QR is het geen toegang.</string>
+    <string name="onboarding_screen_3_title">Uitslag geldt 48 uur</string>
+    <string name="onboarding_screen_3_description">In verband met privacy zie je als scanner alleen of er een geldig test bewijs aanwezig is of niet. Er worden geen persoons-gegevens verstuurd of opgeslagen bij het scannen van een QR.</string>
+    <string name="onboarding_screen_4_title">Een veilig systeem</string>
+    <string name="onboarding_screen_4_description">Als iedereen binnen een geldig testbewijs heeft is binnen weer meer mogelijk. Zo hoeft de 1,5 meter hoeft niet meer gehanteerd te worden. Lees meer over de veiligheidsmaateregelen.</string>
+    <string name="onboarding_screen_5_title">Privacy staat voorop</string>
+    <string name="onboarding_screen_5_description"><![CDATA[Deze app bewaart geen gebruiksdata of locatiegegevens, en geeft deze ook niet aan derden. <br/><br/><a href="google.com">Lees de privacyverklaring</a>]]></string>
+    <string name="onboarding_next">Volgende</string>
+    <string name="privacy_policy_title">Zo gebruikt deze app je gegevens</string>
+    <string name="privacy_policy_description">In de privacyverklaring staat hoe CoronaTester jouw gegevens gebruikt. Dit zijn de belangrijkste punten.</string>
+    <string name="privacy_policy_1">Gebruik van CoronaTester is vrijwillig</string>
+    <string name="privacy_policy_2">Dit is nog een regel lorem ipsum lorem ipsum</string>
+    <string name="privacy_policy_checkbox_text">Ik heb de privacyverklaring gelezen en begrijp hoe de app mijn gegevens gebruikt</string>
+    <string name="dialog_error_title">Er is iets mis gegaan</string>
+    <string name="ok">Ok</string>
+    <string name="scan_qr_title">Scan QR-code</string>
+    <string name="support">Support</string>
+    <string name="about_this_app">Over deze app</string>
+    <string name="give_us_feedback">Geef ons feedback</string>
 </resources>

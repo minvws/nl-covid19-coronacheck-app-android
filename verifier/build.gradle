@@ -4,6 +4,8 @@ plugins {
     id "kotlin-kapt"
     id "koin"
     id "com.google.firebase.appdistribution"
+    id 'kotlin-parcelize'
+    id "androidx.navigation.safeargs.kotlin"
 }
 apply plugin: 'kotlin-android'
 
@@ -91,6 +93,9 @@ android {
 
 dependencies {
     implementation project(path: ':shared')
+    implementation "androidx.viewpager2:viewpager2:1.0.0"
+    implementation "com.xwray:groupie:2.9.0"
+    implementation "com.xwray:groupie-viewbinding:2.9.0"
 }
 repositories {
     mavenCentral()

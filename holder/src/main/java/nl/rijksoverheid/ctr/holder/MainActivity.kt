@@ -20,7 +20,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import nl.rijksoverheid.ctr.holder.databinding.ActivityMainBinding
-import nl.rijksoverheid.ctr.holder.ext.styleTitle
+import nl.rijksoverheid.ctr.shared.ext.styleTitle
 
 class MainActivity : AppCompatActivity() {
 

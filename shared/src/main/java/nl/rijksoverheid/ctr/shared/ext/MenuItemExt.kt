@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.holder.ext
+package nl.rijksoverheid.ctr.shared.ext
 
 import android.content.Context
 import android.text.Spannable

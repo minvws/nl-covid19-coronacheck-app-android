@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import nl.rijksoverheid.ctr.holder.HideToolbar
+import nl.rijksoverheid.ctr.verifier.HideToolbar
 import nl.rijksoverheid.ctr.holder.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.shared.ext.observeResult
 import nl.rijksoverheid.ctr.shared.models.AppStatus
@@ -19,7 +19,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class StatusFragment : Fragment(), HideToolbar {
+class StatusFragment : Fragment(), nl.rijksoverheid.ctr.verifier.HideToolbar {
 
     private val statusViewModel: StatusViewModel by viewModel()
     private val introductionViewModel: IntroductionViewModel by viewModel()

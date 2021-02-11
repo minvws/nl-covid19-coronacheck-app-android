@@ -3,13 +3,8 @@ package nl.rijksoverheid.ctr.holder.digid
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.fragment.app.Fragment
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import net.openid.appauth.AuthorizationService
-import nl.rijksoverheid.ctr.holder.BaseFragment
-import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.shared.ext.observeResult
-import org.koin.android.viewmodel.ext.android.viewModel
+import nl.rijksoverheid.ctr.verifier.BaseFragment
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -18,7 +13,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-open class DigiDFragment : BaseFragment() {
+open class DigiDFragment : nl.rijksoverheid.ctr.verifier.BaseFragment() {
 
     protected val digidViewModel: DigiDViewModel by viewModel()
     private val authService by lazy { AuthorizationService(requireActivity()) }

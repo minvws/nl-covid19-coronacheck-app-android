@@ -8,54 +8,85 @@
 
 package nl.rijksoverheid.ctr.verifier
 
-import android.graphics.Color
 import android.os.Bundle
+import android.view.View
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
-import com.google.android.material.snackbar.Snackbar
-import nl.rijksoverheid.ctr.shared.util.QrCodeUtils
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
+import nl.rijksoverheid.ctr.shared.ext.styleTitle
 import nl.rijksoverheid.ctr.verifier.databinding.ActivityMainBinding
-import org.koin.android.ext.android.inject
-import org.koin.android.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
-    private val qrCodeUtils: QrCodeUtils by inject()
-    private val verifierViewModel: MainViewModel by viewModel()
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        verifierViewModel.holderAllowedLiveData.observe(this, Observer { holderAllowedResult ->
-            when (holderAllowedResult) {
-                is nl.rijksoverheid.ctr.shared.models.Result.Loading -> {
-                    // TODO: Handle loading state
-                }
-                is nl.rijksoverheid.ctr.shared.models.Result.Success -> {
-                    val customerAllowed = holderAllowedResult.data
-                    binding.root.setBackgroundColor(if (customerAllowed) Color.GREEN else Color.RED)
-                }
-                is nl.rijksoverheid.ctr.shared.models.Result.Failed -> {
-                    Snackbar.make(
-                        binding.root,
-                        holderAllowedResult.e.toString(),
-                        Snackbar.LENGTH_LONG
-                    ).show()
-                }
-            }
-        })
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(R.id.nav_status, R.id.nav_scan_qr),
+            binding.drawerLayout
+        )
+        binding.toolbar.setupWithNavController(navController, appBarConfiguration)
+        binding.navView.setupWithNavController(navController)
 
-        binding.scan.setOnClickListener {
-            onLaunchScanner()
-        }
+        navigationDrawerStyling()
+        binding.navView.getHeaderView(0).findViewById<ImageView>(R.id.close)
+            .setOnClickListener { binding.drawerLayout.close() }
+
+        supportFragmentManager.registerFragmentLifecycleCallbacks(
+            object :
+                FragmentManager.FragmentLifecycleCallbacks() {
+                override fun onFragmentViewCreated(
+                    fm: FragmentManager,
+                    f: Fragment,
+                    v: View,
+                    savedInstanceState: Bundle?
+                ) {
+                    when (f) {
+                        is NavHostFragment, is HideToolbar -> {
+                            binding.toolbar.visibility = View.GONE
+                            binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+                        }
+                        else -> {
+                            binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+                            binding.toolbar.visibility = View.VISIBLE
+                        }
+                    }
+                }
+            }, true
+        )
     }
 
-    fun onLaunchScanner() {
-        qrCodeUtils.launchScanner(this) {
-            verifierViewModel.validateholder(it)
+    private fun navigationDrawerStyling() {
+        val context = binding.navView.context
+        binding.navView.menu.findItem(R.id.nav_scan_qr)
+            .styleTitle(context, R.attr.textAppearanceHeadline6)
+        binding.navView.menu.findItem(R.id.nav_support)
+            .styleTitle(context, R.attr.textAppearanceHeadline6)
+        binding.navView.menu.findItem(R.id.nav_about_this_app)
+            .styleTitle(context, R.attr.textAppearanceBody1)
+        binding.navView.menu.findItem(R.id.nav_give_us_feedback)
+            .styleTitle(context, R.attr.textAppearanceBody1)
+    }
+
+    override fun onBackPressed() {
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            binding.drawerLayout.close()
+            return
         }
+        super.onBackPressed()
     }
 }
