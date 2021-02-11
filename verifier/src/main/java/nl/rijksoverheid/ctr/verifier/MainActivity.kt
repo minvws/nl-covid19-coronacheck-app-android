@@ -70,6 +70,10 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
+    fun setToolbarColor(color: Int) {
+        binding.toolbar.setBackgroundColor(color)
+    }
+
     private fun navigationDrawerStyling() {
         val context = binding.navView.context
         binding.navView.menu.findItem(R.id.nav_scan_qr)

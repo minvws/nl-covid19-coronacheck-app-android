@@ -1,7 +1,6 @@
 package nl.rijksoverheid.ctr.holder.introduction.onboarding
 
 import android.os.Bundle
-import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +8,7 @@ import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.holder.HideToolbar
 import nl.rijksoverheid.ctr.holder.databinding.FragmentOnboardingItemBinding
 import nl.rijksoverheid.ctr.holder.introduction.onboarding.models.OnboardingItem
+import nl.rijksoverheid.ctr.shared.ext.fromHtml
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -52,7 +52,7 @@ class OnboardingItemFragment : Fragment(), HideToolbar {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.title.text = getString(item.titleResource)
-        binding.description.text = Html.fromHtml(getString(item.descriptionResource))
+        binding.description.text = getString(item.descriptionResource).fromHtml()
         if (item.imageResource != 0) {
             binding.image.setImageResource(item.imageResource)
         }

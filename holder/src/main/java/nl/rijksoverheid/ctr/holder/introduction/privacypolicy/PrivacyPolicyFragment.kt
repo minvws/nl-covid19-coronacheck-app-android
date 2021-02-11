@@ -13,7 +13,6 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentPrivacyPolicyBinding
 import nl.rijksoverheid.ctr.holder.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.holder.introduction.privacypolicy.models.PrivacyPolicyItem
-import nl.rijksoverheid.ctr.verifier.introduction.privacypolicy.PrivacyPolicyFragmentDirections
 import org.koin.android.viewmodel.ext.android.viewModel
 
 /*

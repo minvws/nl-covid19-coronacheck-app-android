@@ -35,7 +35,7 @@ val sharedModule = module {
             .build()
         retroFit.create(TestApiClient::class.java)
     }
-    single {
+    single() {
         Moshi.Builder().add(KotlinJsonAdapterFactory()).add(OffsetDateTimeJsonAdapter()).build()
     }
     single<QrCodeUtils> { ZxingQrCodeUtils() }

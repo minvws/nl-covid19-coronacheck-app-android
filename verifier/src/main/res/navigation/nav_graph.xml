@@ -63,6 +63,40 @@
         android:id="@+id/nav_scan_qr"
         android:name="nl.rijksoverheid.ctr.verifier.scanqr.ScanQrFragment"
         android:label="@string/scan_qr_title"
-        tools:layout="@layout/fragment_scan_qr" />
+        tools:layout="@layout/fragment_scan_qr">
+
+        <action
+            android:id="@+id/action_scan_result"
+            app:destination="@id/nav_scan_result"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <argument
+            android:name="openScanner"
+            android:defaultValue="false"
+            app:argType="boolean" />
+
+    </fragment>
+
+    <dialog
+        android:id="@+id/nav_scan_result"
+        android:name="nl.rijksoverheid.ctr.verifier.scanqr.ScanResultFragment"
+        android:label=""
+        tools:layout="@layout/fragment_scan_result">
+
+        <argument
+            android:name="valid"
+            android:defaultValue="false"
+            app:argType="boolean" />
+
+        <action
+            android:id="@+id/action_scan_qr"
+            app:destination="@id/nav_scan_qr"
+            app:popUpTo="@id/nav_scan_qr"
+            app:popUpToInclusive="true" />
+
+    </dialog>
 
 </navigation>

@@ -8,6 +8,7 @@
 
 package nl.rijksoverheid.ctr.holder
 
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
@@ -21,6 +22,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import nl.rijksoverheid.ctr.holder.databinding.ActivityMainBinding
 import nl.rijksoverheid.ctr.shared.ext.styleTitle
+import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
 

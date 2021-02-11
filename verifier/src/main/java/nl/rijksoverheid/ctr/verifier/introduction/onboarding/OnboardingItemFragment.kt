@@ -1,11 +1,11 @@
 package nl.rijksoverheid.ctr.verifier.introduction.onboarding
 
 import android.os.Bundle
-import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import nl.rijksoverheid.ctr.shared.ext.fromHtml
 import nl.rijksoverheid.ctr.verifier.HideToolbar
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentOnboardingItemBinding
 import nl.rijksoverheid.ctr.verifier.introduction.onboarding.models.OnboardingItem
@@ -52,7 +52,7 @@ class OnboardingItemFragment : Fragment(), HideToolbar {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.title.text = getString(item.titleResource)
-        binding.description.text = Html.fromHtml(getString(item.descriptionResource))
+        binding.description.text = getString(item.descriptionResource).fromHtml()
         if (item.imageResource != 0) {
             binding.image.setImageResource(item.imageResource)
         }

@@ -17,7 +17,6 @@ import nl.rijksoverheid.ctr.holder.HideToolbar
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentOnboardingBinding
 import nl.rijksoverheid.ctr.holder.introduction.IntroductionViewModel
-import nl.rijksoverheid.ctr.verifier.introduction.onboarding.OnboardingFragmentDirections
 import org.koin.android.viewmodel.ext.android.viewModel
 
 /*

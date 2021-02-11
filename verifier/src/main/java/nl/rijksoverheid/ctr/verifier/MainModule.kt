@@ -5,6 +5,7 @@ import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.SharedPreferencesPersistenceManager
 import nl.rijksoverheid.ctr.holder.usecase.IntroductionUseCase
 import nl.rijksoverheid.ctr.verifier.introduction.IntroductionViewModel
+import nl.rijksoverheid.ctr.verifier.scanqr.ScanQrViewModel
 import nl.rijksoverheid.ctr.verifier.status.StatusViewModel
 import nl.rijksoverheid.ctr.verifier.usecases.DecryptHolderQrUseCase
 import org.koin.android.ext.koin.androidContext
@@ -39,4 +40,5 @@ val mainModule = module {
     // ViewModels
     viewModel { StatusViewModel(get()) }
     viewModel { IntroductionViewModel(get()) }
+    viewModel { ScanQrViewModel(get()) }
 }

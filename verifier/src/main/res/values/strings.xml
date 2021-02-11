@@ -27,4 +27,13 @@
     <string name="support">Support</string>
     <string name="about_this_app">Over deze app</string>
     <string name="give_us_feedback">Geef ons feedback</string>
+    <string name="scan_qr_header">Welkom</string>
+    <string name="scan_qr_description"><![CDATA[Scan een QR-code voor de ingang van jouw bar, restaurant of evenement. Alleen mensen met een geldige QR-code kan je toegang geven. <a href="#">Bekijk de scan instructies.</a>]]></string>
+    <string name="scan_qr_button">Start scannen</string>
+    <string name="scan_result_valid_title">Geldige QR-code</string>
+    <string name="scan_result_valid_subtitle">Geef toegang</string>
+    <string name="scan_result_invalid_title">Geen geldige QR-code</string>
+    <string name="scan_result_invalid_subtitle">Weiger toegang</string>
+    <string name="scan_result_invalid_link">Lees de mogelijke oorzaken</string>
+    <string name="scan_result_invalid_button">Scan volgende</string>
 </resources>

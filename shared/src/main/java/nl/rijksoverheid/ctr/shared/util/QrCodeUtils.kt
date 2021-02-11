@@ -33,7 +33,9 @@ class ZxingQrCodeUtils : QrCodeUtils {
                     it.resultCode,
                     it.data
                 )
-                qrCodeScanned.invoke(result.contents)
+                if (result.contents != null) {
+                    qrCodeScanned.invoke(result.contents)
+                }
             }
 
         val integrator = IntentIntegrator(activity)
