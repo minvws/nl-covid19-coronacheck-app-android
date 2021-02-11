@@ -5,8 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
-import nl.rijksoverheid.ctr.verifier.BaseFragment
+import androidx.navigation.fragment.findNavController
+import nl.rijksoverheid.ctr.holder.BaseFragment
 import nl.rijksoverheid.ctr.holder.databinding.FragmentCommercialTestCodeBinding
+import nl.rijksoverheid.ctr.holder.ext.hideKeyboard
+import nl.rijksoverheid.ctr.holder.ext.showKeyboard
+import nl.rijksoverheid.ctr.shared.ext.observeResult
+import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -15,7 +20,7 @@ import nl.rijksoverheid.ctr.holder.databinding.FragmentCommercialTestCodeBinding
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class CommercialTestCodeFragment : nl.rijksoverheid.ctr.verifier.BaseFragment() {
+class CommercialTestCodeFragment : BaseFragment() {
 
     private lateinit var binding: FragmentCommercialTestCodeBinding
     private val testResultViewModel: TestResultsViewModel by sharedViewModel()
