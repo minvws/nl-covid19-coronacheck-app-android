@@ -8,5 +8,6 @@
 include ':shared'
 include ':verifier'
 include ':holder'
+include ':signing'
 
 rootProject.name = "CoronaTester"
