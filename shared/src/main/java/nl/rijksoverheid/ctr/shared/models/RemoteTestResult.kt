@@ -1,7 +1,7 @@
 package nl.rijksoverheid.ctr.shared.models
 
 import com.squareup.moshi.JsonClass
-import org.threeten.bp.OffsetDateTime
+import java.time.OffsetDateTime
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

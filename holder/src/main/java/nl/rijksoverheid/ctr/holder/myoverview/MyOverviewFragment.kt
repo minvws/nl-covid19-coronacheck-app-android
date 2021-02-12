@@ -11,9 +11,9 @@ import nl.rijksoverheid.ctr.holder.databinding.FragmentMyOverviewBinding
 import nl.rijksoverheid.ctr.holder.digid.DigiDFragment
 import nl.rijksoverheid.ctr.shared.ext.observeResult
 import org.koin.android.viewmodel.ext.android.viewModel
-import org.threeten.bp.OffsetDateTime
-import org.threeten.bp.format.DateTimeFormatter
-import org.threeten.bp.format.FormatStyle
+import java.time.OffsetDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

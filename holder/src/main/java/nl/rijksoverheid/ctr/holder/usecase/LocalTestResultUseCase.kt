@@ -4,7 +4,7 @@ import com.squareup.moshi.Moshi
 import nl.rijksoverheid.ctr.holder.models.LocalTestResult
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.shared.ext.toObject
-import org.threeten.bp.OffsetDateTime
+import java.time.OffsetDateTime
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

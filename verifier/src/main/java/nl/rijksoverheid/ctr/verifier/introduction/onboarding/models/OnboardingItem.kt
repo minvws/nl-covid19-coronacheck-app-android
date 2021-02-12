@@ -1,7 +1,7 @@
 package nl.rijksoverheid.ctr.verifier.introduction.onboarding.models
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

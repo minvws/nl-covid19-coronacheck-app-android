@@ -1,8 +1,12 @@
 package nl.rijksoverheid.ctr.shared.json
 
-import com.squareup.moshi.*
-import org.threeten.bp.OffsetDateTime
-import org.threeten.bp.format.DateTimeFormatter
+import com.squareup.moshi.FromJson
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.JsonReader
+import com.squareup.moshi.JsonWriter
+import com.squareup.moshi.ToJson
+import java.time.OffsetDateTime
+import java.time.format.DateTimeFormatter
 
 class OffsetDateTimeJsonAdapter : JsonAdapter<OffsetDateTime>() {
 

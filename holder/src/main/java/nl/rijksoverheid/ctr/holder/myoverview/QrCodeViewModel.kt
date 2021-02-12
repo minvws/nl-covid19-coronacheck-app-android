@@ -12,7 +12,7 @@ import nl.rijksoverheid.ctr.holder.usecase.LocalTestResultUseCase
 import nl.rijksoverheid.ctr.holder.usecase.QrCodeUseCase
 import nl.rijksoverheid.ctr.holder.usecase.SecretKeyUseCase
 import nl.rijksoverheid.ctr.shared.models.Result
-import org.threeten.bp.OffsetDateTime
+import java.time.OffsetDateTime
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

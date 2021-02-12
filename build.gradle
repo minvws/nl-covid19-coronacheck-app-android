@@ -18,7 +18,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.0'
+        classpath 'com.android.tools.build:gradle:4.1.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.google.firebase:firebase-appdistribution-gradle:2.0.1'
         classpath "org.koin:koin-gradle-plugin:$koin_version"
@@ -33,6 +33,28 @@ allprojects {
         jcenter()
         maven {
             url 'https://jitpack.io'
+        }
+    }
+
+    afterEvaluate {
+        tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+            kotlinOptions {
+                jvmTarget = "1.8"
+            }
+        }
+
+        project.plugins.withId("com.android.base") {
+            android {
+                compileSdkVersion 30
+                defaultConfig {
+                    minSdkVersion 23
+                    targetSdkVersion 30
+                }
+                compileOptions {
+                    sourceCompatibility JavaVersion.VERSION_1_8
+                    targetCompatibility JavaVersion.VERSION_1_8
+                }
+            }
         }
     }
 }
