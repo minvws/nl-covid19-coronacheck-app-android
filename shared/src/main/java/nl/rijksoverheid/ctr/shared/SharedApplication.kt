@@ -2,7 +2,6 @@ package nl.rijksoverheid.ctr.shared
 
 import android.app.Application
 import com.facebook.stetho.Stetho
-import com.jakewharton.threetenabp.AndroidThreeTen
 import timber.log.Timber
 
 /*
@@ -16,8 +15,6 @@ open class SharedApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-
-        AndroidThreeTen.init(this)
 
         if (BuildConfig.DEBUG) {
             Stetho.initializeWithDefaults(this)

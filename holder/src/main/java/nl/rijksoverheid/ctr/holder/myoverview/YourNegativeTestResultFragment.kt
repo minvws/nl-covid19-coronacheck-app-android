@@ -9,8 +9,8 @@ import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.holder.databinding.FragmentYourNegativeTestResultsBinding
 import nl.rijksoverheid.ctr.shared.ext.observeResult
 import org.koin.android.viewmodel.ext.android.sharedViewModel
-import org.threeten.bp.format.DateTimeFormatter
-import org.threeten.bp.format.FormatStyle
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
