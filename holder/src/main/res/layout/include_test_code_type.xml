@@ -18,8 +18,8 @@
     android:foreground="?attr/selectableItemBackground"
     app:cardBackgroundColor="@color/grey_light"
     app:cardElevation="2dp"
-    app:cardCornerRadius="@dimen/test_button_corner_radius"
-    tools:showIn="@layout/fragment_choose_provider">
+    tools:showIn="@layout/fragment_commercial_test_type"
+    app:cardCornerRadius="@dimen/test_button_corner_radius">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:duplicateParentState="true"
@@ -28,28 +28,26 @@
         android:paddingHorizontal="24dp"
         android:paddingVertical="16dp">
 
-        <TextView
-            android:duplicateParentState="true"
-            android:id="@+id/provider_title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            tools:text="@string/choose_provider_commercial_title"
-            android:textAppearance="?attr/textAppearanceBody1"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
+        <ImageView
+            android:id="@+id/icon"
+            android:contentDescription="@null"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            tools:srcCompat="@drawable/ic_test_qr_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
         <TextView
+            android:layout_marginTop="12dp"
             android:duplicateParentState="true"
-            android:id="@+id/provider_subtitle"
+            android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/choose_provider_commercial_subtitle"
+            tools:text="@string/choose_provider_commercial_subtitle"
             android:textAppearance="?attr/textAppearanceBody1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/provider_title" />
+            app:layout_constraintTop_toBottomOf="@+id/icon" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
