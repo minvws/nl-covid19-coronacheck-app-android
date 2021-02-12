@@ -36,7 +36,8 @@ class TestResultUseCase(
         val remoteTestResult = holderRepository.remoteTestResult(
             url = testProvider.resultUrl,
             token = token,
-            verifierCode = verificationCode
+            verifierCode = verificationCode,
+            signingCertificateBytes = testProvider.publicKey
         )
 
         // Persist encrypted test result

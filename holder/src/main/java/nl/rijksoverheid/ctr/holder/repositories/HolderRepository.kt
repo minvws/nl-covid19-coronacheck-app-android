@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.holder.repositories
 
+import nl.rijksoverheid.ctr.shared.api.SigningCertificate
 import nl.rijksoverheid.ctr.shared.api.TestApiClient
 import nl.rijksoverheid.ctr.shared.models.RemoteNonce
 import nl.rijksoverheid.ctr.shared.models.RemoteTestProviders
@@ -20,14 +21,16 @@ class HolderRepository(private val api: TestApiClient) {
     suspend fun remoteTestResult(
         url: String,
         token: String,
-        verifierCode: String
+        verifierCode: String,
+        signingCertificateBytes: ByteArray
     ): RemoteTestResult {
         return api.getTestResult(
             url = url,
             authorization = "Bearer $token",
             data = GetTestResultPostData(
                 verifierCode
-            )
+            ),
+            certificate = SigningCertificate(signingCertificateBytes)
         )
     }
 
