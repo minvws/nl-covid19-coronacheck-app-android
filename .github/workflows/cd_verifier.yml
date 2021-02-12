@@ -6,6 +6,8 @@ on:
       - main
     paths:
       - 'verifier/**'
+      - 'shared/**'
+      - 'signing/**'
 
 jobs:
   build-and-distribute:

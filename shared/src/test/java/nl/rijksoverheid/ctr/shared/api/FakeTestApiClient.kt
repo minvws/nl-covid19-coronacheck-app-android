@@ -8,7 +8,15 @@
 
 package nl.rijksoverheid.ctr.shared.api
 
-import nl.rijksoverheid.ctr.shared.models.*
+import nl.rijksoverheid.ctr.shared.models.Config
+import nl.rijksoverheid.ctr.shared.models.Issuers
+import nl.rijksoverheid.ctr.shared.models.RemoteAgent
+import nl.rijksoverheid.ctr.shared.models.RemoteEvent
+import nl.rijksoverheid.ctr.shared.models.RemoteNonce
+import nl.rijksoverheid.ctr.shared.models.RemoteTestProviders
+import nl.rijksoverheid.ctr.shared.models.RemoteTestResult
+import nl.rijksoverheid.ctr.shared.models.post.GetTestIsmPostData
+import nl.rijksoverheid.ctr.shared.models.post.GetTestResultPostData
 import okhttp3.ResponseBody
 import retrofit2.Response
 
@@ -30,15 +38,24 @@ abstract class FakeTestApiClient : TestApiClient {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getNonce(): nl.rijksoverheid.ctr.holder.models.RemoteNonce {
+    override suspend fun getNonce(): RemoteNonce {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getTestIsm(
-        accessToken: String,
-        sToken: String,
-        icm: String
-    ): Response<ResponseBody> {
+    override suspend fun getConfigCtp(): RemoteTestProviders {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getTestIsm(data: GetTestIsmPostData): Response<ResponseBody> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getTestResult(
+        url: String,
+        authorization: String,
+        data: GetTestResultPostData,
+        certificate: SigningCertificate
+    ): RemoteTestResult {
         TODO("Not yet implemented")
     }
 
