@@ -12,7 +12,7 @@ import com.squareup.moshi.ToJson
 
 class Base64JsonAdapter {
     @FromJson
-    fun fromBase64(value: String): ByteArray = Base64.decode(value, 0)
+    fun fromBase64(value: String): ByteArray = Base64.decode(value, Base64.DEFAULT)
 
     @ToJson
     fun toBase64(value: ByteArray) = Base64.encodeToString(value, Base64.NO_WRAP)
