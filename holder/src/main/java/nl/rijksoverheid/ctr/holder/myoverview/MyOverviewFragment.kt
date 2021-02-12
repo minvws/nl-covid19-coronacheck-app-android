@@ -38,7 +38,11 @@ class MyOverviewFragment : DigiDFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.noQr.card2Button.setOnClickListener {
+        binding.noQr.createQrCard.createQrCardButton.setOnClickListener {
+            findNavController().navigate(MyOverviewFragmentDirections.actionChooseProvider())
+        }
+
+        binding.existingQr.createQrCard.createQrCardButton.setOnClickListener {
             findNavController().navigate(MyOverviewFragmentDirections.actionChooseProvider())
         }
 
@@ -46,14 +50,14 @@ class MyOverviewFragment : DigiDFragment() {
             binding.noQr.root.visibility = View.INVISIBLE
             binding.existingQr.root.visibility = View.VISIBLE
         }, {
-            binding.existingQr.cardQrImage.setImageBitmap(it)
+            binding.existingQr.qrCardQrImage.setImageBitmap(it)
         }, {
             binding.noQr.root.visibility = View.VISIBLE
             binding.existingQr.root.visibility = View.GONE
             presentError()
         })
 
-        binding.existingQr.cardQrImage.doOnPreDraw {
+        binding.existingQr.qrCardQrImage.doOnPreDraw {
             observeResult(qrCodeViewModel.localTestResultLiveData, {
             }, { localTestResult ->
                 if (localTestResult != null) {
@@ -65,8 +69,8 @@ class MyOverviewFragment : DigiDFragment() {
 
                     qrCodeViewModel.generateQrCode(
                         credentials = localTestResult.credentials,
-                        qrCodeWidth = binding.existingQr.cardQrImage.width,
-                        qrCodeHeight = binding.existingQr.cardQrImage.height
+                        qrCodeWidth = binding.existingQr.qrCardQrImage.width,
+                        qrCodeHeight = binding.existingQr.qrCardQrImage.height
                     )
                 }
             }, {
