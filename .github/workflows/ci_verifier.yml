@@ -6,6 +6,8 @@ on:
       - main
     paths:
       - 'verifier/**'
+      - 'shared/**'
+      - 'signing/**'
 
 jobs:
   lint-and-test:
