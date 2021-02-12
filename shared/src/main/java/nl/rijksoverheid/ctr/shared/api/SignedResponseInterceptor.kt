@@ -48,31 +48,27 @@ class SignedResponseInterceptor : Interceptor {
                 ).build()
         )
 
-        if (response.isSuccessful) {
-            val body = response.body ?: return response
+        val body = response.body ?: return response
 
-            val signedResponse = body.use {
-                responseAdapter.fromJson(it.source())
-            } ?: error("Expected signed response payload")
+        val signedResponse = body.use {
+            responseAdapter.fromJson(it.source())
+        } ?: error("Expected signed response payload")
 
-            val validator = if (expectedSigningCertificate != null) {
-                SignatureValidator.Builder()
-                    .signingCertificate(expectedSigningCertificate.certificateBytes).build()
-            } else {
-                defaultValidator
-            }
-
-            return if (!validateSignature(validator, signedResponse)) {
-                response.newBuilder().body("Signature failed to validate".toResponseBody())
-                    .code(500)
-                    .message("Signature failed to validate").build().also { response.close() }
-            } else {
-                response.newBuilder()
-                    .body(signedResponse.payload.toResponseBody("application/json".toMediaType()))
-                    .build().also { response.close() }
-            }
+        val validator = if (expectedSigningCertificate != null) {
+            SignatureValidator.Builder()
+                .signingCertificate(expectedSigningCertificate.certificateBytes).build()
         } else {
-            return response
+            defaultValidator
+        }
+
+        return if (!validateSignature(validator, signedResponse)) {
+            response.newBuilder().body("Signature failed to validate".toResponseBody())
+                .code(500)
+                .message("Signature failed to validate").build().also { response.close() }
+        } else {
+            response.newBuilder()
+                .body(signedResponse.payload.toResponseBody("application/json".toMediaType()))
+                .build().also { response.close() }
         }
     }
 
