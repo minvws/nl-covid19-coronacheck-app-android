@@ -4,125 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="32dp"
     tools:layout_marginHorizontal="16dp">
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/card_1"
+    <include
+        android:id="@+id/make_appointment_card"
+        layout="@layout/item_make_appointment_card"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <include
+        android:id="@+id/create_qr_card"
+        layout="@layout/item_create_qr_card"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        app:cardBackgroundColor="#68d2ff"
-        app:cardCornerRadius="15dp"
-        app:cardElevation="8dp"
-        app:contentPadding="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipChildren="false"
-            android:clipToPadding="false">
-
-            <TextView
-                android:id="@+id/card1_title"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/my_overview_no_qr_make_appointment_title"
-                android:textAppearance="?attr/textAppearanceHeadline6"
-                app:layout_constraintBottom_toTopOf="@+id/card1_description"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/card1_description"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="64dp"
-                android:text="@string/my_overview_no_qr_make_appointment_description"
-                android:textAppearance="?attr/textAppearanceBody1"
-                app:layout_constraintEnd_toEndOf="@+id/card1_title"
-                app:layout_constraintStart_toStartOf="@+id/card1_title"
-                app:layout_constraintTop_toBottomOf="@+id/card1_title" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/card1_button"
-                style="@style/Widget.App.Button.Surface"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="36dp"
-                android:text="@string/my_overview_no_qr_make_appointment_button"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/card1_title"
-                app:layout_constraintTop_toBottomOf="@+id/card1_description" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </com.google.android.material.card.MaterialCardView>
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/card_2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        app:cardBackgroundColor="#3DEC94"
-        app:cardCornerRadius="15dp"
-        app:cardElevation="8dp"
-        app:contentPadding="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/card_1">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipChildren="false"
-            android:clipToPadding="false">
-
-            <TextView
-                android:id="@+id/card2_title"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/my_overview_no_qr_make_qr_title"
-                android:textAppearance="?attr/textAppearanceHeadline6"
-                app:layout_constraintBottom_toTopOf="@+id/card2_description"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/card2_description"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="64dp"
-                android:text="@string/my_overview_no_qr_make_qr_description"
-                android:textAppearance="?attr/textAppearanceBody1"
-                app:layout_constraintEnd_toEndOf="@+id/card2_title"
-                app:layout_constraintStart_toStartOf="@+id/card2_title"
-                app:layout_constraintTop_toBottomOf="@+id/card2_title" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/card2_button"
-                style="@style/Widget.App.Button.Surface"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="36dp"
-                android:text="@string/my_overview_no_qr_make_qr_button"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/card2_title"
-                app:layout_constraintTop_toBottomOf="@+id/card2_description" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </com.google.android.material.card.MaterialCardView>
-
+        app:layout_constraintTop_toBottomOf="@+id/make_appointment_card" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
