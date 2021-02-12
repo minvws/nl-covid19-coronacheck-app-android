@@ -35,6 +35,28 @@ allprojects {
             url 'https://jitpack.io'
         }
     }
+
+    afterEvaluate {
+        tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+            kotlinOptions {
+                jvmTarget = "1.8"
+            }
+        }
+
+        project.plugins.withId("com.android.base") {
+            android {
+                compileSdkVersion 30
+                defaultConfig {
+                    minSdkVersion 23
+                    targetSdkVersion 30
+                }
+                compileOptions {
+                    sourceCompatibility JavaVersion.VERSION_1_8
+                    targetCompatibility JavaVersion.VERSION_1_8
+                }
+            }
+        }
+    }
 }
 
 task clean(type: Delete) {

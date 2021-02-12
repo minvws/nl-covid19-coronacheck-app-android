@@ -11,17 +11,12 @@ plugins {
 def appVersionCode = System.getenv("GITHUB_RUN_NUMBER") != null ? System.getenv("GITHUB_RUN_NUMBER").toInteger() : 1
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.3"
-
     buildFeatures {
         viewBinding true
     }
 
     defaultConfig {
         applicationId "nl.rijksoverheid.ctr.holder"
-        minSdkVersion 21
-        targetSdkVersion 30
         versionCode appVersionCode
         versionName "1.0"
 
@@ -80,15 +75,6 @@ android {
             }
         }
     }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = '1.8'
-    }
 }
 
 dependencies {
@@ -97,8 +83,4 @@ dependencies {
     implementation "androidx.viewpager2:viewpager2:1.0.0"
     implementation "com.xwray:groupie:2.9.0"
     implementation "com.xwray:groupie-viewbinding:2.9.0"
-}
-
-repositories {
-    mavenCentral()
 }
