@@ -37,12 +37,4 @@ class LocalTestResultUseCase(
         return null
     }
 
-    fun save(credentials: String, sampleDate: OffsetDateTime) {
-        val localTestResult = LocalTestResult(
-            credentials = credentials,
-            sampleDate = sampleDate
-        )
-        persistenceManager.saveLocalTestResult(localTestResult)
-    }
-
 }
