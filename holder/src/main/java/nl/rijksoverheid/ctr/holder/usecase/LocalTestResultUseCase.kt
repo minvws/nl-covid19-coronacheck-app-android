@@ -1,9 +1,9 @@
 package nl.rijksoverheid.ctr.holder.usecase
 
-import com.squareup.moshi.Moshi
 import nl.rijksoverheid.ctr.holder.models.LocalTestResult
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
-import nl.rijksoverheid.ctr.shared.ext.toObject
+import nl.rijksoverheid.ctr.shared.repositories.TestResultRepository
+import nl.rijksoverheid.ctr.shared.util.TestResultUtil
 import java.time.OffsetDateTime
 
 /*
@@ -15,12 +15,26 @@ import java.time.OffsetDateTime
  */
 class LocalTestResultUseCase(
     private val persistenceManager: PersistenceManager,
-    private val moshi: Moshi
+    private val testResultUtil: TestResultUtil,
+    private val testResultRepository: TestResultRepository
 ) {
 
-    // TODO: Check expire date
-    fun get(currentDateTime: OffsetDateTime): LocalTestResult? {
-        return persistenceManager.getLocalTestResultJson()?.toObject<LocalTestResult>(moshi)
+    suspend fun get(currentDate: OffsetDateTime): LocalTestResult? {
+        val localTestResult = persistenceManager.getLocalTestResult()
+        localTestResult?.let { localTestResult ->
+            val isValid = testResultUtil.isValid(
+                currentDate = currentDate,
+                sampleDate = localTestResult.sampleDate,
+                validitySeconds = testResultRepository.getTestValidity()
+            )
+            return if (isValid) {
+                localTestResult
+            } else {
+                persistenceManager.deleteLocalTestResult()
+                return null
+            }
+        }
+        return null
     }
 
     fun save(credentials: String, sampleDate: OffsetDateTime) {
@@ -28,7 +42,7 @@ class LocalTestResultUseCase(
             credentials = credentials,
             sampleDate = sampleDate
         )
-        persistenceManager.saveLocalTestResultJson(localTestResult.toJson(moshi))
+        persistenceManager.saveLocalTestResult(localTestResult)
     }
 
 }

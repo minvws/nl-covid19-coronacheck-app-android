@@ -27,8 +27,8 @@ val mainModule = module {
     single<PersistenceManager> {
         SharedPreferencesPersistenceManager(
             PreferenceManager.getDefaultSharedPreferences(
-                androidContext()
-            )
+                androidContext(),
+            ), get()
         )
     }
 
@@ -65,7 +65,7 @@ val mainModule = module {
         TestResultUseCase(get(), get(), get(), get(), get(), get())
     }
     single {
-        LocalTestResultUseCase(get(), get())
+        LocalTestResultUseCase(get(), get(), get())
     }
 
     // ViewModels
