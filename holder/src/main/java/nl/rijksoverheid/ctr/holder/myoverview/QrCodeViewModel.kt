@@ -5,14 +5,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import nl.rijksoverheid.ctr.holder.ext.tickFlow
 import nl.rijksoverheid.ctr.holder.models.LocalTestResult
 import nl.rijksoverheid.ctr.holder.usecase.LocalTestResultUseCase
 import nl.rijksoverheid.ctr.holder.usecase.QrCodeUseCase
 import nl.rijksoverheid.ctr.holder.usecase.SecretKeyUseCase
 import nl.rijksoverheid.ctr.shared.models.Result
 import java.time.OffsetDateTime
+import java.util.concurrent.TimeUnit
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -53,18 +56,20 @@ class QrCodeViewModel(
     fun generateQrCode(credentials: String, qrCodeWidth: Int, qrCodeHeight: Int) {
         qrCodeLiveData.value = Result.Loading()
         viewModelScope.launch {
-            try {
-                val qrCodeBitmap = qrCodeUseCase.qrCode(
-                    credentials = credentials.toByteArray(),
-                    qrCodeWidth = qrCodeWidth,
-                    qrCodeHeight = qrCodeHeight
-                )
-                withContext(Dispatchers.Main) {
-                    qrCodeLiveData.value = Result.Success(qrCodeBitmap)
-                }
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    qrCodeLiveData.value = Result.Failed(e)
+            tickFlow(TimeUnit.MINUTES.toMillis(3)).collect {
+                try {
+                    val qrCodeBitmap = qrCodeUseCase.qrCode(
+                        credentials = credentials.toByteArray(),
+                        qrCodeWidth = qrCodeWidth,
+                        qrCodeHeight = qrCodeHeight
+                    )
+                    withContext(Dispatchers.Main) {
+                        qrCodeLiveData.value = Result.Success(qrCodeBitmap)
+                    }
+                } catch (e: Exception) {
+                    withContext(Dispatchers.Main) {
+                        qrCodeLiveData.value = Result.Failed(e)
+                    }
                 }
             }
         }
