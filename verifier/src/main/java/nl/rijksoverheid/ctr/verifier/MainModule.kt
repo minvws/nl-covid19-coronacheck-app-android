@@ -8,6 +8,7 @@ import nl.rijksoverheid.ctr.verifier.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.verifier.scanqr.ScanQrViewModel
 import nl.rijksoverheid.ctr.verifier.status.StatusViewModel
 import nl.rijksoverheid.ctr.verifier.usecases.DecryptHolderQrUseCase
+import nl.rijksoverheid.ctr.verifier.usecases.TestResultValidUseCase
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -35,6 +36,9 @@ val mainModule = module {
     }
     single {
         IntroductionUseCase(get())
+    }
+    single {
+        TestResultValidUseCase(get(), get(), get())
     }
 
     // ViewModels
