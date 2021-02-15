@@ -4,6 +4,8 @@ import android.graphics.Bitmap
 import android.util.Base64
 import clmobile.Clmobile
 import com.squareup.moshi.Moshi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.holder.repositories.HolderRepository
 import nl.rijksoverheid.ctr.shared.ext.verify
 import nl.rijksoverheid.ctr.shared.models.RemoteTestResult
@@ -54,18 +56,19 @@ class QrCodeUseCase(
         )
     }
 
-    suspend fun qrCode(credentials: ByteArray, qrCodeWidth: Int, qrCodeHeight: Int): Bitmap {
-        val proof = Clmobile.discloseAllWithTime(
-            CryptoUtil.ISSUER_PK_XML.toByteArray(),
-            credentials
-        ).verify()
+    suspend fun qrCode(credentials: ByteArray, qrCodeWidth: Int, qrCodeHeight: Int): Bitmap =
+        withContext(Dispatchers.IO) {
+            val proof = Clmobile.discloseAllWithTime(
+                CryptoUtil.ISSUER_PK_XML.toByteArray(),
+                credentials
+            ).verify()
 
-        val base64Qr = Base64.encodeToString(proof, Base64.NO_WRAP)
+            val base64Qr = Base64.encodeToString(proof, Base64.NO_WRAP)
 
-        return generateHolderQrCodeUseCase.bitmap(
-            data = base64Qr,
-            qrCodeWidth = qrCodeWidth,
-            qrCodeHeight = qrCodeHeight
-        )
-    }
+            generateHolderQrCodeUseCase.bitmap(
+                data = base64Qr,
+                qrCodeWidth = qrCodeWidth,
+                qrCodeHeight = qrCodeHeight
+            )
+        }
 }

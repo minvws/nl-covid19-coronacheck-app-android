@@ -63,13 +63,9 @@ class QrCodeViewModel(
                         qrCodeWidth = qrCodeWidth,
                         qrCodeHeight = qrCodeHeight
                     )
-                    withContext(Dispatchers.Main) {
-                        qrCodeLiveData.value = Result.Success(qrCodeBitmap)
-                    }
+                    qrCodeLiveData.value = Result.Success(qrCodeBitmap)
                 } catch (e: Exception) {
-                    withContext(Dispatchers.Main) {
-                        qrCodeLiveData.value = Result.Failed(e)
-                    }
+                    qrCodeLiveData.value = Result.Failed(e)
                 }
             }
         }
