@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit
 class TestResultRepository {
 
     // TODO: Fetch from remote
-    suspend fun getTestValidity(): Long {
-        return TimeUnit.HOURS.toMillis(48)
+    suspend fun getTestValiditySeconds(): Long {
+        return TimeUnit.HOURS.toSeconds(48)
     }
 }

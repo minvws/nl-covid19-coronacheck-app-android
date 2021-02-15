@@ -1,4 +1,4 @@
-git clone git@github.com:minvws/nl-covid19-coronatester-ctcl-core.git tmp-ctcl
+git clone git@github.com:minvws/nl-covid19-coronatester-ctcl-core-private.git tmp-ctcl
 cd tmp-ctcl
 gomobile bind -target android -o ctcl.aar github.com/minvws/nl-covid19-coronatester-ctcl-core/clmobile
 cd ../

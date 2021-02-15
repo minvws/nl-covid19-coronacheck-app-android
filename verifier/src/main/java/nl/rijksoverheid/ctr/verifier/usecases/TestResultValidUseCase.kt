@@ -21,7 +21,7 @@ class TestResultValidUseCase(
 
     suspend fun valid(currentDate: OffsetDateTime, qrContent: String): Boolean {
         val sampleDateSeconds = decryptHolderQrUseCase.decrypt(qrContent)
-        val validity = testResultRepository.getTestValidity()
+        val validity = testResultRepository.getTestValiditySeconds()
         return testResultUtil.isValid(
             currentDate = currentDate,
             sampleDate = OffsetDateTime.ofInstant(

@@ -32,7 +32,7 @@ val mainModule = module {
 
     // Use cases
     single {
-        DecryptHolderQrUseCase()
+        DecryptHolderQrUseCase(get())
     }
     single {
         IntroductionUseCase(get())
