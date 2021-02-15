@@ -25,7 +25,7 @@ class LocalTestResultUseCase(
             val isValid = testResultUtil.isValid(
                 currentDate = currentDate,
                 sampleDate = localTestResult.sampleDate,
-                validitySeconds = testResultRepository.getTestValidity()
+                validitySeconds = testResultRepository.getTestValiditySeconds()
             )
             return if (isValid) {
                 localTestResult
