@@ -48,6 +48,10 @@ class SignedResponseInterceptor : Interceptor {
                 ).build()
         )
 
+        if (response.code !in 200..299 && response.code !in 400..499) {
+            return response
+        }
+
         val body = response.body ?: return response
 
         val signedResponse = body.use {

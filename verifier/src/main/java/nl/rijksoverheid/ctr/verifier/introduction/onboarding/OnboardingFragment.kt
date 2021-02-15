@@ -17,7 +17,7 @@ import nl.rijksoverheid.ctr.verifier.HideToolbar
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentOnboardingBinding
 import nl.rijksoverheid.ctr.verifier.introduction.IntroductionViewModel
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

@@ -13,7 +13,7 @@ import nl.rijksoverheid.ctr.shared.util.QrCodeUtils
 import nl.rijksoverheid.ctr.verifier.BaseFragment
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanQrBinding
 import org.koin.android.ext.android.inject
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.time.OffsetDateTime
 
 /*

@@ -71,4 +71,5 @@
     <string name="testresult_to_qr_code_title">Van jouw testresultaat wordt nu een QR-code gemaakt</string>
     <string name="testresult_to_qr_code_description">In de QR-code wordt verwerkt dat je negatief getest bent (geen corona) op 2 februari om 14:06.\nIn de CoronaTester app zal alleen de anonieme QR-code zichtbaar zijn, zonder testdetails.</string>
     <string name="button_continue">Verder</string>
+    <string name="commercial_test_error_invalid_code">Deze code is niet geldig</string>
 </resources>

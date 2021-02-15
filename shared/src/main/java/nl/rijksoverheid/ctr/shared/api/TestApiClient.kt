@@ -58,7 +58,7 @@ interface TestApiClient {
     suspend fun getTestResult(
         @Url url: String,
         @Header("Authorization") authorization: String,
-        @Body data: GetTestResultPostData,
+        @Body data: GetTestResultPostData?,
         @Tag certificate: SigningCertificate
     ): RemoteTestResult
 }

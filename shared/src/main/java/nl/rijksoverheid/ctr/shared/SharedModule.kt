@@ -7,6 +7,8 @@ import nl.rijksoverheid.ctr.shared.api.SignedResponseInterceptor
 import nl.rijksoverheid.ctr.shared.api.TestApiClient
 import nl.rijksoverheid.ctr.shared.json.Base64JsonAdapter
 import nl.rijksoverheid.ctr.shared.json.OffsetDateTimeJsonAdapter
+import nl.rijksoverheid.ctr.shared.json.RemoteTestStatusJsonAdapter
+import nl.rijksoverheid.ctr.shared.models.RemoteTestResult
 import nl.rijksoverheid.ctr.shared.repositories.ConfigRepository
 import nl.rijksoverheid.ctr.shared.repositories.TestResultRepository
 import nl.rijksoverheid.ctr.shared.usecases.AppStatusUseCase
@@ -16,8 +18,10 @@ import nl.rijksoverheid.ctr.shared.util.QrCodeUtils
 import nl.rijksoverheid.ctr.shared.util.TestResultUtil
 import nl.rijksoverheid.ctr.shared.util.ZxingQrCodeUtils
 import okhttp3.OkHttpClient
+import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
+import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import timber.log.Timber
@@ -44,17 +48,26 @@ val sharedModule = module {
             }
             .build()
 
-        val retroFit = Retrofit.Builder()
+        Retrofit.Builder()
             .baseUrl("https://api-ct.bananenhalen.nl")
             .client(okHttpClient)
             .addConverterFactory(MoshiConverterFactory.create(get()))
             .build()
-        retroFit.create(TestApiClient::class.java)
     }
+
+    single<Converter<ResponseBody, RemoteTestResult>> {
+        get(Retrofit::class.java).responseBodyConverter(RemoteTestResult::class.java, emptyArray())
+    }
+
+    single {
+        get(Retrofit::class).create(TestApiClient::class.java)
+    }
+
     single {
         Moshi.Builder()
             .add(KotlinJsonAdapterFactory())
             .add(Base64JsonAdapter())
+            .add(RemoteTestStatusJsonAdapter())
             .add(OffsetDateTimeJsonAdapter()).build()
     }
     single<QrCodeUtils> { ZxingQrCodeUtils() }

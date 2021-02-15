@@ -1,16 +1,12 @@
 package nl.rijksoverheid.ctr.holder.myoverview
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentYourNegativeTestResultsBinding
-import nl.rijksoverheid.ctr.shared.ext.observeResult
-import org.koin.android.viewmodel.ext.android.sharedViewModel
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -19,31 +15,22 @@ import java.time.format.FormatStyle
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class YourNegativeTestResultFragment : Fragment() {
+class YourNegativeTestResultFragment : Fragment(R.layout.fragment_your_negative_test_results) {
 
-    private lateinit var binding: FragmentYourNegativeTestResultsBinding
     private val testResultViewModel: TestResultsViewModel by sharedViewModel()
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentYourNegativeTestResultsBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        observeResult(testResultViewModel.testResultLiveData, {
-
-        }, {
-            binding.rowSubtitle.text =
-                it.result.sampleDate.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM))
-        }, {
-
-        })
+        val binding = FragmentYourNegativeTestResultsBinding.bind(view)
+        // observeResult(testResultViewModel.testResultLiveData, {
+        //
+        // }, {
+        //     // val result = (it as? TestResult.Success)?.remoteTestResult ?: error("Expected a test result")
+        //     // binding.rowSubtitle.text =
+        //     //     result.result.sampleDate.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM))
+        // }, {
+        //
+        // })
 
         binding.button.setOnClickListener {
             findNavController().navigate(YourNegativeTestResultFragmentDirections.actionMyOverview())

@@ -10,7 +10,7 @@ import nl.rijksoverheid.ctr.verifier.status.StatusViewModel
 import nl.rijksoverheid.ctr.verifier.usecases.DecryptHolderQrUseCase
 import nl.rijksoverheid.ctr.verifier.usecases.TestResultValidUseCase
 import org.koin.android.ext.koin.androidContext
-import org.koin.android.viewmodel.dsl.viewModel
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 /*

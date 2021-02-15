@@ -10,7 +10,7 @@ import nl.rijksoverheid.ctr.shared.models.AppStatus.AppDeactivated
 import nl.rijksoverheid.ctr.shared.models.AppStatus.ShouldUpdate
 import nl.rijksoverheid.ctr.verifier.HideToolbar
 import nl.rijksoverheid.ctr.verifier.introduction.IntroductionViewModel
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
