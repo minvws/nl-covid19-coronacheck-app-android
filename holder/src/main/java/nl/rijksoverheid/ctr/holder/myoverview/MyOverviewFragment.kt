@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.doOnPreDraw
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMyOverviewBinding
 import nl.rijksoverheid.ctr.holder.digid.DigiDFragment
@@ -67,11 +69,16 @@ class MyOverviewFragment : DigiDFragment() {
                         )
                     )
 
-                    qrCodeViewModel.generateQrCode(
-                        credentials = localTestResult.credentials,
-                        qrCodeWidth = binding.existingQr.qrCardQrImage.width,
-                        qrCodeHeight = binding.existingQr.qrCardQrImage.height
-                    )
+                    lifecycleScope.launchWhenResumed {
+                        launch {
+                            qrCodeViewModel.generateQrCode(
+                                credentials = localTestResult.credentials,
+                                qrCodeWidth = binding.existingQr.qrCardQrImage.width,
+                                qrCodeHeight = binding.existingQr.qrCardQrImage.height
+                            )
+                        }
+                    }
+
                 }
             }, {
                 presentError()
@@ -80,4 +87,5 @@ class MyOverviewFragment : DigiDFragment() {
 
         qrCodeViewModel.getLocalTestResult(OffsetDateTime.now())
     }
+
 }
