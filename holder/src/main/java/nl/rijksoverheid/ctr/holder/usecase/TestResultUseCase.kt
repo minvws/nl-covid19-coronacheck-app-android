@@ -67,7 +67,7 @@ class TestResultUseCase(
             Timber.i("Received commitment message $commitmentMessage")
 
             val testIsmJson = holderRepository.testIsmJson(
-                test = signedResponseWithTestResult.payload.toString(Charsets.UTF_8),
+                test = signedResponseWithTestResult.rawResponse.toString(Charsets.UTF_8),
                 sToken = remoteNonce.sToken,
                 icm = commitmentMessage
             )

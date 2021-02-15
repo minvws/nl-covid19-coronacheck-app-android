@@ -11,4 +11,4 @@ package nl.rijksoverheid.ctr.shared.models
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-class SignedResponseWithModel<T>(val payload: ByteArray, val model: T)
+class SignedResponseWithModel<T>(val rawResponse: ByteArray, val model: T)
