@@ -88,7 +88,7 @@ class SignedResponseInterceptor : Interceptor {
         val buffer = Buffer()
         val writer = JsonWriter.of(buffer)
         writer.beginObject()
-        writer.name("payload")
+        writer.name("rawResponse")
         writer.value(Base64.encodeToString(signedBody, Base64.NO_WRAP))
         writer.name("model")
         writer.value(Buffer().apply { write(response) })
