@@ -44,7 +44,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:theme="@style/ThemeOverlay.App.NavigationView"
-        app:headerLayout="@layout/header_navigation_drawer"
         app:menu="@menu/navigation_drawer" />
 
 </androidx.drawerlayout.widget.DrawerLayout>
