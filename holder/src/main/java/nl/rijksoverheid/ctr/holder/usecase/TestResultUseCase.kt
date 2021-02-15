@@ -74,8 +74,8 @@ class TestResultUseCase(
             Timber.i("Received test ism json $testIsmJson")
 
             val credentials = Clmobile.createCredential(
-                secretKeyUseCase.json().toByteArray(),
-                testIsmJson.toByteArray()
+                secretKeyUseCase.json().toByteArray(Charsets.UTF_8),
+                testIsmJson.toByteArray(Charsets.UTF_8)
             ).successString()
 
             persistenceManager.saveCredentials(credentials)
