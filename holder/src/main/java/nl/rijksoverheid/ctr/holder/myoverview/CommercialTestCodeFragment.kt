@@ -55,6 +55,10 @@ class CommercialTestCodeFragment : BaseFragment() {
             showKeyboard(binding.uniqueCodeText)
         }
 
+        viewModel.loading.observe(viewLifecycleOwner, EventObserver {
+            presentLoading(it)
+        })
+
         binding.uniqueCodeText.addTextChangedListener {
             viewModel.testCode = it?.toString() ?: ""
         }
@@ -95,7 +99,12 @@ class CommercialTestCodeFragment : BaseFragment() {
                 TestResult.NetworkError,
                 TestResult.ServerError -> presentError()
                 is TestResult.Success -> {
-
+                    if (it.remoteTestResult.result?.negativeResult == true) {
+                        findNavController().navigate(CommercialTestCodeFragmentDirections.actionYourNegativeResult())
+                    } else {
+                        // no negative result
+                        // TODO navigate
+                    }
                 }
                 TestResult.VerificationRequired -> {
                     binding.verificationCodeInput.requestFocus()
@@ -114,6 +123,5 @@ class CommercialTestCodeFragment : BaseFragment() {
         binding.verificationCodeInput.error = null
         binding.uniqueCodeInput.error = null
         hideKeyboard()
-        viewModel.getTestResult()
     }
 }
