@@ -16,9 +16,9 @@ import nl.rijksoverheid.ctr.shared.repositories.TestResultRepository
 import nl.rijksoverheid.ctr.shared.usecases.AppStatusUseCase
 import nl.rijksoverheid.ctr.shared.usecases.SignatureValidUseCase
 import nl.rijksoverheid.ctr.shared.util.CryptoUtil
-import nl.rijksoverheid.ctr.shared.util.QrCodeUtils
+import nl.rijksoverheid.ctr.shared.util.QrCodeScannerUtil
 import nl.rijksoverheid.ctr.shared.util.TestResultUtil
-import nl.rijksoverheid.ctr.shared.util.ZxingQrCodeUtils
+import nl.rijksoverheid.ctr.shared.util.ZxingQrCodeScannerUtil
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
@@ -77,7 +77,7 @@ val sharedModule = module {
             .add(RemoteTestStatusJsonAdapter())
             .add(OffsetDateTimeJsonAdapter()).build()
     }
-    single<QrCodeUtils> { ZxingQrCodeUtils() }
+    single<QrCodeScannerUtil> { ZxingQrCodeScannerUtil() }
 
     // Utils
     single { CryptoUtil() }

@@ -9,7 +9,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
 import nl.rijksoverheid.ctr.shared.ext.observeResult
-import nl.rijksoverheid.ctr.shared.util.QrCodeUtils
+import nl.rijksoverheid.ctr.shared.util.QrCodeScannerUtil
 import nl.rijksoverheid.ctr.verifier.BaseFragment
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanQrBinding
 import org.koin.android.ext.android.inject
@@ -26,7 +26,7 @@ import java.time.OffsetDateTime
 class ScanQrFragment : BaseFragment() {
 
     private lateinit var binding: FragmentScanQrBinding
-    private val qrCodeUtils: QrCodeUtils by inject()
+    private val qrCodeScannerUtil: QrCodeScannerUtil by inject()
     private val scanQrViewModel: ScanQrViewModel by viewModel()
     private val args: ScanQrFragmentArgs by navArgs()
 
@@ -63,7 +63,7 @@ class ScanQrFragment : BaseFragment() {
     }
 
     private fun openScanner() {
-        qrCodeUtils.launchScanner(requireActivity() as AppCompatActivity) {
+        qrCodeScannerUtil.launchScanner(requireActivity() as AppCompatActivity) {
             scanQrViewModel.validate(
                 currentDate = OffsetDateTime.now(),
                 qrContent = it

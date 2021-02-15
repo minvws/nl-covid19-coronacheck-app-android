@@ -16,12 +16,12 @@ import com.journeyapps.barcodescanner.BarcodeEncoder
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-interface QrCodeUtils {
+interface QrCodeScannerUtil {
     fun launchScanner(activity: AppCompatActivity, onQrCodeScanned: (qrCodeContent: String) -> Unit)
     fun createQrCode(qrCodeContent: String, width: Int, height: Int): Bitmap
 }
 
-class ZxingQrCodeUtils : QrCodeUtils {
+class ZxingQrCodeScannerUtil : QrCodeScannerUtil {
     override fun launchScanner(
         activity: AppCompatActivity,
         qrCodeScanned: (qrCodeContent: String) -> Unit

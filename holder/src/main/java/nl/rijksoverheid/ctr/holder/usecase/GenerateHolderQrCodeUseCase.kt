@@ -3,7 +3,7 @@ package nl.rijksoverheid.ctr.holder.usecase
 import android.graphics.Bitmap
 import com.squareup.moshi.Moshi
 import nl.rijksoverheid.ctr.shared.util.CryptoUtil
-import nl.rijksoverheid.ctr.shared.util.QrCodeUtils
+import nl.rijksoverheid.ctr.shared.util.QrCodeScannerUtil
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -15,7 +15,7 @@ import nl.rijksoverheid.ctr.shared.util.QrCodeUtils
 class GenerateHolderQrCodeUseCase(
     private val cryptoUtil: CryptoUtil,
     private val moshi: Moshi,
-    private val qrCodeUtils: QrCodeUtils
+    private val qrCodeScannerUtil: QrCodeScannerUtil
 ) {
 
     fun bitmap(
@@ -23,7 +23,7 @@ class GenerateHolderQrCodeUseCase(
         qrCodeWidth: Int,
         qrCodeHeight: Int
     ): Bitmap {
-        return qrCodeUtils.createQrCode(
+        return qrCodeScannerUtil.createQrCode(
             data,
             qrCodeWidth,
             qrCodeHeight
