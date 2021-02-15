@@ -43,8 +43,6 @@ class MainActivity : AppCompatActivity() {
         binding.navView.setupWithNavController(navController)
 
         navigationDrawerStyling()
-        binding.navView.getHeaderView(0).findViewById<ImageView>(R.id.close)
-            .setOnClickListener { binding.drawerLayout.close() }
 
         supportFragmentManager.registerFragmentLifecycleCallbacks(
             object :

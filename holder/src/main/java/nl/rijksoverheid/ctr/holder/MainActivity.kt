@@ -8,10 +8,8 @@
 
 package nl.rijksoverheid.ctr.holder
 
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -22,7 +20,6 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import nl.rijksoverheid.ctr.holder.databinding.ActivityMainBinding
 import nl.rijksoverheid.ctr.shared.ext.styleTitle
-import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
 
@@ -45,8 +42,6 @@ class MainActivity : AppCompatActivity() {
         binding.navView.setupWithNavController(navController)
 
         navigationDrawerStyling()
-        binding.navView.getHeaderView(0).findViewById<ImageView>(R.id.close)
-            .setOnClickListener { binding.drawerLayout.close() }
 
         supportFragmentManager.registerFragmentLifecycleCallbacks(
             object :
