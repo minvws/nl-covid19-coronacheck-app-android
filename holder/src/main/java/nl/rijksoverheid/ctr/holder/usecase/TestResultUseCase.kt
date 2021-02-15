@@ -51,6 +51,7 @@ class TestResultUseCase(
             when (remoteTestResult.status) {
                 RemoteTestResult.Status.VERIFICATION_REQUIRED -> return TestResult.VerificationRequired
                 RemoteTestResult.Status.INVALID_TOKEN -> return TestResult.InvalidToken
+                RemoteTestResult.Status.PENDING -> return TestResult.PendingTestResult
                 RemoteTestResult.Status.COMPLETE -> {
                     // nothing
                 }
@@ -79,7 +80,12 @@ class TestResultUseCase(
             ).successString()
 
             persistenceManager.saveCredentials(credentials)
-            TestResult.Success(remoteTestResult)
+
+            if (remoteTestResult.result?.negativeResult == true) {
+                TestResult.HasTestResult(remoteTestResult)
+            } else {
+                TestResult.NoTestResult
+            }
         } catch (ex: HttpException) {
             Timber.e(ex, "Server error while getting test result")
             TestResult.ServerError
@@ -91,7 +97,9 @@ class TestResultUseCase(
 }
 
 sealed class TestResult {
-    data class Success(val remoteTestResult: RemoteTestResult) : TestResult()
+    data class HasTestResult(val remoteTestResult: RemoteTestResult) : TestResult()
+    object NoTestResult : TestResult()
+    object PendingTestResult : TestResult()
     object InvalidToken : TestResult()
     object VerificationRequired : TestResult()
     object ServerError : TestResult()

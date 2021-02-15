@@ -98,13 +98,14 @@ class CommercialTestCodeFragment : BaseFragment() {
                 }
                 TestResult.NetworkError,
                 TestResult.ServerError -> presentError()
-                is TestResult.Success -> {
-                    if (it.remoteTestResult.result?.negativeResult == true) {
-                        findNavController().navigate(CommercialTestCodeFragmentDirections.actionYourNegativeResult())
-                    } else {
-                        // no negative result
-                        // TODO navigate
-                    }
+                is TestResult.HasTestResult -> {
+                    findNavController().navigate(CommercialTestCodeFragmentDirections.actionYourNegativeResult())
+                }
+                is TestResult.NoTestResult -> {
+
+                }
+                is TestResult.PendingTestResult -> {
+                    
                 }
                 TestResult.VerificationRequired -> {
                     binding.verificationCodeInput.requestFocus()

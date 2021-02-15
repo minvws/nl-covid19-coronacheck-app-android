@@ -50,7 +50,7 @@ class TestResultsViewModel(
     val viewState: LiveData<ViewState> = MutableLiveData(ViewState())
 
     val retrievedResult: RemoteTestResult.Result?
-        get() = (testResult.value?.peekContent() as? TestResult.Success)?.remoteTestResult?.result
+        get() = (testResult.value?.peekContent() as? TestResult.HasTestResult)?.remoteTestResult?.result
 
     private val currentViewState: ViewState
         get() = viewState.value!!
