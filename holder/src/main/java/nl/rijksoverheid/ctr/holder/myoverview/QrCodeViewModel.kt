@@ -53,20 +53,18 @@ class QrCodeViewModel(
         }
     }
 
-    fun generateQrCode(credentials: String, qrCodeWidth: Int, qrCodeHeight: Int) {
+    suspend fun generateQrCode(credentials: String, qrCodeWidth: Int, qrCodeHeight: Int) {
         qrCodeLiveData.value = Result.Loading()
-        viewModelScope.launch {
-            tickFlow(TimeUnit.MINUTES.toMillis(3)).collect {
-                try {
-                    val qrCodeBitmap = qrCodeUseCase.qrCode(
-                        credentials = credentials.toByteArray(),
-                        qrCodeWidth = qrCodeWidth,
-                        qrCodeHeight = qrCodeHeight
-                    )
-                    qrCodeLiveData.value = Result.Success(qrCodeBitmap)
-                } catch (e: Exception) {
-                    qrCodeLiveData.value = Result.Failed(e)
-                }
+        tickFlow(TimeUnit.MINUTES.toMillis(3)).collect {
+            try {
+                val qrCodeBitmap = qrCodeUseCase.qrCode(
+                    credentials = credentials.toByteArray(),
+                    qrCodeWidth = qrCodeWidth,
+                    qrCodeHeight = qrCodeHeight
+                )
+                qrCodeLiveData.value = Result.Success(qrCodeBitmap)
+            } catch (e: Exception) {
+                qrCodeLiveData.value = Result.Failed(e)
             }
         }
     }
