@@ -61,7 +61,7 @@ class LocalTestResultUseCaseTest {
 
             every { persistenceManager.getLocalTestResult() } answers { localTestResult }
             every { testResultUtil.isValid(any(), any(), any()) } answers { true }
-            coEvery { testResultRepository.getTestValidity() } answers { 10 }
+            coEvery { testResultRepository.getTestValiditySeconds() } answers { 10 }
 
             val result = localTestResultUseCase.get(OffsetDateTime.now())
 
