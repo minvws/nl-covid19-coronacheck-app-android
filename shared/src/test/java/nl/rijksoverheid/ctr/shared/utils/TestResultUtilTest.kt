@@ -2,6 +2,8 @@ package nl.rijksoverheid.ctr.shared.utils
 
 import nl.rijksoverheid.ctr.shared.util.TestResultUtil
 import org.junit.Assert
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.time.Instant
 import java.time.OffsetDateTime
@@ -25,7 +27,7 @@ class TestResultUtilTest {
             sampleDate = OffsetDateTime.ofInstant(Instant.ofEpochSecond(9), ZoneOffset.UTC),
             validitySeconds = 3
         )
-        Assert.assertTrue(isValid)
+        assertTrue(isValid)
     }
 
     @Test
@@ -35,7 +37,7 @@ class TestResultUtilTest {
             sampleDate = OffsetDateTime.ofInstant(Instant.ofEpochSecond(7), ZoneOffset.UTC),
             validitySeconds = 3
         )
-        Assert.assertFalse(isValid)
+        assertFalse(isValid)
     }
 
     @Test
@@ -45,6 +47,6 @@ class TestResultUtilTest {
             sampleDate = OffsetDateTime.ofInstant(Instant.ofEpochSecond(6), ZoneOffset.UTC),
             validitySeconds = 3
         )
-        Assert.assertFalse(isValid)
+        assertFalse(isValid)
     }
 }
