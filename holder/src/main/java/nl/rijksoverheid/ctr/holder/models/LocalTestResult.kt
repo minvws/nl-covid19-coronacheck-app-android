@@ -14,5 +14,6 @@ import java.time.OffsetDateTime
 @JsonClass(generateAdapter = true)
 data class LocalTestResult(
     val credentials: String,
-    val sampleDate: OffsetDateTime
+    val sampleDate: OffsetDateTime,
+    val testType: String
 ) : JSON()

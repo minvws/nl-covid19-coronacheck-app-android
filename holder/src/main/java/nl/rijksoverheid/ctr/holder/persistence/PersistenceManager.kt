@@ -2,8 +2,6 @@ package nl.rijksoverheid.ctr.holder.persistence
 
 import android.content.SharedPreferences
 import com.squareup.moshi.Moshi
-import nl.rijksoverheid.ctr.holder.models.LocalTestResult
-import nl.rijksoverheid.ctr.shared.ext.toObject
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -19,9 +17,9 @@ interface PersistenceManager {
     fun getPrivacyPolicyFinished(): Boolean
     fun saveSecretKeyJson(json: String)
     fun getSecretKeyJson(): String?
-    fun saveLocalTestResult(localTestResult: LocalTestResult)
-    fun getLocalTestResult(): LocalTestResult?
-    fun deleteLocalTestResult()
+    fun saveCredentials(credentials: String)
+    fun getCredentials(): String?
+    fun deleteCredentials()
 }
 
 class SharedPreferencesPersistenceManager(
@@ -34,7 +32,7 @@ class SharedPreferencesPersistenceManager(
         const val ONBOARDING_FINISHED = "ONBOARDING_FINISHED"
         const val PRIVACY_POLICY_FINISHED = "PRIVACY_POLICY_FINISHED"
         const val SECRET_KEY_JSON = "SECRET_KEY_JSON"
-        const val LOCAL_TEST_RESULT = "LOCAL_TEST_RESULT"
+        const val CREDENTIALS = "CREDENTIALS"
     }
 
     override fun saveOnboardingFinished() {
@@ -61,16 +59,15 @@ class SharedPreferencesPersistenceManager(
         return sharedPreferences.getString(SECRET_KEY_JSON, null)
     }
 
-    override fun saveLocalTestResult(localTestResult: LocalTestResult) {
-        sharedPreferences.edit().putString(LOCAL_TEST_RESULT, localTestResult.toJson(moshi)).apply()
+    override fun saveCredentials(credentials: String) {
+        sharedPreferences.edit().putString(CREDENTIALS, credentials).apply()
     }
 
-    override fun getLocalTestResult(): LocalTestResult? {
-        return sharedPreferences.getString(LOCAL_TEST_RESULT, null)
-            ?.toObject<LocalTestResult>(moshi)
+    override fun getCredentials(): String? {
+        return sharedPreferences.getString(CREDENTIALS, null)
     }
 
-    override fun deleteLocalTestResult() {
-        sharedPreferences.edit().remove(LOCAL_TEST_RESULT).apply()
+    override fun deleteCredentials() {
+        sharedPreferences.edit().remove(CREDENTIALS).apply()
     }
 }

@@ -1,12 +1,7 @@
 package nl.rijksoverheid.ctr.holder.usecase
 
-import clmobile.Clmobile
-import com.squareup.moshi.Moshi
 import nl.rijksoverheid.ctr.holder.models.LocalTestResult
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
-import nl.rijksoverheid.ctr.shared.ext.toObject
-import nl.rijksoverheid.ctr.shared.ext.verify
-import nl.rijksoverheid.ctr.shared.models.TestResultAttributes
 import nl.rijksoverheid.ctr.shared.repositories.TestResultRepository
 import nl.rijksoverheid.ctr.shared.util.TestResultUtil
 import java.time.Instant
@@ -24,27 +19,31 @@ class LocalTestResultUseCase(
     private val persistenceManager: PersistenceManager,
     private val testResultUtil: TestResultUtil,
     private val testResultRepository: TestResultRepository,
-    private val moshi: Moshi
+    private val testResultAttributesUseCase: TestResultAttributesUseCase
 ) {
 
     suspend fun get(currentDate: OffsetDateTime): LocalTestResult? {
-        val localTestResult = persistenceManager.getLocalTestResult()
-        localTestResult?.let { localTestResult ->
-            val result = Clmobile.readCredential(localTestResult.credentials.toByteArray()).verify()
-            val testAttributes = result.decodeToString().toObject<TestResultAttributes>(moshi)
+        val credentials = persistenceManager.getCredentials()
+        credentials?.let { localTestResult ->
+            val testAttributes = testResultAttributesUseCase.get(credentials)
+            val sampleDate = OffsetDateTime.ofInstant(
+                Instant.ofEpochSecond(testAttributes.sampleTime),
+                ZoneOffset.UTC
+            )
 
             val isValid = testResultUtil.isValid(
                 currentDate = currentDate,
-                sampleDate = OffsetDateTime.ofInstant(
-                    Instant.ofEpochSecond(testAttributes.sampleTime),
-                    ZoneOffset.UTC
-                ),
+                sampleDate = sampleDate,
                 validitySeconds = testResultRepository.getTestValiditySeconds()
             )
             return if (isValid) {
-                localTestResult
+                LocalTestResult(
+                    credentials = credentials,
+                    sampleDate = sampleDate,
+                    testType = testAttributes.testType
+                )
             } else {
-                persistenceManager.deleteLocalTestResult()
+                persistenceManager.deleteCredentials()
                 return null
             }
         }
