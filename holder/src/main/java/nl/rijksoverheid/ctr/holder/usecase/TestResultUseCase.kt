@@ -39,12 +39,14 @@ class TestResultUseCase(
             ?: return TestResult.InvalidToken
 
         return try {
-            val remoteTestResult = holderRepository.remoteTestResult(
+            val signedResponseWithTestResult = holderRepository.remoteTestResult(
                 url = testProvider.resultUrl,
                 token = token,
                 verifierCode = verificationCode,
                 signingCertificateBytes = testProvider.publicKey
             )
+
+            val remoteTestResult = signedResponseWithTestResult.model
 
             when (remoteTestResult.status) {
                 RemoteTestResult.Status.VERIFICATION_REQUIRED -> return TestResult.VerificationRequired
@@ -65,7 +67,7 @@ class TestResultUseCase(
             Timber.i("Received commitment message $commitmentMessage")
 
             val testIsmJson = holderRepository.testIsmJson(
-                test = remoteTestResult.toJson(moshi),
+                test = signedResponseWithTestResult.payload.toString(Charsets.UTF_8),
                 sToken = remoteNonce.sToken,
                 icm = commitmentMessage
             )

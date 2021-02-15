@@ -7,6 +7,7 @@ import nl.rijksoverheid.ctr.shared.models.RemoteEvent
 import nl.rijksoverheid.ctr.shared.models.RemoteNonce
 import nl.rijksoverheid.ctr.shared.models.RemoteTestProviders
 import nl.rijksoverheid.ctr.shared.models.RemoteTestResult
+import nl.rijksoverheid.ctr.shared.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.shared.models.post.GetTestIsmPostData
 import nl.rijksoverheid.ctr.shared.models.post.GetTestResultPostData
 import okhttp3.ResponseBody
@@ -60,5 +61,5 @@ interface TestApiClient {
         @Header("Authorization") authorization: String,
         @Body data: GetTestResultPostData?,
         @Tag certificate: SigningCertificate
-    ): RemoteTestResult
+    ): SignedResponseWithModel<RemoteTestResult>
 }

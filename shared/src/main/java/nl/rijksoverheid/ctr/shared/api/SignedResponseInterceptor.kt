@@ -7,7 +7,9 @@
  */
 package nl.rijksoverheid.ctr.shared.api
 
+import android.util.Base64
 import com.squareup.moshi.JsonClass
+import com.squareup.moshi.JsonWriter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import nl.rijksoverheid.ctr.shared.BuildConfig
@@ -18,6 +20,7 @@ import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.Response
 import okhttp3.ResponseBody.Companion.toResponseBody
+import okio.Buffer
 import timber.log.Timber
 import java.io.ByteArrayInputStream
 
@@ -36,6 +39,7 @@ class SignedResponseInterceptor : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val expectedSigningCertificate = chain.request().tag(SigningCertificate::class.java)
+        val wrapResponse = expectedSigningCertificate != null
 
         val response = chain.proceed(
             chain.request().newBuilder()
@@ -52,11 +56,10 @@ class SignedResponseInterceptor : Interceptor {
             return response
         }
 
-        val body = response.body ?: return response
+        val body = response.body?.bytes() ?: return response
 
-        val signedResponse = body.use {
-            responseAdapter.fromJson(it.source())
-        } ?: error("Expected signed response payload")
+        val signedResponse = responseAdapter.fromJson(Buffer().apply { write(body) })
+            ?: error("Expected signed response payload")
 
         val validator = if (expectedSigningCertificate != null) {
             SignatureValidator.Builder()
@@ -71,9 +74,27 @@ class SignedResponseInterceptor : Interceptor {
                 .message("Signature failed to validate").build().also { response.close() }
         } else {
             response.newBuilder()
-                .body(signedResponse.payload.toResponseBody("application/json".toMediaType()))
+                .body(
+                    (if (wrapResponse) wrapResponse(
+                        body,
+                        signedResponse.payload
+                    ) else signedResponse.payload).toResponseBody("application/json".toMediaType())
+                )
                 .build().also { response.close() }
         }
+    }
+
+    private fun wrapResponse(signedBody: ByteArray, response: ByteArray): ByteArray {
+        val buffer = Buffer()
+        val writer = JsonWriter.of(buffer)
+        writer.beginObject()
+        writer.name("payload")
+        writer.value(Base64.encodeToString(signedBody, Base64.NO_WRAP))
+        writer.name("model")
+        writer.value(Buffer().apply { write(response) })
+        writer.endObject()
+        writer.flush()
+        return buffer.readByteArray()
     }
 
     private fun validateSignature(

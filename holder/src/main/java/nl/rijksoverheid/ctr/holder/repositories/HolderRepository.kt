@@ -7,6 +7,7 @@ import nl.rijksoverheid.ctr.shared.api.TestApiClient
 import nl.rijksoverheid.ctr.shared.models.RemoteNonce
 import nl.rijksoverheid.ctr.shared.models.RemoteTestProviders
 import nl.rijksoverheid.ctr.shared.models.RemoteTestResult
+import nl.rijksoverheid.ctr.shared.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.shared.models.post.GetTestIsmPostData
 import nl.rijksoverheid.ctr.shared.models.post.GetTestResultPostData
 import okhttp3.ResponseBody
@@ -23,7 +24,7 @@ import retrofit2.HttpException
  */
 class HolderRepository(
     private val api: TestApiClient,
-    private val responseConverter: Converter<ResponseBody, RemoteTestResult>
+    private val responseConverter: Converter<ResponseBody, SignedResponseWithModel<RemoteTestResult>>
 ) {
 
     suspend fun remoteTestResult(
@@ -31,7 +32,7 @@ class HolderRepository(
         token: String,
         verifierCode: String?,
         signingCertificateBytes: ByteArray
-    ): RemoteTestResult {
+    ): SignedResponseWithModel<RemoteTestResult> {
         try {
             return api.getTestResult(
                 url = url,
@@ -46,7 +47,7 @@ class HolderRepository(
         } catch (ex: HttpException) {
             // if there's no error body, this must be something else than expected
             val errorBody = ex.response()?.errorBody() ?: throw ex
-            if (ex.code() == 401 || ex.code() == 404) {
+            if (ex.code() == 401) {
                 return withContext(Dispatchers.IO) {
                     responseConverter.convert(errorBody) ?: throw ex
                 }
@@ -63,7 +64,7 @@ class HolderRepository(
     suspend fun testIsmJson(test: String, sToken: String, icm: String): String {
         return api.getTestIsm(
             GetTestIsmPostData(
-                test = JSONObject(test).toString(),
+                test = test,
                 sToken = sToken,
                 icm = JSONObject(icm).toString()
             )

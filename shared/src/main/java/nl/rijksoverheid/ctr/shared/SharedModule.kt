@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.shared
 
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import nl.rijksoverheid.ctr.shared.api.SignedResponseInterceptor
 import nl.rijksoverheid.ctr.shared.api.TestApiClient
@@ -9,6 +10,7 @@ import nl.rijksoverheid.ctr.shared.json.Base64JsonAdapter
 import nl.rijksoverheid.ctr.shared.json.OffsetDateTimeJsonAdapter
 import nl.rijksoverheid.ctr.shared.json.RemoteTestStatusJsonAdapter
 import nl.rijksoverheid.ctr.shared.models.RemoteTestResult
+import nl.rijksoverheid.ctr.shared.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.shared.repositories.ConfigRepository
 import nl.rijksoverheid.ctr.shared.repositories.TestResultRepository
 import nl.rijksoverheid.ctr.shared.usecases.AppStatusUseCase
@@ -55,8 +57,13 @@ val sharedModule = module {
             .build()
     }
 
-    single<Converter<ResponseBody, RemoteTestResult>> {
-        get(Retrofit::class.java).responseBodyConverter(RemoteTestResult::class.java, emptyArray())
+    single<Converter<ResponseBody, SignedResponseWithModel<RemoteTestResult>>> {
+        get(Retrofit::class.java).responseBodyConverter(
+            Types.newParameterizedType(
+                SignedResponseWithModel::class.java,
+                RemoteTestResult::class.java
+            ), emptyArray()
+        )
     }
 
     single {
