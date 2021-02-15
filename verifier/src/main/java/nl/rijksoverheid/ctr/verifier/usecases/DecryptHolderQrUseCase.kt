@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.verifier.usecases
 import android.util.Base64
 import clmobile.Clmobile
 import com.squareup.moshi.Moshi
+import nl.rijksoverheid.ctr.shared.ext.toObject
 import nl.rijksoverheid.ctr.shared.ext.verify
 import nl.rijksoverheid.ctr.shared.models.DecryptedQr
 import nl.rijksoverheid.ctr.shared.models.TestResultAttributes

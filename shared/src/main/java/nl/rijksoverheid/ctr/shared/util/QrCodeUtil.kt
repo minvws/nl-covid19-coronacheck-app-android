@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.shared.util
 
 import java.time.OffsetDateTime
+import java.time.temporal.ChronoUnit
 import java.util.concurrent.TimeUnit
 
 /*
@@ -17,6 +18,6 @@ class QrCodeUtil {
     }
 
     fun isValid(currentDate: OffsetDateTime, creationDate: OffsetDateTime): Boolean {
-        return currentDate.isBefore(creationDate.plusSeconds(VALID_FOR_SECONDS))
+        return ChronoUnit.SECONDS.between(currentDate, creationDate) <= VALID_FOR_SECONDS
     }
 }
