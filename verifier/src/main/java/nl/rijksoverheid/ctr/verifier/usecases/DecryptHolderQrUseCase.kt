@@ -5,8 +5,8 @@ import clmobile.Clmobile
 import com.squareup.moshi.Moshi
 import nl.rijksoverheid.ctr.shared.ext.toObject
 import nl.rijksoverheid.ctr.shared.ext.verify
+import nl.rijksoverheid.ctr.shared.models.TestResultAttributes
 import nl.rijksoverheid.ctr.shared.util.CryptoUtil
-import nl.rijksoverheid.ctr.verifier.models.TestResultAttributes
 import timber.log.Timber
 
 /*

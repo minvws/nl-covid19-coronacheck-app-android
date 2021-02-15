@@ -2,7 +2,6 @@ package nl.rijksoverheid.ctr.holder.usecase
 
 import clmobile.Clmobile
 import com.squareup.moshi.Moshi
-import nl.rijksoverheid.ctr.holder.models.LocalTestResult
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.repositories.HolderRepository
 import nl.rijksoverheid.ctr.shared.ext.successString
@@ -60,12 +59,7 @@ class TestResultUseCase(
             testIsmJson.toByteArray()
         ).successString()
 
-        val localTestResult = LocalTestResult(
-            credentials = credentials,
-            sampleDate = remoteTestResult.result.sampleDate
-        )
-
-        persistenceManager.saveLocalTestResult(localTestResult)
+        persistenceManager.saveCredentials(credentials)
 
         return remoteTestResult
     }
