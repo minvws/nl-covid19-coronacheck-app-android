@@ -18,6 +18,9 @@ class QrCodeUtil {
     }
 
     fun isValid(currentDate: OffsetDateTime, creationDate: OffsetDateTime): Boolean {
-        return ChronoUnit.SECONDS.between(creationDate, currentDate) <= VALID_FOR_SECONDS
+        return ChronoUnit.SECONDS.between(
+            creationDate,
+            currentDate.plusSeconds(VALID_FOR_SECONDS)
+        ) >= 0
     }
 }
