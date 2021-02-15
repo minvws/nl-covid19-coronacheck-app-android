@@ -11,9 +11,12 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanResultBinding
+import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanResultInvalidReasonBinding
+
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -70,6 +73,15 @@ class ScanResultFragment : DialogFragment() {
             )
 
             binding.link.text = spannableString
+            binding.link.setOnClickListener {
+                val binding =
+                    FragmentScanResultInvalidReasonBinding.inflate(layoutInflater, null, false)
+                val dialog = BottomSheetDialog(requireContext())
+                dialog.setContentView(binding.root)
+                binding.description.text =
+                    getString(R.string.scan_result_invalid_reason_description).fromHtml()
+                dialog.show()
+            }
 
         }
 

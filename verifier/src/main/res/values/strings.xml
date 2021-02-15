@@ -36,4 +36,6 @@
     <string name="scan_result_invalid_subtitle">Weiger toegang</string>
     <string name="scan_result_invalid_link">Lees de mogelijke oorzaken</string>
     <string name="scan_result_invalid_button">Scan volgende</string>
+    <string name="scan_result_invalid_reason_title">Geen geldige QR-code</string>
+    <string name="scan_result_invalid_reason_description"><![CDATA[Dit betekent <b>NIET</b> dat de persoon corona hoeft te hebben.<br\><br\><b>Wat kan het betekenen</b><br\>- De QR-code is doorgestuurd.<br\>- De QR-code is vervalst.<br\>- Afgelopen 3 minuten is er meer dan 1 persoon naar binnen gegaan met deze QR-code.<br\><br\><b>En nu?</b><br\>Weiger toegang zonder verdere verklaring.]]></string>
 </resources>

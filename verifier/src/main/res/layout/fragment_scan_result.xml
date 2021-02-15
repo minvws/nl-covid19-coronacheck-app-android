@@ -10,10 +10,10 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:navigationIcon="@drawable/ic_close"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_close" />
 
     <ImageView
         android:id="@+id/image"
@@ -51,7 +51,7 @@
         app:layout_constraintStart_toStartOf="@+id/image"
         app:layout_constraintTop_toBottomOf="@+id/title"
         tools:text="@string/scan_result_invalid_subtitle" />
-
+    
     <TextView
         android:id="@+id/link"
         android:layout_width="0dp"
