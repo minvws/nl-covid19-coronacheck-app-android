@@ -7,7 +7,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.shared.livedata.SingleLiveEvent
 import nl.rijksoverheid.ctr.shared.models.Result
-import nl.rijksoverheid.ctr.verifier.usecases.DecryptHolderQrUseCase
+import nl.rijksoverheid.ctr.verifier.usecases.TestResultValidUseCase
+import java.time.OffsetDateTime
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -16,17 +17,22 @@ import nl.rijksoverheid.ctr.verifier.usecases.DecryptHolderQrUseCase
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class ScanQrViewModel(private val decryptHolderQrUseCase: DecryptHolderQrUseCase) : ViewModel() {
+class ScanQrViewModel(
+    private val testResultValidUseCase: TestResultValidUseCase
+) : ViewModel() {
 
     val qrValidLiveData = SingleLiveEvent<Result<Boolean>>()
 
-    fun validate(holderQrContent: String) {
+    fun validate(currentDate: OffsetDateTime, qrContent: String) {
         qrValidLiveData.value = Result.Loading()
         viewModelScope.launch {
             try {
-                val timestamp = decryptHolderQrUseCase.decrypt(holderQrContent)
+                val isValid = testResultValidUseCase.valid(
+                    currentDate = currentDate,
+                    qrContent = qrContent
+                )
                 withContext(Dispatchers.Main) {
-                    qrValidLiveData.value = Result.Success(false)
+                    qrValidLiveData.value = Result.Success(isValid)
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {

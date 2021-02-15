@@ -8,10 +8,12 @@ import nl.rijksoverheid.ctr.shared.api.TestApiClient
 import nl.rijksoverheid.ctr.shared.json.Base64JsonAdapter
 import nl.rijksoverheid.ctr.shared.json.OffsetDateTimeJsonAdapter
 import nl.rijksoverheid.ctr.shared.repositories.ConfigRepository
+import nl.rijksoverheid.ctr.shared.repositories.TestResultRepository
 import nl.rijksoverheid.ctr.shared.usecases.AppStatusUseCase
 import nl.rijksoverheid.ctr.shared.usecases.SignatureValidUseCase
 import nl.rijksoverheid.ctr.shared.util.CryptoUtil
 import nl.rijksoverheid.ctr.shared.util.QrCodeUtils
+import nl.rijksoverheid.ctr.shared.util.TestResultUtil
 import nl.rijksoverheid.ctr.shared.util.ZxingQrCodeUtils
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -49,7 +51,7 @@ val sharedModule = module {
             .build()
         retroFit.create(TestApiClient::class.java)
     }
-    single() {
+    single {
         Moshi.Builder()
             .add(KotlinJsonAdapterFactory())
             .add(Base64JsonAdapter())
@@ -59,6 +61,7 @@ val sharedModule = module {
 
     // Utils
     single { CryptoUtil() }
+    single { TestResultUtil() }
 
     // Use cases
     single {
@@ -74,4 +77,5 @@ val sharedModule = module {
 
     // Repositories
     single { ConfigRepository(get()) }
+    single { TestResultRepository() }
 }

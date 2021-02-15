@@ -82,5 +82,6 @@ dependencies {
 
     implementation(project(":signing"))
 
-    testImplementation 'junit:junit:4.13.1'
+    api 'junit:junit:4.13.1'
+    api "io.mockk:mockk:1.10.0"
 }

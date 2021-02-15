@@ -65,7 +65,7 @@ class TestResultUseCase(
             sampleDate = remoteTestResult.result.sampleDate
         )
 
-        persistenceManager.saveLocalTestResultJson(localTestResult.toJson(moshi))
+        persistenceManager.saveLocalTestResult(localTestResult)
 
         return remoteTestResult
     }

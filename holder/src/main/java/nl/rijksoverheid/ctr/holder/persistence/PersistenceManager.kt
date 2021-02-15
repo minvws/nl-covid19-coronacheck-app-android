@@ -1,6 +1,9 @@
 package nl.rijksoverheid.ctr.holder.persistence
 
 import android.content.SharedPreferences
+import com.squareup.moshi.Moshi
+import nl.rijksoverheid.ctr.holder.models.LocalTestResult
+import nl.rijksoverheid.ctr.shared.ext.toObject
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -16,11 +19,15 @@ interface PersistenceManager {
     fun getPrivacyPolicyFinished(): Boolean
     fun saveSecretKeyJson(json: String)
     fun getSecretKeyJson(): String?
-    fun saveLocalTestResultJson(localTestResultJson: String)
-    fun getLocalTestResultJson(): String?
+    fun saveLocalTestResult(localTestResult: LocalTestResult)
+    fun getLocalTestResult(): LocalTestResult?
+    fun deleteLocalTestResult()
 }
 
-class SharedPreferencesPersistenceManager(private val sharedPreferences: SharedPreferences) :
+class SharedPreferencesPersistenceManager(
+    private val sharedPreferences: SharedPreferences,
+    private val moshi: Moshi
+) :
     PersistenceManager {
 
     companion object {
@@ -54,11 +61,16 @@ class SharedPreferencesPersistenceManager(private val sharedPreferences: SharedP
         return sharedPreferences.getString(SECRET_KEY_JSON, null)
     }
 
-    override fun saveLocalTestResultJson(localTestResultJson: String) {
-        sharedPreferences.edit().putString(LOCAL_TEST_RESULT, localTestResultJson).apply()
+    override fun saveLocalTestResult(localTestResult: LocalTestResult) {
+        sharedPreferences.edit().putString(LOCAL_TEST_RESULT, localTestResult.toJson(moshi)).apply()
     }
 
-    override fun getLocalTestResultJson(): String? {
+    override fun getLocalTestResult(): LocalTestResult? {
         return sharedPreferences.getString(LOCAL_TEST_RESULT, null)
+            ?.toObject<LocalTestResult>(moshi)
+    }
+
+    override fun deleteLocalTestResult() {
+        sharedPreferences.edit().remove(LOCAL_TEST_RESULT).apply()
     }
 }
