@@ -15,6 +15,7 @@ import nl.rijksoverheid.ctr.shared.models.RemoteEvent
 import nl.rijksoverheid.ctr.shared.models.RemoteNonce
 import nl.rijksoverheid.ctr.shared.models.RemoteTestProviders
 import nl.rijksoverheid.ctr.shared.models.RemoteTestResult
+import nl.rijksoverheid.ctr.shared.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.shared.models.post.GetTestIsmPostData
 import nl.rijksoverheid.ctr.shared.models.post.GetTestResultPostData
 import okhttp3.ResponseBody
@@ -53,9 +54,9 @@ abstract class FakeTestApiClient : TestApiClient {
     override suspend fun getTestResult(
         url: String,
         authorization: String,
-        data: GetTestResultPostData,
+        data: GetTestResultPostData?,
         certificate: SigningCertificate
-    ): RemoteTestResult {
+    ): SignedResponseWithModel<RemoteTestResult> {
         TODO("Not yet implemented")
     }
 

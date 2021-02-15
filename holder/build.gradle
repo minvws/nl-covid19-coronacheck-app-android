@@ -88,4 +88,7 @@ dependencies {
     implementation "androidx.viewpager2:viewpager2:1.0.0"
     implementation "com.xwray:groupie:2.9.0"
     implementation "com.xwray:groupie-viewbinding:2.9.0"
+
+    testImplementation 'junit:junit:4.13.1'
+    testImplementation "io.mockk:mockk:1.10.0"
 }

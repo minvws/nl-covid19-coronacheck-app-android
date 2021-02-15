@@ -13,7 +13,7 @@ import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentPrivacyPolicyBinding
 import nl.rijksoverheid.ctr.verifier.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.verifier.introduction.privacypolicy.models.PrivacyPolicyItem
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

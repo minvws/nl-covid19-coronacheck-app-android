@@ -10,7 +10,7 @@ import nl.rijksoverheid.ctr.shared.ext.observeResult
 import nl.rijksoverheid.ctr.shared.models.AppStatus
 import nl.rijksoverheid.ctr.shared.models.AppStatus.AppDeactivated
 import nl.rijksoverheid.ctr.shared.models.AppStatus.ShouldUpdate
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

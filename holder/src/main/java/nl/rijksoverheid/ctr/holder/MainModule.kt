@@ -10,9 +10,17 @@ import nl.rijksoverheid.ctr.holder.persistence.SharedPreferencesPersistenceManag
 import nl.rijksoverheid.ctr.holder.repositories.AuthenticationRepository
 import nl.rijksoverheid.ctr.holder.repositories.HolderRepository
 import nl.rijksoverheid.ctr.holder.status.StatusViewModel
-import nl.rijksoverheid.ctr.holder.usecase.*
+import nl.rijksoverheid.ctr.holder.usecase.CommitmentMessageUseCase
+import nl.rijksoverheid.ctr.holder.usecase.GenerateHolderQrCodeUseCase
+import nl.rijksoverheid.ctr.holder.usecase.IntroductionUseCase
+import nl.rijksoverheid.ctr.holder.usecase.LocalTestResultUseCase
+import nl.rijksoverheid.ctr.holder.usecase.QrCodeUseCase
+import nl.rijksoverheid.ctr.holder.usecase.SecretKeyUseCase
+import nl.rijksoverheid.ctr.holder.usecase.TestProviderUseCase
+import nl.rijksoverheid.ctr.holder.usecase.TestResultAttributesUseCase
+import nl.rijksoverheid.ctr.holder.usecase.TestResultUseCase
 import org.koin.android.ext.koin.androidContext
-import org.koin.android.viewmodel.dsl.viewModel
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 /*
@@ -76,9 +84,9 @@ val mainModule = module {
     viewModel { IntroductionViewModel(get()) }
     viewModel { QrCodeViewModel(get(), get(), get()) }
     viewModel { DigiDViewModel(get()) }
-    viewModel { TestResultsViewModel(get()) }
+    viewModel { TestResultsViewModel(get(), get()) }
 
     // Repositories
     single { AuthenticationRepository() }
-    single { HolderRepository(get()) }
+    single { HolderRepository(get(), get()) }
 }
