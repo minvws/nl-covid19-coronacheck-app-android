@@ -67,6 +67,9 @@ val mainModule = module {
     single {
         LocalTestResultUseCase(get(), get(), get(), get())
     }
+    single {
+        TestResultAttributesUseCase(get())
+    }
 
     // ViewModels
     viewModel { StatusViewModel(get()) }
