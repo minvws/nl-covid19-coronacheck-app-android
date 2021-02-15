@@ -1,10 +1,9 @@
 package nl.rijksoverheid.ctr.verifier.usecases
 
 import nl.rijksoverheid.ctr.shared.repositories.TestResultRepository
+import nl.rijksoverheid.ctr.shared.util.QrCodeUtil
 import nl.rijksoverheid.ctr.shared.util.TestResultUtil
-import java.time.Instant
 import java.time.OffsetDateTime
-import java.time.ZoneOffset
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -16,19 +15,20 @@ import java.time.ZoneOffset
 class TestResultValidUseCase(
     private val decryptHolderQrUseCase: DecryptHolderQrUseCase,
     private val testResultRepository: TestResultRepository,
-    private val testResultUtil: TestResultUtil
+    private val testResultUtil: TestResultUtil,
+    private val qrCodeUtil: QrCodeUtil
 ) {
 
     suspend fun valid(currentDate: OffsetDateTime, qrContent: String): Boolean {
-        val sampleDateSeconds = decryptHolderQrUseCase.decrypt(qrContent)
+        val decryptQr = decryptHolderQrUseCase.decrypt(qrContent)
         val validity = testResultRepository.getTestValiditySeconds()
         return testResultUtil.isValid(
             currentDate = currentDate,
-            sampleDate = OffsetDateTime.ofInstant(
-                Instant.ofEpochSecond(sampleDateSeconds),
-                ZoneOffset.UTC
-            ),
+            sampleDate = decryptQr.sampleDate,
             validitySeconds = validity
+        ) && qrCodeUtil.isValid(
+            currentDate = currentDate,
+            creationDate = decryptQr.creationDate
         )
     }
 }

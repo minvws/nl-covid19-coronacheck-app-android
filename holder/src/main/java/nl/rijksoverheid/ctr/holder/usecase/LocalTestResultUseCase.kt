@@ -40,7 +40,7 @@ class LocalTestResultUseCase(
                 LocalTestResult(
                     credentials = credentials,
                     sampleDate = sampleDate,
-                    testType = testAttributes.testType
+                    testType = testAttributes.testType,
                 )
             } else {
                 persistenceManager.deleteCredentials()
