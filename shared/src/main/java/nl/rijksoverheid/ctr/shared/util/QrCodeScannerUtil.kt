@@ -1,8 +1,9 @@
 package nl.rijksoverheid.ctr.shared.util
 
+import android.app.Activity
+import android.content.Intent
 import android.graphics.Bitmap
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.result.ActivityResultLauncher
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
 import com.google.zxing.integration.android.IntentIntegrator
@@ -17,30 +18,18 @@ import com.journeyapps.barcodescanner.BarcodeEncoder
  *
  */
 interface QrCodeScannerUtil {
-    fun launchScanner(activity: AppCompatActivity, onQrCodeScanned: (qrCodeContent: String) -> Unit)
+    fun launchScanner(activity: Activity, activityResultLauncher: ActivityResultLauncher<Intent>)
     fun createQrCode(qrCodeContent: String, width: Int, height: Int): Bitmap
 }
 
 class ZxingQrCodeScannerUtil : QrCodeScannerUtil {
     override fun launchScanner(
-        activity: AppCompatActivity,
-        qrCodeScanned: (qrCodeContent: String) -> Unit
+        activity: Activity,
+        activityResultLauncher: ActivityResultLauncher<Intent>
     ) {
-        val startForResult =
-            activity.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                val result = IntentIntegrator.parseActivityResult(
-                    IntentIntegrator.REQUEST_CODE,
-                    it.resultCode,
-                    it.data
-                )
-                if (result.contents != null) {
-                    qrCodeScanned.invoke(result.contents)
-                }
-            }
-
         val integrator = IntentIntegrator(activity)
         integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE)
-        startForResult.launch(integrator.createScanIntent())
+        activityResultLauncher.launch(integrator.createScanIntent())
     }
 
     override fun createQrCode(qrCodeContent: String, width: Int, height: Int): Bitmap {

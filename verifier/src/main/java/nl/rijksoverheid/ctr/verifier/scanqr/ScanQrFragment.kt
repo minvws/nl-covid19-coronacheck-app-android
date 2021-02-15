@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.zxing.integration.android.IntentIntegrator
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
 import nl.rijksoverheid.ctr.shared.ext.observeResult
 import nl.rijksoverheid.ctr.shared.util.QrCodeScannerUtil
@@ -29,6 +31,22 @@ class ScanQrFragment : BaseFragment() {
     private val qrCodeScannerUtil: QrCodeScannerUtil by inject()
     private val scanQrViewModel: ScanQrViewModel by viewModel()
     private val args: ScanQrFragmentArgs by navArgs()
+
+    private val qrScanResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            val result = IntentIntegrator.parseActivityResult(
+                IntentIntegrator.REQUEST_CODE,
+                it.resultCode,
+                it.data
+            )
+            if (result.contents != null) {
+                scanQrViewModel.validate(
+                    currentDate = OffsetDateTime.now(),
+                    qrContent = result.contents
+                )
+            }
+
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -63,11 +81,6 @@ class ScanQrFragment : BaseFragment() {
     }
 
     private fun openScanner() {
-        qrCodeScannerUtil.launchScanner(requireActivity() as AppCompatActivity) {
-            scanQrViewModel.validate(
-                currentDate = OffsetDateTime.now(),
-                qrContent = it
-            )
-        }
+        qrCodeScannerUtil.launchScanner(requireActivity() as AppCompatActivity, qrScanResult)
     }
 }
