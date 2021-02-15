@@ -13,8 +13,8 @@ import nl.rijksoverheid.ctr.holder.usecase.LocalTestResultUseCase
 import nl.rijksoverheid.ctr.holder.usecase.QrCodeUseCase
 import nl.rijksoverheid.ctr.holder.usecase.SecretKeyUseCase
 import nl.rijksoverheid.ctr.shared.models.Result
-import timber.log.Timber
 import java.time.OffsetDateTime
+import java.util.concurrent.TimeUnit
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -65,7 +65,7 @@ class QrCodeViewModel(
             } catch (e: Exception) {
                 qrCodeLiveData.value = Result.Failed(e)
             }
-            delay(3000)
+            delay(TimeUnit.MINUTES.toMillis(3))
         }
     }
 }
