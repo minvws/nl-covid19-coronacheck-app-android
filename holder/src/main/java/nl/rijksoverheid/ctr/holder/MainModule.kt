@@ -17,6 +17,7 @@ import nl.rijksoverheid.ctr.holder.usecase.LocalTestResultUseCase
 import nl.rijksoverheid.ctr.holder.usecase.QrCodeUseCase
 import nl.rijksoverheid.ctr.holder.usecase.SecretKeyUseCase
 import nl.rijksoverheid.ctr.holder.usecase.TestProviderUseCase
+import nl.rijksoverheid.ctr.holder.usecase.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.holder.usecase.TestResultUseCase
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
