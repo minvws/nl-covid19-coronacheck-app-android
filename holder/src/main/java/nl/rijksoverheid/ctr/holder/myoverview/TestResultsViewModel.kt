@@ -9,6 +9,7 @@ import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.holder.usecase.TestResult
 import nl.rijksoverheid.ctr.holder.usecase.TestResultUseCase
 import nl.rijksoverheid.ctr.shared.livedata.Event
+import nl.rijksoverheid.ctr.shared.models.RemoteTestResult
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -47,6 +48,9 @@ class TestResultsViewModel(
         }
 
     val viewState: LiveData<ViewState> = MutableLiveData(ViewState())
+
+    val retrievedResult: RemoteTestResult.Result?
+        get() = (testResult.value?.peekContent() as? TestResult.Success)?.remoteTestResult?.result
 
     private val currentViewState: ViewState
         get() = viewState.value!!
