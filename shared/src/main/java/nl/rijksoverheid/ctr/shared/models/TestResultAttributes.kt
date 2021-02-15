@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.verifier.models
+package nl.rijksoverheid.ctr.shared.models
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
