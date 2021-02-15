@@ -52,7 +52,7 @@
     <string name="commercial_test_type_code_title">Ik heb een code gekregen</string>
     <string name="commercial_test_type_qr_code_title">Ik heb een QR-code gekregen</string>
     <string name="commercial_test_type_no_code_title">Ik heb geen code</string>
-    <string name="commercial_test_type_no_code_description">Als je je bij een commerciele testlocatie hebt laten testen krijg je een code gemaild of op papier. De code kan een QR-code zijn of een code met cijfers en letters.\nHeb je geen code gekregen? Of ben je code kwijt geraakt? Neem dan contact op met je testlocatie.\nHet kan zijn dat je je opnieuw moet laten testen.  </string>
+    <string name="commercial_test_type_no_code_description">Als je je bij een commerciele testlocatie hebt laten testen krijg je een code gemaild of op papier. De code kan een QR-code zijn of een code met cijfers en letters.\nHeb je geen code gekregen? Of ben je code kwijt geraakt? Neem dan contact op met je testlocatie.\nHet kan zijn dat je je opnieuw moet laten testen.</string>
     <string name="commercial_test_code_title">Code invullen</string>
     <string name="commercial_test_code_description">Vul de code in die je van je testlocatie hebt gekregen. Of klik op de link in je e-mail, als de testlocatie je gemaild heeft.</string>
     <string name="commercial_test_unique_code_hint">Unieke code</string>
@@ -72,4 +72,8 @@
     <string name="testresult_to_qr_code_description">In de QR-code wordt verwerkt dat je negatief getest bent (geen corona) op 2 februari om 14:06.\nIn de CoronaTester app zal alleen de anonieme QR-code zichtbaar zijn, zonder testdetails.</string>
     <string name="button_continue">Verder</string>
     <string name="commercial_test_error_invalid_code">Deze code is niet geldig</string>
+    <string name="no_negative_test_result_title">Er is geen negatief testresultaat</string>
+    <string name="no_negative_test_result_description"><![CDATA[Er is geen negatief testresultaat beschikbaar. Dit kan komen door:<br\><br\>- Je testresultaat is nog is nog niet verwerkt. Dit kan x uur duren.<br\>- Je hebt geen test gedaan<br\>- Je test is positief. Je testaanbieder neemt dan contact met jou op.]]></string>
+    <string name="test_result_not_known_title">Testresultaat nog niet bekend</string>
+    <string name="test_result_not_known_description"><![CDATA[Je testresultaat is nog niet bekend. Probeer het later nog eens.<br\>Heb je het idee dat dit niet klopt? Neem dan contact op met de testaanbieder.]]></string>
 </resources>

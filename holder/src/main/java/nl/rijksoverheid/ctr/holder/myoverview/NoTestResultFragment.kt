@@ -5,9 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import nl.rijksoverheid.ctr.holder.databinding.FragmentMyOverviewBinding
+import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.holder.databinding.FragmentNoTestResultBinding
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import nl.rijksoverheid.ctr.shared.ext.fromHtml
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -19,6 +19,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class NoTestResultFragment : Fragment() {
 
     private lateinit var binding: FragmentNoTestResultBinding
+    private val args: NoTestResultFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,5 +28,11 @@ class NoTestResultFragment : Fragment() {
     ): View? {
         binding = FragmentNoTestResultBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.title.text = args.title
+        binding.description.text = args.description.fromHtml()
     }
 }
