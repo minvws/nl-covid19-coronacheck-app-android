@@ -8,10 +8,11 @@
 
 package nl.rijksoverheid.ctr.verifier
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
@@ -66,10 +67,26 @@ class MainActivity : AppCompatActivity() {
                 }
             }, true
         )
+
+        binding.navView.setNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.nav_about_this_app -> {
+                    openBrowser("https://www.google.com")
+                    true
+                }
+                R.id.nav_give_us_feedback -> {
+                    openBrowser("https://www.google.com")
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
-    fun setToolbarColor(color: Int) {
-        binding.toolbar.setBackgroundColor(color)
+    private fun openBrowser(url: String) {
+        CustomTabsIntent.Builder().build().also {
+            it.launchUrl(this, Uri.parse(url))
+        }
     }
 
     private fun navigationDrawerStyling() {
