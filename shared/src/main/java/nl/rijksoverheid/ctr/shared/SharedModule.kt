@@ -48,7 +48,7 @@ val sharedModule = module {
             .build()
 
         Retrofit.Builder()
-            .baseUrl("https://api-ct.bananenhalen.nl")
+            .baseUrl(BuildConfig.BASE_API_URL)
             .client(okHttpClient)
             .addConverterFactory(MoshiConverterFactory.create(get()))
             .build()
