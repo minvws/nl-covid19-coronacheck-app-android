@@ -65,6 +65,7 @@ class QrCodeFragment : DialogFragment() {
 
         qrCodeViewModel.qrCodeLiveData.observe(viewLifecycleOwner, EventObserver {
             binding.image.setImageBitmap(it)
+            binding.loading.visibility = View.GONE
         })
 
         val credentials = localTestResultViewModel.retrievedLocalTestResult?.credentials
