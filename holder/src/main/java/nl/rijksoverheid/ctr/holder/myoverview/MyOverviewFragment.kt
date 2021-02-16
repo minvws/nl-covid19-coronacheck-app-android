@@ -11,7 +11,9 @@ import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMyOverviewBinding
 import nl.rijksoverheid.ctr.holder.digid.DigiDFragment
+import nl.rijksoverheid.ctr.holder.models.LocalTestResult
 import nl.rijksoverheid.ctr.shared.ext.observeResult
+import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.androidx.viewmodel.ViewModelOwner
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import java.time.OffsetDateTime
@@ -67,35 +69,31 @@ class MyOverviewFragment : DigiDFragment() {
             presentError()
         })
 
+        qrCodeViewModel.localTestResultLiveData.observe(viewLifecycleOwner, EventObserver {
+            presentLocalTestResult(it)
+        })
+
+        qrCodeViewModel.getLocalTestResult(OffsetDateTime.now())
+    }
+
+    private fun presentLocalTestResult(localTestResult: LocalTestResult) {
+        binding.qrCard.cardFooter.text = getString(
+            R.string.my_overview_existing_qr_date, localTestResult.expireDate.format(
+                DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
+            )
+        )
+
+        binding.qrCard.root.visibility = View.VISIBLE
+
         binding.qrCard.qrCardQrImage.doOnPreDraw {
-            observeResult(qrCodeViewModel.localTestResultLiveData, {
-            }, { localTestResult ->
-                if (localTestResult != null) {
-                    binding.qrCard.cardFooter.text = getString(
-                        R.string.my_overview_existing_qr_date, localTestResult.expireDate.format(
-                            DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
-                        )
+            lifecycleScope.launchWhenResumed {
+                launch {
+                    qrCodeViewModel.generateQrCode(
+                        credentials = localTestResult.credentials,
+                        qrCodeSize = binding.qrCard.qrCardQrImage.width,
                     )
-
-                    binding.qrCard.root.visibility = View.VISIBLE
-
-                    binding.qrCard.qrCardQrImage.doOnPreDraw {
-                        lifecycleScope.launchWhenResumed {
-                            launch {
-                                qrCodeViewModel.generateQrCode(
-                                    credentials = localTestResult.credentials,
-                                    qrCodeWidth = binding.qrCard.qrCardQrImage.width,
-                                    qrCodeHeight = binding.qrCard.qrCardQrImage.height
-                                )
-                            }
-                        }
-                    }
                 }
-            }, {
-                presentError()
-            })
-
-            qrCodeViewModel.getLocalTestResult(OffsetDateTime.now())
+            }
         }
     }
 }
