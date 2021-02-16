@@ -50,7 +50,7 @@ class CreateQrFragment : Fragment() {
         val result = viewModel.retrievedResult?.remoteTestResult?.result
         if (result == null) {
             // restored from state, no result anymore
-            findNavController().navigate(YourNegativeTestResultFragmentDirections.actionMyOverview())
+            findNavController().navigate(CreateQrFragmentDirections.actionMyOverview())
         } else {
             binding.description.text = getString(
                 R.string.create_qr_code_description, result.sampleDate.format(
