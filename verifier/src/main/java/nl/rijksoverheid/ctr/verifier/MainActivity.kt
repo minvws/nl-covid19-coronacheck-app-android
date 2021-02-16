@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import nl.rijksoverheid.ctr.shared.ext.styleTitle
 import nl.rijksoverheid.ctr.verifier.databinding.ActivityMainBinding
@@ -68,18 +69,20 @@ class MainActivity : AppCompatActivity() {
             }, true
         )
 
-        binding.navView.setNavigationItemSelectedListener {
-            when (it.itemId) {
+        binding.navView.setNavigationItemSelectedListener { item ->
+            when (item.itemId) {
                 R.id.nav_about_this_app -> {
                     openBrowser("https://www.google.com")
-                    true
                 }
                 R.id.nav_give_us_feedback -> {
                     openBrowser("https://www.google.com")
-                    true
                 }
-                else -> false
+                else -> {
+                    NavigationUI.onNavDestinationSelected(item, navController)
+                }
             }
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+            true
         }
     }
 
