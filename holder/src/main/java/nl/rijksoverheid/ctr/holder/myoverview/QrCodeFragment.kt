@@ -5,10 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.DialogQrCodeBinding
-import nl.rijksoverheid.ctr.shared.ext.observeResult
+import nl.rijksoverheid.ctr.shared.models.Result
 import org.koin.androidx.viewmodel.ViewModelOwner
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
@@ -52,12 +53,10 @@ class QrCodeFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        observeResult(qrCodeViewModel.qrCodeLiveData, {
-
-        }, {
-            binding.image.setImageBitmap(it)
-        }, {
-
+        qrCodeViewModel.qrCodeLiveData.observe(viewLifecycleOwner, Observer {
+            if (it is Result.Success) {
+                binding.image.setImageBitmap(it.data)
+            }
         })
 
         binding.toolbar.setNavigationOnClickListener {
