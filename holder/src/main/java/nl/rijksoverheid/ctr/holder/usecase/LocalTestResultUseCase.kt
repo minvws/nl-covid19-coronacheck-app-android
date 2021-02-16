@@ -30,17 +30,20 @@ class LocalTestResultUseCase(
                 Instant.ofEpochSecond(testAttributes.sampleTime),
                 ZoneOffset.UTC
             )
+            val testValiditySeconds = testResultRepository.getTestValiditySeconds()
 
             val isValid = testResultUtil.isValid(
                 currentDate = currentDate,
                 sampleDate = sampleDate,
-                validitySeconds = testResultRepository.getTestValiditySeconds()
+                validitySeconds = testValiditySeconds
             )
+
             return if (isValid) {
                 LocalTestResult(
                     credentials = credentials,
                     sampleDate = sampleDate,
                     testType = testAttributes.testType,
+                    expireDate = sampleDate.plusSeconds(testValiditySeconds)
                 )
             } else {
                 persistenceManager.deleteCredentials()

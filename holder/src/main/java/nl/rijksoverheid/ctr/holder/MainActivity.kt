@@ -8,9 +8,11 @@
 
 package nl.rijksoverheid.ctr.holder
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
@@ -65,6 +67,34 @@ class MainActivity : AppCompatActivity() {
                 }
             }, true
         )
+
+        binding.navView.setNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.nav_about_this_app -> {
+                    openBrowser("https://www.google.com")
+                    true
+                }
+                R.id.nav_frequently_asked_questions -> {
+                    openBrowser("https://www.google.com")
+                    true
+                }
+                R.id.nav_privacy_statement -> {
+                    openBrowser("https://www.google.com")
+                    true
+                }
+                R.id.nav_terms_of_use -> {
+                    openBrowser("https://www.google.com")
+                    true
+                }
+                else -> false
+            }
+        }
+    }
+
+    private fun openBrowser(url: String) {
+        CustomTabsIntent.Builder().build().also {
+            it.launchUrl(this, Uri.parse(url))
+        }
     }
 
     private fun navigationDrawerStyling() {

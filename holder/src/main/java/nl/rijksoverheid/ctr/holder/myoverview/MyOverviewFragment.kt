@@ -12,7 +12,8 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMyOverviewBinding
 import nl.rijksoverheid.ctr.holder.digid.DigiDFragment
 import nl.rijksoverheid.ctr.shared.ext.observeResult
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ViewModelOwner
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -27,7 +28,14 @@ import java.time.format.FormatStyle
 class MyOverviewFragment : DigiDFragment() {
 
     private lateinit var binding: FragmentMyOverviewBinding
-    private val qrCodeViewModel: QrCodeViewModel by viewModel()
+    private val qrCodeViewModel: QrCodeViewModel by sharedViewModel(
+        owner = {
+            ViewModelOwner.from(
+                findNavController().getViewModelStoreOwner(R.id.nav_home),
+                this
+            )
+        }
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,52 +48,51 @@ class MyOverviewFragment : DigiDFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.noQr.createQrCard.createQrCardButton.setOnClickListener {
+        binding.createQrCard.createQrCardButton.setOnClickListener {
             findNavController().navigate(MyOverviewFragmentDirections.actionChooseProvider())
         }
 
-        binding.existingQr.createQrCard.createQrCardButton.setOnClickListener {
+        binding.createQrCard.createQrCardButton.setOnClickListener {
             findNavController().navigate(MyOverviewFragmentDirections.actionChooseProvider())
         }
 
         observeResult(qrCodeViewModel.qrCodeLiveData, {
-            binding.noQr.root.visibility = View.INVISIBLE
-            binding.existingQr.root.visibility = View.VISIBLE
+            binding.qrCard.qrCardLoading
         }, {
-            binding.existingQr.qrCardQrImage.setImageBitmap(it)
+            binding.qrCard.qrCardQrImage.setImageBitmap(it)
         }, {
-            binding.noQr.root.visibility = View.VISIBLE
-            binding.existingQr.root.visibility = View.GONE
             presentError()
         })
 
-        binding.existingQr.qrCardQrImage.doOnPreDraw {
+        binding.qrCard.qrCardQrImage.doOnPreDraw {
             observeResult(qrCodeViewModel.localTestResultLiveData, {
             }, { localTestResult ->
                 if (localTestResult != null) {
-                    binding.existingQr.cardFooter.text = getString(
-                        R.string.my_overview_existing_qr_date, localTestResult.sampleDate.format(
+                    binding.qrCard.cardFooter.text = getString(
+                        R.string.my_overview_existing_qr_date, localTestResult.expireDate.format(
                             DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
                         )
                     )
 
-                    lifecycleScope.launchWhenResumed {
-                        launch {
-                            qrCodeViewModel.generateQrCode(
-                                credentials = localTestResult.credentials,
-                                qrCodeWidth = binding.existingQr.qrCardQrImage.width,
-                                qrCodeHeight = binding.existingQr.qrCardQrImage.height
-                            )
+                    binding.qrCard.root.visibility = View.VISIBLE
+
+                    binding.qrCard.qrCardQrImage.doOnPreDraw {
+                        lifecycleScope.launchWhenResumed {
+                            launch {
+                                qrCodeViewModel.generateQrCode(
+                                    credentials = localTestResult.credentials,
+                                    qrCodeWidth = binding.qrCard.qrCardQrImage.width,
+                                    qrCodeHeight = binding.qrCard.qrCardQrImage.height
+                                )
+                            }
                         }
                     }
-
                 }
             }, {
                 presentError()
             })
+
+            qrCodeViewModel.getLocalTestResult(OffsetDateTime.now())
         }
-
-        qrCodeViewModel.getLocalTestResult(OffsetDateTime.now())
     }
-
 }
