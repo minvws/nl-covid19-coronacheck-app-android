@@ -53,11 +53,11 @@ class QrCodeFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        qrCodeViewModel.qrCodeLiveData.observe(viewLifecycleOwner, Observer {
+        qrCodeViewModel.qrCodeLiveData.observe(viewLifecycleOwner) {
             if (it is Result.Success) {
                 binding.image.setImageBitmap(it.data)
             }
-        })
+        }
 
         binding.toolbar.setNavigationOnClickListener {
             findNavController().popBackStack()
