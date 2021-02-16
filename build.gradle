@@ -15,6 +15,8 @@ buildscript {
     ext.moshi_version = "1.11.0"
     ext.timber_version = "4.7.1"
     ext.junit_version = "4.13.2"
+    ext.okhttp_version = "4.9.0"
+    ext.coroutines_version = "1.4.2"
 
     repositories {
         google()

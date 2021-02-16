@@ -8,10 +8,15 @@
 
 package nl.rijksoverheid.ctr.appconfig.api
 
+import nl.rijksoverheid.ctr.api.cache.CacheOverride
+import nl.rijksoverheid.ctr.api.cachestrategy.CacheStrategy
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import retrofit2.http.GET
+import retrofit2.http.Tag
 
 interface AppConfigApi {
     @GET("config")
-    suspend fun getConfig(): AppConfig
+    //TODO remove once the server has some cache headers set that allow caching
+    @CacheOverride("public,max-age=0")
+    suspend fun getConfig(@Tag cacheStrategy: CacheStrategy = CacheStrategy.CACHE_LAST): AppConfig
 }

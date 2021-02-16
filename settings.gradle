@@ -9,6 +9,7 @@ include ':shared'
 include ':verifier'
 include ':holder'
 include ':signing'
+include ':appconfig'
+include ':cache-interceptors'
 
 rootProject.name = "CoronaTester"
-include ':appconfig'

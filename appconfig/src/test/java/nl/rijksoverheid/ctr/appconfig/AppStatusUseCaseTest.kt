@@ -8,11 +8,12 @@
 
 package nl.rijksoverheid.ctr.appconfig
 
-import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.runBlocking
+import nl.rijksoverheid.ctr.api.cachestrategy.CacheStrategy
 import nl.rijksoverheid.ctr.appconfig.api.AppConfigApi
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.model.AppStatus
+import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class AppStatusUseCaseTest {
@@ -20,7 +21,7 @@ class AppStatusUseCaseTest {
     @Test
     fun `status returns Deactivated when app is deactivated remotely`() = runBlocking {
         val fakeApi = object : AppConfigApi {
-            override suspend fun getConfig(): AppConfig =
+            override suspend fun getConfig(cacheStrategy: CacheStrategy): AppConfig =
                 AppConfig(appDeactivated = true, minimumVersion = 2)
         }
         val configRepository = ConfigRepository(api = fakeApi)
@@ -35,7 +36,8 @@ class AppStatusUseCaseTest {
     fun `status returns UpdateRequired when remote version code is higher than current`() =
         runBlocking {
             val fakeApi = object : AppConfigApi {
-                override suspend fun getConfig(): AppConfig = AppConfig(minimumVersion = 2)
+                override suspend fun getConfig(cacheStrategy: CacheStrategy): AppConfig =
+                    AppConfig(minimumVersion = 2)
             }
             val configRepository = ConfigRepository(api = fakeApi)
             val appStatusUseCase = AppStatusUseCase(configRepository)
@@ -47,7 +49,8 @@ class AppStatusUseCaseTest {
     @Test
     fun `status returns UpToDate when app is up to date`() = runBlocking {
         val fakeApi = object : AppConfigApi {
-            override suspend fun getConfig(): AppConfig = AppConfig(minimumVersion = 2)
+            override suspend fun getConfig(cacheStrategy: CacheStrategy): AppConfig =
+                AppConfig(minimumVersion = 2)
         }
         val configRepository = ConfigRepository(api = fakeApi)
         val appStatusUseCase = AppStatusUseCase(configRepository)

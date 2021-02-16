@@ -25,6 +25,7 @@ import nl.rijksoverheid.ctr.appconfig.AppStatusViewModel
 import nl.rijksoverheid.ctr.shared.ext.styleTitle
 import nl.rijksoverheid.ctr.verifier.databinding.ActivityMainBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
 
@@ -89,7 +90,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         appStatusViewModel.appStatus.observe(this) {
-
+            //TODO handle status
+            Timber.d("Status = $it")
         }
     }
 

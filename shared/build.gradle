@@ -83,6 +83,7 @@ dependencies {
     kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
 
     implementation(project(":signing"))
+    implementation(project(':cache-interceptors'))
 
     testImplementation "junit:junit:${junit_version}"
     testImplementation "io.mockk:mockk:1.10.0"

@@ -8,12 +8,10 @@
 
 package nl.rijksoverheid.ctr.appconfig
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import androidx.lifecycle.switchMap
-import nl.rijksoverheid.ctr.appconfig.model.AppStatus
 
 class AppStatusViewModel(
     private val appStatusUseCase: AppStatusUseCase,
@@ -22,9 +20,9 @@ class AppStatusViewModel(
 
     private val refresh = MutableLiveData(Unit)
 
-    val appStatus: LiveData<AppStatus> = refresh.switchMap {
+    val appStatus = refresh.switchMap {
         liveData {
-            appStatusUseCase.status(versionCode)
+            emit(appStatusUseCase.status(versionCode))
         }
     }
 

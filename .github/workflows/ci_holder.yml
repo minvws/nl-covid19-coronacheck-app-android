@@ -9,6 +9,7 @@ on:
       - 'shared/**'
       - 'signing/**'
       - 'appconfig/**'
+      - 'cache-interceptors/**'
 
 jobs:
   lint-and-test:

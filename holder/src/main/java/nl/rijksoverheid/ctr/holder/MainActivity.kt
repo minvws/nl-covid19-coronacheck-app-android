@@ -94,6 +94,7 @@ class MainActivity : AppCompatActivity() {
 
 
         appStatusViewModel.appStatus.observe(this) {
+            //TODO handle status
             Timber.d("Status = $it")
         }
     }
