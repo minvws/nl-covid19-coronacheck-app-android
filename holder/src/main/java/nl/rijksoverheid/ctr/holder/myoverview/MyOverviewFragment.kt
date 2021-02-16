@@ -12,7 +12,8 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMyOverviewBinding
 import nl.rijksoverheid.ctr.holder.digid.DigiDFragment
 import nl.rijksoverheid.ctr.shared.ext.observeResult
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ViewModelOwner
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -27,7 +28,14 @@ import java.time.format.FormatStyle
 class MyOverviewFragment : DigiDFragment() {
 
     private lateinit var binding: FragmentMyOverviewBinding
-    private val qrCodeViewModel: QrCodeViewModel by viewModel()
+    private val qrCodeViewModel: QrCodeViewModel by sharedViewModel(
+        owner = {
+            ViewModelOwner.from(
+                findNavController().getViewModelStoreOwner(R.id.nav_home),
+                this
+            )
+        }
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,6 +61,9 @@ class MyOverviewFragment : DigiDFragment() {
             binding.existingQr.root.visibility = View.VISIBLE
         }, {
             binding.existingQr.qrCardQrImage.setImageBitmap(it)
+            binding.existingQr.qrCard.setOnClickListener {
+                findNavController().navigate(MyOverviewFragmentDirections.actionQrCode())
+            }
         }, {
             binding.noQr.root.visibility = View.VISIBLE
             binding.existingQr.root.visibility = View.GONE

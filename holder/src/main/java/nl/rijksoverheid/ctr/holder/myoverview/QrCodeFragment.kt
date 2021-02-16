@@ -4,8 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.DialogFragment
+import androidx.navigation.fragment.findNavController
+import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentQrCodeBinding
+import nl.rijksoverheid.ctr.shared.ext.observeResult
+import org.koin.androidx.viewmodel.ViewModelOwner
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -14,9 +19,26 @@ import nl.rijksoverheid.ctr.holder.databinding.FragmentQrCodeBinding
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class QrCodeFragment : Fragment() {
+class QrCodeFragment : DialogFragment() {
 
     private lateinit var binding: FragmentQrCodeBinding
+
+    private val qrCodeViewModel: QrCodeViewModel by sharedViewModel(
+        owner = {
+            ViewModelOwner.from(
+                findNavController().getViewModelStoreOwner(R.id.nav_home),
+                this
+            )
+        }
+    )
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(
+            STYLE_NORMAL,
+            R.style.AppTheme_Dialog_FullScreen
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,5 +49,19 @@ class QrCodeFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
+        observeResult(qrCodeViewModel.qrCodeLiveData, {
+
+        }, {
+            binding.image.setImageBitmap(it)
+        }, {
+
+        })
+
+        binding.toolbar.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
+    }
 }
