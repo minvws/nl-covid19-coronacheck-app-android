@@ -5,13 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.DialogQrCodeBinding
-import nl.rijksoverheid.ctr.shared.models.Result
+import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.androidx.viewmodel.ViewModelOwner
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 /*
@@ -25,7 +28,7 @@ class QrCodeFragment : DialogFragment() {
 
     private lateinit var binding: DialogQrCodeBinding
 
-    private val qrCodeViewModel: QrCodeViewModel by sharedViewModel(
+    private val localTestResultViewModel: LocalTestResultViewModel by sharedViewModel(
         owner = {
             ViewModelOwner.from(
                 findNavController().getViewModelStoreOwner(R.id.nav_home),
@@ -33,6 +36,7 @@ class QrCodeFragment : DialogFragment() {
             )
         }
     )
+    private val qrCodeViewModel: QrCodeViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,9 +63,22 @@ class QrCodeFragment : DialogFragment() {
         params?.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_FULL
         dialog?.window?.attributes = params
 
-        qrCodeViewModel.qrCodeLiveData.observe(viewLifecycleOwner) {
-            if (it is Result.Success) {
-                binding.image.setImageBitmap(it.data)
+        qrCodeViewModel.qrCodeLiveData.observe(viewLifecycleOwner, EventObserver {
+            binding.image.setImageBitmap(it)
+        })
+
+        val credentials = localTestResultViewModel.retrievedLocalTestResult?.credentials
+        if (credentials == null) {
+            // No credentials in cache, go back to overview
+            findNavController().popBackStack()
+        } else {
+            binding.image.doOnPreDraw {
+                lifecycleScope.launchWhenResumed {
+                    qrCodeViewModel.generateQrCode(
+                        credentials = credentials,
+                        qrCodeSize = binding.image.width
+                    )
+                }
             }
         }
 
