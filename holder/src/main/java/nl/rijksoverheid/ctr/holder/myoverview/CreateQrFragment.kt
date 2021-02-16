@@ -1,11 +1,14 @@
 package nl.rijksoverheid.ctr.holder.myoverview
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.databinding.FragmentYourNegativeTestResultsBinding
+import nl.rijksoverheid.ctr.holder.databinding.FragmentCreateQrBinding
+import nl.rijksoverheid.ctr.shared.ext.fromHtml
 import org.koin.androidx.viewmodel.ViewModelOwner
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.scope.emptyState
@@ -19,9 +22,9 @@ import java.time.format.FormatStyle
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class YourNegativeTestResultFragment : Fragment(R.layout.fragment_your_negative_test_results) {
+class CreateQrFragment : Fragment() {
 
-    //TODO depending on the graph and reuse we probably need to know if this is GGD or commercial
+    private lateinit var binding: FragmentCreateQrBinding
     private val viewModel: TestResultsViewModel by sharedViewModel(
         state = emptyState(),
         owner = {
@@ -31,22 +34,34 @@ class YourNegativeTestResultFragment : Fragment(R.layout.fragment_your_negative_
             )
         })
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentCreateQrBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val binding = FragmentYourNegativeTestResultsBinding.bind(view)
+        binding.description.text = getString(R.string.create_qr_code_description).fromHtml()
 
         val result = viewModel.retrievedResult?.remoteTestResult?.result
         if (result == null) {
             // restored from state, no result anymore
-            findNavController().navigate(YourNegativeTestResultFragmentDirections.actionMyOverview())
+            findNavController().navigate(CreateQrFragmentDirections.actionMyOverview())
         } else {
-            binding.rowSubtitle.text =
-                result.sampleDate.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM))
+            binding.description.text = getString(
+                R.string.create_qr_code_description, result.sampleDate.format(
+                    DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)
+                )
+            ).fromHtml()
         }
 
         binding.button.setOnClickListener {
-            findNavController().navigate(YourNegativeTestResultFragmentDirections.actionCreateQr())
+            viewModel.saveTestResult()
+            findNavController().navigate(CreateQrFragmentDirections.actionMyOverview())
         }
     }
-
 }

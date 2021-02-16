@@ -20,10 +20,8 @@ import java.io.IOException
 class TestResultUseCase(
     private val testProviderUseCase: TestProviderUseCase,
     private val holderRepository: HolderRepository,
-    private val moshi: Moshi,
     private val commitmentMessageUseCase: CommitmentMessageUseCase,
     private val secretKeyUseCase: SecretKeyUseCase,
-    private val persistenceManager: PersistenceManager
 ) {
 
     suspend fun testResult(uniqueCode: String, verificationCode: String?): TestResult {
@@ -78,8 +76,7 @@ class TestResultUseCase(
                 testIsmJson.toByteArray(Charsets.UTF_8)
             ).successString()
 
-            persistenceManager.saveCredentials(credentials)
-            TestResult.Success(remoteTestResult)
+            TestResult.Success(remoteTestResult, credentials)
         } catch (ex: HttpException) {
             Timber.e(ex, "Server error while getting test result")
             TestResult.ServerError
@@ -91,7 +88,7 @@ class TestResultUseCase(
 }
 
 sealed class TestResult {
-    data class Success(val remoteTestResult: RemoteTestResult) : TestResult()
+    data class Success(val remoteTestResult: RemoteTestResult, val credentials: String) : TestResult()
     object InvalidToken : TestResult()
     object VerificationRequired : TestResult()
     object ServerError : TestResult()
