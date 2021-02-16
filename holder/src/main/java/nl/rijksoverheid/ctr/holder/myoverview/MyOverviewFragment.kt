@@ -60,6 +60,9 @@ class MyOverviewFragment : DigiDFragment() {
             binding.qrCard.qrCardLoading
         }, {
             binding.qrCard.qrCardQrImage.setImageBitmap(it)
+            binding.qrCard.root.setOnClickListener {
+                findNavController().navigate(MyOverviewFragmentDirections.actionQrCode())
+            }
         }, {
             presentError()
         })
