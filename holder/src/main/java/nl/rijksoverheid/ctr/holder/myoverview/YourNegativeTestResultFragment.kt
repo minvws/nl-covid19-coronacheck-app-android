@@ -38,14 +38,14 @@ class YourNegativeTestResultFragment : Fragment(R.layout.fragment_your_negative_
         val result = viewModel.retrievedResult?.remoteTestResult?.result
         if (result == null) {
             // restored from state, no result anymore
-            findNavController().navigate(YourNegativeTestResultFragmentDirections.actionMyOverview())
+            findNavController().navigate(YourNegativeTestResultFragmentDirections.actionHome())
         } else {
             binding.rowSubtitle.text =
                 result.sampleDate.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM))
         }
 
         binding.button.setOnClickListener {
-            findNavController().navigate(YourNegativeTestResultFragmentDirections.actionCreateQr())
+            findNavController().navigate(YourNegativeTestResultFragmentDirections.actionHome())
         }
     }
 

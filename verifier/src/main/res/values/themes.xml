@@ -40,9 +40,4 @@
         <item name="android:listDivider">@color/white_20</item>
     </style>
 
-    <style name="AppTheme.Dialog.FullScreen" parent="AppTheme">
-        <item name="android:windowFullscreen">false</item>
-        <item name="android:windowIsFloating">false</item>
-    </style>
-
 </resources>
