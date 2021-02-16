@@ -24,6 +24,7 @@ import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import timber.log.Timber
+import java.time.Clock
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -33,6 +34,8 @@ import timber.log.Timber
  *
  */
 val sharedModule = module {
+
+    single { Clock.systemDefaultZone() }
 
     single {
         val okHttpClient = OkHttpClient.Builder()
@@ -77,9 +80,9 @@ val sharedModule = module {
     single<QrCodeScannerUtil> { ZxingQrCodeScannerUtil() }
 
     // Utils
-    single { QrCodeUtil() }
+    single { QrCodeUtil(get()) }
     single { CryptoUtil() }
-    single { TestResultUtil() }
+    single { TestResultUtil(get()) }
 
     // Use cases
     single {

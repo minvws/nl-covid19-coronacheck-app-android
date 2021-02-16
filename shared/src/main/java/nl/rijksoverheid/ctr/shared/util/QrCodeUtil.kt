@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.shared.util
 
+import java.time.Clock
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
 import java.util.concurrent.TimeUnit
@@ -11,16 +12,16 @@ import java.util.concurrent.TimeUnit
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class QrCodeUtil {
+class QrCodeUtil(private val clock: Clock) {
 
     companion object {
         val VALID_FOR_SECONDS = TimeUnit.MINUTES.toSeconds(3)
     }
 
-    fun isValid(currentDate: OffsetDateTime, creationDate: OffsetDateTime): Boolean {
+    fun isValid(creationDate: OffsetDateTime): Boolean {
         return ChronoUnit.SECONDS.between(
             creationDate,
-            currentDate.plusSeconds(VALID_FOR_SECONDS)
+            OffsetDateTime.now(clock).plusSeconds(VALID_FOR_SECONDS)
         ) >= 0
     }
 }

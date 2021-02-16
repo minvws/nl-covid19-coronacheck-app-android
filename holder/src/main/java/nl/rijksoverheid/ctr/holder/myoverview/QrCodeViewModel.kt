@@ -36,11 +36,11 @@ class QrCodeViewModel(
         secretKeyUseCase.persist()
     }
 
-    fun getLocalTestResult(currentDateTime: OffsetDateTime) {
+    fun getLocalTestResult() {
         localTestResultLiveData.value = Result.Loading()
         viewModelScope.launch {
             try {
-                val localTestResult = localTestResultUseCase.get(currentDateTime)
+                val localTestResult = localTestResultUseCase.get()
                 withContext(Dispatchers.Main) {
                     localTestResultLiveData.value = Result.Success(localTestResult)
                 }

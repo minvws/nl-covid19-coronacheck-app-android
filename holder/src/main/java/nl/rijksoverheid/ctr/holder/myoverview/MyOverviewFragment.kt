@@ -14,7 +14,6 @@ import nl.rijksoverheid.ctr.holder.digid.DigiDFragment
 import nl.rijksoverheid.ctr.shared.ext.observeResult
 import org.koin.androidx.viewmodel.ViewModelOwner
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
@@ -92,7 +91,7 @@ class MyOverviewFragment : DigiDFragment() {
                 presentError()
             })
 
-            qrCodeViewModel.getLocalTestResult(OffsetDateTime.now())
+            qrCodeViewModel.getLocalTestResult()
         }
     }
 }

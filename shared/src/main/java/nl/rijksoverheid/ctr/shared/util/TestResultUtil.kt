@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.shared.util
 
+import java.time.Clock
 import java.time.OffsetDateTime
 
 /*
@@ -9,13 +10,13 @@ import java.time.OffsetDateTime
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class TestResultUtil {
+class TestResultUtil(private val clock: Clock) {
 
     fun isValid(
-        currentDate: OffsetDateTime,
         sampleDate: OffsetDateTime,
         validitySeconds: Long
     ): Boolean {
-        return currentDate.isBefore(sampleDate.plusSeconds(validitySeconds))
+        clock.instant()
+        return OffsetDateTime.now(clock).isBefore(sampleDate.plusSeconds(validitySeconds))
     }
 }

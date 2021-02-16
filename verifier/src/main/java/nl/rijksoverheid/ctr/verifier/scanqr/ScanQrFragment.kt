@@ -16,7 +16,6 @@ import nl.rijksoverheid.ctr.verifier.BaseFragment
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanQrBinding
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.time.OffsetDateTime
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -41,7 +40,6 @@ class ScanQrFragment : BaseFragment() {
             )
             if (result.contents != null) {
                 scanQrViewModel.validate(
-                    currentDate = OffsetDateTime.now(),
                     qrContent = result.contents
                 )
             }
