@@ -45,7 +45,7 @@ class YourNegativeTestResultFragment : Fragment(R.layout.fragment_your_negative_
         }
 
         binding.button.setOnClickListener {
-            findNavController().navigate(YourNegativeTestResultFragmentDirections.actionHome())
+            findNavController().navigate(YourNegativeTestResultFragmentDirections.actionCreateQr())
         }
     }
 
