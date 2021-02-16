@@ -4,7 +4,7 @@
         android:id="@+id/main"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_my_overview"
+            android:id="@+id/nav_home"
             android:title="@string/my_overview" />
 
         <item
