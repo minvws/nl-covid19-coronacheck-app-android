@@ -4,14 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.DialogQrCodeBinding
 import nl.rijksoverheid.ctr.shared.models.Result
 import org.koin.androidx.viewmodel.ViewModelOwner
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -41,6 +42,7 @@ class QrCodeFragment : DialogFragment() {
         )
     }
 
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -52,6 +54,10 @@ class QrCodeFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val params = dialog?.window?.attributes
+        params?.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_FULL
+        dialog?.window?.attributes = params
 
         qrCodeViewModel.qrCodeLiveData.observe(viewLifecycleOwner) {
             if (it is Result.Success) {
