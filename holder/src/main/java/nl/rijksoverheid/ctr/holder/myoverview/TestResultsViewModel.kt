@@ -1,10 +1,6 @@
 package nl.rijksoverheid.ctr.holder.myoverview
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.holder.usecase.TestResult
 import nl.rijksoverheid.ctr.holder.usecase.TestResultUseCase
@@ -50,7 +46,7 @@ class TestResultsViewModel(
     val viewState: LiveData<ViewState> = MutableLiveData(ViewState())
 
     val retrievedResult: RemoteTestResult.Result?
-        get() = (testResult.value?.peekContent() as? TestResult.HasTestResult)?.remoteTestResult?.result
+        get() = (testResult.value?.peekContent() as? TestResult.Complete)?.remoteTestResult?.result
 
     private val currentViewState: ViewState
         get() = viewState.value!!

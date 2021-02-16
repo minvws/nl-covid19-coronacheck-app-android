@@ -98,18 +98,19 @@ class CommercialTestCodeFragment : BaseFragment() {
                 }
                 TestResult.NetworkError,
                 TestResult.ServerError -> presentError()
-                is TestResult.HasTestResult -> {
-                    findNavController().navigate(CommercialTestCodeFragmentDirections.actionYourNegativeResult())
-                }
-                is TestResult.NoTestResult -> {
-                    findNavController().navigate(
-                        CommercialTestCodeFragmentDirections.actionNoTestResult(
-                            title = getString(R.string.no_negative_test_result_title),
-                            description = getString(R.string.no_negative_test_result_description)
+                is TestResult.Complete -> {
+                    if (it.remoteTestResult.result?.negativeResult == true) {
+                        findNavController().navigate(CommercialTestCodeFragmentDirections.actionYourNegativeResult())
+                    } else {
+                        findNavController().navigate(
+                            CommercialTestCodeFragmentDirections.actionNoTestResult(
+                                title = getString(R.string.no_negative_test_result_title),
+                                description = getString(R.string.no_negative_test_result_description)
+                            )
                         )
-                    )
+                    }
                 }
-                is TestResult.PendingTestResult -> {
+                is TestResult.Pending -> {
                     findNavController().navigate(
                         CommercialTestCodeFragmentDirections.actionNoTestResult(
                             title = getString(R.string.test_result_not_known_title),
