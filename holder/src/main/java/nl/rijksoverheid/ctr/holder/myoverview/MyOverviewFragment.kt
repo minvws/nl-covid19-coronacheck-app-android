@@ -48,55 +48,51 @@ class MyOverviewFragment : DigiDFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.noQr.createQrCard.createQrCardButton.setOnClickListener {
+        binding.createQrCard.createQrCardButton.setOnClickListener {
             findNavController().navigate(MyOverviewFragmentDirections.actionChooseProvider())
         }
 
-        binding.existingQr.createQrCard.createQrCardButton.setOnClickListener {
+        binding.createQrCard.createQrCardButton.setOnClickListener {
             findNavController().navigate(MyOverviewFragmentDirections.actionChooseProvider())
         }
 
         observeResult(qrCodeViewModel.qrCodeLiveData, {
-            binding.noQr.root.visibility = View.INVISIBLE
-            binding.existingQr.root.visibility = View.VISIBLE
+            binding.qrCard.qrCardLoading
         }, {
-            binding.existingQr.qrCardQrImage.setImageBitmap(it)
-            binding.existingQr.qrCard.setOnClickListener {
-                findNavController().navigate(MyOverviewFragmentDirections.actionQrCode())
-            }
+            binding.qrCard.qrCardQrImage.setImageBitmap(it)
         }, {
-            binding.noQr.root.visibility = View.VISIBLE
-            binding.existingQr.root.visibility = View.GONE
             presentError()
         })
 
-        binding.existingQr.qrCardQrImage.doOnPreDraw {
+        binding.qrCard.qrCardQrImage.doOnPreDraw {
             observeResult(qrCodeViewModel.localTestResultLiveData, {
             }, { localTestResult ->
                 if (localTestResult != null) {
-                    binding.existingQr.cardFooter.text = getString(
-                        R.string.my_overview_existing_qr_date, localTestResult.sampleDate.format(
+                    binding.qrCard.cardFooter.text = getString(
+                        R.string.my_overview_existing_qr_date, localTestResult.expireDate.format(
                             DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
                         )
                     )
 
-                    lifecycleScope.launchWhenResumed {
-                        launch {
-                            qrCodeViewModel.generateQrCode(
-                                credentials = localTestResult.credentials,
-                                qrCodeWidth = binding.existingQr.qrCardQrImage.width,
-                                qrCodeHeight = binding.existingQr.qrCardQrImage.height
-                            )
+                    binding.qrCard.root.visibility = View.VISIBLE
+
+                    binding.qrCard.qrCardQrImage.doOnPreDraw {
+                        lifecycleScope.launchWhenResumed {
+                            launch {
+                                qrCodeViewModel.generateQrCode(
+                                    credentials = localTestResult.credentials,
+                                    qrCodeWidth = binding.qrCard.qrCardQrImage.width,
+                                    qrCodeHeight = binding.qrCard.qrCardQrImage.height
+                                )
+                            }
                         }
                     }
-
                 }
             }, {
                 presentError()
             })
+
+            qrCodeViewModel.getLocalTestResult(OffsetDateTime.now())
         }
-
-        qrCodeViewModel.getLocalTestResult(OffsetDateTime.now())
     }
-
 }

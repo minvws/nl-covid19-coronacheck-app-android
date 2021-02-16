@@ -68,15 +68,17 @@ class LocalTestResultUseCaseTest {
             val credentials = "credentials"
             val sampleDate = OffsetDateTime.ofInstant(Instant.ofEpochSecond(0), ZoneOffset.UTC)
             val testType = "testtype"
+            val validitySeconds = 10L
             val localTestResult = LocalTestResult(
                 credentials = credentials,
                 sampleDate = sampleDate,
-                testType = testType
+                testType = testType,
+                expireDate = sampleDate.plusSeconds(validitySeconds)
             )
 
             every { persistenceManager.getCredentials() } answers { credentials }
             every { testResultUtil.isValid(any(), any(), any()) } answers { true }
-            coEvery { testResultRepository.getTestValiditySeconds() } answers { 10 }
+            coEvery { testResultRepository.getTestValiditySeconds() } answers { validitySeconds }
             every { testResultAttributesUseCase.get(credentials) } answers {
                 TestResultAttributes(
                     sampleDate.toEpochSecond(),

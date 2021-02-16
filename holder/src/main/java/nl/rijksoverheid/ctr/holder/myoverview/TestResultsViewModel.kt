@@ -6,6 +6,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.usecase.TestResult
 import nl.rijksoverheid.ctr.holder.usecase.TestResultUseCase
 import nl.rijksoverheid.ctr.shared.livedata.Event
@@ -20,7 +21,8 @@ import nl.rijksoverheid.ctr.shared.models.RemoteTestResult
  */
 class TestResultsViewModel(
     private val savedStateHandle: SavedStateHandle,
-    private val testResultUseCase: TestResultUseCase
+    private val testResultUseCase: TestResultUseCase,
+    private val persistenceManager: PersistenceManager
 ) : ViewModel() {
 
     val testResult: LiveData<Event<TestResult>> = MutableLiveData()
@@ -49,8 +51,8 @@ class TestResultsViewModel(
 
     val viewState: LiveData<ViewState> = MutableLiveData(ViewState())
 
-    val retrievedResult: RemoteTestResult.Result?
-        get() = (testResult.value?.peekContent() as? TestResult.Success)?.remoteTestResult?.result
+    val retrievedResult: TestResult.Success?
+        get() = (testResult.value?.peekContent() as? TestResult.Success)
 
     private val currentViewState: ViewState
         get() = viewState.value!!
@@ -78,6 +80,12 @@ class TestResultsViewModel(
             } finally {
                 loading.value = Event(false)
             }
+        }
+    }
+
+    fun saveTestResult() {
+        retrievedResult?.let {
+            persistenceManager.saveCredentials(it.credentials)
         }
     }
 
