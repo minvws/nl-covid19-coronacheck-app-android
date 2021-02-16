@@ -56,34 +56,35 @@ class MyOverviewFragment : DigiDFragment() {
             presentError()
         })
 
-        observeResult(qrCodeViewModel.localTestResultLiveData, {
-        }, { localTestResult ->
-            if (localTestResult != null) {
-                binding.qrCard.cardFooter.text = getString(
-                    R.string.my_overview_existing_qr_date, localTestResult.sampleDate.format(
-                        DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
+        binding.qrCard.qrCardQrImage.doOnPreDraw {
+            observeResult(qrCodeViewModel.localTestResultLiveData, {
+            }, { localTestResult ->
+                if (localTestResult != null) {
+                    binding.qrCard.cardFooter.text = getString(
+                        R.string.my_overview_existing_qr_date, localTestResult.expireDate.format(
+                            DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
+                        )
                     )
-                )
 
-                binding.qrCard.root.visibility = View.VISIBLE
+                    binding.qrCard.root.visibility = View.VISIBLE
 
-                binding.qrCard.qrCardQrImage.doOnPreDraw {
-                    lifecycleScope.launchWhenResumed {
-                        launch {
-                            qrCodeViewModel.generateQrCode(
-                                credentials = localTestResult.credentials,
-                                qrCodeWidth = binding.qrCard.qrCardQrImage.width,
-                                qrCodeHeight = binding.qrCard.qrCardQrImage.height
-                            )
+                    binding.qrCard.qrCardQrImage.doOnPreDraw {
+                        lifecycleScope.launchWhenResumed {
+                            launch {
+                                qrCodeViewModel.generateQrCode(
+                                    credentials = localTestResult.credentials,
+                                    qrCodeWidth = binding.qrCard.qrCardQrImage.width,
+                                    qrCodeHeight = binding.qrCard.qrCardQrImage.height
+                                )
+                            }
                         }
                     }
                 }
-            }
-        }, {
-            presentError()
-        })
+            }, {
+                presentError()
+            })
 
-        qrCodeViewModel.getLocalTestResult(OffsetDateTime.now())
+            qrCodeViewModel.getLocalTestResult(OffsetDateTime.now())
+        }
     }
-
 }
