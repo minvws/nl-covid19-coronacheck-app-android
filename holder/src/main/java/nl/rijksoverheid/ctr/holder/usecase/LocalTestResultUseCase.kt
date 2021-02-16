@@ -37,7 +37,7 @@ class LocalTestResultUseCase(
                 sampleDate = sampleDate,
                 validitySeconds = testValiditySeconds
             )
-            
+
             return if (isValid) {
                 LocalTestResult(
                     credentials = credentials,

@@ -38,7 +38,7 @@ val mainModule = module {
         IntroductionUseCase(get())
     }
     single {
-        TestResultValidUseCase(get(), get(), get())
+        TestResultValidUseCase(get(), get(), get(), get())
     }
 
     // ViewModels
