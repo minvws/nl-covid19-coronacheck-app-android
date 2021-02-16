@@ -24,8 +24,8 @@
             app:popUpToInclusive="true" />
 
         <action
-            android:id="@+id/action_my_overview"
-            app:destination="@id/nav_my_overview"
+            android:id="@+id/action_home"
+            app:destination="@id/nav_home"
             app:launchSingleTop="true"
             app:popUpTo="@id/main_nav"
             app:popUpToInclusive="true" />
@@ -51,29 +51,35 @@
         tools:layout="@layout/fragment_privacy_policy">
 
         <action
-            android:id="@+id/action_my_overview"
-            app:destination="@id/nav_my_overview"
+            android:id="@+id/action_home"
+            app:destination="@id/nav_home"
             app:launchSingleTop="true"
             app:popUpTo="@id/main_nav"
             app:popUpToInclusive="true" />
 
     </fragment>
 
-    <fragment
-        android:id="@+id/nav_my_overview"
-        android:name="nl.rijksoverheid.ctr.holder.myoverview.MyOverviewFragment"
-        android:label="@string/my_overview"
-        tools:layout="@layout/fragment_my_overview">
+    <navigation
+        android:id="@+id/nav_home"
+        app:startDestination="@id/nav_my_overview">
 
-        <action
-            android:id="@+id/action_choose_provider"
-            app:destination="@id/nav_choose_provider"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+        <fragment
+            android:id="@+id/nav_my_overview"
+            android:name="nl.rijksoverheid.ctr.holder.myoverview.MyOverviewFragment"
+            android:label="@string/my_overview"
+            tools:layout="@layout/fragment_my_overview">
 
-    </fragment>
+            <action
+                android:id="@+id/action_choose_provider"
+                app:destination="@id/nav_choose_provider"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right" />
+
+        </fragment>
+
+    </navigation>
 
     <fragment
         android:id="@+id/nav_choose_provider"
@@ -133,14 +139,14 @@
             tools:layout="@layout/fragment_your_negative_test_results">
 
             <action
-                android:id="@+id/action_my_overview"
-                app:destination="@id/nav_my_overview"
+                android:id="@+id/action_home"
+                app:destination="@id/nav_home"
                 app:enterAnim="@anim/fragment_open_enter"
                 app:exitAnim="@anim/fragment_open_exit"
                 app:launchSingleTop="true"
                 app:popEnterAnim="@anim/fragment_close_enter"
                 app:popExitAnim="@anim/fragment_close_exit"
-                app:popUpTo="@id/nav_my_overview"
+                app:popUpTo="@id/nav_home"
                 app:popUpToInclusive="true" />
 
         </fragment>

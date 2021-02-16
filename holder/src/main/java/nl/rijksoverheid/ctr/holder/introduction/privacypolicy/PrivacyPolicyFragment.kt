@@ -97,7 +97,7 @@ class PrivacyPolicyFragment : Fragment(), HideToolbar {
 
         binding.button.setOnClickListener {
             introductionViewModel.setPrivacyPolicyFinished()
-            findNavController().navigate(PrivacyPolicyFragmentDirections.actionMyOverview())
+            findNavController().navigate(PrivacyPolicyFragmentDirections.actionHome())
         }
 
     }

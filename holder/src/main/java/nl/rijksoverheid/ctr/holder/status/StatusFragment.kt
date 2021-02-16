@@ -50,7 +50,7 @@ class StatusFragment : Fragment(), HideToolbar {
             val direction = when {
                 !state.onboardingFinished -> StatusFragmentDirections.actionOnboarding()
                 !state.privacyPolicyFinished -> StatusFragmentDirections.actionPrivacyPolicy()
-                else -> StatusFragmentDirections.actionMyOverview()
+                else -> StatusFragmentDirections.actionHome()
             }
             findNavController().navigate(direction)
         })
