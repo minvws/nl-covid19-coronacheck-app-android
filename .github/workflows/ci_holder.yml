@@ -8,6 +8,7 @@ on:
       - 'holder/**'
       - 'shared/**'
       - 'signing/**'
+      - 'appconfig/**'
 
 jobs:
   lint-and-test:
@@ -37,4 +38,4 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-gradle-wrapper
     - name: Gradle actions
-      run: ./gradlew holder:lint holder:test shared:test
+      run: ./gradlew holder:lint holder:test shared:test appconfig:test signing:test

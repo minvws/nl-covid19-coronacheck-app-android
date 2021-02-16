@@ -83,6 +83,7 @@ android {
 dependencies {
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.1'
     implementation project(path: ':shared')
+    implementation project(":appconfig")
     implementation "androidx.viewpager2:viewpager2:1.0.0"
     implementation "com.xwray:groupie:2.9.0"
     implementation "com.xwray:groupie-viewbinding:2.9.0"

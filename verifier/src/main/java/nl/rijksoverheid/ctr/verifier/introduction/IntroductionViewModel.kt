@@ -16,7 +16,11 @@ class IntroductionViewModel(private val introductionUseCase: IntroductionUseCase
 
     val introductionStateLiveData = MutableLiveData<IntroductionState>()
 
-    fun getIntroductionState() {
+    init {
+        getIntroductionState()
+    }
+
+    private fun getIntroductionState() {
         introductionStateLiveData.postValue(
             IntroductionState(
                 onboardingFinished = introductionUseCase.onboardingFinished(),

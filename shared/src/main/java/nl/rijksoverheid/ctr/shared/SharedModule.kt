@@ -12,9 +12,7 @@ import nl.rijksoverheid.ctr.shared.json.RemoteTestStatusJsonAdapter
 import nl.rijksoverheid.ctr.shared.models.RemoteTestResult
 import nl.rijksoverheid.ctr.shared.models.ResponseError
 import nl.rijksoverheid.ctr.shared.models.SignedResponseWithModel
-import nl.rijksoverheid.ctr.shared.repositories.ConfigRepository
 import nl.rijksoverheid.ctr.shared.repositories.TestResultRepository
-import nl.rijksoverheid.ctr.shared.usecases.AppStatusUseCase
 import nl.rijksoverheid.ctr.shared.usecases.SignatureValidUseCase
 import nl.rijksoverheid.ctr.shared.util.*
 import okhttp3.OkHttpClient
@@ -100,11 +98,5 @@ val sharedModule = module {
         )
     }
 
-    single {
-        AppStatusUseCase(get())
-    }
-
-    // Repositories
-    single { ConfigRepository(get()) }
     single { TestResultRepository() }
 }

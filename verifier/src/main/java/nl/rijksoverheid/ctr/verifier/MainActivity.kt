@@ -21,12 +21,15 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
+import nl.rijksoverheid.ctr.appconfig.AppStatusViewModel
 import nl.rijksoverheid.ctr.shared.ext.styleTitle
 import nl.rijksoverheid.ctr.verifier.databinding.ActivityMainBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private val appStatusViewModel: AppStatusViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,6 +87,15 @@ class MainActivity : AppCompatActivity() {
             binding.drawerLayout.closeDrawer(GravityCompat.START)
             true
         }
+
+        appStatusViewModel.appStatus.observe(this) {
+
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        appStatusViewModel.refresh()
     }
 
     private fun openBrowser(url: String) {

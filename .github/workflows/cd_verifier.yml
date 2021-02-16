@@ -8,6 +8,7 @@ on:
       - 'verifier/**'
       - 'shared/**'
       - 'signing/**'
+      - 'appconfig/**'
 
 jobs:
   build-and-distribute:

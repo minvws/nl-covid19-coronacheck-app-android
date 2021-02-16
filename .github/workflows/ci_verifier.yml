@@ -8,6 +8,7 @@ on:
       - 'verifier/**'
       - 'shared/**'
       - 'signing/**'
+      - 'appconfig/**'
 
 jobs:
   lint-and-test:
@@ -37,4 +38,4 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-gradle-wrapper
     - name: Gradle actions
-      run: ./gradlew verifier:lint verifier:test shared:test
+      run: ./gradlew verifier:lint verifier:test shared:test appconfig:test signing:test

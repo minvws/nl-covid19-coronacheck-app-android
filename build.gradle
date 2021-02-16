@@ -10,6 +10,11 @@
 buildscript {
     ext.kotlin_version = '1.4.30'
     ext.koin_version = "2.2.2"
+    ext.lifecycle_version = "2.3.0"
+    ext.retrofit_version = "2.9.0"
+    ext.moshi_version = "1.11.0"
+    ext.timber_version = "4.7.1"
+    ext.junit_version = "4.13.2"
 
     repositories {
         google()

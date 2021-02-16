@@ -11,3 +11,4 @@ include ':holder'
 include ':signing'
 
 rootProject.name = "CoronaTester"
+include ':appconfig'
