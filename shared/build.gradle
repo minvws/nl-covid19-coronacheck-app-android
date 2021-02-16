@@ -26,21 +26,21 @@ android {
     productFlavors {
         tst {
             dimension "environment"
-            buildConfigField "String", "BASE_API_URL", "\"https://api-ct.bananenhalen.nl/v1\""
+            buildConfigField "String", "BASE_API_URL", "\"https://api-ct.bananenhalen.nl/v1/\""
             buildConfigField "String", "DIGI_D_BASE_URL", "\"https://login.ggdghor.nl/coronitacc\""
             buildConfigField "String", "DIGI_D_CLIENT_ID", "\"6456237456911667336\""
             matchingFallbacks = ["tst"]
         }
         acc {
             dimension "environment"
-            buildConfigField "String", "BASE_API_URL", "\"https://holder-api.acc.bananenhalen.nl/v1\""
+            buildConfigField "String", "BASE_API_URL", "\"https://holder-api.acc.bananenhalen.nl/v1/\""
             buildConfigField "String", "DIGI_D_BASE_URL", "\"https://login.ggdghor.nl/coronitacc\""
             buildConfigField "String", "DIGI_D_CLIENT_ID", "\"6456237456911667336\""
             matchingFallbacks = ["acc"]
         }
         prod {
             dimension "environment"
-            buildConfigField "String", "BASE_API_URL", "\"https://api-ct.bananenhalen.nl\""
+            buildConfigField "String", "BASE_API_URL", "\"https://api-ct.bananenhalen.nl/\""
             buildConfigField "String", "DIGI_D_BASE_URL", "\"https://login.ggdghor.nl/coronitacc\""
             buildConfigField "String", "DIGI_D_CLIENT_ID", "\"6456237456911667336\""
             matchingFallbacks = ["prod"]
