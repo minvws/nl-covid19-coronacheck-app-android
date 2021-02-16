@@ -144,6 +144,14 @@
                 app:popEnterAnim="@anim/slide_in_left"
                 app:popExitAnim="@anim/slide_out_right" />
 
+            <action
+                android:id="@+id/action_no_test_result"
+                app:destination="@id/nav_no_test_result"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right" />
+
         </fragment>
 
         <fragment
@@ -192,6 +200,24 @@
 
         </fragment>
 
+        <fragment
+            android:id="@+id/nav_no_test_result"
+            android:name="nl.rijksoverheid.ctr.holder.myoverview.NoTestResultFragment"
+            android:label=""
+            tools:layout="@layout/fragment_no_test_result">
+
+            <argument
+                android:name="title"
+                app:argType="string" />
+
+            <argument
+                android:name="description"
+                app:argType="string" />
+
+        </fragment>
+
+        =======
+        >>>>>>> main
     </navigation>
 
     <fragment

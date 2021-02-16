@@ -1,16 +1,11 @@
 package nl.rijksoverheid.ctr.holder.myoverview
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.usecase.TestResult
 import nl.rijksoverheid.ctr.holder.usecase.TestResultUseCase
 import nl.rijksoverheid.ctr.shared.livedata.Event
-import nl.rijksoverheid.ctr.shared.models.RemoteTestResult
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -51,8 +46,8 @@ class TestResultsViewModel(
 
     val viewState: LiveData<ViewState> = MutableLiveData(ViewState())
 
-    val retrievedResult: TestResult.Success?
-        get() = (testResult.value?.peekContent() as? TestResult.Success)
+    val retrievedResult: TestResult.Complete?
+        get() = (testResult.value?.peekContent() as? TestResult.Complete)
 
     private val currentViewState: ViewState
         get() = viewState.value!!

@@ -1,8 +1,6 @@
 package nl.rijksoverheid.ctr.holder.usecase
 
 import clmobile.Clmobile
-import com.squareup.moshi.Moshi
-import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.repositories.HolderRepository
 import nl.rijksoverheid.ctr.shared.ext.successString
 import nl.rijksoverheid.ctr.shared.models.RemoteTestResult
@@ -49,6 +47,7 @@ class TestResultUseCase(
             when (remoteTestResult.status) {
                 RemoteTestResult.Status.VERIFICATION_REQUIRED -> return TestResult.VerificationRequired
                 RemoteTestResult.Status.INVALID_TOKEN -> return TestResult.InvalidToken
+                RemoteTestResult.Status.PENDING -> return TestResult.Pending
                 RemoteTestResult.Status.COMPLETE -> {
                     // nothing
                 }
@@ -76,7 +75,7 @@ class TestResultUseCase(
                 testIsmJson.toByteArray(Charsets.UTF_8)
             ).successString()
 
-            TestResult.Success(remoteTestResult, credentials)
+            TestResult.Complete(remoteTestResult, credentials)
         } catch (ex: HttpException) {
             Timber.e(ex, "Server error while getting test result")
             TestResult.ServerError
@@ -88,7 +87,10 @@ class TestResultUseCase(
 }
 
 sealed class TestResult {
-    data class Success(val remoteTestResult: RemoteTestResult, val credentials: String) : TestResult()
+    data class Complete(val remoteTestResult: RemoteTestResult, val credentials: String) :
+        TestResult()
+
+    object Pending : TestResult()
     object InvalidToken : TestResult()
     object VerificationRequired : TestResult()
     object ServerError : TestResult()
