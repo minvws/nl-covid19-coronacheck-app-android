@@ -91,7 +91,7 @@
             android:id="@+id/nav_qr_code"
             android:name="nl.rijksoverheid.ctr.holder.myoverview.QrCodeFragment"
             android:label=""
-            tools:layout="@layout/fragment_qr_code" />
+            tools:layout="@layout/dialog_qr_code" />
 
     </navigation>
 

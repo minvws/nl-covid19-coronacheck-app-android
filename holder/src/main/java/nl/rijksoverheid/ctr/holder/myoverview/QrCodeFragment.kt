@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.databinding.FragmentQrCodeBinding
+import nl.rijksoverheid.ctr.holder.databinding.DialogQrCodeBinding
 import nl.rijksoverheid.ctr.shared.ext.observeResult
 import org.koin.androidx.viewmodel.ViewModelOwner
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -21,7 +21,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
  */
 class QrCodeFragment : DialogFragment() {
 
-    private lateinit var binding: FragmentQrCodeBinding
+    private lateinit var binding: DialogQrCodeBinding
 
     private val qrCodeViewModel: QrCodeViewModel by sharedViewModel(
         owner = {
@@ -45,7 +45,7 @@ class QrCodeFragment : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentQrCodeBinding.inflate(inflater, container, false)
+        binding = DialogQrCodeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
