@@ -41,16 +41,7 @@ class SignedResponseInterceptor : Interceptor {
         val expectedSigningCertificate = chain.request().tag(SigningCertificate::class.java)
         val wrapResponse = expectedSigningCertificate != null
 
-        val response = chain.proceed(
-            chain.request().newBuilder()
-                .url(
-                    chain.request().url.newBuilder()
-                        .apply {
-                            // TODO remove when this is the default
-                            query("sigInlineV2")
-                        }.build()
-                ).build()
-        )
+        val response = chain.proceed(chain.request())
 
         if (response.code !in 200..299 && response.code !in 400..499) {
             return response
