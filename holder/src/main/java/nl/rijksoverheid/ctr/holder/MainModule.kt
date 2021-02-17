@@ -45,9 +45,6 @@ val mainModule = module {
         QrCodeUseCase(
             get(),
             get(),
-            get(),
-            get(),
-            get()
         )
     }
     single {

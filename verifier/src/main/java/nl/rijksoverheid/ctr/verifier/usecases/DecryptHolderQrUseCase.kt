@@ -1,6 +1,5 @@
 package nl.rijksoverheid.ctr.verifier.usecases
 
-import android.util.Base64
 import clmobile.Clmobile
 import com.squareup.moshi.Moshi
 import nl.rijksoverheid.ctr.shared.ext.toObject
@@ -25,9 +24,9 @@ class DecryptHolderQrUseCase(private val moshi: Moshi) {
     fun decrypt(
         content: String
     ): DecryptedQr {
-        val decodedContent = Base64.decode(content.toByteArray(), Base64.DEFAULT)
         val result =
-            Clmobile.verify(CryptoUtil.ISSUER_PK_XML.toByteArray(), decodedContent).verify()
+            Clmobile.verifyQREncoded(CryptoUtil.ISSUER_PK_XML.toByteArray(), content.toByteArray())
+                .verify()
         Timber.i("QR Code created at ${result.unixTimeSeconds}")
         val testResultAttributes =
             result.attributesJson.decodeToString().toObject<TestResultAttributes>(moshi)
