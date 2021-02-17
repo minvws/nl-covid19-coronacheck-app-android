@@ -1,5 +1,7 @@
 package nl.rijksoverheid.ctr.holder.usecase
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.holder.models.LocalTestResult
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.shared.repositories.TestResultRepository
@@ -22,9 +24,9 @@ class LocalTestResultUseCase(
     private val testResultAttributesUseCase: TestResultAttributesUseCase
 ) {
 
-    suspend fun get(): LocalTestResult? {
+    suspend fun get(): LocalTestResult? = withContext(Dispatchers.IO) {
         val credentials = persistenceManager.getCredentials()
-        credentials?.let { localTestResult ->
+        if (credentials != null) {
             val testAttributes = testResultAttributesUseCase.get(credentials)
             val sampleDate = OffsetDateTime.ofInstant(
                 Instant.ofEpochSecond(testAttributes.sampleTime),
@@ -37,7 +39,7 @@ class LocalTestResultUseCase(
                 validitySeconds = testValiditySeconds
             )
 
-            return if (isValid) {
+            if (isValid) {
                 LocalTestResult(
                     credentials = credentials,
                     sampleDate = sampleDate,
@@ -46,10 +48,10 @@ class LocalTestResultUseCase(
                 )
             } else {
                 persistenceManager.deleteCredentials()
-                return null
+                null
             }
+        } else {
+            null
         }
-        return null
     }
-
 }

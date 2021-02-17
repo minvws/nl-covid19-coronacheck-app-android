@@ -7,13 +7,15 @@ import android.view.ViewGroup
 import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMyOverviewBinding
 import nl.rijksoverheid.ctr.holder.digid.DigiDFragment
-import nl.rijksoverheid.ctr.shared.ext.observeResult
+import nl.rijksoverheid.ctr.holder.models.LocalTestResult
+import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.androidx.viewmodel.ViewModelOwner
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
@@ -27,7 +29,7 @@ import java.time.format.FormatStyle
 class MyOverviewFragment : DigiDFragment() {
 
     private lateinit var binding: FragmentMyOverviewBinding
-    private val qrCodeViewModel: QrCodeViewModel by sharedViewModel(
+    private val localTestResultViewModel: LocalTestResultViewModel by sharedViewModel(
         owner = {
             ViewModelOwner.from(
                 findNavController().getViewModelStoreOwner(R.id.nav_home),
@@ -35,6 +37,7 @@ class MyOverviewFragment : DigiDFragment() {
             )
         }
     )
+    private val qrCodeViewModel: QrCodeViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,43 +58,39 @@ class MyOverviewFragment : DigiDFragment() {
             findNavController().navigate(MyOverviewFragmentDirections.actionChooseProvider())
         }
 
-        observeResult(qrCodeViewModel.qrCodeLiveData, {
-            binding.qrCard.qrCardLoading
-        }, {
-            binding.qrCard.qrCardQrImage.setImageBitmap(it)
-        }, {
-            presentError()
+        binding.qrCard.root.setOnClickListener {
+            findNavController().navigate(MyOverviewFragmentDirections.actionQrCode())
+        }
+
+        localTestResultViewModel.localTestResultLiveData.observe(viewLifecycleOwner, EventObserver {
+            presentLocalTestResult(it)
         })
 
+        qrCodeViewModel.qrCodeLiveData.observe(viewLifecycleOwner, EventObserver {
+            binding.qrCard.qrCardQrImage.setImageBitmap(it)
+        })
+
+        localTestResultViewModel.getLocalTestResult(OffsetDateTime.now())
+    }
+
+    private fun presentLocalTestResult(localTestResult: LocalTestResult) {
+        binding.qrCard.cardFooter.text = getString(
+            R.string.my_overview_existing_qr_date, localTestResult.expireDate.format(
+                DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
+            )
+        )
+
+        binding.qrCard.root.visibility = View.VISIBLE
+
         binding.qrCard.qrCardQrImage.doOnPreDraw {
-            observeResult(qrCodeViewModel.localTestResultLiveData, {
-            }, { localTestResult ->
-                if (localTestResult != null) {
-                    binding.qrCard.cardFooter.text = getString(
-                        R.string.my_overview_existing_qr_date, localTestResult.expireDate.format(
-                            DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
-                        )
+            lifecycleScope.launchWhenResumed {
+                localTestResultViewModel.retrievedLocalTestResult?.credentials?.let { credentials ->
+                    qrCodeViewModel.generateQrCode(
+                        credentials = credentials,
+                        qrCodeSize = binding.qrCard.qrCardQrImage.width,
                     )
-
-                    binding.qrCard.root.visibility = View.VISIBLE
-
-                    binding.qrCard.qrCardQrImage.doOnPreDraw {
-                        lifecycleScope.launchWhenResumed {
-                            launch {
-                                qrCodeViewModel.generateQrCode(
-                                    credentials = localTestResult.credentials,
-                                    qrCodeWidth = binding.qrCard.qrCardQrImage.width,
-                                    qrCodeHeight = binding.qrCard.qrCardQrImage.height
-                                )
-                            }
-                        }
-                    }
                 }
-            }, {
-                presentError()
-            })
-
-            qrCodeViewModel.getLocalTestResult()
+            }
         }
     }
 }
