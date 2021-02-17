@@ -61,6 +61,12 @@ class SignedResponseInterceptor : Interceptor {
         val signedResponse = responseAdapter.fromJson(Buffer().apply { write(body) })
             ?: error("Expected signed response payload")
 
+        if (signedResponse.payload == null || signedResponse.signature == null) {
+            return response.newBuilder().body("Empty signature".toResponseBody())
+                .code(500)
+                .message("Expected response signature").build().also { response.close() }
+        }
+
         val validator = if (expectedSigningCertificate != null) {
             SignatureValidator.Builder()
                 .signingCertificate(expectedSigningCertificate.certificateBytes).build()
@@ -101,6 +107,9 @@ class SignedResponseInterceptor : Interceptor {
         validator: SignatureValidator,
         signedResponse: SignedResponse
     ): Boolean {
+        if (signedResponse.signature == null || signedResponse.payload == null) {
+            return false
+        }
         return try {
             validator.verifySignature(
                 ByteArrayInputStream(signedResponse.payload),
@@ -116,8 +125,8 @@ class SignedResponseInterceptor : Interceptor {
 
 @JsonClass(generateAdapter = true)
 internal class SignedResponse(
-    val payload: ByteArray,
-    val signature: ByteArray
+    val payload: ByteArray?,
+    val signature: ByteArray?
 )
 
 /**
