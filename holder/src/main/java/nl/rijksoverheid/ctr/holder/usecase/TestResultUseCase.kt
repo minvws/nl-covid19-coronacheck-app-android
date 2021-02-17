@@ -4,6 +4,7 @@ import clmobile.Clmobile
 import nl.rijksoverheid.ctr.holder.repositories.HolderRepository
 import nl.rijksoverheid.ctr.shared.ext.successString
 import nl.rijksoverheid.ctr.shared.models.RemoteTestResult
+import nl.rijksoverheid.ctr.shared.models.TestIsm
 import retrofit2.HttpException
 import timber.log.Timber
 import java.io.IOException
@@ -63,19 +64,30 @@ class TestResultUseCase(
             )
             Timber.i("Received commitment message $commitmentMessage")
 
-            val testIsmJson = holderRepository.testIsmJson(
+            val testIsm = holderRepository.testIsmJson(
                 test = signedResponseWithTestResult.rawResponse.toString(Charsets.UTF_8),
                 sToken = remoteNonce.sToken,
                 icm = commitmentMessage
             )
-            Timber.i("Received test ism json $testIsmJson")
+            when (testIsm) {
+                is TestIsm.Success -> {
+                    Timber.i("Received test ism json ${testIsm.body}")
 
-            val credentials = Clmobile.createCredential(
-                secretKeyUseCase.json().toByteArray(Charsets.UTF_8),
-                testIsmJson.toByteArray(Charsets.UTF_8)
-            ).successString()
+                    val credentials = Clmobile.createCredential(
+                        secretKeyUseCase.json().toByteArray(Charsets.UTF_8),
+                        testIsm.body.toByteArray(Charsets.UTF_8)
+                    ).successString()
 
-            TestResult.Complete(remoteTestResult, credentials)
+                    TestResult.Complete(remoteTestResult, credentials)
+                }
+                is TestIsm.Error -> {
+                    if (testIsm.responseError.code == 99994) {
+                        TestResult.AlreadySigned
+                    } else {
+                        TestResult.ServerError
+                    }
+                }
+            }
         } catch (ex: HttpException) {
             Timber.e(ex, "Server error while getting test result")
             TestResult.ServerError
@@ -90,6 +102,7 @@ sealed class TestResult {
     data class Complete(val remoteTestResult: RemoteTestResult, val credentials: String) :
         TestResult()
 
+    object AlreadySigned : TestResult()
     object Pending : TestResult()
     object InvalidToken : TestResult()
     object VerificationRequired : TestResult()

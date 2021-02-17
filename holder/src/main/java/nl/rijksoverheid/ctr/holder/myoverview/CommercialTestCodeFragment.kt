@@ -110,6 +110,14 @@ class CommercialTestCodeFragment : BaseFragment() {
                         )
                     }
                 }
+                is TestResult.AlreadySigned -> {
+                    findNavController().navigate(
+                        CommercialTestCodeFragmentDirections.actionNoTestResult(
+                            title = getString(R.string.test_result_already_signed_title),
+                            description = getString(R.string.test_result_already_signed_description)
+                        )
+                    )
+                }
                 is TestResult.Pending -> {
                     findNavController().navigate(
                         CommercialTestCodeFragmentDirections.actionNoTestResult(
