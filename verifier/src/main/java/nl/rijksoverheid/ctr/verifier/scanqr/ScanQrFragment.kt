@@ -58,6 +58,9 @@ class ScanQrFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.description.text = binding.description.text.toString().fromHtml()
+        binding.description.setOnClickListener {
+            findNavController().navigate(ScanQrFragmentDirections.actionScanInstructions())
+        }
 
         observeResult(scanQrViewModel.qrValidLiveData, {
             presentLoading(true)

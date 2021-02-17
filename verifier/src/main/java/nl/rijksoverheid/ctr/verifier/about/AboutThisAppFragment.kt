@@ -20,7 +20,7 @@ class AboutThisAppFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         return FragmentAboutThisAppBinding.inflate(inflater, container, false).root
     }
 }

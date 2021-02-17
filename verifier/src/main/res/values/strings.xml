@@ -39,4 +39,6 @@
     <string name="scan_result_invalid_reason_title">Geen geldige QR-code</string>
     <string name="scan_result_invalid_reason_description"><![CDATA[Dit betekent <b>NIET</b> dat de persoon corona hoeft te hebben.<br\><br\><b>Wat kan het betekenen</b><br\>- De QR-code is doorgestuurd.<br\>- De QR-code is vervalst.<br\>- Afgelopen 3 minuten is er meer dan 1 persoon naar binnen gegaan met deze QR-code.<br\><br\><b>En nu?</b><br\>Weiger toegang zonder verdere verklaring.]]></string>
     <string name="about_this_app_description">CoronaTester is ontwikkeld zodat evenementen, horeca en andere uitgaansgelegenheden veilig hun deuren kunnen openen. Met behulp van deze app komen alleen mensen zonder corona binnen. Zo trekt Nederland er langzaam maar zeker meer op uit.</string>
+    <string name="scan_instructions">Scan instructions</string>
+    <string name="scan_instructions_descriptions">Scan instructions go here</string>
 </resources>
