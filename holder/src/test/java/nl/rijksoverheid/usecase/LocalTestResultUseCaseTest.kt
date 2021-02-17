@@ -47,7 +47,7 @@ class LocalTestResultUseCaseTest {
             val testType = "testtype"
 
             every { persistenceManager.getCredentials() } answers { credentials }
-            every { testResultUtil.isValid(any(), any(), any()) } answers { false }
+            every { testResultUtil.isValid(any(), any()) } answers { false }
             coEvery { testResultRepository.getTestValiditySeconds() } answers { 10 }
             every { testResultAttributesUseCase.get(credentials) } answers {
                 TestResultAttributes(
@@ -56,7 +56,7 @@ class LocalTestResultUseCaseTest {
                 )
             }
 
-            val result = localTestResultUseCase.get(OffsetDateTime.now())
+            val result = localTestResultUseCase.get()
 
             verify(exactly = 1) { persistenceManager.deleteCredentials() }
             assertNull(result)
@@ -77,7 +77,7 @@ class LocalTestResultUseCaseTest {
             )
 
             every { persistenceManager.getCredentials() } answers { credentials }
-            every { testResultUtil.isValid(any(), any(), any()) } answers { true }
+            every { testResultUtil.isValid(any(), any()) } answers { true }
             coEvery { testResultRepository.getTestValiditySeconds() } answers { validitySeconds }
             every { testResultAttributesUseCase.get(credentials) } answers {
                 TestResultAttributes(
@@ -86,7 +86,7 @@ class LocalTestResultUseCaseTest {
                 )
             }
 
-            val result = localTestResultUseCase.get(OffsetDateTime.now())
+            val result = localTestResultUseCase.get()
 
             verify(exactly = 0) { persistenceManager.deleteCredentials() }
             assertEquals(result, localTestResult)

@@ -30,7 +30,7 @@ class LocalTestResultViewModel(
     fun getLocalTestResult(currentDateTime: OffsetDateTime) {
         viewModelScope.launch {
             secretKeyUseCase.persist()
-            val localTestResult = localTestResultUseCase.get(currentDateTime)
+            val localTestResult = localTestResultUseCase.get()
             localTestResult?.let {
                 localTestResultLiveData.value = Event(localTestResult)
             }

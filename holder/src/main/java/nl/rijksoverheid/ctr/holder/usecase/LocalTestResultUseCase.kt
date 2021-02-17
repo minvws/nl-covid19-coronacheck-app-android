@@ -24,7 +24,7 @@ class LocalTestResultUseCase(
     private val testResultAttributesUseCase: TestResultAttributesUseCase
 ) {
 
-    suspend fun get(currentDate: OffsetDateTime): LocalTestResult? = withContext(Dispatchers.IO) {
+    suspend fun get(): LocalTestResult? = withContext(Dispatchers.IO) {
         val credentials = persistenceManager.getCredentials()
         if (credentials != null) {
             val testAttributes = testResultAttributesUseCase.get(credentials)
@@ -35,7 +35,6 @@ class LocalTestResultUseCase(
             val testValiditySeconds = testResultRepository.getTestValiditySeconds()
 
             val isValid = testResultUtil.isValid(
-                currentDate = currentDate,
                 sampleDate = sampleDate,
                 validitySeconds = testValiditySeconds
             )
