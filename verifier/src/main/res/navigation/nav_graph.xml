@@ -73,6 +73,14 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
 
+        <action
+            android:id="@+id/action_scan_instructions"
+            app:destination="@id/nav_scan_instructions"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
         <argument
             android:name="openScanner"
             android:defaultValue="false"
@@ -98,5 +106,17 @@
             app:popUpToInclusive="true" />
 
     </dialog>
+
+    <fragment
+        android:id="@+id/nav_about_this_app"
+        android:name="nl.rijksoverheid.ctr.verifier.about.AboutThisAppFragment"
+        android:label="@string/about_this_app"
+        tools:layout="@layout/fragment_about_this_app" />
+
+    <fragment
+        android:id="@+id/nav_scan_instructions"
+        android:name="nl.rijksoverheid.ctr.verifier.scaninstructions.ScanInstructionsFragment"
+        android:label="@string/scan_instructions"
+        tools:layout="@layout/fragment_scan_instructions" />
 
 </navigation>

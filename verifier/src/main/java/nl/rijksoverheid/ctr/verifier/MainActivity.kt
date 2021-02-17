@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
         val appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.nav_status, R.id.nav_scan_qr),
+            setOf(R.id.nav_status, R.id.nav_scan_qr, R.id.nav_about_this_app),
             binding.drawerLayout
         )
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.navView.setNavigationItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.nav_about_this_app -> {
+                R.id.nav_support -> {
                     openBrowser("https://www.google.com")
                 }
                 R.id.nav_give_us_feedback -> {

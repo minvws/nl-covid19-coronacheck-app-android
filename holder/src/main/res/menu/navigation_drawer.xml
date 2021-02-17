@@ -7,6 +7,7 @@
             android:id="@+id/nav_home"
             android:title="@string/my_overview" />
 
+        <!-- TODO: Implement settings -->
         <item
             android:id="@+id/nav_settings"
             android:title="@string/settings"
@@ -16,19 +17,23 @@
         android:id="@+id/info"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_about_this_app"
-            android:title="@string/about_this_app" />
-
-        <item
             android:id="@+id/nav_frequently_asked_questions"
             android:title="@string/frequently_asked_questions" />
 
         <item
-            android:id="@+id/nav_privacy_statement"
-            android:title="@string/privacy_statement" />
+            android:id="@+id/nav_about_this_app"
+            android:title="@string/about_this_app" />
 
+        <!-- TODO: Implement privacy statement -->
+        <item
+            android:id="@+id/nav_privacy_statement"
+            android:title="@string/privacy_statement"
+            android:visible="false" />
+
+        <!-- TODO: Implement terms of use -->
         <item
             android:id="@+id/nav_terms_of_use"
-            android:title="@string/terms_of_use" />
+            android:title="@string/terms_of_use"
+            android:visible="false" />
     </group>
 </menu>
