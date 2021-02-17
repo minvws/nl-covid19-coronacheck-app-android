@@ -18,7 +18,7 @@ import java.time.OffsetDateTime
  *
  */
 class LocalTestResultViewModel(
-    secretKeyUseCase: SecretKeyUseCase,
+    private val secretKeyUseCase: SecretKeyUseCase,
     private val localTestResultUseCase: LocalTestResultUseCase
 ) : ViewModel() {
 
@@ -27,12 +27,9 @@ class LocalTestResultViewModel(
     val retrievedLocalTestResult: LocalTestResult?
         get() = localTestResultLiveData.value?.peekContent()
 
-    init {
-        secretKeyUseCase.persist()
-    }
-
     fun getLocalTestResult(currentDateTime: OffsetDateTime) {
         viewModelScope.launch {
+            secretKeyUseCase.persist()
             val localTestResult = localTestResultUseCase.get(currentDateTime)
             localTestResult?.let {
                 localTestResultLiveData.value = Event(localTestResult)
