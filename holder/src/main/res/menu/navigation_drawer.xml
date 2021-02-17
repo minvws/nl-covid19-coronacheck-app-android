@@ -4,12 +4,13 @@
         android:id="@+id/main"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_my_overview"
+            android:id="@+id/nav_home"
             android:title="@string/my_overview" />
 
         <item
             android:id="@+id/nav_settings"
-            android:title="@string/settings" />
+            android:title="@string/settings"
+            android:visible="false" />
     </group>
     <group
         android:id="@+id/info"
