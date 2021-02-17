@@ -9,6 +9,8 @@ plugins {
 }
 
 def appVersionCode = System.getenv("GITHUB_RUN_NUMBER") != null ? System.getenv("GITHUB_RUN_NUMBER").toInteger() : 1
+version = "1.0"
+archivesBaseName = "verifier-v${version}-${appVersionCode}"
 
 android {
     buildFeatures {
@@ -26,10 +28,10 @@ android {
 
     signingConfigs {
         release {
-            storeFile file('demo_keystore.jks')
-            storePassword 'store_password'
-            keyAlias = 'key_alias'
-            keyPassword 'key_password'
+            storeFile file('../keystore.jks')
+            storePassword System.getenv("KEYSTORE_PASSWORD")
+            keyAlias System.getenv("KEYSTORE_KEY_ALIAS")
+            keyPassword System.getenv("KEYSTORE_KEY_PASSWORD")
         }
     }
 
