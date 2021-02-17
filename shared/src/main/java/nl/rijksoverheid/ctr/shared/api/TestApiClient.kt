@@ -29,19 +29,19 @@ import retrofit2.http.Url
  */
 interface TestApiClient {
 
-    @GET("/holder/get_public_keys/")
+    @GET("holder/get_public_keys/")
     suspend fun getIssuers(): Issuers
 
-    @GET("/issuer/get_event/{id}")
+    @GET("issuer/get_event/{id}")
     suspend fun getEvent(@Path("id") id: String): RemoteEvent
 
     @GET("issuer/get_agent/{id}")
     suspend fun getAgent(@Path("id") id: String): RemoteAgent
 
-    @GET("/holder/get_nonce/")
+    @GET("holder/nonce/")
     suspend fun getNonce(): RemoteNonce
 
-    @GET("/holder/config_ctp/")
+    @GET("holder/config_ctp/")
     suspend fun getConfigCtp(): RemoteTestProviders
 
     @GET("holder/config/")
@@ -50,7 +50,7 @@ interface TestApiClient {
     @GET("verifier/config/")
     suspend fun getVerifierConfig(): Config
 
-    @POST("/holder/get_test_ism/")
+    @POST("holder/get_test_ism/")
     suspend fun getTestIsm(
         @Body data: GetTestIsmPostData
     ): Response<ResponseBody>
