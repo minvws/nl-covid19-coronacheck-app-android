@@ -20,8 +20,8 @@ class QrCodeUtil(private val clock: Clock) {
 
     fun isValid(creationDate: OffsetDateTime): Boolean {
         return ChronoUnit.SECONDS.between(
-            creationDate,
-            OffsetDateTime.now(clock).plusSeconds(VALID_FOR_SECONDS)
-        ) >= 0
+                creationDate,
+                OffsetDateTime.now(clock)
+        ) <= VALID_FOR_SECONDS
     }
 }
