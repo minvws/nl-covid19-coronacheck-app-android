@@ -27,6 +27,7 @@ class HolderRepository(
     private val responseConverter: Converter<ResponseBody, SignedResponseWithModel<RemoteTestResult>>
 ) {
 
+    @Suppress("BlockingMethodInNonBlockingContext")
     suspend fun remoteTestResult(
         url: String,
         token: String,
@@ -61,14 +62,22 @@ class HolderRepository(
         return api.getConfigCtp()
     }
 
+    @Suppress("BlockingMethodInNonBlockingContext")
     suspend fun testIsmJson(test: String, sToken: String, icm: String): String {
-        return api.getTestIsm(
+        val response = api.getTestIsm(
             GetTestIsmPostData(
                 test = test,
                 sToken = sToken,
                 icm = JSONObject(icm).toString()
             )
-        ).body()!!.string()
+        )
+        return if (response.isSuccessful) {
+            response.body()?.use {
+                withContext(Dispatchers.IO) { it.string() }
+            }
+        } else {
+            null
+        } ?: throw HttpException(response)
     }
 
     suspend fun remoteNonce(): RemoteNonce {
