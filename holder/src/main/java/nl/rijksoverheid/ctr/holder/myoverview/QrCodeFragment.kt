@@ -4,14 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.DialogQrCodeBinding
-import nl.rijksoverheid.ctr.shared.models.Result
+import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.androidx.viewmodel.ViewModelOwner
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
+
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -24,7 +28,7 @@ class QrCodeFragment : DialogFragment() {
 
     private lateinit var binding: DialogQrCodeBinding
 
-    private val qrCodeViewModel: QrCodeViewModel by sharedViewModel(
+    private val localTestResultViewModel: LocalTestResultViewModel by sharedViewModel(
         owner = {
             ViewModelOwner.from(
                 findNavController().getViewModelStoreOwner(R.id.nav_home),
@@ -32,6 +36,7 @@ class QrCodeFragment : DialogFragment() {
             )
         }
     )
+    private val qrCodeViewModel: QrCodeViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +45,7 @@ class QrCodeFragment : DialogFragment() {
             R.style.AppTheme_Dialog_FullScreen
         )
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,9 +59,27 @@ class QrCodeFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        qrCodeViewModel.qrCodeLiveData.observe(viewLifecycleOwner) {
-            if (it is Result.Success) {
-                binding.image.setImageBitmap(it.data)
+        val params = dialog?.window?.attributes
+        params?.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_FULL
+        dialog?.window?.attributes = params
+
+        qrCodeViewModel.qrCodeLiveData.observe(viewLifecycleOwner, EventObserver {
+            binding.image.setImageBitmap(it)
+            binding.loading.visibility = View.GONE
+        })
+
+        val credentials = localTestResultViewModel.retrievedLocalTestResult?.credentials
+        if (credentials == null) {
+            // No credentials in cache, go back to overview
+            findNavController().popBackStack()
+        } else {
+            binding.image.doOnPreDraw {
+                lifecycleScope.launchWhenResumed {
+                    qrCodeViewModel.generateQrCode(
+                        credentials = credentials,
+                        qrCodeSize = binding.image.width
+                    )
+                }
             }
         }
 
