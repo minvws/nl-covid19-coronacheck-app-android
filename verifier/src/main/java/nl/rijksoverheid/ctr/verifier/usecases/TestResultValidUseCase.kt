@@ -1,5 +1,7 @@
 package nl.rijksoverheid.ctr.verifier.usecases
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.shared.repositories.TestResultRepository
 import nl.rijksoverheid.ctr.shared.util.QrCodeUtil
 import nl.rijksoverheid.ctr.shared.util.TestResultUtil
@@ -18,14 +20,30 @@ class TestResultValidUseCase(
     private val qrCodeUtil: QrCodeUtil
 ) {
 
-    suspend fun valid(qrContent: String): Boolean {
-        val decryptQr = decryptHolderQrUseCase.decrypt(qrContent)
-        val validity = testResultRepository.getTestValiditySeconds()
-        return testResultUtil.isValid(
-            sampleDate = decryptQr.sampleDate,
-            validitySeconds = validity
-        ) && qrCodeUtil.isValid(
-            creationDate = decryptQr.creationDate
-        )
+    suspend fun valid(qrContent: String): TestResultValidResult = withContext(Dispatchers.IO) {
+        when (val decryptResult = decryptHolderQrUseCase.decrypt(qrContent)) {
+            is DecryptHolderQrUseCase.DecryptResult.Success -> {
+                val validity = testResultRepository.getTestValiditySeconds()
+                val isValid = testResultUtil.isValid(
+                    sampleDate = decryptResult.decryptQr.sampleDate,
+                    validitySeconds = validity
+                ) && qrCodeUtil.isValid(
+                    creationDate = decryptResult.decryptQr.creationDate
+                )
+                if (isValid) {
+                    TestResultValidResult.Valid
+                } else {
+                    TestResultValidResult.Invalid
+                }
+            }
+            is DecryptHolderQrUseCase.DecryptResult.Failed -> {
+                TestResultValidResult.Invalid
+            }
+        }
+    }
+
+    sealed class TestResultValidResult {
+        object Valid : TestResultValidResult()
+        object Invalid : TestResultValidResult()
     }
 }

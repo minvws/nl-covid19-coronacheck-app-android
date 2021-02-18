@@ -10,7 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.zxing.integration.android.IntentIntegrator
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
-import nl.rijksoverheid.ctr.shared.ext.observeResult
+import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.util.QrCodeScannerUtil
 import nl.rijksoverheid.ctr.verifier.BaseFragment
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanQrBinding
@@ -62,14 +62,12 @@ class ScanQrFragment : BaseFragment() {
             findNavController().navigate(ScanQrFragmentDirections.actionScanInstructions())
         }
 
-        observeResult(scanQrViewModel.qrValidLiveData, {
-            presentLoading(true)
-        }, {
-            presentLoading(false)
+        scanQrViewModel.loadingLiveData.observe(viewLifecycleOwner, EventObserver {
+            presentLoading(it)
+        })
+
+        scanQrViewModel.qrValidLiveData.observe(viewLifecycleOwner, EventObserver {
             findNavController().navigate(ScanQrFragmentDirections.actionScanResult(it))
-        }, {
-            presentLoading(false)
-            presentError()
         })
 
         if (args.openScanner) {
