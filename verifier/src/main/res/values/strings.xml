@@ -5,16 +5,14 @@
     <string name="app_name_acc">Verifier (Acc)</string>
     <string name="app_name">Verifier</string>
     <string name="onboarding_title">Onboarding</string>
-    <string name="onboarding_screen_1_title">De lockdown uit</string>
-    <string name="onboarding_screen_1_description">Om zo veilig mogelijk weer op pad te kunnen is het belangrijk om eerst een coronatest te doen. Alleen met een negatief testresultaat kan toegang verleend worden tot x x en x.</string>
-    <string name="onboarding_screen_2_title">Scan QR-codes</string>
-    <string name="onboarding_screen_2_description">Met deze app kun je [NAAM QR]’s van een negatief testresultaat scannen. Mensen met een geldig [NAAM QR] van een negatief testresultaat kunnen naar binnen. Zonder geldige QR is het geen toegang.</string>
-    <string name="onboarding_screen_3_title">Uitslag geldt 48 uur</string>
-    <string name="onboarding_screen_3_description">In verband met privacy zie je als scanner alleen of er een geldig test bewijs aanwezig is of niet. Er worden geen persoons-gegevens verstuurd of opgeslagen bij het scannen van een QR.</string>
-    <string name="onboarding_screen_4_title">Een veilig systeem</string>
-    <string name="onboarding_screen_4_description">Als iedereen binnen een geldig testbewijs heeft is binnen weer meer mogelijk. Zo hoeft de 1,5 meter hoeft niet meer gehanteerd te worden. Lees meer over de veiligheidsmaateregelen.</string>
-    <string name="onboarding_screen_5_title">Privacy staat voorop</string>
-    <string name="onboarding_screen_5_description"><![CDATA[Deze app bewaart geen gebruiksdata of locatiegegevens, en geeft deze ook niet aan derden. <br/><br/><a href="google.com">Lees de privacyverklaring</a>]]></string>
+    <string name="onboarding_screen_1_title">Zo veilig mogelijkweer open</string>
+    <string name="onboarding_screen_1_description">Bezoekers van jouw zaak, gelegenheid of evenement moeten eerst een coronatest doen. Alleen met een negatief testresultaat mogen zij naar binnen. Een negatief testresultaat geldt 48 uur.</string>
+    <string name="onboarding_screen_2_title">Scan QR-code voor testresultaat</string>
+    <string name="onboarding_screen_2_description">In de CoronaCheck app maakt de bezoeker van haar testresultaat een QR-code. Met deze app scan jij de QR-codes en zie je wie er toegang krijgt. Bij een groen scherm mag de bezoeker naar binnen. </string>
+    <string name="onboarding_screen_3_title">Toegang is anoniem</string>
+    <string name="onboarding_screen_3_description">Bij het scannen van een QR-code worden geen persoonsgegevens verstuurd of opgeslagen. Als scanner zie je alleen of de bezoeker een geldig testresultaat heeft.</string>
+    <string name="onboarding_screen_4_title">Voor wie is de scanner?</string>
+    <string name="onboarding_screen_4_description">Met behulp van deze app kun je zo veilig mogelijk de deuren openen. Maar alleen als jouw zaak, evenement of uitgaansgelegen-heid onder de aangewezen locaties valt.</string>
     <string name="onboarding_next">Volgende</string>
     <string name="privacy_policy_title">Zo gebruikt deze app je gegevens</string>
     <string name="privacy_policy_description">In de privacyverklaring staat hoe CoronaTester jouw gegevens gebruikt. Dit zijn de belangrijkste punten.</string>
