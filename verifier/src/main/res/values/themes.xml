@@ -40,4 +40,8 @@
         <item name="android:listDivider">@color/white_20</item>
     </style>
 
+    <style name="AppTheme.Launcher">
+        <item name="android:windowBackground">@drawable/launch_screen</item>
+    </style>
+
 </resources>
