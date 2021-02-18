@@ -22,10 +22,10 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import nl.rijksoverheid.ctr.appconfig.AppStatusViewModel
+import nl.rijksoverheid.ctr.appconfig.model.AppStatus
 import nl.rijksoverheid.ctr.holder.databinding.ActivityMainBinding
 import nl.rijksoverheid.ctr.shared.ext.styleTitle
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
 
@@ -94,8 +94,13 @@ class MainActivity : AppCompatActivity() {
 
 
         appStatusViewModel.appStatus.observe(this) {
-            //TODO handle status
-            Timber.d("Status = $it")
+            when (it) {
+                is AppStatus.Deactivated,
+                is AppStatus.UpdateRequired -> navController.navigate(R.id.action_app_status)
+                else -> {
+                    // up to date
+                }
+            }
         }
     }
 

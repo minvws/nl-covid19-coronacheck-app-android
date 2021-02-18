@@ -22,14 +22,19 @@ class AppStatusUseCaseTest {
     fun `status returns Deactivated when app is deactivated remotely`() = runBlocking {
         val fakeApi = object : AppConfigApi {
             override suspend fun getConfig(cacheStrategy: CacheStrategy): AppConfig =
-                AppConfig(appDeactivated = true, minimumVersion = 2)
+                AppConfig(
+                    appDeactivated = true,
+                    minimumVersion = 2,
+                    informationURL = "https://website.nl",
+                    message = "deactivated"
+                )
         }
         val configRepository = ConfigRepository(api = fakeApi)
         val appStatusUseCase = AppStatusUseCase(configRepository)
         val appStatus = appStatusUseCase.status(
             currentVersionCode = 1
         )
-        assertEquals(appStatus, AppStatus.Deactivated)
+        assertEquals(appStatus, AppStatus.Deactivated("deactivated", "https://website.nl"))
     }
 
     @Test
@@ -43,7 +48,21 @@ class AppStatusUseCaseTest {
             val appStatusUseCase = AppStatusUseCase(configRepository)
             val appStatus =
                 appStatusUseCase.status(currentVersionCode = 1)
-            assertEquals(appStatus, AppStatus.UpdateRequired)
+            assertEquals(appStatus, AppStatus.UpdateRequired(null))
+        }
+
+    @Test
+    fun `status returns UpdateRequired with a message when remote version code is higher than current`() =
+        runBlocking {
+            val fakeApi = object : AppConfigApi {
+                override suspend fun getConfig(cacheStrategy: CacheStrategy): AppConfig =
+                    AppConfig(minimumVersion = 2, message = "message")
+            }
+            val configRepository = ConfigRepository(api = fakeApi)
+            val appStatusUseCase = AppStatusUseCase(configRepository)
+            val appStatus =
+                appStatusUseCase.status(currentVersionCode = 1)
+            assertEquals(appStatus, AppStatus.UpdateRequired("message"))
         }
 
     @Test

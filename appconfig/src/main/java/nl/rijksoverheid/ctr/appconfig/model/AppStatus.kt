@@ -9,7 +9,7 @@
 package nl.rijksoverheid.ctr.appconfig.model
 
 sealed class AppStatus {
-    object UpdateRequired : AppStatus()
-    object Deactivated : AppStatus()
+    data class UpdateRequired(val message: String?) : AppStatus()
+    data class Deactivated(val message: String, val informationUrl: String) : AppStatus()
     object UpToDate : AppStatus()
 }

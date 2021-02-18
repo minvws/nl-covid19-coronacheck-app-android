@@ -21,8 +21,12 @@ class AppStatusUseCase(private val configRepository: ConfigRepository) {
     suspend fun status(currentVersionCode: Int): AppStatus {
         val config = configRepository.getConfigOrDefault()
         return when {
-            config.appDeactivated -> AppStatus.Deactivated
-            currentVersionCode < config.minimumVersion -> AppStatus.UpdateRequired
+            // when deactivated, message and information url are required
+            config.appDeactivated -> AppStatus.Deactivated(
+                config.message!!,
+                config.informationURL!!
+            )
+            currentVersionCode < config.minimumVersion -> AppStatus.UpdateRequired(config.message)
             else -> AppStatus.UpToDate
         }
     }
