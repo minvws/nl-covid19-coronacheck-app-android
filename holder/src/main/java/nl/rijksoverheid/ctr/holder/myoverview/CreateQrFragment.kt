@@ -45,7 +45,6 @@ class CreateQrFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.description.text = getString(R.string.create_qr_code_description).fromHtml()
 
         val result = viewModel.retrievedResult?.remoteTestResult?.result
         if (result == null) {
