@@ -7,7 +7,7 @@ package nl.rijksoverheid.ctr.shared.models
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-sealed class TestIsm {
-    data class Success(val body: String) : TestIsm()
-    data class Error(val responseError: ResponseError) : TestIsm()
+sealed class TestIsmResult {
+    data class Success(val body: String) : TestIsmResult()
+    data class Error(val responseError: ResponseError) : TestIsmResult()
 }

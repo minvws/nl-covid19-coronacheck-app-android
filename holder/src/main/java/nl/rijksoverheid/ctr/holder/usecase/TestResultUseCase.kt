@@ -4,7 +4,7 @@ import clmobile.Clmobile
 import nl.rijksoverheid.ctr.holder.repositories.HolderRepository
 import nl.rijksoverheid.ctr.shared.ext.successString
 import nl.rijksoverheid.ctr.shared.models.RemoteTestResult
-import nl.rijksoverheid.ctr.shared.models.TestIsm
+import nl.rijksoverheid.ctr.shared.models.TestIsmResult
 import retrofit2.HttpException
 import timber.log.Timber
 import java.io.IOException
@@ -64,13 +64,13 @@ class TestResultUseCase(
             )
             Timber.i("Received commitment message $commitmentMessage")
 
-            val testIsm = holderRepository.testIsmJson(
+            val testIsm = holderRepository.getTestIsm(
                 test = signedResponseWithTestResult.rawResponse.toString(Charsets.UTF_8),
                 sToken = remoteNonce.sToken,
                 icm = commitmentMessage
             )
             when (testIsm) {
-                is TestIsm.Success -> {
+                is TestIsmResult.Success -> {
                     Timber.i("Received test ism json ${testIsm.body}")
 
                     val credentials = Clmobile.createCredential(
@@ -80,7 +80,7 @@ class TestResultUseCase(
 
                     TestResult.Complete(remoteTestResult, credentials)
                 }
-                is TestIsm.Error -> {
+                is TestIsmResult.Error -> {
                     if (testIsm.responseError.code == 99994) {
                         TestResult.AlreadySigned
                     } else {

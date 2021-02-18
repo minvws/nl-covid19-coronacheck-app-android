@@ -61,7 +61,7 @@ class HolderRepository(
     }
 
     @Suppress("BlockingMethodInNonBlockingContext")
-    suspend fun testIsmJson(test: String, sToken: String, icm: String): TestIsm {
+    suspend fun getTestIsm(test: String, sToken: String, icm: String): TestIsmResult {
         val response = api.getTestIsm(
             GetTestIsmPostData(
                 test = test,
@@ -74,13 +74,13 @@ class HolderRepository(
             val body =
                 response.body()?.string()
                     ?: throw IllegalStateException("Body should not be null")
-            TestIsm.Success(body)
+            TestIsmResult.Success(body)
         } else {
             val errorBody = response.errorBody() ?: throw HttpException(response)
             withContext(Dispatchers.IO) {
                 val responseError =
                     errorResponseConverter.convert(errorBody) ?: throw HttpException(response)
-                TestIsm.Error(responseError)
+                TestIsmResult.Error(responseError)
             }
         }
     }
