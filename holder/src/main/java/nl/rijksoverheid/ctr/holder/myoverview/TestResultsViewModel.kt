@@ -59,7 +59,7 @@ class TestResultsViewModel(
     private fun updateViewState() {
         (viewState as MutableLiveData).value = currentViewState.copy(
             verificationRequired = verificationRequired,
-            canRetrieveResult = testCode.isNotEmpty() && verificationCode.isNotEmpty()
+            canRetrieveResult = (testCode.isNotEmpty() && !verificationRequired) || (verificationRequired && testCode.isNotEmpty() && verificationCode.isNotEmpty())
         )
     }
 
