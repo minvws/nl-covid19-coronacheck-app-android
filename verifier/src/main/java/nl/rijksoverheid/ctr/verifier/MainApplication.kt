@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.verifier
 
+import nl.rijksoverheid.ctr.appconfig.appConfigModule
 import nl.rijksoverheid.ctr.shared.SharedApplication
 import nl.rijksoverheid.ctr.shared.sharedModule
 import org.koin.android.ext.koin.androidContext
@@ -19,7 +20,7 @@ class MainApplication : SharedApplication() {
 
         startKoin {
             androidContext(this@MainApplication)
-            modules(mainModule, sharedModule)
+            modules(mainModule, sharedModule, appConfigModule("verifier", BuildConfig.VERSION_CODE))
         }
     }
 }

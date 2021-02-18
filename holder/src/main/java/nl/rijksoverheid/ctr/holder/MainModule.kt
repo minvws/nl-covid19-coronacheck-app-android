@@ -10,8 +10,15 @@ import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.SharedPreferencesPersistenceManager
 import nl.rijksoverheid.ctr.holder.repositories.AuthenticationRepository
 import nl.rijksoverheid.ctr.holder.repositories.HolderRepository
-import nl.rijksoverheid.ctr.holder.status.StatusViewModel
-import nl.rijksoverheid.ctr.holder.usecase.*
+import nl.rijksoverheid.ctr.holder.usecase.CommitmentMessageUseCase
+import nl.rijksoverheid.ctr.holder.usecase.GenerateHolderQrCodeUseCase
+import nl.rijksoverheid.ctr.holder.usecase.IntroductionUseCase
+import nl.rijksoverheid.ctr.holder.usecase.LocalTestResultUseCase
+import nl.rijksoverheid.ctr.holder.usecase.QrCodeUseCase
+import nl.rijksoverheid.ctr.holder.usecase.SecretKeyUseCase
+import nl.rijksoverheid.ctr.holder.usecase.TestProviderUseCase
+import nl.rijksoverheid.ctr.holder.usecase.TestResultAttributesUseCase
+import nl.rijksoverheid.ctr.holder.usecase.TestResultUseCase
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
@@ -71,7 +78,6 @@ val mainModule = module {
     }
 
     // ViewModels
-    viewModel { StatusViewModel(get()) }
     viewModel { IntroductionViewModel(get()) }
     viewModel { QrCodeViewModel(get()) }
     viewModel { LocalTestResultViewModel(get(), get()) }

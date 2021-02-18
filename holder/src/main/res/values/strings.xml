@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name_test">Holder (Test)</string>
-    <string name="app_name_acc">Holder (Acc)</string>
-    <string name="app_name">Holder</string>
+    <string name="app_name_test">CoronaCheck (Test)</string>
+    <string name="app_name_acc">CoronaCheck (Acc)</string>
+    <string name="app_name">CoronaCheck</string>
     <string name="onboarding_title">Onboarding</string>
     <string name="onboarding_screen_1_title">Getest en wel op pad</string>
     <string name="onboarding_screen_1_description">Om zo veilig mogelijk op pad te kunnen is het belangrijk eerst een coronatest te doen. Alleen bij een negatieve test krijg je toegang tot de testevenementen van Fieldlab.</string>
@@ -79,4 +79,9 @@
     <string name="about_this_app_description">CoronaTester is ontwikkeld zodat evenementen, horeca en andere uitgaansgelegenheden veilig hun deuren kunnen openen. Met behulp van deze app komen alleen mensen zonder corona binnen. Zo trekt Nederland er langzaam maar zeker meer op uit.</string>
     <string name="test_result_already_signed_title">Testresultaat is al opgehaald</string>
     <string name="test_result_already_signed_description"><![CDATA[Je testresultaat is al opgehaald en verwerkt in een QR-code.<br\><br\> Heb je het idee dat dit niet klopt? Neem dan contact op met de testaanbieder.]]></string>
+    <string name="app_status_update_required_title">Update vereist</string>
+    <string name="app_status_update_required_message">Download de laatste versie van de app om verder te gaan.</string>
+    <string name="app_status_update_required_action">Installeer update</string>
+    <string name="app_status_deactivated_title">App buiten werking</string>
+    <string name="app_status_deactivated_action">Lees meer op de website</string>
 </resources>

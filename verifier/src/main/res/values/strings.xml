@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name_dev">Verifier (Dev)</string>
-    <string name="app_name_test">Verifier (Test)</string>
-    <string name="app_name_acc">Verifier (Acc)</string>
-    <string name="app_name">Verifier</string>
+    <string name="app_name_test">Scanner (Test)</string>
+    <string name="app_name_acc">Scanner (Acc)</string>
+    <string name="app_name">Scanner</string>
     <string name="onboarding_title">Onboarding</string>
     <string name="onboarding_screen_1_title">Zo veilig mogelijkweer open</string>
     <string name="onboarding_screen_1_description">Bezoekers van jouw zaak, gelegenheid of evenement moeten eerst een coronatest doen. Alleen met een negatief testresultaat mogen zij naar binnen. Een negatief testresultaat geldt 48 uur.</string>
@@ -39,4 +38,9 @@
     <string name="about_this_app_description">CoronaTester is ontwikkeld zodat evenementen, horeca en andere uitgaansgelegenheden veilig hun deuren kunnen openen. Met behulp van deze app komen alleen mensen zonder corona binnen. Zo trekt Nederland er langzaam maar zeker meer op uit.</string>
     <string name="scan_instructions">Scan instructions</string>
     <string name="scan_instructions_descriptions">Scan instructions go here</string>
+    <string name="app_status_update_required_title">Update vereist</string>
+    <string name="app_status_update_required_message">Download de laatste versie van de app om verder te gaan.</string>
+    <string name="app_status_update_required_action">Installeer update</string>
+    <string name="app_status_deactivated_title">App buiten werking</string>
+    <string name="app_status_deactivated_action">Lees meer op de website</string>
 </resources>
