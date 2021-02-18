@@ -39,4 +39,9 @@
     <string name="about_this_app_description">CoronaTester is ontwikkeld zodat evenementen, horeca en andere uitgaansgelegenheden veilig hun deuren kunnen openen. Met behulp van deze app komen alleen mensen zonder corona binnen. Zo trekt Nederland er langzaam maar zeker meer op uit.</string>
     <string name="scan_instructions">Scan instructions</string>
     <string name="scan_instructions_descriptions">Scan instructions go here</string>
+    <string name="app_status_update_required_title">Update vereist</string>
+    <string name="app_status_update_required_message">Download de laatste versie van de app om verder te gaan.</string>
+    <string name="app_status_update_required_action">Installeer update</string>
+    <string name="app_status_deactivated_title">App buiten werking</string>
+    <string name="app_status_deactivated_action">Lees meer op de website</string>
 </resources>
