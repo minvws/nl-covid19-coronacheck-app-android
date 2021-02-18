@@ -77,7 +77,10 @@ class MainActivity : AppCompatActivity() {
         binding.navView.setNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_frequently_asked_questions -> {
-                    openBrowser("https://www.google.com")
+                    openBrowser(getString(R.string.url_faq))
+                }
+                R.id.nav_about_this_app -> {
+                    openBrowser(getString(R.string.url_about_this_app))
                 }
                 else -> {
                     NavigationUI.onNavDestinationSelected(item, navController)

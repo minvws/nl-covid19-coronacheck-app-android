@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="url_privacy_statement" translatable="false">https://www.coronacheck.nl/nl/privacy-in-app</string>
+    <string name="url_about_this_app" translatable="false">https://www.coronacheck.nl/nl/over-de-app-in-app</string>
+    <string name="url_faq" translatable="false">https://www.coronacheck.nl/nl/faq-in-app</string>
+</resources>
