@@ -3,7 +3,6 @@ plugins {
     id "kotlin-android"
     id "kotlin-kapt"
     id "koin"
-    id "com.google.firebase.appdistribution"
     id 'kotlin-parcelize'
     id "androidx.navigation.safeargs.kotlin"
 }
@@ -50,31 +49,16 @@ android {
             versionNameSuffix "-test"
             applicationIdSuffix ".test"
             manifestPlaceholders = [appLabel: "@string/app_name_test"]
-
-            firebaseAppDistribution {
-                appId = "1:168257592968:android:cbb6d05f4163e39026493d"
-                groups = "testers"
-            }
         }
         acc {
             dimension "environment"
             versionNameSuffix "-acc"
             applicationIdSuffix ".acc"
             manifestPlaceholders = [appLabel: "@string/app_name_acc"]
-
-            firebaseAppDistribution {
-                appId = "1:168257592968:android:5df6b2057b90a30826493d"
-                groups = "testers"
-            }
         }
         prod {
             dimension "environment"
             manifestPlaceholders = [appLabel: "@string/app_name"]
-
-            firebaseAppDistribution {
-                appId = "1:168257592968:android:aaa5afb416536fdb26493d"
-                groups = "testers"
-            }
         }
     }
 
