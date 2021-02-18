@@ -4,7 +4,7 @@ import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.xwray.groupie.viewbinding.BindableItem
-import nl.rijksoverheid.ctr.shared.ext.fromHtml
+import nl.rijksoverheid.ctr.shared.ext.fromHtmlWithStyling
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.ItemScanInstructionBinding
 
@@ -23,7 +23,7 @@ class ScanInstructionAdapterItem(
     override fun bind(viewBinding: ItemScanInstructionBinding, position: Int) {
         val context = viewBinding.root.context
         viewBinding.title.setText(title)
-        viewBinding.description.text = context.getString(description).fromHtml()
+        viewBinding.description.text = context.getString(description).fromHtmlWithStyling(context)
         if (image == null) {
             viewBinding.image.visibility = View.GONE
         } else {
