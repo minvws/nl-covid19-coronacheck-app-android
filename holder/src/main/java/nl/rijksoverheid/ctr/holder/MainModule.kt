@@ -14,6 +14,7 @@ import nl.rijksoverheid.ctr.holder.status.StatusViewModel
 import nl.rijksoverheid.ctr.holder.usecase.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 /*
@@ -79,5 +80,11 @@ val mainModule = module {
 
     // Repositories
     single { AuthenticationRepository() }
-    single { HolderRepository(get(), get()) }
+    single {
+        HolderRepository(
+            get(),
+            get(named("SignedResponseWithModel")),
+            get(named("ResponseError"))
+        )
+    }
 }

@@ -4,10 +4,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.shared.api.SigningCertificate
 import nl.rijksoverheid.ctr.shared.api.TestApiClient
-import nl.rijksoverheid.ctr.shared.models.RemoteNonce
-import nl.rijksoverheid.ctr.shared.models.RemoteTestProviders
-import nl.rijksoverheid.ctr.shared.models.RemoteTestResult
-import nl.rijksoverheid.ctr.shared.models.SignedResponseWithModel
+import nl.rijksoverheid.ctr.shared.models.*
 import nl.rijksoverheid.ctr.shared.models.post.GetTestIsmPostData
 import nl.rijksoverheid.ctr.shared.models.post.GetTestResultPostData
 import okhttp3.ResponseBody
@@ -24,7 +21,8 @@ import retrofit2.HttpException
  */
 class HolderRepository(
     private val api: TestApiClient,
-    private val responseConverter: Converter<ResponseBody, SignedResponseWithModel<RemoteTestResult>>
+    private val responseConverter: Converter<ResponseBody, SignedResponseWithModel<RemoteTestResult>>,
+    private val errorResponseConverter: Converter<ResponseBody, ResponseError>
 ) {
 
     @Suppress("BlockingMethodInNonBlockingContext")
@@ -63,7 +61,7 @@ class HolderRepository(
     }
 
     @Suppress("BlockingMethodInNonBlockingContext")
-    suspend fun testIsmJson(test: String, sToken: String, icm: String): String {
+    suspend fun getTestIsm(test: String, sToken: String, icm: String): TestIsmResult {
         val response = api.getTestIsm(
             GetTestIsmPostData(
                 test = test,
@@ -71,13 +69,20 @@ class HolderRepository(
                 icm = JSONObject(icm).toString()
             )
         )
+
         return if (response.isSuccessful) {
-            response.body()?.use {
-                withContext(Dispatchers.IO) { it.string() }
-            }
+            val body =
+                response.body()?.string()
+                    ?: throw IllegalStateException("Body should not be null")
+            TestIsmResult.Success(body)
         } else {
-            null
-        } ?: throw HttpException(response)
+            val errorBody = response.errorBody() ?: throw HttpException(response)
+            withContext(Dispatchers.IO) {
+                val responseError =
+                    errorResponseConverter.convert(errorBody) ?: throw HttpException(response)
+                TestIsmResult.Error(responseError)
+            }
+        }
     }
 
     suspend fun remoteNonce(): RemoteNonce {
