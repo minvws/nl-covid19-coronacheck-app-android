@@ -9,6 +9,7 @@ include ':shared'
 include ':verifier'
 include ':holder'
 include ':signing'
+include ':ctcl'
 include ':appconfig'
 include ':cache-interceptors'
 
