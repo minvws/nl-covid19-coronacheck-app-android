@@ -4,16 +4,14 @@
     <string name="app_name_acc">Holder (Acc)</string>
     <string name="app_name">Holder</string>
     <string name="onboarding_title">Onboarding</string>
-    <string name="onboarding_screen_1_title">Veilig op pad</string>
-    <string name="onboarding_screen_1_description">We trekken er weer meer op uit. Doe vlak voor je uitje een coronatest en laat de negatieve testuitslag bij binnenkomst zien. Zo krijgen we corona samen onder controle.</string>
+    <string name="onboarding_screen_1_title">Getest en wel op pad</string>
+    <string name="onboarding_screen_1_description">Om zo veilig mogelijk op pad te kunnen is het belangrijk eerst een coronatest te doen. Alleen bij een negatieve test krijg je toegang tot de testevenementen van Fieldlab.</string>
     <string name="onboarding_screen_2_title">Jouw QR-code op zak</string>
-    <string name="onboarding_screen_2_description">In deze app zet je jouw testuitslag om in een QR-code. Deze laat je scannen bij de ingang van het café, in de rij voor een event of bij andere uitgaansgelegenheden.</string>
-    <string name="onboarding_screen_3_title">Uitslag geldt 2 dagen</string>
-    <string name="onboarding_screen_3_description">Een negatieve testuitslag is 2 dagen geldig. Daarna niet meer. De QR-code verdwijnt dan automatisch uit de app. Nieuwe QR nodig? Laat je dan opnieuw op corona testen.</string>
-    <string name="onboarding_screen_4_title">Een veilig systeem</string>
-    <string name="onboarding_screen_4_description">Er zijn zichtbare en onzichtbare maat-regelen om fraude tegen te gaan. Het is bijvoorbeeld niet mogelijk om een QR code door te sturen, en je kan niet met de QR code van iemand anders naar binnen. </string>
-    <string name="onboarding_screen_5_title">Privacy staat voorop</string>
-    <string name="onboarding_screen_5_description"><![CDATA[Deze app bewaart geen gebruiksdata of locatiegegevens, en geeft deze ook niet aan derden. <br/><br/><a href="google.com">Lees de privacyverklaring</a>]]></string>
+    <string name="onboarding_screen_2_description">Deze app maakt van jouw negatieve testresultaat een persoonlijke QR-code. Bij binnenkomst wordt deze QR-code gescand als bewijs dat je negatief getest bent.</string>
+    <string name="onboarding_screen_3_title">Privacy staat voorop</string>
+    <string name="onboarding_screen_3_description">Deze app haalt alleen een negatief testresultaat op. En controleert of dit jouw resultaat is. Andere gegevens worden niet verwerkt of opgeslagen.</string>
+    <string name="onboarding_screen_4_title">Bewijs geldt 48 uur</string>
+    <string name="onboarding_screen_4_description">Een negatief testresultaat is 48 uur geldig. In die periode is de kans dat je besmet raakt klein. Als je testresultaat afloopt verdwijnt de QR-code uit de app. Nieuwe QR-code nodig? Laat je opnieuw testen.</string>
     <string name="onboarding_next">Volgende</string>
     <string name="privacy_policy_title">Zo gebruikt deze app je gegevens</string>
     <string name="privacy_policy_description">In de privacyverklaring staat hoe CoronaTester jouw gegevens gebruikt. Dit zijn de belangrijkste punten.</string>

@@ -3,7 +3,6 @@ package nl.rijksoverheid.ctr.holder.introduction.onboarding
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.introduction.onboarding.OnboardingItemFragment
 import nl.rijksoverheid.ctr.holder.introduction.onboarding.models.OnboardingItem
 
 /*
@@ -15,7 +14,7 @@ import nl.rijksoverheid.ctr.holder.introduction.onboarding.models.OnboardingItem
  */
 class OnboardingPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
     override fun getItemCount(): Int {
-        return 5
+        return 4
     }
 
     override fun createFragment(position: Int): Fragment {
@@ -39,11 +38,6 @@ class OnboardingPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment
                 R.drawable.illustration_onboarding_4,
                 R.string.onboarding_screen_4_title,
                 R.string.onboarding_screen_4_description
-            )
-            4 -> OnboardingItem(
-                R.drawable.illustration_onboarding_5,
-                R.string.onboarding_screen_5_title,
-                R.string.onboarding_screen_5_description
             )
             else -> throw Exception("Cannot create OnboardingItem for position")
         }
