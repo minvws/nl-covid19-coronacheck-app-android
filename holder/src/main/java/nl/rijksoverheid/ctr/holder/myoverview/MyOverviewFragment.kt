@@ -17,7 +17,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
+import java.util.*
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -76,7 +76,7 @@ class MyOverviewFragment : DigiDFragment() {
     private fun presentLocalTestResult(localTestResult: LocalTestResult) {
         binding.qrCard.cardFooter.text = getString(
             R.string.my_overview_existing_qr_date, localTestResult.expireDate.format(
-                DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
+                DateTimeFormatter.ofPattern("dd MMMM HH:mm", Locale.getDefault())
             )
         )
 
