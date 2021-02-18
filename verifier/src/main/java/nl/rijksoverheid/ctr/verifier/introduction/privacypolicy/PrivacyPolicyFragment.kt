@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.xwray.groupie.GroupieAdapter
 import com.xwray.groupie.Section
+import nl.rijksoverheid.ctr.shared.ext.fromHtml
+import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.verifier.HideToolbar
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentPrivacyPolicyBinding
@@ -44,6 +46,11 @@ class PrivacyPolicyFragment : Fragment(), HideToolbar {
             if (!canPop) {
                 requireActivity().finish()
             }
+        }
+
+        binding.description.text = getString(R.string.privacy_policy_description).fromHtml()
+        binding.description.setOnClickListener {
+            getString(R.string.url_privacy_statement).launchUrl(requireContext())
         }
 
         val adapterItems = listOf(

@@ -15,7 +15,7 @@
     <string name="onboarding_screen_4_description">Met behulp van deze app kun je zo veilig mogelijk de deuren openen. Maar alleen als jouw zaak, evenement of uitgaansgelegen-heid onder de aangewezen locaties valt.</string>
     <string name="onboarding_next">Volgende</string>
     <string name="privacy_policy_title">Zo gebruikt deze app je gegevens</string>
-    <string name="privacy_policy_description">In de privacyverklaring staat hoe CoronaTester jouw gegevens gebruikt. Dit zijn de belangrijkste punten.</string>
+    <string name="privacy_policy_description"><![CDATA[In de <a href="#">privacyverklaring staat</a> hoe CoronaTester jouw gegevens gebruikt. Dit zijn de belangrijkste punten.]]></string>
     <string name="privacy_policy_1">Gebruik van CoronaTester is vrijwillig</string>
     <string name="privacy_policy_2">Dit is nog een regel lorem ipsum lorem ipsum</string>
     <string name="privacy_policy_checkbox_text">Ik heb de privacyverklaring gelezen en begrijp hoe de app mijn gegevens gebruikt</string>

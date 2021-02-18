@@ -1,8 +1,11 @@
 package nl.rijksoverheid.ctr.shared.ext
 
+import android.content.Context
+import android.net.Uri
 import android.os.Build
 import android.text.Html
 import android.text.Spanned
+import androidx.browser.customtabs.CustomTabsIntent
 import com.squareup.moshi.Moshi
 
 /*
@@ -22,5 +25,11 @@ fun String.fromHtml(): Spanned {
         Html.fromHtml(this, Html.FROM_HTML_MODE_LEGACY)
     } else {
         Html.fromHtml(this)
+    }
+}
+
+fun String.launchUrl(context: Context) {
+    CustomTabsIntent.Builder().build().also {
+        it.launchUrl(context, Uri.parse(this))
     }
 }

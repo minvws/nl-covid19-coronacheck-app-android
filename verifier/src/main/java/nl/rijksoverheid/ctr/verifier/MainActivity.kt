@@ -21,6 +21,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
+import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.ext.styleTitle
 import nl.rijksoverheid.ctr.verifier.databinding.ActivityMainBinding
 
@@ -72,10 +73,10 @@ class MainActivity : AppCompatActivity() {
         binding.navView.setNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_support -> {
-                    openBrowser(getString(R.string.url_support))
+                    getString(R.string.url_support).launchUrl(this)
                 }
                 R.id.nav_about_this_app -> {
-                    openBrowser(getString(R.string.url_about_this_app))
+                    getString(R.string.url_about_this_app).launchUrl(this)
                 }
                 else -> {
                     NavigationUI.onNavDestinationSelected(item, navController)
@@ -83,12 +84,6 @@ class MainActivity : AppCompatActivity() {
             }
             binding.drawerLayout.closeDrawer(GravityCompat.START)
             true
-        }
-    }
-
-    private fun openBrowser(url: String) {
-        CustomTabsIntent.Builder().build().also {
-            it.launchUrl(this, Uri.parse(url))
         }
     }
 
