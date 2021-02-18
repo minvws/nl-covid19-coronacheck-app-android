@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.holder.usecase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.holder.models.LocalTestResult
+import nl.rijksoverheid.ctr.holder.myoverview.models.LocalTestResultState
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.shared.repositories.TestResultRepository
 import nl.rijksoverheid.ctr.shared.util.TestResultUtil
@@ -24,7 +25,7 @@ class LocalTestResultUseCase(
     private val testResultAttributesUseCase: TestResultAttributesUseCase
 ) {
 
-    suspend fun get(): LocalTestResult? = withContext(Dispatchers.IO) {
+    suspend fun get(): LocalTestResultState = withContext(Dispatchers.IO) {
         val credentials = persistenceManager.getCredentials()
         if (credentials != null) {
             val testAttributes = testResultAttributesUseCase.get(credentials)
@@ -40,18 +41,18 @@ class LocalTestResultUseCase(
             )
 
             if (isValid) {
-                LocalTestResult(
+                LocalTestResultState.Valid(LocalTestResult(
                     credentials = credentials,
                     sampleDate = sampleDate,
                     testType = testAttributes.testType,
                     expireDate = sampleDate.plusSeconds(testValiditySeconds)
-                )
+                ))
             } else {
                 persistenceManager.deleteCredentials()
-                null
+                LocalTestResultState.Expired
             }
         } else {
-            null
+            LocalTestResultState.None
         }
     }
 }

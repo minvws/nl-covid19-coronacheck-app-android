@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.holder.models.LocalTestResult
+import nl.rijksoverheid.ctr.holder.myoverview.models.LocalTestResultState
 import nl.rijksoverheid.ctr.holder.usecase.LocalTestResultUseCase
 import nl.rijksoverheid.ctr.holder.usecase.SecretKeyUseCase
 import nl.rijksoverheid.ctr.shared.livedata.Event
@@ -22,18 +23,16 @@ class LocalTestResultViewModel(
     private val localTestResultUseCase: LocalTestResultUseCase
 ) : ViewModel() {
 
-    val localTestResultLiveData = MutableLiveData<Event<LocalTestResult>>()
+    val localTestResultStateLiveData = MutableLiveData<Event<LocalTestResultState>>()
 
     val retrievedLocalTestResult: LocalTestResult?
-        get() = localTestResultLiveData.value?.peekContent()
+        get() = (localTestResultStateLiveData.value?.peekContent() as? LocalTestResultState.Valid)?.localTestResult
 
-    fun getLocalTestResult(currentDateTime: OffsetDateTime) {
+    fun getLocalTestResult() {
         viewModelScope.launch {
             secretKeyUseCase.persist()
-            val localTestResult = localTestResultUseCase.get()
-            localTestResult?.let {
-                localTestResultLiveData.value = Event(localTestResult)
-            }
+            val localTestResultState = localTestResultUseCase.get()
+            localTestResultStateLiveData.value = Event(localTestResultState)
         }
     }
 }

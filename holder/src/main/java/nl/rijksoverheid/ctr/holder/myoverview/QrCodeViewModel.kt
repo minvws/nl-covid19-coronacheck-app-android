@@ -1,9 +1,10 @@
 package nl.rijksoverheid.ctr.holder.myoverview
 
-import android.graphics.Bitmap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.delay
+import nl.rijksoverheid.ctr.holder.models.LocalTestResult
+import nl.rijksoverheid.ctr.holder.myoverview.models.LocalTestResultState
 import nl.rijksoverheid.ctr.holder.usecase.QrCodeUseCase
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.util.QrCodeUtil
@@ -19,16 +20,16 @@ class QrCodeViewModel(
     private val qrCodeUseCase: QrCodeUseCase,
 ) : ViewModel() {
 
-    val qrCodeLiveData = MutableLiveData<Event<Bitmap>>()
+    val qrCodeLiveData = MutableLiveData<Event<LocalTestResultState.QrCode>>()
 
-    suspend fun generateQrCode(credentials: String, qrCodeSize: Int) {
+    suspend fun generateQrCode(localTestResult: LocalTestResult, qrCodeSize: Int) {
         while (true) {
             val qrCodeBitmap = qrCodeUseCase.qrCode(
-                credentials = credentials.toByteArray(),
+                credentials = localTestResult.credentials.toByteArray(),
                 qrCodeWidth = qrCodeSize,
                 qrCodeHeight = qrCodeSize
             )
-            qrCodeLiveData.value = Event(qrCodeBitmap)
+            qrCodeLiveData.value = Event(LocalTestResultState.QrCode(localTestResult, qrCodeBitmap))
             delay(QrCodeUtil.VALID_FOR_SECONDS * 1000)
         }
     }

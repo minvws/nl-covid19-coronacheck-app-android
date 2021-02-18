@@ -85,4 +85,5 @@
     <string name="app_status_update_required_action">Installeer update</string>
     <string name="app_status_deactivated_title">App buiten werking</string>
     <string name="app_status_deactivated_action">Lees meer op de website</string>
+    <string name="item_test_result_expired"><![CDATA[Je QR-code is verlopen.<br\>Laat je opnieuw testen.]]></string>
 </resources>
