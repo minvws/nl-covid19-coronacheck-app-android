@@ -8,11 +8,9 @@
 
 package nl.rijksoverheid.ctr.verifier
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
@@ -23,6 +21,7 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import nl.rijksoverheid.ctr.appconfig.AppStatusViewModel
 import nl.rijksoverheid.ctr.appconfig.model.AppStatus
+import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.ext.styleTitle
 import nl.rijksoverheid.ctr.verifier.databinding.ActivityMainBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -77,10 +76,10 @@ class MainActivity : AppCompatActivity() {
         binding.navView.setNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_support -> {
-                    openBrowser("https://www.google.com")
+                    getString(R.string.url_support).launchUrl(this)
                 }
-                R.id.nav_give_us_feedback -> {
-                    openBrowser("https://www.google.com")
+                R.id.nav_about_this_app -> {
+                    getString(R.string.url_about_this_app).launchUrl(this)
                 }
                 else -> {
                     NavigationUI.onNavDestinationSelected(item, navController)
@@ -104,12 +103,6 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         appStatusViewModel.refresh()
-    }
-
-    private fun openBrowser(url: String) {
-        CustomTabsIntent.Builder().build().also {
-            it.launchUrl(this, Uri.parse(url))
-        }
     }
 
     private fun navigationDrawerStyling() {

@@ -13,6 +13,8 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentPrivacyPolicyBinding
 import nl.rijksoverheid.ctr.holder.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.holder.introduction.privacypolicy.models.PrivacyPolicyItem
+import nl.rijksoverheid.ctr.shared.ext.fromHtml
+import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /*
@@ -44,6 +46,11 @@ class PrivacyPolicyFragment : Fragment(), HideToolbar {
             if (!canPop) {
                 requireActivity().finish()
             }
+        }
+
+        binding.description.text = getString(R.string.privacy_policy_description).fromHtml()
+        binding.description.setOnClickListener {
+            getString(R.string.url_privacy_statement).launchUrl(requireContext())
         }
 
         val adapterItems = listOf(
@@ -99,6 +106,5 @@ class PrivacyPolicyFragment : Fragment(), HideToolbar {
             introductionViewModel.setPrivacyPolicyFinished()
             findNavController().navigate(PrivacyPolicyFragmentDirections.actionHome())
         }
-
     }
 }

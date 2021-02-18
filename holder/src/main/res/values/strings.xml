@@ -14,7 +14,7 @@
     <string name="onboarding_screen_4_description">Een negatief testresultaat is 48 uur geldig. In die periode is de kans dat je besmet raakt klein. Als je testresultaat afloopt verdwijnt de QR-code uit de app. Nieuwe QR-code nodig? Laat je opnieuw testen.</string>
     <string name="onboarding_next">Volgende</string>
     <string name="privacy_policy_title">Zo gebruikt deze app je gegevens</string>
-    <string name="privacy_policy_description">In de privacyverklaring staat hoe CoronaTester jouw gegevens gebruikt. Dit zijn de belangrijkste punten.</string>
+    <string name="privacy_policy_description"><![CDATA[In de <a href="#">privacyverklaring staat</a> hoe CoronaTester jouw gegevens gebruikt. Dit zijn de belangrijkste punten.]]></string>
     <string name="privacy_policy_1">Gebruik van CoronaTester is vrijwillig</string>
     <string name="privacy_policy_2">Dit is nog een regel lorem ipsum lorem ipsum</string>
     <string name="privacy_policy_checkbox_text">Ik heb de privacyverklaring gelezen en begrijp hoe de app mijn gegevens gebruikt</string>

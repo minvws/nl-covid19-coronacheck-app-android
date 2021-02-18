@@ -108,12 +108,6 @@
     </dialog>
 
     <fragment
-        android:id="@+id/nav_about_this_app"
-        android:name="nl.rijksoverheid.ctr.verifier.about.AboutThisAppFragment"
-        android:label="@string/about_this_app"
-        tools:layout="@layout/fragment_about_this_app" />
-
-    <fragment
         android:id="@+id/nav_scan_instructions"
         android:name="nl.rijksoverheid.ctr.verifier.scaninstructions.ScanInstructionsFragment"
         android:label="@string/scan_instructions"
