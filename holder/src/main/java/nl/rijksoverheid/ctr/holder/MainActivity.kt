@@ -21,12 +21,17 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
+import nl.rijksoverheid.ctr.appconfig.AppStatusViewModel
+import nl.rijksoverheid.ctr.appconfig.model.AppStatus
 import nl.rijksoverheid.ctr.holder.databinding.ActivityMainBinding
 import nl.rijksoverheid.ctr.shared.ext.styleTitle
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+
+    private val appStatusViewModel: AppStatusViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,12 +91,28 @@ class MainActivity : AppCompatActivity() {
             binding.drawerLayout.closeDrawer(GravityCompat.START)
             true
         }
+
+
+        appStatusViewModel.appStatus.observe(this) {
+            when (it) {
+                is AppStatus.Deactivated,
+                is AppStatus.UpdateRequired -> navController.navigate(R.id.action_app_status)
+                else -> {
+                    // up to date
+                }
+            }
+        }
     }
 
     private fun openBrowser(url: String) {
         CustomTabsIntent.Builder().build().also {
             it.launchUrl(this, Uri.parse(url))
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        appStatusViewModel.refresh()
     }
 
     private fun navigationDrawerStyling() {

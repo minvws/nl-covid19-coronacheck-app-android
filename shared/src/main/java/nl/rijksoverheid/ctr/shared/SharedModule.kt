@@ -1,9 +1,12 @@
 package nl.rijksoverheid.ctr.shared
 
+import android.content.Context
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import nl.rijksoverheid.ctr.api.cache.CacheOverrideInterceptor
+import nl.rijksoverheid.ctr.api.cachestrategy.CacheStrategyInterceptor
 import nl.rijksoverheid.ctr.shared.api.SignedResponseInterceptor
 import nl.rijksoverheid.ctr.shared.api.TestApiClient
 import nl.rijksoverheid.ctr.shared.json.Base64JsonAdapter
@@ -12,11 +15,14 @@ import nl.rijksoverheid.ctr.shared.json.RemoteTestStatusJsonAdapter
 import nl.rijksoverheid.ctr.shared.models.RemoteTestResult
 import nl.rijksoverheid.ctr.shared.models.ResponseError
 import nl.rijksoverheid.ctr.shared.models.SignedResponseWithModel
-import nl.rijksoverheid.ctr.shared.repositories.ConfigRepository
 import nl.rijksoverheid.ctr.shared.repositories.TestResultRepository
-import nl.rijksoverheid.ctr.shared.usecases.AppStatusUseCase
 import nl.rijksoverheid.ctr.shared.usecases.SignatureValidUseCase
-import nl.rijksoverheid.ctr.shared.util.*
+import nl.rijksoverheid.ctr.shared.util.CryptoUtil
+import nl.rijksoverheid.ctr.shared.util.QrCodeScannerUtil
+import nl.rijksoverheid.ctr.shared.util.QrCodeUtil
+import nl.rijksoverheid.ctr.shared.util.TestResultUtil
+import nl.rijksoverheid.ctr.shared.util.ZxingQrCodeScannerUtil
+import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
@@ -26,6 +32,7 @@ import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import timber.log.Timber
+import java.io.File
 import java.time.Clock
 
 /*
@@ -40,9 +47,14 @@ val sharedModule = module {
     single { Clock.systemDefaultZone() }
 
     single {
+        val context = get(Context::class.java)
+        val cache = Cache(File(context.cacheDir, "http"), 10 * 1024 * 1024)
+
         val okHttpClient = OkHttpClient.Builder()
+            .cache(cache)
+            .addNetworkInterceptor(CacheOverrideInterceptor())
             .addNetworkInterceptor(StethoInterceptor())
-            .addNetworkInterceptor(SignedResponseInterceptor())
+            .addInterceptor(CacheStrategyInterceptor())
             .apply {
                 if (BuildConfig.DEBUG) {
                     addInterceptor(HttpLoggingInterceptor {
@@ -50,6 +62,7 @@ val sharedModule = module {
                     }.setLevel(HttpLoggingInterceptor.Level.BODY))
                 }
             }
+            .addInterceptor(SignedResponseInterceptor())
             .build()
 
         Retrofit.Builder()
@@ -100,11 +113,5 @@ val sharedModule = module {
         )
     }
 
-    single {
-        AppStatusUseCase(get())
-    }
-
-    // Repositories
-    single { ConfigRepository(get()) }
     single { TestResultRepository() }
 }

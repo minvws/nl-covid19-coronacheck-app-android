@@ -230,4 +230,15 @@
         android:label="@string/about_this_app"
         tools:layout="@layout/fragment_about_this_app" />
 
+    <fragment
+        android:id="@+id/nav_app_status"
+        android:name="nl.rijksoverheid.ctr.holder.appstatus.AppStatusFragment"
+        tools:layout="@layout/fragment_app_status" />
+
+    <action
+        android:id="@+id/action_app_status"
+        app:destination="@id/nav_app_status"
+        app:popUpTo="@id/main_nav"
+        app:popUpToInclusive="true" />
+
 </navigation>

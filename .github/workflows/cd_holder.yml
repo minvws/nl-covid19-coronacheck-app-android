@@ -8,6 +8,8 @@ on:
       - 'holder/**'
       - 'shared/**'
       - 'signing/**'
+      - 'appconfig/**'
+      - 'cache-interceptors/**'
 
 jobs:
   build-and-distribute:

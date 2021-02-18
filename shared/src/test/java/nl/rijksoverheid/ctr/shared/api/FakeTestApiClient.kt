@@ -8,7 +8,6 @@
 
 package nl.rijksoverheid.ctr.shared.api
 
-import nl.rijksoverheid.ctr.shared.models.Config
 import nl.rijksoverheid.ctr.shared.models.Issuers
 import nl.rijksoverheid.ctr.shared.models.RemoteAgent
 import nl.rijksoverheid.ctr.shared.models.RemoteEvent
@@ -28,10 +27,6 @@ abstract class FakeTestApiClient : TestApiClient {
     }
 
     override suspend fun getEvent(id: String): RemoteEvent {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun getHolderConfig(): Config {
         TODO("Not yet implemented")
     }
 
@@ -57,10 +52,6 @@ abstract class FakeTestApiClient : TestApiClient {
         data: GetTestResultPostData?,
         certificate: SigningCertificate
     ): SignedResponseWithModel<RemoteTestResult> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun getVerifierConfig(): Config {
         TODO("Not yet implemented")
     }
 }

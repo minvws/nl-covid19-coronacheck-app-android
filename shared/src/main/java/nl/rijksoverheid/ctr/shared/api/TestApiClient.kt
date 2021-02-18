@@ -1,6 +1,5 @@
 package nl.rijksoverheid.ctr.shared.api
 
-import nl.rijksoverheid.ctr.shared.models.Config
 import nl.rijksoverheid.ctr.shared.models.Issuers
 import nl.rijksoverheid.ctr.shared.models.RemoteAgent
 import nl.rijksoverheid.ctr.shared.models.RemoteEvent
@@ -44,13 +43,7 @@ interface TestApiClient {
     @GET("holder/config_ctp")
     suspend fun getConfigCtp(): RemoteTestProviders
 
-    @GET("holder/config")
-    suspend fun getHolderConfig(): Config
-
-    @GET("verifier/config")
-    suspend fun getVerifierConfig(): Config
-
-    @POST("holder/get_test_ism")
+    @POST("holder/get_test_ism/")
     suspend fun getTestIsm(
         @Body data: GetTestIsmPostData
     ): Response<ResponseBody>
