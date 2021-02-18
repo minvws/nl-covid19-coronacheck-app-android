@@ -14,7 +14,7 @@ import nl.rijksoverheid.ctr.verifier.introduction.onboarding.models.OnboardingIt
  */
 class OnboardingPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
     override fun getItemCount(): Int {
-        return 5
+        return 4
     }
 
     override fun createFragment(position: Int): Fragment {
@@ -25,7 +25,7 @@ class OnboardingPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment
                 R.string.onboarding_screen_1_description
             )
             1 -> OnboardingItem(
-                R.drawable.illustration_onboarding_2,
+                0,
                 R.string.onboarding_screen_2_title,
                 R.string.onboarding_screen_2_description
             )
@@ -35,14 +35,9 @@ class OnboardingPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment
                 R.string.onboarding_screen_3_description
             )
             3 -> OnboardingItem(
-                R.drawable.illustration_onboarding_4,
+                0,
                 R.string.onboarding_screen_4_title,
                 R.string.onboarding_screen_4_description
-            )
-            4 -> OnboardingItem(
-                R.drawable.illustration_onboarding_5,
-                R.string.onboarding_screen_5_title,
-                R.string.onboarding_screen_5_description
             )
             else -> throw Exception("Cannot create OnboardingItem for position")
         }
