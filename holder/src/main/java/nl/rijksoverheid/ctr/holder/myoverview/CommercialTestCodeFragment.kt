@@ -68,7 +68,6 @@ class CommercialTestCodeFragment : BaseFragment() {
         }
 
         viewModel.viewState.observe(viewLifecycleOwner) {
-            binding.button.visibility = if (it.verificationRequired) View.VISIBLE else View.GONE
             binding.button.isEnabled = it.canRetrieveResult
             binding.uniqueCodeText.imeOptions =
                 (if (it.verificationRequired) EditorInfo.IME_ACTION_NEXT else EditorInfo.IME_ACTION_SEND)
