@@ -88,6 +88,7 @@
             android:layout_marginBottom="16dp"
             android:enabled="false"
             android:text="@string/commercial_test_button"
+            app:layout_constrainedWidth="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
