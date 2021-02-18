@@ -76,10 +76,10 @@ class MainActivity : AppCompatActivity() {
         binding.navView.setNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_support -> {
-                    getString(R.string.url_support).launchUrl(this)
+                    BuildConfig.URL_SUPPORT.launchUrl(this)
                 }
                 R.id.nav_about_this_app -> {
-                    getString(R.string.url_about_this_app).launchUrl(this)
+                    BuildConfig.URL_ABOUT_THIS_APP.launchUrl(this)
                 }
                 else -> {
                     NavigationUI.onNavDestinationSelected(item, navController)
