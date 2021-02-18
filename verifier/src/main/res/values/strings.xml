@@ -19,7 +19,8 @@
     <string name="privacy_policy_1">Gebruik van CoronaTester is vrijwillig</string>
     <string name="privacy_policy_2">Dit is nog een regel lorem ipsum lorem ipsum</string>
     <string name="privacy_policy_checkbox_text">Ik heb de privacyverklaring gelezen en begrijp hoe de app mijn gegevens gebruikt</string>
-    <string name="dialog_error_title">Er is iets mis gegaan</string>
+    <string name="dialog_error_title">Technische fout</string>
+    <string name="dialog_error_message">Excuus, er is een technische fout opgetreden</string>
     <string name="ok">Ok</string>
     <string name="scan_qr_title">Scan QR-code</string>
     <string name="support">Support</string>

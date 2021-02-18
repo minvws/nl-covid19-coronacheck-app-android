@@ -21,7 +21,8 @@
     <string name="my_overview">Mijn overzicht</string>
     <string name="my_overview_description">Laat je QR code scannen voor de ingang van een uitgaansgelegenheid, om naar binnen te mogen.</string>
     <string name="my_overview_no_qr_description">Wil je een restaurant, event of andere uitgaansgelegenheid bezoeken? Daar heb je een negatieve testuitslag voor nodig, in de vorm van een QR-code.</string>
-    <string name="dialog_error_title">Er is iets mis gegaan</string>
+    <string name="dialog_error_title">Technische fout</string>
+    <string name="dialog_error_message">Excuus, er is een technische fout opgetreden</string>
     <string name="digid_login_failed">Inloggen met DigiD niet gelukt</string>
     <string name="ok">Oke</string>
     <string name="settings">Instellingen</string>
