@@ -4,6 +4,7 @@ import clmobile.Clmobile
 import nl.rijksoverheid.ctr.holder.repositories.HolderRepository
 import nl.rijksoverheid.ctr.shared.ext.successString
 import nl.rijksoverheid.ctr.shared.models.RemoteTestResult
+import nl.rijksoverheid.ctr.shared.models.ResponseError
 import nl.rijksoverheid.ctr.shared.models.TestIsmResult
 import retrofit2.HttpException
 import timber.log.Timber
@@ -81,7 +82,7 @@ class TestResultUseCase(
                     TestResult.Complete(remoteTestResult, credentials)
                 }
                 is TestIsmResult.Error -> {
-                    if (testIsm.responseError.code == 99994) {
+                    if (testIsm.responseError.code == ResponseError.CODE_ALREADY_SIGNED) {
                         TestResult.AlreadySigned
                     } else {
                         TestResult.ServerError

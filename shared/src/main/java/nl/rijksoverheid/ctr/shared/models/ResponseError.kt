@@ -10,4 +10,8 @@ package nl.rijksoverheid.ctr.shared.models
 data class ResponseError(
     val status: String,
     val code: Int
-)
+) {
+    companion object {
+        const val CODE_ALREADY_SIGNED = 99994
+    }
+}
