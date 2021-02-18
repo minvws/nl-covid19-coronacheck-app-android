@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name_test">Holder (Test)</string>
-    <string name="app_name_acc">Holder (Acc)</string>
-    <string name="app_name">Holder</string>
+    <string name="app_name_test">CoronaCheck (Test)</string>
+    <string name="app_name_acc">CoronaCheck (Acc)</string>
+    <string name="app_name">CoronaCheck</string>
     <string name="onboarding_title">Onboarding</string>
     <string name="onboarding_screen_1_title">Getest en wel op pad</string>
     <string name="onboarding_screen_1_description">Om zo veilig mogelijk op pad te kunnen is het belangrijk eerst een coronatest te doen. Alleen bij een negatieve test krijg je toegang tot de testevenementen van Fieldlab.</string>
