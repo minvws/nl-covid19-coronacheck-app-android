@@ -85,4 +85,8 @@
     <string name="app_status_update_required_action">Installeer update</string>
     <string name="app_status_deactivated_title">App buiten werking</string>
     <string name="app_status_deactivated_action">Lees meer op de website</string>
+    <string name="test_appointment_info_toolbar_title">Testafspraak maken</string>
+    <string name="test_appointment_info_title">Maak een testafspraak</string>
+    <string name="test_appointment_info_description"><![CDATA[Om een QR-code te maken moet je je eerst laten testen. Alleen van een negatief testresultaat kan je een QR-code maken.<br\><br\> Je QR-code is 48 uur geldig vanaf het moment dat je negatief getest bent. Plan je test dus kort voor je evenement. <a href="#">Lees de meestgestelde vragen over een test plannen.</a>]]></string>
+    <string name="test_appointment_info_button">Maak een afspraak</string>
 </resources>

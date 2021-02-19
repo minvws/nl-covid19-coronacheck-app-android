@@ -41,7 +41,7 @@ class MyOverviewFragment : BaseFragment(R.layout.fragment_my_overview) {
         val binding = FragmentMyOverviewBinding.bind(view)
 
         binding.createQrCard.createQrCardButton.setOnClickListener {
-            findNavController().navigate(MyOverviewFragmentDirections.actionChooseProvider())
+            findNavController().navigate(MyOverviewFragmentDirections.actionTestAppointmentInfo())
         }
 
         binding.qrCard.root.setOnClickListener {
