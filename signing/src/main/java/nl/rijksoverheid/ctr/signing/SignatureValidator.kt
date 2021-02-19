@@ -8,8 +8,6 @@ package nl.rijksoverheid.ctr.signing
 
 import org.bouncycastle.asn1.x500.style.BCStyle
 import org.bouncycastle.asn1.x500.style.IETFUtils
-import org.bouncycastle.asn1.x509.AuthorityKeyIdentifier
-import org.bouncycastle.asn1.x509.SubjectKeyIdentifier
 import org.bouncycastle.cert.jcajce.JcaCertStoreBuilder
 import org.bouncycastle.cert.jcajce.JcaX509CertificateHolder
 import org.bouncycastle.cms.CMSSignedDataParser
@@ -18,7 +16,6 @@ import org.bouncycastle.cms.SignerId
 import org.bouncycastle.cms.jcajce.JcaSimpleSignerInfoVerifierBuilder
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.bouncycastle.operator.jcajce.JcaDigestCalculatorProviderBuilder
-import org.bouncycastle.util.encoders.Hex
 import java.io.BufferedInputStream
 import java.io.ByteArrayInputStream
 import java.io.InputStream
@@ -31,14 +28,6 @@ import java.security.cert.PKIXCertPathBuilderResult
 import java.security.cert.TrustAnchor
 import java.security.cert.X509CertSelector
 import java.security.cert.X509Certificate
-
-// The publicly known default SubjectKeyIdentifier for the root PKI-O CA, retrieved from the device trust store
-private val DEFAULT_ANCHOR_SUBJECT_KEY_IDENTIFIER =
-    SubjectKeyIdentifier(Hex.decode("0414feab0090989e24fca9cc1a8afb27b8bf306ea83b"))
-
-// The publicly known default AuthorityKeyIdentifier for the issuer that issued the signing certificate
-private val DEFAULT_AUTHORITY_KEY_IDENTIFIER =
-    AuthorityKeyIdentifier(Hex.decode("30168014084aaabb99246fbe5b07f1a58a995b2d47efb93c"))
 
 class SignatureValidator private constructor(
     private val signingCertificate: X509Certificate?,
