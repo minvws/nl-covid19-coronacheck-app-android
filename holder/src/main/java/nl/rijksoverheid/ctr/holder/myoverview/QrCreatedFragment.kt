@@ -13,7 +13,7 @@ import org.koin.androidx.viewmodel.ViewModelOwner
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.scope.emptyState
 import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
+import java.util.*
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -53,7 +53,9 @@ class QrCreatedFragment : Fragment() {
         } else {
             binding.description.text = getString(
                 R.string.create_qr_code_description, result.sampleDate.format(
-                    DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)
+                    DateTimeFormatter.ofPattern("dd MMMM", Locale.getDefault())
+                ), result.sampleDate.format(
+                    DateTimeFormatter.ofPattern("HH:mm", Locale.getDefault())
                 )
             ).fromHtml()
         }

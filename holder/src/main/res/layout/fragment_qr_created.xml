@@ -15,7 +15,8 @@
             android:id="@+id/image"
             android:layout_width="match_parent"
             android:layout_height="260dp"
-            android:background="@color/grey_light"
+            android:scaleType="centerInside"
+            android:src="@drawable/illustration_qr_created"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -50,7 +51,7 @@
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:text="@string/button_continue"
+            android:text="@string/create_qr_code_button"
             app:layout_constrainedWidth="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
