@@ -10,9 +10,7 @@ package nl.rijksoverheid.ctr.holder
 
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.fragment.NavHostFragment
@@ -22,11 +20,12 @@ import androidx.navigation.ui.setupWithNavController
 import nl.rijksoverheid.ctr.appconfig.AppStatusViewModel
 import nl.rijksoverheid.ctr.appconfig.model.AppStatus
 import nl.rijksoverheid.ctr.holder.databinding.ActivityMainBinding
+import nl.rijksoverheid.ctr.shared.BaseActivity
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.ext.styleTitle
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity(R.id.nav_my_overview) {
 
     private lateinit var binding: ActivityMainBinding
 
@@ -68,10 +67,8 @@ class MainActivity : AppCompatActivity() {
                     when (f) {
                         is NavHostFragment, is HideToolbar -> {
                             binding.toolbar.visibility = View.GONE
-                            binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
                         }
                         else -> {
-                            binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
                             binding.toolbar.visibility = View.VISIBLE
                         }
                     }
