@@ -47,9 +47,9 @@
     <string name="choose_provider_ggd_subtitle">Log in met je DigiD</string>
     <string name="choose_provider_no_digid">Ik heb geen DigiD</string>
     <string name="commercial_test_type_title">Testresultaat ophalen</string>
-    <string name="commercial_test_type_description">Heb je je laten testen bij een commerciele testlocatie? Dan heb je een unieke code gekregen of een QR-code.</string>
-    <string name="commercial_test_type_code_title">Ik heb een code gekregen</string>
-    <string name="commercial_test_type_qr_code_title">Ik heb een QR-code gekregen</string>
+    <string name="commercial_test_type_description">Heb je je laten testen bij een commerciële testlocatie? Dan heb je een unieke code gekregen of een QR-code.</string>
+    <string name="commercial_test_type_code_title">Ik heb een code</string>
+    <string name="commercial_test_type_qr_code_title">Ik heb een QR-code </string>
     <string name="commercial_test_type_no_code_title">Ik heb geen code</string>
     <string name="commercial_test_type_no_code_description">Als je je bij een commerciele testlocatie hebt laten testen krijg je een code gemaild of op papier. De code kan een QR-code zijn of een code met cijfers en letters.\nHeb je geen code gekregen? Of ben je code kwijt geraakt? Neem dan contact op met je testlocatie.\nHet kan zijn dat je je opnieuw moet laten testen.</string>
     <string name="commercial_test_code_title">Code invullen</string>
