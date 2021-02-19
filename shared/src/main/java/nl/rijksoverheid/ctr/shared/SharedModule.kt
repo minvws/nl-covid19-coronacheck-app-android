@@ -68,13 +68,14 @@ val sharedModule = module {
                     }.setLevel(HttpLoggingInterceptor.Level.BODY))
                 }
             }
-            .addInterceptor(SignedResponseInterceptor())
+            .addInterceptor(SignedResponseInterceptor()).build()
     }
 
     single {
         val context = get(Context::class.java)
         val cache = Cache(File(context.cacheDir, "http"), 10 * 1024 * 1024)
-        val okHttpClient = get(OkHttpClient.Builder::class.java)
+        val okHttpClient = get(OkHttpClient::class.java)
+            .newBuilder()
             .cache(cache)
             .apply {
                 if (BuildConfig.FEATURE_API_SSL_ROOT_CA) {
@@ -100,15 +101,16 @@ val sharedModule = module {
     }
 
     single {
-        val handshakeCertificates = HandshakeCertificates.Builder()
-            .addTrustedCertificate(ROOT_CA_G3.decodeCertificatePem())
-            .addTrustedCertificate(EV_ROOT_CA.decodeCertificatePem())
-            .addTrustedCertificate(PRIVATE_ROOT_CA.decodeCertificatePem())
-            .build()
-
-        val okHttpClient = get(OkHttpClient.Builder::class.java)
+        val okHttpClient = get(OkHttpClient::class.java)
+            .newBuilder()
             .apply {
                 if (BuildConfig.FEATURE_TEST_PROVIDER_TRUSTED_ROOTS) {
+                    val handshakeCertificates = HandshakeCertificates.Builder()
+                        .addTrustedCertificate(ROOT_CA_G3.decodeCertificatePem())
+                        .addTrustedCertificate(EV_ROOT_CA.decodeCertificatePem())
+                        .addTrustedCertificate(PRIVATE_ROOT_CA.decodeCertificatePem())
+                        .build()
+
                     sslSocketFactory(
                         handshakeCertificates.sslSocketFactory(),
                         handshakeCertificates.trustManager
