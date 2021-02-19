@@ -25,7 +25,7 @@ class OnboardingPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment
                 R.string.onboarding_screen_1_description
             )
             1 -> OnboardingItem(
-                0,
+                R.drawable.illustration_onboarding_2,
                 R.string.onboarding_screen_2_title,
                 R.string.onboarding_screen_2_description
             )
@@ -35,7 +35,7 @@ class OnboardingPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment
                 R.string.onboarding_screen_3_description
             )
             3 -> OnboardingItem(
-                0,
+                R.drawable.illustration_onboarding_4,
                 R.string.onboarding_screen_4_title,
                 R.string.onboarding_screen_4_description
             )
