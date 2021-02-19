@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import nl.rijksoverheid.ctr.holder.BaseFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMyOverviewBinding
-import nl.rijksoverheid.ctr.holder.digid.DigiDFragment
 import nl.rijksoverheid.ctr.holder.models.LocalTestResult
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.androidx.viewmodel.ViewModelOwner
@@ -26,7 +26,7 @@ import java.time.format.FormatStyle
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class MyOverviewFragment : DigiDFragment() {
+class MyOverviewFragment : BaseFragment() {
 
     private lateinit var binding: FragmentMyOverviewBinding
     private val localTestResultViewModel: LocalTestResultViewModel by sharedViewModel(
@@ -50,10 +50,6 @@ class MyOverviewFragment : DigiDFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.createQrCard.createQrCardButton.setOnClickListener {
-            findNavController().navigate(MyOverviewFragmentDirections.actionChooseProvider())
-        }
-
         binding.createQrCard.createQrCardButton.setOnClickListener {
             findNavController().navigate(MyOverviewFragmentDirections.actionChooseProvider())
         }

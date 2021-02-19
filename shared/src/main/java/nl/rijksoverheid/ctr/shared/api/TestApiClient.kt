@@ -1,23 +1,11 @@
 package nl.rijksoverheid.ctr.shared.api
 
-import nl.rijksoverheid.ctr.shared.models.Issuers
-import nl.rijksoverheid.ctr.shared.models.RemoteAgent
-import nl.rijksoverheid.ctr.shared.models.RemoteEvent
-import nl.rijksoverheid.ctr.shared.models.RemoteNonce
-import nl.rijksoverheid.ctr.shared.models.RemoteTestProviders
-import nl.rijksoverheid.ctr.shared.models.RemoteTestResult
-import nl.rijksoverheid.ctr.shared.models.SignedResponseWithModel
+import nl.rijksoverheid.ctr.shared.models.*
 import nl.rijksoverheid.ctr.shared.models.post.GetTestIsmPostData
 import nl.rijksoverheid.ctr.shared.models.post.GetTestResultPostData
 import okhttp3.ResponseBody
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.POST
-import retrofit2.http.Path
-import retrofit2.http.Tag
-import retrofit2.http.Url
+import retrofit2.http.*
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -43,7 +31,7 @@ interface TestApiClient {
     @GET("holder/config_ctp")
     suspend fun getConfigCtp(): RemoteTestProviders
 
-    @POST("holder/get_test_ism/")
+    @POST("holder/get_test_ism")
     suspend fun getTestIsm(
         @Body data: GetTestIsmPostData
     ): Response<ResponseBody>

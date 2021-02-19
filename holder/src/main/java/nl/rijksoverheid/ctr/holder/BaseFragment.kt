@@ -29,7 +29,10 @@ open class BaseFragment : Fragment() {
         }
     }
 
-    fun presentError(titleRes: Int = R.string.dialog_error_title, messageRes: Int = R.string.dialog_error_title) {
+    fun presentError(
+        titleRes: Int = R.string.dialog_error_title,
+        messageRes: Int = R.string.dialog_error_message
+    ) {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(getString(titleRes))
             .setMessage(getString(messageRes))

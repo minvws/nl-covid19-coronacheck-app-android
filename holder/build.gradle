@@ -3,12 +3,13 @@ plugins {
     id "kotlin-android"
     id "kotlin-kapt"
     id "koin"
-    id "com.google.firebase.appdistribution"
     id 'kotlin-parcelize'
     id "androidx.navigation.safeargs.kotlin"
 }
 
 def appVersionCode = System.getenv("GITHUB_RUN_NUMBER") != null ? System.getenv("GITHUB_RUN_NUMBER").toInteger() : 1
+version = "1.0"
+archivesBaseName = "holder-v${version}-${appVersionCode}"
 
 android {
     buildFeatures {
@@ -18,7 +19,7 @@ android {
     defaultConfig {
         applicationId "nl.rijksoverheid.ctr.holder"
         versionCode appVersionCode
-        versionName "1.0"
+        versionName version
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -26,10 +27,10 @@ android {
 
     signingConfigs {
         release {
-            storeFile file('demo_keystore.jks')
-            storePassword 'store_password'
-            keyAlias = 'key_alias'
-            keyPassword 'key_password'
+            storeFile file('../keystore.jks')
+            storePassword System.getenv("KEYSTORE_PASSWORD")
+            keyAlias System.getenv("KEYSTORE_KEY_ALIAS")
+            keyPassword System.getenv("KEYSTORE_KEY_PASSWORD")
         }
     }
 
@@ -48,31 +49,16 @@ android {
             versionNameSuffix "-test"
             applicationIdSuffix ".test"
             manifestPlaceholders = [appLabel: "@string/app_name_test"]
-
-            firebaseAppDistribution {
-                appId = "1:168257592968:android:cbb6d05f4163e39026493d"
-                groups = "testers"
-            }
         }
         acc {
             dimension "environment"
             versionNameSuffix "-acc"
             applicationIdSuffix ".acc"
             manifestPlaceholders = [appLabel: "@string/app_name_acc"]
-
-            firebaseAppDistribution {
-                appId = "1:168257592968:android:5df6b2057b90a30826493d"
-                groups = "testers"
-            }
         }
         prod {
             dimension "environment"
             manifestPlaceholders = [appLabel: "@string/app_name"]
-
-            firebaseAppDistribution {
-                appId = "1:168257592968:android:aaa5afb416536fdb26493d"
-                groups = "testers"
-            }
         }
     }
 
