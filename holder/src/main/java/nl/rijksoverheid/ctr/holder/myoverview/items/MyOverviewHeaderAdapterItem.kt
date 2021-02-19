@@ -12,7 +12,8 @@ import nl.rijksoverheid.ctr.holder.databinding.ItemMyOverviewHeaderBinding
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class MyOverviewHeaderAdapterItem : BindableItem<ItemMyOverviewHeaderBinding>() {
+class MyOverviewHeaderAdapterItem :
+    BindableItem<ItemMyOverviewHeaderBinding>(R.layout.item_my_overview_header.toLong()) {
     override fun bind(viewBinding: ItemMyOverviewHeaderBinding, position: Int) {
 
     }

@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.holder.myoverview.models
 
+import android.graphics.Bitmap
 import nl.rijksoverheid.ctr.holder.models.LocalTestResult
 
 /*
@@ -9,8 +10,7 @@ import nl.rijksoverheid.ctr.holder.models.LocalTestResult
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-sealed class LocalTestResultState {
-    data class Valid(val localTestResult: LocalTestResult) : LocalTestResultState()
-    object Expired : LocalTestResultState()
-    object None : LocalTestResultState()
-}
+data class QrCodeData(
+    val localTestResult: LocalTestResult,
+    val qrCode: Bitmap
+)

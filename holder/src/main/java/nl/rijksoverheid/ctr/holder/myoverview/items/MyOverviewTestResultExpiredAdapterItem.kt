@@ -13,7 +13,7 @@ import nl.rijksoverheid.ctr.holder.databinding.ItemMyOverviewTestResultExpiredBi
  *
  */
 class MyOverviewTestResultExpiredAdapterItem(private val onDismissClick: () -> Unit) :
-    BindableItem<ItemMyOverviewTestResultExpiredBinding>() {
+    BindableItem<ItemMyOverviewTestResultExpiredBinding>(R.layout.item_my_overview_test_result_expired.toLong()) {
     override fun bind(viewBinding: ItemMyOverviewTestResultExpiredBinding, position: Int) {
         viewBinding.close.setOnClickListener {
             onDismissClick.invoke()

@@ -1,10 +1,11 @@
 package nl.rijksoverheid.ctr.holder.myoverview.items
 
+import android.graphics.Bitmap
 import android.view.View
 import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.ItemMyOverviewTestResultBinding
-import nl.rijksoverheid.ctr.holder.myoverview.models.LocalTestResultState
+import nl.rijksoverheid.ctr.holder.models.LocalTestResult
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
@@ -15,35 +16,26 @@ import java.time.format.FormatStyle
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class MyOverviewTestResultAdapterItem(private val localTestResultValid: LocalTestResultState) :
-    BindableItem<ItemMyOverviewTestResultBinding>() {
+class MyOverviewTestResultAdapterItem(
+    private val localTestResult: LocalTestResult,
+    private val qrCode: Bitmap? = null
+) :
+    BindableItem<ItemMyOverviewTestResultBinding>(R.layout.item_my_overview_test_result.toLong()) {
     override fun bind(viewBinding: ItemMyOverviewTestResultBinding, position: Int) {
         val context = viewBinding.root.context
 
-        when (localTestResultValid) {
-            is LocalTestResultState.QrCode -> {
-                viewBinding.testResultLoading.visibility = View.GONE
-                viewBinding.testResultQrImage.setImageBitmap(localTestResultValid.qrCode)
-                viewBinding.testResultFooter.text = context.getString(
-                    R.string.my_overview_existing_qr_date,
-                    localTestResultValid.localTestResult.expireDate.format(
-                        DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
-                    )
-                )
+        viewBinding.testResultFooter.text = context.getString(
+            R.string.my_overview_existing_qr_date,
+            localTestResult.expireDate.format(
+                DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
+            )
+        )
 
-            }
-            is LocalTestResultState.Valid -> {
-                viewBinding.testResultLoading.visibility = View.VISIBLE
-                viewBinding.testResultFooter.text = context.getString(
-                    R.string.my_overview_existing_qr_date,
-                    localTestResultValid.localTestResult.expireDate.format(
-                        DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
-                    )
-                )
-            }
-            else -> {
-                // Nothing
-            }
+        if (qrCode == null) {
+            viewBinding.testResultLoading.visibility = View.VISIBLE
+        } else {
+            viewBinding.testResultLoading.visibility = View.GONE
+            viewBinding.testResultQrImage.setImageBitmap(qrCode)
         }
     }
 

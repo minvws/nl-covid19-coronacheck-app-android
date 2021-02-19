@@ -20,7 +20,7 @@ class MyOverviewNavigationCardAdapterItem(
     @ColorRes private val backgroundColor: Int,
     @StringRes private val buttonText: Int,
     private val onButtonClick: () -> Unit
-) : BindableItem<ItemMyOverviewNavigationCardBinding>() {
+) : BindableItem<ItemMyOverviewNavigationCardBinding>(R.layout.item_my_overview_navigation_card.toLong()) {
     override fun bind(viewBinding: ItemMyOverviewNavigationCardBinding, position: Int) {
         viewBinding.title.setText(title)
         viewBinding.description.setText(description)
