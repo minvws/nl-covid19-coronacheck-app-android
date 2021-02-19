@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.holder
 
 import android.app.ProgressDialog
+import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
@@ -11,7 +12,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-open class BaseFragment(contentLayoutId: Int) : Fragment(contentLayoutId) {
+open class BaseFragment(@LayoutRes contentLayoutId: Int) : Fragment(contentLayoutId) {
 
     // TODO: Make non blocking loaders
     val progressDialog by lazy {
