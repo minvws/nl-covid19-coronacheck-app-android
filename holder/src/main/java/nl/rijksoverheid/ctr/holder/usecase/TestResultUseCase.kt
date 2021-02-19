@@ -5,6 +5,7 @@ import nl.rijksoverheid.ctr.holder.repositories.HolderRepository
 import nl.rijksoverheid.ctr.shared.ext.successString
 import nl.rijksoverheid.ctr.shared.models.RemoteTestResult
 import nl.rijksoverheid.ctr.shared.models.ResponseError
+import nl.rijksoverheid.ctr.shared.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.shared.models.TestIsmResult
 import retrofit2.HttpException
 import timber.log.Timber
@@ -57,38 +58,7 @@ class TestResultUseCase(
             }
 
             val result = remoteTestResult.result ?: error("Expected result")
-
-            // Persist encrypted test result
-            val remoteNonce = holderRepository.remoteNonce()
-            val commitmentMessage = commitmentMessageUseCase.json(
-                nonce = remoteNonce.nonce
-            )
-            Timber.i("Received commitment message $commitmentMessage")
-
-            val testIsm = holderRepository.getTestIsm(
-                test = signedResponseWithTestResult.rawResponse.toString(Charsets.UTF_8),
-                sToken = remoteNonce.sToken,
-                icm = commitmentMessage
-            )
-            when (testIsm) {
-                is TestIsmResult.Success -> {
-                    Timber.i("Received test ism json ${testIsm.body}")
-
-                    val credentials = Clmobile.createCredential(
-                        secretKeyUseCase.json().toByteArray(Charsets.UTF_8),
-                        testIsm.body.toByteArray(Charsets.UTF_8)
-                    ).successString()
-
-                    TestResult.Complete(remoteTestResult, credentials)
-                }
-                is TestIsmResult.Error -> {
-                    if (testIsm.responseError.code == ResponseError.CODE_ALREADY_SIGNED) {
-                        TestResult.AlreadySigned
-                    } else {
-                        TestResult.ServerError
-                    }
-                }
-            }
+            TestResult.Complete(remoteTestResult, signedResponseWithTestResult)
         } catch (ex: HttpException) {
             Timber.e(ex, "Server error while getting test result")
             TestResult.ServerError
@@ -97,16 +67,61 @@ class TestResultUseCase(
             TestResult.NetworkError
         }
     }
+
+    suspend fun signTestResult(
+        remoteTestResult: RemoteTestResult,
+        signedResponseWithTestResult: SignedResponseWithModel<RemoteTestResult>
+    ): SignedTestResult {
+        // Persist encrypted test result
+        val remoteNonce = holderRepository.remoteNonce()
+        val commitmentMessage = commitmentMessageUseCase.json(
+            nonce = remoteNonce.nonce
+        )
+        Timber.i("Received commitment message $commitmentMessage")
+
+        val testIsm = holderRepository.getTestIsm(
+            test = signedResponseWithTestResult.rawResponse.toString(Charsets.UTF_8),
+            sToken = remoteNonce.sToken,
+            icm = commitmentMessage
+        )
+        when (testIsm) {
+            is TestIsmResult.Success -> {
+                Timber.i("Received test ism json ${testIsm.body}")
+
+                val credentials = Clmobile.createCredential(
+                    secretKeyUseCase.json().toByteArray(Charsets.UTF_8),
+                    testIsm.body.toByteArray(Charsets.UTF_8)
+                ).successString()
+
+                return SignedTestResult.Complete(credentials)
+            }
+            is TestIsmResult.Error -> {
+                return if (testIsm.responseError.code == ResponseError.CODE_ALREADY_SIGNED) {
+                    SignedTestResult.AlreadySigned
+                } else {
+                    SignedTestResult.ServerError
+                }
+            }
+        }
+    }
 }
 
 sealed class TestResult {
-    data class Complete(val remoteTestResult: RemoteTestResult, val credentials: String) :
+    data class Complete(
+        val remoteTestResult: RemoteTestResult,
+        val signedResponseWithTestResult: SignedResponseWithModel<RemoteTestResult>
+    ) :
         TestResult()
 
-    object AlreadySigned : TestResult()
     object Pending : TestResult()
     object InvalidToken : TestResult()
     object VerificationRequired : TestResult()
     object ServerError : TestResult()
     object NetworkError : TestResult()
+}
+
+sealed class SignedTestResult {
+    data class Complete(val credentials: String) : SignedTestResult()
+    object AlreadySigned : SignedTestResult()
+    object ServerError : SignedTestResult()
 }

@@ -1,9 +1,7 @@
 package nl.rijksoverheid.ctr.holder.myoverview
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -26,7 +24,7 @@ import java.util.*
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class MyOverviewFragment : BaseFragment() {
+class MyOverviewFragment : BaseFragment(R.layout.fragment_my_overview) {
 
     private lateinit var binding: FragmentMyOverviewBinding
     private val localTestResultViewModel: LocalTestResultViewModel by sharedViewModel(
@@ -39,17 +37,10 @@ class MyOverviewFragment : BaseFragment() {
     )
     private val qrCodeViewModel: QrCodeViewModel by viewModel()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentMyOverviewBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding = FragmentMyOverviewBinding.bind(view)
+
         binding.createQrCard.createQrCardButton.setOnClickListener {
             findNavController().navigate(MyOverviewFragmentDirections.actionChooseProvider())
         }

@@ -15,7 +15,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-open class DigiDFragment : BaseFragment() {
+open class DigiDFragment : BaseFragment(0) {
 
     protected val digidViewModel: DigiDViewModel by viewModel()
     private val authService by lazy { AuthorizationService(requireActivity()) }
