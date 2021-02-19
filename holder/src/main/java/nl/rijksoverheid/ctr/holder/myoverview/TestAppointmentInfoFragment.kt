@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentTestAppointmentInfoBinding
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
+import nl.rijksoverheid.ctr.shared.ext.launchUrl
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -21,6 +23,9 @@ class TestAppointmentInfoFragment : Fragment(R.layout.fragment_test_appointment_
         super.onViewCreated(view, savedInstanceState)
 
         val binding = FragmentTestAppointmentInfoBinding.bind(view)
+        binding.description.setOnClickListener {
+            BuildConfig.URL_FAQ.launchUrl(requireContext())
+        }
         binding.description.text =
             getString(R.string.test_appointment_info_description).fromHtml()
         binding.button.setOnClickListener {
