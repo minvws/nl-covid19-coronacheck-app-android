@@ -16,11 +16,11 @@ import com.squareup.moshi.Moshi
  *
  */
 inline fun <reified O> String.toObject(moshi: Moshi): O {
-    return moshi.adapter(O::class.java).fromJson(this) ?: throw Exception("Failed to create object from json string")
+    return moshi.adapter(O::class.java).fromJson(this)
+        ?: throw Exception("Failed to create object from json string")
 }
 
-@Suppress("DEPRECATION")
-fun String.fromHtml(): Spanned {
+inline fun String.fromHtml(): Spanned {
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
         Html.fromHtml(this, Html.FROM_HTML_MODE_LEGACY)
     } else {
