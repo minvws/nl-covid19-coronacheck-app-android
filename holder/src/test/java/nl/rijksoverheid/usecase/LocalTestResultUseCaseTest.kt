@@ -6,6 +6,7 @@ import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.holder.models.LocalTestResult
+import nl.rijksoverheid.ctr.holder.myoverview.models.LocalTestResultState
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.usecase.LocalTestResultUseCase
 import nl.rijksoverheid.ctr.holder.usecase.TestResultAttributesUseCase
@@ -13,7 +14,6 @@ import nl.rijksoverheid.ctr.shared.models.TestResultAttributes
 import nl.rijksoverheid.ctr.shared.repositories.TestResultRepository
 import nl.rijksoverheid.ctr.shared.util.TestResultUtil
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNull
 import org.junit.Test
 import java.time.Instant
 import java.time.OffsetDateTime
@@ -40,7 +40,7 @@ class LocalTestResultUseCaseTest {
     )
 
     @Test
-    fun `Getting invalid test result returns no test result and clears local stored test result`() =
+    fun `Getting invalid test result returns test result state expired and clears local stored test result`() =
         runBlocking {
             val credentials = "credentials"
             val sampleDate = OffsetDateTime.ofInstant(Instant.ofEpochSecond(0), ZoneOffset.UTC)
@@ -59,11 +59,11 @@ class LocalTestResultUseCaseTest {
             val result = localTestResultUseCase.get()
 
             verify(exactly = 1) { persistenceManager.deleteCredentials() }
-            assertNull(result)
+            assertEquals(result, LocalTestResultState.Expired)
         }
 
     @Test
-    fun `Getting valid test result returns test result and does not clear local stored test result`() =
+    fun `Getting valid test result returns test result state success and does not clear local stored test result`() =
         runBlocking {
             val credentials = "credentials"
             val sampleDate = OffsetDateTime.ofInstant(Instant.ofEpochSecond(0), ZoneOffset.UTC)
@@ -89,7 +89,7 @@ class LocalTestResultUseCaseTest {
             val result = localTestResultUseCase.get()
 
             verify(exactly = 0) { persistenceManager.deleteCredentials() }
-            assertEquals(result, localTestResult)
+            assertEquals(result, LocalTestResultState.Valid(localTestResult))
         }
 
 }
