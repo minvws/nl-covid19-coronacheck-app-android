@@ -7,13 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.databinding.FragmentCreateQrBinding
+import nl.rijksoverheid.ctr.holder.databinding.FragmentQrCreatedBinding
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
 import org.koin.androidx.viewmodel.ViewModelOwner
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.scope.emptyState
 import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
+import java.util.*
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -22,9 +22,9 @@ import java.time.format.FormatStyle
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class CreateQrFragment : Fragment() {
+class QrCreatedFragment : Fragment() {
 
-    private lateinit var binding: FragmentCreateQrBinding
+    private lateinit var binding: FragmentQrCreatedBinding
     private val viewModel: TestResultsViewModel by sharedViewModel(
         state = emptyState(),
         owner = {
@@ -39,7 +39,7 @@ class CreateQrFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentCreateQrBinding.inflate(inflater, container, false)
+        binding = FragmentQrCreatedBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -49,18 +49,20 @@ class CreateQrFragment : Fragment() {
         val result = viewModel.retrievedResult?.remoteTestResult?.result
         if (result == null) {
             // restored from state, no result anymore
-            findNavController().navigate(CreateQrFragmentDirections.actionHome())
+            findNavController().navigate(QrCreatedFragmentDirections.actionHome())
         } else {
             binding.description.text = getString(
                 R.string.create_qr_code_description, result.sampleDate.format(
-                    DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)
+                    DateTimeFormatter.ofPattern("dd MMMM", Locale.getDefault())
+                ), result.sampleDate.format(
+                    DateTimeFormatter.ofPattern("HH:mm", Locale.getDefault())
                 )
             ).fromHtml()
         }
 
         binding.button.setOnClickListener {
             viewModel.saveTestResult()
-            findNavController().navigate(CreateQrFragmentDirections.actionHome())
+            findNavController().navigate(QrCreatedFragmentDirections.actionHome())
         }
     }
 }

@@ -12,7 +12,7 @@ import org.koin.androidx.viewmodel.ViewModelOwner
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.scope.emptyState
 import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
+import java.util.*
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -43,7 +43,9 @@ class YourNegativeTestResultFragment : BaseFragment(R.layout.fragment_your_negat
             findNavController().navigate(YourNegativeTestResultFragmentDirections.actionHome())
         } else {
             binding.rowSubtitle.text =
-                result.sampleDate.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM))
+                result.sampleDate.format(
+                    DateTimeFormatter.ofPattern("dd MMMM HH:mm", Locale.getDefault())
+                )
         }
 
         binding.button.setOnClickListener {

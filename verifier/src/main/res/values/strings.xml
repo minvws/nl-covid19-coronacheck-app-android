@@ -11,12 +11,13 @@
     <string name="onboarding_screen_3_title">Toegang is anoniem</string>
     <string name="onboarding_screen_3_description">Bij het scannen van een QR-code worden geen persoonsgegevens verstuurd of opgeslagen. Als scanner zie je alleen of de bezoeker een geldig testresultaat heeft.</string>
     <string name="onboarding_screen_4_title">Voor wie is de scanner?</string>
-    <string name="onboarding_screen_4_description">Met behulp van deze app kun je zo veilig mogelijk de deuren openen. Maar alleen als jouw zaak, evenement of uitgaansgelegen-heid onder de aangewezen locaties valt.</string>
+    <string name="onboarding_screen_4_description"><![CDATA[Met behulp van deze app kun je zo veilig mogelijk de deuren openen. Maar alleen als jouw zaak, evenement of uitgaansgelegen-heid onder de <u>aangewezen locaties</u> valt.]]></string>
     <string name="onboarding_next">Volgende</string>
     <string name="privacy_policy_title">Zo gebruikt deze app je gegevens</string>
     <string name="privacy_policy_description"><![CDATA[In de <a href="#">privacyverklaring staat</a> hoe CoronaTester jouw gegevens gebruikt. Dit zijn de belangrijkste punten.]]></string>
-    <string name="privacy_policy_1">Gebruik van CoronaTester is vrijwillig</string>
-    <string name="privacy_policy_2">Dit is nog een regel lorem ipsum lorem ipsum</string>
+    <string name="privacy_policy_1"><![CDATA[Een CoronaCheck QR-code is <b>niet te herleiden naar jou</b> als persoon]]></string>
+    <string name="privacy_policy_2"><![CDATA[Als scanner weet je alleen <b>of een testbewijs geldig is</b>. Niet wie de bezoeker is.]]></string>
+    <string name="privacy_policy_3"><![CDATA[CoronaCheck Scanner <b>houdt geen locatie of GPS gegevens</b> bij]]></string>
     <string name="privacy_policy_checkbox_text">Ik heb de privacyverklaring gelezen en begrijp hoe de app mijn gegevens gebruikt</string>
     <string name="dialog_error_title">Technische fout</string>
     <string name="dialog_error_message">Excuus, er is een technische fout opgetreden</string>
