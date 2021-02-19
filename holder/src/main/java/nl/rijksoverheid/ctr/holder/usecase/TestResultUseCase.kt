@@ -34,10 +34,10 @@ class TestResultUseCase(
         val providerIdentifier = uniqueCodeAttributes[0]
         val token = uniqueCodeAttributes[1]
 
-        val testProvider = testProviderUseCase.testProvider(providerIdentifier)
-            ?: return TestResult.InvalidToken
-
         return try {
+            val testProvider = testProviderUseCase.testProvider(providerIdentifier)
+                ?: return TestResult.InvalidToken
+
             val signedResponseWithTestResult = holderRepository.remoteTestResult(
                 url = testProvider.resultUrl,
                 token = token,
@@ -72,36 +72,42 @@ class TestResultUseCase(
         remoteTestResult: RemoteTestResult,
         signedResponseWithTestResult: SignedResponseWithModel<RemoteTestResult>
     ): SignedTestResult {
-        // Persist encrypted test result
-        val remoteNonce = holderRepository.remoteNonce()
-        val commitmentMessage = commitmentMessageUseCase.json(
-            nonce = remoteNonce.nonce
-        )
-        Timber.i("Received commitment message $commitmentMessage")
+        try {
+            // Persist encrypted test result
+            val remoteNonce = holderRepository.remoteNonce()
+            val commitmentMessage = commitmentMessageUseCase.json(
+                nonce = remoteNonce.nonce
+            )
+            Timber.i("Received commitment message $commitmentMessage")
 
-        val testIsm = holderRepository.getTestIsm(
-            test = signedResponseWithTestResult.rawResponse.toString(Charsets.UTF_8),
-            sToken = remoteNonce.sToken,
-            icm = commitmentMessage
-        )
-        when (testIsm) {
-            is TestIsmResult.Success -> {
-                Timber.i("Received test ism json ${testIsm.body}")
+            val testIsm = holderRepository.getTestIsm(
+                test = signedResponseWithTestResult.rawResponse.toString(Charsets.UTF_8),
+                sToken = remoteNonce.sToken,
+                icm = commitmentMessage
+            )
+            when (testIsm) {
+                is TestIsmResult.Success -> {
+                    Timber.i("Received test ism json ${testIsm.body}")
 
-                val credentials = Clmobile.createCredential(
-                    secretKeyUseCase.json().toByteArray(Charsets.UTF_8),
-                    testIsm.body.toByteArray(Charsets.UTF_8)
-                ).successString()
+                    val credentials = Clmobile.createCredential(
+                        secretKeyUseCase.json().toByteArray(Charsets.UTF_8),
+                        testIsm.body.toByteArray(Charsets.UTF_8)
+                    ).successString()
 
-                return SignedTestResult.Complete(credentials)
-            }
-            is TestIsmResult.Error -> {
-                return if (testIsm.responseError.code == ResponseError.CODE_ALREADY_SIGNED) {
-                    SignedTestResult.AlreadySigned
-                } else {
-                    SignedTestResult.ServerError
+                    return SignedTestResult.Complete(credentials)
+                }
+                is TestIsmResult.Error -> {
+                    return if (testIsm.responseError.code == ResponseError.CODE_ALREADY_SIGNED) {
+                        SignedTestResult.AlreadySigned
+                    } else {
+                        SignedTestResult.ServerError
+                    }
                 }
             }
+        } catch (ex: HttpException) {
+            return SignedTestResult.ServerError
+        } catch (ex: IOException) {
+            return SignedTestResult.NetworkError
         }
     }
 }
@@ -124,4 +130,5 @@ sealed class SignedTestResult {
     data class Complete(val credentials: String) : SignedTestResult()
     object AlreadySigned : SignedTestResult()
     object ServerError : SignedTestResult()
+    object NetworkError : SignedTestResult()
 }

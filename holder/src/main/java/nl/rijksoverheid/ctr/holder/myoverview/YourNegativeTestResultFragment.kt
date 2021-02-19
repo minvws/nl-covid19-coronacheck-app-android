@@ -70,6 +70,9 @@ class YourNegativeTestResultFragment : BaseFragment(R.layout.fragment_your_negat
                 is SignedTestResult.ServerError -> {
                     presentError()
                 }
+                is SignedTestResult.NetworkError -> {
+                    presentError()
+                }
             }
         })
     }
