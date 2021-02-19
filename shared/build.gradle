@@ -13,6 +13,9 @@ android {
         consumerProguardFiles "consumer-rules.pro"
 
         buildConfigField "String", "SIGNATURE_CERTIFICATE_CN_MATCH", '".coronatester.nl"'
+        //TODO enable by default later
+        buildConfigField "boolean", "FEATURE_API_SSL_ROOT_CA", "false"
+        buildConfigField "boolean", "FEATURE_TEST_PROVIDER_TRUSTED_ROOTS", "false"
     }
 
     buildTypes {
@@ -63,6 +66,7 @@ dependencies {
     api "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation(platform("com.squareup.okhttp3:okhttp-bom:4.9.0"))
     implementation("com.squareup.okhttp3:okhttp")
+    implementation("com.squareup.okhttp3:okhttp-tls")
     implementation("com.squareup.okhttp3:logging-interceptor")
     api "com.squareup.retrofit2:converter-moshi:2.9.0"
     api "com.squareup.moshi:moshi-kotlin:$moshi_version"

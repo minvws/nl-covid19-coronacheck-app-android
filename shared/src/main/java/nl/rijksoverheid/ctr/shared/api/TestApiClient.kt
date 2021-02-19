@@ -2,10 +2,12 @@ package nl.rijksoverheid.ctr.shared.api
 
 import nl.rijksoverheid.ctr.shared.models.*
 import nl.rijksoverheid.ctr.shared.models.post.GetTestIsmPostData
-import nl.rijksoverheid.ctr.shared.models.post.GetTestResultPostData
 import okhttp3.ResponseBody
 import retrofit2.Response
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.Path
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -35,12 +37,4 @@ interface TestApiClient {
     suspend fun getTestIsm(
         @Body data: GetTestIsmPostData
     ): Response<ResponseBody>
-
-    @POST
-    suspend fun getTestResult(
-        @Url url: String,
-        @Header("Authorization") authorization: String,
-        @Body data: GetTestResultPostData?,
-        @Tag certificate: SigningCertificate
-    ): SignedResponseWithModel<RemoteTestResult>
 }
