@@ -52,6 +52,7 @@ android {
             buildConfigField "String", "URL_FAQ", "\"https://web.acc.bananenhalen.nl/nl/faq-in-app.html\""
             buildConfigField "String", "URL_ABOUT_THIS_APP", "\"https://web.acc.bananenhalen.nl/nl/over-de-app-in-app\""
             buildConfigField "String", "URL_PRIVACY_STATEMENT", "\"https://web.acc.bananenhalen.nl/nl/privacy-in-app\""
+            buildConfigField "String", "URL_MAKE_APPOINTMENT", "\"https://web.acc.bananenhalen.nl/nl/testaanbieders-fieldlab-in-de-app\""
         }
         acc {
             dimension "environment"
@@ -61,6 +62,7 @@ android {
             buildConfigField "String", "URL_FAQ", "\"https://web.acc.bananenhalen.nl/nl/faq-in-app.html\""
             buildConfigField "String", "URL_ABOUT_THIS_APP", "\"https://web.acc.bananenhalen.nl/nl/over-de-app-in-app\""
             buildConfigField "String", "URL_PRIVACY_STATEMENT", "\"https://web.acc.bananenhalen.nl/nl/privacy-in-app\""
+            buildConfigField "String", "URL_MAKE_APPOINTMENT", "\"https://web.acc.bananenhalen.nl/nl/testaanbieders-fieldlab-in-de-app\""
         }
         prod {
             dimension "environment"
@@ -68,6 +70,7 @@ android {
             buildConfigField "String", "URL_FAQ", "\"https://web.acc.bananenhalen.nl/nl/faq-in-app.html\""
             buildConfigField "String", "URL_ABOUT_THIS_APP", "\"https://web.acc.bananenhalen.nl/nl/over-de-app-in-app\""
             buildConfigField "String", "URL_PRIVACY_STATEMENT", "\"https://web.acc.bananenhalen.nl/nl/privacy-in-app\""
+            buildConfigField "String", "URL_MAKE_APPOINTMENT", "\"https://web.acc.bananenhalen.nl/nl/testaanbieders-fieldlab-in-de-app\""
         }
     }
 
