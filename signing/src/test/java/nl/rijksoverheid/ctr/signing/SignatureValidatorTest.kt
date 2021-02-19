@@ -7,15 +7,12 @@
 package nl.rijksoverheid.ctr.signing
 
 import nl.rijksoverheid.ctr.signing.certificates.EV_ROOT_CA
-import org.bouncycastle.asn1.x509.SubjectKeyIdentifier
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.bouncycastle.util.encoders.Base64
 import org.junit.Test
 import java.io.ByteArrayInputStream
-import java.security.KeyStore
 import java.security.cert.CertificateFactory
 import java.security.cert.X509Certificate
-import javax.net.ssl.TrustManagerFactory
 
 private val TEST_SIGNATURE = Base64.decode(
     "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",
@@ -46,18 +43,9 @@ class SignatureValidatorTest {
     @Test(expected = SignatureValidationException::class)
     fun `signature validator rejects signature with wrong signing certificate`() {
         val provider = BouncyCastleProvider()
-        val rootCertificate = CertificateFactory.getInstance("X509", provider)
-            .generateCertificate(SignatureValidator::class.java.getResourceAsStream("/signingcert.crt")) as X509Certificate
         // wrong certificate for signing
         val signingCertificate = CertificateFactory.getInstance("X509", provider)
             .generateCertificate(SignatureValidator::class.java.getResourceAsStream("/ca-pki-overheid.pem")) as X509Certificate
-        val trustManager =
-            TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm())
-        val keyStore = KeyStore.getInstance(KeyStore.getDefaultType())
-        // self-signed
-        keyStore.load(null)
-        keyStore.setCertificateEntry("ca", rootCertificate)
-        trustManager.init(keyStore)
 
         val validator = SignatureValidator.Builder()
             .addTrustedCertificate(EV_ROOT_CA)
@@ -72,21 +60,6 @@ class SignatureValidatorTest {
 
     @Test
     fun `signature validator validates correct PKI-O signature`() {
-        val provider = BouncyCastleProvider()
-        val rootCertificate = CertificateFactory.getInstance("X509", provider)
-            .generateCertificate(SignatureValidator::class.java.getResourceAsStream("/ca-pki-overheid.pem")) as X509Certificate
-
-        val trustManager =
-            TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm())
-        val keyStore = KeyStore.getInstance(KeyStore.getDefaultType())
-        // self-signed
-        keyStore.load(null)
-        keyStore.setCertificateEntry("ca", rootCertificate)
-        trustManager.init(keyStore)
-
-        val trustAnchor =
-            SubjectKeyIdentifier.getInstance(rootCertificate.getExtensionValue(org.bouncycastle.asn1.x509.Extension.subjectKeyIdentifier.id))
-
         // defaults for Staat der Nederlanden trust anchor and authority key id
         val validator = SignatureValidator.Builder()
             .addTrustedCertificate(EV_ROOT_CA)
