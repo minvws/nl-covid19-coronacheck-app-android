@@ -1,9 +1,7 @@
 package nl.rijksoverheid.ctr.holder.myoverview
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -26,9 +24,8 @@ import java.util.*
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class MyOverviewFragment : BaseFragment() {
+class MyOverviewFragment : BaseFragment(R.layout.fragment_my_overview) {
 
-    private lateinit var binding: FragmentMyOverviewBinding
     private val localTestResultViewModel: LocalTestResultViewModel by sharedViewModel(
         owner = {
             ViewModelOwner.from(
@@ -39,17 +36,10 @@ class MyOverviewFragment : BaseFragment() {
     )
     private val qrCodeViewModel: QrCodeViewModel by viewModel()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentMyOverviewBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val binding = FragmentMyOverviewBinding.bind(view)
+
         binding.createQrCard.createQrCardButton.setOnClickListener {
             findNavController().navigate(MyOverviewFragmentDirections.actionChooseProvider())
         }
@@ -59,7 +49,7 @@ class MyOverviewFragment : BaseFragment() {
         }
 
         localTestResultViewModel.localTestResultLiveData.observe(viewLifecycleOwner, EventObserver {
-            presentLocalTestResult(it)
+            presentLocalTestResult(binding, it)
         })
 
         qrCodeViewModel.qrCodeLiveData.observe(viewLifecycleOwner, EventObserver {
@@ -69,7 +59,10 @@ class MyOverviewFragment : BaseFragment() {
         localTestResultViewModel.getLocalTestResult(OffsetDateTime.now())
     }
 
-    private fun presentLocalTestResult(localTestResult: LocalTestResult) {
+    private fun presentLocalTestResult(
+        binding: FragmentMyOverviewBinding,
+        localTestResult: LocalTestResult
+    ) {
         binding.qrCard.cardFooter.text = getString(
             R.string.my_overview_existing_qr_date, localTestResult.expireDate.format(
                 DateTimeFormatter.ofPattern("dd MMMM HH:mm", Locale.getDefault())
