@@ -178,7 +178,7 @@
 
             <action
                 android:id="@+id/action_create_qr"
-                app:destination="@id/nav_create_qr"
+                app:destination="@id/nav_qr_created"
                 app:enterAnim="@anim/slide_in_right"
                 app:exitAnim="@anim/slide_out_left"
                 app:popEnterAnim="@anim/slide_in_left"
@@ -206,10 +206,10 @@
         </fragment>
 
         <fragment
-            android:id="@+id/nav_create_qr"
-            android:name="nl.rijksoverheid.ctr.holder.myoverview.CreateQrFragment"
-            android:label=""
-            tools:layout="@layout/fragment_create_qr">
+            android:id="@+id/nav_qr_created"
+            android:name="nl.rijksoverheid.ctr.holder.myoverview.QrCreatedFragment"
+            android:label="@string/commercial_test_type_title"
+            tools:layout="@layout/fragment_qr_created">
 
             <action
                 android:id="@+id/action_home"
