@@ -8,10 +8,10 @@
     <string name="onboarding_screen_1_description">Om zo veilig mogelijk op pad te kunnen is het belangrijk eerst een coronatest te doen. Alleen bij een negatieve test krijg je toegang tot de testevenementen van Fieldlab.</string>
     <string name="onboarding_screen_2_title">Jouw QR-code op zak</string>
     <string name="onboarding_screen_2_description">Deze app maakt van jouw negatieve testresultaat een persoonlijke QR-code. Bij binnenkomst wordt deze QR-code gescand als bewijs dat je negatief getest bent.</string>
-    <string name="onboarding_screen_3_title">Privacy staat voorop</string>
-    <string name="onboarding_screen_3_description">Deze app haalt alleen een negatief testresultaat op. En controleert of dit jouw resultaat is. Andere gegevens worden niet verwerkt of opgeslagen.</string>
-    <string name="onboarding_screen_4_title">Bewijs geldt 48 uur</string>
-    <string name="onboarding_screen_4_description">Een negatief testresultaat is 48 uur geldig. In die periode is de kans dat je besmet raakt klein. Als je testresultaat afloopt verdwijnt de QR-code uit de app. Nieuwe QR-code nodig? Laat je opnieuw testen.</string>
+    <string name="onboarding_screen_4_title">Privacy staat voorop</string>
+    <string name="onboarding_screen_4_description">Deze app haalt alleen een negatief testresultaat op. En controleert of dit jouw resultaat is. Andere gegevens worden niet verwerkt of opgeslagen.</string>
+    <string name="onboarding_screen_3_title">Bewijs geldt 48 uur</string>
+    <string name="onboarding_screen_3_description">Een negatief testresultaat is 48 uur geldig. In die periode is de kans dat je besmet raakt klein. Als je testresultaat afloopt verdwijnt de QR-code uit de app. Nieuwe QR-code nodig? Laat je opnieuw testen.</string>
     <string name="onboarding_next">Volgende</string>
     <string name="privacy_policy_title">Zo gebruikt deze app je gegevens</string>
     <string name="privacy_policy_description"><![CDATA[In de <a href="#">privacyverklaring staat</a> hoe CoronaTester jouw gegevens gebruikt. Dit zijn de belangrijkste punten.]]></string>
