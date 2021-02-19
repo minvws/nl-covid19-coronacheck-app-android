@@ -26,7 +26,6 @@ import java.util.*
  */
 class MyOverviewFragment : BaseFragment(R.layout.fragment_my_overview) {
 
-    private lateinit var binding: FragmentMyOverviewBinding
     private val localTestResultViewModel: LocalTestResultViewModel by sharedViewModel(
         owner = {
             ViewModelOwner.from(
@@ -39,7 +38,7 @@ class MyOverviewFragment : BaseFragment(R.layout.fragment_my_overview) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentMyOverviewBinding.bind(view)
+        val binding = FragmentMyOverviewBinding.bind(view)
 
         binding.createQrCard.createQrCardButton.setOnClickListener {
             findNavController().navigate(MyOverviewFragmentDirections.actionChooseProvider())
@@ -50,7 +49,7 @@ class MyOverviewFragment : BaseFragment(R.layout.fragment_my_overview) {
         }
 
         localTestResultViewModel.localTestResultLiveData.observe(viewLifecycleOwner, EventObserver {
-            presentLocalTestResult(it)
+            presentLocalTestResult(binding, it)
         })
 
         qrCodeViewModel.qrCodeLiveData.observe(viewLifecycleOwner, EventObserver {
@@ -60,7 +59,10 @@ class MyOverviewFragment : BaseFragment(R.layout.fragment_my_overview) {
         localTestResultViewModel.getLocalTestResult(OffsetDateTime.now())
     }
 
-    private fun presentLocalTestResult(localTestResult: LocalTestResult) {
+    private fun presentLocalTestResult(
+        binding: FragmentMyOverviewBinding,
+        localTestResult: LocalTestResult
+    ) {
         binding.qrCard.cardFooter.text = getString(
             R.string.my_overview_existing_qr_date, localTestResult.expireDate.format(
                 DateTimeFormatter.ofPattern("dd MMMM HH:mm", Locale.getDefault())
