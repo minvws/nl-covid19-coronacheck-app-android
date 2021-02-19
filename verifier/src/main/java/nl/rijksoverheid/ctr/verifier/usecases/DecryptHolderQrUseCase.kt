@@ -23,23 +23,37 @@ class DecryptHolderQrUseCase(private val moshi: Moshi) {
 
     fun decrypt(
         content: String
-    ): DecryptedQr {
-        val result =
-            Clmobile.verifyQREncoded(CryptoUtil.ISSUER_PK_XML.toByteArray(), content.toByteArray())
-                .verify()
-        Timber.i("QR Code created at ${result.unixTimeSeconds}")
-        val testResultAttributes =
-            result.attributesJson.decodeToString().toObject<TestResultAttributes>(moshi)
-        return DecryptedQr(
-            creationDate = OffsetDateTime.ofInstant(
-                Instant.ofEpochSecond(result.unixTimeSeconds),
-                ZoneOffset.UTC
-            ),
-            sampleDate = OffsetDateTime.ofInstant(
-                Instant.ofEpochSecond(testResultAttributes.sampleTime),
-                ZoneOffset.UTC
-            ),
-            testType = testResultAttributes.testType
-        )
+    ): DecryptResult {
+        try {
+            val result =
+                Clmobile.verifyQREncoded(
+                    CryptoUtil.ISSUER_PK_XML.toByteArray(),
+                    content.toByteArray()
+                )
+                    .verify()
+            Timber.i("QR Code created at ${result.unixTimeSeconds}")
+            val testResultAttributes =
+                result.attributesJson.decodeToString().toObject<TestResultAttributes>(moshi)
+            return DecryptResult.Success(
+                DecryptedQr(
+                    creationDate = OffsetDateTime.ofInstant(
+                        Instant.ofEpochSecond(result.unixTimeSeconds),
+                        ZoneOffset.UTC
+                    ),
+                    sampleDate = OffsetDateTime.ofInstant(
+                        Instant.ofEpochSecond(testResultAttributes.sampleTime),
+                        ZoneOffset.UTC
+                    ),
+                    testType = testResultAttributes.testType
+                )
+            )
+        } catch (e: Exception) {
+            return DecryptResult.Failed
+        }
+    }
+
+    sealed class DecryptResult {
+        class Success(val decryptQr: DecryptedQr) : DecryptResult()
+        object Failed : DecryptResult()
     }
 }
