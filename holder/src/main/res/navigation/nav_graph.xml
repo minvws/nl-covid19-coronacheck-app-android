@@ -227,7 +227,7 @@
         <fragment
             android:id="@+id/nav_no_test_result"
             android:name="nl.rijksoverheid.ctr.holder.myoverview.NoTestResultFragment"
-            android:label=""
+            android:label="@string/commercial_test_type_title"
             tools:layout="@layout/fragment_no_test_result">
 
             <argument
