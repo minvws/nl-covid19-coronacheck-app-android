@@ -38,11 +38,11 @@
     <string name="my_overview_no_qr_make_qr_button">Maak qr-code</string>
     <string name="my_overview_existing_qr_title">Scan QR-code bij entree</string>
     <string name="my_overview_existing_qr_date">Geldig tot %1$s</string>
-    <string name="choose_provider_toolbar">Maak een QR-code</string>
+    <string name="choose_provider_toolbar">QR-code maken</string>
     <string name="choose_provider_title">Waar ben je getest?</string>
-    <string name="choose_provider_description">Is je testresultaat bekend? Dan kan je er een QR-code van maken. Geef hieronder aan bij welke testlocatie je bent getest.</string>
-    <string name="choose_provider_commercial_title">Commerciële testlocatie</string>
-    <string name="choose_provider_commercial_subtitle">Voer een unieke code in</string>
+    <string name="choose_provider_description">Is je testresultaat negatief? Dan kan je er een QR-code van maken. Geef aan bij welke testlocatie je bent getest.</string>
+    <string name="choose_provider_commercial_title">Fieldlab locatie</string>
+    <string name="choose_provider_commercial_subtitle">Log in met een unieke code</string>
     <string name="choose_provider_ggd_title">GGD</string>
     <string name="choose_provider_ggd_subtitle">Log in met je DigiD</string>
     <string name="choose_provider_no_digid">Ik heb geen DigiD</string>

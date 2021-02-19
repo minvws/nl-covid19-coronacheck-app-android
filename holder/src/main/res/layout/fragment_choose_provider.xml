@@ -14,8 +14,10 @@
             android:id="@+id/image"
             android:layout_width="match_parent"
             android:layout_height="260dp"
-            android:background="@color/grey_light"
+            android:background="@color/green"
             android:contentDescription="@null"
+            android:scaleType="centerInside"
+            android:src="@drawable/illustration_choose_provider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
