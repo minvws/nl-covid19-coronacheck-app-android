@@ -5,6 +5,7 @@ import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.ItemPrivacyPolicyBinding
 import nl.rijksoverheid.ctr.holder.introduction.privacypolicy.models.PrivacyPolicyItem
+import nl.rijksoverheid.ctr.shared.ext.fromHtml
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -21,7 +22,8 @@ class PrivacyPolicyAdapterItem(private val item: PrivacyPolicyItem) :
 
     override fun bind(viewBinding: ItemPrivacyPolicyBinding, position: Int) {
         viewBinding.icon.setImageResource(item.iconResource)
-        viewBinding.description.setText(item.textResource)
+        viewBinding.description.text =
+            viewBinding.description.context.getString(item.textResource).fromHtml()
     }
 
     override fun initializeViewBinding(view: View): ItemPrivacyPolicyBinding {
