@@ -8,6 +8,7 @@
 
 package nl.rijksoverheid.ctr.shared.api
 
+import nl.rijksoverheid.crt.signing.http.SignedRequest
 import nl.rijksoverheid.ctr.shared.models.RemoteTestResult
 import nl.rijksoverheid.ctr.shared.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.shared.models.post.GetTestResultPostData
@@ -19,6 +20,7 @@ import retrofit2.http.Url
 
 interface TestProviderApiClient {
     @POST
+    @SignedRequest
     suspend fun getTestResult(
         @Url url: String,
         @Header("Authorization") authorization: String,

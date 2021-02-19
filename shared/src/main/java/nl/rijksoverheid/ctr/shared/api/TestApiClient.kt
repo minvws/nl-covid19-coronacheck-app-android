@@ -1,6 +1,11 @@
 package nl.rijksoverheid.ctr.shared.api
 
-import nl.rijksoverheid.ctr.shared.models.*
+import nl.rijksoverheid.crt.signing.http.SignedRequest
+import nl.rijksoverheid.ctr.shared.models.Issuers
+import nl.rijksoverheid.ctr.shared.models.RemoteAgent
+import nl.rijksoverheid.ctr.shared.models.RemoteEvent
+import nl.rijksoverheid.ctr.shared.models.RemoteNonce
+import nl.rijksoverheid.ctr.shared.models.RemoteTestProviders
 import nl.rijksoverheid.ctr.shared.models.post.GetTestIsmPostData
 import okhttp3.ResponseBody
 import retrofit2.Response
@@ -19,21 +24,27 @@ import retrofit2.http.Path
 interface TestApiClient {
 
     @GET("holder/get_public_keys")
+    @SignedRequest
     suspend fun getIssuers(): Issuers
 
     @GET("issuer/get_event/{id}")
+    @SignedRequest
     suspend fun getEvent(@Path("id") id: String): RemoteEvent
 
     @GET("issuer/get_agent/{id}")
+    @SignedRequest
     suspend fun getAgent(@Path("id") id: String): RemoteAgent
 
     @GET("holder/nonce")
+    @SignedRequest
     suspend fun getNonce(): RemoteNonce
 
     @GET("holder/config_ctp")
+    @SignedRequest
     suspend fun getConfigCtp(): RemoteTestProviders
 
     @POST("holder/get_test_ism")
+    @SignedRequest
     suspend fun getTestIsm(
         @Body data: GetTestIsmPostData
     ): Response<ResponseBody>
