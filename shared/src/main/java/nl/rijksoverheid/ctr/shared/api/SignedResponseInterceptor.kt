@@ -17,6 +17,9 @@ import nl.rijksoverheid.ctr.shared.BuildConfig
 import nl.rijksoverheid.ctr.shared.json.Base64JsonAdapter
 import nl.rijksoverheid.ctr.signing.SignatureValidationException
 import nl.rijksoverheid.ctr.signing.SignatureValidator
+import nl.rijksoverheid.ctr.signing.certificates.EV_ROOT_CA
+import nl.rijksoverheid.ctr.signing.certificates.PRIVATE_ROOT_CA
+import nl.rijksoverheid.ctr.signing.certificates.ROOT_CA_G3
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.Response
@@ -36,6 +39,7 @@ private val responseAdapter by lazy {
 
 class SignedResponseInterceptor : Interceptor {
     private val defaultValidator = SignatureValidator.Builder()
+        .addTrustedCertificate(EV_ROOT_CA)
         .cnMatching(BuildConfig.SIGNATURE_CERTIFICATE_CN_MATCH)
         .build()
 
@@ -68,6 +72,9 @@ class SignedResponseInterceptor : Interceptor {
 
         val validator = if (expectedSigningCertificate != null) {
             SignatureValidator.Builder()
+                .addTrustedCertificate(EV_ROOT_CA)
+                .addTrustedCertificate(ROOT_CA_G3)
+                .addTrustedCertificate(PRIVATE_ROOT_CA)
                 .signingCertificate(expectedSigningCertificate.certificateBytes).build()
         } else {
             defaultValidator

@@ -9,7 +9,6 @@ package nl.rijksoverheid.ctr.signing
 import org.bouncycastle.asn1.x500.style.BCStyle
 import org.bouncycastle.asn1.x500.style.IETFUtils
 import org.bouncycastle.asn1.x509.AuthorityKeyIdentifier
-import org.bouncycastle.asn1.x509.Extension
 import org.bouncycastle.asn1.x509.SubjectKeyIdentifier
 import org.bouncycastle.cert.jcajce.JcaCertStoreBuilder
 import org.bouncycastle.cert.jcajce.JcaX509CertificateHolder
@@ -23,7 +22,6 @@ import org.bouncycastle.util.encoders.Hex
 import java.io.BufferedInputStream
 import java.io.ByteArrayInputStream
 import java.io.InputStream
-import java.security.KeyStore
 import java.security.cert.CertPathBuilder
 import java.security.cert.CertPathBuilderException
 import java.security.cert.CertStore
@@ -33,8 +31,6 @@ import java.security.cert.PKIXCertPathBuilderResult
 import java.security.cert.TrustAnchor
 import java.security.cert.X509CertSelector
 import java.security.cert.X509Certificate
-import javax.net.ssl.TrustManagerFactory
-import javax.net.ssl.X509TrustManager
 
 // The publicly known default SubjectKeyIdentifier for the root PKI-O CA, retrieved from the device trust store
 private val DEFAULT_ANCHOR_SUBJECT_KEY_IDENTIFIER =
@@ -46,43 +42,39 @@ private val DEFAULT_AUTHORITY_KEY_IDENTIFIER =
 
 class SignatureValidator private constructor(
     private val signingCertificate: X509Certificate?,
-    trustManager: X509TrustManager,
-    trustAnchorSubjectKeyIdentifier: SubjectKeyIdentifier,
-    private val authorityKeyIdentifier: AuthorityKeyIdentifier?,
+    private val trustAnchors: Set<TrustAnchor>,
     private val cnMatchingRegex: Regex?
 ) {
 
     class Builder {
         private var cnMatchingRegEx: Regex? = null
-        private var trustManager: X509TrustManager? = null
-        private var trustAnchorSubjectKeyIdentifier: SubjectKeyIdentifier? = null
+        private var trustAnchors = mutableSetOf<TrustAnchor>()
         private var signingCertificate: X509Certificate? = null
-        private var authorityKeyIdentifier: AuthorityKeyIdentifier? = null
-
-        /**
-         * Set the trust manager to be used. If unset, the default trust manager will be used when calling [build]
-         */
-        fun trustManager(trustManager: X509TrustManager): Builder {
-            this.trustManager = trustManager
-            return this
-        }
 
         /**
          * The subject key identifier of the root certificate that is used as the trust anchor. If unset the default value will be used.
          */
-        fun trustAnchorSubjectKeyIdentifier(subjectKeyIdentifier: SubjectKeyIdentifier): Builder {
-            this.trustAnchorSubjectKeyIdentifier = subjectKeyIdentifier
+        fun addTrustedCertificate(certificate: X509Certificate): Builder {
+            trustAnchors.add(TrustAnchor(certificate, null))
             return this
+        }
+
+        fun addTrustedCertificate(certificatePem: String): Builder {
+            val factory = CertificateFactory.getInstance("X509")
+            return addTrustedCertificate(
+                factory.generateCertificate(
+                    ByteArrayInputStream(
+                        certificatePem.toByteArray()
+                    )
+                ) as X509Certificate
+            )
         }
 
         /**
          * The signing certificate that needs to be for the signature. If set, the signing certificate needs to match this certificate
-         * in order to pass the signature validation. When signing certificate is set, [authorityKeyIdentifier] cannot be set.
+         * in order to pass the signature validation.
          */
         fun signingCertificate(signingCertificate: X509Certificate): Builder {
-            if (authorityKeyIdentifier != null) {
-                throw IllegalStateException("Only one of authorityKeyIdentifier or signingCertificate can be set")
-            }
             this.signingCertificate = signingCertificate
             this.cnMatchingRegEx = null
             return this
@@ -93,18 +85,6 @@ class SignatureValidator private constructor(
                 CertificateFactory.getInstance("X509")
                     .generateCertificate(ByteArrayInputStream(signingCertificateBytes)) as X509Certificate
             )
-            return this
-        }
-
-        /**
-         * The authority key identifier that the signing certificate needs to be signed with. This is used to check if
-         * the signing certificated is issued by the expected issuer. The authority key identifier cannot be set if [signingCertificate] is set.
-         */
-        fun authorityKeyIdentifier(authorityKeyIdentifier: AuthorityKeyIdentifier?): Builder {
-            if (signingCertificate != null) {
-                throw IllegalStateException("Only one of authorityKeyIdentifier or signingCertificate can be set")
-            }
-            this.authorityKeyIdentifier = authorityKeyIdentifier
             return this
         }
 
@@ -129,41 +109,15 @@ class SignatureValidator private constructor(
         fun build(): SignatureValidator {
             return SignatureValidator(
                 signingCertificate,
-                trustManager ?: getDefaultTrustManager(),
-                trustAnchorSubjectKeyIdentifier ?: DEFAULT_ANCHOR_SUBJECT_KEY_IDENTIFIER,
-                if (signingCertificate == null) authorityKeyIdentifier
-                    ?: DEFAULT_AUTHORITY_KEY_IDENTIFIER else null,
+                trustAnchors,
                 cnMatchingRegEx
             )
         }
     }
 
-    private val trustAnchor: TrustAnchor?
     private val provider = BouncyCastleProvider()
 
-    init {
-        trustAnchor = getCertificateForSubjectKeyIdentifier(
-            trustManager,
-            trustAnchorSubjectKeyIdentifier
-        )?.let {
-            TrustAnchor(it, null)
-        }
-    }
-
-    private fun getCertificateForSubjectKeyIdentifier(
-        trustManager: X509TrustManager,
-        subjectKeyIdentifier: SubjectKeyIdentifier
-    ): X509Certificate? {
-        return trustManager.acceptedIssuers.firstOrNull { certificate ->
-            val ski = certificate.getExtensionValue(Extension.subjectKeyIdentifier.id)
-                ?.let { SubjectKeyIdentifier.getInstance(it)?.keyIdentifier }
-            ski?.contentEquals(subjectKeyIdentifier.keyIdentifier) == true
-        }
-    }
-
     fun verifySignature(content: InputStream, signature: ByteArray) {
-        val trustAnchor = this.trustAnchor
-            ?: throw SignatureValidationException("The trust anchor cannot be resolved")
 
         try {
             val sp = CMSSignedDataParser(
@@ -178,14 +132,18 @@ class SignatureValidator private constructor(
 
             val store: CertStore =
                 JcaCertStoreBuilder().setProvider(provider)
-                    .addCertificate(JcaX509CertificateHolder(trustAnchor.trustedCert))
+                    .apply {
+                        for (anchor in trustAnchors) {
+                            addCertificate(JcaX509CertificateHolder(anchor.trustedCert))
+                        }
+                    }
                     .addCertificates(certs)
                     .build()
 
             val signer =
                 sp.signerInfos.signers.firstOrNull()
                     ?: throw SignatureValidationException("No signing certificate found")
-            val result = checkCertPath(trustAnchor, signer.sid, store)
+            val result = checkCertPath(trustAnchors, signer.sid, store)
             val signingCertificate = result.certPath.certificates[0] as X509Certificate
 
             if (this.signingCertificate != null && this.signingCertificate != signingCertificate) {
@@ -218,7 +176,7 @@ class SignatureValidator private constructor(
     }
 
     private fun checkCertPath(
-        trustAnchor: TrustAnchor,
+        trustAnchors: Set<TrustAnchor>,
         signerId: SignerId,
         certs: CertStore
     ): PKIXCertPathBuilderResult {
@@ -232,12 +190,8 @@ class SignatureValidator private constructor(
         targetConstraints.setIssuer(signerId.issuer.encoded)
         targetConstraints.serialNumber = signerId.serialNumber
 
-        authorityKeyIdentifier?.let {
-            targetConstraints.authorityKeyIdentifier = it.keyIdentifier
-        }
-
         val params = PKIXBuilderParameters(
-            setOf(trustAnchor),
+            trustAnchors,
             targetConstraints
         )
 
@@ -245,14 +199,6 @@ class SignatureValidator private constructor(
         params.isRevocationEnabled = false
         return pathBuilder.build(params) as PKIXCertPathBuilderResult
     }
-}
-
-private fun getDefaultTrustManager(): X509TrustManager {
-    val algorithm = TrustManagerFactory.getDefaultAlgorithm()
-    val tm = TrustManagerFactory.getInstance(algorithm)
-    @Suppress("CAST_NEVER_SUCCEEDS")
-    tm.init(null as? KeyStore)
-    return tm.trustManagers[0] as X509TrustManager
 }
 
 class SignatureValidationException(message: String, cause: Throwable? = null) :
