@@ -4,11 +4,9 @@ import android.content.Context
 import android.net.Uri
 import android.os.Build
 import android.text.Html
-import android.text.Spannable
 import android.text.Spanned
 import androidx.browser.customtabs.CustomTabsIntent
 import com.squareup.moshi.Moshi
-import nl.rijksoverheid.ctr.shared.util.getSpannableFromHtml
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -28,10 +26,6 @@ inline fun String.fromHtml(): Spanned {
     } else {
         Html.fromHtml(this)
     }
-}
-
-inline fun String.fromHtmlWithStyling(context: Context): Spannable {
-    return getSpannableFromHtml(context, this)
 }
 
 fun String.launchUrl(context: Context) {
