@@ -58,11 +58,11 @@
     <string name="commercial_test_verification_code_hint">Verificatie code</string>
     <string name="commercial_test_button">Haal testresultaten op</string>
     <string name="your_negative_test_results_title">Jouw negatieve testresultaten</string>
-    <string name="your_negative_test_results_description">Je hebt 1 nieuw negatief testresultaat. Verwerk je testresultaat tot een bewijs in de vorm van een QR-code.</string>
+    <string name="your_negative_test_results_description">Je hebt 1 nieuw negatief testresultaat (geen corona). Maak van dit resultaat een QR-code. Dat is jouw bewijs.</string>
     <string name="your_negative_test_results_tooltip">Alleen testresultaten die niet ouder zijn dan 48 uur kun je gebruiken om een QR-code te maken.</string>
     <string name="your_negative_test_results_header">Recente testresultaten</string>
     <string name="your_negative_test_results_row_title">Negatief testresultaat</string>
-    <string name="your_negative_test_results_row_button">Maak een qr-code van resultaat</string>
+    <string name="your_negative_test_results_row_button">Maak een QR-code van resultaat</string>
     <string name="no_negative_test_results_title">Geen negatieve testresultaten</string>
     <string name="no_negative_test_results_description">Er is geen negatief testresultaat gevonden. Heb je het idee dat dit niet klopt? Neem dan contact op met de testaanbieder.</string>
     <string name="testresult_not_known_title">Testresultaat nog niet bekend</string>

@@ -149,7 +149,7 @@
         <fragment
             android:id="@+id/nav_commercial_test_code"
             android:name="nl.rijksoverheid.ctr.holder.myoverview.CommercialTestCodeFragment"
-            android:label="@string/commercial_test_type_title"
+            android:label="@string/commercial_test_type_code_title"
             tools:layout="@layout/fragment_commercial_test_code">
 
             <action
@@ -173,7 +173,7 @@
         <fragment
             android:id="@+id/nav_your_negative_result"
             android:name="nl.rijksoverheid.ctr.holder.myoverview.YourNegativeTestResultFragment"
-            android:label=""
+            android:label="@string/commercial_test_type_title"
             tools:layout="@layout/fragment_your_negative_test_results">
 
             <action
