@@ -6,11 +6,9 @@ import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.holder.BaseFragment
-import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMyOverviewBinding
 import nl.rijksoverheid.ctr.holder.models.LocalTestResult
-import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.androidx.viewmodel.ViewModelOwner
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -43,11 +41,11 @@ class MyOverviewFragment : BaseFragment(R.layout.fragment_my_overview) {
         val binding = FragmentMyOverviewBinding.bind(view)
 
         binding.makeAppointmentCard.makeAppointmentCardButton.setOnClickListener {
-            BuildConfig.URL_FAQ.launchUrl(requireContext())
+            findNavController().navigate(MyOverviewFragmentDirections.actionMakeAppointment())
         }
 
         binding.createQrCard.createQrCardButton.setOnClickListener {
-            findNavController().navigate(MyOverviewFragmentDirections.actionTestAppointmentInfo())
+            findNavController().navigate(MyOverviewFragmentDirections.actionChooseProvider())
         }
 
         binding.qrCard.root.setOnClickListener {

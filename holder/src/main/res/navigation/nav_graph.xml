@@ -70,8 +70,16 @@
             tools:layout="@layout/fragment_my_overview">
 
             <action
-                android:id="@+id/action_test_appointment_info"
-                app:destination="@id/nav_test_appointment_info"
+                android:id="@+id/action_choose_provider"
+                app:destination="@id/nav_choose_provider"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right" />
+
+            <action
+                android:id="@+id/action_make_appointment"
+                app:destination="@id/nav_make_appointment"
                 app:enterAnim="@anim/slide_in_right"
                 app:exitAnim="@anim/slide_out_left"
                 app:popEnterAnim="@anim/slide_in_left"
@@ -96,20 +104,10 @@
     </navigation>
 
     <fragment
-        android:id="@+id/nav_test_appointment_info"
-        android:name="nl.rijksoverheid.ctr.holder.myoverview.TestAppointmentInfoFragment"
+        android:id="@+id/nav_make_appointment"
+        android:name="nl.rijksoverheid.ctr.holder.makeappointment.MakeAppointmentFragment"
         android:label="@string/test_appointment_info_toolbar_title"
-        tools:layout="@layout/fragment_test_appointment_info">
-
-        <action
-            android:id="@+id/action_choose_provider"
-            app:destination="@id/nav_choose_provider"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
-
-    </fragment>
+        tools:layout="@layout/fragment_make_appointment" />
 
     <fragment
         android:id="@+id/nav_choose_provider"
