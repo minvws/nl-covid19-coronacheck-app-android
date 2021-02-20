@@ -1,12 +1,11 @@
-package nl.rijksoverheid.ctr.holder.myoverview
+package nl.rijksoverheid.ctr.holder.makeappointment
 
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.databinding.FragmentTestAppointmentInfoBinding
+import nl.rijksoverheid.ctr.holder.databinding.FragmentMakeAppointmentBinding
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 
@@ -17,19 +16,19 @@ import nl.rijksoverheid.ctr.shared.ext.launchUrl
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class TestAppointmentInfoFragment : Fragment(R.layout.fragment_test_appointment_info) {
+class MakeAppointmentFragment : Fragment(R.layout.fragment_make_appointment) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val binding = FragmentTestAppointmentInfoBinding.bind(view)
+        val binding = FragmentMakeAppointmentBinding.bind(view)
         binding.description.setOnClickListener {
             BuildConfig.URL_FAQ.launchUrl(requireContext())
         }
         binding.description.text =
             getString(R.string.test_appointment_info_description).fromHtml()
         binding.button.setOnClickListener {
-            findNavController().navigate(TestAppointmentInfoFragmentDirections.actionChooseProvider())
+            BuildConfig.URL_MAKE_APPOINTMENT.launchUrl(requireContext())
         }
     }
 
