@@ -2,11 +2,12 @@ package nl.rijksoverheid.ctr.verifier.usecases
 
 import clmobile.Clmobile
 import com.squareup.moshi.Moshi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import nl.rijksoverheid.ctr.api.models.DecryptedQr
+import nl.rijksoverheid.ctr.api.repositories.TestResultRepository
 import nl.rijksoverheid.ctr.shared.ext.toObject
 import nl.rijksoverheid.ctr.shared.ext.verify
-import nl.rijksoverheid.ctr.shared.models.DecryptedQr
-import nl.rijksoverheid.ctr.shared.models.TestResultAttributes
-import nl.rijksoverheid.ctr.shared.util.CryptoUtil
 import timber.log.Timber
 import java.time.Instant
 import java.time.OffsetDateTime
@@ -19,22 +20,26 @@ import java.time.ZoneOffset
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class DecryptHolderQrUseCase(private val moshi: Moshi) {
+class DecryptHolderQrUseCase(
+    private val moshi: Moshi,
+    private val testResultRepository: TestResultRepository
+) {
 
-    fun decrypt(
+    suspend fun decrypt(
         content: String
-    ): DecryptResult {
+    ): DecryptResult = withContext(Dispatchers.IO) {
         try {
             val result =
                 Clmobile.verifyQREncoded(
-                    CryptoUtil.ISSUER_PK_XML.toByteArray(),
+                    testResultRepository.getIssuerPublicKey().toByteArray(),
                     content.toByteArray()
                 )
                     .verify()
             Timber.i("QR Code created at ${result.unixTimeSeconds}")
             val testResultAttributes =
-                result.attributesJson.decodeToString().toObject<TestResultAttributes>(moshi)
-            return DecryptResult.Success(
+                result.attributesJson.decodeToString()
+                    .toObject<nl.rijksoverheid.ctr.api.models.TestResultAttributes>(moshi)
+            DecryptResult.Success(
                 DecryptedQr(
                     creationDate = OffsetDateTime.ofInstant(
                         Instant.ofEpochSecond(result.unixTimeSeconds),
@@ -48,12 +53,12 @@ class DecryptHolderQrUseCase(private val moshi: Moshi) {
                 )
             )
         } catch (e: Exception) {
-            return DecryptResult.Failed
+            DecryptResult.Failed
         }
     }
 
     sealed class DecryptResult {
-        class Success(val decryptQr: DecryptedQr) : DecryptResult()
+        class Success(val decryptQr: nl.rijksoverheid.ctr.api.models.DecryptedQr) : DecryptResult()
         object Failed : DecryptResult()
     }
 }

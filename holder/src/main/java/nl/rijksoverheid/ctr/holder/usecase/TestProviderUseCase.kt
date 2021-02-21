@@ -1,7 +1,7 @@
 package nl.rijksoverheid.ctr.holder.usecase
 
 import nl.rijksoverheid.ctr.holder.repositories.HolderRepository
-import nl.rijksoverheid.ctr.shared.models.RemoteTestProviders
+import nl.rijksoverheid.ctr.api.models.RemoteTestProviders
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -12,7 +12,7 @@ import nl.rijksoverheid.ctr.shared.models.RemoteTestProviders
  */
 class TestProviderUseCase(private val holderRepository: HolderRepository) {
 
-    suspend fun testProvider(id: String): RemoteTestProviders.Provider? {
+    suspend fun testProvider(id: String): nl.rijksoverheid.ctr.api.models.RemoteTestProviders.Provider? {
         return holderRepository.testProviders().providers.firstOrNull { it.providerIdentifier == id }
     }
 }

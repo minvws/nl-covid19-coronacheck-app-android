@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_introduction"
+    app:startDestination="@+id/nav_onboarding">
+
+    <fragment
+        android:id="@+id/nav_onboarding"
+        android:name="nl.rijksoverheid.ctr.introduction.onboarding.OnboardingFragment"
+        android:label=""
+        tools:layout="@layout/fragment_onboarding">
+
+        <action
+            android:id="@+id/action_privacy_policy"
+            app:destination="@id/nav_privacy_policy" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_privacy_policy"
+        android:name="nl.rijksoverheid.ctr.introduction.privacy_policy.PrivacyPolicyFragment"
+        android:label=""
+        tools:layout="@layout/fragment_privacy_policy" />
+
+</navigation>

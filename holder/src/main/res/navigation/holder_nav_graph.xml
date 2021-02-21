@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav"
+    app:startDestination="@+id/nav_status">
+
+    <fragment
+        android:id="@+id/nav_status"
+        android:name="nl.rijksoverheid.ctr.introduction.status.StatusFragment"
+        android:label="">
+
+        <action
+            android:id="@+id/action_home"
+            app:destination="@id/nav_home" />
+
+    </fragment>
+
+    <navigation
+        android:id="@+id/nav_home"
+        app:startDestination="@id/nav_my_overview">
+
+        <fragment
+            android:id="@+id/nav_my_overview"
+            android:name="nl.rijksoverheid.ctr.holder.myoverview.MyOverviewFragment"
+            android:label="@string/my_overview"
+            tools:layout="@layout/fragment_my_overview">
+
+            <action
+                android:id="@+id/action_choose_provider"
+                app:destination="@id/nav_choose_provider"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right" />
+
+            <action
+                android:id="@+id/action_make_appointment"
+                app:destination="@id/nav_make_appointment"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right" />
+
+            <action
+                android:id="@+id/action_qr_code"
+                app:destination="@id/nav_qr_code"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right" />
+
+        </fragment>
+
+        <dialog
+            android:id="@+id/nav_qr_code"
+            android:name="nl.rijksoverheid.ctr.holder.myoverview.QrCodeFragment"
+            android:label=""
+            tools:layout="@layout/dialog_qr_code" />
+
+    </navigation>
+
+    <fragment
+        android:id="@+id/nav_make_appointment"
+        android:name="nl.rijksoverheid.ctr.holder.makeappointment.MakeAppointmentFragment"
+        android:label="@string/test_appointment_info_toolbar_title"
+        tools:layout="@layout/fragment_make_appointment" />
+
+    <fragment
+        android:id="@+id/nav_choose_provider"
+        android:name="nl.rijksoverheid.ctr.holder.myoverview.ChooseProviderFragment"
+        android:label="@string/choose_provider_toolbar"
+        tools:layout="@layout/fragment_choose_provider">
+
+        <action
+            android:id="@+id/action_commercial_test_type"
+            app:destination="@id/nav_commercial_test_type"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_commercial_test_type"
+        android:name="nl.rijksoverheid.ctr.holder.myoverview.CommercialTestTypeFragment"
+        android:label="@string/commercial_test_type_title"
+        tools:layout="@layout/fragment_commercial_test_type">
+
+        <action
+            android:id="@+id/action_commercial_test_code"
+            app:destination="@id/nav_commercial_test"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
+
+    <navigation
+        android:id="@+id/nav_commercial_test"
+        app:startDestination="@id/nav_commercial_test_code">
+        <fragment
+            android:id="@+id/nav_commercial_test_code"
+            android:name="nl.rijksoverheid.ctr.holder.myoverview.CommercialTestCodeFragment"
+            android:label="@string/commercial_test_type_code_title"
+            tools:layout="@layout/fragment_commercial_test_code">
+
+            <action
+                android:id="@+id/action_your_negative_result"
+                app:destination="@id/nav_your_negative_result"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right" />
+
+            <action
+                android:id="@+id/action_no_test_result"
+                app:destination="@id/nav_no_test_result"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right" />
+
+        </fragment>
+
+        <fragment
+            android:id="@+id/nav_your_negative_result"
+            android:name="nl.rijksoverheid.ctr.holder.myoverview.YourNegativeTestResultFragment"
+            android:label="@string/commercial_test_type_title"
+            tools:layout="@layout/fragment_your_negative_test_results">
+
+            <action
+                android:id="@+id/action_create_qr"
+                app:destination="@id/nav_qr_created"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right" />
+
+            <action
+                android:id="@+id/action_home"
+                app:destination="@id/nav_home"
+                app:enterAnim="@anim/fragment_open_enter"
+                app:exitAnim="@anim/fragment_open_exit"
+                app:launchSingleTop="true"
+                app:popEnterAnim="@anim/fragment_close_enter"
+                app:popExitAnim="@anim/fragment_close_exit"
+                app:popUpTo="@id/nav_home"
+                app:popUpToInclusive="true" />
+
+            <action
+                android:id="@+id/action_no_test_result"
+                app:destination="@id/nav_no_test_result"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right" />
+
+        </fragment>
+
+        <fragment
+            android:id="@+id/nav_qr_created"
+            android:name="nl.rijksoverheid.ctr.holder.myoverview.QrCreatedFragment"
+            android:label="@string/commercial_test_type_title"
+            tools:layout="@layout/fragment_qr_created">
+
+            <action
+                android:id="@+id/action_home"
+                app:destination="@id/nav_home"
+                app:enterAnim="@anim/fragment_open_enter"
+                app:exitAnim="@anim/fragment_open_exit"
+                app:launchSingleTop="true"
+                app:popEnterAnim="@anim/fragment_close_enter"
+                app:popExitAnim="@anim/fragment_close_exit"
+                app:popUpTo="@id/nav_my_overview"
+                app:popUpToInclusive="true" />
+
+        </fragment>
+
+        <fragment
+            android:id="@+id/nav_no_test_result"
+            android:name="nl.rijksoverheid.ctr.holder.myoverview.NoTestResultFragment"
+            android:label="@string/commercial_test_type_title"
+            tools:layout="@layout/fragment_no_test_result">
+
+            <argument
+                android:name="title"
+                app:argType="string" />
+
+            <argument
+                android:name="description"
+                app:argType="string" />
+
+        </fragment>
+
+    </navigation>
+
+    <fragment
+        android:id="@+id/nav_settings"
+        android:name="nl.rijksoverheid.ctr.holder.settings.SettingsFragment"
+        android:label="@string/settings"
+        tools:layout="@layout/fragment_settings" />
+
+    <fragment
+        android:id="@+id/nav_about_this_app"
+        android:name="nl.rijksoverheid.ctr.holder.about.AboutThisAppFragment"
+        android:label="@string/about_this_app"
+        tools:layout="@layout/fragment_about_this_app" />
+
+    <fragment
+        android:id="@+id/nav_app_status"
+        android:name="nl.rijksoverheid.ctr.appconfig.AppStatusFragment"
+        tools:layout="@layout/fragment_app_status" />
+
+    <action
+        android:id="@+id/action_app_status"
+        app:destination="@id/nav_app_status"
+        app:popUpTo="@id/main_nav"
+        app:popUpToInclusive="true" />
+
+</navigation>

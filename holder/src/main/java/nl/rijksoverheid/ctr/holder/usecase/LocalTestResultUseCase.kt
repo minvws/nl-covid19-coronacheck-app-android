@@ -5,7 +5,7 @@ import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.holder.models.LocalTestResult
 import nl.rijksoverheid.ctr.holder.myoverview.models.LocalTestResultState
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
-import nl.rijksoverheid.ctr.shared.repositories.TestResultRepository
+import nl.rijksoverheid.ctr.api.repositories.TestResultRepository
 import nl.rijksoverheid.ctr.shared.util.TestResultUtil
 import java.time.Instant
 import java.time.OffsetDateTime
@@ -21,7 +21,7 @@ import java.time.ZoneOffset
 class LocalTestResultUseCase (
     private val persistenceManager: PersistenceManager,
     private val testResultUtil: TestResultUtil,
-    private val testResultRepository: TestResultRepository,
+    private val testResultRepository: nl.rijksoverheid.ctr.api.repositories.TestResultRepository,
     private val testResultAttributesUseCase: TestResultAttributesUseCase
 ) {
 

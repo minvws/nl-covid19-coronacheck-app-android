@@ -2,17 +2,12 @@ package nl.rijksoverheid.ctr.holder.repositories
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import nl.rijksoverheid.ctr.shared.api.SigningCertificate
-import nl.rijksoverheid.ctr.shared.api.TestApiClient
-import nl.rijksoverheid.ctr.shared.api.TestProviderApiClient
-import nl.rijksoverheid.ctr.shared.models.RemoteNonce
-import nl.rijksoverheid.ctr.shared.models.RemoteTestProviders
-import nl.rijksoverheid.ctr.shared.models.RemoteTestResult
-import nl.rijksoverheid.ctr.shared.models.ResponseError
-import nl.rijksoverheid.ctr.shared.models.SignedResponseWithModel
-import nl.rijksoverheid.ctr.shared.models.TestIsmResult
-import nl.rijksoverheid.ctr.shared.models.post.GetTestIsmPostData
-import nl.rijksoverheid.ctr.shared.models.post.GetTestResultPostData
+import nl.rijksoverheid.ctr.api.CoronaCheckApiClient
+import nl.rijksoverheid.ctr.api.SigningCertificate
+import nl.rijksoverheid.ctr.api.TestProviderApiClient
+import nl.rijksoverheid.ctr.api.models.*
+import nl.rijksoverheid.ctr.api.models.post.GetTestIsmPostData
+import nl.rijksoverheid.ctr.api.models.post.GetTestResultPostData
 import okhttp3.ResponseBody
 import org.json.JSONObject
 import retrofit2.Converter
@@ -26,7 +21,7 @@ import retrofit2.HttpException
  *
  */
 class HolderRepository(
-    private val api: TestApiClient,
+    private val api: CoronaCheckApiClient,
     private val testProviderApiClient: TestProviderApiClient,
     private val responseConverter: Converter<ResponseBody, SignedResponseWithModel<RemoteTestResult>>,
     private val errorResponseConverter: Converter<ResponseBody, ResponseError>
@@ -68,7 +63,11 @@ class HolderRepository(
     }
 
     @Suppress("BlockingMethodInNonBlockingContext")
-    suspend fun getTestIsm(test: String, sToken: String, icm: String): TestIsmResult {
+    suspend fun getTestIsm(
+        test: String,
+        sToken: String,
+        icm: String
+    ): TestIsmResult {
         val response = api.getTestIsm(
             GetTestIsmPostData(
                 test = test,

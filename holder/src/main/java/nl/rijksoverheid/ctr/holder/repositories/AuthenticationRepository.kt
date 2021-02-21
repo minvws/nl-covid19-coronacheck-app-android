@@ -3,8 +3,6 @@ package nl.rijksoverheid.ctr.holder.repositories
 import android.content.Intent
 import android.net.Uri
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import net.openid.appauth.*
 import nl.rijksoverheid.ctr.shared.BuildConfig.DIGI_D_BASE_URL
 import nl.rijksoverheid.ctr.shared.BuildConfig.DIGI_D_CLIENT_ID

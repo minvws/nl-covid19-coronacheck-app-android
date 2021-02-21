@@ -5,6 +5,9 @@
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
+include ':api'
+include ':introduction'
+include ':design'
 include ':shared'
 include ':verifier'
 include ':holder'
