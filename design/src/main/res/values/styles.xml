@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Introduction">
-        <item name="android:background">@color/white</item>
-    </style>
-
     <style name="Widget.App.TextInputLayout" parent="Widget.Design.TextInputLayout">
         <item name="boxBackgroundColor">@color/white</item>
     </style>
@@ -45,5 +41,4 @@
         <item name="android:textColor">@color/white_80</item>
         <item name="android:textSize">16sp</item>
     </style>
-
 </resources>
