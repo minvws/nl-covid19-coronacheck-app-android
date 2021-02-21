@@ -13,6 +13,10 @@ plugins {
 }
 
 android {
+    buildFeatures {
+        viewBinding true
+    }
+
     defaultConfig {
         versionCode 1
         versionName "1.0"
@@ -37,9 +41,11 @@ dependencies {
     implementation "org.koin:koin-android:$koin_version"
     implementation "org.koin:koin-androidx-viewmodel:$koin_version"
     implementation "com.jakewharton.timber:timber:$timber_version"
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
 
     implementation(project(':cache-interceptors'))
     implementation(project(":signing"))
+    implementation(project(":design"))
 
     kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
 

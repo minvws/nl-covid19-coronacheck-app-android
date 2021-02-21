@@ -6,7 +6,7 @@
  *
  */
 
-package nl.rijksoverheid.ctr.verifier.appstatus
+package nl.rijksoverheid.ctr.appconfig
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -15,10 +15,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
-import nl.rijksoverheid.ctr.appconfig.AppStatusViewModel
+import nl.rijksoverheid.ctr.appconfig.databinding.FragmentAppStatusBinding
 import nl.rijksoverheid.ctr.appconfig.model.AppStatus
-import nl.rijksoverheid.ctr.verifier.R
-import nl.rijksoverheid.ctr.verifier.databinding.FragmentAppStatusBinding
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class AppStatusFragment : Fragment(R.layout.fragment_app_status) {
