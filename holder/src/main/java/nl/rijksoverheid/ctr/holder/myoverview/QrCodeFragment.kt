@@ -64,19 +64,19 @@ class QrCodeFragment : DialogFragment() {
         dialog?.window?.attributes = params
 
         qrCodeViewModel.qrCodeLiveData.observe(viewLifecycleOwner, EventObserver {
-            binding.image.setImageBitmap(it)
+            binding.image.setImageBitmap(it.qrCode)
             binding.loading.visibility = View.GONE
         })
 
-        val credentials = localTestResultViewModel.retrievedLocalTestResult?.credentials
-        if (credentials == null) {
+        val localTestResult = localTestResultViewModel.retrievedLocalTestResult
+        if (localTestResult == null) {
             // No credentials in cache, go back to overview
             findNavController().popBackStack()
         } else {
             binding.image.doOnPreDraw {
                 lifecycleScope.launchWhenResumed {
                     qrCodeViewModel.generateQrCode(
-                        credentials = credentials,
+                        localTestResult = localTestResult,
                         qrCodeSize = binding.image.width
                     )
                 }

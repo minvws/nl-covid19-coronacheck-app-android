@@ -21,7 +21,7 @@ class StatusFragment : Fragment(), HideToolbar {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        introductionViewModel.introductionStateLiveData.observe(this, Observer { state ->
+        introductionViewModel.introductionStateLiveData.observe(this, { state ->
             state.onboardingFinished
             val direction = when {
                 !state.onboardingFinished -> StatusFragmentDirections.actionOnboarding()
