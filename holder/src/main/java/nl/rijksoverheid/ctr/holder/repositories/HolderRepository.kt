@@ -4,7 +4,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.shared.api.SigningCertificate
 import nl.rijksoverheid.ctr.shared.api.TestApiClient
-import nl.rijksoverheid.ctr.shared.models.*
+import nl.rijksoverheid.ctr.shared.api.TestProviderApiClient
+import nl.rijksoverheid.ctr.shared.models.RemoteNonce
+import nl.rijksoverheid.ctr.shared.models.RemoteTestProviders
+import nl.rijksoverheid.ctr.shared.models.RemoteTestResult
+import nl.rijksoverheid.ctr.shared.models.ResponseError
+import nl.rijksoverheid.ctr.shared.models.SignedResponseWithModel
+import nl.rijksoverheid.ctr.shared.models.TestIsmResult
 import nl.rijksoverheid.ctr.shared.models.post.GetTestIsmPostData
 import nl.rijksoverheid.ctr.shared.models.post.GetTestResultPostData
 import okhttp3.ResponseBody
@@ -21,6 +27,7 @@ import retrofit2.HttpException
  */
 class HolderRepository(
     private val api: TestApiClient,
+    private val testProviderApiClient: TestProviderApiClient,
     private val responseConverter: Converter<ResponseBody, SignedResponseWithModel<RemoteTestResult>>,
     private val errorResponseConverter: Converter<ResponseBody, ResponseError>
 ) {
@@ -33,7 +40,7 @@ class HolderRepository(
         signingCertificateBytes: ByteArray
     ): SignedResponseWithModel<RemoteTestResult> {
         try {
-            return api.getTestResult(
+            return testProviderApiClient.getTestResult(
                 url = url,
                 authorization = "Bearer $token",
                 data = verifierCode?.let {

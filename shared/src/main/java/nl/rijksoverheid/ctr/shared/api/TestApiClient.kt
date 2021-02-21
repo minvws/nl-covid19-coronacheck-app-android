@@ -1,11 +1,18 @@
 package nl.rijksoverheid.ctr.shared.api
 
-import nl.rijksoverheid.ctr.shared.models.*
+import nl.rijksoverheid.crt.signing.http.SignedRequest
+import nl.rijksoverheid.ctr.shared.models.Issuers
+import nl.rijksoverheid.ctr.shared.models.RemoteAgent
+import nl.rijksoverheid.ctr.shared.models.RemoteEvent
+import nl.rijksoverheid.ctr.shared.models.RemoteNonce
+import nl.rijksoverheid.ctr.shared.models.RemoteTestProviders
 import nl.rijksoverheid.ctr.shared.models.post.GetTestIsmPostData
-import nl.rijksoverheid.ctr.shared.models.post.GetTestResultPostData
 import okhttp3.ResponseBody
 import retrofit2.Response
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.Path
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -17,30 +24,28 @@ import retrofit2.http.*
 interface TestApiClient {
 
     @GET("holder/get_public_keys")
+    @SignedRequest
     suspend fun getIssuers(): Issuers
 
     @GET("issuer/get_event/{id}")
+    @SignedRequest
     suspend fun getEvent(@Path("id") id: String): RemoteEvent
 
     @GET("issuer/get_agent/{id}")
+    @SignedRequest
     suspend fun getAgent(@Path("id") id: String): RemoteAgent
 
     @GET("holder/nonce")
+    @SignedRequest
     suspend fun getNonce(): RemoteNonce
 
     @GET("holder/config_ctp")
+    @SignedRequest
     suspend fun getConfigCtp(): RemoteTestProviders
 
     @POST("holder/get_test_ism")
+    @SignedRequest
     suspend fun getTestIsm(
         @Body data: GetTestIsmPostData
     ): Response<ResponseBody>
-
-    @POST
-    suspend fun getTestResult(
-        @Url url: String,
-        @Header("Authorization") authorization: String,
-        @Body data: GetTestResultPostData?,
-        @Tag certificate: SigningCertificate
-    ): SignedResponseWithModel<RemoteTestResult>
 }

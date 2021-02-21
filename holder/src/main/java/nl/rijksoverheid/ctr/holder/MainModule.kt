@@ -89,6 +89,7 @@ val mainModule = module {
     single {
         HolderRepository(
             get(),
+            get(),
             get(named("SignedResponseWithModel")),
             get(named("ResponseError"))
         )
