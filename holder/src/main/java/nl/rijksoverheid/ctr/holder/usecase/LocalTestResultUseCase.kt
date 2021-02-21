@@ -18,7 +18,7 @@ import java.time.ZoneOffset
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class LocalTestResultUseCase(
+class LocalTestResultUseCase (
     private val persistenceManager: PersistenceManager,
     private val testResultUtil: TestResultUtil,
     private val testResultRepository: TestResultRepository,
@@ -41,12 +41,14 @@ class LocalTestResultUseCase(
             )
 
             if (isValid) {
-                LocalTestResultState.Valid(LocalTestResult(
-                    credentials = credentials,
-                    sampleDate = sampleDate,
-                    testType = testAttributes.testType,
-                    expireDate = sampleDate.plusSeconds(testValiditySeconds)
-                ))
+                LocalTestResultState.Valid(
+                    LocalTestResult(
+                        credentials = credentials,
+                        sampleDate = sampleDate,
+                        testType = testAttributes.testType,
+                        expireDate = sampleDate.plusSeconds(testValiditySeconds)
+                    )
+                )
             } else {
                 persistenceManager.deleteCredentials()
                 LocalTestResultState.Expired

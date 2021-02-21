@@ -71,7 +71,7 @@ val mainModule = module {
         TestResultUseCase(get(), get(), get(), get())
     }
     single {
-        LocalTestResultUseCase(get(), get(), get())
+        LocalTestResultUseCase(get(), get(), get(), get())
     }
     single {
         TestResultAttributesUseCase(get())
