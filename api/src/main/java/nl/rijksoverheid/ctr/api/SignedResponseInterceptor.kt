@@ -13,7 +13,6 @@ import com.squareup.moshi.JsonWriter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import nl.rijksoverheid.crt.signing.http.SignedRequest
-import nl.rijksoverheid.ctr.shared.BuildConfig
 import nl.rijksoverheid.ctr.api.json.Base64JsonAdapter
 import nl.rijksoverheid.ctr.signing.SignatureValidationException
 import nl.rijksoverheid.ctr.signing.SignatureValidator

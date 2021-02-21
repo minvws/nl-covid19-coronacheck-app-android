@@ -29,7 +29,7 @@ val mainModule = module {
 
     // Use cases
     single {
-        DecryptHolderQrUseCase(get())
+        DecryptHolderQrUseCase(get(), get())
     }
     single {
         TestResultValidUseCase(get(), get(), get(), get())

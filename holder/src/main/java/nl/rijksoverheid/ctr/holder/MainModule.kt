@@ -35,8 +35,6 @@ val mainModule = module {
     // Use cases
     single {
         GenerateHolderQrCodeUseCase(
-            get(),
-            get(),
             get()
         )
     }
@@ -44,6 +42,7 @@ val mainModule = module {
         QrCodeUseCase(
             get(),
             get(),
+            get()
         )
     }
     single {

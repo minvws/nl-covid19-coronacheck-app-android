@@ -22,7 +22,7 @@ import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.ext.styleTitle
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MainActivity : BaseActivity(R.id.nav_my_overview) {
+class HolderMainActivity : BaseActivity(R.id.nav_my_overview) {
 
     private lateinit var binding: ActivityMainBinding
 

@@ -38,6 +38,9 @@ android {
 }
 
 dependencies {
+    implementation(project(":shared"))
+    implementation(project(":design"))
+
     implementation "androidx.core:core-ktx:${androidx_version}"
     implementation "androidx.appcompat:appcompat:${appcompat_version}"
     implementation "com.google.android.material:material:${material_version}"
@@ -52,6 +55,4 @@ dependencies {
     implementation "androidx.viewpager2:viewpager2:${viewpager2_version}"
     implementation "com.xwray:groupie:${groupie_version}"
     implementation "com.xwray:groupie-viewbinding:${groupie_version}"
-    implementation(project(":shared"))
-    implementation(project(":design"))
 }

@@ -22,7 +22,7 @@ import nl.rijksoverheid.ctr.shared.ext.styleTitle
 import nl.rijksoverheid.ctr.verifier.databinding.ActivityMainBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MainActivity : BaseActivity(R.id.nav_scan_qr) {
+class VerifierMainActivity : BaseActivity(R.id.nav_scan_qr) {
 
     private lateinit var binding: ActivityMainBinding
     private val appStatusViewModel: AppStatusViewModel by viewModel()

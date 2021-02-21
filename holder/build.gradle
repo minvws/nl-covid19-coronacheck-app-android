@@ -23,6 +23,11 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
+
+        buildConfigField "String", "URL_FAQ", "\"https://coronacheck.nl/nl/faq-in-app.html\""
+        buildConfigField "String", "URL_ABOUT_THIS_APP", "\"https://coronacheck.nl/nl/over-de-app-in-app\""
+        buildConfigField "String", "URL_PRIVACY_STATEMENT", "\"https://coronacheck.nl/nl/privacy-in-app\""
+        buildConfigField "String", "URL_MAKE_APPOINTMENT", "\"https://coronacheck.nl/nl/testaanbieders-fieldlab-in-de-app\""
     }
 
     signingConfigs {
@@ -49,28 +54,16 @@ android {
             versionNameSuffix "-test"
             applicationIdSuffix ".test"
             manifestPlaceholders = [appLabel: "@string/app_name_test"]
-            buildConfigField "String", "URL_FAQ", "\"https://coronacheck.nl/nl/faq-in-app.html\""
-            buildConfigField "String", "URL_ABOUT_THIS_APP", "\"https://coronacheck.nl/nl/over-de-app-in-app\""
-            buildConfigField "String", "URL_PRIVACY_STATEMENT", "\"https://coronacheck.nl/nl/privacy-in-app\""
-            buildConfigField "String", "URL_MAKE_APPOINTMENT", "\"https://coronacheck.nl/nl/testaanbieders-fieldlab-in-de-app\""
         }
         acc {
             dimension "environment"
             versionNameSuffix "-acc"
             applicationIdSuffix ".acc"
             manifestPlaceholders = [appLabel: "@string/app_name_acc"]
-            buildConfigField "String", "URL_FAQ", "\"https://coronacheck.nl/nl/faq-in-app.html\""
-            buildConfigField "String", "URL_ABOUT_THIS_APP", "\"https://coronacheck.nl/nl/over-de-app-in-app\""
-            buildConfigField "String", "URL_PRIVACY_STATEMENT", "\"https://coronacheck.nl/nl/privacy-in-app\""
-            buildConfigField "String", "URL_MAKE_APPOINTMENT", "\"https://coronacheck.nl/nl/testaanbieders-fieldlab-in-de-app\""
         }
         prod {
             dimension "environment"
             manifestPlaceholders = [appLabel: "@string/app_name"]
-            buildConfigField "String", "URL_FAQ", "\"https://coronacheck.nl/nl/faq-in-app.html\""
-            buildConfigField "String", "URL_ABOUT_THIS_APP", "\"https://coronacheck.nl/nl/over-de-app-in-app\""
-            buildConfigField "String", "URL_PRIVACY_STATEMENT", "\"https://coronacheck.nl/nl/privacy-in-app\""
-            buildConfigField "String", "URL_MAKE_APPOINTMENT", "\"https://coronacheck.nl/nl/testaanbieders-fieldlab-in-de-app\""
         }
     }
 
@@ -80,16 +73,29 @@ android {
 }
 
 dependencies {
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.1'
     implementation project(":shared")
     implementation project(":appconfig")
     implementation project(":design")
     implementation project(":introduction")
     implementation project(":api")
+    implementation project(":ctcl")
+
     implementation 'com.github.openid:AppAuth-Android:41a6aa1'
     implementation "com.xwray:groupie:${groupie_version}"
     implementation "com.xwray:groupie-viewbinding:${groupie_version}"
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$navigation_version"
+    implementation "org.koin:koin-android:$koin_version"
+    implementation "org.koin:koin-androidx-viewmodel:$koin_version"
+    implementation "org.koin:koin-androidx-fragment:$koin_version"
+    implementation "androidx.preference:preference-ktx:$preference_version"
+    implementation "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
+    implementation "com.jakewharton.timber:timber:${timber_version}"
 
-    testImplementation "junit:junit:${junit_version}"
-    testImplementation "io.mockk:mockk:1.10.0"
+    testImplementation "junit:junit:$junit_version"
+    testImplementation "io.mockk:mockk:$mock_version"
+
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$desugar_jdk_version"
+
+
 }

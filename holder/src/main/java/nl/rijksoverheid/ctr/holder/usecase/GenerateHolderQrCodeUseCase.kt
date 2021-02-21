@@ -1,8 +1,6 @@
 package nl.rijksoverheid.ctr.holder.usecase
 
 import android.graphics.Bitmap
-import com.squareup.moshi.Moshi
-import nl.rijksoverheid.ctr.shared.util.CryptoUtil
 import nl.rijksoverheid.ctr.shared.util.QrCodeScannerUtil
 
 /*
@@ -13,8 +11,6 @@ import nl.rijksoverheid.ctr.shared.util.QrCodeScannerUtil
  *
  */
 class GenerateHolderQrCodeUseCase(
-    private val cryptoUtil: CryptoUtil,
-    private val moshi: Moshi,
     private val qrCodeScannerUtil: QrCodeScannerUtil
 ) {
 

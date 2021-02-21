@@ -78,13 +78,20 @@ android {
 }
 
 dependencies {
-    implementation(project(":shared"))
     implementation(project(":signing"))
     implementation(project(':cache-interceptors'))
-    implementation(project(':shared'))
-    implementation(platform("com.squareup.okhttp3:okhttp-bom:4.9.0"))
+
+    implementation "com.facebook.stetho:stetho:$stetho_version"
+    implementation "com.facebook.stetho:stetho-okhttp3:$stetho_version"
+    implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
+    implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
+    implementation "org.koin:koin-android:$koin_version"
+    implementation "com.jakewharton.timber:timber:${timber_version}"
+    implementation(platform("com.squareup.okhttp3:okhttp-bom:$okhttp_version"))
     implementation("com.squareup.okhttp3:okhttp")
     implementation("com.squareup.okhttp3:okhttp-tls")
     implementation("com.squareup.okhttp3:logging-interceptor")
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.1'
+
+    kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$desugar_jdk_version"
 }

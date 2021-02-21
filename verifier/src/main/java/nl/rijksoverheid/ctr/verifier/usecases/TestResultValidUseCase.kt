@@ -15,7 +15,7 @@ import nl.rijksoverheid.ctr.shared.util.TestResultUtil
  */
 class TestResultValidUseCase(
     private val decryptHolderQrUseCase: DecryptHolderQrUseCase,
-    private val testResultRepository: nl.rijksoverheid.ctr.api.repositories.TestResultRepository,
+    private val testResultRepository: TestResultRepository,
     private val testResultUtil: TestResultUtil,
     private val qrCodeUtil: QrCodeUtil
 ) {

@@ -4,9 +4,9 @@ import android.graphics.Bitmap
 import clmobile.Clmobile
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import nl.rijksoverheid.ctr.api.repositories.TestResultRepository
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.shared.ext.successString
-import nl.rijksoverheid.ctr.shared.util.CryptoUtil
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -16,6 +16,7 @@ import nl.rijksoverheid.ctr.shared.util.CryptoUtil
  *
  */
 class QrCodeUseCase(
+    private val testResultRepository: TestResultRepository,
     private val persistenceManager: PersistenceManager,
     private val generateHolderQrCodeUseCase: GenerateHolderQrCodeUseCase,
 ) {
@@ -26,7 +27,7 @@ class QrCodeUseCase(
                 ?: throw IllegalStateException("Secret key should exist")
 
             val qrCodeContent = Clmobile.discloseAllWithTimeQrEncoded(
-                CryptoUtil.ISSUER_PK_XML.toByteArray(),
+                testResultRepository.getIssuerPublicKey().toByteArray(),
                 secretKey.toByteArray(),
                 credentials
             ).successString()
