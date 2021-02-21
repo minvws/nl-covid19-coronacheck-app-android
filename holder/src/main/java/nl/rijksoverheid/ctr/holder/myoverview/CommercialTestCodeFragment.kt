@@ -1,9 +1,7 @@
 package nl.rijksoverheid.ctr.holder.myoverview
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.core.widget.addTextChangedListener
 import androidx.navigation.fragment.findNavController
@@ -25,9 +23,8 @@ import org.koin.androidx.viewmodel.scope.emptyState
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class CommercialTestCodeFragment : BaseFragment() {
+class CommercialTestCodeFragment : BaseFragment(R.layout.fragment_commercial_test_code) {
 
-    private lateinit var binding: FragmentCommercialTestCodeBinding
     private val viewModel: TestResultsViewModel by sharedViewModel(
         state = emptyState(),
         owner = {
@@ -37,17 +34,10 @@ class CommercialTestCodeFragment : BaseFragment() {
             )
         })
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentCommercialTestCodeBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val binding = FragmentCommercialTestCodeBinding.bind(view)
 
         if (viewModel.verificationRequired) {
             showKeyboard(binding.verificationCodeText)
@@ -108,14 +98,6 @@ class CommercialTestCodeFragment : BaseFragment() {
                             )
                         )
                     }
-                }
-                is TestResult.AlreadySigned -> {
-                    findNavController().navigate(
-                        CommercialTestCodeFragmentDirections.actionNoTestResult(
-                            title = getString(R.string.test_result_already_signed_title),
-                            description = getString(R.string.test_result_already_signed_description)
-                        )
-                    )
                 }
                 is TestResult.Pending -> {
                     findNavController().navigate(

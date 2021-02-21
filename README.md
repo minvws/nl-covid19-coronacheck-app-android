@@ -1,14 +1,12 @@
-# COVID-19 <Project Name> - <platform>
+# COVID-19 CoronaCheck Prototype - Android
 
 ## Introduction
-This repository contains the <platform> implementation of the Dutch COVID-19 <project or app name>.
+This repository contains the Android prototype of the Dutch COVID-19 CoronaCheck project.
 
-* The <platform> app is located in the repository you are currently viewing.
-* The <related> can be found here: <related repo>
+* The Android app is located in the repository you are currently viewing.
+* The iOS app can be found here: https://github.com/minvws/nl-covid-19-coronacheck-app-ios 
 
-## Local development setup
-
-Instructions for local development
+The project is currently an experimental prototype to explore technical possibilities.   
 
 ## Development & Contribution process
 

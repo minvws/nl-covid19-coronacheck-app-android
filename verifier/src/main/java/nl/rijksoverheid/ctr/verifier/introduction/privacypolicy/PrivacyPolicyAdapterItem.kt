@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.verifier.introduction.privacypolicy
 
 import android.view.View
 import com.xwray.groupie.viewbinding.BindableItem
+import nl.rijksoverheid.ctr.shared.ext.fromHtml
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.ItemPrivacyPolicyBinding
 import nl.rijksoverheid.ctr.verifier.introduction.privacypolicy.models.PrivacyPolicyItem
@@ -21,7 +22,8 @@ class PrivacyPolicyAdapterItem(private val item: PrivacyPolicyItem) :
 
     override fun bind(viewBinding: ItemPrivacyPolicyBinding, position: Int) {
         viewBinding.icon.setImageResource(item.iconResource)
-        viewBinding.description.setText(item.textResource)
+        viewBinding.description.text =
+            viewBinding.description.context.getString(item.textResource).fromHtml()
     }
 
     override fun initializeViewBinding(view: View): ItemPrivacyPolicyBinding {

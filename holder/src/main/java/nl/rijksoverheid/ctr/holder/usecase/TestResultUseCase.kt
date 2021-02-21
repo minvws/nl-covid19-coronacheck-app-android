@@ -5,6 +5,7 @@ import nl.rijksoverheid.ctr.holder.repositories.HolderRepository
 import nl.rijksoverheid.ctr.shared.ext.successString
 import nl.rijksoverheid.ctr.shared.models.RemoteTestResult
 import nl.rijksoverheid.ctr.shared.models.ResponseError
+import nl.rijksoverheid.ctr.shared.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.shared.models.TestIsmResult
 import retrofit2.HttpException
 import timber.log.Timber
@@ -33,10 +34,10 @@ class TestResultUseCase(
         val providerIdentifier = uniqueCodeAttributes[0]
         val token = uniqueCodeAttributes[1]
 
-        val testProvider = testProviderUseCase.testProvider(providerIdentifier)
-            ?: return TestResult.InvalidToken
-
         return try {
+            val testProvider = testProviderUseCase.testProvider(providerIdentifier)
+                ?: return TestResult.InvalidToken
+
             val signedResponseWithTestResult = holderRepository.remoteTestResult(
                 url = testProvider.resultUrl,
                 token = token,
@@ -57,7 +58,21 @@ class TestResultUseCase(
             }
 
             val result = remoteTestResult.result ?: error("Expected result")
+            TestResult.Complete(remoteTestResult, signedResponseWithTestResult)
+        } catch (ex: HttpException) {
+            Timber.e(ex, "Server error while getting test result")
+            TestResult.ServerError
+        } catch (ex: IOException) {
+            Timber.e(ex, "Network error while getting test result")
+            TestResult.NetworkError
+        }
+    }
 
+    suspend fun signTestResult(
+        remoteTestResult: RemoteTestResult,
+        signedResponseWithTestResult: SignedResponseWithModel<RemoteTestResult>
+    ): SignedTestResult {
+        try {
             // Persist encrypted test result
             val remoteNonce = holderRepository.remoteNonce()
             val commitmentMessage = commitmentMessageUseCase.json(
@@ -79,34 +94,41 @@ class TestResultUseCase(
                         testIsm.body.toByteArray(Charsets.UTF_8)
                     ).successString()
 
-                    TestResult.Complete(remoteTestResult, credentials)
+                    return SignedTestResult.Complete(credentials)
                 }
                 is TestIsmResult.Error -> {
-                    if (testIsm.responseError.code == ResponseError.CODE_ALREADY_SIGNED) {
-                        TestResult.AlreadySigned
+                    return if (testIsm.responseError.code == ResponseError.CODE_ALREADY_SIGNED) {
+                        SignedTestResult.AlreadySigned
                     } else {
-                        TestResult.ServerError
+                        SignedTestResult.ServerError
                     }
                 }
             }
         } catch (ex: HttpException) {
-            Timber.e(ex, "Server error while getting test result")
-            TestResult.ServerError
+            return SignedTestResult.ServerError
         } catch (ex: IOException) {
-            Timber.e(ex, "Network error while getting test result")
-            TestResult.NetworkError
+            return SignedTestResult.NetworkError
         }
     }
 }
 
 sealed class TestResult {
-    data class Complete(val remoteTestResult: RemoteTestResult, val credentials: String) :
+    data class Complete(
+        val remoteTestResult: RemoteTestResult,
+        val signedResponseWithTestResult: SignedResponseWithModel<RemoteTestResult>
+    ) :
         TestResult()
 
-    object AlreadySigned : TestResult()
     object Pending : TestResult()
     object InvalidToken : TestResult()
     object VerificationRequired : TestResult()
     object ServerError : TestResult()
     object NetworkError : TestResult()
+}
+
+sealed class SignedTestResult {
+    data class Complete(val credentials: String) : SignedTestResult()
+    object AlreadySigned : SignedTestResult()
+    object ServerError : SignedTestResult()
+    object NetworkError : SignedTestResult()
 }

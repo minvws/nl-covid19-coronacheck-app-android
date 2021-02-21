@@ -8,6 +8,7 @@
 
 package nl.rijksoverheid.ctr.appconfig.api
 
+import nl.rijksoverheid.crt.signing.http.SignedRequest
 import nl.rijksoverheid.ctr.api.cache.CacheOverride
 import nl.rijksoverheid.ctr.api.cachestrategy.CacheStrategy
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
@@ -18,5 +19,6 @@ interface AppConfigApi {
     @GET("config")
     //TODO remove once the server has some cache headers set that allow caching
     @CacheOverride("public,max-age=0")
+    @SignedRequest
     suspend fun getConfig(@Tag cacheStrategy: CacheStrategy = CacheStrategy.CACHE_LAST): AppConfig
 }

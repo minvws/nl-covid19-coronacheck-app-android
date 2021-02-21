@@ -49,16 +49,25 @@ android {
             versionNameSuffix "-test"
             applicationIdSuffix ".test"
             manifestPlaceholders = [appLabel: "@string/app_name_test"]
+            buildConfigField "String", "URL_SUPPORT", "\"https://www.coronacheck.nl/nl/faq-scanner-in-app\""
+            buildConfigField "String", "URL_ABOUT_THIS_APP", "\"https://www.coronacheck.nl/nl/over-de-scanner-app-in-app\""
+            buildConfigField "String", "URL_PRIVACY_STATEMENT", "\"https://www.coronacheck.nl/nl/privacy-in-app\""
         }
         acc {
             dimension "environment"
             versionNameSuffix "-acc"
             applicationIdSuffix ".acc"
             manifestPlaceholders = [appLabel: "@string/app_name_acc"]
+            buildConfigField "String", "URL_SUPPORT", "\"https://www.coronacheck.nl/nl/faq-scanner-in-app\""
+            buildConfigField "String", "URL_ABOUT_THIS_APP", "\"https://www.coronacheck.nl/nl/over-de-scanner-app-in-app\""
+            buildConfigField "String", "URL_PRIVACY_STATEMENT", "\"https://www.coronacheck.nl/nl/privacy-in-app\""
         }
         prod {
             dimension "environment"
             manifestPlaceholders = [appLabel: "@string/app_name"]
+            buildConfigField "String", "URL_SUPPORT", "\"https://www.coronacheck.nl/nl/faq-scanner-in-app\""
+            buildConfigField "String", "URL_ABOUT_THIS_APP", "\"https://www.coronacheck.nl/nl/over-de-scanner-app-in-app\""
+            buildConfigField "String", "URL_PRIVACY_STATEMENT", "\"https://www.coronacheck.nl/nl/privacy-in-app\""
         }
     }
     compileOptions {

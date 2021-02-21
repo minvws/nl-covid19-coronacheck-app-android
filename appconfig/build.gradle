@@ -39,6 +39,7 @@ dependencies {
     implementation "com.jakewharton.timber:timber:$timber_version"
 
     implementation(project(':cache-interceptors'))
+    implementation(project(":signing"))
 
     kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
 

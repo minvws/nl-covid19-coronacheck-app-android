@@ -13,6 +13,11 @@ android {
         consumerProguardFiles "consumer-rules.pro"
 
         buildConfigField "String", "SIGNATURE_CERTIFICATE_CN_MATCH", '".coronatester.nl"'
+        buildConfigField "boolean", "FEATURE_API_SSL_ROOT_CA", "true"
+        buildConfigField "boolean", "FEATURE_TEST_PROVIDER_TRUSTED_ROOTS", "true"
+        buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.coronacheck.nl/v1/\""
+        buildConfigField "String", "DIGI_D_BASE_URL", "\"https://login.ggdghor.nl/coronitacc\""
+        buildConfigField "String", "DIGI_D_CLIENT_ID", "\"6456237456911667336\""
     }
 
     buildTypes {
@@ -29,20 +34,25 @@ android {
             buildConfigField "String", "BASE_API_URL", "\"https://api-ct.bananenhalen.nl/v1/\""
             buildConfigField "String", "DIGI_D_BASE_URL", "\"https://login.ggdghor.nl/coronitacc\""
             buildConfigField "String", "DIGI_D_CLIENT_ID", "\"6456237456911667336\""
+            buildConfigField "boolean", "FEATURE_API_SSL_ROOT_CA", "false"
+            buildConfigField "boolean", "FEATURE_TEST_PROVIDER_TRUSTED_ROOTS", "false"
             matchingFallbacks = ["tst"]
         }
         acc {
             dimension "environment"
-            buildConfigField "String", "BASE_API_URL", "\"https://holder-api.acc.bananenhalen.nl/v1/\""
+            buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.acc.coronacheck.nl/v1/\""
             buildConfigField "String", "DIGI_D_BASE_URL", "\"https://login.ggdghor.nl/coronitacc\""
             buildConfigField "String", "DIGI_D_CLIENT_ID", "\"6456237456911667336\""
+            buildConfigField "boolean", "FEATURE_API_SSL_ROOT_CA", "false"
+            buildConfigField "boolean", "FEATURE_TEST_PROVIDER_TRUSTED_ROOTS", "false"
             matchingFallbacks = ["acc"]
         }
         prod {
             dimension "environment"
-            buildConfigField "String", "BASE_API_URL", "\"https://api-ct.bananenhalen.nl/\""
             buildConfigField "String", "DIGI_D_BASE_URL", "\"https://login.ggdghor.nl/coronitacc\""
             buildConfigField "String", "DIGI_D_CLIENT_ID", "\"6456237456911667336\""
+            buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.acc.coronacheck.nl/v1/\""
+            buildConfigField "boolean", "FEATURE_TEST_PROVIDER_TRUSTED_ROOTS", "false"
             matchingFallbacks = ["prod"]
         }
     }
@@ -54,14 +64,16 @@ android {
 
 dependencies {
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.1'
+    api "androidx.core:core-ktx:${androidx_version}"
     api project(":ctcl")
-    api 'androidx.core:core-ktx:1.3.2'
     api 'androidx.appcompat:appcompat:1.2.0'
+    implementation "androidx.core:core-ktx:1.3.2"
     api 'com.google.android.material:material:1.2.1'
     api "com.jakewharton.timber:timber:${timber_version}"
     api "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation(platform("com.squareup.okhttp3:okhttp-bom:4.9.0"))
     implementation("com.squareup.okhttp3:okhttp")
+    implementation("com.squareup.okhttp3:okhttp-tls")
     implementation("com.squareup.okhttp3:logging-interceptor")
     api "com.squareup.retrofit2:converter-moshi:2.9.0"
     api "com.squareup.moshi:moshi-kotlin:$moshi_version"

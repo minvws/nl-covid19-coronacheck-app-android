@@ -4,7 +4,6 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -12,6 +11,7 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
 import com.xwray.groupie.viewbinding.BindableItem
+import nl.rijksoverheid.ctr.holder.BaseFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMyOverviewBinding
 import nl.rijksoverheid.ctr.holder.models.LocalTestResult
@@ -32,9 +32,10 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
+class MyOverviewFragment : BaseFragment(R.layout.fragment_my_overview) {
 
     private val section = Section()
+
 
     private val localTestResultViewModel: LocalTestResultViewModel by sharedViewModel(
         owner = {
@@ -121,7 +122,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
             backgroundColor = Color.parseColor("#69dbff"),
             buttonText = R.string.my_overview_no_qr_make_appointment_button,
             onButtonClick = {
-
+                findNavController().navigate(MyOverviewFragmentDirections.actionMakeAppointment())
             }
         ))
         items.add(MyOverviewNavigationCardAdapterItem(

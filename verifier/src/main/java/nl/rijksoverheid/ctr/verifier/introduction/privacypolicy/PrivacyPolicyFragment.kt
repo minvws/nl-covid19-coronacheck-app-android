@@ -10,6 +10,7 @@ import com.xwray.groupie.GroupieAdapter
 import com.xwray.groupie.Section
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
+import nl.rijksoverheid.ctr.verifier.BuildConfig
 import nl.rijksoverheid.ctr.verifier.HideToolbar
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentPrivacyPolicyBinding
@@ -50,7 +51,7 @@ class PrivacyPolicyFragment : Fragment(), HideToolbar {
 
         binding.description.text = getString(R.string.privacy_policy_description).fromHtml()
         binding.description.setOnClickListener {
-            getString(R.string.url_privacy_statement).launchUrl(requireContext())
+            BuildConfig.URL_PRIVACY_STATEMENT.launchUrl(requireContext())
         }
 
         val adapterItems = listOf(
@@ -64,28 +65,8 @@ class PrivacyPolicyFragment : Fragment(), HideToolbar {
             ),
             PrivacyPolicyItem(
                 R.drawable.shield,
-                R.string.privacy_policy_1
+                R.string.privacy_policy_3
             ),
-            PrivacyPolicyItem(
-                R.drawable.shield,
-                R.string.privacy_policy_2
-            ),
-            PrivacyPolicyItem(
-                R.drawable.shield,
-                R.string.privacy_policy_1
-            ),
-            PrivacyPolicyItem(
-                R.drawable.shield,
-                R.string.privacy_policy_2
-            ),
-            PrivacyPolicyItem(
-                R.drawable.shield,
-                R.string.privacy_policy_1
-            ),
-            PrivacyPolicyItem(
-                R.drawable.shield,
-                R.string.privacy_policy_2
-            )
         ).map {
             PrivacyPolicyAdapterItem(
                 it

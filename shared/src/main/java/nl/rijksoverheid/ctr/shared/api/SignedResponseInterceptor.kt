@@ -12,15 +12,20 @@ import com.squareup.moshi.JsonClass
 import com.squareup.moshi.JsonWriter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import nl.rijksoverheid.crt.signing.http.SignedRequest
 import nl.rijksoverheid.ctr.shared.BuildConfig
 import nl.rijksoverheid.ctr.shared.json.Base64JsonAdapter
 import nl.rijksoverheid.ctr.signing.SignatureValidationException
 import nl.rijksoverheid.ctr.signing.SignatureValidator
+import nl.rijksoverheid.ctr.signing.certificates.EV_ROOT_CA
+import nl.rijksoverheid.ctr.signing.certificates.PRIVATE_ROOT_CA
+import nl.rijksoverheid.ctr.signing.certificates.ROOT_CA_G3
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.Response
 import okhttp3.ResponseBody.Companion.toResponseBody
 import okio.Buffer
+import retrofit2.Invocation
 import timber.log.Timber
 import java.io.ByteArrayInputStream
 
@@ -34,6 +39,7 @@ private val responseAdapter by lazy {
 
 class SignedResponseInterceptor : Interceptor {
     private val defaultValidator = SignatureValidator.Builder()
+        .addTrustedCertificate(EV_ROOT_CA)
         .cnMatching(BuildConfig.SIGNATURE_CERTIFICATE_CN_MATCH)
         .build()
 
@@ -42,6 +48,12 @@ class SignedResponseInterceptor : Interceptor {
         val wrapResponse = expectedSigningCertificate != null
 
         val response = chain.proceed(chain.request())
+
+        // if not marked with SignedRequest, return the response
+        chain.request()
+            .tag(Invocation::class.java)
+            ?.method()
+            ?.getAnnotation(SignedRequest::class.java) ?: return response
 
         if (response.code !in 200..299 && response.code !in 400..499) {
             return response
@@ -60,6 +72,9 @@ class SignedResponseInterceptor : Interceptor {
 
         val validator = if (expectedSigningCertificate != null) {
             SignatureValidator.Builder()
+                .addTrustedCertificate(EV_ROOT_CA)
+                .addTrustedCertificate(ROOT_CA_G3)
+                .addTrustedCertificate(PRIVATE_ROOT_CA)
                 .signingCertificate(expectedSigningCertificate.certificateBytes).build()
         } else {
             defaultValidator

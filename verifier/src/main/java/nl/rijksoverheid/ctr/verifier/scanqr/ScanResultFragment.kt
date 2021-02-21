@@ -1,9 +1,6 @@
 package nl.rijksoverheid.ctr.verifier.scanqr
 
 import android.os.Bundle
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.UnderlineSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,11 +8,9 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanResultBinding
-import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanResultInvalidReasonBinding
 
 
 /*
@@ -55,34 +50,11 @@ class ScanResultFragment : DialogFragment() {
             binding.image.setImageResource(R.drawable.illustration_scan_result_valid)
             binding.title.text = getString(R.string.scan_result_valid_title)
             binding.subtitle.text = getString(R.string.scan_result_valid_subtitle)
-            binding.link.visibility = View.GONE
         } else {
             binding.root.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.red))
             binding.image.setImageResource(R.drawable.illustration_scan_result_invalid)
             binding.title.text = getString(R.string.scan_result_invalid_title)
             binding.subtitle.text = getString(R.string.scan_result_invalid_subtitle).fromHtml()
-
-            val spannableString =
-                SpannableString(getString(R.string.scan_result_invalid_link))
-
-            spannableString.setSpan(
-                UnderlineSpan(),
-                0,
-                getString(R.string.scan_result_invalid_link).length,
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-            )
-
-            binding.link.text = spannableString
-            binding.link.setOnClickListener {
-                val binding =
-                    FragmentScanResultInvalidReasonBinding.inflate(layoutInflater, null, false)
-                val dialog = BottomSheetDialog(requireContext())
-                dialog.setContentView(binding.root)
-                binding.description.text =
-                    getString(R.string.scan_result_invalid_reason_description).fromHtml()
-                dialog.show()
-            }
-
         }
 
         binding.toolbar.setNavigationOnClickListener {

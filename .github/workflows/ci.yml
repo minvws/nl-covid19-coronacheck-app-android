@@ -44,18 +44,25 @@ jobs:
       - name: Write key store
         run: echo $KEYSTORE_FILE | base64 --decode > keystore.jks
       - name: Build & test
-        run: ./gradlew testDebug testTstDebug lint assemTstRelease assemAccRelease assemProdRelease bundleAccRelease
+        run: ./gradlew testDebug testTstDebug lint assemTstRelease assemAccRelease assemProdRelease bundleProdRelease
       - name: Clean up key store
         if: ${{ always() }}
         run: rm keystore.jks
-      - name: Archive bundles and apks
+      - name: Archive apks
         if: github.ref == 'refs/heads/main'
         uses: actions/upload-artifact@v2
         with:
-          name: build
+          name: apks
           path: |
             holder/build/outputs/apk
             verifier/build/outputs/apk
+          retention-days: 5
+      - name: Archive bundle
+        if: github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v2
+        with:
+          name: bundle
+          path: |
             holder/build/outputs/bundle
             verifier/build/outputs/bundle
           retention-days: 5
@@ -72,6 +79,9 @@ jobs:
     steps:
       - name: Download all workflow run artifacts
         uses: actions/download-artifact@v2
+        with:
+          name: apks
+          path: apks
       - name: Use Node.js
         uses: actions/setup-node@v1
         with:
@@ -81,42 +91,42 @@ jobs:
         run: npm install -g firebase-tools
       - name: Distribute holder test variant
         run: |
-          firebase appdistribution:distribute `ls build/holder/build/outputs/apk/tst/release/holder-*.apk` \
+          firebase appdistribution:distribute `ls apks/holder/build/outputs/apk/tst/release/holder-*.apk` \
           --app 1:168257592968:android:cbb6d05f4163e39026493d \
           --token $FIREBASE_TOKEN \
           --groups testers
 
       - name: Distribute holder acc variant
         run: |
-          firebase appdistribution:distribute `ls build/holder/build/outputs/apk/acc/release/holder-*.apk` \
+          firebase appdistribution:distribute `ls apks/holder/build/outputs/apk/acc/release/holder-*.apk` \
           --app 1:168257592968:android:5df6b2057b90a30826493d \
           --token $FIREBASE_TOKEN \
           --groups testers
 
       - name: Distribute holder prod variant
         run: |
-          firebase appdistribution:distribute `ls build/holder/build/outputs/apk/prod/release/holder-*.apk` \
+          firebase appdistribution:distribute `ls apks/holder/build/outputs/apk/prod/release/holder-*.apk` \
           --app 1:168257592968:android:aaa5afb416536fdb26493d \
           --token $FIREBASE_TOKEN \
           --groups testers
 
       - name: Distribute verifier test variant
         run: |
-          firebase appdistribution:distribute `ls build/verifier/build/outputs/apk/tst/release/verifier-*.apk` \
+          firebase appdistribution:distribute `ls apks/verifier/build/outputs/apk/tst/release/verifier-*.apk` \
           --app 1:168257592968:android:ed609f228437d86f26493d \
           --token $FIREBASE_TOKEN \
           --groups testers
 
       - name: Distribute holder acc variant
         run: |
-          firebase appdistribution:distribute `ls build/verifier/build/outputs/apk/acc/release/verifier-*.apk` \
+          firebase appdistribution:distribute `ls apks/verifier/build/outputs/apk/acc/release/verifier-*.apk` \
           --app 1:168257592968:android:e9d445c4115a5c9d26493d \
           --token $FIREBASE_TOKEN \
           --groups testers
 
       - name: Distribute holder prod variant
         run: |
-          firebase appdistribution:distribute `ls build/verifier/build/outputs/apk/prod/release/verifier-*.apk` \
+          firebase appdistribution:distribute `ls apks/verifier/build/outputs/apk/prod/release/verifier-*.apk` \
           --app 1:168257592968:android:79363a1282863aac26493d \
           --token $FIREBASE_TOKEN \
           --groups testers

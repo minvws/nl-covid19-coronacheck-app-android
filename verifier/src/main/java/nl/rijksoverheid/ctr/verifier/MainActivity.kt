@@ -10,9 +10,7 @@ package nl.rijksoverheid.ctr.verifier
 
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.fragment.NavHostFragment
@@ -21,12 +19,13 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import nl.rijksoverheid.ctr.appconfig.AppStatusViewModel
 import nl.rijksoverheid.ctr.appconfig.model.AppStatus
+import nl.rijksoverheid.ctr.shared.BaseActivity
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.ext.styleTitle
 import nl.rijksoverheid.ctr.verifier.databinding.ActivityMainBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity(R.id.nav_scan_qr) {
 
     private lateinit var binding: ActivityMainBinding
     private val appStatusViewModel: AppStatusViewModel by viewModel()
@@ -62,10 +61,8 @@ class MainActivity : AppCompatActivity() {
                     when (f) {
                         is NavHostFragment, is HideToolbar -> {
                             binding.toolbar.visibility = View.GONE
-                            binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
                         }
                         else -> {
-                            binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
                             binding.toolbar.visibility = View.VISIBLE
                         }
                     }
@@ -76,10 +73,10 @@ class MainActivity : AppCompatActivity() {
         binding.navView.setNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_support -> {
-                    getString(R.string.url_support).launchUrl(this)
+                    BuildConfig.URL_SUPPORT.launchUrl(this)
                 }
                 R.id.nav_about_this_app -> {
-                    getString(R.string.url_about_this_app).launchUrl(this)
+                    BuildConfig.URL_ABOUT_THIS_APP.launchUrl(this)
                 }
                 else -> {
                     NavigationUI.onNavDestinationSelected(item, navController)

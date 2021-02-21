@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.holder.myoverview
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
+import nl.rijksoverheid.ctr.holder.usecase.SignedTestResult
 import nl.rijksoverheid.ctr.holder.usecase.TestResult
 import nl.rijksoverheid.ctr.holder.usecase.TestResultUseCase
 import nl.rijksoverheid.ctr.shared.livedata.Event
@@ -21,6 +22,7 @@ class TestResultsViewModel(
 ) : ViewModel() {
 
     val testResult: LiveData<Event<TestResult>> = MutableLiveData()
+    val signedTestResult: LiveData<Event<SignedTestResult>> = MutableLiveData()
     val loading: LiveData<Event<Boolean>> = MutableLiveData()
 
     var verificationCode: String = savedStateHandle["verification_code"] ?: ""
@@ -79,13 +81,27 @@ class TestResultsViewModel(
     }
 
     fun saveTestResult() {
-        retrievedResult?.let {
-            persistenceManager.saveCredentials(it.credentials)
+        (loading as MutableLiveData).value = Event(true)
+        viewModelScope.launch {
+            try {
+                retrievedResult?.let {
+                    val result = testResultUseCase.signTestResult(
+                        remoteTestResult = it.remoteTestResult,
+                        signedResponseWithTestResult = it.signedResponseWithTestResult
+                    )
+                    if (result is SignedTestResult.Complete) {
+                        persistenceManager.saveCredentials(result.credentials)
+                    }
+                    (signedTestResult as MutableLiveData).value = Event(result)
+                }
+            } finally {
+                loading.value = Event(false)
+            }
         }
     }
-
-    data class ViewState(
-        val verificationRequired: Boolean = false,
-        val canRetrieveResult: Boolean = false
-    )
 }
+
+data class ViewState(
+    val verificationRequired: Boolean = false,
+    val canRetrieveResult: Boolean = false
+)
