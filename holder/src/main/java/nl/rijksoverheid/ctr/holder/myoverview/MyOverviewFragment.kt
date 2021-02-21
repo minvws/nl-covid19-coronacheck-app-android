@@ -1,10 +1,8 @@
 package nl.rijksoverheid.ctr.holder.myoverview
 
 import android.graphics.Bitmap
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -125,7 +123,7 @@ class MyOverviewFragment : BaseFragment(R.layout.fragment_my_overview) {
         items.add(MyOverviewNavigationCardAdapterItem(
             title = R.string.my_overview_no_qr_make_appointment_title,
             description = R.string.my_overview_no_qr_make_appointment_description,
-            backgroundColor = ContextCompat.getColor(requireContext(), R.color.green),
+            backgroundColor = R.color.green,
             backgroundDrawable = R.drawable.illustration_make_appointment,
             buttonText = R.string.my_overview_no_qr_make_appointment_button,
             onButtonClick = {
@@ -135,7 +133,7 @@ class MyOverviewFragment : BaseFragment(R.layout.fragment_my_overview) {
         items.add(MyOverviewNavigationCardAdapterItem(
             title = R.string.my_overview_no_qr_make_qr_title,
             description = R.string.my_overview_no_qr_make_qr_description,
-            backgroundColor = ContextCompat.getColor(requireContext(), R.color.light_blue),
+            backgroundColor = R.color.light_blue,
             backgroundDrawable = R.drawable.illustration_create_qr,
             buttonText = R.string.my_overview_no_qr_make_qr_button,
             onButtonClick = {

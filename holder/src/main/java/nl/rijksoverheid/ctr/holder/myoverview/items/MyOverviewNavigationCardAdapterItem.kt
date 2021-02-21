@@ -26,7 +26,7 @@ class MyOverviewNavigationCardAdapterItem(
     override fun bind(viewBinding: ItemMyOverviewNavigationCardBinding, position: Int) {
         viewBinding.title.setText(title)
         viewBinding.description.setText(description)
-        viewBinding.container.setBackgroundColor(backgroundColor)
+        viewBinding.container.setBackgroundResource(backgroundColor)
         viewBinding.image.setImageResource(backgroundDrawable)
         viewBinding.button.setText(buttonText)
         viewBinding.button.setOnClickListener {
