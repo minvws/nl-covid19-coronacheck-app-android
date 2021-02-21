@@ -3,9 +3,11 @@ package nl.rijksoverheid.ctr.holder.repositories
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.api.CoronaCheckApiClient
+import nl.rijksoverheid.ctr.api.SigningCertificate
 import nl.rijksoverheid.ctr.api.TestProviderApiClient
-import nl.rijksoverheid.ctr.api.models.RemoteTestResult
-import nl.rijksoverheid.ctr.api.models.SignedResponseWithModel
+import nl.rijksoverheid.ctr.api.models.*
+import nl.rijksoverheid.ctr.api.models.post.GetTestIsmPostData
+import nl.rijksoverheid.ctr.api.models.post.GetTestResultPostData
 import okhttp3.ResponseBody
 import org.json.JSONObject
 import retrofit2.Converter
@@ -22,7 +24,7 @@ class HolderRepository(
     private val api: CoronaCheckApiClient,
     private val testProviderApiClient: TestProviderApiClient,
     private val responseConverter: Converter<ResponseBody, SignedResponseWithModel<RemoteTestResult>>,
-    private val errorResponseConverter: Converter<ResponseBody, nl.rijksoverheid.ctr.api.models.ResponseError>
+    private val errorResponseConverter: Converter<ResponseBody, ResponseError>
 ) {
 
     @Suppress("BlockingMethodInNonBlockingContext")
@@ -37,11 +39,11 @@ class HolderRepository(
                 url = url,
                 authorization = "Bearer $token",
                 data = verifierCode?.let {
-                    nl.rijksoverheid.ctr.api.models.post.GetTestResultPostData(
+                    GetTestResultPostData(
                         it
                     )
                 },
-                certificate = nl.rijksoverheid.ctr.api.SigningCertificate(signingCertificateBytes)
+                certificate = SigningCertificate(signingCertificateBytes)
             )
         } catch (ex: HttpException) {
             // if there's no error body, this must be something else than expected
@@ -56,7 +58,7 @@ class HolderRepository(
         }
     }
 
-    suspend fun testProviders(): nl.rijksoverheid.ctr.api.models.RemoteTestProviders {
+    suspend fun testProviders(): RemoteTestProviders {
         return api.getConfigCtp()
     }
 
@@ -65,9 +67,9 @@ class HolderRepository(
         test: String,
         sToken: String,
         icm: String
-    ): nl.rijksoverheid.ctr.api.models.TestIsmResult {
+    ): TestIsmResult {
         val response = api.getTestIsm(
-            nl.rijksoverheid.ctr.api.models.post.GetTestIsmPostData(
+            GetTestIsmPostData(
                 test = test,
                 sToken = sToken,
                 icm = JSONObject(icm).toString()
@@ -78,18 +80,18 @@ class HolderRepository(
             val body =
                 response.body()?.string()
                     ?: throw IllegalStateException("Body should not be null")
-            nl.rijksoverheid.ctr.api.models.TestIsmResult.Success(body)
+            TestIsmResult.Success(body)
         } else {
             val errorBody = response.errorBody() ?: throw HttpException(response)
             withContext(Dispatchers.IO) {
                 val responseError =
                     errorResponseConverter.convert(errorBody) ?: throw HttpException(response)
-                nl.rijksoverheid.ctr.api.models.TestIsmResult.Error(responseError)
+                TestIsmResult.Error(responseError)
             }
         }
     }
 
-    suspend fun remoteNonce(): nl.rijksoverheid.ctr.api.models.RemoteNonce {
+    suspend fun remoteNonce(): RemoteNonce {
         return api.getNonce()
     }
 }
