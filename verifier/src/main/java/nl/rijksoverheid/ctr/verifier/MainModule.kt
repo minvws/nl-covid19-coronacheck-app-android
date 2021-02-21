@@ -3,8 +3,6 @@ package nl.rijksoverheid.ctr.verifier
 import androidx.preference.PreferenceManager
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.SharedPreferencesPersistenceManager
-import nl.rijksoverheid.ctr.holder.usecase.IntroductionUseCase
-import nl.rijksoverheid.ctr.verifier.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.verifier.scanqr.ScanQrViewModel
 import nl.rijksoverheid.ctr.verifier.usecases.DecryptHolderQrUseCase
 import nl.rijksoverheid.ctr.verifier.usecases.TestResultValidUseCase
@@ -34,13 +32,9 @@ val mainModule = module {
         DecryptHolderQrUseCase(get())
     }
     single {
-        IntroductionUseCase(get())
-    }
-    single {
         TestResultValidUseCase(get(), get(), get(), get())
     }
 
     // ViewModels
-    viewModel { IntroductionViewModel(get()) }
     viewModel { ScanQrViewModel(get()) }
 }

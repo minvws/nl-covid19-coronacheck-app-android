@@ -9,10 +9,7 @@
 package nl.rijksoverheid.ctr.holder
 
 import android.os.Bundle
-import android.view.View
 import androidx.core.view.GravityCompat
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
@@ -54,27 +51,6 @@ class MainActivity : BaseActivity(R.id.nav_my_overview) {
         binding.navView.setupWithNavController(navController)
 
         navigationDrawerStyling()
-
-        supportFragmentManager.registerFragmentLifecycleCallbacks(
-            object :
-                FragmentManager.FragmentLifecycleCallbacks() {
-                override fun onFragmentViewCreated(
-                    fm: FragmentManager,
-                    f: Fragment,
-                    v: View,
-                    savedInstanceState: Bundle?
-                ) {
-                    when (f) {
-                        is NavHostFragment, is HideToolbar -> {
-                            binding.toolbar.visibility = View.GONE
-                        }
-                        else -> {
-                            binding.toolbar.visibility = View.VISIBLE
-                        }
-                    }
-                }
-            }, true
-        )
 
         binding.navView.setNavigationItemSelectedListener { item ->
             when (item.itemId) {

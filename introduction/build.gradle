@@ -1,0 +1,58 @@
+/*
+ *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+ *  Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+ *
+ *  SPDX-License-Identifier: EUPL-1.2
+ *
+ */
+
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id "androidx.navigation.safeargs.kotlin"
+    id "kotlin-parcelize"
+}
+
+android {
+    flavorDimensions "default"
+    buildFeatures {
+        viewBinding true
+    }
+
+    defaultConfig {
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+
+        buildConfigField "String", "URL_PRIVACY_STATEMENT", "\"https://coronacheck.nl/nl/privacy-in-app\""
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation "androidx.core:core-ktx:${androidx_version}"
+    implementation "androidx.appcompat:appcompat:${appcompat_version}"
+    implementation "com.google.android.material:material:${material_version}"
+    implementation "androidx.constraintlayout:constraintlayout:${constraintlayout_version}"
+    implementation "androidx.fragment:fragment-ktx:${fragment_version}"
+    implementation "androidx.navigation:navigation-fragment-ktx:${navigation_version}"
+    implementation "androidx.navigation:navigation-ui-ktx:${navigation_version}"
+    implementation "org.koin:koin-android:$koin_version"
+    implementation "org.koin:koin-androidx-viewmodel:$koin_version"
+    implementation "org.koin:koin-androidx-fragment:$koin_version"
+    implementation "androidx.preference:preference-ktx:$preference_version"
+    implementation "androidx.viewpager2:viewpager2:${viewpager2_version}"
+    implementation "com.xwray:groupie:${groupie_version}"
+    implementation "com.xwray:groupie-viewbinding:${groupie_version}"
+    implementation(project(":shared"))
+    implementation(project(":design"))
+}

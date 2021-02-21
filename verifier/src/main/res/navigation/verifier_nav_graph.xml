@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav"
+    app:startDestination="@+id/nav_status">
+
+    <fragment
+        android:id="@+id/nav_status"
+        android:name="nl.rijksoverheid.ctr.introduction.status.StatusFragment"
+        android:label="">
+
+        <action
+            android:id="@+id/action_scan_qr"
+            app:destination="@id/nav_scan_qr" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_scan_qr"
+        android:name="nl.rijksoverheid.ctr.verifier.scanqr.ScanQrFragment"
+        android:label="@string/scan_qr_title"
+        tools:layout="@layout/fragment_scan_qr">
+
+        <action
+            android:id="@+id/action_scan_result"
+            app:destination="@id/nav_scan_result"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/action_scan_instructions"
+            app:destination="@id/nav_scan_instructions"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <argument
+            android:name="openScanner"
+            android:defaultValue="false"
+            app:argType="boolean" />
+
+    </fragment>
+
+    <dialog
+        android:id="@+id/nav_scan_result"
+        android:name="nl.rijksoverheid.ctr.verifier.scanqr.ScanResultFragment"
+        android:label=""
+        tools:layout="@layout/fragment_scan_result">
+
+        <argument
+            android:name="valid"
+            android:defaultValue="false"
+            app:argType="boolean" />
+
+        <action
+            android:id="@+id/action_scan_qr"
+            app:destination="@id/nav_scan_qr"
+            app:popUpTo="@id/nav_scan_qr"
+            app:popUpToInclusive="true" />
+
+    </dialog>
+
+    <fragment
+        android:id="@+id/nav_scan_instructions"
+        android:name="nl.rijksoverheid.ctr.verifier.scaninstructions.ScanInstructionsFragment"
+        android:label="@string/scan_instructions"
+        tools:layout="@layout/fragment_scan_instructions" />
+
+    <fragment
+        android:id="@+id/nav_app_status"
+        android:name="nl.rijksoverheid.ctr.verifier.appstatus.AppStatusFragment"
+        tools:layout="@layout/fragment_app_status" />
+
+    <action
+        android:id="@+id/action_app_status"
+        app:destination="@id/nav_app_status"
+        app:popUpTo="@id/main_nav"
+        app:popUpToInclusive="true" />
+
+
+</navigation>
