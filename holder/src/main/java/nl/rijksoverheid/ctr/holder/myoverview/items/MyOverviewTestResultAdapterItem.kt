@@ -18,7 +18,8 @@ import java.time.format.FormatStyle
  */
 class MyOverviewTestResultAdapterItem(
     private val localTestResult: LocalTestResult,
-    private val qrCode: Bitmap? = null
+    private val onQrCodeClick: () -> Unit,
+    private val qrCode: Bitmap? = null,
 ) :
     BindableItem<ItemMyOverviewTestResultBinding>(R.layout.item_my_overview_test_result.toLong()) {
     override fun bind(viewBinding: ItemMyOverviewTestResultBinding, position: Int) {
@@ -33,9 +34,14 @@ class MyOverviewTestResultAdapterItem(
 
         if (qrCode == null) {
             viewBinding.testResultLoading.visibility = View.VISIBLE
+            viewBinding.testResultQrImage.setImageBitmap(null)
+            viewBinding.testResultQrImage.setOnClickListener(null)
         } else {
             viewBinding.testResultLoading.visibility = View.GONE
             viewBinding.testResultQrImage.setImageBitmap(qrCode)
+            viewBinding.testResultQrImage.setOnClickListener {
+                onQrCodeClick.invoke()
+            }
         }
     }
 

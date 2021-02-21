@@ -4,6 +4,7 @@ import android.view.View
 import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.ItemMyOverviewTestResultExpiredBinding
+import nl.rijksoverheid.ctr.shared.ext.fromHtml
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -15,6 +16,8 @@ import nl.rijksoverheid.ctr.holder.databinding.ItemMyOverviewTestResultExpiredBi
 class MyOverviewTestResultExpiredAdapterItem(private val onDismissClick: () -> Unit) :
     BindableItem<ItemMyOverviewTestResultExpiredBinding>(R.layout.item_my_overview_test_result_expired.toLong()) {
     override fun bind(viewBinding: ItemMyOverviewTestResultExpiredBinding, position: Int) {
+        viewBinding.text.text =
+            viewBinding.root.context.getString(R.string.item_test_result_expired).fromHtml()
         viewBinding.close.setOnClickListener {
             onDismissClick.invoke()
         }

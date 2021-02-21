@@ -105,14 +105,19 @@ class MyOverviewFragment : BaseFragment(R.layout.fragment_my_overview) {
         items.add(MyOverviewHeaderAdapterItem())
         if (isExpired) {
             items.add(MyOverviewTestResultExpiredAdapterItem(onDismissClick = {
-
+                setItems(
+                    isExpired = false
+                )
             }))
         }
         localTestResult?.let {
             items.add(
                 MyOverviewTestResultAdapterItem(
                     localTestResult = it,
-                    qrCode = qrCode
+                    qrCode = qrCode,
+                    onQrCodeClick = {
+                        findNavController().navigate(MyOverviewFragmentDirections.actionQrCode())
+                    }
                 )
             )
         }
@@ -120,6 +125,7 @@ class MyOverviewFragment : BaseFragment(R.layout.fragment_my_overview) {
             title = R.string.my_overview_no_qr_make_appointment_title,
             description = R.string.my_overview_no_qr_make_appointment_description,
             backgroundColor = Color.parseColor("#69dbff"),
+            backgroundDrawable = R.drawable.illustration_make_appointment,
             buttonText = R.string.my_overview_no_qr_make_appointment_button,
             onButtonClick = {
                 findNavController().navigate(MyOverviewFragmentDirections.actionMakeAppointment())
@@ -129,6 +135,7 @@ class MyOverviewFragment : BaseFragment(R.layout.fragment_my_overview) {
             title = R.string.my_overview_no_qr_make_qr_title,
             description = R.string.my_overview_no_qr_make_qr_description,
             backgroundColor = Color.parseColor("#3dec94"),
+            backgroundDrawable = R.drawable.illustration_create_qr,
             buttonText = R.string.my_overview_no_qr_make_qr_button,
             onButtonClick = {
                 findNavController().navigate(MyOverviewFragmentDirections.actionChooseProvider())

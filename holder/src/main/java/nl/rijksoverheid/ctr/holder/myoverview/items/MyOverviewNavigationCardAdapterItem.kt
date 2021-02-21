@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.holder.myoverview.items
 
 import android.view.View
 import androidx.annotation.ColorRes
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.holder.R
@@ -18,6 +19,7 @@ class MyOverviewNavigationCardAdapterItem(
     @StringRes private val title: Int,
     @StringRes private val description: Int,
     @ColorRes private val backgroundColor: Int,
+    @DrawableRes private val backgroundDrawable: Int,
     @StringRes private val buttonText: Int,
     private val onButtonClick: () -> Unit
 ) : BindableItem<ItemMyOverviewNavigationCardBinding>(R.layout.item_my_overview_navigation_card.toLong()) {
@@ -25,6 +27,7 @@ class MyOverviewNavigationCardAdapterItem(
         viewBinding.title.setText(title)
         viewBinding.description.setText(description)
         viewBinding.container.setBackgroundColor(backgroundColor)
+        viewBinding.image.setImageResource(backgroundDrawable)
         viewBinding.button.setText(buttonText)
         viewBinding.button.setOnClickListener {
             onButtonClick.invoke()
