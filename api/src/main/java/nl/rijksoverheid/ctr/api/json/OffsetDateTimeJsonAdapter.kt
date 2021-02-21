@@ -1,10 +1,6 @@
 package nl.rijksoverheid.ctr.api.json
 
-import com.squareup.moshi.FromJson
-import com.squareup.moshi.JsonAdapter
-import com.squareup.moshi.JsonReader
-import com.squareup.moshi.JsonWriter
-import com.squareup.moshi.ToJson
+import com.squareup.moshi.*
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 

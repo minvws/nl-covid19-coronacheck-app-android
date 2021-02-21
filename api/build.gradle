@@ -71,6 +71,10 @@ android {
             matchingFallbacks = ["prod"]
         }
     }
+
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+    }
 }
 
 dependencies {
@@ -82,4 +86,5 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp")
     implementation("com.squareup.okhttp3:okhttp-tls")
     implementation("com.squareup.okhttp3:logging-interceptor")
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.1'
 }
