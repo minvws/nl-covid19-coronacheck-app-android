@@ -28,7 +28,7 @@ val mainModule = module {
         SharedPreferencesPersistenceManager(
             PreferenceManager.getDefaultSharedPreferences(
                 androidContext(),
-            ), get()
+            )
         )
     }
 
@@ -51,9 +51,6 @@ val mainModule = module {
     }
     single {
         CommitmentMessageUseCase(get())
-    }
-    single {
-        IntroductionUseCase(get())
     }
     single {
         TestProviderUseCase(get())

@@ -16,7 +16,7 @@ data class RemoteTestResult(
     val protocolVersion: String,
     val providerIdentifier: String,
     val status: Status
-) : JSON() {
+) {
 
     enum class Status(val apiStatus: String) {
         UNKNOWN(""),

@@ -1,8 +1,8 @@
 package nl.rijksoverheid.ctr.verifier
 
 import androidx.preference.PreferenceManager
-import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
-import nl.rijksoverheid.ctr.holder.persistence.SharedPreferencesPersistenceManager
+import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
+import nl.rijksoverheid.ctr.verifier.persistance.SharedPreferencesPersistenceManager
 import nl.rijksoverheid.ctr.verifier.scanqr.ScanQrViewModel
 import nl.rijksoverheid.ctr.verifier.usecases.DecryptHolderQrUseCase
 import nl.rijksoverheid.ctr.verifier.usecases.TestResultValidUseCase

@@ -20,7 +20,7 @@ data class Event(
     val location: Location,
     val type: Type,
     @Json(name = "valid_tests") val validTests: List<ValidTests>
-) : JSON() {
+) {
 
     @JsonClass(generateAdapter = true)
     data class Location(
