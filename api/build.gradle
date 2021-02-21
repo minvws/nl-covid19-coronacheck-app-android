@@ -1,0 +1,85 @@
+/*
+ *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+ *  Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+ *
+ *  SPDX-License-Identifier: EUPL-1.2
+ *
+ */
+
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id "androidx.navigation.safeargs.kotlin"
+    id "kotlin-parcelize"
+}
+
+android {
+    flavorDimensions "default"
+    buildFeatures {
+        viewBinding true
+    }
+
+    defaultConfig {
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+
+        buildConfigField "String", "SIGNATURE_CERTIFICATE_CN_MATCH", '".coronatester.nl"'
+        buildConfigField "boolean", "FEATURE_API_SSL_ROOT_CA", "true"
+        buildConfigField "boolean", "FEATURE_TEST_PROVIDER_TRUSTED_ROOTS", "true"
+        buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.coronacheck.nl/v1/\""
+        buildConfigField "String", "DIGI_D_BASE_URL", "\"https://login.ggdghor.nl/coronitacc\""
+        buildConfigField "String", "DIGI_D_CLIENT_ID", "\"6456237456911667336\""
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    flavorDimensions "environment"
+    productFlavors {
+        tst {
+            dimension "environment"
+            buildConfigField "String", "BASE_API_URL", "\"https://api-ct.bananenhalen.nl/v1/\""
+            buildConfigField "String", "DIGI_D_BASE_URL", "\"https://login.ggdghor.nl/coronitacc\""
+            buildConfigField "String", "DIGI_D_CLIENT_ID", "\"6456237456911667336\""
+            buildConfigField "boolean", "FEATURE_API_SSL_ROOT_CA", "false"
+            buildConfigField "boolean", "FEATURE_TEST_PROVIDER_TRUSTED_ROOTS", "false"
+            matchingFallbacks = ["tst"]
+        }
+        acc {
+            dimension "environment"
+            buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.acc.coronacheck.nl/v1/\""
+            buildConfigField "String", "DIGI_D_BASE_URL", "\"https://login.ggdghor.nl/coronitacc\""
+            buildConfigField "String", "DIGI_D_CLIENT_ID", "\"6456237456911667336\""
+            buildConfigField "boolean", "FEATURE_API_SSL_ROOT_CA", "false"
+            buildConfigField "boolean", "FEATURE_TEST_PROVIDER_TRUSTED_ROOTS", "false"
+            matchingFallbacks = ["acc"]
+        }
+        prod {
+            dimension "environment"
+            buildConfigField "String", "DIGI_D_BASE_URL", "\"https://login.ggdghor.nl/coronitacc\""
+            buildConfigField "String", "DIGI_D_CLIENT_ID", "\"6456237456911667336\""
+            buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.acc.coronacheck.nl/v1/\""
+            buildConfigField "boolean", "FEATURE_TEST_PROVIDER_TRUSTED_ROOTS", "false"
+            matchingFallbacks = ["prod"]
+        }
+    }
+}
+
+dependencies {
+    implementation(project(":shared"))
+    implementation(project(":signing"))
+    implementation(project(':cache-interceptors'))
+    implementation(project(':shared'))
+    implementation(platform("com.squareup.okhttp3:okhttp-bom:4.9.0"))
+    implementation("com.squareup.okhttp3:okhttp")
+    implementation("com.squareup.okhttp3:okhttp-tls")
+    implementation("com.squareup.okhttp3:logging-interceptor")
+}

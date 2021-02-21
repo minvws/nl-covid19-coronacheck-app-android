@@ -1,7 +1,5 @@
-package nl.rijksoverheid.ctr.holder.models
+package nl.rijksoverheid.ctr.api.models
 
-import com.squareup.moshi.JsonClass
-import nl.rijksoverheid.ctr.api.models.JSON
 import java.time.OffsetDateTime
 
 /*
@@ -11,10 +9,8 @@ import java.time.OffsetDateTime
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-@JsonClass(generateAdapter = true)
-data class LocalTestResult(
-    val credentials: String,
+data class DecryptedQr(
+    val creationDate: OffsetDateTime,
     val sampleDate: OffsetDateTime,
-    val expireDate: OffsetDateTime,
     val testType: String
-) : nl.rijksoverheid.ctr.api.models.JSON()
+)

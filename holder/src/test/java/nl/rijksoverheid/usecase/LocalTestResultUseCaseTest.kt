@@ -10,8 +10,8 @@ import nl.rijksoverheid.ctr.holder.myoverview.models.LocalTestResultState
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.usecase.LocalTestResultUseCase
 import nl.rijksoverheid.ctr.holder.usecase.TestResultAttributesUseCase
-import nl.rijksoverheid.ctr.shared.models.TestResultAttributes
-import nl.rijksoverheid.ctr.shared.repositories.TestResultRepository
+import nl.rijksoverheid.ctr.api.models.TestResultAttributes
+import nl.rijksoverheid.ctr.api.repositories.TestResultRepository
 import nl.rijksoverheid.ctr.shared.util.TestResultUtil
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -30,7 +30,7 @@ class LocalTestResultUseCaseTest {
 
     private val persistenceManager = mockk<PersistenceManager>(relaxUnitFun = true)
     private val testResultUtil = mockk<TestResultUtil>()
-    private val testResultRepository = mockk<TestResultRepository>()
+    private val testResultRepository = mockk<nl.rijksoverheid.ctr.api.repositories.TestResultRepository>()
     private val testResultAttributesUseCase = mockk<TestResultAttributesUseCase>()
     private val localTestResultUseCase = LocalTestResultUseCase(
         persistenceManager = persistenceManager,
@@ -50,7 +50,7 @@ class LocalTestResultUseCaseTest {
             every { testResultUtil.isValid(any(), any()) } answers { false }
             coEvery { testResultRepository.getTestValiditySeconds() } answers { 10 }
             every { testResultAttributesUseCase.get(credentials) } answers {
-                TestResultAttributes(
+                nl.rijksoverheid.ctr.api.models.TestResultAttributes(
                     sampleDate.toEpochSecond(),
                     testType = testType
                 )
@@ -80,7 +80,7 @@ class LocalTestResultUseCaseTest {
             every { testResultUtil.isValid(any(), any()) } answers { true }
             coEvery { testResultRepository.getTestValiditySeconds() } answers { validitySeconds }
             every { testResultAttributesUseCase.get(credentials) } answers {
-                TestResultAttributes(
+                nl.rijksoverheid.ctr.api.models.TestResultAttributes(
                     sampleDate.toEpochSecond(),
                     testType
                 )

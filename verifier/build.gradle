@@ -81,6 +81,7 @@ dependencies {
     implementation project(":appconfig")
     implementation project(":design")
     implementation project(":introduction")
+    implementation project(":api")
     implementation "com.xwray:groupie:${groupie_version}"
     implementation "com.xwray:groupie-viewbinding:${groupie_version}"
 }

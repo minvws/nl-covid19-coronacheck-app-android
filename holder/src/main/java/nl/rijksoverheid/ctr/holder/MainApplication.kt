@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.holder
 
 import android.content.Intent
 import androidx.navigation.fragment.findNavController
+import nl.rijksoverheid.ctr.api.apiModule
 import nl.rijksoverheid.ctr.appconfig.appConfigModule
 import nl.rijksoverheid.ctr.introduction.CoronaCheckApp
 import nl.rijksoverheid.ctr.introduction.IntroductionActivity
@@ -33,7 +34,8 @@ class MainApplication : SharedApplication(), CoronaCheckApp {
                 mainModule,
                 sharedModule,
                 appConfigModule("holder", BuildConfig.VERSION_CODE),
-                introductionModule
+                introductionModule,
+                apiModule
             )
         }
     }

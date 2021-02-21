@@ -3,10 +3,10 @@ package nl.rijksoverheid.ctr.holder.usecase
 import clmobile.Clmobile
 import nl.rijksoverheid.ctr.holder.repositories.HolderRepository
 import nl.rijksoverheid.ctr.shared.ext.successString
-import nl.rijksoverheid.ctr.shared.models.RemoteTestResult
-import nl.rijksoverheid.ctr.shared.models.ResponseError
-import nl.rijksoverheid.ctr.shared.models.SignedResponseWithModel
-import nl.rijksoverheid.ctr.shared.models.TestIsmResult
+import nl.rijksoverheid.ctr.api.models.RemoteTestResult
+import nl.rijksoverheid.ctr.api.models.ResponseError
+import nl.rijksoverheid.ctr.api.models.SignedResponseWithModel
+import nl.rijksoverheid.ctr.api.models.TestIsmResult
 import retrofit2.HttpException
 import timber.log.Timber
 import java.io.IOException
@@ -48,10 +48,10 @@ class TestResultUseCase(
             val remoteTestResult = signedResponseWithTestResult.model
 
             when (remoteTestResult.status) {
-                RemoteTestResult.Status.VERIFICATION_REQUIRED -> return TestResult.VerificationRequired
-                RemoteTestResult.Status.INVALID_TOKEN -> return TestResult.InvalidToken
-                RemoteTestResult.Status.PENDING -> return TestResult.Pending
-                RemoteTestResult.Status.COMPLETE -> {
+                nl.rijksoverheid.ctr.api.models.RemoteTestResult.Status.VERIFICATION_REQUIRED -> return TestResult.VerificationRequired
+                nl.rijksoverheid.ctr.api.models.RemoteTestResult.Status.INVALID_TOKEN -> return TestResult.InvalidToken
+                nl.rijksoverheid.ctr.api.models.RemoteTestResult.Status.PENDING -> return TestResult.Pending
+                nl.rijksoverheid.ctr.api.models.RemoteTestResult.Status.COMPLETE -> {
                     // nothing
                 }
                 else -> throw IllegalStateException("Unsupported status ${remoteTestResult.status}")
@@ -69,8 +69,8 @@ class TestResultUseCase(
     }
 
     suspend fun signTestResult(
-        remoteTestResult: RemoteTestResult,
-        signedResponseWithTestResult: SignedResponseWithModel<RemoteTestResult>
+        remoteTestResult: nl.rijksoverheid.ctr.api.models.RemoteTestResult,
+        signedResponseWithTestResult: nl.rijksoverheid.ctr.api.models.SignedResponseWithModel<nl.rijksoverheid.ctr.api.models.RemoteTestResult>
     ): SignedTestResult {
         try {
             // Persist encrypted test result
@@ -86,7 +86,7 @@ class TestResultUseCase(
                 icm = commitmentMessage
             )
             when (testIsm) {
-                is TestIsmResult.Success -> {
+                is nl.rijksoverheid.ctr.api.models.TestIsmResult.Success -> {
                     Timber.i("Received test ism json ${testIsm.body}")
 
                     val credentials = Clmobile.createCredential(
@@ -96,8 +96,8 @@ class TestResultUseCase(
 
                     return SignedTestResult.Complete(credentials)
                 }
-                is TestIsmResult.Error -> {
-                    return if (testIsm.responseError.code == ResponseError.CODE_ALREADY_SIGNED) {
+                is nl.rijksoverheid.ctr.api.models.TestIsmResult.Error -> {
+                    return if (testIsm.responseError.code == nl.rijksoverheid.ctr.api.models.ResponseError.CODE_ALREADY_SIGNED) {
                         SignedTestResult.AlreadySigned
                     } else {
                         SignedTestResult.ServerError
@@ -114,8 +114,8 @@ class TestResultUseCase(
 
 sealed class TestResult {
     data class Complete(
-        val remoteTestResult: RemoteTestResult,
-        val signedResponseWithTestResult: SignedResponseWithModel<RemoteTestResult>
+        val remoteTestResult: nl.rijksoverheid.ctr.api.models.RemoteTestResult,
+        val signedResponseWithTestResult: nl.rijksoverheid.ctr.api.models.SignedResponseWithModel<nl.rijksoverheid.ctr.api.models.RemoteTestResult>
     ) :
         TestResult()
 

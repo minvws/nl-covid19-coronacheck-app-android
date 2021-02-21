@@ -2,7 +2,7 @@ package nl.rijksoverheid.ctr.verifier.usecases
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import nl.rijksoverheid.ctr.shared.repositories.TestResultRepository
+import nl.rijksoverheid.ctr.api.repositories.TestResultRepository
 import nl.rijksoverheid.ctr.shared.util.QrCodeUtil
 import nl.rijksoverheid.ctr.shared.util.TestResultUtil
 
@@ -15,7 +15,7 @@ import nl.rijksoverheid.ctr.shared.util.TestResultUtil
  */
 class TestResultValidUseCase(
     private val decryptHolderQrUseCase: DecryptHolderQrUseCase,
-    private val testResultRepository: TestResultRepository,
+    private val testResultRepository: nl.rijksoverheid.ctr.api.repositories.TestResultRepository,
     private val testResultUtil: TestResultUtil,
     private val qrCodeUtil: QrCodeUtil
 ) {
