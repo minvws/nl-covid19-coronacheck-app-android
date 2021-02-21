@@ -10,27 +10,16 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/title"
+            android:id="@+id/description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="32dp"
-            android:text="@string/commercial_test_code_title"
-            android:textAppearance="?attr/textAppearanceHeadline6"
+            android:text="@string/commercial_test_code_description"
+            android:textAppearance="?attr/textAppearanceBody1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/description"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="@string/commercial_test_code_description"
-            android:textAppearance="?attr/textAppearanceBody1"
-            app:layout_constraintEnd_toEndOf="@+id/title"
-            app:layout_constraintStart_toStartOf="@+id/title"
-            app:layout_constraintTop_toBottomOf="@+id/title" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/unique_code_input"
@@ -40,8 +29,8 @@
             android:layout_marginTop="32dp"
             android:hint="@string/commercial_test_unique_code_hint"
             app:errorEnabled="true"
-            app:layout_constraintEnd_toEndOf="@+id/title"
-            app:layout_constraintStart_toStartOf="@+id/title"
+            app:layout_constraintEnd_toEndOf="@+id/description"
+            app:layout_constraintStart_toStartOf="@+id/description"
             app:layout_constraintTop_toBottomOf="@+id/description">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -65,8 +54,8 @@
             android:layout_marginTop="16dp"
             android:hint="@string/commercial_test_verification_code_hint"
             app:errorEnabled="true"
-            app:layout_constraintEnd_toEndOf="@+id/title"
-            app:layout_constraintStart_toStartOf="@+id/title"
+            app:layout_constraintEnd_toEndOf="@+id/description"
+            app:layout_constraintStart_toStartOf="@+id/description"
             app:layout_constraintTop_toBottomOf="@+id/unique_code_input">
 
             <com.google.android.material.textfield.TextInputEditText

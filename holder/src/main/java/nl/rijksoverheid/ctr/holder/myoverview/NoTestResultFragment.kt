@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.holder.databinding.FragmentNoTestResultBinding
-import nl.rijksoverheid.ctr.shared.ext.fromHtml
+import nl.rijksoverheid.ctr.shared.util.getSpannableFromHtml
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -33,6 +33,6 @@ class NoTestResultFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.title.text = args.title
-        binding.description.text = args.description.fromHtml()
+        binding.description.text = getSpannableFromHtml(requireContext(), args.description)
     }
 }

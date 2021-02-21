@@ -65,28 +65,8 @@ class PrivacyPolicyFragment : Fragment(), HideToolbar {
             ),
             PrivacyPolicyItem(
                 R.drawable.shield,
-                R.string.privacy_policy_1
+                R.string.privacy_policy_3
             ),
-            PrivacyPolicyItem(
-                R.drawable.shield,
-                R.string.privacy_policy_2
-            ),
-            PrivacyPolicyItem(
-                R.drawable.shield,
-                R.string.privacy_policy_1
-            ),
-            PrivacyPolicyItem(
-                R.drawable.shield,
-                R.string.privacy_policy_2
-            ),
-            PrivacyPolicyItem(
-                R.drawable.shield,
-                R.string.privacy_policy_1
-            ),
-            PrivacyPolicyItem(
-                R.drawable.shield,
-                R.string.privacy_policy_2
-            )
         ).map {
             PrivacyPolicyAdapterItem(
                 it

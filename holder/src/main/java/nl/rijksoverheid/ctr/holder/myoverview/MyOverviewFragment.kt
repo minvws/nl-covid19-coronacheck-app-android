@@ -40,6 +40,10 @@ class MyOverviewFragment : BaseFragment(R.layout.fragment_my_overview) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentMyOverviewBinding.bind(view)
 
+        binding.makeAppointmentCard.makeAppointmentCardButton.setOnClickListener {
+            findNavController().navigate(MyOverviewFragmentDirections.actionMakeAppointment())
+        }
+
         binding.createQrCard.createQrCardButton.setOnClickListener {
             findNavController().navigate(MyOverviewFragmentDirections.actionChooseProvider())
         }

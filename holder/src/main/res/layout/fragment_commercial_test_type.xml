@@ -35,8 +35,8 @@
             app:layout_constraintTop_toBottomOf="@+id/title" />
 
         <include
-            layout="@layout/include_test_code_type"
             android:id="@+id/type_code"
+            layout="@layout/include_test_code_type"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="48dp"
@@ -45,11 +45,12 @@
             app:layout_constraintTop_toBottomOf="@+id/description" />
 
         <include
-            layout="@layout/include_test_code_type"
             android:id="@+id/type_qr_code"
+            layout="@layout/include_test_code_type"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="@+id/title"
             app:layout_constraintStart_toStartOf="@+id/title"
             app:layout_constraintTop_toBottomOf="@+id/type_code" />
