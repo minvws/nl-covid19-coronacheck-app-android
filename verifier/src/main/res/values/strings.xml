@@ -4,7 +4,7 @@
     <string name="app_name_acc">Scanner (Acc)</string>
     <string name="app_name">Scanner</string>
     <string name="onboarding_title">Onboarding</string>
-    <string name="onboarding_screen_1_title">Zo veilig mogelijkweer open</string>
+    <string name="onboarding_screen_1_title">Zo veilig mogelijk weer open</string>
     <string name="onboarding_screen_1_description">Bezoekers van jouw zaak, gelegenheid of evenement moeten eerst een coronatest doen. Alleen met een negatief testresultaat mogen zij naar binnen. Een negatief testresultaat geldt 48 uur.</string>
     <string name="onboarding_screen_2_title">Scan QR-code voor testresultaat</string>
     <string name="onboarding_screen_2_description">In de CoronaCheck app maakt de bezoeker van haar testresultaat een QR-code. Met deze app scan jij de QR-codes en zie je wie er toegang krijgt. Bij een groen scherm mag de bezoeker naar binnen. </string>
