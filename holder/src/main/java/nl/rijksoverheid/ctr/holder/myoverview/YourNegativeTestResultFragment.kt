@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.holder.myoverview
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import nl.rijksoverheid.ctr.holder.BaseFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentYourNegativeTestResultsBinding
@@ -50,6 +51,14 @@ class YourNegativeTestResultFragment : BaseFragment(R.layout.fragment_your_negat
 
         binding.button.setOnClickListener {
             viewModel.saveTestResult()
+        }
+
+        binding.info.setOnClickListener {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(R.string.your_negative_test_results_header)
+                .setMessage(R.string.your_negative_test_results_info)
+                .setPositiveButton(R.string.ok) { _, _ -> }
+                .show()
         }
 
         viewModel.loading.observe(viewLifecycleOwner, EventObserver {
