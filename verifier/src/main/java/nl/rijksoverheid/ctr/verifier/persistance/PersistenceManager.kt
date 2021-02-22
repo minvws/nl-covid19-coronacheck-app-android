@@ -32,7 +32,7 @@ class SharedPreferencesPersistenceManager(private val sharedPreferences: SharedP
     }
 
     override fun setScanInstructionsSeen() {
-        sharedPreferences.edit().putBoolean(SCAN_INSTRUCTIONS_SEEN, false).apply()
+        sharedPreferences.edit().putBoolean(SCAN_INSTRUCTIONS_SEEN, true).apply()
     }
 
     override fun saveSecretKeyJson(json: String) {

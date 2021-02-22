@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.zxing.integration.android.IntentIntegrator
@@ -14,6 +15,7 @@ import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.util.QrCodeScannerUtil
 import nl.rijksoverheid.ctr.verifier.BaseFragment
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanQrBinding
+import nl.rijksoverheid.ctr.verifier.scaninstructions.ScanInstructionsDialogFragment
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -70,12 +72,27 @@ class ScanQrFragment : BaseFragment() {
             findNavController().navigate(ScanQrFragmentDirections.actionScanResult(it))
         })
 
+        setFragmentResultListener(
+            ScanInstructionsDialogFragment.REQUEST_KEY
+        ) { requestKey, bundle ->
+            if (requestKey == ScanInstructionsDialogFragment.REQUEST_KEY && bundle.getBoolean(
+                    ScanInstructionsDialogFragment.EXTRA_LAUNCH_SCANNER
+                )
+            ) {
+                openScanner()
+            }
+        }
+
         if (args.openScanner) {
             openScanner()
         }
 
         binding.button.setOnClickListener {
-            openScanner()
+            if (!scanQrViewModel.scanInstructionsSeen()) {
+                findNavController().navigate(ScanQrFragmentDirections.actionScanInstructions(true))
+            } else {
+                openScanner()
+            }
         }
     }
 
@@ -83,3 +100,5 @@ class ScanQrFragment : BaseFragment() {
         qrCodeScannerUtil.launchScanner(requireActivity() as AppCompatActivity, qrScanResult)
     }
 }
+
+
