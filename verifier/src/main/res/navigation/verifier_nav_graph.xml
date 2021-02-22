@@ -12,7 +12,9 @@
 
         <action
             android:id="@+id/action_scan_qr"
-            app:destination="@id/nav_scan_qr" />
+            app:destination="@id/nav_scan_qr"
+            app:popUpTo="@id/main_nav"
+            app:popUpToInclusive="true" />
 
     </fragment>
 

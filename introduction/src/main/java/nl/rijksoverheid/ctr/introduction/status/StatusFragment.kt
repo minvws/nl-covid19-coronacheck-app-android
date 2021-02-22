@@ -27,7 +27,9 @@ class StatusFragment : Fragment() {
                 if (it) {
                     coronaCheckApp.getIntroductionData().skipIntroductionCallback.invoke(this)
                 } else {
-                    coronaCheckApp.getIntroductionData().launchIntroductionCallback.invoke(this)
+                    coronaCheckApp.getIntroductionData().launchIntroductionCallback.invoke(
+                        requireActivity()
+                    )
                 }
             })
 

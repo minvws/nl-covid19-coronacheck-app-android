@@ -12,7 +12,9 @@
 
         <action
             android:id="@+id/action_home"
-            app:destination="@id/nav_home" />
+            app:destination="@id/nav_home"
+            app:popUpTo="@id/main_nav"
+            app:popUpToInclusive="true" />
 
     </fragment>
 
