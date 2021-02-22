@@ -66,11 +66,18 @@
 
     </dialog>
 
-    <fragment
+    <dialog
         android:id="@+id/nav_scan_instructions"
-        android:name="nl.rijksoverheid.ctr.verifier.scaninstructions.ScanInstructionsFragment"
+        android:name="nl.rijksoverheid.ctr.verifier.scaninstructions.ScanInstructionsDialogFragment"
         android:label="@string/scan_instructions"
-        tools:layout="@layout/fragment_scan_instructions" />
+        tools:layout="@layout/dialog_scan_instructions">
+
+        <argument
+            android:name="openScannerOnBack"
+            android:defaultValue="false"
+            app:argType="boolean" />
+
+    </dialog>
 
     <fragment
         android:id="@+id/nav_app_status"

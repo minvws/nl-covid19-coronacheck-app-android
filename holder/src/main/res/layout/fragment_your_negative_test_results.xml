@@ -45,6 +45,16 @@
             app:layout_constraintStart_toStartOf="@+id/title"
             app:layout_constraintTop_toBottomOf="@+id/description" />
 
+        <ImageView
+            android:id="@+id/info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/actionBarItemBackground"
+            android:src="@drawable/ic_question"
+            app:layout_constraintBottom_toBottomOf="@+id/header"
+            app:layout_constraintEnd_toEndOf="@+id/title"
+            app:layout_constraintTop_toTopOf="@+id/header" />
+
         <View
             android:id="@+id/divider_top"
             android:layout_width="0dp"

@@ -18,6 +18,10 @@
             android:id="@+id/nav_about_this_app"
             android:title="@string/about_this_app" />
 
+        <item
+            android:id="@+id/nav_privacy_statement"
+            android:title="@string/privacy_statement" />
+
         <!-- TODO: Implement give us feedback -->
         <item
             android:id="@+id/nav_give_us_feedback"

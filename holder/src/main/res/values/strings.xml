@@ -64,6 +64,7 @@
     <string name="your_negative_test_results_header">Recente testresultaten</string>
     <string name="your_negative_test_results_row_title">Negatief testresultaat (geen corona)</string>
     <string name="your_negative_test_results_row_button">Maak een QR-code van resultaat</string>
+    <string name="your_negative_test_results_info">Alleen testresultaten die niet ouder zijn dan 48 uur kun je gebruiken om een QR-code van te maken.</string>
     <string name="no_negative_test_results_title">Er is geen negatief testresultaat</string>
     <string name="no_negative_test_results_description">Er is geen negatief testresultaat gevonden. Heb je het idee dat dit niet klopt? Neem dan contact op met de testaanbieder.</string>
     <string name="testresult_not_known_title">Testresultaat nog niet bekend</string>

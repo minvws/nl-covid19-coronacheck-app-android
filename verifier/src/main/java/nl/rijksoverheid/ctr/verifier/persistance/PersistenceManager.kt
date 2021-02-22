@@ -10,6 +10,8 @@ import android.content.SharedPreferences
  *
  */
 interface PersistenceManager {
+    fun getScanInstructionsSeen(): Boolean
+    fun setScanInstructionsSeen()
     fun saveSecretKeyJson(json: String)
     fun getSecretKeyJson(): String?
     fun saveLocalTestResultJson(localTestResultJson: String)
@@ -20,8 +22,17 @@ class SharedPreferencesPersistenceManager(private val sharedPreferences: SharedP
     PersistenceManager {
 
     companion object {
+        const val SCAN_INSTRUCTIONS_SEEN = "SCAN_INSTRUCTIONS_SEEN"
         const val SECRET_KEY_JSON = "SECRET_KEY_JSON"
         const val LOCAL_TEST_RESULT = "LOCAL_TEST_RESULT"
+    }
+
+    override fun getScanInstructionsSeen(): Boolean {
+        return sharedPreferences.getBoolean(SCAN_INSTRUCTIONS_SEEN, false)
+    }
+
+    override fun setScanInstructionsSeen() {
+        sharedPreferences.edit().putBoolean(SCAN_INSTRUCTIONS_SEEN, true).apply()
     }
 
     override fun saveSecretKeyJson(json: String) {

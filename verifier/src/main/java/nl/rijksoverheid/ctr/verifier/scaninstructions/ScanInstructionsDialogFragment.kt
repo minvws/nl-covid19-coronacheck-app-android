@@ -2,11 +2,16 @@ package nl.rijksoverheid.ctr.verifier.scaninstructions
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.Fragment
+import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
+import nl.rijksoverheid.ctr.design.FullScreenDialogFragment
 import nl.rijksoverheid.ctr.verifier.R
-import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanInstructionsBinding
+import nl.rijksoverheid.ctr.verifier.databinding.DialogScanInstructionsBinding
+import timber.log.Timber
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -15,12 +20,27 @@ import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanInstructionsBinding
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
+class ScanInstructionsDialogFragment : FullScreenDialogFragment(R.layout.dialog_scan_instructions) {
+
+    companion object {
+        const val REQUEST_KEY = "REQUEST_KEY"
+        const val EXTRA_LAUNCH_SCANNER = "LAUNCH_SCANNER"
+    }
+
+    private val args: ScanInstructionsDialogFragmentArgs by navArgs()
+
+    override fun getAnimationStyle(): AnimationStyle {
+        return AnimationStyle.SlideFromBottom
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val binding = FragmentScanInstructionsBinding.bind(view)
+        val binding = DialogScanInstructionsBinding.bind(view)
+        binding.toolbar.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
+
         GroupAdapter<GroupieViewHolder>()
             .run {
                 addAll(
@@ -47,5 +67,10 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
                 )
                 binding.recyclerView.adapter = this
             }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        setFragmentResult(REQUEST_KEY, bundleOf(EXTRA_LAUNCH_SCANNER to args.openScannerOnBack))
     }
 }

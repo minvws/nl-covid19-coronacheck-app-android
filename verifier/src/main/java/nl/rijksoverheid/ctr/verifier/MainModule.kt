@@ -36,5 +36,5 @@ val mainModule = module {
     }
 
     // ViewModels
-    viewModel { ScanQrViewModel(get()) }
+    viewModel { ScanQrViewModel(get(), get()) }
 }

@@ -54,6 +54,9 @@ class VerifierMainActivity : BaseActivity(R.id.nav_scan_qr) {
                 R.id.nav_about_this_app -> {
                     BuildConfig.URL_ABOUT_THIS_APP.launchUrl(this)
                 }
+                R.id.nav_privacy_statement -> {
+                    BuildConfig.URL_PRIVACY_STATEMENT.launchUrl(this)
+                }
                 else -> {
                     NavigationUI.onNavDestinationSelected(item, navController)
                 }
@@ -87,6 +90,8 @@ class VerifierMainActivity : BaseActivity(R.id.nav_scan_qr) {
         binding.navView.menu.findItem(R.id.nav_about_this_app)
             .styleTitle(context, R.attr.textAppearanceBody1)
         binding.navView.menu.findItem(R.id.nav_give_us_feedback)
+            .styleTitle(context, R.attr.textAppearanceBody1)
+        binding.navView.menu.findItem(R.id.nav_privacy_statement)
             .styleTitle(context, R.attr.textAppearanceBody1)
     }
 
