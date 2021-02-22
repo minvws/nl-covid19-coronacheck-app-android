@@ -22,6 +22,7 @@ import nl.rijksoverheid.ctr.shared.BaseActivity
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.ext.styleTitle
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
 class HolderMainActivity : BaseActivity(R.id.nav_my_overview) {
 
@@ -31,10 +32,14 @@ class HolderMainActivity : BaseActivity(R.id.nav_my_overview) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_SECURE,
-            WindowManager.LayoutParams.FLAG_SECURE
-        )
+
+        if (BuildConfig.FLAVOR == "prod") {
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE
+            )
+        }
+
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
