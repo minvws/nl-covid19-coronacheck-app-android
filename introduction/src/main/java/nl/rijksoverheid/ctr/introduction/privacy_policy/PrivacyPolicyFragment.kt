@@ -72,7 +72,7 @@ class PrivacyPolicyFragment : Fragment() {
 
         binding.button.setOnClickListener {
             introductionViewModel.saveIntroductionFinished()
-            introductionActivity.introductionDoneCallback().invoke(this)
+            introductionActivity.introductionDoneCallback().invoke(requireActivity())
         }
     }
 }

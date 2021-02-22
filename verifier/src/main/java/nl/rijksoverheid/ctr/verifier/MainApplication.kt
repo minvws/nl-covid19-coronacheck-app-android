@@ -78,17 +78,19 @@ class MainApplication : SharedApplication(), CoronaCheckApp {
                 )
             ),
             introductionDoneCallback = {
-                val intent = Intent(this, VerifierMainActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                startActivity(intent)
+                val intent = Intent(it, VerifierMainActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                it.startActivity(intent)
+                it.overridePendingTransition(0, 0)
             },
             skipIntroductionCallback = {
                 it.findNavController().navigate(StatusFragmentDirections.actionScanQr())
             },
             launchIntroductionCallback = {
-                val intent = Intent(this, IntroductionActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                startActivity(intent)
+                val intent = Intent(it, IntroductionActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                it.startActivity(intent)
+                it.overridePendingTransition(0, 0)
             }
         )
     }
