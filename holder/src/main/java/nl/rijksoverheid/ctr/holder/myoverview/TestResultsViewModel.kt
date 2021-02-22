@@ -86,7 +86,6 @@ class TestResultsViewModel(
             try {
                 retrievedResult?.let {
                     val result = testResultUseCase.signTestResult(
-                        remoteTestResult = it.remoteTestResult,
                         signedResponseWithTestResult = it.signedResponseWithTestResult
                     )
                     if (result is SignedTestResult.Complete) {
