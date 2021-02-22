@@ -2,11 +2,11 @@ package nl.rijksoverheid.ctr.verifier.scaninstructions
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.DialogFragment
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import nl.rijksoverheid.ctr.verifier.R
-import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanInstructionsBinding
+import nl.rijksoverheid.ctr.verifier.databinding.DialogScanInstructionsBinding
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -15,12 +15,20 @@ import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanInstructionsBinding
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
+class ScanInstructionsDialogFragment : DialogFragment(R.layout.dialog_scan_instructions) {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(
+            STYLE_NORMAL,
+            R.style.AppTheme_Dialog_FullScreen
+        )
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val binding = FragmentScanInstructionsBinding.bind(view)
+        val binding = DialogScanInstructionsBinding.bind(view)
         GroupAdapter<GroupieViewHolder>()
             .run {
                 addAll(
