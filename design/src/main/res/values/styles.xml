@@ -41,4 +41,20 @@
         <item name="android:textColor">@color/white_80</item>
         <item name="android:textSize">16sp</item>
     </style>
+
+    <style name="AppTheme.Dialog.FullScreen" parent="">
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowIsFloating">false</item>
+    </style>
+
+    <style name="SlideFromBottomFragmentAnimations">
+        <item name="android:windowEnterAnimation">@anim/slide_in_up</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_down</item>
+    </style>
+
+    <style name="FadeFragmentAnimations">
+        <item name="android:windowEnterAnimation">@anim/fade_in</item>
+        <item name="android:windowExitAnimation">@anim/fade_out</item>
+    </style>
+
 </resources>

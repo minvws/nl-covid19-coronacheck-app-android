@@ -2,9 +2,9 @@ package nl.rijksoverheid.ctr.verifier.scaninstructions
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.DialogFragment
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
+import nl.rijksoverheid.ctr.design.FullScreenDialogFragment
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.DialogScanInstructionsBinding
 
@@ -15,14 +15,10 @@ import nl.rijksoverheid.ctr.verifier.databinding.DialogScanInstructionsBinding
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class ScanInstructionsDialogFragment : DialogFragment(R.layout.dialog_scan_instructions) {
+class ScanInstructionsDialogFragment : FullScreenDialogFragment(R.layout.dialog_scan_instructions) {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setStyle(
-            STYLE_NORMAL,
-            R.style.AppTheme_Dialog_FullScreen
-        )
+    override fun getAnimationStyle(): AnimationStyle {
+        return AnimationStyle.SlideFromBottom
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
