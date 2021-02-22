@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.verifier.scaninstructions
 
 import android.os.Bundle
 import android.view.View
+import androidx.navigation.fragment.findNavController
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import nl.rijksoverheid.ctr.design.FullScreenDialogFragment
@@ -25,6 +26,10 @@ class ScanInstructionsDialogFragment : FullScreenDialogFragment(R.layout.dialog_
         super.onViewCreated(view, savedInstanceState)
 
         val binding = DialogScanInstructionsBinding.bind(view)
+        binding.toolbar.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
+
         GroupAdapter<GroupieViewHolder>()
             .run {
                 addAll(
