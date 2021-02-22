@@ -23,6 +23,7 @@
         </item>
         <item name="materialButtonStyle">@style/Widget.App.Button</item>
         <item name="textInputStyle">@style/Widget.App.TextInputLayout</item>
+        <item name="toolbarStyle">@style/Widget.App.Toolbar.Surface</item>
     </style>
 
     <style name="Widget.App.NavigationView" parent="Widget.MaterialComponents.NavigationView">
