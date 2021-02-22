@@ -85,7 +85,6 @@ class MainApplication : SharedApplication(), CoronaCheckApp {
                 it.overridePendingTransition(0, 0)
             },
             skipIntroductionCallback = {
-                setTheme(R.style.AppTheme)
                 it.findNavController().navigate(StatusFragmentDirections.actionHome())
             },
             launchIntroductionCallback = {
