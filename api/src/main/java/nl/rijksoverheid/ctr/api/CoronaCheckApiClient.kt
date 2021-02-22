@@ -1,14 +1,14 @@
 package nl.rijksoverheid.ctr.api
 
 import nl.rijksoverheid.crt.signing.http.SignedRequest
-import nl.rijksoverheid.ctr.api.models.*
+import nl.rijksoverheid.ctr.api.models.RemoteNonce
+import nl.rijksoverheid.ctr.api.models.RemoteTestProviders
 import nl.rijksoverheid.ctr.api.models.post.GetTestIsmPostData
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
-import retrofit2.http.Path
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -18,19 +18,6 @@ import retrofit2.http.Path
  *
  */
 interface CoronaCheckApiClient {
-
-    @GET("holder/get_public_keys")
-    @SignedRequest
-    suspend fun getIssuers(): Issuers
-
-    @GET("issuer/get_event/{id}")
-    @SignedRequest
-    suspend fun getEvent(@Path("id") id: String): RemoteEvent
-
-    @GET("issuer/get_agent/{id}")
-    @SignedRequest
-    suspend fun getAgent(@Path("id") id: String): RemoteAgent
-
     @GET("holder/nonce")
     @SignedRequest
     suspend fun getNonce(): RemoteNonce
