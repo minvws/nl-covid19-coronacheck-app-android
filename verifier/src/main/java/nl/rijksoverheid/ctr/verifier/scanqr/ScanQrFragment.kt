@@ -9,10 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.google.zxing.integration.android.IntentIntegrator
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
-import nl.rijksoverheid.ctr.shared.util.QrCodeScannerUtil
+import nl.rijksoverheid.ctr.shared.util.MLKitQrCodeScannerUtil
 import nl.rijksoverheid.ctr.verifier.BaseFragment
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanQrBinding
 import nl.rijksoverheid.ctr.verifier.scaninstructions.ScanInstructionsDialogFragment
@@ -29,30 +28,25 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class ScanQrFragment : BaseFragment() {
 
     private lateinit var binding: FragmentScanQrBinding
-    private val qrCodeScannerUtil: QrCodeScannerUtil by inject()
+    private val qrCodeScannerUtil: MLKitQrCodeScannerUtil by inject()
     private val scanQrViewModel: ScanQrViewModel by viewModel()
     private val args: ScanQrFragmentArgs by navArgs()
 
     private val qrScanResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            val result = IntentIntegrator.parseActivityResult(
-                IntentIntegrator.REQUEST_CODE,
-                it.resultCode,
-                it.data
-            )
-            if (result.contents != null) {
+            val scanResult = qrCodeScannerUtil.parseScanResult(it.data)
+            if (scanResult != null) {
                 scanQrViewModel.validate(
-                    qrContent = result.contents
+                    qrContent = scanResult
                 )
             }
-
         }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentScanQrBinding.inflate(inflater)
         return binding.root
     }
