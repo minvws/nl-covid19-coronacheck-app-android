@@ -8,7 +8,7 @@ import nl.rijksoverheid.ctr.holder.myoverview.TestResultsViewModel
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.SharedPreferencesPersistenceManager
 import nl.rijksoverheid.ctr.holder.repositories.AuthenticationRepository
-import nl.rijksoverheid.ctr.holder.repositories.HolderRepository
+import nl.rijksoverheid.ctr.holder.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.repositories.TestProviderRepository
 import nl.rijksoverheid.ctr.holder.usecase.*
 import org.koin.android.ext.koin.androidContext
@@ -74,7 +74,7 @@ val mainModule = module {
     // Repositories
     single { AuthenticationRepository() }
     single {
-        HolderRepository(
+        CoronaCheckRepository(
             get(),
             get(named("ResponseError"))
         )

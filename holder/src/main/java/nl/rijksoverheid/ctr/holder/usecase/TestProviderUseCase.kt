@@ -1,7 +1,6 @@
 package nl.rijksoverheid.ctr.holder.usecase
 
-import nl.rijksoverheid.ctr.holder.repositories.HolderRepository
-import nl.rijksoverheid.ctr.api.models.RemoteTestProviders
+import nl.rijksoverheid.ctr.holder.repositories.CoronaCheckRepository
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -10,9 +9,9 @@ import nl.rijksoverheid.ctr.api.models.RemoteTestProviders
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class TestProviderUseCase(private val holderRepository: HolderRepository) {
+class TestProviderUseCase(private val coronaCheckRepository: CoronaCheckRepository) {
 
     suspend fun testProvider(id: String): nl.rijksoverheid.ctr.api.models.RemoteTestProviders.Provider? {
-        return holderRepository.testProviders().providers.firstOrNull { it.providerIdentifier == id }
+        return coronaCheckRepository.testProviders().providers.firstOrNull { it.providerIdentifier == id }
     }
 }
