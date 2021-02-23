@@ -38,7 +38,7 @@ import java.io.File
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-fun apiModule(baseUrl: String) = module {
+fun apiModule(baseUrl: String) = module(override = true) {
     // the base OkHttpClient for both API and test providers
     single {
         OkHttpClient.Builder()
