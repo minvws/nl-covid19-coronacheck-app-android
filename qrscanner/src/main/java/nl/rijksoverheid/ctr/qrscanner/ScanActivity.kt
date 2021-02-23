@@ -27,6 +27,7 @@ import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
+import nl.rijksoverheid.ctr.qrscanner.databinding.ActivityScannerBinding
 import java.util.concurrent.Executors
 import kotlin.math.abs
 import kotlin.math.max
@@ -40,6 +41,7 @@ class ScanActivity : AppCompatActivity() {
     private var lensFacing = CameraSelector.LENS_FACING_BACK
     private var previewUseCase: Preview? = null
     private var analysisUseCase: ImageAnalysis? = null
+    private lateinit var binding : ActivityScannerBinding
 
     private val screenAspectRatio: Int
         get() {
@@ -50,13 +52,20 @@ class ScanActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_scanner)
+        binding = ActivityScannerBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         setupCamera()
     }
 
     private fun setupCamera() {
-        previewView = findViewById(R.id.preview_view)
+        // Set up preview view
+        previewView = binding.previewView
+
+        // Select camera to use, back facing camera by default
         cameraSelector = CameraSelector.Builder().requireLensFacing(lensFacing).build()
+
+        // Set up viewmodel to provide access to CameraX resource
+        // Scoped to this activity's lifecycle
         ViewModelProvider(
             this, ViewModelProvider.AndroidViewModelFactory.getInstance(application)
         ).get(CameraXViewModel::class.java)
@@ -83,6 +92,9 @@ class ScanActivity : AppCompatActivity() {
         bindAnalyseUseCase()
     }
 
+    /**
+     * Set-up preview, bind to livecycle
+     */
     private fun bindPreviewUseCase() {
         if (cameraProvider == null) {
             return
@@ -110,10 +122,14 @@ class ScanActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Set-up analyzer to scan for QR codes only, improving performance.
+     * Bound to lifecycle
+     */
     private fun bindAnalyseUseCase() {
          val options = BarcodeScannerOptions.Builder()
              .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
-             .build();
+             .build()
         val barcodeScanner: BarcodeScanner = BarcodeScanning.getClient(options)
 
         if (cameraProvider == null) {
@@ -140,7 +156,7 @@ class ScanActivity : AppCompatActivity() {
 
         try {
             cameraProvider!!.bindToLifecycle(
-                /* lifecycleOwner= */this,
+                this,
                 cameraSelector!!,
                 analysisUseCase
             )
@@ -151,6 +167,9 @@ class ScanActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Process frames from CameraX and extract QR codes
+     */
     @SuppressLint("UnsafeExperimentalUsageError")
     private fun processImageProxy(
         barcodeScanner: BarcodeScanner,
@@ -223,7 +242,6 @@ class ScanActivity : AppCompatActivity() {
     companion object {
         private val TAG = ScanActivity::class.java.simpleName
         private const val PERMISSION_CAMERA_REQUEST = 1
-        private const val REQUEST_CODE = 1234
         const val SCAN_RESULT = "scan_result"
 
         private const val RATIO_4_3_VALUE = 4.0 / 3.0
