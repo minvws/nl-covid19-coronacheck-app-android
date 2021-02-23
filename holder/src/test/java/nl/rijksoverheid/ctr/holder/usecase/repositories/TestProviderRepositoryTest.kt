@@ -3,12 +3,11 @@ package nl.rijksoverheid.ctr.holder.usecase.repositories
 import io.mockk.InternalPlatformDsl.toStr
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.api.apiModule
-import nl.rijksoverheid.ctr.api.models.RemoteTestResult
 import nl.rijksoverheid.ctr.holder.repositories.TestProviderRepository
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
-import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertThrows
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -104,7 +103,7 @@ class TestProviderRepositoryTest : AutoCloseKoinTest() {
             signingCertificateBytes = certificate.toByteArray()
         )
 
-        assertEquals(model.model.status, RemoteTestResult.Status.COMPLETE)
+        assertNotNull(model)
     }
 
     @Test
@@ -131,7 +130,7 @@ class TestProviderRepositoryTest : AutoCloseKoinTest() {
             signingCertificateBytes = certificate.toByteArray()
         )
 
-        assertEquals(model.model.status, RemoteTestResult.Status.COMPLETE)
+        assertNotNull(model)
     }
 
     @Test
