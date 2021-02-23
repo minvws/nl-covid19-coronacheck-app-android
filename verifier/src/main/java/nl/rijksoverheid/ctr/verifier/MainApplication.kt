@@ -34,7 +34,7 @@ class MainApplication : SharedApplication(), CoronaCheckApp {
                 sharedModule,
                 appConfigModule("verifier", BuildConfig.VERSION_CODE),
                 introductionModule,
-                apiModule
+                apiModule(nl.rijksoverheid.ctr.api.BuildConfig.BASE_API_URL)
             )
         }
     }
