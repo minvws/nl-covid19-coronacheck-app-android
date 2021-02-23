@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.holder.usecase.usecase
+package nl.rijksoverheid.ctr.holder.usecase
 
 import io.mockk.coEvery
 import io.mockk.every
