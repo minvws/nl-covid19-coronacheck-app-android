@@ -55,7 +55,7 @@ android {
         }
         acc {
             dimension "environment"
-            buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.acc.coronacheck.nl/v1/\""
+            buildConfigField "String", "BASE_API_URL", "\"https://holder-api.acc.coronacheck.nl/v1/\""
             buildConfigField "String", "DIGI_D_BASE_URL", "\"https://login.ggdghor.nl/coronitacc\""
             buildConfigField "String", "DIGI_D_CLIENT_ID", "\"6456237456911667336\""
             buildConfigField "boolean", "FEATURE_API_SSL_ROOT_CA", "true"
@@ -66,7 +66,7 @@ android {
             dimension "environment"
             buildConfigField "String", "DIGI_D_BASE_URL", "\"https://login.ggdghor.nl/coronitacc\""
             buildConfigField "String", "DIGI_D_CLIENT_ID", "\"6456237456911667336\""
-            buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.acc.coronacheck.nl/v1/\""
+            buildConfigField "String", "BASE_API_URL", "\"https://holder-api.coronacheck.nl/v1/\""
             buildConfigField "boolean", "FEATURE_TEST_PROVIDER_TRUSTED_ROOTS", "true"
             matchingFallbacks = ["prod"]
         }
