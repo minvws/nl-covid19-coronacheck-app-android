@@ -1,13 +1,13 @@
 package nl.rijksoverheid.ctr.holder.usecase
 
 import clmobile.Clmobile
-import nl.rijksoverheid.ctr.holder.repositories.HolderRepository
-import nl.rijksoverheid.ctr.shared.ext.successString
 import nl.rijksoverheid.ctr.api.models.RemoteTestResult
 import nl.rijksoverheid.ctr.api.models.ResponseError
 import nl.rijksoverheid.ctr.api.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.api.models.TestIsmResult
+import nl.rijksoverheid.ctr.holder.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.repositories.TestProviderRepository
+import nl.rijksoverheid.ctr.shared.ext.successString
 import retrofit2.HttpException
 import timber.log.Timber
 import java.io.IOException
@@ -22,7 +22,7 @@ import java.io.IOException
 class TestResultUseCase(
     private val testProviderUseCase: TestProviderUseCase,
     private val testProviderRepository: TestProviderRepository,
-    private val holderRepository: HolderRepository,
+    private val coronaCheckRepository: CoronaCheckRepository,
     private val commitmentMessageUseCase: CommitmentMessageUseCase,
     private val secretKeyUseCase: SecretKeyUseCase,
 ) {
@@ -75,13 +75,13 @@ class TestResultUseCase(
     ): SignedTestResult {
         try {
             // Persist encrypted test result
-            val remoteNonce = holderRepository.remoteNonce()
+            val remoteNonce = coronaCheckRepository.remoteNonce()
             val commitmentMessage = commitmentMessageUseCase.json(
                 nonce = remoteNonce.nonce
             )
             Timber.i("Received commitment message $commitmentMessage")
 
-            val testIsm = holderRepository.getTestIsm(
+            val testIsm = coronaCheckRepository.getTestIsm(
                 test = signedResponseWithTestResult.rawResponse.toString(Charsets.UTF_8),
                 sToken = remoteNonce.sToken,
                 icm = commitmentMessage

@@ -20,7 +20,7 @@ import retrofit2.HttpException
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class HolderRepository(
+class CoronaCheckRepository(
     private val api: CoronaCheckApiClient,
     private val errorResponseConverter: Converter<ResponseBody, ResponseError>
 ) {
