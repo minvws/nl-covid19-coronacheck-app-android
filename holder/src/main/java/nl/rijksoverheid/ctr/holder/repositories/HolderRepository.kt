@@ -3,11 +3,11 @@ package nl.rijksoverheid.ctr.holder.repositories
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.api.CoronaCheckApiClient
-import nl.rijksoverheid.ctr.api.SigningCertificate
-import nl.rijksoverheid.ctr.api.TestProviderApiClient
-import nl.rijksoverheid.ctr.api.models.*
+import nl.rijksoverheid.ctr.api.models.RemoteNonce
+import nl.rijksoverheid.ctr.api.models.RemoteTestProviders
+import nl.rijksoverheid.ctr.api.models.ResponseError
+import nl.rijksoverheid.ctr.api.models.TestIsmResult
 import nl.rijksoverheid.ctr.api.models.post.GetTestIsmPostData
-import nl.rijksoverheid.ctr.api.models.post.GetTestResultPostData
 import okhttp3.ResponseBody
 import org.json.JSONObject
 import retrofit2.Converter
@@ -22,41 +22,8 @@ import retrofit2.HttpException
  */
 class HolderRepository(
     private val api: CoronaCheckApiClient,
-    private val testProviderApiClient: TestProviderApiClient,
-    private val responseConverter: Converter<ResponseBody, SignedResponseWithModel<RemoteTestResult>>,
     private val errorResponseConverter: Converter<ResponseBody, ResponseError>
 ) {
-
-    @Suppress("BlockingMethodInNonBlockingContext")
-    suspend fun remoteTestResult(
-        url: String,
-        token: String,
-        verifierCode: String?,
-        signingCertificateBytes: ByteArray
-    ): SignedResponseWithModel<RemoteTestResult> {
-        try {
-            return testProviderApiClient.getTestResult(
-                url = url,
-                authorization = "Bearer $token",
-                data = verifierCode?.let {
-                    GetTestResultPostData(
-                        it
-                    )
-                },
-                certificate = SigningCertificate(signingCertificateBytes)
-            )
-        } catch (ex: HttpException) {
-            // if there's no error body, this must be something else than expected
-            val errorBody = ex.response()?.errorBody() ?: throw ex
-            if (ex.code() == 401) {
-                return withContext(Dispatchers.IO) {
-                    responseConverter.convert(errorBody) ?: throw ex
-                }
-            } else {
-                throw ex
-            }
-        }
-    }
 
     suspend fun testProviders(): RemoteTestProviders {
         return api.getConfigCtp()

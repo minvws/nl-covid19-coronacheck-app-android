@@ -38,7 +38,7 @@ import java.io.File
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-val apiModule = module {
+fun apiModule(baseUrl: String) = module(override = true) {
     // the base OkHttpClient for both API and test providers
     single {
         OkHttpClient.Builder()
@@ -79,7 +79,7 @@ val apiModule = module {
             .build()
 
         Retrofit.Builder()
-            .baseUrl(BuildConfig.BASE_API_URL)
+            .baseUrl(baseUrl)
             .client(okHttpClient)
             .addConverterFactory(MoshiConverterFactory.create(get()))
             .build()
@@ -106,7 +106,7 @@ val apiModule = module {
         Retrofit.Builder()
             .client(okHttpClient)
             // required, although not used for TestProviders
-            .baseUrl(BuildConfig.BASE_API_URL)
+            .baseUrl(baseUrl)
             .addConverterFactory(MoshiConverterFactory.create(get()))
             .build()
             .create(TestProviderApiClient::class.java)
