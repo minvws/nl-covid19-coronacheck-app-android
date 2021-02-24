@@ -44,7 +44,7 @@ jobs:
       - name: Write key store
         run: echo $KEYSTORE_FILE | base64 --decode > keystore.jks
       - name: Build & test
-        run: ./gradlew testDebug testTstDebug lint assemTstRelease assemAccRelease assemProdRelease bundleProdRelease
+        run: ./gradlew --warning-mode=fail testDebug testTstDebug lint assemTstRelease assemAccRelease assemProdRelease bundleProdRelease
       - name: Clean up key store
         if: ${{ always() }}
         run: rm keystore.jks
