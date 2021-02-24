@@ -75,10 +75,9 @@
 
     <nl.rijksoverheid.ctr.holder.myoverview.widget.QrCodeAnimationWidget
         android:layout_width="match_parent"
-        android:layout_height="256dp"
+        android:layout_height="@dimen/qr_code_animation_widget_height"
         android:layout_gravity="bottom"
-        android:layout_marginTop="-72dp"
-        android:src="@drawable/illustration_houses" />
+        android:layout_marginTop="-72dp" />
 
 </LinearLayout>
 
