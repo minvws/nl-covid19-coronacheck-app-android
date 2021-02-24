@@ -31,17 +31,15 @@ class LocalTestResultUseCaseTest {
     @Test
     fun `No local test result saved returns None`() =
         runBlocking {
-            runBlocking {
-                val usecase = LocalTestResultUseCase(
-                    persistenceManager = fakePersistenceManager(credentials = null),
-                    testResultUtil = TestResultUtil(Clock.systemUTC()),
-                    testResultRepository = fakeTestResultRepository(),
-                    testResultAttributesUseCase = fakeTestResultAttributesUseCase()
-                )
+            val usecase = LocalTestResultUseCase(
+                persistenceManager = fakePersistenceManager(credentials = null),
+                testResultUtil = TestResultUtil(Clock.systemUTC()),
+                testResultRepository = fakeTestResultRepository(),
+                testResultAttributesUseCase = fakeTestResultAttributesUseCase()
+            )
 
-                val localTestResult = usecase.get()
-                assertTrue(localTestResult is LocalTestResultState.None)
-            }
+            val localTestResult = usecase.get()
+            assertTrue(localTestResult is LocalTestResultState.None)
         }
 
     @Test
