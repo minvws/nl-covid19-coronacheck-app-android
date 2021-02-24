@@ -14,7 +14,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
@@ -28,6 +27,7 @@ import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
 import nl.rijksoverheid.ctr.qrscanner.databinding.ActivityScannerBinding
+import timber.log.Timber
 import java.util.concurrent.Executors
 import kotlin.math.abs
 import kotlin.math.max
@@ -116,9 +116,9 @@ class QrCodeScannerActivity : AppCompatActivity() {
                 previewUseCase
             )
         } catch (illegalStateException: IllegalStateException) {
-            Log.e(TAG, "${illegalStateException.message}")
+            Timber.e("Unhandled exception: ${illegalStateException.message}")
         } catch (illegalArgumentException: IllegalArgumentException) {
-            Log.e(TAG, "${illegalArgumentException.message}")
+            Timber.e("Unhandled exception: ${illegalArgumentException.message}")
         }
     }
 
@@ -161,9 +161,9 @@ class QrCodeScannerActivity : AppCompatActivity() {
                 analysisUseCase
             )
         } catch (illegalStateException: IllegalStateException) {
-            Log.e(TAG, "${illegalStateException.message}")
+            Timber.e("Unhandled exception: ${illegalStateException.message}")
         } catch (illegalArgumentException: IllegalArgumentException) {
-            Log.e(TAG, "${illegalArgumentException.message}")
+            Timber.e("Unhandled exception: ${illegalArgumentException.message}")
         }
     }
 
@@ -181,7 +181,7 @@ class QrCodeScannerActivity : AppCompatActivity() {
         barcodeScanner.process(inputImage)
             .addOnSuccessListener { barcodes ->
                 barcodes.forEach {
-                    Log.d(TAG, "Found barcode contents ${it.rawValue}")
+                    Timber.d("Found QR code, contents are ${it.rawValue}")
                     val intent = Intent()
                     intent.putExtra(SCAN_RESULT, it.rawValue)
                     setResult(RESULT_OK, intent)
@@ -189,7 +189,7 @@ class QrCodeScannerActivity : AppCompatActivity() {
                 }
             }
             .addOnFailureListener {
-                Log.e(TAG, "${it.message}")
+                Timber.e("Unhandled exception: $it")
             }.addOnCompleteListener {
                 // When the image is from CameraX analysis use case, must call image.close() on received
                 // images when finished using them. Otherwise, new images may not be received or the camera
@@ -226,7 +226,7 @@ class QrCodeScannerActivity : AppCompatActivity() {
             if (isCameraPermissionGranted()) {
                 bindCameraUseCases()
             } else {
-                Log.e(TAG, "no camera permission")
+                Timber.e("No camera permission")
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -240,7 +240,6 @@ class QrCodeScannerActivity : AppCompatActivity() {
     }
 
     companion object {
-        private val TAG = QrCodeScannerActivity::class.java.simpleName
         private const val PERMISSION_CAMERA_REQUEST = 1
         const val SCAN_RESULT = "scan_result"
 

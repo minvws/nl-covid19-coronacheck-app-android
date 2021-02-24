@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import timber.log.Timber
 import java.util.concurrent.ExecutionException
 
 /** View model for interacting with CameraX.  */
@@ -37,17 +38,9 @@ class CameraXViewModel
                             cameraProviderLiveData!!.setValue(cameraProviderFuture.get())
                         } catch (e: ExecutionException) {
                             // Handle any errors (including cancellation) here.
-                            Log.e(
-                                TAG,
-                                "Unhandled exception",
-                                e
-                            )
+                            Timber.e("Unhandled exception: $e")
                         } catch (e: InterruptedException) {
-                            Log.e(
-                                TAG,
-                                "Unhandled exception",
-                                e
-                            )
+                            Timber.e("Unhandled exception: $e")
                         }
                     },
                     ContextCompat.getMainExecutor(getApplication())
@@ -55,8 +48,4 @@ class CameraXViewModel
             }
             return cameraProviderLiveData!!
         }
-
-    companion object {
-        private const val TAG = "CameraXViewModel"
-    }
 }
