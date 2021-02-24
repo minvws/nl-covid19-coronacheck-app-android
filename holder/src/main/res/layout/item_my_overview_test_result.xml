@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/test_result"
@@ -74,13 +75,10 @@
 
     <nl.rijksoverheid.ctr.holder.myoverview.widget.QrCodeAnimationWidget
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/illustration_houses"
-        android:translationY="-16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/test_result" />
+        android:layout_height="256dp"
+        android:layout_gravity="bottom"
+        android:layout_marginTop="-72dp"
+        android:src="@drawable/illustration_houses" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
 

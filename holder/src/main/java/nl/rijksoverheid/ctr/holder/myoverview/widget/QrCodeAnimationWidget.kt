@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.holder.myoverview.widget
 
 import android.content.Context
 import android.util.AttributeSet
+import android.widget.FrameLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import nl.rijksoverheid.ctr.holder.R
 
@@ -13,7 +14,7 @@ import nl.rijksoverheid.ctr.holder.R
  *
  */
 class QrCodeAnimationWidget(context: Context, attrs: AttributeSet?) :
-    ConstraintLayout(context, attrs) {
+    FrameLayout(context, attrs) {
 
     init {
         inflate(context, R.layout.widget_qr_code_animation, this)
