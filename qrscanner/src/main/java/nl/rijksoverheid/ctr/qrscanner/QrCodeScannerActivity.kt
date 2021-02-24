@@ -35,20 +35,9 @@ import kotlin.math.min
 
 class QrCodeScannerActivity : AppCompatActivity() {
 
-    private var previewView: PreviewView? = null
-    private var cameraProvider: ProcessCameraProvider? = null
-    private var cameraSelector: CameraSelector? = null
-    private var lensFacing = CameraSelector.LENS_FACING_BACK
     private var previewUseCase: Preview? = null
     private var analysisUseCase: ImageAnalysis? = null
     private lateinit var binding: ActivityScannerBinding
-
-    private val screenAspectRatio: Int
-        get() {
-            // Get screen metrics used to setup camera for full screen resolution
-            val metrics = DisplayMetrics().also { previewView?.display?.getRealMetrics(it) }
-            return aspectRatio(metrics.widthPixels, metrics.heightPixels)
-        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,10 +48,15 @@ class QrCodeScannerActivity : AppCompatActivity() {
 
     private fun setupCamera() {
         // Set up preview view
-        previewView = binding.previewView
+        val previewView = binding.previewView
+
+        // Get screen metrics used to setup camera for full screen resolution
+        val metrics = DisplayMetrics().also { previewView.display?.getRealMetrics(it) }
+        val screenAspectRatio = aspectRatio(metrics.widthPixels, metrics.heightPixels)
 
         // Select camera to use, back facing camera by default
-        cameraSelector = CameraSelector.Builder().requireLensFacing(lensFacing).build()
+        val cameraSelector =
+            CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_BACK).build()
 
         // Set up viewmodel to provide access to CameraX resource
         // Scoped to this activity's lifecycle
@@ -72,10 +66,9 @@ class QrCodeScannerActivity : AppCompatActivity() {
             .processCameraProvider
             .observe(
                 this,
-                { provider: ProcessCameraProvider? ->
-                    cameraProvider = provider
+                { provider: ProcessCameraProvider ->
                     if (isCameraPermissionGranted()) {
-                        bindCameraUseCases()
+                        bindCameraUseCases(provider, previewView, cameraSelector, screenAspectRatio)
                     } else {
                         ActivityCompat.requestPermissions(
                             this,
@@ -87,32 +80,41 @@ class QrCodeScannerActivity : AppCompatActivity() {
             )
     }
 
-    private fun bindCameraUseCases() {
-        bindPreviewUseCase()
-        bindAnalyseUseCase()
+    private fun bindCameraUseCases(
+        cameraProvider: ProcessCameraProvider,
+        previewView: PreviewView,
+        cameraSelector: CameraSelector,
+        aspectRatio: Int
+    ) {
+        bindPreviewUseCase(cameraProvider, previewView, cameraSelector, aspectRatio)
+        bindAnalyseUseCase(cameraProvider, previewView, cameraSelector, aspectRatio)
     }
 
     /**
      * Set-up preview, bind to livecycle
      */
-    private fun bindPreviewUseCase() {
-        if (cameraProvider == null) {
-            return
-        }
+    private fun bindPreviewUseCase(
+        cameraProvider: ProcessCameraProvider,
+        previewView: PreviewView,
+        cameraSelector: CameraSelector,
+        aspectRatio: Int
+    ) {
+        // If another usecase was already created earlier for whatever reason, unbind it first
+        // before creating a new one to avoid overlapping input streams
         if (previewUseCase != null) {
-            cameraProvider!!.unbind(previewUseCase)
+            cameraProvider.unbind(previewUseCase)
         }
 
         previewUseCase = Preview.Builder()
-            .setTargetAspectRatio(screenAspectRatio)
-            .setTargetRotation(previewView!!.display.rotation)
+            .setTargetAspectRatio(aspectRatio)
+            .setTargetRotation(previewView.display.rotation)
             .build()
-        previewUseCase!!.setSurfaceProvider(previewView!!.surfaceProvider)
+        previewUseCase!!.setSurfaceProvider(previewView.surfaceProvider)
 
         try {
-            cameraProvider!!.bindToLifecycle(
+            cameraProvider.bindToLifecycle(
                 this,
-                cameraSelector!!,
+                cameraSelector,
                 previewUseCase
             )
         } catch (illegalStateException: IllegalStateException) {
@@ -126,22 +128,25 @@ class QrCodeScannerActivity : AppCompatActivity() {
      * Set-up analyzer to scan for QR codes only, improving performance.
      * Bound to lifecycle
      */
-    private fun bindAnalyseUseCase() {
+    private fun bindAnalyseUseCase(
+        cameraProvider: ProcessCameraProvider,
+        previewView: PreviewView,
+        cameraSelector: CameraSelector,
+        aspectRatio: Int
+    ) {
         val options = BarcodeScannerOptions.Builder()
             .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
             .build()
         val barcodeScanner: BarcodeScanner = BarcodeScanning.getClient(options)
 
-        if (cameraProvider == null) {
-            return
-        }
+
         if (analysisUseCase != null) {
-            cameraProvider!!.unbind(analysisUseCase)
+            cameraProvider.unbind(analysisUseCase)
         }
 
         analysisUseCase = ImageAnalysis.Builder()
-            .setTargetAspectRatio(screenAspectRatio)
-            .setTargetRotation(previewView!!.display.rotation)
+            .setTargetAspectRatio(aspectRatio)
+            .setTargetRotation(previewView.display.rotation)
             .build()
 
         // Initialize our background executor
@@ -155,9 +160,9 @@ class QrCodeScannerActivity : AppCompatActivity() {
         )
 
         try {
-            cameraProvider!!.bindToLifecycle(
+            cameraProvider.bindToLifecycle(
                 this,
-                cameraSelector!!,
+                cameraSelector,
                 analysisUseCase
             )
         } catch (illegalStateException: IllegalStateException) {
@@ -224,7 +229,7 @@ class QrCodeScannerActivity : AppCompatActivity() {
     ) {
         if (requestCode == PERMISSION_CAMERA_REQUEST) {
             if (isCameraPermissionGranted()) {
-                bindCameraUseCases()
+                setupCamera()
             } else {
                 Timber.e("No camera permission")
             }
