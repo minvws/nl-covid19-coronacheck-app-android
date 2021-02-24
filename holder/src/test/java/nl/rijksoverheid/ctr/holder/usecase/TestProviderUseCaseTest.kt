@@ -23,7 +23,7 @@ class TestProviderUseCaseTest {
     )
     private val testProvider2 = RemoteTestProviders.Provider(
         name = "dummy",
-        providerIdentifier = "1",
+        providerIdentifier = "2",
         resultUrl = "dummy",
         publicKey = "dummy".toByteArray()
     )
