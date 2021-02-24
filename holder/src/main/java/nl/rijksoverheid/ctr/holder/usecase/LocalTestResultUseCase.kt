@@ -18,10 +18,10 @@ import java.time.ZoneOffset
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class LocalTestResultUseCase (
+open class LocalTestResultUseCase (
     private val persistenceManager: PersistenceManager,
     private val testResultUtil: TestResultUtil,
-    private val testResultRepository: nl.rijksoverheid.ctr.api.repositories.TestResultRepository,
+    private val testResultRepository: TestResultRepository,
     private val testResultAttributesUseCase: TestResultAttributesUseCase
 ) {
 
