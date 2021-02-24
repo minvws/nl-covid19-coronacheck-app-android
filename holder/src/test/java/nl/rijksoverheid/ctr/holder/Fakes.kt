@@ -1,6 +1,5 @@
 package nl.rijksoverheid.ctr.holder
 
-import com.squareup.moshi.Moshi
 import nl.rijksoverheid.ctr.api.models.RemoteNonce
 import nl.rijksoverheid.ctr.api.models.RemoteTestProviders
 import nl.rijksoverheid.ctr.api.models.TestIsmResult
@@ -42,7 +41,7 @@ fun fakeTestResultAttributesUseCase(
     sampleTimeSeconds: Long = 0L,
     testType: String = ""
 ): TestResultAttributesUseCase {
-    return object : TestResultAttributesUseCase(Moshi.Builder().build()) {
+    return object : TestResultAttributesUseCase {
         override fun get(credentials: String): TestResultAttributes {
             return TestResultAttributes(
                 sampleTime = sampleTimeSeconds,

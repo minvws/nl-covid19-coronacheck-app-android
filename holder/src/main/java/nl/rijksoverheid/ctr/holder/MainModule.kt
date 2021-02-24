@@ -62,8 +62,8 @@ val mainModule = module {
     single {
         LocalTestResultUseCase(get(), get(), get(), get())
     }
-    single {
-        TestResultAttributesUseCase(get())
+    factory<TestResultAttributesUseCase> {
+        TestResultAttributesUseCaseImpl(get())
     }
 
     // ViewModels

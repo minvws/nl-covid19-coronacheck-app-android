@@ -13,11 +13,16 @@ import nl.rijksoverheid.ctr.shared.ext.verify
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-open class TestResultAttributesUseCase(
-    private val moshi: Moshi,
-) {
 
-    open fun get(credentials: String): TestResultAttributes {
+interface TestResultAttributesUseCase {
+    fun get(credentials: String): TestResultAttributes
+}
+
+open class TestResultAttributesUseCaseImpl(
+    private val moshi: Moshi,
+) : TestResultAttributesUseCase {
+
+    override fun get(credentials: String): TestResultAttributes {
         val result = Clmobile.readCredential(credentials.toByteArray()).verify()
         return result.decodeToString().toObject(moshi)
     }
