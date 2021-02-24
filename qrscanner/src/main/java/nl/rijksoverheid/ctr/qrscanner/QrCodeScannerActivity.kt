@@ -97,11 +97,11 @@ class QrCodeScannerActivity : AppCompatActivity() {
         aspectRatio: Int
     ) {
         // Set up preview Usecase
-        val previewUseCase = Preview.Builder()
+        val cameraPreview = Preview.Builder()
             .setTargetAspectRatio(aspectRatio)
             .setTargetRotation(previewView.display.rotation)
             .build()
-        previewUseCase.setSurfaceProvider(previewView.surfaceProvider)
+        cameraPreview.setSurfaceProvider(previewView.surfaceProvider)
 
         // bind the preview Usecase to the activity's lifecycle so the preview is automatically unbound
         // and disposed whenever the activity closes
@@ -109,13 +109,13 @@ class QrCodeScannerActivity : AppCompatActivity() {
             cameraProvider.bindToLifecycle(
                 this,
                 cameraSelector,
-                previewUseCase
+                cameraPreview
             )
         } catch (illegalStateException: IllegalStateException) {
             Timber.e("Camera is currently in an illegal state, either closed or in use by another app: ${illegalStateException.message}")
             throw illegalStateException
         } catch (illegalArgumentException: IllegalArgumentException) {
-            Timber.e("Unhandled exception: ${illegalArgumentException.message}")
+            Timber.e("Illegal argument, probably too many use cases linked to camera lifecycle, max is three: ${illegalArgumentException.message}")
             throw illegalArgumentException
         }
     }
@@ -137,7 +137,7 @@ class QrCodeScannerActivity : AppCompatActivity() {
         val barcodeScanner: BarcodeScanner = BarcodeScanning.getClient(options)
 
         // Set up the analysis Usecase
-        val analysisUseCase = ImageAnalysis.Builder()
+        val imageAnalyzer = ImageAnalysis.Builder()
             .setTargetAspectRatio(aspectRatio)
             .setTargetRotation(previewView.display.rotation)
             .build()
@@ -147,7 +147,7 @@ class QrCodeScannerActivity : AppCompatActivity() {
 
         // Add Analyzer to the Usecase, which will receive frames from the camera
         // and processes them using our supplied function
-        analysisUseCase.setAnalyzer(
+        imageAnalyzer.setAnalyzer(
             cameraExecutor,
             ImageAnalysis.Analyzer { cameraFrame ->
                 processCameraFrame(barcodeScanner, cameraFrame)
@@ -160,12 +160,14 @@ class QrCodeScannerActivity : AppCompatActivity() {
             cameraProvider.bindToLifecycle(
                 this,
                 cameraSelector,
-                analysisUseCase
+                imageAnalyzer
             )
         } catch (illegalStateException: IllegalStateException) {
-            Timber.e("Unhandled exception: ${illegalStateException.message}")
+            Timber.e("Camera is currently in an illegal state, either closed or in use by another app: ${illegalStateException.message}")
+            throw illegalStateException
         } catch (illegalArgumentException: IllegalArgumentException) {
-            Timber.e("Unhandled exception: ${illegalArgumentException.message}")
+            Timber.e("Illegal argument, probably too many use cases linked to camera lifecycle, max is three: ${illegalArgumentException.message}")
+            throw illegalArgumentException
         }
     }
 
