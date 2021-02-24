@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.holder.usecase.repositories
+package nl.rijksoverheid.ctr.holder.repositories
 
 import io.mockk.InternalPlatformDsl.toStr
 import kotlinx.coroutines.runBlocking

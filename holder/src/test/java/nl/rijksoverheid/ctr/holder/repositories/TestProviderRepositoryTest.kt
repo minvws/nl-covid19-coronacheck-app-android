@@ -1,9 +1,8 @@
-package nl.rijksoverheid.ctr.holder.usecase.repositories
+package nl.rijksoverheid.ctr.holder.repositories
 
 import io.mockk.InternalPlatformDsl.toStr
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.api.apiModule
-import nl.rijksoverheid.ctr.holder.repositories.TestProviderRepository
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After

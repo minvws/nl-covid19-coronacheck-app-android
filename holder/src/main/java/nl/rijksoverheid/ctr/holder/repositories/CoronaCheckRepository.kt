@@ -20,17 +20,24 @@ import retrofit2.HttpException
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class CoronaCheckRepository(
+
+interface CoronaCheckRepository {
+    suspend fun testProviders(): RemoteTestProviders
+    suspend fun getTestIsm(test: String, sToken: String, icm: String): TestIsmResult
+    suspend fun remoteNonce(): RemoteNonce
+}
+
+open class CoronaCheckRepositoryImpl(
     private val api: CoronaCheckApiClient,
     private val errorResponseConverter: Converter<ResponseBody, ResponseError>
-) {
+) : CoronaCheckRepository {
 
-    suspend fun testProviders(): RemoteTestProviders {
+    override suspend fun testProviders(): RemoteTestProviders {
         return api.getConfigCtp()
     }
 
     @Suppress("BlockingMethodInNonBlockingContext")
-    suspend fun getTestIsm(
+    override suspend fun getTestIsm(
         test: String,
         sToken: String,
         icm: String
@@ -58,7 +65,7 @@ class CoronaCheckRepository(
         }
     }
 
-    suspend fun remoteNonce(): RemoteNonce {
+    override suspend fun remoteNonce(): RemoteNonce {
         return api.getNonce()
     }
 }

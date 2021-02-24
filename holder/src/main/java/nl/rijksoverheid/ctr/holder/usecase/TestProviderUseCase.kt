@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.holder.usecase
 
+import nl.rijksoverheid.ctr.api.models.RemoteTestProviders
 import nl.rijksoverheid.ctr.holder.repositories.CoronaCheckRepository
 
 /*
@@ -11,7 +12,7 @@ import nl.rijksoverheid.ctr.holder.repositories.CoronaCheckRepository
  */
 class TestProviderUseCase(private val coronaCheckRepository: CoronaCheckRepository) {
 
-    suspend fun testProvider(id: String): nl.rijksoverheid.ctr.api.models.RemoteTestProviders.Provider? {
+    suspend fun testProvider(id: String): RemoteTestProviders.Provider? {
         return coronaCheckRepository.testProviders().providers.firstOrNull { it.providerIdentifier == id }
     }
 }
