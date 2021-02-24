@@ -55,7 +55,7 @@ fun fakeTestResultRepository(
     testValiditySeconds: Long = 0,
     issuerPublicKey: String = ""
 ): TestResultRepository {
-    return object : TestResultRepository() {
+    return object : TestResultRepository {
         override suspend fun getIssuerPublicKey(): String {
             return issuerPublicKey
         }
