@@ -37,6 +37,7 @@ class QrCodeScannerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityScannerBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         binding = ActivityScannerBinding.inflate(layoutInflater)
         setContentView(binding.root)

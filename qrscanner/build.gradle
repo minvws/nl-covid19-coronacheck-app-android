@@ -42,9 +42,10 @@ android {
 }
 
 dependencies {
+    implementation project(":design")
+
     implementation "androidx.appcompat:appcompat:${appcompat_version}"
     implementation "com.google.mlkit:barcode-scanning:${mlkit_barcode_version}"
-
     implementation "androidx.core:core-ktx:${androidx_version}"
     implementation "androidx.appcompat:appcompat:${appcompat_version}"
     implementation "androidx.constraintlayout:constraintlayout:${constraintlayout_version}"
