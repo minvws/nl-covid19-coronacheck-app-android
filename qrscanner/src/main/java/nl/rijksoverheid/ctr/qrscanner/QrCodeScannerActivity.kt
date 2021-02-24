@@ -35,8 +35,6 @@ import kotlin.math.min
 
 class QrCodeScannerActivity : AppCompatActivity() {
 
-    private var previewUseCase: Preview? = null
-    private var analysisUseCase: ImageAnalysis? = null
     private lateinit var binding: ActivityScannerBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,7 +57,7 @@ class QrCodeScannerActivity : AppCompatActivity() {
             CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_BACK).build()
 
         // Set up viewmodel to provide access to CameraX resource
-        // Scoped to this activity's lifecycle
+        // Scoped to this activity's lifecycle so camera's are automatically disposed if activity closes
         ViewModelProvider(
             this, ViewModelProvider.AndroidViewModelFactory.getInstance(application)
         ).get(CameraXViewModel::class.java)
@@ -86,12 +84,13 @@ class QrCodeScannerActivity : AppCompatActivity() {
         cameraSelector: CameraSelector,
         aspectRatio: Int
     ) {
+        // Bind Usecases for retrieving preview feed from the camera and image processing
         bindPreviewUseCase(cameraProvider, previewView, cameraSelector, aspectRatio)
         bindAnalyseUseCase(cameraProvider, previewView, cameraSelector, aspectRatio)
     }
 
     /**
-     * Set-up preview, bind to livecycle
+     * Set-up camera preview, using the previously selected camera and aspect ratio
      */
     private fun bindPreviewUseCase(
         cameraProvider: ProcessCameraProvider,
@@ -99,18 +98,15 @@ class QrCodeScannerActivity : AppCompatActivity() {
         cameraSelector: CameraSelector,
         aspectRatio: Int
     ) {
-        // If another usecase was already created earlier for whatever reason, unbind it first
-        // before creating a new one to avoid overlapping input streams
-        if (previewUseCase != null) {
-            cameraProvider.unbind(previewUseCase)
-        }
-
-        previewUseCase = Preview.Builder()
+        // Set up preview Usecase
+        val previewUseCase = Preview.Builder()
             .setTargetAspectRatio(aspectRatio)
             .setTargetRotation(previewView.display.rotation)
             .build()
-        previewUseCase!!.setSurfaceProvider(previewView.surfaceProvider)
+        previewUseCase.setSurfaceProvider(previewView.surfaceProvider)
 
+        // bind the preview Usecase to the activity's lifecycle so the preview is automatically unbound
+        // and disposed whenever the activity closes
         try {
             cameraProvider.bindToLifecycle(
                 this,
@@ -118,15 +114,17 @@ class QrCodeScannerActivity : AppCompatActivity() {
                 previewUseCase
             )
         } catch (illegalStateException: IllegalStateException) {
-            Timber.e("Unhandled exception: ${illegalStateException.message}")
+            Timber.e("Camera is currently in an illegal state, either closed or in use by another app: ${illegalStateException.message}")
+            throw illegalStateException
         } catch (illegalArgumentException: IllegalArgumentException) {
             Timber.e("Unhandled exception: ${illegalArgumentException.message}")
+            throw illegalArgumentException
         }
     }
 
     /**
      * Set-up analyzer to scan for QR codes only, improving performance.
-     * Bound to lifecycle
+     * Bound to lifecycle so analyzer is disposed if activity closes
      */
     private fun bindAnalyseUseCase(
         cameraProvider: ProcessCameraProvider,
@@ -134,31 +132,32 @@ class QrCodeScannerActivity : AppCompatActivity() {
         cameraSelector: CameraSelector,
         aspectRatio: Int
     ) {
+        // Set up options for the scanner, limiting it to QR codes only
         val options = BarcodeScannerOptions.Builder()
             .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
             .build()
         val barcodeScanner: BarcodeScanner = BarcodeScanning.getClient(options)
 
-
-        if (analysisUseCase != null) {
-            cameraProvider.unbind(analysisUseCase)
-        }
-
-        analysisUseCase = ImageAnalysis.Builder()
+        // Set up the analysis Usecase
+        val analysisUseCase = ImageAnalysis.Builder()
             .setTargetAspectRatio(aspectRatio)
             .setTargetRotation(previewView.display.rotation)
             .build()
 
-        // Initialize our background executor
+        // Initialize our background executor to process images in the background
         val cameraExecutor = Executors.newSingleThreadExecutor()
 
-        analysisUseCase?.setAnalyzer(
+        // Add Analyzer to the Usecase, which will receive frames from the camera
+        // and processes them using our supplied function
+        analysisUseCase.setAnalyzer(
             cameraExecutor,
-            ImageAnalysis.Analyzer { imageProxy ->
-                processImageProxy(barcodeScanner, imageProxy)
+            ImageAnalysis.Analyzer { cameraFrame ->
+                processCameraFrame(barcodeScanner, cameraFrame)
             }
         )
 
+        // bind the Analyzer Usecase to the activity's lifecycle so the preview is automatically unbound
+        // and disposed whenever the activity closes
         try {
             cameraProvider.bindToLifecycle(
                 this,
@@ -176,31 +175,35 @@ class QrCodeScannerActivity : AppCompatActivity() {
      * Process frames from CameraX and extract QR codes
      */
     @SuppressLint("UnsafeExperimentalUsageError")
-    private fun processImageProxy(
+    private fun processCameraFrame(
         barcodeScanner: BarcodeScanner,
-        imageProxy: ImageProxy
+        cameraFrame: ImageProxy
     ) {
-        val inputImage =
-            InputImage.fromMediaImage(imageProxy.image!!, imageProxy.imageInfo.rotationDegrees)
+        cameraFrame.image?.let { frame ->
+            val inputImage =
+                InputImage.fromMediaImage(frame, cameraFrame.imageInfo.rotationDegrees)
 
-        barcodeScanner.process(inputImage)
-            .addOnSuccessListener { barcodes ->
-                barcodes.forEach {
-                    Timber.d("Found QR code, contents are ${it.rawValue}")
-                    val intent = Intent()
-                    intent.putExtra(SCAN_RESULT, it.rawValue)
-                    setResult(RESULT_OK, intent)
-                    finish()
+            barcodeScanner.process(inputImage)
+                .addOnSuccessListener { barcodes ->
+                    barcodes.forEach {
+                        Timber.d("Found QR code, contents are ${it.rawValue}")
+                        val intent = Intent()
+                        intent.putExtra(SCAN_RESULT, it.rawValue)
+                        setResult(RESULT_OK, intent)
+                        finish()
+                    }
                 }
-            }
-            .addOnFailureListener {
-                Timber.e("Unhandled exception: $it")
-            }.addOnCompleteListener {
-                // When the image is from CameraX analysis use case, must call image.close() on received
-                // images when finished using them. Otherwise, new images may not be received or the camera
-                // may stall.
-                imageProxy.close()
-            }
+                .addOnFailureListener {
+                    Timber.e("Exception while processing frame: $it")
+                    throw it
+                }.addOnCompleteListener {
+                    // When the image is from a CameraX analysis use case, we must call .close() on received
+                    // images when we're finished using them. Otherwise, new images may not be received or the camera
+                    // may stall.
+                    cameraFrame.close()
+                }
+        }
+
     }
 
     /**
