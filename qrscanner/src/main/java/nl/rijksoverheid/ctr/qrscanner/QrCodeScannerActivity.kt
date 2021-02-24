@@ -20,7 +20,6 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModelProvider
 import com.google.mlkit.vision.barcode.Barcode
 import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
@@ -56,26 +55,25 @@ class QrCodeScannerActivity : AppCompatActivity() {
         val cameraSelector =
             CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_BACK).build()
 
-        // Set up viewmodel to provide access to CameraX resource
-        // Scoped to this activity's lifecycle so camera's are automatically disposed if activity closes
-        ViewModelProvider(
-            this, ViewModelProvider.AndroidViewModelFactory.getInstance(application)
-        ).get(CameraXViewModel::class.java)
-            .processCameraProvider
-            .observe(
-                this,
-                { provider: ProcessCameraProvider ->
-                    if (isCameraPermissionGranted()) {
-                        bindCameraUseCases(provider, previewView, cameraSelector, screenAspectRatio)
-                    } else {
-                        ActivityCompat.requestPermissions(
-                            this,
-                            arrayOf(Manifest.permission.CAMERA),
-                            PERMISSION_CAMERA_REQUEST
-                        )
-                    }
-                }
-            )
+        // Request access to CameraX service. Will return a CameraProvider bound to the lifecycle of
+        // our activity if one is available
+        val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
+
+        cameraProviderFuture.addListener({
+            // Retrieve the available CameraProvider and check for permissions
+            val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
+            if (isCameraPermissionGranted()) {
+                // Start setting up our Preview feed and analyzing Usecases
+                bindCameraUseCases(cameraProvider, previewView, cameraSelector, screenAspectRatio)
+            } else {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.CAMERA),
+                    PERMISSION_CAMERA_REQUEST
+                )
+            }
+        }, ContextCompat.getMainExecutor(this))
+
     }
 
     private fun bindCameraUseCases(
