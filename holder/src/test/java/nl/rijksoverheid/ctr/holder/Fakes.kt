@@ -1,13 +1,14 @@
 package nl.rijksoverheid.ctr.holder
 
 import com.squareup.moshi.Moshi
+import nl.rijksoverheid.ctr.api.models.RemoteNonce
+import nl.rijksoverheid.ctr.api.models.RemoteTestProviders
+import nl.rijksoverheid.ctr.api.models.TestIsmResult
 import nl.rijksoverheid.ctr.api.models.TestResultAttributes
 import nl.rijksoverheid.ctr.api.repositories.TestResultRepository
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
+import nl.rijksoverheid.ctr.holder.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.usecase.TestResultAttributesUseCase
-import java.time.Instant
-import java.time.OffsetDateTime
-import java.time.ZoneId
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -16,11 +17,32 @@ import java.time.ZoneId
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
+
+fun fakeCoronaCheckRepository(
+    testProviders: RemoteTestProviders = RemoteTestProviders(listOf()),
+    testIsmResult: TestIsmResult = TestIsmResult.Success(""),
+    remoteNonce: RemoteNonce = RemoteNonce("", "")
+): CoronaCheckRepository {
+    return object : CoronaCheckRepository {
+        override suspend fun testProviders(): RemoteTestProviders {
+            return testProviders
+        }
+
+        override suspend fun getTestIsm(test: String, sToken: String, icm: String): TestIsmResult {
+            return testIsmResult
+        }
+
+        override suspend fun remoteNonce(): RemoteNonce {
+            return remoteNonce
+        }
+    }
+}
+
 fun fakeTestResultAttributesUseCase(
     sampleTimeSeconds: Long = 0L,
     testType: String = ""
 ): TestResultAttributesUseCase {
-    return object: TestResultAttributesUseCase(Moshi.Builder().build()) {
+    return object : TestResultAttributesUseCase(Moshi.Builder().build()) {
         override fun get(credentials: String): TestResultAttributes {
             return TestResultAttributes(
                 sampleTime = sampleTimeSeconds,
