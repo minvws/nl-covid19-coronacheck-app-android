@@ -9,6 +9,7 @@ import com.google.zxing.EncodeHintType
 import com.google.zxing.integration.android.IntentIntegrator
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 import com.journeyapps.barcodescanner.BarcodeEncoder
+import nl.rijksoverheid.ctr.qrscanner.QrCodeScannerActivity
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -44,5 +45,36 @@ class ZxingQrCodeScannerUtil : QrCodeScannerUtil {
             mapOf(EncodeHintType.ERROR_CORRECTION to ecLevel)
         )
     }
+}
 
+class MLKitQrCodeScannerUtil : QrCodeScannerUtil {
+    override fun launchScanner(
+        activity: Activity,
+        activityResultLauncher: ActivityResultLauncher<Intent>
+    ) {
+        val intentScan = Intent(activity, QrCodeScannerActivity::class.java)
+        activityResultLauncher.launch(intentScan)
+    }
+
+    override fun createQrCode(qrCodeContent: String, width: Int, height: Int): Bitmap {
+        // TODO: Use correct es level after user tests
+        val ecLevel = ErrorCorrectionLevel.values().first()
+        val barcodeEncoder = BarcodeEncoder()
+        return barcodeEncoder.encodeBitmap(
+            qrCodeContent,
+            BarcodeFormat.QR_CODE,
+            width,
+            height,
+            mapOf(EncodeHintType.ERROR_CORRECTION to ecLevel)
+        )
+    }
+
+    fun parseScanResult(resultIntent: Intent?): String? {
+        resultIntent?.extras?.let { bun ->
+            if (bun.containsKey(QrCodeScannerActivity.SCAN_RESULT)) {
+                return bun.getString(QrCodeScannerActivity.SCAN_RESULT)!!
+            }
+        }
+        return null
+    }
 }
