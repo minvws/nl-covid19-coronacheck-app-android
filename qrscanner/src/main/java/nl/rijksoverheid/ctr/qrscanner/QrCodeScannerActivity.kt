@@ -33,7 +33,7 @@ import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 
-class ScanActivity : AppCompatActivity() {
+class QrCodeScannerActivity : AppCompatActivity() {
 
     private var previewView: PreviewView? = null
     private var cameraProvider: ProcessCameraProvider? = null
@@ -240,7 +240,7 @@ class ScanActivity : AppCompatActivity() {
     }
 
     companion object {
-        private val TAG = ScanActivity::class.java.simpleName
+        private val TAG = QrCodeScannerActivity::class.java.simpleName
         private const val PERMISSION_CAMERA_REQUEST = 1
         const val SCAN_RESULT = "scan_result"
 

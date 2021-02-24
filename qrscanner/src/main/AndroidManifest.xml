@@ -11,6 +11,6 @@
     package="nl.rijksoverheid.ctr.qrscanner">
 
     <application>
-        <activity android:name="nl.rijksoverheid.ctr.qrscanner.ScanActivity" />
+        <activity android:name="nl.rijksoverheid.ctr.qrscanner.QrCodeScannerActivity" />
     </application>
 </manifest>

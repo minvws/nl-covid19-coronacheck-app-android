@@ -9,7 +9,7 @@ import com.google.zxing.EncodeHintType
 import com.google.zxing.integration.android.IntentIntegrator
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 import com.journeyapps.barcodescanner.BarcodeEncoder
-import nl.rijksoverheid.ctr.qrscanner.ScanActivity
+import nl.rijksoverheid.ctr.qrscanner.QrCodeScannerActivity
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -54,7 +54,7 @@ class MLKitQrCodeScannerUtil : QrCodeScannerUtil {
         activity: Activity,
         activityResultLauncher: ActivityResultLauncher<Intent>
     ) {
-        val intentScan = Intent(activity, ScanActivity::class.java)
+        val intentScan = Intent(activity, QrCodeScannerActivity::class.java)
         activityResultLauncher.launch(intentScan)
     }
 
@@ -73,8 +73,8 @@ class MLKitQrCodeScannerUtil : QrCodeScannerUtil {
 
     fun parseScanResult(resultIntent : Intent?) : String? {
         resultIntent?.extras?.let { bun ->
-            if(bun.containsKey(ScanActivity.SCAN_RESULT)){
-                return bun.getString(ScanActivity.SCAN_RESULT)!!
+            if(bun.containsKey(QrCodeScannerActivity.SCAN_RESULT)){
+                return bun.getString(QrCodeScannerActivity.SCAN_RESULT)!!
             }
         }
         return null
