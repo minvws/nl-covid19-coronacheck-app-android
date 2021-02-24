@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:keepScreenOn="true">
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="invisible"
+        app:constraint_referenced_ids="image, animation" />
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -25,37 +31,15 @@
         app:layout_constraintBottom_toTopOf="@+id/animation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        tools:layout_height="300dp" />
-
-    <TextView
-        android:id="@+id/footer"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="@string/my_overview_existing_qr_title"
-        android:textAlignment="center"
-        android:textAppearance="?attr/textAppearanceBody1"
-        app:layout_constraintBottom_toTopOf="@+id/animation"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/image"
-        tools:text="Geldig tot 01-01-2021" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <nl.rijksoverheid.ctr.holder.myoverview.widget.QrCodeAnimationWidget
         android:id="@+id/animation"
         android:layout_width="0dp"
-        android:layout_height="@dimen/qr_code_animation_widget_height"
+        android:layout_height="128dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/content"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="invisible"
-        app:constraint_referenced_ids="image, footer, animation" />
 
     <ProgressBar
         android:id="@+id/loading"

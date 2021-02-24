@@ -15,8 +15,6 @@ import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.androidx.viewmodel.ViewModelOwner
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 
 
 /*
@@ -76,13 +74,6 @@ class QrCodeFragment : DialogFragment() {
             // No credentials in cache, go back to overview
             findNavController().popBackStack()
         } else {
-            binding.footer.text = getString(
-                R.string.my_overview_existing_qr_date,
-                localTestResult.expireDate.format(
-                    DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
-                )
-            )
-
             binding.image.doOnPreDraw {
                 lifecycleScope.launchWhenResumed {
                     qrCodeViewModel.generateQrCode(
