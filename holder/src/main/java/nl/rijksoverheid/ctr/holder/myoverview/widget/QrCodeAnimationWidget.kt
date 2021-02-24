@@ -3,7 +3,8 @@ package nl.rijksoverheid.ctr.holder.myoverview.widget
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.FrameLayout
-import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.annotation.RawRes
+import com.airbnb.lottie.LottieAnimationView
 import nl.rijksoverheid.ctr.holder.R
 
 /*
@@ -16,8 +17,36 @@ import nl.rijksoverheid.ctr.holder.R
 class QrCodeAnimationWidget(context: Context, attrs: AttributeSet?) :
     FrameLayout(context, attrs) {
 
+    @RawRes
+    private val leftToRightAnim = R.raw.bike_lr
+
+    @RawRes
+    private val rightToLeftAnim = R.raw.bike_rl
+
+    @RawRes
+    private var currentAnim = leftToRightAnim
+
     init {
-        inflate(context, R.layout.widget_qr_code_animation, this)
+        val view = inflate(context, R.layout.widget_qr_code_animation, this)
+        val lottieAnimationView = view.findViewById<LottieAnimationView>(R.id.animation_view)
+        setOnClickListener {
+            when (currentAnim) {
+                leftToRightAnim -> playAnimation(
+                    view = lottieAnimationView,
+                    anim = rightToLeftAnim
+                )
+                rightToLeftAnim -> playAnimation(
+                    view = lottieAnimationView,
+                    anim = leftToRightAnim
+                )
+            }
+        }
+    }
+
+    private fun playAnimation(view: LottieAnimationView, @RawRes anim: Int) {
+        view.setAnimation(anim)
+        view.playAnimation()
+        currentAnim = anim
     }
 
 }
