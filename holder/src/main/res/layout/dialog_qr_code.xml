@@ -20,6 +20,7 @@
         android:id="@+id/image"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:contentDescription="@null"
         app:layout_constraintBottom_toTopOf="@+id/animation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
