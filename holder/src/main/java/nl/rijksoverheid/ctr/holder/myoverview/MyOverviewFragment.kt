@@ -19,6 +19,7 @@ import nl.rijksoverheid.ctr.holder.myoverview.items.MyOverviewNavigationCardAdap
 import nl.rijksoverheid.ctr.holder.myoverview.items.MyOverviewTestResultAdapterItem
 import nl.rijksoverheid.ctr.holder.myoverview.items.MyOverviewTestResultExpiredAdapterItem
 import nl.rijksoverheid.ctr.holder.myoverview.models.LocalTestResultState
+import nl.rijksoverheid.ctr.shared.ext.executeAfterAllAnimationsAreFinished
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.androidx.viewmodel.ViewModelOwner
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -85,11 +86,14 @@ class MyOverviewFragment : BaseFragment(R.layout.fragment_my_overview) {
                 }
             })
 
-        qrCodeViewModel.qrCodeLiveData.observe(viewLifecycleOwner, EventObserver {
-            setItems(
-                localTestResult = it.localTestResult,
-                qrCode = it.qrCode
-            )
+        qrCodeViewModel.qrCodeLiveData.observe(viewLifecycleOwner, EventObserver { qrCodeData ->
+            // Wait until previous recyclerview animations are finished, else there are weird ItemAnimator animations
+            binding.recyclerView.executeAfterAllAnimationsAreFinished {
+                setItems(
+                    localTestResult = qrCodeData.localTestResult,
+                    qrCode = qrCodeData.qrCode
+                )
+            }
         })
 
         localTestResultViewModel.getLocalTestResult()
