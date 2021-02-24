@@ -47,8 +47,6 @@ class ZxingQrCodeScannerUtil : QrCodeScannerUtil {
     }
 }
 
-
-
 class MLKitQrCodeScannerUtil : QrCodeScannerUtil {
     override fun launchScanner(
         activity: Activity,
@@ -71,13 +69,12 @@ class MLKitQrCodeScannerUtil : QrCodeScannerUtil {
         )
     }
 
-    fun parseScanResult(resultIntent : Intent?) : String? {
+    fun parseScanResult(resultIntent: Intent?): String? {
         resultIntent?.extras?.let { bun ->
-            if(bun.containsKey(QrCodeScannerActivity.SCAN_RESULT)){
+            if (bun.containsKey(QrCodeScannerActivity.SCAN_RESULT)) {
                 return bun.getString(QrCodeScannerActivity.SCAN_RESULT)!!
             }
         }
         return null
     }
-
 }

@@ -41,7 +41,7 @@ class QrCodeScannerActivity : AppCompatActivity() {
     private var lensFacing = CameraSelector.LENS_FACING_BACK
     private var previewUseCase: Preview? = null
     private var analysisUseCase: ImageAnalysis? = null
-    private lateinit var binding : ActivityScannerBinding
+    private lateinit var binding: ActivityScannerBinding
 
     private val screenAspectRatio: Int
         get() {
@@ -72,7 +72,7 @@ class QrCodeScannerActivity : AppCompatActivity() {
             .processCameraProvider
             .observe(
                 this,
-                 { provider: ProcessCameraProvider? ->
+                { provider: ProcessCameraProvider? ->
                     cameraProvider = provider
                     if (isCameraPermissionGranted()) {
                         bindCameraUseCases()
@@ -111,7 +111,7 @@ class QrCodeScannerActivity : AppCompatActivity() {
 
         try {
             cameraProvider!!.bindToLifecycle(
-               this,
+                this,
                 cameraSelector!!,
                 previewUseCase
             )
@@ -127,9 +127,9 @@ class QrCodeScannerActivity : AppCompatActivity() {
      * Bound to lifecycle
      */
     private fun bindAnalyseUseCase() {
-         val options = BarcodeScannerOptions.Builder()
-             .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
-             .build()
+        val options = BarcodeScannerOptions.Builder()
+            .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
+            .build()
         val barcodeScanner: BarcodeScanner = BarcodeScanning.getClient(options)
 
         if (cameraProvider == null) {
