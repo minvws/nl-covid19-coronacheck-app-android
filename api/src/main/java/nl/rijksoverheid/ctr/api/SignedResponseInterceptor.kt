@@ -116,10 +116,12 @@ class SignedResponseInterceptor : Interceptor {
             return false
         }
         return try {
-            validator.verifySignature(
-                ByteArrayInputStream(signedResponse.payload),
-                signedResponse.signature
-            )
+            if (BuildConfig.FEATURE_TEST_PROVIDER_API_CHECKS) {
+                validator.verifySignature(
+                    ByteArrayInputStream(signedResponse.payload),
+                    signedResponse.signature
+                )
+            }
             true
         } catch (ex: SignatureValidationException) {
             Timber.w(ex, "Error validating signature")

@@ -28,8 +28,8 @@ android {
         consumerProguardFiles "consumer-rules.pro"
 
         buildConfigField "String", "SIGNATURE_CERTIFICATE_CN_MATCH", '".coronatester.nl"'
-        buildConfigField "boolean", "FEATURE_API_SSL_ROOT_CA", "true"
-        buildConfigField "boolean", "FEATURE_TEST_PROVIDER_TRUSTED_ROOTS", "true"
+        buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "true"
+        buildConfigField "boolean", "FEATURE_TEST_PROVIDER_API_CHECKS", "true"
         buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.coronacheck.nl/v1/\""
         buildConfigField "String", "DIGI_D_BASE_URL", "\"https://login.ggdghor.nl/coronitacc\""
         buildConfigField "String", "DIGI_D_CLIENT_ID", "\"6456237456911667336\""
@@ -49,8 +49,8 @@ android {
             buildConfigField "String", "BASE_API_URL", "\"https://api-ct.bananenhalen.nl/v1/\""
             buildConfigField "String", "DIGI_D_BASE_URL", "\"https://login.ggdghor.nl/coronitacc\""
             buildConfigField "String", "DIGI_D_CLIENT_ID", "\"6456237456911667336\""
-            buildConfigField "boolean", "FEATURE_API_SSL_ROOT_CA", "false"
-            buildConfigField "boolean", "FEATURE_TEST_PROVIDER_TRUSTED_ROOTS", "false"
+            buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "false"
+            buildConfigField "boolean", "FEATURE_TEST_PROVIDER_API_CHECKS", "false"
             matchingFallbacks = ["tst"]
         }
         acc {
@@ -58,8 +58,6 @@ android {
             buildConfigField "String", "BASE_API_URL", "\"https://holder-api.acc.coronacheck.nl/v1/\""
             buildConfigField "String", "DIGI_D_BASE_URL", "\"https://login.ggdghor.nl/coronitacc\""
             buildConfigField "String", "DIGI_D_CLIENT_ID", "\"6456237456911667336\""
-            buildConfigField "boolean", "FEATURE_API_SSL_ROOT_CA", "true"
-            buildConfigField "boolean", "FEATURE_TEST_PROVIDER_TRUSTED_ROOTS", "true"
             matchingFallbacks = ["acc"]
         }
         prod {
@@ -67,7 +65,6 @@ android {
             buildConfigField "String", "DIGI_D_BASE_URL", "\"https://login.ggdghor.nl/coronitacc\""
             buildConfigField "String", "DIGI_D_CLIENT_ID", "\"6456237456911667336\""
             buildConfigField "String", "BASE_API_URL", "\"https://holder-api.coronacheck.nl/v1/\""
-            buildConfigField "boolean", "FEATURE_TEST_PROVIDER_TRUSTED_ROOTS", "true"
             matchingFallbacks = ["prod"]
         }
     }
