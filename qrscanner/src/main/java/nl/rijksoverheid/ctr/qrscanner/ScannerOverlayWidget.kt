@@ -21,7 +21,7 @@ class ScannerOverlayWidget @JvmOverloads constructor(
     private val cornerRadius = resources.getDimension(R.dimen.overlay_cutout_corner_radius)
     private val overlayMargin = resources.getDimensionPixelSize(R.dimen.overlay_cutout_margin)
     private val overlayPaint = Paint().apply {
-        color = ContextCompat.getColor(context, R.color.overlay_color)
+        color = ContextCompat.getColor(context, R.color.scanner_overlay_color)
         style = Paint.Style.FILL
         isAntiAlias = true
     }

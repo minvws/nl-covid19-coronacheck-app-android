@@ -12,6 +12,6 @@
     <application>
         <activity
             android:name="nl.rijksoverheid.ctr.qrscanner.QrCodeScannerActivity"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/ThemeOverlay.AppTheme.Inverted" />
     </application>
 </manifest>
