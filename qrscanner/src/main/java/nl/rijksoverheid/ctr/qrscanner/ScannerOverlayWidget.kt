@@ -12,14 +12,16 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
+import androidx.core.content.ContextCompat
 
-class ScannerOverlay @JvmOverloads constructor(
+class ScannerOverlayWidget @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
 
-    private val cornerRadius = 32f
+    private val cornerRadius = resources.getDimension(R.dimen.overlay_cutout_corner_radius)
+    private val overlayMargin = resources.getDimensionPixelSize(R.dimen.overlay_cutout_margin)
     private val overlayPaint = Paint().apply {
-        color = resources.getColor(R.color.overlay_color, resources.newTheme())
+        color = ContextCompat.getColor(context, R.color.overlay_color)
         style = Paint.Style.FILL
         isAntiAlias = true
     }
@@ -33,9 +35,9 @@ class ScannerOverlay @JvmOverloads constructor(
         val centerOfCanvas = Point(w / 2, h / 2)
         // Calculate width of cutout based on width or height depending on orientation
         val rectW = if (w < h) {
-            w * 0.95
+            w - (2 * overlayMargin)
         } else {
-            h * 0.95
+            h * (2 * overlayMargin)
         }
         // Calculate corner coordinates
         val left = centerOfCanvas.x - rectW / 2
@@ -58,7 +60,6 @@ class ScannerOverlay @JvmOverloads constructor(
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        // Draw specified path
         canvas.drawPath(overlayRectPath, overlayPaint)
     }
 }
