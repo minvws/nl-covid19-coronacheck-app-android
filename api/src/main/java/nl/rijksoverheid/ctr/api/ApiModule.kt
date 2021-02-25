@@ -64,7 +64,7 @@ fun apiModule(baseUrl: String) = module(override = true) {
             .newBuilder()
             .cache(cache)
             .apply {
-                if (BuildConfig.FEATURE_API_SSL_ROOT_CA) {
+                if (BuildConfig.FEATURE_CORONA_CHECK_API_CHECKS) {
                     val handshakeCertificates = HandshakeCertificates.Builder()
                         .addTrustedCertificate(EV_ROOT_CA.decodeCertificatePem())
                         .build()
@@ -90,7 +90,7 @@ fun apiModule(baseUrl: String) = module(override = true) {
         val okHttpClient = get(OkHttpClient::class.java)
             .newBuilder()
             .apply {
-                if (BuildConfig.FEATURE_TEST_PROVIDER_TRUSTED_ROOTS) {
+                if (BuildConfig.FEATURE_TEST_PROVIDER_API_CHECKS) {
                     val handshakeCertificates = HandshakeCertificates.Builder()
                         .addTrustedCertificate(ROOT_CA_G3.decodeCertificatePem())
                         .addTrustedCertificate(EV_ROOT_CA.decodeCertificatePem())
