@@ -1,13 +1,11 @@
 package nl.rijksoverheid.ctr.holder.usecase
 
-import clmobile.Clmobile
 import nl.rijksoverheid.ctr.api.models.RemoteTestResult
 import nl.rijksoverheid.ctr.api.models.ResponseError
 import nl.rijksoverheid.ctr.api.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.api.models.TestIsmResult
 import nl.rijksoverheid.ctr.holder.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.repositories.TestProviderRepository
-import nl.rijksoverheid.ctr.shared.ext.successString
 import retrofit2.HttpException
 import timber.log.Timber
 import java.io.IOException
@@ -25,6 +23,7 @@ class TestResultUseCase(
     private val coronaCheckRepository: CoronaCheckRepository,
     private val commitmentMessageUseCase: CommitmentMessageUseCase,
     private val secretKeyUseCase: SecretKeyUseCase,
+    private val createCredentialUseCase: CreateCredentialUseCase
 ) {
 
     suspend fun testResult(uniqueCode: String, verificationCode: String? = null): TestResult {
@@ -90,12 +89,12 @@ class TestResultUseCase(
                 is TestIsmResult.Success -> {
                     Timber.i("Received test ism json ${testIsm.body}")
 
-                    val credentials = Clmobile.createCredential(
-                        secretKeyUseCase.json().toByteArray(Charsets.UTF_8),
-                        testIsm.body.toByteArray(Charsets.UTF_8)
-                    ).successString()
+                    val credential = createCredentialUseCase.get(
+                        secretKeyJson = secretKeyUseCase.json(),
+                        testIsmBody = testIsm.body
+                    )
 
-                    return SignedTestResult.Complete(credentials)
+                    return SignedTestResult.Complete(credential)
                 }
                 is TestIsmResult.Error -> {
                     return if (testIsm.responseError.code == ResponseError.CODE_ALREADY_SIGNED) {

@@ -54,7 +54,7 @@ val mainModule = module {
         TestProviderUseCaseImpl(get())
     }
     single {
-        TestResultUseCase(get(), get(), get(), get(), get())
+        TestResultUseCase(get(), get(), get(), get(), get(), get())
     }
     single {
         LocalTestResultUseCase(get(), get(), get(), get())
@@ -82,5 +82,8 @@ val mainModule = module {
             get(),
             get(named("SignedResponseWithModel"))
         )
+    }
+    factory<CreateCredentialUseCase> {
+        CreateCredentialUseCaseImpl()
     }
 }
