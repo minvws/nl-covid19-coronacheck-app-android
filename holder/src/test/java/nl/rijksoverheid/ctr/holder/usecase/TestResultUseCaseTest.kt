@@ -347,5 +347,4 @@ class TestResultUseCaseTest {
             )
         )
     }
-
 }
