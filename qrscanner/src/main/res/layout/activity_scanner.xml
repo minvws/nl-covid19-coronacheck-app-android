@@ -9,31 +9,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:keepScreenOn="true">
+    android:keepScreenOn="true"
+    android:theme="@style/ThemeOverlay.AppTheme.Inverted">
 
     <androidx.camera.view.PreviewView
         android:id="@+id/preview_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <nl.rijksoverheid.ctr.qrscanner.ScannerOverlay
+    <nl.rijksoverheid.ctr.qrscanner.ScannerOverlayWidget
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
     <TextView
+        style="@style/ScannerOverlay.Heading"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginHorizontal="16dp"
         android:layout_marginTop="72dp"
-        android:layout_marginEnd="16dp"
-        android:fontFamily="sans-serif"
-        android:gravity="center_horizontal"
-        android:letterSpacing="0.03"
-        android:lineSpacingExtra="10sp"
         android:text="@string/scanner_instructions"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
