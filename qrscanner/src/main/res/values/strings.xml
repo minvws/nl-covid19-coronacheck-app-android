@@ -9,4 +9,5 @@
 
 <resources>
     <string name="scanner_instructions">Richt je toestel op de QR-code op het scherm van de bezoeker.</string>
+    <string name="scanner_title">Scan QR-Code</string>
 </resources>

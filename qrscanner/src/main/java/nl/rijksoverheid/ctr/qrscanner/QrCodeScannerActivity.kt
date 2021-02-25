@@ -41,6 +41,11 @@ class QrCodeScannerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityScannerBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.toolbar.setNavigationOnClickListener {
+            finish()
+        }
+
         setupCamera()
     }
 
