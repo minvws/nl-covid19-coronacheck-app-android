@@ -27,7 +27,7 @@ class TestResultUseCase(
     private val secretKeyUseCase: SecretKeyUseCase,
 ) {
 
-    suspend fun testResult(uniqueCode: String, verificationCode: String?): TestResult {
+    suspend fun testResult(uniqueCode: String, verificationCode: String? = null): TestResult {
         if (uniqueCode.indexOf("-") == -1) {
             return TestResult.InvalidToken
         }

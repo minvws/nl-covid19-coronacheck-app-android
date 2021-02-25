@@ -1,12 +1,13 @@
 package nl.rijksoverheid.ctr.holder
 
-import nl.rijksoverheid.ctr.api.models.RemoteNonce
-import nl.rijksoverheid.ctr.api.models.RemoteTestProviders
-import nl.rijksoverheid.ctr.api.models.TestIsmResult
-import nl.rijksoverheid.ctr.api.models.TestResultAttributes
+import nl.rijksoverheid.ctr.api.models.*
 import nl.rijksoverheid.ctr.api.repositories.TestResultRepository
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.repositories.CoronaCheckRepository
+import nl.rijksoverheid.ctr.holder.repositories.TestProviderRepository
+import nl.rijksoverheid.ctr.holder.usecase.CommitmentMessageUseCase
+import nl.rijksoverheid.ctr.holder.usecase.SecretKeyUseCase
+import nl.rijksoverheid.ctr.holder.usecase.TestProviderUseCase
 import nl.rijksoverheid.ctr.holder.usecase.TestResultAttributesUseCase
 
 /*
@@ -16,6 +17,63 @@ import nl.rijksoverheid.ctr.holder.usecase.TestResultAttributesUseCase
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
+
+fun fakeSecretKeyUseCase(
+    json: String = "{}"
+): SecretKeyUseCase {
+    return object : SecretKeyUseCase {
+        override fun json(): String {
+            return json
+        }
+
+        override fun persist() {
+
+        }
+    }
+}
+
+fun fakeCommitmentMessageUsecase(
+    json: String = "{}"
+): CommitmentMessageUseCase {
+    return object : CommitmentMessageUseCase {
+        override suspend fun json(nonce: String): String {
+            return json
+        }
+    }
+}
+
+fun fakeTestProviderRepository(
+    model: SignedResponseWithModel<RemoteTestResult> = SignedResponseWithModel(
+        rawResponse = "dummy".toByteArray(),
+        model = RemoteTestResult(
+            result = null,
+            protocolVersion = "1",
+            providerIdentifier = "1",
+            status = RemoteTestResult.Status.COMPLETE
+        )
+    )
+): TestProviderRepository {
+    return object : TestProviderRepository {
+        override suspend fun remoteTestResult(
+            url: String,
+            token: String,
+            verifierCode: String?,
+            signingCertificateBytes: ByteArray
+        ): SignedResponseWithModel<RemoteTestResult> {
+            return model
+        }
+    }
+}
+
+fun fakeTestProviderUseCase(
+    provider: RemoteTestProviders.Provider? = null
+): TestProviderUseCase {
+    return object : TestProviderUseCase {
+        override suspend fun testProvider(id: String): RemoteTestProviders.Provider? {
+            return provider
+        }
+    }
+}
 
 fun fakeCoronaCheckRepository(
     testProviders: RemoteTestProviders = RemoteTestProviders(listOf()),

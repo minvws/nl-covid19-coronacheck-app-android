@@ -10,9 +10,14 @@ import nl.rijksoverheid.ctr.holder.repositories.CoronaCheckRepository
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class TestProviderUseCase(private val coronaCheckRepository: CoronaCheckRepository) {
+interface TestProviderUseCase {
+    suspend fun testProvider(id: String): RemoteTestProviders.Provider?
+}
 
-    suspend fun testProvider(id: String): RemoteTestProviders.Provider? {
+class TestProviderUseCaseImpl(private val coronaCheckRepository: CoronaCheckRepository) :
+    TestProviderUseCase {
+
+    override suspend fun testProvider(id: String): RemoteTestProviders.Provider? {
         return coronaCheckRepository.testProviders().providers.firstOrNull { it.providerIdentifier == id }
     }
 }

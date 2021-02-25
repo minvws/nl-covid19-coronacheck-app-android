@@ -7,10 +7,7 @@ import nl.rijksoverheid.ctr.holder.myoverview.QrCodeViewModel
 import nl.rijksoverheid.ctr.holder.myoverview.TestResultsViewModel
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.SharedPreferencesPersistenceManager
-import nl.rijksoverheid.ctr.holder.repositories.AuthenticationRepository
-import nl.rijksoverheid.ctr.holder.repositories.CoronaCheckRepository
-import nl.rijksoverheid.ctr.holder.repositories.CoronaCheckRepositoryImpl
-import nl.rijksoverheid.ctr.holder.repositories.TestProviderRepository
+import nl.rijksoverheid.ctr.holder.repositories.*
 import nl.rijksoverheid.ctr.holder.usecase.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -47,14 +44,14 @@ val mainModule = module {
             get()
         )
     }
-    single {
-        SecretKeyUseCase(get())
+    factory<SecretKeyUseCase> {
+        SecretKeyUseCaseImpl(get())
     }
-    single {
-        CommitmentMessageUseCase(get())
+    factory<CommitmentMessageUseCase> {
+        CommitmentMessageUseCaseImpl(get())
     }
-    single {
-        TestProviderUseCase(get())
+    factory<TestProviderUseCase> {
+        TestProviderUseCaseImpl(get())
     }
     single {
         TestResultUseCase(get(), get(), get(), get(), get())
@@ -80,8 +77,8 @@ val mainModule = module {
             get(named("ResponseError"))
         )
     }
-    single {
-        TestProviderRepository(
+    factory<TestProviderRepository> {
+        TestProviderRepositoryImpl(
             get(),
             get(named("SignedResponseWithModel"))
         )
