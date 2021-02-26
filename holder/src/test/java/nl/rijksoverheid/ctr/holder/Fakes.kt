@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.holder
 
 import nl.rijksoverheid.ctr.api.models.*
 import nl.rijksoverheid.ctr.api.repositories.TestResultRepository
+import nl.rijksoverheid.ctr.holder.myoverview.models.LocalTestResultState
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.repositories.TestProviderRepository
@@ -14,6 +15,16 @@ import nl.rijksoverheid.ctr.holder.usecase.*
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
+
+fun fakeLocalTestResultUseCase(
+    state: LocalTestResultState = LocalTestResultState.None
+): LocalTestResultUseCase {
+    return object : LocalTestResultUseCase {
+        override suspend fun get(): LocalTestResultState {
+            return state
+        }
+    }
+}
 
 fun fakeCreateCredentialUseCase(
     credential: String = ""

@@ -36,7 +36,6 @@ class MyOverviewFragment : BaseFragment(R.layout.fragment_my_overview) {
 
     private val section = Section()
 
-
     private val localTestResultViewModel: LocalTestResultViewModel by sharedViewModel(
         owner = {
             ViewModelOwner.from(

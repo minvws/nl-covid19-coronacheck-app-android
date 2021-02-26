@@ -2,10 +2,10 @@ package nl.rijksoverheid.ctr.holder.usecase
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import nl.rijksoverheid.ctr.api.repositories.TestResultRepository
 import nl.rijksoverheid.ctr.holder.models.LocalTestResult
 import nl.rijksoverheid.ctr.holder.myoverview.models.LocalTestResultState
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
-import nl.rijksoverheid.ctr.api.repositories.TestResultRepository
 import nl.rijksoverheid.ctr.shared.util.TestResultUtil
 import java.time.Instant
 import java.time.OffsetDateTime
@@ -18,14 +18,19 @@ import java.time.ZoneOffset
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-open class LocalTestResultUseCase (
+
+interface LocalTestResultUseCase {
+    suspend fun get(): LocalTestResultState
+}
+
+open class LocalTestResultUseCaseImpl(
     private val persistenceManager: PersistenceManager,
     private val testResultUtil: TestResultUtil,
     private val testResultRepository: TestResultRepository,
     private val testResultAttributesUseCase: TestResultAttributesUseCase
-) {
+) : LocalTestResultUseCase {
 
-    suspend fun get(): LocalTestResultState = withContext(Dispatchers.IO) {
+    override suspend fun get(): LocalTestResultState = withContext(Dispatchers.IO) {
         val credentials = persistenceManager.getCredentials()
         if (credentials != null) {
             val testAttributes = testResultAttributesUseCase.get(credentials)
