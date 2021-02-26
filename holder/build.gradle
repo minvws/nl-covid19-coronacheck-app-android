@@ -102,11 +102,14 @@ dependencies {
     testImplementation "junit:junit:$junit_version"
     testImplementation "io.mockk:mockk:$mock_version"
     testImplementation "org.koin:koin-test:$koin_version"
-    testImplementation ("org.robolectric:robolectric:$robolectric_version") {
+    testImplementation("org.robolectric:robolectric:$robolectric_version") {
         exclude group: 'org.bouncycastle'
     }
     testImplementation "androidx.test:runner:$androix_test_version"
     testImplementation "com.squareup.okhttp3:mockwebserver"
+    testImplementation("com.schibsted.spain:barista:$barista_version") {
+        exclude group: "org.jetbrains.kotlin"
+    }
 
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$desugar_jdk_version"
 }
