@@ -19,6 +19,7 @@ import nl.rijksoverheid.ctr.signing.SignatureValidator
 import nl.rijksoverheid.ctr.signing.certificates.EV_ROOT_CA
 import nl.rijksoverheid.ctr.signing.certificates.PRIVATE_ROOT_CA
 import nl.rijksoverheid.ctr.signing.certificates.ROOT_CA_G3
+import nl.rijksoverheid.ctr.signing.certificates.ROOT_UZI
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.Response
@@ -70,11 +71,16 @@ class SignedResponseInterceptor : Interceptor {
         }
 
         val validator = if (expectedSigningCertificate != null) {
-            SignatureValidator.Builder()
+            val builder = SignatureValidator.Builder()
                 .addTrustedCertificate(EV_ROOT_CA)
                 .addTrustedCertificate(ROOT_CA_G3)
                 .addTrustedCertificate(PRIVATE_ROOT_CA)
-                .signingCertificate(expectedSigningCertificate.certificateBytes).build()
+                .signingCertificate(expectedSigningCertificate.certificateBytes)
+
+            if (BuildConfig.FLAVOR == "tst") {
+                builder.addTrustedCertificate(ROOT_UZI)
+            }
+            builder.build()
         } else {
             defaultValidator
         }
