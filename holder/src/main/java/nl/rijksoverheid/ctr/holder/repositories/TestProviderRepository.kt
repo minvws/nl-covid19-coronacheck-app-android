@@ -18,12 +18,21 @@ import retrofit2.HttpException
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class TestProviderRepository(
+interface TestProviderRepository {
+    suspend fun remoteTestResult(
+        url: String,
+        token: String,
+        verifierCode: String?,
+        signingCertificateBytes: ByteArray
+    ): SignedResponseWithModel<RemoteTestResult>
+}
+
+class TestProviderRepositoryImpl(
     private val testProviderApiClient: TestProviderApiClient,
     private val responseConverter: Converter<ResponseBody, SignedResponseWithModel<RemoteTestResult>>,
-) {
+) : TestProviderRepository {
     @Suppress("BlockingMethodInNonBlockingContext")
-    suspend fun remoteTestResult(
+    override suspend fun remoteTestResult(
         url: String,
         token: String,
         verifierCode: String?,

@@ -13,7 +13,7 @@ import org.junit.Test
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class TestProviderUseCaseTest {
+class TestProviderUseCaseImplTest {
 
     private val testProvider1 = RemoteTestProviders.Provider(
         name = "dummy",
@@ -30,7 +30,7 @@ class TestProviderUseCaseTest {
 
     @Test
     fun `Existing test provider should return one`() = runBlocking {
-        val usecase = TestProviderUseCase(
+        val usecase = TestProviderUseCaseImpl(
             coronaCheckRepository = fakeCoronaCheckRepository(
                 testProviders = RemoteTestProviders(listOf(testProvider1, testProvider2))
             )
@@ -40,7 +40,7 @@ class TestProviderUseCaseTest {
 
     @Test
     fun `Non-existing test provider should return null`() = runBlocking {
-        val usecase = TestProviderUseCase(
+        val usecase = TestProviderUseCaseImpl(
             coronaCheckRepository = fakeCoronaCheckRepository(
                 testProviders = RemoteTestProviders(listOf(testProvider1, testProvider2))
             )
