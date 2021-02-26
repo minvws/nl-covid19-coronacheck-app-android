@@ -46,6 +46,5 @@
         <item name="colorOnSurface">@color/white</item>
         <item name="android:textColorPrimary">@color/white</item>
         <item name="colorControlNormal">@color/white</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 </resources>
