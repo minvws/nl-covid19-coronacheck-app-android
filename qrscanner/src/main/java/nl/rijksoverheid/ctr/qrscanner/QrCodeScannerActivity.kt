@@ -40,6 +40,10 @@ class QrCodeScannerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityScannerBinding.inflate(layoutInflater)
         setContentView(binding.root)
+    }
+
+    override fun onStart() {
+        super.onStart()
         setupCamera()
     }
 
@@ -82,6 +86,11 @@ class QrCodeScannerActivity : AppCompatActivity() {
         cameraSelector: CameraSelector,
         aspectRatio: Int
     ) {
+        // Unbind exiting Usecases, on some devices these can otherwise persist in the background when
+        // reopening the scanner in quick succession. Since the CameraProvider has a limit of 3 usecases this
+        // can cause crashes otherwise
+        cameraProvider.unbindAll()
+
         // Bind Usecases for retrieving preview feed from the camera and image processing
         bindPreviewUseCase(cameraProvider, previewView, cameraSelector, aspectRatio)
         bindAnalyseUseCase(cameraProvider, previewView, cameraSelector, aspectRatio)
@@ -99,7 +108,6 @@ class QrCodeScannerActivity : AppCompatActivity() {
         // Set up preview Usecase
         val cameraPreview = Preview.Builder()
             .setTargetAspectRatio(aspectRatio)
-            .setTargetRotation(previewView.display.rotation)
             .build()
         cameraPreview.setSurfaceProvider(previewView.surfaceProvider)
 
@@ -139,7 +147,6 @@ class QrCodeScannerActivity : AppCompatActivity() {
         // Set up the analysis Usecase
         val imageAnalyzer = ImageAnalysis.Builder()
             .setTargetAspectRatio(aspectRatio)
-            .setTargetRotation(previewView.display.rotation)
             .build()
 
         // Initialize our background executor to process images in the background
