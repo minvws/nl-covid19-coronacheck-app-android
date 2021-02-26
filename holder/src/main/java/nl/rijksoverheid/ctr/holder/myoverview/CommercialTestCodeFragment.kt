@@ -5,6 +5,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.core.widget.addTextChangedListener
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.holder.BaseFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentCommercialTestCodeBinding
@@ -33,6 +34,8 @@ class CommercialTestCodeFragment : BaseFragment(R.layout.fragment_commercial_tes
                 this
             )
         })
+
+    private val navArgs: CommercialTestCodeFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -116,6 +119,11 @@ class CommercialTestCodeFragment : BaseFragment(R.layout.fragment_commercial_tes
 
         binding.button.setOnClickListener {
             fetchTestResults(binding)
+        }
+
+        // If a location token is set, automatically fill it in
+        navArgs.locationToken?.let { token ->
+            binding.uniqueCodeText.setText(token)
         }
     }
 

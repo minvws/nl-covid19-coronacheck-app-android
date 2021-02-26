@@ -8,9 +8,12 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentCommercialTestTypeBinding
 import nl.rijksoverheid.ctr.holder.databinding.IncludeTestCodeTypeBinding
+import nl.rijksoverheid.ctr.holder.usecase.CheckLocationQrUseCase
+import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.util.MLKitQrCodeScannerUtil
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -26,12 +29,14 @@ import timber.log.Timber
 class CommercialTestTypeFragment : Fragment(R.layout.fragment_commercial_test_type) {
 
     private val qrCodeScannerUtil: MLKitQrCodeScannerUtil by inject()
+    private val checkLocationQrViewModel: CheckLocationQrViewModel by viewModel()
 
     private val qrScanResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             val scanResult = qrCodeScannerUtil.parseScanResult(it.data)
             if (scanResult != null) {
                 Timber.d("Got scan result $scanResult")
+                checkLocationQrViewModel.checkLocationQrValidity(scanResult)
             }
         }
 
@@ -47,6 +52,26 @@ class CommercialTestTypeFragment : Fragment(R.layout.fragment_commercial_test_ty
         ) {
             qrCodeScannerUtil.launchScanner(requireActivity() as AppCompatActivity, qrScanResult)
         }
+
+        checkLocationQrViewModel.locationData.observe(
+            viewLifecycleOwner,
+            EventObserver { qrScanResult ->
+                if (qrScanResult is CheckLocationQrUseCase.QrCheckResult.Success) {
+                    // Navigate to regular code fill-in fragment, supplying the code we received from our scanned QR code
+                    findNavController().navigate(
+                        CommercialTestTypeFragmentDirections.actionCommercialTestCode(
+                            checkLocationQrViewModel.formatLocationCode(qrScanResult.locationQrData)
+                        )
+                    )
+                } else if (qrScanResult is CheckLocationQrUseCase.QrCheckResult.Failed) {
+                    // show alert if code is invalid
+                    MaterialAlertDialogBuilder(requireContext())
+                        .setTitle(getString(R.string.commercial_test_invalid_qr_title))
+                        .setMessage(getString(R.string.commercial_test_invalid_qr_message))
+                        .setPositiveButton(R.string.ok) { _, _ -> }
+                        .show()
+                }
+            })
     }
 }
 
