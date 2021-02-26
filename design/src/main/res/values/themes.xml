@@ -40,4 +40,11 @@
         </item>
         <item name="android:listDivider">@color/white_20</item>
     </style>
+
+    <style name="ThemeOverlay.AppTheme.Inverted" parent="">
+        <item name="colorSurface">@android:color/transparent</item>
+        <item name="colorOnSurface">@color/white</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="colorControlNormal">@color/white</item>
+    </style>
 </resources>
