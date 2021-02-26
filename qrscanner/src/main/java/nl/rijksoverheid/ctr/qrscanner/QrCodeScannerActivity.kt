@@ -42,6 +42,9 @@ class QrCodeScannerActivity : AppCompatActivity() {
         binding = ActivityScannerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Set white status bar icons
+        window?.decorView?.systemUiVisibility = 0
+
         binding.toolbar.setNavigationOnClickListener {
             finish()
         }

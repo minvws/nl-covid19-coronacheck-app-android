@@ -41,13 +41,11 @@
         <item name="android:listDivider">@color/white_20</item>
     </style>
 
-    <style name="ThemeOverlay.AppTheme.Inverted" parent="AppTheme">
-        <item name="colorSurface">@color/grey_darker</item>
+    <style name="ThemeOverlay.AppTheme.Inverted" parent="">
+        <item name="colorSurface">@android:color/transparent</item>
         <item name="colorOnSurface">@color/white</item>
         <item name="android:textColorPrimary">@color/white</item>
         <item name="colorControlNormal">@color/white</item>
-        <item name="android:statusBarColor">@color/black_12_no_transparency</item>
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="toolbarStyle">@style/Widget.App.Toolbar.Surface</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 </resources>
