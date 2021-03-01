@@ -93,7 +93,7 @@
         <fragment
             android:id="@+id/nav_date_of_birth_input"
             android:name="nl.rijksoverheid.ctr.holder.myoverview.date_of_birth.DateOfBirthInputFragment"
-            android:label="@string/date_of_birth_input_title"
+            android:label="@string/date_of_birth_input_toolbar_title"
             tools:layout="@layout/fragment_date_of_birth_input">
 
             <action
@@ -109,7 +109,7 @@
         <fragment
             android:id="@+id/nav_date_of_birth_check"
             android:name="nl.rijksoverheid.ctr.holder.myoverview.date_of_birth.DateOfBirthCheckFragment"
-            android:label="@string/date_of_birth_check_title"
+            android:label="@string/date_of_birth_input_toolbar_title"
             tools:layout="@layout/fragment_date_of_birth_check">
 
             <action
