@@ -6,7 +6,6 @@ import android.graphics.Bitmap
 import androidx.activity.result.ActivityResultLauncher
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
-import com.google.zxing.integration.android.IntentIntegrator
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 import com.journeyapps.barcodescanner.BarcodeEncoder
 import nl.rijksoverheid.ctr.qrscanner.QrCodeScannerActivity
@@ -22,7 +21,7 @@ interface QrCodeScannerUtil {
     fun launchScanner(
         activity: Activity,
         activityResultLauncher: ActivityResultLauncher<Intent>,
-        customMessage: String?
+        customMessage: String
     )
 
     fun createQrCode(qrCodeContent: String, width: Int, height: Int): Bitmap
@@ -32,12 +31,10 @@ class MLKitQrCodeScannerUtil : QrCodeScannerUtil {
     override fun launchScanner(
         activity: Activity,
         activityResultLauncher: ActivityResultLauncher<Intent>,
-        customMessage: String?
+        customMessage: String
     ) {
         val intentScan = Intent(activity, QrCodeScannerActivity::class.java)
-        customMessage?.let {
-            intentScan.putExtra("customMessage", customMessage)
-        }
+        intentScan.putExtra(QrCodeScannerActivity.CUSTOM_MESSAGE, customMessage)
         activityResultLauncher.launch(intentScan)
     }
 

@@ -11,7 +11,7 @@ package nl.rijksoverheid.ctr.holder.myoverview.models
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class LocationQrData (
+data class TokenQR (
     val token: String,
     val protocolVersion: String,
     val providerIdentifier: String

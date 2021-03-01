@@ -41,8 +41,8 @@ class QrCodeScannerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityScannerBinding.inflate(layoutInflater)
         setContentView(binding.root)
-      
-       // Set white status bar icons
+
+        // Set white status bar icons
         window?.decorView?.systemUiVisibility = 0
 
         binding.toolbar.setNavigationOnClickListener {
@@ -55,10 +55,8 @@ class QrCodeScannerActivity : AppCompatActivity() {
         }
 
         // Check for custom message
-        intent.extras?.let{
-            if(it.containsKey("customMessage")){
-                binding.scannerHeader.text = it.getString("customMessage")
-            }
+        intent.getStringExtra(CUSTOM_MESSAGE)?.let {
+            binding.scannerHeader.text = it
         }
     }
 
@@ -277,8 +275,8 @@ class QrCodeScannerActivity : AppCompatActivity() {
     companion object {
         private const val PERMISSION_CAMERA_REQUEST = 1
         const val SCAN_RESULT = "scan_result"
-
         private const val RATIO_4_3_VALUE = 4.0 / 3.0
         private const val RATIO_16_9_VALUE = 16.0 / 9.0
+        const val CUSTOM_MESSAGE = "customMessage"
     }
 }

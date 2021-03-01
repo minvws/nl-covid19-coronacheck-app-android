@@ -11,20 +11,15 @@ package nl.rijksoverheid.ctr.holder.myoverview
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import nl.rijksoverheid.ctr.holder.myoverview.models.LocationQrData
-import nl.rijksoverheid.ctr.holder.usecase.CheckLocationQrUseCase
+import nl.rijksoverheid.ctr.holder.usecase.TokenQrUseCase
 import nl.rijksoverheid.ctr.shared.livedata.Event
 
-class CheckLocationQrViewModel(private val checkLocationQrUseCase: CheckLocationQrUseCase) : ViewModel() {
+class TokenQrViewModel(private val tokenQrUseCase: TokenQrUseCase) : ViewModel() {
 
-    val locationData : LiveData<Event<CheckLocationQrUseCase.QrCheckResult>> = MutableLiveData()
+    val locationData : LiveData<Event<TokenQrUseCase.TokenQrResult>> = MutableLiveData()
 
     fun checkLocationQrValidity(scannedData : String) {
-        val data = checkLocationQrUseCase.checkValidQR(scannedData)
+        val data = tokenQrUseCase.checkValidQR(scannedData)
         (locationData as MutableLiveData).postValue(Event(data))
-    }
-
-    fun formatLocationCode(data : LocationQrData) : String {
-        return "${data.providerIdentifier}-${data.token}"
     }
 }

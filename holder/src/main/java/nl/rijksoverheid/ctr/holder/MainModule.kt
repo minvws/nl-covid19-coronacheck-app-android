@@ -2,7 +2,7 @@ package nl.rijksoverheid.ctr.holder
 
 import androidx.preference.PreferenceManager
 import nl.rijksoverheid.ctr.holder.digid.DigiDViewModel
-import nl.rijksoverheid.ctr.holder.myoverview.CheckLocationQrViewModel
+import nl.rijksoverheid.ctr.holder.myoverview.TokenQrViewModel
 import nl.rijksoverheid.ctr.holder.myoverview.LocalTestResultViewModel
 import nl.rijksoverheid.ctr.holder.myoverview.QrCodeViewModel
 import nl.rijksoverheid.ctr.holder.myoverview.TestResultsViewModel
@@ -64,7 +64,7 @@ val mainModule = module {
         TestResultAttributesUseCaseImpl(get())
     }
     single {
-        CheckLocationQrUseCase(get())
+        TokenQrUseCase(get())
     }
 
     // ViewModels
@@ -72,7 +72,7 @@ val mainModule = module {
     viewModel { LocalTestResultViewModel(get(), get()) }
     viewModel { DigiDViewModel(get()) }
     viewModel { TestResultsViewModel(get(), get(), get()) }
-    viewModel { CheckLocationQrViewModel(get()) }
+    viewModel { TokenQrViewModel(get()) }
 
     // Repositories
     single { AuthenticationRepository() }
