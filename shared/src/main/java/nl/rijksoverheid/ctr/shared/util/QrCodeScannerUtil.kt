@@ -28,31 +28,6 @@ interface QrCodeScannerUtil {
     fun createQrCode(qrCodeContent: String, width: Int, height: Int): Bitmap
 }
 
-class ZxingQrCodeScannerUtil : QrCodeScannerUtil {
-    override fun launchScanner(
-        activity: Activity,
-        activityResultLauncher: ActivityResultLauncher<Intent>,
-        customMessage: String?
-    ) {
-        val integrator = IntentIntegrator(activity)
-        integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE)
-        activityResultLauncher.launch(integrator.createScanIntent())
-    }
-
-    override fun createQrCode(qrCodeContent: String, width: Int, height: Int): Bitmap {
-        // TODO: Use correct es level after user tests
-        val ecLevel = ErrorCorrectionLevel.values().first()
-        val barcodeEncoder = BarcodeEncoder()
-        return barcodeEncoder.encodeBitmap(
-            qrCodeContent,
-            BarcodeFormat.QR_CODE,
-            width,
-            height,
-            mapOf(EncodeHintType.ERROR_CORRECTION to ecLevel)
-        )
-    }
-}
-
 class MLKitQrCodeScannerUtil : QrCodeScannerUtil {
     override fun launchScanner(
         activity: Activity,
