@@ -4,21 +4,21 @@
     <string name="app_name_acc">CoronaCheck (Acc)</string>
     <string name="app_name">CoronaCheck</string>
     <string name="onboarding_title">Onboarding</string>
-    <string name="onboarding_screen_1_title">Getest en wel op pad</string>
-    <string name="onboarding_screen_1_description">Om zo veilig mogelijk op pad te kunnen is het belangrijk eerst een coronatest te doen. Alleen bij een negatieve test krijg je toegang tot de testevenementen van Fieldlab.</string>
+    <string name="onboarding_screen_1_title">Alleen toegang na testen</string>
+    <string name="onboarding_screen_1_description">Jouw veiligheid en die van anderen is belangrijk. Ook als je wat leuks gaat doen. Laat je daarom eerst testen. Met een negatief testresultaat (geen corona) krijg je toegang tot de testevenementen van Fieldlab.</string>
     <string name="onboarding_screen_2_title">Jouw QR-code op zak</string>
-    <string name="onboarding_screen_2_description">Deze app maakt van jouw negatieve testresultaat een persoonlijke QR-code. Bij binnenkomst wordt deze QR-code gescand als bewijs dat je negatief getest bent.</string>
+    <string name="onboarding_screen_2_description">Ben je negatief getest (geen corona)? Dan kun je met deze app een persoonlijke QR-code maken. Dat is jouw testbewijs. De QR-code wordt gescand voordat je toegang krijgt.</string>
     <string name="onboarding_screen_4_title">Privacy staat voorop</string>
-    <string name="onboarding_screen_4_description">Deze app haalt alleen een negatief testresultaat op. En controleert of dit jouw resultaat is. Andere gegevens worden niet verwerkt of opgeslagen.</string>
-    <string name="onboarding_screen_3_title">Bewijs geldt 48 uur</string>
-    <string name="onboarding_screen_3_description">Een negatief testresultaat is 48 uur geldig. In die periode is de kans dat je besmet raakt klein. Als je testresultaat afloopt verdwijnt de QR-code uit de app. Nieuwe QR-code nodig? Laat je opnieuw testen.</string>
+    <string name="onboarding_screen_4_description">Deze app haalt alleen een negatief testresultaat (geen corona) op. En controleert of dit jouw resultaat is. Andere persoonsgegevens worden niet verwerkt of opgeslagen.</string>
+    <string name="onboarding_screen_3_title">Geldigheid van je bewijs</string>
+    <string name="onboarding_screen_3_description">Een negatief testresultaat (geen corona) is geldig tot 48 uur na het moment van testen. De kans dat je in die tijd besmettelijk bent voor anderen is namelijk klein.</string>
     <string name="onboarding_next">Volgende</string>
-    <string name="privacy_policy_title">Zo gebruikt deze app je gegevens</string>
-    <string name="privacy_policy_description"><![CDATA[In de <a href="#">privacyverklaring staat</a> hoe CoronaTester jouw gegevens gebruikt. Dit zijn de belangrijkste punten.]]></string>
-    <string name="privacy_policy_1"><![CDATA[De CoronaCheck QR-code is <b>niet te herleiden naar jou</b> als persoon]]></string>
-    <string name="privacy_policy_2"><![CDATA[De scanner weet alleen of jouw testbewijs geldig is. <b>Niet wie je bent.</b>]]></string>
-    <string name="privacy_policy_3"><![CDATA[CoronaCheck <b>houdt geen locatie of GPS gegevens bij</b>]]></string>
-    <string name="privacy_policy_checkbox_text">Ik heb de privacyverklaring gelezen en begrijp hoe de app mijn gegevens gebruikt</string>
+    <string name="privacy_policy_title">Zo gebruikt deze app jouw gegevens</string>
+    <string name="privacy_policy_description"><![CDATA[In de <a href="#">privacyverklaring</a> staat hoe CoronaCheck omgaat met jouw gegevens. Dit zijn de belangrijkste punten:]]></string>
+    <string name="privacy_policy_1"><![CDATA[Je naam wordt <b>niet gebruikt of bewaard</b>]]></string>
+    <string name="privacy_policy_2"><![CDATA[Je GPS- of locatiegegevens worden <b>niet gebruikt of bewaard</b>]]></string>
+    <string name="privacy_policy_3"><![CDATA[Anderen kunnen jou <b>niet terugvinden als gebruiker</b> van deze app</b>]]></string>
+    <string name="privacy_policy_checkbox_text">Ik heb de privacyverklaring gelezen en begrijp hoe de app met gegevens omgaat</string>
     <string name="my_overview">Mijn overzicht</string>
     <string name="my_overview_description">Laat je QR code scannen voor de ingang van een uitgaansgelegenheid, om naar binnen te mogen.</string>
     <string name="my_overview_no_qr_description">Wil je een testevenement van Fieldlab bezoeken? Daar heb je een negatieve testuitslag voor nodig, in de vorm van een QR-code.</string>
@@ -28,14 +28,14 @@
     <string name="ok">Oke</string>
     <string name="settings">Instellingen</string>
     <string name="about_this_app">Over deze app</string>
-    <string name="frequently_asked_questions">Meest gestelde vragen</string>
+    <string name="frequently_asked_questions">Meestgestelde vragen</string>
     <string name="privacy_statement">Privacyverklaring</string>
     <string name="terms_of_use">Gebruiksvoorwaarden</string>
     <string name="my_overview_no_qr_make_appointment_title">Maak een testafspraak</string>
     <string name="my_overview_no_qr_make_appointment_description">Wil je een QR-code maken? Laat je dan eerst testen op corona.</string>
     <string name="my_overview_no_qr_make_appointment_button">Maak afspraak</string>
     <string name="my_overview_no_qr_make_qr_title">Maak een QR-code</string>
-    <string name="my_overview_no_qr_make_qr_description">Heb je je testresultaat al? Laat je negatieve resultaat zien met jouw QR-code.</string>
+    <string name="my_overview_no_qr_make_qr_description">Zet jouw negatieve testresultaat om in een persoonlijke QR-code.</string>
     <string name="my_overview_no_qr_make_qr_button">Maak qr-code</string>
     <string name="my_overview_existing_qr_title">Scan QR-code bij entree</string>
     <string name="my_overview_existing_qr_date">Geldig tot %1$s</string>
@@ -77,7 +77,7 @@
     <string name="button_continue">Verder</string>
     <string name="commercial_test_error_invalid_code">Deze code is niet geldig</string>
     <string name="no_negative_test_result_title">Er is geen negatief testresultaat</string>
-    <string name="no_negative_test_result_description"><![CDATA[Er is geen negatief testresultaat beschikbaar. Dit kan komen door:<br\> <ul> <li>Je hebt nog geen test gedaan</li> <li>Je testresultaat is nog niet verwerkt</li> <li>Je test is langer dan 48 uur geleden uitgevoerd</li> <li>Je uitslag is niet negatief. In dit geval neemt de testlocatie contact op met jou.</li> </ul>]]></string>
+    <string name="no_negative_test_result_description"><![CDATA[Er is geen negatief testresultaat (geen corona) beschikbaar.<br/>Dit kan het volgende betekenen:<br\><ul><li>Je hebt nog geen test gedaan</li><li>Je testresultaat is nog niet verwerkt</li><li>Je test is langer dan 48 uur geleden uitgevoerd</li><li>Je uitslag is niet negatief. In dit geval neemt de testlocatie contact op met jou.</li></ul>]]></string>
     <string name="test_result_not_known_title">Testresultaat nog niet bekend</string>
     <string name="test_result_not_known_description"><![CDATA[Probeer het later nog eens.<br\><br\>Neem voor vragen contact op met jouw testlocatie.]]></string>
     <string name="create_qr_code_title">Van jouw testresultaat is een QR-code gemaakt</string>
@@ -89,7 +89,7 @@
     <string name="item_test_result_expired"><![CDATA[Je QR-code is verlopen.<br\>Laat je opnieuw testen.]]></string>
     <string name="test_appointment_info_toolbar_title">Testafspraak maken</string>
     <string name="test_appointment_info_title">Maak een testafspraak</string>
-    <string name="test_appointment_info_description"><![CDATA[Om een QR-code te maken moet je je eerst laten testen. Alleen van een negatief testresultaat kan je een QR-code maken.<br\><br\> Je QR-code is 48 uur geldig vanaf het moment dat je negatief getest bent. Plan je test dus kort voor je evenement. <a href="#">Lees de meestgestelde vragen over een test plannen.</a>]]></string>
+    <string name="test_appointment_info_description"><![CDATA[Om een QR-code te maken moet je je eerst laten testen. Alleen van een negatief testresultaat kan je een QR-code maken.<br\><br\>Je QR-code is 48 uur geldig vanaf het moment dat je negatief getest bent. Plan je test dus kort voor je evenement. <a href="#">Lees de meestgestelde vragen over een test plannen.</a>]]></string>
     <string name="test_appointment_info_button">Maak een afspraak</string>
     <string name="date_of_birth_input_title">Wat is je geboortedatum?</string>
     <string name="date_of_birth_input_toolbar_title">Controle geboortedatum</string>
