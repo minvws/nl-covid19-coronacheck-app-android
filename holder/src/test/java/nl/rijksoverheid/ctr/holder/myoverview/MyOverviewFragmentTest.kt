@@ -76,7 +76,8 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                     credentials = "dummy",
                     sampleDate = OffsetDateTime.now(),
                     expireDate = OffsetDateTime.now(),
-                    testType = "dummy"
+                    testType = "dummy",
+                    dateOfBirthMillis = 0L
                 )
             )
         )
@@ -174,7 +175,8 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                     credentials = "dummy",
                     sampleDate = OffsetDateTime.now(),
                     expireDate = OffsetDateTime.now(),
-                    testType = "dummy"
+                    testType = "dummy",
+                    dateOfBirthMillis = 0L
                 )
             )
         )

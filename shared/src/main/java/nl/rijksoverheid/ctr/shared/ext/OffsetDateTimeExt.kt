@@ -16,3 +16,8 @@ fun OffsetDateTime.formatDate(): String =
     DateTimeFormatter.ofPattern(
         "d MMMM yyyy"
     ).format(this)
+
+fun OffsetDateTime.formatDateShort(): String =
+    DateTimeFormatter.ofPattern(
+        "dd-MM-yyyy"
+    ).format(this)

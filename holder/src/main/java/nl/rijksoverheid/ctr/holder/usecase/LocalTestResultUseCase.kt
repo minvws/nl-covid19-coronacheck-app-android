@@ -45,13 +45,17 @@ open class LocalTestResultUseCaseImpl(
                 validitySeconds = testValiditySeconds
             )
 
+            val dateOfBirthMillis = persistenceManager.getDateOfBirthMillis()
+                ?: throw IllegalStateException("Date of birth should not be null")
+
             if (isValid) {
                 LocalTestResultState.Valid(
                     LocalTestResult(
                         credentials = credentials,
                         sampleDate = sampleDate,
                         testType = testAttributes.testType,
-                        expireDate = sampleDate.plusSeconds(testValiditySeconds)
+                        expireDate = sampleDate.plusSeconds(testValiditySeconds),
+                        dateOfBirthMillis = dateOfBirthMillis
                     )
                 )
             } else {
