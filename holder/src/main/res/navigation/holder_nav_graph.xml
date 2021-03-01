@@ -76,7 +76,21 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
 
+        <action
+            android:id="@+id/action_date_of_birth_input"
+            app:destination="@id/nav_date_of_birth_input"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
     </fragment>
+
+    <fragment
+        android:id="@+id/nav_date_of_birth_input"
+        android:name="nl.rijksoverheid.ctr.holder.myoverview.DateOfBirthInputFragment"
+        android:label="@string/date_of_birth_input_title"
+        tools:layout="@layout/fragment_date_of_birth_input" />
 
     <fragment
         android:id="@+id/nav_commercial_test_type"
