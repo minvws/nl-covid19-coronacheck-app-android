@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentDateOfBirthCheckBinding
 import nl.rijksoverheid.ctr.shared.ext.formatDate
@@ -56,7 +57,12 @@ class DateOfBirthCheckFragment : Fragment(R.layout.fragment_date_of_birth_check)
             }
 
             binding.buttonNext.setOnClickListener {
-                findNavController().navigate(DateOfBirthCheckFragmentDirections.actionCommercialTestType())
+                MaterialAlertDialogBuilder(requireContext())
+                    .setView(R.layout.dialog_date_of_birth_saved)
+                    .setPositiveButton(R.string.ok) { _, _ ->
+                        findNavController().navigate(DateOfBirthCheckFragmentDirections.actionCommercialTestType())
+                    }
+                    .show()
             }
 
             binding.buttonEdit.setOnClickListener {
@@ -64,5 +70,4 @@ class DateOfBirthCheckFragment : Fragment(R.layout.fragment_date_of_birth_check)
             }
         }
     }
-
 }
