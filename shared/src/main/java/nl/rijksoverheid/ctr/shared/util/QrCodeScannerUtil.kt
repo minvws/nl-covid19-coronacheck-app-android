@@ -6,7 +6,6 @@ import android.graphics.Bitmap
 import androidx.activity.result.ActivityResultLauncher
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
-import com.google.zxing.integration.android.IntentIntegrator
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 import com.journeyapps.barcodescanner.BarcodeEncoder
 import nl.rijksoverheid.ctr.qrscanner.QrCodeScannerActivity
@@ -19,40 +18,25 @@ import nl.rijksoverheid.ctr.qrscanner.QrCodeScannerActivity
  *
  */
 interface QrCodeScannerUtil {
-    fun launchScanner(activity: Activity, activityResultLauncher: ActivityResultLauncher<Intent>)
-    fun createQrCode(qrCodeContent: String, width: Int, height: Int): Bitmap
-}
-
-class ZxingQrCodeScannerUtil : QrCodeScannerUtil {
-    override fun launchScanner(
+    fun launchScanner(
         activity: Activity,
-        activityResultLauncher: ActivityResultLauncher<Intent>
-    ) {
-        val integrator = IntentIntegrator(activity)
-        integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE)
-        activityResultLauncher.launch(integrator.createScanIntent())
-    }
+        activityResultLauncher: ActivityResultLauncher<Intent>,
+        customMessage: String
+    )
 
-    override fun createQrCode(qrCodeContent: String, width: Int, height: Int): Bitmap {
-        // TODO: Use correct es level after user tests
-        val ecLevel = ErrorCorrectionLevel.values().first()
-        val barcodeEncoder = BarcodeEncoder()
-        return barcodeEncoder.encodeBitmap(
-            qrCodeContent,
-            BarcodeFormat.QR_CODE,
-            width,
-            height,
-            mapOf(EncodeHintType.ERROR_CORRECTION to ecLevel)
-        )
-    }
+    fun createQrCode(qrCodeContent: String, width: Int, height: Int): Bitmap
+
+    fun parseScanResult(resultIntent: Intent?): String?
 }
 
 class MLKitQrCodeScannerUtil : QrCodeScannerUtil {
     override fun launchScanner(
         activity: Activity,
-        activityResultLauncher: ActivityResultLauncher<Intent>
+        activityResultLauncher: ActivityResultLauncher<Intent>,
+        customMessage: String
     ) {
         val intentScan = Intent(activity, QrCodeScannerActivity::class.java)
+        intentScan.putExtra(QrCodeScannerActivity.CUSTOM_MESSAGE, customMessage)
         activityResultLauncher.launch(intentScan)
     }
 
@@ -69,7 +53,7 @@ class MLKitQrCodeScannerUtil : QrCodeScannerUtil {
         )
     }
 
-    fun parseScanResult(resultIntent: Intent?): String? {
+    override fun parseScanResult(resultIntent: Intent?): String? {
         resultIntent?.extras?.let { bun ->
             if (bun.containsKey(QrCodeScannerActivity.SCAN_RESULT)) {
                 return bun.getString(QrCodeScannerActivity.SCAN_RESULT)!!

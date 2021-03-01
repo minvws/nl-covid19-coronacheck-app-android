@@ -11,8 +11,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
-import nl.rijksoverheid.ctr.shared.util.MLKitQrCodeScannerUtil
+import nl.rijksoverheid.ctr.shared.util.QrCodeScannerUtil
 import nl.rijksoverheid.ctr.verifier.BaseFragment
+import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanQrBinding
 import nl.rijksoverheid.ctr.verifier.scaninstructions.ScanInstructionsDialogFragment
 import org.koin.android.ext.android.inject
@@ -28,7 +29,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class ScanQrFragment : BaseFragment() {
 
     private lateinit var binding: FragmentScanQrBinding
-    private val qrCodeScannerUtil: MLKitQrCodeScannerUtil by inject()
+    private val qrCodeScannerUtil: QrCodeScannerUtil by inject()
     private val scanQrViewModel: ScanQrViewModel by viewModel()
     private val args: ScanQrFragmentArgs by navArgs()
 
@@ -91,7 +92,11 @@ class ScanQrFragment : BaseFragment() {
     }
 
     private fun openScanner() {
-        qrCodeScannerUtil.launchScanner(requireActivity() as AppCompatActivity, qrScanResult)
+        qrCodeScannerUtil.launchScanner(
+            requireActivity() as AppCompatActivity, qrScanResult, getString(
+                R.string.scanner_custom_message
+            )
+        )
     }
 }
 
