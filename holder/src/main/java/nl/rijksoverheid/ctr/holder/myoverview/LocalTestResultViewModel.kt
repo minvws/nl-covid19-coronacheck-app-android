@@ -9,7 +9,6 @@ import nl.rijksoverheid.ctr.holder.myoverview.models.LocalTestResultState
 import nl.rijksoverheid.ctr.holder.usecase.LocalTestResultUseCase
 import nl.rijksoverheid.ctr.holder.usecase.SecretKeyUseCase
 import nl.rijksoverheid.ctr.shared.livedata.Event
-import java.time.OffsetDateTime
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -18,17 +17,22 @@ import java.time.OffsetDateTime
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class LocalTestResultViewModel(
-    private val secretKeyUseCase: SecretKeyUseCase,
-    private val localTestResultUseCase: LocalTestResultUseCase
-) : ViewModel() {
+
+abstract class LocalTestResultViewModel : ViewModel() {
 
     val localTestResultStateLiveData = MutableLiveData<Event<LocalTestResultState>>()
-
     val retrievedLocalTestResult: LocalTestResult?
         get() = (localTestResultStateLiveData.value?.peekContent() as? LocalTestResultState.Valid)?.localTestResult
 
-    fun getLocalTestResult() {
+    abstract fun getLocalTestResult()
+}
+
+open class LocalTestResultViewModelImpl(
+    private val secretKeyUseCase: SecretKeyUseCase,
+    private val localTestResultUseCase: LocalTestResultUseCase
+) : LocalTestResultViewModel() {
+
+    override fun getLocalTestResult() {
         viewModelScope.launch {
             secretKeyUseCase.persist()
             val localTestResultState = localTestResultUseCase.get()

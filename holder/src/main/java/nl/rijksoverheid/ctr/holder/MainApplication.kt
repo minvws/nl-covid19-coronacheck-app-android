@@ -85,7 +85,7 @@ class MainApplication : SharedApplication(), CoronaCheckApp {
                 it.overridePendingTransition(0, 0)
             },
             skipIntroductionCallback = {
-                it.findNavController().navigate(StatusFragmentDirections.actionHome())
+                it.findNavController().navigate(StatusFragmentDirections.actionMyOverview())
             },
             launchIntroductionCallback = {
                 val intent = Intent(it, IntroductionActivity::class.java)

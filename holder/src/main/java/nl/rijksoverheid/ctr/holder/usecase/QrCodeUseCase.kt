@@ -15,13 +15,21 @@ import nl.rijksoverheid.ctr.shared.ext.successString
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class QrCodeUseCase(
+interface QrCodeUseCase {
+    suspend fun qrCode(credentials: ByteArray, qrCodeWidth: Int, qrCodeHeight: Int): Bitmap
+}
+
+class QrCodeUseCaseImpl(
     private val testResultRepository: TestResultRepository,
     private val persistenceManager: PersistenceManager,
     private val generateHolderQrCodeUseCase: GenerateHolderQrCodeUseCase,
-) {
+) : QrCodeUseCase {
 
-    suspend fun qrCode(credentials: ByteArray, qrCodeWidth: Int, qrCodeHeight: Int): Bitmap =
+    override suspend fun qrCode(
+        credentials: ByteArray,
+        qrCodeWidth: Int,
+        qrCodeHeight: Int
+    ): Bitmap =
         withContext(Dispatchers.IO) {
             val secretKey = persistenceManager.getSecretKeyJson()
                 ?: throw IllegalStateException("Secret key should exist")

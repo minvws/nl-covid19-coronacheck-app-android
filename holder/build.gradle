@@ -98,15 +98,20 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
     implementation "com.jakewharton.timber:timber:${timber_version}"
     implementation "com.airbnb.android:lottie:$lottie_version"
+    debugImplementation "androidx.fragment:fragment-testing:$fragment_version"
 
     testImplementation "junit:junit:$junit_version"
     testImplementation "io.mockk:mockk:$mock_version"
     testImplementation "org.koin:koin-test:$koin_version"
-    testImplementation ("org.robolectric:robolectric:$robolectric_version") {
+    testImplementation("org.robolectric:robolectric:$robolectric_version") {
         exclude group: 'org.bouncycastle'
     }
     testImplementation "androidx.test:runner:$androix_test_version"
     testImplementation "com.squareup.okhttp3:mockwebserver"
+    testImplementation("com.schibsted.spain:barista:$barista_version") {
+        exclude group: "org.jetbrains.kotlin"
+    }
+    testImplementation "androidx.navigation:navigation-testing:$navigation_version"
 
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$desugar_jdk_version"
 }

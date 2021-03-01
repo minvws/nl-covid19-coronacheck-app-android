@@ -7,7 +7,7 @@
     android:layout_marginHorizontal="16dp">
 
     <TextView
-        android:id="@+id/description"
+        android:id="@+id/test_description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"

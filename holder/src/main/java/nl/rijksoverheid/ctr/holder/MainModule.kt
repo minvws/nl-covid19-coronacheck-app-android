@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.holder
 import androidx.preference.PreferenceManager
 import nl.rijksoverheid.ctr.holder.digid.DigiDViewModel
 import nl.rijksoverheid.ctr.holder.myoverview.LocalTestResultViewModel
+import nl.rijksoverheid.ctr.holder.myoverview.LocalTestResultViewModelImpl
 import nl.rijksoverheid.ctr.holder.myoverview.QrCodeViewModel
 import nl.rijksoverheid.ctr.holder.myoverview.TestResultsViewModel
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
@@ -37,8 +38,8 @@ val mainModule = module {
             get()
         )
     }
-    single {
-        QrCodeUseCase(
+    factory<QrCodeUseCase> {
+        QrCodeUseCaseImpl(
             get(),
             get(),
             get()
@@ -56,8 +57,8 @@ val mainModule = module {
     single {
         TestResultUseCase(get(), get(), get(), get(), get(), get())
     }
-    single {
-        LocalTestResultUseCase(get(), get(), get(), get())
+    factory<LocalTestResultUseCase> {
+        LocalTestResultUseCaseImpl(get(), get(), get(), get())
     }
     factory<TestResultAttributesUseCase> {
         TestResultAttributesUseCaseImpl(get())
@@ -65,7 +66,7 @@ val mainModule = module {
 
     // ViewModels
     viewModel { QrCodeViewModel(get()) }
-    viewModel { LocalTestResultViewModel(get(), get()) }
+    viewModel<LocalTestResultViewModel> { LocalTestResultViewModelImpl(get(), get()) }
     viewModel { DigiDViewModel(get()) }
     viewModel { TestResultsViewModel(get(), get(), get()) }
 
