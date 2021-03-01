@@ -8,6 +8,7 @@ import com.schibsted.spain.barista.interaction.BaristaClickInteractions.clickOn
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.fakePersistenceManager
 import org.junit.Assert
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.core.context.loadKoinModules
@@ -38,7 +39,7 @@ class ChooseProviderFragmentTest : AutoCloseKoinTest() {
         )
 
         clickOn(R.id.provider_commercial)
-        Assert.assertEquals(navController.currentDestination?.id, R.id.nav_date_of_birth_input)
+        assertEquals(navController.currentDestination?.id, R.id.nav_date_of_birth_input)
     }
 
     @Test
@@ -48,7 +49,7 @@ class ChooseProviderFragmentTest : AutoCloseKoinTest() {
         )
 
         clickOn(R.id.provider_commercial)
-        Assert.assertEquals(navController.currentDestination?.id, R.id.nav_commercial_test_type)
+        assertEquals(navController.currentDestination?.id, R.id.nav_commercial_test_type)
     }
 
     private fun launchChooseProviderFragment(hasDateOfBirthSaved: Boolean) {
