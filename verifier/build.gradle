@@ -20,6 +20,7 @@ android {
         applicationId "nl.rijksoverheid.ctr.verifier"
         versionCode appVersionCode
         versionName "1.0"
+        vectorDrawables.useSupportLibrary = true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"

@@ -15,6 +15,8 @@ interface PersistenceManager {
     fun saveCredentials(credentials: String)
     fun getCredentials(): String?
     fun deleteCredentials()
+    fun saveDateOfBirthMillis(millis: Long)
+    fun getDateOfBirthMillis(): Long?
 }
 
 class SharedPreferencesPersistenceManager(
@@ -25,6 +27,7 @@ class SharedPreferencesPersistenceManager(
     companion object {
         const val SECRET_KEY_JSON = "SECRET_KEY_JSON"
         const val CREDENTIALS = "CREDENTIALS"
+        const val DATE_OF_BIRTH_MILLIS = "DATE_OF_BIRTH_MILLIS"
     }
 
     override fun saveSecretKeyJson(json: String) {
@@ -45,5 +48,18 @@ class SharedPreferencesPersistenceManager(
 
     override fun deleteCredentials() {
         sharedPreferences.edit().remove(CREDENTIALS).apply()
+    }
+
+    override fun saveDateOfBirthMillis(millis: Long) {
+        sharedPreferences.edit().putLong(DATE_OF_BIRTH_MILLIS, millis).apply()
+    }
+
+    override fun getDateOfBirthMillis(): Long? {
+        val millis = sharedPreferences.getLong(DATE_OF_BIRTH_MILLIS, 0)
+        return if (millis == 0L) {
+            null
+        } else {
+            millis
+        }
     }
 }

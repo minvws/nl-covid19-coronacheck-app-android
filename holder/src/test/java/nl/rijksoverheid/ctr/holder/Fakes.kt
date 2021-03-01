@@ -176,7 +176,8 @@ fun fakeTestResultRepository(
 
 fun fakePersistenceManager(
     secretKeyJson: String? = "",
-    credentials: String? = ""
+    credentials: String? = "",
+    dateOfBirth: Long? = null
 ): PersistenceManager {
     return object : PersistenceManager {
         override fun saveSecretKeyJson(json: String) {
@@ -197,6 +198,14 @@ fun fakePersistenceManager(
 
         override fun deleteCredentials() {
 
+        }
+
+        override fun saveDateOfBirthMillis(millis: Long) {
+
+        }
+
+        override fun getDateOfBirthMillis(): Long? {
+            return dateOfBirth
         }
     }
 }

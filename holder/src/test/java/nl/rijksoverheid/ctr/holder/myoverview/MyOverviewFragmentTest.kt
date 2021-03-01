@@ -76,7 +76,8 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                     credentials = "dummy",
                     sampleDate = OffsetDateTime.now(),
                     expireDate = OffsetDateTime.now(),
-                    testType = "dummy"
+                    testType = "dummy",
+                    dateOfBirthMillis = 0L
                 )
             )
         )
@@ -174,7 +175,8 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                     credentials = "dummy",
                     sampleDate = OffsetDateTime.now(),
                     expireDate = OffsetDateTime.now(),
-                    testType = "dummy"
+                    testType = "dummy",
+                    dateOfBirthMillis = 0L
                 )
             )
         )
@@ -235,7 +237,6 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
             MyOverviewFragment().also {
                 it.viewLifecycleOwnerLiveData.observeForever { viewLifecycleOwner ->
                     if (viewLifecycleOwner != null) {
-                        // The fragment’s view has just been created
                         Navigation.setViewNavController(it.requireView(), navController)
                     }
                 }
