@@ -70,7 +70,7 @@ val mainModule = module {
     viewModel<LocalTestResultViewModel> { LocalTestResultViewModelImpl(get(), get()) }
     viewModel { DigiDViewModel(get()) }
     viewModel { TestResultsViewModel(get(), get(), get()) }
-    viewModel { DateOfBirthInputViewModel() }
+    viewModel { DateOfBirthInputViewModel(get()) }
 
     // Repositories
     single { AuthenticationRepository() }

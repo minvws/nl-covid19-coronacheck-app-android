@@ -38,7 +38,7 @@ class DateOfBirthCheckFragment : Fragment(R.layout.fragment_date_of_birth_check)
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentDateOfBirthCheckBinding.bind(view)
 
-        val dateOfBirth = dateOfBirthInputViewModel.retrievedDateOfBirth
+        val dateOfBirth = dateOfBirthInputViewModel.retrievedDateOfBirthMillis
         if (dateOfBirth == null) {
             findNavController().navigate(DateOfBirthCheckFragmentDirections.actionMyOverview())
         } else {
@@ -57,6 +57,7 @@ class DateOfBirthCheckFragment : Fragment(R.layout.fragment_date_of_birth_check)
             }
 
             binding.buttonNext.setOnClickListener {
+                dateOfBirthInputViewModel.saveDateOfBirth()
                 MaterialAlertDialogBuilder(requireContext())
                     .setView(R.layout.dialog_date_of_birth_saved)
                     .setPositiveButton(R.string.ok) { _, _ ->
