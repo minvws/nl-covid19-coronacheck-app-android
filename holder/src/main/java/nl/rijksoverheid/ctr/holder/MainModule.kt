@@ -38,8 +38,8 @@ val mainModule = module {
             get()
         )
     }
-    single {
-        QrCodeUseCase(
+    factory<QrCodeUseCase> {
+        QrCodeUseCaseImpl(
             get(),
             get(),
             get()

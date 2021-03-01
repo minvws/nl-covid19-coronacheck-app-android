@@ -1,12 +1,15 @@
 package nl.rijksoverheid.ctr.holder
 
+import android.graphics.Bitmap
 import nl.rijksoverheid.ctr.api.models.*
 import nl.rijksoverheid.ctr.api.repositories.TestResultRepository
+import nl.rijksoverheid.ctr.holder.myoverview.LocalTestResultViewModel
 import nl.rijksoverheid.ctr.holder.myoverview.models.LocalTestResultState
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.repositories.TestProviderRepository
 import nl.rijksoverheid.ctr.holder.usecase.*
+import nl.rijksoverheid.ctr.shared.livedata.Event
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -15,6 +18,30 @@ import nl.rijksoverheid.ctr.holder.usecase.*
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
+
+fun fakeQrCodeUseCase(
+    bitmap: Bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
+): QrCodeUseCase {
+    return object : QrCodeUseCase {
+        override suspend fun qrCode(
+            credentials: ByteArray,
+            qrCodeWidth: Int,
+            qrCodeHeight: Int
+        ): Bitmap {
+            return bitmap
+        }
+    }
+}
+
+fun fakeLocalTestResultViewModel(
+    localTestResultState: LocalTestResultState = LocalTestResultState.None
+): LocalTestResultViewModel {
+    return object : LocalTestResultViewModel() {
+        override fun getLocalTestResult() {
+            localTestResultStateLiveData.value = Event(localTestResultState)
+        }
+    }
+}
 
 fun fakeLocalTestResultUseCase(
     state: LocalTestResultState = LocalTestResultState.None
