@@ -14,7 +14,7 @@ import nl.rijksoverheid.ctr.holder.databinding.FragmentCommercialTestTypeBinding
 import nl.rijksoverheid.ctr.holder.databinding.IncludeTestCodeTypeBinding
 import nl.rijksoverheid.ctr.holder.usecase.TokenQrUseCase
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
-import nl.rijksoverheid.ctr.shared.util.MLKitQrCodeScannerUtil
+import nl.rijksoverheid.ctr.shared.util.QrCodeScannerUtil
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -28,7 +28,7 @@ import timber.log.Timber
  */
 class CommercialTestTypeFragment : Fragment(R.layout.fragment_commercial_test_type) {
 
-    private val qrCodeScannerUtil: MLKitQrCodeScannerUtil by inject()
+    private val qrCodeScannerUtil: QrCodeScannerUtil by inject()
     private val tokenQrViewModel: TokenQrViewModel by viewModel()
 
     private val qrScanResult =
