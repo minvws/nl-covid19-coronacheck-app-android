@@ -12,7 +12,6 @@ import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.DialogQrCodeBinding
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
-import org.koin.androidx.viewmodel.ViewModelOwner
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -28,14 +27,7 @@ class QrCodeFragment : DialogFragment() {
 
     private lateinit var binding: DialogQrCodeBinding
 
-    private val localTestResultViewModel: LocalTestResultViewModel by sharedViewModel(
-        owner = {
-            ViewModelOwner.from(
-                findNavController().getViewModelStoreOwner(R.id.nav_home),
-                this
-            )
-        }
-    )
+    private val localTestResultViewModel: LocalTestResultViewModel by sharedViewModel()
     private val qrCodeViewModel: QrCodeViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {

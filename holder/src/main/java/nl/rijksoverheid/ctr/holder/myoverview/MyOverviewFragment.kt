@@ -36,14 +36,7 @@ class MyOverviewFragment : BaseFragment(R.layout.fragment_my_overview) {
 
     private val section = Section()
 
-    private val localTestResultViewModel: LocalTestResultViewModel by sharedViewModel(
-        owner = {
-            ViewModelOwner.from(
-                findNavController().getViewModelStoreOwner(R.id.nav_home),
-                this
-            )
-        }
-    )
+    private val localTestResultViewModel: LocalTestResultViewModel by sharedViewModel()
     private val qrCodeViewModel: QrCodeViewModel by viewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

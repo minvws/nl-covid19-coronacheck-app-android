@@ -49,7 +49,7 @@ class QrCreatedFragment : Fragment() {
         val result = viewModel.retrievedResult?.remoteTestResult?.result
         if (result == null) {
             // restored from state, no result anymore
-            findNavController().navigate(QrCreatedFragmentDirections.actionHome())
+            findNavController().navigate(QrCreatedFragmentDirections.actionMyOverview())
         } else {
             binding.description.text = getString(
                 R.string.create_qr_code_description, result.sampleDate.format(
@@ -62,7 +62,7 @@ class QrCreatedFragment : Fragment() {
 
         binding.button.setOnClickListener {
             viewModel.saveTestResult()
-            findNavController().navigate(QrCreatedFragmentDirections.actionHome())
+            findNavController().navigate(QrCreatedFragmentDirections.actionMyOverview())
         }
     }
 }
