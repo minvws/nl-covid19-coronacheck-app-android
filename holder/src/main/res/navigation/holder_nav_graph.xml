@@ -11,56 +11,50 @@
         android:label="">
 
         <action
-            android:id="@+id/action_home"
-            app:destination="@id/nav_home"
+            android:id="@+id/action_my_overview"
+            app:destination="@id/nav_my_overview"
             app:popUpTo="@id/main_nav"
             app:popUpToInclusive="true" />
 
     </fragment>
 
-    <navigation
-        android:id="@+id/nav_home"
-        app:startDestination="@id/nav_my_overview">
+    <fragment
+        android:id="@+id/nav_my_overview"
+        android:name="nl.rijksoverheid.ctr.holder.myoverview.MyOverviewFragment"
+        android:label="@string/my_overview"
+        tools:layout="@layout/fragment_my_overview">
 
-        <fragment
-            android:id="@+id/nav_my_overview"
-            android:name="nl.rijksoverheid.ctr.holder.myoverview.MyOverviewFragment"
-            android:label="@string/my_overview"
-            tools:layout="@layout/fragment_my_overview">
+        <action
+            android:id="@+id/action_choose_provider"
+            app:destination="@id/nav_choose_provider"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
 
-            <action
-                android:id="@+id/action_choose_provider"
-                app:destination="@id/nav_choose_provider"
-                app:enterAnim="@anim/slide_in_right"
-                app:exitAnim="@anim/slide_out_left"
-                app:popEnterAnim="@anim/slide_in_left"
-                app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_make_appointment"
+            app:destination="@id/nav_make_appointment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
 
-            <action
-                android:id="@+id/action_make_appointment"
-                app:destination="@id/nav_make_appointment"
-                app:enterAnim="@anim/slide_in_right"
-                app:exitAnim="@anim/slide_out_left"
-                app:popEnterAnim="@anim/slide_in_left"
-                app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_qr_code"
+            app:destination="@id/nav_qr_code"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
 
-            <action
-                android:id="@+id/action_qr_code"
-                app:destination="@id/nav_qr_code"
-                app:enterAnim="@anim/slide_in_right"
-                app:exitAnim="@anim/slide_out_left"
-                app:popEnterAnim="@anim/slide_in_left"
-                app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
 
-        </fragment>
-
-        <dialog
-            android:id="@+id/nav_qr_code"
-            android:name="nl.rijksoverheid.ctr.holder.myoverview.QrCodeFragment"
-            android:label=""
-            tools:layout="@layout/dialog_qr_code" />
-
-    </navigation>
+    <dialog
+        android:id="@+id/nav_qr_code"
+        android:name="nl.rijksoverheid.ctr.holder.myoverview.QrCodeFragment"
+        android:label=""
+        tools:layout="@layout/dialog_qr_code" />
 
     <fragment
         android:id="@+id/nav_make_appointment"
@@ -82,7 +76,66 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
 
+        <action
+            android:id="@+id/action_date_of_birth"
+            app:destination="@id/nav_date_of_birth"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
     </fragment>
+
+    <navigation
+        android:id="@+id/nav_date_of_birth"
+        app:startDestination="@id/nav_date_of_birth_input">
+
+        <fragment
+            android:id="@+id/nav_date_of_birth_input"
+            android:name="nl.rijksoverheid.ctr.holder.myoverview.date_of_birth.DateOfBirthInputFragment"
+            android:label="@string/date_of_birth_input_toolbar_title"
+            tools:layout="@layout/fragment_date_of_birth_input">
+
+            <action
+                android:id="@+id/action_date_of_birth_check"
+                app:destination="@id/nav_date_of_birth_check"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right" />
+
+        </fragment>
+
+        <fragment
+            android:id="@+id/nav_date_of_birth_check"
+            android:name="nl.rijksoverheid.ctr.holder.myoverview.date_of_birth.DateOfBirthCheckFragment"
+            android:label="@string/date_of_birth_input_toolbar_title"
+            tools:layout="@layout/fragment_date_of_birth_check">
+
+            <action
+                android:id="@+id/action_commercial_test_type"
+                app:destination="@id/nav_commercial_test_type"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right"
+                app:popUpTo="@id/nav_date_of_birth_input"
+                app:popUpToInclusive="true" />
+
+            <action
+                android:id="@+id/action_my_overview"
+                app:destination="@id/nav_my_overview"
+                app:enterAnim="@anim/fragment_open_enter"
+                app:exitAnim="@anim/fragment_open_exit"
+                app:launchSingleTop="true"
+                app:popEnterAnim="@anim/fragment_close_enter"
+                app:popExitAnim="@anim/fragment_close_exit"
+                app:popUpTo="@id/nav_my_overview"
+                app:popUpToInclusive="true" />
+
+        </fragment>
+
+    </navigation>
 
     <fragment
         android:id="@+id/nav_commercial_test_type"
@@ -108,9 +161,9 @@
              fragment where you wish to use it -->
         <argument
             android:name="locationToken"
-            app:nullable="true"
             android:defaultValue="@null"
-            app:argType="string" />
+            app:argType="string"
+            app:nullable="true" />
 
         <fragment
             android:id="@+id/nav_commercial_test_code"
@@ -120,9 +173,9 @@
 
             <argument
                 android:name="locationToken"
-                app:nullable="true"
                 android:defaultValue="@null"
-                app:argType="string" />
+                app:argType="string"
+                app:nullable="true" />
 
             <action
                 android:id="@+id/action_your_negative_result"
@@ -157,14 +210,14 @@
                 app:popExitAnim="@anim/slide_out_right" />
 
             <action
-                android:id="@+id/action_home"
-                app:destination="@id/nav_home"
+                android:id="@+id/action_my_overview"
+                app:destination="@id/nav_my_overview"
                 app:enterAnim="@anim/fragment_open_enter"
                 app:exitAnim="@anim/fragment_open_exit"
                 app:launchSingleTop="true"
                 app:popEnterAnim="@anim/fragment_close_enter"
                 app:popExitAnim="@anim/fragment_close_exit"
-                app:popUpTo="@id/nav_home"
+                app:popUpTo="@id/nav_my_overview"
                 app:popUpToInclusive="true" />
 
             <action
@@ -184,8 +237,8 @@
             tools:layout="@layout/fragment_qr_created">
 
             <action
-                android:id="@+id/action_home"
-                app:destination="@id/nav_home"
+                android:id="@+id/action_my_overview"
+                app:destination="@id/nav_my_overview"
                 app:enterAnim="@anim/fragment_open_enter"
                 app:exitAnim="@anim/fragment_open_exit"
                 app:launchSingleTop="true"

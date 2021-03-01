@@ -41,7 +41,7 @@ class YourNegativeTestResultFragment : BaseFragment(R.layout.fragment_your_negat
         val result = viewModel.retrievedResult?.remoteTestResult?.result
         if (result == null) {
             // restored from state, no result anymore
-            findNavController().navigate(YourNegativeTestResultFragmentDirections.actionHome())
+            findNavController().navigate(YourNegativeTestResultFragmentDirections.actionMyOverview())
         } else {
             binding.rowSubtitle.text =
                 result.sampleDate.format(

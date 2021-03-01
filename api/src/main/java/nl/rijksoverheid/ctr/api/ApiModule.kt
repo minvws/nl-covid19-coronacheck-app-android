@@ -17,6 +17,7 @@ import nl.rijksoverheid.ctr.api.repositories.TestResultRepositoryImpl
 import nl.rijksoverheid.ctr.signing.certificates.EV_ROOT_CA
 import nl.rijksoverheid.ctr.signing.certificates.PRIVATE_ROOT_CA
 import nl.rijksoverheid.ctr.signing.certificates.ROOT_CA_G3
+import nl.rijksoverheid.ctr.signing.certificates.DIGICERT_BTC_ROOT_CA
 import okhttp3.Cache
 import okhttp3.ConnectionSpec
 import okhttp3.OkHttpClient
@@ -95,6 +96,7 @@ fun apiModule(baseUrl: String) = module(override = true) {
                         .addTrustedCertificate(ROOT_CA_G3.decodeCertificatePem())
                         .addTrustedCertificate(EV_ROOT_CA.decodeCertificatePem())
                         .addTrustedCertificate(PRIVATE_ROOT_CA.decodeCertificatePem())
+                        .addTrustedCertificate(DIGICERT_BTC_ROOT_CA.decodeCertificatePem())
                         .build()
 
                     sslSocketFactory(

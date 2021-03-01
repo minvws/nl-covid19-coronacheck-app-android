@@ -6,6 +6,10 @@ import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.ItemMyOverviewTestResultBinding
 import nl.rijksoverheid.ctr.holder.models.LocalTestResult
+import nl.rijksoverheid.ctr.shared.ext.formatDateShort
+import java.time.Instant
+import java.time.OffsetDateTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
@@ -24,6 +28,11 @@ class MyOverviewTestResultAdapterItem(
     BindableItem<ItemMyOverviewTestResultBinding>(R.layout.item_my_overview_test_result.toLong()) {
     override fun bind(viewBinding: ItemMyOverviewTestResultBinding, position: Int) {
         val context = viewBinding.root.context
+
+        viewBinding.testResultSubtitle.text = OffsetDateTime.ofInstant(
+            Instant.ofEpochMilli(localTestResult.dateOfBirthMillis),
+            ZoneId.of("UTC")
+        ).formatDateShort()
 
         viewBinding.testResultFooter.text = context.getString(
             R.string.my_overview_existing_qr_date,

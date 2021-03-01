@@ -26,12 +26,12 @@ import java.util.concurrent.TimeUnit
  *
  */
 
-class LocalTestResultUseCaseTest {
+class LocalTestResultUseCaseImplTest {
 
     @Test
     fun `No local test result saved returns None`() =
         runBlocking {
-            val usecase = LocalTestResultUseCase(
+            val usecase = LocalTestResultUseCaseImpl(
                 persistenceManager = fakePersistenceManager(credentials = null),
                 testResultUtil = TestResultUtil(Clock.systemUTC()),
                 testResultRepository = fakeTestResultRepository(),
@@ -48,7 +48,7 @@ class LocalTestResultUseCaseTest {
             val mockedPersistenceManager: PersistenceManager = mockk(relaxed = true)
             every { mockedPersistenceManager.getCredentials() } answers { "" }
 
-            val usecase = LocalTestResultUseCase(
+            val usecase = LocalTestResultUseCaseImpl(
                 persistenceManager = mockedPersistenceManager,
                 testResultUtil = TestResultUtil(
                     clock = Clock.fixed(Instant.parse("2021-01-02T00:00:00.00Z"), ZoneId.of("UTC"))
@@ -75,7 +75,7 @@ class LocalTestResultUseCaseTest {
             val mockedPersistenceManager: PersistenceManager = mockk(relaxed = true)
             every { mockedPersistenceManager.getCredentials() } answers { "" }
 
-            val usecase = LocalTestResultUseCase(
+            val usecase = LocalTestResultUseCaseImpl(
                 persistenceManager = mockedPersistenceManager,
                 testResultUtil = TestResultUtil(
                     clock = Clock.fixed(Instant.parse("2021-01-04T00:00:00.00Z"), ZoneId.of("UTC"))
