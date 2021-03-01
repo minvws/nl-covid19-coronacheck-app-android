@@ -50,7 +50,11 @@ class CommercialTestTypeFragment : Fragment(R.layout.fragment_commercial_test_ty
             R.drawable.ic_test_qr_code,
             R.string.commercial_test_type_qr_code_title
         ) {
-            qrCodeScannerUtil.launchScanner(requireActivity() as AppCompatActivity, qrScanResult)
+            qrCodeScannerUtil.launchScanner(
+                requireActivity() as AppCompatActivity, qrScanResult, getString(
+                    R.string.commercial_test_scanner_custom_message
+                )
+            )
         }
 
         checkLocationQrViewModel.locationData.observe(

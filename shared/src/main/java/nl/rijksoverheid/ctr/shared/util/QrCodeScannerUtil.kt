@@ -19,14 +19,20 @@ import nl.rijksoverheid.ctr.qrscanner.QrCodeScannerActivity
  *
  */
 interface QrCodeScannerUtil {
-    fun launchScanner(activity: Activity, activityResultLauncher: ActivityResultLauncher<Intent>)
+    fun launchScanner(
+        activity: Activity,
+        activityResultLauncher: ActivityResultLauncher<Intent>,
+        customMessage: String?
+    )
+
     fun createQrCode(qrCodeContent: String, width: Int, height: Int): Bitmap
 }
 
 class ZxingQrCodeScannerUtil : QrCodeScannerUtil {
     override fun launchScanner(
         activity: Activity,
-        activityResultLauncher: ActivityResultLauncher<Intent>
+        activityResultLauncher: ActivityResultLauncher<Intent>,
+        customMessage: String?
     ) {
         val integrator = IntentIntegrator(activity)
         integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE)
@@ -50,9 +56,13 @@ class ZxingQrCodeScannerUtil : QrCodeScannerUtil {
 class MLKitQrCodeScannerUtil : QrCodeScannerUtil {
     override fun launchScanner(
         activity: Activity,
-        activityResultLauncher: ActivityResultLauncher<Intent>
+        activityResultLauncher: ActivityResultLauncher<Intent>,
+        customMessage: String?
     ) {
         val intentScan = Intent(activity, QrCodeScannerActivity::class.java)
+        customMessage?.let {
+            intentScan.putExtra("customMessage", customMessage)
+        }
         activityResultLauncher.launch(intentScan)
     }
 

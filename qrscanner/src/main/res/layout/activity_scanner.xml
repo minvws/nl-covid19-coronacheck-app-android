@@ -9,6 +9,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:keepScreenOn="true"
     android:theme="@style/ThemeOverlay.AppTheme.Inverted">
 
@@ -41,12 +42,13 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/scanner_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="32dp"
         android:layout_marginTop="32dp"
         android:gravity="center_horizontal"
-        android:text="@string/scanner_instructions"
+        tools:text="@string/scanner_instructions"
         android:textAppearance="?attr/textAppearanceBody1"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"

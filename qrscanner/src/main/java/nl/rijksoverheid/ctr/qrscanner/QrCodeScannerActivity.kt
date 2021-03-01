@@ -53,6 +53,13 @@ class QrCodeScannerActivity : AppCompatActivity() {
             binding.toolbar.setPadding(0, insets.systemWindowInsetTop, 0, 0)
             insets
         }
+
+        // Check for custom message
+        intent.extras?.let{
+            if(it.containsKey("customMessage")){
+                binding.scannerHeader.text = it.getString("customMessage")
+            }
+        }
     }
 
     override fun onStart() {

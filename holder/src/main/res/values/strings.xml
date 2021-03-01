@@ -60,6 +60,7 @@
     <string name="commercial_test_button">Haal testresultaten op</string>
     <string name="commercial_test_invalid_qr_title">Ongeldige QR-code</string>
     <string name="commercial_test_invalid_qr_message">Deze QR-code is niet geldig. Scan de QR-code die je van je testlocatie hebt gekregen.</string>
+    <string name="commercial_test_scanner_custom_message">Richt je toestel op de QR-code die je van de testlocatie hebt gekregen.</string>
     <string name="your_negative_test_results_title">Jouw negatieve testresultaten</string>
     <string name="your_negative_test_results_description">Je hebt 1 nieuw negatief testresultaat (geen corona). Maak van dit resultaat een QR-code. Dat is jouw bewijs.</string>
     <string name="your_negative_test_results_tooltip">Alleen testresultaten die niet ouder zijn dan 48 uur kun je gebruiken om een QR-code te maken.</string>
