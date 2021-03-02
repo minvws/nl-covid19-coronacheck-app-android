@@ -91,6 +91,19 @@ class MyOverviewFragment : BaseFragment(R.layout.fragment_my_overview) {
         localTestResultViewModel.getLocalTestResult()
     }
 
+    override fun onResume() {
+        super.onResume()
+        // Make sure QR is immediately refreshed on resume, for instance after unlocking the device
+        localTestResultViewModel.retrievedLocalTestResult?.let{ localResult ->
+            lifecycleScope.launchWhenResumed {
+                qrCodeViewModel.generateQrCode(
+                    localTestResult = localResult,
+                    qrCodeSize = resources.displayMetrics.widthPixels
+                )
+            }
+        }
+    }
+
     private fun setItems(
         isExpired: Boolean = false,
         localTestResult: LocalTestResult? = null,
