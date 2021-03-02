@@ -10,9 +10,11 @@ package nl.rijksoverheid.ctr.qrscanner
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Parcelable
 import android.util.DisplayMetrics
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
@@ -21,11 +23,13 @@ import androidx.camera.view.PreviewView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.mlkit.vision.barcode.Barcode
 import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
+import kotlinx.parcelize.Parcelize
 import nl.rijksoverheid.ctr.qrscanner.databinding.ActivityScannerBinding
 import timber.log.Timber
 import java.util.concurrent.Executors
@@ -55,7 +59,7 @@ class QrCodeScannerActivity : AppCompatActivity() {
         }
 
         // Check for custom message
-        intent.getStringExtra(CUSTOM_MESSAGE)?.let {
+        intent.getStringExtra(EXTRA_CUSTOM_MESSAGE)?.let {
             binding.scannerHeader.text = it
         }
     }
@@ -88,14 +92,18 @@ class QrCodeScannerActivity : AppCompatActivity() {
                 // Start setting up our Preview feed and analyzing Usecases
                 bindCameraUseCases(cameraProvider, previewView, cameraSelector, screenAspectRatio)
             } else {
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(Manifest.permission.CAMERA),
-                    PERMISSION_CAMERA_REQUEST
-                )
+                requestPermission()
             }
         }, ContextCompat.getMainExecutor(this))
 
+    }
+
+    private fun requestPermission() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(Manifest.permission.CAMERA),
+            PERMISSION_CAMERA_REQUEST
+        )
     }
 
     private fun bindCameraUseCases(
@@ -259,7 +267,11 @@ class QrCodeScannerActivity : AppCompatActivity() {
             if (isCameraPermissionGranted()) {
                 setupCamera()
             } else {
-                Timber.e("No camera permission")
+                val rationaleDialog =
+                    intent.getParcelableExtra<RationaleDialog>(EXTRA_RATIONALE_DIALOG)
+                if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) && rationaleDialog != null) {
+                    showRationaleDialog(rationaleDialog)
+                }
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -272,11 +284,39 @@ class QrCodeScannerActivity : AppCompatActivity() {
         ) == PackageManager.PERMISSION_GRANTED
     }
 
+    private fun showRationaleDialog(rationaleDialog: RationaleDialog) {
+        MaterialAlertDialogBuilder(this)
+            .setTitle(rationaleDialog.title)
+            .setMessage(rationaleDialog.description)
+            .setPositiveButton(R.string.ok) { dialog, which ->
+                requestPermission()
+            }
+            .show()
+    }
+
     companion object {
         private const val PERMISSION_CAMERA_REQUEST = 1
         const val SCAN_RESULT = "scan_result"
         private const val RATIO_4_3_VALUE = 4.0 / 3.0
         private const val RATIO_16_9_VALUE = 16.0 / 9.0
-        const val CUSTOM_MESSAGE = "customMessage"
+        private const val EXTRA_CUSTOM_MESSAGE = "customMessage"
+        private const val EXTRA_RATIONALE_DIALOG = "EXTRA_RATIONALE_DIALOG"
+
+        fun getIntent(
+            context: Context,
+            customMessage: String,
+            rationaleDialog: RationaleDialog?
+        ): Intent {
+            val intent = Intent(context, QrCodeScannerActivity::class.java)
+            intent.putExtra(EXTRA_CUSTOM_MESSAGE, customMessage)
+            intent.putExtra(EXTRA_RATIONALE_DIALOG, rationaleDialog)
+            return intent
+        }
     }
+
+    @Parcelize
+    data class RationaleDialog(
+        val title: String,
+        val description: String
+    ) : Parcelable
 }

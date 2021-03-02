@@ -100,4 +100,6 @@
     <string name="date_of_birth_check_positive_button">Bevestig</string>
     <string name="date_of_birth_check_edit_button">Pas geboortedatum aan</string>
     <string name="date_of_birth_check_dialog_text">Geboortedatum\n ingevuld</string>
+    <string name="camera_rationale_dialog_title">CoronaCheck wil toegang tot je camera</string>
+    <string name="camera_rationale_dialog_description">Zo kan de app je QR-code scannen</string>
 </resources>
