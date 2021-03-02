@@ -3,12 +3,14 @@ package nl.rijksoverheid.ctr.shared.util
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Color
 import androidx.activity.result.ActivityResultLauncher
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
-import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
-import com.journeyapps.barcodescanner.BarcodeEncoder
+import com.google.zxing.MultiFormatWriter
 import nl.rijksoverheid.ctr.qrscanner.QrCodeScannerActivity
+import java.util.*
+
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -41,16 +43,29 @@ class MLKitQrCodeScannerUtil : QrCodeScannerUtil {
     }
 
     override fun createQrCode(qrCodeContent: String, width: Int, height: Int): Bitmap {
-        // TODO: Use correct es level after user tests
-        val ecLevel = ErrorCorrectionLevel.values().first()
-        val barcodeEncoder = BarcodeEncoder()
-        return barcodeEncoder.encodeBitmap(
+        val multiFormatWriter = MultiFormatWriter()
+        val hints: MutableMap<EncodeHintType, Any> = EnumMap(
+            EncodeHintType::class.java
+        )
+        hints[EncodeHintType.MARGIN] = 0
+        val bitMatrix = multiFormatWriter.encode(
             qrCodeContent,
             BarcodeFormat.QR_CODE,
             width,
             height,
-            mapOf(EncodeHintType.ERROR_CORRECTION to ecLevel)
+            hints
         )
+        val bitmap = Bitmap.createBitmap(
+            width,
+            height,
+            Bitmap.Config.RGB_565
+        )
+        for (i in 0 until width) {
+            for (j in 0 until height) {
+                bitmap.setPixel(i, j, if (bitMatrix[i, j]) Color.BLACK else Color.WHITE)
+            }
+        }
+        return bitmap
     }
 
     override fun parseScanResult(resultIntent: Intent?): String? {

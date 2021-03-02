@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="nl.rijksoverheid.ctr.verifier">
 
-    <uses-sdk tools:overrideLibrary="com.google.zxing.client.android" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
