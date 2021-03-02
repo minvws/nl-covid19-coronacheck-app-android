@@ -8,6 +8,7 @@
 
 package nl.rijksoverheid.ctr.holder.usecase
 
+import com.squareup.moshi.JsonDataException
 import com.squareup.moshi.Moshi
 import nl.rijksoverheid.ctr.holder.myoverview.models.TokenQR
 import nl.rijksoverheid.ctr.shared.ext.toObject
@@ -16,11 +17,14 @@ import java.io.IOException
 
 class TokenQrUseCase(private val moshi: Moshi) {
 
-    fun checkValidQR(scannedQR: String) : TokenQrResult{
+    fun checkValidQR(scannedQR: String): TokenQrResult {
         return try {
             val scannedData = scannedQR.toObject<TokenQR>(moshi)
             TokenQrResult.Success("${scannedData.providerIdentifier}-${scannedData.token}")
-        }catch (e: IOException){
+        } catch (e: IOException) {
+            Timber.e(e)
+            TokenQrResult.Failed
+        } catch (e: JsonDataException) {
             Timber.e(e)
             TokenQrResult.Failed
         }
