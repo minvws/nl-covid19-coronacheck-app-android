@@ -21,7 +21,6 @@ import nl.rijksoverheid.ctr.holder.myoverview.items.MyOverviewTestResultExpiredA
 import nl.rijksoverheid.ctr.holder.myoverview.models.LocalTestResultState
 import nl.rijksoverheid.ctr.shared.ext.executeAfterAllAnimationsAreFinished
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
-import org.koin.androidx.viewmodel.ViewModelOwner
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

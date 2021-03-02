@@ -94,8 +94,6 @@ dependencies {
     implementation "androidx.preference:preference-ktx:$preference_version"
     implementation "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
     implementation "com.jakewharton.timber:timber:${timber_version}"
-    implementation("com.journeyapps:zxing-android-embedded:$zxing_android_version") { transitive = false }
-    implementation "com.google.zxing:core:$zxing_core_version"
 
     testImplementation "junit:junit:$junit_version"
     testImplementation "io.mockk:mockk:$mock_version"
