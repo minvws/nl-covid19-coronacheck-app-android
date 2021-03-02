@@ -99,5 +99,5 @@
     <string name="date_of_birth_check_confirmation">%1$s is de geboortedatum die op mijn identiteitsbewijs staat</string>
     <string name="date_of_birth_check_positive_button">Bevestig</string>
     <string name="date_of_birth_check_edit_button">Pas geboortedatum aan</string>
-    <string name="date_of_birth_check_dialog_text">Geboortedatum ingevuld</string>
+    <string name="date_of_birth_check_dialog_text">Geboortedatum\n ingevuld</string>
 </resources>
