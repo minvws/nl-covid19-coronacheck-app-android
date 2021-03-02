@@ -59,6 +59,4 @@ class TokenQrUseCaseTest {
             (result as TokenQrUseCase.TokenQrResult.Success).uniqueCode
         )
     }
-
-
 }
