@@ -53,7 +53,7 @@ class CommercialTestCodeFragment : BaseFragment(R.layout.fragment_commercial_tes
         })
 
         binding.uniqueCodeText.addTextChangedListener {
-            viewModel.testCode = it?.toString() ?: ""
+            viewModel.testCode = it?.toString()?.toUpperCase() ?: ""
         }
 
         binding.verificationCodeText.addTextChangedListener {
