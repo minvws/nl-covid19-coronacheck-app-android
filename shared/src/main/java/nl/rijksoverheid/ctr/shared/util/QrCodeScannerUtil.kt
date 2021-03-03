@@ -23,9 +23,11 @@ interface QrCodeScannerUtil {
     fun launchScanner(
         activity: Activity,
         activityResultLauncher: ActivityResultLauncher<Intent>,
+        customTitle: String,
         customMessage: String,
         rationaleDialogTitle: String? = null,
-        rationaleDialogDescription: String? = null
+        rationaleDialogDescription: String? = null,
+        rationaleDialogOkayButtonText: String? = null
     )
 
     fun createQrCode(qrCodeContent: String, width: Int, height: Int): Bitmap
@@ -37,17 +39,21 @@ class MLKitQrCodeScannerUtil : QrCodeScannerUtil {
     override fun launchScanner(
         activity: Activity,
         activityResultLauncher: ActivityResultLauncher<Intent>,
+        customTitle: String,
         customMessage: String,
         rationaleDialogTitle: String?,
-        rationaleDialogDescription: String?
+        rationaleDialogDescription: String?,
+        rationaleDialogOkayButtonText: String?
     ) {
         val rationaleDialog =
-            if (rationaleDialogTitle != null && rationaleDialogDescription != null) QrCodeScannerActivity.RationaleDialog(
+            if (rationaleDialogTitle != null && rationaleDialogDescription != null && rationaleDialogOkayButtonText != null) QrCodeScannerActivity.RationaleDialog(
                 rationaleDialogTitle,
-                rationaleDialogDescription
+                rationaleDialogDescription,
+                rationaleDialogOkayButtonText
             ) else null
         val intentScan = QrCodeScannerActivity.getIntent(
             context = activity,
+            customTitle = customTitle,
             customMessage = customMessage,
             rationaleDialog = rationaleDialog
         )

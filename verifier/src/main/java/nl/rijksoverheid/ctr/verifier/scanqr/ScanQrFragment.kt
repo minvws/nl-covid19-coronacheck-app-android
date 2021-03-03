@@ -93,9 +93,15 @@ class ScanQrFragment : BaseFragment() {
 
     private fun openScanner() {
         qrCodeScannerUtil.launchScanner(
-            requireActivity() as AppCompatActivity, qrScanResult, getString(
+            requireActivity() as AppCompatActivity, qrScanResult,
+            getString(
+                R.string.scanner_custom_title
+            ),getString(
                 R.string.scanner_custom_message
-            )
+            ),
+            getString(R.string.camera_rationale_dialog_title),
+            getString(R.string.camera_rationale_dialog_description),
+            getString(R.string.ok)
         )
     }
 }
