@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="app_status_deactivated_title">App buiten werking</string>
-    <string name="app_status_deactivated_action">Lees meer op de website</string>
-    <string name="app_status_update_required_title">Update vereist</string>
-    <string name="app_status_update_required_message">Download de laatste versie van de app om verder te gaan.</string>
-    <string name="app_status_update_required_action">Installeer update</string>
-</resources>
