@@ -2,8 +2,9 @@ package nl.rijksoverheid.ctr.holder.myoverview
 
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.xwray.groupie.GroupAdapter
@@ -21,8 +22,8 @@ import nl.rijksoverheid.ctr.holder.myoverview.items.MyOverviewTestResultExpiredA
 import nl.rijksoverheid.ctr.holder.myoverview.models.LocalTestResultState
 import nl.rijksoverheid.ctr.shared.ext.executeAfterAllAnimationsAreFinished
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
+import nl.rijksoverheid.ctr.shared.util.QrCodeUtil
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -36,7 +37,17 @@ class MyOverviewFragment : BaseFragment(R.layout.fragment_my_overview) {
     private val section = Section()
 
     private val localTestResultViewModel: LocalTestResultViewModel by sharedViewModel()
-    private val qrCodeViewModel: QrCodeViewModel by viewModel()
+    private val qrCodeHandler = Handler(Looper.getMainLooper())
+    private val qrCodeRunnable = object : Runnable {
+        override fun run() {
+            val canGenerateQrCode = localTestResultViewModel.generateQrCode(
+                size = resources.displayMetrics.widthPixels
+            )
+            if (canGenerateQrCode) {
+                qrCodeHandler.postDelayed(this, QrCodeUtil.VALID_FOR_SECONDS * 1000)
+            }
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -67,17 +78,14 @@ class MyOverviewFragment : BaseFragment(R.layout.fragment_my_overview) {
                             localTestResult = localTestResultState.localTestResult
                         )
 
-                        lifecycleScope.launchWhenResumed {
-                            qrCodeViewModel.generateQrCode(
-                                localTestResult = localTestResultState.localTestResult,
-                                qrCodeSize = resources.displayMetrics.widthPixels
-                            )
-                        }
+                        qrCodeHandler.post(qrCodeRunnable)
                     }
                 }
             })
 
-        qrCodeViewModel.qrCodeLiveData.observe(viewLifecycleOwner, EventObserver { qrCodeData ->
+        localTestResultViewModel.qrCodeLiveData.observe(
+            viewLifecycleOwner
+        ) { qrCodeData ->
             // Wait until previous recyclerview animations are finished, else there are weird ItemAnimator animations
             binding.recyclerView.executeAfterAllAnimationsAreFinished {
                 setItems(
@@ -85,9 +93,19 @@ class MyOverviewFragment : BaseFragment(R.layout.fragment_my_overview) {
                     qrCode = qrCodeData.qrCode
                 )
             }
-        })
+        }
 
         localTestResultViewModel.getLocalTestResult()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        qrCodeHandler.post(qrCodeRunnable)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        qrCodeHandler.removeCallbacks(qrCodeRunnable)
     }
 
     private fun setItems(

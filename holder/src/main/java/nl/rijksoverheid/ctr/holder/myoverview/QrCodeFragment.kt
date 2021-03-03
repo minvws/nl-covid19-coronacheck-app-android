@@ -1,16 +1,18 @@
 package nl.rijksoverheid.ctr.holder.myoverview
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.DialogQrCodeBinding
+import nl.rijksoverheid.ctr.shared.util.QrCodeUtil
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import nl.rijksoverheid.ctr.shared.ext.formatDateShort
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -18,6 +20,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneId
+
 
 
 /*
@@ -32,7 +35,17 @@ class QrCodeFragment : DialogFragment() {
     private lateinit var binding: DialogQrCodeBinding
 
     private val localTestResultViewModel: LocalTestResultViewModel by sharedViewModel()
-    private val qrCodeViewModel: QrCodeViewModel by viewModel()
+    private val qrCodeHandler = Handler(Looper.getMainLooper())
+    private val qrCodeRunnable = object : Runnable {
+        override fun run() {
+            val canGenerateQrCode = localTestResultViewModel.generateQrCode(
+                size = resources.displayMetrics.widthPixels
+            )
+            if (canGenerateQrCode) {
+                qrCodeHandler.postDelayed(this, QrCodeUtil.VALID_FOR_SECONDS * 1000)
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,34 +72,30 @@ class QrCodeFragment : DialogFragment() {
         params?.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_FULL
         dialog?.window?.attributes = params
 
-        qrCodeViewModel.qrCodeLiveData.observe(viewLifecycleOwner, EventObserver {
+        localTestResultViewModel.qrCodeLiveData.observe(viewLifecycleOwner) {
             binding.image.setImageBitmap(it.qrCode)
             binding.loading.visibility = View.GONE
             binding.content.visibility = View.VISIBLE
-        })
+        }
 
         val localTestResult = localTestResultViewModel.retrievedLocalTestResult
         if (localTestResult == null) {
             // No credentials in cache, go back to overview
             findNavController().popBackStack()
-        } else {
-            binding.title.text = OffsetDateTime.ofInstant(
-                Instant.ofEpochMilli(localTestResult.dateOfBirthMillis),
-                ZoneId.of("UTC")
-            ).formatDateShort()
-
-            binding.image.doOnPreDraw {
-                lifecycleScope.launchWhenResumed {
-                    qrCodeViewModel.generateQrCode(
-                        localTestResult = localTestResult,
-                        qrCodeSize = binding.image.height
-                    )
-                }
-            }
-        }
+        } 
 
         binding.toolbar.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        qrCodeHandler.post(qrCodeRunnable)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        qrCodeHandler.removeCallbacks(qrCodeRunnable)
     }
 }

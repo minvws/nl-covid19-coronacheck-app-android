@@ -6,7 +6,9 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.holder.models.LocalTestResult
 import nl.rijksoverheid.ctr.holder.myoverview.models.LocalTestResultState
+import nl.rijksoverheid.ctr.holder.myoverview.models.QrCodeData
 import nl.rijksoverheid.ctr.holder.usecase.LocalTestResultUseCase
+import nl.rijksoverheid.ctr.holder.usecase.QrCodeUseCase
 import nl.rijksoverheid.ctr.holder.usecase.SecretKeyUseCase
 import nl.rijksoverheid.ctr.shared.livedata.Event
 
@@ -20,16 +22,19 @@ import nl.rijksoverheid.ctr.shared.livedata.Event
 
 abstract class LocalTestResultViewModel : ViewModel() {
 
+    val qrCodeLiveData = MutableLiveData<QrCodeData>()
     val localTestResultStateLiveData = MutableLiveData<Event<LocalTestResultState>>()
     val retrievedLocalTestResult: LocalTestResult?
         get() = (localTestResultStateLiveData.value?.peekContent() as? LocalTestResultState.Valid)?.localTestResult
 
     abstract fun getLocalTestResult()
+    abstract fun generateQrCode(size: Int): Boolean
 }
 
 open class LocalTestResultViewModelImpl(
     private val secretKeyUseCase: SecretKeyUseCase,
-    private val localTestResultUseCase: LocalTestResultUseCase
+    private val localTestResultUseCase: LocalTestResultUseCase,
+    private val qrCodeUseCase: QrCodeUseCase
 ) : LocalTestResultViewModel() {
 
     override fun getLocalTestResult() {
@@ -38,5 +43,28 @@ open class LocalTestResultViewModelImpl(
             val localTestResultState = localTestResultUseCase.get()
             localTestResultStateLiveData.value = Event(localTestResultState)
         }
+    }
+
+    /**
+     * Generate a qr code from the local test result retrieved in [getLocalTestResult]
+     * @param size The size of the qr code
+     * @return If a qr code can be generated
+     */
+    override fun generateQrCode(size: Int): Boolean {
+        retrievedLocalTestResult?.let {
+            viewModelScope.launch {
+                val qrCodeBitmap = qrCodeUseCase.qrCode(
+                    credentials = it.credentials.toByteArray(),
+                    qrCodeWidth = size,
+                    qrCodeHeight = size
+                )
+                qrCodeLiveData.value =
+                    QrCodeData(
+                        localTestResult = it,
+                        qrCode = qrCodeBitmap
+                    )
+            }
+        }
+        return retrievedLocalTestResult != null
     }
 }
