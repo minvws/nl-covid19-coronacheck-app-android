@@ -11,16 +11,12 @@ import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.DialogQrCodeBinding
+import nl.rijksoverheid.ctr.shared.ext.formatDateShort
 import nl.rijksoverheid.ctr.shared.util.QrCodeUtil
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import nl.rijksoverheid.ctr.shared.ext.formatDateShort
-import nl.rijksoverheid.ctr.shared.livedata.EventObserver
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneId
-
 
 
 /*
@@ -73,6 +69,10 @@ class QrCodeFragment : DialogFragment() {
         dialog?.window?.attributes = params
 
         localTestResultViewModel.qrCodeLiveData.observe(viewLifecycleOwner) {
+            binding.title.text = OffsetDateTime.ofInstant(
+                Instant.ofEpochMilli(it.localTestResult.dateOfBirthMillis),
+                ZoneId.of("UTC")
+            ).formatDateShort()
             binding.image.setImageBitmap(it.qrCode)
             binding.loading.visibility = View.GONE
             binding.content.visibility = View.VISIBLE
@@ -82,7 +82,7 @@ class QrCodeFragment : DialogFragment() {
         if (localTestResult == null) {
             // No credentials in cache, go back to overview
             findNavController().popBackStack()
-        } 
+        }
 
         binding.toolbar.setNavigationOnClickListener {
             findNavController().popBackStack()
