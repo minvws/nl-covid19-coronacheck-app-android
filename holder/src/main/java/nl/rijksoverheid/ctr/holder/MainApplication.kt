@@ -92,7 +92,10 @@ class MainApplication : SharedApplication(), CoronaCheckApp {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 it.startActivity(intent)
                 it.overridePendingTransition(0, 0)
-            }
+            },
+            privacyPolicyStringResource = R.string.privacy_policy_description,
+            privacyPolicyCheckboxStringResource = R.string.privacy_policy_checkbox_text,
+            onboardingNextButtonStringResource = R.string.onboarding_next
         )
     }
 }

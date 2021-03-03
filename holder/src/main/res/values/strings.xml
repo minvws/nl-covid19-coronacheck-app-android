@@ -94,6 +94,7 @@
     <string name="date_of_birth_input_description"><![CDATA[We vragen je je geboortedatum in te vullen, zoals die op je identiteitsbewijs staat. Let op: je kan deze later niet meer aanpassen.<br\><br\>Zo controleren we of een testresultaat ook echt bij jou hoort.]]></string>
     <string name="date_of_birth_input_helper_text">Geboortedatum</string>
     <string name="date_of_birth_input_hint">01 Januari 1980</string>
+    <string name="date_of_birth_input_next">Volgende</string>
     <string name="date_of_birth_check_title">Controleer je geboortedatum</string>
     <string name="date_of_birth_check_description"><![CDATA[Komt <b>%1$s</b> overeen met de geboortedatum zoals die op je identiteitsbewijs staat?<br/><br/>Je kan je geboortedatum later niet meer aanpassen.]]></string>
     <string name="date_of_birth_check_confirmation">%1$s is de geboortedatum die op mijn identiteitsbewijs staat</string>

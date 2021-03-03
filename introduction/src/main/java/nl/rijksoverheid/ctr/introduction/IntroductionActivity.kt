@@ -37,4 +37,16 @@ class IntroductionActivity : AppCompatActivity() {
         return coronaCheckApp.getIntroductionData().introductionDoneCallback
     }
 
+    fun getPrivacyPolicyDescription() : Int {
+        return coronaCheckApp.getIntroductionData().privacyPolicyStringResource
+    }
+
+    fun getPrivacyPolicyCheckboxDescription() : Int {
+        return coronaCheckApp.getIntroductionData().privacyPolicyCheckboxStringResource
+    }
+
+    fun getOnboardingNextString() : Int {
+        return coronaCheckApp.getIntroductionData().onboardingNextButtonStringResource
+    }
+
 }
