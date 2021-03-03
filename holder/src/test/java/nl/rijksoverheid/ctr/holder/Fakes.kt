@@ -3,13 +3,16 @@ package nl.rijksoverheid.ctr.holder
 import android.graphics.Bitmap
 import nl.rijksoverheid.ctr.api.models.*
 import nl.rijksoverheid.ctr.api.repositories.TestResultRepository
+import nl.rijksoverheid.ctr.holder.models.LocalTestResult
 import nl.rijksoverheid.ctr.holder.myoverview.LocalTestResultViewModel
 import nl.rijksoverheid.ctr.holder.myoverview.models.LocalTestResultState
+import nl.rijksoverheid.ctr.holder.myoverview.models.QrCodeData
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.repositories.TestProviderRepository
 import nl.rijksoverheid.ctr.holder.usecase.*
 import nl.rijksoverheid.ctr.shared.livedata.Event
+import java.time.OffsetDateTime
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -34,11 +37,30 @@ fun fakeQrCodeUseCase(
 }
 
 fun fakeLocalTestResultViewModel(
-    localTestResultState: LocalTestResultState = LocalTestResultState.None
+    localTestResultState: LocalTestResultState = LocalTestResultState.None,
 ): LocalTestResultViewModel {
     return object : LocalTestResultViewModel() {
         override fun getLocalTestResult() {
             localTestResultStateLiveData.value = Event(localTestResultState)
+        }
+
+        override fun generateQrCode(size: Int): Boolean {
+            if (localTestResultState is LocalTestResultState.Valid) {
+                qrCodeLiveData.value =
+                    QrCodeData(
+                        localTestResult = LocalTestResult(
+                            credentials = "dummy",
+                            sampleDate = OffsetDateTime.now(),
+                            expireDate = OffsetDateTime.now(),
+                            testType = "dummy",
+                            dateOfBirthMillis = 0L
+                        ),
+                        qrCode = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
+                    )
+                return true
+            } else {
+                return false
+            }
         }
     }
 }
