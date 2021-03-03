@@ -9,13 +9,18 @@
 package nl.rijksoverheid.ctr.holder.usecase
 
 import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import nl.rijksoverheid.ctr.holder.myoverview.models.TokenQR
 import nl.rijksoverheid.ctr.shared.ext.toObject
-import org.junit.Assert
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.koin.test.AutoCloseKoinTest
+import org.koin.test.get
+import org.robolectric.RobolectricTestRunner
 
-class TokenQrUseCaseTest {
+@RunWith(RobolectricTestRunner::class)
+class TokenQrUseCaseTest : AutoCloseKoinTest() {
 
     private val validInput =
         "{\"token\":\"TTTTTTTTT2\",\"protocolVersion\":\"1.0\",\"providerIdentifier\":\"BRB\"}"
@@ -24,29 +29,25 @@ class TokenQrUseCaseTest {
     private val invalidInputIncorrectValues =
         "{\"token\":\"TTTTTTTTT2\",\"protocolVersion\":1,\"providerIdentifier\": BRB }"
 
-    private val moshi: Moshi = Moshi.Builder()
-        .add(KotlinJsonAdapterFactory()).build()
+    private val moshi: Moshi = get()
     private val tokenQrUseCase = TokenQrUseCase(moshi)
 
     @Test
     fun `tokenQrResult returns Success if supplied with a valid token and providerIdentifier`() {
         val result = tokenQrUseCase.checkValidQR(validInput)
-
-        Assert.assertTrue(result is TokenQrUseCase.TokenQrResult.Success)
+        assertTrue(result is TokenQrUseCase.TokenQrResult.Success)
     }
 
     @Test
     fun `tokenQrResult returns Failed if supplied with an invalid token or providerIdentifier`() {
         val result = tokenQrUseCase.checkValidQR(invalidInputMissingToken)
-
-        Assert.assertTrue(result is TokenQrUseCase.TokenQrResult.Failed)
+        assertTrue(result is TokenQrUseCase.TokenQrResult.Failed)
     }
 
     @Test
     fun `tokenQrResult returns Failed if supplied with malformed input`() {
         val result = tokenQrUseCase.checkValidQR(invalidInputIncorrectValues)
-
-        Assert.assertTrue(result is TokenQrUseCase.TokenQrResult.Failed)
+        assertTrue(result is TokenQrUseCase.TokenQrResult.Failed)
     }
 
     @Test
@@ -54,7 +55,7 @@ class TokenQrUseCaseTest {
         val tokenQr = validInput.toObject<TokenQR>(moshi)
         val expectedResult = "${tokenQr.providerIdentifier}-${tokenQr.token}"
         val result = tokenQrUseCase.checkValidQR(validInput)
-        Assert.assertEquals(
+        assertEquals(
             expectedResult,
             (result as TokenQrUseCase.TokenQrResult.Success).uniqueCode
         )
