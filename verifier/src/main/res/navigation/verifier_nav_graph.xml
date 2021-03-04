@@ -82,7 +82,7 @@
     <fragment
         android:id="@+id/nav_app_status"
         android:name="nl.rijksoverheid.ctr.appconfig.AppStatusFragment"
-        tools:layout="@layout/activity_app_status" />
+        tools:layout="@layout/fragment_app_status" />
 
     <action
         android:id="@+id/action_app_status"

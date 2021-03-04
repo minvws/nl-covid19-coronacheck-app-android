@@ -8,38 +8,30 @@
 
 package nl.rijksoverheid.ctr.appconfig
 
-import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import androidx.annotation.StringRes
-import androidx.appcompat.app.AppCompatActivity
-import nl.rijksoverheid.ctr.appconfig.databinding.ActivityAppStatusBinding
+import androidx.fragment.app.Fragment
+import nl.rijksoverheid.ctr.appconfig.databinding.FragmentAppStatusBinding
 import nl.rijksoverheid.ctr.appconfig.model.AppStatus
 
-class AppStatusActivity : AppCompatActivity() {
+class AppStatusFragment : Fragment(R.layout.fragment_app_status) {
 
     companion object {
-        private const val EXTRA_APP_STATUS = "EXTRA_APP_STATUS"
-
-        fun launch(activity: Activity, appStatus: AppStatus) {
-            val intent = Intent(activity, AppStatusActivity::class.java)
-            intent.putExtra(EXTRA_APP_STATUS, appStatus)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            activity.startActivity(intent)
-            activity.overridePendingTransition(0, 0)
-        }
+        const val EXTRA_APP_STATUS = "EXTRA_APP_STATUS"
     }
 
-    private val appStatusStrings by lazy { (application as AppStatusStringProvider).getAppStatusStrings() }
+    private val appStatusStrings by lazy { (requireActivity().application as AppStatusStringProvider).getAppStatusStrings() }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val binding = ActivityAppStatusBinding.inflate(layoutInflater)
-        val appStatus = intent.getParcelableExtra<AppStatus>(EXTRA_APP_STATUS)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        setContentView(binding.root)
+        val binding = FragmentAppStatusBinding.bind(view)
+        val appStatus = arguments?.getParcelable<AppStatus>(EXTRA_APP_STATUS)
+            ?: throw IllegalStateException("AppStatus should not be null")
 
         when (appStatus) {
             is AppStatus.Deactivated -> {
@@ -82,7 +74,10 @@ class AppStatusActivity : AppCompatActivity() {
     }
 
     private fun openPlayStore() {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName"))
+        val intent = Intent(
+            Intent.ACTION_VIEW,
+            Uri.parse("market://details?id=${requireContext().packageName}")
+        )
             .setPackage("com.android.vending")
         try {
             startActivity(intent)
@@ -91,14 +86,14 @@ class AppStatusActivity : AppCompatActivity() {
             startActivity(
                 Intent(
                     Intent.ACTION_VIEW,
-                    Uri.parse("https://play.google.com/store/apps/details?id=$packageName")
+                    Uri.parse("https://play.google.com/store/apps/details?id=${requireContext().packageName}")
                 )
             )
         }
     }
 }
 
-private fun ActivityAppStatusBinding.bind(
+private fun FragmentAppStatusBinding.bind(
     @StringRes title: Int,
     @StringRes message: Int,
     @StringRes action: Int,

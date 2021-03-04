@@ -9,15 +9,16 @@
 package nl.rijksoverheid.ctr.holder
 
 import android.os.Bundle
+import android.view.View
 import android.view.WindowManager
+import androidx.core.os.bundleOf
 import androidx.core.view.GravityCompat
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
-import nl.rijksoverheid.ctr.appconfig.AppStatusActivity
+import nl.rijksoverheid.ctr.appconfig.AppStatusFragment
 import nl.rijksoverheid.ctr.appconfig.AppStatusViewModel
-import nl.rijksoverheid.ctr.appconfig.model.AppStatus
 import nl.rijksoverheid.ctr.holder.databinding.ActivityMainBinding
 import nl.rijksoverheid.ctr.shared.BaseActivity
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
@@ -48,6 +49,17 @@ class HolderMainActivity : BaseActivity(R.id.nav_my_overview) {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
+        navController.addOnDestinationChangedListener { controller, destination, arguments ->
+            if (destination.id in arrayOf(
+                    R.id.nav_app_status
+                )
+            ) {
+                binding.toolbar.visibility = View.GONE
+            } else {
+                binding.toolbar.visibility = View.VISIBLE
+            }
+        }
+
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.nav_status,
@@ -83,10 +95,8 @@ class HolderMainActivity : BaseActivity(R.id.nav_my_overview) {
 
 
         appStatusViewModel.appStatus.observe(this) {
-            AppStatusActivity.launch(
-                activity = this,
-                appStatus = it
-            )
+            val bundle = bundleOf(AppStatusFragment.EXTRA_APP_STATUS to it)
+            navController.navigate(R.id.action_app_status, bundle)
         }
     }
 
