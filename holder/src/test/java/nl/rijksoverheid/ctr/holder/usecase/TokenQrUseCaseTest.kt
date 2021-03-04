@@ -16,7 +16,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest
-import org.koin.test.get
+import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
@@ -29,7 +29,7 @@ class TokenQrUseCaseTest : AutoCloseKoinTest() {
     private val invalidInputIncorrectValues =
         "{\"token\":\"TTTTTTTTT2\",\"protocolVersion\":1,\"providerIdentifier\": BRB }"
 
-    private val moshi: Moshi = get()
+    private val moshi: Moshi by inject()
     private val tokenQrUseCase = TokenQrUseCase(moshi)
 
     @Test
