@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.holder
 import android.content.Intent
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.api.apiModule
+import nl.rijksoverheid.ctr.appconfig.AppStatusStringProvider
 import nl.rijksoverheid.ctr.appconfig.appConfigModule
 import nl.rijksoverheid.ctr.introduction.CoronaCheckApp
 import nl.rijksoverheid.ctr.introduction.IntroductionActivity
@@ -23,7 +24,7 @@ import org.koin.core.context.startKoin
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class MainApplication : SharedApplication(), CoronaCheckApp {
+class MainApplication : SharedApplication(), CoronaCheckApp, AppStatusStringProvider {
 
     override fun onCreate() {
         super.onCreate()
@@ -92,7 +93,20 @@ class MainApplication : SharedApplication(), CoronaCheckApp {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 it.startActivity(intent)
                 it.overridePendingTransition(0, 0)
-            }
+            },
+            privacyPolicyStringResource = R.string.privacy_policy_description,
+            privacyPolicyCheckboxStringResource = R.string.privacy_policy_checkbox_text,
+            onboardingNextButtonStringResource = R.string.onboarding_next
+        )
+    }
+
+    override fun getAppStatusStrings(): AppStatusStringProvider.AppStatusStrings {
+        return AppStatusStringProvider.AppStatusStrings(
+            appStatusDeactivatedTitle = R.string.app_status_deactivated_title,
+            appStatusDeactivatedAction = R.string.app_status_deactivated_action,
+            appStatusUpdateRequiredAction = R.string.app_status_update_required_action,
+            appStatusUpdateRequiredMessage = R.string.app_status_update_required_message,
+            appStatusUpdateRequiredTitle = R.string.app_status_update_required_title
         )
     }
 }

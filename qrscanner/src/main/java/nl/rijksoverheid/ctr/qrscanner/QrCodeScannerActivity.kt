@@ -62,6 +62,11 @@ class QrCodeScannerActivity : AppCompatActivity() {
         intent.getStringExtra(EXTRA_CUSTOM_MESSAGE)?.let {
             binding.scannerHeader.text = it
         }
+
+        // Check for custom title
+        intent.getStringExtra(EXTRA_CUSTOM_TITLE)?.let {
+            binding.toolbar.title = it
+        }
     }
 
     override fun onStart() {
@@ -288,7 +293,7 @@ class QrCodeScannerActivity : AppCompatActivity() {
         MaterialAlertDialogBuilder(this)
             .setTitle(rationaleDialog.title)
             .setMessage(rationaleDialog.description)
-            .setPositiveButton(R.string.ok) { dialog, which ->
+            .setPositiveButton(rationaleDialog.okayButtonText) { dialog, which ->
                 requestPermission()
             }
             .show()
@@ -301,13 +306,16 @@ class QrCodeScannerActivity : AppCompatActivity() {
         private const val RATIO_16_9_VALUE = 16.0 / 9.0
         private const val EXTRA_CUSTOM_MESSAGE = "customMessage"
         private const val EXTRA_RATIONALE_DIALOG = "EXTRA_RATIONALE_DIALOG"
+        private const val EXTRA_CUSTOM_TITLE = "customTitle"
 
         fun getIntent(
             context: Context,
+            customTitle : String,
             customMessage: String,
             rationaleDialog: RationaleDialog?
         ): Intent {
             val intent = Intent(context, QrCodeScannerActivity::class.java)
+            intent.putExtra(EXTRA_CUSTOM_TITLE, customTitle)
             intent.putExtra(EXTRA_CUSTOM_MESSAGE, customMessage)
             intent.putExtra(EXTRA_RATIONALE_DIALOG, rationaleDialog)
             return intent
@@ -317,6 +325,7 @@ class QrCodeScannerActivity : AppCompatActivity() {
     @Parcelize
     data class RationaleDialog(
         val title: String,
-        val description: String
+        val description: String,
+        val okayButtonText: String
     ) : Parcelable
 }

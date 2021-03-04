@@ -11,7 +11,6 @@ import com.xwray.groupie.Section
 import nl.rijksoverheid.ctr.introduction.BuildConfig
 import nl.rijksoverheid.ctr.introduction.IntroductionActivity
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
-import nl.rijksoverheid.ctr.introduction.R
 import nl.rijksoverheid.ctr.introduction.databinding.FragmentPrivacyPolicyBinding
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
@@ -49,10 +48,14 @@ class PrivacyPolicyFragment : Fragment() {
             }
         }
 
-        binding.description.text = getString(R.string.privacy_policy_description).fromHtml()
+        binding.description.text =
+            getString(introductionActivity.getPrivacyPolicyDescription()).fromHtml()
         binding.description.setOnClickListener {
             BuildConfig.URL_PRIVACY_STATEMENT.launchUrl(requireContext())
         }
+        binding.checkbox.text =
+            getString(introductionActivity.getPrivacyPolicyCheckboxDescription())
+        binding.button.text = getString(introductionActivity.getOnboardingNextString())
 
         val adapterItems = introductionActivity.getPrivacyPolicyItems().map {
             PrivacyPolicyAdapterItem(

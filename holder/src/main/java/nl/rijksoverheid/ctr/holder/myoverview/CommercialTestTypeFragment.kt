@@ -53,11 +53,13 @@ class CommercialTestTypeFragment : Fragment(R.layout.fragment_commercial_test_ty
             qrCodeScannerUtil.launchScanner(
                 requireActivity() as AppCompatActivity,
                 qrScanResult,
+                getString(R.string.commercial_test_scanner_custom_title),
                 getString(
                     R.string.commercial_test_scanner_custom_message
                 ),
                 getString(R.string.camera_rationale_dialog_title),
-                getString(R.string.camera_rationale_dialog_description)
+                getString(R.string.camera_rationale_dialog_description),
+                getString(R.string.ok)
             )
         }
 

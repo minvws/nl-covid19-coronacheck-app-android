@@ -77,6 +77,7 @@ class OnboardingFragment : Fragment() {
             binding.viewPager.currentItem = binding.viewPager.currentItem - 1
         }
 
+        binding.button.text = getString(introductionActivity.getOnboardingNextString())
         binding.button.setOnClickListener {
             val currentItem = binding.viewPager.currentItem
             if (currentItem == adapter.itemCount - 1) {

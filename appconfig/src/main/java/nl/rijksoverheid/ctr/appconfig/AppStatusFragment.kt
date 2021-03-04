@@ -22,27 +22,30 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 class AppStatusFragment : Fragment(R.layout.fragment_app_status) {
 
     private val viewModel: AppStatusViewModel by sharedViewModel()
+    private val appStatusStringProvider by lazy { requireActivity().application as AppStatusStringProvider }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentAppStatusBinding.bind(view)
 
+        val appStatusStrings = appStatusStringProvider.getAppStatusStrings()
+
         viewModel.appStatus.observe(viewLifecycleOwner) {
             when (it) {
                 is AppStatus.Deactivated -> {
                     binding.bind(
-                        R.string.app_status_deactivated_title,
+                        appStatusStrings.appStatusDeactivatedTitle,
                         it.message,
-                        R.string.app_status_deactivated_action
+                        appStatusStrings.appStatusDeactivatedAction
                     ) {
                         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(it.informationUrl)))
                     }
                 }
                 is AppStatus.UpdateRequired -> {
                     binding.bind(
-                        R.string.app_status_update_required_title,
-                        it.message ?: getString(R.string.app_status_update_required_message),
-                        R.string.app_status_update_required_action
+                        appStatusStrings.appStatusUpdateRequiredTitle,
+                        it.message ?: getString(appStatusStrings.appStatusUpdateRequiredMessage),
+                        appStatusStrings.appStatusUpdateRequiredAction
                     ) {
                         openPlayStore()
                     }
