@@ -86,7 +86,6 @@ class AppStatusUseCaseTest {
 
     @Test
     fun `status returns NoActionRequired when app is up to date`() = runBlocking {
-        val publicKeys = PublicKeys(clKeys = listOf(PublicKeys.ClKey("dummy1", "dummy2")))
         val fakeApi = object : AppConfigApi {
             override suspend fun getConfig(): AppConfig =
                 AppConfig(
@@ -94,14 +93,13 @@ class AppStatusUseCaseTest {
                     informationURL = "http://www.website.nl"
                 )
 
-            override suspend fun getPublicKeys(): PublicKeys {
-                return publicKeys
-            }
+            override suspend fun getPublicKeys(): PublicKeys =
+                PublicKeys(clKeys = listOf())
         }
         val configRepository = ConfigRepositoryImpl(api = fakeApi)
         val appStatusUseCase = AppConfigUseCase(configRepository)
         val appStatus = appStatusUseCase.status(currentVersionCode = 2)
-        assertEquals(appStatus, AppStatus.NoActionRequired(publicKeys))
+        assertEquals(appStatus, AppStatus.NoActionRequired)
     }
 
     @Test

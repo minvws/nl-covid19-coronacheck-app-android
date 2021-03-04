@@ -104,6 +104,7 @@
     <string name="date_of_birth_check_dialog_text">Geboortedatum\n ingevuld</string>
     <string name="camera_rationale_dialog_title">CoronaCheck wil toegang tot je camera</string>
     <string name="camera_rationale_dialog_description">Zo kan de app je QR-code scannen</string>
+    <string name="app_setup_text">We starten de app voor je op…</string>
 
     <!-- App Status strings -->
     <string name="app_status_deactivated_title">App buiten werking</string>

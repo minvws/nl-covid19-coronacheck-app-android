@@ -51,6 +51,7 @@
     <string name="scanner_custom_message">Richt je toestel op de QR-code op het scherm van de bezoeker.</string>
     <string name="camera_rationale_dialog_title">Scanner wil toegang tot je camera</string>
     <string name="camera_rationale_dialog_description">Zo kan de app QR-codes scannen</string>
+    <string name="app_setup_text">We starten de app voor je op…</string>
 
     <!-- App Status strings -->
     <string name="app_status_deactivated_title">App buiten werking</string>

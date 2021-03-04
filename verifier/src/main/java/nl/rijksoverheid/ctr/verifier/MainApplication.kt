@@ -80,7 +80,9 @@ class MainApplication : SharedApplication(), CoronaCheckApp, AppStatusStringProv
             },
             privacyPolicyStringResource = R.string.privacy_policy_description,
             privacyPolicyCheckboxStringResource = R.string.privacy_policy_checkbox_text,
-            onboardingNextButtonStringResource = R.string.onboarding_next
+            onboardingNextButtonStringResource = R.string.onboarding_next,
+            launchScreen = R.drawable.launch_screen,
+            appSetupTextResource = R.string.app_setup_text
         )
     }
 

@@ -48,4 +48,9 @@
         <item name="android:textColorPrimary">@color/white</item>
         <item name="colorControlNormal">@color/white</item>
     </style>
+
+    <style name="ThemeOverlay.AppTheme.Splash" parent="">
+        <item name="android:textColorPrimary">@color/grey</item>
+    </style>
+
 </resources>

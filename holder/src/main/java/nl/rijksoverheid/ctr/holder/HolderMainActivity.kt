@@ -53,6 +53,7 @@ class HolderMainActivity : BaseActivity(R.id.nav_my_overview) {
         val navController = navHostFragment.navController
         navController.addOnDestinationChangedListener { _, destination, _ ->
             if (destination.id in arrayOf(
+                    R.id.nav_setup,
                     R.id.nav_app_status,
                     R.id.nav_onboarding,
                     R.id.nav_privacy_policy
