@@ -22,7 +22,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 class AppStatusFragment : Fragment(R.layout.fragment_app_status) {
 
     private val viewModel: AppStatusViewModel by sharedViewModel()
-    private val appStatusStringProvider by lazy { activity?.application as AppStatusStringProvider }
+    private val appStatusStringProvider by lazy { requireActivity().application as AppStatusStringProvider }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
