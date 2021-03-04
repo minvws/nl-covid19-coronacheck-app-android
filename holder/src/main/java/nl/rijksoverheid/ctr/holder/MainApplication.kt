@@ -103,10 +103,14 @@ class MainApplication : SharedApplication(), CoronaCheckApp, AppStatusStringProv
     override fun getAppStatusStrings(): AppStatusStringProvider.AppStatusStrings {
         return AppStatusStringProvider.AppStatusStrings(
             appStatusDeactivatedTitle = R.string.app_status_deactivated_title,
+            appStatusDeactivatedMessage = R.string.app_status_deactivated_message,
             appStatusDeactivatedAction = R.string.app_status_deactivated_action,
             appStatusUpdateRequiredAction = R.string.app_status_update_required_action,
             appStatusUpdateRequiredMessage = R.string.app_status_update_required_message,
-            appStatusUpdateRequiredTitle = R.string.app_status_update_required_title
+            appStatusUpdateRequiredTitle = R.string.app_status_update_required_title,
+            appStatusInternetRequiredTitle = R.string.app_status_internet_required_title,
+            appStatusInternetRequiredMessage = R.string.app_status_internet_required_message,
+            appStatusInternetRequiredAction = R.string.app_status_internet_required_action
         )
     }
 }

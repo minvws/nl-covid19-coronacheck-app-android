@@ -8,8 +8,20 @@
 
 package nl.rijksoverheid.ctr.appconfig.model
 
-sealed class AppStatus {
-    data class UpdateRequired(val message: String?) : AppStatus()
-    data class Deactivated(val message: String, val informationUrl: String) : AppStatus()
-    object UpToDate : AppStatus()
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+sealed class AppStatus : Parcelable {
+
+    @Parcelize
+    object UpdateRequired : AppStatus(), Parcelable
+
+    @Parcelize
+    data class Deactivated(val informationUrl: String) : AppStatus(), Parcelable
+
+    @Parcelize
+    object InternetRequired : AppStatus(), Parcelable
+
+    @Parcelize
+    object NoActionRequired : AppStatus(), Parcelable
 }

@@ -9,6 +9,7 @@
 package nl.rijksoverheid.ctr.appconfig
 
 import nl.rijksoverheid.ctr.appconfig.api.AppConfigApi
+import nl.rijksoverheid.ctr.appconfig.usecase.AppConfigUseCase
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -20,8 +21,8 @@ import retrofit2.Retrofit
  * @param versionCode version code
  */
 fun appConfigModule(path: String, versionCode: Int) = module {
-    factory { ConfigRepository(get()) }
-    factory { AppStatusUseCase(get()) }
+    factory<ConfigRepository> { ConfigRepositoryImpl(get()) }
+    factory { AppConfigUseCase(get()) }
 
     single {
         val retrofit = get(Retrofit::class.java)

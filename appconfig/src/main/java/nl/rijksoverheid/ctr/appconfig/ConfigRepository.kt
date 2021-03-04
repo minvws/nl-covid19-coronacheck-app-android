@@ -10,16 +10,19 @@ package nl.rijksoverheid.ctr.appconfig
 
 import nl.rijksoverheid.ctr.appconfig.api.AppConfigApi
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
+import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
 
-import timber.log.Timber
+interface ConfigRepository {
+    suspend fun getConfig(): AppConfig
+    suspend fun getPublicKeys(): PublicKeys
+}
 
-class ConfigRepository(private val api: AppConfigApi) {
-    suspend fun getConfigOrDefault(): AppConfig {
-        return try {
-            api.getConfig()
-        } catch (ex: Exception) {
-            Timber.w(ex, "Error fetching app config, returning default")
-            AppConfig()
-        }
+class ConfigRepositoryImpl(private val api: AppConfigApi): ConfigRepository {
+    override suspend fun getConfig(): AppConfig {
+        return api.getConfig()
+    }
+
+    override suspend fun getPublicKeys(): PublicKeys {
+        return api.getPublicKeys()
     }
 }

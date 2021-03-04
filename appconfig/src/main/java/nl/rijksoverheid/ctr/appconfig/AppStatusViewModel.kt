@@ -12,9 +12,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import androidx.lifecycle.switchMap
+import nl.rijksoverheid.ctr.appconfig.usecase.AppConfigUseCase
 
 class AppStatusViewModel(
-    private val appStatusUseCase: AppStatusUseCase,
+    private val appStatusUseCase: AppConfigUseCase,
     private val versionCode: Int
 ) : ViewModel() {
 

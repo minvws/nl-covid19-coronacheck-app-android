@@ -6,6 +6,13 @@
   ~
   -->
 
-<manifest package="nl.rijksoverheid.ctr.appconfig">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="nl.rijksoverheid.ctr.appconfig">
 
+    <application>
+        <activity
+            android:name=".AppStatusActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+    </application>
 </manifest>

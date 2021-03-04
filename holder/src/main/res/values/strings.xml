@@ -107,8 +107,12 @@
 
     <!-- App Status strings -->
     <string name="app_status_deactivated_title">App buiten werking</string>
-    <string name="app_status_deactivated_action">Lees meer op de website</string>
+    <string name="app_status_deactivated_message">De app is niet meer in gebruik. Ga voor meer informatie naar CoronaCheck.nl</string>
+    <string name="app_status_deactivated_action">Ga naar coronacheck.nl</string>
     <string name="app_status_update_required_title">Update vereist</string>
     <string name="app_status_update_required_message">Download de laatste versie van de app om verder te gaan.</string>
     <string name="app_status_update_required_action">Installeer update</string>
+    <string name="app_status_internet_required_title">Je hebt geen internetverbinding</string>
+    <string name="app_status_internet_required_message">Controleer je wifi of zet mobiele data aan.</string>
+    <string name="app_status_internet_required_action">Probeer opnieuw</string>
 </resources>
