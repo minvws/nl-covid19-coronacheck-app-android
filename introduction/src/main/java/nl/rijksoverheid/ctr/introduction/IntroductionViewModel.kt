@@ -14,14 +14,7 @@ import nl.rijksoverheid.ctr.shared.livedata.Event
  */
 class IntroductionViewModel(private val introductionPersistenceManager: IntroductionPersistenceManager) :
     ViewModel() {
-
-    val introductionFinishedLiveData = MutableLiveData<Event<Boolean>>()
-
-    fun getIntroductionState() {
-        introductionFinishedLiveData.postValue(
-            Event(introductionPersistenceManager.getIntroductionFinished())
-        )
-    }
+    val introductionFinished = introductionPersistenceManager.getIntroductionFinished()
 
     fun saveIntroductionFinished() {
         introductionPersistenceManager.saveIntroductionFinished()

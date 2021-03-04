@@ -20,10 +20,13 @@ import nl.rijksoverheid.ctr.holder.myoverview.items.MyOverviewNavigationCardAdap
 import nl.rijksoverheid.ctr.holder.myoverview.items.MyOverviewTestResultAdapterItem
 import nl.rijksoverheid.ctr.holder.myoverview.items.MyOverviewTestResultExpiredAdapterItem
 import nl.rijksoverheid.ctr.holder.myoverview.models.LocalTestResultState
+import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.shared.ext.executeAfterAllAnimationsAreFinished
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.util.QrCodeUtil
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -36,6 +39,7 @@ class MyOverviewFragment : BaseFragment(R.layout.fragment_my_overview) {
 
     private val section = Section()
 
+    private val introductionViewModel: IntroductionViewModel by viewModel()
     private val localTestResultViewModel: LocalTestResultViewModel by sharedViewModel()
     private val qrCodeHandler = Handler(Looper.getMainLooper())
     private val qrCodeRunnable = object : Runnable {
@@ -46,6 +50,13 @@ class MyOverviewFragment : BaseFragment(R.layout.fragment_my_overview) {
             if (canGenerateQrCode) {
                 qrCodeHandler.postDelayed(this, QrCodeUtil.VALID_FOR_SECONDS * 1000)
             }
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (!introductionViewModel.introductionFinished) {
+            findNavController().navigate(R.id.action_introduction)
         }
     }
 

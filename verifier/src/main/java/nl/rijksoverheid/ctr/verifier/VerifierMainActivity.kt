@@ -9,11 +9,15 @@
 package nl.rijksoverheid.ctr.verifier
 
 import android.os.Bundle
+import android.view.View
+import androidx.core.os.bundleOf
 import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
+import nl.rijksoverheid.ctr.appconfig.AppStatusFragment
 import nl.rijksoverheid.ctr.appconfig.AppStatusViewModel
 import nl.rijksoverheid.ctr.appconfig.model.AppStatus
 import nl.rijksoverheid.ctr.shared.BaseActivity
@@ -37,8 +41,29 @@ class VerifierMainActivity : BaseActivity(R.id.nav_scan_qr) {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.id in arrayOf(
+                    R.id.nav_app_status,
+                    R.id.nav_onboarding,
+                    R.id.nav_privacy_policy
+                )
+            ) {
+                binding.toolbar.visibility = View.GONE
+                binding.drawerLayout.setDrawerLockMode(
+                    DrawerLayout.LOCK_MODE_LOCKED_CLOSED,
+                    GravityCompat.START
+                )
+            } else {
+                binding.toolbar.visibility = View.VISIBLE
+                binding.drawerLayout.setDrawerLockMode(
+                    DrawerLayout.LOCK_MODE_UNLOCKED,
+                    GravityCompat.START
+                )
+            }
+        }
+
         val appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.nav_status, R.id.nav_scan_qr, R.id.nav_about_this_app),
+            setOf(R.id.nav_scan_qr, R.id.nav_about_this_app),
             binding.drawerLayout
         )
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
@@ -66,12 +91,9 @@ class VerifierMainActivity : BaseActivity(R.id.nav_scan_qr) {
         }
 
         appStatusViewModel.appStatus.observe(this) {
-            when (it) {
-                is AppStatus.Deactivated,
-                is AppStatus.UpdateRequired -> navController.navigate(R.id.action_app_status)
-                else -> {
-                    /* nothing, up to date */
-                }
+            if (it !is AppStatus.NoActionRequired) {
+                val bundle = bundleOf(AppStatusFragment.EXTRA_APP_STATUS to it)
+                navController.navigate(R.id.action_app_status, bundle)
             }
         }
     }

@@ -21,6 +21,6 @@
         android:id="@+id/nav_privacy_policy"
         android:name="nl.rijksoverheid.ctr.introduction.privacy_policy.PrivacyPolicyFragment"
         android:label=""
-        tools:layout="@layout/fragment_privacy_policy" />
+        tools:layout="@layout/fragment_privacy_policy"/>
 
 </navigation>

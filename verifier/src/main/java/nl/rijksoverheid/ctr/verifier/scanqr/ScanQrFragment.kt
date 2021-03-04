@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.util.QrCodeScannerUtil
@@ -29,6 +30,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class ScanQrFragment : BaseFragment() {
 
     private lateinit var binding: FragmentScanQrBinding
+    private val introductionViewModel: IntroductionViewModel by viewModel()
     private val qrCodeScannerUtil: QrCodeScannerUtil by inject()
     private val scanQrViewModel: ScanQrViewModel by viewModel()
     private val args: ScanQrFragmentArgs by navArgs()
@@ -42,6 +44,13 @@ class ScanQrFragment : BaseFragment() {
                 )
             }
         }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (!introductionViewModel.introductionFinished) {
+            findNavController().navigate(R.id.action_introduction)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -96,7 +105,7 @@ class ScanQrFragment : BaseFragment() {
             requireActivity() as AppCompatActivity, qrScanResult,
             getString(
                 R.string.scanner_custom_title
-            ),getString(
+            ), getString(
                 R.string.scanner_custom_message
             ),
             getString(R.string.camera_rationale_dialog_title),
