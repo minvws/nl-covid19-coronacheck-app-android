@@ -53,5 +53,6 @@ dependencies {
     kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
 
     testImplementation "io.mockk:mockk:$mock_version"
+    testImplementation "com.squareup.okhttp3:mockwebserver"
     testImplementation "junit:junit:$junit_version"
 }
