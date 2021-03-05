@@ -46,7 +46,7 @@ class AppStatusFragment : Fragment(R.layout.fragment_app_status) {
             is AppStatus.UpdateRequired -> {
                 binding.bind(
                     appStatusStrings.appStatusUpdateRequiredTitle,
-                    appStatusStrings.appStatusDeactivatedMessage,
+                    appStatusStrings.appStatusUpdateRequiredMessage,
                     appStatusStrings.appStatusUpdateRequiredAction
                 ) {
                     openPlayStore()
