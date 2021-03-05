@@ -9,21 +9,19 @@
 package nl.rijksoverheid.ctr.appconfig.api
 
 import nl.rijksoverheid.crt.signing.http.SignedRequest
-import nl.rijksoverheid.ctr.api.cache.CacheOverride
-import nl.rijksoverheid.ctr.api.cache.CacheStrategy
+import nl.rijksoverheid.ctr.shared.interceptors.CacheOverride
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
 import retrofit2.http.GET
-import retrofit2.http.Tag
 
 interface AppConfigApi {
     @GET("config")
     @CacheOverride("public,max-age=0")
     @SignedRequest
-    suspend fun getConfig(@Tag cacheStrategy: CacheStrategy = CacheStrategy.CACHE_LAST): AppConfig
+    suspend fun getConfig(): AppConfig
 
     @GET("public_keys")
     @CacheOverride("public,max-age=0")
     @SignedRequest
-    suspend fun getPublicKeys(@Tag cacheStrategy: CacheStrategy = CacheStrategy.CACHE_LAST): PublicKeys
+    suspend fun getPublicKeys(): PublicKeys
 }

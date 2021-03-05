@@ -5,9 +5,12 @@
  *  SPDX-License-Identifier: EUPL-1.2
  *
  */
-package nl.rijksoverheid.ctr.api.cache
+package nl.rijksoverheid.ctr.appconfig
 
 import kotlinx.coroutines.runBlocking
+import nl.rijksoverheid.ctr.appconfig.api.AppConfigApiCacheInterceptor
+import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
+import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
@@ -20,12 +23,35 @@ import org.junit.Test
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.http.GET
-import retrofit2.http.Tag
 import java.io.File
 
 private const val RESPONSE = "Server response"
 
-class CacheStrategyInterceptorTest {
+class AppConfigApiCacheInterceptorTest {
+
+    private val fakeCachedAppConfigUseCase = object : CachedAppConfigUseCase {
+        override fun persistAppConfig(appConfig: AppConfig) {
+
+        }
+
+        override fun getCachedAppConfig(): AppConfig {
+            return AppConfig(
+                minimumVersion = 0,
+                appDeactivated = false,
+                informationURL = "",
+                configTtlSeconds = 30,
+                maxValidityHours = 0
+            )
+        }
+
+        override fun persistPublicKeys(publicKeys: PublicKeys) {}
+
+        override fun getCachedPublicKeys(): PublicKeys {
+            return PublicKeys(clKeys = listOf())
+        }
+
+    }
+
     private lateinit var mockWebServer: MockWebServer
     private lateinit var cache: Cache
     private lateinit var tmpDir: File
@@ -38,7 +64,9 @@ class CacheStrategyInterceptorTest {
         tmpDir.delete()
         cache = Cache(tmpDir, 1024 * 1024)
         testApi = Retrofit.Builder().client(
-            OkHttpClient.Builder().cache(cache).addInterceptor(CacheStrategyInterceptor()).build()
+            OkHttpClient.Builder().cache(cache)
+                .addInterceptor(AppConfigApiCacheInterceptor(fakeCachedAppConfigUseCase))
+                .build()
         ).baseUrl(mockWebServer.url("/")).build().create(TestApi::class.java)
     }
 
@@ -48,27 +76,11 @@ class CacheStrategyInterceptorTest {
     }
 
     @Test
-    fun `cacheStrategy CACHE_FIRST will try the cache first, then network`() = runBlocking {
-        mockWebServer.enqueue(MockResponse().setBody(RESPONSE))
-        testApi.dummyRequest(CacheStrategy.CACHE_FIRST)
-        assertEquals(1, mockWebServer.requestCount)
-    }
-
-    @Test
-    fun `cacheStrategy CACHE_FIRST returns cached response`() = runBlocking {
-        mockWebServer.enqueue(MockResponse().setBody(RESPONSE))
-        // network request
-        testApi.dummyRequest(CacheStrategy.CACHE_LAST)
-        testApi.dummyRequest(CacheStrategy.CACHE_FIRST)
-        assertEquals(1, mockWebServer.requestCount)
-    }
-
-    @Test
-    fun `cacheStrategy CACHE_LAST will try the cache in case of an error response`() = runBlocking {
+    fun `try the cache in case of an error response`() = runBlocking {
         mockWebServer.enqueue(MockResponse().setBody(RESPONSE))
         mockWebServer.enqueue(MockResponse().setResponseCode(500))
         val response = testApi.dummyRequest()
-        val cachedResponse = testApi.dummyRequest(CacheStrategy.CACHE_LAST)
+        val cachedResponse = testApi.dummyRequest()
 
         assertEquals(200, response.code())
         assertEquals(200, cachedResponse.code())
@@ -76,15 +88,8 @@ class CacheStrategyInterceptorTest {
         assertEquals(2, mockWebServer.requestCount)
     }
 
-    @Test
-    fun `cacheStrategy CACHE_ONLY will try the cache the cache only`() = runBlocking {
-        val response = testApi.dummyRequest(CacheStrategy.CACHE_ONLY)
-        assertEquals(504, response.code())
-        assertEquals(0, mockWebServer.requestCount)
-    }
-
     interface TestApi {
         @GET("/")
-        suspend fun dummyRequest(@Tag cacheStrategy: CacheStrategy = CacheStrategy.CACHE_LAST): Response<ResponseBody>
+        suspend fun dummyRequest(): Response<ResponseBody>
     }
 }

@@ -5,8 +5,6 @@ import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import nl.rijksoverheid.ctr.api.cache.CacheOverrideInterceptor
-import nl.rijksoverheid.ctr.api.cache.CacheStrategyInterceptor
 import nl.rijksoverheid.ctr.api.json.Base64JsonAdapter
 import nl.rijksoverheid.ctr.api.json.OffsetDateTimeJsonAdapter
 import nl.rijksoverheid.ctr.api.json.RemoteTestStatusJsonAdapter
@@ -14,10 +12,11 @@ import nl.rijksoverheid.ctr.api.models.RemoteTestResult
 import nl.rijksoverheid.ctr.api.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.api.repositories.TestResultRepository
 import nl.rijksoverheid.ctr.api.repositories.TestResultRepositoryImpl
+import nl.rijksoverheid.ctr.shared.interceptors.CacheOverrideInterceptor
+import nl.rijksoverheid.ctr.signing.certificates.DIGICERT_BTC_ROOT_CA
 import nl.rijksoverheid.ctr.signing.certificates.EV_ROOT_CA
 import nl.rijksoverheid.ctr.signing.certificates.PRIVATE_ROOT_CA
 import nl.rijksoverheid.ctr.signing.certificates.ROOT_CA_G3
-import nl.rijksoverheid.ctr.signing.certificates.DIGICERT_BTC_ROOT_CA
 import okhttp3.Cache
 import okhttp3.ConnectionSpec
 import okhttp3.OkHttpClient
@@ -43,10 +42,13 @@ import java.io.File
 fun apiModule(baseUrl: String) = module(override = true) {
     // the base OkHttpClient for both API and test providers
     single {
+        val context = get(Context::class.java)
+        val cache = Cache(File(context.cacheDir, "http"), 10 * 1024 * 1024)
+
         OkHttpClient.Builder()
             .addNetworkInterceptor(CacheOverrideInterceptor())
             .addNetworkInterceptor(StethoInterceptor())
-            .addInterceptor(CacheStrategyInterceptor())
+            .cache(cache)
             .followRedirects(false)
             .apply {
                 if (BuildConfig.DEBUG) {
@@ -59,11 +61,8 @@ fun apiModule(baseUrl: String) = module(override = true) {
     }
 
     single {
-        val context = get(Context::class.java)
-        val cache = Cache(File(context.cacheDir, "http"), 10 * 1024 * 1024)
         val okHttpClient = get(OkHttpClient::class.java)
             .newBuilder()
-            .cache(cache)
             .apply {
                 if (BuildConfig.FEATURE_CORONA_CHECK_API_CHECKS) {
                     val handshakeCertificates = HandshakeCertificates.Builder()

@@ -21,9 +21,9 @@ import nl.rijksoverheid.ctr.shared.models.JSON
  */
 @JsonClass(generateAdapter = true)
 data class AppConfig(
-    @Json(name = "androidMinimumVersion") val minimumVersion: Int = 0,
-    @Json(name = "androidMinimumVersionMessage") val message: String? = null,
-    @Json(name = "playStoreURL") val playStoreURL: String? = null,
-    @Json(name = "appDeactivated") val appDeactivated: Boolean = false,
-    @Json(name = "informationURL") val informationURL: String
+    @Json(name = "androidMinimumVersion") val minimumVersion: Int,
+    @Json(name = "appDeactivated") val appDeactivated: Boolean,
+    @Json(name = "informationURL") val informationURL: String,
+    @Json(name = "configTTL") val configTtlSeconds: Int,
+    @Json(name = "maxValidityHours") val maxValidityHours: Int
 ) : JSON()

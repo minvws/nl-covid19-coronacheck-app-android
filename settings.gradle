@@ -15,6 +15,5 @@ include ':holder'
 include ':signing'
 include ':ctcl'
 include ':appconfig'
-include ':cache-interceptors'
 
 rootProject.name = "CoronaTester"

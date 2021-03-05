@@ -13,9 +13,9 @@ import android.content.SharedPreferences
 
 interface AppConfigPersistenceManager {
     fun savePublicKeysJson(json: String)
-    fun getPublicKeysJson(): String
+    fun getPublicKeysJson(): String?
     fun saveAppConfigJson(json: String)
-    fun getAppConfigJson(): String
+    fun getAppConfigJson(): String?
 }
 
 class AppConfigPersistenceManagerImpl(private val sharedPreferences: SharedPreferences) :
@@ -30,17 +30,15 @@ class AppConfigPersistenceManagerImpl(private val sharedPreferences: SharedPrefe
         sharedPreferences.edit().putString(PUBLIC_KEYS_JSON, json).apply()
     }
 
-    override fun getPublicKeysJson(): String {
+    override fun getPublicKeysJson(): String? {
         return sharedPreferences.getString(PUBLIC_KEYS_JSON, null)
-            ?: throw IllegalStateException("Persisted public keys should never be null when getting")
     }
 
     override fun saveAppConfigJson(json: String) {
         sharedPreferences.edit().putString(APP_CONFIG_JSON, json).apply()
     }
 
-    override fun getAppConfigJson(): String {
+    override fun getAppConfigJson(): String? {
         return sharedPreferences.getString(APP_CONFIG_JSON, null)
-            ?: throw IllegalStateException("Persisted app config should never be null when getting")
     }
 }

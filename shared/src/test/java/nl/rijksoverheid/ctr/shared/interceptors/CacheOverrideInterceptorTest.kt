@@ -5,7 +5,7 @@
  *  SPDX-License-Identifier: EUPL-1.2
  *
  */
-package nl.rijksoverheid.ctr.api.cache
+package nl.rijksoverheid.ctr.shared.interceptors
 
 import kotlinx.coroutines.runBlocking
 import okhttp3.Cache

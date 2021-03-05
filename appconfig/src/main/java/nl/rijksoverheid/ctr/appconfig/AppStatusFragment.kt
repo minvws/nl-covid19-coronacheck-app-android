@@ -58,12 +58,13 @@ class AppStatusFragment : Fragment(R.layout.fragment_app_status) {
                     appStatusStrings.appStatusInternetRequiredMessage,
                     appStatusStrings.appStatusInternetRequiredAction
                 ) {
-                    startActivity(
-                        Intent(
-                            Intent.ACTION_VIEW,
-                            Uri.parse("https://www.coronacheck.nl")
-                        )
-                    )
+                    val launchIntent =
+                        requireContext().packageManager.getLaunchIntentForPackage(requireContext().packageName)
+                    launchIntent?.let {
+                        launchIntent.flags =
+                            Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                        requireContext().startActivity(launchIntent)
+                    }
                 }
             }
             else -> {

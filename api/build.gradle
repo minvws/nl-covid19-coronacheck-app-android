@@ -76,7 +76,7 @@ android {
 
 dependencies {
     implementation(project(":signing"))
-    implementation(project(':cache-interceptors'))
+    implementation(project(":shared"))
 
     implementation "com.facebook.stetho:stetho:$stetho_version"
     implementation "com.facebook.stetho:stetho-okhttp3:$stetho_version"

@@ -14,7 +14,7 @@ import androidx.lifecycle.liveData
 import androidx.lifecycle.switchMap
 import nl.rijksoverheid.ctr.appconfig.usecase.AppConfigUseCase
 
-class AppStatusViewModel(
+class AppConfigViewModel(
     private val appStatusUseCase: AppConfigUseCase,
     private val versionCode: Int
 ) : ViewModel() {
