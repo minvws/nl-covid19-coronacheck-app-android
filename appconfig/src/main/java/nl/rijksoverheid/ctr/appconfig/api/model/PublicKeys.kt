@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.appconfig.api.model
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import nl.rijksoverheid.ctr.shared.models.JSON
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -13,7 +14,7 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class PublicKeys(
     @Json(name = "cl_keys") val clKeys: List<ClKey>
-) {
+) : JSON() {
     @JsonClass(generateAdapter = true)
     data class ClKey(
         val id: String,

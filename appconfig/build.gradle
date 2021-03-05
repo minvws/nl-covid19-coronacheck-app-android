@@ -42,13 +42,16 @@ dependencies {
     implementation "org.koin:koin-android:$koin_version"
     implementation "org.koin:koin-androidx-viewmodel:$koin_version"
     implementation "com.jakewharton.timber:timber:$timber_version"
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
+    implementation "androidx.preference:preference-ktx:$preference_version"
 
     implementation(project(':cache-interceptors'))
     implementation(project(":signing"))
     implementation(project(":design"))
+    implementation(project(":shared"))
 
     kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
 
+    testImplementation "io.mockk:mockk:$mock_version"
     testImplementation "junit:junit:$junit_version"
 }

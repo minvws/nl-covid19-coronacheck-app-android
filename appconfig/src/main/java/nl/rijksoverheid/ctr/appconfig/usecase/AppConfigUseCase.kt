@@ -8,6 +8,7 @@
 
 package nl.rijksoverheid.ctr.appconfig.usecase
 
+import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.ConfigRepository
 import nl.rijksoverheid.ctr.appconfig.model.AppStatus
 import java.io.IOException
@@ -19,11 +20,17 @@ import java.io.IOException
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class AppConfigUseCase(private val configRepository: ConfigRepository) {
-    suspend fun status(currentVersionCode: Int): AppStatus {
+class AppConfigUseCase(
+    private val configRepository: ConfigRepository,
+    private val cachedAppConfigUseCase: CachedAppConfigUseCase
+) {
+
+    suspend fun config(currentVersionCode: Int): AppStatus {
         return try {
             val config = configRepository.getConfig()
+            cachedAppConfigUseCase.persistAppConfig(config)
             val publicKeys = configRepository.getPublicKeys()
+            cachedAppConfigUseCase.persistPublicKeys(publicKeys)
             return when {
                 config.appDeactivated -> AppStatus.Deactivated(config.informationURL)
                 currentVersionCode < config.minimumVersion -> AppStatus.UpdateRequired

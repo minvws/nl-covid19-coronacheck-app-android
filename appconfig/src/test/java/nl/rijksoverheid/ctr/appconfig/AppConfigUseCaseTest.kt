@@ -8,6 +8,9 @@
 
 package nl.rijksoverheid.ctr.appconfig
 
+import io.mockk.coVerify
+import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.api.cache.CacheStrategy
 import nl.rijksoverheid.ctr.appconfig.api.AppConfigApi
@@ -19,10 +22,12 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.io.IOException
 
-class AppStatusUseCaseTest {
+class AppConfigUseCaseTest {
+
+    private val fakeCachedAppConfigUseCase = mockk<CachedAppConfigUseCase>(relaxed = true)
 
     @Test
-    fun `status returns Deactivated when app is deactivated remotely`() = runBlocking {
+    fun `config returns Deactivated when app is deactivated remotely`() = runBlocking {
         val informationUrl = "https://website.nl"
         val fakeApi = object : AppConfigApi {
             override suspend fun getConfig(cacheStrategy: CacheStrategy): AppConfig =
@@ -37,15 +42,15 @@ class AppStatusUseCaseTest {
                 PublicKeys(clKeys = listOf())
         }
         val configRepository = ConfigRepositoryImpl(api = fakeApi)
-        val appStatusUseCase = AppConfigUseCase(configRepository)
-        val appStatus = appStatusUseCase.status(
+        val appStatusUseCase = AppConfigUseCase(configRepository, fakeCachedAppConfigUseCase)
+        val appStatus = appStatusUseCase.config(
             currentVersionCode = 1
         )
         assertEquals(appStatus, AppStatus.Deactivated(informationUrl))
     }
 
     @Test
-    fun `status returns UpdateRequired when remote version code is higher than current`() =
+    fun `config returns UpdateRequired when remote version code is higher than current`() =
         runBlocking {
             val fakeApi = object : AppConfigApi {
                 override suspend fun getConfig(cacheStrategy: CacheStrategy): AppConfig =
@@ -59,14 +64,14 @@ class AppStatusUseCaseTest {
             }
 
             val configRepository = ConfigRepositoryImpl(api = fakeApi)
-            val appStatusUseCase = AppConfigUseCase(configRepository)
+            val appStatusUseCase = AppConfigUseCase(configRepository, fakeCachedAppConfigUseCase)
             val appStatus =
-                appStatusUseCase.status(currentVersionCode = 1)
+                appStatusUseCase.config(currentVersionCode = 1)
             assertEquals(appStatus, AppStatus.UpdateRequired)
         }
 
     @Test
-    fun `status returns UpdateRequired with a message when remote version code is higher than current`() =
+    fun `config returns UpdateRequired with a message when remote version code is higher than current`() =
         runBlocking {
             val fakeApi = object : AppConfigApi {
                 override suspend fun getConfig(cacheStrategy: CacheStrategy): AppConfig =
@@ -79,14 +84,14 @@ class AppStatusUseCaseTest {
                     PublicKeys(clKeys = listOf())
             }
             val configRepository = ConfigRepositoryImpl(api = fakeApi)
-            val appStatusUseCase = AppConfigUseCase(configRepository)
+            val appStatusUseCase = AppConfigUseCase(configRepository, fakeCachedAppConfigUseCase)
             val appStatus =
-                appStatusUseCase.status(currentVersionCode = 1)
+                appStatusUseCase.config(currentVersionCode = 1)
             assertEquals(appStatus, AppStatus.UpdateRequired)
         }
 
     @Test
-    fun `status returns NoActionRequired when app is up to date`() = runBlocking {
+    fun `config returns NoActionRequired when app is up to date`() = runBlocking {
         val fakeApi = object : AppConfigApi {
             override suspend fun getConfig(cacheStrategy: CacheStrategy): AppConfig =
                 AppConfig(
@@ -98,13 +103,13 @@ class AppStatusUseCaseTest {
                 PublicKeys(clKeys = listOf())
         }
         val configRepository = ConfigRepositoryImpl(api = fakeApi)
-        val appStatusUseCase = AppConfigUseCase(configRepository)
-        val appStatus = appStatusUseCase.status(currentVersionCode = 2)
+        val appStatusUseCase = AppConfigUseCase(configRepository, fakeCachedAppConfigUseCase)
+        val appStatus = appStatusUseCase.config(currentVersionCode = 2)
         assertEquals(appStatus, AppStatus.NoActionRequired)
     }
 
     @Test
-    fun `status returns InternetRequired when config request fails`() = runBlocking {
+    fun `config returns InternetRequired when config request fails`() = runBlocking {
         val fakeApi = object : AppConfigApi {
             override suspend fun getConfig(cacheStrategy: CacheStrategy): AppConfig =
                 throw IOException()
@@ -113,15 +118,15 @@ class AppStatusUseCaseTest {
                 PublicKeys(clKeys = listOf())
         }
         val configRepository = ConfigRepositoryImpl(api = fakeApi)
-        val appStatusUseCase = AppConfigUseCase(configRepository)
-        val appStatus = appStatusUseCase.status(
+        val appStatusUseCase = AppConfigUseCase(configRepository, fakeCachedAppConfigUseCase)
+        val appStatus = appStatusUseCase.config(
             currentVersionCode = 1
         )
         assertEquals(appStatus, AppStatus.InternetRequired)
     }
 
     @Test
-    fun `status returns InternetRequired when public keys request fails`() = runBlocking {
+    fun `config returns InternetRequired when public keys request fails`() = runBlocking {
         val fakeApi = object : AppConfigApi {
             override suspend fun getConfig(cacheStrategy: CacheStrategy): AppConfig =
                 AppConfig(
@@ -133,10 +138,33 @@ class AppStatusUseCaseTest {
                 throw IOException()
         }
         val configRepository = ConfigRepositoryImpl(api = fakeApi)
-        val appStatusUseCase = AppConfigUseCase(configRepository)
-        val appStatus = appStatusUseCase.status(
+        val appStatusUseCase = AppConfigUseCase(configRepository, fakeCachedAppConfigUseCase)
+        val appStatus = appStatusUseCase.config(
             currentVersionCode = 1
         )
         assertEquals(appStatus, AppStatus.InternetRequired)
     }
+
+    @Test
+    fun `config persists config and public keys`() = runBlocking {
+        val appConfig = AppConfig(
+            minimumVersion = 2,
+            informationURL = "http://www.website.nl"
+        )
+        val publicKeys = PublicKeys(clKeys = listOf())
+        val fakeApi = object : AppConfigApi {
+            override suspend fun getConfig(cacheStrategy: CacheStrategy): AppConfig = appConfig
+            override suspend fun getPublicKeys(cacheStrategy: CacheStrategy): PublicKeys =
+                publicKeys
+        }
+        val configRepository = ConfigRepositoryImpl(api = fakeApi)
+
+        AppConfigUseCase(configRepository, fakeCachedAppConfigUseCase).config(
+            currentVersionCode = 1
+        )
+
+        coVerify { fakeCachedAppConfigUseCase.persistAppConfig(appConfig) }
+        coVerify { fakeCachedAppConfigUseCase.persistPublicKeys(publicKeys) }
+    }
+
 }

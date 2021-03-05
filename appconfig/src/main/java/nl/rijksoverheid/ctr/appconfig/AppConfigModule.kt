@@ -22,7 +22,9 @@ import retrofit2.Retrofit
  */
 fun appConfigModule(path: String, versionCode: Int) = module {
     factory<ConfigRepository> { ConfigRepositoryImpl(get()) }
-    factory { AppConfigUseCase(get()) }
+    factory { AppConfigUseCase(get(), get()) }
+    factory<AppConfigPersistenceManager> { AppConfigPersistenceManagerImpl(get()) }
+    factory<CachedAppConfigUseCase> { CachedAppConfigUseCaseImpl(get(), get()) }
 
     single {
         val retrofit = get(Retrofit::class.java)

@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.holder
 
+import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
 import nl.rijksoverheid.ctr.holder.digid.DigiDViewModel
 import nl.rijksoverheid.ctr.holder.myoverview.LocalTestResultViewModel
@@ -25,11 +26,15 @@ import org.koin.dsl.module
  */
 val mainModule = module {
 
+    single<SharedPreferences> {
+        PreferenceManager.getDefaultSharedPreferences(
+            androidContext(),
+        )
+    }
+
     single<PersistenceManager> {
         SharedPreferencesPersistenceManager(
-            PreferenceManager.getDefaultSharedPreferences(
-                androidContext(),
-            )
+            get()
         )
     }
 
