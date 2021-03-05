@@ -47,7 +47,7 @@ class ScanQrFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (!introductionViewModel.introductionFinished) {
+        if (!introductionViewModel.introductionFinished()) {
             findNavController().navigate(R.id.action_introduction)
         }
     }
