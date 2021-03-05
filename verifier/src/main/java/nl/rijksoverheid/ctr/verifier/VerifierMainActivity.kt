@@ -20,15 +20,20 @@ import androidx.navigation.ui.setupWithNavController
 import nl.rijksoverheid.ctr.appconfig.AppStatusFragment
 import nl.rijksoverheid.ctr.appconfig.AppStatusViewModel
 import nl.rijksoverheid.ctr.appconfig.model.AppStatus
+import nl.rijksoverheid.ctr.holder.persistence.IntroductionPersistenceManager
 import nl.rijksoverheid.ctr.shared.BaseActivity
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.ext.styleTitle
 import nl.rijksoverheid.ctr.verifier.databinding.ActivityMainBinding
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
 class VerifierMainActivity : BaseActivity(R.id.nav_scan_qr) {
 
     private lateinit var binding: ActivityMainBinding
+
+    private val introductionPersistenceManager: IntroductionPersistenceManager by inject()
     private val appStatusViewModel: AppStatusViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -101,7 +106,11 @@ class VerifierMainActivity : BaseActivity(R.id.nav_scan_qr) {
 
     override fun onStart() {
         super.onStart()
-        appStatusViewModel.refresh()
+
+        // Only get app config on every app foreground when introduction is finished
+        if (introductionPersistenceManager.getIntroductionFinished()) {
+            appStatusViewModel.refresh()
+        }
     }
 
     private fun navigationDrawerStyling() {
