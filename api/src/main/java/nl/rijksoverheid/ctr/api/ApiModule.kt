@@ -5,7 +5,6 @@ import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import nl.rijksoverheid.ctr.api.cache.CacheOverrideInterceptor
 import nl.rijksoverheid.ctr.api.json.Base64JsonAdapter
 import nl.rijksoverheid.ctr.api.json.OffsetDateTimeJsonAdapter
 import nl.rijksoverheid.ctr.api.json.RemoteTestStatusJsonAdapter
@@ -13,6 +12,7 @@ import nl.rijksoverheid.ctr.api.models.RemoteTestResult
 import nl.rijksoverheid.ctr.api.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.api.repositories.TestResultRepository
 import nl.rijksoverheid.ctr.api.repositories.TestResultRepositoryImpl
+import nl.rijksoverheid.ctr.shared.interceptors.CacheOverrideInterceptor
 import nl.rijksoverheid.ctr.signing.certificates.DIGICERT_BTC_ROOT_CA
 import nl.rijksoverheid.ctr.signing.certificates.EV_ROOT_CA
 import nl.rijksoverheid.ctr.signing.certificates.PRIVATE_ROOT_CA

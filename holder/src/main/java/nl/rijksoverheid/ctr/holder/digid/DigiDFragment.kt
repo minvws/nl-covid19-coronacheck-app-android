@@ -24,10 +24,6 @@ open class DigiDFragment : BaseFragment(0) {
             digidViewModel.handleActivityResult(it, authService)
         }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
-
     fun login() {
         digidViewModel.login(loginResult, authService)
     }

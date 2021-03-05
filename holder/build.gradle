@@ -113,6 +113,7 @@ dependencies {
         exclude group: "org.jetbrains.kotlin"
     }
     testImplementation "androidx.navigation:navigation-testing:$navigation_version"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
 
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$desugar_jdk_version"
 }

@@ -45,7 +45,6 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
     implementation "androidx.preference:preference-ktx:$preference_version"
 
-    implementation(project(':cache-interceptors'))
     implementation(project(":signing"))
     implementation(project(":design"))
     implementation(project(":shared"))
