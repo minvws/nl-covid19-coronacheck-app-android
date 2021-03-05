@@ -218,6 +218,11 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
         loadKoinModules(
             module(override = true) {
                 viewModel {
+                    fakeIntroductionViewModel(
+                        introductionFinished = true
+                    )
+                }
+                viewModel {
                     fakeLocalTestResultViewModel(
                         localTestResultState = localTestResultState
                     )

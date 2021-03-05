@@ -26,7 +26,6 @@ import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.util.QrCodeUtil
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import timber.log.Timber
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -55,7 +54,7 @@ class MyOverviewFragment : BaseFragment(R.layout.fragment_my_overview) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (!introductionViewModel.introductionFinished) {
+        if (!introductionViewModel.introductionFinished()) {
             findNavController().navigate(R.id.action_introduction)
         }
     }

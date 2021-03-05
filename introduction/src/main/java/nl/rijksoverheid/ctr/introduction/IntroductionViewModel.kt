@@ -12,11 +12,20 @@ import nl.rijksoverheid.ctr.shared.livedata.Event
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class IntroductionViewModel(private val introductionPersistenceManager: IntroductionPersistenceManager) :
-    ViewModel() {
-    val introductionFinished = introductionPersistenceManager.getIntroductionFinished()
 
-    fun saveIntroductionFinished() {
+abstract class IntroductionViewModel : ViewModel() {
+    abstract fun introductionFinished(): Boolean
+    abstract fun saveIntroductionFinished()
+}
+
+class IntroductionViewModelImpl(private val introductionPersistenceManager: IntroductionPersistenceManager) :
+    IntroductionViewModel() {
+
+    override fun introductionFinished(): Boolean {
+        return introductionPersistenceManager.getIntroductionFinished()
+    }
+
+    override fun saveIntroductionFinished() {
         introductionPersistenceManager.saveIntroductionFinished()
     }
 
