@@ -19,7 +19,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import nl.rijksoverheid.ctr.appconfig.AppStatusFragment
-import nl.rijksoverheid.ctr.appconfig.AppStatusViewModel
+import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.model.AppStatus
 import nl.rijksoverheid.ctr.holder.databinding.ActivityMainBinding
 import nl.rijksoverheid.ctr.holder.persistence.IntroductionPersistenceManager
@@ -34,7 +34,7 @@ class HolderMainActivity : BaseActivity(R.id.nav_my_overview) {
     private lateinit var binding: ActivityMainBinding
 
     private val introductionPersistenceManager: IntroductionPersistenceManager by inject()
-    private val appStatusViewModel: AppStatusViewModel by viewModel()
+    private val appStatusViewModel: AppConfigViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)

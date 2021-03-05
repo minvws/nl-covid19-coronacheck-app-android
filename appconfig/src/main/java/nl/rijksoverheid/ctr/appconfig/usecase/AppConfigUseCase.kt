@@ -11,6 +11,7 @@ package nl.rijksoverheid.ctr.appconfig.usecase
 import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.ConfigRepository
 import nl.rijksoverheid.ctr.appconfig.model.AppStatus
+import retrofit2.HttpException
 import java.io.IOException
 
 /*
@@ -37,6 +38,8 @@ class AppConfigUseCase(
                 else -> AppStatus.NoActionRequired
             }
         } catch (e: IOException) {
+            AppStatus.InternetRequired
+        } catch (e: HttpException) {
             AppStatus.InternetRequired
         }
     }

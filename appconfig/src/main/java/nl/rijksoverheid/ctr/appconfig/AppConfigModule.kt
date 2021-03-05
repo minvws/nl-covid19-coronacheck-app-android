@@ -33,6 +33,6 @@ fun appConfigModule(path: String, versionCode: Int) = module {
     }
 
     viewModel {
-        AppStatusViewModel(get(), versionCode)
+        AppConfigViewModel(get(), versionCode)
     }
 }
