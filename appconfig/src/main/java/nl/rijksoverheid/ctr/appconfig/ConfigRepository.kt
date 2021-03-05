@@ -17,7 +17,7 @@ interface ConfigRepository {
     suspend fun getPublicKeys(): PublicKeys
 }
 
-class ConfigRepositoryImpl(private val api: AppConfigApi): ConfigRepository {
+class ConfigRepositoryImpl(private val api: AppConfigApi) : ConfigRepository {
     override suspend fun getConfig(): AppConfig {
         return api.getConfig()
     }
