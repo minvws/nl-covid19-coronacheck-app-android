@@ -9,7 +9,9 @@
 package nl.rijksoverheid.ctr.appconfig
 
 import nl.rijksoverheid.ctr.appconfig.api.AppConfigApi
+import nl.rijksoverheid.ctr.appconfig.api.AppConfigApiCacheInterceptor
 import nl.rijksoverheid.ctr.appconfig.usecase.AppConfigUseCase
+import okhttp3.OkHttpClient
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -25,11 +27,17 @@ fun appConfigModule(path: String, versionCode: Int) = module {
     factory { AppConfigUseCase(get(), get()) }
     factory<AppConfigPersistenceManager> { AppConfigPersistenceManagerImpl(get()) }
     factory<CachedAppConfigUseCase> { CachedAppConfigUseCaseImpl(get(), get()) }
+    factory { AppConfigApiCacheInterceptor(get()) }
+
 
     single {
+        val okHttpClient = get(OkHttpClient::class.java).newBuilder()
+            .addInterceptor(AppConfigApiCacheInterceptor(get())).build()
+
         val retrofit = get(Retrofit::class.java)
         val baseUrl = retrofit.baseUrl().newBuilder().addPathSegments("$path/").build()
-        retrofit.newBuilder().baseUrl(baseUrl).build().create(AppConfigApi::class.java)
+        retrofit.newBuilder().baseUrl(baseUrl).client(okHttpClient).build()
+            .create(AppConfigApi::class.java)
     }
 
     viewModel {
