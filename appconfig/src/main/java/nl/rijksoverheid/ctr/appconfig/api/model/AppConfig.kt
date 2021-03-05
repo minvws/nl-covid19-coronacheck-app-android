@@ -10,6 +10,7 @@ package nl.rijksoverheid.ctr.appconfig.api.model
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import nl.rijksoverheid.ctr.shared.models.JSON
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -25,4 +26,4 @@ data class AppConfig(
     @Json(name = "playStoreURL") val playStoreURL: String? = null,
     @Json(name = "appDeactivated") val appDeactivated: Boolean = false,
     @Json(name = "informationURL") val informationURL: String
-)
+) : JSON()

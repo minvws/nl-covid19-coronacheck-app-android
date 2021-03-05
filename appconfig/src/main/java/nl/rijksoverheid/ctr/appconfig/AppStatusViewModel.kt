@@ -23,7 +23,7 @@ class AppStatusViewModel(
 
     val appStatus = refresh.switchMap {
         liveData {
-            emit(appStatusUseCase.status(versionCode))
+            emit(appStatusUseCase.config(versionCode))
         }
     }
 

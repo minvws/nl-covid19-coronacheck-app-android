@@ -20,10 +20,10 @@ interface AppConfigApi {
     @GET("config")
     @CacheOverride("public,max-age=0")
     @SignedRequest
-    suspend fun getConfig(@Tag cacheStrategy: CacheStrategy = CacheStrategy.CACHE_FIRST): AppConfig
+    suspend fun getConfig(@Tag cacheStrategy: CacheStrategy = CacheStrategy.CACHE_LAST): AppConfig
 
     @GET("public_keys")
     @CacheOverride("public,max-age=0")
     @SignedRequest
-    suspend fun getPublicKeys(@Tag cacheStrategy: CacheStrategy = CacheStrategy.CACHE_FIRST): PublicKeys
+    suspend fun getPublicKeys(@Tag cacheStrategy: CacheStrategy = CacheStrategy.CACHE_LAST): PublicKeys
 }
