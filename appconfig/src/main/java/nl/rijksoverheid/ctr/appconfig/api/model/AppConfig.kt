@@ -24,5 +24,5 @@ data class AppConfig(
     @Json(name = "androidMinimumVersionMessage") val message: String? = null,
     @Json(name = "playStoreURL") val playStoreURL: String? = null,
     @Json(name = "appDeactivated") val appDeactivated: Boolean = false,
-    @Json(name = "informationURL") val informationURL: String? = null
+    @Json(name = "informationURL") val informationURL: String
 )

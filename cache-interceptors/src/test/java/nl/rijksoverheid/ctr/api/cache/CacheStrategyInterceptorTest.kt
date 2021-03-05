@@ -8,8 +8,6 @@
 package nl.rijksoverheid.ctr.api.cache
 
 import kotlinx.coroutines.runBlocking
-import nl.rijksoverheid.ctr.api.cachestrategy.CacheStrategy
-import nl.rijksoverheid.ctr.api.cachestrategy.CacheStrategyInterceptor
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody

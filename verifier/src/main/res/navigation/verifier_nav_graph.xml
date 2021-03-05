@@ -3,20 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_nav"
-    app:startDestination="@+id/nav_status">
-
-    <fragment
-        android:id="@+id/nav_status"
-        android:name="nl.rijksoverheid.ctr.introduction.status.StatusFragment"
-        android:label="">
-
-        <action
-            android:id="@+id/action_scan_qr"
-            app:destination="@id/nav_scan_qr"
-            app:popUpTo="@id/main_nav"
-            app:popUpToInclusive="true" />
-
-    </fragment>
+    app:startDestination="@+id/nav_scan_qr">
 
     <fragment
         android:id="@+id/nav_scan_qr"
@@ -79,16 +66,30 @@
 
     </dialog>
 
+    <action
+        android:id="@+id/action_app_status"
+        app:destination="@id/nav_app_status"
+        app:popUpTo="@id/main_nav"
+        app:popUpToInclusive="true" />
+
     <fragment
         android:id="@+id/nav_app_status"
         android:name="nl.rijksoverheid.ctr.appconfig.AppStatusFragment"
         tools:layout="@layout/fragment_app_status" />
 
     <action
-        android:id="@+id/action_app_status"
-        app:destination="@id/nav_app_status"
+        android:id="@+id/action_introduction"
+        app:destination="@id/nav_introduction"
         app:popUpTo="@id/main_nav"
         app:popUpToInclusive="true" />
+
+    <action
+        android:id="@+id/action_scan_qr"
+        app:destination="@id/nav_scan_qr"
+        app:popUpTo="@id/main_nav"
+        app:popUpToInclusive="true" />
+
+    <include app:graph="@navigation/introduction_nav_graph" />
 
 
 </navigation>

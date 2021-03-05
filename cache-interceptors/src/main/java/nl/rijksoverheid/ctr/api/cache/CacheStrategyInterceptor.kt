@@ -5,7 +5,7 @@
  *  SPDX-License-Identifier: EUPL-1.2
  *
  */
-package nl.rijksoverheid.ctr.api.cachestrategy
+package nl.rijksoverheid.ctr.api.cache
 
 import okhttp3.CacheControl
 import okhttp3.Interceptor

@@ -22,5 +22,5 @@ val introductionModule = module {
             )
         )
     }
-    viewModel { IntroductionViewModel(get()) }
+    viewModel<IntroductionViewModel> { IntroductionViewModelImpl(get()) }
 }

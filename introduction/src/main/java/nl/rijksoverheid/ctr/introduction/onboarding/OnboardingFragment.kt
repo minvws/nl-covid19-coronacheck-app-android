@@ -13,11 +13,9 @@ import androidx.core.view.forEachIndexed
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
-import nl.rijksoverheid.ctr.introduction.IntroductionActivity
-import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
+import nl.rijksoverheid.ctr.introduction.CoronaCheckApp
 import nl.rijksoverheid.ctr.introduction.R
 import nl.rijksoverheid.ctr.introduction.databinding.FragmentOnboardingBinding
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -28,8 +26,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  */
 class OnboardingFragment : Fragment() {
 
-    private val introductionActivity: IntroductionActivity by lazy { activity as IntroductionActivity }
-    private val introductionViewModel: IntroductionViewModel by viewModel()
+    private val introductionData by lazy { (requireActivity().application as CoronaCheckApp).getIntroductionData() }
     private lateinit var binding: FragmentOnboardingBinding
 
     override fun onCreateView(
@@ -47,7 +44,7 @@ class OnboardingFragment : Fragment() {
         val adapter =
             OnboardingPagerAdapter(
                 this,
-                introductionActivity.getOnboardingItems()
+                introductionData.onboardingItems
             )
         binding.viewPager.adapter = adapter
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
@@ -77,7 +74,7 @@ class OnboardingFragment : Fragment() {
             binding.viewPager.currentItem = binding.viewPager.currentItem - 1
         }
 
-        binding.button.text = getString(introductionActivity.getOnboardingNextString())
+        binding.button.text = getString(introductionData.onboardingNextButtonStringResource)
         binding.button.setOnClickListener {
             val currentItem = binding.viewPager.currentItem
             if (currentItem == adapter.itemCount - 1) {

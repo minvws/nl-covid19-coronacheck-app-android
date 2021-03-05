@@ -11,6 +11,7 @@ import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.repositories.TestProviderRepository
 import nl.rijksoverheid.ctr.holder.usecase.*
+import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import java.time.OffsetDateTime
 
@@ -32,6 +33,20 @@ fun fakeQrCodeUseCase(
             qrCodeHeight: Int
         ): Bitmap {
             return bitmap
+        }
+    }
+}
+
+fun fakeIntroductionViewModel(
+    introductionFinished: Boolean
+): IntroductionViewModel {
+    return object : IntroductionViewModel() {
+        override fun introductionFinished(): Boolean {
+            return introductionFinished
+        }
+
+        override fun saveIntroductionFinished() {
+
         }
     }
 }

@@ -6,7 +6,7 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import nl.rijksoverheid.ctr.api.cache.CacheOverrideInterceptor
-import nl.rijksoverheid.ctr.api.cachestrategy.CacheStrategyInterceptor
+import nl.rijksoverheid.ctr.api.cache.CacheStrategyInterceptor
 import nl.rijksoverheid.ctr.api.json.Base64JsonAdapter
 import nl.rijksoverheid.ctr.api.json.OffsetDateTimeJsonAdapter
 import nl.rijksoverheid.ctr.api.json.RemoteTestStatusJsonAdapter

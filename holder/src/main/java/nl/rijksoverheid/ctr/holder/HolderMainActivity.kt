@@ -9,12 +9,16 @@
 package nl.rijksoverheid.ctr.holder
 
 import android.os.Bundle
+import android.view.View
 import android.view.WindowManager
+import androidx.core.os.bundleOf
 import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
+import nl.rijksoverheid.ctr.appconfig.AppStatusFragment
 import nl.rijksoverheid.ctr.appconfig.AppStatusViewModel
 import nl.rijksoverheid.ctr.appconfig.model.AppStatus
 import nl.rijksoverheid.ctr.holder.databinding.ActivityMainBinding
@@ -22,7 +26,6 @@ import nl.rijksoverheid.ctr.shared.BaseActivity
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.ext.styleTitle
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import timber.log.Timber
 
 class HolderMainActivity : BaseActivity(R.id.nav_my_overview) {
 
@@ -48,9 +51,30 @@ class HolderMainActivity : BaseActivity(R.id.nav_my_overview) {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.id in arrayOf(
+                    R.id.nav_setup,
+                    R.id.nav_app_status,
+                    R.id.nav_onboarding,
+                    R.id.nav_privacy_policy
+                )
+            ) {
+                binding.toolbar.visibility = View.GONE
+                binding.drawerLayout.setDrawerLockMode(
+                    DrawerLayout.LOCK_MODE_LOCKED_CLOSED,
+                    GravityCompat.START
+                )
+            } else {
+                binding.toolbar.visibility = View.VISIBLE
+                binding.drawerLayout.setDrawerLockMode(
+                    DrawerLayout.LOCK_MODE_UNLOCKED,
+                    GravityCompat.START
+                )
+            }
+        }
+
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_status,
                 R.id.nav_my_overview,
                 R.id.nav_settings,
                 R.id.nav_about_this_app
@@ -81,18 +105,13 @@ class HolderMainActivity : BaseActivity(R.id.nav_my_overview) {
             true
         }
 
-
         appStatusViewModel.appStatus.observe(this) {
-            when (it) {
-                is AppStatus.Deactivated,
-                is AppStatus.UpdateRequired -> navController.navigate(R.id.action_app_status)
-                else -> {
-                    // up to date
-                }
+            if (it !is AppStatus.NoActionRequired) {
+                val bundle = bundleOf(AppStatusFragment.EXTRA_APP_STATUS to it)
+                navController.navigate(R.id.action_app_status, bundle)
             }
         }
     }
-
 
     override fun onStart() {
         super.onStart()

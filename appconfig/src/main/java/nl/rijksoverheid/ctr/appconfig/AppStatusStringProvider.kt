@@ -13,10 +13,14 @@ interface AppStatusStringProvider {
     fun getAppStatusStrings(): AppStatusStrings
 
     data class AppStatusStrings(
-        val appStatusDeactivatedTitle: Int = 0,
-        val appStatusDeactivatedAction: Int = 0,
-        val appStatusUpdateRequiredTitle: Int = 0,
-        val appStatusUpdateRequiredMessage: Int = 0,
-        val appStatusUpdateRequiredAction: Int = 0,
+        val appStatusDeactivatedTitle: Int,
+        val appStatusDeactivatedMessage: Int,
+        val appStatusDeactivatedAction: Int,
+        val appStatusUpdateRequiredTitle: Int,
+        val appStatusUpdateRequiredMessage: Int,
+        val appStatusUpdateRequiredAction: Int,
+        val appStatusInternetRequiredTitle: Int,
+        val appStatusInternetRequiredMessage: Int,
+        val appStatusInternetRequiredAction: Int
     )
 }

@@ -1,16 +1,13 @@
 package nl.rijksoverheid.ctr.holder
 
-import android.content.Intent
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.api.apiModule
 import nl.rijksoverheid.ctr.appconfig.AppStatusStringProvider
 import nl.rijksoverheid.ctr.appconfig.appConfigModule
 import nl.rijksoverheid.ctr.introduction.CoronaCheckApp
-import nl.rijksoverheid.ctr.introduction.IntroductionActivity
 import nl.rijksoverheid.ctr.introduction.introductionModule
 import nl.rijksoverheid.ctr.introduction.onboarding.models.OnboardingItem
 import nl.rijksoverheid.ctr.introduction.privacy_policy.models.PrivacyPolicyItem
-import nl.rijksoverheid.ctr.introduction.status.StatusFragmentDirections
 import nl.rijksoverheid.ctr.shared.SharedApplication
 import nl.rijksoverheid.ctr.shared.sharedModule
 import org.koin.android.ext.koin.androidContext
@@ -43,6 +40,7 @@ class MainApplication : SharedApplication(), CoronaCheckApp, AppStatusStringProv
 
     override fun getIntroductionData(): CoronaCheckApp.IntroductionData {
         return CoronaCheckApp.IntroductionData(
+            appSetupTextResource = R.string.app_setup_text,
             onboardingItems = listOf(
                 OnboardingItem(
                     R.drawable.illustration_onboarding_1,
@@ -80,33 +78,26 @@ class MainApplication : SharedApplication(), CoronaCheckApp, AppStatusStringProv
                 )
             ),
             introductionDoneCallback = {
-                val intent = Intent(it, HolderMainActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                it.startActivity(intent)
-                it.overridePendingTransition(0, 0)
-            },
-            skipIntroductionCallback = {
-                it.findNavController().navigate(StatusFragmentDirections.actionMyOverview())
-            },
-            launchIntroductionCallback = {
-                val intent = Intent(it, IntroductionActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                it.startActivity(intent)
-                it.overridePendingTransition(0, 0)
+                it.findNavController().navigate(R.id.action_my_overview)
             },
             privacyPolicyStringResource = R.string.privacy_policy_description,
             privacyPolicyCheckboxStringResource = R.string.privacy_policy_checkbox_text,
-            onboardingNextButtonStringResource = R.string.onboarding_next
+            onboardingNextButtonStringResource = R.string.onboarding_next,
+            launchScreen = R.drawable.launch_screen
         )
     }
 
     override fun getAppStatusStrings(): AppStatusStringProvider.AppStatusStrings {
         return AppStatusStringProvider.AppStatusStrings(
             appStatusDeactivatedTitle = R.string.app_status_deactivated_title,
+            appStatusDeactivatedMessage = R.string.app_status_deactivated_message,
             appStatusDeactivatedAction = R.string.app_status_deactivated_action,
             appStatusUpdateRequiredAction = R.string.app_status_update_required_action,
             appStatusUpdateRequiredMessage = R.string.app_status_update_required_message,
-            appStatusUpdateRequiredTitle = R.string.app_status_update_required_title
+            appStatusUpdateRequiredTitle = R.string.app_status_update_required_title,
+            appStatusInternetRequiredTitle = R.string.app_status_internet_required_title,
+            appStatusInternetRequiredMessage = R.string.app_status_internet_required_message,
+            appStatusInternetRequiredAction = R.string.app_status_internet_required_action
         )
     }
 }

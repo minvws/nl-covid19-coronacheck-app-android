@@ -9,7 +9,7 @@ import androidx.navigation.fragment.findNavController
 import com.xwray.groupie.GroupieAdapter
 import com.xwray.groupie.Section
 import nl.rijksoverheid.ctr.introduction.BuildConfig
-import nl.rijksoverheid.ctr.introduction.IntroductionActivity
+import nl.rijksoverheid.ctr.introduction.CoronaCheckApp
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.databinding.FragmentPrivacyPolicyBinding
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
@@ -25,7 +25,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  */
 class PrivacyPolicyFragment : Fragment() {
 
-    private val introductionActivity by lazy { activity as IntroductionActivity }
+    private val introductionData by lazy { (requireActivity().application as CoronaCheckApp).getIntroductionData() }
     private val introductionViewModel: IntroductionViewModel by viewModel()
     private lateinit var binding: FragmentPrivacyPolicyBinding
 
@@ -49,15 +49,15 @@ class PrivacyPolicyFragment : Fragment() {
         }
 
         binding.description.text =
-            getString(introductionActivity.getPrivacyPolicyDescription()).fromHtml()
+            getString(introductionData.privacyPolicyStringResource).fromHtml()
         binding.description.setOnClickListener {
             BuildConfig.URL_PRIVACY_STATEMENT.launchUrl(requireContext())
         }
         binding.checkbox.text =
-            getString(introductionActivity.getPrivacyPolicyCheckboxDescription())
-        binding.button.text = getString(introductionActivity.getOnboardingNextString())
+            getString(introductionData.privacyPolicyCheckboxStringResource)
+        binding.button.text = getString(introductionData.onboardingNextButtonStringResource)
 
-        val adapterItems = introductionActivity.getPrivacyPolicyItems().map {
+        val adapterItems = introductionData.privacyPolicyItems.map {
             PrivacyPolicyAdapterItem(
                 it
             )
@@ -75,7 +75,7 @@ class PrivacyPolicyFragment : Fragment() {
 
         binding.button.setOnClickListener {
             introductionViewModel.saveIntroductionFinished()
-            introductionActivity.introductionDoneCallback().invoke(requireActivity())
+            introductionData.introductionDoneCallback.invoke(this)
         }
     }
 }

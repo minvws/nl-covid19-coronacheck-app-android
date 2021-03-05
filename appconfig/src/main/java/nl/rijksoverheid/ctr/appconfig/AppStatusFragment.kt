@@ -17,49 +17,67 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.appconfig.databinding.FragmentAppStatusBinding
 import nl.rijksoverheid.ctr.appconfig.model.AppStatus
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class AppStatusFragment : Fragment(R.layout.fragment_app_status) {
 
-    private val viewModel: AppStatusViewModel by sharedViewModel()
-    private val appStatusStringProvider by lazy { requireActivity().application as AppStatusStringProvider }
+    companion object {
+        const val EXTRA_APP_STATUS = "EXTRA_APP_STATUS"
+    }
+
+    private val appStatusStrings by lazy { (requireActivity().application as AppStatusStringProvider).getAppStatusStrings() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         val binding = FragmentAppStatusBinding.bind(view)
+        val appStatus = arguments?.getParcelable<AppStatus>(EXTRA_APP_STATUS)
+            ?: throw IllegalStateException("AppStatus should not be null")
 
-        val appStatusStrings = appStatusStringProvider.getAppStatusStrings()
-
-        viewModel.appStatus.observe(viewLifecycleOwner) {
-            when (it) {
-                is AppStatus.Deactivated -> {
-                    binding.bind(
-                        appStatusStrings.appStatusDeactivatedTitle,
-                        it.message,
-                        appStatusStrings.appStatusDeactivatedAction
-                    ) {
-                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(it.informationUrl)))
-                    }
-                }
-                is AppStatus.UpdateRequired -> {
-                    binding.bind(
-                        appStatusStrings.appStatusUpdateRequiredTitle,
-                        it.message ?: getString(appStatusStrings.appStatusUpdateRequiredMessage),
-                        appStatusStrings.appStatusUpdateRequiredAction
-                    ) {
-                        openPlayStore()
-                    }
-                }
-                else -> {
-                    /* nothing */
+        when (appStatus) {
+            is AppStatus.Deactivated -> {
+                binding.bind(
+                    appStatusStrings.appStatusDeactivatedTitle,
+                    appStatusStrings.appStatusDeactivatedMessage,
+                    appStatusStrings.appStatusDeactivatedAction
+                ) {
+                    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(appStatus.informationUrl)))
                 }
             }
+            is AppStatus.UpdateRequired -> {
+                binding.bind(
+                    appStatusStrings.appStatusUpdateRequiredTitle,
+                    appStatusStrings.appStatusUpdateRequiredMessage,
+                    appStatusStrings.appStatusUpdateRequiredAction
+                ) {
+                    openPlayStore()
+                }
+            }
+            is AppStatus.InternetRequired -> {
+                binding.bind(
+                    appStatusStrings.appStatusInternetRequiredTitle,
+                    appStatusStrings.appStatusInternetRequiredMessage,
+                    appStatusStrings.appStatusInternetRequiredAction
+                ) {
+                    startActivity(
+                        Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse("https://www.coronacheck.nl")
+                        )
+                    )
+                }
+            }
+            else -> {
+                /* nothing */
+            }
         }
+
     }
 
     private fun openPlayStore() {
-        val pkg = requireContext().packageName
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$pkg"))
+        val intent = Intent(
+            Intent.ACTION_VIEW,
+            Uri.parse("market://details?id=${requireContext().packageName}")
+        )
             .setPackage("com.android.vending")
         try {
             startActivity(intent)
@@ -68,7 +86,7 @@ class AppStatusFragment : Fragment(R.layout.fragment_app_status) {
             startActivity(
                 Intent(
                     Intent.ACTION_VIEW,
-                    Uri.parse("https://play.google.com/store/apps/details?id=$pkg")
+                    Uri.parse("https://play.google.com/store/apps/details?id=${requireContext().packageName}")
                 )
             )
         }
@@ -77,12 +95,12 @@ class AppStatusFragment : Fragment(R.layout.fragment_app_status) {
 
 private fun FragmentAppStatusBinding.bind(
     @StringRes title: Int,
-    message: String,
+    @StringRes message: Int,
     @StringRes action: Int,
     onClick: () -> Unit
 ) {
     this.title.setText(title)
-    this.message.text = message
+    this.message.setText(message)
     this.action.setText(action)
     this.action.setOnClickListener {
         onClick()
