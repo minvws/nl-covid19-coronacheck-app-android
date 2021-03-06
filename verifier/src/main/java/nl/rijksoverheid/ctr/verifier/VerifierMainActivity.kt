@@ -95,7 +95,7 @@ class VerifierMainActivity : BaseActivity(R.id.nav_scan_qr) {
             true
         }
 
-        appStatusViewModel.appStatus.observe(this) {
+        appStatusViewModel.appStatusLiveData.observe(this) {
             if (it !is AppStatus.NoActionRequired) {
                 val bundle = bundleOf(AppStatusFragment.EXTRA_APP_STATUS to it)
                 navController.navigate(R.id.action_app_status, bundle)
