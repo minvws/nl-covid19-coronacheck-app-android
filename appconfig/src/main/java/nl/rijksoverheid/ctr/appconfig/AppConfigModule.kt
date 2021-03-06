@@ -10,10 +10,7 @@ package nl.rijksoverheid.ctr.appconfig
 
 import nl.rijksoverheid.ctr.appconfig.api.AppConfigApi
 import nl.rijksoverheid.ctr.appconfig.api.AppConfigApiCacheInterceptor
-import nl.rijksoverheid.ctr.appconfig.usecase.AppConfigUseCase
-import nl.rijksoverheid.ctr.appconfig.usecase.AppConfigUseCaseImpl
-import nl.rijksoverheid.ctr.appconfig.usecase.AppStatusUseCase
-import nl.rijksoverheid.ctr.appconfig.usecase.AppStatusUseCaseImpl
+import nl.rijksoverheid.ctr.appconfig.usecase.*
 import okhttp3.OkHttpClient
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -32,6 +29,7 @@ fun appConfigModule(path: String, versionCode: Int) = module {
     factory<AppConfigPersistenceManager> { AppConfigPersistenceManagerImpl(get()) }
     factory<CachedAppConfigUseCase> { CachedAppConfigUseCaseImpl(get(), get()) }
     factory { AppConfigApiCacheInterceptor(get()) }
+    factory<PersistConfigUseCase> { PersistConfigUseCaseImpl(get()) }
 
 
     single {
@@ -45,6 +43,6 @@ fun appConfigModule(path: String, versionCode: Int) = module {
     }
 
     viewModel {
-        AppConfigViewModel(get(), get(), versionCode)
+        AppConfigViewModel(get(), get(), get(), versionCode)
     }
 }

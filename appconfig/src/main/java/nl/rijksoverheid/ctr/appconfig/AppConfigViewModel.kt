@@ -13,12 +13,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.appconfig.model.AppStatus
+import nl.rijksoverheid.ctr.appconfig.model.ConfigResult
 import nl.rijksoverheid.ctr.appconfig.usecase.AppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.usecase.AppStatusUseCase
+import nl.rijksoverheid.ctr.appconfig.usecase.PersistConfigUseCase
 
 class AppConfigViewModel(
     private val appConfigUseCase: AppConfigUseCase,
     private val appStatusUseCase: AppStatusUseCase,
+    private val persistConfigUseCase: PersistConfigUseCase,
     private val versionCode: Int
 ) : ViewModel() {
 
@@ -28,6 +31,12 @@ class AppConfigViewModel(
         viewModelScope.launch {
             val configResult = appConfigUseCase.get()
             val appStatus = appStatusUseCase.get(configResult, versionCode)
+            if (configResult is ConfigResult.Success) {
+                persistConfigUseCase.persist(
+                    appConfig = configResult.appConfig,
+                    publicKeys = configResult.publicKeys
+                )
+            }
             appStatusLiveData.postValue(appStatus)
         }
     }
