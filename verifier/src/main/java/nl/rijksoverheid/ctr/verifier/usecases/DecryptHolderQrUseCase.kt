@@ -21,8 +21,7 @@ import java.time.ZoneOffset
  *
  */
 class DecryptHolderQrUseCase(
-    private val moshi: Moshi,
-    private val testResultRepository: TestResultRepository
+    private val moshi: Moshi
 ) {
 
     suspend fun decrypt(
@@ -31,7 +30,6 @@ class DecryptHolderQrUseCase(
         try {
             val result =
                 Clmobile.verifyQREncoded(
-                    testResultRepository.getIssuerPublicKey().toByteArray(),
                     content.toByteArray()
                 )
                     .verify()
