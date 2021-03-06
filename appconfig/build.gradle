@@ -55,4 +55,6 @@ dependencies {
     testImplementation "io.mockk:mockk:$mock_version"
     testImplementation "com.squareup.okhttp3:mockwebserver"
     testImplementation "junit:junit:$junit_version"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
+    testImplementation "androidx.arch.core:core-testing:$androidx_arch_core_version"
 }

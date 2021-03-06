@@ -18,17 +18,21 @@ import nl.rijksoverheid.ctr.appconfig.usecase.AppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.usecase.AppStatusUseCase
 import nl.rijksoverheid.ctr.appconfig.usecase.PersistConfigUseCase
 
-class AppConfigViewModel(
+abstract class AppConfigViewModel : ViewModel() {
+    val appStatusLiveData = MutableLiveData<AppStatus>()
+
+    abstract fun refresh()
+}
+
+class AppConfigViewModelImpl(
     private val appConfigUseCase: AppConfigUseCase,
     private val appStatusUseCase: AppStatusUseCase,
     private val persistConfigUseCase: PersistConfigUseCase,
     private val loadPublicKeysUseCase: LoadPublicKeysUseCase,
     private val versionCode: Int
-) : ViewModel() {
+) : AppConfigViewModel() {
 
-    val appStatusLiveData = MutableLiveData<AppStatus>()
-
-    fun refresh() {
+    override fun refresh() {
         viewModelScope.launch {
             val configResult = appConfigUseCase.get()
             val appStatus = appStatusUseCase.get(configResult, versionCode)

@@ -45,6 +45,7 @@ buildscript {
     ext.androix_test_version = '1.3.0'
     ext.lottie_version = '3.5.0'
     ext.barista_version = '3.7.0'
+    ext.androidx_arch_core_version = '2.1.0'
 
     repositories {
         google()

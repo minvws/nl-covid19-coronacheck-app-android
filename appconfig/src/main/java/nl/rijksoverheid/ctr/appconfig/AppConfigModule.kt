@@ -43,7 +43,7 @@ fun appConfigModule(path: String, versionCode: Int) = module {
             .create(AppConfigApi::class.java)
     }
 
-    viewModel {
-        AppConfigViewModel(get(), get(), get(), get(), versionCode)
+    viewModel<AppConfigViewModel> {
+        AppConfigViewModelImpl(get(), get(), get(), get(), versionCode)
     }
 }
