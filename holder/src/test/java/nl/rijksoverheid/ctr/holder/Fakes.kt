@@ -198,13 +198,8 @@ fun fakeTestResultAttributesUseCase(
 
 fun fakeTestResultRepository(
     testValiditySeconds: Long = 0,
-    issuerPublicKey: String = ""
 ): TestResultRepository {
     return object : TestResultRepository {
-        override suspend fun getIssuerPublicKey(): String {
-            return issuerPublicKey
-        }
-
         override suspend fun getTestValiditySeconds(): Long {
             return testValiditySeconds
         }
