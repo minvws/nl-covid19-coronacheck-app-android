@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.appconfig
 
+import com.squareup.moshi.Moshi
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
@@ -34,7 +35,8 @@ class PersistConfigUseCaseImplTest {
         )
 
         val usecase = PersistConfigUseCaseImpl(
-            appConfigPersistenceManager = appConfigPersistenceManager
+            appConfigPersistenceManager = appConfigPersistenceManager,
+            moshi = Moshi.Builder().build()
         )
 
         usecase.persist(

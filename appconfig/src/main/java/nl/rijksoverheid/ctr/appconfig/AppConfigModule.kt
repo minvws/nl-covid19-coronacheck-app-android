@@ -29,7 +29,7 @@ fun appConfigModule(path: String, versionCode: Int) = module {
     factory<AppConfigPersistenceManager> { AppConfigPersistenceManagerImpl(get()) }
     factory<CachedAppConfigUseCase> { CachedAppConfigUseCaseImpl(get(), get()) }
     factory { AppConfigApiCacheInterceptor(get()) }
-    factory<PersistConfigUseCase> { PersistConfigUseCaseImpl(get()) }
+    factory<PersistConfigUseCase> { PersistConfigUseCaseImpl(get(), get()) }
 
 
     single {

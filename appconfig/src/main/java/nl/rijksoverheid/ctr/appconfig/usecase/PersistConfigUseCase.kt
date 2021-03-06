@@ -21,9 +21,8 @@ interface PersistConfigUseCase {
 
 class PersistConfigUseCaseImpl(
     private val appConfigPersistenceManager: AppConfigPersistenceManager,
+    private val moshi: Moshi
 ) : PersistConfigUseCase {
-
-    private val moshi = Moshi.Builder().build()
 
     override suspend fun persist(appConfig: AppConfig, publicKeys: PublicKeys) =
         withContext(Dispatchers.IO) {
