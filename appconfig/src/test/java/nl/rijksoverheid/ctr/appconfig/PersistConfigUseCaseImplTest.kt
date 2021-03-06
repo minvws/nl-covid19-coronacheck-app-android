@@ -42,7 +42,7 @@ class PersistConfigUseCaseImplTest {
             publicKeys = publicKeys
         )
 
-        coVerify() { appConfigPersistenceManager.saveAppConfigJson(any()) }
+        coVerify { appConfigPersistenceManager.saveAppConfigJson(any()) }
         coVerify { appConfigPersistenceManager.savePublicKeysJson(any()) }
     }
 
