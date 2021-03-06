@@ -22,6 +22,7 @@ class AppConfigViewModel(
     private val appConfigUseCase: AppConfigUseCase,
     private val appStatusUseCase: AppStatusUseCase,
     private val persistConfigUseCase: PersistConfigUseCase,
+    private val loadPublicKeysUseCase: LoadPublicKeysUseCase,
     private val versionCode: Int
 ) : ViewModel() {
 
@@ -34,6 +35,9 @@ class AppConfigViewModel(
             if (configResult is ConfigResult.Success) {
                 persistConfigUseCase.persist(
                     appConfig = configResult.appConfig,
+                    publicKeys = configResult.publicKeys
+                )
+                loadPublicKeysUseCase.load(
                     publicKeys = configResult.publicKeys
                 )
             }

@@ -30,6 +30,7 @@ fun appConfigModule(path: String, versionCode: Int) = module {
     factory<CachedAppConfigUseCase> { CachedAppConfigUseCaseImpl(get(), get()) }
     factory { AppConfigApiCacheInterceptor(get()) }
     factory<PersistConfigUseCase> { PersistConfigUseCaseImpl(get(), get()) }
+    factory<LoadPublicKeysUseCase> { LoadPublicKeysUseCaseImpl(get()) }
 
 
     single {
@@ -43,6 +44,6 @@ fun appConfigModule(path: String, versionCode: Int) = module {
     }
 
     viewModel {
-        AppConfigViewModel(get(), get(), get(), versionCode)
+        AppConfigViewModel(get(), get(), get(), get(), versionCode)
     }
 }

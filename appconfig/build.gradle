@@ -48,6 +48,7 @@ dependencies {
     implementation(project(":signing"))
     implementation(project(":design"))
     implementation(project(":shared"))
+    implementation(project(":ctcl"))
 
     kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
 
