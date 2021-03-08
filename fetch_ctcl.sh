@@ -2,5 +2,5 @@ git clone git@github.com:minvws/nl-covid19-coronatester-ctcl-core-private.git tm
 cd tmp-ctcl
 gomobile bind -target android -o ctcl.aar github.com/minvws/nl-covid19-coronatester-ctcl-core/clmobile
 cd ../
-cp tmp-ctcl/ctcl.aar shared/libs 
+cp tmp-ctcl/ctcl.aar ctcl
 rm -rf tmp-ctcl
