@@ -14,7 +14,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.scope.emptyState
 import java.time.Instant
 import java.time.OffsetDateTime
-import java.time.ZoneId
+import java.time.ZoneOffset
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -44,7 +44,7 @@ class DateOfBirthCheckFragment : Fragment(R.layout.fragment_date_of_birth_check)
         } else {
             val dateOfBirthString = OffsetDateTime.ofInstant(
                 Instant.ofEpochMilli(dateOfBirth),
-                ZoneId.of("CET")
+                ZoneOffset.UTC
             ).formatDate()
 
             binding.description.text =
