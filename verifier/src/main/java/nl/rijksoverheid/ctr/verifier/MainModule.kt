@@ -2,6 +2,8 @@ package nl.rijksoverheid.ctr.verifier
 
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
+import nl.rijksoverheid.ctr.shared.util.MLKitQrCodeScannerUtil
+import nl.rijksoverheid.ctr.shared.util.QrCodeScannerUtil
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 import nl.rijksoverheid.ctr.verifier.persistance.SharedPreferencesPersistenceManager
 import nl.rijksoverheid.ctr.verifier.scanqr.ScanQrViewModel
@@ -31,6 +33,8 @@ val mainModule = module {
             get()
         )
     }
+
+    single<QrCodeScannerUtil> { MLKitQrCodeScannerUtil() }
 
     // Use cases
     single {
