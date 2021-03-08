@@ -24,6 +24,18 @@ fun OffsetDateTime.formatDate(): String =
     ).format(this)
 
 // TODO: Other country support
+fun OffsetDateTime.formatDateDayMonth(): String =
+    DateTimeFormatter.ofPattern(
+        "d MMMM"
+    ).format(this)
+
+// TODO: Other country support
+fun OffsetDateTime.formatHourMinutes(): String =
+    DateTimeFormatter.ofPattern(
+        "HH:mm"
+    ).format(this)
+
+// TODO: Other country support
 fun OffsetDateTime.formatDateShort(): String =
     DateTimeFormatter.ofPattern(
         "dd-MM-yyyy"

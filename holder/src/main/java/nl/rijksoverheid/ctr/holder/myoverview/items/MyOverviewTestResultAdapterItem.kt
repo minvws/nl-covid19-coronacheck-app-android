@@ -30,7 +30,7 @@ class MyOverviewTestResultAdapterItem(
 
         viewBinding.testResultSubtitle.text = OffsetDateTime.ofInstant(
             Instant.ofEpochMilli(localTestResult.dateOfBirthMillis),
-            ZoneId.of("GMT")
+            ZoneId.of("CET")
         ).formatDateShort()
 
 

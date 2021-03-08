@@ -44,7 +44,7 @@ class DateOfBirthCheckFragment : Fragment(R.layout.fragment_date_of_birth_check)
         } else {
             val dateOfBirthString = OffsetDateTime.ofInstant(
                 Instant.ofEpochMilli(dateOfBirth),
-                ZoneId.of("UTC")
+                ZoneId.of("CET")
             ).formatDate()
 
             binding.description.text =
