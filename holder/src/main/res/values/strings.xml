@@ -50,6 +50,7 @@
     <string name="commercial_test_type_title">Testresultaat ophalen</string>
     <string name="commercial_test_type_description">Heb je je laten testen bij een commerciële testlocatie? Dan heb je een unieke code gekregen of een QR-code.</string>
     <string name="commercial_test_type_code_title">Ik heb een code</string>
+    <string name="commercial_test_type_code_toolbar_title">Code invullen</string>
     <string name="commercial_test_type_qr_code_title">Ik heb een QR-code </string>
     <string name="commercial_test_type_no_code_title">Ik heb geen code</string>
     <string name="commercial_test_type_no_code_description">Als je je bij een commerciele testlocatie hebt laten testen krijg je een code gemaild of op papier. De code kan een QR-code zijn of een code met cijfers en letters.\nHeb je geen code gekregen? Of ben je code kwijt geraakt? Neem dan contact op met je testlocatie.\nHet kan zijn dat je je opnieuw moet laten testen.</string>
@@ -57,7 +58,7 @@
     <string name="commercial_test_code_description">Vul de code in die je van je testlocatie hebt gekregen. Of klik op de link in je e-mail, als de testlocatie je gemaild heeft.</string>
     <string name="commercial_test_unique_code_hint">Unieke code</string>
     <string name="commercial_test_verification_code_hint">Verificatie code</string>
-    <string name="commercial_test_button">Haal testresultaten op</string>
+    <string name="commercial_test_button">Haal testresultaat op</string>
     <string name="commercial_test_invalid_qr_title">Ongeldige QR-code</string>
     <string name="commercial_test_invalid_qr_message">Deze QR-code is niet geldig. Scan de QR-code die je van je testlocatie hebt gekregen.</string>
     <string name="commercial_test_scanner_custom_title">QR-code scannen</string>
