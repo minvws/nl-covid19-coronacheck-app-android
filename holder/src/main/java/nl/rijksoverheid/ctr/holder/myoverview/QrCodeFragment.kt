@@ -16,7 +16,7 @@ import nl.rijksoverheid.ctr.shared.util.QrCodeUtil
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import java.time.Instant
 import java.time.OffsetDateTime
-import java.time.ZoneId
+import java.time.ZoneOffset
 
 
 /*
@@ -71,7 +71,7 @@ class QrCodeFragment : DialogFragment() {
         localTestResultViewModel.qrCodeLiveData.observe(viewLifecycleOwner) {
             binding.title.text = OffsetDateTime.ofInstant(
                 Instant.ofEpochMilli(it.localTestResult.dateOfBirthMillis),
-                ZoneId.of("CET")
+                ZoneOffset.UTC
             ).formatDateShort()
             binding.image.setImageBitmap(it.qrCode)
             binding.loading.visibility = View.GONE

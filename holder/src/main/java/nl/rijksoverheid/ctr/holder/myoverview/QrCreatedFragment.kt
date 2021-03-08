@@ -14,9 +14,6 @@ import nl.rijksoverheid.ctr.shared.ext.fromHtml
 import org.koin.androidx.viewmodel.ViewModelOwner
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.scope.emptyState
-import java.time.Instant
-import java.time.OffsetDateTime
-import java.time.ZoneId
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -54,16 +51,8 @@ class QrCreatedFragment : Fragment() {
             // restored from state, no result anymore
             findNavController().navigate(QrCreatedFragmentDirections.actionMyOverview())
         } else {
-            val dayMonths = OffsetDateTime.ofInstant(
-                Instant.ofEpochSecond(result.sampleDate.toEpochSecond()),
-                ZoneId.of("CET")
-            ).formatDateDayMonth()
-
-            val hourMinutes = OffsetDateTime.ofInstant(
-                Instant.ofEpochSecond(result.sampleDate.toEpochSecond()),
-                ZoneId.of("CET")
-            ).formatHourMinutes()
-
+            val dayMonths = result.sampleDate.formatDateDayMonth()
+            val hourMinutes = result.sampleDate.formatHourMinutes(requireContext())
             binding.description.text = getString(
                 R.string.create_qr_code_description, dayMonths, hourMinutes
             ).fromHtml()

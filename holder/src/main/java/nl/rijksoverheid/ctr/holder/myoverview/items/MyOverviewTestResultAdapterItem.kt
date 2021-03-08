@@ -11,6 +11,7 @@ import nl.rijksoverheid.ctr.shared.ext.formatDateTime
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneId
+import java.time.ZoneOffset
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -30,16 +31,13 @@ class MyOverviewTestResultAdapterItem(
 
         viewBinding.testResultSubtitle.text = OffsetDateTime.ofInstant(
             Instant.ofEpochMilli(localTestResult.dateOfBirthMillis),
-            ZoneId.of("CET")
+            ZoneOffset.UTC
         ).formatDateShort()
 
 
         viewBinding.testResultFooter.text = context.getString(
             R.string.my_overview_existing_qr_date,
-            OffsetDateTime.ofInstant(
-                Instant.ofEpochSecond(localTestResult.expireDate.toEpochSecond()),
-                ZoneId.of("CET")
-            ).formatDateTime()
+            localTestResult.expireDate.formatDateTime(context)
         )
 
         if (qrCode == null) {

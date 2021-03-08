@@ -15,7 +15,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.scope.emptyState
 import java.time.Instant
 import java.time.OffsetDateTime
-import java.time.ZoneId
+import java.time.ZoneOffset
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -48,8 +48,8 @@ class YourNegativeTestResultFragment : BaseFragment(R.layout.fragment_your_negat
             binding.rowSubtitle.text =
                 OffsetDateTime.ofInstant(
                     Instant.ofEpochSecond(result.sampleDate.toEpochSecond()),
-                    ZoneId.of("CET")
-                ).formatDateTime()
+                    ZoneOffset.UTC
+                ).formatDateTime(requireContext())
         }
 
         binding.button.setOnClickListener {
