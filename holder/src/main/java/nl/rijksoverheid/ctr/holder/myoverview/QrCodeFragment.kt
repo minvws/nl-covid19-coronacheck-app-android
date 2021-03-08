@@ -71,7 +71,7 @@ class QrCodeFragment : DialogFragment() {
         localTestResultViewModel.qrCodeLiveData.observe(viewLifecycleOwner) {
             binding.title.text = OffsetDateTime.ofInstant(
                 Instant.ofEpochMilli(it.localTestResult.dateOfBirthMillis),
-                ZoneId.of("UTC")
+                ZoneId.of("CET")
             ).formatDateShort()
             binding.image.setImageBitmap(it.qrCode)
             binding.loading.visibility = View.GONE

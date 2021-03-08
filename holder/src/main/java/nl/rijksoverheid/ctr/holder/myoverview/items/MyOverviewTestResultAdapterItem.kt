@@ -7,11 +7,10 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.ItemMyOverviewTestResultBinding
 import nl.rijksoverheid.ctr.holder.models.LocalTestResult
 import nl.rijksoverheid.ctr.shared.ext.formatDateShort
+import nl.rijksoverheid.ctr.shared.ext.formatDateTime
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneId
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -31,14 +30,16 @@ class MyOverviewTestResultAdapterItem(
 
         viewBinding.testResultSubtitle.text = OffsetDateTime.ofInstant(
             Instant.ofEpochMilli(localTestResult.dateOfBirthMillis),
-            ZoneId.of("UTC")
+            ZoneId.of("GMT")
         ).formatDateShort()
+
 
         viewBinding.testResultFooter.text = context.getString(
             R.string.my_overview_existing_qr_date,
-            localTestResult.expireDate.format(
-                DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
-            )
+            OffsetDateTime.ofInstant(
+                Instant.ofEpochSecond(localTestResult.expireDate.toEpochSecond()),
+                ZoneId.of("CET")
+            ).formatDateTime()
         )
 
         if (qrCode == null) {
