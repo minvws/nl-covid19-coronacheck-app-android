@@ -59,7 +59,7 @@
                 android:id="@+id/items"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="0dp"
                 android:orientation="vertical"
                 android:overScrollMode="never"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -104,10 +104,10 @@
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:enabled="false"
-        tools:text="Volgende"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Volgende" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

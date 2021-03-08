@@ -155,7 +155,7 @@
         <fragment
             android:id="@+id/nav_commercial_test_code"
             android:name="nl.rijksoverheid.ctr.holder.myoverview.CommercialTestCodeFragment"
-            android:label="@string/commercial_test_type_code_title"
+            android:label="@string/commercial_test_type_code_toolbar_title"
             tools:layout="@layout/fragment_commercial_test_code">
 
             <argument
