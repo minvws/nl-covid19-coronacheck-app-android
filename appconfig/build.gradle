@@ -48,10 +48,13 @@ dependencies {
     implementation(project(":signing"))
     implementation(project(":design"))
     implementation(project(":shared"))
+    implementation(project(":ctcl"))
 
     kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
 
     testImplementation "io.mockk:mockk:$mock_version"
     testImplementation "com.squareup.okhttp3:mockwebserver"
     testImplementation "junit:junit:$junit_version"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
+    testImplementation "androidx.arch.core:core-testing:$androidx_arch_core_version"
 }

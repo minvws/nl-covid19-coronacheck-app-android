@@ -8,9 +8,10 @@
 
 package nl.rijksoverheid.ctr.appconfig.usecase
 
-import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.appconfig.ConfigRepository
-import nl.rijksoverheid.ctr.appconfig.model.AppStatus
+import nl.rijksoverheid.ctr.appconfig.model.ConfigResult
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -21,26 +22,22 @@ import java.io.IOException
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class AppConfigUseCase(
-    private val configRepository: ConfigRepository,
-    private val cachedAppConfigUseCase: CachedAppConfigUseCase
-) {
 
-    suspend fun config(currentVersionCode: Int): AppStatus {
-        return try {
-            val config = configRepository.getConfig()
-            cachedAppConfigUseCase.persistAppConfig(config)
-            val publicKeys = configRepository.getPublicKeys()
-            cachedAppConfigUseCase.persistPublicKeys(publicKeys)
-            return when {
-                config.appDeactivated -> AppStatus.Deactivated(config.informationURL)
-                currentVersionCode < config.minimumVersion -> AppStatus.UpdateRequired
-                else -> AppStatus.NoActionRequired
-            }
+interface AppConfigUseCase {
+    suspend fun get(): ConfigResult
+}
+
+class AppConfigUseCaseImpl(private val configRepository: ConfigRepository) : AppConfigUseCase {
+    override suspend fun get(): ConfigResult = withContext(Dispatchers.IO) {
+        try {
+            ConfigResult.Success(
+                appConfig = configRepository.getConfig(),
+                publicKeys = configRepository.getPublicKeys()
+            )
         } catch (e: IOException) {
-            AppStatus.InternetRequired
+            ConfigResult.NetworkError
         } catch (e: HttpException) {
-            AppStatus.InternetRequired
+            ConfigResult.ServerError
         }
     }
 }

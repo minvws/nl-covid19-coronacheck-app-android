@@ -46,6 +46,7 @@ buildscript {
     ext.lottie_version = '3.5.0'
     ext.barista_version = '3.7.0'
     ext.crashlytics_version = '17.3.1'
+    ext.androidx_arch_core_version = '2.1.0'
 
     repositories {
         google()

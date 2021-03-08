@@ -8,12 +8,15 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentQrCreatedBinding
+import nl.rijksoverheid.ctr.shared.ext.formatDateDayMonth
+import nl.rijksoverheid.ctr.shared.ext.formatHourMinutes
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
 import org.koin.androidx.viewmodel.ViewModelOwner
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.scope.emptyState
-import java.time.format.DateTimeFormatter
-import java.util.*
+import java.time.Instant
+import java.time.OffsetDateTime
+import java.time.ZoneId
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -51,12 +54,18 @@ class QrCreatedFragment : Fragment() {
             // restored from state, no result anymore
             findNavController().navigate(QrCreatedFragmentDirections.actionMyOverview())
         } else {
+            val dayMonths = OffsetDateTime.ofInstant(
+                Instant.ofEpochSecond(result.sampleDate.toEpochSecond()),
+                ZoneId.of("CET")
+            ).formatDateDayMonth()
+
+            val hourMinutes = OffsetDateTime.ofInstant(
+                Instant.ofEpochSecond(result.sampleDate.toEpochSecond()),
+                ZoneId.of("CET")
+            ).formatHourMinutes()
+
             binding.description.text = getString(
-                R.string.create_qr_code_description, result.sampleDate.format(
-                    DateTimeFormatter.ofPattern("dd MMMM", Locale.getDefault())
-                ), result.sampleDate.format(
-                    DateTimeFormatter.ofPattern("HH:mm", Locale.getDefault())
-                )
+                R.string.create_qr_code_description, dayMonths, hourMinutes
             ).fromHtml()
         }
 

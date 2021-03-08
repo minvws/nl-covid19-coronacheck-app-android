@@ -32,7 +32,7 @@ class SetupFragment : Fragment(R.layout.fragment_setup) {
         binding.root.setBackgroundResource(introductionData.launchScreen)
         binding.text.setText(introductionData.appSetupTextResource)
 
-        appStatusViewModel.appStatus.observe(viewLifecycleOwner, {
+        appStatusViewModel.appStatusLiveData.observe(viewLifecycleOwner, {
             if (it is AppStatus.NoActionRequired) {
                 findNavController().navigate(SetupFragmentDirections.actionOnboarding())
             } else {

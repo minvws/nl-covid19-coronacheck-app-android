@@ -10,7 +10,7 @@ package nl.rijksoverheid.ctr.appconfig
 
 import nl.rijksoverheid.ctr.appconfig.api.AppConfigApi
 import nl.rijksoverheid.ctr.appconfig.api.AppConfigApiCacheInterceptor
-import nl.rijksoverheid.ctr.appconfig.usecase.AppConfigUseCase
+import nl.rijksoverheid.ctr.appconfig.usecase.*
 import okhttp3.OkHttpClient
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -24,10 +24,13 @@ import retrofit2.Retrofit
  */
 fun appConfigModule(path: String, versionCode: Int) = module {
     factory<ConfigRepository> { ConfigRepositoryImpl(get()) }
-    factory { AppConfigUseCase(get(), get()) }
+    factory<AppConfigUseCase> { AppConfigUseCaseImpl(get()) }
+    factory<AppStatusUseCase> { AppStatusUseCaseImpl() }
     factory<AppConfigPersistenceManager> { AppConfigPersistenceManagerImpl(get()) }
     factory<CachedAppConfigUseCase> { CachedAppConfigUseCaseImpl(get(), get()) }
     factory { AppConfigApiCacheInterceptor(get()) }
+    factory<PersistConfigUseCase> { PersistConfigUseCaseImpl(get(), get()) }
+    factory<LoadPublicKeysUseCase> { LoadPublicKeysUseCaseImpl(get()) }
 
 
     single {
@@ -40,7 +43,7 @@ fun appConfigModule(path: String, versionCode: Int) = module {
             .create(AppConfigApi::class.java)
     }
 
-    viewModel {
-        AppConfigViewModel(get(), versionCode)
+    viewModel<AppConfigViewModel> {
+        AppConfigViewModelImpl(get(), get(), get(), get(), versionCode)
     }
 }

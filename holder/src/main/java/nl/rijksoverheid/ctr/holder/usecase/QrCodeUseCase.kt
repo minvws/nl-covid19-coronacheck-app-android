@@ -35,7 +35,6 @@ class QrCodeUseCaseImpl(
                 ?: throw IllegalStateException("Secret key should exist")
 
             val qrCodeContent = Clmobile.discloseAllWithTimeQrEncoded(
-                testResultRepository.getIssuerPublicKey().toByteArray(),
                 secretKey.toByteArray(),
                 credentials
             ).successString()

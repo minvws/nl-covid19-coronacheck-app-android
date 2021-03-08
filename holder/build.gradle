@@ -104,6 +104,7 @@ dependencies {
     implementation "com.jakewharton.timber:timber:${timber_version}"
     implementation "com.airbnb.android:lottie:$lottie_version"
     debugImplementation "androidx.fragment:fragment-testing:$fragment_version"
+    implementation "com.google.zxing:core:$zxing_core_version"
 
     testImplementation "junit:junit:$junit_version"
     testImplementation "io.mockk:mockk:$mock_version"
