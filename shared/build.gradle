@@ -34,7 +34,6 @@ android {
 
 dependencies {
     implementation project(":ctcl")
-    implementation project(":qrscanner")
 
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"
     implementation "com.facebook.stetho:stetho:$stetho_version"
@@ -47,7 +46,6 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp")
     implementation "androidx.browser:browser:$browser_version"
     implementation "com.google.android.material:material:${material_version}"
-    implementation "com.google.zxing:core:$zxing_core_version"
 
     api "com.squareup.retrofit2:retrofit:$retrofit_version"
 
