@@ -17,7 +17,7 @@ interface CachedAppConfigUseCase {
     fun persistAppConfig(appConfig: AppConfig)
     fun getCachedAppConfig(): AppConfig
     fun persistPublicKeys(publicKeys: PublicKeys)
-    fun getCachedPublicKeys(): PublicKeys
+    fun getCachedPublicKeys(): PublicKeys?
 }
 
 class CachedAppConfigUseCaseImpl constructor(
@@ -40,8 +40,7 @@ class CachedAppConfigUseCaseImpl constructor(
         persistenceManager.savePublicKeysJson(json)
     }
 
-    override fun getCachedPublicKeys(): PublicKeys {
+    override fun getCachedPublicKeys(): PublicKeys? {
         return persistenceManager.getPublicKeysJson()?.toObject(moshi)
-            ?: throw IllegalStateException("Public keys should be cached")
     }
 }
