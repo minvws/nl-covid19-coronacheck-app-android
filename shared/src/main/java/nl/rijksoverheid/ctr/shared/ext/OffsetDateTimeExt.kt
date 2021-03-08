@@ -12,6 +12,12 @@ import java.time.format.DateTimeFormatter
  */
 
 // TODO: Other country support
+fun OffsetDateTime.formatDateTime(): String =
+    DateTimeFormatter.ofPattern(
+        "d MMMM HH:mm"
+    ).format(this)
+
+// TODO: Other country support
 fun OffsetDateTime.formatDate(): String =
     DateTimeFormatter.ofPattern(
         "d MMMM yyyy"

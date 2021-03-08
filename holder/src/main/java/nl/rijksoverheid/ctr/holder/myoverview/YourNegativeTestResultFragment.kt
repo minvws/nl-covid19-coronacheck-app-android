@@ -8,12 +8,14 @@ import nl.rijksoverheid.ctr.holder.BaseFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentYourNegativeTestResultsBinding
 import nl.rijksoverheid.ctr.holder.usecase.SignedTestResult
+import nl.rijksoverheid.ctr.shared.ext.formatDateTime
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.androidx.viewmodel.ViewModelOwner
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.scope.emptyState
-import java.time.format.DateTimeFormatter
-import java.util.*
+import java.time.Instant
+import java.time.OffsetDateTime
+import java.time.ZoneId
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -44,9 +46,10 @@ class YourNegativeTestResultFragment : BaseFragment(R.layout.fragment_your_negat
             findNavController().navigate(YourNegativeTestResultFragmentDirections.actionMyOverview())
         } else {
             binding.rowSubtitle.text =
-                result.sampleDate.format(
-                    DateTimeFormatter.ofPattern("dd MMMM HH:mm", Locale.getDefault())
-                )
+                OffsetDateTime.ofInstant(
+                    Instant.ofEpochSecond(result.sampleDate.toEpochSecond()),
+                    ZoneId.of("CET")
+                ).formatDateTime()
         }
 
         binding.button.setOnClickListener {
