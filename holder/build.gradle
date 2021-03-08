@@ -61,12 +61,16 @@ android {
             versionNameSuffix "-test"
             applicationIdSuffix ".test"
             manifestPlaceholders = [appLabel: "@string/app_name_test"]
+            apply plugin: 'com.google.gms.google-services'
+            apply plugin: 'com.google.firebase.crashlytics'
         }
         acc {
             dimension "environment"
             versionNameSuffix "-acc"
             applicationIdSuffix ".acc"
             manifestPlaceholders = [appLabel: "@string/app_name_acc"]
+            apply plugin: 'com.google.gms.google-services'
+            apply plugin: 'com.google.firebase.crashlytics'
         }
         prod {
             dimension "environment"
@@ -117,4 +121,7 @@ dependencies {
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
 
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$desugar_jdk_version"
+
+    tstImplementation "com.google.firebase:firebase-crashlytics-ktx:$crashlytics_version"
+    accImplementation "com.google.firebase:firebase-crashlytics-ktx:$crashlytics_version"
 }
