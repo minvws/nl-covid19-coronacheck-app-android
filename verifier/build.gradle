@@ -87,8 +87,6 @@ dependencies {
     implementation project(":introduction")
     implementation project(":api")
     implementation project(":ctcl")
-    implementation project(":qrscanner")
-    implementation "com.google.zxing:core:$zxing_core_version"
 
     implementation "com.xwray:groupie:${groupie_version}"
     implementation "com.xwray:groupie-viewbinding:${groupie_version}"

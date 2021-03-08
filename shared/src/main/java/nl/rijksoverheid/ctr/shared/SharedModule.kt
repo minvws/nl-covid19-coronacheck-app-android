@@ -16,6 +16,8 @@ val sharedModule = module {
 
     single { Clock.systemDefaultZone() }
 
+    single<QrCodeScannerUtil> { MLKitQrCodeScannerUtil() }
+
     // Utils
     single { QrCodeUtil(get()) }
     single { TestResultUtil(get()) }

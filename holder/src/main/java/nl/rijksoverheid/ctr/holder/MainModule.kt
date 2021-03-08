@@ -40,7 +40,9 @@ val mainModule = module {
 
     // Use cases
     single {
-        GenerateHolderQrCodeUseCase()
+        GenerateHolderQrCodeUseCase(
+            get()
+        )
     }
     factory<QrCodeUseCase> {
         QrCodeUseCaseImpl(
