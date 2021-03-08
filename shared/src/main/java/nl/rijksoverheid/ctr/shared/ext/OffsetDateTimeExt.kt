@@ -19,7 +19,7 @@ fun OffsetDateTime.formatDateTime(context: Context): String =
     DateTimeFormatter.ofPattern(
         DateFormat.getBestDateTimePattern(
             Locale.getDefault(),
-            if (DateFormat.is24HourFormat(context)) "d MMMM hh:mm" else "d MMMM hh:mm a"
+            if (DateFormat.is24HourFormat(context)) "d MMMM HH:mm" else "d MMMM hh:mm"
         )
     ).withZone(ZoneId.systemDefault()).format(this)
 
@@ -43,7 +43,7 @@ fun OffsetDateTime.formatHourMinutes(context: Context): String =
     DateTimeFormatter.ofPattern(
         DateFormat.getBestDateTimePattern(
             Locale.getDefault(),
-            if (DateFormat.is24HourFormat(context)) "hh:mm" else "hh:mm a"
+            if (DateFormat.is24HourFormat(context)) "HH:mm" else "hh:mm"
         )
     ).withZone(ZoneId.systemDefault()).format(this)
 
