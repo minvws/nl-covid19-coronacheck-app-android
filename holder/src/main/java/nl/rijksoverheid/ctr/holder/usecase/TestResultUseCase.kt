@@ -1,12 +1,11 @@
 package nl.rijksoverheid.ctr.holder.usecase
 
-import clmobile.Clmobile
-import nl.rijksoverheid.ctr.holder.repositories.HolderRepository
-import nl.rijksoverheid.ctr.shared.ext.successString
-import nl.rijksoverheid.ctr.shared.models.RemoteTestResult
-import nl.rijksoverheid.ctr.shared.models.ResponseError
-import nl.rijksoverheid.ctr.shared.models.SignedResponseWithModel
-import nl.rijksoverheid.ctr.shared.models.TestIsmResult
+import nl.rijksoverheid.ctr.api.models.RemoteTestResult
+import nl.rijksoverheid.ctr.api.models.ResponseError
+import nl.rijksoverheid.ctr.api.models.SignedResponseWithModel
+import nl.rijksoverheid.ctr.api.models.TestIsmResult
+import nl.rijksoverheid.ctr.holder.repositories.CoronaCheckRepository
+import nl.rijksoverheid.ctr.holder.repositories.TestProviderRepository
 import retrofit2.HttpException
 import timber.log.Timber
 import java.io.IOException
@@ -20,12 +19,14 @@ import java.io.IOException
  */
 class TestResultUseCase(
     private val testProviderUseCase: TestProviderUseCase,
-    private val holderRepository: HolderRepository,
+    private val testProviderRepository: TestProviderRepository,
+    private val coronaCheckRepository: CoronaCheckRepository,
     private val commitmentMessageUseCase: CommitmentMessageUseCase,
     private val secretKeyUseCase: SecretKeyUseCase,
+    private val createCredentialUseCase: CreateCredentialUseCase
 ) {
 
-    suspend fun testResult(uniqueCode: String, verificationCode: String?): TestResult {
+    suspend fun testResult(uniqueCode: String, verificationCode: String? = null): TestResult {
         if (uniqueCode.indexOf("-") == -1) {
             return TestResult.InvalidToken
         }
@@ -38,7 +39,7 @@ class TestResultUseCase(
             val testProvider = testProviderUseCase.testProvider(providerIdentifier)
                 ?: return TestResult.InvalidToken
 
-            val signedResponseWithTestResult = holderRepository.remoteTestResult(
+            val signedResponseWithTestResult = testProviderRepository.remoteTestResult(
                 url = testProvider.resultUrl,
                 token = token,
                 verifierCode = verificationCode,
@@ -69,18 +70,17 @@ class TestResultUseCase(
     }
 
     suspend fun signTestResult(
-        remoteTestResult: RemoteTestResult,
         signedResponseWithTestResult: SignedResponseWithModel<RemoteTestResult>
     ): SignedTestResult {
         try {
             // Persist encrypted test result
-            val remoteNonce = holderRepository.remoteNonce()
+            val remoteNonce = coronaCheckRepository.remoteNonce()
             val commitmentMessage = commitmentMessageUseCase.json(
                 nonce = remoteNonce.nonce
             )
             Timber.i("Received commitment message $commitmentMessage")
 
-            val testIsm = holderRepository.getTestIsm(
+            val testIsm = coronaCheckRepository.getTestIsm(
                 test = signedResponseWithTestResult.rawResponse.toString(Charsets.UTF_8),
                 sToken = remoteNonce.sToken,
                 icm = commitmentMessage
@@ -89,12 +89,12 @@ class TestResultUseCase(
                 is TestIsmResult.Success -> {
                     Timber.i("Received test ism json ${testIsm.body}")
 
-                    val credentials = Clmobile.createCredential(
-                        secretKeyUseCase.json().toByteArray(Charsets.UTF_8),
-                        testIsm.body.toByteArray(Charsets.UTF_8)
-                    ).successString()
+                    val credential = createCredentialUseCase.get(
+                        secretKeyJson = secretKeyUseCase.json(),
+                        testIsmBody = testIsm.body
+                    )
 
-                    return SignedTestResult.Complete(credentials)
+                    return SignedTestResult.Complete(credential)
                 }
                 is TestIsmResult.Error -> {
                     return if (testIsm.responseError.code == ResponseError.CODE_ALREADY_SIGNED) {

@@ -2,9 +2,10 @@ package nl.rijksoverheid.ctr.holder.usecase
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import nl.rijksoverheid.ctr.api.repositories.TestResultRepository
 import nl.rijksoverheid.ctr.holder.models.LocalTestResult
+import nl.rijksoverheid.ctr.holder.myoverview.models.LocalTestResultState
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
-import nl.rijksoverheid.ctr.shared.repositories.TestResultRepository
 import nl.rijksoverheid.ctr.shared.util.TestResultUtil
 import java.time.Instant
 import java.time.OffsetDateTime
@@ -17,14 +18,19 @@ import java.time.ZoneOffset
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class LocalTestResultUseCase(
+
+interface LocalTestResultUseCase {
+    suspend fun get(): LocalTestResultState
+}
+
+open class LocalTestResultUseCaseImpl(
     private val persistenceManager: PersistenceManager,
     private val testResultUtil: TestResultUtil,
     private val testResultRepository: TestResultRepository,
     private val testResultAttributesUseCase: TestResultAttributesUseCase
-) {
+) : LocalTestResultUseCase {
 
-    suspend fun get(): LocalTestResult? = withContext(Dispatchers.IO) {
+    override suspend fun get(): LocalTestResultState = withContext(Dispatchers.IO) {
         val credentials = persistenceManager.getCredentials()
         if (credentials != null) {
             val testAttributes = testResultAttributesUseCase.get(credentials)
@@ -39,19 +45,25 @@ class LocalTestResultUseCase(
                 validitySeconds = testValiditySeconds
             )
 
+            val dateOfBirthMillis = persistenceManager.getDateOfBirthMillis()
+                ?: throw IllegalStateException("Date of birth should not be null")
+
             if (isValid) {
-                LocalTestResult(
-                    credentials = credentials,
-                    sampleDate = sampleDate,
-                    testType = testAttributes.testType,
-                    expireDate = sampleDate.plusSeconds(testValiditySeconds)
+                LocalTestResultState.Valid(
+                    LocalTestResult(
+                        credentials = credentials,
+                        sampleDate = sampleDate,
+                        testType = testAttributes.testType,
+                        expireDate = sampleDate.plusSeconds(testValiditySeconds),
+                        dateOfBirthMillis = dateOfBirthMillis
+                    )
                 )
             } else {
                 persistenceManager.deleteCredentials()
-                null
+                LocalTestResultState.Expired
             }
         } else {
-            null
+            LocalTestResultState.None
         }
     }
 }

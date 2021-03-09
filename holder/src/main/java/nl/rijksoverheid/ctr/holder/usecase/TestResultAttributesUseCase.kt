@@ -2,9 +2,9 @@ package nl.rijksoverheid.ctr.holder.usecase
 
 import clmobile.Clmobile
 import com.squareup.moshi.Moshi
+import nl.rijksoverheid.ctr.api.models.TestResultAttributes
 import nl.rijksoverheid.ctr.shared.ext.toObject
 import nl.rijksoverheid.ctr.shared.ext.verify
-import nl.rijksoverheid.ctr.shared.models.TestResultAttributes
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -13,9 +13,16 @@ import nl.rijksoverheid.ctr.shared.models.TestResultAttributes
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class TestResultAttributesUseCase(private val moshi: Moshi) {
 
-    fun get(credentials: String): TestResultAttributes {
+interface TestResultAttributesUseCase {
+    fun get(credentials: String): TestResultAttributes
+}
+
+open class TestResultAttributesUseCaseImpl(
+    private val moshi: Moshi,
+) : TestResultAttributesUseCase {
+
+    override fun get(credentials: String): TestResultAttributes {
         val result = Clmobile.readCredential(credentials.toByteArray()).verify()
         return result.decodeToString().toObject(moshi)
     }

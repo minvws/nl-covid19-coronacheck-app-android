@@ -1,7 +1,6 @@
 package nl.rijksoverheid.ctr.holder.persistence
 
 import android.content.SharedPreferences
-import com.squareup.moshi.Moshi
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -11,44 +10,24 @@ import com.squareup.moshi.Moshi
  *
  */
 interface PersistenceManager {
-    fun saveOnboardingFinished()
-    fun getOnboardingFinished(): Boolean
-    fun savePrivacyPolicyFinished()
-    fun getPrivacyPolicyFinished(): Boolean
     fun saveSecretKeyJson(json: String)
     fun getSecretKeyJson(): String?
     fun saveCredentials(credentials: String)
     fun getCredentials(): String?
     fun deleteCredentials()
+    fun saveDateOfBirthMillis(millis: Long)
+    fun getDateOfBirthMillis(): Long?
 }
 
 class SharedPreferencesPersistenceManager(
-    private val sharedPreferences: SharedPreferences,
-    private val moshi: Moshi
+    private val sharedPreferences: SharedPreferences
 ) :
     PersistenceManager {
 
     companion object {
-        const val ONBOARDING_FINISHED = "ONBOARDING_FINISHED"
-        const val PRIVACY_POLICY_FINISHED = "PRIVACY_POLICY_FINISHED"
         const val SECRET_KEY_JSON = "SECRET_KEY_JSON"
         const val CREDENTIALS = "CREDENTIALS"
-    }
-
-    override fun saveOnboardingFinished() {
-        sharedPreferences.edit().putBoolean(ONBOARDING_FINISHED, true).apply()
-    }
-
-    override fun getOnboardingFinished(): Boolean {
-        return sharedPreferences.getBoolean(ONBOARDING_FINISHED, false)
-    }
-
-    override fun savePrivacyPolicyFinished() {
-        sharedPreferences.edit().putBoolean(PRIVACY_POLICY_FINISHED, true).apply()
-    }
-
-    override fun getPrivacyPolicyFinished(): Boolean {
-        return sharedPreferences.getBoolean(PRIVACY_POLICY_FINISHED, false)
+        const val DATE_OF_BIRTH_MILLIS = "DATE_OF_BIRTH_MILLIS"
     }
 
     override fun saveSecretKeyJson(json: String) {
@@ -69,5 +48,18 @@ class SharedPreferencesPersistenceManager(
 
     override fun deleteCredentials() {
         sharedPreferences.edit().remove(CREDENTIALS).apply()
+    }
+
+    override fun saveDateOfBirthMillis(millis: Long) {
+        sharedPreferences.edit().putLong(DATE_OF_BIRTH_MILLIS, millis).apply()
+    }
+
+    override fun getDateOfBirthMillis(): Long? {
+        val millis = sharedPreferences.getLong(DATE_OF_BIRTH_MILLIS, 0)
+        return if (millis == 0L) {
+            null
+        } else {
+            millis
+        }
     }
 }

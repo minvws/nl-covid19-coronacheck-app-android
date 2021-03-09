@@ -5,7 +5,6 @@ import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import net.openid.appauth.AuthorizationService
 import nl.rijksoverheid.ctr.holder.BaseFragment
-import nl.rijksoverheid.ctr.shared.ext.observeResult
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /*
@@ -24,17 +23,6 @@ open class DigiDFragment : BaseFragment(0) {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             digidViewModel.handleActivityResult(it, authService)
         }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        observeResult(digidViewModel.accessTokenLiveData, {
-
-        }, {
-
-        }, {
-            presentError()
-        })
-    }
 
     fun login() {
         digidViewModel.login(loginResult, authService)

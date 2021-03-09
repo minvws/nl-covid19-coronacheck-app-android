@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/test_result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="32dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="16dp"
+            android:paddingBottom="24dp">
+
+            <ProgressBar
+                android:id="@+id/test_result_loading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/test_result_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
+                android:text="@string/my_overview_existing_qr_title"
+                android:textAlignment="center"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                app:layout_constraintBottom_toTopOf="@+id/test_result_subtitle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/test_result_subtitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/my_overview_existing_qr_title"
+                android:textAlignment="center"
+                android:textAppearance="?attr/textAppearanceBody1"
+                app:layout_constraintBottom_toTopOf="@+id/test_result_qr_image"
+                app:layout_constraintEnd_toEndOf="@+id/test_result_title"
+                app:layout_constraintStart_toStartOf="@+id/test_result_title"
+                app:layout_constraintTop_toBottomOf="@+id/test_result_title"
+                tools:text="07-01-1988" />
+
+            <ImageView
+                android:id="@+id/test_result_qr_image"
+                android:layout_width="0dp"
+                android:layout_height="275dp"
+                app:layout_constraintBottom_toTopOf="@+id/test_result_footer"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/test_result_title" />
+
+            <TextView
+                android:id="@+id/test_result_footer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/my_overview_existing_qr_title"
+                android:textAlignment="center"
+                android:textAppearance="?attr/textAppearanceBody1"
+                app:layout_constraintEnd_toEndOf="@+id/test_result_title"
+                app:layout_constraintStart_toStartOf="@+id/test_result_title"
+                app:layout_constraintTop_toBottomOf="@+id/test_result_qr_image"
+                tools:text="Geldig tot 01-01-2021" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <nl.rijksoverheid.ctr.holder.myoverview.widget.QrCodeAnimationWidget
+        android:layout_width="match_parent"
+        android:layout_height="256dp"
+        android:layout_gravity="bottom"
+        android:layout_marginTop="-72dp" />
+
+</LinearLayout>
+

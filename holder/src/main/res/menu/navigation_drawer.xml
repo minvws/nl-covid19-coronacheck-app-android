@@ -24,11 +24,9 @@
             android:id="@+id/nav_about_this_app"
             android:title="@string/about_this_app" />
 
-        <!-- TODO: Implement privacy statement -->
         <item
             android:id="@+id/nav_privacy_statement"
-            android:title="@string/privacy_statement"
-            android:visible="false" />
+            android:title="@string/privacy_statement" />
 
         <!-- TODO: Implement terms of use -->
         <item

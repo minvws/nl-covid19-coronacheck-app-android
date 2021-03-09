@@ -1,7 +1,6 @@
 package nl.rijksoverheid.ctr.holder.models
 
 import com.squareup.moshi.JsonClass
-import nl.rijksoverheid.ctr.shared.models.JSON
 import java.time.OffsetDateTime
 
 /*
@@ -16,5 +15,6 @@ data class LocalTestResult(
     val credentials: String,
     val sampleDate: OffsetDateTime,
     val expireDate: OffsetDateTime,
-    val testType: String
-) : JSON()
+    val testType: String,
+    val dateOfBirthMillis: Long
+)

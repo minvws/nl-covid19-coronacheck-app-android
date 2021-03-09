@@ -2,7 +2,7 @@ package nl.rijksoverheid.ctr.verifier.usecases
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import nl.rijksoverheid.ctr.shared.repositories.TestResultRepository
+import nl.rijksoverheid.ctr.api.repositories.TestResultRepository
 import nl.rijksoverheid.ctr.shared.util.QrCodeUtil
 import nl.rijksoverheid.ctr.shared.util.TestResultUtil
 

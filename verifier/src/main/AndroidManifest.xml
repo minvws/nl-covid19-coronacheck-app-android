@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="nl.rijksoverheid.ctr.verifier">
 
-    <uses-sdk tools:overrideLibrary="com.google.zxing.client.android" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:name=".MainApplication"
@@ -14,22 +14,16 @@
         android:label="${appLabel}"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.Launcher"
-        tools:replace="android:allowBackup">
+        android:theme="@style/AppTheme.Launcher">
 
         <activity
-            android:name=".MainActivity"
+            android:name=".VerifierMainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity
-            android:name="com.journeyapps.barcodescanner.CaptureActivity"
-            android:screenOrientation="portrait"
-            tools:replace="screenOrientation" />
 
     </application>
 

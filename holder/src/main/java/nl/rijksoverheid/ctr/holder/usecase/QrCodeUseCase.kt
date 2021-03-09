@@ -4,9 +4,9 @@ import android.graphics.Bitmap
 import clmobile.Clmobile
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import nl.rijksoverheid.ctr.api.repositories.TestResultRepository
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.shared.ext.successString
-import nl.rijksoverheid.ctr.shared.util.CryptoUtil
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -15,18 +15,26 @@ import nl.rijksoverheid.ctr.shared.util.CryptoUtil
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class QrCodeUseCase(
+interface QrCodeUseCase {
+    suspend fun qrCode(credentials: ByteArray, qrCodeWidth: Int, qrCodeHeight: Int): Bitmap
+}
+
+class QrCodeUseCaseImpl(
+    private val testResultRepository: TestResultRepository,
     private val persistenceManager: PersistenceManager,
     private val generateHolderQrCodeUseCase: GenerateHolderQrCodeUseCase,
-) {
+) : QrCodeUseCase {
 
-    suspend fun qrCode(credentials: ByteArray, qrCodeWidth: Int, qrCodeHeight: Int): Bitmap =
+    override suspend fun qrCode(
+        credentials: ByteArray,
+        qrCodeWidth: Int,
+        qrCodeHeight: Int
+    ): Bitmap =
         withContext(Dispatchers.IO) {
             val secretKey = persistenceManager.getSecretKeyJson()
                 ?: throw IllegalStateException("Secret key should exist")
 
             val qrCodeContent = Clmobile.discloseAllWithTimeQrEncoded(
-                CryptoUtil.ISSUER_PK_XML.toByteArray(),
                 secretKey.toByteArray(),
                 credentials
             ).successString()

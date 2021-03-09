@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Widget.App.TextInputLayout" parent="Widget.Design.TextInputLayout">
+        <item name="boxBackgroundColor">@color/white</item>
+    </style>
+
+    <style name="Widget.App.Button.Surface" parent="Widget.App.Button">
+        <item name="android:backgroundTint">?colorSurface</item>
+        <item name="android:textColor">?colorOnSurface</item>
+    </style>
+
+    <style name="Widget.App.Button" parent="Widget.MaterialComponents.Button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">52dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetLeft">0dp</item>
+        <item name="android:insetRight">0dp</item>
+        <item name="android:paddingStart">48dp</item>
+        <item name="android:paddingEnd">48dp</item>
+        <item name="cornerRadius">26dp</item>
+    </style>
+
+    <style name="App.TextAppearance.MaterialComponents.Body1" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="lineHeight">26sp</item>
+    </style>
+
+    <style name="App.TextAppearance.MaterialComponents.Headline5.Montserrat" parent="android:TextAppearance">
+        <item name="android:fontFamily">@font/montserrat_bold</item>
+        <item name="android:textSize">26sp</item>
+    </style>
+
+    <style name="App.TextAppearance.MaterialComponents.Headline6.Montserrat" parent="android:TextAppearance">
+        <item name="android:fontFamily">@font/montserrat_bold</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="App.TextAppearance.MaterialComponents.Body1.Montserrat" parent="android:TextAppearance">
+        <item name="android:fontFamily">@font/montserrat_semibold</item>
+        <item name="android:textColor">@color/white_80</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Widget.App.Toolbar.Surface" parent="Widget.MaterialComponents.Toolbar.Surface">
+        <item name="android:elevation">4dp</item>
+    </style>
+
+    <style name="AppTheme.Dialog.FullScreen" parent="">
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowIsFloating">false</item>
+    </style>
+
+    <style name="SlideFromBottomFragmentAnimations">
+        <item name="android:windowEnterAnimation">@anim/slide_in_up</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_down</item>
+    </style>
+
+    <style name="FadeFragmentAnimations">
+        <item name="android:windowEnterAnimation">@anim/fade_in</item>
+        <item name="android:windowExitAnimation">@anim/fade_out</item>
+    </style>
+
+</resources>

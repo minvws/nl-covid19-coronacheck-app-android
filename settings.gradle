@@ -5,12 +5,15 @@
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
+include ':qrscanner'
+include ':api'
+include ':introduction'
+include ':design'
 include ':shared'
 include ':verifier'
 include ':holder'
 include ':signing'
 include ':ctcl'
 include ':appconfig'
-include ':cache-interceptors'
 
 rootProject.name = "CoronaTester"

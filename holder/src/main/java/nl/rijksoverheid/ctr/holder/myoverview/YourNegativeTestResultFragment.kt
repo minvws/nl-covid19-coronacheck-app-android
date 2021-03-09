@@ -3,16 +3,19 @@ package nl.rijksoverheid.ctr.holder.myoverview
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import nl.rijksoverheid.ctr.holder.BaseFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentYourNegativeTestResultsBinding
 import nl.rijksoverheid.ctr.holder.usecase.SignedTestResult
+import nl.rijksoverheid.ctr.shared.ext.formatDateTime
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.androidx.viewmodel.ViewModelOwner
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.scope.emptyState
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
+import java.time.Instant
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -40,14 +43,25 @@ class YourNegativeTestResultFragment : BaseFragment(R.layout.fragment_your_negat
         val result = viewModel.retrievedResult?.remoteTestResult?.result
         if (result == null) {
             // restored from state, no result anymore
-            findNavController().navigate(YourNegativeTestResultFragmentDirections.actionHome())
+            findNavController().navigate(YourNegativeTestResultFragmentDirections.actionMyOverview())
         } else {
             binding.rowSubtitle.text =
-                result.sampleDate.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM))
+                OffsetDateTime.ofInstant(
+                    Instant.ofEpochSecond(result.sampleDate.toEpochSecond()),
+                    ZoneOffset.UTC
+                ).formatDateTime(requireContext())
         }
 
         binding.button.setOnClickListener {
             viewModel.saveTestResult()
+        }
+
+        binding.info.setOnClickListener {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(R.string.your_negative_test_results_header)
+                .setMessage(R.string.your_negative_test_results_info)
+                .setPositiveButton(R.string.ok) { _, _ -> }
+                .show()
         }
 
         viewModel.loading.observe(viewLifecycleOwner, EventObserver {

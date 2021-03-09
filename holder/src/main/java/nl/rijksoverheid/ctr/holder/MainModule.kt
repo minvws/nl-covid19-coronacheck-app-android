@@ -1,24 +1,17 @@
 package nl.rijksoverheid.ctr.holder
 
+import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
 import nl.rijksoverheid.ctr.holder.digid.DigiDViewModel
-import nl.rijksoverheid.ctr.holder.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.holder.myoverview.LocalTestResultViewModel
-import nl.rijksoverheid.ctr.holder.myoverview.QrCodeViewModel
+import nl.rijksoverheid.ctr.holder.myoverview.LocalTestResultViewModelImpl
 import nl.rijksoverheid.ctr.holder.myoverview.TestResultsViewModel
+import nl.rijksoverheid.ctr.holder.myoverview.TokenQrViewModel
+import nl.rijksoverheid.ctr.holder.myoverview.date_of_birth.DateOfBirthInputViewModel
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.SharedPreferencesPersistenceManager
-import nl.rijksoverheid.ctr.holder.repositories.AuthenticationRepository
-import nl.rijksoverheid.ctr.holder.repositories.HolderRepository
-import nl.rijksoverheid.ctr.holder.usecase.CommitmentMessageUseCase
-import nl.rijksoverheid.ctr.holder.usecase.GenerateHolderQrCodeUseCase
-import nl.rijksoverheid.ctr.holder.usecase.IntroductionUseCase
-import nl.rijksoverheid.ctr.holder.usecase.LocalTestResultUseCase
-import nl.rijksoverheid.ctr.holder.usecase.QrCodeUseCase
-import nl.rijksoverheid.ctr.holder.usecase.SecretKeyUseCase
-import nl.rijksoverheid.ctr.holder.usecase.TestProviderUseCase
-import nl.rijksoverheid.ctr.holder.usecase.TestResultAttributesUseCase
-import nl.rijksoverheid.ctr.holder.usecase.TestResultUseCase
+import nl.rijksoverheid.ctr.holder.repositories.*
+import nl.rijksoverheid.ctr.holder.usecase.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
@@ -33,64 +26,73 @@ import org.koin.dsl.module
  */
 val mainModule = module {
 
+    single<SharedPreferences> {
+        PreferenceManager.getDefaultSharedPreferences(
+            androidContext(),
+        )
+    }
+
     single<PersistenceManager> {
         SharedPreferencesPersistenceManager(
-            PreferenceManager.getDefaultSharedPreferences(
-                androidContext(),
-            ), get()
+            get()
         )
     }
 
     // Use cases
     single {
-        GenerateHolderQrCodeUseCase(
+        GenerateHolderQrCodeUseCase()
+    }
+    factory<QrCodeUseCase> {
+        QrCodeUseCaseImpl(
             get(),
             get(),
             get()
         )
     }
-    single {
-        QrCodeUseCase(
-            get(),
-            get(),
-        )
+    factory<SecretKeyUseCase> {
+        SecretKeyUseCaseImpl(get())
+    }
+    factory<CommitmentMessageUseCase> {
+        CommitmentMessageUseCaseImpl(get())
+    }
+    factory<TestProviderUseCase> {
+        TestProviderUseCaseImpl(get())
     }
     single {
-        SecretKeyUseCase(get())
+        TestResultUseCase(get(), get(), get(), get(), get(), get())
+    }
+    factory<LocalTestResultUseCase> {
+        LocalTestResultUseCaseImpl(get(), get(), get(), get())
+    }
+    factory<TestResultAttributesUseCase> {
+        TestResultAttributesUseCaseImpl(get())
     }
     single {
-        CommitmentMessageUseCase(get())
-    }
-    single {
-        IntroductionUseCase(get())
-    }
-    single {
-        TestProviderUseCase(get())
-    }
-    single {
-        TestResultUseCase(get(), get(), get(), get())
-    }
-    single {
-        LocalTestResultUseCase(get(), get(), get(), get())
-    }
-    single {
-        TestResultAttributesUseCase(get())
+        TokenQrUseCase(get())
     }
 
     // ViewModels
-    viewModel { IntroductionViewModel(get()) }
-    viewModel { QrCodeViewModel(get()) }
-    viewModel { LocalTestResultViewModel(get(), get()) }
+    viewModel<LocalTestResultViewModel> { LocalTestResultViewModelImpl(get(), get(), get()) }
     viewModel { DigiDViewModel(get()) }
     viewModel { TestResultsViewModel(get(), get(), get()) }
+    viewModel { TokenQrViewModel(get()) }
+    viewModel { DateOfBirthInputViewModel(get()) }
 
     // Repositories
     single { AuthenticationRepository() }
-    single {
-        HolderRepository(
+    factory<CoronaCheckRepository> {
+        CoronaCheckRepositoryImpl(
             get(),
-            get(named("SignedResponseWithModel")),
             get(named("ResponseError"))
         )
+    }
+    factory<TestProviderRepository> {
+        TestProviderRepositoryImpl(
+            get(),
+            get(named("SignedResponseWithModel"))
+        )
+    }
+    factory<CreateCredentialUseCase> {
+        CreateCredentialUseCaseImpl()
     }
 }

@@ -6,6 +6,4 @@
   ~
   -->
 
-<manifest package="nl.rijksoverheid.ctr.appconfig">
-
-</manifest>
+<manifest package="nl.rijksoverheid.ctr.appconfig" />

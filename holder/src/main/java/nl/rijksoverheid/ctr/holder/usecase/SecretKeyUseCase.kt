@@ -11,16 +11,22 @@ import nl.rijksoverheid.ctr.shared.ext.successString
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class SecretKeyUseCase(
-    private val persistenceManager: PersistenceManager
-) {
 
-    fun json(): String {
+interface SecretKeyUseCase {
+    fun json(): String
+    fun persist()
+}
+
+class SecretKeyUseCaseImpl(
+    private val persistenceManager: PersistenceManager
+) : SecretKeyUseCase {
+
+    override fun json(): String {
         return persistenceManager.getSecretKeyJson()
             ?: throw Exception("Secret key is not yet generated, persist first")
     }
 
-    fun persist() {
+    override fun persist() {
         if (persistenceManager.getSecretKeyJson() == null) {
             persistenceManager.saveSecretKeyJson(json = Clmobile.generateHolderSk().successString())
         }

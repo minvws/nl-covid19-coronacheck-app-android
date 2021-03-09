@@ -20,6 +20,7 @@ android {
         applicationId "nl.rijksoverheid.ctr.verifier"
         versionCode appVersionCode
         versionName "1.0"
+        vectorDrawables.useSupportLibrary = true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -51,7 +52,9 @@ android {
             manifestPlaceholders = [appLabel: "@string/app_name_test"]
             buildConfigField "String", "URL_SUPPORT", "\"https://www.coronacheck.nl/nl/faq-scanner-in-app\""
             buildConfigField "String", "URL_ABOUT_THIS_APP", "\"https://www.coronacheck.nl/nl/over-de-scanner-app-in-app\""
-            buildConfigField "String", "URL_PRIVACY_STATEMENT", "\"https://web.acc.bananenhalen.nl/nl/privacy-in-app\""
+            buildConfigField "String", "URL_PRIVACY_STATEMENT", "\"https://www.coronacheck.nl/nl/privacy-in-app\""
+            apply plugin: 'com.google.gms.google-services'
+            apply plugin: 'com.google.firebase.crashlytics'
         }
         acc {
             dimension "environment"
@@ -60,14 +63,16 @@ android {
             manifestPlaceholders = [appLabel: "@string/app_name_acc"]
             buildConfigField "String", "URL_SUPPORT", "\"https://www.coronacheck.nl/nl/faq-scanner-in-app\""
             buildConfigField "String", "URL_ABOUT_THIS_APP", "\"https://www.coronacheck.nl/nl/over-de-scanner-app-in-app\""
-            buildConfigField "String", "URL_PRIVACY_STATEMENT", "\"https://web.acc.bananenhalen.nl/nl/privacy-in-app\""
+            buildConfigField "String", "URL_PRIVACY_STATEMENT", "\"https://www.coronacheck.nl/nl/privacy-in-app\""
+            apply plugin: 'com.google.gms.google-services'
+            apply plugin: 'com.google.firebase.crashlytics'
         }
         prod {
             dimension "environment"
             manifestPlaceholders = [appLabel: "@string/app_name"]
             buildConfigField "String", "URL_SUPPORT", "\"https://www.coronacheck.nl/nl/faq-scanner-in-app\""
             buildConfigField "String", "URL_ABOUT_THIS_APP", "\"https://www.coronacheck.nl/nl/over-de-scanner-app-in-app\""
-            buildConfigField "String", "URL_PRIVACY_STATEMENT", "\"https://web.acc.bananenhalen.nl/nl/privacy-in-app\""
+            buildConfigField "String", "URL_PRIVACY_STATEMENT", "\"https://www.coronacheck.nl/nl/privacy-in-app\""
         }
     }
     compileOptions {
@@ -76,11 +81,32 @@ android {
 }
 
 dependencies {
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.1'
-    implementation project(path: ':shared')
+    implementation project(":shared")
     implementation project(":appconfig")
-    implementation "androidx.viewpager2:viewpager2:1.0.0"
-    implementation "com.xwray:groupie:2.9.0"
-    implementation "com.xwray:groupie-viewbinding:2.9.0"
+    implementation project(":design")
+    implementation project(":introduction")
+    implementation project(":api")
+    implementation project(":ctcl")
+    implementation project(":qrscanner")
+    implementation "com.google.zxing:core:$zxing_core_version"
+
+    implementation "com.xwray:groupie:${groupie_version}"
+    implementation "com.xwray:groupie-viewbinding:${groupie_version}"
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$navigation_version"
+    implementation "org.koin:koin-android:$koin_version"
+    implementation "org.koin:koin-androidx-viewmodel:$koin_version"
+    implementation "org.koin:koin-androidx-fragment:$koin_version"
+    implementation "androidx.preference:preference-ktx:$preference_version"
+    implementation "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
+    implementation "com.jakewharton.timber:timber:${timber_version}"
+
+    testImplementation "junit:junit:$junit_version"
+    testImplementation "io.mockk:mockk:$mock_version"
+
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$desugar_jdk_version"
+
+    tstImplementation "com.google.firebase:firebase-crashlytics-ktx:$crashlytics_version"
+    accImplementation "com.google.firebase:firebase-crashlytics-ktx:$crashlytics_version"
 }
 

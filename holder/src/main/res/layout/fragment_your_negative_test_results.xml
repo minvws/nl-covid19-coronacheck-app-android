@@ -45,6 +45,16 @@
             app:layout_constraintStart_toStartOf="@+id/title"
             app:layout_constraintTop_toBottomOf="@+id/description" />
 
+        <ImageView
+            android:id="@+id/info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/actionBarItemBackground"
+            android:src="@drawable/ic_question"
+            app:layout_constraintBottom_toBottomOf="@+id/header"
+            app:layout_constraintEnd_toEndOf="@+id/title"
+            app:layout_constraintTop_toTopOf="@+id/header" />
+
         <View
             android:id="@+id/divider_top"
             android:layout_width="0dp"
@@ -59,28 +69,33 @@
             android:id="@+id/radio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:checked="true"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
             app:layout_constraintStart_toStartOf="@+id/title"
             app:layout_constraintTop_toBottomOf="@+id/divider_top" />
 
         <TextView
             android:id="@+id/row_title"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:text="@string/your_negative_test_results_row_title"
             android:textAppearance="?attr/textAppearanceBody1"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/radio"
+            app:layout_constraintEnd_toEndOf="@+id/title"
             app:layout_constraintStart_toEndOf="@+id/radio"
             app:layout_constraintTop_toTopOf="@+id/radio" />
 
         <TextView
             android:id="@+id/row_subtitle"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="Dinsdag 2 februari 14:06"
             android:textAppearance="?attr/textAppearanceBody1"
+            app:layout_constraintEnd_toEndOf="@+id/title"
             app:layout_constraintStart_toStartOf="@+id/row_title"
             app:layout_constraintTop_toBottomOf="@+id/row_title"
             tools:text="Dinsdag 2 februari 14:06" />

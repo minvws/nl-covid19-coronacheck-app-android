@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.shared.livedata.Event
+import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 import nl.rijksoverheid.ctr.verifier.usecases.TestResultValidUseCase
 
 /*
@@ -15,7 +16,8 @@ import nl.rijksoverheid.ctr.verifier.usecases.TestResultValidUseCase
  *
  */
 class ScanQrViewModel(
-    private val testResultValidUseCase: TestResultValidUseCase
+    private val testResultValidUseCase: TestResultValidUseCase,
+    private val persistenceManager: PersistenceManager
 ) : ViewModel() {
 
     val loadingLiveData = MutableLiveData<Event<Boolean>>()
@@ -40,5 +42,13 @@ class ScanQrViewModel(
                 loadingLiveData.value = Event(false)
             }
         }
+    }
+
+    fun scanInstructionsSeen(): Boolean {
+        val seen = persistenceManager.getScanInstructionsSeen()
+        if (!seen) {
+            persistenceManager.setScanInstructionsSeen()
+        }
+        return seen
     }
 }

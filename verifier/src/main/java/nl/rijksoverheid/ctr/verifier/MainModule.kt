@@ -1,10 +1,11 @@
 package nl.rijksoverheid.ctr.verifier
 
+import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
-import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
-import nl.rijksoverheid.ctr.holder.persistence.SharedPreferencesPersistenceManager
-import nl.rijksoverheid.ctr.holder.usecase.IntroductionUseCase
-import nl.rijksoverheid.ctr.verifier.introduction.IntroductionViewModel
+import nl.rijksoverheid.ctr.shared.util.MLKitQrCodeScannerUtil
+import nl.rijksoverheid.ctr.shared.util.QrCodeScannerUtil
+import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
+import nl.rijksoverheid.ctr.verifier.persistance.SharedPreferencesPersistenceManager
 import nl.rijksoverheid.ctr.verifier.scanqr.ScanQrViewModel
 import nl.rijksoverheid.ctr.verifier.usecases.DecryptHolderQrUseCase
 import nl.rijksoverheid.ctr.verifier.usecases.TestResultValidUseCase
@@ -21,26 +22,28 @@ import org.koin.dsl.module
  */
 val mainModule = module {
 
-    single<PersistenceManager> {
-        SharedPreferencesPersistenceManager(
-            PreferenceManager.getDefaultSharedPreferences(
-                androidContext()
-            )
+    single<SharedPreferences> {
+        PreferenceManager.getDefaultSharedPreferences(
+            androidContext(),
         )
     }
+
+    single<PersistenceManager> {
+        SharedPreferencesPersistenceManager(
+            get()
+        )
+    }
+
+    single<QrCodeScannerUtil> { MLKitQrCodeScannerUtil() }
 
     // Use cases
     single {
         DecryptHolderQrUseCase(get())
     }
     single {
-        IntroductionUseCase(get())
-    }
-    single {
         TestResultValidUseCase(get(), get(), get(), get())
     }
 
     // ViewModels
-    viewModel { IntroductionViewModel(get()) }
-    viewModel { ScanQrViewModel(get()) }
+    viewModel { ScanQrViewModel(get(), get()) }
 }

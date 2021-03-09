@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="nl.rijksoverheid.ctr.holder">
 
-    <uses-sdk tools:overrideLibrary="com.google.zxing.client.android" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -14,11 +13,10 @@
         android:label="${appLabel}"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.Launcher"
-        tools:replace="android:allowBackup">
+        android:theme="@style/AppTheme.Launcher">
 
         <activity
-            android:name=".MainActivity"
+            android:name=".HolderMainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
