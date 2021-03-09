@@ -4,7 +4,6 @@ import android.graphics.Bitmap
 import clmobile.Clmobile
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import nl.rijksoverheid.ctr.api.repositories.TestResultRepository
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.shared.ext.successString
 
@@ -20,7 +19,6 @@ interface QrCodeUseCase {
 }
 
 class QrCodeUseCaseImpl(
-    private val testResultRepository: TestResultRepository,
     private val persistenceManager: PersistenceManager,
     private val generateHolderQrCodeUseCase: GenerateHolderQrCodeUseCase,
 ) : QrCodeUseCase {

@@ -11,7 +11,7 @@
     <string name="onboarding_screen_4_title">Privacy staat voorop</string>
     <string name="onboarding_screen_4_description">Deze app haalt alleen een negatief testresultaat (geen corona) op. En controleert of dit jouw resultaat is. Andere persoonsgegevens worden niet verwerkt of opgeslagen.</string>
     <string name="onboarding_screen_3_title">Geldigheid van je bewijs</string>
-    <string name="onboarding_screen_3_description">Een negatief testresultaat (geen corona) is geldig tot 48 uur na het moment van testen. De kans dat je in die tijd besmettelijk bent voor anderen is namelijk klein.</string>
+    <string name="onboarding_screen_3_description">Een negatief testresultaat (geen corona) is geldig tot %1$s uur na het moment van testen. De kans dat je in die tijd besmettelijk bent voor anderen is namelijk klein.</string>
     <string name="onboarding_next">Volgende</string>
     <string name="privacy_policy_title">Zo gebruikt deze app jouw gegevens</string>
     <string name="privacy_policy_description"><![CDATA[In de <a href="#">privacyverklaring</a> staat hoe CoronaCheck omgaat met jouw gegevens. Dit zijn de belangrijkste punten:]]></string>
@@ -51,25 +51,25 @@
     <string name="commercial_test_type_description">Heb je je laten testen bij een commerciële testlocatie? Dan heb je een unieke code gekregen of een QR-code.</string>
     <string name="commercial_test_type_code_title">Ik heb een code</string>
     <string name="commercial_test_type_code_toolbar_title">Code invullen</string>
-    <string name="commercial_test_type_qr_code_title">Ik heb een QR-code </string>
+    <string name="commercial_test_type_qr_code_title">Ik heb een QR-code</string>
     <string name="commercial_test_type_no_code_title">Ik heb geen code</string>
     <string name="commercial_test_type_no_code_description">Als je je bij een commerciele testlocatie hebt laten testen krijg je een code gemaild of op papier. De code kan een QR-code zijn of een code met cijfers en letters.\nHeb je geen code gekregen? Of ben je code kwijt geraakt? Neem dan contact op met je testlocatie.\nHet kan zijn dat je je opnieuw moet laten testen.</string>
     <string name="commercial_test_code_title">Code invullen</string>
     <string name="commercial_test_code_description">Vul de code in die je van je testlocatie hebt gekregen. Of klik op de link in je e-mail, als de testlocatie je gemaild heeft.</string>
     <string name="commercial_test_unique_code_hint">Unieke code</string>
     <string name="commercial_test_verification_code_hint">Verificatie code</string>
-    <string name="commercial_test_button">Haal testresultaat op</string>
+    <string name="commercial_test_button">Haal testresultaten op</string>
     <string name="commercial_test_invalid_qr_title">Ongeldige QR-code</string>
     <string name="commercial_test_invalid_qr_message">Deze QR-code is niet geldig. Scan de QR-code die je van je testlocatie hebt gekregen.</string>
     <string name="commercial_test_scanner_custom_title">QR-code scannen</string>
     <string name="commercial_test_scanner_custom_message">Richt je toestel op de QR-code die je van de testlocatie hebt gekregen.</string>
     <string name="your_negative_test_results_title">Jouw negatieve testresultaten</string>
     <string name="your_negative_test_results_description">Je hebt 1 nieuw negatief testresultaat (geen corona). Maak van dit resultaat een QR-code. Dat is jouw bewijs.</string>
-    <string name="your_negative_test_results_tooltip">Alleen testresultaten die niet ouder zijn dan 48 uur kun je gebruiken om een QR-code te maken.</string>
+    <string name="your_negative_test_results_tooltip">Alleen testresultaten die niet ouder zijn dan %1$s uur kun je gebruiken om een QR-code te maken.</string>
     <string name="your_negative_test_results_header">Recente testresultaten</string>
     <string name="your_negative_test_results_row_title">Negatief testresultaat (geen corona)</string>
     <string name="your_negative_test_results_row_button">Maak een QR-code van resultaat</string>
-    <string name="your_negative_test_results_info">Alleen testresultaten die niet ouder zijn dan 48 uur kun je gebruiken om een QR-code van te maken.</string>
+    <string name="your_negative_test_results_info">Alleen testresultaten die niet ouder zijn dan %1$s uur kun je gebruiken om een QR-code van te maken.</string>
     <string name="testresult_not_known_title">Testresultaat nog niet bekend</string>
     <string name="testresult_not_known_description">Je testresultaat is nog niet bekend. Probeer het later nog eens.\nHeb je het idee dat dit niet klopt? Neem dan contact op met de testaanbieder.</string>
     <string name="testresult_to_qr_code_title">Van jouw testresultaat wordt nu een QR-code gemaakt</string>
@@ -77,7 +77,7 @@
     <string name="button_continue">Verder</string>
     <string name="commercial_test_error_invalid_code">Deze code is niet geldig</string>
     <string name="no_negative_test_result_title">Er is geen negatief testresultaat</string>
-    <string name="no_negative_test_result_description"><![CDATA[Er is geen negatief testresultaat (geen corona) beschikbaar.<br/>Dit kan het volgende betekenen:<br\><br\><ul><li>Je hebt nog geen test gedaan</li><li>Je testresultaat is nog niet verwerkt</li><li>Je test is langer dan 48 uur geleden uitgevoerd</li><li>Je uitslag is niet negatief. In dit geval neemt de testlocatie contact op met jou.</li></ul>]]></string>
+    <string name="no_negative_test_result_description"><![CDATA[Er is geen negatief testresultaat (geen corona) beschikbaar.<br/>Dit kan het volgende betekenen:<br\><br\><ul><li>Je hebt nog geen test gedaan</li><li>Je testresultaat is nog niet verwerkt</li><li>Je test is langer dan %1$s uur geleden uitgevoerd</li><li>Je uitslag is niet negatief. In dit geval neemt de testlocatie contact op met jou.</li></ul>]]></string>
     <string name="test_result_not_known_title">Testresultaat nog niet bekend</string>
     <string name="test_result_not_known_description"><![CDATA[Probeer het later nog eens.<br\><br\>Neem voor vragen contact op met jouw testlocatie.]]></string>
     <string name="create_qr_code_title">Van jouw testresultaat is een QR-code gemaakt</string>
@@ -89,7 +89,7 @@
     <string name="item_test_result_expired"><![CDATA[Je QR-code is verlopen.<br\>Laat je opnieuw testen.]]></string>
     <string name="test_appointment_info_toolbar_title">Testafspraak maken</string>
     <string name="test_appointment_info_title">Maak een testafspraak</string>
-    <string name="test_appointment_info_description"><![CDATA[Om een QR-code te maken moet je je eerst laten testen. Alleen van een negatief testresultaat kan je een QR-code maken.<br\><br\>Je QR-code is 48 uur geldig vanaf het moment dat je negatief getest bent. Plan je test dus kort voor je evenement. <a href="#">Lees de meestgestelde vragen over een test plannen.</a>]]></string>
+    <string name="test_appointment_info_description"><![CDATA[Om een QR-code te maken moet je je eerst laten testen. Alleen van een negatief testresultaat kan je een QR-code maken.<br\><br\>Je QR-code is %1$s uur geldig vanaf het moment dat je negatief getest bent. Plan je test dus kort voor je evenement. <a href="#">Lees de meestgestelde vragen over een test plannen.</a>]]></string>
     <string name="test_appointment_info_button">Maak een afspraak</string>
     <string name="date_of_birth_input_title">Wat is je geboortedatum?</string>
     <string name="date_of_birth_input_toolbar_title">Controle geboortedatum</string>
@@ -106,11 +106,10 @@
     <string name="camera_rationale_dialog_title">CoronaCheck wil toegang tot je camera</string>
     <string name="camera_rationale_dialog_description">Zo kan de app je QR-code scannen</string>
     <string name="app_setup_text">We starten de app voor je op…</string>
-
     <!-- App Status strings -->
     <string name="app_status_deactivated_title">App buiten werking</string>
     <string name="app_status_deactivated_message">De app is niet meer in gebruik. Ga voor meer informatie naar CoronaCheck.nl</string>
-    <string name="app_status_deactivated_action">Ga naar coronacheck.nl</string>
+    <string name="app_status_deactivated_action">Lees meer op de website</string>
     <string name="app_status_update_required_title">Update vereist</string>
     <string name="app_status_update_required_message">Download de laatste versie van de app om verder te gaan.</string>
     <string name="app_status_update_required_action">Installeer update</string>

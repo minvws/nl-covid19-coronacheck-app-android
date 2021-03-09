@@ -5,7 +5,6 @@ import com.squareup.moshi.Moshi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.api.models.DecryptedQr
-import nl.rijksoverheid.ctr.api.repositories.TestResultRepository
 import nl.rijksoverheid.ctr.shared.ext.toObject
 import nl.rijksoverheid.ctr.shared.ext.verify
 import timber.log.Timber

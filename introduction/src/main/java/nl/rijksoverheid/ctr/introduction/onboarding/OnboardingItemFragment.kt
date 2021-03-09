@@ -51,7 +51,7 @@ class OnboardingItemFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.title.text = getString(item.titleResource)
-        binding.description.text = getString(item.descriptionResource).fromHtml()
+        binding.description.text = item.description.fromHtml()
         if (item.imageResource != 0) {
             binding.image.setImageResource(item.imageResource)
         }

@@ -4,9 +4,10 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.runBlocking
+import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
+import nl.rijksoverheid.ctr.holder.fakeCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.fakePersistenceManager
 import nl.rijksoverheid.ctr.holder.fakeTestResultAttributesUseCase
-import nl.rijksoverheid.ctr.holder.fakeTestResultRepository
 import nl.rijksoverheid.ctr.holder.myoverview.models.LocalTestResultState
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.shared.util.TestResultUtil
@@ -16,7 +17,6 @@ import java.time.Clock
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneId
-import java.util.concurrent.TimeUnit
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -34,7 +34,7 @@ class LocalTestResultUseCaseImplTest {
             val usecase = LocalTestResultUseCaseImpl(
                 persistenceManager = fakePersistenceManager(credentials = null),
                 testResultUtil = TestResultUtil(Clock.systemUTC()),
-                testResultRepository = fakeTestResultRepository(),
+                cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
                 testResultAttributesUseCase = fakeTestResultAttributesUseCase()
             )
 
@@ -53,8 +53,14 @@ class LocalTestResultUseCaseImplTest {
                 testResultUtil = TestResultUtil(
                     clock = Clock.fixed(Instant.parse("2021-01-02T00:00:00.00Z"), ZoneId.of("UTC"))
                 ),
-                testResultRepository = fakeTestResultRepository(
-                    testValiditySeconds = TimeUnit.HOURS.toSeconds(48)
+                cachedAppConfigUseCase = fakeCachedAppConfigUseCase(
+                    appConfig = AppConfig(
+                        minimumVersion = 0,
+                        appDeactivated = false,
+                        informationURL = "dummy",
+                        configTtlSeconds = 0,
+                        maxValidityHours = 48
+                    )
                 ),
                 testResultAttributesUseCase = fakeTestResultAttributesUseCase(
                     sampleTimeSeconds = OffsetDateTime.ofInstant(
@@ -80,15 +86,13 @@ class LocalTestResultUseCaseImplTest {
                 testResultUtil = TestResultUtil(
                     clock = Clock.fixed(Instant.parse("2021-01-04T00:00:00.00Z"), ZoneId.of("UTC"))
                 ),
-                testResultRepository = fakeTestResultRepository(
-                    testValiditySeconds = TimeUnit.HOURS.toSeconds(48)
-                ),
                 testResultAttributesUseCase = fakeTestResultAttributesUseCase(
                     sampleTimeSeconds = OffsetDateTime.ofInstant(
                         Instant.parse("2021-01-01T00:00:00.00Z"),
                         ZoneId.of("UTC")
                     ).toEpochSecond()
-                )
+                ),
+                cachedAppConfigUseCase = fakeCachedAppConfigUseCase()
             )
 
             val localTestResult = usecase.get()

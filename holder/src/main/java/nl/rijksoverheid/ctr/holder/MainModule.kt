@@ -46,7 +46,6 @@ val mainModule = module {
         QrCodeUseCaseImpl(
             get(),
             get(),
-            get()
         )
     }
     factory<SecretKeyUseCase> {

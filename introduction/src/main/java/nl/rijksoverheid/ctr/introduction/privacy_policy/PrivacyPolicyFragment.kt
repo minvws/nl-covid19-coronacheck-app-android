@@ -25,7 +25,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  */
 class PrivacyPolicyFragment : Fragment() {
 
-    private val introductionData by lazy { (requireActivity().application as CoronaCheckApp).getIntroductionData() }
+    private val onboardingData by lazy { (requireActivity().application as CoronaCheckApp).getOnboardingData() }
     private val introductionViewModel: IntroductionViewModel by viewModel()
     private lateinit var binding: FragmentPrivacyPolicyBinding
 
@@ -49,15 +49,15 @@ class PrivacyPolicyFragment : Fragment() {
         }
 
         binding.description.text =
-            getString(introductionData.privacyPolicyStringResource).fromHtml()
+            getString(onboardingData.privacyPolicyStringResource).fromHtml()
         binding.description.setOnClickListener {
             BuildConfig.URL_PRIVACY_STATEMENT.launchUrl(requireContext())
         }
         binding.checkbox.text =
-            getString(introductionData.privacyPolicyCheckboxStringResource)
-        binding.button.text = getString(introductionData.onboardingNextButtonStringResource)
+            getString(onboardingData.privacyPolicyCheckboxStringResource)
+        binding.button.text = getString(onboardingData.onboardingNextButtonStringResource)
 
-        val adapterItems = introductionData.privacyPolicyItems.map {
+        val adapterItems = onboardingData.privacyPolicyItems.map {
             PrivacyPolicyAdapterItem(
                 it
             )
@@ -75,7 +75,7 @@ class PrivacyPolicyFragment : Fragment() {
 
         binding.button.setOnClickListener {
             introductionViewModel.saveIntroductionFinished()
-            introductionData.introductionDoneCallback.invoke(this)
+            onboardingData.introductionDoneCallback.invoke(this)
         }
     }
 }

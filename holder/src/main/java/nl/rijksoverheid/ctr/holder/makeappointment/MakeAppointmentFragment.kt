@@ -3,11 +3,13 @@ package nl.rijksoverheid.ctr.holder.makeappointment
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import nl.rijksoverheid.ctr.appconfig.AppConfigUtil
 import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMakeAppointmentBinding
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
+import org.koin.android.ext.android.inject
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -18,6 +20,8 @@ import nl.rijksoverheid.ctr.shared.ext.launchUrl
  */
 class MakeAppointmentFragment : Fragment(R.layout.fragment_make_appointment) {
 
+    private val appConfigUtil: AppConfigUtil by inject()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -26,7 +30,8 @@ class MakeAppointmentFragment : Fragment(R.layout.fragment_make_appointment) {
             BuildConfig.URL_FAQ.launchUrl(requireContext())
         }
         binding.description.text =
-            getString(R.string.test_appointment_info_description).fromHtml()
+            appConfigUtil.getStringWithTestValidity(R.string.test_appointment_info_description)
+                .fromHtml()
         binding.button.setOnClickListener {
             BuildConfig.URL_MAKE_APPOINTMENT.launchUrl(requireContext())
         }

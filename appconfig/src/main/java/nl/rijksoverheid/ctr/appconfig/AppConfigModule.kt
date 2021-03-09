@@ -12,6 +12,8 @@ import nl.rijksoverheid.ctr.appconfig.api.AppConfigApi
 import nl.rijksoverheid.ctr.appconfig.api.AppConfigApiCacheInterceptor
 import nl.rijksoverheid.ctr.appconfig.usecase.*
 import okhttp3.OkHttpClient
+import org.koin.android.ext.koin.androidApplication
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -31,6 +33,7 @@ fun appConfigModule(path: String, versionCode: Int) = module {
     factory { AppConfigApiCacheInterceptor(get()) }
     factory<PersistConfigUseCase> { PersistConfigUseCaseImpl(get(), get()) }
     factory<LoadPublicKeysUseCase> { LoadPublicKeysUseCaseImpl(get()) }
+    factory<AppConfigUtil> { AppConfigUtilImpl(androidContext(), get()) }
 
 
     single {
