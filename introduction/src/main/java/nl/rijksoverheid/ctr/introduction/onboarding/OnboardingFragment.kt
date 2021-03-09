@@ -26,7 +26,7 @@ import nl.rijksoverheid.ctr.introduction.databinding.FragmentOnboardingBinding
  */
 class OnboardingFragment : Fragment() {
 
-    private val introductionData by lazy { (requireActivity().application as CoronaCheckApp).getIntroductionData() }
+    private val onboardingData by lazy { (requireActivity().application as CoronaCheckApp).getOnboardingData() }
     private lateinit var binding: FragmentOnboardingBinding
 
     override fun onCreateView(
@@ -44,7 +44,7 @@ class OnboardingFragment : Fragment() {
         val adapter =
             OnboardingPagerAdapter(
                 this,
-                introductionData.onboardingItems
+                onboardingData.onboardingItems
             )
         binding.viewPager.adapter = adapter
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
@@ -74,7 +74,7 @@ class OnboardingFragment : Fragment() {
             binding.viewPager.currentItem = binding.viewPager.currentItem - 1
         }
 
-        binding.button.text = getString(introductionData.onboardingNextButtonStringResource)
+        binding.button.text = getString(onboardingData.onboardingNextButtonStringResource)
         binding.button.setOnClickListener {
             val currentItem = binding.viewPager.currentItem
             if (currentItem == adapter.itemCount - 1) {

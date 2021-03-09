@@ -2,7 +2,9 @@ package nl.rijksoverheid.ctr.holder
 
 import android.graphics.Bitmap
 import nl.rijksoverheid.ctr.api.models.*
-import nl.rijksoverheid.ctr.api.repositories.TestResultRepository
+import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
+import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
 import nl.rijksoverheid.ctr.holder.models.LocalTestResult
 import nl.rijksoverheid.ctr.holder.myoverview.LocalTestResultViewModel
 import nl.rijksoverheid.ctr.holder.myoverview.models.LocalTestResultState
@@ -22,6 +24,35 @@ import java.time.OffsetDateTime
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
+
+fun fakeCachedAppConfigUseCase(
+    appConfig: AppConfig = AppConfig(
+        minimumVersion = 0,
+        appDeactivated = false,
+        informationURL = "dummy",
+        configTtlSeconds = 0,
+        maxValidityHours = 0
+    ),
+    publicKeys: PublicKeys = PublicKeys(
+        clKeys = listOf()
+    )
+): CachedAppConfigUseCase = object : CachedAppConfigUseCase {
+    override fun persistAppConfig(appConfig: AppConfig) {
+
+    }
+
+    override fun getCachedAppConfig(): AppConfig {
+        return appConfig
+    }
+
+    override fun persistPublicKeys(publicKeys: PublicKeys) {
+
+    }
+
+    override fun getCachedPublicKeys(): PublicKeys? {
+        return publicKeys
+    }
+}
 
 fun fakeQrCodeUseCase(
     bitmap: Bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
@@ -192,16 +223,6 @@ fun fakeTestResultAttributesUseCase(
                 sampleTime = sampleTimeSeconds,
                 testType = ""
             )
-        }
-    }
-}
-
-fun fakeTestResultRepository(
-    testValiditySeconds: Long = 0,
-): TestResultRepository {
-    return object : TestResultRepository {
-        override suspend fun getTestValiditySeconds(): Long {
-            return testValiditySeconds
         }
     }
 }
