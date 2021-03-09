@@ -24,6 +24,7 @@ interface TestProviderApiClient {
     suspend fun getTestResult(
         @Url url: String,
         @Header("Authorization") authorization: String,
+        @Header("CoronaCheck-Protocol-Version") protocolVersion: String,
         @Body data: GetTestResultPostData?,
         @Tag certificate: SigningCertificate
     ): SignedResponseWithModel<RemoteTestResult>

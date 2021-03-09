@@ -37,6 +37,15 @@ data class RemoteTestResult(
         val unique: String,
         val sampleDate: OffsetDateTime,
         val testType: String,
-        val negativeResult: Boolean
-    )
+        val negativeResult: Boolean,
+        val holder: Holder
+    ) {
+
+        data class Holder(
+            val firstNameInitial: String,
+            val lastNameInitial: String,
+            val birthDay: String,
+            val birthMonth: String
+        )
+    }
 }
