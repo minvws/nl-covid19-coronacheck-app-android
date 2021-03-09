@@ -23,14 +23,14 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class SetupFragment : Fragment(R.layout.fragment_setup) {
 
     private val appStatusViewModel: AppConfigViewModel by viewModel()
-    private val introductionData by lazy { (requireActivity().application as CoronaCheckApp).getIntroductionData() }
+    private val setupData by lazy { (requireActivity().application as CoronaCheckApp).getSetupData() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val binding = FragmentSetupBinding.bind(view)
-        binding.root.setBackgroundResource(introductionData.launchScreen)
-        binding.text.setText(introductionData.appSetupTextResource)
+        binding.root.setBackgroundResource(setupData.launchScreen)
+        binding.text.setText(setupData.appSetupTextResource)
 
         appStatusViewModel.appStatusLiveData.observe(viewLifecycleOwner, {
             if (it is AppStatus.NoActionRequired) {

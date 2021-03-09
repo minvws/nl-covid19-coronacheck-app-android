@@ -25,6 +25,7 @@ class MainApplication : SharedApplication(), CoronaCheckApp, AppStatusStringProv
 
     private val loadPublicKeysUseCase: LoadPublicKeysUseCase by inject()
     private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
+    private val appConfigUtil: AppConfigUtil by inject()
 
     override fun onCreate() {
         super.onCreate()
@@ -46,29 +47,35 @@ class MainApplication : SharedApplication(), CoronaCheckApp, AppStatusStringProv
         }
     }
 
-    override fun getIntroductionData(): CoronaCheckApp.IntroductionData {
-        return CoronaCheckApp.IntroductionData(
+    override fun getSetupData(): CoronaCheckApp.SetupData {
+        return CoronaCheckApp.SetupData(
             appSetupTextResource = R.string.app_setup_text,
+            launchScreen = R.drawable.launch_screen
+        )
+    }
+
+    override fun getOnboardingData(): CoronaCheckApp.OnboardingData {
+        return CoronaCheckApp.OnboardingData(
             onboardingItems = listOf(
                 OnboardingItem(
                     R.drawable.illustration_onboarding_1,
                     R.string.onboarding_screen_1_title,
-                    R.string.onboarding_screen_1_description
+                    getString(R.string.onboarding_screen_1_description)
                 ),
                 OnboardingItem(
                     R.drawable.illustration_onboarding_2,
                     R.string.onboarding_screen_2_title,
-                    R.string.onboarding_screen_2_description
+                    getString(R.string.onboarding_screen_2_description)
                 ),
                 OnboardingItem(
                     R.drawable.illustration_onboarding_3,
                     R.string.onboarding_screen_3_title,
-                    R.string.onboarding_screen_3_description
+                    appConfigUtil.getStringWithTestValidity(R.string.onboarding_screen_3_description)
                 ),
                 OnboardingItem(
                     R.drawable.illustration_onboarding_4,
                     R.string.onboarding_screen_4_title,
-                    R.string.onboarding_screen_4_description
+                    getString(R.string.onboarding_screen_4_description)
                 )
             ),
             privacyPolicyItems = listOf(
@@ -91,7 +98,6 @@ class MainApplication : SharedApplication(), CoronaCheckApp, AppStatusStringProv
             privacyPolicyStringResource = R.string.privacy_policy_description,
             privacyPolicyCheckboxStringResource = R.string.privacy_policy_checkbox_text,
             onboardingNextButtonStringResource = R.string.onboarding_next,
-            launchScreen = R.drawable.launch_screen
         )
     }
 
