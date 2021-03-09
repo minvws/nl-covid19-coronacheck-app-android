@@ -339,7 +339,13 @@ class TestResultUseCaseTest {
                     unique = "dummy",
                     sampleDate = OffsetDateTime.now(),
                     testType = "dummy",
-                    negativeResult = false
+                    negativeResult = false,
+                    holder = RemoteTestResult.Result.Holder(
+                        firstNameInitial = "A",
+                        lastNameInitial = "B",
+                        birthDay = "1",
+                        birthMonth = "2"
+                    )
                 ),
                 providerIdentifier = "dummy",
                 status = status,
