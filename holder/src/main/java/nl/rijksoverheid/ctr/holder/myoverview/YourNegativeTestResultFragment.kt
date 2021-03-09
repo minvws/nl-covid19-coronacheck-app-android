@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.holder.myoverview
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import nl.rijksoverheid.ctr.holder.BaseFragment
@@ -52,6 +53,14 @@ class YourNegativeTestResultFragment : BaseFragment(R.layout.fragment_your_negat
                 ).formatDateTime(requireContext())
         }
 
+        // Catch back button to show modal instead
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object :
+            OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                handleBackButton()
+            }
+        })
+
         binding.button.setOnClickListener {
             viewModel.saveTestResult()
         }
@@ -89,6 +98,19 @@ class YourNegativeTestResultFragment : BaseFragment(R.layout.fragment_your_negat
                 }
             }
         })
+    }
+
+    private fun handleBackButton() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(R.string.your_negative_test_results_backbutton_title))
+            .setMessage(getString(R.string.your_negative_test_results_backbutton_message))
+            .setPositiveButton(R.string.your_negative_test_results_backbutton_ok) { _, _ ->
+                findNavController().navigate(
+                    YourNegativeTestResultFragmentDirections.actionMyOverview()
+                )
+            }
+            .setNegativeButton(R.string.your_negative_test_results_backbutton_cancel) { _, _ -> }
+            .show()
     }
 
 }

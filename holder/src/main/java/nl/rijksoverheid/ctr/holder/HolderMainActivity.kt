@@ -18,8 +18,8 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
-import nl.rijksoverheid.ctr.appconfig.AppStatusFragment
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
+import nl.rijksoverheid.ctr.appconfig.AppStatusFragment
 import nl.rijksoverheid.ctr.appconfig.model.AppStatus
 import nl.rijksoverheid.ctr.holder.databinding.ActivityMainBinding
 import nl.rijksoverheid.ctr.holder.persistence.IntroductionPersistenceManager
@@ -85,6 +85,19 @@ class HolderMainActivity : BaseActivity(R.id.nav_my_overview) {
             binding.drawerLayout
         )
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
+        binding.toolbar.setNavigationOnClickListener {
+            // Override back arrow behavior on toolbar
+            when (navController.currentDestination?.id) {
+                R.id.nav_your_negative_result -> {
+                    // Trigger custom dispatcher in destination
+                    onBackPressedDispatcher.onBackPressed()
+                    return@setNavigationOnClickListener
+                }
+            }
+
+            // If no custom behavior was handled perform the default action.
+            navController.navigateUp() || super.onSupportNavigateUp()
+        }
         binding.navView.setupWithNavController(navController)
 
         navigationDrawerStyling()
@@ -148,4 +161,5 @@ class HolderMainActivity : BaseActivity(R.id.nav_my_overview) {
         }
         super.onBackPressed()
     }
+
 }
