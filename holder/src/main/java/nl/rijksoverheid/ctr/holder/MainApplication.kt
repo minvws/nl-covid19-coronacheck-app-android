@@ -2,14 +2,14 @@ package nl.rijksoverheid.ctr.holder
 
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.api.apiModule
-import nl.rijksoverheid.ctr.appconfig.AppStatusStringProvider
-import nl.rijksoverheid.ctr.appconfig.appConfigModule
+import nl.rijksoverheid.ctr.appconfig.*
 import nl.rijksoverheid.ctr.introduction.CoronaCheckApp
 import nl.rijksoverheid.ctr.introduction.introductionModule
 import nl.rijksoverheid.ctr.introduction.onboarding.models.OnboardingItem
 import nl.rijksoverheid.ctr.introduction.privacy_policy.models.PrivacyPolicyItem
 import nl.rijksoverheid.ctr.shared.SharedApplication
 import nl.rijksoverheid.ctr.shared.sharedModule
+import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -23,6 +23,9 @@ import org.koin.core.context.startKoin
  */
 class MainApplication : SharedApplication(), CoronaCheckApp, AppStatusStringProvider {
 
+    private val loadPublicKeysUseCase: LoadPublicKeysUseCase by inject()
+    private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
+
     override fun onCreate() {
         super.onCreate()
 
@@ -35,6 +38,11 @@ class MainApplication : SharedApplication(), CoronaCheckApp, AppStatusStringProv
                 introductionModule,
                 apiModule(nl.rijksoverheid.ctr.api.BuildConfig.BASE_API_URL)
             )
+        }
+
+        // If we have public keys stored, load them so they can be used by CTCL
+        cachedAppConfigUseCase.getCachedPublicKeys()?.let {
+            loadPublicKeysUseCase.load(it)
         }
     }
 
