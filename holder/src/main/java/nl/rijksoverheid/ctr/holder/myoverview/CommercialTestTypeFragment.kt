@@ -55,7 +55,7 @@ class CommercialTestTypeFragment : Fragment(R.layout.fragment_commercial_test_ty
             if (persistenceManager.hasSeenCameraRationale() == true) {
                 launchScanner()
             } else {
-                showCameraDisclosure()
+                showCameraRationale()
             }
         }
 
@@ -80,14 +80,15 @@ class CommercialTestTypeFragment : Fragment(R.layout.fragment_commercial_test_ty
             })
     }
 
-    private fun showCameraDisclosure() {
+    private fun showCameraRationale() {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(getString(R.string.camera_rationale_dialog_title))
             .setMessage(getString(R.string.camera_rationale_dialog_description))
-            .setPositiveButton(R.string.ok) { _, _ ->
+            .setPositiveButton(R.string.camera_rationale_dialog_accept) { _, _ ->
                 persistenceManager.setHasSeenCameraRationale(true)
                 launchScanner()
             }
+            .setNegativeButton(R.string.camera_rationale_dialog_deny) { _, _ -> }
             .show()
     }
 
