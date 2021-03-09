@@ -16,7 +16,6 @@ class TestResultUtil(private val clock: Clock) {
         sampleDate: OffsetDateTime,
         validitySeconds: Long
     ): Boolean {
-        clock.instant()
         return OffsetDateTime.now(clock).isBefore(sampleDate.plusSeconds(validitySeconds))
     }
 }

@@ -10,8 +10,6 @@ import nl.rijksoverheid.ctr.api.json.OffsetDateTimeJsonAdapter
 import nl.rijksoverheid.ctr.api.json.RemoteTestStatusJsonAdapter
 import nl.rijksoverheid.ctr.api.models.RemoteTestResult
 import nl.rijksoverheid.ctr.api.models.SignedResponseWithModel
-import nl.rijksoverheid.ctr.api.repositories.TestResultRepository
-import nl.rijksoverheid.ctr.api.repositories.TestResultRepositoryImpl
 import nl.rijksoverheid.ctr.shared.interceptors.CacheOverrideInterceptor
 import nl.rijksoverheid.ctr.signing.certificates.DIGICERT_BTC_ROOT_CA
 import nl.rijksoverheid.ctr.signing.certificates.EV_ROOT_CA
@@ -140,7 +138,4 @@ fun apiModule(baseUrl: String) = module(override = true) {
             .add(RemoteTestStatusJsonAdapter())
             .add(OffsetDateTimeJsonAdapter()).build()
     }
-
-    factory<TestResultRepository> { TestResultRepositoryImpl() }
-
 }

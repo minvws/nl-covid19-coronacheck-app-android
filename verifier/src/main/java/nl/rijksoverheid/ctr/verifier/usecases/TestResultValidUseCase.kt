@@ -2,9 +2,10 @@ package nl.rijksoverheid.ctr.verifier.usecases
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import nl.rijksoverheid.ctr.api.repositories.TestResultRepository
+import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.shared.util.QrCodeUtil
 import nl.rijksoverheid.ctr.shared.util.TestResultUtil
+import java.util.concurrent.TimeUnit
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -15,15 +16,16 @@ import nl.rijksoverheid.ctr.shared.util.TestResultUtil
  */
 class TestResultValidUseCase(
     private val decryptHolderQrUseCase: DecryptHolderQrUseCase,
-    private val testResultRepository: TestResultRepository,
     private val testResultUtil: TestResultUtil,
-    private val qrCodeUtil: QrCodeUtil
+    private val qrCodeUtil: QrCodeUtil,
+    private val cachedAppConfigUseCase: CachedAppConfigUseCase
 ) {
 
     suspend fun valid(qrContent: String): TestResultValidResult = withContext(Dispatchers.IO) {
         when (val decryptResult = decryptHolderQrUseCase.decrypt(qrContent)) {
             is DecryptHolderQrUseCase.DecryptResult.Success -> {
-                val validity = testResultRepository.getTestValiditySeconds()
+                val validity =
+                    TimeUnit.HOURS.toSeconds(cachedAppConfigUseCase.getCachedAppConfig().maxValidityHours.toLong())
                 val isValid = testResultUtil.isValid(
                     sampleDate = decryptResult.decryptQr.sampleDate,
                     validitySeconds = validity
