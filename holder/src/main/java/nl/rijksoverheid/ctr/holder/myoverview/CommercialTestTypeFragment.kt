@@ -12,6 +12,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentCommercialTestTypeBinding
 import nl.rijksoverheid.ctr.holder.databinding.IncludeTestCodeTypeBinding
+import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.usecase.TokenQrUseCase
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.util.QrCodeScannerUtil
@@ -30,6 +31,7 @@ class CommercialTestTypeFragment : Fragment(R.layout.fragment_commercial_test_ty
 
     private val qrCodeScannerUtil: QrCodeScannerUtil by inject()
     private val tokenQrViewModel: TokenQrViewModel by viewModel()
+    private val persistenceManager: PersistenceManager by inject()
 
     private val qrScanResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
@@ -50,17 +52,11 @@ class CommercialTestTypeFragment : Fragment(R.layout.fragment_commercial_test_ty
             R.drawable.ic_test_qr_code,
             R.string.commercial_test_type_qr_code_title
         ) {
-            qrCodeScannerUtil.launchScanner(
-                requireActivity() as AppCompatActivity,
-                qrScanResult,
-                getString(R.string.commercial_test_scanner_custom_title),
-                getString(
-                    R.string.commercial_test_scanner_custom_message
-                ),
-                getString(R.string.camera_rationale_dialog_title),
-                getString(R.string.camera_rationale_dialog_description),
-                getString(R.string.ok)
-            )
+            if (persistenceManager.hasSeenCameraRationale()) {
+                launchScanner()
+            } else {
+                showCameraDisclosure()
+            }
         }
 
         tokenQrViewModel.locationData.observe(
@@ -82,6 +78,31 @@ class CommercialTestTypeFragment : Fragment(R.layout.fragment_commercial_test_ty
                         .show()
                 }
             })
+    }
+
+    private fun showCameraDisclosure() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(R.string.camera_rationale_dialog_title))
+            .setMessage(getString(R.string.camera_rationale_dialog_description))
+            .setPositiveButton(R.string.ok) { _, _ ->
+                persistenceManager.setHasSeenCameraRationale(true)
+                launchScanner()
+            }
+            .show()
+    }
+
+    private fun launchScanner() {
+        qrCodeScannerUtil.launchScanner(
+            requireActivity() as AppCompatActivity,
+            qrScanResult,
+            getString(R.string.commercial_test_scanner_custom_title),
+            getString(
+                R.string.commercial_test_scanner_custom_message
+            ),
+            getString(R.string.camera_rationale_dialog_title),
+            getString(R.string.camera_rationale_dialog_description),
+            getString(R.string.ok)
+        )
     }
 }
 
