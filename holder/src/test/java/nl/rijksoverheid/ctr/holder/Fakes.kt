@@ -98,8 +98,7 @@ fun fakeLocalTestResultViewModel(
                             credentials = "dummy",
                             sampleDate = OffsetDateTime.now(),
                             expireDate = OffsetDateTime.now(),
-                            testType = "dummy",
-                            dateOfBirthMillis = 0L
+                            testType = "dummy"
                         ),
                         qrCode = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
                     )
@@ -229,8 +228,7 @@ fun fakeTestResultAttributesUseCase(
 
 fun fakePersistenceManager(
     secretKeyJson: String? = "",
-    credentials: String? = "",
-    dateOfBirth: Long? = null
+    credentials: String? = ""
 ): PersistenceManager {
     return object : PersistenceManager {
         override fun saveSecretKeyJson(json: String) {
@@ -251,14 +249,6 @@ fun fakePersistenceManager(
 
         override fun deleteCredentials() {
 
-        }
-
-        override fun saveDateOfBirthMillis(millis: Long) {
-
-        }
-
-        override fun getDateOfBirthMillis(): Long? {
-            return dateOfBirth
         }
     }
 }
