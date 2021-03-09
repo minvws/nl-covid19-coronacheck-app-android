@@ -48,16 +48,17 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button"
+        style="@style/Widget.App.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
-        tools:text="Volgende"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/indicators" />
+        app:layout_constraintTop_toBottomOf="@+id/indicators"
+        tools:text="Volgende" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -55,6 +55,7 @@
         tools:text="Download de laatste versie van de app" />
 
     <Button
+        style="@style/Widget.App.Button"
         android:id="@+id/action"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
