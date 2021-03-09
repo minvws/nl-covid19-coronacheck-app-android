@@ -52,7 +52,7 @@ class CommercialTestTypeFragment : Fragment(R.layout.fragment_commercial_test_ty
             R.drawable.ic_test_qr_code,
             R.string.commercial_test_type_qr_code_title
         ) {
-            if (persistenceManager.hasSeenCameraRationale()) {
+            if (persistenceManager.hasSeenCameraRationale() == true) {
                 launchScanner()
             } else {
                 showCameraDisclosure()

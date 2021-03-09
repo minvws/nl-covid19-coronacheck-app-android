@@ -17,7 +17,7 @@ interface PersistenceManager {
     fun deleteCredentials()
     fun saveDateOfBirthMillis(millis: Long)
     fun getDateOfBirthMillis(): Long?
-    fun hasSeenCameraRationale() : Boolean
+    fun hasSeenCameraRationale() : Boolean?
     fun setHasSeenCameraRationale(hasSeen: Boolean)
 }
 
