@@ -96,7 +96,7 @@ class HolderMainActivity : BaseActivity(R.id.nav_my_overview) {
             }
 
             // If no custom behavior was handled perform the default action.
-            navController.navigateUp() || super.onSupportNavigateUp()
+            NavigationUI.navigateUp(navController, binding.drawerLayout)
         }
         binding.navView.setupWithNavController(navController)
 
