@@ -8,8 +8,6 @@ import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentChooseProviderBinding
 import nl.rijksoverheid.ctr.holder.databinding.IncludeTestProviderBinding
-import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
-import org.koin.android.ext.android.inject
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -20,8 +18,6 @@ import org.koin.android.ext.android.inject
  */
 class ChooseProviderFragment : Fragment(R.layout.fragment_choose_provider) {
 
-    private val persistenceManager: PersistenceManager by inject()
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentChooseProviderBinding.bind(view)
@@ -29,11 +25,7 @@ class ChooseProviderFragment : Fragment(R.layout.fragment_choose_provider) {
             R.string.choose_provider_commercial_title,
             R.string.choose_provider_commercial_subtitle
         ) {
-            if (persistenceManager.getDateOfBirthMillis() == null) {
-                findNavController().navigate(ChooseProviderFragmentDirections.actionDateOfBirth())
-            } else {
-                findNavController().navigate(ChooseProviderFragmentDirections.actionCommercialTestType())
-            }
+            findNavController().navigate(ChooseProviderFragmentDirections.actionCommercialTestType())
         }
 
         binding.providerGgd.bind(

@@ -7,7 +7,6 @@ import nl.rijksoverheid.ctr.holder.myoverview.LocalTestResultViewModel
 import nl.rijksoverheid.ctr.holder.myoverview.LocalTestResultViewModelImpl
 import nl.rijksoverheid.ctr.holder.myoverview.TestResultsViewModel
 import nl.rijksoverheid.ctr.holder.myoverview.TokenQrViewModel
-import nl.rijksoverheid.ctr.holder.myoverview.date_of_birth.DateOfBirthInputViewModel
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.SharedPreferencesPersistenceManager
 import nl.rijksoverheid.ctr.holder.repositories.*
@@ -75,7 +74,6 @@ val mainModule = module {
     viewModel { DigiDViewModel(get()) }
     viewModel { TestResultsViewModel(get(), get(), get()) }
     viewModel { TokenQrViewModel(get()) }
-    viewModel { DateOfBirthInputViewModel(get()) }
 
     // Repositories
     single { AuthenticationRepository() }

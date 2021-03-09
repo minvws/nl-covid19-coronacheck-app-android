@@ -63,66 +63,7 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
 
-        <action
-            android:id="@+id/action_date_of_birth"
-            app:destination="@id/nav_date_of_birth"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
-
     </fragment>
-
-    <navigation
-        android:id="@+id/nav_date_of_birth"
-        app:startDestination="@id/nav_date_of_birth_input">
-
-        <fragment
-            android:id="@+id/nav_date_of_birth_input"
-            android:name="nl.rijksoverheid.ctr.holder.myoverview.date_of_birth.DateOfBirthInputFragment"
-            android:label="@string/date_of_birth_input_toolbar_title"
-            tools:layout="@layout/fragment_date_of_birth_input">
-
-            <action
-                android:id="@+id/action_date_of_birth_check"
-                app:destination="@id/nav_date_of_birth_check"
-                app:enterAnim="@anim/slide_in_right"
-                app:exitAnim="@anim/slide_out_left"
-                app:popEnterAnim="@anim/slide_in_left"
-                app:popExitAnim="@anim/slide_out_right" />
-
-        </fragment>
-
-        <fragment
-            android:id="@+id/nav_date_of_birth_check"
-            android:name="nl.rijksoverheid.ctr.holder.myoverview.date_of_birth.DateOfBirthCheckFragment"
-            android:label="@string/date_of_birth_input_toolbar_title"
-            tools:layout="@layout/fragment_date_of_birth_check">
-
-            <action
-                android:id="@+id/action_commercial_test_type"
-                app:destination="@id/nav_commercial_test_type"
-                app:enterAnim="@anim/slide_in_right"
-                app:exitAnim="@anim/slide_out_left"
-                app:popEnterAnim="@anim/slide_in_left"
-                app:popExitAnim="@anim/slide_out_right"
-                app:popUpTo="@id/nav_date_of_birth_input"
-                app:popUpToInclusive="true" />
-
-            <action
-                android:id="@+id/action_my_overview"
-                app:destination="@id/nav_my_overview"
-                app:enterAnim="@anim/fragment_open_enter"
-                app:exitAnim="@anim/fragment_open_exit"
-                app:launchSingleTop="true"
-                app:popEnterAnim="@anim/fragment_close_enter"
-                app:popExitAnim="@anim/fragment_close_exit"
-                app:popUpTo="@id/nav_my_overview"
-                app:popUpToInclusive="true" />
-
-        </fragment>
-
-    </navigation>
 
     <fragment
         android:id="@+id/nav_commercial_test_type"
