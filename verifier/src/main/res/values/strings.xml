@@ -5,7 +5,7 @@
     <string name="app_name">Scanner</string>
     <string name="onboarding_title">Onboarding</string>
     <string name="onboarding_screen_1_title">Zo veilig mogelijk weer open</string>
-    <string name="onboarding_screen_1_description">Bezoekers van jouw zaak, gelegenheid of evenement moeten eerst een coronatest doen. Alleen met een negatief testresultaat mogen zij naar binnen. Een negatief testresultaat geldt 1$s uur.</string>
+    <string name="onboarding_screen_1_description">Bezoekers van jouw zaak, gelegenheid of evenement moeten eerst een coronatest doen. Alleen met een negatief testresultaat mogen zij naar binnen. Een negatief testresultaat geldt %1$s uur.</string>
     <string name="onboarding_screen_2_title">Scan QR-code voor testresultaat</string>
     <string name="onboarding_screen_2_description">In de CoronaCheck app maakt de bezoeker van haar testresultaat een QR-code. Met deze app scan jij de QR-codes en zie je wie er toegang krijgt. Bij een groen scherm mag de bezoeker naar binnen.</string>
     <string name="onboarding_screen_3_title">Toegang is anoniem</string>
@@ -45,7 +45,7 @@
     <string name="scan_instructions_3_title">3. Groen scherm = toegang</string>
     <string name="scan_instructions_3_description">Groen scherm? De bezoeker heeft een geldig negatief testresultaat en mag naar binnen.</string>
     <string name="scan_instructions_4_title">4. Rood scherm = geen toegang</string>
-    <string name="scan_instructions_4_description"><![CDATA[Rood scherm? De QR-code van de bezoeker is niet geldig. De bezoeker kan geen toegang krijgen. Bij een rood scherm mag de bezoeker nooit binnengelaten worden. Dit brengt andere bezoekers in gevaar. Een rood scherm betekent niet dat de bezoeker corona heeft. Het betekent alleen dat er geen bewijs van een recente negatieve coronatest is.<br\><br\><ul><li>Controleer of de bezoeker de QR-code vanuit de CoronaCheck app laat zien. Een schermafbeelding of kopie van een QR-code geeft altijd een rood scherm.</li><li>Is de bezoeker wel negatief op corona getest in de afgelopen 1$s uur? Dan kan er van dat testresultaat een bewijs gemaakt worden in de CoronaCheck app.</li><li>Heeft de bezoeker geen test gedaan? Stuur hem of haar naar een snelteststraat in de buurt om een nieuwe test te doen.</li></ul>]]></string>
+    <string name="scan_instructions_4_description"><![CDATA[Rood scherm? De QR-code van de bezoeker is niet geldig. De bezoeker kan geen toegang krijgen. Bij een rood scherm mag de bezoeker nooit binnengelaten worden. Dit brengt andere bezoekers in gevaar. Een rood scherm betekent niet dat de bezoeker corona heeft. Het betekent alleen dat er geen bewijs van een recente negatieve coronatest is.<br\><br\><ul><li>Controleer of de bezoeker de QR-code vanuit de CoronaCheck app laat zien. Een schermafbeelding of kopie van een QR-code geeft altijd een rood scherm.</li><li>Is de bezoeker wel negatief op corona getest in de afgelopen %1$s uur? Dan kan er van dat testresultaat een bewijs gemaakt worden in de CoronaCheck app.</li><li>Heeft de bezoeker geen test gedaan? Stuur hem of haar naar een snelteststraat in de buurt om een nieuwe test te doen.</li></ul>]]></string>
     <string name="privacy_statement">Privacyverklaring</string>
     <string name="scanner_custom_title">Scan QR-Code</string>
     <string name="scanner_custom_message">Richt je toestel op de QR-code op het scherm van de bezoeker.</string>
