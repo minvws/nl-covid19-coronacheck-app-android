@@ -17,13 +17,13 @@ import nl.rijksoverheid.ctr.verifier.databinding.ItemScanInstructionBinding
  */
 class ScanInstructionAdapterItem(
     @StringRes private val title: Int,
-    @StringRes private val description: Int,
+    private val description: String,
     @DrawableRes private val image: Int? = null
 ) : BindableItem<ItemScanInstructionBinding>() {
     override fun bind(viewBinding: ItemScanInstructionBinding, position: Int) {
         val context = viewBinding.root.context
         viewBinding.title.setText(title)
-        viewBinding.description.text = getSpannableFromHtml(context, context.getString(description))
+        viewBinding.description.text = getSpannableFromHtml(context, description)
         if (image == null) {
             viewBinding.image.visibility = View.GONE
         } else {
