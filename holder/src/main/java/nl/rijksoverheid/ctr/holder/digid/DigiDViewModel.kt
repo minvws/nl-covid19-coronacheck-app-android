@@ -6,14 +6,11 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import net.openid.appauth.AuthorizationException
 import net.openid.appauth.AuthorizationResponse
 import net.openid.appauth.AuthorizationService
 import nl.rijksoverheid.ctr.holder.repositories.AuthenticationRepository
-import nl.rijksoverheid.ctr.shared.models.Result
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -24,21 +21,14 @@ import nl.rijksoverheid.ctr.shared.models.Result
  */
 class DigiDViewModel(private val authenticationRepository: AuthenticationRepository) : ViewModel() {
 
-    val accessTokenLiveData = MutableLiveData<Result<String>>()
+    val accessTokenLiveData = MutableLiveData<String>()
 
     fun login(
         activityResultLauncher: ActivityResultLauncher<Intent>,
         authService: AuthorizationService
     ) {
-        accessTokenLiveData.value = Result.Loading()
         viewModelScope.launch {
-            try {
-                authenticationRepository.authResponse(activityResultLauncher, authService)
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    accessTokenLiveData.value = Result.Failed(e)
-                }
-            }
+            authenticationRepository.authResponse(activityResultLauncher, authService)
         }
     }
 
@@ -49,16 +39,18 @@ class DigiDViewModel(private val authenticationRepository: AuthenticationReposit
                 val authResponse = AuthorizationResponse.fromIntent(intent)
                 val authError = AuthorizationException.fromIntent(intent)
                 when {
-                    authError != null -> accessTokenLiveData.postValue(Result.Failed(authError))
+                    authError != null -> {
+                    }
                     authResponse != null -> {
                         val accessToken =
                             authenticationRepository.accessToken(authService, authResponse)
-                        accessTokenLiveData.postValue(Result.Success(accessToken))
+                        accessTokenLiveData.postValue(accessToken)
                     }
-                    else -> accessTokenLiveData.postValue(Result.Failed(Exception("Could not get AuthorizationResponse")))
+                    else -> {
+                    }
                 }
             } else {
-                accessTokenLiveData.postValue(Result.Failed(Exception("Could not get AuthorizationResponse")))
+                
             }
         }
     }

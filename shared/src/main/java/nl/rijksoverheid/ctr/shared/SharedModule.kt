@@ -1,6 +1,9 @@
 package nl.rijksoverheid.ctr.shared
 
-import nl.rijksoverheid.ctr.shared.util.*
+import nl.rijksoverheid.ctr.shared.usecase.TestResultAttributesUseCase
+import nl.rijksoverheid.ctr.shared.usecase.TestResultAttributesUseCaseImpl
+import nl.rijksoverheid.ctr.shared.util.QrCodeUtil
+import nl.rijksoverheid.ctr.shared.util.TestResultUtil
 import org.koin.dsl.module
 import java.time.Clock
 
@@ -16,7 +19,10 @@ val sharedModule = module {
 
     single { Clock.systemDefaultZone() }
 
-    single<QrCodeScannerUtil> { MLKitQrCodeScannerUtil() }
+    // Usecases
+    factory<TestResultAttributesUseCase> {
+        TestResultAttributesUseCaseImpl(get())
+    }
 
     // Utils
     single { QrCodeUtil(get()) }

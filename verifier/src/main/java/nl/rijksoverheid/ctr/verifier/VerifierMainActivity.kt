@@ -17,11 +17,11 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
-import nl.rijksoverheid.ctr.appconfig.AppStatusFragment
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
+import nl.rijksoverheid.ctr.appconfig.AppStatusFragment
 import nl.rijksoverheid.ctr.appconfig.model.AppStatus
+import nl.rijksoverheid.ctr.design.BaseActivity
 import nl.rijksoverheid.ctr.holder.persistence.IntroductionPersistenceManager
-import nl.rijksoverheid.ctr.shared.BaseActivity
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.ext.styleTitle
 import nl.rijksoverheid.ctr.verifier.databinding.ActivityMainBinding

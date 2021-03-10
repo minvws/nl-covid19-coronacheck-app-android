@@ -4,9 +4,10 @@ import clmobile.Clmobile
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import nl.rijksoverheid.ctr.api.models.DecryptedQr
 import nl.rijksoverheid.ctr.shared.ext.toObject
 import nl.rijksoverheid.ctr.shared.ext.verify
+import nl.rijksoverheid.ctr.verifier.models.DecryptedQr
+import nl.rijksoverheid.ctr.shared.models.TestResultAttributes
 import timber.log.Timber
 import java.time.Instant
 import java.time.OffsetDateTime
@@ -35,7 +36,7 @@ class DecryptHolderQrUseCase(
             Timber.i("QR Code created at ${result.unixTimeSeconds}")
             val testResultAttributes =
                 result.attributesJson.decodeToString()
-                    .toObject<nl.rijksoverheid.ctr.api.models.TestResultAttributes>(moshi)
+                    .toObject<TestResultAttributes>(moshi)
             DecryptResult.Success(
                 DecryptedQr(
                     creationDate = OffsetDateTime.ofInstant(
@@ -55,7 +56,7 @@ class DecryptHolderQrUseCase(
     }
 
     sealed class DecryptResult {
-        class Success(val decryptQr: nl.rijksoverheid.ctr.api.models.DecryptedQr) : DecryptResult()
+        class Success(val decryptQr: DecryptedQr) : DecryptResult()
         object Failed : DecryptResult()
     }
 }

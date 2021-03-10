@@ -12,7 +12,6 @@ include ':design'
 include ':shared'
 include ':verifier'
 include ':holder'
-include ':signing'
 include ':ctcl'
 include ':appconfig'
 

@@ -8,7 +8,7 @@ import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.holder.fakeCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.fakePersistenceManager
 import nl.rijksoverheid.ctr.holder.fakeTestResultAttributesUseCase
-import nl.rijksoverheid.ctr.holder.myoverview.models.LocalTestResultState
+import nl.rijksoverheid.ctr.holder.models.LocalTestResultState
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.shared.util.TestResultUtil
 import org.junit.Assert.assertTrue

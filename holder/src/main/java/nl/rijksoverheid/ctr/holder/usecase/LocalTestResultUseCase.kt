@@ -4,8 +4,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.models.LocalTestResult
-import nl.rijksoverheid.ctr.holder.myoverview.models.LocalTestResultState
+import nl.rijksoverheid.ctr.holder.models.LocalTestResultState
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
+import nl.rijksoverheid.ctr.shared.usecase.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.shared.util.TestResultUtil
 import java.time.Instant
 import java.time.OffsetDateTime
@@ -47,17 +48,13 @@ open class LocalTestResultUseCaseImpl(
                 validitySeconds = testValiditySeconds
             )
 
-            val dateOfBirthMillis = persistenceManager.getDateOfBirthMillis()
-                ?: throw IllegalStateException("Date of birth should not be null")
-
             if (isValid) {
                 LocalTestResultState.Valid(
                     LocalTestResult(
                         credentials = credentials,
                         sampleDate = sampleDate,
                         testType = testAttributes.testType,
-                        expireDate = sampleDate.plusSeconds(testValiditySeconds),
-                        dateOfBirthMillis = dateOfBirthMillis
+                        expireDate = sampleDate.plusSeconds(testValiditySeconds)
                     )
                 )
             } else {

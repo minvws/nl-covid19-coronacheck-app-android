@@ -24,6 +24,11 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
+
+        buildConfigField "String", "SIGNATURE_CERTIFICATE_CN_MATCH", '".coronatester.nl"'
+        buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "true"
+        buildConfigField "boolean", "FEATURE_TEST_PROVIDER_API_CHECKS", "true"
+        buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.coronacheck.nl/v1/\""
     }
 
     signingConfigs {
@@ -53,6 +58,9 @@ android {
             buildConfigField "String", "URL_SUPPORT", "\"https://www.coronacheck.nl/nl/faq-scanner-in-app\""
             buildConfigField "String", "URL_ABOUT_THIS_APP", "\"https://www.coronacheck.nl/nl/over-de-scanner-app-in-app\""
             buildConfigField "String", "URL_PRIVACY_STATEMENT", "\"https://www.coronacheck.nl/nl/privacy-in-app\""
+            buildConfigField "String", "BASE_API_URL", "\"https://api-ct.bananenhalen.nl/v1/\""
+            buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "false"
+            buildConfigField "boolean", "FEATURE_TEST_PROVIDER_API_CHECKS", "false"
             apply plugin: 'com.google.gms.google-services'
             apply plugin: 'com.google.firebase.crashlytics'
         }
@@ -64,6 +72,8 @@ android {
             buildConfigField "String", "URL_SUPPORT", "\"https://www.coronacheck.nl/nl/faq-scanner-in-app\""
             buildConfigField "String", "URL_ABOUT_THIS_APP", "\"https://www.coronacheck.nl/nl/over-de-scanner-app-in-app\""
             buildConfigField "String", "URL_PRIVACY_STATEMENT", "\"https://www.coronacheck.nl/nl/privacy-in-app\""
+            buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.acc.coronacheck.nl/v1/\""
+            buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.coronacheck.nl/v1/\""
             apply plugin: 'com.google.gms.google-services'
             apply plugin: 'com.google.firebase.crashlytics'
         }
@@ -87,6 +97,7 @@ dependencies {
     implementation project(":introduction")
     implementation project(":api")
     implementation project(":ctcl")
+    implementation project(":qrscanner")
 
     implementation "com.xwray:groupie:${groupie_version}"
     implementation "com.xwray:groupie-viewbinding:${groupie_version}"

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/nav_my_overview"
-        android:name="nl.rijksoverheid.ctr.holder.myoverview.MyOverviewFragment"
+        android:name="nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewFragment"
         android:label="@string/my_overview"
         tools:layout="@layout/fragment_my_overview">
 
@@ -39,19 +39,19 @@
 
     <dialog
         android:id="@+id/nav_qr_code"
-        android:name="nl.rijksoverheid.ctr.holder.myoverview.QrCodeFragment"
+        android:name="nl.rijksoverheid.ctr.holder.ui.myoverview.QrCodeFragment"
         android:label=""
         tools:layout="@layout/dialog_qr_code" />
 
     <fragment
         android:id="@+id/nav_make_appointment"
-        android:name="nl.rijksoverheid.ctr.holder.makeappointment.MakeAppointmentFragment"
+        android:name="nl.rijksoverheid.ctr.holder.ui.make_appointment.MakeAppointmentFragment"
         android:label="@string/test_appointment_info_toolbar_title"
         tools:layout="@layout/fragment_make_appointment" />
 
     <fragment
         android:id="@+id/nav_choose_provider"
-        android:name="nl.rijksoverheid.ctr.holder.myoverview.ChooseProviderFragment"
+        android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.ChooseProviderFragment"
         android:label="@string/choose_provider_toolbar"
         tools:layout="@layout/fragment_choose_provider">
 
@@ -63,70 +63,11 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
 
-        <action
-            android:id="@+id/action_date_of_birth"
-            app:destination="@id/nav_date_of_birth"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
-
     </fragment>
-
-    <navigation
-        android:id="@+id/nav_date_of_birth"
-        app:startDestination="@id/nav_date_of_birth_input">
-
-        <fragment
-            android:id="@+id/nav_date_of_birth_input"
-            android:name="nl.rijksoverheid.ctr.holder.myoverview.date_of_birth.DateOfBirthInputFragment"
-            android:label="@string/date_of_birth_input_toolbar_title"
-            tools:layout="@layout/fragment_date_of_birth_input">
-
-            <action
-                android:id="@+id/action_date_of_birth_check"
-                app:destination="@id/nav_date_of_birth_check"
-                app:enterAnim="@anim/slide_in_right"
-                app:exitAnim="@anim/slide_out_left"
-                app:popEnterAnim="@anim/slide_in_left"
-                app:popExitAnim="@anim/slide_out_right" />
-
-        </fragment>
-
-        <fragment
-            android:id="@+id/nav_date_of_birth_check"
-            android:name="nl.rijksoverheid.ctr.holder.myoverview.date_of_birth.DateOfBirthCheckFragment"
-            android:label="@string/date_of_birth_input_toolbar_title"
-            tools:layout="@layout/fragment_date_of_birth_check">
-
-            <action
-                android:id="@+id/action_commercial_test_type"
-                app:destination="@id/nav_commercial_test_type"
-                app:enterAnim="@anim/slide_in_right"
-                app:exitAnim="@anim/slide_out_left"
-                app:popEnterAnim="@anim/slide_in_left"
-                app:popExitAnim="@anim/slide_out_right"
-                app:popUpTo="@id/nav_date_of_birth_input"
-                app:popUpToInclusive="true" />
-
-            <action
-                android:id="@+id/action_my_overview"
-                app:destination="@id/nav_my_overview"
-                app:enterAnim="@anim/fragment_open_enter"
-                app:exitAnim="@anim/fragment_open_exit"
-                app:launchSingleTop="true"
-                app:popEnterAnim="@anim/fragment_close_enter"
-                app:popExitAnim="@anim/fragment_close_exit"
-                app:popUpTo="@id/nav_my_overview"
-                app:popUpToInclusive="true" />
-
-        </fragment>
-
-    </navigation>
 
     <fragment
         android:id="@+id/nav_commercial_test_type"
-        android:name="nl.rijksoverheid.ctr.holder.myoverview.CommercialTestTypeFragment"
+        android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.CommercialTestTypeFragment"
         android:label="@string/commercial_test_type_title"
         tools:layout="@layout/fragment_commercial_test_type">
 
@@ -154,7 +95,7 @@
 
         <fragment
             android:id="@+id/nav_commercial_test_code"
-            android:name="nl.rijksoverheid.ctr.holder.myoverview.CommercialTestCodeFragment"
+            android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.CommercialTestCodeFragment"
             android:label="@string/commercial_test_type_code_toolbar_title"
             tools:layout="@layout/fragment_commercial_test_code">
 
@@ -184,7 +125,7 @@
 
         <fragment
             android:id="@+id/nav_your_negative_result"
-            android:name="nl.rijksoverheid.ctr.holder.myoverview.YourNegativeTestResultFragment"
+            android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.YourNegativeTestResultFragment"
             android:label="@string/commercial_test_type_title"
             tools:layout="@layout/fragment_your_negative_test_results">
 
@@ -219,7 +160,7 @@
 
         <fragment
             android:id="@+id/nav_qr_created"
-            android:name="nl.rijksoverheid.ctr.holder.myoverview.QrCreatedFragment"
+            android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.QrCreatedFragment"
             android:label="@string/commercial_test_type_title"
             tools:layout="@layout/fragment_qr_created">
 
@@ -238,7 +179,7 @@
 
         <fragment
             android:id="@+id/nav_no_test_result"
-            android:name="nl.rijksoverheid.ctr.holder.myoverview.NoTestResultFragment"
+            android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.NoTestResultFragment"
             android:label="@string/commercial_test_type_title"
             tools:layout="@layout/fragment_no_test_result">
 
@@ -253,18 +194,6 @@
         </fragment>
 
     </navigation>
-
-    <fragment
-        android:id="@+id/nav_settings"
-        android:name="nl.rijksoverheid.ctr.holder.settings.SettingsFragment"
-        android:label="@string/settings"
-        tools:layout="@layout/fragment_settings" />
-
-    <fragment
-        android:id="@+id/nav_about_this_app"
-        android:name="nl.rijksoverheid.ctr.holder.about.AboutThisAppFragment"
-        android:label="@string/about_this_app"
-        tools:layout="@layout/fragment_about_this_app" />
 
     <action
         android:id="@+id/action_app_status"

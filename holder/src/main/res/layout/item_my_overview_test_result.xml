@@ -41,23 +41,10 @@
                 android:text="@string/my_overview_existing_qr_title"
                 android:textAlignment="center"
                 android:textAppearance="?attr/textAppearanceHeadline6"
-                app:layout_constraintBottom_toTopOf="@+id/test_result_subtitle"
+                app:layout_constraintBottom_toTopOf="@+id/test_result_qr_image"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/test_result_subtitle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/my_overview_existing_qr_title"
-                android:textAlignment="center"
-                android:textAppearance="?attr/textAppearanceBody1"
-                app:layout_constraintBottom_toTopOf="@+id/test_result_qr_image"
-                app:layout_constraintEnd_toEndOf="@+id/test_result_title"
-                app:layout_constraintStart_toStartOf="@+id/test_result_title"
-                app:layout_constraintTop_toBottomOf="@+id/test_result_title"
-                tools:text="07-01-1988" />
 
             <ImageView
                 android:id="@+id/test_result_qr_image"
@@ -84,7 +71,7 @@
 
     </com.google.android.material.card.MaterialCardView>
 
-    <nl.rijksoverheid.ctr.holder.myoverview.widget.QrCodeAnimationWidget
+    <nl.rijksoverheid.ctr.holder.ui.myoverview.QrCodeAnimationWidget
         android:layout_width="match_parent"
         android:layout_height="256dp"
         android:layout_gravity="bottom"

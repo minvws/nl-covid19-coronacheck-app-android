@@ -1,7 +1,7 @@
 package nl.rijksoverheid.ctr.holder.usecase
 
 import kotlinx.coroutines.runBlocking
-import nl.rijksoverheid.ctr.api.models.RemoteTestProviders
+import nl.rijksoverheid.ctr.holder.models.RemoteTestProviders
 import nl.rijksoverheid.ctr.holder.fakeCoronaCheckRepository
 import org.junit.Assert.assertEquals
 import org.junit.Test

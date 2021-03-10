@@ -31,6 +31,10 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
 
+        buildConfigField "String", "SIGNATURE_CERTIFICATE_CN_MATCH", '".coronatester.nl"'
+        buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "true"
+        buildConfigField "boolean", "FEATURE_TEST_PROVIDER_API_CHECKS", "true"
+        buildConfigField "String", "BASE_API_URL", "\"https://holder-api.coronacheck.nl/v1/\""
         buildConfigField "String", "URL_FAQ", "\"https://coronacheck.nl/nl/faq-in-app.html\""
         buildConfigField "String", "URL_ABOUT_THIS_APP", "\"https://coronacheck.nl/nl/over-de-app-in-app\""
         buildConfigField "String", "URL_PRIVACY_STATEMENT", "\"https://coronacheck.nl/nl/privacy-in-app\""
@@ -57,6 +61,11 @@ android {
     flavorDimensions "environment"
     productFlavors {
         tst {
+            buildConfigField "String", "BASE_API_URL", "\"https://api-ct.bananenhalen.nl/v1/\""
+            buildConfigField "String", "DIGI_D_BASE_URL", "\"https://login.ggdghor.nl/coronitacc\""
+            buildConfigField "String", "DIGI_D_CLIENT_ID", "\"6456237456911667336\""
+            buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "false"
+            buildConfigField "boolean", "FEATURE_TEST_PROVIDER_API_CHECKS", "false"
             dimension "environment"
             versionNameSuffix "-test"
             applicationIdSuffix ".test"
@@ -65,6 +74,9 @@ android {
             apply plugin: 'com.google.firebase.crashlytics'
         }
         acc {
+            buildConfigField "String", "BASE_API_URL", "\"https://holder-api.acc.coronacheck.nl/v1/\""
+            buildConfigField "String", "DIGI_D_BASE_URL", "\"https://login.ggdghor.nl/coronitacc\""
+            buildConfigField "String", "DIGI_D_CLIENT_ID", "\"6456237456911667336\""
             dimension "environment"
             versionNameSuffix "-acc"
             applicationIdSuffix ".acc"
@@ -73,6 +85,9 @@ android {
             apply plugin: 'com.google.firebase.crashlytics'
         }
         prod {
+            buildConfigField "String", "BASE_API_URL", "\"https://holder-api.coronacheck.nl/v1/\""
+            buildConfigField "String", "DIGI_D_BASE_URL", "\"https://login.ggdghor.nl/coronitacc\""
+            buildConfigField "String", "DIGI_D_CLIENT_ID", "\"6456237456911667336\""
             dimension "environment"
             manifestPlaceholders = [appLabel: "@string/app_name"]
         }
@@ -90,6 +105,7 @@ dependencies {
     implementation project(":introduction")
     implementation project(":api")
     implementation project(":ctcl")
+    implementation project(":qrscanner")
 
     implementation 'com.github.openid:AppAuth-Android:41a6aa1'
     implementation "com.xwray:groupie:${groupie_version}"
@@ -104,6 +120,12 @@ dependencies {
     implementation "com.jakewharton.timber:timber:${timber_version}"
     implementation "com.airbnb.android:lottie:$lottie_version"
     debugImplementation "androidx.fragment:fragment-testing:$fragment_version"
+    implementation "com.google.zxing:core:$zxing_core_version"
+    implementation("com.squareup.okhttp3:logging-interceptor")
+    implementation(platform("com.squareup.okhttp3:okhttp-bom:$okhttp_version"))
+    implementation("com.squareup.okhttp3:okhttp")
+    implementation("com.squareup.okhttp3:okhttp-tls")
+    implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
 
     testImplementation "junit:junit:$junit_version"
     testImplementation "io.mockk:mockk:$mock_version"

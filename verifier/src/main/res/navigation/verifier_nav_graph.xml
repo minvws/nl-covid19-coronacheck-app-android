@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/nav_scan_qr"
-        android:name="nl.rijksoverheid.ctr.verifier.scanqr.ScanQrFragment"
+        android:name="nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrFragment"
         android:label="@string/scan_qr_title"
         tools:layout="@layout/fragment_scan_qr">
 
@@ -36,7 +36,7 @@
 
     <dialog
         android:id="@+id/nav_scan_result"
-        android:name="nl.rijksoverheid.ctr.verifier.scanqr.ScanResultFragment"
+        android:name="nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanResultFragment"
         android:label=""
         tools:layout="@layout/fragment_scan_result">
 
@@ -55,7 +55,7 @@
 
     <dialog
         android:id="@+id/nav_scan_instructions"
-        android:name="nl.rijksoverheid.ctr.verifier.scaninstructions.ScanInstructionsDialogFragment"
+        android:name="nl.rijksoverheid.ctr.verifier.ui.scaninstructions.ScanInstructionsDialogFragment"
         android:label="@string/scan_instructions"
         tools:layout="@layout/dialog_scan_instructions">
 

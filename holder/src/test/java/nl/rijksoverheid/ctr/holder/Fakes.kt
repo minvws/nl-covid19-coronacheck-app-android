@@ -1,20 +1,21 @@
 package nl.rijksoverheid.ctr.holder
 
 import android.graphics.Bitmap
-import nl.rijksoverheid.ctr.api.models.*
 import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
-import nl.rijksoverheid.ctr.holder.models.LocalTestResult
-import nl.rijksoverheid.ctr.holder.myoverview.LocalTestResultViewModel
-import nl.rijksoverheid.ctr.holder.myoverview.models.LocalTestResultState
-import nl.rijksoverheid.ctr.holder.myoverview.models.QrCodeData
+import nl.rijksoverheid.ctr.holder.models.*
+import nl.rijksoverheid.ctr.holder.ui.myoverview.LocalTestResultViewModel
+import nl.rijksoverheid.ctr.holder.models.LocalTestResultState
+import nl.rijksoverheid.ctr.holder.models.QrCodeData
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.repositories.TestProviderRepository
 import nl.rijksoverheid.ctr.holder.usecase.*
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.shared.livedata.Event
+import nl.rijksoverheid.ctr.shared.models.TestResultAttributes
+import nl.rijksoverheid.ctr.shared.usecase.TestResultAttributesUseCase
 import java.time.OffsetDateTime
 
 /*
@@ -98,8 +99,7 @@ fun fakeLocalTestResultViewModel(
                             credentials = "dummy",
                             sampleDate = OffsetDateTime.now(),
                             expireDate = OffsetDateTime.now(),
-                            testType = "dummy",
-                            dateOfBirthMillis = 0L
+                            testType = "dummy"
                         ),
                         qrCode = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
                     )
@@ -230,7 +230,6 @@ fun fakeTestResultAttributesUseCase(
 fun fakePersistenceManager(
     secretKeyJson: String? = "",
     credentials: String? = "",
-    dateOfBirth: Long? = null,
     hasSeenCameraRationale: Boolean? = false
 ): PersistenceManager {
     return object : PersistenceManager {
@@ -252,14 +251,6 @@ fun fakePersistenceManager(
 
         override fun deleteCredentials() {
 
-        }
-
-        override fun saveDateOfBirthMillis(millis: Long) {
-
-        }
-
-        override fun getDateOfBirthMillis(): Long? {
-            return dateOfBirth
         }
 
         override fun hasSeenCameraRationale(): Boolean? {
