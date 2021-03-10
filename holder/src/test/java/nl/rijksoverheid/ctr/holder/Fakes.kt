@@ -229,7 +229,8 @@ fun fakeTestResultAttributesUseCase(
 
 fun fakePersistenceManager(
     secretKeyJson: String? = "",
-    credentials: String? = ""
+    credentials: String? = "",
+    hasSeenCameraRationale: Boolean? = false
 ): PersistenceManager {
     return object : PersistenceManager {
         override fun saveSecretKeyJson(json: String) {
@@ -249,6 +250,14 @@ fun fakePersistenceManager(
         }
 
         override fun deleteCredentials() {
+
+        }
+
+        override fun hasSeenCameraRationale(): Boolean? {
+            return hasSeenCameraRationale
+        }
+
+        override fun setHasSeenCameraRationale(hasSeen: Boolean) {
 
         }
     }

@@ -15,6 +15,8 @@ interface PersistenceManager {
     fun saveCredentials(credentials: String)
     fun getCredentials(): String?
     fun deleteCredentials()
+    fun hasSeenCameraRationale(): Boolean?
+    fun setHasSeenCameraRationale(hasSeen: Boolean)
 }
 
 class SharedPreferencesPersistenceManager(
@@ -25,6 +27,7 @@ class SharedPreferencesPersistenceManager(
     companion object {
         const val SECRET_KEY_JSON = "SECRET_KEY_JSON"
         const val CREDENTIALS = "CREDENTIALS"
+        const val HAS_SEEN_CAMERA_RATIONALE = "HAS_SEEN_CAMERA_RATIONALE"
     }
 
     override fun saveSecretKeyJson(json: String) {
@@ -45,5 +48,13 @@ class SharedPreferencesPersistenceManager(
 
     override fun deleteCredentials() {
         sharedPreferences.edit().remove(CREDENTIALS).apply()
+    }
+
+    override fun hasSeenCameraRationale(): Boolean {
+        return sharedPreferences.getBoolean(HAS_SEEN_CAMERA_RATIONALE, false)
+    }
+
+    override fun setHasSeenCameraRationale(hasSeen: Boolean) {
+        sharedPreferences.edit().putBoolean(HAS_SEEN_CAMERA_RATIONALE, hasSeen).apply()
     }
 }

@@ -2,6 +2,8 @@ package nl.rijksoverheid.ctr.shared
 
 import nl.rijksoverheid.ctr.shared.usecase.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.shared.usecase.TestResultAttributesUseCaseImpl
+import nl.rijksoverheid.ctr.shared.util.MLKitQrCodeScannerUtil
+import nl.rijksoverheid.ctr.shared.util.QrCodeScannerUtil
 import nl.rijksoverheid.ctr.shared.util.QrCodeUtil
 import nl.rijksoverheid.ctr.shared.util.TestResultUtil
 import org.koin.dsl.module
@@ -23,6 +25,8 @@ val sharedModule = module {
     factory<TestResultAttributesUseCase> {
         TestResultAttributesUseCaseImpl(get())
     }
+
+    single<QrCodeScannerUtil> { MLKitQrCodeScannerUtil() }
 
     // Utils
     single { QrCodeUtil(get()) }

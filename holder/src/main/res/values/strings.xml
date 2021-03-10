@@ -96,7 +96,9 @@
     <string name="test_appointment_info_description"><![CDATA[Om een QR-code te maken moet je je eerst laten testen. Alleen van een negatief testresultaat kan je een QR-code maken.<br\><br\>Je QR-code is %1$s uur geldig vanaf het moment dat je negatief getest bent. Plan je test dus kort voor je evenement. <a href="#">Lees de meestgestelde vragen over een test plannen.</a>]]></string>
     <string name="test_appointment_info_button">Maak een afspraak</string>
     <string name="camera_rationale_dialog_title">CoronaCheck wil toegang tot je camera</string>
-    <string name="camera_rationale_dialog_description">Zo kan de app je QR-code scannen</string>
+    <string name="camera_rationale_dialog_description">Alleen zo kan de app jouw QR-code scannen.</string>
+    <string name="camera_rationale_dialog_accept">Oke</string>
+    <string name="camera_rationale_dialog_deny">Annuleren</string>
     <string name="app_setup_text">We starten de app voor je op…</string>
     <!-- App Status strings -->
     <string name="app_status_deactivated_title">App buiten werking</string>

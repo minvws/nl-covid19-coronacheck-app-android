@@ -21,7 +21,6 @@
         <item name="textAppearanceHeadline6">
             @style/App.TextAppearance.MaterialComponents.Headline6.Montserrat
         </item>
-        <item name="materialButtonStyle">@style/Widget.App.Button</item>
         <item name="textInputStyle">@style/Widget.App.TextInputLayout</item>
         <item name="toolbarStyle">@style/Widget.App.Toolbar.Surface</item>
         <item name="android:splitMotionEvents">false</item>

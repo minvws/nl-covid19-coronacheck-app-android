@@ -34,6 +34,7 @@ android {
 
 dependencies {
     implementation project(":ctcl")
+    implementation project(":qrscanner")
 
     implementation "org.koin:koin-android:$koin_version"
     implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
@@ -41,6 +42,10 @@ dependencies {
     implementation(platform("com.squareup.okhttp3:okhttp-bom:$okhttp_version"))
     implementation "androidx.browser:browser:$browser_version"
     implementation "androidx.appcompat:appcompat:${appcompat_version}"
+    implementation "com.google.android.material:material:${material_version}"
+    implementation "com.google.zxing:core:$zxing_core_version"
+
+    api "com.squareup.retrofit2:retrofit:$retrofit_version"
 
     testImplementation "junit:junit:${junit_version}"
     testImplementation "io.mockk:mockk:$mock_version"

@@ -12,6 +12,7 @@ import nl.rijksoverheid.ctr.appconfig.AppConfigUtil
 import nl.rijksoverheid.ctr.design.FullScreenDialogFragment
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.DialogScanInstructionsBinding
+import nl.rijksoverheid.ctr.verifier.scanqr.ScanQrFragment
 import org.koin.android.ext.android.inject
 
 /*
@@ -22,11 +23,6 @@ import org.koin.android.ext.android.inject
  *
  */
 class ScanInstructionsDialogFragment : FullScreenDialogFragment(R.layout.dialog_scan_instructions) {
-
-    companion object {
-        const val REQUEST_KEY = "REQUEST_KEY"
-        const val EXTRA_LAUNCH_SCANNER = "LAUNCH_SCANNER"
-    }
 
     private val appConfigUtil: AppConfigUtil by inject()
     private val args: ScanInstructionsDialogFragmentArgs by navArgs()
@@ -73,6 +69,9 @@ class ScanInstructionsDialogFragment : FullScreenDialogFragment(R.layout.dialog_
 
     override fun onDestroyView() {
         super.onDestroyView()
-        setFragmentResult(REQUEST_KEY, bundleOf(EXTRA_LAUNCH_SCANNER to args.openScannerOnBack))
+        setFragmentResult(
+            ScanQrFragment.REQUEST_KEY,
+            bundleOf(ScanQrFragment.EXTRA_LAUNCH_SCANNER to args.openScannerOnBack)
+        )
     }
 }
