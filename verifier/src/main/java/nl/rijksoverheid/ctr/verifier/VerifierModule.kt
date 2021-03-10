@@ -2,8 +2,7 @@ package nl.rijksoverheid.ctr.verifier
 
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
-import nl.rijksoverheid.ctr.shared.usecase.TestResultAttributesUseCase
-import nl.rijksoverheid.ctr.shared.usecase.TestResultAttributesUseCaseImpl
+import com.squareup.moshi.Moshi
 import nl.rijksoverheid.ctr.shared.util.MLKitQrCodeScannerUtil
 import nl.rijksoverheid.ctr.shared.util.QrCodeScannerUtil
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
@@ -48,4 +47,8 @@ val verifierModule = module {
 
     // ViewModels
     viewModel { ScanQrViewModel(get(), get()) }
+
+    single {
+        get(Moshi.Builder::class).build()
+    }
 }

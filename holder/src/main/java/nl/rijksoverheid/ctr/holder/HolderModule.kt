@@ -42,7 +42,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-fun holderModule(baseUrl: String) = module(override = true) {
+fun holderModule(baseUrl: String) = module {
 
     single<SharedPreferences> {
         PreferenceManager.getDefaultSharedPreferences(
@@ -156,7 +156,7 @@ fun holderModule(baseUrl: String) = module(override = true) {
         )
     }
 
-    single(override = true) {
-        get(Moshi::class).newBuilder().add(RemoteTestStatusJsonAdapter())
+    single {
+        get(Moshi.Builder::class).add(RemoteTestStatusJsonAdapter()).build()
     }
 }
