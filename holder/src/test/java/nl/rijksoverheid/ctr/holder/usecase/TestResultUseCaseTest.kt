@@ -1,8 +1,8 @@
 package nl.rijksoverheid.ctr.holder.usecase
 
 import kotlinx.coroutines.runBlocking
-import nl.rijksoverheid.ctr.api.models.*
 import nl.rijksoverheid.ctr.holder.*
+import nl.rijksoverheid.ctr.holder.models.*
 import nl.rijksoverheid.ctr.holder.repositories.TestProviderRepository
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert.assertTrue

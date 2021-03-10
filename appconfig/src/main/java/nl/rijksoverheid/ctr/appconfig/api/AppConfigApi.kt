@@ -8,8 +8,8 @@
 
 package nl.rijksoverheid.ctr.appconfig.api
 
-import nl.rijksoverheid.crt.signing.http.SignedRequest
-import nl.rijksoverheid.ctr.shared.interceptors.CacheOverride
+import nl.rijksoverheid.ctr.api.interceptors.CacheOverride
+import nl.rijksoverheid.ctr.api.signing.http.SignedRequest
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
 import retrofit2.http.GET

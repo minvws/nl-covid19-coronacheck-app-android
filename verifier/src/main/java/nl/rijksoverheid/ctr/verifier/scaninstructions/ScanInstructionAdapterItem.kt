@@ -4,7 +4,7 @@ import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.xwray.groupie.viewbinding.BindableItem
-import nl.rijksoverheid.ctr.shared.util.getSpannableFromHtml
+import nl.rijksoverheid.ctr.design.utils.getSpannableFromHtml
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.ItemScanInstructionBinding
 

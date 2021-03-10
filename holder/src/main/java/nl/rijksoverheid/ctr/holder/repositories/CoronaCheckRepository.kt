@@ -2,12 +2,12 @@ package nl.rijksoverheid.ctr.holder.repositories
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import nl.rijksoverheid.ctr.api.CoronaCheckApiClient
-import nl.rijksoverheid.ctr.api.models.RemoteNonce
-import nl.rijksoverheid.ctr.api.models.RemoteTestProviders
-import nl.rijksoverheid.ctr.api.models.ResponseError
-import nl.rijksoverheid.ctr.api.models.TestIsmResult
-import nl.rijksoverheid.ctr.api.models.post.GetTestIsmPostData
+import nl.rijksoverheid.ctr.holder.api.HolderApiClient
+import nl.rijksoverheid.ctr.holder.models.RemoteNonce
+import nl.rijksoverheid.ctr.holder.models.RemoteTestProviders
+import nl.rijksoverheid.ctr.holder.models.ResponseError
+import nl.rijksoverheid.ctr.holder.models.TestIsmResult
+import nl.rijksoverheid.ctr.holder.models.post.GetTestIsmPostData
 import okhttp3.ResponseBody
 import org.json.JSONObject
 import retrofit2.Converter
@@ -28,7 +28,7 @@ interface CoronaCheckRepository {
 }
 
 open class CoronaCheckRepositoryImpl(
-    private val api: CoronaCheckApiClient,
+    private val api: HolderApiClient,
     private val errorResponseConverter: Converter<ResponseBody, ResponseError>
 ) : CoronaCheckRepository {
 

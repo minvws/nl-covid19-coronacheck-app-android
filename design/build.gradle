@@ -30,5 +30,8 @@ android {
 }
 
 dependencies {
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"
     implementation "androidx.fragment:fragment-ktx:$fragment_ktx_version"
+    implementation "androidx.appcompat:appcompat:${appcompat_version}"
+    implementation "com.google.android.material:material:${material_version}"
 }

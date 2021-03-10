@@ -26,13 +26,6 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
-
-        buildConfigField "String", "SIGNATURE_CERTIFICATE_CN_MATCH", '".coronatester.nl"'
-        buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "true"
-        buildConfigField "boolean", "FEATURE_TEST_PROVIDER_API_CHECKS", "true"
-        buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.coronacheck.nl/v1/\""
-        buildConfigField "String", "DIGI_D_BASE_URL", "\"https://login.ggdghor.nl/coronitacc\""
-        buildConfigField "String", "DIGI_D_CLIENT_ID", "\"6456237456911667336\""
     }
 
     buildTypes {
@@ -42,44 +35,14 @@ android {
         }
     }
 
-    flavorDimensions "environment"
-    productFlavors {
-        tst {
-            dimension "environment"
-            buildConfigField "String", "BASE_API_URL", "\"https://api-ct.bananenhalen.nl/v1/\""
-            buildConfigField "String", "DIGI_D_BASE_URL", "\"https://login.ggdghor.nl/coronitacc\""
-            buildConfigField "String", "DIGI_D_CLIENT_ID", "\"6456237456911667336\""
-            buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "false"
-            buildConfigField "boolean", "FEATURE_TEST_PROVIDER_API_CHECKS", "false"
-            matchingFallbacks = ["tst"]
-        }
-        acc {
-            dimension "environment"
-            buildConfigField "String", "BASE_API_URL", "\"https://holder-api.acc.coronacheck.nl/v1/\""
-            buildConfigField "String", "DIGI_D_BASE_URL", "\"https://login.ggdghor.nl/coronitacc\""
-            buildConfigField "String", "DIGI_D_CLIENT_ID", "\"6456237456911667336\""
-            matchingFallbacks = ["acc"]
-        }
-        prod {
-            dimension "environment"
-            buildConfigField "String", "DIGI_D_BASE_URL", "\"https://login.ggdghor.nl/coronitacc\""
-            buildConfigField "String", "DIGI_D_CLIENT_ID", "\"6456237456911667336\""
-            buildConfigField "String", "BASE_API_URL", "\"https://holder-api.coronacheck.nl/v1/\""
-            matchingFallbacks = ["prod"]
-        }
-    }
-
     compileOptions {
         coreLibraryDesugaringEnabled true
     }
 }
 
 dependencies {
-    implementation(project(":signing"))
     implementation(project(":shared"))
 
-    implementation "com.facebook.stetho:stetho:$stetho_version"
-    implementation "com.facebook.stetho:stetho-okhttp3:$stetho_version"
     implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
     implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
     implementation "org.koin:koin-android:$koin_version"
@@ -88,7 +51,14 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp")
     implementation("com.squareup.okhttp3:okhttp-tls")
     implementation("com.squareup.okhttp3:logging-interceptor")
+    implementation "org.bouncycastle:bcprov-jdk15to18:$bouncycastle_version"
+    api "org.bouncycastle:bcpkix-jdk15to18:$bouncycastle_version"
+
 
     kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$desugar_jdk_version"
+
+    testImplementation "junit:junit:${junit_version}"
+    testImplementation "com.squareup.okhttp3:mockwebserver"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
 }

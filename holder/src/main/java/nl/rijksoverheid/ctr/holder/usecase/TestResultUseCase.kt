@@ -1,9 +1,9 @@
 package nl.rijksoverheid.ctr.holder.usecase
 
-import nl.rijksoverheid.ctr.api.models.RemoteTestResult
-import nl.rijksoverheid.ctr.api.models.ResponseError
-import nl.rijksoverheid.ctr.api.models.SignedResponseWithModel
-import nl.rijksoverheid.ctr.api.models.TestIsmResult
+import nl.rijksoverheid.ctr.holder.models.RemoteTestResult
+import nl.rijksoverheid.ctr.holder.models.ResponseError
+import nl.rijksoverheid.ctr.holder.models.SignedResponseWithModel
+import nl.rijksoverheid.ctr.holder.models.TestIsmResult
 import nl.rijksoverheid.ctr.holder.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.repositories.TestProviderRepository
 import retrofit2.HttpException

@@ -1,11 +1,10 @@
 package nl.rijksoverheid.ctr.holder
 
 import android.graphics.Bitmap
-import nl.rijksoverheid.ctr.api.models.*
 import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
-import nl.rijksoverheid.ctr.holder.models.LocalTestResult
+import nl.rijksoverheid.ctr.holder.models.*
 import nl.rijksoverheid.ctr.holder.myoverview.LocalTestResultViewModel
 import nl.rijksoverheid.ctr.holder.myoverview.models.LocalTestResultState
 import nl.rijksoverheid.ctr.holder.myoverview.models.QrCodeData
@@ -15,6 +14,8 @@ import nl.rijksoverheid.ctr.holder.repositories.TestProviderRepository
 import nl.rijksoverheid.ctr.holder.usecase.*
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.shared.livedata.Event
+import nl.rijksoverheid.ctr.shared.models.TestResultAttributes
+import nl.rijksoverheid.ctr.shared.usecase.TestResultAttributesUseCase
 import java.time.OffsetDateTime
 
 /*

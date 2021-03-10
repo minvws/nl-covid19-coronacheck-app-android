@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.holder.databinding.FragmentNoTestResultBinding
-import nl.rijksoverheid.ctr.shared.util.getSpannableFromHtml
+import nl.rijksoverheid.ctr.design.utils.getSpannableFromHtml
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

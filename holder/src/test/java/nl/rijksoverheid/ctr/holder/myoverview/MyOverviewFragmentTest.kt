@@ -129,7 +129,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
             listId = R.id.recyclerView,
             position = 1,
             targetViewId = R.id.text,
-            text = ApplicationProvider.getApplicationContext<MainApplication>()
+            text = ApplicationProvider.getApplicationContext<HolderApplication>()
                 .getString(R.string.item_test_result_expired).fromHtml().toStr()
         )
         assertDisplayedAtPosition(
