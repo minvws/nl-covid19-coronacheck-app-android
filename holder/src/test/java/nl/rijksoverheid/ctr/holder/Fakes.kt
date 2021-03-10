@@ -5,9 +5,9 @@ import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
 import nl.rijksoverheid.ctr.holder.models.*
-import nl.rijksoverheid.ctr.holder.myoverview.LocalTestResultViewModel
-import nl.rijksoverheid.ctr.holder.myoverview.models.LocalTestResultState
-import nl.rijksoverheid.ctr.holder.myoverview.models.QrCodeData
+import nl.rijksoverheid.ctr.holder.ui.myoverview.LocalTestResultViewModel
+import nl.rijksoverheid.ctr.holder.models.LocalTestResultState
+import nl.rijksoverheid.ctr.holder.models.QrCodeData
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.repositories.TestProviderRepository

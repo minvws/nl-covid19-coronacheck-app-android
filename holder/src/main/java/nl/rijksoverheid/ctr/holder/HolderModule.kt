@@ -15,10 +15,10 @@ import nl.rijksoverheid.ctr.holder.digid.DigiDViewModel
 import nl.rijksoverheid.ctr.holder.models.RemoteTestResult
 import nl.rijksoverheid.ctr.holder.models.ResponseError
 import nl.rijksoverheid.ctr.holder.models.SignedResponseWithModel
-import nl.rijksoverheid.ctr.holder.myoverview.LocalTestResultViewModel
-import nl.rijksoverheid.ctr.holder.myoverview.LocalTestResultViewModelImpl
-import nl.rijksoverheid.ctr.holder.myoverview.TestResultsViewModel
-import nl.rijksoverheid.ctr.holder.myoverview.TokenQrViewModel
+import nl.rijksoverheid.ctr.holder.ui.myoverview.LocalTestResultViewModel
+import nl.rijksoverheid.ctr.holder.ui.myoverview.LocalTestResultViewModelImpl
+import nl.rijksoverheid.ctr.holder.ui.create_qr.TestResultsViewModel
+import nl.rijksoverheid.ctr.holder.ui.create_qr.TokenQrViewModel
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.SharedPreferencesPersistenceManager
 import nl.rijksoverheid.ctr.holder.repositories.*

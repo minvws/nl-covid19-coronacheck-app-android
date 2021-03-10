@@ -105,6 +105,7 @@ dependencies {
     implementation project(":introduction")
     implementation project(":api")
     implementation project(":ctcl")
+    implementation project(":qrscanner")
 
     implementation 'com.github.openid:AppAuth-Android:41a6aa1'
     implementation "com.xwray:groupie:${groupie_version}"

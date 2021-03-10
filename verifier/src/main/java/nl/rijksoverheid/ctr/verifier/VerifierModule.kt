@@ -5,7 +5,7 @@ import androidx.preference.PreferenceManager
 import com.squareup.moshi.Moshi
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 import nl.rijksoverheid.ctr.verifier.persistance.SharedPreferencesPersistenceManager
-import nl.rijksoverheid.ctr.verifier.scanqr.ScanQrViewModel
+import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrViewModel
 import nl.rijksoverheid.ctr.verifier.usecases.DecryptHolderQrUseCase
 import nl.rijksoverheid.ctr.verifier.usecases.TestResultValidUseCase
 import org.koin.android.ext.koin.androidContext

@@ -9,7 +9,7 @@
 package nl.rijksoverheid.ctr.holder.usecase
 
 import com.squareup.moshi.Moshi
-import nl.rijksoverheid.ctr.holder.myoverview.models.TokenQR
+import nl.rijksoverheid.ctr.holder.models.TokenQR
 import nl.rijksoverheid.ctr.shared.ext.toObject
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue

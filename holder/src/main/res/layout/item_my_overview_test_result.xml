@@ -71,7 +71,7 @@
 
     </com.google.android.material.card.MaterialCardView>
 
-    <nl.rijksoverheid.ctr.holder.myoverview.widget.QrCodeAnimationWidget
+    <nl.rijksoverheid.ctr.holder.ui.myoverview.QrCodeAnimationWidget
         android:layout_width="match_parent"
         android:layout_height="256dp"
         android:layout_gravity="bottom"

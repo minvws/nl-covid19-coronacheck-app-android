@@ -1,7 +1,7 @@
 package nl.rijksoverheid.ctr.holder.usecase
 
 import android.graphics.Bitmap
-import nl.rijksoverheid.ctr.shared.util.QrCodeScannerUtil
+import nl.rijksoverheid.ctr.qrscanner.QrCodeScannerUtil
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

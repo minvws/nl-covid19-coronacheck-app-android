@@ -7,6 +7,7 @@ import nl.rijksoverheid.ctr.introduction.CoronaCheckApp
 import nl.rijksoverheid.ctr.introduction.introductionModule
 import nl.rijksoverheid.ctr.introduction.onboarding.models.OnboardingItem
 import nl.rijksoverheid.ctr.introduction.privacy_policy.models.PrivacyPolicyItem
+import nl.rijksoverheid.ctr.qrscanner.qrCodeScannerModule
 import nl.rijksoverheid.ctr.shared.SharedApplication
 import nl.rijksoverheid.ctr.shared.sharedModule
 import org.koin.android.ext.android.inject
@@ -43,6 +44,7 @@ class VerifierApplication : SharedApplication(), CoronaCheckApp, AppStatusString
                 sharedModule,
                 appConfigModule("verifier", BuildConfig.VERSION_CODE),
                 introductionModule,
+                qrCodeScannerModule
             )
         }
 
