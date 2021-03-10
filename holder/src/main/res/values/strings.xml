@@ -48,7 +48,7 @@
     <string name="choose_provider_ggd_subtitle">Log in met je DigiD</string>
     <string name="choose_provider_no_digid">Ik heb geen DigiD</string>
     <string name="commercial_test_type_title">Testresultaat ophalen</string>
-    <string name="commercial_test_type_description">Heb je je laten testen bij een commerciële testlocatie? Dan heb je een unieke QR-code gekregen.</string>
+    <string name="commercial_test_type_description">Heb je je laten testen bij een commerciële testlocatie? Dan heb je een unieke (QR-)code gekregen.</string>
     <string name="commercial_test_type_code_title">Ik heb een code</string>
     <string name="commercial_test_type_code_toolbar_title">Code invullen</string>
     <string name="commercial_test_type_qr_code_title">Ik heb een QR-code </string>
