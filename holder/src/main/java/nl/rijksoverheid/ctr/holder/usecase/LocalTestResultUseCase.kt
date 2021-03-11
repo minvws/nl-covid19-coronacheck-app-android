@@ -7,6 +7,7 @@ import nl.rijksoverheid.ctr.holder.models.LocalTestResult
 import nl.rijksoverheid.ctr.holder.models.LocalTestResultState
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.shared.usecase.TestResultAttributesUseCase
+import nl.rijksoverheid.ctr.shared.util.PersonalDetailsUtil
 import nl.rijksoverheid.ctr.shared.util.TestResultUtil
 import java.time.Instant
 import java.time.OffsetDateTime
@@ -29,7 +30,8 @@ open class LocalTestResultUseCaseImpl(
     private val persistenceManager: PersistenceManager,
     private val testResultUtil: TestResultUtil,
     private val testResultAttributesUseCase: TestResultAttributesUseCase,
-    private val cachedAppConfigUseCase: CachedAppConfigUseCase
+    private val cachedAppConfigUseCase: CachedAppConfigUseCase,
+    private val personalDetailsUtil: PersonalDetailsUtil
 ) : LocalTestResultUseCase {
 
     override suspend fun get(): LocalTestResultState = withContext(Dispatchers.IO) {
@@ -49,12 +51,20 @@ open class LocalTestResultUseCaseImpl(
             )
 
             if (isValid) {
+                val personalDetails = personalDetailsUtil.getPersonalDetails(
+                    firstNameInitial = testAttributes.firstNameInitial,
+                    lastNameInitial = testAttributes.lastNameInitial,
+                    birthDay = testAttributes.birthDay,
+                    birthMonth = testAttributes.birthMonth
+                )
+
                 LocalTestResultState.Valid(
                     LocalTestResult(
                         credentials = credentials,
                         sampleDate = sampleDate,
                         testType = testAttributes.testType,
-                        expireDate = sampleDate.plusSeconds(testValiditySeconds)
+                        expireDate = sampleDate.plusSeconds(testValiditySeconds),
+                        personalDetails = personalDetails
                     )
                 )
             } else {

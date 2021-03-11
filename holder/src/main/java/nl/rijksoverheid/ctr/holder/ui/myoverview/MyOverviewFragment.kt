@@ -1,9 +1,6 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview
 
-import android.graphics.Bitmap
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -21,9 +18,7 @@ import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewNavigationCardA
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewTestResultAdapterItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewTestResultExpiredAdapterItem
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
-import nl.rijksoverheid.ctr.shared.ext.executeAfterAllAnimationsAreFinished
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
-import nl.rijksoverheid.ctr.shared.util.QrCodeUtil
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -40,17 +35,6 @@ class MyOverviewFragment : BaseFragment(R.layout.fragment_my_overview) {
 
     private val introductionViewModel: IntroductionViewModel by viewModel()
     private val localTestResultViewModel: LocalTestResultViewModel by sharedViewModel()
-    private val qrCodeHandler = Handler(Looper.getMainLooper())
-    private val qrCodeRunnable = object : Runnable {
-        override fun run() {
-            val canGenerateQrCode = localTestResultViewModel.generateQrCode(
-                size = resources.displayMetrics.widthPixels
-            )
-            if (canGenerateQrCode) {
-                qrCodeHandler.postDelayed(this, QrCodeUtil.VALID_FOR_SECONDS * 1000)
-            }
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,41 +71,16 @@ class MyOverviewFragment : BaseFragment(R.layout.fragment_my_overview) {
                         setItems(
                             localTestResult = localTestResultState.localTestResult
                         )
-
-                        qrCodeHandler.post(qrCodeRunnable)
                     }
                 }
             })
 
-        localTestResultViewModel.qrCodeLiveData.observe(
-            viewLifecycleOwner
-        ) { qrCodeData ->
-            // Wait until previous recyclerview animations are finished, else there are weird ItemAnimator animations
-            binding.recyclerView.executeAfterAllAnimationsAreFinished {
-                setItems(
-                    localTestResult = qrCodeData.localTestResult,
-                    qrCode = qrCodeData.qrCode
-                )
-            }
-        }
-
         localTestResultViewModel.getLocalTestResult()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        qrCodeHandler.post(qrCodeRunnable)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        qrCodeHandler.removeCallbacks(qrCodeRunnable)
     }
 
     private fun setItems(
         isExpired: Boolean = false,
         localTestResult: LocalTestResult? = null,
-        qrCode: Bitmap? = null,
     ) {
         val items = mutableListOf<BindableItem<*>>()
         items.add(MyOverviewHeaderAdapterItem())
@@ -136,8 +95,7 @@ class MyOverviewFragment : BaseFragment(R.layout.fragment_my_overview) {
             items.add(
                 MyOverviewTestResultAdapterItem(
                     localTestResult = it,
-                    qrCode = qrCode,
-                    onQrCodeClick = {
+                    onButtonClick = {
                         findNavController().navigate(MyOverviewFragmentDirections.actionQrCode())
                     }
                 )

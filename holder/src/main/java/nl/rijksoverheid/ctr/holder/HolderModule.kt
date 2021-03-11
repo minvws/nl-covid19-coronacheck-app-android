@@ -79,7 +79,7 @@ fun holderModule(baseUrl: String) = module {
         TestResultUseCase(get(), get(), get(), get(), get(), get(), get())
     }
     factory<LocalTestResultUseCase> {
-        LocalTestResultUseCaseImpl(get(), get(), get(), get())
+        LocalTestResultUseCaseImpl(get(), get(), get(), get(), get())
     }
     single {
         TokenQrUseCase(get())

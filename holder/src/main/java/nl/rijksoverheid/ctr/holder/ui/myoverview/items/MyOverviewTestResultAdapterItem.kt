@@ -1,12 +1,11 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview.items
 
-import android.graphics.Bitmap
 import android.view.View
 import com.xwray.groupie.viewbinding.BindableItem
+import nl.rijksoverheid.ctr.design.ext.formatDateTime
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.ItemMyOverviewTestResultBinding
 import nl.rijksoverheid.ctr.holder.models.LocalTestResult
-import nl.rijksoverheid.ctr.shared.ext.formatDateTime
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -17,28 +16,21 @@ import nl.rijksoverheid.ctr.shared.ext.formatDateTime
  */
 class MyOverviewTestResultAdapterItem(
     private val localTestResult: LocalTestResult,
-    private val onQrCodeClick: () -> Unit,
-    private val qrCode: Bitmap? = null,
+    private val onButtonClick: () -> Unit,
 ) :
     BindableItem<ItemMyOverviewTestResultBinding>(R.layout.item_my_overview_test_result.toLong()) {
     override fun bind(viewBinding: ItemMyOverviewTestResultBinding, position: Int) {
         val context = viewBinding.root.context
+        val personalDetails = localTestResult.personalDetails
 
-        viewBinding.testResultFooter.text = context.getString(
-            R.string.my_overview_existing_qr_date,
+        viewBinding.personalDetails.text =
+            "${personalDetails[0]} ${personalDetails[1]} ${personalDetails[2]} ${personalDetails[3]}"
+        viewBinding.validity.text = context.getString(
+            R.string.my_overview_test_result_validity,
             localTestResult.expireDate.formatDateTime(context)
         )
-
-        if (qrCode == null) {
-            viewBinding.testResultLoading.visibility = View.VISIBLE
-            viewBinding.testResultQrImage.setImageBitmap(null)
-            viewBinding.testResultQrImage.setOnClickListener(null)
-        } else {
-            viewBinding.testResultLoading.visibility = View.GONE
-            viewBinding.testResultQrImage.setImageBitmap(qrCode)
-            viewBinding.testResultQrImage.setOnClickListener {
-                onQrCodeClick.invoke()
-            }
+        viewBinding.button.setOnClickListener {
+            onButtonClick.invoke()
         }
     }
 

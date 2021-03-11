@@ -15,5 +15,6 @@ data class LocalTestResult(
     val credentials: String,
     val sampleDate: OffsetDateTime,
     val expireDate: OffsetDateTime,
-    val testType: String
+    val testType: String,
+    val personalDetails: List<String>
 )
