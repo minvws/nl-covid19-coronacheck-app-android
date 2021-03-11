@@ -5,12 +5,10 @@ import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
 import nl.rijksoverheid.ctr.holder.models.*
-import nl.rijksoverheid.ctr.holder.ui.myoverview.LocalTestResultViewModel
-import nl.rijksoverheid.ctr.holder.models.LocalTestResultState
-import nl.rijksoverheid.ctr.holder.models.QrCodeData
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.repositories.TestProviderRepository
+import nl.rijksoverheid.ctr.holder.ui.myoverview.LocalTestResultViewModel
 import nl.rijksoverheid.ctr.holder.usecase.*
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.shared.livedata.Event
@@ -29,7 +27,7 @@ import java.time.OffsetDateTime
 
 fun fakePersonalDetailsUtil(
 
-): PersonalDetailsUtil = object: PersonalDetailsUtil {
+): PersonalDetailsUtil = object : PersonalDetailsUtil {
     override fun getPersonalDetails(
         firstNameInitial: String,
         lastNameInitial: String,
@@ -229,13 +227,21 @@ fun fakeCoronaCheckRepository(
 
 fun fakeTestResultAttributesUseCase(
     sampleTimeSeconds: Long = 0L,
-    testType: String = ""
+    testType: String = "",
+    birthDay: String = "",
+    birthMonth: String = "",
+    firstNameInitial: String = "",
+    lastNameInitial: String = ""
 ): TestResultAttributesUseCase {
     return object : TestResultAttributesUseCase {
         override fun get(credentials: String): TestResultAttributes {
             return TestResultAttributes(
                 sampleTime = sampleTimeSeconds,
-                testType = ""
+                testType = testType,
+                birthDay = birthDay,
+                birthMonth = birthMonth,
+                firstNameInitial = firstNameInitial,
+                lastNameInitial = lastNameInitial
             )
         }
     }
