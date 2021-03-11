@@ -22,6 +22,8 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.TestResultsViewModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.TokenQrViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.LocalTestResultViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.LocalTestResultViewModelImpl
+import nl.rijksoverheid.ctr.holder.ui.myoverview.util.TestResultAdapterItemUtil
+import nl.rijksoverheid.ctr.holder.ui.myoverview.util.TestResultAdapterItemUtilImpl
 import nl.rijksoverheid.ctr.holder.usecase.*
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
@@ -105,6 +107,11 @@ fun holderModule(baseUrl: String) = module {
             get(named("SignedResponseWithModel"))
         )
     }
+
+    // Utils
+    factory<TestResultAdapterItemUtil> { TestResultAdapterItemUtilImpl(get()) }
+
+    // Usecases
     factory<CreateCredentialUseCase> {
         CreateCredentialUseCaseImpl()
     }

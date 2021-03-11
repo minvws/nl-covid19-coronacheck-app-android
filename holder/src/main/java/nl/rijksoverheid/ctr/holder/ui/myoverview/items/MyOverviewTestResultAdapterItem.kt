@@ -1,11 +1,16 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview.items
 
+import android.annotation.SuppressLint
 import android.view.View
 import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.design.ext.formatDateTime
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.ItemMyOverviewTestResultBinding
 import nl.rijksoverheid.ctr.holder.models.LocalTestResult
+import nl.rijksoverheid.ctr.holder.ui.myoverview.util.TestResultAdapterItemUtil
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
+
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -18,7 +23,12 @@ class MyOverviewTestResultAdapterItem(
     private val localTestResult: LocalTestResult,
     private val onButtonClick: () -> Unit,
 ) :
-    BindableItem<ItemMyOverviewTestResultBinding>(R.layout.item_my_overview_test_result.toLong()) {
+    BindableItem<ItemMyOverviewTestResultBinding>(R.layout.item_my_overview_test_result.toLong()),
+    KoinComponent {
+
+    private val testResultAdapterItemUtil: TestResultAdapterItemUtil by inject()
+
+    @SuppressLint("SetTextI18n")
     override fun bind(viewBinding: ItemMyOverviewTestResultBinding, position: Int) {
         val context = viewBinding.root.context
         val personalDetails = localTestResult.personalDetails
@@ -29,6 +39,23 @@ class MyOverviewTestResultAdapterItem(
             R.string.my_overview_test_result_validity,
             localTestResult.expireDate.formatDateTime(context)
         )
+
+        // Handle count
+        when (val expireCountDownResult =
+            testResultAdapterItemUtil.getExpireCountdownText(expireDate = localTestResult.expireDate)) {
+            is TestResultAdapterItemUtil.ExpireCountDown.Hide -> {
+                viewBinding.expiresIn.visibility = View.GONE
+            }
+            is TestResultAdapterItemUtil.ExpireCountDown.Show -> {
+                viewBinding.expiresIn.visibility = View.VISIBLE
+                viewBinding.expiresIn.text = context.getString(
+                    R.string.my_overview_test_result_expires_in,
+                    expireCountDownResult.hoursLeft.toString(),
+                    expireCountDownResult.minutesLeft.toString()
+                )
+            }
+        }
+
         viewBinding.button.setOnClickListener {
             onButtonClick.invoke()
         }
