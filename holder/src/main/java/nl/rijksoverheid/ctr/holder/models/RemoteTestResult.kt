@@ -41,6 +41,7 @@ data class RemoteTestResult(
         val holder: Holder
     ) {
 
+        @JsonClass(generateAdapter = true)
         data class Holder(
             val firstNameInitial: String,
             val lastNameInitial: String,
