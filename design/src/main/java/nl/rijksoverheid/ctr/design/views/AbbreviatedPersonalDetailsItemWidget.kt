@@ -12,15 +12,15 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.RelativeLayout
+import android.widget.FrameLayout
 import nl.rijksoverheid.ctr.design.databinding.ViewIdentifierItemBinding
 
-class IdentifierItemView @JvmOverloads constructor(
+class AbbreviatedPersonalDetailsItemWidget @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyle: Int = 0,
     defStyleRes: Int = 0
-) : RelativeLayout(context, attrs, defStyle, defStyleRes) {
+) : FrameLayout(context, attrs, defStyle, defStyleRes) {
 
     val binding = ViewIdentifierItemBinding.inflate(LayoutInflater.from(context), this)
 

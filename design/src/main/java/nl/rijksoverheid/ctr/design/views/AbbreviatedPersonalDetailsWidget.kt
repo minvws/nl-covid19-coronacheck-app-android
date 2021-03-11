@@ -13,7 +13,7 @@ import android.util.AttributeSet
 import android.view.Gravity
 import android.widget.LinearLayout
 
-class IdentifierHolderView @JvmOverloads constructor(
+class AbbreviatedPersonalDetailsWidget @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyle: Int = 0,
@@ -21,13 +21,12 @@ class IdentifierHolderView @JvmOverloads constructor(
 ) : LinearLayout(context, attrs, defStyle, defStyleRes) {
 
     init {
-        gravity = Gravity.CENTER_HORIZONTAL
         orientation = HORIZONTAL
     }
 
-    fun addIdentifierItems(items: List<String>, showPosition: Boolean? = false) {
+    fun setPersonalDetails(items: List<String>, showPosition: Boolean? = false) {
         items.forEachIndexed { index, content ->
-            val item = IdentifierItemView(context)
+            val item = AbbreviatedPersonalDetailsItemWidget(context)
             item.setContent(content)
 
             if (showPosition == true) {

@@ -11,21 +11,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    tools:parentTag="android.widget.RelativeLayout">
+    tools:parentTag="android.widget.FrameLayout">
 
     <TextView
         android:id="@+id/item_text"
-        android:layout_width="66dp"
+        android:layout_width="wrap_content"
         android:layout_height="44dp"
+        android:layout_gravity="top"
         android:layout_marginHorizontal="6dp"
-        android:background="@drawable/identifier_item_back"
+        android:background="@drawable/abbreviated_personal_details_item_back"
         android:ellipsize="end"
         android:gravity="center"
         android:maxLines="1"
+        android:minWidth="66dp"
         android:textAppearance="@style/App.TextAppearance.MaterialComponents.Headline6.Montserrat"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         tools:text="MAA" />
 
     <TextView
@@ -34,10 +33,11 @@
         android:layout_height="20dp"
         android:layout_below="@+id/item_text"
         android:layout_centerInParent="true"
-        android:layout_marginTop="12dp"
-        android:background="@drawable/identifier_position_back"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginTop="56dp"
+        android:background="@drawable/abbreviated_personal_details_position_back"
         android:gravity="center"
-        android:textAppearance="@style/App.TextAppearance.MaterialComponents.Caption"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
         android:textColor="@color/black"
         android:visibility="gone"
         tools:text="1"
