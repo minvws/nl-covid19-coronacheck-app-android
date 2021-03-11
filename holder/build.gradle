@@ -104,7 +104,7 @@ dependencies {
     implementation project(":design")
     implementation project(":introduction")
     implementation project(":api")
-    implementation project(":ctcl")
+    implementation project(':clcore')
     implementation project(":qrscanner")
 
     implementation 'com.github.openid:AppAuth-Android:41a6aa1'

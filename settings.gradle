@@ -12,7 +12,7 @@ include ':design'
 include ':shared'
 include ':verifier'
 include ':holder'
-include ':ctcl'
+include ':clcore'
 include ':appconfig'
 
 rootProject.name = "CoronaTester"

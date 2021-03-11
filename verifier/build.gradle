@@ -96,7 +96,7 @@ dependencies {
     implementation project(":design")
     implementation project(":introduction")
     implementation project(":api")
-    implementation project(":ctcl")
+    implementation project(':clcore')
     implementation project(":qrscanner")
 
     implementation "com.xwray:groupie:${groupie_version}"

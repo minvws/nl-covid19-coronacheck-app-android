@@ -33,7 +33,7 @@ android {
 }
 
 dependencies {
-    implementation project(":ctcl")
+    implementation project(':clcore')
 
     implementation "org.koin:koin-android:$koin_version"
     implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"

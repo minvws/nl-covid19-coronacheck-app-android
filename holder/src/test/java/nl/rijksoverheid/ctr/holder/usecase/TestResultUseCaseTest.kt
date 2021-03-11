@@ -29,7 +29,8 @@ class TestResultUseCaseTest {
             coronaCheckRepository = fakeCoronaCheckRepository(),
             commitmentMessageUseCase = fakeCommitmentMessageUsecase(),
             secretKeyUseCase = fakeSecretKeyUseCase(),
-            createCredentialUseCase = fakeCreateCredentialUseCase()
+            createCredentialUseCase = fakeCreateCredentialUseCase(),
+            personalDetailsUtil = fakePersonalDetailsUtil()
         )
         val result = usecase.testResult(uniqueCode = "dummy")
         assertTrue(result is TestResult.InvalidToken)
@@ -43,7 +44,8 @@ class TestResultUseCaseTest {
             coronaCheckRepository = fakeCoronaCheckRepository(),
             commitmentMessageUseCase = fakeCommitmentMessageUsecase(),
             secretKeyUseCase = fakeSecretKeyUseCase(),
-            createCredentialUseCase = fakeCreateCredentialUseCase()
+            createCredentialUseCase = fakeCreateCredentialUseCase(),
+            personalDetailsUtil = fakePersonalDetailsUtil()
         )
         val result = usecase.testResult(uniqueCode = "provider-code")
         assertTrue(result is TestResult.InvalidToken)
@@ -65,7 +67,8 @@ class TestResultUseCaseTest {
             coronaCheckRepository = fakeCoronaCheckRepository(),
             commitmentMessageUseCase = fakeCommitmentMessageUsecase(),
             secretKeyUseCase = fakeSecretKeyUseCase(),
-            createCredentialUseCase = fakeCreateCredentialUseCase()
+            createCredentialUseCase = fakeCreateCredentialUseCase(),
+            personalDetailsUtil = fakePersonalDetailsUtil()
         )
         val result = usecase.testResult(uniqueCode = "$providerIdentifier-code")
         assertTrue(result is TestResult.Complete)
@@ -88,7 +91,8 @@ class TestResultUseCaseTest {
                 coronaCheckRepository = fakeCoronaCheckRepository(),
                 commitmentMessageUseCase = fakeCommitmentMessageUsecase(),
                 secretKeyUseCase = fakeSecretKeyUseCase(),
-                createCredentialUseCase = fakeCreateCredentialUseCase()
+                createCredentialUseCase = fakeCreateCredentialUseCase(),
+                personalDetailsUtil = fakePersonalDetailsUtil()
             )
             val result = usecase.testResult(uniqueCode = "$providerIdentifier-code")
             assertTrue(result is TestResult.VerificationRequired)
@@ -111,7 +115,8 @@ class TestResultUseCaseTest {
                 coronaCheckRepository = fakeCoronaCheckRepository(),
                 commitmentMessageUseCase = fakeCommitmentMessageUsecase(),
                 secretKeyUseCase = fakeSecretKeyUseCase(),
-                createCredentialUseCase = fakeCreateCredentialUseCase()
+                createCredentialUseCase = fakeCreateCredentialUseCase(),
+                personalDetailsUtil = fakePersonalDetailsUtil()
             )
             val result = usecase.testResult(uniqueCode = "$providerIdentifier-code")
             assertTrue(result is TestResult.InvalidToken)
@@ -138,7 +143,8 @@ class TestResultUseCaseTest {
                 coronaCheckRepository = fakeCoronaCheckRepository(),
                 commitmentMessageUseCase = fakeCommitmentMessageUsecase(),
                 secretKeyUseCase = fakeSecretKeyUseCase(),
-                createCredentialUseCase = fakeCreateCredentialUseCase()
+                createCredentialUseCase = fakeCreateCredentialUseCase(),
+                personalDetailsUtil = fakePersonalDetailsUtil()
             )
             val result = usecase.testResult(uniqueCode = "$providerIdentifier-code")
             assertTrue(result is TestResult.ServerError)
@@ -167,7 +173,8 @@ class TestResultUseCaseTest {
                 coronaCheckRepository = fakeCoronaCheckRepository(),
                 commitmentMessageUseCase = fakeCommitmentMessageUsecase(),
                 secretKeyUseCase = fakeSecretKeyUseCase(),
-                createCredentialUseCase = fakeCreateCredentialUseCase()
+                createCredentialUseCase = fakeCreateCredentialUseCase(),
+                personalDetailsUtil = fakePersonalDetailsUtil()
             )
             val result = usecase.testResult(uniqueCode = "$providerIdentifier-code")
             assertTrue(result is TestResult.NetworkError)
@@ -190,7 +197,8 @@ class TestResultUseCaseTest {
                 coronaCheckRepository = fakeCoronaCheckRepository(),
                 commitmentMessageUseCase = fakeCommitmentMessageUsecase(),
                 secretKeyUseCase = fakeSecretKeyUseCase(),
-                createCredentialUseCase = fakeCreateCredentialUseCase()
+                createCredentialUseCase = fakeCreateCredentialUseCase(),
+                personalDetailsUtil = fakePersonalDetailsUtil()
             )
             val result = usecase.testResult(uniqueCode = "$providerIdentifier-code")
             assertTrue(result is TestResult.Pending)
@@ -209,7 +217,8 @@ class TestResultUseCaseTest {
                 ),
                 commitmentMessageUseCase = fakeCommitmentMessageUsecase(),
                 secretKeyUseCase = fakeSecretKeyUseCase(),
-                createCredentialUseCase = fakeCreateCredentialUseCase()
+                createCredentialUseCase = fakeCreateCredentialUseCase(),
+                personalDetailsUtil = fakePersonalDetailsUtil()
             )
             val result = usecase.signTestResult(getRemoteTestResult())
             assertTrue(result is SignedTestResult.Complete)
@@ -238,7 +247,8 @@ class TestResultUseCaseTest {
                     ),
                     commitmentMessageUseCase = fakeCommitmentMessageUsecase(),
                     secretKeyUseCase = fakeSecretKeyUseCase(),
-                    createCredentialUseCase = fakeCreateCredentialUseCase()
+                    createCredentialUseCase = fakeCreateCredentialUseCase(),
+                    personalDetailsUtil = fakePersonalDetailsUtil()
                 )
                 val result = usecase.signTestResult(getRemoteTestResult())
                 assertTrue(result is SignedTestResult.AlreadySigned)
@@ -266,7 +276,8 @@ class TestResultUseCaseTest {
                 ),
                 commitmentMessageUseCase = fakeCommitmentMessageUsecase(),
                 secretKeyUseCase = fakeSecretKeyUseCase(),
-                createCredentialUseCase = fakeCreateCredentialUseCase()
+                createCredentialUseCase = fakeCreateCredentialUseCase(),
+                personalDetailsUtil = fakePersonalDetailsUtil()
             )
             val result = usecase.signTestResult(getRemoteTestResult())
             assertTrue(result is SignedTestResult.ServerError)
@@ -293,7 +304,8 @@ class TestResultUseCaseTest {
                 }),
                 commitmentMessageUseCase = fakeCommitmentMessageUsecase(),
                 secretKeyUseCase = fakeSecretKeyUseCase(),
-                createCredentialUseCase = fakeCreateCredentialUseCase()
+                createCredentialUseCase = fakeCreateCredentialUseCase(),
+                personalDetailsUtil = fakePersonalDetailsUtil()
             )
             val result = usecase.signTestResult(getRemoteTestResult())
             assertTrue(result is SignedTestResult.ServerError)
@@ -316,7 +328,8 @@ class TestResultUseCaseTest {
                 }),
                 commitmentMessageUseCase = fakeCommitmentMessageUsecase(),
                 secretKeyUseCase = fakeSecretKeyUseCase(),
-                createCredentialUseCase = fakeCreateCredentialUseCase()
+                createCredentialUseCase = fakeCreateCredentialUseCase(),
+                personalDetailsUtil = fakePersonalDetailsUtil()
             )
             val result = usecase.signTestResult(getRemoteTestResult())
             assertTrue(result is SignedTestResult.NetworkError)

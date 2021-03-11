@@ -62,4 +62,16 @@
     <string name="app_status_internet_required_title">Je hebt geen internetverbinding</string>
     <string name="app_status_internet_required_message">Controleer je wifi of zet mobiele data aan.</string>
     <string name="app_status_internet_required_action">Probeer opnieuw</string>
+    <string name="personal_details_month_january">JAN</string>
+    <string name="personal_details_month_february">FEB</string>
+    <string name="personal_details_month_march">MAR</string>
+    <string name="personal_details_month_april">APR</string>
+    <string name="personal_details_month_may">MEI</string>
+    <string name="personal_details_month_june">JUN</string>
+    <string name="personal_details_month_july">JUL</string>
+    <string name="personal_details_month_august">AUG</string>
+    <string name="personal_details_month_sep">SEP</string>
+    <string name="personal_details_month_okt">OKT</string>
+    <string name="personal_details_month_nov">NOV</string>
+    <string name="personal_details_month_dec">DEC</string>
 </resources>

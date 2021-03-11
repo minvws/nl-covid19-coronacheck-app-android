@@ -5,17 +5,16 @@ import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
 import nl.rijksoverheid.ctr.holder.models.*
-import nl.rijksoverheid.ctr.holder.ui.myoverview.LocalTestResultViewModel
-import nl.rijksoverheid.ctr.holder.models.LocalTestResultState
-import nl.rijksoverheid.ctr.holder.models.QrCodeData
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.repositories.TestProviderRepository
+import nl.rijksoverheid.ctr.holder.ui.myoverview.LocalTestResultViewModel
 import nl.rijksoverheid.ctr.holder.usecase.*
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.TestResultAttributes
 import nl.rijksoverheid.ctr.shared.usecase.TestResultAttributesUseCase
+import nl.rijksoverheid.ctr.shared.util.PersonalDetailsUtil
 import java.time.OffsetDateTime
 
 /*
@@ -25,6 +24,19 @@ import java.time.OffsetDateTime
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
+
+fun fakePersonalDetailsUtil(
+
+): PersonalDetailsUtil = object : PersonalDetailsUtil {
+    override fun getPersonalDetails(
+        firstNameInitial: String,
+        lastNameInitial: String,
+        birthDay: String,
+        birthMonth: String
+    ): List<String> {
+        return listOf()
+    }
+}
 
 fun fakeCachedAppConfigUseCase(
     appConfig: AppConfig = AppConfig(
@@ -215,13 +227,21 @@ fun fakeCoronaCheckRepository(
 
 fun fakeTestResultAttributesUseCase(
     sampleTimeSeconds: Long = 0L,
-    testType: String = ""
+    testType: String = "",
+    birthDay: String = "",
+    birthMonth: String = "",
+    firstNameInitial: String = "",
+    lastNameInitial: String = ""
 ): TestResultAttributesUseCase {
     return object : TestResultAttributesUseCase {
         override fun get(credentials: String): TestResultAttributes {
             return TestResultAttributes(
                 sampleTime = sampleTimeSeconds,
-                testType = ""
+                testType = testType,
+                birthDay = birthDay,
+                birthMonth = birthMonth,
+                firstNameInitial = firstNameInitial,
+                lastNameInitial = lastNameInitial
             )
         }
     }

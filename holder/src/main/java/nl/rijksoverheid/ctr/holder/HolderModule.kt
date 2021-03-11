@@ -15,13 +15,13 @@ import nl.rijksoverheid.ctr.holder.digid.DigiDViewModel
 import nl.rijksoverheid.ctr.holder.models.RemoteTestResult
 import nl.rijksoverheid.ctr.holder.models.ResponseError
 import nl.rijksoverheid.ctr.holder.models.SignedResponseWithModel
-import nl.rijksoverheid.ctr.holder.ui.myoverview.LocalTestResultViewModel
-import nl.rijksoverheid.ctr.holder.ui.myoverview.LocalTestResultViewModelImpl
-import nl.rijksoverheid.ctr.holder.ui.create_qr.TestResultsViewModel
-import nl.rijksoverheid.ctr.holder.ui.create_qr.TokenQrViewModel
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.SharedPreferencesPersistenceManager
 import nl.rijksoverheid.ctr.holder.repositories.*
+import nl.rijksoverheid.ctr.holder.ui.create_qr.TestResultsViewModel
+import nl.rijksoverheid.ctr.holder.ui.create_qr.TokenQrViewModel
+import nl.rijksoverheid.ctr.holder.ui.myoverview.LocalTestResultViewModel
+import nl.rijksoverheid.ctr.holder.ui.myoverview.LocalTestResultViewModelImpl
 import nl.rijksoverheid.ctr.holder.usecase.*
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
@@ -76,7 +76,7 @@ fun holderModule(baseUrl: String) = module {
         TestProviderUseCaseImpl(get())
     }
     single {
-        TestResultUseCase(get(), get(), get(), get(), get(), get())
+        TestResultUseCase(get(), get(), get(), get(), get(), get(), get())
     }
     factory<LocalTestResultUseCase> {
         LocalTestResultUseCaseImpl(get(), get(), get(), get())

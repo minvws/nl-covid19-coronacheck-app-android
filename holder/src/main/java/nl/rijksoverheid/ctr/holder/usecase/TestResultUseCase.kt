@@ -6,6 +6,7 @@ import nl.rijksoverheid.ctr.holder.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.holder.models.TestIsmResult
 import nl.rijksoverheid.ctr.holder.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.repositories.TestProviderRepository
+import nl.rijksoverheid.ctr.shared.util.PersonalDetailsUtil
 import retrofit2.HttpException
 import timber.log.Timber
 import java.io.IOException
@@ -23,7 +24,8 @@ class TestResultUseCase(
     private val coronaCheckRepository: CoronaCheckRepository,
     private val commitmentMessageUseCase: CommitmentMessageUseCase,
     private val secretKeyUseCase: SecretKeyUseCase,
-    private val createCredentialUseCase: CreateCredentialUseCase
+    private val createCredentialUseCase: CreateCredentialUseCase,
+    private val personalDetailsUtil: PersonalDetailsUtil
 ) {
 
     suspend fun testResult(uniqueCode: String, verificationCode: String? = null): TestResult {
@@ -59,7 +61,13 @@ class TestResultUseCase(
             }
 
             val result = remoteTestResult.result ?: error("Expected result")
-            TestResult.Complete(remoteTestResult, signedResponseWithTestResult)
+            val personalDetails = personalDetailsUtil.getPersonalDetails(
+                firstNameInitial = result.holder.firstNameInitial,
+                lastNameInitial = result.holder.lastNameInitial,
+                birthDay = result.holder.birthDay,
+                birthMonth = result.holder.birthMonth
+            )
+            TestResult.Complete(remoteTestResult, personalDetails, signedResponseWithTestResult)
         } catch (ex: HttpException) {
             Timber.e(ex, "Server error while getting test result")
             TestResult.ServerError
@@ -115,6 +123,7 @@ class TestResultUseCase(
 sealed class TestResult {
     data class Complete(
         val remoteTestResult: RemoteTestResult,
+        val personalDetails: List<String>,
         val signedResponseWithTestResult: SignedResponseWithModel<RemoteTestResult>
     ) :
         TestResult()

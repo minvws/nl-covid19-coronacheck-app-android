@@ -44,16 +44,23 @@ class YourNegativeTestResultFragment : BaseFragment(R.layout.fragment_your_negat
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentYourNegativeTestResultsBinding.bind(view)
 
-        val result = viewModel.retrievedResult?.remoteTestResult?.result
-        if (result == null) {
+        val retrievedResult = viewModel.retrievedResult
+        if (retrievedResult == null) {
             // restored from state, no result anymore
             findNavController().navigate(YourNegativeTestResultFragmentDirections.actionMyOverview())
         } else {
-            binding.rowSubtitle.text =
-                OffsetDateTime.ofInstant(
-                    Instant.ofEpochSecond(result.sampleDate.toEpochSecond()),
-                    ZoneOffset.UTC
-                ).formatDateTime(requireContext())
+            retrievedResult.remoteTestResult.result?.let {
+                binding.rowSubtitle.text =
+                    OffsetDateTime.ofInstant(
+                        Instant.ofEpochSecond(it.sampleDate.toEpochSecond()),
+                        ZoneOffset.UTC
+                    ).formatDateTime(requireContext())
+            }
+
+            binding.rowPersonalDetails.text = getString(
+                R.string.your_negative_test_results_row_personal_details,
+                "${retrievedResult.personalDetails[0]} ${retrievedResult.personalDetails[1]} ${retrievedResult.personalDetails[2]} ${retrievedResult.personalDetails[3]}"
+            )
         }
 
         // Catch back button to show modal instead

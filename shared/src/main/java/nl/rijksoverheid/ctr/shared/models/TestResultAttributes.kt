@@ -9,5 +9,9 @@ package nl.rijksoverheid.ctr.shared.models
  */
 data class TestResultAttributes(
     val sampleTime: Long,
-    val testType: String
+    val testType: String,
+    val birthDay: String,
+    val birthMonth: String,
+    val firstNameInitial: String,
+    val lastNameInitial: String
 )
