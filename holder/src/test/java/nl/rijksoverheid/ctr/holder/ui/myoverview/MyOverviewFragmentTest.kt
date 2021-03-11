@@ -167,25 +167,26 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
         )
     }
 
-//    @Test
-//    fun `Clicking qr code in MyOverviewTestResultAdapterItem navigates to new screen`() {
-//        launchOverviewFragment(
-//            localTestResultState = LocalTestResultState.Valid(
-//                LocalTestResult(
-//                    credentials = "dummy",
-//                    sampleDate = OffsetDateTime.now(),
-//                    expireDate = OffsetDateTime.now(),
-//                    testType = "dummy"
-//                )
-//            )
-//        )
-//        clickListItemChild(
-//            id = R.id.recyclerView,
-//            position = 1,
-//            childId = R.id.test_result_qr_image
-//        )
-//        assertEquals(navController.currentDestination?.id, R.id.nav_qr_code)
-//    }
+    @Test
+    fun `Clicking button in MyOverviewTestResultAdapterItem navigates to qr code screen`() {
+        launchOverviewFragment(
+            localTestResultState = LocalTestResultState.Valid(
+                LocalTestResult(
+                    credentials = "dummy",
+                    sampleDate = OffsetDateTime.now(),
+                    expireDate = OffsetDateTime.now(),
+                    testType = "dummy",
+                    personalDetails = listOf("X", "X", "X", "X")
+                )
+            )
+        )
+        clickListItemChild(
+            id = R.id.recyclerView,
+            position = 1,
+            childId = R.id.button
+        )
+        assertEquals(navController.currentDestination?.id, R.id.nav_qr_code)
+    }
 
     @Test
     fun `Clicking button in first MyOverviewNavigationCardAdapterItem navigates to new screen`() {
