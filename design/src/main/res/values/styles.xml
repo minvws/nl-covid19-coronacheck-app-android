@@ -42,6 +42,10 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+    <style name="App.TextAppearance.MaterialComponents.Caption" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:textColor">?colorOnPrimary</item>
+    </style>
+
     <style name="Widget.App.Toolbar.Surface" parent="Widget.MaterialComponents.Toolbar.Surface">
         <item name="android:elevation">4dp</item>
     </style>
