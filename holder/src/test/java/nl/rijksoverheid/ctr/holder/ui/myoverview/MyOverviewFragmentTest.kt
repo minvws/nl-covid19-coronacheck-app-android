@@ -77,7 +77,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                     sampleDate = OffsetDateTime.now(),
                     expireDate = OffsetDateTime.now(),
                     testType = "dummy",
-                    personalDetails = listOf()
+                    personalDetails = listOf("X", "X", "X", "X")
                 )
             )
         )
@@ -91,12 +91,12 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
             targetViewId = R.id.test_description,
             textId = R.string.my_overview_no_qr_description
         )
-//        assertDisplayedAtPosition(
-//            listId = R.id.recyclerView,
-//            position = 1,
-//            targetViewId = R.id.test_result_title,
-//            textId = R.string.my_overview_existing_qr_title
-//        )
+        assertDisplayedAtPosition(
+            listId = R.id.recyclerView,
+            position = 1,
+            targetViewId = R.id.title,
+            textId = R.string.my_overview_test_result_title
+        )
         assertDisplayedAtPosition(
             listId = R.id.recyclerView,
             position = 2,
