@@ -1,5 +1,7 @@
 package nl.rijksoverheid.ctr.holder.models
 
+import com.squareup.moshi.JsonClass
+
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
  *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
@@ -7,6 +9,7 @@ package nl.rijksoverheid.ctr.holder.models
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
+@JsonClass(generateAdapter = true)
 data class ResponseError(
     val status: String,
     val code: Int
