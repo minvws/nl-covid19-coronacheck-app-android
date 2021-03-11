@@ -45,6 +45,12 @@
             android:defaultValue="false"
             app:argType="boolean" />
 
+        <argument
+            android:name="qrResult"
+            android:defaultValue="@null"
+            app:nullable="true"
+            app:argType="nl.rijksoverheid.ctr.verifier.models.DecryptedQr" />
+
         <action
             android:id="@+id/action_scan_qr"
             app:destination="@id/nav_scan_qr"
