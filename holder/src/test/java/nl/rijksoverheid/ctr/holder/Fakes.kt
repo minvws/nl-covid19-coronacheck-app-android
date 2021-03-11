@@ -16,6 +16,7 @@ import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.TestResultAttributes
 import nl.rijksoverheid.ctr.shared.usecase.TestResultAttributesUseCase
+import nl.rijksoverheid.ctr.shared.util.PersonalDetailsUtil
 import java.time.OffsetDateTime
 
 /*
@@ -25,6 +26,19 @@ import java.time.OffsetDateTime
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
+
+fun fakePersonalDetailsUtil(
+
+): PersonalDetailsUtil = object: PersonalDetailsUtil {
+    override fun getPersonalDetails(
+        firstNameInitial: String,
+        lastNameInitial: String,
+        birthDay: String,
+        birthMonth: String
+    ): List<String> {
+        return listOf()
+    }
+}
 
 fun fakeCachedAppConfigUseCase(
     appConfig: AppConfig = AppConfig(
