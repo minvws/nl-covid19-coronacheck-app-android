@@ -45,4 +45,18 @@ class PersonalDetailsUtilImplTest {
         assertEquals("X", personalDetails[3])
     }
 
+    @Test
+    fun `getPersonalDetails returns correct personal details in order fields are empty`() {
+        val personalDetails = personalDetailsUtil.getPersonalDetails(
+            firstNameInitial = "",
+            lastNameInitial = "",
+            birthDay = "",
+            birthMonth = ""
+        )
+        assertEquals("_", personalDetails[0])
+        assertEquals("_", personalDetails[1])
+        assertEquals("_", personalDetails[2])
+        assertEquals("_", personalDetails[3])
+    }
+
 }

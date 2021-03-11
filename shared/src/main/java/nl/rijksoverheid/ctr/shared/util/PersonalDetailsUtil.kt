@@ -37,10 +37,10 @@ class PersonalDetailsUtilImpl(private val passportMonths: List<String>) : Person
         }
 
         return listOf(
-            firstNameInitial,
-            lastNameInitial,
-            birthDayReadableString,
-            birthMonthReadableString
+            if (firstNameInitial.isEmpty()) "_" else firstNameInitial,
+            if (lastNameInitial.isEmpty()) "_" else lastNameInitial,
+            if (birthDayReadableString.isEmpty()) "_" else birthDayReadableString,
+            if (birthMonthReadableString.isEmpty()) "_" else birthMonthReadableString
         )
     }
 
