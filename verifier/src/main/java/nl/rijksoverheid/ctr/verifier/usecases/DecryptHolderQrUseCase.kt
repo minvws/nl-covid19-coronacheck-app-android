@@ -47,7 +47,11 @@ class DecryptHolderQrUseCase(
                         Instant.ofEpochSecond(testResultAttributes.sampleTime),
                         ZoneOffset.UTC
                     ),
-                    testType = testResultAttributes.testType
+                    testType = testResultAttributes.testType,
+                    firstNameInitial = testResultAttributes.firstNameInitial,
+                    lastNameInitial = testResultAttributes.lastNameInitial,
+                    birthDay = testResultAttributes.birthDay,
+                    birthMonth = testResultAttributes.birthMonth
                 )
             )
         } catch (e: Exception) {

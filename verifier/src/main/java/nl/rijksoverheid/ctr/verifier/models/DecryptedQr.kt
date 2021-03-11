@@ -12,5 +12,9 @@ import java.time.OffsetDateTime
 data class DecryptedQr(
     val creationDate: OffsetDateTime,
     val sampleDate: OffsetDateTime,
-    val testType: String
+    val testType: String,
+    val firstNameInitial: String,
+    val lastNameInitial: String,
+    val birthDay: String,
+    val birthMonth: String,
 )

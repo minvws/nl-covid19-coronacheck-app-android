@@ -5,6 +5,7 @@ import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.shared.util.QrCodeUtil
 import nl.rijksoverheid.ctr.shared.util.TestResultUtil
+import nl.rijksoverheid.ctr.verifier.models.DecryptedQr
 import java.util.concurrent.TimeUnit
 
 /*
@@ -26,14 +27,21 @@ class TestResultValidUseCase(
             is DecryptHolderQrUseCase.DecryptResult.Success -> {
                 val validity =
                     TimeUnit.HOURS.toSeconds(cachedAppConfigUseCase.getCachedAppConfig().maxValidityHours.toLong())
-                val isValid = testResultUtil.isValid(
+               /* val isValid = testResultUtil.isValid(
                     sampleDate = decryptResult.decryptQr.sampleDate,
                     validitySeconds = validity
                 ) && qrCodeUtil.isValid(
                     creationDate = decryptResult.decryptQr.creationDate
+                )*/
+                val isValidSample = testResultUtil.isValid(
+                    sampleDate = decryptResult.decryptQr.sampleDate,
+                    validitySeconds = validity
                 )
-                if (isValid) {
-                    TestResultValidResult.Valid
+                val isValidCreation =qrCodeUtil.isValid(
+                    creationDate = decryptResult.decryptQr.creationDate
+                )
+                if (isValidCreation && isValidSample) {
+                    TestResultValidResult.Valid(decryptResult.decryptQr)
                 } else {
                     TestResultValidResult.Invalid
                 }
@@ -45,7 +53,7 @@ class TestResultValidUseCase(
     }
 
     sealed class TestResultValidResult {
-        object Valid : TestResultValidResult()
+        class Valid(val decryptedQr: DecryptedQr) : TestResultValidResult()
         object Invalid : TestResultValidResult()
     }
 }
