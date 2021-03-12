@@ -4,8 +4,8 @@ import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.Espresso
-import androidx.test.espresso.assertion.ViewAssertions
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers
 import com.schibsted.spain.barista.assertion.BaristaListAssertions.assertDisplayedAtPosition
 import com.schibsted.spain.barista.assertion.BaristaListAssertions.assertListItemCount
@@ -165,8 +165,8 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                 firstTimeCreated = true
             )
         )
-        Espresso.onView(ViewMatchers.withId(com.google.android.material.R.id.snackbar_text))
-            .check(ViewAssertions.matches(ViewMatchers.withText(R.string.my_overview_qr_created_snackbar_message)))
+        onView(ViewMatchers.withId(com.google.android.material.R.id.snackbar_text))
+            .check(matches(ViewMatchers.withText(R.string.my_overview_qr_created_snackbar_message)))
     }
 
     @Test
