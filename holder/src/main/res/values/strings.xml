@@ -33,7 +33,8 @@
     <string name="terms_of_use">Gebruiksvoorwaarden</string>
     <string name="my_overview_test_result_title">Mijn QR-code</string>
     <string name="my_overview_test_result_validity">Geldig tot %1$s</string>
-    <string name="my_overview_test_result_expires_in">Verloopt in %1$s uur %2$s min</string>
+    <string name="my_overview_test_result_expires_in_hours_minutes">Verloopt in %1$s uur %2$s min</string>
+    <string name="my_overview_test_result_expires_in_minutes">Verloopt over %1$s min</string>
     <string name="my_overview_test_result_footer">Laat QR-code zien bij ingang</string>
     <string name="my_overview_test_result_button">Bekijk QR</string>
     <string name="my_overview_no_qr_make_appointment_title">Maak een testafspraak</string>

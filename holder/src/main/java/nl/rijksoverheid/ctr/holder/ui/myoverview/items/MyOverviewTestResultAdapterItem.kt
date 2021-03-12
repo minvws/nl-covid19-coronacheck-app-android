@@ -48,11 +48,18 @@ class MyOverviewTestResultAdapterItem(
             }
             is TestResultAdapterItemUtil.ExpireCountDown.Show -> {
                 viewBinding.expiresIn.visibility = View.VISIBLE
-                viewBinding.expiresIn.text = context.getString(
-                    R.string.my_overview_test_result_expires_in,
-                    expireCountDownResult.hoursLeft.toString(),
-                    expireCountDownResult.minutesLeft.toString()
-                )
+                if (expireCountDownResult.hoursLeft == 0L) {
+                    viewBinding.expiresIn.text = context.getString(
+                        R.string.my_overview_test_result_expires_in_minutes,
+                        expireCountDownResult.minutesLeft.toString()
+                    )
+                } else {
+                    viewBinding.expiresIn.text = context.getString(
+                        R.string.my_overview_test_result_expires_in_hours_minutes,
+                        expireCountDownResult.hoursLeft.toString(),
+                        expireCountDownResult.minutesLeft.toString()
+                    )
+                }
             }
         }
 

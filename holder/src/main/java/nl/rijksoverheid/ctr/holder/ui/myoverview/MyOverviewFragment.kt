@@ -1,6 +1,8 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -20,11 +22,13 @@ import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewNavigationCardA
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewTestResultAdapterItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewTestResultExpiredAdapterItem
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
+import nl.rijksoverheid.ctr.shared.ext.executeAfterAllAnimationsAreFinished
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.ext.show
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.concurrent.TimeUnit
 
 
 /*
@@ -37,6 +41,14 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class MyOverviewFragment : BaseFragment(R.layout.fragment_my_overview) {
 
     private val section = Section()
+
+    private val localTestResultHandler = Handler(Looper.getMainLooper())
+    private val localTestResultRunnable = object : Runnable {
+        override fun run() {
+            localTestResultViewModel.getLocalTestResult()
+            localTestResultHandler.postDelayed(this, TimeUnit.MILLISECONDS.toMillis(1000))
+        }
+    }
 
     private val introductionViewModel: IntroductionViewModel by viewModel()
     private val localTestResultViewModel: LocalTestResultViewModel by sharedViewModel()
@@ -73,27 +85,39 @@ class MyOverviewFragment : BaseFragment(R.layout.fragment_my_overview) {
                         )
                     }
                     is LocalTestResultState.Valid -> {
-                        setItems(
-                            localTestResult = localTestResultState.localTestResult
-                        )
+                        // Wait until other RecyclerView animations are finished before adding this view
+                        // Else it can cause weird glitches
+                        binding.recyclerView.executeAfterAllAnimationsAreFinished {
+                            setItems(
+                                localTestResult = localTestResultState.localTestResult
+                            )
 
-                        // Show a SnackBar if this qr is created for the first time
-                        if (localTestResultState.firstTimeCreated) {
-                            Snackbar.make(
-                                requireView(),
-                                R.string.my_overview_qr_created_snackbar_message,
-                                Snackbar.LENGTH_LONG
-                            ).also {
-                                it.setAction(R.string.my_overview_qr_created_snackbar_button) {
-                                    BuildConfig.URL_FAQ.launchUrl(requireContext())
-                                }
-                            }.show(requireActivity())
+                            // Show a SnackBar if this qr is created for the first time
+                            if (localTestResultState.firstTimeCreated) {
+                                Snackbar.make(
+                                    requireView(),
+                                    R.string.my_overview_qr_created_snackbar_message,
+                                    Snackbar.LENGTH_LONG
+                                ).also {
+                                    it.setAction(R.string.my_overview_qr_created_snackbar_button) {
+                                        BuildConfig.URL_FAQ.launchUrl(requireContext())
+                                    }
+                                }.show(requireActivity())
+                            }
                         }
                     }
                 }
             })
+    }
 
-        localTestResultViewModel.getLocalTestResult()
+    override fun onResume() {
+        super.onResume()
+        localTestResultHandler.postAtFrontOfQueue(localTestResultRunnable)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        localTestResultHandler.removeCallbacks(localTestResultRunnable)
     }
 
     private fun setItems(

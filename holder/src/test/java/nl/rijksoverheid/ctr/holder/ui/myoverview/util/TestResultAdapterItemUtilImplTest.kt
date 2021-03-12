@@ -48,5 +48,24 @@ class TestResultAdapterItemUtilImplTest {
             ), result
         )
     }
+
+    @Test
+    fun `getExpireCountdownText returned minutes should never be below 1`() {
+        val util = TestResultAdapterItemUtilImpl(
+            clock = Clock.fixed(Instant.parse("2021-01-01T00:00:00.00Z"), ZoneId.of("UTC"))
+        )
+        val result = util.getExpireCountdownText(
+            expireDate = OffsetDateTime.ofInstant(
+                Instant.parse("2021-01-01T00:00:50.00Z"),
+                ZoneId.of("UTC")
+            )
+        )
+        assertEquals(
+            TestResultAdapterItemUtil.ExpireCountDown.Show(
+                hoursLeft = 0,
+                minutesLeft = 1
+            ), result
+        )
+    }
 }
 

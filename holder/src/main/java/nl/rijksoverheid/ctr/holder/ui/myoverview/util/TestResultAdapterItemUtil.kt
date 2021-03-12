@@ -1,6 +1,5 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview.util
 
-import androidx.annotation.StringRes
 import java.time.Clock
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
@@ -45,7 +44,7 @@ class TestResultAdapterItemUtilImpl(private val clock: Clock) : TestResultAdapte
                     .toEpochSecond()
             val hoursUntilFinish = diff / hoursInSeconds
             diff %= hoursInSeconds
-            val minutesUntilFinish = diff / minutesInSeconds
+            val minutesUntilFinish = (diff / minutesInSeconds).coerceAtLeast(1)
             TestResultAdapterItemUtil.ExpireCountDown.Show(
                 hoursLeft = hoursUntilFinish,
                 minutesLeft = minutesUntilFinish
