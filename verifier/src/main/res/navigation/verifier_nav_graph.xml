@@ -41,15 +41,8 @@
         tools:layout="@layout/fragment_scan_result">
 
         <argument
-            android:name="valid"
-            android:defaultValue="false"
-            app:argType="boolean" />
-
-        <argument
-            android:name="qrResult"
-            android:defaultValue="@null"
-            app:nullable="true"
-            app:argType="nl.rijksoverheid.ctr.verifier.models.DecryptedQr" />
+            android:name="validatedResult"
+            app:argType="nl.rijksoverheid.ctr.verifier.models.ValidatedQrResult" />
 
         <action
             android:id="@+id/action_scan_qr"

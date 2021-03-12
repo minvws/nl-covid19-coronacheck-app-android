@@ -6,8 +6,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.shared.ext.toObject
 import nl.rijksoverheid.ctr.shared.ext.verify
-import nl.rijksoverheid.ctr.verifier.models.DecryptedQr
 import nl.rijksoverheid.ctr.shared.models.TestResultAttributes
+import nl.rijksoverheid.ctr.verifier.models.DecryptedQr
 import timber.log.Timber
 import java.time.Instant
 import java.time.OffsetDateTime

@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.shared.livedata.Event
-import nl.rijksoverheid.ctr.verifier.models.DecryptedQr
+import nl.rijksoverheid.ctr.verifier.models.ValidatedQrResult
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 import nl.rijksoverheid.ctr.verifier.usecases.TestResultValidUseCase
 
@@ -22,8 +22,7 @@ class ScanQrViewModel(
 ) : ViewModel() {
 
     val loadingLiveData = MutableLiveData<Event<Boolean>>()
-    val qrValidLiveData = MutableLiveData<Event<Boolean>>()
-    var qrResult : DecryptedQr? = null
+    val validatedQrLiveData = MutableLiveData<Event<ValidatedQrResult>>()
 
     fun validate(qrContent: String) {
         loadingLiveData.value = Event(true)
@@ -34,12 +33,10 @@ class ScanQrViewModel(
                 )
                 when (result) {
                     is TestResultValidUseCase.TestResultValidResult.Valid -> {
-                        qrResult = result.decryptedQr
-                        qrValidLiveData.value = Event(true)
+                        validatedQrLiveData.value = Event(ValidatedQrResult(true, result.decryptedQr))
                     }
                     is TestResultValidUseCase.TestResultValidResult.Invalid -> {
-                        qrResult = null
-                        qrValidLiveData.value = Event(false)
+                        validatedQrLiveData.value = Event(ValidatedQrResult(false, null))
                     }
                 }
             } finally {
