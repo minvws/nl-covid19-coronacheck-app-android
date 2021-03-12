@@ -81,6 +81,11 @@ class VerifierMainActivity : BaseActivity(R.id.nav_scan_qr) {
         )
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
         binding.navView.setupWithNavController(navController)
+        binding.appVersion.text = getString(
+            R.string.app_version,
+            BuildConfig.VERSION_NAME,
+            BuildConfig.VERSION_CODE.toString()
+        )
 
         navigationDrawerStyling()
 
