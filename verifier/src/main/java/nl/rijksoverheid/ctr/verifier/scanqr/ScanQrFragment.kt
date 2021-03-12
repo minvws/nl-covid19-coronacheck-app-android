@@ -8,7 +8,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
@@ -16,7 +15,6 @@ import nl.rijksoverheid.ctr.shared.util.QrCodeScannerUtil
 import nl.rijksoverheid.ctr.verifier.BaseFragment
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanQrBinding
-import nl.rijksoverheid.ctr.verifier.scaninstructions.ScanInstructionsDialogFragment
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -29,11 +27,15 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  */
 class ScanQrFragment : BaseFragment() {
 
+    companion object {
+        const val REQUEST_KEY = "REQUEST_KEY"
+        const val EXTRA_LAUNCH_SCANNER = "LAUNCH_SCANNER"
+    }
+
     private lateinit var binding: FragmentScanQrBinding
     private val introductionViewModel: IntroductionViewModel by viewModel()
     private val qrCodeScannerUtil: QrCodeScannerUtil by inject()
     private val scanQrViewModel: ScanQrViewModel by viewModel()
-    private val args: ScanQrFragmentArgs by navArgs()
 
     private val qrScanResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
@@ -77,18 +79,14 @@ class ScanQrFragment : BaseFragment() {
         })
 
         setFragmentResultListener(
-            ScanInstructionsDialogFragment.REQUEST_KEY
+            REQUEST_KEY
         ) { requestKey, bundle ->
-            if (requestKey == ScanInstructionsDialogFragment.REQUEST_KEY && bundle.getBoolean(
-                    ScanInstructionsDialogFragment.EXTRA_LAUNCH_SCANNER
+            if (requestKey == REQUEST_KEY && bundle.getBoolean(
+                    EXTRA_LAUNCH_SCANNER
                 )
             ) {
                 openScanner()
             }
-        }
-
-        if (args.openScanner) {
-            openScanner()
         }
 
         binding.button.setOnClickListener {

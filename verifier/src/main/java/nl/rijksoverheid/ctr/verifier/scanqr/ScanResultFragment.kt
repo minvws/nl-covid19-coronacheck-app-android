@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
@@ -62,7 +64,11 @@ class ScanResultFragment : DialogFragment() {
         }
 
         binding.button.setOnClickListener {
-            findNavController().navigate(ScanResultFragmentDirections.actionScanQr(true))
+            setFragmentResult(
+                ScanQrFragment.REQUEST_KEY,
+                bundleOf(ScanQrFragment.EXTRA_LAUNCH_SCANNER to true)
+            )
+            dismiss()
         }
     }
 }

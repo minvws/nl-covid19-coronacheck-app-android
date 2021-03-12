@@ -27,11 +27,6 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
 
-        <argument
-            android:name="openScanner"
-            android:defaultValue="false"
-            app:argType="boolean" />
-
     </fragment>
 
     <dialog
@@ -44,12 +39,6 @@
             android:name="valid"
             android:defaultValue="false"
             app:argType="boolean" />
-
-        <action
-            android:id="@+id/action_scan_qr"
-            app:destination="@id/nav_scan_qr"
-            app:popUpTo="@id/nav_scan_qr"
-            app:popUpToInclusive="true" />
 
     </dialog>
 
