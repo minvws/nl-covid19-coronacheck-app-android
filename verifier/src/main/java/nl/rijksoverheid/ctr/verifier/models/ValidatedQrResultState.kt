@@ -11,8 +11,10 @@ package nl.rijksoverheid.ctr.verifier.models
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
-@Parcelize
-data class ValidatedQrResult(
-    val valid : Boolean,
-    val qrResult : DecryptedQr?
-) : Parcelable
+sealed class ValidatedQrResultState : Parcelable {
+    @Parcelize
+    data class Valid(val qrResult: DecryptedQr) : ValidatedQrResultState(), Parcelable
+
+    @Parcelize
+    object Invalid : ValidatedQrResultState(), Parcelable
+}

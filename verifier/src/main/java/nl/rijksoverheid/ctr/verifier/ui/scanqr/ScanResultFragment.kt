@@ -18,6 +18,7 @@ import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanResultBinding
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanResultInvalidReasonBinding
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanResultValidReasonBinding
+import nl.rijksoverheid.ctr.verifier.models.ValidatedQrResultState
 import org.koin.android.ext.android.inject
 
 
@@ -54,13 +55,14 @@ class ScanResultFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (args.validatedResult.valid) {
+        val validatedQrResultState = args.validatedResult
+        if (validatedQrResultState is ValidatedQrResultState.Valid) {
             binding.root.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.green))
             binding.image.setImageResource(R.drawable.illustration_scan_result_valid)
             binding.title.text = getString(R.string.scan_result_valid_title)
             binding.subtitle.text = getString(R.string.scan_result_valid_subtitle).fromHtml()
 
-            args.validatedResult.qrResult?.let {
+            validatedQrResultState.qrResult.let {
                 val personalDetails = personalDetailsUtil.getPersonalDetails(
                     it.firstNameInitial,
                     it.lastNameInitial,
@@ -105,7 +107,6 @@ class ScanResultFragment : DialogFragment() {
                 }
                 dialog.show()
             }
-
         }
 
         binding.toolbar.setNavigationOnClickListener {
