@@ -15,6 +15,9 @@ import nl.rijksoverheid.ctr.shared.util.PersonalDetailsUtil
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanResultBinding
 import org.koin.android.ext.android.inject
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import nl.rijksoverheid.ctr.design.utils.getSpannableFromHtml
+import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanResultInvalidReasonBinding
 
 
 /*
@@ -72,6 +75,20 @@ class ScanResultFragment : DialogFragment() {
             binding.image.setImageResource(R.drawable.illustration_scan_result_invalid)
             binding.title.text = getString(R.string.scan_result_invalid_title)
             binding.subtitle.text = getString(R.string.scan_result_invalid_subtitle).fromHtml()
+
+            binding.subtitle.setOnClickListener {
+                val binding =
+                    FragmentScanResultInvalidReasonBinding.inflate(layoutInflater, null, false)
+                val dialog = BottomSheetDialog(requireContext())
+                dialog.setContentView(binding.root)
+                binding.description.text =
+                    getSpannableFromHtml(requireContext(), getString(R.string.scan_result_invalid_reason_description))
+                binding.close.setOnClickListener {
+                    dialog.dismiss()
+                }
+                dialog.show()
+            }
+
         }
 
         binding.toolbar.setNavigationOnClickListener {
