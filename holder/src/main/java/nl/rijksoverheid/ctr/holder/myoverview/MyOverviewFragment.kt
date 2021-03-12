@@ -104,13 +104,12 @@ class MyOverviewFragment : BaseFragment(R.layout.fragment_my_overview) {
                 )
             }
         }
-
-        localTestResultViewModel.getLocalTestResult()
     }
 
     override fun onResume() {
         super.onResume()
-        qrCodeHandler.post(qrCodeRunnable)
+        section.clear()
+        localTestResultViewModel.getLocalTestResult()
     }
 
     override fun onPause() {

@@ -91,6 +91,8 @@ class QrCodeFragment : DialogFragment() {
 
     override fun onResume() {
         super.onResume()
+        binding.loading.visibility = View.VISIBLE
+        binding.content.visibility = View.GONE
         qrCodeHandler.post(qrCodeRunnable)
     }
 
