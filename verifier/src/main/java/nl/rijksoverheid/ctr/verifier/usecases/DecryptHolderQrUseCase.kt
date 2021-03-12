@@ -6,8 +6,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.shared.ext.toObject
 import nl.rijksoverheid.ctr.shared.ext.verify
-import nl.rijksoverheid.ctr.verifier.models.DecryptedQr
 import nl.rijksoverheid.ctr.shared.models.TestResultAttributes
+import nl.rijksoverheid.ctr.verifier.models.DecryptedQr
 import timber.log.Timber
 import java.time.Instant
 import java.time.OffsetDateTime
@@ -47,7 +47,11 @@ class DecryptHolderQrUseCase(
                         Instant.ofEpochSecond(testResultAttributes.sampleTime),
                         ZoneOffset.UTC
                     ),
-                    testType = testResultAttributes.testType
+                    testType = testResultAttributes.testType,
+                    firstNameInitial = testResultAttributes.firstNameInitial,
+                    lastNameInitial = testResultAttributes.lastNameInitial,
+                    birthDay = testResultAttributes.birthDay,
+                    birthMonth = testResultAttributes.birthMonth
                 )
             )
         } catch (e: Exception) {

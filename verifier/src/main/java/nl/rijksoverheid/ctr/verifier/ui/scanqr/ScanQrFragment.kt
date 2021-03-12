@@ -76,7 +76,7 @@ class ScanQrFragment : BaseFragment() {
             presentLoading(it)
         })
 
-        scanQrViewModel.qrValidLiveData.observe(viewLifecycleOwner, EventObserver {
+        scanQrViewModel.validatedQrLiveData.observe(viewLifecycleOwner, EventObserver {
             findNavController().navigate(ScanQrFragmentDirections.actionScanResult(it))
         })
 

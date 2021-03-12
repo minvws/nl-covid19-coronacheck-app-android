@@ -5,6 +5,7 @@ import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.shared.util.QrCodeUtil
 import nl.rijksoverheid.ctr.shared.util.TestResultUtil
+import nl.rijksoverheid.ctr.verifier.models.DecryptedQr
 import java.util.concurrent.TimeUnit
 
 /*
@@ -33,7 +34,7 @@ class TestResultValidUseCase(
                     creationDate = decryptResult.decryptQr.creationDate
                 )
                 if (isValid) {
-                    TestResultValidResult.Valid
+                    TestResultValidResult.Valid(decryptResult.decryptQr)
                 } else {
                     TestResultValidResult.Invalid
                 }
@@ -45,7 +46,7 @@ class TestResultValidUseCase(
     }
 
     sealed class TestResultValidResult {
-        object Valid : TestResultValidResult()
+        class Valid(val decryptedQr: DecryptedQr) : TestResultValidResult()
         object Invalid : TestResultValidResult()
     }
 }

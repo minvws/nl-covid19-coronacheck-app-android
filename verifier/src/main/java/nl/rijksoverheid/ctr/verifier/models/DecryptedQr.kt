@@ -1,5 +1,7 @@
 package nl.rijksoverheid.ctr.verifier.models
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 import java.time.OffsetDateTime
 
 /*
@@ -9,8 +11,13 @@ import java.time.OffsetDateTime
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
+@Parcelize
 data class DecryptedQr(
     val creationDate: OffsetDateTime,
     val sampleDate: OffsetDateTime,
-    val testType: String
-)
+    val testType: String,
+    val firstNameInitial: String,
+    val lastNameInitial: String,
+    val birthDay: String,
+    val birthMonth: String,
+) : Parcelable
