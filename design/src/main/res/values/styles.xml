@@ -26,6 +26,15 @@
         <item name="lineHeight">26sp</item>
     </style>
 
+    <style name="App.TextAppearance.MaterialComponents.Body2" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="lineHeight">20sp</item>
+    </style>
+
+    <style name="App.TextAppearance.MaterialComponents.Body2.Secondary" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="lineHeight">20sp</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
+    </style>
+
     <style name="App.TextAppearance.MaterialComponents.Headline5.Montserrat" parent="android:TextAppearance">
         <item name="android:fontFamily">@font/montserrat_bold</item>
         <item name="android:textSize">26sp</item>

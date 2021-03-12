@@ -111,7 +111,8 @@ fun fakeLocalTestResultViewModel(
                             credentials = "dummy",
                             sampleDate = OffsetDateTime.now(),
                             expireDate = OffsetDateTime.now(),
-                            testType = "dummy"
+                            testType = "dummy",
+                            personalDetails = listOf()
                         ),
                         qrCode = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
                     )

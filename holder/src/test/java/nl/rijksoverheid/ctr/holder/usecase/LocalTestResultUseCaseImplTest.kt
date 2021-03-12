@@ -7,6 +7,7 @@ import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.holder.fakeCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.fakePersistenceManager
+import nl.rijksoverheid.ctr.holder.fakePersonalDetailsUtil
 import nl.rijksoverheid.ctr.holder.fakeTestResultAttributesUseCase
 import nl.rijksoverheid.ctr.holder.models.LocalTestResultState
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
@@ -35,7 +36,8 @@ class LocalTestResultUseCaseImplTest {
                 persistenceManager = fakePersistenceManager(credentials = null),
                 testResultUtil = TestResultUtil(Clock.systemUTC()),
                 cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
-                testResultAttributesUseCase = fakeTestResultAttributesUseCase()
+                testResultAttributesUseCase = fakeTestResultAttributesUseCase(),
+                personalDetailsUtil = fakePersonalDetailsUtil()
             )
 
             val localTestResult = usecase.get()
@@ -67,7 +69,8 @@ class LocalTestResultUseCaseImplTest {
                         Instant.parse("2021-01-01T00:00:00.00Z"),
                         ZoneId.of("UTC")
                     ).toEpochSecond()
-                )
+                ),
+                personalDetailsUtil = fakePersonalDetailsUtil()
             )
 
             val localTestResult = usecase.get()
@@ -92,7 +95,8 @@ class LocalTestResultUseCaseImplTest {
                         ZoneId.of("UTC")
                     ).toEpochSecond()
                 ),
-                cachedAppConfigUseCase = fakeCachedAppConfigUseCase()
+                cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
+                personalDetailsUtil = fakePersonalDetailsUtil()
             )
 
             val localTestResult = usecase.get()

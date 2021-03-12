@@ -8,8 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentQrCreatedBinding
-import nl.rijksoverheid.ctr.shared.ext.formatDateDayMonth
-import nl.rijksoverheid.ctr.shared.ext.formatHourMinutes
+import nl.rijksoverheid.ctr.design.ext.formatDateDayMonth
+import nl.rijksoverheid.ctr.design.ext.formatHourMinutes
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
 import org.koin.androidx.viewmodel.ViewModelOwner
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel

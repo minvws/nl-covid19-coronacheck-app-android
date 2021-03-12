@@ -11,7 +11,6 @@ import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.DialogQrCodeBinding
-import nl.rijksoverheid.ctr.holder.ui.myoverview.LocalTestResultViewModel
 import nl.rijksoverheid.ctr.shared.util.QrCodeUtil
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
@@ -67,8 +66,7 @@ class QrCodeFragment : DialogFragment() {
 
         localTestResultViewModel.qrCodeLiveData.observe(viewLifecycleOwner) {
             binding.image.setImageBitmap(it.qrCode)
-            binding.loading.visibility = View.GONE
-            binding.content.visibility = View.VISIBLE
+            presentQrLoading(false)
         }
 
         val localTestResult = localTestResultViewModel.retrievedLocalTestResult
@@ -82,8 +80,14 @@ class QrCodeFragment : DialogFragment() {
         }
     }
 
+    private fun presentQrLoading(loading: Boolean) {
+        binding.loading.visibility = if (loading) View.VISIBLE else View.GONE
+        binding.content.visibility = if (loading) View.GONE else View.VISIBLE
+    }
+
     override fun onResume() {
         super.onResume()
+        presentQrLoading(true)
         qrCodeHandler.post(qrCodeRunnable)
     }
 
