@@ -42,6 +42,17 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:theme="@style/ThemeOverlay.App.NavigationView"
-        app:menu="@menu/navigation_drawer" />
+        app:menu="@menu/navigation_drawer">
+
+        <TextView
+            android:id="@+id/app_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:padding="16dp"
+            android:textAppearance="@style/App.TextAppearance.MaterialComponents.Body1"
+            tools:text="App versie: 1.0 (1)" />
+
+    </com.google.android.material.navigation.NavigationView>
 
 </androidx.drawerlayout.widget.DrawerLayout>

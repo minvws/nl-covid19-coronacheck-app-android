@@ -34,7 +34,7 @@ abstract class BaseActivity(@IdRes private val homeDestination: Int) : AppCompat
             // Listen on the root view so that we can inset the navView even if the insets are consumed
             // within the layout (for example due to using fitSystemWindows)
             ViewCompat.setOnApplyWindowInsetsListener(drawer) { _, insets ->
-                navView.setPadding(0, insets.systemWindowInsetTop, 0, 0)
+                navView.setPadding(0, insets.systemWindowInsetTop, 0, insets.systemWindowInsetBottom)
                 insets
             }
 
