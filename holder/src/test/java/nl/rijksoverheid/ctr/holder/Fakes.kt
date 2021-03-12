@@ -128,7 +128,7 @@ fun fakeLocalTestResultUseCase(
     state: LocalTestResultState = LocalTestResultState.None
 ): LocalTestResultUseCase {
     return object : LocalTestResultUseCase {
-        override suspend fun get(): LocalTestResultState {
+        override suspend fun get(currentLocalTestResultState: LocalTestResultState?): LocalTestResultState {
             return state
         }
     }
