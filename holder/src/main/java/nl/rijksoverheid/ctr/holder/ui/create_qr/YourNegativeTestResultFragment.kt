@@ -90,7 +90,11 @@ class YourNegativeTestResultFragment : BaseFragment(R.layout.fragment_your_negat
         viewModel.signedTestResult.observe(viewLifecycleOwner, EventObserver {
             when (it) {
                 is SignedTestResult.Complete -> {
-                    findNavController().navigate(YourNegativeTestResultFragmentDirections.actionMyOverview())
+                    findNavController().navigate(
+                        YourNegativeTestResultFragmentDirections.actionMyOverview(
+                            true
+                        )
+                    )
                 }
                 is SignedTestResult.AlreadySigned -> {
                     findNavController().navigate(

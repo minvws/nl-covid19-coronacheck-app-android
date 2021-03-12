@@ -17,7 +17,7 @@ inline fun clmobile.Result.successString(): String {
     }
 }
 
-inline fun clmobile.Result.verify(): ByteArray {
+fun clmobile.Result.verify(): ByteArray {
     if (this.error.isNotEmpty()) {
         throw Exception(this.error)
     } else {

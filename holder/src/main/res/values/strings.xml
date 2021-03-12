@@ -42,6 +42,8 @@
     <string name="my_overview_no_qr_make_qr_title">Maak een QR-code</string>
     <string name="my_overview_no_qr_make_qr_description">Zet jouw negatieve testresultaat om in een persoonlijke QR-code.</string>
     <string name="my_overview_no_qr_make_qr_button">Maak qr-code</string>
+    <string name="my_overview_qr_created_snackbar_message">Jouw QR-code is gemaakt. Lees meer over welke gegevens zijn verwerkt in de QR-code.</string>
+    <string name="my_overview_qr_created_snackbar_button">Lees meer</string>
     <string name="choose_provider_toolbar">QR-code maken</string>
     <string name="choose_provider_title">Waar ben je getest?</string>
     <string name="choose_provider_description">Is je testresultaat negatief? Dan kan je er een QR-code van maken. Geef aan bij welke testlocatie je bent getest.</string>

@@ -3,12 +3,15 @@ package nl.rijksoverheid.ctr.holder.ui.myoverview
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.google.android.material.snackbar.Snackbar
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
 import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.holder.BaseFragment
+import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMyOverviewBinding
 import nl.rijksoverheid.ctr.holder.models.LocalTestResult
@@ -18,11 +21,12 @@ import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewNavigationCardA
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewTestResultAdapterItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewTestResultExpiredAdapterItem
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
+import nl.rijksoverheid.ctr.shared.ext.launchUrl
+import nl.rijksoverheid.ctr.shared.ext.show
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.time.Clock
+
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -35,6 +39,7 @@ class MyOverviewFragment : BaseFragment(R.layout.fragment_my_overview) {
 
     private val section = Section()
 
+    private val args: MyOverviewFragmentArgs by navArgs()
     private val introductionViewModel: IntroductionViewModel by viewModel()
     private val localTestResultViewModel: LocalTestResultViewModel by sharedViewModel()
 
@@ -78,6 +83,18 @@ class MyOverviewFragment : BaseFragment(R.layout.fragment_my_overview) {
             })
 
         localTestResultViewModel.getLocalTestResult()
+
+        if (args.showQrCreatedSnackBar) {
+            Snackbar.make(
+                requireView(),
+                R.string.my_overview_qr_created_snackbar_message,
+                Snackbar.LENGTH_LONG
+            ).also {
+                it.setAction(R.string.my_overview_qr_created_snackbar_button) {
+                    BuildConfig.URL_FAQ.launchUrl(requireContext())
+                }
+            }.show(requireActivity())
+        }
     }
 
     private fun setItems(
