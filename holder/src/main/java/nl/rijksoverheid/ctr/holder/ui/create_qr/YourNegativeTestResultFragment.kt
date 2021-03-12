@@ -91,9 +91,7 @@ class YourNegativeTestResultFragment : BaseFragment(R.layout.fragment_your_negat
             when (it) {
                 is SignedTestResult.Complete -> {
                     findNavController().navigate(
-                        YourNegativeTestResultFragmentDirections.actionMyOverview(
-                            true
-                        )
+                        YourNegativeTestResultFragmentDirections.actionMyOverview()
                     )
                 }
                 is SignedTestResult.AlreadySigned -> {

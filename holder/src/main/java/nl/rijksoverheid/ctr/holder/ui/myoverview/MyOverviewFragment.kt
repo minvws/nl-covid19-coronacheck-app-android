@@ -3,7 +3,6 @@ package nl.rijksoverheid.ctr.holder.ui.myoverview
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.snackbar.Snackbar
 import com.xwray.groupie.GroupAdapter
@@ -39,7 +38,6 @@ class MyOverviewFragment : BaseFragment(R.layout.fragment_my_overview) {
 
     private val section = Section()
 
-    private val args: MyOverviewFragmentArgs by navArgs()
     private val introductionViewModel: IntroductionViewModel by viewModel()
     private val localTestResultViewModel: LocalTestResultViewModel by sharedViewModel()
 
@@ -78,23 +76,24 @@ class MyOverviewFragment : BaseFragment(R.layout.fragment_my_overview) {
                         setItems(
                             localTestResult = localTestResultState.localTestResult
                         )
+
+                        // Show a SnackBar if this qr is created for the first time
+                        if (localTestResultState.firstTimeCreated) {
+                            Snackbar.make(
+                                requireView(),
+                                R.string.my_overview_qr_created_snackbar_message,
+                                Snackbar.LENGTH_LONG
+                            ).also {
+                                it.setAction(R.string.my_overview_qr_created_snackbar_button) {
+                                    BuildConfig.URL_FAQ.launchUrl(requireContext())
+                                }
+                            }.show(requireActivity())
+                        }
                     }
                 }
             })
 
         localTestResultViewModel.getLocalTestResult()
-
-        if (args.showQrCreatedSnackBar) {
-            Snackbar.make(
-                requireView(),
-                R.string.my_overview_qr_created_snackbar_message,
-                Snackbar.LENGTH_LONG
-            ).also {
-                it.setAction(R.string.my_overview_qr_created_snackbar_button) {
-                    BuildConfig.URL_FAQ.launchUrl(requireContext())
-                }
-            }.show(requireActivity())
-        }
     }
 
     private fun setItems(
