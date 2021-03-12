@@ -36,6 +36,8 @@
     <string name="scan_result_invalid_button">Scan volgende</string>
     <string name="scan_result_invalid_reason_title">Geen geldige QR-code</string>
     <string name="scan_result_invalid_reason_description"><![CDATA[Dit betekent <b>niet</b> dat de persoon corona heeft.<br\><br\><b>Wat kan het betekenen</b><br\><ul><li>De persoon is niet getest</li><li>De QR-code is doorgestuurd</li><li>De QR-code is vervalst</li></ul><br\><b>En nu?</b><br\>Weiger toegang en verzoek de bezoeker eerst een test te doen. Als het testresultaat bekend is kan de bezoeker er in de CoronaCheck app een QR-code van maken.]]></string>
+    <string name="scan_result_valid_reason_title">Identificatie gegevens controleren</string>
+    <string name="scan_result_valid_reason_description">Controleer of de identificatie gegevens op het groene scherm overeenkomen met de gegevens die op de bezoeker zijn identiteitsbewijs staan. Zo controleer je of de QR-code ook echt bij hem hoort.\n\nEen identificatie gegeven bestaat uit de eerste letter van de bezoekers voornaam (1), de eerste letter van de achternaam (2), de geboortedag (3), en geboortemaand (4).</string>
     <string name="about_this_app_description">CoronaTester is ontwikkeld zodat evenementen, horeca en andere uitgaansgelegenheden veilig hun deuren kunnen openen. Met behulp van deze app komen alleen mensen zonder corona binnen. Zo trekt Nederland er langzaam maar zeker meer op uit.</string>
     <string name="scan_instructions">Scan instructies</string>
     <string name="scan_instructions_1_title">1. Houd afstand</string>

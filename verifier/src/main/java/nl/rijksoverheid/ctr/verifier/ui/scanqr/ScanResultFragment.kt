@@ -10,14 +10,15 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import nl.rijksoverheid.ctr.design.utils.getSpannableFromHtml
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
 import nl.rijksoverheid.ctr.shared.util.PersonalDetailsUtil
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanResultBinding
-import org.koin.android.ext.android.inject
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import nl.rijksoverheid.ctr.design.utils.getSpannableFromHtml
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanResultInvalidReasonBinding
+import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanResultValidReasonBinding
+import org.koin.android.ext.android.inject
 
 
 /*
@@ -45,7 +46,7 @@ class ScanResultFragment : DialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentScanResultBinding.inflate(inflater)
         return binding.root
     }
@@ -68,8 +69,21 @@ class ScanResultFragment : DialogFragment() {
                 )
                 binding.personalDetailsHolder.setPersonalDetails(personalDetails)
                 binding.personalDetailsHolder.visibility = View.VISIBLE
-            }
 
+                binding.subtitle.setOnClickListener {
+                    val binding =
+                        FragmentScanResultValidReasonBinding.inflate(layoutInflater, null, false)
+                    val dialog = BottomSheetDialog(requireContext())
+                    dialog.setContentView(binding.root)
+                    binding.close.setOnClickListener {
+                        dialog.dismiss()
+                    }
+                    binding.personalDetailsHolder.setPersonalDetails(
+                        resources.getStringArray(R.array.personal_details_mock_data).toList(), true
+                    )
+                    dialog.show()
+                }
+            }
         } else {
             binding.root.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.red))
             binding.image.setImageResource(R.drawable.illustration_scan_result_invalid)
@@ -82,7 +96,10 @@ class ScanResultFragment : DialogFragment() {
                 val dialog = BottomSheetDialog(requireContext())
                 dialog.setContentView(binding.root)
                 binding.description.text =
-                    getSpannableFromHtml(requireContext(), getString(R.string.scan_result_invalid_reason_description))
+                    getSpannableFromHtml(
+                        requireContext(),
+                        getString(R.string.scan_result_invalid_reason_description)
+                    )
                 binding.close.setOnClickListener {
                     dialog.dismiss()
                 }
