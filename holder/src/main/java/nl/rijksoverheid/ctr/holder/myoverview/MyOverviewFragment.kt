@@ -69,14 +69,13 @@ class MyOverviewFragment : BaseFragment(R.layout.fragment_my_overview) {
         }
         binding.recyclerView.adapter = adapter
         (binding.recyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
-        setItems()
 
         localTestResultViewModel.localTestResultStateLiveData.observe(
             viewLifecycleOwner,
             EventObserver { localTestResultState ->
                 when (localTestResultState) {
                     is LocalTestResultState.None -> {
-                        // Nothing
+                        setItems()
                     }
                     is LocalTestResultState.Expired -> {
                         setItems(
