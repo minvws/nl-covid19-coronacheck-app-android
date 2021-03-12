@@ -109,7 +109,7 @@ class HolderMainActivity : BaseActivity(R.id.nav_my_overview) {
         }
 
         appStatusViewModel.appStatus.observe(this) {
-            if (it !is AppStatus.NoActionRequired) {
+            if (it !is AppStatus.NoActionRequired && it !is AppStatus.InternetRequired) {
                 val bundle = bundleOf(AppStatusFragment.EXTRA_APP_STATUS to it)
                 navController.navigate(R.id.action_app_status, bundle)
             }

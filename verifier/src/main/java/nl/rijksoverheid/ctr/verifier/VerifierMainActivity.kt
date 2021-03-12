@@ -17,8 +17,8 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
-import nl.rijksoverheid.ctr.appconfig.AppStatusFragment
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
+import nl.rijksoverheid.ctr.appconfig.AppStatusFragment
 import nl.rijksoverheid.ctr.appconfig.model.AppStatus
 import nl.rijksoverheid.ctr.holder.persistence.IntroductionPersistenceManager
 import nl.rijksoverheid.ctr.shared.BaseActivity
@@ -96,7 +96,7 @@ class VerifierMainActivity : BaseActivity(R.id.nav_scan_qr) {
         }
 
         appStatusViewModel.appStatus.observe(this) {
-            if (it !is AppStatus.NoActionRequired) {
+            if (it !is AppStatus.NoActionRequired && it !is AppStatus.InternetRequired) {
                 val bundle = bundleOf(AppStatusFragment.EXTRA_APP_STATUS to it)
                 navController.navigate(R.id.action_app_status, bundle)
             }
