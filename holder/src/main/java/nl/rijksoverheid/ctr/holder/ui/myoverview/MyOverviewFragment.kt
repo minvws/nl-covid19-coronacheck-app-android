@@ -46,7 +46,9 @@ class MyOverviewFragment : BaseFragment(R.layout.fragment_my_overview) {
     private val localTestResultRunnable = object : Runnable {
         override fun run() {
             localTestResultViewModel.getLocalTestResult()
-            localTestResultHandler.postDelayed(this, TimeUnit.MILLISECONDS.toMillis(1000))
+
+            // Refresh every 10 seconds
+            localTestResultHandler.postDelayed(this, TimeUnit.SECONDS.toMillis(10))
         }
     }
 
