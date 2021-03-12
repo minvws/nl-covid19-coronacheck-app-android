@@ -13,12 +13,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.navArgs
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import nl.rijksoverheid.ctr.design.ExpandedBottomSheetDialogFragment
 import nl.rijksoverheid.ctr.shared.util.PersonalDetailsUtil
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanResultValidReasonBinding
 import org.koin.android.ext.android.inject
 
-class ScanResultValidExplanationDialogFragment : BottomSheetDialogFragment() {
+class ScanResultValidExplanationDialogFragment : ExpandedBottomSheetDialogFragment() {
 
     private lateinit var binding: FragmentScanResultValidReasonBinding
     private val args: ScanResultValidExplanationDialogFragmentArgs by navArgs()
@@ -29,6 +29,7 @@ class ScanResultValidExplanationDialogFragment : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        super.onCreateView(inflater, container, savedInstanceState)
         binding = FragmentScanResultValidReasonBinding.inflate(inflater)
         return binding.root
     }
@@ -44,6 +45,5 @@ class ScanResultValidExplanationDialogFragment : BottomSheetDialogFragment() {
             )
             binding.personalDetailsHolder.setPersonalDetails(personalDetails, true)
         }
-
     }
 }
