@@ -1,6 +1,5 @@
 package nl.rijksoverheid.ctr.shared.ext
 
-import android.R
 import android.widget.TextView
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.FragmentActivity
@@ -11,7 +10,7 @@ import com.google.android.material.snackbar.Snackbar
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
  *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
  *
- *   SPDX-License-Identifier: EUPL-1.2
+ *   SPDX-License-Identifier: EUPL-1.2 
  *
  */
 
@@ -26,7 +25,7 @@ fun Snackbar.show(fragmentActivity: FragmentActivity) {
 
     // Apply window insets on snackbar
     ViewCompat.setOnApplyWindowInsetsListener(
-        fragmentActivity.findViewById(R.id.content)
+        fragmentActivity.findViewById(android.R.id.content)
     ) { _, insets ->
         this.view.translationY = insets.systemWindowInsetBottom * -1f
         insets
