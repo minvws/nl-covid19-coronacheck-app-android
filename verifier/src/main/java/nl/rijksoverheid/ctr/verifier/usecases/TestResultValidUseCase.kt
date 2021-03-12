@@ -27,20 +27,13 @@ class TestResultValidUseCase(
             is DecryptHolderQrUseCase.DecryptResult.Success -> {
                 val validity =
                     TimeUnit.HOURS.toSeconds(cachedAppConfigUseCase.getCachedAppConfig().maxValidityHours.toLong())
-               /* val isValid = testResultUtil.isValid(
+                val isValid = testResultUtil.isValid(
                     sampleDate = decryptResult.decryptQr.sampleDate,
                     validitySeconds = validity
                 ) && qrCodeUtil.isValid(
                     creationDate = decryptResult.decryptQr.creationDate
-                )*/
-                val isValidSample = testResultUtil.isValid(
-                    sampleDate = decryptResult.decryptQr.sampleDate,
-                    validitySeconds = validity
                 )
-                val isValidCreation =qrCodeUtil.isValid(
-                    creationDate = decryptResult.decryptQr.creationDate
-                )
-                if (isValidCreation && isValidSample) {
+                if (isValid) {
                     TestResultValidResult.Valid(decryptResult.decryptQr)
                 } else {
                     TestResultValidResult.Invalid
