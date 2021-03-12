@@ -14,10 +14,4 @@
         <item>@string/personal_details_month_nov</item>
         <item>@string/personal_details_month_dec</item>
     </string-array>
-    <string-array name="personal_details_mock_data">
-        <item>W</item>
-        <item>G</item>
-        <item>15</item>
-        <item>MAA</item>
-    </string-array>
 </resources>

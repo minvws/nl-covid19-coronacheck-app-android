@@ -80,9 +80,7 @@ class ScanResultFragment : DialogFragment() {
                     binding.close.setOnClickListener {
                         dialog.dismiss()
                     }
-                    binding.personalDetailsHolder.setPersonalDetails(
-                        resources.getStringArray(R.array.personal_details_mock_data).toList(), true
-                    )
+                    binding.personalDetailsHolder.setPersonalDetails(personalDetails)
                     dialog.show()
                 }
             }
