@@ -71,7 +71,6 @@
     <string name="commercial_test_scanner_custom_message">Richt je toestel op de QR-code die je van de testlocatie hebt gekregen.</string>
     <string name="your_negative_test_results_title">Jouw negatieve testresultaten</string>
     <string name="your_negative_test_results_description">Je hebt 1 nieuw negatief testresultaat (geen corona). Maak van dit resultaat een QR-code. Dat is jouw bewijs.</string>
-    <string name="your_negative_test_results_tooltip">Alleen testresultaten die niet ouder zijn dan %1$s uur kun je gebruiken om een QR-code te maken.</string>
     <string name="your_negative_test_results_header">Recente testresultaten</string>
     <string name="your_negative_test_results_row_title">Negatief testresultaat (geen corona)</string>
     <string name="your_negative_test_results_row_personal_details">Identificatie gegevens: %1$s</string>
@@ -80,7 +79,9 @@
     <string name="your_negative_test_results_backbutton_message">Je kan later vanaf Mijn overzicht opnieuw een QR-code maken</string>
     <string name="your_negative_test_results_backbutton_ok">Ja</string>
     <string name="your_negative_test_results_backbutton_cancel">Nee</string>
-    <string name="your_negative_test_results_info">Alleen testresultaten die niet ouder zijn dan %1$s uur kun je gebruiken om een QR-code van te maken.</string>
+    <string name="your_negative_test_results_explanation_title">Meer over testresultaten</string>
+    <string name="your_negative_test_results_explanation_paragraph_1"><![CDATA[In een testresultaat staan alleen de testdatum en jouw gegevens.<br\><br\>Je gegevens bestaan uit: (1) de eerste letter van je voornaam, (2) de eerste letter van je achternaam, (3) je geboortedag en (4) geboortemaand.]]></string>
+    <string name="your_negative_test_results_explanation_paragraph_2"><![CDATA[<b>Zijn deze gegevens anders dan op je identiteitsbewijs?</b><br\>Neem contact op met je testlocatie. Zij kunnen je gegevens aanpassen.]]></string>
     <string name="testresult_not_known_title">Testresultaat nog niet bekend</string>
     <string name="testresult_not_known_description">Je testresultaat is nog niet bekend. Probeer het later nog eens.\nHeb je het idee dat dit niet klopt? Neem dan contact op met de testaanbieder.</string>
     <string name="testresult_to_qr_code_title">Van jouw testresultaat wordt nu een QR-code gemaakt</string>

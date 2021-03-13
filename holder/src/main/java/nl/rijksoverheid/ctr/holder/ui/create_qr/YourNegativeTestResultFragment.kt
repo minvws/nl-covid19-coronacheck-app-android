@@ -49,12 +49,22 @@ class YourNegativeTestResultFragment : BaseFragment(R.layout.fragment_your_negat
             // restored from state, no result anymore
             findNavController().navigate(YourNegativeTestResultFragmentDirections.actionMyOverview())
         } else {
-            retrievedResult.remoteTestResult.result?.let {
+            retrievedResult.remoteTestResult.result?.let { result ->
                 binding.rowSubtitle.text =
                     OffsetDateTime.ofInstant(
-                        Instant.ofEpochSecond(it.sampleDate.toEpochSecond()),
+                        Instant.ofEpochSecond(result.sampleDate.toEpochSecond()),
                         ZoneOffset.UTC
                     ).formatDateTime(requireContext())
+
+
+                binding.info.setOnClickListener {
+                    findNavController().navigate(
+                        YourNegativeTestResultFragmentDirections.actionYourNegativeResultExplanation(
+                            result.holder
+                        )
+                    )
+                }
+
             }
 
             binding.rowPersonalDetails.text = getString(
@@ -73,14 +83,6 @@ class YourNegativeTestResultFragment : BaseFragment(R.layout.fragment_your_negat
 
         binding.button.setOnClickListener {
             viewModel.saveTestResult()
-        }
-
-        binding.info.setOnClickListener {
-            MaterialAlertDialogBuilder(requireContext())
-                .setTitle(R.string.your_negative_test_results_header)
-                .setMessage(appConfigUtil.getStringWithTestValidity(R.string.your_negative_test_results_info))
-                .setPositiveButton(R.string.ok) { _, _ -> }
-                .show()
         }
 
         viewModel.loading.observe(viewLifecycleOwner, EventObserver {

@@ -36,14 +36,13 @@ class ScanResultValidExplanationDialogFragment : ExpandedBottomSheetDialogFragme
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        args.qrResult.let {
-            val personalDetails = personalDetailsUtil.getPersonalDetails(
-                it.firstNameInitial,
-                it.lastNameInitial,
-                it.birthDay,
-                it.birthMonth
-            )
-            binding.personalDetailsHolder.setPersonalDetails(personalDetails, true)
-        }
+        val qrResult = args.qrResult
+        val personalDetails = personalDetailsUtil.getPersonalDetails(
+            qrResult.firstNameInitial,
+            qrResult.lastNameInitial,
+            qrResult.birthDay,
+            qrResult.birthMonth
+        )
+        binding.personalDetailsHolder.setPersonalDetails(personalDetails, true)
     }
 }
