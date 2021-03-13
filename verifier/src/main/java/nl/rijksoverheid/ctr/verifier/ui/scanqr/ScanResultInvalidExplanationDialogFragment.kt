@@ -13,11 +13,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import nl.rijksoverheid.ctr.design.ExpandedBottomSheetDialogFragment
 import nl.rijksoverheid.ctr.design.utils.getSpannableFromHtml
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanResultInvalidReasonBinding
 
-class ScanResultInvalidExplanationDialogFragment : BottomSheetDialogFragment() {
+class ScanResultInvalidExplanationDialogFragment : ExpandedBottomSheetDialogFragment() {
 
     private lateinit var binding: FragmentScanResultInvalidReasonBinding
 
@@ -26,6 +27,7 @@ class ScanResultInvalidExplanationDialogFragment : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        super.onCreateView(inflater, container, savedInstanceState)
         binding = FragmentScanResultInvalidReasonBinding.inflate(inflater)
         return binding.root
     }

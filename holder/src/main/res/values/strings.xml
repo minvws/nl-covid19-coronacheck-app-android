@@ -33,7 +33,8 @@
     <string name="terms_of_use">Gebruiksvoorwaarden</string>
     <string name="my_overview_test_result_title">Mijn QR-code</string>
     <string name="my_overview_test_result_validity">Geldig tot %1$s</string>
-    <string name="my_overview_test_result_expires_in">Verloopt in %1$s uur %2$s min</string>
+    <string name="my_overview_test_result_expires_in_hours_minutes">Verloopt in %1$s uur %2$s min</string>
+    <string name="my_overview_test_result_expires_in_minutes">Verloopt over %1$s min</string>
     <string name="my_overview_test_result_footer">Laat QR-code zien bij ingang</string>
     <string name="my_overview_test_result_button">Bekijk QR</string>
     <string name="my_overview_no_qr_make_appointment_title">Maak een testafspraak</string>
@@ -42,6 +43,8 @@
     <string name="my_overview_no_qr_make_qr_title">Maak een QR-code</string>
     <string name="my_overview_no_qr_make_qr_description">Zet jouw negatieve testresultaat om in een persoonlijke QR-code.</string>
     <string name="my_overview_no_qr_make_qr_button">Maak qr-code</string>
+    <string name="my_overview_qr_created_snackbar_message">Jouw QR-code is gemaakt. Lees meer over welke gegevens zijn verwerkt in de QR-code.</string>
+    <string name="my_overview_qr_created_snackbar_button">Lees meer</string>
     <string name="choose_provider_toolbar">QR-code maken</string>
     <string name="choose_provider_title">Waar ben je getest?</string>
     <string name="choose_provider_description">Is je testresultaat negatief? Dan kan je er een QR-code van maken. Geef aan bij welke testlocatie je bent getest.</string>
@@ -68,7 +71,6 @@
     <string name="commercial_test_scanner_custom_message">Richt je toestel op de QR-code die je van de testlocatie hebt gekregen.</string>
     <string name="your_negative_test_results_title">Jouw negatieve testresultaten</string>
     <string name="your_negative_test_results_description">Je hebt 1 nieuw negatief testresultaat (geen corona). Maak van dit resultaat een QR-code. Dat is jouw bewijs.</string>
-    <string name="your_negative_test_results_tooltip">Alleen testresultaten die niet ouder zijn dan %1$s uur kun je gebruiken om een QR-code te maken.</string>
     <string name="your_negative_test_results_header">Recente testresultaten</string>
     <string name="your_negative_test_results_row_title">Negatief testresultaat (geen corona)</string>
     <string name="your_negative_test_results_row_personal_details">Identificatie gegevens: %1$s</string>
@@ -77,7 +79,9 @@
     <string name="your_negative_test_results_backbutton_message">Je kan later vanaf Mijn overzicht opnieuw een QR-code maken</string>
     <string name="your_negative_test_results_backbutton_ok">Ja</string>
     <string name="your_negative_test_results_backbutton_cancel">Nee</string>
-    <string name="your_negative_test_results_info">Alleen testresultaten die niet ouder zijn dan %1$s uur kun je gebruiken om een QR-code van te maken.</string>
+    <string name="your_negative_test_results_explanation_title">Meer over testresultaten</string>
+    <string name="your_negative_test_results_explanation_paragraph_1"><![CDATA[In een testresultaat staan alleen de testdatum en jouw gegevens.<br\><br\>Je gegevens bestaan uit: (1) de eerste letter van je voornaam, (2) de eerste letter van je achternaam, (3) je geboortedag en (4) geboortemaand.]]></string>
+    <string name="your_negative_test_results_explanation_paragraph_2"><![CDATA[<b>Zijn deze gegevens anders dan op je identiteitsbewijs?</b><br\>Neem contact op met je testlocatie. Zij kunnen je gegevens aanpassen.]]></string>
     <string name="testresult_not_known_title">Testresultaat nog niet bekend</string>
     <string name="testresult_not_known_description">Je testresultaat is nog niet bekend. Probeer het later nog eens.\nHeb je het idee dat dit niet klopt? Neem dan contact op met de testaanbieder.</string>
     <string name="testresult_to_qr_code_title">Van jouw testresultaat wordt nu een QR-code gemaakt</string>
@@ -88,9 +92,6 @@
     <string name="no_negative_test_result_description"><![CDATA[Er is geen negatief testresultaat (geen corona) beschikbaar.<br/>Dit kan het volgende betekenen:<br\><br\><ul><li>Je hebt nog geen test gedaan</li><li>Je testresultaat is nog niet verwerkt</li><li>Je test is langer dan %1$s uur geleden uitgevoerd</li><li>Je uitslag is niet negatief. In dit geval neemt de testlocatie contact op met jou.</li></ul>]]></string>
     <string name="test_result_not_known_title">Testresultaat nog niet bekend</string>
     <string name="test_result_not_known_description"><![CDATA[Probeer het later nog eens.<br\><br\>Neem voor vragen contact op met jouw testlocatie.]]></string>
-    <string name="create_qr_code_title">Van jouw testresultaat is een QR-code gemaakt</string>
-    <string name="create_qr_code_description"><![CDATA[In de QR-code is verwerkt dat je <b>negatief getest</b> bent (geen corona) op <b>%1$s om %2$s</b>.<br\><br\>In deze app is alleen de anonieme QR-code zichtbaar, zonder verdere testinformatie.]]></string>
-    <string name="create_qr_code_button">Naar mijn QR</string>
     <string name="about_this_app_description">CoronaTester is ontwikkeld zodat evenementen, horeca en andere uitgaansgelegenheden veilig hun deuren kunnen openen. Met behulp van deze app komen alleen mensen zonder corona binnen. Zo trekt Nederland er langzaam maar zeker meer op uit.</string>
     <string name="test_result_already_signed_title">Testresultaat is al opgehaald</string>
     <string name="test_result_already_signed_description"><![CDATA[Je testresultaat is al opgehaald en verwerkt in een QR-code.<br\><br\> Heb je het idee dat dit niet klopt? Neem dan contact op met de testaanbieder.]]></string>

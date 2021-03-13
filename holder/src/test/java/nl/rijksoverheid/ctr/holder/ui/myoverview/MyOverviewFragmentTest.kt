@@ -4,6 +4,9 @@ import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers
 import com.schibsted.spain.barista.assertion.BaristaListAssertions.assertDisplayedAtPosition
 import com.schibsted.spain.barista.assertion.BaristaListAssertions.assertListItemCount
 import com.schibsted.spain.barista.interaction.BaristaListInteractions.clickListItemChild
@@ -78,7 +81,8 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                     expireDate = OffsetDateTime.now(),
                     testType = "dummy",
                     personalDetails = listOf("X", "X", "X", "X")
-                )
+                ),
+                firstTimeCreated = false
             )
         )
         assertListItemCount(
@@ -148,6 +152,24 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
     }
 
     @Test
+    fun `First time creating qr code shows snackbar`() {
+        launchOverviewFragment(
+            localTestResultState = LocalTestResultState.Valid(
+                LocalTestResult(
+                    credentials = "dummy",
+                    sampleDate = OffsetDateTime.now(),
+                    expireDate = OffsetDateTime.now(),
+                    testType = "dummy",
+                    personalDetails = listOf("X", "X", "X", "X")
+                ),
+                firstTimeCreated = true
+            )
+        )
+        onView(ViewMatchers.withId(com.google.android.material.R.id.snackbar_text))
+            .check(matches(ViewMatchers.withText(R.string.my_overview_qr_created_snackbar_message)))
+    }
+
+    @Test
     fun `Clicking close button in MyOverviewTestResultExpiredAdapterItem removes the view from RecyclerView`() {
         launchOverviewFragment(
             localTestResultState = LocalTestResultState.Expired
@@ -177,7 +199,8 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                     expireDate = OffsetDateTime.now(),
                     testType = "dummy",
                     personalDetails = listOf("X", "X", "X", "X")
-                )
+                ),
+                firstTimeCreated = false
             )
         )
         clickListItemChild(

@@ -40,7 +40,7 @@ open class LocalTestResultViewModelImpl(
     override fun getLocalTestResult() {
         viewModelScope.launch {
             secretKeyUseCase.persist()
-            val localTestResultState = localTestResultUseCase.get()
+            val localTestResultState = localTestResultUseCase.get(localTestResultStateLiveData.value?.peekContent())
             localTestResultStateLiveData.value = Event(localTestResultState)
         }
     }

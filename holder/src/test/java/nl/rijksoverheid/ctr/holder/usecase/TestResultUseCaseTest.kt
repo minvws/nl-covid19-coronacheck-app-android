@@ -353,7 +353,7 @@ class TestResultUseCaseTest {
                     sampleDate = OffsetDateTime.now(),
                     testType = "dummy",
                     negativeResult = false,
-                    holder = RemoteTestResult.Result.Holder(
+                    holder = Holder(
                         firstNameInitial = "A",
                         lastNameInitial = "B",
                         birthDay = "1",

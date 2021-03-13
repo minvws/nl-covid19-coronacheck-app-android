@@ -1,6 +1,8 @@
 package nl.rijksoverheid.ctr.holder.models
 
+import android.os.Parcelable
 import com.squareup.moshi.JsonClass
+import kotlinx.parcelize.Parcelize
 import java.time.OffsetDateTime
 
 /*
@@ -39,14 +41,5 @@ data class RemoteTestResult(
         val testType: String,
         val negativeResult: Boolean,
         val holder: Holder
-    ) {
-
-        @JsonClass(generateAdapter = true)
-        data class Holder(
-            val firstNameInitial: String,
-            val lastNameInitial: String,
-            val birthDay: String,
-            val birthMonth: String
-        )
-    }
+    )
 }

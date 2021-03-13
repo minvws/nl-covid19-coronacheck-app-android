@@ -8,7 +8,7 @@ package nl.rijksoverheid.ctr.holder.models
  *
  */
 sealed class LocalTestResultState {
-    data class Valid(val localTestResult: LocalTestResult) : LocalTestResultState()
+    data class Valid(val localTestResult: LocalTestResult, val firstTimeCreated: Boolean) : LocalTestResultState()
     object Expired : LocalTestResultState()
     object None : LocalTestResultState()
 }

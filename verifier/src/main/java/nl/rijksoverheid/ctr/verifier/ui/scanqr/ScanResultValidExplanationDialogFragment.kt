@@ -13,12 +13,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.navArgs
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import nl.rijksoverheid.ctr.design.ExpandedBottomSheetDialogFragment
 import nl.rijksoverheid.ctr.shared.util.PersonalDetailsUtil
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanResultValidReasonBinding
 import org.koin.android.ext.android.inject
 
-class ScanResultValidExplanationDialogFragment : BottomSheetDialogFragment() {
+class ScanResultValidExplanationDialogFragment : ExpandedBottomSheetDialogFragment() {
 
     private lateinit var binding: FragmentScanResultValidReasonBinding
     private val args: ScanResultValidExplanationDialogFragmentArgs by navArgs()
@@ -29,21 +29,20 @@ class ScanResultValidExplanationDialogFragment : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        super.onCreateView(inflater, container, savedInstanceState)
         binding = FragmentScanResultValidReasonBinding.inflate(inflater)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        args.qrResult.let {
-            val personalDetails = personalDetailsUtil.getPersonalDetails(
-                it.firstNameInitial,
-                it.lastNameInitial,
-                it.birthDay,
-                it.birthMonth
-            )
-            binding.personalDetailsHolder.setPersonalDetails(personalDetails, true)
-        }
-
+        val qrResult = args.qrResult
+        val personalDetails = personalDetailsUtil.getPersonalDetails(
+            qrResult.firstNameInitial,
+            qrResult.lastNameInitial,
+            qrResult.birthDay,
+            qrResult.birthMonth
+        )
+        binding.personalDetailsHolder.setPersonalDetails(personalDetails, true)
     }
 }

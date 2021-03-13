@@ -12,6 +12,7 @@ import nl.rijksoverheid.ctr.holder.fakeTestResultAttributesUseCase
 import nl.rijksoverheid.ctr.holder.models.LocalTestResultState
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.shared.util.TestResultUtil
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.time.Clock
@@ -40,7 +41,7 @@ class LocalTestResultUseCaseImplTest {
                 personalDetailsUtil = fakePersonalDetailsUtil()
             )
 
-            val localTestResult = usecase.get()
+            val localTestResult = usecase.get(null)
             assertTrue(localTestResult is LocalTestResultState.None)
         }
 
@@ -73,8 +74,42 @@ class LocalTestResultUseCaseImplTest {
                 personalDetailsUtil = fakePersonalDetailsUtil()
             )
 
-            val localTestResult = usecase.get()
-            assertTrue(localTestResult is LocalTestResultState.Valid)
+            val localTestResult = usecase.get(null)
+            assertFalse((localTestResult as LocalTestResultState.Valid).firstTimeCreated)
+            verify(exactly = 0) { mockedPersistenceManager.deleteCredentials() }
+        }
+
+    @Test
+    fun `Local test result that is valid with previous test result state None returns first time created`() =
+        runBlocking {
+            val mockedPersistenceManager: PersistenceManager = mockk(relaxed = true)
+            every { mockedPersistenceManager.getCredentials() } answers { "" }
+
+            val usecase = LocalTestResultUseCaseImpl(
+                persistenceManager = mockedPersistenceManager,
+                testResultUtil = TestResultUtil(
+                    clock = Clock.fixed(Instant.parse("2021-01-02T00:00:00.00Z"), ZoneId.of("UTC"))
+                ),
+                cachedAppConfigUseCase = fakeCachedAppConfigUseCase(
+                    appConfig = AppConfig(
+                        minimumVersion = 0,
+                        appDeactivated = false,
+                        informationURL = "dummy",
+                        configTtlSeconds = 0,
+                        maxValidityHours = 48
+                    )
+                ),
+                testResultAttributesUseCase = fakeTestResultAttributesUseCase(
+                    sampleTimeSeconds = OffsetDateTime.ofInstant(
+                        Instant.parse("2021-01-01T00:00:00.00Z"),
+                        ZoneId.of("UTC")
+                    ).toEpochSecond()
+                ),
+                personalDetailsUtil = fakePersonalDetailsUtil()
+            )
+
+            val localTestResult = usecase.get(LocalTestResultState.None)
+            assertTrue((localTestResult as LocalTestResultState.Valid).firstTimeCreated)
             verify(exactly = 0) { mockedPersistenceManager.deleteCredentials() }
         }
 
@@ -99,7 +134,7 @@ class LocalTestResultUseCaseImplTest {
                 personalDetailsUtil = fakePersonalDetailsUtil()
             )
 
-            val localTestResult = usecase.get()
+            val localTestResult = usecase.get(null)
             assertTrue(localTestResult is LocalTestResultState.Expired)
             verify(exactly = 1) { mockedPersistenceManager.deleteCredentials() }
         }
