@@ -53,7 +53,7 @@ val mainModule = module {
         SecretKeyUseCaseImpl(get())
     }
     factory<CommitmentMessageUseCase> {
-        CommitmentMessageUseCaseImpl(get())
+        CommitmentMessageUseCaseImpl(get(), get())
     }
     factory<TestProviderUseCase> {
         TestProviderUseCaseImpl(get())
