@@ -21,7 +21,7 @@ class AppConfigUtilImpl(
     override fun getStringWithTestValidity(@StringRes text: Int): String {
         return context.getString(
             text,
-            cachedAppConfigUseCase.getCachedAppConfig().maxValidityHours.toString()
+            cachedAppConfigUseCase.getCachedAppConfigMaxValidityHours().toString()
         )
     }
 }

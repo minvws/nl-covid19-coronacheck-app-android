@@ -44,7 +44,9 @@ open class LocalTestResultUseCaseImpl(
                     ZoneOffset.UTC
                 )
                 val testValiditySeconds =
-                    TimeUnit.HOURS.toSeconds(cachedAppConfigUseCase.getCachedAppConfig().maxValidityHours.toLong())
+                    TimeUnit.HOURS.toSeconds(
+                        cachedAppConfigUseCase.getCachedAppConfigMaxValidityHours().toLong()
+                    )
 
                 val isValid = testResultUtil.isValid(
                     sampleDate = sampleDate,

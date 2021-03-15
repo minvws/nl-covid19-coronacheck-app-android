@@ -12,6 +12,5 @@ import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
  */
 sealed class ConfigResult {
     data class Success(val appConfig: AppConfig, val publicKeys: PublicKeys) : ConfigResult()
-    object ServerError : ConfigResult()
-    object NetworkError : ConfigResult()
+    object Error : ConfigResult()
 }

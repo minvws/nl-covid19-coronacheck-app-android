@@ -2,8 +2,12 @@ package nl.rijksoverheid.ctr.appconfig.usecase
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import nl.rijksoverheid.ctr.appconfig.AppConfigPersistenceManager
+import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.model.AppStatus
 import nl.rijksoverheid.ctr.appconfig.model.ConfigResult
+import java.time.Clock
+import java.time.OffsetDateTime
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -16,7 +20,12 @@ interface AppStatusUseCase {
     suspend fun get(config: ConfigResult, currentVersionCode: Int): AppStatus
 }
 
-class AppStatusUseCaseImpl : AppStatusUseCase {
+class AppStatusUseCaseImpl(
+    private val clock: Clock,
+    private val cachedAppConfigUseCase: CachedAppConfigUseCase,
+    private val appConfigPersistenceManager: AppConfigPersistenceManager
+) :
+    AppStatusUseCase {
     override suspend fun get(config: ConfigResult, currentVersionCode: Int): AppStatus =
         withContext(Dispatchers.IO) {
             when (config) {
@@ -28,11 +37,21 @@ class AppStatusUseCaseImpl : AppStatusUseCase {
                         else -> AppStatus.NoActionRequired
                     }
                 }
-                is ConfigResult.NetworkError -> {
-                    AppStatus.InternetRequired
-                }
-                is ConfigResult.ServerError -> {
-                    AppStatus.InternetRequired
+                is ConfigResult.Error -> {
+                    val cachedAppConfig = cachedAppConfigUseCase.getCachedAppConfig()
+                    if (cachedAppConfig == null) {
+                        AppStatus.InternetRequired
+                    } else {
+                        if (appConfigPersistenceManager.getAppConfigLastFetchedSeconds() + cachedAppConfig.configTtlSeconds >= OffsetDateTime.now(
+                                clock
+                            )
+                                .toEpochSecond()
+                        ) {
+                            AppStatus.NoActionRequired
+                        } else {
+                            AppStatus.InternetRequired
+                        }
+                    }
                 }
             }
         }

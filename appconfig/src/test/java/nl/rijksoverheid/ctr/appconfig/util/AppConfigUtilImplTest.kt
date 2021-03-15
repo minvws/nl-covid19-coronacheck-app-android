@@ -5,9 +5,7 @@ import io.mockk.InternalPlatformDsl.toStr
 import io.mockk.mockk
 import io.mockk.verify
 import nl.rijksoverheid.ctr.appconfig.AppConfigUtilImpl
-import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
-import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
-import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
+import nl.rijksoverheid.ctr.appconfig.fakeCachedAppConfigUseCase
 import org.junit.Test
 
 /*
@@ -24,31 +22,12 @@ class AppConfigUtilImplTest {
         val textResource = 0
         val maxValidityHours = 48
         val mockedContext: Context = mockk(relaxed = true)
-        val fakeCachedAppConfigUseCase = object : CachedAppConfigUseCase {
-            override fun persistAppConfig(appConfig: AppConfig) {
-
-            }
-
-            override fun getCachedAppConfig(): AppConfig = AppConfig(
-                minimumVersion = 0,
-                appDeactivated = false,
-                informationURL = "dummy",
-                configTtlSeconds = 0,
-                maxValidityHours = maxValidityHours
-            )
-
-            override fun persistPublicKeys(publicKeys: PublicKeys) {
-
-            }
-
-            override fun getCachedPublicKeys(): PublicKeys? {
-                return null
-            }
-        }
 
         val appConfigUtil = AppConfigUtilImpl(
             context = mockedContext,
-            cachedAppConfigUseCase = fakeCachedAppConfigUseCase
+            cachedAppConfigUseCase = fakeCachedAppConfigUseCase(
+                cachedAppConfigMaxValidityHours = maxValidityHours
+            )
         )
 
         appConfigUtil.getStringWithTestValidity(textResource)

@@ -15,7 +15,8 @@ import nl.rijksoverheid.ctr.shared.ext.toObject
 
 interface CachedAppConfigUseCase {
     fun persistAppConfig(appConfig: AppConfig)
-    fun getCachedAppConfig(): AppConfig
+    fun getCachedAppConfig(): AppConfig?
+    fun getCachedAppConfigMaxValidityHours(): Int
     fun persistPublicKeys(publicKeys: PublicKeys)
     fun getCachedPublicKeys(): PublicKeys?
 }
@@ -30,9 +31,13 @@ class CachedAppConfigUseCaseImpl constructor(
         persistenceManager.saveAppConfigJson(json)
     }
 
-    override fun getCachedAppConfig(): AppConfig {
+    override fun getCachedAppConfig(): AppConfig? {
         return persistenceManager.getAppConfigJson()?.toObject(moshi)
-            ?: throw IllegalStateException("App config should be cached")
+    }
+
+    override fun getCachedAppConfigMaxValidityHours(): Int {
+        return getCachedAppConfig()?.maxValidityHours
+            ?: throw IllegalStateException("AppConfig should be cached")
     }
 
     override fun persistPublicKeys(publicKeys: PublicKeys) {
