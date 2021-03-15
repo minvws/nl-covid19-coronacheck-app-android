@@ -8,6 +8,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.appconfig.AppConfigUtil
 import nl.rijksoverheid.ctr.holder.BaseFragment
+import nl.rijksoverheid.ctr.holder.HolderMainActivity
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentCommercialTestCodeBinding
 import nl.rijksoverheid.ctr.holder.ext.hideKeyboard
@@ -52,7 +53,8 @@ class CommercialTestCodeFragment : BaseFragment(R.layout.fragment_commercial_tes
         }
 
         viewModel.loading.observe(viewLifecycleOwner, EventObserver {
-            presentLoading(it)
+            (activity as HolderMainActivity).presentLoading(it)
+            binding.button.isEnabled = !it
         })
 
         binding.uniqueCodeText.addTextChangedListener {
@@ -116,7 +118,6 @@ class CommercialTestCodeFragment : BaseFragment(R.layout.fragment_commercial_tes
                     }
 
                     binding.verificationCodeInput.requestFocus()
-                    showKeyboard(binding.verificationCodeText)
                 }
             }
         })

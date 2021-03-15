@@ -8,6 +8,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import nl.rijksoverheid.ctr.appconfig.AppConfigUtil
 import nl.rijksoverheid.ctr.design.ext.formatDateTime
 import nl.rijksoverheid.ctr.holder.BaseFragment
+import nl.rijksoverheid.ctr.holder.HolderMainActivity
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentYourNegativeTestResultsBinding
 import nl.rijksoverheid.ctr.holder.usecase.SignedTestResult
@@ -86,7 +87,8 @@ class YourNegativeTestResultFragment : BaseFragment(R.layout.fragment_your_negat
         }
 
         viewModel.loading.observe(viewLifecycleOwner, EventObserver {
-            presentLoading(it)
+            (requireActivity() as HolderMainActivity).presentLoading(it)
+            binding.button.isEnabled = !it
         })
 
         viewModel.signedTestResult.observe(viewLifecycleOwner, EventObserver {
