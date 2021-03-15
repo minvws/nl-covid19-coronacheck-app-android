@@ -69,12 +69,6 @@ class QrCodeFragment : DialogFragment() {
             presentQrLoading(false)
         }
 
-        val localTestResult = localTestResultViewModel.retrievedLocalTestResult
-        if (localTestResult == null) {
-            // No credentials in cache, go back to overview
-            findNavController().popBackStack()
-        }
-
         binding.toolbar.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
@@ -89,6 +83,13 @@ class QrCodeFragment : DialogFragment() {
         super.onResume()
         presentQrLoading(true)
         qrCodeHandler.post(qrCodeRunnable)
+
+        // If the qr code has expired close this screen
+        val localTestResult = localTestResultViewModel.retrievedLocalTestResult
+        if (localTestResult == null) {
+            // No credentials in cache, go back to overview
+            findNavController().popBackStack()
+        }
     }
 
     override fun onPause() {
