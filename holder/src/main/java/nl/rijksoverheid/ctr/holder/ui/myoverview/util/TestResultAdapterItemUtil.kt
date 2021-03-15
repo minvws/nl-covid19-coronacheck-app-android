@@ -36,7 +36,7 @@ class TestResultAdapterItemUtilImpl(private val clock: Clock) : TestResultAdapte
     ): TestResultAdapterItemUtil.ExpireCountDown {
         val hoursBetweenExpiration =
             ChronoUnit.HOURS.between(OffsetDateTime.now(clock), expireDate)
-        return if (hoursBetweenExpiration > 6) {
+        return if (hoursBetweenExpiration > 5) {
             TestResultAdapterItemUtil.ExpireCountDown.Hide
         } else {
             var diff =
