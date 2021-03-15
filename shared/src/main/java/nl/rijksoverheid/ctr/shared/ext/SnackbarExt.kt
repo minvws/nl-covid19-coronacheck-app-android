@@ -15,7 +15,7 @@ import com.google.android.material.snackbar.Snackbar
 /**
  * Sets max lines to 5 for a Snackbar
  */
-fun Snackbar.show() {
+fun Snackbar.showWithLargeContent() {
     // Set multi lines
     view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text).maxLines = 5
     this.show()
