@@ -64,6 +64,7 @@
     <string name="commercial_test_code_description">Vul de code in die je van je testlocatie hebt gekregen. Of klik op de link in je e-mail, als de testlocatie je gemaild heeft.</string>
     <string name="commercial_test_unique_code_hint">Unieke code</string>
     <string name="commercial_test_verification_code_hint">Verificatie code</string>
+    <string name="commercial_test_verification_code_helper_text">Je ontvangt een code per sms of email</string>
     <string name="commercial_test_button">Haal testresultaten op</string>
     <string name="commercial_test_invalid_qr_title">Ongeldige QR-code</string>
     <string name="commercial_test_invalid_qr_message">Deze QR-code is niet geldig. Scan de QR-code die je van je testlocatie hebt gekregen.</string>
