@@ -116,6 +116,10 @@ class VerifierMainActivity : BaseActivity(R.id.nav_scan_qr) {
         }
     }
 
+    fun presentLoading(loading: Boolean) {
+        binding.loading.visibility = if (loading) View.VISIBLE else View.GONE
+    }
+
     override fun onStart() {
         super.onStart()
 

@@ -8,7 +8,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.qrscanner.QrCodeScannerUtil
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
@@ -32,7 +31,6 @@ class ScanQrFragment : BaseFragment() {
     private val introductionViewModel: IntroductionViewModel by viewModel()
     private val qrCodeScannerUtil: QrCodeScannerUtil by inject()
     private val scanQrViewModel: ScanQrViewModel by viewModel()
-    private val args: ScanQrFragmentArgs by navArgs()
 
     companion object {
         const val REQUEST_KEY = "REQUEST_KEY"

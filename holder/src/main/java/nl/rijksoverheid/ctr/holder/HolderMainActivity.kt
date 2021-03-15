@@ -134,6 +134,10 @@ class HolderMainActivity : BaseActivity(R.id.nav_my_overview) {
         }
     }
 
+    fun presentLoading(loading: Boolean) {
+        binding.loading.visibility = if (loading) View.VISIBLE else View.GONE
+    }
+
     override fun onStart() {
         super.onStart()
 
