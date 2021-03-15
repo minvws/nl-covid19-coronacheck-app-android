@@ -4,6 +4,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.appconfig.AppConfigPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.model.AppStatus
 import nl.rijksoverheid.ctr.appconfig.model.ConfigResult
 import java.time.Clock
@@ -30,12 +31,10 @@ class AppStatusUseCaseImpl(
         withContext(Dispatchers.IO) {
             when (config) {
                 is ConfigResult.Success -> {
-                    val appConfig = config.appConfig
-                    when {
-                        appConfig.appDeactivated -> AppStatus.Deactivated(appConfig.informationURL)
-                        currentVersionCode < appConfig.minimumVersion -> AppStatus.UpdateRequired
-                        else -> AppStatus.NoActionRequired
-                    }
+                    checkIfActionRequired(
+                        currentVersionCode = currentVersionCode,
+                        appConfig = config.appConfig
+                    )
                 }
                 is ConfigResult.Error -> {
                     val cachedAppConfig = cachedAppConfigUseCase.getCachedAppConfig()
@@ -47,7 +46,10 @@ class AppStatusUseCaseImpl(
                             )
                                 .toEpochSecond()
                         ) {
-                            AppStatus.NoActionRequired
+                            checkIfActionRequired(
+                                currentVersionCode = currentVersionCode,
+                                appConfig = cachedAppConfig
+                            )
                         } else {
                             AppStatus.InternetRequired
                         }
@@ -55,4 +57,12 @@ class AppStatusUseCaseImpl(
                 }
             }
         }
+
+    private fun checkIfActionRequired(currentVersionCode: Int, appConfig: AppConfig): AppStatus {
+        return when {
+            appConfig.appDeactivated -> AppStatus.Deactivated(appConfig.informationURL)
+            currentVersionCode < appConfig.minimumVersion -> AppStatus.UpdateRequired
+            else -> AppStatus.NoActionRequired
+        }
+    }
 }
