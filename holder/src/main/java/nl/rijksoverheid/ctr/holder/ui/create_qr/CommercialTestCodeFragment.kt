@@ -83,13 +83,8 @@ class CommercialTestCodeFragment : BaseFragment(R.layout.fragment_commercial_tes
         viewModel.testResult.observe(viewLifecycleOwner, EventObserver {
             when (it) {
                 TestResult.InvalidToken -> {
-                    if (viewModel.verificationRequired) {
-                        binding.verificationCodeInput.error =
-                            getString(R.string.commercial_test_error_invalid_code)
-                    } else {
-                        binding.uniqueCodeInput.error =
-                            getString(R.string.commercial_test_error_invalid_code)
-                    }
+                    binding.uniqueCodeInput.error =
+                        getString(R.string.commercial_test_error_invalid_code)
                 }
                 TestResult.NetworkError,
                 TestResult.ServerError -> presentError()
@@ -114,6 +109,12 @@ class CommercialTestCodeFragment : BaseFragment(R.layout.fragment_commercial_tes
                     )
                 }
                 TestResult.VerificationRequired -> {
+                    // If we come here a second time, it means the inputted verification code is not valid
+                    if (binding.verificationCodeText.text?.isNotEmpty() == true) {
+                        binding.verificationCodeInput.error =
+                            getString(R.string.commercial_test_error_invalid_combination)
+                    }
+
                     binding.verificationCodeInput.requestFocus()
                     showKeyboard(binding.verificationCodeText)
                 }
@@ -131,9 +132,9 @@ class CommercialTestCodeFragment : BaseFragment(R.layout.fragment_commercial_tes
     }
 
     private fun fetchTestResults(binding: FragmentCommercialTestCodeBinding) {
-        viewModel.getTestResult()
         binding.verificationCodeInput.error = null
         binding.uniqueCodeInput.error = null
+        viewModel.getTestResult()
         hideKeyboard()
     }
 }
