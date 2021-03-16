@@ -50,8 +50,7 @@ open class LocalTestResultUseCaseImpl(
 
                 val isValid = testResultUtil.isValid(
                     sampleDate = sampleDate,
-                    validitySeconds = testValiditySeconds,
-                    isPaperProof = testAttributes.isPaperProof
+                    validitySeconds = testValiditySeconds
                 )
 
                 if (isValid) {

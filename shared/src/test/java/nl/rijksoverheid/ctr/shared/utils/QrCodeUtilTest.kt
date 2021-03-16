@@ -29,9 +29,25 @@ class QrCodeUtilTest {
                         2
                     )
                 ), ZoneOffset.UTC
-            )
+            ),
+            isPaperProof = "0"
         )
         assertFalse(isValid)
+    }
+
+    @Test
+    fun `isValid always returns true if isPaperProof is 1`() {
+        val isValid = qrCodeUtil.isValid(
+            creationDate = OffsetDateTime.ofInstant(
+                Instant.ofEpochSecond(
+                    TimeUnit.MINUTES.toSeconds(
+                        2
+                    )
+                ), ZoneOffset.UTC
+            ),
+            isPaperProof = "1"
+        )
+        assertTrue(isValid)
     }
 
     @Test
@@ -43,7 +59,8 @@ class QrCodeUtilTest {
                         4
                     )
                 ), ZoneOffset.UTC
-            )
+            ),
+            isPaperProof = "0"
         )
         assertTrue(isValid)
     }

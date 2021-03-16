@@ -14,13 +14,8 @@ class TestResultUtil(private val clock: Clock) {
 
     fun isValid(
         sampleDate: OffsetDateTime,
-        validitySeconds: Long,
-        isPaperProof: String
+        validitySeconds: Long
     ): Boolean {
-        return if (isPaperProof == "1") {
-            true
-        } else {
-            OffsetDateTime.now(clock).isBefore(sampleDate.plusSeconds(validitySeconds))
-        }
+        return OffsetDateTime.now(clock).isBefore(sampleDate.plusSeconds(validitySeconds))
     }
 }
