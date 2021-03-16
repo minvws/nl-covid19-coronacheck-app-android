@@ -23,7 +23,8 @@ class TestResultUtilTest {
     fun `isValid returns true if current date is after test validity date`() {
         val isValid = testResultUtil.isValid(
             sampleDate = OffsetDateTime.ofInstant(Instant.ofEpochSecond(9), ZoneOffset.UTC),
-            validitySeconds = 3
+            validitySeconds = 3,
+            isPaperProof = "0"
         )
         assertTrue(isValid)
     }
@@ -32,7 +33,8 @@ class TestResultUtilTest {
     fun `isValid returns false if current date is same as test validity date`() {
         val isValid = testResultUtil.isValid(
             sampleDate = OffsetDateTime.ofInstant(Instant.ofEpochSecond(7), ZoneOffset.UTC),
-            validitySeconds = 3
+            validitySeconds = 3,
+            isPaperProof = "0"
         )
         assertFalse(isValid)
     }
@@ -41,8 +43,19 @@ class TestResultUtilTest {
     fun `isValid returns false if current date is before test validity date`() {
         val isValid = testResultUtil.isValid(
             sampleDate = OffsetDateTime.ofInstant(Instant.ofEpochSecond(6), ZoneOffset.UTC),
-            validitySeconds = 3
+            validitySeconds = 3,
+            isPaperProof = "0"
         )
         assertFalse(isValid)
+    }
+
+    @Test
+    fun `isValid always returns true if paperproof is 1`() {
+        val isValid = testResultUtil.isValid(
+            sampleDate = OffsetDateTime.ofInstant(Instant.ofEpochSecond(6), ZoneOffset.UTC),
+            validitySeconds = 3,
+            isPaperProof = "1"
+        )
+        assertTrue(isValid)
     }
 }

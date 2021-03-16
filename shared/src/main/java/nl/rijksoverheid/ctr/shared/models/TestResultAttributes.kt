@@ -13,5 +13,7 @@ data class TestResultAttributes(
     val birthDay: String,
     val birthMonth: String,
     val firstNameInitial: String,
-    val lastNameInitial: String
+    val lastNameInitial: String,
+    val isPaperProof: String,
+    val isSpecimen: String
 )
