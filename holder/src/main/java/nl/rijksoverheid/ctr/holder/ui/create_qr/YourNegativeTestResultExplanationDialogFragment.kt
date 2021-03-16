@@ -9,6 +9,8 @@ import nl.rijksoverheid.ctr.design.ExpandedBottomSheetDialogFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.DialogYourNegativeTestResultExplanationBinding
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
+import nl.rijksoverheid.ctr.shared.util.PersonalDetailsUtil
+import org.koin.android.ext.android.inject
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -21,6 +23,7 @@ class YourNegativeTestResultExplanationDialogFragment : ExpandedBottomSheetDialo
 
     private lateinit var binding: DialogYourNegativeTestResultExplanationBinding
     private val args: YourNegativeTestResultExplanationDialogFragmentArgs by navArgs()
+    private val personalDetailsUtil: PersonalDetailsUtil by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,13 +43,16 @@ class YourNegativeTestResultExplanationDialogFragment : ExpandedBottomSheetDialo
             getString(R.string.your_negative_test_results_explanation_paragraph_2).fromHtml()
 
         val holder = args.holder
+
+        val personalDetails = personalDetailsUtil.getPersonalDetails(
+            firstNameInitial = holder.firstNameInitial,
+            lastNameInitial = holder.lastNameInitial,
+            birthDay = holder.birthDay,
+            birthMonth = holder.birthMonth
+        )
+
         binding.personalDetailsHolder.setPersonalDetails(
-            items = listOf(
-                holder.firstNameInitial,
-                holder.lastNameInitial,
-                holder.birthDay,
-                holder.birthMonth
-            ),
+            items = personalDetails,
             showPosition = true
         )
     }
