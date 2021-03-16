@@ -27,37 +27,33 @@ class DecryptHolderQrUseCase(
     suspend fun decrypt(
         content: String
     ): DecryptResult = withContext(Dispatchers.IO) {
-        try {
-            val result =
-                Clmobile.verifyQREncoded(
-                    content.toByteArray()
-                )
-                    .verify()
-            Timber.i("QR Code created at ${result.unixTimeSeconds}")
-            val testResultAttributes =
-                result.attributesJson.decodeToString()
-                    .toObject<TestResultAttributes>(moshi)
-            DecryptResult.Success(
-                DecryptedQr(
-                    creationDate = OffsetDateTime.ofInstant(
-                        Instant.ofEpochSecond(result.unixTimeSeconds),
-                        ZoneOffset.UTC
-                    ),
-                    sampleDate = OffsetDateTime.ofInstant(
-                        Instant.ofEpochSecond(testResultAttributes.sampleTime),
-                        ZoneOffset.UTC
-                    ),
-                    testType = testResultAttributes.testType,
-                    firstNameInitial = testResultAttributes.firstNameInitial,
-                    lastNameInitial = testResultAttributes.lastNameInitial,
-                    birthDay = testResultAttributes.birthDay,
-                    birthMonth = testResultAttributes.birthMonth,
-                    isPaperProof = testResultAttributes.isPaperProof
-                )
+        val result =
+            Clmobile.verifyQREncoded(
+                content.toByteArray()
             )
-        } catch (e: Exception) {
-            DecryptResult.Failed
-        }
+                .verify()
+        Timber.i("QR Code created at ${result.unixTimeSeconds}")
+        val testResultAttributes =
+            result.attributesJson.decodeToString()
+                .toObject<TestResultAttributes>(moshi)
+        DecryptResult.Success(
+            DecryptedQr(
+                creationDate = OffsetDateTime.ofInstant(
+                    Instant.ofEpochSecond(result.unixTimeSeconds),
+                    ZoneOffset.UTC
+                ),
+                sampleDate = OffsetDateTime.ofInstant(
+                    Instant.ofEpochSecond(testResultAttributes.sampleTime),
+                    ZoneOffset.UTC
+                ),
+                testType = testResultAttributes.testType,
+                firstNameInitial = testResultAttributes.firstNameInitial,
+                lastNameInitial = testResultAttributes.lastNameInitial,
+                birthDay = testResultAttributes.birthDay,
+                birthMonth = testResultAttributes.birthMonth,
+                isPaperProof = testResultAttributes.isPaperProof
+            )
+        )
     }
 
     sealed class DecryptResult {
