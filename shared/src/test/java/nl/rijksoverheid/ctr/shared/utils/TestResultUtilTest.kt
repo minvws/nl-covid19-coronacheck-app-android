@@ -45,13 +45,4 @@ class TestResultUtilTest {
         )
         assertFalse(isValid)
     }
-
-    @Test
-    fun `isValid always returns true if paperproof is 1`() {
-        val isValid = testResultUtil.isValid(
-            sampleDate = OffsetDateTime.ofInstant(Instant.ofEpochSecond(6), ZoneOffset.UTC),
-            validitySeconds = 3
-        )
-        assertTrue(isValid)
-    }
 }
