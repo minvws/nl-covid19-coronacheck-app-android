@@ -6,14 +6,14 @@
         <item
             android:id="@+id/nav_scan_qr"
             android:title="@string/scan_qr_title" />
-
-        <item
-            android:id="@+id/nav_support"
-            android:title="@string/support" />
     </group>
     <group
         android:id="@+id/info"
         android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_support"
+            android:title="@string/support" />
+
         <item
             android:id="@+id/nav_about_this_app"
             android:title="@string/about_this_app" />

@@ -40,7 +40,7 @@
         <item name="textAppearanceBody1">
             @style/App.TextAppearance.MaterialComponents.Body1.Montserrat
         </item>
-        <item name="android:listDivider">@color/white_20</item>
+        <item name="android:listDivider">@android:color/transparent</item>
     </style>
 
     <style name="ThemeOverlay.AppTheme.Inverted" parent="">
