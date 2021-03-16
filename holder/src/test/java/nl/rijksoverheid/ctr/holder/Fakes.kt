@@ -58,6 +58,10 @@ fun fakeCachedAppConfigUseCase(
         return appConfig
     }
 
+    override fun getCachedAppConfigMaxValidityHours(): Int {
+        return appConfig.maxValidityHours
+    }
+
     override fun persistPublicKeys(publicKeys: PublicKeys) {
 
     }

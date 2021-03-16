@@ -8,6 +8,9 @@ import nl.rijksoverheid.ctr.appconfig.model.ConfigResult
 import nl.rijksoverheid.ctr.appconfig.usecase.AppStatusUseCaseImpl
 import org.junit.Assert
 import org.junit.Test
+import java.time.Clock
+import java.time.Instant
+import java.time.ZoneId
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -18,7 +21,6 @@ import org.junit.Test
  */
 class AppStatusUseCaseImplTest {
 
-    private val appStatusUseCase = AppStatusUseCaseImpl()
     private val publicKeys = PublicKeys(clKeys = listOf())
     private fun getAppConfig(minimumVersion: Int = 1, appDeactivated: Boolean = false) = AppConfig(
         minimumVersion = minimumVersion,
@@ -31,6 +33,12 @@ class AppStatusUseCaseImplTest {
     @Test
     fun `status returns Deactivated when app is deactivated remotely`() =
         runBlocking {
+            val appStatusUseCase = AppStatusUseCaseImpl(
+                clock = Clock.fixed(Instant.ofEpochSecond(0), ZoneId.of("UTC")),
+                cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
+                appConfigPersistenceManager = fakeAppConfigPersistenceManager()
+            )
+
             val appStatus = appStatusUseCase.get(
                 config = ConfigResult.Success(
                     appConfig = getAppConfig(appDeactivated = true),
@@ -44,6 +52,12 @@ class AppStatusUseCaseImplTest {
     @Test
     fun `status returns UpdateRequired when remote version code is higher than current`() =
         runBlocking {
+            val appStatusUseCase = AppStatusUseCaseImpl(
+                clock = Clock.fixed(Instant.ofEpochSecond(0), ZoneId.of("UTC")),
+                cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
+                appConfigPersistenceManager = fakeAppConfigPersistenceManager()
+            )
+
             val appStatus = appStatusUseCase.get(
                 config = ConfigResult.Success(
                     appConfig = getAppConfig(minimumVersion = 2),
@@ -57,6 +71,12 @@ class AppStatusUseCaseImplTest {
     @Test
     fun `status returns NoActionRequired when app is up to date`() =
         runBlocking {
+            val appStatusUseCase = AppStatusUseCaseImpl(
+                clock = Clock.fixed(Instant.ofEpochSecond(0), ZoneId.of("UTC")),
+                cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
+                appConfigPersistenceManager = fakeAppConfigPersistenceManager()
+            )
+
             val appStatus = appStatusUseCase.get(
                 config = ConfigResult.Success(
                     appConfig = getAppConfig(),
@@ -68,22 +88,72 @@ class AppStatusUseCaseImplTest {
         }
 
     @Test
-    fun `status returns InternetRequired when config is Network Error`() =
+    fun `status returns InternetRequired when config is Error and cached app config does not exist`() =
         runBlocking {
+            val appStatusUseCase = AppStatusUseCaseImpl(
+                clock = Clock.fixed(Instant.ofEpochSecond(0), ZoneId.of("UTC")),
+                cachedAppConfigUseCase = fakeCachedAppConfigUseCase(
+                    appConfig = null
+                ),
+                appConfigPersistenceManager = fakeAppConfigPersistenceManager()
+            )
+
             val appStatus = appStatusUseCase.get(
-                config = ConfigResult.NetworkError,
+                config = ConfigResult.Error,
                 currentVersionCode = 1
             )
             Assert.assertEquals(AppStatus.InternetRequired, appStatus)
         }
 
     @Test
-    fun `status returns InternetRequired when config is Server Error`() =
+    fun `status returns InternetRequired when config is Error and cached app config is no longer valid`() =
         runBlocking {
+
+            // Current time is 100 seconds
+            // Max offline time is set to 50 seconds
+            // Last time config fetched was 20 seconds
+            val appStatusUseCase = AppStatusUseCaseImpl(
+                clock = Clock.fixed(Instant.ofEpochSecond(100), ZoneId.of("UTC")),
+                cachedAppConfigUseCase = fakeCachedAppConfigUseCase(
+                    appConfig = fakeAppConfig(
+                        configTtlSeconds = 50
+                    )
+                ),
+                appConfigPersistenceManager = fakeAppConfigPersistenceManager(
+                    lastFetchedSeconds = 20
+                )
+            )
+
             val appStatus = appStatusUseCase.get(
-                config = ConfigResult.ServerError,
+                config = ConfigResult.Error,
                 currentVersionCode = 1
             )
             Assert.assertEquals(AppStatus.InternetRequired, appStatus)
+        }
+
+    @Test
+    fun `status returns NoActionRequired when config is Error and cached app config is still valid`() =
+        runBlocking {
+
+            // Current time is 100 seconds
+            // Max offline time is set to 50 seconds
+            // Last time config fetched was 70 seconds
+            val appStatusUseCase = AppStatusUseCaseImpl(
+                clock = Clock.fixed(Instant.ofEpochSecond(100), ZoneId.of("UTC")),
+                cachedAppConfigUseCase = fakeCachedAppConfigUseCase(
+                    appConfig = fakeAppConfig(
+                        configTtlSeconds = 50
+                    )
+                ),
+                appConfigPersistenceManager = fakeAppConfigPersistenceManager(
+                    lastFetchedSeconds = 70
+                )
+            )
+
+            val appStatus = appStatusUseCase.get(
+                config = ConfigResult.Error,
+                currentVersionCode = 1
+            )
+            Assert.assertEquals(AppStatus.NoActionRequired, appStatus)
         }
 }

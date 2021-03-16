@@ -26,7 +26,9 @@ class TestResultValidUseCase(
         when (val decryptResult = decryptHolderQrUseCase.decrypt(qrContent)) {
             is DecryptHolderQrUseCase.DecryptResult.Success -> {
                 val validity =
-                    TimeUnit.HOURS.toSeconds(cachedAppConfigUseCase.getCachedAppConfig().maxValidityHours.toLong())
+                    TimeUnit.HOURS.toSeconds(
+                        cachedAppConfigUseCase.getCachedAppConfigMaxValidityHours().toLong()
+                    )
                 val isValid = testResultUtil.isValid(
                     sampleDate = decryptResult.decryptQr.sampleDate,
                     validitySeconds = validity

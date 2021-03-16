@@ -8,18 +8,21 @@
 
 package nl.rijksoverheid.ctr.appconfig
 
+import io.mockk.coVerify
+import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.appconfig.api.AppConfigApi
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
 import nl.rijksoverheid.ctr.appconfig.model.ConfigResult
+import nl.rijksoverheid.ctr.appconfig.repositories.ConfigRepositoryImpl
 import nl.rijksoverheid.ctr.appconfig.usecase.AppConfigUseCaseImpl
-import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import retrofit2.HttpException
-import retrofit2.Response
 import java.io.IOException
+import java.time.Clock
+import java.time.Instant
+import java.time.ZoneId
 
 class AppConfigUseCaseImplTest {
 
@@ -35,6 +38,9 @@ class AppConfigUseCaseImplTest {
         clKeys = listOf()
     )
 
+    private val clock = Clock.fixed(Instant.ofEpochSecond(0), ZoneId.of("UTC"))
+    private val appConfigPersistenceManager = mockk<AppConfigPersistenceManager>(relaxed = true)
+
     @Test
     fun `config returns Success when both calls succeed`() = runBlocking {
         val fakeApi = object : AppConfigApi {
@@ -42,17 +48,19 @@ class AppConfigUseCaseImplTest {
             override suspend fun getPublicKeys(): PublicKeys = publicKeys
         }
         val configRepository = ConfigRepositoryImpl(api = fakeApi)
-        val appConfigUseCase = AppConfigUseCaseImpl(configRepository)
+        val appConfigUseCase =
+            AppConfigUseCaseImpl(clock, appConfigPersistenceManager, configRepository)
         assertEquals(
             appConfigUseCase.get(), ConfigResult.Success(
                 appConfig = appConfig,
                 publicKeys = publicKeys
             )
         )
+        coVerify { appConfigPersistenceManager.saveAppConfigLastFetchedSeconds(0) }
     }
 
     @Test
-    fun `config returns NetworkError when config call fails`() = runBlocking {
+    fun `config returns Error when config call fails`() = runBlocking {
         val fakeApi = object : AppConfigApi {
             override suspend fun getConfig(): AppConfig {
                 throw IOException()
@@ -61,34 +69,16 @@ class AppConfigUseCaseImplTest {
             override suspend fun getPublicKeys(): PublicKeys = publicKeys
         }
         val configRepository = ConfigRepositoryImpl(api = fakeApi)
-        val appConfigUseCase = AppConfigUseCaseImpl(configRepository)
+        val appConfigUseCase =
+            AppConfigUseCaseImpl(clock, appConfigPersistenceManager, configRepository)
         assertEquals(
-            appConfigUseCase.get(), ConfigResult.NetworkError
+            appConfigUseCase.get(), ConfigResult.Error
         )
+        coVerify(exactly = 0) { appConfigPersistenceManager.saveAppConfigLastFetchedSeconds(0) }
     }
 
     @Test
-    fun `config returns ServerError when config call fails`() = runBlocking {
-        val fakeApi = object : AppConfigApi {
-            override suspend fun getConfig(): AppConfig {
-                throw HttpException(
-                    Response.error<String>(
-                        400, "".toResponseBody()
-                    )
-                )
-            }
-
-            override suspend fun getPublicKeys(): PublicKeys = publicKeys
-        }
-        val configRepository = ConfigRepositoryImpl(api = fakeApi)
-        val appConfigUseCase = AppConfigUseCaseImpl(configRepository)
-        assertEquals(
-            appConfigUseCase.get(), ConfigResult.ServerError
-        )
-    }
-
-    @Test
-    fun `config returns NetworkError when public keys call fails`() = runBlocking {
+    fun `config returns Error when public keys call fails`() = runBlocking {
         val fakeApi = object : AppConfigApi {
             override suspend fun getConfig(): AppConfig = appConfig
             override suspend fun getPublicKeys(): PublicKeys {
@@ -96,28 +86,11 @@ class AppConfigUseCaseImplTest {
             }
         }
         val configRepository = ConfigRepositoryImpl(api = fakeApi)
-        val appConfigUseCase = AppConfigUseCaseImpl(configRepository)
+        val appConfigUseCase =
+            AppConfigUseCaseImpl(clock, appConfigPersistenceManager, configRepository)
         assertEquals(
-            appConfigUseCase.get(), ConfigResult.NetworkError
+            appConfigUseCase.get(), ConfigResult.Error
         )
-    }
-
-    @Test
-    fun `config returns ServerError when public keys call fails`() = runBlocking {
-        val fakeApi = object : AppConfigApi {
-            override suspend fun getConfig(): AppConfig = appConfig
-            override suspend fun getPublicKeys(): PublicKeys {
-                throw HttpException(
-                    Response.error<String>(
-                        400, "".toResponseBody()
-                    )
-                )
-            }
-        }
-        val configRepository = ConfigRepositoryImpl(api = fakeApi)
-        val appConfigUseCase = AppConfigUseCaseImpl(configRepository)
-        assertEquals(
-            appConfigUseCase.get(), ConfigResult.ServerError
-        )
+        coVerify(exactly = 0) { appConfigPersistenceManager.saveAppConfigLastFetchedSeconds(0) }
     }
 }

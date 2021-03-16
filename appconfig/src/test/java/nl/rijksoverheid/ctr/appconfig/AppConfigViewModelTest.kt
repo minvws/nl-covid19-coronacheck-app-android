@@ -81,7 +81,7 @@ class AppConfigViewModelTest {
     @Test
     fun `refresh calls emits status to livedata`() = runBlocking {
         coEvery { appConfigUseCase.get() } answers {
-            ConfigResult.ServerError
+            ConfigResult.Error
         }
 
         coEvery { appStatusUseCase.get(any(), any()) } answers { AppStatus.InternetRequired }

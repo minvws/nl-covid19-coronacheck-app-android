@@ -8,7 +8,6 @@
 
 package nl.rijksoverheid.ctr.appconfig.api
 
-import nl.rijksoverheid.ctr.api.interceptors.CacheOverride
 import nl.rijksoverheid.ctr.api.signing.http.SignedRequest
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
@@ -16,12 +15,10 @@ import retrofit2.http.GET
 
 interface AppConfigApi {
     @GET("config")
-    @CacheOverride("public,max-age=0")
     @SignedRequest
     suspend fun getConfig(): AppConfig
 
     @GET("public_keys")
-    @CacheOverride("public,max-age=0")
     @SignedRequest
     suspend fun getPublicKeys(): PublicKeys
 }
