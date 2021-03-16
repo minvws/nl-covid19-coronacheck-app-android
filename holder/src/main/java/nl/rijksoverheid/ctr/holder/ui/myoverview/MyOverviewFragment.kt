@@ -24,7 +24,7 @@ import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewTestResultExpir
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.shared.ext.executeAfterAllAnimationsAreFinished
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
-import nl.rijksoverheid.ctr.shared.ext.showWithLargeContent
+import nl.rijksoverheid.ctr.shared.ext.show
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -104,7 +104,7 @@ class MyOverviewFragment : BaseFragment(R.layout.fragment_my_overview) {
                                     it.setAction(R.string.my_overview_qr_created_snackbar_button) {
                                         BuildConfig.URL_FAQ.launchUrl(requireContext())
                                     }
-                                }.showWithLargeContent()
+                                }.show(requireActivity())
                             }
                         }
                     }
