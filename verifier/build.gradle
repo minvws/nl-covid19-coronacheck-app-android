@@ -28,7 +28,7 @@ android {
         buildConfigField "String", "SIGNATURE_CERTIFICATE_CN_MATCH", '".coronatester.nl"'
         buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "true"
         buildConfigField "boolean", "FEATURE_TEST_PROVIDER_API_CHECKS", "true"
-        buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.coronacheck.nl/v1/\""
+        buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.coronacheck.nl/v2/\""
     }
 
     signingConfigs {
