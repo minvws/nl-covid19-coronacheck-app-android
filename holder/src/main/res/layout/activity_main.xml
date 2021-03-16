@@ -52,6 +52,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:theme="@style/ThemeOverlay.App.NavigationView"
+        app:itemMaxLines="3"
         app:menu="@menu/navigation_drawer">
 
         <TextView
