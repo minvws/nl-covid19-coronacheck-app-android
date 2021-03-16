@@ -58,7 +58,7 @@ android {
             buildConfigField "String", "URL_SUPPORT", "\"https://www.coronacheck.nl/nl/faq-scanner-in-app\""
             buildConfigField "String", "URL_ABOUT_THIS_APP", "\"https://www.coronacheck.nl/nl/over-de-scanner-app-in-app\""
             buildConfigField "String", "URL_PRIVACY_STATEMENT", "\"https://www.coronacheck.nl/nl/privacy-in-app\""
-            buildConfigField "String", "BASE_API_URL", "\"https://api-ct.bananenhalen.nl/v1/\""
+            buildConfigField "String", "BASE_API_URL", "\"https://api-ct.bananenhalen.nl/v2/\""
             buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "false"
             buildConfigField "boolean", "FEATURE_TEST_PROVIDER_API_CHECKS", "false"
             apply plugin: 'com.google.gms.google-services'
@@ -72,7 +72,7 @@ android {
             buildConfigField "String", "URL_SUPPORT", "\"https://www.coronacheck.nl/nl/faq-scanner-in-app\""
             buildConfigField "String", "URL_ABOUT_THIS_APP", "\"https://www.coronacheck.nl/nl/over-de-scanner-app-in-app\""
             buildConfigField "String", "URL_PRIVACY_STATEMENT", "\"https://www.coronacheck.nl/nl/privacy-in-app\""
-            buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.coronacheck.nl/v2/\""
+            buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.acc.coronacheck.nl/v2/\""
             apply plugin: 'com.google.gms.google-services'
             apply plugin: 'com.google.firebase.crashlytics'
         }
