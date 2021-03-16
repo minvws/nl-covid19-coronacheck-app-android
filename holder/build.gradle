@@ -34,7 +34,7 @@ android {
         buildConfigField "String", "SIGNATURE_CERTIFICATE_CN_MATCH", '".coronatester.nl"'
         buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "true"
         buildConfigField "boolean", "FEATURE_TEST_PROVIDER_API_CHECKS", "true"
-        buildConfigField "String", "BASE_API_URL", "\"https://holder-api.coronacheck.nl/v1/\""
+        buildConfigField "String", "BASE_API_URL", "\"https://holder-api.coronacheck.nl/v2/\""
         buildConfigField "String", "URL_FAQ", "\"https://coronacheck.nl/nl/faq-in-app.html\""
         buildConfigField "String", "URL_ABOUT_THIS_APP", "\"https://coronacheck.nl/nl/over-de-app-in-app\""
         buildConfigField "String", "URL_PRIVACY_STATEMENT", "\"https://coronacheck.nl/nl/privacy-in-app\""
@@ -85,7 +85,6 @@ android {
             apply plugin: 'com.google.firebase.crashlytics'
         }
         prod {
-            buildConfigField "String", "BASE_API_URL", "\"https://holder-api.coronacheck.nl/v1/\""
             buildConfigField "String", "DIGI_D_BASE_URL", "\"https://login.ggdghor.nl/coronitacc\""
             buildConfigField "String", "DIGI_D_CLIENT_ID", "\"6456237456911667336\""
             dimension "environment"
