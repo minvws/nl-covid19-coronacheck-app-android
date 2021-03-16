@@ -18,7 +18,7 @@
             android:background="@color/green"
             android:contentDescription="@null"
             android:scaleType="centerInside"
-            android:src="@drawable/illustration_choose_provider"
+            android:src="@drawable/illustration_create_qr_big"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
