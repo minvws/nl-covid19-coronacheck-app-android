@@ -51,7 +51,8 @@ class DecryptHolderQrUseCase(
                     firstNameInitial = testResultAttributes.firstNameInitial,
                     lastNameInitial = testResultAttributes.lastNameInitial,
                     birthDay = testResultAttributes.birthDay,
-                    birthMonth = testResultAttributes.birthMonth
+                    birthMonth = testResultAttributes.birthMonth,
+                    isPaperProof = testResultAttributes.isPaperProof
                 )
             )
         } catch (e: Exception) {

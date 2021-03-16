@@ -18,10 +18,14 @@ class QrCodeUtil(private val clock: Clock) {
         val VALID_FOR_SECONDS = TimeUnit.MINUTES.toSeconds(3)
     }
 
-    fun isValid(creationDate: OffsetDateTime): Boolean {
-        return ChronoUnit.SECONDS.between(
+    fun isValid(creationDate: OffsetDateTime, isPaperProof: String): Boolean {
+        return if (isPaperProof == "1") {
+            true
+        } else {
+            ChronoUnit.SECONDS.between(
                 creationDate,
                 OffsetDateTime.now(clock)
-        ) <= VALID_FOR_SECONDS
+            ) <= VALID_FOR_SECONDS
+        }
     }
 }

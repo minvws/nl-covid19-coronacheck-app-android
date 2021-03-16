@@ -31,9 +31,10 @@ class TestResultValidUseCase(
                     )
                 val isValid = testResultUtil.isValid(
                     sampleDate = decryptResult.decryptQr.sampleDate,
-                    validitySeconds = validity
+                    validitySeconds = validity,
                 ) && qrCodeUtil.isValid(
-                    creationDate = decryptResult.decryptQr.creationDate
+                    creationDate = decryptResult.decryptQr.creationDate,
+                    isPaperProof = decryptResult.decryptQr.isPaperProof
                 )
                 if (isValid) {
                     TestResultValidResult.Valid(decryptResult.decryptQr)

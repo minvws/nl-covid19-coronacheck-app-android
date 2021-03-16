@@ -236,7 +236,9 @@ fun fakeTestResultAttributesUseCase(
     birthDay: String = "",
     birthMonth: String = "",
     firstNameInitial: String = "",
-    lastNameInitial: String = ""
+    lastNameInitial: String = "",
+    isSpecimen: String = "0",
+    isPaperProof: String = "0"
 ): TestResultAttributesUseCase {
     return object : TestResultAttributesUseCase {
         override fun get(credentials: String): TestResultAttributes {
@@ -246,7 +248,9 @@ fun fakeTestResultAttributesUseCase(
                 birthDay = birthDay,
                 birthMonth = birthMonth,
                 firstNameInitial = firstNameInitial,
-                lastNameInitial = lastNameInitial
+                lastNameInitial = lastNameInitial,
+                isSpecimen = isSpecimen,
+                isPaperProof = isPaperProof
             )
         }
     }

@@ -20,4 +20,5 @@ data class DecryptedQr(
     val lastNameInitial: String,
     val birthDay: String,
     val birthMonth: String,
+    val isPaperProof: String
 ) : Parcelable
