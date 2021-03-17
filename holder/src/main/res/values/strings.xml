@@ -11,7 +11,7 @@
     <string name="onboarding_screen_4_title">Privacy staat voorop</string>
     <string name="onboarding_screen_4_description">In jouw QR-code staat alleen wanneer je negatief getest bent.</string>
     <string name="onboarding_screen_3_title">Geldigheid van je bewijs</string>
-    <string name="onboarding_screen_3_description">Wil je toegang krijgen tot een bepaalde sociale, culturele of sportieve activiteit? Zorg dat jouw QR-code binnen 40 uur na het moment van testen aan de deur gescand is. Als je testbewijs verloopt verdwijnt de QR-code uit de app. Nieuwe QR-code nodig? Laat je opnieuw testen.</string>
+    <string name="onboarding_screen_3_description">Wil je toegang krijgen tot een bepaalde sociale, culturele of sportieve activiteit? Zorg dat jouw QR-code binnen %1$s uur na het moment van testen aan de deur gescand is. Als je testbewijs verloopt verdwijnt de QR-code uit de app. Nieuwe QR-code nodig? Laat je opnieuw testen.</string>
     <string name="onboarding_next">Volgende</string>
     <string name="privacy_policy_title">Zo gebruikt deze app jouw gegevens</string>
     <string name="privacy_policy_description"><![CDATA[In de <a href="#">privacyverklaring</a> staat hoe CoronaCheck omgaat met jouw gegevens. Dit zijn de belangrijkste punten:]]></string>
@@ -48,7 +48,7 @@
     <string name="choose_provider_toolbar">QR-code maken</string>
     <string name="choose_provider_title">QR-code maken</string>
     <string name="choose_provider_description">Bewijst je test dat je op dat moment geen corona hebt? Dan kan je van het testresultaat een QR-code maken.</string>
-    <string name="choose_provider_commercial_title">Fieldlab locatie</string>
+    <string name="choose_provider_commercial_title">Testenvoortoegang.nl</string>
     <string name="choose_provider_commercial_subtitle">Vul je code in</string>
     <string name="choose_provider_ggd_title">GGD</string>
     <string name="choose_provider_ggd_subtitle">Log in met je DigiD</string>
@@ -86,7 +86,7 @@
     <string name="testresult_not_known_title">Testresultaat nog niet bekend</string>
     <string name="testresult_not_known_description">Je testresultaat is nog niet bekend. Probeer het later nog eens.\nHeb je het idee dat dit niet klopt? Neem dan contact op met de testaanbieder.</string>
     <string name="testresult_to_qr_code_title">Van jouw testresultaat wordt nu een QR-code gemaakt</string>
-    <string name="testresult_to_qr_code_description">In de QR-code wordt verwerkt dat je negatief getest bent (geen corona) op 2 februari om 14:06.\nIn de CoronaTester app zal alleen de anonieme QR-code zichtbaar zijn, zonder testdetails.</string>
+    <string name="testresult_to_qr_code_description">In de QR-code wordt verwerkt dat je negatief getest bent op 2 februari om 14:06.\nIn de CoronaCheck-app is alleen de anonieme QR-code zichtbaar, zonder testdetails.</string>
     <string name="button_continue">Verder</string>
     <string name="commercial_test_error_invalid_code">Deze code is niet geldig</string>
     <string name="commercial_test_error_invalid_combination">Geen geldige combinatie</string>
@@ -94,13 +94,13 @@
     <string name="no_negative_test_result_description"><![CDATA[Er is geen negatief testresultaat (geen corona) beschikbaar.<br/>Dit kan het volgende betekenen:<br\><br\><ul><li>Je hebt nog geen test gedaan</li><li>Je testresultaat is nog niet verwerkt</li><li>Je test is langer dan %1$s uur geleden uitgevoerd]]></string>
     <string name="test_result_not_known_title">Testresultaat nog niet bekend</string>
     <string name="test_result_not_known_description"><![CDATA[Probeer het later nog eens.<br\><br\>Neem voor vragen contact op met jouw testlocatie.]]></string>
-    <string name="about_this_app_description">CoronaTester is ontwikkeld zodat evenementen, horeca en andere uitgaansgelegenheden veilig hun deuren kunnen openen. Met behulp van deze app komen alleen mensen zonder corona binnen. Zo trekt Nederland er langzaam maar zeker meer op uit.</string>
+    <string name="about_this_app_description">CoronaCheck is ontwikkeld zodat bezoekers van o.a. evenementen, concerten, musea en sportlocaties kunnen bewijzen dat ze negatief getest zijn op corona. Met behulp van deze app komen alleen mensen met een geldig negatief testbewijs binnen. Zo trekt Nederland er weer meer op uit.</string>
     <string name="test_result_already_signed_title">Testresultaat is al opgehaald</string>
     <string name="test_result_already_signed_description"><![CDATA[Je testresultaat is al opgehaald en in een QR-code omgezet.<br\><br\> Klopt dit niet? Neem dan contact op met de testlocatie.]]></string>
     <string name="item_test_result_expired"><![CDATA[Je QR-code is verlopen.<br\>Laat je opnieuw testen.]]></string>
     <string name="test_appointment_info_toolbar_title">Testafspraak maken</string>
     <string name="test_appointment_info_title">Maak een testafspraak</string>
-    <string name="test_appointment_info_description"><![CDATA[Om een QR-code te maken moet je je eerst laten testen. Alleen van een negatief testresultaat kan je een QR-code maken.<br\><br\>Een testbewijs is geldig tot 40 uur na het moment van testen. Plan je test dus op tijd. En zorg dat jouw QR-code binnen 40 uur gescand is aan de deur.]]></string>
+    <string name="test_appointment_info_description"><![CDATA[Om een QR-code te maken moet je je eerst laten testen. Alleen van een negatief testresultaat kan je een QR-code maken.<br\><br\>Een testbewijs is geldig tot %1$s uur na het moment van testen. Plan je test dus op tijd. En zorg dat jouw QR-code binnen %2$s uur gescand is aan de deur.]]></string>
     <string name="test_appointment_info_button">Maak een afspraak</string>
     <string name="camera_rationale_dialog_title">CoronaCheck wil toegang tot je camera</string>
     <string name="camera_rationale_dialog_description">Alleen zo kan de app jouw QR-code scannen.</string>
