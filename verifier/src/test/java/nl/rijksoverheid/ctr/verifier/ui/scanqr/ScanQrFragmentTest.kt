@@ -1,10 +1,15 @@
 package nl.rijksoverheid.ctr.verifier.ui.scanqr
 
+import android.app.Activity
+import android.content.Intent
+import android.graphics.Bitmap
+import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
 import com.schibsted.spain.barista.interaction.BaristaClickInteractions.clickOn
+import nl.rijksoverheid.ctr.qrscanner.QrCodeScannerUtil
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.fakeIntroductionViewModel
 import nl.rijksoverheid.ctr.verifier.fakeScanQrViewModel
@@ -52,14 +57,59 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
         assertEquals(navController.currentDestination?.id, R.id.nav_scan_instructions)
     }
 
+    /**
+     * Camera qr code scanner is bypassed in test
+     */
+    @Test
+    fun `Clicking start scan goes to valid scan result`() {
+        
+    }
+
+    /**
+     * Camera qr code scanner is bypassed in test
+     */
+    @Test
+    fun `Clicking start scan goes to invalid scan result`() {
+
+    }
+
     private fun launchScanQrFragment(
         state: VerifiedQrResultState = VerifiedQrResultState.Valid(
             fakeVerifiedQr
         ),
         hasSeenScanInstructions: Boolean = true
-    ) {
+    ): QrCodeScannerUtil {
         loadKoinModules(
             module(override = true) {
+                factory {
+                    object : QrCodeScannerUtil {
+                        override fun launchScanner(
+                            activity: Activity,
+                            activityResultLauncher: ActivityResultLauncher<Intent>,
+                            customTitle: String,
+                            customMessage: String,
+                            rationaleDialogTitle: String?,
+                            rationaleDialogDescription: String?,
+                            rationaleDialogOkayButtonText: String?
+                        ) {
+                            navController.navigate(ScanQrFragmentDirections.actionScanResult(state))
+                        }
+
+                        override fun createQrCode(
+                            qrCodeContent: String,
+                            width: Int,
+                            height: Int
+                        ): Bitmap {
+                            return Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
+                        }
+
+                        override fun parseScanResult(resultIntent: Intent?): String? {
+                            return null
+                        }
+
+                    }
+                }
+
                 viewModel {
                     fakeScanQrViewModel(
                         result = state,
