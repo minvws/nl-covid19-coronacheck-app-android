@@ -8,6 +8,7 @@ import nl.rijksoverheid.ctr.verifier.datamappers.VerifiedQrDataMapperImpl
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 import nl.rijksoverheid.ctr.verifier.persistance.SharedPreferencesPersistenceManager
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrViewModel
+import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrViewModelImpl
 import nl.rijksoverheid.ctr.verifier.usecases.TestResultValidUseCase
 import nl.rijksoverheid.ctr.verifier.usecases.TestResultValidUseCaseImpl
 import nl.rijksoverheid.ctr.verifier.usecases.VerifyQrUseCase
@@ -50,7 +51,7 @@ val verifierModule = module {
     factory<VerifiedQrDataMapper> { VerifiedQrDataMapperImpl(get()) }
 
     // ViewModels
-    viewModel { ScanQrViewModel(get(), get()) }
+    viewModel<ScanQrViewModel> { ScanQrViewModelImpl(get(), get()) }
 
     single {
         get(Moshi.Builder::class).build()
