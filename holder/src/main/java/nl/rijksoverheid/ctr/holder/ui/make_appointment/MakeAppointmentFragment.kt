@@ -26,9 +26,6 @@ class MakeAppointmentFragment : Fragment(R.layout.fragment_make_appointment) {
         super.onViewCreated(view, savedInstanceState)
 
         val binding = FragmentMakeAppointmentBinding.bind(view)
-        binding.description.setOnClickListener {
-            BuildConfig.URL_FAQ.launchUrl(requireContext())
-        }
         binding.description.text =
             appConfigUtil.getStringWithTestValidity(R.string.test_appointment_info_description)
                 .fromHtml()
@@ -36,5 +33,4 @@ class MakeAppointmentFragment : Fragment(R.layout.fragment_make_appointment) {
             BuildConfig.URL_MAKE_APPOINTMENT.launchUrl(requireContext())
         }
     }
-
 }
