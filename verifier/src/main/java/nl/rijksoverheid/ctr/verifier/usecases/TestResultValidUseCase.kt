@@ -3,9 +3,9 @@ package nl.rijksoverheid.ctr.verifier.usecases
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
-import nl.rijksoverheid.ctr.shared.util.QrCodeUtil
 import nl.rijksoverheid.ctr.shared.util.TestResultUtil
 import nl.rijksoverheid.ctr.verifier.models.VerifiedQr
+import nl.rijksoverheid.ctr.verifier.util.QrCodeUtil
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit
  *
  */
 interface TestResultValidUseCase {
-    suspend fun valid(qrContent: String): TestResultValidResult
+    suspend fun validate(qrContent: String): TestResultValidResult
 
     sealed class TestResultValidResult {
         class Valid(val verifiedQr: VerifiedQr) : TestResultValidResult()
@@ -34,7 +34,7 @@ class TestResultValidUseCaseImpl(
     private val cachedAppConfigUseCase: CachedAppConfigUseCase
 ) : TestResultValidUseCase {
 
-    override suspend fun valid(qrContent: String): TestResultValidUseCase.TestResultValidResult =
+    override suspend fun validate(qrContent: String): TestResultValidUseCase.TestResultValidResult =
         withContext(Dispatchers.IO) {
             when (val verifyQrResult = verifyQrUseCase.get(qrContent)) {
                 is VerifyQrUseCase.VerifyQrResult.Success -> {

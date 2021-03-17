@@ -1,6 +1,5 @@
-package nl.rijksoverheid.ctr.shared.utils
+package nl.rijksoverheid.ctr.verifier.util
 
-import nl.rijksoverheid.ctr.shared.util.QrCodeUtil
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -14,11 +13,11 @@ import java.util.concurrent.TimeUnit
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class QrCodeUtilTest {
+class QrCodeUtilImplTest {
 
     private val instant = Instant.ofEpochSecond(TimeUnit.MINUTES.toSeconds(6))
     private val clock = Clock.fixed(instant, ZoneId.of("UTC"))
-    private val qrCodeUtil = QrCodeUtil(clock)
+    private val qrCodeUtil = QrCodeUtilImpl(clock)
 
     @Test
     fun `isValid returns false if difference is more than 3 minutes`() {

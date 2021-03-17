@@ -28,7 +28,7 @@ class ScanQrViewModel(
         loadingLiveData.value = Event(true)
         viewModelScope.launch {
             try {
-                val result = testResultValidUseCase.valid(
+                val result = testResultValidUseCase.validate(
                     qrContent = qrContent
                 )
                 when (result) {

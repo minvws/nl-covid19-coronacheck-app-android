@@ -1,11 +1,8 @@
 package nl.rijksoverheid.ctr.verifier.usecases
 
-import clmobile.Clmobile
-import com.squareup.moshi.Moshi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import nl.rijksoverheid.ctr.shared.ext.toObject
-import nl.rijksoverheid.ctr.shared.ext.verify
+import nl.rijksoverheid.ctr.verifier.datamappers.VerifiedQrDataMapper
 import nl.rijksoverheid.ctr.verifier.models.VerifiedQr
 
 /*
@@ -27,24 +24,16 @@ interface VerifyQrUseCase {
 }
 
 class VerifyQrUseCaseImpl(
-    private val moshi: Moshi
+    private val verifiedQrDataMapper: VerifiedQrDataMapper
 ) : VerifyQrUseCase {
 
     override suspend fun get(
         content: String
     ): VerifyQrUseCase.VerifyQrResult = withContext(Dispatchers.IO) {
         try {
-            val result =
-                Clmobile.verifyQREncoded(
-                    content.toByteArray()
-                ).verify()
-
             VerifyQrUseCase.VerifyQrResult.Success(
-                VerifiedQr(
-                    creationDateSeconds = result.unixTimeSeconds,
-                    testResultAttributes = result.attributesJson.decodeToString().toObject(
-                        moshi
-                    )
+                verifiedQrDataMapper.transform(
+                    qrContent = content
                 )
             )
         } catch (e: Exception) {
