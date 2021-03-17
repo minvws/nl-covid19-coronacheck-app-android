@@ -6,7 +6,7 @@ import com.squareup.moshi.Moshi
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 import nl.rijksoverheid.ctr.verifier.persistance.SharedPreferencesPersistenceManager
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrViewModel
-import nl.rijksoverheid.ctr.verifier.usecases.DecryptHolderQrUseCase
+import nl.rijksoverheid.ctr.verifier.usecases.VerifyQrUseCase
 import nl.rijksoverheid.ctr.verifier.usecases.TestResultValidUseCase
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -35,7 +35,7 @@ val verifierModule = module {
 
     // Use cases
     single {
-        DecryptHolderQrUseCase(get())
+        VerifyQrUseCase(get())
     }
     single {
         TestResultValidUseCase(get(), get(), get(), get())

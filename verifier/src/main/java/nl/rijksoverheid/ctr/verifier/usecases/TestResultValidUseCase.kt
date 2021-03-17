@@ -5,7 +5,10 @@ import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.shared.util.QrCodeUtil
 import nl.rijksoverheid.ctr.shared.util.TestResultUtil
-import nl.rijksoverheid.ctr.verifier.models.DecryptedQr
+import nl.rijksoverheid.ctr.verifier.models.VerifiedQr
+import java.time.Instant
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
 import java.util.concurrent.TimeUnit
 
 /*
@@ -16,40 +19,47 @@ import java.util.concurrent.TimeUnit
  *
  */
 class TestResultValidUseCase(
-    private val decryptHolderQrUseCase: DecryptHolderQrUseCase,
+    private val verifyQrUseCase: VerifyQrUseCase,
     private val testResultUtil: TestResultUtil,
     private val qrCodeUtil: QrCodeUtil,
     private val cachedAppConfigUseCase: CachedAppConfigUseCase
 ) {
 
     suspend fun valid(qrContent: String): TestResultValidResult = withContext(Dispatchers.IO) {
-        when (val decryptResult = decryptHolderQrUseCase.decrypt(qrContent)) {
-            is DecryptHolderQrUseCase.DecryptResult.Success -> {
+        when (val verifyQrResult = verifyQrUseCase.get(qrContent)) {
+            is VerifyQrUseCase.VerifyQrResult.Success -> {
+                val verifiedQr = verifyQrResult.verifiedQr
                 val validity =
                     TimeUnit.HOURS.toSeconds(
                         cachedAppConfigUseCase.getCachedAppConfigMaxValidityHours().toLong()
                     )
                 val isValid = testResultUtil.isValid(
-                    sampleDate = decryptResult.decryptQr.sampleDate,
+                    sampleDate = OffsetDateTime.ofInstant(
+                        Instant.ofEpochSecond(verifiedQr.testResultAttributes.sampleTime),
+                        ZoneOffset.UTC
+                    ),
                     validitySeconds = validity,
                 ) && qrCodeUtil.isValid(
-                    creationDate = decryptResult.decryptQr.creationDate,
-                    isPaperProof = decryptResult.decryptQr.isPaperProof
+                    creationDate = OffsetDateTime.ofInstant(
+                        Instant.ofEpochSecond(verifiedQr.creationDateSeconds),
+                        ZoneOffset.UTC
+                    ),
+                    isPaperProof = verifiedQr.testResultAttributes.isPaperProof
                 )
                 if (isValid) {
-                    TestResultValidResult.Valid(decryptResult.decryptQr)
+                    TestResultValidResult.Valid(verifiedQr)
                 } else {
                     TestResultValidResult.Invalid
                 }
             }
-            is DecryptHolderQrUseCase.DecryptResult.Failed -> {
+            is VerifyQrUseCase.VerifyQrResult.Failed -> {
                 TestResultValidResult.Invalid
             }
         }
     }
 
     sealed class TestResultValidResult {
-        class Valid(val decryptedQr: DecryptedQr) : TestResultValidResult()
+        class Valid(val verifiedQr: VerifiedQr) : TestResultValidResult()
         object Invalid : TestResultValidResult()
     }
 }

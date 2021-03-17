@@ -1,7 +1,5 @@
 package nl.rijksoverheid.ctr.shared
 
-import nl.rijksoverheid.ctr.shared.usecase.TestResultAttributesUseCase
-import nl.rijksoverheid.ctr.shared.usecase.TestResultAttributesUseCaseImpl
 import nl.rijksoverheid.ctr.shared.util.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
@@ -18,11 +16,6 @@ import java.time.Clock
 val sharedModule = module {
 
     single { Clock.systemDefaultZone() }
-
-    // Usecases
-    factory<TestResultAttributesUseCase> {
-        TestResultAttributesUseCaseImpl(get())
-    }
 
     // Utils
     single { QrCodeUtil(get()) }

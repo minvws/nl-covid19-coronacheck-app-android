@@ -2,7 +2,7 @@ package nl.rijksoverheid.ctr.verifier.models
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
-import java.time.OffsetDateTime
+import nl.rijksoverheid.ctr.shared.models.TestResultAttributes
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -12,13 +12,7 @@ import java.time.OffsetDateTime
  *
  */
 @Parcelize
-data class DecryptedQr(
-    val creationDate: OffsetDateTime,
-    val sampleDate: OffsetDateTime,
-    val testType: String,
-    val firstNameInitial: String,
-    val lastNameInitial: String,
-    val birthDay: String,
-    val birthMonth: String,
-    val isPaperProof: String
+data class VerifiedQr(
+    val creationDateSeconds: Long,
+    val testResultAttributes: TestResultAttributes
 ) : Parcelable
