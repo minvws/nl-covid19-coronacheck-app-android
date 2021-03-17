@@ -30,7 +30,7 @@
     <string name="scan_qr_description"><![CDATA[Scan nu de QR-codes van jouw bezoekers. Maar let op: je mag alleen bezoekers met een geldige QR-code toegang geven. <a href="#">Zo werkt scannen</a>]]></string>
     <string name="scan_qr_button">Start scannen</string>
     <string name="scan_result_valid_title">Geef toegang</string>
-    <string name="scan_result_valid_subtitle"><![CDATA[Controleer of deze gegevens hetzelfde zijn als de gegevens op het identiteitsbewijs. Lees meer.]]></string>
+    <string name="scan_result_valid_subtitle"><![CDATA[Controleer of deze gegevens hetzelfde zijn als de gegevens op het identiteitsbewijs. <b><u>Lees meer</b></u>]]></string>
     <string name="scan_result_invalid_title">Weiger toegang</string>
     <string name="scan_result_invalid_subtitle"><![CDATA[De bezoeker heeft geen geldig negatief testbewijs. <b><u>Lees mogelijke oorzaken</b></u>]]></string>
     <string name="scan_result_invalid_button">Scan volgende</string>
@@ -58,7 +58,7 @@
     <string name="app_status_deactivated_title">App buiten werking</string>
     <string name="app_status_deactivated_message">De app is niet meer in gebruik. Ga voor meer informatie naar CoronaCheck.nl</string>
     <string name="app_status_deactivated_action">Lees meer</string>
-    <string name="app_status_update_required_title">Update vereist</string>
+    <string name="app_status_update_required_title">Tijd voor een update</string>
     <string name="app_status_update_required_message">Download de laatste versie van de app om verder te gaan.</string>
     <string name="app_status_update_required_action">Installeer update</string>
     <string name="app_status_internet_required_title">Je hebt geen internetverbinding</string>
