@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.shared.utils
 
 import nl.rijksoverheid.ctr.shared.util.TestResultUtil
+import nl.rijksoverheid.ctr.shared.util.TestResultUtilImpl
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -13,11 +14,11 @@ import java.time.*
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class TestResultUtilTest {
+class TestResultUtilImplTest {
 
     private val instant = Instant.ofEpochSecond(10)
     private val clock = Clock.fixed(instant, ZoneId.of("UTC"))
-    private val testResultUtil = TestResultUtil(clock)
+    private val testResultUtil = TestResultUtilImpl(clock)
 
     @Test
     fun `isValid returns true if current date is after test validity date`() {

@@ -15,6 +15,7 @@ import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.TestResultAttributes
 import nl.rijksoverheid.ctr.shared.usecase.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.shared.util.PersonalDetailsUtil
+import nl.rijksoverheid.ctr.shared.util.TestResultUtil
 import java.time.OffsetDateTime
 
 /*
@@ -24,6 +25,14 @@ import java.time.OffsetDateTime
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
+
+fun fakeTestResultUtil(
+    isValid: Boolean = true
+) = object : TestResultUtil {
+    override fun isValid(sampleDate: OffsetDateTime, validitySeconds: Long): Boolean {
+        return isValid
+    }
+}
 
 fun fakePersonalDetailsUtil(
 
