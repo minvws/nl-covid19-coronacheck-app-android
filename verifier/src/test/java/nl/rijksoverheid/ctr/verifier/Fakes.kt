@@ -5,8 +5,8 @@ import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
 import nl.rijksoverheid.ctr.shared.models.TestResultAttributes
 import nl.rijksoverheid.ctr.shared.util.TestResultUtil
-import nl.rijksoverheid.ctr.verifier.datamappers.VerifiedQrDataMapper
 import nl.rijksoverheid.ctr.verifier.models.VerifiedQr
+import nl.rijksoverheid.ctr.verifier.usecases.TestResultValidUseCase
 import nl.rijksoverheid.ctr.verifier.usecases.VerifyQrUseCase
 import nl.rijksoverheid.ctr.verifier.util.QrCodeUtil
 import java.time.OffsetDateTime
@@ -18,6 +18,17 @@ import java.time.OffsetDateTime
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
+
+fun fakeTestResultValidUseCase(
+    result: TestResultValidUseCase.TestResultValidResult = TestResultValidUseCase.TestResultValidResult.Valid(
+        verifiedQr = fakeVerifiedQr
+    )
+) = object : TestResultValidUseCase {
+    override suspend fun validate(qrContent: String): TestResultValidUseCase.TestResultValidResult {
+        return result
+    }
+}
+
 fun fakeQrCodeUtil(
     isValid: Boolean = true
 ) = object : QrCodeUtil {
@@ -26,25 +37,19 @@ fun fakeQrCodeUtil(
     }
 }
 
-fun fakeVerifiedQrDataMapper(
-    verifiedQr: VerifiedQr = VerifiedQr(
-        creationDateSeconds = 0,
-        testResultAttributes = TestResultAttributes(
-            sampleTime = 0,
-            testType = "dummy",
-            birthDay = "dummy",
-            birthMonth = "dummy",
-            firstNameInitial = "dummy",
-            lastNameInitial = "dummy",
-            isPaperProof = "0",
-            isSpecimen = "0"
-        )
+val fakeVerifiedQr = VerifiedQr(
+    creationDateSeconds = 0,
+    testResultAttributes = TestResultAttributes(
+        sampleTime = 0,
+        testType = "dummy",
+        birthDay = "dummy",
+        birthMonth = "dummy",
+        firstNameInitial = "dummy",
+        lastNameInitial = "dummy",
+        isPaperProof = "0",
+        isSpecimen = "0"
     )
-) = object : VerifiedQrDataMapper {
-    override fun transform(qrContent: String): VerifiedQr {
-        return verifiedQr
-    }
-}
+)
 
 fun fakeVerifyQrUseCase(
     result: VerifyQrUseCase.VerifyQrResult = VerifyQrUseCase.VerifyQrResult.Success(
