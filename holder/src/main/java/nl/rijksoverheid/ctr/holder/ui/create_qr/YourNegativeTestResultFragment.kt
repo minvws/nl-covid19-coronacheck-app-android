@@ -11,6 +11,7 @@ import nl.rijksoverheid.ctr.holder.BaseFragment
 import nl.rijksoverheid.ctr.holder.HolderMainActivity
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentYourNegativeTestResultsBinding
+import nl.rijksoverheid.ctr.holder.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.holder.usecase.SignedTestResult
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.android.ext.android.inject
@@ -59,13 +60,12 @@ class YourNegativeTestResultFragment : BaseFragment(R.layout.fragment_your_negat
 
 
                 binding.info.setOnClickListener {
-                    findNavController().navigate(
+                    findNavControllerSafety(R.id.nav_your_negative_result)?.navigate(
                         YourNegativeTestResultFragmentDirections.actionYourNegativeResultExplanation(
                             result.holder
                         )
                     )
                 }
-
             }
 
             binding.rowPersonalDetails.text = getString(
