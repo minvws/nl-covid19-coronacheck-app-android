@@ -7,7 +7,7 @@
     <string name="onboarding_screen_1_title">Alleen toegang na testen</string>
     <string name="onboarding_screen_1_description">Jouw gezondheid en die van anderen is belangrijk. Ook als je wat leuks gaat doen. Laat je daarom eerst testen. Als je test bewijst dat je op dat moment geen corona hebt krijg je toegang tot bepaalde sociale, culturele of sportieve activiteiten.</string>
     <string name="onboarding_screen_2_title">Jouw QR-code op zak</string>
-    <string name="onboarding_screen_2_description">Bewijst je test dat je op dat moment geen corona hebt? Dan kun je in deze app een persoonlijke QR-code maken. Dat is jouw testbewijs. De QR-code wordt gescand voordat je toegang krijgt.</string>
+    <string name="onboarding_screen_2_description">Had je op het moment van testen geen corona? Dan kun je in deze app een persoonlijke QR-code maken. Dat is jouw testbewijs. De QR-code wordt gescand voordat je toegang krijgt.</string>
     <string name="onboarding_screen_4_title">Privacy staat voorop</string>
     <string name="onboarding_screen_4_description">In jouw QR-code staat alleen wanneer je negatief getest bent.</string>
     <string name="onboarding_screen_3_title">Geldigheid van je bewijs</string>
@@ -46,9 +46,9 @@
     <string name="my_overview_qr_created_snackbar_message">Jouw QR-code is gemaakt. Lees hier welke informatie in jouw QR-code staat.</string>
     <string name="my_overview_qr_created_snackbar_button">Lees meer</string>
     <string name="choose_provider_toolbar">QR-code maken</string>
-    <string name="choose_provider_title">QR-code maken</string>
-    <string name="choose_provider_description">Bewijst je test dat je op dat moment geen corona hebt? Dan kan je van het testresultaat een QR-code maken. Geef aan waar je getest bent.</string>
-    <string name="choose_provider_commercial_title">Via Testenvoortoegang.nl</string>
+    <string name="choose_provider_title">Waar ben je getest?</string>
+    <string name="choose_provider_description">Had je op het moment van testen geen corona? Dan kan je van het testresultaat een QR-code maken. Geef aan waar je getest bent.</string>
+    <string name="choose_provider_commercial_title">Testen voor toegang</string>
     <string name="choose_provider_commercial_subtitle">Vul je code in</string>
     <string name="choose_provider_ggd_title">GGD</string>
     <string name="choose_provider_ggd_subtitle">Log in met je DigiD</string>
