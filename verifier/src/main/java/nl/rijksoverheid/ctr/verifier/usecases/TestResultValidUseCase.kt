@@ -18,48 +18,53 @@ import java.util.concurrent.TimeUnit
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class TestResultValidUseCase(
-    private val verifyQrUseCase: VerifyQrUseCase,
-    private val testResultUtil: TestResultUtil,
-    private val qrCodeUtil: QrCodeUtil,
-    private val cachedAppConfigUseCase: CachedAppConfigUseCase
-) {
-
-    suspend fun valid(qrContent: String): TestResultValidResult = withContext(Dispatchers.IO) {
-        when (val verifyQrResult = verifyQrUseCase.get(qrContent)) {
-            is VerifyQrUseCase.VerifyQrResult.Success -> {
-                val verifiedQr = verifyQrResult.verifiedQr
-                val validity =
-                    TimeUnit.HOURS.toSeconds(
-                        cachedAppConfigUseCase.getCachedAppConfigMaxValidityHours().toLong()
-                    )
-                val isValid = testResultUtil.isValid(
-                    sampleDate = OffsetDateTime.ofInstant(
-                        Instant.ofEpochSecond(verifiedQr.testResultAttributes.sampleTime),
-                        ZoneOffset.UTC
-                    ),
-                    validitySeconds = validity,
-                ) && qrCodeUtil.isValid(
-                    creationDate = OffsetDateTime.ofInstant(
-                        Instant.ofEpochSecond(verifiedQr.creationDateSeconds),
-                        ZoneOffset.UTC
-                    ),
-                    isPaperProof = verifiedQr.testResultAttributes.isPaperProof
-                )
-                if (isValid) {
-                    TestResultValidResult.Valid(verifiedQr)
-                } else {
-                    TestResultValidResult.Invalid
-                }
-            }
-            is VerifyQrUseCase.VerifyQrResult.Failed -> {
-                TestResultValidResult.Invalid
-            }
-        }
-    }
+interface TestResultValidUseCase {
+    suspend fun valid(qrContent: String): TestResultValidResult
 
     sealed class TestResultValidResult {
         class Valid(val verifiedQr: VerifiedQr) : TestResultValidResult()
         object Invalid : TestResultValidResult()
     }
+}
+
+class TestResultValidUseCaseImpl(
+    private val verifyQrUseCase: VerifyQrUseCase,
+    private val testResultUtil: TestResultUtil,
+    private val qrCodeUtil: QrCodeUtil,
+    private val cachedAppConfigUseCase: CachedAppConfigUseCase
+) : TestResultValidUseCase {
+
+    override suspend fun valid(qrContent: String): TestResultValidUseCase.TestResultValidResult =
+        withContext(Dispatchers.IO) {
+            when (val verifyQrResult = verifyQrUseCase.get(qrContent)) {
+                is VerifyQrUseCase.VerifyQrResult.Success -> {
+                    val verifiedQr = verifyQrResult.verifiedQr
+                    val validity =
+                        TimeUnit.HOURS.toSeconds(
+                            cachedAppConfigUseCase.getCachedAppConfigMaxValidityHours().toLong()
+                        )
+                    val isValid = testResultUtil.isValid(
+                        sampleDate = OffsetDateTime.ofInstant(
+                            Instant.ofEpochSecond(verifiedQr.testResultAttributes.sampleTime),
+                            ZoneOffset.UTC
+                        ),
+                        validitySeconds = validity,
+                    ) && qrCodeUtil.isValid(
+                        creationDate = OffsetDateTime.ofInstant(
+                            Instant.ofEpochSecond(verifiedQr.creationDateSeconds),
+                            ZoneOffset.UTC
+                        ),
+                        isPaperProof = verifiedQr.testResultAttributes.isPaperProof
+                    )
+                    if (isValid) {
+                        TestResultValidUseCase.TestResultValidResult.Valid(verifiedQr)
+                    } else {
+                        TestResultValidUseCase.TestResultValidResult.Invalid
+                    }
+                }
+                is VerifyQrUseCase.VerifyQrResult.Failed -> {
+                    TestResultValidUseCase.TestResultValidResult.Invalid
+                }
+            }
+        }
 }

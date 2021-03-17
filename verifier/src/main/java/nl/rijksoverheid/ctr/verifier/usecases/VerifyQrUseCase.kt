@@ -15,20 +15,31 @@ import nl.rijksoverheid.ctr.verifier.models.VerifiedQr
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class VerifyQrUseCase(
-    private val moshi: Moshi
-) {
-
+interface VerifyQrUseCase {
     suspend fun get(
         content: String
-    ): VerifyQrResult = withContext(Dispatchers.IO) {
+    ): VerifyQrResult
+
+    sealed class VerifyQrResult {
+        class Success(val verifiedQr: VerifiedQr) : VerifyQrResult()
+        object Failed : VerifyQrResult()
+    }
+}
+
+class VerifyQrUseCaseImpl(
+    private val moshi: Moshi
+) : VerifyQrUseCase {
+
+    override suspend fun get(
+        content: String
+    ): VerifyQrUseCase.VerifyQrResult = withContext(Dispatchers.IO) {
         try {
             val result =
                 Clmobile.verifyQREncoded(
                     content.toByteArray()
                 ).verify()
 
-            VerifyQrResult.Success(
+            VerifyQrUseCase.VerifyQrResult.Success(
                 VerifiedQr(
                     creationDateSeconds = result.unixTimeSeconds,
                     testResultAttributes = result.attributesJson.decodeToString().toObject(
@@ -37,12 +48,7 @@ class VerifyQrUseCase(
                 )
             )
         } catch (e: Exception) {
-            VerifyQrResult.Failed
+            VerifyQrUseCase.VerifyQrResult.Failed
         }
-    }
-
-    sealed class VerifyQrResult {
-        class Success(val verifiedQr: VerifiedQr) : VerifyQrResult()
-        object Failed : VerifyQrResult()
     }
 }
