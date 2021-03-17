@@ -6,14 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.qrscanner.QrCodeScannerUtil
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
-import nl.rijksoverheid.ctr.verifier.BaseFragment
 import nl.rijksoverheid.ctr.verifier.R
+import nl.rijksoverheid.ctr.verifier.VerifierMainActivity
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanQrBinding
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -25,7 +26,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class ScanQrFragment : BaseFragment() {
+class ScanQrFragment : Fragment() {
 
     private lateinit var binding: FragmentScanQrBinding
     private val introductionViewModel: IntroductionViewModel by viewModel()
@@ -71,7 +72,7 @@ class ScanQrFragment : BaseFragment() {
         }
 
         scanQrViewModel.loadingLiveData.observe(viewLifecycleOwner, EventObserver {
-            presentLoading(it)
+            (requireActivity() as VerifierMainActivity).presentLoading(it)
         })
 
         scanQrViewModel.validatedQrLiveData.observe(viewLifecycleOwner, EventObserver {
