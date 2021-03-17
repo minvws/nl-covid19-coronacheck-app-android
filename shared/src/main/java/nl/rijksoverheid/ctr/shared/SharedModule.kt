@@ -2,10 +2,7 @@ package nl.rijksoverheid.ctr.shared
 
 import nl.rijksoverheid.ctr.shared.usecase.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.shared.usecase.TestResultAttributesUseCaseImpl
-import nl.rijksoverheid.ctr.shared.util.PersonalDetailsUtil
-import nl.rijksoverheid.ctr.shared.util.PersonalDetailsUtilImpl
-import nl.rijksoverheid.ctr.shared.util.QrCodeUtil
-import nl.rijksoverheid.ctr.shared.util.TestResultUtil
+import nl.rijksoverheid.ctr.shared.util.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import java.time.Clock
@@ -29,7 +26,7 @@ val sharedModule = module {
 
     // Utils
     single { QrCodeUtil(get()) }
-    single { TestResultUtil(get()) }
+    factory<TestResultUtil> { TestResultUtilImpl(get()) }
     factory<PersonalDetailsUtil> {
         PersonalDetailsUtilImpl(
             passportMonths = androidContext().resources.getStringArray(

@@ -48,8 +48,8 @@ class TestResultsViewModel(
 
     val viewState: LiveData<ViewState> = MutableLiveData(ViewState())
 
-    val retrievedResult: TestResult.Complete?
-        get() = (testResult.value?.peekContent() as? TestResult.Complete)
+    val retrievedResult: TestResult.NegativeTestResult?
+        get() = (testResult.value?.peekContent() as? TestResult.NegativeTestResult)
 
     private val currentViewState: ViewState
         get() = viewState.value!!

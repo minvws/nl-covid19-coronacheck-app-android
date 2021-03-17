@@ -90,17 +90,16 @@ class CommercialTestCodeFragment : BaseFragment(R.layout.fragment_commercial_tes
                 }
                 TestResult.NetworkError,
                 TestResult.ServerError -> presentError()
-                is TestResult.Complete -> {
-                    if (it.remoteTestResult.result?.negativeResult == true) {
-                        findNavController().navigate(CommercialTestCodeFragmentDirections.actionYourNegativeResult())
-                    } else {
-                        findNavController().navigate(
-                            CommercialTestCodeFragmentDirections.actionNoTestResult(
-                                title = getString(R.string.no_negative_test_result_title),
-                                description = appConfigUtil.getStringWithTestValidity(R.string.no_negative_test_result_description)
-                            )
+                is TestResult.NegativeTestResult -> {
+                    findNavController().navigate(CommercialTestCodeFragmentDirections.actionYourNegativeResult())
+                }
+                is TestResult.NoNegativeTestResult -> {
+                    findNavController().navigate(
+                        CommercialTestCodeFragmentDirections.actionNoTestResult(
+                            title = getString(R.string.no_negative_test_result_title),
+                            description = appConfigUtil.getStringWithTestValidity(R.string.no_negative_test_result_description)
                         )
-                    }
+                    )
                 }
                 is TestResult.Pending -> {
                     findNavController().navigate(
@@ -130,6 +129,11 @@ class CommercialTestCodeFragment : BaseFragment(R.layout.fragment_commercial_tes
         navArgs.locationToken?.let { token ->
             binding.uniqueCodeText.setText(token)
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        hideKeyboard()
     }
 
     private fun fetchTestResults(binding: FragmentCommercialTestCodeBinding) {
