@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.holder.usecase
 
+import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.models.RemoteTestResult
 import nl.rijksoverheid.ctr.holder.models.ResponseError
 import nl.rijksoverheid.ctr.holder.models.SignedResponseWithModel
@@ -7,9 +8,11 @@ import nl.rijksoverheid.ctr.holder.models.TestIsmResult
 import nl.rijksoverheid.ctr.holder.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.repositories.TestProviderRepository
 import nl.rijksoverheid.ctr.shared.util.PersonalDetailsUtil
+import nl.rijksoverheid.ctr.shared.util.TestResultUtil
 import retrofit2.HttpException
 import timber.log.Timber
 import java.io.IOException
+import java.util.concurrent.TimeUnit
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -25,7 +28,9 @@ class TestResultUseCase(
     private val commitmentMessageUseCase: CommitmentMessageUseCase,
     private val secretKeyUseCase: SecretKeyUseCase,
     private val createCredentialUseCase: CreateCredentialUseCase,
-    private val personalDetailsUtil: PersonalDetailsUtil
+    private val personalDetailsUtil: PersonalDetailsUtil,
+    private val testResultUtil: TestResultUtil,
+    private val cachedAppConfigUseCase: CachedAppConfigUseCase
 ) {
 
     suspend fun testResult(uniqueCode: String, verificationCode: String? = null): TestResult {
@@ -67,7 +72,22 @@ class TestResultUseCase(
                 birthDay = result.holder.birthDay,
                 birthMonth = result.holder.birthMonth
             )
-            TestResult.Complete(remoteTestResult, personalDetails, signedResponseWithTestResult)
+
+            if (remoteTestResult.result.negativeResult && testResultUtil.isValid(
+                    sampleDate = remoteTestResult.result.sampleDate,
+                    validitySeconds = TimeUnit.HOURS.toSeconds(
+                        cachedAppConfigUseCase.getCachedAppConfigMaxValidityHours().toLong()
+                    )
+                )
+            ) {
+                TestResult.NegativeTestResult(
+                    remoteTestResult,
+                    personalDetails,
+                    signedResponseWithTestResult
+                )
+            } else {
+                TestResult.NoNegativeTestResult
+            }
         } catch (ex: HttpException) {
             Timber.e(ex, "Server error while getting test result")
             TestResult.ServerError
@@ -121,12 +141,12 @@ class TestResultUseCase(
 }
 
 sealed class TestResult {
-    data class Complete(
+    object NoNegativeTestResult : TestResult()
+    class NegativeTestResult(
         val remoteTestResult: RemoteTestResult,
         val personalDetails: List<String>,
         val signedResponseWithTestResult: SignedResponseWithModel<RemoteTestResult>
-    ) :
-        TestResult()
+    ) : TestResult()
 
     object Pending : TestResult()
     object InvalidToken : TestResult()

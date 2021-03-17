@@ -78,7 +78,7 @@ fun holderModule(baseUrl: String) = module {
         TestProviderUseCaseImpl(get())
     }
     single {
-        TestResultUseCase(get(), get(), get(), get(), get(), get(), get())
+        TestResultUseCase(get(), get(), get(), get(), get(), get(), get(), get(), get())
     }
     factory<LocalTestResultUseCase> {
         LocalTestResultUseCaseImpl(get(), get(), get(), get(), get())
