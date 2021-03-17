@@ -47,8 +47,8 @@
     <string name="my_overview_qr_created_snackbar_button">Lees meer</string>
     <string name="choose_provider_toolbar">QR-code maken</string>
     <string name="choose_provider_title">QR-code maken</string>
-    <string name="choose_provider_description">Bewijst je test dat je op dat moment geen corona hebt? Dan kan je van het testresultaat een QR-code maken.</string>
-    <string name="choose_provider_commercial_title">Testenvoortoegang.nl</string>
+    <string name="choose_provider_description">Bewijst je test dat je op dat moment geen corona hebt? Dan kan je van het testresultaat een QR-code maken. Geef aan waar je getest bent.</string>
+    <string name="choose_provider_commercial_title">Via Testenvoortoegang.nl</string>
     <string name="choose_provider_commercial_subtitle">Vul je code in</string>
     <string name="choose_provider_ggd_title">GGD</string>
     <string name="choose_provider_ggd_subtitle">Log in met je DigiD</string>
@@ -100,7 +100,7 @@
     <string name="item_test_result_expired"><![CDATA[Je QR-code is verlopen.<br\>Laat je opnieuw testen.]]></string>
     <string name="test_appointment_info_toolbar_title">Testafspraak maken</string>
     <string name="test_appointment_info_title">Maak een testafspraak</string>
-    <string name="test_appointment_info_description"><![CDATA[Om een QR-code te maken moet je je eerst laten testen. Alleen van een negatief testresultaat kan je een QR-code maken.<br\><br\>Een testbewijs is geldig tot %1$s uur na het moment van testen. Plan je test dus op tijd. En zorg dat jouw QR-code binnen %1$s uur gescand is aan de deur.]]></string>
+    <string name="test_appointment_info_description"><![CDATA[Je moet je eerst laten testen voordat je een QR-code maakt. Alleen van een negatief testresultaat kan je een QR-code maken.<br\><br\>Een testbewijs is geldig tot %1$s uur na het moment van testen. Plan je test dus op tijd. En zorg dat jouw QR-code binnen %1$s uur gescand is aan de deur.]]></string>
     <string name="test_appointment_info_button">Maak een afspraak</string>
     <string name="camera_rationale_dialog_title">CoronaCheck wil toegang tot je camera</string>
     <string name="camera_rationale_dialog_description">Alleen zo kan de app jouw QR-code scannen.</string>
