@@ -1,8 +1,9 @@
 package nl.rijksoverheid.ctr.shared
 
-import nl.rijksoverheid.ctr.shared.usecase.TestResultAttributesUseCase
-import nl.rijksoverheid.ctr.shared.usecase.TestResultAttributesUseCaseImpl
-import nl.rijksoverheid.ctr.shared.util.*
+import nl.rijksoverheid.ctr.shared.util.PersonalDetailsUtil
+import nl.rijksoverheid.ctr.shared.util.PersonalDetailsUtilImpl
+import nl.rijksoverheid.ctr.shared.util.TestResultUtil
+import nl.rijksoverheid.ctr.shared.util.TestResultUtilImpl
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import java.time.Clock
@@ -19,13 +20,7 @@ val sharedModule = module {
 
     single { Clock.systemDefaultZone() }
 
-    // Usecases
-    factory<TestResultAttributesUseCase> {
-        TestResultAttributesUseCaseImpl(get())
-    }
-
     // Utils
-    single { QrCodeUtil(get()) }
     factory<TestResultUtil> { TestResultUtilImpl(get()) }
     factory<PersonalDetailsUtil> {
         PersonalDetailsUtilImpl(

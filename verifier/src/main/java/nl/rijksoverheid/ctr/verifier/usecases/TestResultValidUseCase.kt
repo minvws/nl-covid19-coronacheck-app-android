@@ -3,9 +3,12 @@ package nl.rijksoverheid.ctr.verifier.usecases
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
-import nl.rijksoverheid.ctr.shared.util.QrCodeUtil
 import nl.rijksoverheid.ctr.shared.util.TestResultUtil
-import nl.rijksoverheid.ctr.verifier.models.DecryptedQr
+import nl.rijksoverheid.ctr.verifier.models.VerifiedQr
+import nl.rijksoverheid.ctr.verifier.util.QrCodeUtil
+import java.time.Instant
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
 import java.util.concurrent.TimeUnit
 
 /*
@@ -15,41 +18,53 @@ import java.util.concurrent.TimeUnit
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class TestResultValidUseCase(
-    private val decryptHolderQrUseCase: DecryptHolderQrUseCase,
+interface TestResultValidUseCase {
+    suspend fun validate(qrContent: String): TestResultValidResult
+
+    sealed class TestResultValidResult {
+        class Valid(val verifiedQr: VerifiedQr) : TestResultValidResult()
+        object Invalid : TestResultValidResult()
+    }
+}
+
+class TestResultValidUseCaseImpl(
+    private val verifyQrUseCase: VerifyQrUseCase,
     private val testResultUtil: TestResultUtil,
     private val qrCodeUtil: QrCodeUtil,
     private val cachedAppConfigUseCase: CachedAppConfigUseCase
-) {
+) : TestResultValidUseCase {
 
-    suspend fun valid(qrContent: String): TestResultValidResult = withContext(Dispatchers.IO) {
-        when (val decryptResult = decryptHolderQrUseCase.decrypt(qrContent)) {
-            is DecryptHolderQrUseCase.DecryptResult.Success -> {
-                val validity =
-                    TimeUnit.HOURS.toSeconds(
-                        cachedAppConfigUseCase.getCachedAppConfigMaxValidityHours().toLong()
+    override suspend fun validate(qrContent: String): TestResultValidUseCase.TestResultValidResult =
+        withContext(Dispatchers.IO) {
+            when (val verifyQrResult = verifyQrUseCase.get(qrContent)) {
+                is VerifyQrUseCase.VerifyQrResult.Success -> {
+                    val verifiedQr = verifyQrResult.verifiedQr
+                    val validity =
+                        TimeUnit.HOURS.toSeconds(
+                            cachedAppConfigUseCase.getCachedAppConfigMaxValidityHours().toLong()
+                        )
+                    val isValid = testResultUtil.isValid(
+                        sampleDate = OffsetDateTime.ofInstant(
+                            Instant.ofEpochSecond(verifiedQr.testResultAttributes.sampleTime),
+                            ZoneOffset.UTC
+                        ),
+                        validitySeconds = validity,
+                    ) && qrCodeUtil.isValid(
+                        creationDate = OffsetDateTime.ofInstant(
+                            Instant.ofEpochSecond(verifiedQr.creationDateSeconds),
+                            ZoneOffset.UTC
+                        ),
+                        isPaperProof = verifiedQr.testResultAttributes.isPaperProof
                     )
-                val isValid = testResultUtil.isValid(
-                    sampleDate = decryptResult.decryptQr.sampleDate,
-                    validitySeconds = validity,
-                ) && qrCodeUtil.isValid(
-                    creationDate = decryptResult.decryptQr.creationDate,
-                    isPaperProof = decryptResult.decryptQr.isPaperProof
-                )
-                if (isValid) {
-                    TestResultValidResult.Valid(decryptResult.decryptQr)
-                } else {
-                    TestResultValidResult.Invalid
+                    if (isValid) {
+                        TestResultValidUseCase.TestResultValidResult.Valid(verifiedQr)
+                    } else {
+                        TestResultValidUseCase.TestResultValidResult.Invalid
+                    }
+                }
+                is VerifyQrUseCase.VerifyQrResult.Failed -> {
+                    TestResultValidUseCase.TestResultValidResult.Invalid
                 }
             }
-            is DecryptHolderQrUseCase.DecryptResult.Failed -> {
-                TestResultValidResult.Invalid
-            }
         }
-    }
-
-    sealed class TestResultValidResult {
-        class Valid(val decryptedQr: DecryptedQr) : TestResultValidResult()
-        object Invalid : TestResultValidResult()
-    }
 }

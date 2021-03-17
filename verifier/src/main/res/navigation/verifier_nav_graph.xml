@@ -42,7 +42,7 @@
 
         <argument
             android:name="validatedResult"
-            app:argType="nl.rijksoverheid.ctr.verifier.models.ValidatedQrResultState" />
+            app:argType="nl.rijksoverheid.ctr.verifier.models.VerifiedQrResultState" />
 
         <action
             android:id="@+id/action_scan_qr"
@@ -63,10 +63,10 @@
         android:id="@+id/valid_explanation_bottomsheet"
         android:name="nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanResultValidExplanationDialogFragment"
         android:label="ScanResultValidExplanationDialogFragment"
-        tools:layout="@layout/fragment_scan_result_valid_reason" >
+        tools:layout="@layout/fragment_scan_result_valid_reason">
         <argument
             android:name="qrResult"
-            app:argType="nl.rijksoverheid.ctr.verifier.models.DecryptedQr" />
+            app:argType="nl.rijksoverheid.ctr.verifier.models.VerifiedQr" />
     </dialog>
 
     <dialog

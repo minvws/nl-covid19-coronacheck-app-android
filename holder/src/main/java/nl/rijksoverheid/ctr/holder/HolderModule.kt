@@ -25,6 +25,8 @@ import nl.rijksoverheid.ctr.holder.ui.myoverview.LocalTestResultViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.util.TestResultAdapterItemUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.util.TestResultAdapterItemUtilImpl
 import nl.rijksoverheid.ctr.holder.usecase.*
+import nl.rijksoverheid.ctr.shared.usecase.TestResultAttributesUseCase
+import nl.rijksoverheid.ctr.shared.usecase.TestResultAttributesUseCaseImpl
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import okhttp3.tls.HandshakeCertificates
@@ -114,6 +116,10 @@ fun holderModule(baseUrl: String) = module {
     // Usecases
     factory<CreateCredentialUseCase> {
         CreateCredentialUseCaseImpl()
+    }
+
+    factory<TestResultAttributesUseCase> {
+        TestResultAttributesUseCaseImpl(get())
     }
 
     single {

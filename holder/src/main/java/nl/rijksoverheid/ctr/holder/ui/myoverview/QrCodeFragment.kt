@@ -11,7 +11,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.DialogQrCodeBinding
-import nl.rijksoverheid.ctr.shared.util.QrCodeUtil
+import nl.rijksoverheid.ctr.shared.QrCodeConstants
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 
@@ -34,7 +34,7 @@ class QrCodeFragment : DialogFragment() {
                 size = resources.displayMetrics.widthPixels
             )
             if (canGenerateQrCode) {
-                qrCodeHandler.postDelayed(this, QrCodeUtil.VALID_FOR_SECONDS * 1000)
+                qrCodeHandler.postDelayed(this, QrCodeConstants.VALID_FOR_SECONDS * 1000)
             }
         }
     }
