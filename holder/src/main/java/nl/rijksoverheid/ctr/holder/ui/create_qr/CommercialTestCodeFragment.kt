@@ -132,6 +132,11 @@ class CommercialTestCodeFragment : BaseFragment(R.layout.fragment_commercial_tes
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        hideKeyboard()
+    }
+
     private fun fetchTestResults(binding: FragmentCommercialTestCodeBinding) {
         binding.verificationCodeInput.error = null
         binding.uniqueCodeInput.error = null
