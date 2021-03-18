@@ -10,4 +10,5 @@
     <item name="nav_host_fragment" type="id" />
     <item name="drawer_layout" type="id" />
     <item name="nav_view" type="id" />
+    <item name="launch_screen" type="drawable" />
 </resources>

@@ -37,7 +37,6 @@ class VerifierMainActivity : BaseActivity(R.id.nav_scan_qr) {
     private val appStatusViewModel: AppConfigViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
 
         if (BuildConfig.FLAVOR == "prod") {

@@ -29,7 +29,6 @@ class SetupFragment : Fragment(R.layout.fragment_setup) {
         super.onViewCreated(view, savedInstanceState)
 
         val binding = FragmentSetupBinding.bind(view)
-        binding.root.setBackgroundResource(setupData.launchScreen)
         binding.text.setText(setupData.appSetupTextResource)
 
         appStatusViewModel.appStatusLiveData.observe(viewLifecycleOwner, {
@@ -42,7 +41,5 @@ class SetupFragment : Fragment(R.layout.fragment_setup) {
         })
 
         appStatusViewModel.refresh()
-
     }
-
 }

@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Component Styles -->
+    <style name="Widget.App.NavigationView" parent="Widget.MaterialComponents.NavigationView">
+        <item name="itemTextColor">@color/white</item>
+    </style>
+
     <style name="Widget.App.TextInputLayout" parent="Widget.Design.TextInputLayout">
         <item name="boxBackgroundColor">@color/white</item>
     </style>
@@ -22,6 +27,11 @@
         <item name="cornerRadius">26dp</item>
     </style>
 
+    <style name="Widget.App.Toolbar.Surface" parent="Widget.MaterialComponents.Toolbar.Surface">
+        <item name="android:elevation">4dp</item>
+    </style>
+
+    <!-- Text Styles -->
     <style name="App.TextAppearance.MaterialComponents.Body1" parent="TextAppearance.MaterialComponents.Body1">
         <item name="lineHeight">26sp</item>
     </style>
@@ -51,15 +61,13 @@
         <item name="android:textSize">16sp</item>
     </style>
 
-    <style name="Widget.App.Toolbar.Surface" parent="Widget.MaterialComponents.Toolbar.Surface">
-        <item name="android:elevation">4dp</item>
-    </style>
-
+    <!-- Dialogs -->
     <style name="AppTheme.Dialog.FullScreen" parent="">
         <item name="android:windowFullscreen">false</item>
         <item name="android:windowIsFloating">false</item>
     </style>
 
+    <!-- Animations -->
     <style name="SlideFromBottomFragmentAnimations">
         <item name="android:windowEnterAnimation">@anim/slide_in_up</item>
         <item name="android:windowExitAnimation">@anim/slide_out_down</item>

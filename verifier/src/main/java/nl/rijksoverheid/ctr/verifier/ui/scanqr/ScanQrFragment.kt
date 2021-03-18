@@ -5,11 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
+import nl.rijksoverheid.ctr.design.BaseActivity
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.qrscanner.QrCodeScannerUtil
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
@@ -53,6 +52,8 @@ class ScanQrFragment : Fragment() {
         super.onCreate(savedInstanceState)
         if (!introductionViewModel.introductionFinished()) {
             findNavController().navigate(R.id.action_introduction)
+        } else {
+            (requireActivity() as BaseActivity).removeSplashScreen()
         }
     }
 
