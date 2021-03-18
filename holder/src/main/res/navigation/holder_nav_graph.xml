@@ -54,10 +54,10 @@
         <action
             android:id="@+id/action_commercial_test_type"
             app:destination="@id/nav_commercial_test_type"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:enterAnim="@anim/fragment_open_enter_slide"
+            app:exitAnim="@anim/fragment_open_exit_slide"
+            app:popEnterAnim="@anim/fragment_close_enter_slide"
+            app:popExitAnim="@anim/fragment_close_exit_slide" />
 
     </fragment>
 
