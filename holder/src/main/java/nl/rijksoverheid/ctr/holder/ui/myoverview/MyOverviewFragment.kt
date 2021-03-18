@@ -11,6 +11,7 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
 import com.xwray.groupie.viewbinding.BindableItem
+import nl.rijksoverheid.ctr.design.BaseActivity
 import nl.rijksoverheid.ctr.holder.BaseFragment
 import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.R
@@ -59,6 +60,8 @@ class MyOverviewFragment : BaseFragment(R.layout.fragment_my_overview) {
         super.onCreate(savedInstanceState)
         if (!introductionViewModel.introductionFinished()) {
             findNavController().navigate(R.id.action_introduction)
+        } else if (requireActivity() is BaseActivity) {
+            (requireActivity() as BaseActivity).removeSplashScreen()
         }
     }
 

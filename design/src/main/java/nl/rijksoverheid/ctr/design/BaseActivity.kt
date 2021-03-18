@@ -8,7 +8,10 @@
 
 package nl.rijksoverheid.ctr.design
 
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.TypedValue
+import android.view.ContextThemeWrapper
 import android.view.View
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
@@ -16,12 +19,24 @@ import androidx.core.view.ViewCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.fragment.NavHostFragment
 
+
 /**
  * Base activity that adjust the navigation menu for system bar insets and
  * locks the drawer on any nav destination except for the home destination
  * @param homeDestination the destination which should show the drawer
  */
 abstract class BaseActivity(@IdRes private val homeDestination: Int) : AppCompatActivity() {
+
+    /**
+     * Remove the splash screen by setting the background to AppTheme's windowBackground value
+     */
+    fun removeSplashScreen() {
+        val theme = ContextThemeWrapper(this, R.style.AppTheme).theme
+        val typedValue = TypedValue()
+        theme.resolveAttribute(android.R.attr.windowBackground, typedValue, true)
+        window.setBackgroundDrawable(ColorDrawable(typedValue.data))
+    }
+
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
         val navHostFragment =

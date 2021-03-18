@@ -37,16 +37,13 @@ class HolderMainActivity : BaseActivity(R.id.nav_my_overview) {
     private val appStatusViewModel: AppConfigViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.AppTheme)
-
+        super.onCreate(savedInstanceState)
         if (BuildConfig.FLAVOR == "prod") {
             window.setFlags(
                 WindowManager.LayoutParams.FLAG_SECURE,
                 WindowManager.LayoutParams.FLAG_SECURE
             )
         }
-
-        super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -170,5 +167,4 @@ class HolderMainActivity : BaseActivity(R.id.nav_my_overview) {
         }
         super.onBackPressed()
     }
-
 }

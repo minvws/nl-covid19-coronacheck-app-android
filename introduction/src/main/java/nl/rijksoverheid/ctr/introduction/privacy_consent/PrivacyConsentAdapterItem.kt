@@ -1,10 +1,10 @@
-package nl.rijksoverheid.ctr.introduction.privacy_policy
+package nl.rijksoverheid.ctr.introduction.privacy_consent
 
 import android.view.View
 import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.introduction.R
-import nl.rijksoverheid.ctr.introduction.databinding.ItemPrivacyPolicyBinding
-import nl.rijksoverheid.ctr.introduction.privacy_policy.models.PrivacyPolicyItem
+import nl.rijksoverheid.ctr.introduction.databinding.ItemPrivacyConsentBinding
+import nl.rijksoverheid.ctr.introduction.privacy_consent.models.PrivacyPolicyItem
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
 
 /*
@@ -14,20 +14,20 @@ import nl.rijksoverheid.ctr.shared.ext.fromHtml
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class PrivacyPolicyAdapterItem(private val item: PrivacyPolicyItem) :
-    BindableItem<ItemPrivacyPolicyBinding>() {
+class PrivacyConsentAdapterItem(private val item: PrivacyPolicyItem) :
+    BindableItem<ItemPrivacyConsentBinding>() {
     override fun getLayout(): Int {
-        return R.layout.item_privacy_policy
+        return R.layout.item_privacy_consent
     }
 
-    override fun bind(viewBinding: ItemPrivacyPolicyBinding, position: Int) {
+    override fun bind(viewBinding: ItemPrivacyConsentBinding, position: Int) {
         viewBinding.icon.setImageResource(item.iconResource)
         viewBinding.description.text =
             viewBinding.description.context.getString(item.textResource).fromHtml()
     }
 
-    override fun initializeViewBinding(view: View): ItemPrivacyPolicyBinding {
-        return ItemPrivacyPolicyBinding.bind(view)
+    override fun initializeViewBinding(view: View): ItemPrivacyConsentBinding {
+        return ItemPrivacyConsentBinding.bind(view)
     }
 
 }
