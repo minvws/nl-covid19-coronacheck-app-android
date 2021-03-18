@@ -22,7 +22,7 @@ import org.koin.core.context.startKoin
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class HolderApplication : SharedApplication(), CoronaCheckApp, AppStatusStringProvider {
+class HolderApplication : SharedApplication(), CoronaCheckApp {
 
     private val loadPublicKeysUseCase: LoadPublicKeysUseCase by inject()
     private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
@@ -105,20 +105,6 @@ class HolderApplication : SharedApplication(), CoronaCheckApp, AppStatusStringPr
             privacyPolicyStringResource = R.string.privacy_policy_description,
             privacyPolicyCheckboxStringResource = R.string.privacy_policy_checkbox_text,
             onboardingNextButtonStringResource = R.string.onboarding_next,
-        )
-    }
-
-    override fun getAppStatusStrings(): AppStatusStringProvider.AppStatusStrings {
-        return AppStatusStringProvider.AppStatusStrings(
-            appStatusDeactivatedTitle = R.string.app_status_deactivated_title,
-            appStatusDeactivatedMessage = R.string.app_status_deactivated_message,
-            appStatusDeactivatedAction = R.string.app_status_deactivated_action,
-            appStatusUpdateRequiredAction = R.string.app_status_update_required_action,
-            appStatusUpdateRequiredMessage = R.string.app_status_update_required_message,
-            appStatusUpdateRequiredTitle = R.string.app_status_update_required_title,
-            appStatusInternetRequiredTitle = R.string.app_status_internet_required_title,
-            appStatusInternetRequiredMessage = R.string.app_status_internet_required_message,
-            appStatusInternetRequiredAction = R.string.app_status_internet_required_action
         )
     }
 }

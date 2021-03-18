@@ -24,8 +24,6 @@ class AppStatusFragment : Fragment(R.layout.fragment_app_status) {
         const val EXTRA_APP_STATUS = "EXTRA_APP_STATUS"
     }
 
-    private val appStatusStrings by lazy { (requireActivity().application as AppStatusStringProvider).getAppStatusStrings() }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -36,27 +34,27 @@ class AppStatusFragment : Fragment(R.layout.fragment_app_status) {
         when (appStatus) {
             is AppStatus.Deactivated -> {
                 binding.bind(
-                    appStatusStrings.appStatusDeactivatedTitle,
-                    appStatusStrings.appStatusDeactivatedMessage,
-                    appStatusStrings.appStatusDeactivatedAction
+                    R.string.app_status_deactivated_title,
+                    R.string.app_status_deactivated_message,
+                    R.string.app_status_deactivated_action
                 ) {
                     startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(appStatus.informationUrl)))
                 }
             }
             is AppStatus.UpdateRequired -> {
                 binding.bind(
-                    appStatusStrings.appStatusUpdateRequiredTitle,
-                    appStatusStrings.appStatusUpdateRequiredMessage,
-                    appStatusStrings.appStatusUpdateRequiredAction
+                    R.string.app_status_update_required_title,
+                    R.string.app_status_update_required_message,
+                    R.string.app_status_update_required_action
                 ) {
                     openPlayStore()
                 }
             }
             is AppStatus.InternetRequired -> {
                 binding.bind(
-                    appStatusStrings.appStatusInternetRequiredTitle,
-                    appStatusStrings.appStatusInternetRequiredMessage,
-                    appStatusStrings.appStatusInternetRequiredAction
+                    R.string.app_status_internet_required_title,
+                    R.string.app_status_internet_required_message,
+                    R.string.app_status_internet_required_action
                 ) {
                     val launchIntent =
                         requireContext().packageManager.getLaunchIntentForPackage(requireContext().packageName)
