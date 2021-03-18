@@ -27,6 +27,11 @@
         <item name="cornerRadius">26dp</item>
     </style>
 
+    <style name="Widget.App.Button.Small" parent="Widget.App.Button">
+        <item name="android:paddingStart">32dp</item>
+        <item name="android:paddingEnd">32dp</item>
+    </style>
+
     <style name="Widget.App.Toolbar.Surface" parent="Widget.MaterialComponents.Toolbar.Surface">
         <item name="android:elevation">4dp</item>
     </style>
