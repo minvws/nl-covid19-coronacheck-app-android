@@ -27,7 +27,7 @@ import org.junit.Test
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class ScanQrViewModelTest {
+class ScanQrViewModelImplTest {
 
     @get:Rule
     val rule = InstantTaskExecutorRule()
@@ -43,7 +43,7 @@ class ScanQrViewModelTest {
 
     @Test
     fun `Getting valid test result delegates to correct livedatas`() = runBlocking {
-        val viewModel = ScanQrViewModel(
+        val viewModel = ScanQrViewModelImpl(
             testResultValidUseCase = fakeTestResultValidUseCase(
                 result = TestResultValidUseCase.TestResultValidResult.Valid(
                     verifiedQr = fakeVerifiedQr
@@ -75,7 +75,7 @@ class ScanQrViewModelTest {
 
     @Test
     fun `Getting invalid test result delegates to correct livedatas`() = runBlocking {
-        val viewModel = ScanQrViewModel(
+        val viewModel = ScanQrViewModelImpl(
             testResultValidUseCase = fakeTestResultValidUseCase(
                 result = TestResultValidUseCase.TestResultValidResult.Invalid
             ),
@@ -103,7 +103,7 @@ class ScanQrViewModelTest {
 
     @Test
     fun `scanInstructionsSeen persist value if not persisted before`() {
-        val viewModel = ScanQrViewModel(
+        val viewModel = ScanQrViewModelImpl(
             testResultValidUseCase = fakeTestResultValidUseCase(
                 result = TestResultValidUseCase.TestResultValidResult.Invalid
             ),
@@ -118,7 +118,7 @@ class ScanQrViewModelTest {
 
     @Test
     fun `scanInstructionsSeen does not persist value if persisted before`() {
-        val viewModel = ScanQrViewModel(
+        val viewModel = ScanQrViewModelImpl(
             testResultValidUseCase = fakeTestResultValidUseCase(
                 result = TestResultValidUseCase.TestResultValidResult.Invalid
             ),

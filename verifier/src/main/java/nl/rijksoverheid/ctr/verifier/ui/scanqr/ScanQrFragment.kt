@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
@@ -101,7 +102,7 @@ class ScanQrFragment : Fragment() {
 
     private fun openScanner() {
         qrCodeScannerUtil.launchScanner(
-            requireActivity() as AppCompatActivity, qrScanResult,
+            requireActivity(), qrScanResult,
             getString(
                 R.string.scanner_custom_title
             ), getString(

@@ -12,6 +12,12 @@ version = "1.0"
 archivesBaseName = "verifier-v${version}-${appVersionCode}"
 
 android {
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+
     buildFeatures {
         viewBinding true
     }
@@ -109,14 +115,25 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
     implementation "com.jakewharton.timber:timber:${timber_version}"
 
+    testImplementation "androidx.test:runner:$androix_test_version"
     testImplementation "junit:junit:$junit_version"
     testImplementation "io.mockk:mockk:$mock_version"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
     testImplementation "androidx.arch.core:core-testing:$androidx_arch_core_version"
+    testImplementation("org.robolectric:robolectric:$robolectric_version") {
+        exclude group: 'org.bouncycastle'
+    }
+    testImplementation("com.schibsted.spain:barista:$barista_version") {
+        exclude group: "org.jetbrains.kotlin"
+    }
+    testImplementation "org.koin:koin-test:$koin_version"
+    testImplementation "androidx.navigation:navigation-testing:$navigation_version"
 
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$desugar_jdk_version"
 
     tstImplementation "com.google.firebase:firebase-crashlytics-ktx:$crashlytics_version"
     accImplementation "com.google.firebase:firebase-crashlytics-ktx:$crashlytics_version"
+
+    debugImplementation "androidx.fragment:fragment-testing:$fragment_version"
 }
 

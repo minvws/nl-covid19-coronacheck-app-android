@@ -3,9 +3,13 @@ package nl.rijksoverheid.ctr.verifier
 import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
+import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
+import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.TestResultAttributes
 import nl.rijksoverheid.ctr.shared.util.TestResultUtil
 import nl.rijksoverheid.ctr.verifier.models.VerifiedQr
+import nl.rijksoverheid.ctr.verifier.models.VerifiedQrResultState
+import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrViewModel
 import nl.rijksoverheid.ctr.verifier.usecases.TestResultValidUseCase
 import nl.rijksoverheid.ctr.verifier.usecases.VerifyQrUseCase
 import nl.rijksoverheid.ctr.verifier.util.QrCodeUtil
@@ -18,6 +22,33 @@ import java.time.OffsetDateTime
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
+
+fun fakeIntroductionViewModel(
+    introductionFinished: Boolean
+): IntroductionViewModel {
+    return object : IntroductionViewModel() {
+        override fun introductionFinished(): Boolean {
+            return introductionFinished
+        }
+
+        override fun saveIntroductionFinished() {
+
+        }
+    }
+}
+
+fun fakeScanQrViewModel(
+    result: VerifiedQrResultState,
+    scanInstructionsSeen: Boolean
+) = object : ScanQrViewModel() {
+    override fun validate(qrContent: String) {
+        validatedQrLiveData.value = Event(result)
+    }
+
+    override fun scanInstructionsSeen(): Boolean {
+        return scanInstructionsSeen
+    }
+}
 
 fun fakeTestResultValidUseCase(
     result: TestResultValidUseCase.TestResultValidResult = TestResultValidUseCase.TestResultValidResult.Valid(

@@ -16,15 +16,21 @@ import nl.rijksoverheid.ctr.verifier.usecases.TestResultValidUseCase
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class ScanQrViewModel(
-    private val testResultValidUseCase: TestResultValidUseCase,
-    private val persistenceManager: PersistenceManager
-) : ViewModel() {
 
+abstract class ScanQrViewModel : ViewModel() {
     val loadingLiveData = MutableLiveData<Event<Boolean>>()
     val validatedQrLiveData = MutableLiveData<Event<VerifiedQrResultState>>()
 
-    fun validate(qrContent: String) {
+    abstract fun validate(qrContent: String)
+    abstract fun scanInstructionsSeen(): Boolean
+}
+
+class ScanQrViewModelImpl(
+    private val testResultValidUseCase: TestResultValidUseCase,
+    private val persistenceManager: PersistenceManager
+) : ScanQrViewModel() {
+
+    override fun validate(qrContent: String) {
         loadingLiveData.value = Event(true)
         viewModelScope.launch {
             try {
@@ -46,7 +52,7 @@ class ScanQrViewModel(
         }
     }
 
-    fun scanInstructionsSeen(): Boolean {
+    override fun scanInstructionsSeen(): Boolean {
         val seen = persistenceManager.getScanInstructionsSeen()
         if (!seen) {
             persistenceManager.setScanInstructionsSeen()
