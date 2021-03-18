@@ -52,7 +52,7 @@ class ScanQrFragment : Fragment() {
         super.onCreate(savedInstanceState)
         if (!introductionViewModel.introductionFinished()) {
             findNavController().navigate(R.id.action_introduction)
-        } else {
+        } else if (requireActivity() is BaseActivity) {
             (requireActivity() as BaseActivity).removeSplashScreen()
         }
     }

@@ -60,7 +60,7 @@ class MyOverviewFragment : BaseFragment(R.layout.fragment_my_overview) {
         super.onCreate(savedInstanceState)
         if (!introductionViewModel.introductionFinished()) {
             findNavController().navigate(R.id.action_introduction)
-        } else {
+        } else if (requireActivity() is BaseActivity) {
             (requireActivity() as BaseActivity).removeSplashScreen()
         }
     }
