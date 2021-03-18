@@ -43,6 +43,18 @@
             app:layout_constraintStart_toStartOf="@+id/description"
             app:layout_constraintTop_toBottomOf="@+id/type_code" />
 
+        <Button
+            android:id="@+id/no_code_button"
+            style="?attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/commercial_test_type_no_code_title"
+            app:layout_constraintEnd_toEndOf="@+id/description"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="@+id/description"
+            app:layout_constraintTop_toBottomOf="@+id/type_qr_code" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

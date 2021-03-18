@@ -12,6 +12,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentCommercialTestTypeBinding
 import nl.rijksoverheid.ctr.holder.databinding.IncludeTestCodeTypeBinding
+import nl.rijksoverheid.ctr.holder.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.usecase.TokenQrUseCase
 import nl.rijksoverheid.ctr.qrscanner.QrCodeScannerUtil
@@ -57,6 +58,11 @@ class CommercialTestTypeFragment : Fragment(R.layout.fragment_commercial_test_ty
             } else {
                 showCameraRationale()
             }
+        }
+        binding.noCodeButton.setOnClickListener {
+            findNavControllerSafety(R.id.nav_commercial_test_type)?.navigate(
+                CommercialTestTypeFragmentDirections.actionNoCode()
+            )
         }
 
         tokenQrViewModel.locationData.observe(
