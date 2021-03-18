@@ -27,10 +27,6 @@ class ScanInstructionsDialogFragment : FullScreenDialogFragment(R.layout.dialog_
     private val appConfigUtil: AppConfigUtil by inject()
     private val args: ScanInstructionsDialogFragmentArgs by navArgs()
 
-    override fun getAnimationStyle(): AnimationStyle {
-        return AnimationStyle.SlideFromBottom
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

@@ -58,7 +58,6 @@ class HolderApplication : SharedApplication(), CoronaCheckApp, AppStatusStringPr
     override fun getSetupData(): CoronaCheckApp.SetupData {
         return CoronaCheckApp.SetupData(
             appSetupTextResource = R.string.app_setup_text,
-            launchScreen = R.drawable.launch_screen
         )
     }
 

@@ -56,7 +56,6 @@ class VerifierApplication : SharedApplication(), CoronaCheckApp, AppStatusString
 
     override fun getSetupData(): CoronaCheckApp.SetupData {
         return CoronaCheckApp.SetupData(
-            launchScreen = R.drawable.launch_screen,
             appSetupTextResource = R.string.app_setup_text
         )
     }

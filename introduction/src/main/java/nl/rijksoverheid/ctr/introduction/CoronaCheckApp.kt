@@ -1,6 +1,5 @@
 package nl.rijksoverheid.ctr.introduction
 
-import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.introduction.onboarding.models.OnboardingItem
@@ -11,7 +10,6 @@ interface CoronaCheckApp {
     fun getOnboardingData(): OnboardingData
 
     data class SetupData(
-        @DrawableRes val launchScreen: Int,
         @StringRes val appSetupTextResource: Int
     )
 

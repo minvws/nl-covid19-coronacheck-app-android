@@ -62,20 +62,14 @@
     </style>
 
     <!-- Dialogs -->
-    <style name="AppTheme.Dialog.FullScreen" parent="">
+    <style name="AppTheme.Dialog.FullScreen" parent="AppTheme">
         <item name="android:windowFullscreen">false</item>
         <item name="android:windowIsFloating">false</item>
     </style>
 
-    <!-- Animations -->
-    <style name="SlideFromBottomFragmentAnimations">
-        <item name="android:windowEnterAnimation">@anim/slide_in_up</item>
-        <item name="android:windowExitAnimation">@anim/slide_out_down</item>
-    </style>
-
-    <style name="FadeFragmentAnimations">
-        <item name="android:windowEnterAnimation">@anim/fade_in</item>
-        <item name="android:windowExitAnimation">@anim/fade_out</item>
+    <style name="AppTheme.Dialog.FullScreen.Animations" parent="">
+        <item name="android:windowEnterAnimation">@anim/fragment_open_enter</item>
+        <item name="android:windowExitAnimation">@anim/fragment_close_exit</item>
     </style>
 
 </resources>
