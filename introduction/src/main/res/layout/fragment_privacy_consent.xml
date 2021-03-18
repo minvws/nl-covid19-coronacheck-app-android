@@ -68,7 +68,7 @@
                 app:layout_constraintStart_toStartOf="@+id/title"
                 app:layout_constraintTop_toBottomOf="@+id/description"
                 tools:itemCount="5"
-                tools:listitem="@layout/item_privacy_policy" />
+                tools:listitem="@layout/item_privacy_consent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

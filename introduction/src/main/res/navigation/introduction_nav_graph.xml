@@ -37,8 +37,8 @@
 
     <fragment
         android:id="@+id/nav_privacy_policy"
-        android:name="nl.rijksoverheid.ctr.introduction.privacy_policy.PrivacyPolicyFragment"
-        tools:layout="@layout/fragment_privacy_policy" />
+        android:name="nl.rijksoverheid.ctr.introduction.privacy_consent.PrivacyConsentFragment"
+        tools:layout="@layout/fragment_privacy_consent" />
 
     <fragment
         android:id="@+id/nav_app_status"

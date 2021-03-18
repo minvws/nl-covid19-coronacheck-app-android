@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.introduction.privacy_policy.models
+package nl.rijksoverheid.ctr.introduction.privacy_consent.models
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

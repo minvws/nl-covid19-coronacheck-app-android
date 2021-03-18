@@ -4,7 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.introduction.onboarding.models.OnboardingItem
-import nl.rijksoverheid.ctr.introduction.privacy_policy.models.PrivacyPolicyItem
+import nl.rijksoverheid.ctr.introduction.privacy_consent.models.PrivacyPolicyItem
 
 interface CoronaCheckApp {
     fun getSetupData(): SetupData

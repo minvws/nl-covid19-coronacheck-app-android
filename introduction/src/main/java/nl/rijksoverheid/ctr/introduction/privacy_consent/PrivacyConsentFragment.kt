@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.introduction.privacy_policy
+package nl.rijksoverheid.ctr.introduction.privacy_consent
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,7 +11,7 @@ import com.xwray.groupie.Section
 import nl.rijksoverheid.ctr.introduction.BuildConfig
 import nl.rijksoverheid.ctr.introduction.CoronaCheckApp
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
-import nl.rijksoverheid.ctr.introduction.databinding.FragmentPrivacyPolicyBinding
+import nl.rijksoverheid.ctr.introduction.databinding.FragmentPrivacyConsentBinding
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -23,18 +23,18 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class PrivacyPolicyFragment : Fragment() {
+class PrivacyConsentFragment : Fragment() {
 
     private val onboardingData by lazy { (requireActivity().application as CoronaCheckApp).getOnboardingData() }
     private val introductionViewModel: IntroductionViewModel by viewModel()
-    private lateinit var binding: FragmentPrivacyPolicyBinding
+    private lateinit var binding: FragmentPrivacyConsentBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentPrivacyPolicyBinding.inflate(inflater)
+        binding = FragmentPrivacyConsentBinding.inflate(inflater)
         return binding.root
     }
 
@@ -58,7 +58,7 @@ class PrivacyPolicyFragment : Fragment() {
         binding.button.text = getString(onboardingData.onboardingNextButtonStringResource)
 
         val adapterItems = onboardingData.privacyPolicyItems.map {
-            PrivacyPolicyAdapterItem(
+            PrivacyConsentAdapterItem(
                 it
             )
         }
