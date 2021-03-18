@@ -33,7 +33,6 @@
     <dialog
         android:id="@+id/nav_scan_result"
         android:name="nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanResultFragment"
-        android:label=""
         tools:layout="@layout/fragment_scan_result">
 
         <argument

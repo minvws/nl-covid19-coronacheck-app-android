@@ -1,15 +1,13 @@
 package nl.rijksoverheid.ctr.verifier.ui.scanqr
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import nl.rijksoverheid.ctr.design.FullScreenDialogFragment
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
 import nl.rijksoverheid.ctr.shared.util.PersonalDetailsUtil
 import nl.rijksoverheid.ctr.verifier.R
@@ -25,31 +23,15 @@ import org.koin.android.ext.android.inject
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class ScanResultFragment : DialogFragment() {
+class ScanResultFragment : FullScreenDialogFragment(R.layout.fragment_scan_result) {
 
-    private lateinit var binding: FragmentScanResultBinding
     private val args: ScanResultFragmentArgs by navArgs()
     private val personalDetailsUtil: PersonalDetailsUtil by inject()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setStyle(
-            STYLE_NORMAL,
-            R.style.AppTheme_Dialog_FullScreen
-        )
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentScanResultBinding.inflate(inflater)
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val binding = FragmentScanResultBinding.bind(view)
 
         val validatedQrResultState = args.validatedResult
         if (validatedQrResultState is VerifiedQrResultState.Valid) {
