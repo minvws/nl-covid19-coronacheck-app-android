@@ -14,6 +14,7 @@ import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.fakeIntroductionViewModel
 import nl.rijksoverheid.ctr.verifier.fakeScanQrViewModel
 import nl.rijksoverheid.ctr.verifier.fakeVerifiedQr
+import nl.rijksoverheid.ctr.verifier.models.VerifiedQr
 import nl.rijksoverheid.ctr.verifier.models.VerifiedQrResultState
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -61,16 +62,22 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
      * Camera qr code scanner is bypassed in test
      */
     @Test
-    fun `Clicking start scan goes to valid scan result`() {
-        
+    fun `Clicking start scan and scanning valid qr goes to valid scan result`() {
+        launchScanQrFragment()
+        clickOn(R.id.button)
+        assertEquals(R.id.nav_scan_result, navController.currentDestination?.id)
+        assertEquals(VerifiedQrResultState.Valid(fakeVerifiedQr), navController.backStack.last().arguments?.get("validatedResult"))
     }
 
     /**
      * Camera qr code scanner is bypassed in test
      */
     @Test
-    fun `Clicking start scan goes to invalid scan result`() {
-
+    fun `Clicking start scan and scanning invalid qr goes to invalid scan result`() {
+        launchScanQrFragment(state = VerifiedQrResultState.Invalid)
+        clickOn(R.id.button)
+        assertEquals(R.id.nav_scan_result, navController.currentDestination?.id)
+        assertEquals(VerifiedQrResultState.Invalid, navController.backStack.last().arguments?.get("validatedResult"))
     }
 
     private fun launchScanQrFragment(
@@ -78,10 +85,10 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
             fakeVerifiedQr
         ),
         hasSeenScanInstructions: Boolean = true
-    ): QrCodeScannerUtil {
+    ) {
         loadKoinModules(
             module(override = true) {
-                factory {
+                factory<QrCodeScannerUtil> {
                     object : QrCodeScannerUtil {
                         override fun launchScanner(
                             activity: Activity,
