@@ -21,9 +21,8 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="24dp"
         android:fillViewport="true"
-        android:orientation="vertical"
-        android:scrollbars="none"
         app:layout_constraintBottom_toTopOf="@+id/checkbox_container"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -48,7 +47,7 @@
                 android:id="@+id/description"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="24dp"
                 android:text="@string/privacy_policy_description"
                 android:textAppearance="?attr/textAppearanceBody1"
                 app:layout_constraintEnd_toEndOf="@+id/title"
@@ -59,7 +58,7 @@
                 android:id="@+id/items"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="0dp"
+                android:layout_marginTop="32dp"
                 android:orientation="vertical"
                 android:overScrollMode="never"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -67,6 +66,7 @@
                 app:layout_constraintEnd_toEndOf="@+id/title"
                 app:layout_constraintStart_toStartOf="@+id/title"
                 app:layout_constraintTop_toBottomOf="@+id/description"
+                app:layout_constraintVertical_bias="0"
                 tools:itemCount="5"
                 tools:listitem="@layout/item_privacy_consent" />
 
@@ -78,7 +78,7 @@
         android:id="@+id/checkbox_container"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="32dp"
         android:background="@drawable/shape_privacy_policy_checkbox_background"
         android:paddingHorizontal="24dp"
         android:paddingVertical="16dp"
@@ -86,23 +86,23 @@
         app:layout_constraintEnd_toEndOf="@+id/scroll"
         app:layout_constraintStart_toStartOf="@+id/scroll">
 
-        <androidx.appcompat.widget.AppCompatCheckBox
+        <CheckBox
             android:id="@+id/checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/shape_privacy_policy_checkbox_background"
             android:paddingHorizontal="16dp"
+            android:textAppearance="?attr/textAppearanceBody1"
             tools:text="Akkoord met privacy verklaring" />
 
     </FrameLayout>
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/button"
         style="@style/Widget.App.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:enabled="false"
         app:layout_constrainedWidth="true"
