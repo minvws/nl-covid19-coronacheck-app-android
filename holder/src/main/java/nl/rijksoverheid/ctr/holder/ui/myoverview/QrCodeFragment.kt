@@ -3,12 +3,10 @@ package nl.rijksoverheid.ctr.holder.ui.myoverview
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.WindowManager
-import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.findNavController
+import nl.rijksoverheid.ctr.design.FullScreenDialogFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.DialogQrCodeBinding
 import nl.rijksoverheid.ctr.shared.QrCodeConstants
@@ -22,10 +20,9 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class QrCodeFragment : DialogFragment() {
+class QrCodeFragment : FullScreenDialogFragment(R.layout.dialog_qr_code) {
 
     private lateinit var binding: DialogQrCodeBinding
-
     private val localTestResultViewModel: LocalTestResultViewModel by sharedViewModel()
     private val qrCodeHandler = Handler(Looper.getMainLooper())
     private val qrCodeRunnable = object : Runnable {
@@ -39,26 +36,10 @@ class QrCodeFragment : DialogFragment() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setStyle(
-            STYLE_NORMAL,
-            R.style.AppTheme_Dialog_FullScreen
-        )
-    }
-
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = DialogQrCodeBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding = DialogQrCodeBinding.bind(view)
 
         val params = dialog?.window?.attributes
         params?.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_FULL
