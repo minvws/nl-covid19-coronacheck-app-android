@@ -5,7 +5,6 @@ import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import nl.rijksoverheid.ctr.appconfig.AppConfigUtil
 import nl.rijksoverheid.ctr.design.ext.formatDateTime
 import nl.rijksoverheid.ctr.holder.BaseFragment
 import nl.rijksoverheid.ctr.holder.HolderMainActivity
@@ -14,7 +13,6 @@ import nl.rijksoverheid.ctr.holder.databinding.FragmentYourNegativeTestResultsBi
 import nl.rijksoverheid.ctr.holder.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.holder.usecase.SignedTestResult
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ViewModelOwner
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.scope.emptyState
@@ -31,8 +29,6 @@ import java.time.ZoneOffset
  */
 class YourNegativeTestResultFragment : BaseFragment(R.layout.fragment_your_negative_test_results) {
 
-    //TODO depending on the graph and reuse we probably need to know if this is GGD or commercial
-    private val appConfigUtil: AppConfigUtil by inject()
     private val viewModel: TestResultsViewModel by sharedViewModel(
         state = emptyState(),
         owner = {

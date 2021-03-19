@@ -21,7 +21,6 @@ import org.koin.android.ext.android.inject
  */
 class YourNegativeTestResultExplanationDialogFragment : ExpandedBottomSheetDialogFragment() {
 
-    private lateinit var binding: DialogYourNegativeTestResultExplanationBinding
     private val args: YourNegativeTestResultExplanationDialogFragmentArgs by navArgs()
     private val personalDetailsUtil: PersonalDetailsUtil by inject()
 
@@ -31,12 +30,12 @@ class YourNegativeTestResultExplanationDialogFragment : ExpandedBottomSheetDialo
         savedInstanceState: Bundle?
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
-        binding = DialogYourNegativeTestResultExplanationBinding.inflate(inflater)
-        return binding.root
+        return DialogYourNegativeTestResultExplanationBinding.inflate(inflater).root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val binding = DialogYourNegativeTestResultExplanationBinding.bind(view)
         binding.paragraph1.text =
             getString(R.string.your_negative_test_results_explanation_paragraph_1).fromHtml()
         binding.paragraph2.text =

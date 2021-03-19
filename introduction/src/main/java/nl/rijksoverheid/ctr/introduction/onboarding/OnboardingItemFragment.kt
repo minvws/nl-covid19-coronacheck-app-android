@@ -1,10 +1,9 @@
 package nl.rijksoverheid.ctr.introduction.onboarding
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import nl.rijksoverheid.ctr.introduction.R
 import nl.rijksoverheid.ctr.introduction.databinding.FragmentOnboardingItemBinding
 import nl.rijksoverheid.ctr.introduction.onboarding.models.OnboardingItem
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
@@ -16,7 +15,7 @@ import nl.rijksoverheid.ctr.shared.ext.fromHtml
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class OnboardingItemFragment : Fragment() {
+class OnboardingItemFragment : Fragment(R.layout.fragment_onboarding_item) {
 
     companion object {
 
@@ -39,17 +38,10 @@ class OnboardingItemFragment : Fragment() {
         ) ?: throw Exception("Failed to get item")
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentOnboardingItemBinding.inflate(inflater)
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val binding = FragmentOnboardingItemBinding.bind(view)
+
         binding.title.text = getString(item.titleResource)
         binding.description.text = item.description.fromHtml()
         if (item.imageResource != 0) {
