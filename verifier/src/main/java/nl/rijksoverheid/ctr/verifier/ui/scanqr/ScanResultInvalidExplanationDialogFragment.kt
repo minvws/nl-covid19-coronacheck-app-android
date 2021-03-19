@@ -12,7 +12,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import nl.rijksoverheid.ctr.design.ExpandedBottomSheetDialogFragment
 import nl.rijksoverheid.ctr.design.utils.getSpannableFromHtml
 import nl.rijksoverheid.ctr.verifier.R
@@ -20,20 +19,18 @@ import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanResultInvalidReason
 
 class ScanResultInvalidExplanationDialogFragment : ExpandedBottomSheetDialogFragment() {
 
-    private lateinit var binding: FragmentScanResultInvalidReasonBinding
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
-        binding = FragmentScanResultInvalidReasonBinding.inflate(inflater)
-        return binding.root
+        return FragmentScanResultInvalidReasonBinding.inflate(inflater).root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val binding = FragmentScanResultInvalidReasonBinding.bind(view)
         binding.description.text = getSpannableFromHtml(
             requireContext(),
             getString(R.string.scan_result_invalid_reason_description)

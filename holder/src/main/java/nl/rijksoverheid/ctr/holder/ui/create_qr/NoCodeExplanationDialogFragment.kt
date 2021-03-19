@@ -17,7 +17,6 @@ import nl.rijksoverheid.ctr.shared.ext.fromHtml
  *
  */
 class NoCodeExplanationDialogFragment : ExpandedBottomSheetDialogFragment() {
-    private lateinit var binding: DialogNoCodeExplanationBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,13 +24,14 @@ class NoCodeExplanationDialogFragment : ExpandedBottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
-        binding = DialogNoCodeExplanationBinding.inflate(inflater)
-        return binding.root
+        return DialogNoCodeExplanationBinding.inflate(inflater).root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val binding = DialogNoCodeExplanationBinding.bind(view)
         binding.description.text =
             getString(R.string.commercial_test_type_no_code_description).fromHtml()
     }
+
 }

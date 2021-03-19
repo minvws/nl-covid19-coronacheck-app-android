@@ -18,20 +18,19 @@ import nl.rijksoverheid.ctr.holder.databinding.FragmentNoTestResultBinding
  */
 class NoTestResultFragment : Fragment() {
 
-    private lateinit var binding: FragmentNoTestResultBinding
     private val args: NoTestResultFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentNoTestResultBinding.inflate(inflater, container, false)
-        return binding.root
+    ): View {
+        return FragmentNoTestResultBinding.inflate(inflater, container, false).root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val binding = FragmentNoTestResultBinding.bind(view)
         binding.title.text = args.title
         binding.description.text = getSpannableFromHtml(requireContext(), args.description)
     }
