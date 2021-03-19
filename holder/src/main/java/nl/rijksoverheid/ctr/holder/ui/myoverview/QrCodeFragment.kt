@@ -23,7 +23,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 class QrCodeFragment : FullScreenDialogFragment(R.layout.dialog_qr_code) {
 
     private var _binding: DialogQrCodeBinding? = null
-    private val binding: DialogQrCodeBinding = _binding!!
+    private val binding: DialogQrCodeBinding by lazy { _binding!! }
     private val localTestResultViewModel: LocalTestResultViewModel by sharedViewModel()
     private val qrCodeHandler = Handler(Looper.getMainLooper())
     private val qrCodeRunnable = object : Runnable {
