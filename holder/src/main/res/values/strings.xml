@@ -5,7 +5,7 @@
     <string name="app_name">CoronaCheck</string>
     <string name="onboarding_title">Onboarding</string>
     <string name="onboarding_screen_1_title">Alleen toegang na testen</string>
-    <string name="onboarding_screen_1_description">Jouw gezondheid en die van anderen is belangrijk. Ook als je wat leuks gaat doen. Laat je daarom eerst testen. Als je test bewijst dat je op dat moment geen corona hebt krijg je toegang tot bepaalde sociale, culturele of sportieve activiteiten.</string>
+    <string name="onboarding_screen_1_description">Jouw gezondheid en die van anderen is belangrijk. Ook als je wat leuks gaat doen. Laat je daarom eerst testen. Als blijkt dat je op het moment van testen geen corona had, krijg je toegang tot bepaalde sociale, culturele of sportieve activiteiten.</string>
     <string name="onboarding_screen_2_title">Jouw QR-code op zak</string>
     <string name="onboarding_screen_2_description">Had je op het moment van testen geen corona? Dan kun je in deze app een persoonlijke QR-code maken. Dat is jouw testbewijs. De QR-code wordt gescand voordat je toegang krijgt.</string>
     <string name="onboarding_screen_4_title">Privacy staat voorop</string>
@@ -59,13 +59,13 @@
     <string name="commercial_test_type_code_toolbar_title">Code invullen</string>
     <string name="commercial_test_type_qr_code_title">Ik heb een QR-code</string>
     <string name="commercial_test_type_no_code_title">Ik heb geen code</string>
-    <string name="commercial_test_type_no_code_description"><![CDATA[Je krijgt van de testlocatie een QR-code of een code met cijfers en letters.<br\><br\> Heb je geen code gekregen? Of ben je ‘m kwijtgeraakt? Neem dan contact op met de testlocatie.<br\><br\>Het kan zijn dat je je opnieuw moet laten testen.]]></string>
+    <string name="commercial_test_type_no_code_description"><![CDATA[Je krijgt van de testlocatie een QR-code of een code met cijfers en letters.<br\><br\>Heb je geen code gekregen? Of ben je ‘m kwijtgeraakt? Neem dan contact op met de testlocatie.<br\><br\>Het kan zijn dat je je opnieuw moet laten testen.]]></string>
     <string name="commercial_test_code_title">Code invullen</string>
     <string name="commercial_test_code_description">Vul jouw code in. Deze heb je in een e-mail van je testlocatie gekregen.</string>
     <string name="commercial_test_unique_code_hint">Code</string>
     <string name="commercial_test_verification_code_hint">Verificatiecode</string>
     <string name="commercial_test_verification_code_helper_text">Je ontvangt een code per sms of email</string>
-    <string name="commercial_test_button">Haal testresultaten op</string>
+    <string name="commercial_test_button">Haal testresultaat op</string>
     <string name="commercial_test_invalid_qr_title">Ongeldige QR-code</string>
     <string name="commercial_test_invalid_qr_message">Deze QR-code is niet geldig. Scan de QR-code die je van je testlocatie hebt gekregen.</string>
     <string name="commercial_test_scanner_custom_title">QR-code scannen</string>
@@ -75,7 +75,7 @@
     <string name="your_negative_test_results_header">Recente testresultaten</string>
     <string name="your_negative_test_results_row_title">Negatief testresultaat (geen corona)</string>
     <string name="your_negative_test_results_row_personal_details">Identificatiegegevens: %1$s</string>
-    <string name="your_negative_test_results_row_button">Maak een QR-code van resultaat</string>
+    <string name="your_negative_test_results_row_button">Maak QR-code</string>
     <string name="your_negative_test_results_backbutton_title">Weet je zeker dat je wilt stoppen?</string>
     <string name="your_negative_test_results_backbutton_message">Je moet dan later opnieuw met de code je testresultaat ophalen.</string>
     <string name="your_negative_test_results_backbutton_ok">Ja</string>
