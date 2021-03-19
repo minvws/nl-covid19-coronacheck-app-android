@@ -1,6 +1,8 @@
 package nl.rijksoverheid.ctr.introduction.onboarding
 
+import android.graphics.Color
 import android.graphics.PorterDuff
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +15,7 @@ import androidx.core.view.forEachIndexed
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
+import nl.rijksoverheid.ctr.design.BaseActivity
 import nl.rijksoverheid.ctr.introduction.CoronaCheckApp
 import nl.rijksoverheid.ctr.introduction.R
 import nl.rijksoverheid.ctr.introduction.databinding.FragmentOnboardingBinding
@@ -26,7 +29,7 @@ import nl.rijksoverheid.ctr.introduction.databinding.FragmentOnboardingBinding
  */
 class OnboardingFragment : Fragment() {
 
-    private val introductionData by lazy { (requireActivity().application as CoronaCheckApp).getIntroductionData() }
+    private val onboardingData by lazy { (requireActivity().application as CoronaCheckApp).getOnboardingData() }
     private lateinit var binding: FragmentOnboardingBinding
 
     override fun onCreateView(
@@ -41,10 +44,12 @@ class OnboardingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        (requireActivity() as BaseActivity).removeSplashScreen()
+
         val adapter =
             OnboardingPagerAdapter(
                 this,
-                introductionData.onboardingItems
+                onboardingData.onboardingItems
             )
         binding.viewPager.adapter = adapter
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
@@ -74,7 +79,7 @@ class OnboardingFragment : Fragment() {
             binding.viewPager.currentItem = binding.viewPager.currentItem - 1
         }
 
-        binding.button.text = getString(introductionData.onboardingNextButtonStringResource)
+        binding.button.text = getString(onboardingData.onboardingNextButtonStringResource)
         binding.button.setOnClickListener {
             val currentItem = binding.viewPager.currentItem
             if (currentItem == adapter.itemCount - 1) {

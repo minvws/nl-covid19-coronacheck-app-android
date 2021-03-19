@@ -10,13 +10,19 @@ import java.time.OffsetDateTime
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class TestResultUtil(private val clock: Clock) {
-
+interface TestResultUtil {
     fun isValid(
         sampleDate: OffsetDateTime,
         validitySeconds: Long
+    ): Boolean
+}
+
+class TestResultUtilImpl(private val clock: Clock) : TestResultUtil {
+
+    override fun isValid(
+        sampleDate: OffsetDateTime,
+        validitySeconds: Long
     ): Boolean {
-        clock.instant()
         return OffsetDateTime.now(clock).isBefore(sampleDate.plusSeconds(validitySeconds))
     }
 }

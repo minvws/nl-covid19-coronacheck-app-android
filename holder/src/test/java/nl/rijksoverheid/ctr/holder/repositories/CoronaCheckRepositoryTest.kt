@@ -3,8 +3,7 @@ package nl.rijksoverheid.ctr.holder.repositories
 import io.mockk.InternalPlatformDsl.toStr
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.api.apiModule
-import nl.rijksoverheid.ctr.api.models.TestIsmResult
-import nl.rijksoverheid.ctr.holder.repositories.CoronaCheckRepository
+import nl.rijksoverheid.ctr.holder.models.TestIsmResult
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
@@ -44,7 +43,7 @@ class CoronaCheckRepositoryTest : AutoCloseKoinTest() {
         )
 
         loadKoinModules(
-            apiModule(mockWebServer.url("/").toStr())
+            apiModule(mockWebServer.url("/").toStr(), true, "", false, false)
         )
 
         val coronaCheckRepository: CoronaCheckRepository = get()
@@ -68,7 +67,7 @@ class CoronaCheckRepositoryTest : AutoCloseKoinTest() {
         )
 
         loadKoinModules(
-            apiModule(mockWebServer.url("/").toStr())
+            apiModule(mockWebServer.url("/").toStr(), true, "", false, false)
         )
 
         val coronaCheckRepository: CoronaCheckRepository = get()

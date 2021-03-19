@@ -14,12 +14,12 @@ import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
  *
  */
 interface LoadPublicKeysUseCase {
-    suspend fun load(publicKeys: PublicKeys)
+    fun load(publicKeys: PublicKeys)
 }
 
 class LoadPublicKeysUseCaseImpl(private val moshi: Moshi) : LoadPublicKeysUseCase {
 
-    override suspend fun load(publicKeys: PublicKeys): Unit = withContext(Dispatchers.IO) {
+    override fun load(publicKeys: PublicKeys) {
         val json = moshi.adapter(List::class.java).toJson(publicKeys.clKeys)
         Clmobile.loadIssuerPks(json.toByteArray())
     }

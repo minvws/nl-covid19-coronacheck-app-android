@@ -15,8 +15,8 @@ interface PersistenceManager {
     fun saveCredentials(credentials: String)
     fun getCredentials(): String?
     fun deleteCredentials()
-    fun saveDateOfBirthMillis(millis: Long)
-    fun getDateOfBirthMillis(): Long?
+    fun hasSeenCameraRationale(): Boolean?
+    fun setHasSeenCameraRationale(hasSeen: Boolean)
 }
 
 class SharedPreferencesPersistenceManager(
@@ -27,7 +27,7 @@ class SharedPreferencesPersistenceManager(
     companion object {
         const val SECRET_KEY_JSON = "SECRET_KEY_JSON"
         const val CREDENTIALS = "CREDENTIALS"
-        const val DATE_OF_BIRTH_MILLIS = "DATE_OF_BIRTH_MILLIS"
+        const val HAS_SEEN_CAMERA_RATIONALE = "HAS_SEEN_CAMERA_RATIONALE"
     }
 
     override fun saveSecretKeyJson(json: String) {
@@ -50,16 +50,11 @@ class SharedPreferencesPersistenceManager(
         sharedPreferences.edit().remove(CREDENTIALS).apply()
     }
 
-    override fun saveDateOfBirthMillis(millis: Long) {
-        sharedPreferences.edit().putLong(DATE_OF_BIRTH_MILLIS, millis).apply()
+    override fun hasSeenCameraRationale(): Boolean {
+        return sharedPreferences.getBoolean(HAS_SEEN_CAMERA_RATIONALE, false)
     }
 
-    override fun getDateOfBirthMillis(): Long? {
-        val millis = sharedPreferences.getLong(DATE_OF_BIRTH_MILLIS, 0)
-        return if (millis == 0L) {
-            null
-        } else {
-            millis
-        }
+    override fun setHasSeenCameraRationale(hasSeen: Boolean) {
+        sharedPreferences.edit().putBoolean(HAS_SEEN_CAMERA_RATIONALE, hasSeen).apply()
     }
 }

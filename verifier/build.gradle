@@ -12,6 +12,12 @@ version = "1.0"
 archivesBaseName = "verifier-v${version}-${appVersionCode}"
 
 android {
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+
     buildFeatures {
         viewBinding true
     }
@@ -19,11 +25,16 @@ android {
     defaultConfig {
         applicationId "nl.rijksoverheid.ctr.verifier"
         versionCode appVersionCode
-        versionName "1.0"
+        versionName "1.1"
         vectorDrawables.useSupportLibrary = true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
+
+        buildConfigField "String", "SIGNATURE_CERTIFICATE_CN_MATCH", '".coronatester.nl"'
+        buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "true"
+        buildConfigField "boolean", "FEATURE_TEST_PROVIDER_API_CHECKS", "true"
+        buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.coronacheck.nl/v2/\""
     }
 
     signingConfigs {
@@ -53,6 +64,9 @@ android {
             buildConfigField "String", "URL_SUPPORT", "\"https://www.coronacheck.nl/nl/faq-scanner-in-app\""
             buildConfigField "String", "URL_ABOUT_THIS_APP", "\"https://www.coronacheck.nl/nl/over-de-scanner-app-in-app\""
             buildConfigField "String", "URL_PRIVACY_STATEMENT", "\"https://www.coronacheck.nl/nl/privacy-in-app\""
+            buildConfigField "String", "BASE_API_URL", "\"https://api-ct.bananenhalen.nl/v2/\""
+            buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "false"
+            buildConfigField "boolean", "FEATURE_TEST_PROVIDER_API_CHECKS", "false"
             apply plugin: 'com.google.gms.google-services'
             apply plugin: 'com.google.firebase.crashlytics'
         }
@@ -64,6 +78,7 @@ android {
             buildConfigField "String", "URL_SUPPORT", "\"https://www.coronacheck.nl/nl/faq-scanner-in-app\""
             buildConfigField "String", "URL_ABOUT_THIS_APP", "\"https://www.coronacheck.nl/nl/over-de-scanner-app-in-app\""
             buildConfigField "String", "URL_PRIVACY_STATEMENT", "\"https://www.coronacheck.nl/nl/privacy-in-app\""
+            buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.acc.coronacheck.nl/v2/\""
             apply plugin: 'com.google.gms.google-services'
             apply plugin: 'com.google.firebase.crashlytics'
         }
@@ -86,9 +101,8 @@ dependencies {
     implementation project(":design")
     implementation project(":introduction")
     implementation project(":api")
-    implementation project(":ctcl")
+    implementation project(':clcore')
     implementation project(":qrscanner")
-    implementation "com.google.zxing:core:$zxing_core_version"
 
     implementation "com.xwray:groupie:${groupie_version}"
     implementation "com.xwray:groupie-viewbinding:${groupie_version}"
@@ -101,12 +115,25 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
     implementation "com.jakewharton.timber:timber:${timber_version}"
 
+    testImplementation "androidx.test:runner:$androix_test_version"
     testImplementation "junit:junit:$junit_version"
     testImplementation "io.mockk:mockk:$mock_version"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
+    testImplementation "androidx.arch.core:core-testing:$androidx_arch_core_version"
+    testImplementation("org.robolectric:robolectric:$robolectric_version") {
+        exclude group: 'org.bouncycastle'
+    }
+    testImplementation("com.schibsted.spain:barista:$barista_version") {
+        exclude group: "org.jetbrains.kotlin"
+    }
+    testImplementation "org.koin:koin-test:$koin_version"
+    testImplementation "androidx.navigation:navigation-testing:$navigation_version"
 
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$desugar_jdk_version"
 
     tstImplementation "com.google.firebase:firebase-crashlytics-ktx:$crashlytics_version"
     accImplementation "com.google.firebase:firebase-crashlytics-ktx:$crashlytics_version"
+
+    debugImplementation "androidx.fragment:fragment-testing:$fragment_version"
 }
 

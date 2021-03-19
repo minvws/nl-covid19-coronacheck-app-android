@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Component Styles -->
+    <style name="Widget.App.NavigationView" parent="Widget.MaterialComponents.NavigationView">
+        <item name="itemTextColor">@color/white</item>
+    </style>
+
     <style name="Widget.App.TextInputLayout" parent="Widget.Design.TextInputLayout">
         <item name="boxBackgroundColor">@color/white</item>
     </style>
@@ -12,18 +17,37 @@
 
     <style name="Widget.App.Button" parent="Widget.MaterialComponents.Button">
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">52dp</item>
+        <item name="android:layout_height">56dp</item>
         <item name="android:insetBottom">0dp</item>
         <item name="android:insetTop">0dp</item>
         <item name="android:insetLeft">0dp</item>
         <item name="android:insetRight">0dp</item>
-        <item name="android:paddingStart">48dp</item>
-        <item name="android:paddingEnd">48dp</item>
+        <item name="android:paddingStart">56dp</item>
+        <item name="android:paddingEnd">56dp</item>
         <item name="cornerRadius">26dp</item>
     </style>
 
+    <style name="Widget.App.Button.Small" parent="Widget.App.Button">
+        <item name="android:paddingStart">32dp</item>
+        <item name="android:paddingEnd">32dp</item>
+    </style>
+
+    <style name="Widget.App.Toolbar.Surface" parent="Widget.MaterialComponents.Toolbar.Surface">
+        <item name="android:elevation">4dp</item>
+    </style>
+
+    <!-- Text Styles -->
     <style name="App.TextAppearance.MaterialComponents.Body1" parent="TextAppearance.MaterialComponents.Body1">
         <item name="lineHeight">26sp</item>
+    </style>
+
+    <style name="App.TextAppearance.MaterialComponents.Body2" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="lineHeight">20sp</item>
+    </style>
+
+    <style name="App.TextAppearance.MaterialComponents.Body2.Secondary" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="lineHeight">20sp</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
     </style>
 
     <style name="App.TextAppearance.MaterialComponents.Headline5.Montserrat" parent="android:TextAppearance">
@@ -42,23 +66,15 @@
         <item name="android:textSize">16sp</item>
     </style>
 
-    <style name="Widget.App.Toolbar.Surface" parent="Widget.MaterialComponents.Toolbar.Surface">
-        <item name="android:elevation">4dp</item>
-    </style>
-
-    <style name="AppTheme.Dialog.FullScreen" parent="">
+    <!-- Dialogs -->
+    <style name="AppTheme.Dialog.FullScreen" parent="AppTheme">
         <item name="android:windowFullscreen">false</item>
         <item name="android:windowIsFloating">false</item>
     </style>
 
-    <style name="SlideFromBottomFragmentAnimations">
-        <item name="android:windowEnterAnimation">@anim/slide_in_up</item>
-        <item name="android:windowExitAnimation">@anim/slide_out_down</item>
-    </style>
-
-    <style name="FadeFragmentAnimations">
-        <item name="android:windowEnterAnimation">@anim/fade_in</item>
-        <item name="android:windowExitAnimation">@anim/fade_out</item>
+    <style name="AppTheme.Dialog.FullScreen.Animations" parent="">
+        <item name="android:windowEnterAnimation">@anim/fragment_open_enter</item>
+        <item name="android:windowExitAnimation">@anim/fragment_close_exit</item>
     </style>
 
 </resources>

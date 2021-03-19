@@ -1,7 +1,6 @@
 package nl.rijksoverheid.ctr.shared
 
 import android.app.Application
-import com.facebook.stetho.Stetho
 import timber.log.Timber
 
 /*
@@ -17,7 +16,6 @@ open class SharedApplication : Application() {
         super.onCreate()
 
         if (BuildConfig.DEBUG) {
-            Stetho.initializeWithDefaults(this)
             Timber.plant(Timber.DebugTree())
         }
     }

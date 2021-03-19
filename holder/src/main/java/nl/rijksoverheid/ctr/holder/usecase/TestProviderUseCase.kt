@@ -1,6 +1,6 @@
 package nl.rijksoverheid.ctr.holder.usecase
 
-import nl.rijksoverheid.ctr.api.models.RemoteTestProviders
+import nl.rijksoverheid.ctr.holder.models.RemoteTestProviders
 import nl.rijksoverheid.ctr.holder.repositories.CoronaCheckRepository
 
 /*

@@ -12,23 +12,24 @@
         <item name="android:windowTranslucentNavigation">true</item>
         <item name="colorControlNormal">@color/black</item>
 
-        <item name="navigationViewStyle">@style/Widget.App.NavigationView</item>
+        <!-- Text Styles -->
         <item name="android:textColorPrimary">@color/black</item>
+        <item name="android:textColorSecondary">@color/grey</item>
         <item name="textAppearanceBody1">@style/App.TextAppearance.MaterialComponents.Body1</item>
+        <item name="textAppearanceBody2">@style/App.TextAppearance.MaterialComponents.Body2</item>
         <item name="textAppearanceHeadline5">
             @style/App.TextAppearance.MaterialComponents.Headline5.Montserrat
         </item>
         <item name="textAppearanceHeadline6">
             @style/App.TextAppearance.MaterialComponents.Headline6.Montserrat
         </item>
-        <item name="materialButtonStyle">@style/Widget.App.Button</item>
+
+        <!-- Component Styles -->
+        <item name="navigationViewStyle">@style/Widget.App.NavigationView</item>
         <item name="textInputStyle">@style/Widget.App.TextInputLayout</item>
         <item name="toolbarStyle">@style/Widget.App.Toolbar.Surface</item>
-        <item name="android:splitMotionEvents">false</item>
-    </style>
 
-    <style name="Widget.App.NavigationView" parent="Widget.MaterialComponents.NavigationView">
-        <item name="itemTextColor">@color/white</item>
+        <item name="android:splitMotionEvents">false</item>
     </style>
 
     <style name="ThemeOverlay.App.NavigationView" parent="">
@@ -39,7 +40,7 @@
         <item name="textAppearanceBody1">
             @style/App.TextAppearance.MaterialComponents.Body1.Montserrat
         </item>
-        <item name="android:listDivider">@color/white_20</item>
+        <item name="android:listDivider">@android:color/transparent</item>
     </style>
 
     <style name="ThemeOverlay.AppTheme.Inverted" parent="">

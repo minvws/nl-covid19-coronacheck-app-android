@@ -2,11 +2,11 @@ package nl.rijksoverheid.ctr.holder.repositories
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import nl.rijksoverheid.ctr.api.SigningCertificate
-import nl.rijksoverheid.ctr.api.TestProviderApiClient
-import nl.rijksoverheid.ctr.api.models.RemoteTestResult
-import nl.rijksoverheid.ctr.api.models.SignedResponseWithModel
-import nl.rijksoverheid.ctr.api.models.post.GetTestResultPostData
+import nl.rijksoverheid.ctr.api.interceptors.SigningCertificate
+import nl.rijksoverheid.ctr.holder.api.TestProviderApiClient
+import nl.rijksoverheid.ctr.holder.models.RemoteTestResult
+import nl.rijksoverheid.ctr.holder.models.SignedResponseWithModel
+import nl.rijksoverheid.ctr.holder.models.post.GetTestResultPostData
 import okhttp3.ResponseBody
 import retrofit2.Converter
 import retrofit2.HttpException
@@ -47,7 +47,8 @@ class TestProviderRepositoryImpl(
                         it
                     )
                 },
-                certificate = SigningCertificate(signingCertificateBytes)
+                certificate = SigningCertificate(signingCertificateBytes),
+                protocolVersion = "2.0"
             )
         } catch (ex: HttpException) {
             // if there's no error body, this must be something else than expected

@@ -54,6 +54,7 @@
             android:layout_marginTop="16dp"
             android:hint="@string/commercial_test_verification_code_hint"
             app:errorEnabled="true"
+            app:helperText="@string/commercial_test_verification_code_helper_text"
             app:layout_constraintEnd_toEndOf="@+id/description"
             app:layout_constraintStart_toStartOf="@+id/description"
             app:layout_constraintTop_toBottomOf="@+id/unique_code_input">
@@ -70,6 +71,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button"
+            style="@style/Widget.App.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"

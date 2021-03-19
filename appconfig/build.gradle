@@ -32,6 +32,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+    }
 }
 
 dependencies {
@@ -45,10 +48,10 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
     implementation "androidx.preference:preference-ktx:$preference_version"
 
-    implementation(project(":signing"))
     implementation(project(":design"))
     implementation(project(":shared"))
-    implementation(project(":ctcl"))
+    implementation(project(':clcore'))
+    implementation(project(":api"))
 
     kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
 

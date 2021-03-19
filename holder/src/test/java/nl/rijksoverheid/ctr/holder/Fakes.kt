@@ -1,18 +1,21 @@
 package nl.rijksoverheid.ctr.holder
 
 import android.graphics.Bitmap
-import nl.rijksoverheid.ctr.api.models.*
-import nl.rijksoverheid.ctr.api.repositories.TestResultRepository
-import nl.rijksoverheid.ctr.holder.models.LocalTestResult
-import nl.rijksoverheid.ctr.holder.myoverview.LocalTestResultViewModel
-import nl.rijksoverheid.ctr.holder.myoverview.models.LocalTestResultState
-import nl.rijksoverheid.ctr.holder.myoverview.models.QrCodeData
+import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
+import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
+import nl.rijksoverheid.ctr.holder.models.*
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.repositories.TestProviderRepository
+import nl.rijksoverheid.ctr.holder.ui.myoverview.LocalTestResultViewModel
 import nl.rijksoverheid.ctr.holder.usecase.*
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.shared.livedata.Event
+import nl.rijksoverheid.ctr.shared.models.TestResultAttributes
+import nl.rijksoverheid.ctr.shared.usecase.TestResultAttributesUseCase
+import nl.rijksoverheid.ctr.shared.util.PersonalDetailsUtil
+import nl.rijksoverheid.ctr.shared.util.TestResultUtil
 import java.time.OffsetDateTime
 
 /*
@@ -22,6 +25,60 @@ import java.time.OffsetDateTime
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
+
+fun fakeTestResultUtil(
+    isValid: Boolean = true
+) = object : TestResultUtil {
+    override fun isValid(sampleDate: OffsetDateTime, validitySeconds: Long): Boolean {
+        return isValid
+    }
+}
+
+fun fakePersonalDetailsUtil(
+
+): PersonalDetailsUtil = object : PersonalDetailsUtil {
+    override fun getPersonalDetails(
+        firstNameInitial: String,
+        lastNameInitial: String,
+        birthDay: String,
+        birthMonth: String
+    ): List<String> {
+        return listOf()
+    }
+}
+
+fun fakeCachedAppConfigUseCase(
+    appConfig: AppConfig = AppConfig(
+        minimumVersion = 0,
+        appDeactivated = false,
+        informationURL = "dummy",
+        configTtlSeconds = 0,
+        maxValidityHours = 0
+    ),
+    publicKeys: PublicKeys = PublicKeys(
+        clKeys = listOf()
+    )
+): CachedAppConfigUseCase = object : CachedAppConfigUseCase {
+    override fun persistAppConfig(appConfig: AppConfig) {
+
+    }
+
+    override fun getCachedAppConfig(): AppConfig {
+        return appConfig
+    }
+
+    override fun getCachedAppConfigMaxValidityHours(): Int {
+        return appConfig.maxValidityHours
+    }
+
+    override fun persistPublicKeys(publicKeys: PublicKeys) {
+
+    }
+
+    override fun getCachedPublicKeys(): PublicKeys? {
+        return publicKeys
+    }
+}
 
 fun fakeQrCodeUseCase(
     bitmap: Bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
@@ -68,7 +125,7 @@ fun fakeLocalTestResultViewModel(
                             sampleDate = OffsetDateTime.now(),
                             expireDate = OffsetDateTime.now(),
                             testType = "dummy",
-                            dateOfBirthMillis = 0L
+                            personalDetails = listOf()
                         ),
                         qrCode = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
                     )
@@ -84,7 +141,7 @@ fun fakeLocalTestResultUseCase(
     state: LocalTestResultState = LocalTestResultState.None
 ): LocalTestResultUseCase {
     return object : LocalTestResultUseCase {
-        override suspend fun get(): LocalTestResultState {
+        override suspend fun get(currentLocalTestResultState: LocalTestResultState?): LocalTestResultState {
             return state
         }
     }
@@ -184,24 +241,26 @@ fun fakeCoronaCheckRepository(
 
 fun fakeTestResultAttributesUseCase(
     sampleTimeSeconds: Long = 0L,
-    testType: String = ""
+    testType: String = "",
+    birthDay: String = "",
+    birthMonth: String = "",
+    firstNameInitial: String = "",
+    lastNameInitial: String = "",
+    isSpecimen: String = "0",
+    isPaperProof: String = "0"
 ): TestResultAttributesUseCase {
     return object : TestResultAttributesUseCase {
         override fun get(credentials: String): TestResultAttributes {
             return TestResultAttributes(
                 sampleTime = sampleTimeSeconds,
-                testType = ""
+                testType = testType,
+                birthDay = birthDay,
+                birthMonth = birthMonth,
+                firstNameInitial = firstNameInitial,
+                lastNameInitial = lastNameInitial,
+                isSpecimen = isSpecimen,
+                isPaperProof = isPaperProof
             )
-        }
-    }
-}
-
-fun fakeTestResultRepository(
-    testValiditySeconds: Long = 0,
-): TestResultRepository {
-    return object : TestResultRepository {
-        override suspend fun getTestValiditySeconds(): Long {
-            return testValiditySeconds
         }
     }
 }
@@ -209,7 +268,7 @@ fun fakeTestResultRepository(
 fun fakePersistenceManager(
     secretKeyJson: String? = "",
     credentials: String? = "",
-    dateOfBirth: Long? = null
+    hasSeenCameraRationale: Boolean? = false
 ): PersistenceManager {
     return object : PersistenceManager {
         override fun saveSecretKeyJson(json: String) {
@@ -232,12 +291,12 @@ fun fakePersistenceManager(
 
         }
 
-        override fun saveDateOfBirthMillis(millis: Long) {
-
+        override fun hasSeenCameraRationale(): Boolean? {
+            return hasSeenCameraRationale
         }
 
-        override fun getDateOfBirthMillis(): Long? {
-            return dateOfBirth
+        override fun setHasSeenCameraRationale(hasSeen: Boolean) {
+
         }
     }
 }

@@ -13,12 +13,20 @@
         <action
             android:id="@+id/action_onboarding"
             app:destination="@id/nav_onboarding"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit"
             app:popUpTo="@id/nav_introduction"
             app:popUpToInclusive="true" />
 
         <action
             android:id="@+id/action_app_status"
             app:destination="@id/nav_app_status"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit"
             app:popUpTo="@id/nav_introduction"
             app:popUpToInclusive="true" />
 
@@ -31,14 +39,18 @@
 
         <action
             android:id="@+id/action_privacy_policy"
-            app:destination="@id/nav_privacy_policy" />
+            app:destination="@id/nav_privacy_policy"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
 
     </fragment>
 
     <fragment
         android:id="@+id/nav_privacy_policy"
-        android:name="nl.rijksoverheid.ctr.introduction.privacy_policy.PrivacyPolicyFragment"
-        tools:layout="@layout/fragment_privacy_policy" />
+        android:name="nl.rijksoverheid.ctr.introduction.privacy_consent.PrivacyConsentFragment"
+        tools:layout="@layout/fragment_privacy_consent" />
 
     <fragment
         android:id="@+id/nav_app_status"

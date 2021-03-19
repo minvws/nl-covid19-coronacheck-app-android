@@ -14,5 +14,5 @@ import kotlinx.parcelize.Parcelize
 data class OnboardingItem(
     val imageResource: Int,
     val titleResource: Int,
-    val descriptionResource: Int
+    val description: String
 ) : Parcelable

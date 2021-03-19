@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+  ~   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+  ~
+  ~   SPDX-License-Identifier: EUPL-1.2
+  ~
+  -->
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:parentTag="android.widget.FrameLayout">
+
+    <TextView
+        android:id="@+id/item_text"
+        android:layout_width="wrap_content"
+        android:layout_height="44dp"
+        android:layout_gravity="top"
+        android:layout_marginHorizontal="6dp"
+        android:background="@drawable/shape_abbreviated_personal_details_item_background"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="1"
+        android:minWidth="66dp"
+        android:textAppearance="@style/App.TextAppearance.MaterialComponents.Headline6.Montserrat"
+        tools:text="MAA" />
+
+    <TextView
+        android:id="@+id/item_position"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_below="@+id/item_text"
+        android:layout_centerInParent="true"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginTop="56dp"
+        android:background="@drawable/shape_abbreviated_personal_details_position_background"
+        android:gravity="center"
+        android:textAppearance="?attr/textAppearanceCaption"
+        android:textColor="@color/black"
+        android:visibility="gone"
+        tools:text="1"
+        tools:visibility="visible" />
+</merge>

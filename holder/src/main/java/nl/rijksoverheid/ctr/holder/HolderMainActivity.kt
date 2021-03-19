@@ -18,12 +18,12 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
-import nl.rijksoverheid.ctr.appconfig.AppStatusFragment
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
+import nl.rijksoverheid.ctr.appconfig.AppStatusFragment
 import nl.rijksoverheid.ctr.appconfig.model.AppStatus
+import nl.rijksoverheid.ctr.design.BaseActivity
 import nl.rijksoverheid.ctr.holder.databinding.ActivityMainBinding
 import nl.rijksoverheid.ctr.holder.persistence.IntroductionPersistenceManager
-import nl.rijksoverheid.ctr.shared.BaseActivity
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.ext.styleTitle
 import org.koin.android.ext.android.inject
@@ -37,16 +37,13 @@ class HolderMainActivity : BaseActivity(R.id.nav_my_overview) {
     private val appStatusViewModel: AppConfigViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.AppTheme)
-
+        super.onCreate(savedInstanceState)
         if (BuildConfig.FLAVOR == "prod") {
             window.setFlags(
                 WindowManager.LayoutParams.FLAG_SECURE,
                 WindowManager.LayoutParams.FLAG_SECURE
             )
         }
-
-        super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -85,7 +82,25 @@ class HolderMainActivity : BaseActivity(R.id.nav_my_overview) {
             binding.drawerLayout
         )
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
+        binding.toolbar.setNavigationOnClickListener {
+            // Override back arrow behavior on toolbar
+            when (navController.currentDestination?.id) {
+                R.id.nav_your_negative_result -> {
+                    // Trigger custom dispatcher in destination
+                    onBackPressedDispatcher.onBackPressed()
+                    return@setNavigationOnClickListener
+                }
+            }
+
+            // If no custom behavior was handled perform the default action.
+            NavigationUI.navigateUp(navController, binding.drawerLayout)
+        }
         binding.navView.setupWithNavController(navController)
+        binding.appVersion.text = getString(
+            R.string.app_version,
+            BuildConfig.VERSION_NAME,
+            BuildConfig.VERSION_CODE.toString()
+        )
 
         navigationDrawerStyling()
 
@@ -114,6 +129,10 @@ class HolderMainActivity : BaseActivity(R.id.nav_my_overview) {
                 navController.navigate(R.id.action_app_status, bundle)
             }
         }
+    }
+
+    fun presentLoading(loading: Boolean) {
+        binding.loading.visibility = if (loading) View.VISIBLE else View.GONE
     }
 
     override fun onStart() {

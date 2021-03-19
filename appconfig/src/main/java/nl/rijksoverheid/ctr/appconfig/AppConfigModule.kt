@@ -9,9 +9,11 @@
 package nl.rijksoverheid.ctr.appconfig
 
 import nl.rijksoverheid.ctr.appconfig.api.AppConfigApi
-import nl.rijksoverheid.ctr.appconfig.api.AppConfigApiCacheInterceptor
+import nl.rijksoverheid.ctr.appconfig.repositories.ConfigRepository
+import nl.rijksoverheid.ctr.appconfig.repositories.ConfigRepositoryImpl
 import nl.rijksoverheid.ctr.appconfig.usecase.*
 import okhttp3.OkHttpClient
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -24,19 +26,17 @@ import retrofit2.Retrofit
  */
 fun appConfigModule(path: String, versionCode: Int) = module {
     factory<ConfigRepository> { ConfigRepositoryImpl(get()) }
-    factory<AppConfigUseCase> { AppConfigUseCaseImpl(get()) }
-    factory<AppStatusUseCase> { AppStatusUseCaseImpl() }
+    factory<AppConfigUseCase> { AppConfigUseCaseImpl(get(), get(), get()) }
+    factory<AppStatusUseCase> { AppStatusUseCaseImpl(get(), get(), get()) }
     factory<AppConfigPersistenceManager> { AppConfigPersistenceManagerImpl(get()) }
     factory<CachedAppConfigUseCase> { CachedAppConfigUseCaseImpl(get(), get()) }
-    factory { AppConfigApiCacheInterceptor(get()) }
     factory<PersistConfigUseCase> { PersistConfigUseCaseImpl(get(), get()) }
     factory<LoadPublicKeysUseCase> { LoadPublicKeysUseCaseImpl(get()) }
+    factory<AppConfigUtil> { AppConfigUtilImpl(androidContext(), get()) }
 
 
     single {
-        val okHttpClient = get(OkHttpClient::class.java).newBuilder()
-            .addInterceptor(AppConfigApiCacheInterceptor(get())).build()
-
+        val okHttpClient = get(OkHttpClient::class.java).newBuilder().build()
         val retrofit = get(Retrofit::class.java)
         val baseUrl = retrofit.baseUrl().newBuilder().addPathSegments("$path/").build()
         retrofit.newBuilder().baseUrl(baseUrl).client(okHttpClient).build()
