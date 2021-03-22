@@ -2,6 +2,8 @@ package nl.rijksoverheid.ctr.introduction.onboarding
 
 import android.graphics.PorterDuff
 import android.os.Bundle
+import android.util.TypedValue
+import android.view.ContextThemeWrapper
 import android.view.View
 import android.widget.ImageView
 import androidx.activity.OnBackPressedCallback
@@ -11,7 +13,6 @@ import androidx.core.view.forEachIndexed
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
-import nl.rijksoverheid.ctr.design.BaseActivity
 import nl.rijksoverheid.ctr.introduction.CoronaCheckApp
 import nl.rijksoverheid.ctr.introduction.R
 import nl.rijksoverheid.ctr.introduction.databinding.FragmentOnboardingBinding
@@ -30,7 +31,7 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (requireActivity() as BaseActivity).removeSplashScreen()
+        setOnboardingActivityBackground()
 
         val binding = FragmentOnboardingBinding.bind(view)
 
@@ -92,6 +93,19 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
             indicator.setImageResource(R.drawable.shape_onboarding_item_indicator)
             binding.indicators.addView(indicator)
         }
+    }
+
+    /**
+     * Remove splash screen and set
+     */
+    private fun setOnboardingActivityBackground() {
+        val theme = ContextThemeWrapper(
+            requireActivity(),
+            nl.rijksoverheid.ctr.design.R.style.AppTheme
+        ).theme
+        val typedValue = TypedValue()
+        theme.resolveAttribute(android.R.attr.windowBackground, typedValue, true)
+        requireActivity().window.setBackgroundDrawableResource(R.drawable.introduction_launch_screen)
     }
 
     private fun updateCurrentIndicator(binding: FragmentOnboardingBinding, position: Int) {
