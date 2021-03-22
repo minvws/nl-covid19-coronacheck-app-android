@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.xwray.groupie.GroupieAdapter
 import com.xwray.groupie.Section
+import nl.rijksoverheid.ctr.design.BaseActivity
 import nl.rijksoverheid.ctr.introduction.BuildConfig
 import nl.rijksoverheid.ctr.introduction.CoronaCheckApp
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
@@ -29,6 +30,11 @@ class PrivacyConsentFragment : Fragment(R.layout.fragment_privacy_consent) {
     private val onboardingData by lazy { (requireActivity().application as CoronaCheckApp).getOnboardingData() }
     private val introductionViewModel: IntroductionViewModel by viewModel()
     private lateinit var binding: FragmentPrivacyConsentBinding
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        (requireActivity() as BaseActivity).removeSplashScreen()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
