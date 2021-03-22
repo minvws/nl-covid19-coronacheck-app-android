@@ -159,11 +159,11 @@ class MyOverviewFragment : BaseFragment(R.layout.fragment_my_overview) {
             }
         ))
         items.add(MyOverviewNavigationCardAdapterItem(
-            title = R.string.my_overview_no_qr_make_qr_title,
+            title = if (localTestResult == null) R.string.my_overview_no_qr_make_qr_title else R.string.my_overview_no_qr_replace_qr_title,
             description = R.string.my_overview_no_qr_make_qr_description,
             backgroundColor = R.color.green,
             backgroundDrawable = R.drawable.illustration_create_qr,
-            buttonText = R.string.my_overview_no_qr_make_qr_button,
+            buttonText = if (localTestResult == null) R.string.my_overview_no_qr_make_qr_button else R.string.my_overview_no_qr_replace_qr_button,
             onButtonClick = {
                 findNavController().navigate(MyOverviewFragmentDirections.actionChooseProvider())
             }
