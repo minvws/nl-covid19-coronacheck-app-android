@@ -32,7 +32,7 @@ class QrCodeFragment : FullScreenDialogFragment(R.layout.dialog_qr_code) {
                 size = resources.displayMetrics.widthPixels
             )
             if (canGenerateQrCode) {
-                qrCodeHandler.postDelayed(this, QrCodeConstants.VALID_FOR_SECONDS * 1000)
+                qrCodeHandler.postDelayed(this, (QrCodeConstants.VALID_FOR_SECONDS / 2) * 1000)
             }
         }
     }

@@ -49,4 +49,6 @@ dependencies {
     testImplementation "junit:junit:${junit_version}"
     testImplementation "io.mockk:mockk:$mock_version"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
+
+    kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
 }

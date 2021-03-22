@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.shared.models
 
 import android.os.Parcelable
+import com.squareup.moshi.JsonClass
 import kotlinx.parcelize.Parcelize
 
 /*
@@ -11,6 +12,7 @@ import kotlinx.parcelize.Parcelize
  *
  */
 @Parcelize
+@JsonClass(generateAdapter = true)
 data class TestResultAttributes(
     val sampleTime: Long,
     val testType: String,
