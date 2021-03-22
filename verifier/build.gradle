@@ -25,7 +25,7 @@ android {
     defaultConfig {
         applicationId "nl.rijksoverheid.ctr.verifier"
         versionCode appVersionCode
-        versionName "1.1"
+        versionName version
         vectorDrawables.useSupportLibrary = true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
