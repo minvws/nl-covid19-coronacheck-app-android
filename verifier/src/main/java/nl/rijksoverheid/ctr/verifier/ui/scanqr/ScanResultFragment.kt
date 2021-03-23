@@ -9,11 +9,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import nl.rijksoverheid.ctr.design.FullScreenDialogFragment
-import nl.rijksoverheid.ctr.design.utils.getSpannableFromHtml
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
 import nl.rijksoverheid.ctr.shared.util.MultiTapDetector
 import nl.rijksoverheid.ctr.shared.util.PersonalDetailsUtil
-import nl.rijksoverheid.ctr.verifier.BuildConfig
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanResultBinding
 import nl.rijksoverheid.ctr.verifier.models.VerifiedQr
@@ -42,59 +40,23 @@ class ScanResultFragment : FullScreenDialogFragment(R.layout.fragment_scan_resul
         val validatedQrResultState = args.validatedResult
         when (validatedQrResultState) {
             is VerifiedQrResultState.Valid -> {
-                if (validatedQrResultState.verifiedQr.testResultAttributes.isSpecimen == "1") {
-                    presentDemoScreen(binding)
-                } else {
-                    binding.root.setBackgroundColor(
-                        ContextCompat.getColor(
-                            requireContext(),
-                            R.color.green
-                        )
-                    )
-                    binding.image.setImageResource(R.drawable.illustration_scan_result_valid)
-                    binding.title.text = getString(R.string.scan_result_valid_title)
-                    binding.subtitle.text =
-                        getString(R.string.scan_result_valid_subtitle).fromHtml()
-
-                    validatedQrResultState.verifiedQr.testResultAttributes.let {
-                        val personalDetails = personalDetailsUtil.getPersonalDetails(
-                            it.firstNameInitial,
-                            it.lastNameInitial,
-                            it.birthDay,
-                            it.birthMonth
-                        )
-                        binding.personalDetailsHolder.setPersonalDetails(personalDetails)
-                        binding.personalDetailsHolder.visibility = View.VISIBLE
-
-                        binding.subtitle.setOnClickListener {
-                            findNavController().navigate(
-                                ScanResultFragmentDirections.actionShowValidExplanation(
-                                    validatedQrResultState.verifiedQr
-                                )
-                            )
-                        }
-                    }
-                }
+                presentValidScreen(
+                    binding = binding,
+                    verifiedQr = validatedQrResultState.verifiedQr
+                )
             }
             is VerifiedQrResultState.Invalid -> {
-                if (validatedQrResultState.verifiedQr?.testResultAttributes?.isSpecimen == "1") {
-                    presentDemoScreen(binding)
-                } else {
-                    binding.root.setBackgroundColor(
-                        ContextCompat.getColor(
-                            requireContext(),
-                            R.color.red
-                        )
-                    )
-                    binding.image.setImageResource(R.drawable.illustration_scan_result_invalid)
-                    binding.title.text = getString(R.string.scan_result_invalid_title)
-                    binding.subtitle.text =
-                        getString(R.string.scan_result_invalid_subtitle).fromHtml()
-
-                    binding.subtitle.setOnClickListener {
-                        findNavController().navigate(ScanResultFragmentDirections.actionShowInvalidExplanation())
-                    }
-                }
+                presentInvalidScreen(
+                    binding = binding
+                )
+            }
+            is VerifiedQrResultState.Error -> {
+                presentInvalidScreen(
+                    binding = binding
+                )
+            }
+            is VerifiedQrResultState.Demo -> {
+                presentDemoScreen(binding)
             }
         }
 
@@ -113,12 +75,67 @@ class ScanResultFragment : FullScreenDialogFragment(R.layout.fragment_scan_resul
         MultiTapDetector(binding.image) { amount, _ ->
             if (amount == 3) {
                 when (validatedQrResultState) {
-                    is VerifiedQrResultState.Valid -> presentDebugDialog(validatedQrResultState.verifiedQr)
+                    is VerifiedQrResultState.Valid -> presentDebugDialog(validatedQrResultState.verifiedQr.toString())
                     is VerifiedQrResultState.Invalid -> presentDebugDialog(
-                        validatedQrResultState.verifiedQr
+                        validatedQrResultState.verifiedQr.toString()
                     )
+                    is VerifiedQrResultState.Error -> presentDebugDialog(
+                        validatedQrResultState.error
+                    )
+                    is VerifiedQrResultState.Demo -> {
+                        presentDebugDialog(validatedQrResultState.toString())
+                    }
                 }
             }
+        }
+    }
+
+    private fun presentValidScreen(binding: FragmentScanResultBinding, verifiedQr: VerifiedQr) {
+        binding.root.setBackgroundColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.green
+            )
+        )
+        binding.image.setImageResource(R.drawable.illustration_scan_result_valid)
+        binding.title.text = getString(R.string.scan_result_valid_title)
+        binding.subtitle.text =
+            getString(R.string.scan_result_valid_subtitle).fromHtml()
+
+        verifiedQr.testResultAttributes.let {
+            val personalDetails = personalDetailsUtil.getPersonalDetails(
+                it.firstNameInitial,
+                it.lastNameInitial,
+                it.birthDay,
+                it.birthMonth
+            )
+            binding.personalDetailsHolder.setPersonalDetails(personalDetails)
+            binding.personalDetailsHolder.visibility = View.VISIBLE
+
+            binding.subtitle.setOnClickListener {
+                findNavController().navigate(
+                    ScanResultFragmentDirections.actionShowValidExplanation(
+                        verifiedQr
+                    )
+                )
+            }
+        }
+    }
+
+    private fun presentInvalidScreen(binding: FragmentScanResultBinding) {
+        binding.root.setBackgroundColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.red
+            )
+        )
+        binding.image.setImageResource(R.drawable.illustration_scan_result_invalid)
+        binding.title.text = getString(R.string.scan_result_invalid_title)
+        binding.subtitle.text =
+            getString(R.string.scan_result_invalid_subtitle).fromHtml()
+
+        binding.subtitle.setOnClickListener {
+            findNavController().navigate(ScanResultFragmentDirections.actionShowInvalidExplanation())
         }
     }
 
@@ -134,14 +151,10 @@ class ScanResultFragment : FullScreenDialogFragment(R.layout.fragment_scan_resul
         binding.subtitle.visibility = View.GONE
     }
 
-    private fun presentDebugDialog(verifiedQr: VerifiedQr?) {
-        val message = verifiedQr?.toString() ?: "ClCore error"
-
+    private fun presentDebugDialog(message: String) {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(ZonedDateTime.now().toString())
-            .setMessage(
-                getSpannableFromHtml(requireContext(), message)
-            )
+            .setMessage(message)
             .show()
     }
 }

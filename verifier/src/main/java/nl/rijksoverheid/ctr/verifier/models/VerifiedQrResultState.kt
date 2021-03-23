@@ -16,5 +16,11 @@ sealed class VerifiedQrResultState : Parcelable {
     data class Valid(val verifiedQr: VerifiedQr) : VerifiedQrResultState(), Parcelable
 
     @Parcelize
-    data class Invalid(val verifiedQr: VerifiedQr?) : VerifiedQrResultState(), Parcelable
+    data class Invalid(val verifiedQr: VerifiedQr) : VerifiedQrResultState(), Parcelable
+
+    @Parcelize
+    data class Error(val error: String) : VerifiedQrResultState(), Parcelable
+
+    @Parcelize
+    data class Demo(val verifiedQr: VerifiedQr) : VerifiedQrResultState(), Parcelable
 }

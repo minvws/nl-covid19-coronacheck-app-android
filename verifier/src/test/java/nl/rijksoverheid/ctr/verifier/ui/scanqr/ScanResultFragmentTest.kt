@@ -99,7 +99,7 @@ class ScanResultFragmentTest : AutoCloseKoinTest() {
 
     @Test
     fun `Invalid result shows correct screen`() {
-        launchScanResultFragment(state = VerifiedQrResultState.Invalid(verifiedQr = null))
+        launchScanResultFragment(state = VerifiedQrResultState.Invalid(verifiedQr = fakeVerifiedQr()))
         assertHasBackground(R.id.root, R.color.red)
         assertDisplayed(R.id.title, R.string.scan_result_invalid_title)
         scrollTo(R.id.subtitle)
@@ -112,7 +112,7 @@ class ScanResultFragmentTest : AutoCloseKoinTest() {
 
     @Test
     fun `Invalid result on description click opens explanation dialog`() {
-        launchScanResultFragment(state = VerifiedQrResultState.Invalid(verifiedQr = null))
+        launchScanResultFragment(state = VerifiedQrResultState.Invalid(verifiedQr = fakeVerifiedQr()))
         clickOn(R.id.subtitle)
         assertEquals(
             navController.currentDestination?.id,
@@ -122,7 +122,7 @@ class ScanResultFragmentTest : AutoCloseKoinTest() {
 
     @Test
     fun `Invalid result on button click opens scanner`() {
-        launchScanResultFragment(state = VerifiedQrResultState.Invalid(verifiedQr = null))
+        launchScanResultFragment(state = VerifiedQrResultState.Invalid(verifiedQr = fakeVerifiedQr()))
         clickOn(R.id.button)
         assertEquals(
             navController.currentDestination?.id,
@@ -131,27 +131,22 @@ class ScanResultFragmentTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `Valid result with isSpecimen shows correct screen`() {
-        launchScanResultFragment(
-            state = VerifiedQrResultState.Valid(
-                verifiedQr = fakeVerifiedQr(
-                    isSpecimen = "1"
-                )
-            )
+    fun `Error result shows correct screen`() {
+        launchScanResultFragment(state = VerifiedQrResultState.Error(error = "Error"))
+        assertHasBackground(R.id.root, R.color.red)
+        assertDisplayed(R.id.title, R.string.scan_result_invalid_title)
+        scrollTo(R.id.subtitle)
+        assertDisplayed(
+            R.id.subtitle,
+            InstrumentationRegistry.getInstrumentation().context.getString(R.string.scan_result_invalid_subtitle)
+                .fromHtml().toString()
         )
-        assertHasBackground(R.id.root, R.color.grey_medium)
-        assertDisplayed(R.id.title, R.string.scan_result_demo_title)
-        assertNotDisplayed(R.id.subtitle)
     }
 
     @Test
-    fun `Invalid result with isSpecimen shows correct screen`() {
+    fun `Demo result shows correct screen`() {
         launchScanResultFragment(
-            state = VerifiedQrResultState.Invalid(
-                verifiedQr = fakeVerifiedQr(
-                    isSpecimen = "1"
-                )
-            )
+            state = VerifiedQrResultState.Demo(verifiedQr = fakeVerifiedQr())
         )
         assertHasBackground(R.id.root, R.color.grey_medium)
         assertDisplayed(R.id.title, R.string.scan_result_demo_title)

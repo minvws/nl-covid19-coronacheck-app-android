@@ -4,7 +4,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.verifier.datamappers.VerifiedQrDataMapper
 import nl.rijksoverheid.ctr.verifier.models.VerifiedQr
-import timber.log.Timber
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -19,8 +18,8 @@ interface VerifyQrUseCase {
     ): VerifyQrResult
 
     sealed class VerifyQrResult {
-        class Success(val verifiedQr: VerifiedQr) : VerifyQrResult()
-        object Failed : VerifyQrResult()
+        data class Success(val verifiedQr: VerifiedQr) : VerifyQrResult()
+        data class Failed(val error: String) : VerifyQrResult()
     }
 }
 
@@ -38,8 +37,7 @@ class VerifyQrUseCaseImpl(
                 )
             )
         } catch (e: Exception) {
-            Timber.e(e)
-            VerifyQrUseCase.VerifyQrResult.Failed
+            VerifyQrUseCase.VerifyQrResult.Failed(e.toString())
         }
     }
 }
