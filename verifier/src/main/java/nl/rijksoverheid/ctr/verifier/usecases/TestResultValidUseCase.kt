@@ -5,6 +5,7 @@ import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.shared.util.TestResultUtil
 import nl.rijksoverheid.ctr.verifier.models.VerifiedQr
+import nl.rijksoverheid.ctr.verifier.models.VerifiedQrResultState
 import nl.rijksoverheid.ctr.verifier.util.QrCodeUtil
 import java.time.Instant
 import java.time.OffsetDateTime
@@ -19,12 +20,7 @@ import java.util.concurrent.TimeUnit
  *
  */
 interface TestResultValidUseCase {
-    suspend fun validate(qrContent: String): TestResultValidResult
-
-    sealed class TestResultValidResult {
-        class Valid(val verifiedQr: VerifiedQr) : TestResultValidResult()
-        object Invalid : TestResultValidResult()
-    }
+    suspend fun validate(qrContent: String): VerifiedQrResultState
 }
 
 class TestResultValidUseCaseImpl(
@@ -34,7 +30,7 @@ class TestResultValidUseCaseImpl(
     private val cachedAppConfigUseCase: CachedAppConfigUseCase
 ) : TestResultValidUseCase {
 
-    override suspend fun validate(qrContent: String): TestResultValidUseCase.TestResultValidResult =
+    override suspend fun validate(qrContent: String): VerifiedQrResultState =
         withContext(Dispatchers.IO) {
             when (val verifyQrResult = verifyQrUseCase.get(qrContent)) {
                 is VerifyQrUseCase.VerifyQrResult.Success -> {
@@ -57,13 +53,13 @@ class TestResultValidUseCaseImpl(
                         isPaperProof = verifiedQr.testResultAttributes.isPaperProof
                     )
                     if (isValid) {
-                        TestResultValidUseCase.TestResultValidResult.Valid(verifiedQr)
+                        VerifiedQrResultState.Valid(verifiedQr)
                     } else {
-                        TestResultValidUseCase.TestResultValidResult.Invalid
+                        VerifiedQrResultState.Invalid(verifiedQr)
                     }
                 }
                 is VerifyQrUseCase.VerifyQrResult.Failed -> {
-                    TestResultValidUseCase.TestResultValidResult.Invalid
+                    VerifiedQrResultState.Invalid(null)
                 }
             }
         }

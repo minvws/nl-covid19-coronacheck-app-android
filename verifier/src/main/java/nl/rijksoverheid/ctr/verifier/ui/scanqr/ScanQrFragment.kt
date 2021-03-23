@@ -13,11 +13,15 @@ import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.qrscanner.QrCodeScannerUtil
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
+import nl.rijksoverheid.ctr.shared.models.TestResultAttributes
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.VerifierMainActivity
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanQrBinding
+import nl.rijksoverheid.ctr.verifier.models.VerifiedQr
+import nl.rijksoverheid.ctr.verifier.models.VerifiedQrResultState
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.time.OffsetDateTime
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -101,16 +105,35 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
     }
 
     private fun openScanner() {
-        qrCodeScannerUtil.launchScanner(
-            requireActivity(), qrScanResult,
-            getString(
-                R.string.scanner_custom_title
-            ), getString(
-                R.string.scanner_custom_message
-            ),
-            getString(R.string.camera_rationale_dialog_title),
-            getString(R.string.camera_rationale_dialog_description),
-            getString(R.string.ok)
+//        qrCodeScannerUtil.launchScanner(
+//            requireActivity(), qrScanResult,
+//            getString(
+//                R.string.scanner_custom_title
+//            ), getString(
+//                R.string.scanner_custom_message
+//            ),
+//            getString(R.string.camera_rationale_dialog_title),
+//            getString(R.string.camera_rationale_dialog_description),
+//            getString(R.string.ok)
+//        )
+        findNavController().navigate(
+            ScanQrFragmentDirections.actionScanResult(
+                VerifiedQrResultState.Invalid(
+                    verifiedQr = VerifiedQr(
+                        creationDateSeconds = OffsetDateTime.now().toEpochSecond(),
+                        testResultAttributes = TestResultAttributes(
+                            sampleTime = OffsetDateTime.now().toEpochSecond(),
+                            testType = "BRA",
+                            birthMonth = "07",
+                            birthDay = "02",
+                            firstNameInitial = "B",
+                            lastNameInitial = "N",
+                            isPaperProof = "1",
+                            isSpecimen = "1"
+                        )
+                    )
+                )
+            )
         )
     }
 }
