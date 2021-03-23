@@ -15,7 +15,6 @@ import nl.rijksoverheid.ctr.verifier.fakeTestResultValidUseCase
 import nl.rijksoverheid.ctr.verifier.fakeVerifiedQr
 import nl.rijksoverheid.ctr.verifier.models.VerifiedQrResultState
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
-import nl.rijksoverheid.ctr.verifier.usecases.TestResultValidUseCase
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -46,7 +45,7 @@ class ScanQrViewModelImplTest {
         val viewModel = ScanQrViewModelImpl(
             testResultValidUseCase = fakeTestResultValidUseCase(
                 result = VerifiedQrResultState.Valid(
-                    verifiedQr = fakeVerifiedQr
+                    verifiedQr = fakeVerifiedQr()
                 )
             ),
             persistenceManager = fakePersistenceManager
@@ -66,7 +65,7 @@ class ScanQrViewModelImplTest {
             validatedQrObserver.onChanged(
                 Event(
                     VerifiedQrResultState.Valid(
-                        verifiedQr = fakeVerifiedQr
+                        verifiedQr = fakeVerifiedQr()
                     )
                 )
             )

@@ -40,38 +40,61 @@ class ScanResultFragment : FullScreenDialogFragment(R.layout.fragment_scan_resul
         val binding = FragmentScanResultBinding.bind(view)
 
         val validatedQrResultState = args.validatedResult
-        if (validatedQrResultState is VerifiedQrResultState.Valid) {
-            binding.root.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.green))
-            binding.image.setImageResource(R.drawable.illustration_scan_result_valid)
-            binding.title.text = getString(R.string.scan_result_valid_title)
-            binding.subtitle.text = getString(R.string.scan_result_valid_subtitle).fromHtml()
-
-            validatedQrResultState.verifiedQr.testResultAttributes.let {
-                val personalDetails = personalDetailsUtil.getPersonalDetails(
-                    it.firstNameInitial,
-                    it.lastNameInitial,
-                    it.birthDay,
-                    it.birthMonth
-                )
-                binding.personalDetailsHolder.setPersonalDetails(personalDetails)
-                binding.personalDetailsHolder.visibility = View.VISIBLE
-
-                binding.subtitle.setOnClickListener {
-                    findNavController().navigate(
-                        ScanResultFragmentDirections.actionShowValidExplanation(
-                            validatedQrResultState.verifiedQr
+        when (validatedQrResultState) {
+            is VerifiedQrResultState.Valid -> {
+                if (validatedQrResultState.verifiedQr.testResultAttributes.isSpecimen == "1") {
+                    presentDemoScreen(binding)
+                } else {
+                    binding.root.setBackgroundColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.green
                         )
                     )
+                    binding.image.setImageResource(R.drawable.illustration_scan_result_valid)
+                    binding.title.text = getString(R.string.scan_result_valid_title)
+                    binding.subtitle.text =
+                        getString(R.string.scan_result_valid_subtitle).fromHtml()
+
+                    validatedQrResultState.verifiedQr.testResultAttributes.let {
+                        val personalDetails = personalDetailsUtil.getPersonalDetails(
+                            it.firstNameInitial,
+                            it.lastNameInitial,
+                            it.birthDay,
+                            it.birthMonth
+                        )
+                        binding.personalDetailsHolder.setPersonalDetails(personalDetails)
+                        binding.personalDetailsHolder.visibility = View.VISIBLE
+
+                        binding.subtitle.setOnClickListener {
+                            findNavController().navigate(
+                                ScanResultFragmentDirections.actionShowValidExplanation(
+                                    validatedQrResultState.verifiedQr
+                                )
+                            )
+                        }
+                    }
                 }
             }
-        } else {
-            binding.root.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.red))
-            binding.image.setImageResource(R.drawable.illustration_scan_result_invalid)
-            binding.title.text = getString(R.string.scan_result_invalid_title)
-            binding.subtitle.text = getString(R.string.scan_result_invalid_subtitle).fromHtml()
+            is VerifiedQrResultState.Invalid -> {
+                if (validatedQrResultState.verifiedQr?.testResultAttributes?.isSpecimen == "1") {
+                    presentDemoScreen(binding)
+                } else {
+                    binding.root.setBackgroundColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.red
+                        )
+                    )
+                    binding.image.setImageResource(R.drawable.illustration_scan_result_invalid)
+                    binding.title.text = getString(R.string.scan_result_invalid_title)
+                    binding.subtitle.text =
+                        getString(R.string.scan_result_invalid_subtitle).fromHtml()
 
-            binding.subtitle.setOnClickListener {
-                findNavController().navigate(ScanResultFragmentDirections.actionShowInvalidExplanation())
+                    binding.subtitle.setOnClickListener {
+                        findNavController().navigate(ScanResultFragmentDirections.actionShowInvalidExplanation())
+                    }
+                }
             }
         }
 
@@ -87,18 +110,28 @@ class ScanResultFragment : FullScreenDialogFragment(R.layout.fragment_scan_resul
             findNavController().popBackStack()
         }
 
-        if (BuildConfig.FLAVOR != "prod") {
-            MultiTapDetector(binding.image) { amount, _ ->
-                if (amount == 3) {
-                    when (validatedQrResultState) {
-                        is VerifiedQrResultState.Valid -> presentDebugDialog(validatedQrResultState.verifiedQr)
-                        is VerifiedQrResultState.Invalid -> presentDebugDialog(
-                            validatedQrResultState.verifiedQr
-                        )
-                    }
+        MultiTapDetector(binding.image) { amount, _ ->
+            if (amount == 3) {
+                when (validatedQrResultState) {
+                    is VerifiedQrResultState.Valid -> presentDebugDialog(validatedQrResultState.verifiedQr)
+                    is VerifiedQrResultState.Invalid -> presentDebugDialog(
+                        validatedQrResultState.verifiedQr
+                    )
                 }
             }
         }
+    }
+
+    private fun presentDemoScreen(binding: FragmentScanResultBinding) {
+        binding.image.setImageResource(R.drawable.illustration_scan_result_valid)
+        binding.root.setBackgroundColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.grey_medium
+            )
+        )
+        binding.title.text = getString(R.string.scan_result_demo_title)
+        binding.subtitle.visibility = View.GONE
     }
 
     private fun presentDebugDialog(verifiedQr: VerifiedQr?) {

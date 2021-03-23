@@ -4,6 +4,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.verifier.datamappers.VerifiedQrDataMapper
 import nl.rijksoverheid.ctr.verifier.models.VerifiedQr
+import timber.log.Timber
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -37,6 +38,7 @@ class VerifyQrUseCaseImpl(
                 )
             )
         } catch (e: Exception) {
+            Timber.e(e)
             VerifyQrUseCase.VerifyQrResult.Failed
         }
     }
