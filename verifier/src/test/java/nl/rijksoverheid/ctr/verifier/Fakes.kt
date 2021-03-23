@@ -51,11 +51,11 @@ fun fakeScanQrViewModel(
 }
 
 fun fakeTestResultValidUseCase(
-    result: TestResultValidUseCase.TestResultValidResult = TestResultValidUseCase.TestResultValidResult.Valid(
+    result: VerifiedQrResultState = VerifiedQrResultState.Valid(
         verifiedQr = fakeVerifiedQr
     )
 ) = object : TestResultValidUseCase {
-    override suspend fun validate(qrContent: String): TestResultValidUseCase.TestResultValidResult {
+    override suspend fun validate(qrContent: String): VerifiedQrResultState {
         return result
     }
 }
