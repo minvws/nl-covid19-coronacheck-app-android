@@ -3,11 +3,8 @@ package nl.rijksoverheid.ctr.verifier.usecases
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
+import nl.rijksoverheid.ctr.verifier.*
 import nl.rijksoverheid.ctr.verifier.datamappers.VerifiedQrDataMapper
-import nl.rijksoverheid.ctr.verifier.fakeCachedAppConfigUseCase
-import nl.rijksoverheid.ctr.verifier.fakeQrCodeUtil
-import nl.rijksoverheid.ctr.verifier.fakeTestResultUtil
-import nl.rijksoverheid.ctr.verifier.fakeVerifyQrUseCase
 import nl.rijksoverheid.ctr.verifier.models.VerifiedQrResultState
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -58,7 +55,7 @@ class TestResultValidUseCaseImplTest {
         }
 
     @Test
-    fun `Validate returns Invalid if code cannot be validated`() = runBlocking {
+    fun `Validate returns Error if code cannot be validated`() = runBlocking {
         val fakeVerifiedQrDataMapper: VerifiedQrDataMapper = mockk()
         coEvery { fakeVerifiedQrDataMapper.transform(any()) } throws Exception("Crash")
         val fakeVerifyQrUseCase = VerifyQrUseCaseImpl(fakeVerifiedQrDataMapper)
@@ -69,7 +66,21 @@ class TestResultValidUseCaseImplTest {
             qrCodeUtil = fakeQrCodeUtil(isValid = false),
             cachedAppConfigUseCase = fakeCachedAppConfigUseCase()
         )
-        assertTrue(usecase.validate("") is VerifiedQrResultState.Invalid)
+        assertTrue(usecase.validate("") is VerifiedQrResultState.Error)
     }
+
+    @Test
+    fun `Validate returns Demo if isSpecimen is set to 1`() =
+        runBlocking {
+            val usecase = TestResultValidUseCaseImpl(
+                verifyQrUseCase = fakeVerifyQrUseCase(result = VerifyQrUseCase.VerifyQrResult.Success(
+                    verifiedQr = fakeVerifiedQr(isSpecimen = "1")
+                )),
+                testResultUtil = fakeTestResultUtil(),
+                qrCodeUtil = fakeQrCodeUtil(),
+                cachedAppConfigUseCase = fakeCachedAppConfigUseCase()
+            )
+            assertTrue(usecase.validate("") is VerifiedQrResultState.Demo)
+        }
 
 }

@@ -41,7 +41,7 @@ class ScanQrViewModelImplTest {
     }
 
     @Test
-    fun `Getting valid test result delegates to correct livedatas`() = runBlocking {
+    fun `Getting test result delegates to correct livedatas`() = runBlocking {
         val viewModel = ScanQrViewModelImpl(
             testResultValidUseCase = fakeTestResultValidUseCase(
                 result = VerifiedQrResultState.Valid(
@@ -73,43 +73,11 @@ class ScanQrViewModelImplTest {
     }
 
     @Test
-    fun `Getting invalid test result delegates to correct livedatas`() = runBlocking {
-        val viewModel = ScanQrViewModelImpl(
-            testResultValidUseCase = fakeTestResultValidUseCase(
-                result = VerifiedQrResultState.Invalid(
-                    verifiedQr = null
-                )
-            ),
-            persistenceManager = fakePersistenceManager
-        )
-
-        viewModel.loadingLiveData.observeForever(loadingMockedObserver)
-        viewModel.validatedQrLiveData.observeForever(validatedQrObserver)
-
-        viewModel.validate("")
-
-        verifyOrder {
-            loadingMockedObserver.onChanged(Event(true))
-            loadingMockedObserver.onChanged(Event(false))
-        }
-
-        verify {
-            validatedQrObserver.onChanged(
-                Event(
-                    VerifiedQrResultState.Invalid(
-                        verifiedQr = null
-                    )
-                )
-            )
-        }
-    }
-
-    @Test
     fun `scanInstructionsSeen persist value if not persisted before`() {
         val viewModel = ScanQrViewModelImpl(
             testResultValidUseCase = fakeTestResultValidUseCase(
                 result = VerifiedQrResultState.Invalid(
-                    verifiedQr = null
+                    verifiedQr = fakeVerifiedQr()
                 )
             ),
             persistenceManager = fakePersistenceManager
@@ -126,7 +94,7 @@ class ScanQrViewModelImplTest {
         val viewModel = ScanQrViewModelImpl(
             testResultValidUseCase = fakeTestResultValidUseCase(
                 result = VerifiedQrResultState.Invalid(
-                    verifiedQr = null
+                    verifiedQr = fakeVerifiedQr()
                 )
             ),
             persistenceManager = fakePersistenceManager

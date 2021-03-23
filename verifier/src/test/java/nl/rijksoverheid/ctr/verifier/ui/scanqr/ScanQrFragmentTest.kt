@@ -76,11 +76,11 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
      */
     @Test
     fun `Clicking start scan and scanning invalid qr goes to invalid scan result`() {
-        launchScanQrFragment(state = VerifiedQrResultState.Invalid(verifiedQr = null))
+        launchScanQrFragment(state = VerifiedQrResultState.Invalid(verifiedQr = fakeVerifiedQr()))
         clickOn(R.id.button)
         assertEquals(R.id.nav_scan_result, navController.currentDestination?.id)
         assertEquals(
-            VerifiedQrResultState.Invalid(verifiedQr = null),
+            VerifiedQrResultState.Invalid(verifiedQr = fakeVerifiedQr()),
             navController.backStack.last().arguments?.get("validatedResult")
         )
     }
@@ -118,7 +118,6 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
                         override fun parseScanResult(resultIntent: Intent?): String? {
                             return null
                         }
-
                     }
                 }
 
