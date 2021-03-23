@@ -110,15 +110,13 @@ class ScanResultFragment : FullScreenDialogFragment(R.layout.fragment_scan_resul
             findNavController().popBackStack()
         }
 
-        if (BuildConfig.FLAVOR != "prod") {
-            MultiTapDetector(binding.image) { amount, _ ->
-                if (amount == 3) {
-                    when (validatedQrResultState) {
-                        is VerifiedQrResultState.Valid -> presentDebugDialog(validatedQrResultState.verifiedQr)
-                        is VerifiedQrResultState.Invalid -> presentDebugDialog(
-                            validatedQrResultState.verifiedQr
-                        )
-                    }
+        MultiTapDetector(binding.image) { amount, _ ->
+            if (amount == 3) {
+                when (validatedQrResultState) {
+                    is VerifiedQrResultState.Valid -> presentDebugDialog(validatedQrResultState.verifiedQr)
+                    is VerifiedQrResultState.Invalid -> presentDebugDialog(
+                        validatedQrResultState.verifiedQr
+                    )
                 }
             }
         }
