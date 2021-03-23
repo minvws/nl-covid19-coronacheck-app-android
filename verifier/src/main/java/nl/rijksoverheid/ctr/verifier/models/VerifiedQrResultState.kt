@@ -13,8 +13,8 @@ import kotlinx.parcelize.Parcelize
 
 sealed class VerifiedQrResultState : Parcelable {
     @Parcelize
-    data class Valid(val qrResult: VerifiedQr) : VerifiedQrResultState(), Parcelable
+    data class Valid(val verifiedQr: VerifiedQr) : VerifiedQrResultState(), Parcelable
 
     @Parcelize
-    object Invalid : VerifiedQrResultState(), Parcelable
+    data class Invalid(val verifiedQr: VerifiedQr?) : VerifiedQrResultState(), Parcelable
 }

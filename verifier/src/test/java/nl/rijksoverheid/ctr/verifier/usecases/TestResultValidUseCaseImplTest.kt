@@ -8,6 +8,7 @@ import nl.rijksoverheid.ctr.verifier.fakeCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.verifier.fakeQrCodeUtil
 import nl.rijksoverheid.ctr.verifier.fakeTestResultUtil
 import nl.rijksoverheid.ctr.verifier.fakeVerifyQrUseCase
+import nl.rijksoverheid.ctr.verifier.models.VerifiedQrResultState
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -29,7 +30,7 @@ class TestResultValidUseCaseImplTest {
                 qrCodeUtil = fakeQrCodeUtil(),
                 cachedAppConfigUseCase = fakeCachedAppConfigUseCase()
             )
-            assertTrue(usecase.validate("") is TestResultValidUseCase.TestResultValidResult.Valid)
+            assertTrue(usecase.validate("") is VerifiedQrResultState.Valid)
         }
 
     @Test
@@ -41,7 +42,7 @@ class TestResultValidUseCaseImplTest {
                 qrCodeUtil = fakeQrCodeUtil(),
                 cachedAppConfigUseCase = fakeCachedAppConfigUseCase()
             )
-            assertTrue(usecase.validate("") is TestResultValidUseCase.TestResultValidResult.Invalid)
+            assertTrue(usecase.validate("") is VerifiedQrResultState.Invalid)
         }
 
     @Test
@@ -53,7 +54,7 @@ class TestResultValidUseCaseImplTest {
                 qrCodeUtil = fakeQrCodeUtil(isValid = false),
                 cachedAppConfigUseCase = fakeCachedAppConfigUseCase()
             )
-            assertTrue(usecase.validate("") is TestResultValidUseCase.TestResultValidResult.Invalid)
+            assertTrue(usecase.validate("") is VerifiedQrResultState.Invalid)
         }
 
     @Test
@@ -68,7 +69,7 @@ class TestResultValidUseCaseImplTest {
             qrCodeUtil = fakeQrCodeUtil(isValid = false),
             cachedAppConfigUseCase = fakeCachedAppConfigUseCase()
         )
-        assertTrue(usecase.validate("") is TestResultValidUseCase.TestResultValidResult.Invalid)
+        assertTrue(usecase.validate("") is VerifiedQrResultState.Invalid)
     }
 
 }

@@ -7,13 +7,19 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import nl.rijksoverheid.ctr.design.FullScreenDialogFragment
+import nl.rijksoverheid.ctr.design.utils.getSpannableFromHtml
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
+import nl.rijksoverheid.ctr.shared.util.MultiTapDetector
 import nl.rijksoverheid.ctr.shared.util.PersonalDetailsUtil
+import nl.rijksoverheid.ctr.verifier.BuildConfig
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanResultBinding
+import nl.rijksoverheid.ctr.verifier.models.VerifiedQr
 import nl.rijksoverheid.ctr.verifier.models.VerifiedQrResultState
 import org.koin.android.ext.android.inject
+import java.time.ZonedDateTime
 
 
 /*
@@ -40,7 +46,7 @@ class ScanResultFragment : FullScreenDialogFragment(R.layout.fragment_scan_resul
             binding.title.text = getString(R.string.scan_result_valid_title)
             binding.subtitle.text = getString(R.string.scan_result_valid_subtitle).fromHtml()
 
-            validatedQrResultState.qrResult.testResultAttributes.let {
+            validatedQrResultState.verifiedQr.testResultAttributes.let {
                 val personalDetails = personalDetailsUtil.getPersonalDetails(
                     it.firstNameInitial,
                     it.lastNameInitial,
@@ -53,7 +59,7 @@ class ScanResultFragment : FullScreenDialogFragment(R.layout.fragment_scan_resul
                 binding.subtitle.setOnClickListener {
                     findNavController().navigate(
                         ScanResultFragmentDirections.actionShowValidExplanation(
-                            validatedQrResultState.qrResult
+                            validatedQrResultState.verifiedQr
                         )
                     )
                 }
@@ -80,5 +86,29 @@ class ScanResultFragment : FullScreenDialogFragment(R.layout.fragment_scan_resul
             )
             findNavController().popBackStack()
         }
+
+        if (BuildConfig.FLAVOR != "prod") {
+            MultiTapDetector(binding.image) { amount, _ ->
+                if (amount == 3) {
+                    when (validatedQrResultState) {
+                        is VerifiedQrResultState.Valid -> presentDebugDialog(validatedQrResultState.verifiedQr)
+                        is VerifiedQrResultState.Invalid -> presentDebugDialog(
+                            validatedQrResultState.verifiedQr
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private fun presentDebugDialog(verifiedQr: VerifiedQr?) {
+        val message = verifiedQr?.toString() ?: "ClCore error"
+
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(ZonedDateTime.now().toString())
+            .setMessage(
+                getSpannableFromHtml(requireContext(), message)
+            )
+            .show()
     }
 }

@@ -45,7 +45,7 @@ class ScanQrViewModelImplTest {
     fun `Getting valid test result delegates to correct livedatas`() = runBlocking {
         val viewModel = ScanQrViewModelImpl(
             testResultValidUseCase = fakeTestResultValidUseCase(
-                result = TestResultValidUseCase.TestResultValidResult.Valid(
+                result = VerifiedQrResultState.Valid(
                     verifiedQr = fakeVerifiedQr
                 )
             ),
@@ -66,7 +66,7 @@ class ScanQrViewModelImplTest {
             validatedQrObserver.onChanged(
                 Event(
                     VerifiedQrResultState.Valid(
-                        qrResult = fakeVerifiedQr
+                        verifiedQr = fakeVerifiedQr
                     )
                 )
             )
@@ -77,7 +77,9 @@ class ScanQrViewModelImplTest {
     fun `Getting invalid test result delegates to correct livedatas`() = runBlocking {
         val viewModel = ScanQrViewModelImpl(
             testResultValidUseCase = fakeTestResultValidUseCase(
-                result = TestResultValidUseCase.TestResultValidResult.Invalid
+                result = VerifiedQrResultState.Invalid(
+                    verifiedQr = null
+                )
             ),
             persistenceManager = fakePersistenceManager
         )
@@ -95,7 +97,9 @@ class ScanQrViewModelImplTest {
         verify {
             validatedQrObserver.onChanged(
                 Event(
-                    VerifiedQrResultState.Invalid
+                    VerifiedQrResultState.Invalid(
+                        verifiedQr = null
+                    )
                 )
             )
         }
@@ -105,7 +109,9 @@ class ScanQrViewModelImplTest {
     fun `scanInstructionsSeen persist value if not persisted before`() {
         val viewModel = ScanQrViewModelImpl(
             testResultValidUseCase = fakeTestResultValidUseCase(
-                result = TestResultValidUseCase.TestResultValidResult.Invalid
+                result = VerifiedQrResultState.Invalid(
+                    verifiedQr = null
+                )
             ),
             persistenceManager = fakePersistenceManager
         )
@@ -120,7 +126,9 @@ class ScanQrViewModelImplTest {
     fun `scanInstructionsSeen does not persist value if persisted before`() {
         val viewModel = ScanQrViewModelImpl(
             testResultValidUseCase = fakeTestResultValidUseCase(
-                result = TestResultValidUseCase.TestResultValidResult.Invalid
+                result = VerifiedQrResultState.Invalid(
+                    verifiedQr = null
+                )
             ),
             persistenceManager = fakePersistenceManager
         )

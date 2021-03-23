@@ -37,15 +37,7 @@ class ScanQrViewModelImpl(
                 val result = testResultValidUseCase.validate(
                     qrContent = qrContent
                 )
-                when (result) {
-                    is TestResultValidUseCase.TestResultValidResult.Valid -> {
-                        validatedQrLiveData.value =
-                            Event(VerifiedQrResultState.Valid(result.verifiedQr))
-                    }
-                    is TestResultValidUseCase.TestResultValidResult.Invalid -> {
-                        validatedQrLiveData.value = Event(VerifiedQrResultState.Invalid)
-                    }
-                }
+                validatedQrLiveData.value = Event(result)
             } finally {
                 loadingLiveData.value = Event(false)
             }
