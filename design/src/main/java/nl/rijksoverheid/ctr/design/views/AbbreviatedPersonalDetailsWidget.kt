@@ -10,7 +10,6 @@ package nl.rijksoverheid.ctr.design.views
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.Gravity
 import android.widget.LinearLayout
 
 class AbbreviatedPersonalDetailsWidget @JvmOverloads constructor(
