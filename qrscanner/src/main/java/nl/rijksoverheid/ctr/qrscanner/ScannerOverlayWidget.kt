@@ -37,7 +37,7 @@ class ScannerOverlayWidget @JvmOverloads constructor(
         val rectW = if (w < h) {
             w - (2 * overlayMargin)
         } else {
-            h * (2 * overlayMargin)
+            h - (2 * overlayMargin)
         }
         // Calculate corner coordinates
         val left = centerOfCanvas.x - rectW / 2
@@ -55,7 +55,7 @@ class ScannerOverlayWidget @JvmOverloads constructor(
             ), cornerRadius, cornerRadius, Path.Direction.CW
         )
         // Set filltype to Inverse Even Odd to draw outside of the path only
-        overlayRectPath.fillType = Path.FillType.INVERSE_EVEN_ODD
+        overlayRectPath.fillType = Path.FillType.INVERSE_WINDING
     }
 
     override fun onDraw(canvas: Canvas) {
