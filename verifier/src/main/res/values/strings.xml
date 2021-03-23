@@ -31,11 +31,11 @@
     <string name="scan_qr_button">Start scannen</string>
     <string name="scan_result_valid_title">Geldige QR-code</string>
     <string name="scan_result_valid_subtitle"><![CDATA[Controleer of deze gegevens hetzelfde zijn als de gegevens op het identiteitsbewijs. <b><u>Lees meer</b></u>]]></string>
-    <string name="scan_result_invalid_title">Weiger toegang</string>
+    <string name="scan_result_invalid_title">Geen geldige QR-code</string>
     <string name="scan_result_invalid_subtitle"><![CDATA[De bezoeker heeft geen geldig negatief testbewijs. <b><u>Lees mogelijke oorzaken</b></u>]]></string>
     <string name="scan_result_invalid_button">Scan volgende</string>
     <string name="scan_result_invalid_reason_title">Ongeldige QR-code</string>
-    <string name="scan_result_invalid_reason_description"><![CDATA[Dit betekent <b>niet</b> dat de persoon corona heeft.<br\><br\><b>Mogelijke oorzaken</b><br\><ul><li>De persoon is niet getest</li><li>De QR-code is doorgestuurd</li><li>De QR-code is vervalst</li></ul><br\><b>En nu?</b><br\>Weiger toegang en verzoek de bezoeker eerst een test te doen. Als het testresultaat bekend is kan de bezoeker er in de CoronaCheck-app een QR-code van maken.]]></string>
+    <string name="scan_result_invalid_reason_description"><![CDATA[Dit betekent <b>niet</b> dat de persoon corona heeft.<br\><br\><b>Mogelijke oorzaken</b><br\><ul><li>De persoon is niet getest</li><li>De QR-code is doorgestuurd</li><li>De QR-code is vervalst</li></ul><br\><b>En nu?</b><br\>Verzoek de bezoeker eerst een test te doen. Als het testresultaat bekend is kan de bezoeker er in de CoronaCheck-app een QR-code van maken.]]></string>
     <string name="scan_result_valid_reason_title">Identificatiegegevens controleren</string>
     <string name="scan_result_valid_reason_description">Controleer of de QR-code ook echt bij de bezoeker hoort. Kijk daarvoor of deze gegevens hetzelfde zijn als de gegevens op het identiteitsbewijs.\n\nDe gegevens bestaan uit: (1) de eerste letter van de voornaam, (2) de eerste letter van de achternaam, (3) de geboortedag en (4) de geboortemaand.</string>
     <string name="about_this_app_description">CoronaCheck Scanner is ontwikkeld zodat o.a. evenementen, concerten, musea en sportlocaties de deuren kunnen openen. Met behulp van deze app krijgen alleen bezoekers die kortgeleden negatief op corona getest zijn toegang. Zo trekt Nederland er weer meer op uit.</string>
