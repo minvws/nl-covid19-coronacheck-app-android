@@ -1,12 +1,16 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview.items
 
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.view.View
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.core.content.ContextCompat
 import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.ItemMyOverviewNavigationCardBinding
+
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -24,9 +28,16 @@ class MyOverviewNavigationCardAdapterItem(
     private val onButtonClick: () -> Unit
 ) : BindableItem<ItemMyOverviewNavigationCardBinding>(R.layout.item_my_overview_navigation_card.toLong()) {
     override fun bind(viewBinding: ItemMyOverviewNavigationCardBinding, position: Int) {
+        val backgroundColor = ContextCompat.getColor(viewBinding.root.context, backgroundColor)
         viewBinding.title.setText(title)
         viewBinding.description.setText(description)
-        viewBinding.container.setBackgroundResource(backgroundColor)
+        viewBinding.container.setBackgroundColor(backgroundColor)
+
+        viewBinding.gradient.background = GradientDrawable(
+            GradientDrawable.Orientation.LEFT_RIGHT,
+            intArrayOf(backgroundColor, backgroundColor, backgroundColor, Color.TRANSPARENT)
+        )
+
         viewBinding.image.setImageResource(backgroundDrawable)
         viewBinding.button.setText(buttonText)
         viewBinding.button.setOnClickListener {
