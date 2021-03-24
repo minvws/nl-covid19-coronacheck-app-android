@@ -7,6 +7,7 @@ import nl.rijksoverheid.ctr.holder.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.holder.models.TestIsmResult
 import nl.rijksoverheid.ctr.holder.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.repositories.TestProviderRepository
+import nl.rijksoverheid.ctr.holder.ui.myoverview.util.TokenValidatorUtil
 import nl.rijksoverheid.ctr.shared.util.PersonalDetailsUtil
 import nl.rijksoverheid.ctr.shared.util.TestResultUtil
 import retrofit2.HttpException
@@ -30,7 +31,8 @@ class TestResultUseCase(
     private val createCredentialUseCase: CreateCredentialUseCase,
     private val personalDetailsUtil: PersonalDetailsUtil,
     private val testResultUtil: TestResultUtil,
-    private val cachedAppConfigUseCase: CachedAppConfigUseCase
+    private val cachedAppConfigUseCase: CachedAppConfigUseCase,
+    private val tokenValidatorUtil: TokenValidatorUtil
 ) {
 
     suspend fun testResult(uniqueCode: String, verificationCode: String? = null): TestResult {
@@ -46,6 +48,15 @@ class TestResultUseCase(
 
         val providerIdentifier = uniqueCodeAttributes[0]
         val token = uniqueCodeAttributes[1]
+        val checksum = uniqueCodeAttributes[2]
+
+        if (!tokenValidatorUtil.validate(
+                token = token,
+                checksum = checksum
+            )
+        ) {
+            return TestResult.InvalidToken
+        }
 
         return try {
             val testProvider = testProviderUseCase.testProvider(providerIdentifier)
