@@ -9,14 +9,14 @@
     <string name="onboarding_screen_2_title">Scan QR-code voor toegang</string>
     <string name="onboarding_screen_2_description">In de CoronaCheck-app maakt de bezoeker van het testresultaat een QR-code. Daarna scan je met deze app de QR-codes en zie je wie toegang mag krijgen. Bij een groen scherm mag de bezoeker naar binnen. De QR-code moet binnen 40 uur na het moment van testen gescand zijn.</string>
     <string name="onboarding_screen_3_title">Toegang is anoniem</string>
-    <string name="onboarding_screen_3_description">Bij het scannen van een QR-code worden geen persoonsgegevens verstuurd of opgeslagen. Als scanner zie je alleen of de bezoeker een geldig negatief testresultaat heeft.</string>
+    <string name="onboarding_screen_3_description">Bij het scannen van een QR-code worden geen persoonsgegevens verstuurd of opgeslagen. Als controleur zie je alleen of de bezoeker een geldig negatief testresultaat heeft.</string>
     <string name="onboarding_screen_4_title">Voor wie is de scanner?</string>
     <string name="onboarding_screen_4_description"><![CDATA[Met behulp van deze app kun je weer bezoekers ontvangen. Maar alleen als jouw sociale, culturele of sportieve activiteit onder de <u>aangewezen locaties</u> valt.]]></string>
     <string name="onboarding_next">Volgende</string>
     <string name="privacy_policy_title">Zo gebruikt deze app je gegevens</string>
     <string name="privacy_policy_description"><![CDATA[In de <a href="#">privacyverklaring staat</a> hoe CoronaCheck Scanner jouw gegevens gebruikt. Dit zijn de belangrijkste punten.]]></string>
     <string name="privacy_policy_1"><![CDATA[Een CoronaCheck QR-code is <b>niet te herleiden naar jou</b> als persoon]]></string>
-    <string name="privacy_policy_2"><![CDATA[Als scanner weet je alleen <b>of een testbewijs geldig is</b>. Niet wie de bezoeker is.]]></string>
+    <string name="privacy_policy_2"><![CDATA[Als controleur weet je alleen <b>of een testbewijs geldig is</b>. Niet wie de bezoeker is.]]></string>
     <string name="privacy_policy_3"><![CDATA[CoronaCheck Scanner <b>houdt geen locatie of GPS gegevens</b> bij]]></string>
     <string name="privacy_policy_checkbox_text">Ik heb de privacyverklaring gelezen en begrijp hoe de app mijn gegevens gebruikt</string>
     <string name="dialog_error_title">Technische fout</string>
