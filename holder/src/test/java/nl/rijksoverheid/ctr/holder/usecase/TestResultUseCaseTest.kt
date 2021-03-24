@@ -58,6 +58,26 @@ class TestResultUseCaseTest {
     }
 
     @Test
+    fun `testResult returns InvalidToken if token validator fails`() = runBlocking {
+        val usecase = TestResultUseCase(
+            testProviderUseCase = fakeTestProviderUseCase(),
+            testProviderRepository = fakeTestProviderRepository(),
+            coronaCheckRepository = fakeCoronaCheckRepository(),
+            commitmentMessageUseCase = fakeCommitmentMessageUsecase(),
+            secretKeyUseCase = fakeSecretKeyUseCase(),
+            createCredentialUseCase = fakeCreateCredentialUseCase(),
+            personalDetailsUtil = fakePersonalDetailsUtil(),
+            cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
+            testResultUtil = fakeTestResultUtil(),
+            tokenValidatorUtil = fakeTokenValidatorUtil(
+                isValid = false
+            )
+        )
+        val result = usecase.testResult(uniqueCode = "provider-code-t1")
+        assertTrue(result is TestResult.InvalidToken)
+    }
+
+    @Test
     fun `testResult returns InvalidToken if no provider matches`() = runBlocking {
         val usecase = TestResultUseCase(
             testProviderUseCase = fakeTestProviderUseCase(),
@@ -71,7 +91,7 @@ class TestResultUseCaseTest {
             testResultUtil = fakeTestResultUtil(),
             tokenValidatorUtil = fakeTokenValidatorUtil()
         )
-        val result = usecase.testResult(uniqueCode = "provider-code")
+        val result = usecase.testResult(uniqueCode = "provider-code-t1")
         assertTrue(result is TestResult.InvalidToken)
     }
 
