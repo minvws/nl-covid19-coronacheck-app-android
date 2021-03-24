@@ -1,11 +1,5 @@
 name: Build, test and distribute
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+on: pull_request
 
 jobs:
   build-and-test:
@@ -49,7 +43,6 @@ jobs:
         if: ${{ always() }}
         run: rm keystore.jks
       - name: Archive apks
-        if: github.ref == 'refs/heads/main'
         uses: actions/upload-artifact@v2
         with:
           name: apks
@@ -58,7 +51,6 @@ jobs:
             verifier/build/outputs/apk
           retention-days: 5
       - name: Archive bundle
-        if: github.ref == 'refs/heads/main'
         uses: actions/upload-artifact@v2
         with:
           name: bundle
@@ -73,7 +65,6 @@ jobs:
       SLACK_MESSAGE: 'New apps available for android :green_heart:'
       FIREBASE_TOKEN: ${{ secrets.FIREBASE_CLI_TOKEN }}
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
     needs: [ "build-and-test" ]
 
     steps:
@@ -95,42 +86,35 @@ jobs:
           --app 1:168257592968:android:cbb6d05f4163e39026493d \
           --token $FIREBASE_TOKEN \
           --groups testers
-
       - name: Distribute holder acc variant
         run: |
           firebase appdistribution:distribute `ls apks/holder/build/outputs/apk/acc/release/holder-*.apk` \
           --app 1:168257592968:android:5df6b2057b90a30826493d \
           --token $FIREBASE_TOKEN \
           --groups testers
-
       - name: Distribute holder prod variant
         run: |
           firebase appdistribution:distribute `ls apks/holder/build/outputs/apk/prod/release/holder-*.apk` \
           --app 1:168257592968:android:aaa5afb416536fdb26493d \
           --token $FIREBASE_TOKEN \
           --groups testers
-
       - name: Distribute verifier test variant
         run: |
           firebase appdistribution:distribute `ls apks/verifier/build/outputs/apk/tst/release/verifier-*.apk` \
           --app 1:168257592968:android:ed609f228437d86f26493d \
           --token $FIREBASE_TOKEN \
           --groups testers
-
       - name: Distribute holder acc variant
         run: |
           firebase appdistribution:distribute `ls apks/verifier/build/outputs/apk/acc/release/verifier-*.apk` \
           --app 1:168257592968:android:e9d445c4115a5c9d26493d \
           --token $FIREBASE_TOKEN \
           --groups testers
-
       - name: Distribute holder prod variant
         run: |
           firebase appdistribution:distribute `ls apks/verifier/build/outputs/apk/prod/release/verifier-*.apk` \
           --app 1:168257592968:android:79363a1282863aac26493d \
           --token $FIREBASE_TOKEN \
           --groups testers
-
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2
-
