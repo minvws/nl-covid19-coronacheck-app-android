@@ -105,7 +105,8 @@ class HolderApplication : SharedApplication(), CoronaCheckApp {
             privacyPolicyStringResource = R.string.privacy_policy_description,
             privacyPolicyCheckboxStringResource = R.string.privacy_policy_checkbox_text,
             onboardingNextButtonStringResource = R.string.onboarding_next,
-            backButtonLabel = R.string.back
+            backButtonStringResource = R.string.back,
+            onboardingPageIndicatorStringResource = R.string.onboarding_page_indicator_label
         )
     }
 }

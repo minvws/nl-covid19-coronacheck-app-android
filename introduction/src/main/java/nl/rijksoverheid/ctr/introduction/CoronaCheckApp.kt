@@ -20,6 +20,7 @@ interface CoronaCheckApp {
         @StringRes val privacyPolicyStringResource: Int,
         @StringRes val privacyPolicyCheckboxStringResource: Int,
         @StringRes val onboardingNextButtonStringResource: Int,
-        @StringRes val backButtonLabel: Int,
+        @StringRes val backButtonStringResource: Int,
+        @StringRes val onboardingPageIndicatorStringResource: Int
     )
 }

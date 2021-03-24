@@ -47,6 +47,7 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
                 super.onPageSelected(position)
                 binding.toolbar.visibility = if (position == 0) View.GONE else View.VISIBLE
                 updateCurrentIndicator(binding, position)
+                binding.indicators.contentDescription = getString(onboardingData.onboardingPageIndicatorStringResource, (position+1).toString(), adapter.itemCount.toString())
             }
         })
 
@@ -68,7 +69,7 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
         binding.toolbar.setNavigationOnClickListener {
             binding.viewPager.currentItem = binding.viewPager.currentItem - 1
         }
-        binding.toolbar.navigationContentDescription = getString(onboardingData.backButtonLabel)
+        binding.toolbar.navigationContentDescription = getString(onboardingData.backButtonStringResource)
 
         binding.button.text = getString(onboardingData.onboardingNextButtonStringResource)
         binding.button.setOnClickListener {
