@@ -22,7 +22,7 @@ import java.time.OffsetDateTime
 class TestResultUseCaseTest {
 
     @Test
-    fun `testResult returns InvalidToken if a uniquecode does not contain -`() = runBlocking {
+    fun `testResult returns InvalidToken if a uniquecode has 1 part`() = runBlocking {
         val usecase = TestResultUseCase(
             testProviderUseCase = fakeTestProviderUseCase(),
             testProviderRepository = fakeTestProviderRepository(),
@@ -35,6 +35,23 @@ class TestResultUseCaseTest {
             testResultUtil = fakeTestResultUtil()
         )
         val result = usecase.testResult(uniqueCode = "dummy")
+        assertTrue(result is TestResult.InvalidToken)
+    }
+
+    @Test
+    fun `testResult returns InvalidToken if a uniquecode has 2 parts`() = runBlocking {
+        val usecase = TestResultUseCase(
+            testProviderUseCase = fakeTestProviderUseCase(),
+            testProviderRepository = fakeTestProviderRepository(),
+            coronaCheckRepository = fakeCoronaCheckRepository(),
+            commitmentMessageUseCase = fakeCommitmentMessageUsecase(),
+            secretKeyUseCase = fakeSecretKeyUseCase(),
+            createCredentialUseCase = fakeCreateCredentialUseCase(),
+            personalDetailsUtil = fakePersonalDetailsUtil(),
+            cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
+            testResultUtil = fakeTestResultUtil()
+        )
+        val result = usecase.testResult(uniqueCode = "dummy-dummy")
         assertTrue(result is TestResult.InvalidToken)
     }
 
@@ -77,7 +94,7 @@ class TestResultUseCaseTest {
                 cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
                 testResultUtil = fakeTestResultUtil()
             )
-            val result = usecase.testResult(uniqueCode = "$providerIdentifier-code")
+            val result = usecase.testResult(uniqueCode = "$providerIdentifier-code-t1")
             assertTrue(result is TestResult.NegativeTestResult)
         }
 
@@ -103,7 +120,7 @@ class TestResultUseCaseTest {
                 cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
                 testResultUtil = fakeTestResultUtil(isValid = false)
             )
-            val result = usecase.testResult(uniqueCode = "$providerIdentifier-code")
+            val result = usecase.testResult(uniqueCode = "$providerIdentifier-code-t1")
             assertTrue(result is TestResult.NoNegativeTestResult)
         }
 
@@ -119,7 +136,10 @@ class TestResultUseCaseTest {
                 ),
                 testProviderRepository = fakeTestProviderRepository(
                     model =
-                    getRemoteTestResult(status = RemoteTestResult.Status.COMPLETE, negativeResult = false)
+                    getRemoteTestResult(
+                        status = RemoteTestResult.Status.COMPLETE,
+                        negativeResult = false
+                    )
                 ),
                 coronaCheckRepository = fakeCoronaCheckRepository(),
                 commitmentMessageUseCase = fakeCommitmentMessageUsecase(),
@@ -129,7 +149,7 @@ class TestResultUseCaseTest {
                 cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
                 testResultUtil = fakeTestResultUtil()
             )
-            val result = usecase.testResult(uniqueCode = "$providerIdentifier-code")
+            val result = usecase.testResult(uniqueCode = "$providerIdentifier-code-t1")
             assertTrue(result is TestResult.NoNegativeTestResult)
         }
 
@@ -155,7 +175,7 @@ class TestResultUseCaseTest {
                 cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
                 testResultUtil = fakeTestResultUtil()
             )
-            val result = usecase.testResult(uniqueCode = "$providerIdentifier-code")
+            val result = usecase.testResult(uniqueCode = "$providerIdentifier-code-t1")
             assertTrue(result is TestResult.VerificationRequired)
         }
 
@@ -181,7 +201,7 @@ class TestResultUseCaseTest {
                 cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
                 testResultUtil = fakeTestResultUtil()
             )
-            val result = usecase.testResult(uniqueCode = "$providerIdentifier-code")
+            val result = usecase.testResult(uniqueCode = "$providerIdentifier-code-t1")
             assertTrue(result is TestResult.InvalidToken)
         }
 
@@ -211,7 +231,7 @@ class TestResultUseCaseTest {
                 cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
                 testResultUtil = fakeTestResultUtil()
             )
-            val result = usecase.testResult(uniqueCode = "$providerIdentifier-code")
+            val result = usecase.testResult(uniqueCode = "$providerIdentifier-code-t1")
             assertTrue(result is TestResult.ServerError)
         }
 
@@ -243,7 +263,7 @@ class TestResultUseCaseTest {
                 cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
                 testResultUtil = fakeTestResultUtil()
             )
-            val result = usecase.testResult(uniqueCode = "$providerIdentifier-code")
+            val result = usecase.testResult(uniqueCode = "$providerIdentifier-code-t1")
             assertTrue(result is TestResult.NetworkError)
         }
 
@@ -269,7 +289,7 @@ class TestResultUseCaseTest {
                 cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
                 testResultUtil = fakeTestResultUtil()
             )
-            val result = usecase.testResult(uniqueCode = "$providerIdentifier-code")
+            val result = usecase.testResult(uniqueCode = "$providerIdentifier-code-t1")
             assertTrue(result is TestResult.Pending)
         }
 
@@ -424,8 +444,10 @@ class TestResultUseCaseTest {
         )
     }
 
-    private fun getRemoteTestResult(status: RemoteTestResult.Status = RemoteTestResult.Status.COMPLETE,
-    negativeResult: Boolean = true): SignedResponseWithModel<RemoteTestResult> {
+    private fun getRemoteTestResult(
+        status: RemoteTestResult.Status = RemoteTestResult.Status.COMPLETE,
+        negativeResult: Boolean = true
+    ): SignedResponseWithModel<RemoteTestResult> {
         return SignedResponseWithModel(
             rawResponse = "dummy".toByteArray(), model = RemoteTestResult(
                 result = RemoteTestResult.Result(

@@ -39,6 +39,11 @@ class TestResultUseCase(
         }
 
         val uniqueCodeAttributes = uniqueCode.split("-")
+
+        if (uniqueCodeAttributes.size != 3) {
+            return TestResult.InvalidToken
+        }
+
         val providerIdentifier = uniqueCodeAttributes[0]
         val token = uniqueCodeAttributes[1]
 
