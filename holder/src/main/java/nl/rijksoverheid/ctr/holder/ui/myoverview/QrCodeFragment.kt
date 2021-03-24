@@ -5,6 +5,7 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import android.view.WindowManager
+import android.view.accessibility.AccessibilityEvent
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.design.FullScreenDialogFragment
 import nl.rijksoverheid.ctr.holder.BuildConfig
@@ -63,6 +64,12 @@ class QrCodeFragment : FullScreenDialogFragment(R.layout.dialog_qr_code) {
     private fun presentQrLoading(loading: Boolean) {
         binding.loading.visibility = if (loading) View.VISIBLE else View.GONE
         binding.content.visibility = if (loading) View.GONE else View.VISIBLE
+        // Move focus to loading indicator or QR depending on state
+        if (loading) {
+           binding.loading.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED)
+        } else {
+            binding.content.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED)
+        }
     }
 
     override fun onResume() {

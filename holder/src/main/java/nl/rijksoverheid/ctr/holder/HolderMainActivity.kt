@@ -11,6 +11,7 @@ package nl.rijksoverheid.ctr.holder
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
+import android.view.accessibility.AccessibilityEvent
 import androidx.core.os.bundleOf
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -133,6 +134,7 @@ class HolderMainActivity : BaseActivity(R.id.nav_my_overview) {
 
     fun presentLoading(loading: Boolean) {
         binding.loading.visibility = if (loading) View.VISIBLE else View.GONE
+        if (loading) { binding.loading.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED) }
     }
 
     override fun onStart() {
