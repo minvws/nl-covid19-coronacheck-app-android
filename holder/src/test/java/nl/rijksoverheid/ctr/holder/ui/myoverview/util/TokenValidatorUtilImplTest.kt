@@ -44,6 +44,11 @@ class TokenValidatorUtilImplTest {
 
     @Test
     fun `Check invalid token 2`() {
+        assertEquals(false, util.validate("YL8BSX9T6J39C7", "L"))
+    }
+
+    @Test
+    fun `Check invalid token 3`() {
         assertEquals(false, util.validate("YL8BSX9T6J39C7", ""))
     }
 }

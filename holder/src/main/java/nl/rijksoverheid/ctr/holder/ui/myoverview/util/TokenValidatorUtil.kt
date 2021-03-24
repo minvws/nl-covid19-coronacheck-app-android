@@ -21,7 +21,11 @@ class TokenValidatorUtilImpl : TokenValidatorUtil {
     override fun validate(token: String, checksum: String): Boolean {
         return try {
             val tokenWithChecksum = token + checksum[0]
-            validateCheckCharacter(tokenWithChecksum)
+            if (checksum.length == 2) {
+                validateCheckCharacter(tokenWithChecksum)
+            } else {
+                false
+            }
         } catch (e: StringIndexOutOfBoundsException) {
             false
         }
