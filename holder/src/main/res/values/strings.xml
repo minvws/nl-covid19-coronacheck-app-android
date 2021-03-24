@@ -18,7 +18,7 @@
     <string name="privacy_policy_1"><![CDATA[Jouw gegevens worden <b>nergens centraal opgeslagen</b>]]></string>
     <string name="privacy_policy_2"><![CDATA[Je GPS- of locatiegegevens worden <b>niet gebruikt of bewaard</b>]]></string>
     <string name="privacy_policy_3"><![CDATA[In de QR-code staat alleen <b>wanneer</b> je negatief getest bent]]></string>
-    <string name="privacy_policy_checkbox_text">Ik heb de privacyverklaring gelezen en begrijp hoe de app met gegevens omgaat</string>
+    <string name="privacy_policy_checkbox_text">Ik heb de privacyverklaring gelezen en begrepen. Voor het verwerken van mijn persoonsgegevens geef ik toestemming</string>
     <string name="my_overview">Mijn overzicht</string>
     <string name="my_overview_description">Laat je QR code scannen voor de ingang van een uitgaansgelegenheid, om naar binnen te mogen.</string>
     <string name="my_overview_no_qr_description">Wil je een bepaalde sociale, culturele of sportieve locatie bezoeken? Dan heb je een negatief testresultaat nodig, in de vorm van een QR-code.</string>
@@ -44,14 +44,14 @@
     <string name="my_overview_no_qr_replace_qr_title">Vervang je QR-code</string>
     <string name="my_overview_no_qr_make_qr_description">Zet jouw negatieve testresultaat om in een persoonlijke QR-code.</string>
     <string name="my_overview_no_qr_make_qr_button">Maak QR-code</string>
-    <string name="my_overview_no_qr_replace_qr_button">Maak QR-code</string>
+    <string name="my_overview_no_qr_replace_qr_button">Vervang QR-code</string>
     <string name="my_overview_qr_created_snackbar_message">Jouw QR-code is gemaakt. Lees hier welke informatie in jouw QR-code staat.</string>
     <string name="my_overview_qr_created_snackbar_button">Lees meer</string>
     <string name="choose_provider_toolbar">QR-code maken</string>
     <string name="choose_provider_title">Waar ben je getest?</string>
     <string name="choose_provider_description">Had je op het moment van testen geen corona? Dan kan je van het testresultaat een QR-code maken. Geef aan waar je getest bent.</string>
-    <string name="choose_provider_commercial_title">Testen voor toegang</string>
-    <string name="choose_provider_commercial_subtitle">Vul je code in</string>
+    <string name="choose_provider_commercial_title">Testen voor Toegang</string>
+    <string name="choose_provider_commercial_subtitle">Haal testresultaat op</string>
     <string name="choose_provider_ggd_title">GGD</string>
     <string name="choose_provider_ggd_subtitle">Log in met je DigiD</string>
     <string name="choose_provider_no_digid">Ik heb geen DigiD</string>
