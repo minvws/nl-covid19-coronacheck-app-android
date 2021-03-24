@@ -42,7 +42,7 @@
             android:layout_marginTop="32dp"
             android:textAlignment="center"
             android:textAppearance="?attr/textAppearanceHeadline5"
-
+            android:accessibilityHeading="true"
             app:layout_constraintEnd_toEndOf="@+id/image"
             app:layout_constraintStart_toStartOf="@+id/image"
             app:layout_constraintTop_toBottomOf="@+id/image"
