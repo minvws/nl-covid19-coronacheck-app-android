@@ -139,4 +139,5 @@
     <string name="create_qr_code_title">Van jouw testresultaat is een QR-code gemaakt</string>
     <string name="create_qr_code_description"><![CDATA[In de QR-code is verwerkt dat je <b>negatief getest</b> bent (geen corona) op <b>%1$s om %2$s</b>.<br\><br\>In deze app is alleen de anonieme QR-code zichtbaar, zonder verdere testinformatie.]]></string>
     <string name="create_qr_code_button">Naar mijn QR</string>
+    <string name="back">Terug</string>
 </resources>
