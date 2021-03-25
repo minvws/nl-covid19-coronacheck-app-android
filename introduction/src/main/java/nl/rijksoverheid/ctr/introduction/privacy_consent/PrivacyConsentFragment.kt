@@ -1,19 +1,20 @@
 package nl.rijksoverheid.ctr.introduction.privacy_consent
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.xwray.groupie.GroupieAdapter
-import com.xwray.groupie.Section
 import nl.rijksoverheid.ctr.design.BaseActivity
 import nl.rijksoverheid.ctr.introduction.BuildConfig
 import nl.rijksoverheid.ctr.introduction.CoronaCheckApp
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.R
 import nl.rijksoverheid.ctr.introduction.databinding.FragmentPrivacyConsentBinding
+import nl.rijksoverheid.ctr.introduction.databinding.ItemPrivacyConsentBinding
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -66,17 +67,23 @@ class PrivacyConsentFragment : Fragment(R.layout.fragment_privacy_consent) {
             getString(onboardingData.privacyPolicyCheckboxStringResource)
         binding.button.text = getString(onboardingData.onboardingNextButtonStringResource)
 
-        val adapterItems = onboardingData.privacyPolicyItems.map {
-            PrivacyConsentAdapterItem(
-                it
-            )
+        onboardingData.privacyPolicyItems.forEach { item ->
+            val viewBinding =
+                ItemPrivacyConsentBinding.inflate(layoutInflater, binding.items, true)
+            viewBinding.icon.setImageResource(item.iconResource)
+            viewBinding.description.text =
+                viewBinding.description.context.getString(item.textResource).fromHtml()
         }
-
-        val adapter = GroupieAdapter()
-        val section = Section()
-        binding.items.adapter = adapter
-        adapter.add(section)
-        section.update(adapterItems)
+        Log.d("bart", "check: " + binding.scroll.canScrollVertically(1))
+        binding.scroll.doOnPreDraw {
+            if (binding.scroll.canScrollVertically(1)) {
+                binding.bottom.cardElevation =
+                    resources.getDimensionPixelSize(R.dimen.onboarding_bottom_scroll_elevation)
+                        .toFloat()
+            } else {
+                binding.bottom.cardElevation = 0f
+            }
+        }
 
         binding.checkbox.setOnCheckedChangeListener { _, isChecked ->
             binding.button.isEnabled = isChecked
