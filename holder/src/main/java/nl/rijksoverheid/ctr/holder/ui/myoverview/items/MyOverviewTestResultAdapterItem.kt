@@ -1,9 +1,12 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview.items
 
 import android.annotation.SuppressLint
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.view.View
 import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.design.ext.formatDateTime
+import nl.rijksoverheid.ctr.design.ext.getAppThemeWindowBackgroundColor
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.ItemMyOverviewTestResultBinding
 import nl.rijksoverheid.ctr.holder.models.LocalTestResult
@@ -31,6 +34,13 @@ class MyOverviewTestResultAdapterItem(
     @SuppressLint("SetTextI18n")
     override fun bind(viewBinding: ItemMyOverviewTestResultBinding, position: Int) {
         val context = viewBinding.root.context
+        val backgroundColor = context.getAppThemeWindowBackgroundColor()
+
+        viewBinding.gradient.background = GradientDrawable(
+            GradientDrawable.Orientation.LEFT_RIGHT,
+            intArrayOf(backgroundColor, backgroundColor, backgroundColor, Color.TRANSPARENT)
+        )
+
         val personalDetails = localTestResult.personalDetails
 
         viewBinding.personalDetails.text =

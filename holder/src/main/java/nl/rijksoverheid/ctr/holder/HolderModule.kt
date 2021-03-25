@@ -24,6 +24,8 @@ import nl.rijksoverheid.ctr.holder.ui.myoverview.LocalTestResultViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.LocalTestResultViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.util.TestResultAdapterItemUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.util.TestResultAdapterItemUtilImpl
+import nl.rijksoverheid.ctr.holder.ui.myoverview.util.TokenValidatorUtil
+import nl.rijksoverheid.ctr.holder.ui.myoverview.util.TokenValidatorUtilImpl
 import nl.rijksoverheid.ctr.holder.usecase.*
 import nl.rijksoverheid.ctr.shared.usecase.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.shared.usecase.TestResultAttributesUseCaseImpl
@@ -79,13 +81,14 @@ fun holderModule(baseUrl: String) = module {
     factory<TestProviderUseCase> {
         TestProviderUseCaseImpl(get())
     }
-    single {
-        TestResultUseCase(get(), get(), get(), get(), get(), get(), get(), get(), get())
+    factory {
+        TestResultUseCase(get(), get(), get(), get(), get(), get(), get(), get(), get(), get())
     }
     factory<LocalTestResultUseCase> {
         LocalTestResultUseCaseImpl(get(), get(), get(), get(), get())
     }
-    single {
+    factory<TokenValidatorUtil> { TokenValidatorUtilImpl() }
+    factory {
         TokenQrUseCase(get())
     }
 

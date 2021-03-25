@@ -9,6 +9,7 @@ import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.repositories.TestProviderRepository
 import nl.rijksoverheid.ctr.holder.ui.myoverview.LocalTestResultViewModel
+import nl.rijksoverheid.ctr.holder.ui.myoverview.util.TokenValidatorUtil
 import nl.rijksoverheid.ctr.holder.usecase.*
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.shared.livedata.Event
@@ -25,6 +26,14 @@ import java.time.OffsetDateTime
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
+
+fun fakeTokenValidatorUtil(
+    isValid: Boolean = true
+) = object : TokenValidatorUtil {
+    override fun validate(token: String, checksum: String): Boolean {
+        return isValid
+    }
+}
 
 fun fakeTestResultUtil(
     isValid: Boolean = true
