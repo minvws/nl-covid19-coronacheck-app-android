@@ -12,6 +12,7 @@ import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.DialogQrCodeBinding
 import nl.rijksoverheid.ctr.shared.QrCodeConstants
+import nl.rijksoverheid.ctr.shared.ext.accessibilityFocus
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import java.util.concurrent.TimeUnit
 
@@ -66,9 +67,9 @@ class QrCodeFragment : FullScreenDialogFragment(R.layout.dialog_qr_code) {
         binding.content.visibility = if (loading) View.GONE else View.VISIBLE
         // Move focus to loading indicator or QR depending on state
         if (loading) {
-           binding.loading.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED)
+           binding.loading.accessibilityFocus()
         } else {
-            binding.content.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED)
+            binding.image.accessibilityFocus()
         }
     }
 

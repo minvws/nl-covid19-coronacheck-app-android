@@ -22,6 +22,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/image"
         app:layout_constraintTop_toTopOf="parent"
+        app:navigationContentDescription="@string/back"
         app:navigationIcon="@drawable/ic_close" />
 
     <ImageView
@@ -45,6 +46,9 @@
         android:layout_width="0dp"
         android:layout_height="128dp"
         android:contentDescription="@null"
+        android:focusable="false"
+        android:screenReaderFocusable="false"
+        android:importantForAccessibility="no"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
