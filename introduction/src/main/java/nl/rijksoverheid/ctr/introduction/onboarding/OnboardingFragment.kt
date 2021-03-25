@@ -6,6 +6,7 @@ import android.util.TypedValue
 import android.view.ContextThemeWrapper
 import android.view.View
 import android.widget.ImageView
+import android.widget.ScrollView
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
@@ -37,15 +38,29 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
 
         val adapter =
             OnboardingPagerAdapter(
-                this,
+                childFragmentManager,
+                lifecycle,
                 onboardingData.onboardingItems
             )
+        binding.viewPager.offscreenPageLimit = onboardingData.onboardingItems.size
         binding.viewPager.adapter = adapter
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 binding.toolbar.visibility = if (position == 0) View.GONE else View.VISIBLE
                 updateCurrentIndicator(binding, position)
+
+                // Apply bottom elevation if the view inside the viewpager is scrollable
+                val scrollView =
+                    childFragmentManager.fragments[position]?.view?.findViewById<ScrollView>(R.id.scroll)
+                if (scrollView?.canScrollVertically(1) == true) {
+                    binding.bottom.cardElevation =
+                        resources.getDimensionPixelSize(R.dimen.onboarding_bottom_scroll_elevation)
+                            .toFloat()
+                } else {
+                    binding.bottom.cardElevation = 0f
+                }
+
             }
         })
 
