@@ -11,7 +11,6 @@ package nl.rijksoverheid.ctr.holder
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
-import android.view.accessibility.AccessibilityEvent
 import androidx.core.os.bundleOf
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -75,7 +74,7 @@ class HolderMainActivity : BaseActivity(R.id.nav_my_overview) {
                 )
                 // Set accessibility focus to toolbar on screen change
                 binding.toolbar.getNavigationIconView()?.let {
-                    it.postDelayed({ it.accessibilityFocus()}, accessibilityFocusDelay)
+                    it.postDelayed({ it.setAccessibilityFocus()}, accessibilityFocusDelay)
                 }
             }
         }
@@ -141,9 +140,9 @@ class HolderMainActivity : BaseActivity(R.id.nav_my_overview) {
     fun presentLoading(loading: Boolean) {
         binding.loading.visibility = if (loading) View.VISIBLE else View.GONE
         if (loading) {
-            binding.loading.accessibilityFocus()
+            binding.loading.setAccessibilityFocus()
         } else {
-            binding.toolbar.accessibilityFocus()
+            binding.toolbar.setAccessibilityFocus()
         }
     }
 

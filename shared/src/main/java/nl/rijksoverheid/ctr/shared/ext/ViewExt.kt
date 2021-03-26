@@ -16,7 +16,7 @@ import android.view.accessibility.AccessibilityNodeInfo
 /**
  * Request focus for accessibility framework
  */
-fun View.accessibilityFocus(): View {
+fun View.setAccessibilityFocus(): View {
     this.performAccessibilityAction(AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS, null)
     this.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED)
     return this
