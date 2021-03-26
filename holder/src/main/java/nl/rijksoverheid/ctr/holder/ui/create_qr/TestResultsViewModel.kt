@@ -80,6 +80,12 @@ class TestResultsViewModel(
         }
     }
 
+    fun sendVerificationCode() {
+        viewModelScope.launch {
+            testResultUseCase.testResult(testCode, "")
+        }
+    }
+
     fun saveTestResult() {
         (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {
