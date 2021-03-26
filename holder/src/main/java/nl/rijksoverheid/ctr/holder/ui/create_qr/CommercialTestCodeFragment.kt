@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr
 
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.core.widget.addTextChangedListener
@@ -19,6 +20,8 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ViewModelOwner.Companion.from
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.scope.emptyState
+import java.util.concurrent.TimeUnit
+import kotlin.math.roundToInt
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -29,6 +32,8 @@ import org.koin.androidx.viewmodel.scope.emptyState
  */
 class CommercialTestCodeFragment : BaseFragment(R.layout.fragment_commercial_test_code) {
 
+    private var _binding: FragmentCommercialTestCodeBinding? = null
+    private val binding: FragmentCommercialTestCodeBinding by lazy { _binding!! }
     private val viewModel: TestResultsViewModel by sharedViewModel(
         state = emptyState(),
         owner = {
@@ -41,10 +46,32 @@ class CommercialTestCodeFragment : BaseFragment(R.layout.fragment_commercial_tes
     private val appConfigUtil: AppConfigUtil by inject()
     private val navArgs: CommercialTestCodeFragmentArgs by navArgs()
 
+    private val verificationCodeTimer =
+        object : CountDownTimer(
+            TimeUnit.SECONDS.toMillis(10),
+            TimeUnit.SECONDS.toMillis(1)
+        ) {
+            override fun onTick(millisUntilFinished: Long) {
+                binding.sendAgainButton.visibility = View.VISIBLE
+                val secondsUntilFinished = (millisUntilFinished / 1000f).roundToInt()
+                binding.sendAgainButton.isEnabled = false
+                binding.sendAgainButton.text = getString(
+                    R.string.commercial_test_verification_code_send_again_in,
+                    secondsUntilFinished.toString()
+                )
+            }
+
+            override fun onFinish() {
+                binding.sendAgainButton.isEnabled = true
+                binding.sendAgainButton.text =
+                    getString(R.string.commercial_test_verification_code_send_again)
+            }
+        }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val binding = FragmentCommercialTestCodeBinding.bind(view)
+        _binding = FragmentCommercialTestCodeBinding.bind(view)
 
         if (viewModel.verificationRequired) {
             showKeyboard(binding.verificationCodeText)
@@ -54,7 +81,6 @@ class CommercialTestCodeFragment : BaseFragment(R.layout.fragment_commercial_tes
 
         viewModel.loading.observe(viewLifecycleOwner, EventObserver {
             (activity as HolderMainActivity).presentLoading(it)
-            binding.button.isEnabled = !it
         })
 
         binding.uniqueCodeText.addTextChangedListener {
@@ -71,6 +97,9 @@ class CommercialTestCodeFragment : BaseFragment(R.layout.fragment_commercial_tes
                 (if (it.verificationRequired) EditorInfo.IME_ACTION_NEXT else EditorInfo.IME_ACTION_SEND)
             binding.verificationCodeInput.visibility =
                 if (it.verificationRequired) View.VISIBLE else View.GONE
+
+            // Start send verification code timer countdown once
+            if (it.verificationRequired && binding.sendAgainButton.visibility == View.GONE) verificationCodeTimer.start()
         }
 
         binding.uniqueCodeText.setOnEditorActionListener { _, actionId, _ ->
@@ -121,6 +150,11 @@ class CommercialTestCodeFragment : BaseFragment(R.layout.fragment_commercial_tes
             }
         })
 
+        binding.sendAgainButton.setOnClickListener {
+            viewModel.sendVerificationCode()
+            verificationCodeTimer.start()
+        }
+
         binding.button.setOnClickListener {
             fetchTestResults(binding)
         }
@@ -134,6 +168,12 @@ class CommercialTestCodeFragment : BaseFragment(R.layout.fragment_commercial_tes
     override fun onPause() {
         super.onPause()
         hideKeyboard()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        verificationCodeTimer.cancel()
+        _binding = null
     }
 
     private fun fetchTestResults(binding: FragmentCommercialTestCodeBinding) {
