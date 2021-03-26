@@ -36,50 +36,54 @@ open class LocalTestResultUseCaseImpl(
 
     override suspend fun get(currentLocalTestResultState: LocalTestResultState?): LocalTestResultState =
         withContext(Dispatchers.IO) {
-            val credentials = persistenceManager.getCredentials()
-            if (credentials != null) {
-                val testAttributes = testResultAttributesUseCase.get(credentials)
-                val sampleDate = OffsetDateTime.ofInstant(
-                    Instant.ofEpochSecond(testAttributes.sampleTime),
-                    ZoneOffset.UTC
-                )
-                val testValiditySeconds =
-                    TimeUnit.HOURS.toSeconds(
-                        cachedAppConfigUseCase.getCachedAppConfigMaxValidityHours().toLong()
+            try {
+                val credentials = persistenceManager.getCredentials()
+                if (credentials != null) {
+                    val testAttributes = testResultAttributesUseCase.get(credentials)
+                    val sampleDate = OffsetDateTime.ofInstant(
+                        Instant.ofEpochSecond(testAttributes.sampleTime),
+                        ZoneOffset.UTC
+                    )
+                    val testValiditySeconds =
+                        TimeUnit.HOURS.toSeconds(
+                            cachedAppConfigUseCase.getCachedAppConfigMaxValidityHours().toLong()
+                        )
+
+                    val isValid = testResultUtil.isValid(
+                        sampleDate = sampleDate,
+                        validitySeconds = testValiditySeconds
                     )
 
-                val isValid = testResultUtil.isValid(
-                    sampleDate = sampleDate,
-                    validitySeconds = testValiditySeconds
-                )
+                    if (isValid) {
+                        val personalDetails = personalDetailsUtil.getPersonalDetails(
+                            firstNameInitial = testAttributes.firstNameInitial,
+                            lastNameInitial = testAttributes.lastNameInitial,
+                            birthDay = testAttributes.birthDay,
+                            birthMonth = testAttributes.birthMonth
+                        )
 
-                if (isValid) {
-                    val personalDetails = personalDetailsUtil.getPersonalDetails(
-                        firstNameInitial = testAttributes.firstNameInitial,
-                        lastNameInitial = testAttributes.lastNameInitial,
-                        birthDay = testAttributes.birthDay,
-                        birthMonth = testAttributes.birthMonth
-                    )
+                        // First time created if previous state is null (app first launch) or if previous state is different
+                        val firstTimeCreated =
+                            currentLocalTestResultState != null && currentLocalTestResultState !is LocalTestResultState.Valid
 
-                    // First time created if previous state is null (app first launch) or if previous state is different
-                    val firstTimeCreated =
-                        currentLocalTestResultState != null && currentLocalTestResultState !is LocalTestResultState.Valid
-
-                    LocalTestResultState.Valid(
-                        LocalTestResult(
-                            credentials = credentials,
-                            sampleDate = sampleDate,
-                            testType = testAttributes.testType,
-                            expireDate = sampleDate.plusSeconds(testValiditySeconds),
-                            personalDetails = personalDetails
-                        ),
-                        firstTimeCreated = firstTimeCreated
-                    )
+                        LocalTestResultState.Valid(
+                            LocalTestResult(
+                                credentials = credentials,
+                                sampleDate = sampleDate,
+                                testType = testAttributes.testType,
+                                expireDate = sampleDate.plusSeconds(testValiditySeconds),
+                                personalDetails = personalDetails
+                            ),
+                            firstTimeCreated = firstTimeCreated
+                        )
+                    } else {
+                        persistenceManager.deleteCredentials()
+                        LocalTestResultState.Expired
+                    }
                 } else {
-                    persistenceManager.deleteCredentials()
-                    LocalTestResultState.Expired
+                    LocalTestResultState.None
                 }
-            } else {
+            } catch (e: Exception) {
                 LocalTestResultState.None
             }
         }
