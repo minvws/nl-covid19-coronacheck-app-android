@@ -47,6 +47,7 @@
                 android:paddingHorizontal="48dp"
                 android:textAlignment="center"
                 android:textAppearance="?attr/textAppearanceHeadline5"
+                android:accessibilityHeading="true"
                 app:layout_constraintBottom_toTopOf="@+id/message"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

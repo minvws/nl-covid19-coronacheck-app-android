@@ -30,6 +30,7 @@
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="32dp"
             android:text="@string/choose_provider_title"
+            android:accessibilityHeading="true"
             android:textAppearance="?attr/textAppearanceHeadline5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

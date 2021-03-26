@@ -39,6 +39,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/privacy_policy_title"
                 android:textAppearance="?attr/textAppearanceHeadline5"
+                android:accessibilityHeading="true"
                 app:layout_constraintBottom_toTopOf="@+id/description"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

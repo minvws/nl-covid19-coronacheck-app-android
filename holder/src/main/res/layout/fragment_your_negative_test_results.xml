@@ -19,6 +19,7 @@
             android:layout_marginTop="48dp"
             android:text="@string/your_negative_test_results_title"
             android:textAppearance="?attr/textAppearanceHeadline5"
+            android:accessibilityHeading="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

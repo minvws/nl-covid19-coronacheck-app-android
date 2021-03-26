@@ -18,6 +18,7 @@
             android:layout_height="wrap_content"
             android:text="@string/your_negative_test_results_explanation_title"
             android:textAppearance="?attr/textAppearanceHeadline5"
+            android:accessibilityHeading="true"
             app:layout_constraintBottom_toTopOf="@+id/paragraph1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

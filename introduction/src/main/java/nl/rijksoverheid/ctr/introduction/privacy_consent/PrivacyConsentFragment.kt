@@ -57,6 +57,7 @@ class PrivacyConsentFragment : Fragment(R.layout.fragment_privacy_consent) {
                 requireActivity().finish()
             }
         }
+        binding.toolbar.navigationContentDescription = getString(onboardingData.backButtonStringResource)
 
         binding.description.text =
             getString(onboardingData.privacyPolicyStringResource).fromHtml()

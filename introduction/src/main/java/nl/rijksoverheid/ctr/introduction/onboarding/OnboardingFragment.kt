@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.TypedValue
 import android.view.ContextThemeWrapper
 import android.view.View
+import android.view.accessibility.AccessibilityEvent
 import android.widget.ImageView
 import android.widget.ScrollView
 import androidx.activity.OnBackPressedCallback
@@ -50,6 +51,8 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
                 binding.toolbar.visibility = if (position == 0) View.GONE else View.VISIBLE
                 updateCurrentIndicator(binding, position)
 
+                binding.indicators.contentDescription = getString(onboardingData.onboardingPageIndicatorStringResource, (position+1).toString(), adapter.itemCount.toString())
+
                 // Apply bottom elevation if the view inside the viewpager is scrollable
                 val scrollView =
                     childFragmentManager.fragments[position]?.view?.findViewById<ScrollView>(R.id.scroll)
@@ -60,7 +63,6 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
                 } else {
                     binding.bottom.cardElevation = 0f
                 }
-
             }
         })
 
@@ -82,6 +84,7 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
         binding.toolbar.setNavigationOnClickListener {
             binding.viewPager.currentItem = binding.viewPager.currentItem - 1
         }
+        binding.toolbar.navigationContentDescription = getString(onboardingData.backButtonStringResource)
 
         binding.button.text = getString(onboardingData.onboardingNextButtonStringResource)
         binding.button.setOnClickListener {
@@ -90,6 +93,8 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
                 findNavController().navigate(OnboardingFragmentDirections.actionPrivacyPolicy())
             } else {
                 binding.viewPager.currentItem = currentItem + 1
+                binding.button.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUS_CLEARED)
+                binding.button.clearFocus()
             }
         }
 
