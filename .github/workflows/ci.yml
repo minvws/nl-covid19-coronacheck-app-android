@@ -6,6 +6,8 @@ on:
   pull_request:
     branches:
       - main
+  schedule:
+    - cron: '0 6 * * 1' # Monday at 06 UTC
 
 jobs:
   build-and-test:
@@ -44,6 +46,9 @@ jobs:
       - name: Write key store
         run: echo $KEYSTORE_FILE | base64 --decode > keystore.jks
       - name: Build & test
+        run: ./gradlew testDebug testTstDebug lint assemTstRelease assemAccRelease assemProdRelease bundleProdRelease
+      - name: Build & test scheduled
+        if: (github.event_name == 'schedule')
         run: ./gradlew --warning-mode=fail testDebug testTstDebug lint assemTstRelease assemAccRelease assemProdRelease bundleProdRelease
       - name: Clean up key store
         if: ${{ always() }}
