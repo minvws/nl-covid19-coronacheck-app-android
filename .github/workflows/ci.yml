@@ -40,9 +40,15 @@ jobs:
         run: ./gradlew testDebug testTstDebug lint
       - name: Write key store
         if: github.repository.name != 'nl-covid19-coronacheck-app-android'
+        env:
+          KEYSTORE_FILE: ${{ secrets.KEYSTORE_FILE }}
         run: echo $KEYSTORE_FILE | base64 --decode > keystore.jks
       - name: Build
         if: github.repository.name != 'nl-covid19-coronacheck-app-android'
+        env:
+          KEYSTORE_KEY_ALIAS: ${{ secrets.KEYSTORE_KEY_ALIAS }}
+          KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
         run: ./gradlew assemTstRelease assemAccRelease assemProdRelease bundleProdRelease
       - name: Clean up key store
         if: ${{ always() && github.repository.name != 'nl-covid19-coronacheck-app-android' }}
