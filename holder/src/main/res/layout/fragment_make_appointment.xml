@@ -16,7 +16,7 @@
             android:layout_height="260dp"
             android:background="@color/light_blue"
             android:contentDescription="@null"
-            android:scaleType="centerCrop"
+            android:scaleType="centerInside"
             android:src="@drawable/illustration_make_appointment_big"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
