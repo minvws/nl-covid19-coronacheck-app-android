@@ -12,6 +12,7 @@
     <application>
         <activity
             android:name="nl.rijksoverheid.ctr.qrscanner.QrCodeScannerActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
     </application>
 </manifest>

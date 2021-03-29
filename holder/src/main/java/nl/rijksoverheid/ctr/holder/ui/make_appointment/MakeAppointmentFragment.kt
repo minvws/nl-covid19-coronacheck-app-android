@@ -9,6 +9,7 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMakeAppointmentBinding
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
+import nl.rijksoverheid.ctr.shared.util.AndroidUtil
 import org.koin.android.ext.android.inject
 
 /*
@@ -20,6 +21,7 @@ import org.koin.android.ext.android.inject
  */
 class MakeAppointmentFragment : Fragment(R.layout.fragment_make_appointment) {
 
+    private val androidUtil: AndroidUtil by inject()
     private val appConfigUtil: AppConfigUtil by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -31,6 +33,10 @@ class MakeAppointmentFragment : Fragment(R.layout.fragment_make_appointment) {
                 .fromHtml()
         binding.button.setOnClickListener {
             BuildConfig.URL_MAKE_APPOINTMENT.launchUrl(requireContext())
+        }
+
+        if (androidUtil.isSmallScreen()) {
+            binding.image.visibility = View.GONE
         }
     }
 }

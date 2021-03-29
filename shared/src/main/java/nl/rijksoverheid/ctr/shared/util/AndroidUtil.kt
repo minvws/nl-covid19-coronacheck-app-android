@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.shared.util
 
 import android.content.Context
+import android.content.res.Configuration
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -15,6 +16,6 @@ interface AndroidUtil {
 
 class AndroidUtilImpl(private val context: Context) : AndroidUtil {
     override fun isSmallScreen(): Boolean {
-        return context.resources.displayMetrics.heightPixels <= 800
+        return context.resources.displayMetrics.heightPixels <= 800 || context.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
     }
 }

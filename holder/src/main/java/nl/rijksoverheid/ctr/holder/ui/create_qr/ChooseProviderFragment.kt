@@ -8,6 +8,8 @@ import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentChooseProviderBinding
 import nl.rijksoverheid.ctr.holder.databinding.IncludeTestProviderBinding
+import nl.rijksoverheid.ctr.shared.util.AndroidUtil
+import org.koin.android.ext.android.inject
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -18,9 +20,16 @@ import nl.rijksoverheid.ctr.holder.databinding.IncludeTestProviderBinding
  */
 class ChooseProviderFragment : Fragment(R.layout.fragment_choose_provider) {
 
+    private val androidUtil: AndroidUtil by inject()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentChooseProviderBinding.bind(view)
+
+        if (androidUtil.isSmallScreen()) {
+            binding.image.visibility = View.GONE
+        }
+
         binding.providerCommercial.bind(
             R.string.choose_provider_commercial_title,
             R.string.choose_provider_commercial_subtitle
