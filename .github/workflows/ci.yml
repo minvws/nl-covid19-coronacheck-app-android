@@ -81,7 +81,7 @@ jobs:
       FIREBASE_TOKEN: ${{ secrets.FIREBASE_CLI_TOKEN }}
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
-    needs: [ "build-and-test" ]
+    needs: [ "build" ]
 
     steps:
       - name: Download all workflow run artifacts
