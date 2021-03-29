@@ -1,12 +1,10 @@
 package nl.rijksoverheid.ctr.introduction.onboarding
 
-import android.graphics.Color
 import android.graphics.PorterDuff
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.view.LayoutInflater
+import android.util.TypedValue
+import android.view.ContextThemeWrapper
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.AppCompatImageView
@@ -15,7 +13,6 @@ import androidx.core.view.forEachIndexed
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
-import nl.rijksoverheid.ctr.design.BaseActivity
 import nl.rijksoverheid.ctr.introduction.CoronaCheckApp
 import nl.rijksoverheid.ctr.introduction.R
 import nl.rijksoverheid.ctr.introduction.databinding.FragmentOnboardingBinding
@@ -27,24 +24,16 @@ import nl.rijksoverheid.ctr.introduction.databinding.FragmentOnboardingBinding
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class OnboardingFragment : Fragment() {
+class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
 
     private val onboardingData by lazy { (requireActivity().application as CoronaCheckApp).getOnboardingData() }
-    private lateinit var binding: FragmentOnboardingBinding
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentOnboardingBinding.inflate(inflater)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (requireActivity() as BaseActivity).removeSplashScreen()
+        setOnboardingActivityBackground()
+
+        val binding = FragmentOnboardingBinding.bind(view)
 
         val adapter =
             OnboardingPagerAdapter(
@@ -56,7 +45,7 @@ class OnboardingFragment : Fragment() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 binding.toolbar.visibility = if (position == 0) View.GONE else View.VISIBLE
-                updateCurrentIndicator(position)
+                updateCurrentIndicator(binding, position)
             }
         })
 
@@ -89,11 +78,14 @@ class OnboardingFragment : Fragment() {
             }
         }
 
-        initIndicators(adapter)
+        initIndicators(binding, adapter)
         binding.viewPager.setCurrentItem(0, false) // Triggers onPageSelected
     }
 
-    private fun initIndicators(adapter: OnboardingPagerAdapter) {
+    private fun initIndicators(
+        binding: FragmentOnboardingBinding,
+        adapter: OnboardingPagerAdapter
+    ) {
         val padding = resources.getDimensionPixelSize(R.dimen.onboarding_item_indicator_spacing)
         repeat(adapter.itemCount) {
             val indicator = AppCompatImageView(requireContext())
@@ -103,7 +95,20 @@ class OnboardingFragment : Fragment() {
         }
     }
 
-    private fun updateCurrentIndicator(position: Int) {
+    /**
+     * Remove splash screen and set
+     */
+    private fun setOnboardingActivityBackground() {
+        val theme = ContextThemeWrapper(
+            requireActivity(),
+            nl.rijksoverheid.ctr.design.R.style.AppTheme
+        ).theme
+        val typedValue = TypedValue()
+        theme.resolveAttribute(android.R.attr.windowBackground, typedValue, true)
+        requireActivity().window.setBackgroundDrawableResource(R.drawable.introduction_launch_screen)
+    }
+
+    private fun updateCurrentIndicator(binding: FragmentOnboardingBinding, position: Int) {
         binding.indicators.forEachIndexed { index, view ->
             val color = if (index == position) {
                 ContextCompat.getColor(requireContext(), R.color.onboarding_indicator_selected)

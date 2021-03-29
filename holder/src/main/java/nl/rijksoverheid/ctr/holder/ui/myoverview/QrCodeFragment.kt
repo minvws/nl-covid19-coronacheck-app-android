@@ -22,7 +22,8 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
  */
 class QrCodeFragment : FullScreenDialogFragment(R.layout.dialog_qr_code) {
 
-    private lateinit var binding: DialogQrCodeBinding
+    private var _binding: DialogQrCodeBinding? = null
+    private val binding: DialogQrCodeBinding by lazy { _binding!! }
     private val localTestResultViewModel: LocalTestResultViewModel by sharedViewModel()
     private val qrCodeHandler = Handler(Looper.getMainLooper())
     private val qrCodeRunnable = object : Runnable {
@@ -31,7 +32,7 @@ class QrCodeFragment : FullScreenDialogFragment(R.layout.dialog_qr_code) {
                 size = resources.displayMetrics.widthPixels
             )
             if (canGenerateQrCode) {
-                qrCodeHandler.postDelayed(this, QrCodeConstants.VALID_FOR_SECONDS * 1000)
+                qrCodeHandler.postDelayed(this, (QrCodeConstants.VALID_FOR_SECONDS / 2) * 1000)
             }
         }
     }
@@ -39,7 +40,7 @@ class QrCodeFragment : FullScreenDialogFragment(R.layout.dialog_qr_code) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding = DialogQrCodeBinding.bind(view)
+        _binding = DialogQrCodeBinding.bind(view)
 
         val params = dialog?.window?.attributes
         params?.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_FULL
@@ -76,5 +77,10 @@ class QrCodeFragment : FullScreenDialogFragment(R.layout.dialog_qr_code) {
     override fun onPause() {
         super.onPause()
         qrCodeHandler.removeCallbacks(qrCodeRunnable)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

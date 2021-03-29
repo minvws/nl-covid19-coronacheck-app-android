@@ -8,9 +8,11 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.xwray.groupie.GroupieAdapter
 import com.xwray.groupie.Section
+import nl.rijksoverheid.ctr.design.BaseActivity
 import nl.rijksoverheid.ctr.introduction.BuildConfig
 import nl.rijksoverheid.ctr.introduction.CoronaCheckApp
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
+import nl.rijksoverheid.ctr.introduction.R
 import nl.rijksoverheid.ctr.introduction.databinding.FragmentPrivacyConsentBinding
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
@@ -23,11 +25,16 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class PrivacyConsentFragment : Fragment() {
+class PrivacyConsentFragment : Fragment(R.layout.fragment_privacy_consent) {
 
     private val onboardingData by lazy { (requireActivity().application as CoronaCheckApp).getOnboardingData() }
     private val introductionViewModel: IntroductionViewModel by viewModel()
     private lateinit var binding: FragmentPrivacyConsentBinding
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        (requireActivity() as BaseActivity).removeSplashScreen()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,6 +47,8 @@ class PrivacyConsentFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val binding = FragmentPrivacyConsentBinding.bind(view)
 
         binding.toolbar.setNavigationOnClickListener {
             val canPop = findNavController().popBackStack()

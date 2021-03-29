@@ -16,6 +16,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.DisplayMetrics
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
@@ -23,6 +24,8 @@ import androidx.camera.view.PreviewView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
+import androidx.core.view.ViewCompat.setLayerPaint
+import androidx.core.view.ViewCompat.setLayerType
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.mlkit.vision.barcode.Barcode
 import com.google.mlkit.vision.barcode.BarcodeScanner
@@ -48,6 +51,9 @@ class QrCodeScannerActivity : AppCompatActivity() {
 
         // Set white status bar icons
         window?.decorView?.systemUiVisibility = 0
+
+        // Set overlay to software accelerated only to fix transparency on certain devices
+        binding.overlay.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
 
         binding.toolbar.setNavigationOnClickListener {
             finish()

@@ -18,8 +18,8 @@ interface VerifyQrUseCase {
     ): VerifyQrResult
 
     sealed class VerifyQrResult {
-        class Success(val verifiedQr: VerifiedQr) : VerifyQrResult()
-        object Failed : VerifyQrResult()
+        data class Success(val verifiedQr: VerifiedQr) : VerifyQrResult()
+        data class Failed(val error: String) : VerifyQrResult()
     }
 }
 
@@ -37,7 +37,7 @@ class VerifyQrUseCaseImpl(
                 )
             )
         } catch (e: Exception) {
-            VerifyQrUseCase.VerifyQrResult.Failed
+            VerifyQrUseCase.VerifyQrResult.Failed(e.toString())
         }
     }
 }

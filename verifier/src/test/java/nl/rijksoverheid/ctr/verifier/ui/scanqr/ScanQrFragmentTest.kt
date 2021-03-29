@@ -14,7 +14,6 @@ import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.fakeIntroductionViewModel
 import nl.rijksoverheid.ctr.verifier.fakeScanQrViewModel
 import nl.rijksoverheid.ctr.verifier.fakeVerifiedQr
-import nl.rijksoverheid.ctr.verifier.models.VerifiedQr
 import nl.rijksoverheid.ctr.verifier.models.VerifiedQrResultState
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -66,7 +65,10 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
         launchScanQrFragment()
         clickOn(R.id.button)
         assertEquals(R.id.nav_scan_result, navController.currentDestination?.id)
-        assertEquals(VerifiedQrResultState.Valid(fakeVerifiedQr), navController.backStack.last().arguments?.get("validatedResult"))
+        assertEquals(
+            VerifiedQrResultState.Valid(fakeVerifiedQr()),
+            navController.backStack.last().arguments?.get("validatedResult")
+        )
     }
 
     /**
@@ -74,15 +76,18 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
      */
     @Test
     fun `Clicking start scan and scanning invalid qr goes to invalid scan result`() {
-        launchScanQrFragment(state = VerifiedQrResultState.Invalid)
+        launchScanQrFragment(state = VerifiedQrResultState.Invalid(verifiedQr = fakeVerifiedQr()))
         clickOn(R.id.button)
         assertEquals(R.id.nav_scan_result, navController.currentDestination?.id)
-        assertEquals(VerifiedQrResultState.Invalid, navController.backStack.last().arguments?.get("validatedResult"))
+        assertEquals(
+            VerifiedQrResultState.Invalid(verifiedQr = fakeVerifiedQr()),
+            navController.backStack.last().arguments?.get("validatedResult")
+        )
     }
 
     private fun launchScanQrFragment(
         state: VerifiedQrResultState = VerifiedQrResultState.Valid(
-            fakeVerifiedQr
+            fakeVerifiedQr()
         ),
         hasSeenScanInstructions: Boolean = true
     ) {
@@ -113,7 +118,6 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
                         override fun parseScanResult(resultIntent: Intent?): String? {
                             return null
                         }
-
                     }
                 }
 

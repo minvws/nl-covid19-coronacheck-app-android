@@ -69,6 +69,12 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
             targetViewId = R.id.title,
             textId = R.string.my_overview_no_qr_make_qr_title
         )
+        assertDisplayedAtPosition(
+            listId = R.id.recyclerView,
+            position = 2,
+            targetViewId = R.id.button,
+            textId = R.string.my_overview_no_qr_make_qr_button
+        )
     }
 
     @Test
@@ -111,7 +117,13 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
             listId = R.id.recyclerView,
             position = 3,
             targetViewId = R.id.title,
-            textId = R.string.my_overview_no_qr_make_qr_title
+            textId = R.string.my_overview_no_qr_replace_qr_title
+        )
+        assertDisplayedAtPosition(
+            listId = R.id.recyclerView,
+            position = 3,
+            targetViewId = R.id.button,
+            textId = R.string.my_overview_no_qr_replace_qr_button
         )
     }
 

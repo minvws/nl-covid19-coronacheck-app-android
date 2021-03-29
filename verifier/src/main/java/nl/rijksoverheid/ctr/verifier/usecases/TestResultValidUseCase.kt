@@ -4,7 +4,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.shared.util.TestResultUtil
-import nl.rijksoverheid.ctr.verifier.models.VerifiedQr
+import nl.rijksoverheid.ctr.verifier.models.VerifiedQrResultState
 import nl.rijksoverheid.ctr.verifier.util.QrCodeUtil
 import java.time.Instant
 import java.time.OffsetDateTime
@@ -19,12 +19,7 @@ import java.util.concurrent.TimeUnit
  *
  */
 interface TestResultValidUseCase {
-    suspend fun validate(qrContent: String): TestResultValidResult
-
-    sealed class TestResultValidResult {
-        class Valid(val verifiedQr: VerifiedQr) : TestResultValidResult()
-        object Invalid : TestResultValidResult()
-    }
+    suspend fun validate(qrContent: String): VerifiedQrResultState
 }
 
 class TestResultValidUseCaseImpl(
@@ -34,36 +29,40 @@ class TestResultValidUseCaseImpl(
     private val cachedAppConfigUseCase: CachedAppConfigUseCase
 ) : TestResultValidUseCase {
 
-    override suspend fun validate(qrContent: String): TestResultValidUseCase.TestResultValidResult =
+    override suspend fun validate(qrContent: String): VerifiedQrResultState =
         withContext(Dispatchers.IO) {
             when (val verifyQrResult = verifyQrUseCase.get(qrContent)) {
                 is VerifyQrUseCase.VerifyQrResult.Success -> {
                     val verifiedQr = verifyQrResult.verifiedQr
-                    val validity =
-                        TimeUnit.HOURS.toSeconds(
-                            cachedAppConfigUseCase.getCachedAppConfigMaxValidityHours().toLong()
-                        )
-                    val isValid = testResultUtil.isValid(
-                        sampleDate = OffsetDateTime.ofInstant(
-                            Instant.ofEpochSecond(verifiedQr.testResultAttributes.sampleTime),
-                            ZoneOffset.UTC
-                        ),
-                        validitySeconds = validity,
-                    ) && qrCodeUtil.isValid(
-                        creationDate = OffsetDateTime.ofInstant(
-                            Instant.ofEpochSecond(verifiedQr.creationDateSeconds),
-                            ZoneOffset.UTC
-                        ),
-                        isPaperProof = verifiedQr.testResultAttributes.isPaperProof
-                    )
-                    if (isValid) {
-                        TestResultValidUseCase.TestResultValidResult.Valid(verifiedQr)
+                    if (verifiedQr.testResultAttributes.isSpecimen == "1") {
+                        VerifiedQrResultState.Demo(verifiedQr)
                     } else {
-                        TestResultValidUseCase.TestResultValidResult.Invalid
+                        val validity =
+                            TimeUnit.HOURS.toSeconds(
+                                cachedAppConfigUseCase.getCachedAppConfigMaxValidityHours().toLong()
+                            )
+                        val isValid = testResultUtil.isValid(
+                            sampleDate = OffsetDateTime.ofInstant(
+                                Instant.ofEpochSecond(verifiedQr.testResultAttributes.sampleTime),
+                                ZoneOffset.UTC
+                            ),
+                            validitySeconds = validity,
+                        ) && qrCodeUtil.isValid(
+                            creationDate = OffsetDateTime.ofInstant(
+                                Instant.ofEpochSecond(verifiedQr.creationDateSeconds),
+                                ZoneOffset.UTC
+                            ),
+                            isPaperProof = verifiedQr.testResultAttributes.isPaperProof
+                        )
+                        if (isValid) {
+                            VerifiedQrResultState.Valid(verifiedQr)
+                        } else {
+                            VerifiedQrResultState.Invalid(verifiedQr)
+                        }
                     }
                 }
                 is VerifyQrUseCase.VerifyQrResult.Failed -> {
-                    TestResultValidUseCase.TestResultValidResult.Invalid
+                    VerifiedQrResultState.Error(verifyQrResult.error)
                 }
             }
         }

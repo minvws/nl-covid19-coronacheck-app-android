@@ -15,7 +15,6 @@ import nl.rijksoverheid.ctr.verifier.fakeTestResultValidUseCase
 import nl.rijksoverheid.ctr.verifier.fakeVerifiedQr
 import nl.rijksoverheid.ctr.verifier.models.VerifiedQrResultState
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
-import nl.rijksoverheid.ctr.verifier.usecases.TestResultValidUseCase
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -42,11 +41,11 @@ class ScanQrViewModelImplTest {
     }
 
     @Test
-    fun `Getting valid test result delegates to correct livedatas`() = runBlocking {
+    fun `Getting test result delegates to correct livedatas`() = runBlocking {
         val viewModel = ScanQrViewModelImpl(
             testResultValidUseCase = fakeTestResultValidUseCase(
-                result = TestResultValidUseCase.TestResultValidResult.Valid(
-                    verifiedQr = fakeVerifiedQr
+                result = VerifiedQrResultState.Valid(
+                    verifiedQr = fakeVerifiedQr()
                 )
             ),
             persistenceManager = fakePersistenceManager
@@ -66,36 +65,8 @@ class ScanQrViewModelImplTest {
             validatedQrObserver.onChanged(
                 Event(
                     VerifiedQrResultState.Valid(
-                        qrResult = fakeVerifiedQr
+                        verifiedQr = fakeVerifiedQr()
                     )
-                )
-            )
-        }
-    }
-
-    @Test
-    fun `Getting invalid test result delegates to correct livedatas`() = runBlocking {
-        val viewModel = ScanQrViewModelImpl(
-            testResultValidUseCase = fakeTestResultValidUseCase(
-                result = TestResultValidUseCase.TestResultValidResult.Invalid
-            ),
-            persistenceManager = fakePersistenceManager
-        )
-
-        viewModel.loadingLiveData.observeForever(loadingMockedObserver)
-        viewModel.validatedQrLiveData.observeForever(validatedQrObserver)
-
-        viewModel.validate("")
-
-        verifyOrder {
-            loadingMockedObserver.onChanged(Event(true))
-            loadingMockedObserver.onChanged(Event(false))
-        }
-
-        verify {
-            validatedQrObserver.onChanged(
-                Event(
-                    VerifiedQrResultState.Invalid
                 )
             )
         }
@@ -105,7 +76,9 @@ class ScanQrViewModelImplTest {
     fun `scanInstructionsSeen persist value if not persisted before`() {
         val viewModel = ScanQrViewModelImpl(
             testResultValidUseCase = fakeTestResultValidUseCase(
-                result = TestResultValidUseCase.TestResultValidResult.Invalid
+                result = VerifiedQrResultState.Invalid(
+                    verifiedQr = fakeVerifiedQr()
+                )
             ),
             persistenceManager = fakePersistenceManager
         )
@@ -120,7 +93,9 @@ class ScanQrViewModelImplTest {
     fun `scanInstructionsSeen does not persist value if persisted before`() {
         val viewModel = ScanQrViewModelImpl(
             testResultValidUseCase = fakeTestResultValidUseCase(
-                result = TestResultValidUseCase.TestResultValidResult.Invalid
+                result = VerifiedQrResultState.Invalid(
+                    verifiedQr = fakeVerifiedQr()
+                )
             ),
             persistenceManager = fakePersistenceManager
         )

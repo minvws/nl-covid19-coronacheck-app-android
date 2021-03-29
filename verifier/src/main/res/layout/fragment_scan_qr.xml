@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:scaleType="centerInside"
-            android:src="@drawable/illustration_scan_qr"
+            android:src="@drawable/illustration_scanner_get_started"
             app:layout_constraintBottom_toTopOf="@+id/title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

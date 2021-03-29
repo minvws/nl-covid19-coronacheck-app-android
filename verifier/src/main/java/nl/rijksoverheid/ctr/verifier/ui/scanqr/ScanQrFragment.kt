@@ -26,9 +26,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class ScanQrFragment : Fragment() {
+class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
 
-    private lateinit var binding: FragmentScanQrBinding
     private val introductionViewModel: IntroductionViewModel by viewModel()
     private val qrCodeScannerUtil: QrCodeScannerUtil by inject()
     private val scanQrViewModel: ScanQrViewModel by viewModel()
@@ -62,12 +61,12 @@ class ScanQrFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentScanQrBinding.inflate(inflater)
-        return binding.root
+        return FragmentScanQrBinding.inflate(inflater).root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val binding = FragmentScanQrBinding.bind(view)
         binding.description.text = binding.description.text.toString().fromHtml()
         binding.description.setOnClickListener {
             findNavController().navigate(ScanQrFragmentDirections.actionScanInstructions())

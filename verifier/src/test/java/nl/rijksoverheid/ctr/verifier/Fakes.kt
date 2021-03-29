@@ -51,11 +51,11 @@ fun fakeScanQrViewModel(
 }
 
 fun fakeTestResultValidUseCase(
-    result: TestResultValidUseCase.TestResultValidResult = TestResultValidUseCase.TestResultValidResult.Valid(
-        verifiedQr = fakeVerifiedQr
+    result: VerifiedQrResultState = VerifiedQrResultState.Valid(
+        verifiedQr = fakeVerifiedQr()
     )
 ) = object : TestResultValidUseCase {
-    override suspend fun validate(qrContent: String): TestResultValidUseCase.TestResultValidResult {
+    override suspend fun validate(qrContent: String): VerifiedQrResultState {
         return result
     }
 }
@@ -68,17 +68,23 @@ fun fakeQrCodeUtil(
     }
 }
 
-val fakeVerifiedQr = VerifiedQr(
+fun fakeVerifiedQr(
+    isSpecimen: String = "0",
+    birthDay: String = "dummy",
+    birthMonth: String = "dummy",
+    firstNameInitial: String = "dummy",
+    lastNameInitial: String = "dummy"
+) = VerifiedQr(
     creationDateSeconds = 0,
     testResultAttributes = TestResultAttributes(
         sampleTime = 0,
         testType = "dummy",
-        birthDay = "dummy",
-        birthMonth = "dummy",
-        firstNameInitial = "dummy",
-        lastNameInitial = "dummy",
+        birthDay = birthDay,
+        birthMonth = birthMonth,
+        firstNameInitial = firstNameInitial,
+        lastNameInitial = lastNameInitial,
         isPaperProof = "0",
-        isSpecimen = "0"
+        isSpecimen = isSpecimen
     )
 )
 
