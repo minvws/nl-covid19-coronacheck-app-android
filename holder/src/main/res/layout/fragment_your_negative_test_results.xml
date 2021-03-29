@@ -52,6 +52,7 @@
             android:layout_height="wrap_content"
             android:background="?attr/actionBarItemBackground"
             android:src="@drawable/ic_question"
+            android:contentDescription="@string/accessibility_testresult_icon_description"
             app:layout_constraintBottom_toBottomOf="@+id/header"
             app:layout_constraintEnd_toEndOf="@+id/title"
             app:layout_constraintTop_toTopOf="@+id/header" />

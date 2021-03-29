@@ -11,7 +11,6 @@ package nl.rijksoverheid.ctr.holder
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
-import android.view.accessibility.AccessibilityEvent
 import androidx.core.os.bundleOf
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -25,8 +24,8 @@ import nl.rijksoverheid.ctr.appconfig.model.AppStatus
 import nl.rijksoverheid.ctr.design.BaseActivity
 import nl.rijksoverheid.ctr.holder.databinding.ActivityMainBinding
 import nl.rijksoverheid.ctr.holder.persistence.IntroductionPersistenceManager
-import nl.rijksoverheid.ctr.shared.ext.launchUrl
-import nl.rijksoverheid.ctr.shared.ext.styleTitle
+import nl.rijksoverheid.ctr.shared.AccessibilityConstants
+import nl.rijksoverheid.ctr.shared.ext.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -36,7 +35,7 @@ class HolderMainActivity : BaseActivity(R.id.nav_my_overview) {
 
     private val introductionPersistenceManager: IntroductionPersistenceManager by inject()
     private val appStatusViewModel: AppConfigViewModel by viewModel()
-
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (BuildConfig.FLAVOR == "prod") {
@@ -71,6 +70,10 @@ class HolderMainActivity : BaseActivity(R.id.nav_my_overview) {
                     DrawerLayout.LOCK_MODE_UNLOCKED,
                     GravityCompat.START
                 )
+                // Set accessibility focus to toolbar on screen change
+                binding.toolbar.getNavigationIconView()?.let {
+                    it.postDelayed({ it.setAccessibilityFocus()}, AccessibilityConstants.ACCESSIBILITY_FOCUS_DELAY)
+                }
             }
         }
 
@@ -134,7 +137,11 @@ class HolderMainActivity : BaseActivity(R.id.nav_my_overview) {
 
     fun presentLoading(loading: Boolean) {
         binding.loading.visibility = if (loading) View.VISIBLE else View.GONE
-        if (loading) { binding.loading.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED) }
+        if (loading) {
+            binding.loading.setAccessibilityFocus()
+        } else {
+            binding.toolbar.setAccessibilityFocus()
+        }
     }
 
     override fun onStart() {

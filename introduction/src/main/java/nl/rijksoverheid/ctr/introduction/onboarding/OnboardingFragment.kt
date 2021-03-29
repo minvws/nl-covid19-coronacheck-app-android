@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.TypedValue
 import android.view.ContextThemeWrapper
 import android.view.View
-import android.view.accessibility.AccessibilityEvent
 import android.widget.ImageView
 import android.widget.ScrollView
 import androidx.activity.OnBackPressedCallback
@@ -18,6 +17,8 @@ import androidx.viewpager2.widget.ViewPager2
 import nl.rijksoverheid.ctr.introduction.CoronaCheckApp
 import nl.rijksoverheid.ctr.introduction.R
 import nl.rijksoverheid.ctr.introduction.databinding.FragmentOnboardingBinding
+import nl.rijksoverheid.ctr.shared.ext.setAccessibilityFocus
+import nl.rijksoverheid.ctr.shared.ext.getNavigationIconView
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -93,8 +94,7 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
                 findNavController().navigate(OnboardingFragmentDirections.actionPrivacyPolicy())
             } else {
                 binding.viewPager.currentItem = currentItem + 1
-                binding.button.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUS_CLEARED)
-                binding.button.clearFocus()
+                binding.toolbar.getNavigationIconView()?.setAccessibilityFocus()
             }
         }
 
