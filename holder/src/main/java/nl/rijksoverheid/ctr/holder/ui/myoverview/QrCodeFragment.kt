@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -42,8 +43,11 @@ class QrCodeFragment : FullScreenDialogFragment(R.layout.dialog_qr_code) {
         }
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         _binding = DialogQrCodeBinding.bind(view)
 
@@ -66,7 +70,7 @@ class QrCodeFragment : FullScreenDialogFragment(R.layout.dialog_qr_code) {
         binding.content.visibility = if (loading) View.GONE else View.VISIBLE
         // Move focus to loading indicator or QR depending on state
         if (loading) {
-           binding.loading.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED)
+            binding.loading.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED)
         } else {
             binding.content.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED)
         }
@@ -92,6 +96,7 @@ class QrCodeFragment : FullScreenDialogFragment(R.layout.dialog_qr_code) {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
         _binding = null
     }
 }
