@@ -8,13 +8,8 @@ on:
       - main
 
 jobs:
-  build-and-test:
+  test:
     runs-on: ubuntu-latest
-    env:
-      KEYSTORE_KEY_ALIAS: ${{ secrets.KEYSTORE_KEY_ALIAS }}
-      KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
-      KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-      KEYSTORE_FILE: ${{ secrets.KEYSTORE_FILE }}
     steps:
       - uses: actions/checkout@v2
       - name: set up JDK 1.8
@@ -41,10 +36,22 @@ jobs:
           key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-wrapper
+      - name: Test
+        run: ./gradlew testDebug testTstDebug lint
+
+  build:
+    runs-on: ubuntu-latest
+    env:
+      KEYSTORE_KEY_ALIAS: ${{ secrets.KEYSTORE_KEY_ALIAS }}
+      KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
+      KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+      KEYSTORE_FILE: ${{ secrets.KEYSTORE_FILE }}
+    needs: [ "test" ]
+    steps:
       - name: Write key store
         run: echo $KEYSTORE_FILE | base64 --decode > keystore.jks
       - name: Build & test
-        run: ./gradlew testDebug testTstDebug lint assemTstRelease assemAccRelease assemProdRelease bundleProdRelease
+        run: ./gradlew assemTstRelease assemAccRelease assemProdRelease bundleProdRelease
       - name: Clean up key store
         if: ${{ always() }}
         run: rm keystore.jks
