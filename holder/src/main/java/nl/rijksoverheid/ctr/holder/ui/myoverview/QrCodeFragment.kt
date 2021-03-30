@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -7,10 +8,13 @@ import android.view.View
 import android.view.WindowManager
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.design.FullScreenDialogFragment
+import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.DialogQrCodeBinding
 import nl.rijksoverheid.ctr.shared.QrCodeConstants
+import nl.rijksoverheid.ctr.shared.ext.setAccessibilityFocus
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import java.util.concurrent.TimeUnit
 
 
 /*
@@ -32,13 +36,18 @@ class QrCodeFragment : FullScreenDialogFragment(R.layout.dialog_qr_code) {
                 size = resources.displayMetrics.widthPixels
             )
             if (canGenerateQrCode) {
-                qrCodeHandler.postDelayed(this, (QrCodeConstants.VALID_FOR_SECONDS / 2) * 1000)
+                val refreshMillis =
+                    if (BuildConfig.FLAVOR == "tst") TimeUnit.SECONDS.toMillis(10) else (QrCodeConstants.VALID_FOR_SECONDS / 2) * 1000
+                qrCodeHandler.postDelayed(this, refreshMillis)
             }
         }
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         _binding = DialogQrCodeBinding.bind(view)
 
@@ -59,6 +68,12 @@ class QrCodeFragment : FullScreenDialogFragment(R.layout.dialog_qr_code) {
     private fun presentQrLoading(loading: Boolean) {
         binding.loading.visibility = if (loading) View.VISIBLE else View.GONE
         binding.content.visibility = if (loading) View.GONE else View.VISIBLE
+        // Move focus to loading indicator or QR depending on state
+        if (loading) {
+            binding.loading.setAccessibilityFocus()
+        } else {
+            binding.image.setAccessibilityFocus()
+        }
     }
 
     override fun onResume() {
@@ -81,6 +96,7 @@ class QrCodeFragment : FullScreenDialogFragment(R.layout.dialog_qr_code) {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
         _binding = null
     }
 }

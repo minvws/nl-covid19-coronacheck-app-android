@@ -16,7 +16,7 @@
             android:layout_height="260dp"
             android:background="@color/light_blue"
             android:contentDescription="@null"
-            android:scaleType="centerCrop"
+            android:scaleType="centerInside"
             android:src="@drawable/illustration_make_appointment_big"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -30,6 +30,7 @@
             android:layout_marginTop="32dp"
             android:text="@string/test_appointment_info_title"
             android:textAppearance="?attr/textAppearanceHeadline5"
+            android:accessibilityHeading="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/image" />

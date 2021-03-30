@@ -1,6 +1,8 @@
 package nl.rijksoverheid.ctr.introduction.onboarding
 
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import nl.rijksoverheid.ctr.introduction.onboarding.models.OnboardingItem
 
@@ -11,8 +13,12 @@ import nl.rijksoverheid.ctr.introduction.onboarding.models.OnboardingItem
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class OnboardingPagerAdapter(fragment: Fragment, private val items: List<OnboardingItem>) :
-    FragmentStateAdapter(fragment) {
+class OnboardingPagerAdapter(
+    fragmentManager: FragmentManager,
+    lifecycle: Lifecycle,
+    private val items: List<OnboardingItem>
+) :
+    FragmentStateAdapter(fragmentManager, lifecycle) {
     override fun getItemCount(): Int {
         return items.size
     }

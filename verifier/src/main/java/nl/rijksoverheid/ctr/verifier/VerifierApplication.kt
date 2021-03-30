@@ -103,7 +103,9 @@ class VerifierApplication : SharedApplication(), CoronaCheckApp {
             },
             privacyPolicyStringResource = R.string.privacy_policy_description,
             privacyPolicyCheckboxStringResource = R.string.privacy_policy_checkbox_text,
-            onboardingNextButtonStringResource = R.string.onboarding_next
+            onboardingNextButtonStringResource = R.string.onboarding_next,
+            backButtonStringResource = R.string.back,
+            onboardingPageIndicatorStringResource = R.string.onboarding_page_indicator_label
         )
     }
 }

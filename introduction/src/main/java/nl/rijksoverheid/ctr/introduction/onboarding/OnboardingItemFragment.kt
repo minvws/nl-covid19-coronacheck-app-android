@@ -7,6 +7,8 @@ import nl.rijksoverheid.ctr.introduction.R
 import nl.rijksoverheid.ctr.introduction.databinding.FragmentOnboardingItemBinding
 import nl.rijksoverheid.ctr.introduction.onboarding.models.OnboardingItem
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
+import nl.rijksoverheid.ctr.shared.util.AndroidUtil
+import org.koin.android.ext.android.inject
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -18,7 +20,6 @@ import nl.rijksoverheid.ctr.shared.ext.fromHtml
 class OnboardingItemFragment : Fragment(R.layout.fragment_onboarding_item) {
 
     companion object {
-
         private const val EXTRA_ONBOARDING_ITEM = "EXTRA_ONBOARDING_ITEM"
 
         fun getInstance(onboardingItem: OnboardingItem): OnboardingItemFragment {
@@ -31,7 +32,8 @@ class OnboardingItemFragment : Fragment(R.layout.fragment_onboarding_item) {
         }
     }
 
-    private lateinit var binding: FragmentOnboardingItemBinding
+    private val androidUtil: AndroidUtil by inject()
+
     private val item: OnboardingItem by lazy {
         arguments?.getParcelable<OnboardingItem>(
             EXTRA_ONBOARDING_ITEM
@@ -44,8 +46,14 @@ class OnboardingItemFragment : Fragment(R.layout.fragment_onboarding_item) {
 
         binding.title.text = getString(item.titleResource)
         binding.description.text = item.description.fromHtml()
-        if (item.imageResource != 0) {
-            binding.image.setImageResource(item.imageResource)
+
+        if (androidUtil.isSmallScreen()) {
+            binding.image.visibility = View.GONE
+        } else {
+            binding.image.visibility = View.VISIBLE
+            if (item.imageResource != 0) {
+                binding.image.setImageResource(item.imageResource)
+            }
         }
     }
 }

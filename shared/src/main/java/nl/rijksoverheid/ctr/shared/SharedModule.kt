@@ -1,9 +1,6 @@
 package nl.rijksoverheid.ctr.shared
 
-import nl.rijksoverheid.ctr.shared.util.PersonalDetailsUtil
-import nl.rijksoverheid.ctr.shared.util.PersonalDetailsUtilImpl
-import nl.rijksoverheid.ctr.shared.util.TestResultUtil
-import nl.rijksoverheid.ctr.shared.util.TestResultUtilImpl
+import nl.rijksoverheid.ctr.shared.util.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import java.time.Clock
@@ -21,6 +18,7 @@ val sharedModule = module {
     single { Clock.systemDefaultZone() }
 
     // Utils
+    factory<AndroidUtil> { AndroidUtilImpl(androidContext()) }
     factory<TestResultUtil> { TestResultUtilImpl(get()) }
     factory<PersonalDetailsUtil> {
         PersonalDetailsUtilImpl(

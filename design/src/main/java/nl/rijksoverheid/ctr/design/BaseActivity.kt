@@ -10,14 +10,13 @@ package nl.rijksoverheid.ctr.design
 
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.TypedValue
-import android.view.ContextThemeWrapper
 import android.view.View
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.fragment.NavHostFragment
+import nl.rijksoverheid.ctr.design.ext.getAppThemeWindowBackgroundColor
 
 
 /**
@@ -31,10 +30,7 @@ abstract class BaseActivity(@IdRes private val homeDestination: Int) : AppCompat
      * Remove the splash screen by setting the background to AppTheme's windowBackground value
      */
     fun removeSplashScreen() {
-        val theme = ContextThemeWrapper(this, R.style.AppTheme).theme
-        val typedValue = TypedValue()
-        theme.resolveAttribute(android.R.attr.windowBackground, typedValue, true)
-        window.setBackgroundDrawable(ColorDrawable(typedValue.data))
+        window.setBackgroundDrawable(ColorDrawable(this.getAppThemeWindowBackgroundColor()))
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {

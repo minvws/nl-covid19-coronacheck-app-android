@@ -16,8 +16,7 @@
         android:theme="@style/AppTheme.Launcher">
 
         <activity
-            android:name=".VerifierMainActivity"
-            android:screenOrientation="portrait">
+            android:name=".VerifierMainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
