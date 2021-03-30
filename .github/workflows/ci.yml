@@ -39,22 +39,22 @@ jobs:
       - name: Test
         run: ./gradlew testDebug testTstDebug lint
       - name: Write key store
-        if: github.event.repository.name != 'minvws/nl-covid19-***-app-android-private'
+        if: github.event.repository.name != 'nl-covid19-***-app-android-private'
         env:
           KEYSTORE_FILE: ${{ secrets.KEYSTORE_FILE }}
         run: echo $KEYSTORE_FILE | base64 --decode > keystore.jks
       - name: Build
-        if: github.event.repository.name != 'minvws/nl-covid19-***-app-android-private'
+        if: github.event.repository.name != 'nl-covid19-***-app-android-private'
         env:
           KEYSTORE_KEY_ALIAS: ${{ secrets.KEYSTORE_KEY_ALIAS }}
           KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
         run: ./gradlew assemTstRelease assemAccRelease assemProdRelease bundleProdRelease
       - name: Clean up key store
-        if: ${{ always() && github.event.repository.name != 'minvws/nl-covid19-***-app-android-private' }}
+        if: ${{ always() && github.event.repository.name != 'nl-covid19-***-app-android-private' }}
         run: rm keystore.jks   
       - name: Archive apks
-        if: github.ref == 'refs/heads/main' && github.event.repository.name != 'minvws/nl-covid19-***-app-android-private'
+        if: github.ref == 'refs/heads/main' && github.event.repository.name != 'nl-covid19-***-app-android-private'
         uses: actions/upload-artifact@v2
         with:
           name: apks
@@ -63,7 +63,7 @@ jobs:
             verifier/build/outputs/apk
           retention-days: 5
       - name: Archive bundle
-        if: github.ref == 'refs/heads/main' && github.event.repository.name != 'minvws/nl-covid19-***-app-android-private'
+        if: github.ref == 'refs/heads/main' && github.event.repository.name != 'nl-covid19-***-app-android-private'
         uses: actions/upload-artifact@v2
         with:
           name: bundle
@@ -73,7 +73,7 @@ jobs:
           retention-days: 5
 
   distribute:
-    if: github.ref == 'refs/heads/main' && github.event.repository.name != 'minvws/nl-covid19-***-app-android-private'
+    if: github.ref == 'refs/heads/main' && github.event.repository.name != 'nl-covid19-***-app-android-private'
     env:
       SLACK_WEBHOOK: ${{ secrets.SLACK_URL }}
       SLACK_MESSAGE: 'New apps available for android :green_heart:'
