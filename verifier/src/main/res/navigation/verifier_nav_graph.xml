@@ -110,6 +110,20 @@
         app:popUpTo="@id/main_nav"
         app:popUpToInclusive="true" />
 
+    <fragment
+        android:id="@+id/about_this_app"
+        android:name="nl.rijksoverheid.ctr.design.menu.about.AboutThisAppFragment"
+        android:label="@string/about_this_app"
+        tools:layout="@layout/fragment_about_app" />
+
+    <action
+        android:id="@+id/action_about_this_app"
+        app:destination="@id/about_this_app"
+        app:enterAnim="@anim/fragment_open_enter"
+        app:exitAnim="@anim/fragment_open_exit"
+        app:popEnterAnim="@anim/fragment_close_enter"
+        app:popExitAnim="@anim/fragment_close_exit" />
+
     <include app:graph="@navigation/introduction_nav_graph" />
 
 

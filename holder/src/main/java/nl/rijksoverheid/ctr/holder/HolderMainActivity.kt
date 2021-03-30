@@ -100,11 +100,6 @@ class HolderMainActivity : BaseActivity(R.id.nav_my_overview) {
             NavigationUI.navigateUp(navController, binding.drawerLayout)
         }
         binding.navView.setupWithNavController(navController)
-        binding.appVersion.text = getString(
-            R.string.app_version,
-            BuildConfig.VERSION_NAME,
-            BuildConfig.VERSION_CODE.toString()
-        )
 
         navigationDrawerStyling()
 
@@ -114,7 +109,7 @@ class HolderMainActivity : BaseActivity(R.id.nav_my_overview) {
                     BuildConfig.URL_FAQ.launchUrl(this)
                 }
                 R.id.nav_about_this_app -> {
-                    BuildConfig.URL_ABOUT_THIS_APP.launchUrl(this)
+                    navController.navigate(R.id.action_about_this_app)
                 }
                 R.id.nav_privacy_statement -> {
                     BuildConfig.URL_PRIVACY_STATEMENT.launchUrl(this)
