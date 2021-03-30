@@ -87,7 +87,7 @@ class VerifierMainActivity : BaseActivity(R.id.nav_scan_qr) {
                     BuildConfig.URL_SUPPORT.launchUrl(this)
                 }
                 R.id.nav_about_this_app -> {
-                    BuildConfig.URL_ABOUT_THIS_APP.launchUrl(this)
+                    navController.navigate(R.id.action_about_this_app)
                 }
                 R.id.nav_privacy_statement -> {
                     BuildConfig.URL_PRIVACY_STATEMENT.launchUrl(this)

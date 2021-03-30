@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.holder
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.api.apiModule
 import nl.rijksoverheid.ctr.appconfig.*
+import nl.rijksoverheid.ctr.design.menu.about.AboutAppResourceProvider
 import nl.rijksoverheid.ctr.introduction.CoronaCheckApp
 import nl.rijksoverheid.ctr.introduction.introductionModule
 import nl.rijksoverheid.ctr.introduction.onboarding.models.OnboardingItem
@@ -22,7 +23,7 @@ import org.koin.core.context.startKoin
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class HolderApplication : SharedApplication(), CoronaCheckApp {
+class HolderApplication : SharedApplication(), CoronaCheckApp, AboutAppResourceProvider {
 
     private val loadPublicKeysUseCase: LoadPublicKeysUseCase by inject()
     private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
@@ -107,6 +108,15 @@ class HolderApplication : SharedApplication(), CoronaCheckApp {
             onboardingNextButtonStringResource = R.string.onboarding_next,
             backButtonStringResource = R.string.back,
             onboardingPageIndicatorStringResource = R.string.onboarding_page_indicator_label
+        )
+    }
+
+    override fun getAboutThisAppData(): AboutAppResourceProvider.AboutData {
+        return AboutAppResourceProvider.AboutData(
+            aboutThisAppTextResource = R.string.about_this_app_description,
+            appVersionTextResource = R.string.app_version,
+            appVersionName = BuildConfig.VERSION_NAME,
+            appVersionCode = BuildConfig.VERSION_CODE.toString()
         )
     }
 }
