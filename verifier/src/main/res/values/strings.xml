@@ -11,7 +11,7 @@
     <string name="onboarding_screen_3_title">Toegang is anoniem</string>
     <string name="onboarding_screen_3_description">Bij het scannen van een QR-code worden geen persoonsgegevens verstuurd of opgeslagen. Als controleur zie je alleen of de bezoeker een geldig negatief testresultaat heeft.</string>
     <string name="onboarding_screen_4_title">Voor wie is de scanner?</string>
-    <string name="onboarding_screen_4_description"><![CDATA[Met behulp van deze app kun je weer bezoekers ontvangen. Maar alleen als jouw sociale, culturele of sportieve activiteit onder de <u>aangewezen locaties</u> valt.]]></string>
+    <string name="onboarding_screen_4_description"><![CDATA[Met behulp van deze app kun je weer bezoekers ontvangen. Maar alleen als jouw sociale, culturele of sportieve activiteit onder de aangewezen locaties valt.]]></string>
     <string name="onboarding_next">Volgende</string>
     <string name="privacy_policy_title">Zo gebruikt deze app je gegevens</string>
     <string name="privacy_policy_description"><![CDATA[In de <a href="#">privacyverklaring staat</a> hoe CoronaCheck Scanner gegevens gebruikt. Dit zijn de belangrijkste punten.]]></string>
