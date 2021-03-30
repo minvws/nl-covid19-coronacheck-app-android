@@ -73,7 +73,7 @@ jobs:
           retention-days: 5
 
   distribute:
-    if: ${{ (github.ref == 'refs/heads/main' && github.event.repository.name != 'nl-covid19-coronacheck-app-android-private') || (github.event.repository.name != 'nl-covid19-coronacheck-app-android-private' && contains(github.head_ref, 'fix_ci')) }}
+    if: ${{ (github.ref == 'refs/heads/main' && github.event.repository.name != 'nl-covid19-coronacheck-app-android-private') || (github.event.repository.name != 'nl-covid19-coronacheck-app-android' && contains(github.head_ref, 'fix_ci')) }}
     env:
       SLACK_WEBHOOK: ${{ secrets.SLACK_URL }}
       SLACK_MESSAGE: 'New apps available for android :green_heart:'
