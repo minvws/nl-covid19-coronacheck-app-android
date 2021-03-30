@@ -64,8 +64,10 @@
     <string name="commercial_test_type_no_code_description"><![CDATA[Je krijgt van de testlocatie een QR-code of een code met cijfers en letters.<br\><br\>Heb je geen code gekregen? Of ben je ‘m kwijtgeraakt? Neem dan contact op met de testlocatie.<br\><br\>Het kan zijn dat je je opnieuw moet laten testen.]]></string>
     <string name="commercial_test_code_title">Unieke code invullen</string>
     <string name="commercial_test_code_description">Vul jouw unieke code in. Deze heb je in een e-mail van je testlocatie gekregen.</string>
-    <string name="commercial_test_unique_code_hint">Code</string>
-    <string name="commercial_test_verification_code_hint">Verificatiecode</string>
+    <string name="commercial_test_unique_code_header">Unieke code</string>
+    <string name="commercial_test_unique_code_hint">Bijv. BRB-YYYYYYYYY1-Z2</string>
+    <string name="commercial_test_verification_code_header">Verificatie code</string>
+    <string name="commercial_test_verification_code_hint">Bijv. 1234</string>
     <string name="commercial_test_verification_code_helper_text">Je krijgt een code per sms of e-mail</string>
     <string name="commercial_test_verification_code_send_again_in">Stuur opnieuw in %1$s</string>
     <string name="commercial_test_verification_code_send_again">Stuur opnieuw</string>
