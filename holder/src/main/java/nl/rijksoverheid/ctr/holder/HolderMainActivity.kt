@@ -100,11 +100,6 @@ class HolderMainActivity : BaseActivity(R.id.nav_my_overview) {
             NavigationUI.navigateUp(navController, binding.drawerLayout)
         }
         binding.navView.setupWithNavController(navController)
-        binding.appVersion.text = getString(
-            R.string.app_version,
-            BuildConfig.VERSION_NAME,
-            BuildConfig.VERSION_CODE.toString()
-        )
 
         navigationDrawerStyling()
 
