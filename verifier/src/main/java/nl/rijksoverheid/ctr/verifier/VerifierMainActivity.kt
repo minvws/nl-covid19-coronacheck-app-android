@@ -10,7 +10,6 @@ package nl.rijksoverheid.ctr.verifier
 
 import android.os.Bundle
 import android.view.View
-import android.view.WindowManager
 import androidx.core.os.bundleOf
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -23,6 +22,7 @@ import nl.rijksoverheid.ctr.appconfig.AppStatusFragment
 import nl.rijksoverheid.ctr.appconfig.model.AppStatus
 import nl.rijksoverheid.ctr.design.BaseActivity
 import nl.rijksoverheid.ctr.holder.persistence.IntroductionPersistenceManager
+import nl.rijksoverheid.ctr.shared.ext.isScreenReaderOn
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.ext.styleTitle
 import nl.rijksoverheid.ctr.verifier.databinding.ActivityMainBinding
@@ -87,6 +87,9 @@ class VerifierMainActivity : BaseActivity(R.id.nav_scan_qr) {
                 R.id.nav_privacy_statement -> {
                     BuildConfig.URL_PRIVACY_STATEMENT.launchUrl(this)
                 }
+                R.id.nav_close_menu -> {
+                    binding.navView.menu.close()
+                }
                 else -> {
                     NavigationUI.onNavDestinationSelected(item, navController)
                 }
@@ -101,6 +104,9 @@ class VerifierMainActivity : BaseActivity(R.id.nav_scan_qr) {
                 navController.navigate(R.id.action_app_status, bundle)
             }
         }
+
+        // Add close button to menu if user has screenreader enabled
+        binding.navView.menu.findItem(R.id.nav_close_menu).isVisible = isScreenReaderOn()
     }
 
     fun presentLoading(loading: Boolean) {
@@ -127,6 +133,8 @@ class VerifierMainActivity : BaseActivity(R.id.nav_scan_qr) {
         binding.navView.menu.findItem(R.id.nav_give_us_feedback)
             .styleTitle(context, R.attr.textAppearanceBody1)
         binding.navView.menu.findItem(R.id.nav_privacy_statement)
+            .styleTitle(context, R.attr.textAppearanceBody1)
+        binding.navView.menu.findItem(R.id.nav_close_menu)
             .styleTitle(context, R.attr.textAppearanceBody1)
     }
 

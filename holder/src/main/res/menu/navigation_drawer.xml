@@ -33,5 +33,11 @@
             android:id="@+id/nav_terms_of_use"
             android:title="@string/terms_of_use"
             android:visible="false" />
+
+        <item android:id="@+id/nav_close_menu"
+            android:title="@string/menu_close"
+            android:visible="false"
+            />
+
     </group>
 </menu>

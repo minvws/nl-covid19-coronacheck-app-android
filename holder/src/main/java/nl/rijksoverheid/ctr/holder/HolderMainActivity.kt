@@ -29,13 +29,14 @@ import nl.rijksoverheid.ctr.shared.ext.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+
 class HolderMainActivity : BaseActivity(R.id.nav_my_overview) {
 
     private lateinit var binding: ActivityMainBinding
 
     private val introductionPersistenceManager: IntroductionPersistenceManager by inject()
     private val appStatusViewModel: AppConfigViewModel by viewModel()
-    
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (BuildConfig.FLAVOR == "prod") {
@@ -72,7 +73,10 @@ class HolderMainActivity : BaseActivity(R.id.nav_my_overview) {
                 )
                 // Set accessibility focus to toolbar on screen change
                 binding.toolbar.getNavigationIconView()?.let {
-                    it.postDelayed({ it.setAccessibilityFocus()}, AccessibilityConstants.ACCESSIBILITY_FOCUS_DELAY)
+                    it.postDelayed(
+                        { it.setAccessibilityFocus() },
+                        AccessibilityConstants.ACCESSIBILITY_FOCUS_DELAY
+                    )
                 }
             }
         }
@@ -114,6 +118,9 @@ class HolderMainActivity : BaseActivity(R.id.nav_my_overview) {
                 R.id.nav_privacy_statement -> {
                     BuildConfig.URL_PRIVACY_STATEMENT.launchUrl(this)
                 }
+                R.id.nav_close_menu -> {
+                    binding.navView.menu.close()
+                }
                 else -> {
                     NavigationUI.onNavDestinationSelected(item, navController)
                 }
@@ -128,6 +135,9 @@ class HolderMainActivity : BaseActivity(R.id.nav_my_overview) {
                 navController.navigate(R.id.action_app_status, bundle)
             }
         }
+
+        // Add close button to menu if user has screenreader enabled
+        binding.navView.menu.findItem(R.id.nav_close_menu).isVisible = isScreenReaderOn()
     }
 
     fun presentLoading(loading: Boolean) {
@@ -161,6 +171,8 @@ class HolderMainActivity : BaseActivity(R.id.nav_my_overview) {
         binding.navView.menu.findItem(R.id.nav_privacy_statement)
             .styleTitle(context, R.attr.textAppearanceBody1)
         binding.navView.menu.findItem(R.id.nav_terms_of_use)
+            .styleTitle(context, R.attr.textAppearanceBody1)
+        binding.navView.menu.findItem(R.id.nav_close_menu)
             .styleTitle(context, R.attr.textAppearanceBody1)
     }
 

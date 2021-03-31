@@ -147,4 +147,5 @@
     <string name="onboarding_page_indicator_label">Pagina %1$s van %2$s</string>
     <string name="accessibility_label_your_qr">Jouw QR-code</string>
     <string name="accessibility_testresult_icon_description">Informatie over je negatieve testresultaat</string>
+    <string name="menu_close">Sluiten</string>
 </resources>
