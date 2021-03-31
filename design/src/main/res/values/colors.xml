@@ -2,11 +2,11 @@
 <resources>
     <!-- Specific -->
     <color name="divider">#d0d0d0</color>
-    <color name="onboarding_indicator_selected">@color/grey</color>
-    <color name="onboarding_indicator">@color/grey_30</color>
     <color name="scanner_overlay_color">#99000000</color>
     <!-- Used for statusbar coloring, as transparancy doesn't work correctly here -->
     <color name="black_12_no_transparency">#5a5a5a</color>
+    <color name="hint">#727679</color>
+    <color name="error">#b30900</color>
 
     <!-- Palette -->
     <color name="white">#FFFFFF</color>
