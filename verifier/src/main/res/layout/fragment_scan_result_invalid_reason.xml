@@ -12,13 +12,12 @@
         android:paddingHorizontal="16dp"
         android:paddingVertical="32dp">
 
-        <TextView
+        <nl.rijksoverheid.ctr.design.views.AccessibilityHeaderWidget
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/scan_result_invalid_reason_title"
             android:textAppearance="?attr/textAppearanceHeadline5"
-            android:accessibilityHeading="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

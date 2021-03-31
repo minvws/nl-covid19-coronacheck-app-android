@@ -34,7 +34,7 @@
             app:layout_constraintTop_toBottomOf="@id/toolbar"
             tools:src="@drawable/illustration_scan_result_valid" />
 
-        <TextView
+        <nl.rijksoverheid.ctr.design.views.AccessibilityHeaderWidget
             android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -42,7 +42,6 @@
             android:layout_marginTop="32dp"
             android:textAlignment="center"
             android:textAppearance="?attr/textAppearanceHeadline5"
-            android:accessibilityHeading="true"
             app:layout_constraintEnd_toEndOf="@+id/image"
             app:layout_constraintStart_toStartOf="@+id/image"
             app:layout_constraintTop_toBottomOf="@+id/image"

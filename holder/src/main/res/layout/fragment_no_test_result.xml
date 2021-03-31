@@ -12,12 +12,11 @@
         android:layout_marginHorizontal="16dp"
         android:layout_marginVertical="48dp">
 
-        <TextView
+        <nl.rijksoverheid.ctr.design.views.AccessibilityHeaderWidget
             android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textAppearance="?attr/textAppearanceHeadline5"
-            android:accessibilityHeading="true"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/description"
             app:layout_constraintEnd_toEndOf="parent"
