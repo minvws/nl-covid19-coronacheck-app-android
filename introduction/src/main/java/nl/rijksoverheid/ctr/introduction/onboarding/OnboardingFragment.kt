@@ -1,6 +1,5 @@
 package nl.rijksoverheid.ctr.introduction.onboarding
 
-import android.graphics.PorterDuff
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.ContextThemeWrapper
@@ -9,7 +8,6 @@ import android.widget.ImageView
 import android.widget.ScrollView
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.core.content.ContextCompat
 import androidx.core.view.forEachIndexed
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -17,8 +15,8 @@ import androidx.viewpager2.widget.ViewPager2
 import nl.rijksoverheid.ctr.introduction.CoronaCheckApp
 import nl.rijksoverheid.ctr.introduction.R
 import nl.rijksoverheid.ctr.introduction.databinding.FragmentOnboardingBinding
-import nl.rijksoverheid.ctr.shared.ext.setAccessibilityFocus
 import nl.rijksoverheid.ctr.shared.ext.getNavigationIconView
+import nl.rijksoverheid.ctr.shared.ext.setAccessibilityFocus
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -52,7 +50,11 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
                 binding.toolbar.visibility = if (position == 0) View.GONE else View.VISIBLE
                 updateCurrentIndicator(binding, position)
 
-                binding.indicators.contentDescription = getString(onboardingData.onboardingPageIndicatorStringResource, (position+1).toString(), adapter.itemCount.toString())
+                binding.indicators.contentDescription = getString(
+                    onboardingData.onboardingPageIndicatorStringResource,
+                    (position + 1).toString(),
+                    adapter.itemCount.toString()
+                )
 
                 // Apply bottom elevation if the view inside the viewpager is scrollable
                 val scrollView =
@@ -85,7 +87,8 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
         binding.toolbar.setNavigationOnClickListener {
             binding.viewPager.currentItem = binding.viewPager.currentItem - 1
         }
-        binding.toolbar.navigationContentDescription = getString(onboardingData.backButtonStringResource)
+        binding.toolbar.navigationContentDescription =
+            getString(onboardingData.backButtonStringResource)
 
         binding.button.text = getString(onboardingData.onboardingNextButtonStringResource)
         binding.button.setOnClickListener {
@@ -99,7 +102,6 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
         }
 
         initIndicators(binding, adapter)
-        binding.viewPager.setCurrentItem(0, false) // Triggers onPageSelected
     }
 
     private fun initIndicators(
@@ -110,7 +112,7 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
         repeat(adapter.itemCount) {
             val indicator = AppCompatImageView(requireContext())
             indicator.setPadding(padding, padding, padding, padding)
-            indicator.setImageResource(R.drawable.shape_onboarding_item_indicator)
+            indicator.setImageResource(if (it == 0) R.drawable.shape_onboarding_item_indicator_selected else R.drawable.shape_onboarding_item_indicator)
             binding.indicators.addView(indicator)
         }
     }
@@ -130,12 +132,12 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
 
     private fun updateCurrentIndicator(binding: FragmentOnboardingBinding, position: Int) {
         binding.indicators.forEachIndexed { index, view ->
-            val color = if (index == position) {
-                ContextCompat.getColor(requireContext(), R.color.onboarding_indicator_selected)
+            val imageResource = if (index == position) {
+                R.drawable.shape_onboarding_item_indicator_selected
             } else {
-                ContextCompat.getColor(requireContext(), R.color.onboarding_indicator)
+                R.drawable.shape_onboarding_item_indicator
             }
-            (view as ImageView).setColorFilter(color, PorterDuff.Mode.MULTIPLY)
+            (view as ImageView).setImageResource(imageResource)
         }
     }
 }
