@@ -1,7 +1,6 @@
 package nl.rijksoverheid.ctr.holder
 
-import androidx.security.crypto.EncryptedSharedPreferences
-import androidx.security.crypto.MasterKeys
+import androidx.preference.PreferenceManager
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import nl.rijksoverheid.ctr.api.signing.certificates.DIGICERT_BTC_ROOT_CA
@@ -50,17 +49,6 @@ import retrofit2.converter.moshi.MoshiConverterFactory
  *
  */
 fun holderModule(baseUrl: String) = module {
-
-    single {
-        val masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
-        EncryptedSharedPreferences.create(
-            "secret_shared_prefs",
-            masterKeyAlias,
-            androidContext(),
-            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-        )
-    }
 
     single<PersistenceManager> {
         SharedPreferencesPersistenceManager(
@@ -129,6 +117,13 @@ fun holderModule(baseUrl: String) = module {
 
     factory<TestResultAttributesUseCase> {
         TestResultAttributesUseCaseImpl(get())
+    }
+
+    factory {
+        SharedPreferenceMigration(
+            oldSharedPreferences = PreferenceManager.getDefaultSharedPreferences(androidContext()),
+            newSharedPreferences = get()
+        )
     }
 
     single {

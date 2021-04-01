@@ -2,12 +2,15 @@ package nl.rijksoverheid.ctr.verifier.ui.scanqr
 
 import android.app.Activity
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Bitmap
 import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
+import androidx.preference.PreferenceManager
 import androidx.test.core.app.ApplicationProvider
+import androidx.test.platform.app.InstrumentationRegistry
 import com.schibsted.spain.barista.interaction.BaristaClickInteractions.clickOn
 import nl.rijksoverheid.ctr.qrscanner.QrCodeScannerUtil
 import nl.rijksoverheid.ctr.verifier.R
@@ -93,6 +96,9 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
     ) {
         loadKoinModules(
             module(override = true) {
+                factory<SharedPreferences> {
+                    PreferenceManager.getDefaultSharedPreferences(InstrumentationRegistry.getInstrumentation().context)
+                }
                 factory<QrCodeScannerUtil> {
                     object : QrCodeScannerUtil {
                         override fun launchScanner(
