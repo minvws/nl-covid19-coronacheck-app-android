@@ -17,7 +17,7 @@
             android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="aaaaaaaaaaaaaaaaaaaaaaaaaaA"
+            android:text="@string/scan_result_invalid_reason_title"
             android:textAppearance="?attr/textAppearanceHeadline5"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
