@@ -13,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import nl.rijksoverheid.ctr.design.ExpandedBottomSheetDialogFragment
+import nl.rijksoverheid.ctr.design.ext.isScreenReaderOn
 import nl.rijksoverheid.ctr.design.utils.getSpannableFromHtml
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanResultInvalidReasonBinding
@@ -35,5 +36,9 @@ class ScanResultInvalidExplanationDialogFragment : ExpandedBottomSheetDialogFrag
             requireContext(),
             getString(R.string.scan_result_invalid_reason_description)
         )
+
+        if (requireContext().isScreenReaderOn()) {
+            handleAccessibility(binding.container, binding.title, R.string.menu_close)
+        }
     }
 }

@@ -1,10 +1,12 @@
 package nl.rijksoverheid.ctr.design.ext
 
+import android.accessibilityservice.AccessibilityServiceInfo
 import android.content.Context
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.util.TypedValue
 import android.view.ContextThemeWrapper
+import android.view.accessibility.AccessibilityManager
 import nl.rijksoverheid.ctr.design.R
 
 /*
@@ -19,4 +21,15 @@ fun Context.getAppThemeWindowBackgroundColor(): Int {
     val typedValue = TypedValue()
     theme.resolveAttribute(android.R.attr.windowBackground, typedValue, true)
     return typedValue.data
+}
+
+fun Context.isScreenReaderOn(): Boolean {
+    val am = getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager
+    if (am != null && am.isEnabled) {
+        val serviceInfoList =
+            am.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_SPOKEN)
+        if (serviceInfoList.isNotEmpty())
+            return true
+    }
+    return false
 }

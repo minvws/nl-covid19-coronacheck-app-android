@@ -28,5 +28,10 @@
             android:title="@string/give_us_feedback"
             android:visible="false" />
 
+        <item android:id="@+id/nav_close_menu"
+            android:title="@string/menu_close"
+            android:visible="false"
+            />
+
     </group>
 </menu>
