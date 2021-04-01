@@ -1,6 +1,6 @@
 package nl.rijksoverheid.ctr.introduction
 
-import nl.rijksoverheid.ctr.holder.persistence.IntroductionPersistenceManager
+import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 

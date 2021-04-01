@@ -2,7 +2,7 @@ package nl.rijksoverheid.ctr.holder
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
-import nl.rijksoverheid.ctr.holder.persistence.IntroductionPersistenceManager
+import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

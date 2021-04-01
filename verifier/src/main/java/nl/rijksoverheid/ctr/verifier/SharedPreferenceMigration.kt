@@ -2,7 +2,7 @@ package nl.rijksoverheid.ctr.verifier
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
-import nl.rijksoverheid.ctr.holder.persistence.IntroductionPersistenceManager
+import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
 
 /**
  * Temporary class to migrate from shared preferences to encrypted shared preferences

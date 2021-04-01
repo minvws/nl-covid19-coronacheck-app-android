@@ -24,7 +24,7 @@ import nl.rijksoverheid.ctr.appconfig.model.AppStatus
 import nl.rijksoverheid.ctr.design.BaseActivity
 import nl.rijksoverheid.ctr.design.ext.isScreenReaderOn
 import nl.rijksoverheid.ctr.holder.databinding.ActivityMainBinding
-import nl.rijksoverheid.ctr.holder.persistence.IntroductionPersistenceManager
+import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
 import nl.rijksoverheid.ctr.shared.AccessibilityConstants
 import nl.rijksoverheid.ctr.shared.ext.*
 import org.koin.android.ext.android.inject
