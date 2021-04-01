@@ -34,6 +34,9 @@ class ScanInstructionsDialogFragment : FullScreenDialogFragment(R.layout.dialog_
         binding.toolbar.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
+        binding.button.setOnClickListener {
+            findNavController().popBackStack()
+        }
 
         GroupAdapter<GroupieViewHolder>()
             .run {
