@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.holder.persistence
+package nl.rijksoverheid.ctr.introduction.persistance
 
 import android.content.SharedPreferences
 

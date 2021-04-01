@@ -1,6 +1,5 @@
 package nl.rijksoverheid.ctr.verifier
 
-import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
 import com.squareup.moshi.Moshi
 import nl.rijksoverheid.ctr.verifier.datamappers.VerifiedQrDataMapper
@@ -28,12 +27,6 @@ import org.koin.dsl.module
  */
 val verifierModule = module {
 
-    single<SharedPreferences> {
-        PreferenceManager.getDefaultSharedPreferences(
-            androidContext(),
-        )
-    }
-
     single<PersistenceManager> {
         SharedPreferencesPersistenceManager(
             get()
@@ -49,6 +42,13 @@ val verifierModule = module {
     }
     factory<QrCodeUtil> { QrCodeUtilImpl(get()) }
     factory<VerifiedQrDataMapper> { VerifiedQrDataMapperImpl(get()) }
+
+    factory {
+        SharedPreferenceMigration(
+            oldSharedPreferences = PreferenceManager.getDefaultSharedPreferences(androidContext()),
+            newSharedPreferences = get()
+        )
+    }
 
     // ViewModels
     viewModel<ScanQrViewModel> { ScanQrViewModelImpl(get(), get()) }

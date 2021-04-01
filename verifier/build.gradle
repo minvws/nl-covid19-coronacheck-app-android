@@ -113,6 +113,7 @@ dependencies {
     implementation "androidx.preference:preference-ktx:$preference_version"
     implementation "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
     implementation "com.jakewharton.timber:timber:${timber_version}"
+    implementation "androidx.security:security-crypto:$security_crypto_version"
 
     testImplementation "androidx.test:runner:$androix_test_version"
     testImplementation "junit:junit:$junit_version"

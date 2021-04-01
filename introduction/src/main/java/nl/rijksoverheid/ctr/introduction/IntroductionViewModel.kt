@@ -1,9 +1,7 @@
 package nl.rijksoverheid.ctr.introduction
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import nl.rijksoverheid.ctr.holder.persistence.IntroductionPersistenceManager
-import nl.rijksoverheid.ctr.shared.livedata.Event
+import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
