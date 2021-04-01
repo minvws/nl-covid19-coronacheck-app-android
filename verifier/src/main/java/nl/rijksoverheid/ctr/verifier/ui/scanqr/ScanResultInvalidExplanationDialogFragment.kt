@@ -37,11 +37,8 @@ class ScanResultInvalidExplanationDialogFragment : ExpandedBottomSheetDialogFrag
             getString(R.string.scan_result_invalid_reason_description)
         )
 
-        if(requireContext().isScreenReaderOn()) {
-            binding.container.binding.closeBtn.contentDescription = getString(R.string.menu_close)
-            binding.container.binding.closeBtn.setOnClickListener {
-                this.dialog?.dismiss()
-            }
+        if (requireContext().isScreenReaderOn()) {
+            handleAccessibility(binding.container, binding.title, R.string.menu_close)
         }
     }
 }

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fillViewport="true">
 
-    <nl.rijksoverheid.ctr.design.views.AccessibleContainerWidget
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,9 +15,9 @@
 
         <nl.rijksoverheid.ctr.design.views.AccessibilityHeaderWidget
             android:id="@+id/title"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/scan_result_invalid_reason_title"
+            android:text="aaaaaaaaaaaaaaaaaaaaaaaaaaA"
             android:textAppearance="?attr/textAppearanceHeadline5"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -38,6 +38,6 @@
             app:layout_constraintVertical_bias="0"
             tools:text="@string/scan_result_invalid_reason_description" />
 
-    </nl.rijksoverheid.ctr.design.views.AccessibleContainerWidget>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.core.widget.NestedScrollView>

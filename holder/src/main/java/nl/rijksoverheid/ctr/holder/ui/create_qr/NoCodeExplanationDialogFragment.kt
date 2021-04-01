@@ -35,11 +35,8 @@ class NoCodeExplanationDialogFragment : ExpandedBottomSheetDialogFragment() {
             getString(R.string.commercial_test_type_no_code_description).fromHtml()
 
 
-        if(requireContext().isScreenReaderOn()) {
-            binding.container.binding.closeBtn.contentDescription = getString(R.string.menu_close)
-            binding.container.binding.closeBtn.setOnClickListener {
-                this.dialog?.dismiss()
-            }
+        if (requireContext().isScreenReaderOn()) {
+            handleAccessibility(binding.container, binding.title, R.string.menu_close)
         }
     }
 
