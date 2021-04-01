@@ -60,7 +60,7 @@ open class ExpandedBottomSheetDialogFragment : BottomSheetDialogFragment() {
         set.applyTo(container)
 
         closeButton.setOnClickListener {
-            dialog?.dismiss()
+            dismiss()
         }
     }
 }
