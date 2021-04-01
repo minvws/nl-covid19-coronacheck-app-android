@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import nl.rijksoverheid.ctr.design.ExpandedBottomSheetDialogFragment
+import nl.rijksoverheid.ctr.design.ext.isScreenReaderOn
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.DialogNoCodeExplanationBinding
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
@@ -32,6 +33,14 @@ class NoCodeExplanationDialogFragment : ExpandedBottomSheetDialogFragment() {
         val binding = DialogNoCodeExplanationBinding.bind(view)
         binding.description.text =
             getString(R.string.commercial_test_type_no_code_description).fromHtml()
+
+
+        if(requireContext().isScreenReaderOn()) {
+            binding.container.binding.closeBtn.contentDescription = getString(R.string.menu_close)
+            binding.container.binding.closeBtn.setOnClickListener {
+                this.dialog?.dismiss()
+            }
+        }
     }
 
 }

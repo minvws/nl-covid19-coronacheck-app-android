@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:fillViewport="true">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <nl.rijksoverheid.ctr.design.views.AccessibleContainerWidget
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingHorizontal="16dp"
@@ -37,6 +38,6 @@
             app:layout_constraintTop_toBottomOf="@+id/title"
             tools:text="@string/commercial_test_type_no_code_description" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </nl.rijksoverheid.ctr.design.views.AccessibleContainerWidget>
 
 </androidx.core.widget.NestedScrollView>

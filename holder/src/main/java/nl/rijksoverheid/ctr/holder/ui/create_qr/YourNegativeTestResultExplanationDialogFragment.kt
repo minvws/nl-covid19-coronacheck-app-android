@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.design.ExpandedBottomSheetDialogFragment
+import nl.rijksoverheid.ctr.design.ext.isScreenReaderOn
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.DialogYourNegativeTestResultExplanationBinding
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
@@ -54,6 +55,13 @@ class YourNegativeTestResultExplanationDialogFragment : ExpandedBottomSheetDialo
             items = personalDetails,
             showPosition = true
         )
+
+        if(requireContext().isScreenReaderOn()) {
+            binding.container.binding.closeBtn.contentDescription = getString(R.string.menu_close)
+            binding.container.binding.closeBtn.setOnClickListener {
+                this.dialog?.dismiss()
+            }
+        }
     }
 }
 
