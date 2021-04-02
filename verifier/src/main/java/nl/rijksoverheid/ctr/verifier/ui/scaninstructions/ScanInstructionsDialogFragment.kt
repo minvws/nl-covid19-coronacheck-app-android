@@ -14,7 +14,6 @@ import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.DialogScanInstructionsBinding
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrFragment
 import org.koin.android.ext.android.inject
-import kotlin.properties.Delegates
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -27,19 +26,12 @@ class ScanInstructionsDialogFragment : FullScreenDialogFragment(R.layout.dialog_
 
     private val appConfigUtil: AppConfigUtil by inject()
     private val args: ScanInstructionsDialogFragmentArgs by navArgs()
-    private var openScannerOnClose by Delegates.notNull<Boolean>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        openScannerOnClose = args.openScannerOnBack
 
         val binding = DialogScanInstructionsBinding.bind(view)
         binding.toolbar.setNavigationOnClickListener {
-            findNavController().popBackStack()
-        }
-        binding.button.setOnClickListener {
-            // Force scanner to open if user closes instructions with scan button
-            openScannerOnClose = true
             findNavController().popBackStack()
         }
 
@@ -75,7 +67,7 @@ class ScanInstructionsDialogFragment : FullScreenDialogFragment(R.layout.dialog_
         super.onDestroyView()
         setFragmentResult(
             ScanQrFragment.REQUEST_KEY,
-            bundleOf(ScanQrFragment.EXTRA_LAUNCH_SCANNER to openScannerOnClose)
+            bundleOf(ScanQrFragment.EXTRA_LAUNCH_SCANNER to args.openScannerOnBack)
         )
     }
 }
