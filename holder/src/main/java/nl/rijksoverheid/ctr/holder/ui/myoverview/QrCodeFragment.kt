@@ -6,6 +6,8 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import android.view.WindowManager
+import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.design.FullScreenDialogFragment
 import nl.rijksoverheid.ctr.holder.BuildConfig
@@ -42,7 +44,6 @@ class QrCodeFragment : FullScreenDialogFragment(R.layout.dialog_qr_code) {
             }
         }
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -96,7 +97,11 @@ class QrCodeFragment : FullScreenDialogFragment(R.layout.dialog_qr_code) {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
         _binding = null
+
+        setFragmentResult(
+            MyOverviewFragment.REQUEST_KEY,
+            bundleOf(MyOverviewFragment.EXTRA_BACK_FROM_QR to true)
+        )
     }
 }

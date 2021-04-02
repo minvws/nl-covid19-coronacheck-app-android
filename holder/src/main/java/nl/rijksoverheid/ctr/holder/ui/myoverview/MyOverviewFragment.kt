@@ -1,9 +1,11 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.snackbar.Snackbar
@@ -40,6 +42,11 @@ import java.util.concurrent.TimeUnit
  *
  */
 class MyOverviewFragment : BaseFragment(R.layout.fragment_my_overview) {
+
+    companion object {
+        const val REQUEST_KEY = "REQUEST_KEY"
+        const val EXTRA_BACK_FROM_QR = "EXTRA_BACK_FROM_QR"
+    }
 
     private val section = Section()
 
@@ -113,6 +120,18 @@ class MyOverviewFragment : BaseFragment(R.layout.fragment_my_overview) {
                     }
                 }
             })
+
+        setFragmentResultListener(
+            REQUEST_KEY
+        ) { requestKey, bundle ->
+            if (requestKey == REQUEST_KEY && bundle.getBoolean(
+                    EXTRA_BACK_FROM_QR
+                )
+            ) {
+                requireActivity().requestedOrientation =
+                    ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+            }
+        }
     }
 
     override fun onResume() {
