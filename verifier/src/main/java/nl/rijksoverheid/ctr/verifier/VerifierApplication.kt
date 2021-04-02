@@ -81,7 +81,7 @@ open class VerifierApplication : SharedApplication(), CoronaCheckApp, AboutAppRe
                 OnboardingItem(
                     R.drawable.illustration_onboarding_2,
                     R.string.onboarding_screen_2_title,
-                    getString(R.string.onboarding_screen_2_description)
+                    appConfigUtil.getStringWithTestValidity(R.string.onboarding_screen_2_description)
                 ),
                 OnboardingItem(
                     R.drawable.illustration_onboarding_3,
