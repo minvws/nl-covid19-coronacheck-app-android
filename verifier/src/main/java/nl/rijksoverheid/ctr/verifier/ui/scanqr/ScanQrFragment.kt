@@ -68,6 +68,9 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentScanQrBinding.bind(view)
         binding.description.text = binding.description.text.toString().fromHtml()
+        binding.description.setOnClickListener {
+            findNavController().navigate(ScanQrFragmentDirections.actionScanInstructions())
+        }
 
         scanQrViewModel.loadingLiveData.observe(viewLifecycleOwner, EventObserver {
             (requireActivity() as VerifierMainActivity).presentLoading(it)
