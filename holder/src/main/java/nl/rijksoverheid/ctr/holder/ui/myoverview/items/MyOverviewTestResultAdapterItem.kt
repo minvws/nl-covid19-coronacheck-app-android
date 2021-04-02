@@ -1,9 +1,9 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview.items
 
 import android.annotation.SuppressLint
-import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.view.View
+import androidx.core.content.ContextCompat
 import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.design.ext.formatDateTime
 import nl.rijksoverheid.ctr.design.ext.getAppThemeWindowBackgroundColor
@@ -38,7 +38,12 @@ class MyOverviewTestResultAdapterItem(
 
         viewBinding.gradient.background = GradientDrawable(
             GradientDrawable.Orientation.LEFT_RIGHT,
-            intArrayOf(backgroundColor, backgroundColor, backgroundColor, Color.TRANSPARENT)
+            intArrayOf(
+                backgroundColor,
+                backgroundColor,
+                backgroundColor,
+                ContextCompat.getColor(viewBinding.root.context, R.color.transparent_white)
+            )
         )
 
         val personalDetails = localTestResult.personalDetails
