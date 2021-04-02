@@ -1,6 +1,5 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview.items
 
-import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.view.View
 import androidx.annotation.ColorRes
@@ -35,7 +34,12 @@ class MyOverviewNavigationCardAdapterItem(
 
         viewBinding.gradient.background = GradientDrawable(
             GradientDrawable.Orientation.LEFT_RIGHT,
-            intArrayOf(backgroundColor, backgroundColor, backgroundColor, Color.TRANSPARENT)
+            intArrayOf(
+                backgroundColor,
+                backgroundColor,
+                backgroundColor,
+                ContextCompat.getColor(viewBinding.root.context, R.color.transparent_white)
+            )
         )
 
         viewBinding.image.setImageResource(backgroundDrawable)
