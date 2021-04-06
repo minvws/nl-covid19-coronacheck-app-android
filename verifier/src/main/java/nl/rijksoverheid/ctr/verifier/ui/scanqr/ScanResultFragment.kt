@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import nl.rijksoverheid.ctr.design.FullScreenDialogFragment
+import nl.rijksoverheid.ctr.design.utils.getSpannableFromHtml
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
 import nl.rijksoverheid.ctr.shared.util.MultiTapDetector
 import nl.rijksoverheid.ctr.shared.util.PersonalDetailsUtil
@@ -19,7 +20,6 @@ import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanResultBinding
 import nl.rijksoverheid.ctr.verifier.models.VerifiedQr
 import nl.rijksoverheid.ctr.verifier.models.VerifiedQrResultState
 import org.koin.android.ext.android.inject
-import java.time.ZonedDateTime
 
 
 /*
@@ -84,15 +84,15 @@ class ScanResultFragment : FullScreenDialogFragment(R.layout.fragment_scan_resul
         MultiTapDetector(binding.image) { amount, _ ->
             if (amount == 3) {
                 when (validatedQrResultState) {
-                    is VerifiedQrResultState.Valid -> presentDebugDialog(validatedQrResultState.verifiedQr.toString())
+                    is VerifiedQrResultState.Valid -> presentDebugDialog(validatedQrResultState.verifiedQr.getDebugHtmlString())
                     is VerifiedQrResultState.Invalid -> presentDebugDialog(
-                        validatedQrResultState.verifiedQr.toString()
+                        validatedQrResultState.verifiedQr.getDebugHtmlString()
                     )
                     is VerifiedQrResultState.Error -> presentDebugDialog(
                         validatedQrResultState.error
                     )
                     is VerifiedQrResultState.Demo -> {
-                        presentDebugDialog(validatedQrResultState.toString())
+                        presentDebugDialog(validatedQrResultState.verifiedQr.getDebugHtmlString())
                     }
                 }
             }
@@ -150,8 +150,11 @@ class ScanResultFragment : FullScreenDialogFragment(R.layout.fragment_scan_resul
 
     private fun presentDebugDialog(message: String) {
         MaterialAlertDialogBuilder(requireContext())
-            .setTitle(ZonedDateTime.now().toString())
-            .setMessage(message)
+            .setTitle("Debug Info")
+            .setMessage(getSpannableFromHtml(requireContext(), message))
+            .setPositiveButton(
+                "Ok"
+            ) { _, _ -> }
             .show()
     }
 }
