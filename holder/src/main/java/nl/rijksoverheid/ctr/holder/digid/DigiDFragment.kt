@@ -1,10 +1,8 @@
 package nl.rijksoverheid.ctr.holder.digid
 
-import android.os.Bundle
-import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.Fragment
 import net.openid.appauth.AuthorizationService
-import nl.rijksoverheid.ctr.holder.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /*
@@ -14,7 +12,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-open class DigiDFragment : BaseFragment(0) {
+open class DigiDFragment : Fragment(0) {
 
     protected val digidViewModel: DigiDViewModel by viewModel()
     private val authService by lazy { AuthorizationService(requireActivity()) }

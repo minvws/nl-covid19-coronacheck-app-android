@@ -3,16 +3,18 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import nl.rijksoverheid.ctr.design.ext.formatDateTime
-import nl.rijksoverheid.ctr.holder.BaseFragment
+import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderMainActivity
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentYourNegativeTestResultsBinding
 import nl.rijksoverheid.ctr.holder.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.holder.usecase.SignedTestResult
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ViewModelOwner
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.scope.emptyState
@@ -27,8 +29,9 @@ import java.time.ZoneOffset
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class YourNegativeTestResultFragment : BaseFragment(R.layout.fragment_your_negative_test_results) {
+class YourNegativeTestResultFragment : Fragment(R.layout.fragment_your_negative_test_results) {
 
+    private val dialogUtil: DialogUtil by inject()
     private val viewModel: TestResultsViewModel by sharedViewModel(
         state = emptyState(),
         owner = {
@@ -103,10 +106,35 @@ class YourNegativeTestResultFragment : BaseFragment(R.layout.fragment_your_negat
                     )
                 }
                 is SignedTestResult.ServerError -> {
-                    presentError()
+                    val message = if (it.errorCode == null) getString(
+                        R.string.dialog_error_message_with_error_code,
+                        "${it.httpCode.toString()}"
+                    ) else getString(
+                        R.string.dialog_error_message_with_error_code,
+                        "${it.httpCode.toString()}/${it.errorCode.toString()}"
+                    )
+                    dialogUtil.presentDialog(
+                        context = requireContext(),
+                        title = R.string.dialog_error_title,
+                        message = message,
+                        positiveButtonText = R.string.dialog_retry,
+                        positiveButtonCallback = {
+                            viewModel.saveTestResult()
+                        },
+                        negativeButtonText = R.string.dialog_close
+                    )
                 }
                 is SignedTestResult.NetworkError -> {
-                    presentError()
+                    dialogUtil.presentDialog(
+                        context = requireContext(),
+                        title = R.string.dialog_no_internet_connection_title,
+                        message = getString(R.string.dialog_no_internet_connection_description),
+                        positiveButtonText = R.string.dialog_retry,
+                        positiveButtonCallback = {
+                            viewModel.saveTestResult()
+                        },
+                        negativeButtonText = R.string.dialog_close
+                    )
                 }
             }
         })

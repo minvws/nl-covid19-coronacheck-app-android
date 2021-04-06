@@ -9,5 +9,5 @@ package nl.rijksoverheid.ctr.holder.models
  */
 sealed class TestIsmResult {
     data class Success(val body: String) : TestIsmResult()
-    data class Error(val responseError: nl.rijksoverheid.ctr.holder.models.ResponseError) : TestIsmResult()
+    data class Error(val httpCode: Int, val responseError: ResponseError) : TestIsmResult()
 }
