@@ -2,6 +2,8 @@ package nl.rijksoverheid.ctr.verifier.ui.scanqr
 
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.ColorRes
+import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
@@ -42,7 +44,17 @@ class ScanResultFragment : FullScreenDialogFragment(R.layout.fragment_scan_resul
             is VerifiedQrResultState.Valid -> {
                 presentValidScreen(
                     binding = binding,
-                    verifiedQr = validatedQrResultState.verifiedQr
+                    verifiedQr = validatedQrResultState.verifiedQr,
+                    backgroundColor = R.color.green,
+                    title = R.string.scan_result_valid_title
+                )
+            }
+            is VerifiedQrResultState.Demo -> {
+                presentValidScreen(
+                    binding = binding,
+                    verifiedQr = validatedQrResultState.verifiedQr,
+                    backgroundColor = R.color.grey_medium,
+                    title = R.string.scan_result_demo_title
                 )
             }
             is VerifiedQrResultState.Invalid -> {
@@ -54,9 +66,6 @@ class ScanResultFragment : FullScreenDialogFragment(R.layout.fragment_scan_resul
                 presentInvalidScreen(
                     binding = binding
                 )
-            }
-            is VerifiedQrResultState.Demo -> {
-                presentDemoScreen(binding)
             }
         }
 
@@ -90,15 +99,15 @@ class ScanResultFragment : FullScreenDialogFragment(R.layout.fragment_scan_resul
         }
     }
 
-    private fun presentValidScreen(binding: FragmentScanResultBinding, verifiedQr: VerifiedQr) {
-        binding.root.setBackgroundColor(
-            ContextCompat.getColor(
-                requireContext(),
-                R.color.green
-            )
-        )
+    private fun presentValidScreen(
+        binding: FragmentScanResultBinding,
+        verifiedQr: VerifiedQr,
+        @ColorRes backgroundColor: Int,
+        @StringRes title: Int
+    ) {
+        binding.root.setBackgroundResource(backgroundColor)
         binding.image.setImageResource(R.drawable.illustration_scan_result_valid)
-        binding.title.text = getString(R.string.scan_result_valid_title)
+        binding.title.setText(title)
         binding.subtitle.text =
             getString(R.string.scan_result_valid_subtitle).fromHtml()
 
@@ -137,18 +146,6 @@ class ScanResultFragment : FullScreenDialogFragment(R.layout.fragment_scan_resul
         binding.subtitle.setOnClickListener {
             findNavController().navigate(ScanResultFragmentDirections.actionShowInvalidExplanation())
         }
-    }
-
-    private fun presentDemoScreen(binding: FragmentScanResultBinding) {
-        binding.image.setImageResource(R.drawable.illustration_scan_result_valid)
-        binding.root.setBackgroundColor(
-            ContextCompat.getColor(
-                requireContext(),
-                R.color.grey_medium
-            )
-        )
-        binding.title.text = getString(R.string.scan_result_demo_title)
-        binding.subtitle.visibility = View.GONE
     }
 
     private fun presentDebugDialog(message: String) {
