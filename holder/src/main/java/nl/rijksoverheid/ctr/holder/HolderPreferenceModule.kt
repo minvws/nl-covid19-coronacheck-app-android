@@ -1,9 +1,14 @@
 package nl.rijksoverheid.ctr.holder
 
+import android.security.keystore.KeyGenParameterSpec
+import android.security.keystore.KeyProperties
+import android.security.keystore.StrongBoxUnavailableException
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
+import nl.rijksoverheid.ctr.shared.util.AndroidUtil
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
+import timber.log.Timber
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -14,10 +19,11 @@ import org.koin.dsl.module
  */
 val holderPreferenceModule = module {
     single {
-        val masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
+        val androidUtil = get<AndroidUtil>()
+
         EncryptedSharedPreferences.create(
             "secret_shared_prefs",
-            masterKeyAlias,
+            androidUtil.getMasterKeyAlias(),
             androidContext(),
             EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
             EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
