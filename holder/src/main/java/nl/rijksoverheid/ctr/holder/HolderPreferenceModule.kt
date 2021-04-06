@@ -1,14 +1,9 @@
 package nl.rijksoverheid.ctr.holder
 
-import android.security.keystore.KeyGenParameterSpec
-import android.security.keystore.KeyProperties
-import android.security.keystore.StrongBoxUnavailableException
 import androidx.security.crypto.EncryptedSharedPreferences
-import androidx.security.crypto.MasterKeys
 import nl.rijksoverheid.ctr.shared.util.AndroidUtil
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
-import timber.log.Timber
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
