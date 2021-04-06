@@ -106,10 +106,17 @@ class YourNegativeTestResultFragment : Fragment(R.layout.fragment_your_negative_
                     )
                 }
                 is SignedTestResult.ServerError -> {
+                    val message = if (it.errorCode == null) getString(
+                        R.string.dialog_error_message_with_error_code,
+                        "${it.httpCode}"
+                    ) else getString(
+                        R.string.dialog_error_message_with_error_code,
+                        "${it.httpCode}/${it.errorCode}"
+                    )
                     dialogUtil.presentDialog(
                         context = requireContext(),
                         title = R.string.dialog_error_title,
-                        message = R.string.dialog_error_message,
+                        message = message,
                         positiveButtonText = R.string.dialog_retry,
                         positiveButtonCallback = {
                             viewModel.saveTestResult()
@@ -121,7 +128,7 @@ class YourNegativeTestResultFragment : Fragment(R.layout.fragment_your_negative_
                     dialogUtil.presentDialog(
                         context = requireContext(),
                         title = R.string.dialog_no_internet_connection_title,
-                        message = R.string.dialog_no_internet_connection_description,
+                        message = getString(R.string.dialog_no_internet_connection_description),
                         positiveButtonText = R.string.dialog_retry,
                         positiveButtonCallback = {
                             viewModel.saveTestResult()

@@ -15,7 +15,7 @@ interface DialogUtil {
     fun presentDialog(
         context: Context,
         @StringRes title: Int,
-        @StringRes message: Int,
+        message: String,
         @StringRes positiveButtonText: Int,
         positiveButtonCallback: () -> Unit,
         @StringRes negativeButtonText: Int? = null,
@@ -28,7 +28,7 @@ class DialogUtilImpl : DialogUtil {
     override fun presentDialog(
         context: Context,
         @StringRes title: Int,
-        @StringRes message: Int,
+        message: String,
         @StringRes positiveButtonText: Int,
         positiveButtonCallback: () -> Unit,
         @StringRes negativeButtonText: Int?,

@@ -123,7 +123,7 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
                     dialogUtil.presentDialog(
                         context = requireContext(),
                         title = R.string.dialog_no_internet_connection_title,
-                        message = R.string.dialog_no_internet_connection_description,
+                        message = getString(R.string.dialog_no_internet_connection_description),
                         positiveButtonText = R.string.dialog_retry,
                         positiveButtonCallback = {
                             viewModel.getTestResult()
@@ -135,7 +135,10 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
                     dialogUtil.presentDialog(
                         context = requireContext(),
                         title = R.string.dialog_error_title,
-                        message = R.string.dialog_error_message,
+                        message = getString(
+                            R.string.dialog_error_message_with_error_code,
+                            it.httpCode
+                        ),
                         positiveButtonText = R.string.dialog_retry,
                         positiveButtonCallback = {
                             viewModel.getTestResult()
