@@ -24,6 +24,7 @@
     <string name="my_overview_no_qr_description">Wil je een bepaalde sociale, culturele of sportieve locatie bezoeken? Dan heb je een negatieve testuitslag nodig, in de vorm van een QR-code.</string>
     <string name="dialog_error_title">Sorry, er ging iets mis</string>
     <string name="dialog_error_message">Dat komt door een technische fout.</string>
+    <string name="dialog_error_message_with_error_code">Dat komt door een technische fout (%1$s).</string>
     <string name="digid_login_failed">Inloggen met DigiD niet gelukt</string>
     <string name="ok">Oke</string>
     <string name="settings">Instellingen</string>
@@ -148,4 +149,8 @@
     <string name="accessibility_label_your_qr">Jouw QR-code</string>
     <string name="accessibility_testresult_icon_description">Informatie over je negatieve testuitslag</string>
     <string name="menu_close">Sluiten</string>
+    <string name="dialog_no_internet_connection_title">Geen internetverbinding</string>
+    <string name="dialog_no_internet_connection_description">Je hebt geen internetverbinding</string>
+    <string name="dialog_close">Sluiten</string>
+    <string name="dialog_retry">Probeer opnieuw</string>
 </resources>

@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.verifier
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.api.apiModule
 import nl.rijksoverheid.ctr.appconfig.*
+import nl.rijksoverheid.ctr.design.designModule
 import nl.rijksoverheid.ctr.design.menu.about.AboutAppResourceProvider
 import nl.rijksoverheid.ctr.introduction.CoronaCheckApp
 import nl.rijksoverheid.ctr.introduction.introductionModule
@@ -48,7 +49,8 @@ open class VerifierApplication : SharedApplication(), CoronaCheckApp, AboutAppRe
                 appConfigModule("verifier", BuildConfig.VERSION_CODE),
                 introductionModule,
                 qrCodeScannerModule,
-                *getAdditionalModules().toTypedArray()
+                *getAdditionalModules().toTypedArray(),
+                designModule
             )
         }
 
