@@ -108,10 +108,10 @@ class YourNegativeTestResultFragment : Fragment(R.layout.fragment_your_negative_
                 is SignedTestResult.ServerError -> {
                     val message = if (it.errorCode == null) getString(
                         R.string.dialog_error_message_with_error_code,
-                        "${it.httpCode}"
+                        "${it.httpCode.toString()}"
                     ) else getString(
                         R.string.dialog_error_message_with_error_code,
-                        "${it.httpCode}/${it.errorCode}"
+                        "${it.httpCode.toString()}/${it.errorCode.toString()}"
                     )
                     dialogUtil.presentDialog(
                         context = requireContext(),

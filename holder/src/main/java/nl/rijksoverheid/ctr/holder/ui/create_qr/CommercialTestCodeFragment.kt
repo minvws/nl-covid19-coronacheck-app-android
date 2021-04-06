@@ -137,7 +137,7 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
                         title = R.string.dialog_error_title,
                         message = getString(
                             R.string.dialog_error_message_with_error_code,
-                            it.httpCode
+                            it.httpCode.toString()
                         ),
                         positiveButtonText = R.string.dialog_retry,
                         positiveButtonCallback = {
