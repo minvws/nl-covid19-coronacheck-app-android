@@ -29,7 +29,7 @@ class AndroidUtilImpl(private val context: Context) : AndroidUtil {
             try {
                 MasterKeys.getOrCreate(
                     KeyGenParameterSpec.Builder(
-                        "_androidx_security_master_key_",
+                        "_coronacheck_security_master_key_",
                         KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT
                     ).setBlockModes(KeyProperties.BLOCK_MODE_GCM)
                         .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
