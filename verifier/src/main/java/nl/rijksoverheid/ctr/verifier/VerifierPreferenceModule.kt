@@ -1,7 +1,7 @@
 package nl.rijksoverheid.ctr.verifier
 
 import androidx.security.crypto.EncryptedSharedPreferences
-import androidx.security.crypto.MasterKeys
+import nl.rijksoverheid.ctr.shared.util.AndroidUtil
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -14,10 +14,11 @@ import org.koin.dsl.module
  */
 val verifierPreferenceModule = module {
     single {
-        val masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
+        val androidUtil = get<AndroidUtil>()
+
         EncryptedSharedPreferences.create(
             "secret_shared_prefs",
-            masterKeyAlias,
+            androidUtil.getMasterKeyAlias(),
             androidContext(),
             EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
             EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
