@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.design.BaseActivity
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
@@ -31,11 +30,6 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
     private val introductionViewModel: IntroductionViewModel by viewModel()
     private val qrCodeScannerUtil: QrCodeScannerUtil by inject()
     private val scanQrViewModel: ScanQrViewModel by viewModel()
-
-    companion object {
-        const val REQUEST_KEY = "REQUEST_KEY"
-        const val EXTRA_LAUNCH_SCANNER = "LAUNCH_SCANNER"
-    }
 
     private val qrScanResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
@@ -80,20 +74,9 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
             findNavController().navigate(ScanQrFragmentDirections.actionScanResult(it))
         })
 
-        setFragmentResultListener(
-            REQUEST_KEY
-        ) { requestKey, bundle ->
-            if (requestKey == REQUEST_KEY && bundle.getBoolean(
-                    EXTRA_LAUNCH_SCANNER
-                )
-            ) {
-                openScanner()
-            }
-        }
-
         binding.button.setOnClickListener {
             if (!scanQrViewModel.scanInstructionsSeen()) {
-                findNavController().navigate(ScanQrFragmentDirections.actionScanInstructions(true))
+                findNavController().navigate(ScanQrFragmentDirections.actionScanInstructions())
             } else {
                 openScanner()
             }

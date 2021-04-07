@@ -21,12 +21,11 @@
 
         <action
             android:id="@+id/action_scan_instructions"
-            app:destination="@id/nav_scan_instructions" />
-
-        <argument
-            android:name="openScanner"
-            android:defaultValue="false"
-            app:argType="boolean" />
+            app:destination="@id/nav_scan_instructions"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
 
     </fragment>
 
@@ -71,17 +70,21 @@
         android:label="ScanResultInvalidExplanationDialogFragment"
         tools:layout="@layout/fragment_scan_result_invalid_reason" />
 
-    <dialog
+    <fragment
         android:id="@+id/nav_scan_instructions"
-        android:name="nl.rijksoverheid.ctr.verifier.ui.scaninstructions.ScanInstructionsDialogFragment"
-        tools:layout="@layout/dialog_scan_instructions">
+        android:name="nl.rijksoverheid.ctr.verifier.ui.scaninstructions.ScanInstructionsFragment"
+        android:label="@string/scan_instructions"
+        tools:layout="@layout/fragment_scan_instructions">
 
-        <argument
-            android:name="openScannerOnBack"
-            android:defaultValue="false"
-            app:argType="boolean" />
+        <action
+            android:id="@+id/action_scan_result"
+            app:destination="@id/nav_scan_result"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
 
-    </dialog>
+    </fragment>
 
     <action
         android:id="@+id/action_app_status"
