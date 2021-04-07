@@ -14,17 +14,6 @@
         android:visibility="invisible"
         app:constraint_referenced_ids="image, animation" />
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/image"
-        app:layout_constraintTop_toTopOf="parent"
-        app:navigationContentDescription="@string/back"
-        app:navigationIcon="@drawable/ic_close" />
-
     <ImageView
         android:id="@+id/image"
         android:layout_width="0dp"
@@ -32,13 +21,13 @@
         android:layout_marginTop="8dp"
         android:adjustViewBounds="false"
         android:contentDescription="@string/accessibility_label_your_qr"
+        android:focusable="true"
         android:paddingHorizontal="16dp"
         android:scaleType="fitStart"
-        android:focusable="true"
         app:layout_constraintBottom_toTopOf="@+id/animation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintTop_toTopOf="parent"
         tools:layout_height="400dp" />
 
     <nl.rijksoverheid.ctr.holder.ui.myoverview.QrCodeAnimationWidget
@@ -47,20 +36,10 @@
         android:layout_height="128dp"
         android:contentDescription="@null"
         android:focusable="false"
-        android:screenReaderFocusable="false"
         android:importantForAccessibility="no"
+        android:screenReaderFocusable="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <com.google.android.material.progressindicator.LinearProgressIndicator
-        android:id="@+id/loading"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:indeterminate="true"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
