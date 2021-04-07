@@ -365,7 +365,8 @@ class TestResultUseCaseTest {
                             responseError = ResponseError(
                                 status = "dummy",
                                 code = ResponseError.CODE_ALREADY_SIGNED
-                            )
+                            ),
+                            httpCode = 400
                         )
                     ),
                     commitmentMessageUseCase = fakeCommitmentMessageUsecase(),
@@ -397,7 +398,8 @@ class TestResultUseCaseTest {
                         responseError = ResponseError(
                             status = "dummy",
                             code = 0
-                        )
+                        ),
+                        httpCode = 400
                     )
                 ),
                 commitmentMessageUseCase = fakeCommitmentMessageUsecase(),

@@ -43,6 +43,7 @@ dependencies {
     implementation "androidx.browser:browser:$browser_version"
     implementation "androidx.appcompat:appcompat:${appcompat_version}"
     implementation "com.google.android.material:material:${material_version}"
+    implementation "androidx.security:security-crypto:$security_crypto_version"
 
     api "com.squareup.retrofit2:retrofit:$retrofit_version"
 

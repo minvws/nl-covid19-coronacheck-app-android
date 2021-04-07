@@ -7,7 +7,7 @@
     <string name="onboarding_screen_1_title">Alleen toegang na testen</string>
     <string name="onboarding_screen_1_description">Bezoekers van bepaalde sociale, culturele of sportieve activiteiten moeten eerst een coronatest doen. Zij krijgen alleen toegang als uit de test blijkt dat ze geen corona hebben.</string>
     <string name="onboarding_screen_2_title">Scan QR-code voor testuitslag</string>
-    <string name="onboarding_screen_2_description">In de CoronaCheck-app maken bezoekers van hun testuitslag een QR-code. Daarna scan je met deze app de QR-codes en zie je wie toegang mag krijgen. Bij een groen scherm mogen bezoekers naar binnen. De QR-code moet binnen 40 uur na het moment van testen gescand zijn.</string>
+    <string name="onboarding_screen_2_description">In de CoronaCheck-app maken bezoekers van hun testuitslag een QR-code. Daarna scan je met deze app de QR-codes en zie je wie toegang mag krijgen. Bij een groen scherm mogen bezoekers naar binnen. De QR-code moet binnen %1$s uur na het moment van testen gescand zijn.</string>
     <string name="onboarding_screen_3_title">Toegang is anoniem</string>
     <string name="onboarding_screen_3_description">Bij het scannen van een QR-code worden geen persoonsgegevens verstuurd of opgeslagen. Als controleur zie je alleen of de bezoeker een geldige negatieve testuitslag heeft.</string>
     <string name="onboarding_screen_4_title">Voor wie is de scanner?</string>

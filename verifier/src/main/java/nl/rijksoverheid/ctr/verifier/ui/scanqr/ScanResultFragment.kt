@@ -3,12 +3,15 @@ package nl.rijksoverheid.ctr.verifier.ui.scanqr
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.ColorRes
+import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import nl.rijksoverheid.ctr.design.FullScreenDialogFragment
 import nl.rijksoverheid.ctr.qrscanner.QrCodeScannerUtil
+import nl.rijksoverheid.ctr.design.utils.getSpannableFromHtml
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.util.MultiTapDetector
@@ -19,8 +22,6 @@ import nl.rijksoverheid.ctr.verifier.models.VerifiedQr
 import nl.rijksoverheid.ctr.verifier.models.VerifiedQrResultState
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.time.ZonedDateTime
-
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -89,7 +90,17 @@ class ScanResultFragment : FullScreenDialogFragment(R.layout.fragment_scan_resul
             is VerifiedQrResultState.Valid -> {
                 presentValidScreen(
                     binding = binding,
-                    verifiedQr = validatedQrResultState.verifiedQr
+                    verifiedQr = validatedQrResultState.verifiedQr,
+                    backgroundColor = R.color.green,
+                    title = R.string.scan_result_valid_title
+                )
+            }
+            is VerifiedQrResultState.Demo -> {
+                presentValidScreen(
+                    binding = binding,
+                    verifiedQr = validatedQrResultState.verifiedQr,
+                    backgroundColor = R.color.grey_medium,
+                    title = R.string.scan_result_demo_title
                 )
             }
             is VerifiedQrResultState.Invalid -> {
@@ -102,23 +113,20 @@ class ScanResultFragment : FullScreenDialogFragment(R.layout.fragment_scan_resul
                     binding = binding
                 )
             }
-            is VerifiedQrResultState.Demo -> {
-                presentDemoScreen(binding)
-            }
         }
 
         MultiTapDetector(binding.image) { amount, _ ->
             if (amount == 3) {
                 when (validatedQrResultState) {
-                    is VerifiedQrResultState.Valid -> presentDebugDialog(validatedQrResultState.verifiedQr.toString())
+                    is VerifiedQrResultState.Valid -> presentDebugDialog(validatedQrResultState.verifiedQr.getDebugHtmlString())
                     is VerifiedQrResultState.Invalid -> presentDebugDialog(
-                        validatedQrResultState.verifiedQr.toString()
+                        validatedQrResultState.verifiedQr.getDebugHtmlString()
                     )
                     is VerifiedQrResultState.Error -> presentDebugDialog(
                         validatedQrResultState.error
                     )
                     is VerifiedQrResultState.Demo -> {
-                        presentDebugDialog(validatedQrResultState.toString())
+                        presentDebugDialog(validatedQrResultState.verifiedQr.getDebugHtmlString())
                     }
                 }
             }
@@ -139,15 +147,15 @@ class ScanResultFragment : FullScreenDialogFragment(R.layout.fragment_scan_resul
         binding.loading.visibility = View.VISIBLE
     }
 
-    private fun presentValidScreen(binding: FragmentScanResultBinding, verifiedQr: VerifiedQr) {
-        binding.root.setBackgroundColor(
-            ContextCompat.getColor(
-                requireContext(),
-                R.color.green
-            )
-        )
+    private fun presentValidScreen(
+        binding: FragmentScanResultBinding,
+        verifiedQr: VerifiedQr,
+        @ColorRes backgroundColor: Int,
+        @StringRes title: Int
+    ) {
+        binding.root.setBackgroundResource(backgroundColor)
         binding.image.setImageResource(R.drawable.illustration_scan_result_valid)
-        binding.title.text = getString(R.string.scan_result_valid_title)
+        binding.title.setText(title)
         binding.subtitle.text =
             getString(R.string.scan_result_valid_subtitle).fromHtml()
 
@@ -190,23 +198,13 @@ class ScanResultFragment : FullScreenDialogFragment(R.layout.fragment_scan_resul
         binding.loading.visibility = View.GONE
     }
 
-    private fun presentDemoScreen(binding: FragmentScanResultBinding) {
-        binding.image.setImageResource(R.drawable.illustration_scan_result_valid)
-        binding.root.setBackgroundColor(
-            ContextCompat.getColor(
-                requireContext(),
-                R.color.grey_medium
-            )
-        )
-        binding.title.text = getString(R.string.scan_result_demo_title)
-        binding.subtitle.visibility = View.GONE
-        binding.loading.visibility = View.GONE
-    }
-
     private fun presentDebugDialog(message: String) {
         MaterialAlertDialogBuilder(requireContext())
-            .setTitle(ZonedDateTime.now().toString())
-            .setMessage(message)
+            .setTitle("Debug Info")
+            .setMessage(getSpannableFromHtml(requireContext(), message))
+            .setPositiveButton(
+                "Ok"
+            ) { _, _ -> }
             .show()
     }
 

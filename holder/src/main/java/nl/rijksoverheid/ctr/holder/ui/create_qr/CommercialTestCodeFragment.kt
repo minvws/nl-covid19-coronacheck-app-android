@@ -5,10 +5,11 @@ import android.os.CountDownTimer
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.appconfig.AppConfigUtil
-import nl.rijksoverheid.ctr.holder.BaseFragment
+import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderMainActivity
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentCommercialTestCodeBinding
@@ -30,7 +31,7 @@ import kotlin.math.roundToInt
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class CommercialTestCodeFragment : BaseFragment(R.layout.fragment_commercial_test_code) {
+class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_code) {
 
     private var _binding: FragmentCommercialTestCodeBinding? = null
     private val binding: FragmentCommercialTestCodeBinding by lazy { _binding!! }
@@ -44,6 +45,7 @@ class CommercialTestCodeFragment : BaseFragment(R.layout.fragment_commercial_tes
         })
 
     private val appConfigUtil: AppConfigUtil by inject()
+    private val dialogUtil: DialogUtil by inject()
     private val navArgs: CommercialTestCodeFragmentArgs by navArgs()
 
     private val verificationCodeTimer =
@@ -117,8 +119,33 @@ class CommercialTestCodeFragment : BaseFragment(R.layout.fragment_commercial_tes
                     binding.uniqueCodeInput.error =
                         getString(R.string.commercial_test_error_invalid_code)
                 }
-                TestResult.NetworkError,
-                TestResult.ServerError -> presentError()
+                is TestResult.NetworkError -> {
+                    dialogUtil.presentDialog(
+                        context = requireContext(),
+                        title = R.string.dialog_no_internet_connection_title,
+                        message = getString(R.string.dialog_no_internet_connection_description),
+                        positiveButtonText = R.string.dialog_retry,
+                        positiveButtonCallback = {
+                            viewModel.getTestResult()
+                        },
+                        negativeButtonText = R.string.dialog_close
+                    )
+                }
+                is TestResult.ServerError -> {
+                    dialogUtil.presentDialog(
+                        context = requireContext(),
+                        title = R.string.dialog_error_title,
+                        message = getString(
+                            R.string.dialog_error_message_with_error_code,
+                            it.httpCode.toString()
+                        ),
+                        positiveButtonText = R.string.dialog_retry,
+                        positiveButtonCallback = {
+                            viewModel.getTestResult()
+                        },
+                        negativeButtonText = R.string.dialog_close
+                    )
+                }
                 is TestResult.NegativeTestResult -> {
                     findNavController().navigate(CommercialTestCodeFragmentDirections.actionYourNegativeResult())
                 }

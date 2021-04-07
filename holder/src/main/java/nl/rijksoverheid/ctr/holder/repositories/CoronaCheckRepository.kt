@@ -60,7 +60,7 @@ open class CoronaCheckRepositoryImpl(
             withContext(Dispatchers.IO) {
                 val responseError =
                     errorResponseConverter.convert(errorBody) ?: throw HttpException(response)
-                TestIsmResult.Error(responseError)
+                TestIsmResult.Error(response.code(), responseError)
             }
         }
     }
