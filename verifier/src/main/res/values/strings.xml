@@ -5,7 +5,7 @@
     <string name="app_name">Scanner</string>
     <string name="onboarding_title">Onboarding</string>
     <string name="onboarding_screen_1_title">Alleen toegang na testen</string>
-    <string name="onboarding_screen_1_description">Bezoekers van bepaalde sociale, culturele of sportieve activiteiten moeten eerst een coronatest doen. Zij krijgen alleen toegang als uit de test blijkt dat ze geen corona hebben.</string>
+    <string name="onboarding_screen_1_description">Bezoekers van bepaalde sociale, culturele of sportieve activiteiten moeten eerst een coronatest doen. De bezoeker krijgt alleen toegang als de test bewijst dat hij of zij op dat moment geen corona heeft.</string>
     <string name="onboarding_screen_2_title">Scan QR-code voor testuitslag</string>
     <string name="onboarding_screen_2_description">In de CoronaCheck-app maken bezoekers van hun testuitslag een QR-code. Daarna scan je met deze app de QR-codes en zie je wie toegang mag krijgen. Bij een groen scherm mogen bezoekers naar binnen. De QR-code moet binnen %1$s uur na het moment van testen gescand zijn.</string>
     <string name="onboarding_screen_3_title">Toegang is anoniem</string>
@@ -14,7 +14,7 @@
     <string name="onboarding_screen_4_description"><![CDATA[Met behulp van deze app kun je weer bezoekers ontvangen. Maar alleen als jouw sociale, culturele of sportieve activiteit onder de aangewezen locaties valt.]]></string>
     <string name="onboarding_next">Volgende</string>
     <string name="privacy_policy_title">Zo gebruikt deze app je gegevens</string>
-    <string name="privacy_policy_description"><![CDATA[In de <a href="#">privacyverklaring staat</a> hoe CoronaCheck Scanner gegevens gebruikt. Dit zijn de belangrijkste punten.]]></string>
+    <string name="privacy_policy_description"><![CDATA[In de <a href="#">privacyverklaring</a> staat hoe CoronaCheck Scanner gegevens gebruikt. Dit zijn de belangrijkste punten.]]></string>
     <string name="privacy_policy_1"><![CDATA[Gegevens van de bezoeker worden <b>nergens centraal opgeslagen</b> ]]></string>
     <string name="privacy_policy_2"><![CDATA[Als controleur weet je alleen <b>of een testbewijs geldig is</b>. Niet wie de bezoeker is.]]></string>
     <string name="privacy_policy_3"><![CDATA[GPS- of locatiegegevens worden <b>niet gebruikt of bewaard</b> ]]></string>

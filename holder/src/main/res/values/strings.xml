@@ -7,7 +7,7 @@
     <string name="onboarding_screen_1_title">Alleen toegang na testen</string>
     <string name="onboarding_screen_1_description">Jouw gezondheid en die van anderen is belangrijk. Ook als je wat leuks gaat doen. Laat je daarom eerst testen. Blijkt uit de test dat je geen corona hebt (negatieve testuitslag)? Dan krijg je toegang tot bepaalde sociale, culturele of sportieve activiteiten.</string>
     <string name="onboarding_screen_2_title">Jouw QR-code op zak</string>
-    <string name="onboarding_screen_2_description">Als uit de test blijkt dat je geen corona hebt kun je in deze app een persoonlijke QR-code maken. Dat is jouw testbewijs. De QR-code wordt gescand voordat je toegang krijgt.</string>
+    <string name="onboarding_screen_2_description">Als uit de test blijkt dat je geen corona hebt kun je in deze app een persoonlijke QR-code maken. Dat is jouw testbewijs. De QR-code wordt gescand om toegang te krijgen.</string>
     <string name="onboarding_screen_4_title">Privacy staat voorop</string>
     <string name="onboarding_screen_4_description">In jouw QR-code staat alleen wanneer je negatief getest bent.</string>
     <string name="onboarding_screen_3_title">Geldigheid van je bewijs</string>
@@ -97,8 +97,8 @@
     <string name="button_continue">Verder</string>
     <string name="commercial_test_error_invalid_code">Deze code is niet geldig</string>
     <string name="commercial_test_error_invalid_combination">Geen geldige combinatie</string>
-    <string name="no_negative_test_result_title">Er is geen negatieve testuitslag</string>
-    <string name="no_negative_test_result_description"><![CDATA[Er is geen negatieve testuitslag beschikbaar.<br/>Dit kan het volgende betekenen:<br\><br\><ul><li>Je hebt nog geen test gedaan</li><li>Je testresultaat is nog niet verwerkt</li><li>Je test is langer dan %1$s uur geleden uitgevoerd]]></string>
+    <string name="no_negative_test_result_title">Geen negatieve testuitslag</string>
+    <string name="no_negative_test_result_description"><![CDATA[Er is geen negatieve testuitslag beschikbaar.]]></string>
     <string name="test_result_not_known_title">Testuitslag nog niet bekend</string>
     <string name="test_result_not_known_description"><![CDATA[Probeer het later nog eens.<br\><br\>Neem voor vragen contact op met jouw testlocatie.]]></string>
     <string name="about_this_app_description">CoronaCheck is ontwikkeld zodat bezoekers weer naar sociale, culturele en sportieve locaties kunnen. Met behulp van deze app bewijzen bezoekers dat ze kortgeleden negatief getest zijn op corona. Zo kan Nederland meer buiten de deur doen.</string>
@@ -150,7 +150,7 @@
     <string name="accessibility_testresult_icon_description">Informatie over je negatieve testuitslag</string>
     <string name="menu_close">Sluiten</string>
     <string name="dialog_no_internet_connection_title">Geen internetverbinding</string>
-    <string name="dialog_no_internet_connection_description">Je hebt geen internetverbinding</string>
+    <string name="dialog_no_internet_connection_description">Je bent nu niet verbonden met het internet.</string>
     <string name="dialog_close">Sluiten</string>
     <string name="dialog_retry">Probeer opnieuw</string>
 </resources>
