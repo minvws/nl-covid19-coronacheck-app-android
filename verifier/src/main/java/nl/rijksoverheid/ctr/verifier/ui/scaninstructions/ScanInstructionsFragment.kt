@@ -1,21 +1,21 @@
-
 package nl.rijksoverheid.ctr.verifier.ui.scaninstructions
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.os.bundleOf
-import androidx.fragment.app.setFragmentResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import nl.rijksoverheid.ctr.appconfig.AppConfigUtil
-import nl.rijksoverheid.ctr.design.FullScreenDialogFragment
+import nl.rijksoverheid.ctr.qrscanner.QrCodeScannerUtil
+import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.verifier.R
-import nl.rijksoverheid.ctr.verifier.databinding.DialogScanInstructionsBinding
-import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrFragment
+import nl.rijksoverheid.ctr.verifier.VerifierMainActivity
+import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanInstructionsBinding
+import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrViewModel
 import org.koin.android.ext.android.inject
-import kotlin.properties.Delegates
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -24,24 +24,28 @@ import kotlin.properties.Delegates
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class ScanInstructionsDialogFragment : FullScreenDialogFragment(R.layout.dialog_scan_instructions) {
+class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
 
     private val appConfigUtil: AppConfigUtil by inject()
-    private val args: ScanInstructionsDialogFragmentArgs by navArgs()
-    private var openScannerOnClose by Delegates.notNull<Boolean>()
+    private val qrCodeScannerUtil: QrCodeScannerUtil by inject()
+    private val scanQrViewModel: ScanQrViewModel by viewModel()
+
+    private val qrScanResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            val scanResult = qrCodeScannerUtil.parseScanResult(it.data)
+            if (scanResult != null) {
+                scanQrViewModel.validate(
+                    qrContent = scanResult
+                )
+            }
+        }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        openScannerOnClose = args.openScannerOnBack
 
-        val binding = DialogScanInstructionsBinding.bind(view)
-        binding.toolbar.setNavigationOnClickListener {
-            findNavController().popBackStack()
-        }
+        val binding = FragmentScanInstructionsBinding.bind(view)
         binding.button.setOnClickListener {
-            // Force scanner to open if user closes instructions with scan button
-            openScannerOnClose = true
-            findNavController().popBackStack()
+            openScanner()
         }
 
         GroupAdapter<GroupieViewHolder>()
@@ -70,13 +74,27 @@ class ScanInstructionsDialogFragment : FullScreenDialogFragment(R.layout.dialog_
                 )
                 binding.recyclerView.adapter = this
             }
+
+        scanQrViewModel.loadingLiveData.observe(viewLifecycleOwner, EventObserver {
+            (requireActivity() as VerifierMainActivity).presentLoading(it)
+        })
+
+        scanQrViewModel.validatedQrLiveData.observe(viewLifecycleOwner, EventObserver {
+            findNavController().navigate(ScanInstructionsFragmentDirections.actionScanResult(it))
+        })
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        setFragmentResult(
-            ScanQrFragment.REQUEST_KEY,
-            bundleOf(ScanQrFragment.EXTRA_LAUNCH_SCANNER to openScannerOnClose)
+    private fun openScanner() {
+        qrCodeScannerUtil.launchScanner(
+            requireActivity(), qrScanResult,
+            getString(
+                R.string.scanner_custom_title
+            ), getString(
+                R.string.scanner_custom_message
+            ),
+            getString(R.string.camera_rationale_dialog_title),
+            getString(R.string.camera_rationale_dialog_description),
+            getString(R.string.ok)
         )
     }
 }
