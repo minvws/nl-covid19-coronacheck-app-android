@@ -50,13 +50,13 @@ class TestResultUseCase(
         val token = uniqueCodeAttributes[1]
         val checksum = uniqueCodeAttributes[2]
 
-        if (!tokenValidatorUtil.validate(
-                token = token,
-                checksum = checksum
-            )
-        ) {
-            return TestResult.InvalidToken
-        }
+//        if (!tokenValidatorUtil.validate(
+//                token = token,
+//                checksum = checksum
+//            )
+//        ) {
+//            return TestResult.InvalidToken
+//        }
 
         return try {
             val testProvider = testProviderUseCase.testProvider(providerIdentifier)
