@@ -1,6 +1,10 @@
 package nl.rijksoverheid.ctr.verifier.ui.scanqr
 
+import android.app.Activity
+import android.content.Intent
+import android.graphics.Bitmap
 import android.widget.TextView
+import androidx.activity.result.ActivityResultLauncher
 import androidx.core.os.bundleOf
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.navigation.Navigation
@@ -15,6 +19,7 @@ import com.schibsted.spain.barista.interaction.BaristaClickInteractions.clickOn
 import com.schibsted.spain.barista.interaction.BaristaScrollInteractions.scrollTo
 import nl.rijksoverheid.ctr.design.views.AbbreviatedPersonalDetailsItemWidget
 import nl.rijksoverheid.ctr.design.views.AbbreviatedPersonalDetailsWidget
+import nl.rijksoverheid.ctr.qrscanner.QrCodeScannerUtil
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.fakeIntroductionViewModel
@@ -88,16 +93,6 @@ class ScanResultFragmentTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `Valid result on button click opens scanner`() {
-        launchScanResultFragment()
-        clickOn(R.id.button)
-        assertEquals(
-            navController.currentDestination?.id,
-            R.id.nav_scan_qr
-        )
-    }
-
-    @Test
     fun `Invalid result shows correct screen`() {
         launchScanResultFragment(state = VerifiedQrResultState.Invalid(verifiedQr = fakeVerifiedQr()))
         assertHasBackground(R.id.root, R.color.red)
@@ -117,16 +112,6 @@ class ScanResultFragmentTest : AutoCloseKoinTest() {
         assertEquals(
             navController.currentDestination?.id,
             R.id.invalid_explanation_bottomsheet
-        )
-    }
-
-    @Test
-    fun `Invalid result on button click opens scanner`() {
-        launchScanResultFragment(state = VerifiedQrResultState.Invalid(verifiedQr = fakeVerifiedQr()))
-        clickOn(R.id.button)
-        assertEquals(
-            navController.currentDestination?.id,
-            R.id.nav_scan_qr
         )
     }
 
