@@ -24,6 +24,7 @@ class AbbreviatedPersonalDetailsWidget @JvmOverloads constructor(
     }
 
     fun setPersonalDetails(items: List<String>, showPosition: Boolean? = false) {
+        removeAllViews()
         items.forEachIndexed { index, content ->
             val item = AbbreviatedPersonalDetailsItemWidget(context)
             item.setContent(content)
