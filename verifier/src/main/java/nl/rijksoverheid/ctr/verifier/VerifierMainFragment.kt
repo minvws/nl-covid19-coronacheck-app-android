@@ -9,10 +9,13 @@
 package nl.rijksoverheid.ctr.verifier
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
@@ -20,30 +23,35 @@ import androidx.navigation.ui.setupWithNavController
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.AppStatusFragment
 import nl.rijksoverheid.ctr.appconfig.model.AppStatus
-import nl.rijksoverheid.ctr.design.BaseActivity
-import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
 import nl.rijksoverheid.ctr.design.ext.isScreenReaderOn
+import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.ext.styleTitle
 import nl.rijksoverheid.ctr.verifier.databinding.ActivityMainBinding
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class VerifierMainActivity : BaseActivity(R.id.nav_scan_qr) {
+class VerifierMainFragment : Fragment() {
 
     private lateinit var binding: ActivityMainBinding
 
     private val introductionPersistenceManager: IntroductionPersistenceManager by inject()
     private val appStatusViewModel: AppConfigViewModel by viewModel()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = ActivityMainBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+            childFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
         navController.addOnDestinationChangedListener { _, destination, _ ->
             if (destination.id in arrayOf(
@@ -79,13 +87,13 @@ class VerifierMainActivity : BaseActivity(R.id.nav_scan_qr) {
         binding.navView.setNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_support -> {
-                    BuildConfig.URL_SUPPORT.launchUrl(this)
+                    BuildConfig.URL_SUPPORT.launchUrl(requireContext())
                 }
                 R.id.nav_about_this_app -> {
                     navController.navigate(R.id.action_about_this_app)
                 }
                 R.id.nav_privacy_statement -> {
-                    BuildConfig.URL_PRIVACY_STATEMENT.launchUrl(this)
+                    BuildConfig.URL_PRIVACY_STATEMENT.launchUrl(requireContext())
                 }
                 R.id.nav_close_menu -> {
                     binding.navView.menu.close()
@@ -98,7 +106,7 @@ class VerifierMainActivity : BaseActivity(R.id.nav_scan_qr) {
             true
         }
 
-        appStatusViewModel.appStatusLiveData.observe(this) {
+        appStatusViewModel.appStatusLiveData.observe(viewLifecycleOwner) {
             if (it !is AppStatus.NoActionRequired) {
                 val bundle = bundleOf(AppStatusFragment.EXTRA_APP_STATUS to it)
                 navController.navigate(R.id.action_app_status, bundle)
@@ -106,7 +114,8 @@ class VerifierMainActivity : BaseActivity(R.id.nav_scan_qr) {
         }
 
         // Add close button to menu if user has screenreader enabled
-        binding.navView.menu.findItem(R.id.nav_close_menu).isVisible = isScreenReaderOn()
+        binding.navView.menu.findItem(R.id.nav_close_menu).isVisible =
+            requireActivity().isScreenReaderOn()
     }
 
     fun presentLoading(loading: Boolean) {
@@ -136,13 +145,5 @@ class VerifierMainActivity : BaseActivity(R.id.nav_scan_qr) {
             .styleTitle(context, R.attr.textAppearanceBody1)
         binding.navView.menu.findItem(R.id.nav_close_menu)
             .styleTitle(context, R.attr.textAppearanceBody1)
-    }
-
-    override fun onBackPressed() {
-        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            binding.drawerLayout.close()
-            return
-        }
-        super.onBackPressed()
     }
 }

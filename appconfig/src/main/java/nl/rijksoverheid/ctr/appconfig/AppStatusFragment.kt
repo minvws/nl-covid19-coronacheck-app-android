@@ -17,7 +17,6 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.appconfig.databinding.FragmentAppStatusBinding
 import nl.rijksoverheid.ctr.appconfig.model.AppStatus
-import nl.rijksoverheid.ctr.design.BaseActivity
 import nl.rijksoverheid.ctr.shared.util.AndroidUtil
 import org.koin.android.ext.android.inject
 
@@ -31,7 +30,6 @@ class AppStatusFragment : Fragment(R.layout.fragment_app_status) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (requireActivity() as BaseActivity).removeSplashScreen()
 
         val binding = FragmentAppStatusBinding.bind(view)
         val appStatus = arguments?.getParcelable<AppStatus>(EXTRA_APP_STATUS)

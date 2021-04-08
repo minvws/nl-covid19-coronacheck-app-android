@@ -11,7 +11,7 @@ import nl.rijksoverheid.ctr.appconfig.AppConfigUtil
 import nl.rijksoverheid.ctr.qrscanner.QrCodeScannerUtil
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.verifier.R
-import nl.rijksoverheid.ctr.verifier.VerifierMainActivity
+import nl.rijksoverheid.ctr.verifier.VerifierMainFragment
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanInstructionsBinding
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrViewModel
 import org.koin.android.ext.android.inject
@@ -76,7 +76,7 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
             }
 
         scanQrViewModel.loadingLiveData.observe(viewLifecycleOwner, EventObserver {
-            (requireActivity() as VerifierMainActivity).presentLoading(it)
+            (requireActivity() as VerifierMainFragment).presentLoading(it)
         })
 
         scanQrViewModel.validatedQrLiveData.observe(viewLifecycleOwner, EventObserver {

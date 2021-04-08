@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import nl.rijksoverheid.ctr.design.BaseActivity
 import nl.rijksoverheid.ctr.introduction.BuildConfig
 import nl.rijksoverheid.ctr.introduction.CoronaCheckApp
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
@@ -32,11 +31,6 @@ class PrivacyConsentFragment : Fragment(R.layout.fragment_privacy_consent) {
     private val introductionViewModel: IntroductionViewModel by viewModel()
     private lateinit var binding: FragmentPrivacyConsentBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        (requireActivity() as BaseActivity).removeSplashScreen()
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -57,7 +51,8 @@ class PrivacyConsentFragment : Fragment(R.layout.fragment_privacy_consent) {
                 requireActivity().finish()
             }
         }
-        binding.toolbar.navigationContentDescription = getString(onboardingData.backButtonStringResource)
+        binding.toolbar.navigationContentDescription =
+            getString(onboardingData.backButtonStringResource)
 
         binding.description.text =
             getString(onboardingData.privacyPolicyStringResource).fromHtml()
@@ -92,7 +87,8 @@ class PrivacyConsentFragment : Fragment(R.layout.fragment_privacy_consent) {
 
         binding.button.setOnClickListener {
             introductionViewModel.saveIntroductionFinished()
-            onboardingData.introductionDoneCallback.invoke(this)
+            //findNavController().navigate(PrivacyConsentFragmentDirections.navExit())
+            //onboardingData.introductionDoneCallback.invoke(this)
         }
     }
 }

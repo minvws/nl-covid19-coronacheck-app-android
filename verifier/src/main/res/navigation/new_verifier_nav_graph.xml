@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav"
+    app:startDestination="@+id/nav_main">
+
+    <include app:graph="@navigation/introduction_nav_graph" />
+
+    <fragment
+        android:id="@+id/nav_main"
+        android:name="nl.rijksoverheid.ctr.verifier.VerifierMainFragment"
+        tools:layout="@layout/fragment_scan_qr" />
+
+    <action
+        android:id="@+id/action_introduction"
+        app:destination="@id/nav_introduction"
+        app:enterAnim="@anim/fragment_open_enter"
+        app:exitAnim="@anim/fragment_open_exit"
+        app:popEnterAnim="@anim/fragment_close_enter"
+        app:popExitAnim="@anim/fragment_close_exit" />
+
+    <action
+        android:id="@+id/action_app_status"
+        app:destination="@id/nav_app_status"
+        app:popUpTo="@id/main_nav"
+        app:popUpToInclusive="true" />
+
+    <action
+        android:id="@+id/action_scan_qr"
+        app:destination="@id/nav_scan_qr"
+        app:enterAnim="@anim/fragment_open_enter"
+        app:exitAnim="@anim/fragment_open_exit"
+        app:popEnterAnim="@anim/fragment_close_enter"
+        app:popExitAnim="@anim/fragment_close_exit"
+        app:popUpTo="@id/main_nav"
+        app:popUpToInclusive="true" />
+
+    <action
+        android:id="@+id/action_about_this_app"
+        app:destination="@id/about_this_app"
+        app:enterAnim="@anim/fragment_open_enter"
+        app:exitAnim="@anim/fragment_open_exit"
+        app:popEnterAnim="@anim/fragment_close_enter"
+        app:popExitAnim="@anim/fragment_close_exit" />
+
+</navigation>

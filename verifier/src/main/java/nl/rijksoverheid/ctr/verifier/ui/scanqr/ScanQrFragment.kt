@@ -7,13 +7,11 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import nl.rijksoverheid.ctr.design.BaseActivity
-import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.qrscanner.QrCodeScannerUtil
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.verifier.R
-import nl.rijksoverheid.ctr.verifier.VerifierMainActivity
+import nl.rijksoverheid.ctr.verifier.VerifierMainFragment
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanQrBinding
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -27,7 +25,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  */
 class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
 
-    private val introductionViewModel: IntroductionViewModel by viewModel()
     private val qrCodeScannerUtil: QrCodeScannerUtil by inject()
     private val scanQrViewModel: ScanQrViewModel by viewModel()
 
@@ -41,15 +38,6 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
             }
         }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        if (!introductionViewModel.introductionFinished()) {
-            findNavController().navigate(R.id.action_introduction)
-        } else if (requireActivity() is BaseActivity) {
-            (requireActivity() as BaseActivity).removeSplashScreen()
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -60,6 +48,7 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         val binding = FragmentScanQrBinding.bind(view)
         binding.description.text = binding.description.text.toString().fromHtml()
         binding.description.setOnClickListener {
@@ -67,7 +56,7 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
         }
 
         scanQrViewModel.loadingLiveData.observe(viewLifecycleOwner, EventObserver {
-            (requireActivity() as VerifierMainActivity).presentLoading(it)
+            (requireActivity() as VerifierMainFragment).presentLoading(it)
         })
 
         scanQrViewModel.validatedQrLiveData.observe(viewLifecycleOwner, EventObserver {

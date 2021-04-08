@@ -8,7 +8,6 @@
 
 package nl.rijksoverheid.ctr.design
 
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.IdRes
@@ -16,7 +15,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.fragment.NavHostFragment
-import nl.rijksoverheid.ctr.design.ext.getAppThemeWindowBackgroundColor
 
 
 /**
@@ -25,13 +23,6 @@ import nl.rijksoverheid.ctr.design.ext.getAppThemeWindowBackgroundColor
  * @param homeDestination the destination which should show the drawer
  */
 abstract class BaseActivity(@IdRes private val homeDestination: Int) : AppCompatActivity() {
-
-    /**
-     * Remove the splash screen by setting the background to AppTheme's windowBackground value
-     */
-    fun removeSplashScreen() {
-        window.setBackgroundDrawable(ColorDrawable(this.getAppThemeWindowBackgroundColor()))
-    }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)

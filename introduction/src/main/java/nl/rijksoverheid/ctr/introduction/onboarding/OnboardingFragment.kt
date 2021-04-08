@@ -1,8 +1,6 @@
 package nl.rijksoverheid.ctr.introduction.onboarding
 
 import android.os.Bundle
-import android.util.TypedValue
-import android.view.ContextThemeWrapper
 import android.view.View
 import android.widget.ImageView
 import android.widget.ScrollView
@@ -31,8 +29,6 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        setOnboardingActivityBackground()
 
         val binding = FragmentOnboardingBinding.bind(view)
 
@@ -115,19 +111,6 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
             indicator.setImageResource(if (it == 0) R.drawable.shape_onboarding_item_indicator_selected else R.drawable.shape_onboarding_item_indicator)
             binding.indicators.addView(indicator)
         }
-    }
-
-    /**
-     * Remove splash screen and set
-     */
-    private fun setOnboardingActivityBackground() {
-        val theme = ContextThemeWrapper(
-            requireActivity(),
-            nl.rijksoverheid.ctr.design.R.style.AppTheme
-        ).theme
-        val typedValue = TypedValue()
-        theme.resolveAttribute(android.R.attr.windowBackground, typedValue, true)
-        requireActivity().window.setBackgroundDrawableResource(R.drawable.introduction_launch_screen)
     }
 
     private fun updateCurrentIndicator(binding: FragmentOnboardingBinding, position: Int) {
