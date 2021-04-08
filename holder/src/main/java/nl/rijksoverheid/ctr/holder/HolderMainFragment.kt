@@ -10,7 +10,9 @@ package nl.rijksoverheid.ctr.holder
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
@@ -20,6 +22,8 @@ import nl.rijksoverheid.ctr.design.ext.isScreenReaderOn
 import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppData
 import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppFragment
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMainBinding
+import nl.rijksoverheid.ctr.shared.AccessibilityConstants
+import nl.rijksoverheid.ctr.shared.ext.getNavigationIconView
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.ext.setAccessibilityFocus
 import nl.rijksoverheid.ctr.shared.ext.styleTitle
@@ -37,7 +41,16 @@ class HolderMainFragment : BaseMainFragment(R.layout.fragment_main) {
         val navHostFragment =
             childFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            binding.toolbar.getNavigationIconView()?.let {
+                it.postDelayed(
+                    { it.setAccessibilityFocus() },
+                    AccessibilityConstants.ACCESSIBILITY_FOCUS_DELAY
+                )
+            }
+        }
 
+        binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.nav_my_overview,
@@ -46,7 +59,20 @@ class HolderMainFragment : BaseMainFragment(R.layout.fragment_main) {
             binding.drawerLayout
         )
 
+        binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
+        binding.toolbar.setNavigationOnClickListener {
+            // Override back arrow behavior on toolbar
+            when (navController.currentDestination?.id) {
+                R.id.nav_your_negative_result -> {
+                    requireActivity().onBackPressedDispatcher.onBackPressed()
+                    return@setNavigationOnClickListener
+                }
+            }
+
+            // If no custom behavior was handled perform the default action.
+            NavigationUI.navigateUp(navController, binding.drawerLayout)
+        }
         binding.navView.setupWithNavController(navController)
 
         navigationDrawerStyling()
@@ -83,6 +109,19 @@ class HolderMainFragment : BaseMainFragment(R.layout.fragment_main) {
         // Add close button to menu if user has screenreader enabled
         binding.navView.menu.findItem(R.id.nav_close_menu).isVisible =
             requireActivity().isScreenReaderOn()
+
+        // Close Navigation Drawer when pressing back if it's open
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object :
+            OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    binding.drawerLayout.close()
+                    return
+                } else {
+                    requireActivity().finishAndRemoveTask()
+                }
+            }
+        })
     }
 
     override fun onDestroyView() {
