@@ -82,7 +82,7 @@ class PrivacyConsentFragment : Fragment(R.layout.fragment_privacy_consent) {
         binding.button.setOnClickListener {
             introductionViewModel.saveIntroductionFinished()
             requireActivity().findNavController(R.id.main_nav_host_fragment)
-                .popBackStack(R.id.nav_introduction, true)
+                .navigate(R.id.action_main)
         }
     }
 }

@@ -101,7 +101,7 @@ class HolderMainFragment : BaseMainFragment(R.layout.fragment_main) {
 
     private fun navigationDrawerStyling() {
         val context = binding.navView.context
-        binding.navView.menu.findItem(R.id.nav_home)
+        binding.navView.menu.findItem(R.id.nav_my_overview)
             .styleTitle(context, R.attr.textAppearanceHeadline6)
         binding.navView.menu.findItem(R.id.nav_settings)
             .styleTitle(context, R.attr.textAppearanceHeadline6)

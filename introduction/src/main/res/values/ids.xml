@@ -7,4 +7,5 @@
     <item name="back" type="string" />
     <item name="onboarding_next" type="string" />
     <item name="onboarding_page_indicator_label" type="string" />
+    <item name="action_main" type="id" />
 </resources>
