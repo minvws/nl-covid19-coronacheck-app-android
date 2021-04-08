@@ -1,15 +1,15 @@
 package nl.rijksoverheid.ctr.introduction.privacy_consent
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.introduction.BuildConfig
-import nl.rijksoverheid.ctr.introduction.CoronaCheckApp
+import nl.rijksoverheid.ctr.introduction.IntroductionFragment
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.R
 import nl.rijksoverheid.ctr.introduction.databinding.FragmentPrivacyConsentBinding
@@ -27,7 +27,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  */
 class PrivacyConsentFragment : Fragment(R.layout.fragment_privacy_consent) {
 
-    private val onboardingData by lazy { (requireActivity().application as CoronaCheckApp).getOnboardingData() }
+    private val introductionData by lazy { (parentFragment?.parentFragment as IntroductionFragment).introductionData }
     private val introductionViewModel: IntroductionViewModel by viewModel()
     private lateinit var binding: FragmentPrivacyConsentBinding
 
@@ -52,25 +52,24 @@ class PrivacyConsentFragment : Fragment(R.layout.fragment_privacy_consent) {
             }
         }
         binding.toolbar.navigationContentDescription =
-            getString(onboardingData.backButtonStringResource)
+            getString(introductionData.backButtonStringResource)
 
         binding.description.text =
-            getString(onboardingData.privacyPolicyStringResource).fromHtml()
+            getString(introductionData.privacyPolicyStringResource).fromHtml()
         binding.description.setOnClickListener {
             BuildConfig.URL_PRIVACY_STATEMENT.launchUrl(requireContext())
         }
         binding.checkbox.text =
-            getString(onboardingData.privacyPolicyCheckboxStringResource)
-        binding.button.text = getString(onboardingData.onboardingNextButtonStringResource)
+            getString(introductionData.privacyPolicyCheckboxStringResource)
+        binding.button.text = getString(introductionData.onboardingNextButtonStringResource)
 
-        onboardingData.privacyPolicyItems.forEach { item ->
+        introductionData.privacyPolicyItems.forEach { item ->
             val viewBinding =
                 ItemPrivacyConsentBinding.inflate(layoutInflater, binding.items, true)
             viewBinding.icon.setImageResource(item.iconResource)
             viewBinding.description.text =
                 viewBinding.description.context.getString(item.textResource).fromHtml()
         }
-        Log.d("bart", "check: " + binding.scroll.canScrollVertically(1))
         binding.scroll.doOnPreDraw {
             if (binding.scroll.canScrollVertically(1)) {
                 binding.bottom.cardElevation =
@@ -87,8 +86,8 @@ class PrivacyConsentFragment : Fragment(R.layout.fragment_privacy_consent) {
 
         binding.button.setOnClickListener {
             introductionViewModel.saveIntroductionFinished()
-            //findNavController().navigate(PrivacyConsentFragmentDirections.navExit())
-            //onboardingData.introductionDoneCallback.invoke(this)
+            requireActivity().findNavController(R.id.main_nav_host_fragment)
+                .popBackStack(R.id.nav_introduction, true)
         }
     }
 }

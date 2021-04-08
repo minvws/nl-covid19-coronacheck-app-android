@@ -14,6 +14,6 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:navGraph="@navigation/new_verifier_nav_graph" />
+        app:navGraph="@navigation/verifier_nav_graph_root" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,23 +2,26 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_nav"
+    android:id="@+id/root_nav"
     app:startDestination="@+id/nav_main">
-
-    <include app:graph="@navigation/introduction_nav_graph" />
 
     <fragment
         android:id="@+id/nav_main"
         android:name="nl.rijksoverheid.ctr.verifier.VerifierMainFragment"
         tools:layout="@layout/fragment_scan_qr" />
 
-    <action
-        android:id="@+id/action_introduction"
-        app:destination="@id/nav_introduction"
-        app:enterAnim="@anim/fragment_open_enter"
-        app:exitAnim="@anim/fragment_open_exit"
-        app:popEnterAnim="@anim/fragment_close_enter"
-        app:popExitAnim="@anim/fragment_close_exit" />
+    <fragment
+        android:id="@+id/nav_introduction"
+        android:name="nl.rijksoverheid.ctr.introduction.IntroductionFragment"
+        tools:layout="@layout/fragment_introduction">
+
+        <action
+            android:id="@+id/action_exit_introduction"
+            app:destination="@id/nav_main"
+            app:popUpTo="@id/root_nav"
+            app:popUpToInclusive="true" />
+
+    </fragment>
 
     <action
         android:id="@+id/action_app_status"

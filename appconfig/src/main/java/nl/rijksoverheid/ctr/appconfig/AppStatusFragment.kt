@@ -24,6 +24,12 @@ class AppStatusFragment : Fragment(R.layout.fragment_app_status) {
 
     companion object {
         const val EXTRA_APP_STATUS = "EXTRA_APP_STATUS"
+
+        fun getBundle(appStatus: AppStatus): Bundle {
+            val bundle = Bundle()
+            bundle.putParcelable(EXTRA_APP_STATUS, appStatus)
+            return bundle
+        }
     }
 
     private val androidUtil: AndroidUtil by inject()
