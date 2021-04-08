@@ -9,16 +9,23 @@
 package nl.rijksoverheid.ctr.design
 
 import android.view.View
+import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ViewCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
+import nl.rijksoverheid.ctr.shared.AccessibilityConstants
+import nl.rijksoverheid.ctr.shared.ext.getNavigationIconView
+import nl.rijksoverheid.ctr.shared.ext.setAccessibilityFocus
 
 
 /**
- * Base activity that adjust the navigation menu for system bar insets
+ * Base activity that adjust the navigation menu for system bar insets and handles custom destination logic
  */
-abstract class BaseMainFragment(contentLayoutId: Int) :
+abstract class BaseMainFragment(
+    contentLayoutId: Int,
+    val topLevelDestinations: Set<Int>
+) :
     Fragment(contentLayoutId) {
 
     override fun onStart() {
@@ -40,6 +47,22 @@ abstract class BaseMainFragment(contentLayoutId: Int) :
                     insets.systemWindowInsetBottom
                 )
                 insets
+            }
+
+            navController.addOnDestinationChangedListener { _, destination, _ ->
+
+                if (topLevelDestinations.contains(destination.id)) {
+                    drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+                } else {
+                    drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+                }
+
+                requireView().findViewById<Toolbar>(R.id.toolbar).getNavigationIconView()?.let {
+                    it.postDelayed(
+                        { it.setAccessibilityFocus() },
+                        AccessibilityConstants.ACCESSIBILITY_FOCUS_DELAY
+                    )
+                }
             }
         }
     }

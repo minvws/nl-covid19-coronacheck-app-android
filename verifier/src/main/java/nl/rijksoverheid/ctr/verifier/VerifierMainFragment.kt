@@ -28,7 +28,8 @@ import nl.rijksoverheid.ctr.shared.ext.setAccessibilityFocus
 import nl.rijksoverheid.ctr.shared.ext.styleTitle
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentMainBinding
 
-class VerifierMainFragment : BaseMainFragment(R.layout.fragment_main) {
+class VerifierMainFragment :
+    BaseMainFragment(R.layout.fragment_main, setOf(R.id.nav_scan_qr, R.id.nav_about_this_app)) {
 
     private var _binding: FragmentMainBinding? = null
     private val binding: FragmentMainBinding by lazy { _binding!! }
@@ -52,7 +53,7 @@ class VerifierMainFragment : BaseMainFragment(R.layout.fragment_main) {
 
         binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         val appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.nav_scan_qr, R.id.nav_about_this_app),
+            topLevelDestinations,
             binding.drawerLayout
         )
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)

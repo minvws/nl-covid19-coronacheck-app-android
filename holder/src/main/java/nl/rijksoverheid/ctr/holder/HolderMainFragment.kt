@@ -28,7 +28,12 @@ import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.ext.setAccessibilityFocus
 import nl.rijksoverheid.ctr.shared.ext.styleTitle
 
-class HolderMainFragment : BaseMainFragment(R.layout.fragment_main) {
+class HolderMainFragment : BaseMainFragment(
+    R.layout.fragment_main, setOf(
+        R.id.nav_my_overview,
+        R.id.nav_about_this_app
+    )
+) {
 
     private var _binding: FragmentMainBinding? = null
     private val binding: FragmentMainBinding by lazy { _binding!! }
@@ -52,30 +57,25 @@ class HolderMainFragment : BaseMainFragment(R.layout.fragment_main) {
 
         binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.nav_my_overview,
-                R.id.nav_about_this_app
-            ),
+            topLevelDestinations,
             binding.drawerLayout
         )
 
         binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
+        binding.navView.setupWithNavController(navController)
+
         binding.toolbar.setNavigationOnClickListener {
-            // Override back arrow behavior on toolbar
             when (navController.currentDestination?.id) {
                 R.id.nav_your_negative_result -> {
+                    // Trigger custom dispatcher in destination
                     requireActivity().onBackPressedDispatcher.onBackPressed()
                     return@setNavigationOnClickListener
                 }
             }
 
-            // If no custom behavior was handled perform the default action.
-            NavigationUI.navigateUp(navController, binding.drawerLayout)
+            NavigationUI.navigateUp(navController, appBarConfiguration)
         }
-        binding.navView.setupWithNavController(navController)
-
-        navigationDrawerStyling()
 
         binding.navView.setNavigationItemSelectedListener { item ->
             when (item.itemId) {
@@ -105,6 +105,8 @@ class HolderMainFragment : BaseMainFragment(R.layout.fragment_main) {
             binding.drawerLayout.closeDrawer(GravityCompat.START)
             true
         }
+
+        navigationDrawerStyling()
 
         // Add close button to menu if user has screenreader enabled
         binding.navView.menu.findItem(R.id.nav_close_menu).isVisible =
