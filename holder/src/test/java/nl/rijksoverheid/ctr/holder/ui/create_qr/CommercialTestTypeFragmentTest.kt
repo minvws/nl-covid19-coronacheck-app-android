@@ -25,7 +25,7 @@ class CommercialTestTypeFragmentTest : AutoCloseKoinTest() {
     private val navController = TestNavHostController(
         ApplicationProvider.getApplicationContext()
     ).also {
-        it.setGraph(R.navigation.holder_nav_graph)
+        it.setGraph(R.navigation.holder_nav_graph_main)
         it.setCurrentDestination(R.id.nav_commercial_test_type)
     }
 
