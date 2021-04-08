@@ -1,4 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+  ~   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+  ~
+  ~   SPDX-License-Identifier: EUPL-1.2
+  ~
+  -->
+
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -26,6 +33,10 @@
             app:exitAnim="@anim/fragment_open_exit"
             app:popEnterAnim="@anim/fragment_close_enter"
             app:popExitAnim="@anim/fragment_close_exit" />
+
+        <action
+            android:id="@+id/action_about_this_app"
+            app:destination="@id/nav_about_this_app" />
 
     </fragment>
 
@@ -86,39 +97,10 @@
 
     </fragment>
 
-    <action
-        android:id="@+id/action_app_status"
-        app:destination="@id/nav_app_status"
-        app:popUpTo="@id/main_nav"
-        app:popUpToInclusive="true" />
-
-    <fragment
-        android:id="@+id/nav_app_status"
-        android:name="nl.rijksoverheid.ctr.appconfig.AppStatusFragment"
-        tools:layout="@layout/fragment_app_status" />
-
-    <action
-        android:id="@+id/action_introduction"
-        app:destination="@id/nav_introduction"
-        app:popUpTo="@id/main_nav"
-        app:popUpToInclusive="true" />
-
-    <action
-        android:id="@+id/action_scan_qr"
-        app:destination="@id/nav_scan_qr"
-        app:enterAnim="@anim/fragment_open_enter"
-        app:exitAnim="@anim/fragment_open_exit"
-        app:popEnterAnim="@anim/fragment_close_enter"
-        app:popExitAnim="@anim/fragment_close_exit"
-        app:popUpTo="@id/main_nav"
-        app:popUpToInclusive="true" />
-
     <fragment
         android:id="@+id/nav_about_this_app"
         android:name="nl.rijksoverheid.ctr.design.menu.about.AboutThisAppFragment"
         android:label="@string/about_this_app"
         tools:layout="@layout/fragment_about_app" />
-
-    <include app:graph="@navigation/introduction_nav_graph" />
 
 </navigation>

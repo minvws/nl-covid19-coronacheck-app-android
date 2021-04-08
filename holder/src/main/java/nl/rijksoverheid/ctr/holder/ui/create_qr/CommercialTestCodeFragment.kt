@@ -11,6 +11,7 @@ import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.appconfig.AppConfigUtil
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderMainActivity
+import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentCommercialTestCodeBinding
 import nl.rijksoverheid.ctr.holder.ext.hideKeyboard
@@ -82,7 +83,7 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
         }
 
         viewModel.loading.observe(viewLifecycleOwner, EventObserver {
-            (activity as HolderMainActivity).presentLoading(it)
+            (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
         })
 
         binding.uniqueCodeText.addTextChangedListener {

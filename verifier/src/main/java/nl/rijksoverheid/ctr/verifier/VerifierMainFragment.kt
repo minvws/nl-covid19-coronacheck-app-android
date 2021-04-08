@@ -53,7 +53,7 @@ class VerifierMainFragment : BaseMainFragment(R.layout.fragment_main) {
                 }
                 R.id.nav_about_this_app -> {
                     navController.navigate(
-                        R.id.nav_about_this_app, AboutThisAppFragment.getBundle(
+                        R.id.action_about_this_app, AboutThisAppFragment.getBundle(
                             data = AboutThisAppData(
                                 versionName = BuildConfig.VERSION_NAME,
                                 versionCode = BuildConfig.VERSION_CODE.toString()
