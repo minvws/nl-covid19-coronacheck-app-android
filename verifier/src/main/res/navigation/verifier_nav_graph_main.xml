@@ -114,7 +114,7 @@
         app:popUpToInclusive="true" />
 
     <fragment
-        android:id="@+id/about_this_app"
+        android:id="@+id/nav_about_this_app"
         android:name="nl.rijksoverheid.ctr.design.menu.about.AboutThisAppFragment"
         android:label="@string/about_this_app"
         tools:layout="@layout/fragment_about_app" />

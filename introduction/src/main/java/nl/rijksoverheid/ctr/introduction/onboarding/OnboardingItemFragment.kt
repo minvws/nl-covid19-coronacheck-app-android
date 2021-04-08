@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.introduction.onboarding
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import nl.rijksoverheid.ctr.appconfig.AppConfigUtil
 import nl.rijksoverheid.ctr.introduction.R
 import nl.rijksoverheid.ctr.introduction.databinding.FragmentOnboardingItemBinding
 import nl.rijksoverheid.ctr.introduction.onboarding.models.OnboardingItem
@@ -32,6 +33,7 @@ class OnboardingItemFragment : Fragment(R.layout.fragment_onboarding_item) {
         }
     }
 
+    private val appConfigUtil: AppConfigUtil by inject()
     private val androidUtil: AndroidUtil by inject()
 
     private val item: OnboardingItem by lazy {
@@ -45,7 +47,12 @@ class OnboardingItemFragment : Fragment(R.layout.fragment_onboarding_item) {
         val binding = FragmentOnboardingItemBinding.bind(view)
 
         binding.title.text = getString(item.titleResource)
-        binding.description.text = item.description.fromHtml()
+        if (item.descriptionHasTestValidity) {
+            binding.description.text =
+                appConfigUtil.getStringWithTestValidity(item.description).fromHtml()
+        } else {
+            binding.description.text = getString(item.description).fromHtml()
+        }
 
         if (androidUtil.isSmallScreen()) {
             binding.image.visibility = View.GONE

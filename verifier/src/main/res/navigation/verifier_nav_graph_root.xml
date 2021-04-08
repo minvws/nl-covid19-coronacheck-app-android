@@ -18,33 +18,18 @@
         <action
             android:id="@+id/action_exit_introduction"
             app:destination="@id/nav_main"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit"
             app:popUpTo="@id/root_nav"
             app:popUpToInclusive="true" />
 
     </fragment>
 
-    <action
-        android:id="@+id/action_app_status"
-        app:destination="@id/nav_app_status"
-        app:popUpTo="@id/main_nav"
-        app:popUpToInclusive="true" />
-
-    <action
-        android:id="@+id/action_scan_qr"
-        app:destination="@id/nav_scan_qr"
-        app:enterAnim="@anim/fragment_open_enter"
-        app:exitAnim="@anim/fragment_open_exit"
-        app:popEnterAnim="@anim/fragment_close_enter"
-        app:popExitAnim="@anim/fragment_close_exit"
-        app:popUpTo="@id/main_nav"
-        app:popUpToInclusive="true" />
-
-    <action
-        android:id="@+id/action_about_this_app"
-        app:destination="@id/about_this_app"
-        app:enterAnim="@anim/fragment_open_enter"
-        app:exitAnim="@anim/fragment_open_exit"
-        app:popEnterAnim="@anim/fragment_close_enter"
-        app:popExitAnim="@anim/fragment_close_exit" />
+    <fragment
+        android:id="@+id/nav_app_status"
+        android:name="nl.rijksoverheid.ctr.appconfig.AppStatusFragment"
+        tools:layout="@layout/fragment_app_status" />
 
 </navigation>

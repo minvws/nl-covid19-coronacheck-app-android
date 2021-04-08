@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
+        android:contentDescription="@string/back"
         app:layout_constraintBottom_toTopOf="@+id/scroll"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -50,11 +51,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="@string/privacy_policy_description"
                 android:textAppearance="?attr/textAppearanceBody1"
                 app:layout_constraintEnd_toEndOf="@+id/title"
                 app:layout_constraintStart_toStartOf="@+id/title"
-                app:layout_constraintTop_toBottomOf="@+id/title" />
+                app:layout_constraintTop_toBottomOf="@+id/title"
+                tools:text="@string/privacy_policy_description" />
 
             <LinearLayout
                 android:id="@+id/items"
@@ -88,8 +89,8 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/shape_privacy_policy_checkbox_background"
                     android:paddingHorizontal="16dp"
-                    android:textAppearance="?attr/textAppearanceBody1"
-                    tools:text="Akkoord met privacy verklaring" />
+                    android:text="@string/privacy_policy_checkbox_text"
+                    android:textAppearance="?attr/textAppearanceBody1" />
 
             </FrameLayout>
 
@@ -117,7 +118,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             android:enabled="false"
-            tools:text="Volgende" />
+            android:text="@string/onboarding_next" />
 
     </androidx.cardview.widget.CardView>
 

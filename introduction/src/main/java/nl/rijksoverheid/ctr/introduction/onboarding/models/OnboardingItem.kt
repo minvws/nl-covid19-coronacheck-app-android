@@ -1,6 +1,8 @@
 package nl.rijksoverheid.ctr.introduction.onboarding.models
 
 import android.os.Parcelable
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import kotlinx.parcelize.Parcelize
 
 /*
@@ -12,7 +14,8 @@ import kotlinx.parcelize.Parcelize
  */
 @Parcelize
 data class OnboardingItem(
-    val imageResource: Int,
-    val titleResource: Int,
-    val description: String
+    @DrawableRes val imageResource: Int,
+    @StringRes val titleResource: Int,
+    @StringRes val description: Int,
+    val descriptionHasTestValidity: Boolean = false
 ) : Parcelable

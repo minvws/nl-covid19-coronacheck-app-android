@@ -2,14 +2,18 @@ package nl.rijksoverheid.ctr.verifier
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.navigation.fragment.NavHostFragment
-import nl.rijksoverheid.ctr.appconfig.AppConfigUtil
+import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
+import nl.rijksoverheid.ctr.appconfig.AppStatusFragment
+import nl.rijksoverheid.ctr.appconfig.model.AppStatus
 import nl.rijksoverheid.ctr.introduction.IntroductionFragment
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.models.IntroductionData
 import nl.rijksoverheid.ctr.introduction.onboarding.models.OnboardingItem
+import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
 import nl.rijksoverheid.ctr.introduction.privacy_consent.models.PrivacyPolicyItem
-import nl.rijksoverheid.ctr.verifier.databinding.ActivityMainNewBinding
+import nl.rijksoverheid.ctr.verifier.databinding.ActivityMainBinding
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -20,15 +24,16 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class NewVerifierMainActivity : AppCompatActivity() {
+class VerifierMainActivity : AppCompatActivity() {
 
-    private val appConfigUtil: AppConfigUtil by inject()
     private val introductionViewModel: IntroductionViewModel by viewModel()
+    private val introductionPersistenceManager: IntroductionPersistenceManager by inject()
+    private val appStatusViewModel: AppConfigViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
-        val binding = ActivityMainNewBinding.inflate(layoutInflater)
+        val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val navHostFragment =
@@ -44,22 +49,23 @@ class NewVerifierMainActivity : AppCompatActivity() {
                             OnboardingItem(
                                 R.drawable.illustration_onboarding_1,
                                 R.string.onboarding_screen_1_title,
-                                appConfigUtil.getStringWithTestValidity(R.string.onboarding_screen_1_description)
+                                R.string.onboarding_screen_1_description
                             ),
                             OnboardingItem(
                                 R.drawable.illustration_onboarding_2,
                                 R.string.onboarding_screen_2_title,
-                                appConfigUtil.getStringWithTestValidity(R.string.onboarding_screen_2_description)
+                                R.string.onboarding_screen_2_description,
+                                true
                             ),
                             OnboardingItem(
                                 R.drawable.illustration_onboarding_3,
                                 R.string.onboarding_screen_3_title,
-                                getString(R.string.onboarding_screen_3_description)
+                                R.string.onboarding_screen_3_description
                             ),
                             OnboardingItem(
                                 R.drawable.illustration_onboarding_4,
                                 R.string.onboarding_screen_4_title,
-                                getString(R.string.onboarding_screen_4_description)
+                                R.string.onboarding_screen_4_description
                             )
                         ),
                         privacyPolicyItems = listOf(
@@ -75,16 +81,25 @@ class NewVerifierMainActivity : AppCompatActivity() {
                                 R.drawable.shield,
                                 R.string.privacy_policy_3
                             )
-                        ),
-                        privacyPolicyStringResource = R.string.privacy_policy_description,
-                        privacyPolicyCheckboxStringResource = R.string.privacy_policy_checkbox_text,
-                        onboardingNextButtonStringResource = R.string.onboarding_next,
-                        backButtonStringResource = R.string.back,
-                        onboardingPageIndicatorStringResource = R.string.onboarding_page_indicator_label,
-                        appSetupTextResource = R.string.app_setup_text
+                        )
                     )
                 )
             )
+        }
+
+        appStatusViewModel.appStatusLiveData.observe(this, {
+            if (it !is AppStatus.NoActionRequired) {
+                val bundle = bundleOf(AppStatusFragment.EXTRA_APP_STATUS to it)
+                navController.navigate(R.id.nav_app_status, bundle)
+            }
+        })
+    }
+
+    override fun onStart() {
+        super.onStart()
+        // Only get app config on every app foreground when introduction is finished
+        if (introductionPersistenceManager.getIntroductionFinished()) {
+            appStatusViewModel.refresh()
         }
     }
 

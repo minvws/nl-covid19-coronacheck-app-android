@@ -8,29 +8,26 @@
 
 package nl.rijksoverheid.ctr.design
 
-import android.os.Bundle
 import android.view.View
-import androidx.annotation.IdRes
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 
 
 /**
- * Base activity that adjust the navigation menu for system bar insets and
- * locks the drawer on any nav destination except for the home destination
- * @param homeDestination the destination which should show the drawer
+ * Base activity that adjust the navigation menu for system bar insets
  */
-abstract class BaseActivity(@IdRes private val homeDestination: Int) : AppCompatActivity() {
+abstract class BaseMainFragment(contentLayoutId: Int) :
+    Fragment(contentLayoutId) {
 
-    override fun onPostCreate(savedInstanceState: Bundle?) {
-        super.onPostCreate(savedInstanceState)
+    override fun onStart() {
+        super.onStart()
         val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as? NavHostFragment
+            childFragmentManager.findFragmentById(R.id.nav_host_fragment) as? NavHostFragment
         val navController = navHostFragment?.navController
-        val drawer: DrawerLayout? = findViewById(R.id.drawer_layout)
-        val navView: View? = findViewById(R.id.nav_view)
+        val drawer: DrawerLayout? = requireView().findViewById(R.id.drawer_layout)
+        val navView: View? = requireView().findViewById(R.id.nav_view)
 
         if (drawer != null && navView != null && navController != null) {
             // Listen on the root view so that we can inset the navView even if the insets are consumed
@@ -43,13 +40,6 @@ abstract class BaseActivity(@IdRes private val homeDestination: Int) : AppCompat
                     insets.systemWindowInsetBottom
                 )
                 insets
-            }
-
-            navController.addOnDestinationChangedListener { _, destination, _ ->
-                when (destination.id) {
-                    homeDestination -> drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
-                    else -> drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-                }
             }
         }
     }

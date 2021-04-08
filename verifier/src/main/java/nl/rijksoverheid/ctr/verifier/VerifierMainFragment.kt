@@ -9,71 +9,33 @@
 package nl.rijksoverheid.ctr.verifier
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
-import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
-import nl.rijksoverheid.ctr.appconfig.AppStatusFragment
-import nl.rijksoverheid.ctr.appconfig.model.AppStatus
+import nl.rijksoverheid.ctr.design.BaseMainFragment
 import nl.rijksoverheid.ctr.design.ext.isScreenReaderOn
-import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
+import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppData
+import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppFragment
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.ext.styleTitle
-import nl.rijksoverheid.ctr.verifier.databinding.ActivityMainBinding
-import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import nl.rijksoverheid.ctr.verifier.databinding.FragmentMainBinding
 
-class VerifierMainFragment : Fragment() {
+class VerifierMainFragment : BaseMainFragment(R.layout.fragment_main) {
 
-    private lateinit var binding: ActivityMainBinding
-
-    private val introductionPersistenceManager: IntroductionPersistenceManager by inject()
-    private val appStatusViewModel: AppConfigViewModel by viewModel()
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = ActivityMainBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+    private var _binding: FragmentMainBinding? = null
+    private val binding: FragmentMainBinding by lazy { _binding!! }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        _binding = FragmentMainBinding.bind(view)
+
         val navHostFragment =
             childFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id in arrayOf(
-                    R.id.nav_setup,
-                    R.id.nav_app_status,
-                    R.id.nav_onboarding,
-                    R.id.nav_privacy_policy
-                )
-            ) {
-                binding.toolbar.visibility = View.GONE
-                binding.drawerLayout.setDrawerLockMode(
-                    DrawerLayout.LOCK_MODE_LOCKED_CLOSED,
-                    GravityCompat.START
-                )
-            } else {
-                binding.toolbar.visibility = View.VISIBLE
-                binding.drawerLayout.setDrawerLockMode(
-                    DrawerLayout.LOCK_MODE_UNLOCKED,
-                    GravityCompat.START
-                )
-            }
-        }
 
         val appBarConfiguration = AppBarConfiguration(
             setOf(R.id.nav_scan_qr, R.id.nav_about_this_app),
@@ -90,7 +52,14 @@ class VerifierMainFragment : Fragment() {
                     BuildConfig.URL_SUPPORT.launchUrl(requireContext())
                 }
                 R.id.nav_about_this_app -> {
-                    navController.navigate(R.id.action_about_this_app)
+                    navController.navigate(
+                        R.id.nav_about_this_app, AboutThisAppFragment.getBundle(
+                            data = AboutThisAppData(
+                                versionName = BuildConfig.VERSION_NAME,
+                                versionCode = BuildConfig.VERSION_CODE.toString()
+                            )
+                        )
+                    )
                 }
                 R.id.nav_privacy_statement -> {
                     BuildConfig.URL_PRIVACY_STATEMENT.launchUrl(requireContext())
@@ -106,29 +75,18 @@ class VerifierMainFragment : Fragment() {
             true
         }
 
-        appStatusViewModel.appStatusLiveData.observe(viewLifecycleOwner) {
-            if (it !is AppStatus.NoActionRequired) {
-                val bundle = bundleOf(AppStatusFragment.EXTRA_APP_STATUS to it)
-                navController.navigate(R.id.action_app_status, bundle)
-            }
-        }
-
         // Add close button to menu if user has screenreader enabled
         binding.navView.menu.findItem(R.id.nav_close_menu).isVisible =
             requireActivity().isScreenReaderOn()
     }
 
-    fun presentLoading(loading: Boolean) {
-        binding.loading.visibility = if (loading) View.VISIBLE else View.GONE
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
-    override fun onStart() {
-        super.onStart()
-
-        // Only get app config on every app foreground when introduction is finished
-        if (introductionPersistenceManager.getIntroductionFinished()) {
-            appStatusViewModel.refresh()
-        }
+    fun presentLoading(loading: Boolean) {
+        binding.loading.visibility = if (loading) View.VISIBLE else View.GONE
     }
 
     private fun navigationDrawerStyling() {

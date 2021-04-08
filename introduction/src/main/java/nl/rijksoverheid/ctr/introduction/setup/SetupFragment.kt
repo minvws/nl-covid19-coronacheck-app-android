@@ -8,10 +8,7 @@ import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.AppStatusFragment
 import nl.rijksoverheid.ctr.appconfig.model.AppStatus
-import nl.rijksoverheid.ctr.introduction.CoronaCheckApp
-import nl.rijksoverheid.ctr.introduction.IntroductionFragment
 import nl.rijksoverheid.ctr.introduction.R
-import nl.rijksoverheid.ctr.introduction.databinding.FragmentSetupBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /*
@@ -24,13 +21,9 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class SetupFragment : Fragment(R.layout.fragment_setup) {
 
     private val appStatusViewModel: AppConfigViewModel by viewModel()
-    private val introductionData by lazy { (parentFragment?.parentFragment as IntroductionFragment).introductionData }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val binding = FragmentSetupBinding.bind(view)
-        binding.text.setText(introductionData.appSetupTextResource)
 
         appStatusViewModel.appStatusLiveData.observe(viewLifecycleOwner, {
             if (it is AppStatus.NoActionRequired) {

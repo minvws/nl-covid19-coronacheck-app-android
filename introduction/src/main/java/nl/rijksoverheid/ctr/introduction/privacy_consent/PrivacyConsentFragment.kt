@@ -51,17 +51,12 @@ class PrivacyConsentFragment : Fragment(R.layout.fragment_privacy_consent) {
                 requireActivity().finish()
             }
         }
-        binding.toolbar.navigationContentDescription =
-            getString(introductionData.backButtonStringResource)
 
         binding.description.text =
-            getString(introductionData.privacyPolicyStringResource).fromHtml()
+            getString(R.string.privacy_policy_description).fromHtml()
         binding.description.setOnClickListener {
-            BuildConfig.URL_PRIVACY_STATEMENT.launchUrl(requireContext())
+            BuildConfig.URL_PRIVACY_STATEMENT.launchUrl(requireActivity())
         }
-        binding.checkbox.text =
-            getString(introductionData.privacyPolicyCheckboxStringResource)
-        binding.button.text = getString(introductionData.onboardingNextButtonStringResource)
 
         introductionData.privacyPolicyItems.forEach { item ->
             val viewBinding =

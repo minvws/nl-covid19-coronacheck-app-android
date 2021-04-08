@@ -23,10 +23,10 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="16dp"
+            android:text="@string/about_this_app_description"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="CoronaCheck is ontwikkeld zodat bezoekers van bepaalde sociale, culturele en sportieve locaties kunnen bewijzen dat ze negatief getest zijn op corona. Met behulp van deze app komen alleen mensen met een geldig negatief testbewijs binnen. Zo trekt Nederland er weer meer op uit." />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/app_version"

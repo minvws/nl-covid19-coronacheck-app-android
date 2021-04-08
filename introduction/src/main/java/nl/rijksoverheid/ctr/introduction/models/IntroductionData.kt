@@ -1,7 +1,6 @@
 package nl.rijksoverheid.ctr.introduction.models
 
 import android.os.Parcelable
-import androidx.annotation.StringRes
 import kotlinx.parcelize.Parcelize
 import nl.rijksoverheid.ctr.introduction.onboarding.models.OnboardingItem
 import nl.rijksoverheid.ctr.introduction.privacy_consent.models.PrivacyPolicyItem
@@ -16,11 +15,5 @@ import nl.rijksoverheid.ctr.introduction.privacy_consent.models.PrivacyPolicyIte
 @Parcelize
 data class IntroductionData(
     val onboardingItems: List<OnboardingItem> = listOf(),
-    val privacyPolicyItems: List<PrivacyPolicyItem> = listOf(),
-    @StringRes val appSetupTextResource: Int,
-    @StringRes val privacyPolicyStringResource: Int,
-    @StringRes val privacyPolicyCheckboxStringResource: Int,
-    @StringRes val onboardingNextButtonStringResource: Int,
-    @StringRes val backButtonStringResource: Int,
-    @StringRes val onboardingPageIndicatorStringResource: Int
+    val privacyPolicyItems: List<PrivacyPolicyItem> = listOf()
 ) : Parcelable

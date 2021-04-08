@@ -10,7 +10,6 @@ import androidx.core.view.forEachIndexed
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
-import nl.rijksoverheid.ctr.introduction.CoronaCheckApp
 import nl.rijksoverheid.ctr.introduction.IntroductionFragment
 import nl.rijksoverheid.ctr.introduction.R
 import nl.rijksoverheid.ctr.introduction.databinding.FragmentOnboardingBinding
@@ -48,7 +47,7 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
                 updateCurrentIndicator(binding, position)
 
                 binding.indicators.contentDescription = getString(
-                    introductionData.onboardingPageIndicatorStringResource,
+                    R.string.onboarding_page_indicator_label,
                     (position + 1).toString(),
                     adapter.itemCount.toString()
                 )
@@ -84,10 +83,7 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
         binding.toolbar.setNavigationOnClickListener {
             binding.viewPager.currentItem = binding.viewPager.currentItem - 1
         }
-        binding.toolbar.navigationContentDescription =
-            getString(introductionData.backButtonStringResource)
 
-        binding.button.text = getString(introductionData.onboardingNextButtonStringResource)
         binding.button.setOnClickListener {
             val currentItem = binding.viewPager.currentItem
             if (currentItem == adapter.itemCount - 1) {

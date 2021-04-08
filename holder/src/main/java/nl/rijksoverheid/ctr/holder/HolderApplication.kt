@@ -80,22 +80,22 @@ open class HolderApplication : SharedApplication(), CoronaCheckApp, AboutAppReso
                 OnboardingItem(
                     R.drawable.illustration_onboarding_1,
                     R.string.onboarding_screen_1_title,
-                    getString(R.string.onboarding_screen_1_description)
+                    R.string.onboarding_screen_1_description
                 ),
                 OnboardingItem(
                     R.drawable.illustration_onboarding_2,
                     R.string.onboarding_screen_2_title,
-                    getString(R.string.onboarding_screen_2_description)
+                    R.string.onboarding_screen_1_description
                 ),
                 OnboardingItem(
                     R.drawable.illustration_onboarding_3,
                     R.string.onboarding_screen_3_title,
-                    appConfigUtil.getStringWithTestValidity(R.string.onboarding_screen_3_description)
+                    R.string.onboarding_screen_1_description
                 ),
                 OnboardingItem(
                     R.drawable.illustration_onboarding_4,
                     R.string.onboarding_screen_4_title,
-                    getString(R.string.onboarding_screen_4_description)
+                    R.string.onboarding_screen_1_description
                 )
             ),
             privacyPolicyItems = listOf(

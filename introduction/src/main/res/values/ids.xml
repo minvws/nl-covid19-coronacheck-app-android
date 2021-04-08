@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="app_setup_text" type="string" />
+    <item name="privacy_policy_title" type="string" />
+    <item name="privacy_policy_description" type="string" />
+    <item name="privacy_policy_checkbox_text" type="string" />
+    <item name="back" type="string" />
+    <item name="onboarding_next" type="string" />
+    <item name="onboarding_page_indicator_label" type="string" />
+</resources>
