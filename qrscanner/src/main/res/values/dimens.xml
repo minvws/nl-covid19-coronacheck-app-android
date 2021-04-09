@@ -9,5 +9,5 @@
 
 <resources>
     <dimen name="overlay_cutout_corner_radius">10dp</dimen>
-    <dimen name="overlay_cutout_margin">16dp</dimen>
+    <dimen name="overlay_cutout_margin">20dp</dimen>
 </resources>
