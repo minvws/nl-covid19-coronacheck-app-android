@@ -72,15 +72,6 @@ class QrCodeScannerActivity : AppCompatActivity() {
         intent.getStringExtra(EXTRA_CUSTOM_TITLE)?.let {
             binding.toolbar.title = it
         }
-
-        Handler().postDelayed(object : Runnable {
-            override fun run() {
-                val intent = Intent()
-                intent.putExtra(SCAN_RESULT, "")
-                setResult(RESULT_OK, intent)
-                finish()
-            }
-        }, 3000)
     }
 
     override fun onStart() {
