@@ -76,7 +76,7 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
             }
 
         scanQrViewModel.loadingLiveData.observe(viewLifecycleOwner, EventObserver {
-            (requireActivity() as VerifierMainFragment).presentLoading(it)
+            (parentFragment?.parentFragment as VerifierMainFragment).presentLoading(it)
         })
 
         scanQrViewModel.validatedQrLiveData.observe(viewLifecycleOwner, EventObserver {

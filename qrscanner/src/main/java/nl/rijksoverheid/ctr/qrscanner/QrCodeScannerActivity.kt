@@ -14,6 +14,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Handler
 import android.os.Parcelable
 import android.util.DisplayMetrics
 import android.view.View
@@ -24,8 +25,6 @@ import androidx.camera.view.PreviewView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
-import androidx.core.view.ViewCompat.setLayerPaint
-import androidx.core.view.ViewCompat.setLayerType
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.mlkit.vision.barcode.Barcode
 import com.google.mlkit.vision.barcode.BarcodeScanner
@@ -73,6 +72,15 @@ class QrCodeScannerActivity : AppCompatActivity() {
         intent.getStringExtra(EXTRA_CUSTOM_TITLE)?.let {
             binding.toolbar.title = it
         }
+
+        Handler().postDelayed(object : Runnable {
+            override fun run() {
+                val intent = Intent()
+                intent.putExtra(SCAN_RESULT, "")
+                setResult(RESULT_OK, intent)
+                finish()
+            }
+        }, 3000)
     }
 
     override fun onStart() {
@@ -316,7 +324,7 @@ class QrCodeScannerActivity : AppCompatActivity() {
 
         fun getIntent(
             context: Context,
-            customTitle : String,
+            customTitle: String,
             customMessage: String,
             rationaleDialog: RationaleDialog?
         ): Intent {
