@@ -40,7 +40,7 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
     private val navController = TestNavHostController(
         ApplicationProvider.getApplicationContext()
     ).also {
-        it.setGraph(R.navigation.verifier_nav_graph)
+        it.setGraph(R.navigation.verifier_nav_graph_main)
         it.setCurrentDestination(R.id.nav_scan_qr)
     }
 
@@ -131,11 +131,6 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
                     fakeScanQrViewModel(
                         result = state,
                         scanInstructionsSeen = hasSeenScanInstructions
-                    )
-                }
-                viewModel {
-                    fakeIntroductionViewModel(
-                        introductionFinished = true
                     )
                 }
             }

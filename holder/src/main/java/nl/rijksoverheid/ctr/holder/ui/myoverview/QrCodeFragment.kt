@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.holder.BuildConfig
-import nl.rijksoverheid.ctr.holder.HolderMainActivity
+import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentQrCodeBinding
 import nl.rijksoverheid.ctr.shared.QrCodeConstants
@@ -62,7 +62,7 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
     }
 
     private fun presentQrLoading(loading: Boolean) {
-        (requireActivity() as HolderMainActivity).presentLoading(loading)
+        (parentFragment?.parentFragment as HolderMainFragment).presentLoading(loading)
         binding.content.visibility = if (loading) View.GONE else View.VISIBLE
         // Move focus to loading indicator or QR depending on state
         if (!loading) {
@@ -94,7 +94,7 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
 
         requireActivity().window.attributes.screenBrightness =
             WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE
-        (requireActivity() as HolderMainActivity).presentLoading(false)
+        (parentFragment?.parentFragment as HolderMainFragment).presentLoading(false)
 
         setFragmentResult(
             MyOverviewFragment.REQUEST_KEY,

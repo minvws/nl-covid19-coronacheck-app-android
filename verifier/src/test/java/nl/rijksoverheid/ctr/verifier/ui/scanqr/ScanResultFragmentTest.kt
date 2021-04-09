@@ -1,10 +1,6 @@
 package nl.rijksoverheid.ctr.verifier.ui.scanqr
 
-import android.app.Activity
-import android.content.Intent
-import android.graphics.Bitmap
 import android.widget.TextView
-import androidx.activity.result.ActivityResultLauncher
 import androidx.core.os.bundleOf
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.navigation.Navigation
@@ -19,7 +15,6 @@ import com.schibsted.spain.barista.interaction.BaristaClickInteractions.clickOn
 import com.schibsted.spain.barista.interaction.BaristaScrollInteractions.scrollTo
 import nl.rijksoverheid.ctr.design.views.AbbreviatedPersonalDetailsItemWidget
 import nl.rijksoverheid.ctr.design.views.AbbreviatedPersonalDetailsWidget
-import nl.rijksoverheid.ctr.qrscanner.QrCodeScannerUtil
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.fakeIntroductionViewModel
@@ -156,7 +151,7 @@ class ScanResultFragmentTest : AutoCloseKoinTest() {
         navController = TestNavHostController(
             ApplicationProvider.getApplicationContext()
         ).also {
-            it.setGraph(R.navigation.verifier_nav_graph)
+            it.setGraph(R.navigation.verifier_nav_graph_main)
             it.setCurrentDestination(R.id.nav_scan_result)
         }
 

@@ -1,9 +1,11 @@
 package nl.rijksoverheid.ctr.holder
 
 import android.graphics.Bitmap
+import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
+import nl.rijksoverheid.ctr.appconfig.model.AppStatus
 import nl.rijksoverheid.ctr.holder.models.*
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.repositories.CoronaCheckRepository
@@ -26,6 +28,13 @@ import java.time.OffsetDateTime
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
+
+fun fakeAppConfigViewModel(appStatus: AppStatus = AppStatus.NoActionRequired) =
+    object : AppConfigViewModel() {
+        override fun refresh() {
+            appStatusLiveData.value = appStatus
+        }
+    }
 
 fun fakeTokenValidatorUtil(
     isValid: Boolean = true

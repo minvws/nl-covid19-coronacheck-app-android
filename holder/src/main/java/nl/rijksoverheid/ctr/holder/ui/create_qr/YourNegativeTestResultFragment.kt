@@ -9,6 +9,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import nl.rijksoverheid.ctr.design.ext.formatDateTime
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderMainActivity
+import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentYourNegativeTestResultsBinding
 import nl.rijksoverheid.ctr.holder.ext.findNavControllerSafety
@@ -86,7 +87,7 @@ class YourNegativeTestResultFragment : Fragment(R.layout.fragment_your_negative_
         }
 
         viewModel.loading.observe(viewLifecycleOwner, EventObserver {
-            (requireActivity() as HolderMainActivity).presentLoading(it)
+            (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
             binding.button.isEnabled = !it
         })
 

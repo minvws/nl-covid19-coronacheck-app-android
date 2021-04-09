@@ -1,8 +1,6 @@
 package nl.rijksoverheid.ctr.introduction.onboarding
 
 import android.os.Bundle
-import android.util.TypedValue
-import android.view.ContextThemeWrapper
 import android.view.View
 import android.widget.ImageView
 import android.widget.ScrollView
@@ -12,7 +10,7 @@ import androidx.core.view.forEachIndexed
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
-import nl.rijksoverheid.ctr.introduction.CoronaCheckApp
+import nl.rijksoverheid.ctr.introduction.IntroductionFragment
 import nl.rijksoverheid.ctr.introduction.R
 import nl.rijksoverheid.ctr.introduction.databinding.FragmentOnboardingBinding
 import nl.rijksoverheid.ctr.shared.ext.getNavigationIconView
@@ -27,12 +25,10 @@ import nl.rijksoverheid.ctr.shared.ext.setAccessibilityFocus
  */
 class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
 
-    private val onboardingData by lazy { (requireActivity().application as CoronaCheckApp).getOnboardingData() }
+    private val introductionData by lazy { (parentFragment?.parentFragment as IntroductionFragment).introductionData }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        setOnboardingActivityBackground()
 
         val binding = FragmentOnboardingBinding.bind(view)
 
@@ -40,9 +36,9 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
             OnboardingPagerAdapter(
                 childFragmentManager,
                 lifecycle,
-                onboardingData.onboardingItems
+                introductionData.onboardingItems
             )
-        binding.viewPager.offscreenPageLimit = onboardingData.onboardingItems.size
+        binding.viewPager.offscreenPageLimit = introductionData.onboardingItems.size
         binding.viewPager.adapter = adapter
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
@@ -51,7 +47,7 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
                 updateCurrentIndicator(binding, position)
 
                 binding.indicators.contentDescription = getString(
-                    onboardingData.onboardingPageIndicatorStringResource,
+                    R.string.onboarding_page_indicator_label,
                     (position + 1).toString(),
                     adapter.itemCount.toString()
                 )
@@ -87,10 +83,7 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
         binding.toolbar.setNavigationOnClickListener {
             binding.viewPager.currentItem = binding.viewPager.currentItem - 1
         }
-        binding.toolbar.navigationContentDescription =
-            getString(onboardingData.backButtonStringResource)
 
-        binding.button.text = getString(onboardingData.onboardingNextButtonStringResource)
         binding.button.setOnClickListener {
             val currentItem = binding.viewPager.currentItem
             if (currentItem == adapter.itemCount - 1) {
@@ -115,19 +108,6 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
             indicator.setImageResource(if (it == 0) R.drawable.shape_onboarding_item_indicator_selected else R.drawable.shape_onboarding_item_indicator)
             binding.indicators.addView(indicator)
         }
-    }
-
-    /**
-     * Remove splash screen and set
-     */
-    private fun setOnboardingActivityBackground() {
-        val theme = ContextThemeWrapper(
-            requireActivity(),
-            nl.rijksoverheid.ctr.design.R.style.AppTheme
-        ).theme
-        val typedValue = TypedValue()
-        theme.resolveAttribute(android.R.attr.windowBackground, typedValue, true)
-        requireActivity().window.setBackgroundDrawableResource(R.drawable.introduction_launch_screen)
     }
 
     private fun updateCurrentIndicator(binding: FragmentOnboardingBinding, position: Int) {
