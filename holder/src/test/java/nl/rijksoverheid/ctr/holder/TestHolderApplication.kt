@@ -1,6 +1,8 @@
 package nl.rijksoverheid.ctr.holder
 
 import androidx.preference.PreferenceManager
+import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.context.loadKoinModules
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
@@ -12,6 +14,11 @@ import org.koin.dsl.module
  *
  */
 class TestHolderApplication : HolderApplication() {
+
+    fun addKoinModules(modules: List<Module>) {
+        loadKoinModules(modules)
+    }
+
     override fun getAdditionalModules(): List<Module> {
         return listOf(module {
             factory {

@@ -1,8 +1,10 @@
 package nl.rijksoverheid.ctr.verifier
 
+import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
+import nl.rijksoverheid.ctr.appconfig.model.AppStatus
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.TestResultAttributes
@@ -22,6 +24,13 @@ import java.time.OffsetDateTime
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
+
+fun fakeAppConfigViewModel(appStatus: AppStatus = AppStatus.NoActionRequired) =
+    object : AppConfigViewModel() {
+        override fun refresh() {
+            appStatusLiveData.value = appStatus
+        }
+    }
 
 fun fakeIntroductionViewModel(
     introductionFinished: Boolean

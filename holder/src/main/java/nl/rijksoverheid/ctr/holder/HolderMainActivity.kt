@@ -21,9 +21,7 @@ import nl.rijksoverheid.ctr.introduction.IntroductionFragment
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.models.IntroductionData
 import nl.rijksoverheid.ctr.introduction.onboarding.models.OnboardingItem
-import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
 import nl.rijksoverheid.ctr.introduction.privacy_consent.models.PrivacyPolicyItem
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /*
@@ -36,7 +34,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class HolderMainActivity : AppCompatActivity() {
 
     private val introductionViewModel: IntroductionViewModel by viewModel()
-    private val introductionPersistenceManager: IntroductionPersistenceManager by inject()
     private val appStatusViewModel: AppConfigViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -114,7 +111,7 @@ class HolderMainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         // Only get app config on every app foreground when introduction is finished
-        if (introductionPersistenceManager.getIntroductionFinished()) {
+        if (introductionViewModel.introductionFinished()) {
             appStatusViewModel.refresh()
         }
     }
