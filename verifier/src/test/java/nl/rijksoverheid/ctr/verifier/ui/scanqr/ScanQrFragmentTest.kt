@@ -133,11 +133,6 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
                         scanInstructionsSeen = hasSeenScanInstructions
                     )
                 }
-                viewModel {
-                    fakeIntroductionViewModel(
-                        introductionFinished = true
-                    )
-                }
             }
         )
 
