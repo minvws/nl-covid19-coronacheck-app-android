@@ -166,9 +166,16 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
         aspectRatio: Int
     ) {
         // Set up options for the scanner, limiting it to QR codes only
-        val options = BarcodeScannerOptions.Builder()
-            .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
-            .build()
+        val options = if (intent.getBooleanExtra(EXTRA_IS_TEST_VARIANT, false)) {
+            BarcodeScannerOptions.Builder()
+                .setBarcodeFormats(Barcode.FORMAT_QR_CODE, Barcode.FORMAT_AZTEC)
+                .build()
+        } else {
+            BarcodeScannerOptions.Builder()
+                .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
+                .build()
+        }
+
         val barcodeScanner: BarcodeScanner = BarcodeScanning.getClient(options)
 
         // Set up the analysis Usecase
