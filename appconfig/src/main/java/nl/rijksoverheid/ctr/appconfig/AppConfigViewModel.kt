@@ -16,6 +16,7 @@ import nl.rijksoverheid.ctr.appconfig.model.AppStatus
 import nl.rijksoverheid.ctr.appconfig.model.ConfigResult
 import nl.rijksoverheid.ctr.appconfig.usecase.AppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.usecase.AppStatusUseCase
+import nl.rijksoverheid.ctr.appconfig.usecase.LoadPublicKeysUseCase
 import nl.rijksoverheid.ctr.appconfig.usecase.PersistConfigUseCase
 
 abstract class AppConfigViewModel : ViewModel() {

@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.holder
 
 import nl.rijksoverheid.ctr.api.apiModule
 import nl.rijksoverheid.ctr.appconfig.*
+import nl.rijksoverheid.ctr.appconfig.usecase.LoadPublicKeysUseCase
 import nl.rijksoverheid.ctr.design.designModule
 import nl.rijksoverheid.ctr.introduction.introductionModule
 import nl.rijksoverheid.ctr.qrscanner.qrCodeScannerModule

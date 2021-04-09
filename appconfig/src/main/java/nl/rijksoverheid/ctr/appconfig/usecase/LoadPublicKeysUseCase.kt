@@ -1,9 +1,7 @@
-package nl.rijksoverheid.ctr.appconfig
+package nl.rijksoverheid.ctr.appconfig.usecase
 
 import clmobile.Clmobile
 import com.squareup.moshi.Moshi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
 
 /*

@@ -9,6 +9,7 @@ import nl.rijksoverheid.ctr.qrscanner.QrCodeScannerUtil
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.verifier.R
+import nl.rijksoverheid.ctr.verifier.VerifierMainActivity
 import nl.rijksoverheid.ctr.verifier.VerifierMainFragment
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanQrBinding
 import org.koin.android.ext.android.inject
@@ -54,11 +55,7 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
         })
 
         binding.button.setOnClickListener {
-            if (!scanQrViewModel.scanInstructionsSeen()) {
-                findNavController().navigate(ScanQrFragmentDirections.actionScanInstructions())
-            } else {
-                openScanner()
-            }
+            (requireActivity() as VerifierMainActivity).launchScannerFlow()
         }
     }
 

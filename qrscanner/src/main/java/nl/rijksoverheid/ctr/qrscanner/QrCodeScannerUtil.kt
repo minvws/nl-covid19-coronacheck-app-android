@@ -45,18 +45,18 @@ class MLKitQrCodeScannerUtil : QrCodeScannerUtil {
         rationaleDialogOkayButtonText: String?
     ) {
         val rationaleDialog =
-            if (rationaleDialogTitle != null && rationaleDialogDescription != null && rationaleDialogOkayButtonText != null) QrCodeScannerActivity.RationaleDialog(
+            if (rationaleDialogTitle != null && rationaleDialogDescription != null && rationaleDialogOkayButtonText != null) QrCodeScannerFragment.RationaleDialog(
                 rationaleDialogTitle,
                 rationaleDialogDescription,
                 rationaleDialogOkayButtonText
             ) else null
-        val intentScan = QrCodeScannerActivity.getIntent(
-            context = activity,
-            customTitle = customTitle,
-            customMessage = customMessage,
-            rationaleDialog = rationaleDialog
-        )
-        activityResultLauncher.launch(intentScan)
+//        val intentScan = QrCodeScannerFragment.getIntent(
+//            context = activity,
+//            customTitle = customTitle,
+//            customMessage = customMessage,
+//            rationaleDialog = rationaleDialog
+//        )
+//        activityResultLauncher.launch(intentScan)
     }
 
     override fun createQrCode(qrCodeContent: String, width: Int, height: Int): Bitmap {
@@ -86,11 +86,11 @@ class MLKitQrCodeScannerUtil : QrCodeScannerUtil {
     }
 
     override fun parseScanResult(resultIntent: Intent?): String? {
-        resultIntent?.extras?.let { bun ->
-            if (bun.containsKey(QrCodeScannerActivity.SCAN_RESULT)) {
-                return bun.getString(QrCodeScannerActivity.SCAN_RESULT)!!
-            }
-        }
+//        resultIntent?.extras?.let { bun ->
+//            if (bun.containsKey(QrCodeScannerFragment.SCAN_RESULT)) {
+//                return bun.getString(QrCodeScannerFragment.SCAN_RESULT)!!
+//            }
+//        }
         return null
     }
 }

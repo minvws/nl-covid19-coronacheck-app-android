@@ -10,8 +10,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import nl.rijksoverheid.ctr.design.FullScreenDialogFragment
-import nl.rijksoverheid.ctr.qrscanner.QrCodeScannerUtil
 import nl.rijksoverheid.ctr.design.utils.getSpannableFromHtml
+import nl.rijksoverheid.ctr.qrscanner.QrCodeScannerUtil
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.util.MultiTapDetector
