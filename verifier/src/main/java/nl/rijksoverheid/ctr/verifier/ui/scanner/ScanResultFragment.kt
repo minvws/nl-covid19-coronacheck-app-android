@@ -5,11 +5,10 @@ import android.view.View
 import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
-import androidx.navigation.Navigation
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import nl.rijksoverheid.ctr.design.FullScreenDialogFragment
 import nl.rijksoverheid.ctr.design.utils.getSpannableFromHtml
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
 import nl.rijksoverheid.ctr.shared.util.MultiTapDetector
@@ -28,7 +27,7 @@ import org.koin.android.ext.android.inject
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class ScanResultFragment : FullScreenDialogFragment(R.layout.fragment_scan_result) {
+class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
 
     private val args: ScanResultFragmentArgs by navArgs()
     private val personalDetailsUtil: PersonalDetailsUtil by inject()
