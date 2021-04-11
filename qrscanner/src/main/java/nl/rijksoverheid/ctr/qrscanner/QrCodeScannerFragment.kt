@@ -12,7 +12,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.os.Parcelable
 import android.util.DisplayMetrics
 import android.view.View
 import androidx.camera.core.*
@@ -28,7 +27,6 @@ import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
-import kotlinx.parcelize.Parcelize
 import nl.rijksoverheid.ctr.qrscanner.databinding.FragmentScannerBinding
 import timber.log.Timber
 import java.util.concurrent.Executors
@@ -39,25 +37,12 @@ import kotlin.math.min
 abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
 
     private var _binding: FragmentScannerBinding? = null
-    val binding: FragmentScannerBinding by lazy { _binding!! }
+    val binding get() = _binding!!
 
     companion object {
         private const val PERMISSION_CAMERA_REQUEST = 1
         private const val RATIO_4_3_VALUE = 4.0 / 3.0
         private const val RATIO_16_9_VALUE = 16.0 / 9.0
-        private const val EXTRA_TITLE = "EXTRA_TITLE"
-        private const val EXTRA_MESSAGE = "EXTRA_MESSAGE"
-        private const val EXTRA_RATIONALE_DIALOG = "EXTRA_RATIONALE_DIALOG"
-
-        fun getBundle(title: String, message: String, rationaleDialog: RationaleDialog?): Bundle {
-            val bundle = Bundle()
-            bundle.putString(EXTRA_TITLE, title)
-            bundle.putString(EXTRA_MESSAGE, message)
-            rationaleDialog?.let {
-                bundle.putParcelable(EXTRA_RATIONALE_DIALOG, rationaleDialog)
-            }
-            return bundle
-        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -77,14 +62,13 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
             insets
         }
 
-        binding.scannerHeader.text = arguments?.getString(EXTRA_MESSAGE)
-        binding.toolbar.title = arguments?.getString(EXTRA_TITLE)
+        binding.scannerHeader.text = getCopy().message
+        binding.toolbar.title = getCopy().title
     }
 
     override fun onStart() {
         super.onStart()
         setupCamera()
-        Timber.v("ON START")
     }
 
     private fun setupCamera() {
@@ -200,7 +184,7 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
         imageAnalyzer.setAnalyzer(
             cameraExecutor,
             { cameraFrame ->
-                processCameraFrame(barcodeScanner, cameraFrame)
+                processCameraFrame(cameraProvider, barcodeScanner, cameraFrame)
             }
         )
 
@@ -226,20 +210,20 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
      */
     @SuppressLint("UnsafeExperimentalUsageError")
     private fun processCameraFrame(
+        cameraProvider: ProcessCameraProvider,
         barcodeScanner: BarcodeScanner,
         cameraFrame: ImageProxy
     ) {
         cameraFrame.image?.let { frame ->
             val inputImage =
                 InputImage.fromMediaImage(frame, cameraFrame.imageInfo.rotationDegrees)
+            val task = barcodeScanner.process(inputImage)
 
             barcodeScanner.process(inputImage)
                 .addOnSuccessListener { barcodes ->
-                    barcodes.forEach {
-                        Timber.d("Found QR code, contents are ${it.rawValue}")
-                        it.rawValue?.let { content ->
-                            onQrScanned(content)
-                        }
+                    barcodes.firstOrNull()?.rawValue?.let {
+                        onQrScanned(it)
+                        cameraProvider.unbindAll()
                     }
                 }
                 .addOnFailureListener {
@@ -256,6 +240,7 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
     }
 
     abstract fun onQrScanned(content: String)
+    abstract fun getCopy(): Copy
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -290,9 +275,7 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
             if (isCameraPermissionGranted()) {
                 setupCamera()
             } else {
-                val rationaleDialog = arguments?.getParcelable<RationaleDialog>(
-                    EXTRA_RATIONALE_DIALOG
-                )
+                val rationaleDialog = getCopy().rationaleDialog
                 if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) && rationaleDialog != null) {
                     showRationaleDialog(rationaleDialog)
                 }
@@ -308,7 +291,7 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
         ) == PackageManager.PERMISSION_GRANTED
     }
 
-    private fun showRationaleDialog(rationaleDialog: RationaleDialog) {
+    private fun showRationaleDialog(rationaleDialog: Copy.RationaleDialog) {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(rationaleDialog.title)
             .setMessage(rationaleDialog.description)
@@ -318,10 +301,15 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
             .show()
     }
 
-    @Parcelize
-    data class RationaleDialog(
+    data class Copy(
         val title: String,
-        val description: String,
-        val okayButtonText: String
-    ) : Parcelable
+        val message: String,
+        val rationaleDialog: RationaleDialog? = null
+    ) {
+        data class RationaleDialog(
+            val title: String,
+            val description: String,
+            val okayButtonText: String
+        )
+    }
 }

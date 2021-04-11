@@ -16,7 +16,6 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layoutDirection="rtl"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -65,7 +64,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
-            app:layout_goneMarginTop="32dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             android:textAlignment="center"
@@ -75,16 +73,8 @@
             app:layout_constraintStart_toStartOf="@+id/image"
             app:layout_constraintTop_toBottomOf="@+id/personalDetailsHolder"
             app:layout_constraintVertical_bias="0.0"
+            app:layout_goneMarginTop="32dp"
             tools:text="@string/scan_result_invalid_subtitle" />
-
-        <ProgressBar
-            android:id="@+id/loading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button"
