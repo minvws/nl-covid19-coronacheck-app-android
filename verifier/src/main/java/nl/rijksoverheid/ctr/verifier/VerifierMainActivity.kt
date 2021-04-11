@@ -39,7 +39,7 @@ class VerifierMainActivity : AppCompatActivity() {
 
         if (!introductionViewModel.introductionFinished()) {
             navController.navigate(
-                R.id.nav_introduction,
+                R.id.action_introduction,
                 IntroductionFragment.getBundle(
                     introductionData = IntroductionData(
                         onboardingItems = listOf(
@@ -87,7 +87,7 @@ class VerifierMainActivity : AppCompatActivity() {
         appStatusViewModel.appStatusLiveData.observe(this, {
             if (it !is AppStatus.NoActionRequired) {
                 val bundle = bundleOf(AppStatusFragment.EXTRA_APP_STATUS to it)
-                navController.navigate(R.id.nav_app_status, bundle)
+                navController.navigate(R.id.action_app_status, bundle)
             }
         })
     }

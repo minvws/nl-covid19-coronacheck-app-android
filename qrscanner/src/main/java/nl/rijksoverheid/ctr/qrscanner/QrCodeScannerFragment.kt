@@ -10,52 +10,51 @@ package nl.rijksoverheid.ctr.qrscanner
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.os.Handler
-import android.os.Parcelable
 import android.util.DisplayMetrics
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.mlkit.vision.barcode.Barcode
 import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
-import kotlinx.parcelize.Parcelize
-import nl.rijksoverheid.ctr.qrscanner.databinding.ActivityScannerBinding
+import nl.rijksoverheid.ctr.qrscanner.databinding.FragmentScannerBinding
 import timber.log.Timber
 import java.util.concurrent.Executors
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 
-class QrCodeScannerActivity : AppCompatActivity() {
+abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
 
-    private lateinit var binding: ActivityScannerBinding
+    private var _binding: FragmentScannerBinding? = null
+    val binding get() = _binding!!
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityScannerBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    companion object {
+        private const val PERMISSION_CAMERA_REQUEST = 1
+        private const val RATIO_4_3_VALUE = 4.0 / 3.0
+        private const val RATIO_16_9_VALUE = 16.0 / 9.0
+    }
 
-        // Set white status bar icons
-        window?.decorView?.systemUiVisibility = 0
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        _binding = FragmentScannerBinding.bind(view)
 
         // Set overlay to software accelerated only to fix transparency on certain devices
         binding.overlay.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
 
         binding.toolbar.setNavigationOnClickListener {
-            finish()
+            findNavController().popBackStack()
         }
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.toolbar) { _, insets ->
@@ -63,15 +62,8 @@ class QrCodeScannerActivity : AppCompatActivity() {
             insets
         }
 
-        // Check for custom message
-        intent.getStringExtra(EXTRA_CUSTOM_MESSAGE)?.let {
-            binding.scannerHeader.text = it
-        }
-
-        // Check for custom title
-        intent.getStringExtra(EXTRA_CUSTOM_TITLE)?.let {
-            binding.toolbar.title = it
-        }
+        binding.scannerHeader.text = getCopy().message
+        binding.toolbar.title = getCopy().title
     }
 
     override fun onStart() {
@@ -93,7 +85,7 @@ class QrCodeScannerActivity : AppCompatActivity() {
 
         // Request access to CameraX service. Will return a CameraProvider bound to the lifecycle of
         // our activity if one is available
-        val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
+        val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
 
         cameraProviderFuture.addListener({
             // Retrieve the available CameraProvider and check for permissions
@@ -104,13 +96,12 @@ class QrCodeScannerActivity : AppCompatActivity() {
             } else {
                 requestPermission()
             }
-        }, ContextCompat.getMainExecutor(this))
+        }, ContextCompat.getMainExecutor(requireContext()))
 
     }
 
     private fun requestPermission() {
-        ActivityCompat.requestPermissions(
-            this,
+        requestPermissions(
             arrayOf(Manifest.permission.CAMERA),
             PERMISSION_CAMERA_REQUEST
         )
@@ -151,7 +142,7 @@ class QrCodeScannerActivity : AppCompatActivity() {
         // and disposed whenever the activity closes
         try {
             cameraProvider.bindToLifecycle(
-                this,
+                viewLifecycleOwner,
                 cameraSelector,
                 cameraPreview
             )
@@ -192,8 +183,8 @@ class QrCodeScannerActivity : AppCompatActivity() {
         // and processes them using our supplied function
         imageAnalyzer.setAnalyzer(
             cameraExecutor,
-            ImageAnalysis.Analyzer { cameraFrame ->
-                processCameraFrame(barcodeScanner, cameraFrame)
+            { cameraFrame ->
+                processCameraFrame(cameraProvider, barcodeScanner, cameraFrame)
             }
         )
 
@@ -201,7 +192,7 @@ class QrCodeScannerActivity : AppCompatActivity() {
         // and disposed whenever the activity closes
         try {
             cameraProvider.bindToLifecycle(
-                this,
+                viewLifecycleOwner,
                 cameraSelector,
                 imageAnalyzer
             )
@@ -219,21 +210,21 @@ class QrCodeScannerActivity : AppCompatActivity() {
      */
     @SuppressLint("UnsafeExperimentalUsageError")
     private fun processCameraFrame(
+        cameraProvider: ProcessCameraProvider,
         barcodeScanner: BarcodeScanner,
         cameraFrame: ImageProxy
     ) {
         cameraFrame.image?.let { frame ->
             val inputImage =
                 InputImage.fromMediaImage(frame, cameraFrame.imageInfo.rotationDegrees)
+            val task = barcodeScanner.process(inputImage)
 
             barcodeScanner.process(inputImage)
                 .addOnSuccessListener { barcodes ->
-                    barcodes.forEach {
-                        Timber.d("Found QR code, contents are ${it.rawValue}")
-                        val intent = Intent()
-                        intent.putExtra(SCAN_RESULT, it.rawValue)
-                        setResult(RESULT_OK, intent)
-                        finish()
+                    barcodes.firstOrNull()?.rawValue?.let {
+                        onQrScanned(it)
+                        Timber.v("IK KOM HIER")
+                        cameraProvider.unbindAll()
                     }
                 }
                 .addOnFailureListener {
@@ -247,6 +238,14 @@ class QrCodeScannerActivity : AppCompatActivity() {
                 }
         }
 
+    }
+
+    abstract fun onQrScanned(content: String)
+    abstract fun getCopy(): Copy
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     /**
@@ -277,8 +276,7 @@ class QrCodeScannerActivity : AppCompatActivity() {
             if (isCameraPermissionGranted()) {
                 setupCamera()
             } else {
-                val rationaleDialog =
-                    intent.getParcelableExtra<RationaleDialog>(EXTRA_RATIONALE_DIALOG)
+                val rationaleDialog = getCopy().rationaleDialog
                 if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) && rationaleDialog != null) {
                     showRationaleDialog(rationaleDialog)
                 }
@@ -289,13 +287,13 @@ class QrCodeScannerActivity : AppCompatActivity() {
 
     private fun isCameraPermissionGranted(): Boolean {
         return ContextCompat.checkSelfPermission(
-            baseContext,
+            requireContext(),
             Manifest.permission.CAMERA
         ) == PackageManager.PERMISSION_GRANTED
     }
 
-    private fun showRationaleDialog(rationaleDialog: RationaleDialog) {
-        MaterialAlertDialogBuilder(this)
+    private fun showRationaleDialog(rationaleDialog: Copy.RationaleDialog) {
+        MaterialAlertDialogBuilder(requireContext())
             .setTitle(rationaleDialog.title)
             .setMessage(rationaleDialog.description)
             .setPositiveButton(rationaleDialog.okayButtonText) { dialog, which ->
@@ -304,33 +302,15 @@ class QrCodeScannerActivity : AppCompatActivity() {
             .show()
     }
 
-    companion object {
-        private const val PERMISSION_CAMERA_REQUEST = 1
-        const val SCAN_RESULT = "scan_result"
-        private const val RATIO_4_3_VALUE = 4.0 / 3.0
-        private const val RATIO_16_9_VALUE = 16.0 / 9.0
-        private const val EXTRA_CUSTOM_MESSAGE = "customMessage"
-        private const val EXTRA_RATIONALE_DIALOG = "EXTRA_RATIONALE_DIALOG"
-        private const val EXTRA_CUSTOM_TITLE = "customTitle"
-
-        fun getIntent(
-            context: Context,
-            customTitle: String,
-            customMessage: String,
-            rationaleDialog: RationaleDialog?
-        ): Intent {
-            val intent = Intent(context, QrCodeScannerActivity::class.java)
-            intent.putExtra(EXTRA_CUSTOM_TITLE, customTitle)
-            intent.putExtra(EXTRA_CUSTOM_MESSAGE, customMessage)
-            intent.putExtra(EXTRA_RATIONALE_DIALOG, rationaleDialog)
-            return intent
-        }
-    }
-
-    @Parcelize
-    data class RationaleDialog(
+    data class Copy(
         val title: String,
-        val description: String,
-        val okayButtonText: String
-    ) : Parcelable
+        val message: String,
+        val rationaleDialog: RationaleDialog? = null
+    ) {
+        data class RationaleDialog(
+            val title: String,
+            val description: String,
+            val okayButtonText: String
+        )
+    }
 }

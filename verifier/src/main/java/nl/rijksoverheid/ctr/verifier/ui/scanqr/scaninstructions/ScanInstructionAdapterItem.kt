@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.verifier.ui.scaninstructions
+package nl.rijksoverheid.ctr.verifier.ui.scanqr.scaninstructions
 
 import android.view.View
 import androidx.annotation.DrawableRes

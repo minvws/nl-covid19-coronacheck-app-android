@@ -10,6 +10,16 @@
         android:name="nl.rijksoverheid.ctr.holder.HolderMainFragment"
         tools:layout="@layout/fragment_main" />
 
+    <action
+        android:id="@+id/action_introduction"
+        app:destination="@id/nav_introduction"
+        app:enterAnim="@anim/fragment_open_enter"
+        app:exitAnim="@anim/fragment_open_exit"
+        app:popEnterAnim="@anim/fragment_close_enter"
+        app:popExitAnim="@anim/fragment_close_exit"
+        app:popUpTo="@+id/root_nav"
+        app:popUpToInclusive="true" />
+
     <fragment
         android:id="@+id/nav_introduction"
         android:name="nl.rijksoverheid.ctr.introduction.IntroductionFragment"
@@ -26,6 +36,16 @@
             app:popUpToInclusive="true" />
 
     </fragment>
+
+    <action
+        android:id="@+id/action_app_status"
+        app:destination="@id/nav_app_status"
+        app:enterAnim="@anim/fragment_open_enter"
+        app:exitAnim="@anim/fragment_open_exit"
+        app:popEnterAnim="@anim/fragment_close_enter"
+        app:popExitAnim="@anim/fragment_close_exit"
+        app:popUpTo="@+id/root_nav"
+        app:popUpToInclusive="true" />
 
     <fragment
         android:id="@+id/nav_app_status"

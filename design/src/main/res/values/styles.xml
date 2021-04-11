@@ -66,15 +66,4 @@
         <item name="android:textSize">16sp</item>
     </style>
 
-    <!-- Dialogs -->
-    <style name="AppTheme.Dialog.FullScreen" parent="AppTheme">
-        <item name="android:windowFullscreen">false</item>
-        <item name="android:windowIsFloating">false</item>
-    </style>
-
-    <style name="AppTheme.Dialog.FullScreen.Animations" parent="">
-        <item name="android:windowEnterAnimation">@anim/fragment_open_enter</item>
-        <item name="android:windowExitAnimation">@anim/fragment_close_exit</item>
-    </style>
-
 </resources>

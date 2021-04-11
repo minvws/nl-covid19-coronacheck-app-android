@@ -10,6 +10,16 @@
         android:name="nl.rijksoverheid.ctr.verifier.VerifierMainFragment"
         tools:layout="@layout/fragment_main" />
 
+    <action
+        android:id="@+id/action_introduction"
+        app:destination="@id/nav_introduction"
+        app:enterAnim="@anim/fragment_open_enter"
+        app:exitAnim="@anim/fragment_open_exit"
+        app:popEnterAnim="@anim/fragment_close_enter"
+        app:popExitAnim="@anim/fragment_close_exit"
+        app:popUpTo="@+id/root_nav"
+        app:popUpToInclusive="true" />
+
     <fragment
         android:id="@+id/nav_introduction"
         android:name="nl.rijksoverheid.ctr.introduction.IntroductionFragment"
@@ -31,5 +41,26 @@
         android:id="@+id/nav_app_status"
         android:name="nl.rijksoverheid.ctr.appconfig.AppStatusFragment"
         tools:layout="@layout/fragment_app_status" />
+
+    <action
+        android:id="@+id/action_app_status"
+        app:destination="@id/nav_app_status"
+        app:enterAnim="@anim/fragment_open_enter"
+        app:exitAnim="@anim/fragment_open_exit"
+        app:popEnterAnim="@anim/fragment_close_enter"
+        app:popExitAnim="@anim/fragment_close_exit"
+        app:popUpTo="@+id/root_nav"
+        app:popUpToInclusive="true" />
+
+    <action
+        android:id="@+id/action_scanner"
+        app:destination="@id/nav_scanner"
+        app:enterAnim="@anim/fragment_open_enter"
+        app:exitAnim="@anim/fragment_open_exit"
+        app:popEnterAnim="@anim/fragment_close_enter"
+        app:popExitAnim="@anim/fragment_close_exit"
+        app:popUpTo="@id/nav_scanner" />
+
+    <include app:graph="@navigation/verifier_nav_graph_scanner" />
 
 </navigation>

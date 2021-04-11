@@ -6,7 +6,7 @@
  *
  */
 
-package nl.rijksoverheid.ctr.verifier.ui.scanqr
+package nl.rijksoverheid.ctr.verifier.ui.scanner
 
 import android.os.Bundle
 import android.view.LayoutInflater

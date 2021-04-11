@@ -21,10 +21,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.TestResultsViewModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.TokenQrViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.LocalTestResultViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.LocalTestResultViewModelImpl
-import nl.rijksoverheid.ctr.holder.ui.myoverview.util.TestResultAdapterItemUtil
-import nl.rijksoverheid.ctr.holder.ui.myoverview.util.TestResultAdapterItemUtilImpl
-import nl.rijksoverheid.ctr.holder.ui.myoverview.util.TokenValidatorUtil
-import nl.rijksoverheid.ctr.holder.ui.myoverview.util.TokenValidatorUtilImpl
+import nl.rijksoverheid.ctr.holder.ui.myoverview.util.*
 import nl.rijksoverheid.ctr.holder.usecase.*
 import nl.rijksoverheid.ctr.shared.usecase.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.shared.usecase.TestResultAttributesUseCaseImpl
@@ -108,6 +105,7 @@ fun holderModule(baseUrl: String) = module {
     }
 
     // Utils
+    factory<QrCodeUtil> { QrCodeUtilImpl() }
     factory<TestResultAdapterItemUtil> { TestResultAdapterItemUtilImpl(get()) }
 
     // Usecases

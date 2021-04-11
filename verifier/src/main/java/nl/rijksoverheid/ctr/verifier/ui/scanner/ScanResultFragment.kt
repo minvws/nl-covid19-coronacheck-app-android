@@ -1,27 +1,24 @@
-package nl.rijksoverheid.ctr.verifier.ui.scanqr
+package nl.rijksoverheid.ctr.verifier.ui.scanner
 
 import android.os.Bundle
 import android.view.View
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import nl.rijksoverheid.ctr.design.FullScreenDialogFragment
-import nl.rijksoverheid.ctr.qrscanner.QrCodeScannerUtil
 import nl.rijksoverheid.ctr.design.utils.getSpannableFromHtml
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
-import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.util.MultiTapDetector
 import nl.rijksoverheid.ctr.shared.util.PersonalDetailsUtil
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanResultBinding
 import nl.rijksoverheid.ctr.verifier.models.VerifiedQr
 import nl.rijksoverheid.ctr.verifier.models.VerifiedQrResultState
+import nl.rijksoverheid.ctr.verifier.ui.scanner.util.ScannerUtil
 import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -30,23 +27,11 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class ScanResultFragment : FullScreenDialogFragment(R.layout.fragment_scan_result) {
-
+class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
 
     private val args: ScanResultFragmentArgs by navArgs()
     private val personalDetailsUtil: PersonalDetailsUtil by inject()
-    private val qrCodeScannerUtil: QrCodeScannerUtil by inject()
-    private val scanQrViewModel: ScanQrViewModel by viewModel()
-
-    private val qrScanResult =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            val scanResult = qrCodeScannerUtil.parseScanResult(it.data)
-            if (scanResult != null) {
-                scanQrViewModel.validate(
-                    qrContent = scanResult
-                )
-            }
-        }
+    private val scannerUtil: ScannerUtil by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -59,27 +44,12 @@ class ScanResultFragment : FullScreenDialogFragment(R.layout.fragment_scan_resul
         )
 
         binding.toolbar.setNavigationOnClickListener {
-            findNavController().popBackStack()
+            findNavController().navigate(ScanResultFragmentDirections.actionNavMain())
         }
 
         binding.button.setOnClickListener {
-            openScanner()
+            scannerUtil.launchScanner(requireActivity())
         }
-
-        scanQrViewModel.loadingLiveData.observe(viewLifecycleOwner, EventObserver {
-            if (it) {
-                presentLoadingScreen(
-                    binding = binding
-                )
-            }
-        })
-
-        scanQrViewModel.validatedQrLiveData.observe(viewLifecycleOwner, EventObserver {
-            handleValidatedResult(
-                binding = binding,
-                validatedQrResultState = it
-            )
-        })
     }
 
     private fun handleValidatedResult(
@@ -133,20 +103,6 @@ class ScanResultFragment : FullScreenDialogFragment(R.layout.fragment_scan_resul
         }
     }
 
-    private fun presentLoadingScreen(binding: FragmentScanResultBinding) {
-        binding.root.setBackgroundColor(
-            ContextCompat.getColor(
-                requireContext(),
-                R.color.grey_medium
-            )
-        )
-        binding.image.setImageResource(0)
-        binding.title.text = ""
-        binding.subtitle.text = ""
-        binding.personalDetailsHolder.visibility = View.GONE
-        binding.loading.visibility = View.VISIBLE
-    }
-
     private fun presentValidScreen(
         binding: FragmentScanResultBinding,
         verifiedQr: VerifiedQr,
@@ -177,7 +133,6 @@ class ScanResultFragment : FullScreenDialogFragment(R.layout.fragment_scan_resul
                 )
             }
         }
-        binding.loading.visibility = View.GONE
     }
 
     private fun presentInvalidScreen(binding: FragmentScanResultBinding) {
@@ -195,7 +150,6 @@ class ScanResultFragment : FullScreenDialogFragment(R.layout.fragment_scan_resul
         binding.subtitle.setOnClickListener {
             findNavController().navigate(ScanResultFragmentDirections.actionShowInvalidExplanation())
         }
-        binding.loading.visibility = View.GONE
     }
 
     private fun presentDebugDialog(message: String) {
@@ -206,19 +160,5 @@ class ScanResultFragment : FullScreenDialogFragment(R.layout.fragment_scan_resul
                 "Ok"
             ) { _, _ -> }
             .show()
-    }
-
-    private fun openScanner() {
-        qrCodeScannerUtil.launchScanner(
-            requireActivity(), qrScanResult,
-            getString(
-                R.string.scanner_custom_title
-            ), getString(
-                R.string.scanner_custom_message
-            ),
-            getString(R.string.camera_rationale_dialog_title),
-            getString(R.string.camera_rationale_dialog_description),
-            getString(R.string.ok)
-        )
     }
 }
