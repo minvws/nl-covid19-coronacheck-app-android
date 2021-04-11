@@ -1,14 +1,14 @@
-package nl.rijksoverheid.ctr.verifier.ui.scaninstructions
+package nl.rijksoverheid.ctr.verifier.ui.scanqr.scaninstructions
 
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import nl.rijksoverheid.ctr.appconfig.AppConfigUtil
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanInstructionsBinding
+import nl.rijksoverheid.ctr.verifier.ui.scanner.util.ScannerUtil
 import org.koin.android.ext.android.inject
 
 /*
@@ -21,14 +21,14 @@ import org.koin.android.ext.android.inject
 class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
 
     private val appConfigUtil: AppConfigUtil by inject()
+    private val scannerUtil: ScannerUtil by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val binding = FragmentScanInstructionsBinding.bind(view)
         binding.button.setOnClickListener {
-            Navigation.findNavController(requireActivity(), R.id.main_nav_host_fragment)
-                .navigate(R.id.nav_scanner)
+            scannerUtil.launchScanner(requireActivity())
         }
 
         GroupAdapter<GroupieViewHolder>()

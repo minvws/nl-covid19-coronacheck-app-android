@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_scanner"
+    app:startDestination="@+id/nav_qr_scanner">
+
+    <fragment
+        android:id="@+id/nav_qr_scanner"
+        android:name="nl.rijksoverheid.ctr.verifier.ui.scanner.VerifierQrScannerFragment"
+        tools:layout="@layout/fragment_scanner">
+
+        <action
+            android:id="@+id/action_scan_result"
+            app:destination="@id/nav_scan_result"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_scan_result"
+        android:name="nl.rijksoverheid.ctr.verifier.ui.scanner.ScanResultFragment"
+        tools:layout="@layout/fragment_scan_result">
+
+        <argument
+            android:name="validatedResult"
+            app:argType="nl.rijksoverheid.ctr.verifier.models.VerifiedQrResultState" />
+
+        <action
+            android:id="@+id/action_nav_main"
+            app:destination="@id/nav_main"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit"
+            app:popUpTo="@id/nav_main"
+            app:popUpToInclusive="true" />
+
+        <action
+            android:id="@+id/action_show_valid_explanation"
+            app:destination="@id/valid_explanation_bottomsheet" />
+
+        <action
+            android:id="@+id/action_show_invalid_explanation"
+            app:destination="@id/invalid_explanation_bottomsheet" />
+
+    </fragment>
+
+    <dialog
+        android:id="@+id/valid_explanation_bottomsheet"
+        android:name="nl.rijksoverheid.ctr.verifier.ui.scanner.ScanResultValidExplanationDialogFragment"
+        android:label="ScanResultValidExplanationDialogFragment"
+        tools:layout="@layout/fragment_scan_result_valid_reason">
+        <argument
+            android:name="qrResult"
+            app:argType="nl.rijksoverheid.ctr.verifier.models.VerifiedQr" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/invalid_explanation_bottomsheet"
+        android:name="nl.rijksoverheid.ctr.verifier.ui.scanner.ScanResultInvalidExplanationDialogFragment"
+        android:label="ScanResultInvalidExplanationDialogFragment"
+        tools:layout="@layout/fragment_scan_result_invalid_reason" />
+
+</navigation>

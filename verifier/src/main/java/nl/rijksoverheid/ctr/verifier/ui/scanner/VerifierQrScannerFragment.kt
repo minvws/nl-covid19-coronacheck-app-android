@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.verifier.scanner
+package nl.rijksoverheid.ctr.verifier.ui.scanner
 
 import android.os.Bundle
 import android.view.View

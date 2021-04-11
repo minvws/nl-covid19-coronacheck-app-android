@@ -34,7 +34,7 @@
 
     <fragment
         android:id="@+id/nav_scan_instructions"
-        android:name="nl.rijksoverheid.ctr.verifier.ui.scaninstructions.ScanInstructionsFragment"
+        android:name="nl.rijksoverheid.ctr.verifier.ui.scanqr.scaninstructions.ScanInstructionsFragment"
         android:label="@string/scan_instructions"
         tools:layout="@layout/fragment_scan_instructions" />
 
@@ -43,5 +43,7 @@
         android:name="nl.rijksoverheid.ctr.design.menu.about.AboutThisAppFragment"
         android:label="@string/about_this_app"
         tools:layout="@layout/fragment_about_app" />
+
+    <include app:graph="@navigation/verifier_nav_graph_scanner" />
 
 </navigation>

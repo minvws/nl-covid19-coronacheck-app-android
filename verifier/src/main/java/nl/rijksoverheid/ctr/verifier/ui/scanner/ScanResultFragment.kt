@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.verifier.ui.scanqr
+package nl.rijksoverheid.ctr.verifier.ui.scanner
 
 import android.os.Bundle
 import android.view.View
@@ -18,6 +18,7 @@ import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanResultBinding
 import nl.rijksoverheid.ctr.verifier.models.VerifiedQr
 import nl.rijksoverheid.ctr.verifier.models.VerifiedQrResultState
+import nl.rijksoverheid.ctr.verifier.ui.scanner.util.ScannerUtil
 import org.koin.android.ext.android.inject
 
 /*
@@ -31,6 +32,7 @@ class ScanResultFragment : FullScreenDialogFragment(R.layout.fragment_scan_resul
 
     private val args: ScanResultFragmentArgs by navArgs()
     private val personalDetailsUtil: PersonalDetailsUtil by inject()
+    private val scannerUtil: ScannerUtil by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -47,8 +49,7 @@ class ScanResultFragment : FullScreenDialogFragment(R.layout.fragment_scan_resul
         }
 
         binding.button.setOnClickListener {
-            Navigation.findNavController(requireActivity(), R.id.main_nav_host_fragment)
-                .navigate(R.id.nav_scanner)
+            scannerUtil.launchScanner(requireActivity())
         }
     }
 

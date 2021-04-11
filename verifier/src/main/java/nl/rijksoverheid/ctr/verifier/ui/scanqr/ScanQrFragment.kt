@@ -3,11 +3,12 @@ package nl.rijksoverheid.ctr.verifier.ui.scanqr
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanQrBinding
+import nl.rijksoverheid.ctr.verifier.ui.scanner.util.ScannerUtil
+import org.koin.android.ext.android.inject
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -17,6 +18,8 @@ import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanQrBinding
  *
  */
 class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
+
+    private val scannerUtil: ScannerUtil by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -28,8 +31,7 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
         }
 
         binding.button.setOnClickListener {
-            Navigation.findNavController(requireActivity(), R.id.main_nav_host_fragment)
-                .navigate(R.id.nav_scanner)
+            scannerUtil.launchScanner(requireActivity())
         }
     }
 }

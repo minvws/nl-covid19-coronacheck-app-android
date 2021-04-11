@@ -223,6 +223,7 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
                 .addOnSuccessListener { barcodes ->
                     barcodes.firstOrNull()?.rawValue?.let {
                         onQrScanned(it)
+                        Timber.v("IK KOM HIER")
                         cameraProvider.unbindAll()
                     }
                 }

@@ -6,6 +6,8 @@ import nl.rijksoverheid.ctr.verifier.datamappers.VerifiedQrDataMapper
 import nl.rijksoverheid.ctr.verifier.datamappers.VerifiedQrDataMapperImpl
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 import nl.rijksoverheid.ctr.verifier.persistance.SharedPreferencesPersistenceManager
+import nl.rijksoverheid.ctr.verifier.ui.scanner.util.ScannerUtil
+import nl.rijksoverheid.ctr.verifier.ui.scanner.util.ScannerUtilImpl
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrViewModel
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrViewModelImpl
 import nl.rijksoverheid.ctr.verifier.usecases.TestResultValidUseCase
@@ -40,7 +42,6 @@ val verifierModule = module {
     factory<TestResultValidUseCase> {
         TestResultValidUseCaseImpl(get(), get(), get(), get())
     }
-    factory<QrCodeUtil> { QrCodeUtilImpl(get()) }
     factory<VerifiedQrDataMapper> { VerifiedQrDataMapperImpl(get()) }
 
     factory {
@@ -49,6 +50,10 @@ val verifierModule = module {
             newSharedPreferences = get()
         )
     }
+
+    // Utils
+    factory<QrCodeUtil> { QrCodeUtilImpl(get()) }
+    factory<ScannerUtil> { ScannerUtilImpl() }
 
     // ViewModels
     viewModel<ScanQrViewModel> { ScanQrViewModelImpl(get(), get()) }

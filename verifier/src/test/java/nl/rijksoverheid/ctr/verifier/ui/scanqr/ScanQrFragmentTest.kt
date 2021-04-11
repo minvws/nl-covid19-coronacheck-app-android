@@ -1,10 +1,6 @@
 package nl.rijksoverheid.ctr.verifier.ui.scanqr
 
-import android.app.Activity
-import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.Bitmap
-import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
@@ -12,12 +8,13 @@ import androidx.preference.PreferenceManager
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.platform.app.InstrumentationRegistry
 import com.schibsted.spain.barista.interaction.BaristaClickInteractions.clickOn
-import nl.rijksoverheid.ctr.qrscanner.QrCodeScannerUtil
+import io.mockk.mockk
+import io.mockk.verify
 import nl.rijksoverheid.ctr.verifier.R
-import nl.rijksoverheid.ctr.verifier.fakeIntroductionViewModel
 import nl.rijksoverheid.ctr.verifier.fakeScanQrViewModel
 import nl.rijksoverheid.ctr.verifier.fakeVerifiedQr
 import nl.rijksoverheid.ctr.verifier.models.VerifiedQrResultState
+import nl.rijksoverheid.ctr.verifier.ui.scanner.util.ScannerUtil
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -36,6 +33,8 @@ import org.robolectric.RobolectricTestRunner
  */
 @RunWith(RobolectricTestRunner::class)
 class ScanQrFragmentTest : AutoCloseKoinTest() {
+
+    private val scannerUtil: ScannerUtil = mockk(relaxed = true)
 
     private val navController = TestNavHostController(
         ApplicationProvider.getApplicationContext()
@@ -64,28 +63,10 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
      * Camera qr code scanner is bypassed in test
      */
     @Test
-    fun `Clicking start scan and scanning valid qr goes to valid scan result`() {
+    fun `Clicking start scan opens scanner`() {
         launchScanQrFragment()
         clickOn(R.id.button)
-        assertEquals(R.id.nav_scan_result, navController.currentDestination?.id)
-        assertEquals(
-            VerifiedQrResultState.Valid(fakeVerifiedQr()),
-            navController.backStack.last().arguments?.get("validatedResult")
-        )
-    }
-
-    /**
-     * Camera qr code scanner is bypassed in test
-     */
-    @Test
-    fun `Clicking start scan and scanning invalid qr goes to invalid scan result`() {
-        launchScanQrFragment(state = VerifiedQrResultState.Invalid(verifiedQr = fakeVerifiedQr()))
-        clickOn(R.id.button)
-        assertEquals(R.id.nav_scan_result, navController.currentDestination?.id)
-        assertEquals(
-            VerifiedQrResultState.Invalid(verifiedQr = fakeVerifiedQr()),
-            navController.backStack.last().arguments?.get("validatedResult")
-        )
+        verify { scannerUtil.launchScanner(any()) }
     }
 
     private fun launchScanQrFragment(
@@ -99,32 +80,9 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
                 factory<SharedPreferences> {
                     PreferenceManager.getDefaultSharedPreferences(InstrumentationRegistry.getInstrumentation().context)
                 }
-                factory<QrCodeScannerUtil> {
-                    object : QrCodeScannerUtil {
-                        override fun launchScanner(
-                            activity: Activity,
-                            activityResultLauncher: ActivityResultLauncher<Intent>,
-                            customTitle: String,
-                            customMessage: String,
-                            rationaleDialogTitle: String?,
-                            rationaleDialogDescription: String?,
-                            rationaleDialogOkayButtonText: String?
-                        ) {
-                            navController.navigate(ScanQrFragmentDirections.actionScanResult(state))
-                        }
 
-                        override fun createQrCode(
-                            qrCodeContent: String,
-                            width: Int,
-                            height: Int
-                        ): Bitmap {
-                            return Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
-                        }
-
-                        override fun parseScanResult(resultIntent: Intent?): String? {
-                            return null
-                        }
-                    }
+                factory {
+                    scannerUtil
                 }
 
                 viewModel {
