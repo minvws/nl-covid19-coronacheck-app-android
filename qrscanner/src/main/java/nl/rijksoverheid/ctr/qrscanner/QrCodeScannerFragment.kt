@@ -17,6 +17,7 @@ import android.view.View
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
@@ -64,6 +65,14 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
 
         binding.scannerHeader.text = getCopy().message
         binding.toolbar.title = getCopy().title
+
+        // Show header below overlay window after overlay finishes drawing
+        binding.overlay.viewTreeObserver.addOnGlobalLayoutListener {
+            val set = ConstraintSet()
+            set.clone(binding.root)
+            set.setGuidelineBegin(binding.headerGuideline.id, binding.overlay.bottomOfOverlayWindow)
+            set.applyTo(binding.root)
+        }
     }
 
     override fun onStart() {
@@ -166,15 +175,9 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
         aspectRatio: Int
     ) {
         // Set up options for the scanner, limiting it to QR codes only
-        val options = if (intent.getBooleanExtra(EXTRA_IS_TEST_VARIANT, false)) {
-            BarcodeScannerOptions.Builder()
-                .setBarcodeFormats(Barcode.FORMAT_QR_CODE, Barcode.FORMAT_AZTEC)
-                .build()
-        } else {
-            BarcodeScannerOptions.Builder()
-                .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
-                .build()
-        }
+        val options = BarcodeScannerOptions.Builder()
+            .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
+            .build()
 
         val barcodeScanner: BarcodeScanner = BarcodeScanning.getClient(options)
 
