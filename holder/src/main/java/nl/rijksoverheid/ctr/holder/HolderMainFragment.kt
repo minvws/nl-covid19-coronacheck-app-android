@@ -101,6 +101,22 @@ class HolderMainFragment : BaseMainFragment(
         binding.navView.menu.findItem(R.id.nav_close_menu).isVisible =
             requireActivity().isScreenReaderOn()
 
+
+        // Track menu opening to shift focus for screenreaders accordingly
+        binding.drawerLayout.addDrawerListener(object : DrawerLayout.SimpleDrawerListener() {
+            override fun onDrawerStateChanged(newState: Int) {
+                if (newState == DrawerLayout.STATE_SETTLING && !binding.drawerLayout.isDrawerOpen(
+                        GravityCompat.START
+                    )
+                ) {
+                    // Shift focus to first item in menu after menu has opened, needs delay
+                    binding.navView.postDelayed({
+                        binding.navView.findViewById<View>(R.id.nav_my_overview).setAccessibilityFocus()
+                    }, AccessibilityConstants.ACCESSIBILITY_FOCUS_DELAY)
+                }
+            }
+        })
+
         // Close Navigation Drawer when pressing back if it's open
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object :
             OnBackPressedCallback(true) {

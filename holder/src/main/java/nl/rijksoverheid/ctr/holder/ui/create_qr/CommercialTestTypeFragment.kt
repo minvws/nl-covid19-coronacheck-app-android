@@ -13,6 +13,7 @@ import nl.rijksoverheid.ctr.holder.databinding.IncludeTestCodeTypeBinding
 import nl.rijksoverheid.ctr.holder.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.usecase.TokenQrUseCase
+import nl.rijksoverheid.ctr.shared.ext.setAsAccessibilityButton
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -50,6 +51,8 @@ class CommercialTestTypeFragment : Fragment(R.layout.fragment_commercial_test_ty
                 CommercialTestTypeFragmentDirections.actionNoCode()
             )
         }
+
+        binding.typeCode.root.setAsAccessibilityButton(isButton = true)
 
         tokenQrViewModel.locationData.observe(
             viewLifecycleOwner,

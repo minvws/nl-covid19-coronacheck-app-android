@@ -11,6 +11,7 @@ package nl.rijksoverheid.ctr.shared.ext
 import android.view.View
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
+import android.widget.Button
 import androidx.core.view.AccessibilityDelegateCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
@@ -43,5 +44,16 @@ private fun View.setAccessibilityDelegate(callback: (host: View, info: Accessibi
 fun View.accessibilityHeading(isHeading: Boolean) {
     this.setAccessibilityDelegate { _, info ->
         info.isHeading = isHeading
+    }
+}
+
+
+fun View.setAsAccessibilityButton(isButton: Boolean) {
+    this.setAccessibilityDelegate { _, info ->
+        info.className = if (isButton) {
+            Button::class.java.name
+        } else {
+            this::class.java.name
+        }
     }
 }
