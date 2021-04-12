@@ -19,7 +19,6 @@ import nl.rijksoverheid.ctr.holder.databinding.ActivityMainBinding
 import nl.rijksoverheid.ctr.introduction.IntroductionFragment
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.models.IntroductionStatus
-import nl.rijksoverheid.ctr.introduction.models.NewTerms
 import nl.rijksoverheid.ctr.introduction.onboarding.models.OnboardingItem
 import nl.rijksoverheid.ctr.introduction.privacy_consent.models.PrivacyPolicyItem
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -54,10 +53,7 @@ class HolderMainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
 
         val introductionStatus = introductionViewModel.getIntroductionStatus(
-            newTerms = NewTerms(
-                version = 1,
-                needsConsent = true
-            ),
+            newTerms = null,
             onboardingItems = listOf(
                 OnboardingItem(
                     R.drawable.illustration_onboarding_1,

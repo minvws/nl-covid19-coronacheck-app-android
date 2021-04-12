@@ -39,10 +39,7 @@ class VerifierMainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
 
         val introductionStatus = introductionViewModel.getIntroductionStatus(
-            newTerms = NewTerms(
-                version = 1,
-                needsConsent = false
-            ),
+            newTerms = null,
             onboardingItems = listOf(
                 OnboardingItem(
                     R.drawable.illustration_onboarding_1,
