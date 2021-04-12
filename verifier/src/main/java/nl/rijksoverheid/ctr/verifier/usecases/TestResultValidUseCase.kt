@@ -34,31 +34,31 @@ class TestResultValidUseCaseImpl(
             when (val verifyQrResult = verifyQrUseCase.get(qrContent)) {
                 is VerifyQrUseCase.VerifyQrResult.Success -> {
                     val verifiedQr = verifyQrResult.verifiedQr
-                    if (verifiedQr.testResultAttributes.isSpecimen == "1") {
-                        VerifiedQrResultState.Demo(verifiedQr)
-                    } else {
-                        val validity =
-                            TimeUnit.HOURS.toSeconds(
-                                cachedAppConfigUseCase.getCachedAppConfigMaxValidityHours().toLong()
-                            )
-                        val isValid = testResultUtil.isValid(
-                            sampleDate = OffsetDateTime.ofInstant(
-                                Instant.ofEpochSecond(verifiedQr.testResultAttributes.sampleTime),
-                                ZoneOffset.UTC
-                            ),
-                            validitySeconds = validity,
-                        ) && qrCodeUtil.isValid(
-                            creationDate = OffsetDateTime.ofInstant(
-                                Instant.ofEpochSecond(verifiedQr.creationDateSeconds),
-                                ZoneOffset.UTC
-                            ),
-                            isPaperProof = verifiedQr.testResultAttributes.isPaperProof
+                    val validity =
+                        TimeUnit.HOURS.toSeconds(
+                            cachedAppConfigUseCase.getCachedAppConfigMaxValidityHours().toLong()
                         )
-                        if (isValid) {
-                            VerifiedQrResultState.Valid(verifiedQr)
+                    val isValid = testResultUtil.isValid(
+                        sampleDate = OffsetDateTime.ofInstant(
+                            Instant.ofEpochSecond(verifiedQr.testResultAttributes.sampleTime),
+                            ZoneOffset.UTC
+                        ),
+                        validitySeconds = validity,
+                    ) && qrCodeUtil.isValid(
+                        creationDate = OffsetDateTime.ofInstant(
+                            Instant.ofEpochSecond(verifiedQr.creationDateSeconds),
+                            ZoneOffset.UTC
+                        ),
+                        isPaperProof = verifiedQr.testResultAttributes.isPaperProof
+                    )
+                    if (isValid) {
+                        if (verifiedQr.testResultAttributes.isSpecimen == "1") {
+                            VerifiedQrResultState.Demo(verifiedQr)
                         } else {
-                            VerifiedQrResultState.Invalid(verifiedQr)
+                            VerifiedQrResultState.Valid(verifiedQr)
                         }
+                    } else {
+                        VerifiedQrResultState.Invalid(verifiedQr)
                     }
                 }
                 is VerifyQrUseCase.VerifyQrResult.Failed -> {
