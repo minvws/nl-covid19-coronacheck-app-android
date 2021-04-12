@@ -31,6 +31,22 @@ class TestResultValidUseCaseImplTest {
         }
 
     @Test
+    fun `Validate returns Demo if code can be validated with valid test result, valid qr code and isSpecimen is set to 1`() =
+        runBlocking {
+            val usecase = TestResultValidUseCaseImpl(
+                verifyQrUseCase = fakeVerifyQrUseCase(
+                    result = VerifyQrUseCase.VerifyQrResult.Success(
+                        verifiedQr = fakeVerifiedQr(isSpecimen = "1")
+                    )
+                ),
+                testResultUtil = fakeTestResultUtil(),
+                qrCodeUtil = fakeQrCodeUtil(),
+                cachedAppConfigUseCase = fakeCachedAppConfigUseCase()
+            )
+            assertTrue(usecase.validate("") is VerifiedQrResultState.Demo)
+        }
+
+    @Test
     fun `Validate returns Invalid if code can be validated with invalid test result and valid qr code`() =
         runBlocking {
             val usecase = TestResultValidUseCaseImpl(
@@ -68,19 +84,4 @@ class TestResultValidUseCaseImplTest {
         )
         assertTrue(usecase.validate("") is VerifiedQrResultState.Error)
     }
-
-    @Test
-    fun `Validate returns Demo if isSpecimen is set to 1`() =
-        runBlocking {
-            val usecase = TestResultValidUseCaseImpl(
-                verifyQrUseCase = fakeVerifyQrUseCase(result = VerifyQrUseCase.VerifyQrResult.Success(
-                    verifiedQr = fakeVerifiedQr(isSpecimen = "1")
-                )),
-                testResultUtil = fakeTestResultUtil(),
-                qrCodeUtil = fakeQrCodeUtil(),
-                cachedAppConfigUseCase = fakeCachedAppConfigUseCase()
-            )
-            assertTrue(usecase.validate("") is VerifiedQrResultState.Demo)
-        }
-
 }
