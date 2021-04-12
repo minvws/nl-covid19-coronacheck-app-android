@@ -11,7 +11,6 @@ package nl.rijksoverheid.ctr.holder
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.bundleOf
 import androidx.navigation.fragment.NavHostFragment
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.AppStatusFragment
@@ -20,6 +19,8 @@ import nl.rijksoverheid.ctr.holder.databinding.ActivityMainBinding
 import nl.rijksoverheid.ctr.introduction.IntroductionFragment
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.models.IntroductionData
+import nl.rijksoverheid.ctr.introduction.models.IntroductionStatus
+import nl.rijksoverheid.ctr.introduction.models.NewTerms
 import nl.rijksoverheid.ctr.introduction.onboarding.models.OnboardingItem
 import nl.rijksoverheid.ctr.introduction.privacy_consent.models.PrivacyPolicyItem
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -53,7 +54,14 @@ class HolderMainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
 
-        if (!introductionViewModel.introductionFinished()) {
+        val introductionStatus = introductionViewModel.getIntroductionStatus(
+            newTerms = NewTerms(
+                version = 1,
+                needsConsent = true
+            )
+        )
+
+        if (introductionStatus !is IntroductionStatus.IntroductionFinished.NoActionRequired) {
             navController.navigate(
                 R.id.action_introduction,
                 IntroductionFragment.getBundle(
@@ -95,15 +103,15 @@ class HolderMainActivity : AppCompatActivity() {
                                 R.string.privacy_policy_3
                             )
                         )
-                    )
+                    ),
+                    introductionStatus = introductionStatus
                 )
             )
         }
 
         appStatusViewModel.appStatusLiveData.observe(this, {
             if (it !is AppStatus.NoActionRequired) {
-                val bundle = bundleOf(AppStatusFragment.EXTRA_APP_STATUS to it)
-                navController.navigate(R.id.action_app_status, bundle)
+                navController.navigate(R.id.action_app_status, AppStatusFragment.getBundle(it))
             }
         })
     }
@@ -111,7 +119,7 @@ class HolderMainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         // Only get app config on every app foreground when introduction is finished
-        if (introductionViewModel.introductionFinished()) {
+        if (introductionViewModel.getIntroductionFinished()) {
             appStatusViewModel.refresh()
         }
     }

@@ -12,7 +12,6 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 sealed class AppStatus : Parcelable {
-
     @Parcelize
     object UpdateRequired : AppStatus(), Parcelable
 

@@ -13,10 +13,11 @@ import org.koin.dsl.module
  */
 
 val introductionModule = module {
-    single {
+    factory {
         IntroductionPersistenceManager(
             get()
         )
     }
-    viewModel<IntroductionViewModel> { IntroductionViewModelImpl(get()) }
+    factory<IntroductionStatusUseCase> { IntroductionStatusUseCaseImpl(get()) }
+    viewModel<IntroductionViewModel> { IntroductionViewModelImpl(get(), get()) }
 }

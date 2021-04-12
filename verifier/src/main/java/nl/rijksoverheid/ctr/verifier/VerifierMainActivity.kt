@@ -10,6 +10,8 @@ import nl.rijksoverheid.ctr.appconfig.model.AppStatus
 import nl.rijksoverheid.ctr.introduction.IntroductionFragment
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.models.IntroductionData
+import nl.rijksoverheid.ctr.introduction.models.IntroductionStatus
+import nl.rijksoverheid.ctr.introduction.models.NewTerms
 import nl.rijksoverheid.ctr.introduction.onboarding.models.OnboardingItem
 import nl.rijksoverheid.ctr.introduction.privacy_consent.models.PrivacyPolicyItem
 import nl.rijksoverheid.ctr.verifier.databinding.ActivityMainBinding
@@ -37,7 +39,14 @@ class VerifierMainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
 
-        if (!introductionViewModel.introductionFinished()) {
+        val introductionStatus = introductionViewModel.getIntroductionStatus(
+            newTerms = NewTerms(
+                version = 1,
+                needsConsent = true
+            )
+        )
+
+        if (introductionStatus !is IntroductionStatus.IntroductionFinished.NoActionRequired) {
             navController.navigate(
                 R.id.action_introduction,
                 IntroductionFragment.getBundle(
@@ -79,7 +88,8 @@ class VerifierMainActivity : AppCompatActivity() {
                                 R.string.privacy_policy_3
                             )
                         )
-                    )
+                    ),
+                    introductionStatus = introductionStatus
                 )
             )
         }
@@ -95,7 +105,7 @@ class VerifierMainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         // Only get app config on every app foreground when introduction is finished
-        if (introductionViewModel.introductionFinished()) {
+        if (introductionViewModel.getIntroductionFinished()) {
             appStatusViewModel.refresh()
         }
     }

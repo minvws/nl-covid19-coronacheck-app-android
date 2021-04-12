@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.introduction
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.introduction.models.IntroductionData
+import nl.rijksoverheid.ctr.introduction.models.IntroductionStatus
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -15,10 +16,15 @@ class IntroductionFragment : Fragment(R.layout.fragment_introduction) {
 
     companion object {
         private const val EXTRA_INTRODUCTION_DATA = "EXTRA_INTRODUCTION_DATA"
+        private const val EXTRA_INTRODUCTION_STATUS = "EXTRA_INTRODUCTION_STATUS"
 
-        fun getBundle(introductionData: IntroductionData): Bundle {
+        fun getBundle(
+            introductionData: IntroductionData,
+            introductionStatus: IntroductionStatus
+        ): Bundle {
             val bundle = Bundle()
             bundle.putParcelable(EXTRA_INTRODUCTION_DATA, introductionData)
+            bundle.putParcelable(EXTRA_INTRODUCTION_STATUS, introductionStatus)
             return bundle
         }
     }
@@ -29,4 +35,9 @@ class IntroductionFragment : Fragment(R.layout.fragment_introduction) {
         ) ?: error("IntroductionData should be set")
     }
 
+    val introductionStatus by lazy {
+        arguments?.getParcelable<IntroductionStatus>(
+            EXTRA_INTRODUCTION_STATUS
+        )
+    }
 }
