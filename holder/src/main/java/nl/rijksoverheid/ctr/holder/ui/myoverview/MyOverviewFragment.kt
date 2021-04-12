@@ -1,9 +1,12 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.snackbar.Snackbar
@@ -11,8 +14,6 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
 import com.xwray.groupie.viewbinding.BindableItem
-import nl.rijksoverheid.ctr.design.BaseActivity
-import nl.rijksoverheid.ctr.holder.BaseFragment
 import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMyOverviewBinding
@@ -22,13 +23,11 @@ import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewHeaderAdapterIt
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewNavigationCardAdapterItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewTestResultAdapterItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewTestResultExpiredAdapterItem
-import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.shared.ext.executeAfterAllAnimationsAreFinished
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.ext.show
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.concurrent.TimeUnit
 
 
@@ -39,7 +38,12 @@ import java.util.concurrent.TimeUnit
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class MyOverviewFragment : BaseFragment(R.layout.fragment_my_overview) {
+class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
+
+    companion object {
+        const val REQUEST_KEY = "REQUEST_KEY"
+        const val EXTRA_BACK_FROM_QR = "EXTRA_BACK_FROM_QR"
+    }
 
     private val section = Section()
 
@@ -53,17 +57,7 @@ class MyOverviewFragment : BaseFragment(R.layout.fragment_my_overview) {
         }
     }
 
-    private val introductionViewModel: IntroductionViewModel by viewModel()
     private val localTestResultViewModel: LocalTestResultViewModel by sharedViewModel()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        if (!introductionViewModel.introductionFinished()) {
-            findNavController().navigate(R.id.action_introduction)
-        } else if (requireActivity() is BaseActivity) {
-            (requireActivity() as BaseActivity).removeSplashScreen()
-        }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -113,6 +107,18 @@ class MyOverviewFragment : BaseFragment(R.layout.fragment_my_overview) {
                     }
                 }
             })
+
+        setFragmentResultListener(
+            REQUEST_KEY
+        ) { requestKey, bundle ->
+            if (requestKey == REQUEST_KEY && bundle.getBoolean(
+                    EXTRA_BACK_FROM_QR
+                )
+            ) {
+                requireActivity().requestedOrientation =
+                    ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+            }
+        }
     }
 
     override fun onResume() {

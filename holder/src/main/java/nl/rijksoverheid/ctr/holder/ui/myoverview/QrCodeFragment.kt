@@ -6,11 +6,14 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import android.view.WindowManager
+import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
-import nl.rijksoverheid.ctr.design.FullScreenDialogFragment
 import nl.rijksoverheid.ctr.holder.BuildConfig
+import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.databinding.DialogQrCodeBinding
+import nl.rijksoverheid.ctr.holder.databinding.FragmentQrCodeBinding
 import nl.rijksoverheid.ctr.shared.QrCodeConstants
 import nl.rijksoverheid.ctr.shared.ext.setAccessibilityFocus
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -24,10 +27,10 @@ import java.util.concurrent.TimeUnit
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class QrCodeFragment : FullScreenDialogFragment(R.layout.dialog_qr_code) {
+class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
 
-    private var _binding: DialogQrCodeBinding? = null
-    private val binding: DialogQrCodeBinding by lazy { _binding!! }
+    private var _binding: FragmentQrCodeBinding? = null
+    private val binding: FragmentQrCodeBinding by lazy { _binding!! }
     private val localTestResultViewModel: LocalTestResultViewModel by sharedViewModel()
     private val qrCodeHandler = Handler(Looper.getMainLooper())
     private val qrCodeRunnable = object : Runnable {
@@ -43,35 +46,26 @@ class QrCodeFragment : FullScreenDialogFragment(R.layout.dialog_qr_code) {
         }
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
-        _binding = DialogQrCodeBinding.bind(view)
-
-        val params = dialog?.window?.attributes
-        params?.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_FULL
-        dialog?.window?.attributes = params
+        _binding = FragmentQrCodeBinding.bind(view)
+        requireActivity().window.attributes.screenBrightness =
+            WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_FULL
 
         localTestResultViewModel.qrCodeLiveData.observe(viewLifecycleOwner) {
             binding.image.setImageBitmap(it.qrCode)
             presentQrLoading(false)
         }
-
-        binding.toolbar.setNavigationOnClickListener {
-            findNavController().popBackStack()
-        }
     }
 
     private fun presentQrLoading(loading: Boolean) {
-        binding.loading.visibility = if (loading) View.VISIBLE else View.GONE
+        (parentFragment?.parentFragment as HolderMainFragment).presentLoading(loading)
         binding.content.visibility = if (loading) View.GONE else View.VISIBLE
         // Move focus to loading indicator or QR depending on state
-        if (loading) {
-            binding.loading.setAccessibilityFocus()
-        } else {
+        if (!loading) {
             binding.image.setAccessibilityFocus()
         }
     }
@@ -96,7 +90,15 @@ class QrCodeFragment : FullScreenDialogFragment(R.layout.dialog_qr_code) {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
         _binding = null
+
+        requireActivity().window.attributes.screenBrightness =
+            WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE
+        (parentFragment?.parentFragment as HolderMainFragment).presentLoading(false)
+
+        setFragmentResult(
+            MyOverviewFragment.REQUEST_KEY,
+            bundleOf(MyOverviewFragment.EXTRA_BACK_FROM_QR to true)
+        )
     }
 }

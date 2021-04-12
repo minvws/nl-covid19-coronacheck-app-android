@@ -26,13 +26,18 @@ class ScannerOverlayWidget @JvmOverloads constructor(
         isAntiAlias = true
     }
 
+    var bottomOfOverlayWindow : Int = 0
+
     private val overlayRectPath = Path()
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
 
         // Determine center
-        val centerOfCanvas = Point(w / 2, h / 2)
+        val centerOfWindow = Point(w / 2, h / 2)
+        // Offset center by 1/8th of screen height
+        centerOfWindow.offset(0, -h / 8)
+
         // Calculate width of cutout based on width or height depending on orientation
         val rectW = if (w < h) {
             w - (2 * overlayMargin)
@@ -40,10 +45,10 @@ class ScannerOverlayWidget @JvmOverloads constructor(
             h - (2 * overlayMargin)
         }
         // Calculate corner coordinates
-        val left = centerOfCanvas.x - rectW / 2
-        val top = centerOfCanvas.y - rectW / 2
-        val right = centerOfCanvas.x + rectW / 2
-        val bottom = centerOfCanvas.y + rectW / 2
+        val left = centerOfWindow.x - rectW / 2
+        val top = centerOfWindow.y - rectW / 2
+        val right = centerOfWindow.x + rectW / 2
+        bottomOfOverlayWindow = centerOfWindow.y + rectW / 2
 
         // Create path of rounded rectangle based on coordinates calculated above
         overlayRectPath.addRoundRect(
@@ -51,7 +56,7 @@ class ScannerOverlayWidget @JvmOverloads constructor(
                 left.toFloat(),
                 top.toFloat(),
                 right.toFloat(),
-                bottom.toFloat()
+                bottomOfOverlayWindow.toFloat()
             ), cornerRadius, cornerRadius, Path.Direction.CW
         )
         // Set filltype to Inverse Even Odd to draw outside of the path only

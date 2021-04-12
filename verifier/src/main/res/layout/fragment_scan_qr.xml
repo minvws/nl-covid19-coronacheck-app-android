@@ -24,14 +24,13 @@
             app:layout_constraintVertical_bias="0"
             app:layout_constraintVertical_chainStyle="packed" />
 
-        <TextView
+        <nl.rijksoverheid.ctr.design.views.AccessibilityHeaderWidget
             android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:text="@string/scan_qr_header"
             android:textAppearance="?attr/textAppearanceHeadline5"
-            android:accessibilityHeading="true"
             app:layout_constraintBottom_toTopOf="@+id/description"
             app:layout_constraintEnd_toEndOf="@+id/image"
             app:layout_constraintStart_toStartOf="@+id/image"

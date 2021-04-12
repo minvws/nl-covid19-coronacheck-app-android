@@ -46,6 +46,8 @@ buildscript {
     ext.barista_version = '3.7.0'
     ext.crashlytics_version = '17.3.1'
     ext.androidx_arch_core_version = '2.1.0'
+    ext.app_auth_version = '0.8.1'
+    ext.security_crypto_version = '1.0.0-rc04'
 
     repositories {
         google()
@@ -68,9 +70,6 @@ allprojects {
         google()
         mavenCentral()
         jcenter()
-        maven {
-            url 'https://jitpack.io'
-        }
     }
 
     afterEvaluate {

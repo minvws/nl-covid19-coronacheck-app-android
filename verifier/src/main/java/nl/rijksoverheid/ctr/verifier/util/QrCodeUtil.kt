@@ -4,7 +4,6 @@ import nl.rijksoverheid.ctr.shared.QrCodeConstants
 import java.time.Clock
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
-import java.util.concurrent.TimeUnit
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

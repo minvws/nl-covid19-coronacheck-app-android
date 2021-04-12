@@ -50,13 +50,13 @@ class TestResultUseCase(
         val token = uniqueCodeAttributes[1]
         val checksum = uniqueCodeAttributes[2]
 
-        if (!tokenValidatorUtil.validate(
-                token = token,
-                checksum = checksum
-            )
-        ) {
-            return TestResult.InvalidToken
-        }
+//        if (!tokenValidatorUtil.validate(
+//                token = token,
+//                checksum = checksum
+//            )
+//        ) {
+//            return TestResult.InvalidToken
+//        }
 
         return try {
             val testProvider = testProviderUseCase.testProvider(providerIdentifier)
@@ -106,7 +106,7 @@ class TestResultUseCase(
             }
         } catch (ex: HttpException) {
             Timber.e(ex, "Server error while getting test result")
-            TestResult.ServerError
+            TestResult.ServerError(ex.code())
         } catch (ex: IOException) {
             Timber.e(ex, "Network error while getting test result")
             TestResult.NetworkError
@@ -144,12 +144,12 @@ class TestResultUseCase(
                     return if (testIsm.responseError.code == ResponseError.CODE_ALREADY_SIGNED) {
                         SignedTestResult.AlreadySigned
                     } else {
-                        SignedTestResult.ServerError
+                        SignedTestResult.ServerError(testIsm.httpCode, testIsm.responseError.code)
                     }
                 }
             }
         } catch (ex: HttpException) {
-            return SignedTestResult.ServerError
+            return SignedTestResult.ServerError(ex.code())
         } catch (ex: IOException) {
             return SignedTestResult.NetworkError
         }
@@ -158,7 +158,7 @@ class TestResultUseCase(
 
 sealed class TestResult {
     object NoNegativeTestResult : TestResult()
-    class NegativeTestResult(
+    data class NegativeTestResult(
         val remoteTestResult: RemoteTestResult,
         val personalDetails: List<String>,
         val signedResponseWithTestResult: SignedResponseWithModel<RemoteTestResult>
@@ -167,13 +167,13 @@ sealed class TestResult {
     object Pending : TestResult()
     object InvalidToken : TestResult()
     object VerificationRequired : TestResult()
-    object ServerError : TestResult()
+    data class ServerError(val httpCode: Int) : TestResult()
     object NetworkError : TestResult()
 }
 
 sealed class SignedTestResult {
     data class Complete(val credentials: String) : SignedTestResult()
     object AlreadySigned : SignedTestResult()
-    object ServerError : SignedTestResult()
+    data class ServerError(val httpCode: Int, val errorCode: Int? = null) : SignedTestResult()
     object NetworkError : SignedTestResult()
 }

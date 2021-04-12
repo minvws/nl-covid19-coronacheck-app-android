@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.shared
 
 import android.app.Application
+import org.koin.core.module.Module
 import timber.log.Timber
 
 /*
@@ -10,7 +11,7 @@ import timber.log.Timber
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-open class SharedApplication : Application() {
+abstract class SharedApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
@@ -19,4 +20,6 @@ open class SharedApplication : Application() {
             Timber.plant(Timber.DebugTree())
         }
     }
+
+    abstract fun getAdditionalModules(): List<Module>
 }

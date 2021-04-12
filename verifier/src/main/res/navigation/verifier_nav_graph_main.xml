@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+  ~   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+  ~
+  ~   SPDX-License-Identifier: EUPL-1.2
+  ~
+  -->
+
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav"
+    app:startDestination="@+id/nav_scan_qr">
+
+    <fragment
+        android:id="@+id/nav_scan_qr"
+        android:name="nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrFragment"
+        android:label="@string/scan_qr_title"
+        tools:layout="@layout/fragment_scan_qr">
+
+        <action
+            android:id="@+id/action_scan_instructions"
+            app:destination="@id/nav_scan_instructions"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
+
+        <action
+            android:id="@+id/action_about_this_app"
+            app:destination="@id/nav_about_this_app" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_scan_instructions"
+        android:name="nl.rijksoverheid.ctr.verifier.ui.scanqr.scaninstructions.ScanInstructionsFragment"
+        android:label="@string/scan_instructions"
+        tools:layout="@layout/fragment_scan_instructions" />
+
+    <fragment
+        android:id="@+id/nav_about_this_app"
+        android:name="nl.rijksoverheid.ctr.design.menu.about.AboutThisAppFragment"
+        android:label="@string/about_this_app"
+        tools:layout="@layout/fragment_about_app" />
+
+    <include app:graph="@navigation/verifier_nav_graph_scanner" />
+
+</navigation>

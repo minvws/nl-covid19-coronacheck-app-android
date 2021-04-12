@@ -38,7 +38,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
     private val navController = TestNavHostController(
         ApplicationProvider.getApplicationContext()
     ).also {
-        it.setGraph(R.navigation.holder_nav_graph)
+        it.setGraph(R.navigation.holder_nav_graph_main)
         it.setCurrentDestination(R.id.nav_my_overview)
     }
 
@@ -252,11 +252,6 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
     private fun launchOverviewFragment(localTestResultState: LocalTestResultState) {
         loadKoinModules(
             module(override = true) {
-                viewModel {
-                    fakeIntroductionViewModel(
-                        introductionFinished = true
-                    )
-                }
                 viewModel {
                     fakeLocalTestResultViewModel(
                         localTestResultState = localTestResultState

@@ -1,8 +1,6 @@
 package nl.rijksoverheid.ctr.introduction
 
-import androidx.preference.PreferenceManager
-import nl.rijksoverheid.ctr.holder.persistence.IntroductionPersistenceManager
-import org.koin.android.ext.koin.androidContext
+import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -17,9 +15,7 @@ import org.koin.dsl.module
 val introductionModule = module {
     single {
         IntroductionPersistenceManager(
-            PreferenceManager.getDefaultSharedPreferences(
-                androidContext(),
-            )
+            get()
         )
     }
     viewModel<IntroductionViewModel> { IntroductionViewModelImpl(get()) }

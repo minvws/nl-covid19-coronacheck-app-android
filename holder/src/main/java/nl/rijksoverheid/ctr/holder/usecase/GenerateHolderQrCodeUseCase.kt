@@ -1,7 +1,7 @@
 package nl.rijksoverheid.ctr.holder.usecase
 
 import android.graphics.Bitmap
-import nl.rijksoverheid.ctr.qrscanner.QrCodeScannerUtil
+import nl.rijksoverheid.ctr.holder.ui.myoverview.util.QrCodeUtil
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -11,7 +11,7 @@ import nl.rijksoverheid.ctr.qrscanner.QrCodeScannerUtil
  *
  */
 class GenerateHolderQrCodeUseCase(
-    private val qrCodeScannerUtil: QrCodeScannerUtil
+    private val qrCodeUtil: QrCodeUtil
 ) {
 
     fun bitmap(
@@ -19,7 +19,7 @@ class GenerateHolderQrCodeUseCase(
         qrCodeWidth: Int,
         qrCodeHeight: Int
     ): Bitmap {
-        return qrCodeScannerUtil.createQrCode(
+        return qrCodeUtil.createQrCode(
             data,
             qrCodeWidth,
             qrCodeHeight

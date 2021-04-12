@@ -7,8 +7,8 @@ plugins {
     id "androidx.navigation.safeargs.kotlin"
 }
 
-def appVersionCode = System.getenv("GITHUB_RUN_NUMBER") != null ? System.getenv("GITHUB_RUN_NUMBER").toInteger() : 380
-version = "1.1.1"
+def appVersionCode = System.getenv("GITHUB_RUN_NUMBER") != null ? System.getenv("GITHUB_RUN_NUMBER").toInteger() : 502
+version = "1.1.4"
 archivesBaseName = "holder-v${version}-${appVersionCode}"
 
 android {
@@ -36,7 +36,6 @@ android {
         buildConfigField "boolean", "FEATURE_TEST_PROVIDER_API_CHECKS", "true"
         buildConfigField "String", "BASE_API_URL", "\"https://holder-api.coronacheck.nl/v2/\""
         buildConfigField "String", "URL_FAQ", "\"https://coronacheck.nl/nl/faq-in-app.html\""
-        buildConfigField "String", "URL_ABOUT_THIS_APP", "\"https://coronacheck.nl/nl/over-de-app-in-app\""
         buildConfigField "String", "URL_PRIVACY_STATEMENT", "\"https://coronacheck.nl/nl/privacy-in-app\""
         buildConfigField "String", "URL_MAKE_APPOINTMENT", "\"https://coronacheck.nl/nl/testaanbieders-fieldlab-in-de-app\""
     }
@@ -106,7 +105,7 @@ dependencies {
     implementation project(':clcore')
     implementation project(":qrscanner")
 
-    implementation 'com.github.openid:AppAuth-Android:41a6aa1'
+    implementation "net.openid:appauth:${app_auth_version}"
     implementation "com.xwray:groupie:${groupie_version}"
     implementation "com.xwray:groupie-viewbinding:${groupie_version}"
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"
@@ -125,6 +124,8 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp")
     implementation("com.squareup.okhttp3:okhttp-tls")
     implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
+    implementation "androidx.security:security-crypto:$security_crypto_version"
+    implementation "com.google.zxing:core:$zxing_core_version"
 
     testImplementation "junit:junit:$junit_version"
     testImplementation "io.mockk:mockk:$mock_version"

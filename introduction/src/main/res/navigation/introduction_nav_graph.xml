@@ -50,7 +50,9 @@
     <fragment
         android:id="@+id/nav_privacy_policy"
         android:name="nl.rijksoverheid.ctr.introduction.privacy_consent.PrivacyConsentFragment"
-        tools:layout="@layout/fragment_privacy_consent" />
+        tools:layout="@layout/fragment_privacy_consent">
+
+    </fragment>
 
     <fragment
         android:id="@+id/nav_app_status"

@@ -13,6 +13,8 @@ import com.schibsted.spain.barista.assertion.BaristaVisibilityAssertions.assertD
 import com.schibsted.spain.barista.assertion.BaristaVisibilityAssertions.assertNotDisplayed
 import com.schibsted.spain.barista.interaction.BaristaClickInteractions.clickOn
 import com.schibsted.spain.barista.interaction.BaristaScrollInteractions.scrollTo
+import io.mockk.mockk
+import io.mockk.verify
 import nl.rijksoverheid.ctr.design.views.AbbreviatedPersonalDetailsItemWidget
 import nl.rijksoverheid.ctr.design.views.AbbreviatedPersonalDetailsWidget
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
@@ -20,6 +22,8 @@ import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.fakeIntroductionViewModel
 import nl.rijksoverheid.ctr.verifier.fakeVerifiedQr
 import nl.rijksoverheid.ctr.verifier.models.VerifiedQrResultState
+import nl.rijksoverheid.ctr.verifier.ui.scanner.ScanResultFragment
+import nl.rijksoverheid.ctr.verifier.ui.scanner.util.ScannerUtil
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -40,6 +44,15 @@ import org.robolectric.RobolectricTestRunner
 class ScanResultFragmentTest : AutoCloseKoinTest() {
 
     private lateinit var navController: TestNavHostController
+    private val scannerUtil: ScannerUtil = mockk(relaxed = true)
+
+    @Test
+    fun `Clicking scan again button opens scanner`() {
+        launchScanResultFragment()
+        scrollTo(R.id.button)
+        clickOn(R.id.button)
+        verify { scannerUtil.launchScanner(any()) }
+    }
 
     @Test
     fun `Valid result shows correct screen`() {
@@ -88,16 +101,6 @@ class ScanResultFragmentTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `Valid result on button click opens scanner`() {
-        launchScanResultFragment()
-        clickOn(R.id.button)
-        assertEquals(
-            navController.currentDestination?.id,
-            R.id.nav_scan_qr
-        )
-    }
-
-    @Test
     fun `Invalid result shows correct screen`() {
         launchScanResultFragment(state = VerifiedQrResultState.Invalid(verifiedQr = fakeVerifiedQr()))
         assertHasBackground(R.id.root, R.color.red)
@@ -117,16 +120,6 @@ class ScanResultFragmentTest : AutoCloseKoinTest() {
         assertEquals(
             navController.currentDestination?.id,
             R.id.invalid_explanation_bottomsheet
-        )
-    }
-
-    @Test
-    fun `Invalid result on button click opens scanner`() {
-        launchScanResultFragment(state = VerifiedQrResultState.Invalid(verifiedQr = fakeVerifiedQr()))
-        clickOn(R.id.button)
-        assertEquals(
-            navController.currentDestination?.id,
-            R.id.nav_scan_qr
         )
     }
 
@@ -165,13 +158,16 @@ class ScanResultFragmentTest : AutoCloseKoinTest() {
                         introductionFinished = true
                     )
                 }
+                factory {
+                    scannerUtil
+                }
             }
         )
 
         navController = TestNavHostController(
             ApplicationProvider.getApplicationContext()
         ).also {
-            it.setGraph(R.navigation.verifier_nav_graph)
+            it.setGraph(R.navigation.verifier_nav_graph_scanner)
             it.setCurrentDestination(R.id.nav_scan_result)
         }
 

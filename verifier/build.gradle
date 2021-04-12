@@ -7,8 +7,8 @@ plugins {
     id "androidx.navigation.safeargs.kotlin"
 }
 
-def appVersionCode = System.getenv("GITHUB_RUN_NUMBER") != null ? System.getenv("GITHUB_RUN_NUMBER").toInteger() : 380
-version = "1.1.1"
+def appVersionCode = System.getenv("GITHUB_RUN_NUMBER") != null ? System.getenv("GITHUB_RUN_NUMBER").toInteger() : 492
+version = "1.1.4"
 archivesBaseName = "verifier-v${version}-${appVersionCode}"
 
 android {
@@ -62,7 +62,6 @@ android {
             applicationIdSuffix ".test"
             manifestPlaceholders = [appLabel: "@string/app_name_test"]
             buildConfigField "String", "URL_SUPPORT", "\"https://www.coronacheck.nl/nl/faq-scanner-in-app\""
-            buildConfigField "String", "URL_ABOUT_THIS_APP", "\"https://www.coronacheck.nl/nl/over-de-scanner-app-in-app\""
             buildConfigField "String", "URL_PRIVACY_STATEMENT", "\"https://www.coronacheck.nl/nl/privacy-in-app\""
             buildConfigField "String", "BASE_API_URL", "\"https://api-ct.bananenhalen.nl/v2/\""
             buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "false"
@@ -114,6 +113,7 @@ dependencies {
     implementation "androidx.preference:preference-ktx:$preference_version"
     implementation "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
     implementation "com.jakewharton.timber:timber:${timber_version}"
+    implementation "androidx.security:security-crypto:$security_crypto_version"
 
     testImplementation "androidx.test:runner:$androix_test_version"
     testImplementation "junit:junit:$junit_version"

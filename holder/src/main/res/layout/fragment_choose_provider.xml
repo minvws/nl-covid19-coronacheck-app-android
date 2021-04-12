@@ -23,14 +23,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
+        <nl.rijksoverheid.ctr.design.views.AccessibilityHeaderWidget
             android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="32dp"
             android:text="@string/choose_provider_title"
-            android:accessibilityHeading="true"
             android:textAppearance="?attr/textAppearanceHeadline5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

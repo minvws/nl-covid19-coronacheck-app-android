@@ -1,6 +1,5 @@
 package nl.rijksoverheid.ctr.holder
 
-import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
@@ -22,10 +21,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.TestResultsViewModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.TokenQrViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.LocalTestResultViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.LocalTestResultViewModelImpl
-import nl.rijksoverheid.ctr.holder.ui.myoverview.util.TestResultAdapterItemUtil
-import nl.rijksoverheid.ctr.holder.ui.myoverview.util.TestResultAdapterItemUtilImpl
-import nl.rijksoverheid.ctr.holder.ui.myoverview.util.TokenValidatorUtil
-import nl.rijksoverheid.ctr.holder.ui.myoverview.util.TokenValidatorUtilImpl
+import nl.rijksoverheid.ctr.holder.ui.myoverview.util.*
 import nl.rijksoverheid.ctr.holder.usecase.*
 import nl.rijksoverheid.ctr.shared.usecase.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.shared.usecase.TestResultAttributesUseCaseImpl
@@ -41,6 +37,7 @@ import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
+
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
  *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
@@ -49,12 +46,6 @@ import retrofit2.converter.moshi.MoshiConverterFactory
  *
  */
 fun holderModule(baseUrl: String) = module {
-
-    single<SharedPreferences> {
-        PreferenceManager.getDefaultSharedPreferences(
-            androidContext(),
-        )
-    }
 
     single<PersistenceManager> {
         SharedPreferencesPersistenceManager(
@@ -114,6 +105,7 @@ fun holderModule(baseUrl: String) = module {
     }
 
     // Utils
+    factory<QrCodeUtil> { QrCodeUtilImpl() }
     factory<TestResultAdapterItemUtil> { TestResultAdapterItemUtilImpl(get()) }
 
     // Usecases
@@ -123,6 +115,13 @@ fun holderModule(baseUrl: String) = module {
 
     factory<TestResultAttributesUseCase> {
         TestResultAttributesUseCaseImpl(get())
+    }
+
+    factory {
+        SharedPreferenceMigration(
+            oldSharedPreferences = PreferenceManager.getDefaultSharedPreferences(androidContext()),
+            newSharedPreferences = get()
+        )
     }
 
     single {
