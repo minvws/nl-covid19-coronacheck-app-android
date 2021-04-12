@@ -41,19 +41,37 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/scanner_header"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/header_guideline"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="32dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintGuide_begin="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:id="@+id/scanner_header_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_marginTop="32dp"
-        android:gravity="center_horizontal"
-        android:textAppearance="?attr/textAppearanceBody1"
-        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/preview_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
-        tools:text="Richt je toestel op de QR-code op het scherm van de bezoeker." />
+        app:layout_constraintTop_toBottomOf="@id/header_guideline">
+
+        <TextView
+            android:id="@+id/scanner_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/overlay_cutout_margin"
+            android:gravity="center_horizontal"
+            android:textAppearance="?attr/textAppearanceBody1"
+            android:textStyle="bold"
+            tools:text="Richt je toestel op de QR-code op het scherm van de bezoeker." />
+
+    </ScrollView>
 
     <ProgressBar
         android:id="@+id/progress"

@@ -17,8 +17,10 @@ import android.view.View
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
+import androidx.core.view.doOnLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -64,6 +66,14 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
 
         binding.scannerHeader.text = getCopy().message
         binding.toolbar.title = getCopy().title
+
+        // Show header below overlay window after overlay finishes drawing
+        binding.overlay.doOnLayout {
+            val set = ConstraintSet()
+            set.clone(binding.root)
+            set.setGuidelineBegin(binding.headerGuideline.id, binding.overlay.bottomOfOverlayWindow)
+            set.applyTo(binding.root)
+        }
     }
 
     override fun onStart() {
@@ -169,6 +179,7 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
         val options = BarcodeScannerOptions.Builder()
             .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
             .build()
+
         val barcodeScanner: BarcodeScanner = BarcodeScanning.getClient(options)
 
         // Set up the analysis Usecase
