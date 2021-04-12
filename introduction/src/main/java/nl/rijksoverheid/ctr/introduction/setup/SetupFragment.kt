@@ -5,6 +5,7 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.AppStatusFragment
 import nl.rijksoverheid.ctr.appconfig.model.AppStatus
@@ -20,6 +21,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  */
 class SetupFragment : Fragment(R.layout.fragment_setup) {
 
+    private val args: SetupFragmentArgs by navArgs()
     private val appStatusViewModel: AppConfigViewModel by viewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -27,7 +29,7 @@ class SetupFragment : Fragment(R.layout.fragment_setup) {
 
         appStatusViewModel.appStatusLiveData.observe(viewLifecycleOwner, {
             if (it is AppStatus.NoActionRequired) {
-                findNavController().navigate(SetupFragmentDirections.actionOnboarding())
+                findNavController().navigate(SetupFragmentDirections.actionOnboarding(args.introductionData))
             } else {
                 val bundle = bundleOf(AppStatusFragment.EXTRA_APP_STATUS to it)
                 findNavController().navigate(R.id.action_app_status, bundle)

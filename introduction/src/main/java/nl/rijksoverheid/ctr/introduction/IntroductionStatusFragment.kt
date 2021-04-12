@@ -14,21 +14,42 @@ import nl.rijksoverheid.ctr.introduction.models.IntroductionStatus
  */
 class IntroductionStatusFragment : Fragment() {
 
-    private val introductionStatus by lazy { (parentFragment?.parentFragment as IntroductionFragment).introductionStatus }
+    companion object {
+        private const val EXTRA_INTRODUCTION_STATUS = "EXTRA_INTRODUCTION_STATUS"
+
+        fun getBundle(
+            introductionStatus: IntroductionStatus
+        ): Bundle {
+            val bundle = Bundle()
+            bundle.putParcelable(EXTRA_INTRODUCTION_STATUS, introductionStatus)
+            return bundle
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        when (val status = introductionStatus) {
+        val introductionStatus = arguments?.getParcelable<IntroductionStatus>(
+            EXTRA_INTRODUCTION_STATUS
+        )
+
+        when (introductionStatus) {
             is IntroductionStatus.IntroductionNotFinished -> {
-                findNavController().navigate(IntroductionStatusFragmentDirections.actionSetup())
+                findNavController().navigate(
+                    IntroductionStatusFragmentDirections.actionSetup(
+                        introductionStatus.introductionData
+                    )
+                )
             }
             is IntroductionStatus.IntroductionFinished.ConsentNeeded -> {
                 findNavController().navigate(
                     IntroductionStatusFragmentDirections.actionNewTerms(
-                        status.newTerms
+                        introductionStatus.newTerms
                     )
                 )
+            }
+            is IntroductionStatus.IntroductionFinished.NoActionRequired -> {
+
             }
         }
     }

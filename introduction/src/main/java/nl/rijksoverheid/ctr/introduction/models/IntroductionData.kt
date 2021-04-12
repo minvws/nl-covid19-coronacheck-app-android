@@ -15,5 +15,6 @@ import nl.rijksoverheid.ctr.introduction.privacy_consent.models.PrivacyPolicyIte
 @Parcelize
 data class IntroductionData(
     val onboardingItems: List<OnboardingItem> = listOf(),
-    val privacyPolicyItems: List<PrivacyPolicyItem> = listOf()
+    val privacyPolicyItems: List<PrivacyPolicyItem> = listOf(),
+    val newTerms: NewTerms? = null
 ) : Parcelable

@@ -12,7 +12,6 @@ import kotlinx.parcelize.Parcelize
  */
 sealed class IntroductionStatus : Parcelable {
     sealed class IntroductionFinished : IntroductionStatus() {
-
         @Parcelize
         data class ConsentNeeded(val newTerms: NewTerms) : IntroductionStatus(), Parcelable
 
@@ -22,5 +21,6 @@ sealed class IntroductionStatus : Parcelable {
     }
 
     @Parcelize
-    object IntroductionNotFinished : IntroductionStatus(), Parcelable
+    data class IntroductionNotFinished(val introductionData: IntroductionData) :
+        IntroductionStatus(), Parcelable
 }

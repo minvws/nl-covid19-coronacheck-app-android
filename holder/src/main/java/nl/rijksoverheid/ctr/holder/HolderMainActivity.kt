@@ -18,7 +18,6 @@ import nl.rijksoverheid.ctr.appconfig.model.AppStatus
 import nl.rijksoverheid.ctr.holder.databinding.ActivityMainBinding
 import nl.rijksoverheid.ctr.introduction.IntroductionFragment
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
-import nl.rijksoverheid.ctr.introduction.models.IntroductionData
 import nl.rijksoverheid.ctr.introduction.models.IntroductionStatus
 import nl.rijksoverheid.ctr.introduction.models.NewTerms
 import nl.rijksoverheid.ctr.introduction.onboarding.models.OnboardingItem
@@ -58,54 +57,50 @@ class HolderMainActivity : AppCompatActivity() {
             newTerms = NewTerms(
                 version = 1,
                 needsConsent = true
+            ),
+            onboardingItems = listOf(
+                OnboardingItem(
+                    R.drawable.illustration_onboarding_1,
+                    R.string.onboarding_screen_1_title,
+                    R.string.onboarding_screen_1_description
+                ),
+                OnboardingItem(
+                    R.drawable.illustration_onboarding_2,
+                    R.string.onboarding_screen_2_title,
+                    R.string.onboarding_screen_2_description,
+                    true
+                ),
+                OnboardingItem(
+                    R.drawable.illustration_onboarding_3,
+                    R.string.onboarding_screen_3_title,
+                    R.string.onboarding_screen_3_description,
+                    true
+                ),
+                OnboardingItem(
+                    R.drawable.illustration_onboarding_4,
+                    R.string.onboarding_screen_4_title,
+                    R.string.onboarding_screen_4_description
+                )
+            ),
+            privacyPolicyItems = listOf(
+                PrivacyPolicyItem(
+                    R.drawable.shield,
+                    R.string.privacy_policy_1
+                ),
+                PrivacyPolicyItem(
+                    R.drawable.shield,
+                    R.string.privacy_policy_2
+                ),
+                PrivacyPolicyItem(
+                    R.drawable.shield,
+                    R.string.privacy_policy_3
+                )
             )
         )
 
         if (introductionStatus !is IntroductionStatus.IntroductionFinished.NoActionRequired) {
             navController.navigate(
-                R.id.action_introduction,
-                IntroductionFragment.getBundle(
-                    introductionData = IntroductionData(
-                        onboardingItems = listOf(
-                            OnboardingItem(
-                                R.drawable.illustration_onboarding_1,
-                                R.string.onboarding_screen_1_title,
-                                R.string.onboarding_screen_1_description
-                            ),
-                            OnboardingItem(
-                                R.drawable.illustration_onboarding_2,
-                                R.string.onboarding_screen_2_title,
-                                R.string.onboarding_screen_2_description,
-                                true
-                            ),
-                            OnboardingItem(
-                                R.drawable.illustration_onboarding_3,
-                                R.string.onboarding_screen_3_title,
-                                R.string.onboarding_screen_3_description
-                            ),
-                            OnboardingItem(
-                                R.drawable.illustration_onboarding_4,
-                                R.string.onboarding_screen_4_title,
-                                R.string.onboarding_screen_4_description
-                            )
-                        ),
-                        privacyPolicyItems = listOf(
-                            PrivacyPolicyItem(
-                                R.drawable.shield,
-                                R.string.privacy_policy_1
-                            ),
-                            PrivacyPolicyItem(
-                                R.drawable.shield,
-                                R.string.privacy_policy_2
-                            ),
-                            PrivacyPolicyItem(
-                                R.drawable.shield,
-                                R.string.privacy_policy_3
-                            )
-                        )
-                    ),
-                    introductionStatus = introductionStatus
-                )
+                R.id.action_introduction, IntroductionFragment.getBundle(introductionStatus)
             )
         }
 

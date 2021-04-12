@@ -9,8 +9,8 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.view.forEachIndexed
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
-import nl.rijksoverheid.ctr.introduction.IntroductionFragment
 import nl.rijksoverheid.ctr.introduction.R
 import nl.rijksoverheid.ctr.introduction.databinding.FragmentOnboardingBinding
 import nl.rijksoverheid.ctr.shared.ext.getNavigationIconView
@@ -25,7 +25,7 @@ import nl.rijksoverheid.ctr.shared.ext.setAccessibilityFocus
  */
 class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
 
-    private val introductionData by lazy { (parentFragment?.parentFragment as IntroductionFragment).introductionData }
+    private val args: OnboardingFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -36,9 +36,9 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
             OnboardingPagerAdapter(
                 childFragmentManager,
                 lifecycle,
-                introductionData.onboardingItems
+                args.introductionData.onboardingItems
             )
-        binding.viewPager.offscreenPageLimit = introductionData.onboardingItems.size
+        binding.viewPager.offscreenPageLimit = args.introductionData.onboardingItems.size
         binding.viewPager.adapter = adapter
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
@@ -87,7 +87,7 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
         binding.button.setOnClickListener {
             val currentItem = binding.viewPager.currentItem
             if (currentItem == adapter.itemCount - 1) {
-                findNavController().navigate(OnboardingFragmentDirections.actionPrivacyPolicy())
+                findNavController().navigate(OnboardingFragmentDirections.actionPrivacyPolicy(args.introductionData))
             } else {
                 binding.viewPager.currentItem = currentItem + 1
                 binding.toolbar.getNavigationIconView()?.setAccessibilityFocus()

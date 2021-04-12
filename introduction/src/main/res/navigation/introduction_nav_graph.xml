@@ -28,6 +28,10 @@
         android:name="nl.rijksoverheid.ctr.introduction.setup.SetupFragment"
         tools:layout="@layout/fragment_setup">
 
+        <argument
+            android:name="introduction_data"
+            app:argType="nl.rijksoverheid.ctr.introduction.models.IntroductionData" />
+
         <action
             android:id="@+id/action_onboarding"
             app:destination="@id/nav_onboarding"
@@ -63,12 +67,20 @@
             app:popEnterAnim="@anim/fragment_close_enter"
             app:popExitAnim="@anim/fragment_close_exit" />
 
+        <argument
+            android:name="introduction_data"
+            app:argType="nl.rijksoverheid.ctr.introduction.models.IntroductionData" />
+
     </fragment>
 
     <fragment
         android:id="@+id/nav_privacy_policy"
         android:name="nl.rijksoverheid.ctr.introduction.privacy_consent.PrivacyConsentFragment"
         tools:layout="@layout/fragment_privacy_consent">
+
+        <argument
+            android:name="introduction_data"
+            app:argType="nl.rijksoverheid.ctr.introduction.models.IntroductionData" />
 
     </fragment>
 
