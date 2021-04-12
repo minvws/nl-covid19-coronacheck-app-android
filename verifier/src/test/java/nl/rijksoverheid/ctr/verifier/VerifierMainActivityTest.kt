@@ -5,6 +5,8 @@ import androidx.navigation.findNavController
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import nl.rijksoverheid.ctr.appconfig.model.AppStatus
+import nl.rijksoverheid.ctr.introduction.models.IntroductionData
+import nl.rijksoverheid.ctr.introduction.models.IntroductionStatus
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -28,7 +30,13 @@ class VerifierMainActivityTest : AutoCloseKoinTest() {
     @Test
     fun `If introduction not finished navigate to introduction`() {
         val scenario = launchHolderMainActivity(
-            introductionFinished = false
+            introductionStatus = IntroductionStatus.IntroductionNotFinished(
+                introductionData = IntroductionData(
+                    onboardingItems = listOf(),
+                    privacyPolicyItems = listOf(),
+                    null
+                )
+            )
         )
 
         scenario.onActivity {
@@ -41,9 +49,7 @@ class VerifierMainActivityTest : AutoCloseKoinTest() {
 
     @Test
     fun `If introduction finished navigate to main`() {
-        val scenario = launchHolderMainActivity(
-            introductionFinished = true
-        )
+        val scenario = launchHolderMainActivity()
         scenario.onActivity {
             assertEquals(
                 it.findNavController(R.id.main_nav_host_fragment).currentDestination?.id,
@@ -66,14 +72,14 @@ class VerifierMainActivityTest : AutoCloseKoinTest() {
     }
 
     private fun launchHolderMainActivity(
-        introductionFinished: Boolean = true,
+        introductionStatus: IntroductionStatus = IntroductionStatus.IntroductionFinished.NoActionRequired,
         appStatus: AppStatus = AppStatus.NoActionRequired
     ): ActivityScenario<VerifierMainActivity> {
         loadKoinModules(
             module(override = true) {
                 viewModel {
                     fakeIntroductionViewModel(
-                        introductionFinished = introductionFinished
+                        introductionStatus = introductionStatus
                     )
                 }
                 viewModel {

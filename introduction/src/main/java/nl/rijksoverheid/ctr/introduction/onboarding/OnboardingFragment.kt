@@ -38,32 +38,37 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
                 lifecycle,
                 args.introductionData.onboardingItems
             )
-        binding.viewPager.offscreenPageLimit = args.introductionData.onboardingItems.size
-        binding.viewPager.adapter = adapter
-        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                binding.toolbar.visibility = if (position == 0) View.GONE else View.VISIBLE
-                updateCurrentIndicator(binding, position)
 
-                binding.indicators.contentDescription = getString(
-                    R.string.onboarding_page_indicator_label,
-                    (position + 1).toString(),
-                    adapter.itemCount.toString()
-                )
+        if (args.introductionData.onboardingItems.isNotEmpty()) {
+            binding.viewPager.offscreenPageLimit = args.introductionData.onboardingItems.size
+            binding.viewPager.adapter = adapter
+            binding.viewPager.registerOnPageChangeCallback(object :
+                ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    binding.toolbar.visibility = if (position == 0) View.GONE else View.VISIBLE
+                    updateCurrentIndicator(binding, position)
 
-                // Apply bottom elevation if the view inside the viewpager is scrollable
-                val scrollView =
-                    childFragmentManager.fragments[position]?.view?.findViewById<ScrollView>(R.id.scroll)
-                if (scrollView?.canScrollVertically(1) == true) {
-                    binding.bottom.cardElevation =
-                        resources.getDimensionPixelSize(R.dimen.onboarding_bottom_scroll_elevation)
-                            .toFloat()
-                } else {
-                    binding.bottom.cardElevation = 0f
+                    binding.indicators.contentDescription = getString(
+                        R.string.onboarding_page_indicator_label,
+                        (position + 1).toString(),
+                        adapter.itemCount.toString()
+                    )
+
+                    // Apply bottom elevation if the view inside the viewpager is scrollable
+                    val scrollView =
+                        childFragmentManager.fragments[position]?.view?.findViewById<ScrollView>(R.id.scroll)
+                    if (scrollView?.canScrollVertically(1) == true) {
+                        binding.bottom.cardElevation =
+                            resources.getDimensionPixelSize(R.dimen.onboarding_bottom_scroll_elevation)
+                                .toFloat()
+                    } else {
+                        binding.bottom.cardElevation = 0f
+                    }
                 }
-            }
-        })
+            })
+        }
+
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object :
             OnBackPressedCallback(true) {
