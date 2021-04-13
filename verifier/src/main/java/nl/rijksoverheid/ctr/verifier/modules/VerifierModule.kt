@@ -1,7 +1,9 @@
-package nl.rijksoverheid.ctr.verifier
+package nl.rijksoverheid.ctr.verifier.modules
 
 import androidx.preference.PreferenceManager
 import com.squareup.moshi.Moshi
+import nl.rijksoverheid.ctr.introduction.models.NewTerms
+import nl.rijksoverheid.ctr.verifier.SharedPreferenceMigration
 import nl.rijksoverheid.ctr.verifier.datamappers.VerifiedQrDataMapper
 import nl.rijksoverheid.ctr.verifier.datamappers.VerifiedQrDataMapperImpl
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
@@ -28,6 +30,10 @@ import org.koin.dsl.module
  *
  */
 val verifierModule = module {
+
+    factory<NewTerms?> {
+        NewTerms(version = 1, true)
+    }
 
     single<PersistenceManager> {
         SharedPreferencesPersistenceManager(

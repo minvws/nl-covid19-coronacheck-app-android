@@ -8,8 +8,6 @@ import nl.rijksoverheid.ctr.appconfig.model.AppStatus
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.models.IntroductionStatus
 import nl.rijksoverheid.ctr.introduction.models.NewTerms
-import nl.rijksoverheid.ctr.introduction.onboarding.models.OnboardingItem
-import nl.rijksoverheid.ctr.introduction.privacy_consent.models.PrivacyPolicyItem
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.TestResultAttributes
 import nl.rijksoverheid.ctr.shared.util.TestResultUtil
@@ -40,16 +38,8 @@ fun fakeIntroductionViewModel(
     introductionStatus: IntroductionStatus = IntroductionStatus.IntroductionFinished.NoActionRequired,
 ): IntroductionViewModel {
     return object : IntroductionViewModel() {
-        override fun getIntroductionStatus(
-            onboardingItems: List<OnboardingItem>,
-            privacyPolicyItems: List<PrivacyPolicyItem>,
-            newTerms: NewTerms?
-        ): IntroductionStatus {
+        override fun getIntroductionStatus(): IntroductionStatus {
             return introductionStatus
-        }
-
-        override fun getIntroductionFinished(): Boolean {
-            return introductionStatus is IntroductionStatus.IntroductionFinished.NoActionRequired || introductionStatus is IntroductionStatus.IntroductionFinished.ConsentNeeded
         }
 
         override fun saveIntroductionFinished(newTerms: NewTerms?) {

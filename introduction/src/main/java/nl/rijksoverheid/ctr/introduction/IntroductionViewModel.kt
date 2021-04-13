@@ -3,9 +3,7 @@ package nl.rijksoverheid.ctr.introduction
 import androidx.lifecycle.ViewModel
 import nl.rijksoverheid.ctr.introduction.models.IntroductionStatus
 import nl.rijksoverheid.ctr.introduction.models.NewTerms
-import nl.rijksoverheid.ctr.introduction.onboarding.models.OnboardingItem
 import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
-import nl.rijksoverheid.ctr.introduction.privacy_consent.models.PrivacyPolicyItem
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -16,13 +14,7 @@ import nl.rijksoverheid.ctr.introduction.privacy_consent.models.PrivacyPolicyIte
  */
 
 abstract class IntroductionViewModel : ViewModel() {
-    abstract fun getIntroductionStatus(
-        onboardingItems: List<OnboardingItem>,
-        privacyPolicyItems: List<PrivacyPolicyItem>,
-        newTerms: NewTerms? = null
-    ): IntroductionStatus
-
-    abstract fun getIntroductionFinished(): Boolean
+    abstract fun getIntroductionStatus(): IntroductionStatus
     abstract fun saveIntroductionFinished(newTerms: NewTerms? = null)
 }
 
@@ -32,16 +24,7 @@ class IntroductionViewModelImpl(
 ) :
     IntroductionViewModel() {
 
-    override fun getIntroductionStatus(
-        onboardingItems: List<OnboardingItem>,
-        privacyPolicyItems: List<PrivacyPolicyItem>,
-        newTerms: NewTerms?
-    ) =
-        introductionStatusUseCase.get(onboardingItems, privacyPolicyItems, newTerms)
-
-    override fun getIntroductionFinished(): Boolean {
-        return introductionPersistenceManager.getIntroductionFinished()
-    }
+    override fun getIntroductionStatus() = introductionStatusUseCase.get()
 
     override fun saveIntroductionFinished(newTerms: NewTerms?) {
         introductionPersistenceManager.saveIntroductionFinished()

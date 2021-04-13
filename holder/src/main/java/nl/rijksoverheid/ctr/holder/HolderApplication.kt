@@ -4,6 +4,9 @@ import nl.rijksoverheid.ctr.api.apiModule
 import nl.rijksoverheid.ctr.appconfig.*
 import nl.rijksoverheid.ctr.appconfig.usecase.LoadPublicKeysUseCase
 import nl.rijksoverheid.ctr.design.designModule
+import nl.rijksoverheid.ctr.holder.modules.holderIntroductionModule
+import nl.rijksoverheid.ctr.holder.modules.holderModule
+import nl.rijksoverheid.ctr.holder.modules.holderPreferenceModule
 import nl.rijksoverheid.ctr.introduction.introductionModule
 import nl.rijksoverheid.ctr.shared.SharedApplication
 import nl.rijksoverheid.ctr.shared.sharedModule
@@ -34,6 +37,7 @@ open class HolderApplication : SharedApplication() {
             androidContext(this@HolderApplication)
             modules(
                 holderModule(BuildConfig.BASE_API_URL),
+                holderIntroductionModule,
                 apiModule(
                     BuildConfig.BASE_API_URL,
                     BuildConfig.FLAVOR == "tst",

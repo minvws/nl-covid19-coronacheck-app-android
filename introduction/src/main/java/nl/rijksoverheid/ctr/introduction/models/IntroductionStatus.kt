@@ -13,10 +13,10 @@ import kotlinx.parcelize.Parcelize
 sealed class IntroductionStatus : Parcelable {
     sealed class IntroductionFinished : IntroductionStatus() {
         @Parcelize
-        data class ConsentNeeded(val newTerms: NewTerms) : IntroductionStatus(), Parcelable
+        data class ConsentNeeded(val newTerms: NewTerms) : IntroductionFinished(), Parcelable
 
         @Parcelize
-        object NoActionRequired : IntroductionStatus(), Parcelable
+        object NoActionRequired : IntroductionFinished(), Parcelable
 
     }
 

@@ -2,10 +2,7 @@ package nl.rijksoverheid.ctr.introduction
 
 import nl.rijksoverheid.ctr.introduction.models.IntroductionData
 import nl.rijksoverheid.ctr.introduction.models.IntroductionStatus
-import nl.rijksoverheid.ctr.introduction.models.NewTerms
-import nl.rijksoverheid.ctr.introduction.onboarding.models.OnboardingItem
 import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
-import nl.rijksoverheid.ctr.introduction.privacy_consent.models.PrivacyPolicyItem
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -15,38 +12,30 @@ import nl.rijksoverheid.ctr.introduction.privacy_consent.models.PrivacyPolicyIte
  *
  */
 interface IntroductionStatusUseCase {
-    fun get(
-        onboardingItems: List<OnboardingItem>,
-        privacyPolicyItems: List<PrivacyPolicyItem>,
-        newTerms: NewTerms?
-    ): IntroductionStatus
+    fun get(): IntroductionStatus
 }
 
 class IntroductionStatusUseCaseImpl(
-    private val introductionPersistenceManager: IntroductionPersistenceManager
+    private val introductionPersistenceManager: IntroductionPersistenceManager,
+    private val introductionData: IntroductionData
 ) : IntroductionStatusUseCase {
-    override fun get(
-        onboardingItems: List<OnboardingItem>,
-        privacyPolicyItems: List<PrivacyPolicyItem>,
-        newTerms: NewTerms?
-    ): IntroductionStatus {
+    override fun get(): IntroductionStatus {
         val introductionFinished: Boolean = introductionPersistenceManager.getIntroductionFinished()
 
         return if (introductionFinished) {
-            if (newTerms != null && !introductionPersistenceManager.getNewTermsSeen(newTerms.version)) {
+            if (introductionData.newTerms != null && !introductionPersistenceManager.getNewTermsSeen(
+                    introductionData.newTerms.version
+                )
+            ) {
                 IntroductionStatus.IntroductionFinished.ConsentNeeded(
-                    newTerms
+                    introductionData.newTerms
                 )
             } else {
                 IntroductionStatus.IntroductionFinished.NoActionRequired
             }
         } else {
             IntroductionStatus.IntroductionNotFinished(
-                introductionData = IntroductionData(
-                    onboardingItems = onboardingItems,
-                    privacyPolicyItems = privacyPolicyItems,
-                    newTerms = newTerms
-                )
+                introductionData
             )
         }
     }
