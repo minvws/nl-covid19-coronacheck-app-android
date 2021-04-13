@@ -7,6 +7,9 @@ import nl.rijksoverheid.ctr.design.designModule
 import nl.rijksoverheid.ctr.introduction.introductionModule
 import nl.rijksoverheid.ctr.shared.SharedApplication
 import nl.rijksoverheid.ctr.shared.sharedModule
+import nl.rijksoverheid.ctr.verifier.modules.verifierIntroductionModule
+import nl.rijksoverheid.ctr.verifier.modules.verifierModule
+import nl.rijksoverheid.ctr.verifier.modules.verifierPreferenceModule
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -39,6 +42,7 @@ open class VerifierApplication : SharedApplication() {
                     BuildConfig.FEATURE_TEST_PROVIDER_API_CHECKS
                 ),
                 verifierModule,
+                verifierIntroductionModule,
                 sharedModule,
                 appConfigModule("verifier", BuildConfig.VERSION_CODE),
                 introductionModule,

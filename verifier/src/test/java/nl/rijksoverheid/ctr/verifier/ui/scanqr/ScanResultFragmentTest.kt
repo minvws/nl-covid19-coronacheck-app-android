@@ -19,7 +19,6 @@ import nl.rijksoverheid.ctr.design.views.AbbreviatedPersonalDetailsItemWidget
 import nl.rijksoverheid.ctr.design.views.AbbreviatedPersonalDetailsWidget
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
 import nl.rijksoverheid.ctr.verifier.R
-import nl.rijksoverheid.ctr.verifier.fakeIntroductionViewModel
 import nl.rijksoverheid.ctr.verifier.fakeVerifiedQr
 import nl.rijksoverheid.ctr.verifier.models.VerifiedQrResultState
 import nl.rijksoverheid.ctr.verifier.ui.scanner.ScanResultFragment
@@ -27,7 +26,6 @@ import nl.rijksoverheid.ctr.verifier.ui.scanner.util.ScannerUtil
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.loadKoinModules
 import org.koin.dsl.module
 import org.koin.test.AutoCloseKoinTest
@@ -153,11 +151,6 @@ class ScanResultFragmentTest : AutoCloseKoinTest() {
     ) {
         loadKoinModules(
             module(override = true) {
-                viewModel {
-                    fakeIntroductionViewModel(
-                        introductionFinished = true
-                    )
-                }
                 factory {
                     scannerUtil
                 }

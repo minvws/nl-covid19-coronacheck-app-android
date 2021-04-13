@@ -2,8 +2,6 @@ package nl.rijksoverheid.ctr.introduction.models
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
-import nl.rijksoverheid.ctr.introduction.onboarding.models.OnboardingItem
-import nl.rijksoverheid.ctr.introduction.privacy_consent.models.PrivacyPolicyItem
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -13,8 +11,7 @@ import nl.rijksoverheid.ctr.introduction.privacy_consent.models.PrivacyPolicyIte
  *
  */
 @Parcelize
-data class IntroductionData(
-    val onboardingItems: List<OnboardingItem> = listOf(),
-    val privacyPolicyItems: List<PrivacyPolicyItem> = listOf(),
-    val newTerms: NewTerms? = null
+data class NewTerms(
+    val version: Int,
+    val needsConsent: Boolean
 ) : Parcelable

@@ -36,19 +36,19 @@
     <string name="scan_result_invalid_subtitle"><![CDATA[De bezoeker heeft geen geldig negatief testbewijs. <b><u>Lees mogelijke oorzaken</b></u>]]></string>
     <string name="scan_result_invalid_button">Scan volgende</string>
     <string name="scan_result_invalid_reason_title">Ongeldige QR-code</string>
-    <string name="scan_result_invalid_reason_description"><![CDATA[Dit betekent <b>niet</b> dat de persoon corona heeft.<br\><br\><b>Mogelijke oorzaken</b><br\><ul><li>De persoon is niet getest</li><li>De QR-code is doorgestuurd</li><li>De QR-code is vervalst</li></ul><br\><b>Wat nu?</b><br\>Vraag de bezoeker eerst een test te doen. Als de testuitslag bekend is kan de bezoeker er in de CoronaCheck-app een QR-code van maken.]]></string>
+    <string name="scan_result_invalid_reason_description"><![CDATA[Dit betekent <b>niet</b> dat deze bezoeker corona heeft.<br\><br\><b>Mogelijke oorzaken</b><br\><ul><li>De persoon is niet getest</li><li>De QR-code is doorgestuurd</li><li>De QR-code is vervalst</li></ul><br\><b>Wat nu?</b><br\>Vraag de bezoeker eerst een test te doen. Als de testuitslag bekend is kan de bezoeker er in de CoronaCheck-app een QR-code van maken.]]></string>
     <string name="scan_result_valid_reason_title">Identificatiegegevens controleren</string>
     <string name="scan_result_valid_reason_description">Controleer of de QR-code ook echt bij de bezoeker hoort. Kijk daarvoor of deze gegevens hetzelfde zijn als de gegevens op het identiteitsbewijs.\n\nDe gegevens bestaan uit: (1) de eerste letter van de voornaam, (2) de eerste letter van de achternaam, (3) de geboortedag en (4) de geboortemaand.</string>
     <string name="about_this_app_description">CoronaCheck Scanner is ontwikkeld zodat sociale, culturele en sportieve locaties hun deuren kunnen openen. Denk bijvoorbeeld aan evenementen, musea en concerten. Met behulp van deze app krijgen alleen bezoekers die kortgeleden negatief op corona getest zijn toegang. Zo kan Nederland meer buiten de deur doen.</string>
     <string name="scan_instructions">Scan instructies</string>
     <string name="scan_instructions_1_title">1. Houd afstand</string>
-    <string name="scan_instructions_1_description">Druk in de CoronaCheck Scanner-app op ‘Start Scannen’. Vraag de bezoeker zijn of haar QR-code te laten zien in de CoronaCheck-app. De QR-code kan veilig op afstand uitgelezen worden. De telefoons hoeven elkaar dus niet te raken.</string>
+    <string name="scan_instructions_1_description">Druk op de knop ‘Start Scannen’ en vraag de bezoeker de QR-code in de CoronaCheck-app te laten zien. Deze QR-code geldt als testbewijs en kan veilig op afstand uitgelezen worden.</string>
     <string name="scan_instructions_2_title">2. Scan de QR-code</string>
     <string name="scan_instructions_2_description">Richt de camera van jouw telefoon op de telefoon van de bezoeker en scan de QR-code.</string>
     <string name="scan_instructions_3_title">3. Groen scherm</string>
-    <string name="scan_instructions_3_description">Groen scherm? De bezoeker heeft een geldig negatief testresultaat en mag naar binnen. De bezoeker moet natuurlijk wel een toegangskaartje hebben.</string>
+    <string name="scan_instructions_3_description">Groen scherm? De bezoeker heeft een geldige negatieve testuitslag en mag naar binnen. Het kan zijn dat de bezoeker ook een toegangskaartje nodig heeft.</string>
     <string name="scan_instructions_4_title">4. Rood scherm</string>
-    <string name="scan_instructions_4_description"><![CDATA[Rood scherm? De QR-code van de bezoeker is niet geldig. De bezoeker kan geen toegang krijgen. Bij een rood scherm mag de bezoeker nooit binnengelaten worden. Dit brengt andere bezoekers in gevaar. Een rood scherm betekent niet dat de bezoeker corona heeft. Het betekent alleen dat er geen bewijs van een recente negatieve coronatest is.<br\><br\><ul><li>Controleer of de bezoeker de QR-code vanuit de CoronaCheck-app laat zien. Een schermafbeelding of kopie van een QR-code geeft altijd een rood scherm.</li><li>Is de bezoeker wel negatief op corona getest in de afgelopen %1$s uur? Dan kan er van de testuitslag een bewijs gemaakt worden in de CoronaCheck-app.</li><li>Heeft de bezoeker geen coronatest gedaan? Dan is het niet mogelijk een testbewijs te maken. Vraag de bezoeker eerst een test te doen.</li></ul>]]></string>
+    <string name="scan_instructions_4_description"><![CDATA[Rood scherm? De QR-code van de bezoeker is niet geldig. De bezoeker kan geen toegang krijgen. Bij een rood scherm mag de bezoeker nooit binnengelaten worden. Dit brengt andere bezoekers in gevaar. Een rood scherm betekent niet dat de bezoeker corona heeft. Het betekent alleen dat er geen bewijs van een recente negatieve coronatest is.<br\><br\><ul><li>Controleer of de bezoeker de QR-code vanuit de CoronaCheck app laat zien. Een schermafbeelding of kopie van een QR-code geeft altijd een rood scherm.</li><li>Is de bezoeker wel negatief op corona getest in de afgelopen %1$s uur? Dan kan er van dat testresultaat een bewijs gemaakt worden in de CoronaCheck app.</li><li>Heeft de bezoeker geen test gedaan? Stuur hem of haar naar een snelteststraat in de buurt om een nieuwe test te doen.</li></ul>]]></string>
     <string name="privacy_statement">Privacyverklaring</string>
     <string name="scanner_custom_title">Scan QR-Code</string>
     <string name="scanner_custom_message">Richt je toestel op de QR-code op het scherm van de bezoeker.</string>
@@ -81,4 +81,13 @@
     <string name="back">Terug</string>
     <string name="onboarding_page_indicator_label">Pagina %1$s van %2$s</string>
     <string name="menu_close">Sluiten</string>
+    <string name="new_terms_title">Onze voorwaarden zijn vernieuwd</string>
+    <string name="new_terms_highlights"><![CDATA[<b>Dit is wat er is veranderd</b><br\><br\><ul><li>Als je een buitenlandse reis wil maken worden er aanvullende medische Corona gegevens opgehaald</li><li>tempor incididunt ut labore et dolore magna aliqua.</li><li>Ut enim ad minim veniam, quis nostrud exercitation ullamco</li></ul>]]></string>
+    <string name="new_terms"><![CDATA[<b>1:  Lorem ipsum dolor sit amet</b><br\>consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.]]></string>
+    <string name="new_terms_consent_button">Volgende</string>
+    <string name="new_terms_consent_needed_positive_button">Akkoord</string>
+    <string name="new_terms_consent_needed_negative_button">Niet akkoord</string>
+    <string name="new_terms_no_consent_dialog_title">Je kan niet verder als je niet akkoord gaat</string>
+    <string name="new_terms_no_consent_dialog_message">Je hebt geen toegang de CoronaCheck app zonder akkoord te gaan met de bijgewerkte voorwaarden.</string>
+    <string name="new_terms_no_consent_dialog_button">Ok</string>
 </resources>

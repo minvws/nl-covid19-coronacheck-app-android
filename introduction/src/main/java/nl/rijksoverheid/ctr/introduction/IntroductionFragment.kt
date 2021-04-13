@@ -1,8 +1,10 @@
 package nl.rijksoverheid.ctr.introduction
 
 import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.Fragment
-import nl.rijksoverheid.ctr.introduction.models.IntroductionData
+import androidx.navigation.fragment.NavHostFragment
+import nl.rijksoverheid.ctr.introduction.models.IntroductionStatus
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -14,19 +16,28 @@ import nl.rijksoverheid.ctr.introduction.models.IntroductionData
 class IntroductionFragment : Fragment(R.layout.fragment_introduction) {
 
     companion object {
-        private const val EXTRA_INTRODUCTION_DATA = "EXTRA_INTRODUCTION_DATA"
+        private const val EXTRA_INTRODUCTION_STATUS = "EXTRA_INTRODUCTION_STATUS"
 
-        fun getBundle(introductionData: IntroductionData): Bundle {
+        fun getBundle(
+            introductionStatus: IntroductionStatus
+        ): Bundle {
             val bundle = Bundle()
-            bundle.putParcelable(EXTRA_INTRODUCTION_DATA, introductionData)
+            bundle.putParcelable(EXTRA_INTRODUCTION_STATUS, introductionStatus)
             return bundle
         }
     }
 
-    val introductionData by lazy {
-        arguments?.getParcelable<IntroductionData>(
-            EXTRA_INTRODUCTION_DATA
-        ) ?: error("IntroductionData should be set")
-    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
+        val navHostFragment =
+            childFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        navHostFragment.navController.setGraph(
+            R.navigation.introduction_nav_graph, IntroductionStatusFragment.getBundle(
+                introductionStatus = arguments?.getParcelable(
+                    EXTRA_INTRODUCTION_STATUS
+                ) ?: error("IntroductionStatus should be set")
+            )
+        )
+    }
 }
