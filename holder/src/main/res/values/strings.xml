@@ -146,7 +146,7 @@
     <string name="create_qr_code_button">Naar mijn QR</string>
     <string name="back">Terug</string>
     <string name="onboarding_page_indicator_label">Pagina %1$s van %2$s</string>
-    <string name="accessibility_label_your_qr">Jouw QR-code</string>
+    <string name="accessibility_label_your_qr">Hier wordt een afbeelding getoond van jouw QR-code.</string>
     <string name="accessibility_testresult_icon_description">Informatie over je negatieve testuitslag</string>
     <string name="menu_close">Sluiten</string>
     <string name="dialog_no_internet_connection_title">Geen internetverbinding</string>
