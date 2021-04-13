@@ -24,7 +24,6 @@ import androidx.core.view.doOnLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.mlkit.vision.barcode.Barcode
 import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
@@ -177,7 +176,7 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
     ) {
         // Set up options for the scanner, limiting it to QR codes only
         val options = BarcodeScannerOptions.Builder()
-            .setBarcodeFormats(Barcode.FORMAT_QR_CODE, getAdditionalBarcodeFormat())
+            .setBarcodeFormats(getBarcodeFormats().first(), *getBarcodeFormats().toIntArray())
             .build()
 
         val barcodeScanner: BarcodeScanner = BarcodeScanning.getClient(options)
@@ -251,7 +250,7 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
 
     abstract fun onQrScanned(content: String)
     abstract fun getCopy(): Copy
-    abstract fun getAdditionalBarcodeFormat(): Int
+    abstract fun getBarcodeFormats(): List<Int>
 
     override fun onDestroyView() {
         super.onDestroyView()

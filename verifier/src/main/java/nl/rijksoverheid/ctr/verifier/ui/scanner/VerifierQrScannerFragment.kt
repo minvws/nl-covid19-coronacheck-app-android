@@ -40,8 +40,13 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
         )
     }
 
-    override fun getAdditionalBarcodeFormat(): Int {
-        return Barcode.FORMAT_AZTEC
+    override fun getBarcodeFormats(): List<Int> {
+        val formats = mutableListOf<Int>()
+        formats.add(Barcode.FORMAT_QR_CODE)
+        if (BuildConfig.FLAVOR == "tst") {
+            formats.add(Barcode.FORMAT_AZTEC)
+        }
+        return formats
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
