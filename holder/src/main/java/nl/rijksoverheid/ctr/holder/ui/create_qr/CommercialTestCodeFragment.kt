@@ -187,7 +187,7 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
         }
 
         // If a location token is set, automatically fill it in
-        navArgs.locationToken?.let { token ->
+        navArgs.token?.let { token ->
             binding.uniqueCodeText.setText(token)
         }
     }
