@@ -50,6 +50,8 @@ class MyOverviewTestResultAdapterItem(
 
         viewBinding.personalDetails.text =
             "${personalDetails[0]} ${personalDetails[1]} ${personalDetails[2]} ${personalDetails[3]}"
+        viewBinding.personalDetails.contentDescription = context.getString(R.string.accessibility_label_my_overview_test_result_personal_data, personalDetails[0], personalDetails[1], personalDetails[2], personalDetails[3])
+
         viewBinding.validity.text = context.getString(
             R.string.my_overview_test_result_validity,
             localTestResult.expireDate.formatDateTime(context)
