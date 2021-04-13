@@ -114,6 +114,7 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
     implementation "com.jakewharton.timber:timber:${timber_version}"
     implementation "androidx.security:security-crypto:$security_crypto_version"
+    implementation "com.google.mlkit:barcode-scanning:${mlkit_barcode_version}"
 
     testImplementation "androidx.test:runner:$androix_test_version"
     testImplementation "junit:junit:$junit_version"
