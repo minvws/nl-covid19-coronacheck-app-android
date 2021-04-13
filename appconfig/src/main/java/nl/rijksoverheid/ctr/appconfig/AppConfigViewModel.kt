@@ -46,7 +46,7 @@ class AppConfigViewModelImpl(
                     publicKeys = configResult.publicKeys
                 )
             }
-            appStatusLiveData.postValue(AppStatus.InternetRequired)
+            appStatusLiveData.postValue(appStatus)
         }
     }
 }
