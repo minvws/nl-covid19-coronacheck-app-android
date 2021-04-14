@@ -39,12 +39,5 @@
             android:checkable="false"
             android:title="@string/terms_of_use"
             android:visible="false" />
-
-        <item
-            android:id="@+id/nav_close_menu"
-            android:checkable="false"
-            android:title="@string/menu_close"
-            android:visible="false" />
-
     </group>
 </menu>
