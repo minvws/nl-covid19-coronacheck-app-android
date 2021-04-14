@@ -55,7 +55,7 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
         binding.overlay.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
 
         binding.toolbar.setNavigationOnClickListener {
-            findNavController().popBackStack()
+            findNavController().navigateUp()
         }
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.toolbar) { _, insets ->

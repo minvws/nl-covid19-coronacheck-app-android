@@ -22,8 +22,6 @@ import nl.rijksoverheid.ctr.design.ext.isScreenReaderOn
 import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppData
 import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppFragment
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMainBinding
-import nl.rijksoverheid.ctr.shared.AccessibilityConstants
-import nl.rijksoverheid.ctr.shared.ext.getNavigationIconView
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.ext.setAccessibilityFocus
 import nl.rijksoverheid.ctr.shared.ext.styleTitle
@@ -36,7 +34,7 @@ class HolderMainFragment : BaseMainFragment(
 ) {
 
     private var _binding: FragmentMainBinding? = null
-    private val binding: FragmentMainBinding by lazy { _binding!! }
+    private val binding get() = _binding!!
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -46,14 +44,6 @@ class HolderMainFragment : BaseMainFragment(
         val navHostFragment =
             childFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            binding.toolbar.getNavigationIconView()?.let {
-                it.postDelayed(
-                    { it.setAccessibilityFocus() },
-                    AccessibilityConstants.ACCESSIBILITY_FOCUS_DELAY
-                )
-            }
-        }
 
         binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         val appBarConfiguration = AppBarConfiguration(
@@ -61,7 +51,6 @@ class HolderMainFragment : BaseMainFragment(
             binding.drawerLayout
         )
 
-        binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
         binding.navView.setupWithNavController(navController)
 
