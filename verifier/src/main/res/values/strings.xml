@@ -91,5 +91,5 @@
     <string name="new_terms_no_consent_dialog_title">Je kan niet verder als je niet akkoord gaat</string>
     <string name="new_terms_no_consent_dialog_message">Je hebt geen toegang de CoronaCheck app zonder akkoord te gaan met de bijgewerkte voorwaarden.</string>
     <string name="new_terms_no_consent_dialog_button">Ok</string>
-    <string name="accessibility_label_ministry">Logo Rijksoverheid</string>
+    <string name="accessibility_logo_label_ministry">Logo Rijksoverheid</string>
 </resources>

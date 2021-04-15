@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/illustration_logo_ministerie"
         app:layout_constraintEnd_toEndOf="parent"
-        android:contentDescription="@string/accessibility_label_ministry"
+        android:contentDescription="@string/accessibility_logo_label_ministry"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
