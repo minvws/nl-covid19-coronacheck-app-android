@@ -10,7 +10,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentCommercialTestTypeBinding
 import nl.rijksoverheid.ctr.holder.databinding.IncludeTestCodeTypeBinding
-import nl.rijksoverheid.ctr.holder.ext.findNavControllerSafety
+import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.usecase.TokenQrUseCase
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
