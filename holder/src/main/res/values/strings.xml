@@ -9,7 +9,7 @@
     <string name="onboarding_screen_2_title">Jouw QR-code op zak</string>
     <string name="onboarding_screen_2_description">Als uit de test blijkt dat je geen corona hebt kun je in deze app een persoonlijke QR-code maken. Dat is jouw testbewijs. De QR-code wordt gescand om toegang te krijgen.</string>
     <string name="onboarding_screen_4_title">Zo min mogelijk gegevens</string>
-    <string name="onboarding_screen_4_description">"In jouw QR-code staan alleen je negatieve testuitslag (geen corona), het tijdstip van de test en minimale gegevens: de eerste letter van je voornaam, de eerste letter van je achternaam, je geboortedag en geboortemaand. Dit is ter controle, om zeker te zijn dat de testuitslag bij jou hoort. "</string>
+    <string name="onboarding_screen_4_description">In jouw QR-code staan alleen je negatieve testuitslag (geen corona), het tijdstip van de test en minimale gegevens: de eerste letter van je voornaam, de eerste letter van je achternaam, je geboortedag en geboortemaand. Dit is ter controle, om zeker te zijn dat de testuitslag bij jou hoort.</string>
     <string name="onboarding_screen_3_title">Geldigheid van je bewijs</string>
     <string name="onboarding_screen_3_description">Wil je toegang krijgen tot een bepaalde sociale, culturele of sportieve activiteit? Zorg dat jouw QR-code binnen %1$s uur na het moment van testen gescand is bij de ingang. Als je testbewijs verloopt verdwijnt de QR-code uit de app.</string>
     <string name="onboarding_next">Volgende</string>
@@ -18,7 +18,7 @@
     <string name="privacy_policy_1"><![CDATA[Jouw gegevens worden <b>nergens centraal opgeslagen</b>]]></string>
     <string name="privacy_policy_2"><![CDATA[Je GPS- of locatiegegevens worden <b>niet gebruikt of bewaard</b>]]></string>
     <string name="privacy_policy_3"><![CDATA[In de QR-code staan minimale <b>persoonsgegevens</b>.]]></string>
-    <string name="privacy_policy_checkbox_text">"Ik heb de privacyverklaring gelezen en geef toestemming voor het verwerken van mijn persoonsgegevens.  "</string>
+    <string name="privacy_policy_checkbox_text">Ik heb de privacyverklaring gelezen en geef toestemming voor het verwerken van mijn persoonsgegevens.</string>
     <string name="my_overview">Mijn overzicht</string>
     <string name="my_overview_description">Laat je QR code scannen voor de ingang van een uitgaansgelegenheid, om naar binnen te mogen.</string>
     <string name="my_overview_no_qr_description">Voor toegang tot een pilot-event heb je een negatieve testuitslag nodig. Daar maak je een QR-code van. Laat bij de ingang de QR-code én je identiteitsbewijs zien.</string>
