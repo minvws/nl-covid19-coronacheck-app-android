@@ -8,6 +8,9 @@ import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.holder.*
 import nl.rijksoverheid.ctr.holder.models.LocalTestResultState
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
+import nl.rijksoverheid.ctr.shared.ext.ClmobileVerifyException
+import nl.rijksoverheid.ctr.shared.models.TestResultAttributes
+import nl.rijksoverheid.ctr.shared.usecase.TestResultAttributesUseCase
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -127,4 +130,27 @@ class LocalTestResultUseCaseImplTest {
             assertTrue(localTestResult is LocalTestResultState.Expired)
             verify(exactly = 1) { mockedPersistenceManager.deleteCredentials() }
         }
+
+    @Test
+    fun `Stored Local test result that fails to verify returns no test result`() =
+        runBlocking {
+            val mockedPersistenceManager: PersistenceManager = mockk(relaxed = true)
+            every { mockedPersistenceManager.getCredentials() } answers { "" }
+
+            val usecase = LocalTestResultUseCaseImpl(
+                persistenceManager = mockedPersistenceManager,
+                testResultUtil = fakeTestResultUtil(),
+                cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
+                testResultAttributesUseCase = object : TestResultAttributesUseCase {
+                    override fun get(credentials: String): TestResultAttributes {
+                        throw ClmobileVerifyException("")
+                    }
+                },
+                personalDetailsUtil = fakePersonalDetailsUtil()
+            )
+
+            val localTestResult = usecase.get(null)
+            assertTrue(localTestResult is LocalTestResultState.None)
+        }
+
 }

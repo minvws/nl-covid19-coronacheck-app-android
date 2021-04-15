@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.holder.ext
+package nl.rijksoverheid.ctr.shared.ext
 
 import android.content.Context
 import android.view.inputmethod.InputMethodManager
@@ -6,7 +6,6 @@ import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import timber.log.Timber
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

@@ -44,6 +44,9 @@ dependencies {
     implementation "androidx.appcompat:appcompat:${appcompat_version}"
     implementation "com.google.android.material:material:${material_version}"
     implementation "androidx.security:security-crypto:$security_crypto_version"
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$navigation_version"
+    implementation "androidx.fragment:fragment-ktx:$fragment_ktx_version"
 
     api "com.squareup.retrofit2:retrofit:$retrofit_version"
 
