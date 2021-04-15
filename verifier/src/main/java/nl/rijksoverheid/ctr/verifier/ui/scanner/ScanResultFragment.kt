@@ -33,8 +33,6 @@ import java.util.concurrent.TimeUnit
  */
 class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
 
-    private var _binding: FragmentScanResultBinding? = null
-    private val binding get() = _binding!!
     private val args: ScanResultFragmentArgs by navArgs()
     private val personalDetailsUtil: PersonalDetailsUtil by inject()
     private val scannerUtil: ScannerUtil by inject()
@@ -47,7 +45,7 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        _binding = FragmentScanResultBinding.bind(view)
+        val binding = FragmentScanResultBinding.bind(view)
 
         handleValidatedResult(
             binding = binding,
@@ -185,6 +183,5 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
     override fun onDestroyView() {
         super.onDestroyView()
         autoCloseHandler.removeCallbacks(autoCloseRunnable)
-        _binding = null
     }
 }
