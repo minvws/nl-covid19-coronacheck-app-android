@@ -19,6 +19,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import timber.log.Timber
 import java.io.File
+import java.util.concurrent.TimeUnit
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -42,6 +43,8 @@ fun apiModule(
         OkHttpClient.Builder()
             .addNetworkInterceptor(CacheOverrideInterceptor())
             .cache(cache)
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
             .followRedirects(false)
             .apply {
                 if (BuildConfig.DEBUG) {
