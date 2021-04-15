@@ -22,7 +22,6 @@ import nl.rijksoverheid.ctr.verifier.models.VerifiedQr
 import nl.rijksoverheid.ctr.verifier.models.VerifiedQrResultState
 import nl.rijksoverheid.ctr.verifier.ui.scanner.util.ScannerUtil
 import org.koin.android.ext.android.inject
-import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 /*
@@ -42,7 +41,6 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
 
     private val autoCloseHandler = Handler(Looper.getMainLooper())
     private val autoCloseRunnable = Runnable {
-        Timber.v("IK KOM HIER")
         findNavController().navigate(ScanResultFragmentDirections.actionNavMain())
     }
 
