@@ -10,7 +10,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.appconfig.AppConfigUtil
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
-import nl.rijksoverheid.ctr.holder.HolderMainActivity
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentCommercialTestCodeBinding
@@ -35,7 +34,7 @@ import kotlin.math.roundToInt
 class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_code) {
 
     private var _binding: FragmentCommercialTestCodeBinding? = null
-    private val binding: FragmentCommercialTestCodeBinding by lazy { _binding!! }
+    private val binding get() = _binding!!
     private val viewModel: TestResultsViewModel by sharedViewModel(
         state = emptyState(),
         owner = {
