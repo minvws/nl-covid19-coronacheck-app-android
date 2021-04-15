@@ -1,6 +1,8 @@
 package nl.rijksoverheid.ctr.verifier.ui.scanner
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
@@ -13,12 +15,14 @@ import nl.rijksoverheid.ctr.design.utils.getSpannableFromHtml
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
 import nl.rijksoverheid.ctr.shared.util.MultiTapDetector
 import nl.rijksoverheid.ctr.shared.util.PersonalDetailsUtil
+import nl.rijksoverheid.ctr.verifier.BuildConfig
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanResultBinding
 import nl.rijksoverheid.ctr.verifier.models.VerifiedQr
 import nl.rijksoverheid.ctr.verifier.models.VerifiedQrResultState
 import nl.rijksoverheid.ctr.verifier.ui.scanner.util.ScannerUtil
 import org.koin.android.ext.android.inject
+import java.util.concurrent.TimeUnit
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -32,6 +36,11 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
     private val args: ScanResultFragmentArgs by navArgs()
     private val personalDetailsUtil: PersonalDetailsUtil by inject()
     private val scannerUtil: ScannerUtil by inject()
+
+    private val autoCloseHandler = Handler(Looper.getMainLooper())
+    private val autoCloseRunnable = Runnable {
+        findNavController().navigate(ScanResultFragmentDirections.actionNavMain())
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -50,6 +59,15 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
         binding.button.setOnClickListener {
             scannerUtil.launchScanner(requireActivity())
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val autoCloseDuration =
+            if (BuildConfig.FLAVOR == "tst") TimeUnit.SECONDS.toMillis(10) else TimeUnit.MINUTES.toMillis(
+                3
+            )
+        autoCloseHandler.postDelayed(autoCloseRunnable, autoCloseDuration)
     }
 
     private fun handleValidatedResult(
@@ -160,5 +178,10 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
                 "Ok"
             ) { _, _ -> }
             .show()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        autoCloseHandler.removeCallbacks(autoCloseRunnable)
     }
 }
