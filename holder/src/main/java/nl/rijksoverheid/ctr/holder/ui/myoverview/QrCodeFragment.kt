@@ -49,14 +49,14 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (BuildConfig.FLAVOR == "prod") {
-            requireActivity().window.apply {
-                setFlags(
-                    WindowManager.LayoutParams.FLAG_SECURE,
-                    WindowManager.LayoutParams.FLAG_SECURE
-                )
-                attributes.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_FULL
-            }
+            requireActivity().window.setFlags(
+                WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE
+            )
         }
+        val params = requireActivity().window.attributes
+        params?.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_FULL
+        requireActivity().window.attributes = params
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -103,8 +103,11 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
         super.onDestroyView()
         _binding = null
 
-        requireActivity().window.attributes.screenBrightness =
-            WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE
+        // Set brightness back to previous
+        val params = requireActivity().window.attributes
+        params?.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE
+        requireActivity().window.attributes = params
+
         (parentFragment?.parentFragment as HolderMainFragment).presentLoading(false)
 
         setFragmentResult(
