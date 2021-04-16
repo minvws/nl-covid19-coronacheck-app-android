@@ -28,7 +28,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="@string/your_negative_test_results_description"
+            tools:text="@string/your_negative_test_results_description"
             android:textAppearance="?attr/textAppearanceBody1"
             app:layout_constraintEnd_toEndOf="@+id/title"
             app:layout_constraintStart_toStartOf="@+id/title"

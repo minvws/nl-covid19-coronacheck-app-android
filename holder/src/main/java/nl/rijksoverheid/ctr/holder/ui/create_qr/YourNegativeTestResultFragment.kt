@@ -11,8 +11,9 @@ import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentYourNegativeTestResultsBinding
-import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.holder.usecase.SignedTestResult
+import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
+import nl.rijksoverheid.ctr.shared.ext.fromHtml
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ViewModelOwner
@@ -44,6 +45,9 @@ class YourNegativeTestResultFragment : Fragment(R.layout.fragment_your_negative_
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentYourNegativeTestResultsBinding.bind(view)
+
+        binding.description.text =
+            getString(R.string.your_negative_test_results_description).fromHtml()
 
         val retrievedResult = viewModel.retrievedResult
         if (retrievedResult == null) {

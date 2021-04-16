@@ -43,7 +43,7 @@
     <string name="my_overview_no_qr_make_appointment_description">Wil je een QR-code maken? Laat je dan eerst testen op corona.</string>
     <string name="my_overview_no_qr_make_appointment_button">Maak afspraak</string>
     <string name="my_overview_no_qr_make_qr_title">QR-code maken</string>
-    <string name="my_overview_no_qr_replace_qr_title">Vervang je QR-code</string>
+    <string name="my_overview_no_qr_replace_qr_title">QR-code vervangen</string>
     <string name="my_overview_no_qr_make_qr_description">Zet jouw negatieve testuitslag om in een persoonlijke QR-code.</string>
     <string name="my_overview_no_qr_make_qr_button">Maak QR-code</string>
     <string name="my_overview_no_qr_replace_qr_button">Vervang QR-code</string>
@@ -161,7 +161,7 @@
     <string name="new_terms_consent_needed_positive_button">Akkoord</string>
     <string name="new_terms_consent_needed_negative_button">Niet akkoord</string>
     <string name="new_terms_no_consent_dialog_title">Je kan niet verder als je niet akkoord gaat</string>
-    <string name="new_terms_no_consent_dialog_message">Je hebt geen toegang de CoronaCheck-app zonder akkoord te gaan met de bijgewerkte voorwaarden.</string>
+    <string name="new_terms_no_consent_dialog_message">Zonder akkoord met de bijgewerkte voorwaarden heb je geen toegang tot de CoronaCheck-app.</string>
     <string name="new_terms_no_consent_dialog_button">Ok</string>
     <string name="accessibility_logo_label_ministry">Logo Rijksoverheid</string>
 </resources>
