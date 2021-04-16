@@ -49,10 +49,13 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (BuildConfig.FLAVOR == "prod") {
-            requireActivity().window.setFlags(
-                WindowManager.LayoutParams.FLAG_SECURE,
-                WindowManager.LayoutParams.FLAG_SECURE
-            )
+            requireActivity().window.apply {
+                setFlags(
+                    WindowManager.LayoutParams.FLAG_SECURE,
+                    WindowManager.LayoutParams.FLAG_SECURE
+                )
+                attributes.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_FULL
+            }
         }
     }
 
@@ -62,8 +65,6 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
         requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         _binding = FragmentQrCodeBinding.bind(view)
-        requireActivity().window.attributes.screenBrightness =
-            WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_FULL
 
         localTestResultViewModel.qrCodeLiveData.observe(viewLifecycleOwner) {
             binding.image.setImageBitmap(it.qrCode)
