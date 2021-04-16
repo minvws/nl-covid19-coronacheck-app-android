@@ -156,7 +156,7 @@
     <string name="dialog_retry">Probeer opnieuw</string>
     <string name="new_terms_title">Onze voorwaarden zijn vernieuwd</string>
     <string name="new_terms_highlights"><![CDATA[<b>Dit is wat er is veranderd</b><br\><br\><ul><li>Initialen en geboortedag en -maand zijn opgenomen in QR-code</li><li>Deze gegevens worden getoond op de Scanner app voor ID-controle</li></ul>]]></string>
-    <string name="new_terms"><![CDATA[Je kunt de volledige privacy verklaring <a href="https://coronacheck.nl/nl/privacy-in-app">hier</a> lezen]]></string>
+    <string name="new_terms"><![CDATA[Lees <a href="https://coronacheck.nl/nl/privacy-in-app">hier</a> de volledige privacyverklaring.]]></string>
     <string name="new_terms_consent_button">Volgende</string>
     <string name="new_terms_consent_needed_positive_button">Akkoord</string>
     <string name="new_terms_consent_needed_negative_button">Niet akkoord</string>

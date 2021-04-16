@@ -83,8 +83,8 @@
     <string name="onboarding_page_indicator_label">Pagina %1$s van %2$s</string>
     <string name="menu_close">Sluiten</string>
     <string name="new_terms_title">Onze voorwaarden zijn vernieuwd</string>
-    <string name="new_terms_highlights"><![CDATA[<b>Dit is wat er is veranderd</b><br\><br\><ul><li>Beschrijving van gebruiksregels</li><li>Uitleg hoe de app te gebruiken</li><li>Toestemming cameragebruik.</li></ul>]]></string>
-    <string name="new_terms"><![CDATA[Je kunt de volledige gebruikers verklaring <a href="https://coronacheck.nl/nl/gebruikersvoorwaarden-in-app">hier</a> lezen]]></string>
+    <string name="new_terms_highlights"><![CDATA[<b>Dit is veranderd</b><br\><br\><ul><li>Beschrijving van gebruiksregels</li><li>Uitleg over gebruik van de app</li><li>Toestemming voor gebruik camera</li></ul>]]></string>
+    <string name="new_terms"><![CDATA[Lees <a href="https://coronacheck.nl/nl/gebruikersvoorwaarden-in-app">hier</a> de volledige gebruikersverklaring.]]></string>
     <string name="new_terms_consent_button">Volgende</string>
     <string name="new_terms_consent_needed_positive_button">Akkoord</string>
     <string name="new_terms_consent_needed_negative_button">Niet akkoord</string>
