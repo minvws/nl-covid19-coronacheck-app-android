@@ -14,11 +14,11 @@
     <string name="onboarding_screen_4_description"><![CDATA[Met behulp van deze app kun je weer bezoekers ontvangen. Maar alleen als jouw sociale, culturele of sportieve activiteit onder de aangewezen locaties valt.]]></string>
     <string name="onboarding_next">Volgende</string>
     <string name="privacy_policy_title">Zo gebruikt de app gegevens</string>
-    <string name="privacy_policy_description"><![CDATA[In de <a href="#">privacyverklaring</a> staat hoe CoronaCheck Scanner gegevens gebruikt. Dit zijn de belangrijkste punten:]]></string>
+    <string name="privacy_policy_description"><![CDATA[In de <a href="#">gebruiksvoorwaarden</a> staat hoe CoronaCheck Scanner gegevens gebruikt. Dit zijn de belangrijkste punten:]]></string>
     <string name="privacy_policy_1"><![CDATA[Gegevens van de bezoeker worden <b>nergens centraal opgeslagen</b> ]]></string>
     <string name="privacy_policy_2"><![CDATA[Als controleur weet je alleen <b>of een testbewijs geldig is</b>. Niet wie de bezoeker is.]]></string>
     <string name="privacy_policy_3"><![CDATA[GPS- of locatiegegevens worden <b>niet gebruikt of bewaard</b> ]]></string>
-    <string name="privacy_policy_checkbox_text">Ik heb de privacyverklaring gelezen en begrijp hoe de app gegevens gebruikt.</string>
+    <string name="privacy_policy_checkbox_text">Ik heb de gebruiksvoorwaarden gelezen en begrijp hoe de app gegevens gebruikt.</string>
     <string name="dialog_error_title">Technische fout</string>
     <string name="dialog_error_message">Excuus, er is een technische fout opgetreden</string>
     <string name="ok">Ok</string>
@@ -50,7 +50,7 @@
     <string name="scan_instructions_4_title">4. Rood scherm</string>
     <string name="scan_instructions_4_description"><![CDATA[Rood scherm? Dat betekent niet dat de bezoeker corona heeft. Het betekent alleen dat de QR-code ongeldig is. Er is dus geen bewijs van een recente negatieve testuitslag. Dit kun je doen:<br\><br\><ul><li>Controleer of de bezoeker de QR-code vanuit de CoronaCheck-app laat zien. Een schermafbeelding of kopie van een QR-code uit de app geeft altijd een rood scherm.</li><li>Vraag de bezoeker de app volledig af te sluiten en opnieuw op te starten. Scan daarna opnieuw de QR-code.</li><li>Blijft er een rood scherm komen, terwijl de bezoeker wel een negatieve testuitslag heeft? Stuur de bezoeker naar onze helpdesk, telefoonnummer: 0800-1421.</li></ul> <br\>Er is altijd een groen scherm nodig voor toegang.</a> Heeft de bezoeker geen (geldige) QR-code? Dan kun je de bezoeker niet binnenlaten. Kijk <a href="https://www.coronacheck.nl/scanner">hier</a> voor meer informatie.
 ]]></string>
-    <string name="privacy_statement">Privacyverklaring</string>
+    <string name="privacy_statement">Gebruiksvoorwaarden</string>
     <string name="scanner_custom_title">Scan QR-Code</string>
     <string name="scanner_custom_message">Richt je telefoon op de QR-code op het scherm van de bezoeker. Of op het papieren testbewijs.</string>
     <string name="camera_rationale_dialog_title">Scanner wil toegang tot je camera</string>
