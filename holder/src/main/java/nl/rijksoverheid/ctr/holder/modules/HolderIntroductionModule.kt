@@ -55,7 +55,10 @@ val holderIntroductionModule = module {
                     R.string.privacy_policy_3
                 )
             ),
-            newTerms = null
+            newTerms = NewTerms(
+                version = 1,
+                needsConsent = true
+            )
         )
     }
 }
