@@ -18,7 +18,7 @@
     <string name="privacy_policy_1"><![CDATA[Gegevens van de bezoeker worden <b>nergens centraal opgeslagen</b> ]]></string>
     <string name="privacy_policy_2"><![CDATA[Als controleur weet je alleen <b>of een testbewijs geldig is</b>. Niet wie de bezoeker is.]]></string>
     <string name="privacy_policy_3"><![CDATA[GPS- of locatiegegevens worden <b>niet gebruikt of bewaard</b> ]]></string>
-    <string name="privacy_policy_checkbox_text">Ik heb de gebruiksvoorwaarden gelezen en begrijp hoe de app gegevens gebruikt.</string>
+    <string name="privacy_policy_checkbox_text">Ik ga akkoord met de gebruiksvoorwaarden</string>
     <string name="dialog_error_title">Technische fout</string>
     <string name="dialog_error_message">Excuus, er is een technische fout opgetreden</string>
     <string name="ok">Ok</string>
