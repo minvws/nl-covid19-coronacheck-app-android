@@ -33,18 +33,7 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
     private val binding get() = _binding!!
     private val localTestResultViewModel: LocalTestResultViewModel by sharedViewModel()
     private val qrCodeHandler = Handler(Looper.getMainLooper())
-    private val qrCodeRunnable = object : Runnable {
-        override fun run() {
-            val canGenerateQrCode = localTestResultViewModel.generateQrCode(
-                size = resources.displayMetrics.widthPixels
-            )
-            if (canGenerateQrCode) {
-                val refreshMillis =
-                    if (BuildConfig.FLAVOR == "tst") TimeUnit.SECONDS.toMillis(10) else (QrCodeConstants.VALID_FOR_SECONDS / 2) * 1000
-                qrCodeHandler.postDelayed(this, refreshMillis)
-            }
-        }
-    }
+    private val qrCodeRunnable = Runnable { generateQrCode() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,10 +70,21 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
         }
     }
 
+    private fun generateQrCode() {
+        val canGenerateQrCode = localTestResultViewModel.generateQrCode(
+            size = resources.displayMetrics.widthPixels
+        )
+        if (canGenerateQrCode) {
+            val refreshMillis =
+                if (BuildConfig.FLAVOR == "tst") TimeUnit.SECONDS.toMillis(10) else (QrCodeConstants.VALID_FOR_SECONDS / 2) * 1000
+            qrCodeHandler.postDelayed(qrCodeRunnable, refreshMillis)
+        }
+    }
+
     override fun onResume() {
         super.onResume()
         presentQrLoading(true)
-        qrCodeHandler.post(qrCodeRunnable)
+        generateQrCode()
 
         // If the qr code has expired close this screen
         val localTestResult = localTestResultViewModel.retrievedLocalTestResult

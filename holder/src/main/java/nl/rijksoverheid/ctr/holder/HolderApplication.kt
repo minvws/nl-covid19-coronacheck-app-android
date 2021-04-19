@@ -29,7 +29,6 @@ open class HolderApplication : SharedApplication() {
     private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
     private val sharedPreferenceMigration: SharedPreferenceMigration by inject()
 
-
     override fun onCreate() {
         super.onCreate()
 
