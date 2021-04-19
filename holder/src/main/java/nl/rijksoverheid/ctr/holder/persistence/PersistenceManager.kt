@@ -31,7 +31,10 @@ class SharedPreferencesPersistenceManager(
     }
 
     override fun saveSecretKeyJson(json: String) {
-        sharedPreferences.edit().putString(SECRET_KEY_JSON, json).apply()
+        val result = sharedPreferences.edit().putString(SECRET_KEY_JSON, json).commit()
+        if (!result) {
+            throw IllegalStateException("Failed to save secret key in shared preference")
+        }
     }
 
     override fun getSecretKeyJson(): String? {
@@ -39,7 +42,10 @@ class SharedPreferencesPersistenceManager(
     }
 
     override fun saveCredentials(credentials: String) {
-        sharedPreferences.edit().putString(CREDENTIALS, credentials).apply()
+        val result = sharedPreferences.edit().putString(CREDENTIALS, credentials).commit()
+        if (!result) {
+            throw IllegalStateException("Failed to save credentials in shared preference")
+        }
     }
 
     override fun getCredentials(): String? {
@@ -47,7 +53,10 @@ class SharedPreferencesPersistenceManager(
     }
 
     override fun deleteCredentials() {
-        sharedPreferences.edit().remove(CREDENTIALS).apply()
+        val result = sharedPreferences.edit().remove(CREDENTIALS).commit()
+        if (!result) {
+            throw IllegalStateException("Failed to delete credentials in shared preference")
+        }
     }
 
     override fun hasSeenCameraRationale(): Boolean {
@@ -55,6 +64,10 @@ class SharedPreferencesPersistenceManager(
     }
 
     override fun setHasSeenCameraRationale(hasSeen: Boolean) {
-        sharedPreferences.edit().putBoolean(HAS_SEEN_CAMERA_RATIONALE, hasSeen).apply()
+        val result =
+            sharedPreferences.edit().putBoolean(HAS_SEEN_CAMERA_RATIONALE, hasSeen).commit()
+        if (!result) {
+            throw IllegalStateException("Failed to set camera rationale has been seen in shared preference")
+        }
     }
 }
