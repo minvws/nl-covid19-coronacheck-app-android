@@ -136,4 +136,11 @@ class HolderMainFragment : BaseMainFragment(
         binding.navView.menu.findItem(R.id.nav_terms_of_use)
             .styleTitle(context, R.attr.textAppearanceBody1)
     }
+
+    /**
+     * Allow screens to dynamically update their title
+     */
+    fun updateTitle(title: String){
+        binding.toolbar.title = title
+    }
 }
