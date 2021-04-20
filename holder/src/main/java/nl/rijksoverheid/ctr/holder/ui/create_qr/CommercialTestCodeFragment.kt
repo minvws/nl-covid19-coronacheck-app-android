@@ -170,6 +170,7 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
                     }
 
                     if(viewModel.usingSuppliedToken){
+                        binding.description.setText(R.string.commercial_test_verification_code_description_deeplink)
                         binding.uniqueCodeInput.isVisible = false
                     }
 

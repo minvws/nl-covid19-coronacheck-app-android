@@ -73,6 +73,7 @@
     <string name="commercial_test_verification_code_helper_text">Je krijgt een code via sms of e-mail</string>
     <string name="commercial_test_verification_code_send_again_in">Stuur opnieuw in %1$s</string>
     <string name="commercial_test_verification_code_send_again">Stuur opnieuw</string>
+    <string name="commercial_test_verification_code_description_deeplink">Vul jouw verficatie code in om je negatieve testresultaat op te halen. Deze krijg je in een sms of e-mail van je testlocatie.</string>
     <string name="commercial_test_button">Haal testuitslag op</string>
     <string name="commercial_test_invalid_qr_title">Ongeldige QR-code</string>
     <string name="commercial_test_invalid_qr_message">Deze QR-code is niet geldig. Scan de QR-code die je van je testlocatie hebt gekregen.</string>
