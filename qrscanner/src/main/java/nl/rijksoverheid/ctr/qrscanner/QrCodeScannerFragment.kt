@@ -10,6 +10,7 @@ package nl.rijksoverheid.ctr.qrscanner
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.DisplayMetrics
@@ -50,6 +51,8 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
         super.onViewCreated(view, savedInstanceState)
 
         _binding = FragmentScannerBinding.bind(view)
+
+        requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         // Set overlay to software accelerated only to fix transparency on certain devices
         binding.overlay.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
@@ -255,6 +258,8 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        requireActivity().requestedOrientation =
+            ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
     }
 
     /**
