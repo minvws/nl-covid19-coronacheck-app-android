@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -75,14 +76,10 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
 
         _binding = FragmentCommercialTestCodeBinding.bind(view)
 
-        if (viewModel.verificationRequired) {
-            showKeyboard(binding.verificationCodeText)
-        } else {
-            showKeyboard(binding.uniqueCodeText)
-        }
-
         viewModel.loading.observe(viewLifecycleOwner, EventObserver {
             (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
+            binding.loadingOverlay.isVisible = it
+            binding.button.isVisible != it
         })
 
         binding.uniqueCodeText.addTextChangedListener {
@@ -172,6 +169,10 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
                             getString(R.string.commercial_test_error_invalid_combination)
                     }
 
+                    if(viewModel.usingSuppliedToken){
+                        binding.uniqueCodeInput.isVisible = false
+                    }
+
                     binding.verificationCodeInput.requestFocus()
                 }
             }
@@ -188,8 +189,24 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
 
         // If a location token is set, automatically fill it in
         navArgs.token?.let { token ->
-            binding.uniqueCodeText.setText(token)
+            binding.uniqueCodeText.apply{
+                setText(token)
+                isEnabled = false
+            }
+            viewModel.usingSuppliedToken = true
+            (parentFragment?.parentFragment as HolderMainFragment).updateTitle(getString(R.string.commercial_test_type_title))
+            fetchTestResults(binding)
         }
+
+        if (viewModel.verificationRequired) {
+            showKeyboard(binding.verificationCodeText)
+        } else {
+            // Don't show keyboard if token is set through external flow
+            if(!viewModel.usingSuppliedToken) {
+                showKeyboard(binding.uniqueCodeText)
+            }
+        }
+
     }
 
     override fun onPause() {

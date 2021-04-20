@@ -46,6 +46,13 @@ class TestResultsViewModel(
             updateViewState()
         }
 
+    var usingSuppliedToken : Boolean = savedStateHandle["supplied_token"] ?: false
+        set(value) {
+            field = value
+            savedStateHandle["supplied_token"] = value
+            updateViewState()
+        }
+
     val viewState: LiveData<ViewState> = MutableLiveData(ViewState())
 
     val retrievedResult: TestResult.NegativeTestResult?
@@ -61,7 +68,8 @@ class TestResultsViewModel(
     private fun updateViewState() {
         (viewState as MutableLiveData).value = currentViewState.copy(
             verificationRequired = verificationRequired,
-            canRetrieveResult = (testCode.isNotEmpty() && !verificationRequired) || (verificationRequired && testCode.isNotEmpty() && verificationCode.isNotEmpty())
+            canRetrieveResult = (testCode.isNotEmpty() && !verificationRequired) || (verificationRequired && testCode.isNotEmpty() && verificationCode.isNotEmpty()),
+            usingSuppliedToken = usingSuppliedToken
         )
     }
 
@@ -113,5 +121,6 @@ class TestResultsViewModel(
 
 data class ViewState(
     val verificationRequired: Boolean = false,
-    val canRetrieveResult: Boolean = false
+    val canRetrieveResult: Boolean = false,
+    val usingSuppliedToken: Boolean = false
 )
