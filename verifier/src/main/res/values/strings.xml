@@ -14,7 +14,7 @@
     <string name="onboarding_screen_4_description"><![CDATA[Met behulp van deze app kun je weer bezoekers ontvangen. Maar alleen als jouw sociale, culturele of sportieve activiteit onder de aangewezen locaties valt.]]></string>
     <string name="onboarding_next">Volgende</string>
     <string name="privacy_policy_title">Zo gebruikt de app gegevens</string>
-    <string name="privacy_policy_description"><![CDATA[In de <a href="#">gebruiksvoorwaarden</a> staat hoe CoronaCheck Scanner gegevens gebruikt. Dit zijn de belangrijkste punten:]]></string>
+    <string name="privacy_policy_description"><![CDATA[In de <a href="https://coronacheck.nl/nl/gebruikersvoorwaarden-in-app">gebruiksvoorwaarden</a> staat hoe CoronaCheck Scanner gegevens gebruikt. Dit zijn de belangrijkste punten:]]></string>
     <string name="privacy_policy_1"><![CDATA[Gegevens van de bezoeker worden <b>nergens centraal opgeslagen</b> ]]></string>
     <string name="privacy_policy_2"><![CDATA[Als controleur weet je alleen <b>of een testbewijs geldig is</b>. Niet wie de bezoeker is.]]></string>
     <string name="privacy_policy_3"><![CDATA[GPS- of locatiegegevens worden <b>niet gebruikt of bewaard</b> ]]></string>
@@ -92,4 +92,7 @@
     <string name="new_terms_no_consent_dialog_message">Je hebt geen toegang de CoronaCheck app zonder akkoord te gaan met de bijgewerkte voorwaarden.</string>
     <string name="new_terms_no_consent_dialog_button">Ok</string>
     <string name="accessibility_logo_label_ministry">Logo Rijksoverheid</string>
+    <string name="url_faq">https://www.coronacheck.nl/nl/faq-scanner-in-app</string>
+    <string name="url_privacy_statement">https://coronacheck.nl/nl/privacy-in-app</string>
+    <string name="url_terms_of_use">https://coronacheck.nl/nl/gebruikersvoorwaarden-in-app</string>
 </resources>
