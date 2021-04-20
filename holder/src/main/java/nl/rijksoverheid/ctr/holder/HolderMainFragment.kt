@@ -69,7 +69,7 @@ class HolderMainFragment : BaseMainFragment(
         binding.navView.setNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_frequently_asked_questions -> {
-                    BuildConfig.URL_FAQ.launchUrl(requireActivity())
+                    getString(R.string.url_faq).launchUrl(requireActivity())
                 }
                 R.id.nav_about_this_app -> {
                     navController.navigate(
@@ -82,7 +82,7 @@ class HolderMainFragment : BaseMainFragment(
                     )
                 }
                 R.id.nav_privacy_statement -> {
-                    BuildConfig.URL_PRIVACY_STATEMENT.launchUrl(requireActivity())
+                    getString(R.string.url_privacy_statement).launchUrl(requireActivity())
                 }
                 R.id.nav_close_menu -> {
                     binding.navView.menu.close()

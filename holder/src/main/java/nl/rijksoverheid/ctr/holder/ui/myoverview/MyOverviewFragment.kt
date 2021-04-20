@@ -12,7 +12,6 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
 import com.xwray.groupie.viewbinding.BindableItem
-import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMyOverviewBinding
 import nl.rijksoverheid.ctr.holder.models.LocalTestResult
@@ -87,7 +86,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                                 Snackbar.LENGTH_LONG
                             ).also {
                                 it.setAction(R.string.my_overview_qr_created_snackbar_button) {
-                                    BuildConfig.URL_FAQ.launchUrl(requireContext())
+                                    getString(R.string.url_faq).launchUrl(requireContext())
                                 }
                             }.show(requireActivity())
                         }

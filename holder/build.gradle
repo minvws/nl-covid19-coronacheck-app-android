@@ -35,9 +35,6 @@ android {
         buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "true"
         buildConfigField "boolean", "FEATURE_TEST_PROVIDER_API_CHECKS", "true"
         buildConfigField "String", "BASE_API_URL", "\"https://holder-api.coronacheck.nl/v3/\""
-        buildConfigField "String", "URL_FAQ", "\"https://coronacheck.nl/nl/faq-in-app.html\""
-        buildConfigField "String", "URL_PRIVACY_STATEMENT", "\"https://coronacheck.nl/nl/privacy-in-app\""
-        buildConfigField "String", "URL_MAKE_APPOINTMENT", "\"https://coronacheck.nl/nl/testaanbieders-fieldlab-in-de-app\""
     }
 
     signingConfigs {

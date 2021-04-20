@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.appconfig.AppConfigUtil
-import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMakeAppointmentBinding
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
@@ -32,7 +31,7 @@ class MakeAppointmentFragment : Fragment(R.layout.fragment_make_appointment) {
             appConfigUtil.getStringWithTestValidity(R.string.test_appointment_info_description)
                 .fromHtml()
         binding.button.setOnClickListener {
-            BuildConfig.URL_MAKE_APPOINTMENT.launchUrl(requireContext())
+            getString(R.string.url_make_appointment).launchUrl(requireContext())
         }
 
         if (androidUtil.isSmallScreen()) {
