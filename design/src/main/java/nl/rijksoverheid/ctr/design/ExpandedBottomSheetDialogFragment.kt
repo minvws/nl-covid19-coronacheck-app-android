@@ -8,6 +8,9 @@ import android.widget.ImageView
 import androidx.annotation.StringRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.view.AccessibilityDelegateCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import com.google.android.material.R
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -62,5 +65,13 @@ open class ExpandedBottomSheetDialogFragment : BottomSheetDialogFragment() {
         closeButton.setOnClickListener {
             dismiss()
         }
+
+        // Sets the focus to the close button on initializing as requested in WCAG feedback
+        ViewCompat.setAccessibilityDelegate(closeButton, object : AccessibilityDelegateCompat() {
+            override fun onInitializeAccessibilityNodeInfo(host: View?, info: AccessibilityNodeInfoCompat?) {
+                info?.setTraversalBefore(titleView)
+                super.onInitializeAccessibilityNodeInfo(host, info)
+            }
+        })
     }
 }

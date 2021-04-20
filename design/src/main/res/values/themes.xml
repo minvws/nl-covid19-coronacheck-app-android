@@ -56,4 +56,8 @@
         <item name="android:textColorPrimary">@color/grey</item>
     </style>
 
+    <style name="ThemeOverlay.App.Menu" parent="">
+        <item name="colorControlNormal">@color/white</item>
+    </style>
+
 </resources>

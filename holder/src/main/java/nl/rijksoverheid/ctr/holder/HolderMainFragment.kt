@@ -18,7 +18,6 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import nl.rijksoverheid.ctr.design.BaseMainFragment
-import nl.rijksoverheid.ctr.design.ext.isScreenReaderOn
 import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppData
 import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppFragment
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMainBinding
@@ -84,9 +83,6 @@ class HolderMainFragment : BaseMainFragment(
                 R.id.nav_privacy_statement -> {
                     BuildConfig.URL_PRIVACY_STATEMENT.launchUrl(requireActivity())
                 }
-                R.id.nav_close_menu -> {
-                    binding.navView.menu.close()
-                }
                 else -> {
                     NavigationUI.onNavDestinationSelected(item, navController)
                 }
@@ -96,10 +92,6 @@ class HolderMainFragment : BaseMainFragment(
         }
 
         navigationDrawerStyling()
-
-        // Add close button to menu if user has screenreader enabled
-        binding.navView.menu.findItem(R.id.nav_close_menu).isVisible =
-            requireActivity().isScreenReaderOn()
 
         // Close Navigation Drawer when pressing back if it's open
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object :
@@ -142,8 +134,6 @@ class HolderMainFragment : BaseMainFragment(
         binding.navView.menu.findItem(R.id.nav_privacy_statement)
             .styleTitle(context, R.attr.textAppearanceBody1)
         binding.navView.menu.findItem(R.id.nav_terms_of_use)
-            .styleTitle(context, R.attr.textAppearanceBody1)
-        binding.navView.menu.findItem(R.id.nav_close_menu)
             .styleTitle(context, R.attr.textAppearanceBody1)
     }
 }

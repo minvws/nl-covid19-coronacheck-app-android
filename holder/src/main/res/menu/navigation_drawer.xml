@@ -5,11 +5,13 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/nav_my_overview"
+            android:checkable="false"
             android:title="@string/my_overview" />
 
         <!-- TODO: Implement settings -->
         <item
             android:id="@+id/nav_settings"
+            android:checkable="false"
             android:title="@string/settings"
             android:visible="false" />
     </group>
@@ -18,26 +20,24 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/nav_frequently_asked_questions"
+            android:checkable="false"
             android:title="@string/frequently_asked_questions" />
 
         <item
             android:id="@+id/nav_about_this_app"
+            android:checkable="false"
             android:title="@string/about_this_app" />
 
         <item
             android:id="@+id/nav_privacy_statement"
+            android:checkable="false"
             android:title="@string/privacy_statement" />
 
         <!-- TODO: Implement terms of use -->
         <item
             android:id="@+id/nav_terms_of_use"
+            android:checkable="false"
             android:title="@string/terms_of_use"
             android:visible="false" />
-
-        <item
-            android:id="@+id/nav_close_menu"
-            android:title="@string/menu_close"
-            android:visible="false" />
-
     </group>
 </menu>
