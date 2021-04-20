@@ -26,7 +26,6 @@ open class VerifierApplication : SharedApplication() {
 
     private val loadPublicKeysUseCase: LoadPublicKeysUseCase by inject()
     private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
-    private val sharedPreferenceMigration: SharedPreferenceMigration by inject()
 
     override fun onCreate() {
         super.onCreate()
@@ -50,9 +49,7 @@ open class VerifierApplication : SharedApplication() {
                 designModule
             )
         }
-
-        sharedPreferenceMigration.migrate()
-
+        
         // If we have public keys stored, load them so they can be used by CTCL
         cachedAppConfigUseCase.getCachedPublicKeys()?.let {
             loadPublicKeysUseCase.load(it)

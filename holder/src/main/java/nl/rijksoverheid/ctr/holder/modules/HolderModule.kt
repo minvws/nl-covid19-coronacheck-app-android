@@ -1,6 +1,5 @@
 package nl.rijksoverheid.ctr.holder.modules
 
-import androidx.preference.PreferenceManager
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import nl.rijksoverheid.ctr.api.signing.certificates.DIGICERT_BTC_ROOT_CA
@@ -8,7 +7,6 @@ import nl.rijksoverheid.ctr.api.signing.certificates.EV_ROOT_CA
 import nl.rijksoverheid.ctr.api.signing.certificates.PRIVATE_ROOT_CA
 import nl.rijksoverheid.ctr.api.signing.certificates.ROOT_CA_G3
 import nl.rijksoverheid.ctr.holder.BuildConfig
-import nl.rijksoverheid.ctr.holder.SharedPreferenceMigration
 import nl.rijksoverheid.ctr.holder.api.HolderApiClient
 import nl.rijksoverheid.ctr.holder.api.RemoteTestStatusJsonAdapter
 import nl.rijksoverheid.ctr.holder.api.TestProviderApiClient
@@ -31,7 +29,6 @@ import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import okhttp3.tls.HandshakeCertificates
 import okhttp3.tls.decodeCertificatePem
-import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -117,13 +114,6 @@ fun holderModule(baseUrl: String) = module {
 
     factory<TestResultAttributesUseCase> {
         TestResultAttributesUseCaseImpl(get())
-    }
-
-    factory {
-        SharedPreferenceMigration(
-            oldSharedPreferences = PreferenceManager.getDefaultSharedPreferences(androidContext()),
-            newSharedPreferences = get()
-        )
     }
 
     single {
