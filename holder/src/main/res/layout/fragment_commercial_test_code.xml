@@ -53,6 +53,7 @@
             style="@style/Widget.App.TextInputLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            app:layout_goneMarginTop="32dp"
             android:hint="@string/commercial_test_verification_code_header"
             app:errorEnabled="true"
             app:helperText="@string/commercial_test_verification_code_helper_text"
