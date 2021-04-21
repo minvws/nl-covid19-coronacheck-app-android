@@ -5,6 +5,7 @@ import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.xwray.groupie.viewbinding.BindableItem
+import nl.rijksoverheid.ctr.design.ext.enableWebLinks
 import nl.rijksoverheid.ctr.design.spans.LinkTransformationMethod
 import nl.rijksoverheid.ctr.design.utils.getSpannableFromHtml
 import nl.rijksoverheid.ctr.verifier.R
@@ -26,8 +27,7 @@ class ScanInstructionAdapterItem(
         val context = viewBinding.root.context
         viewBinding.title.setText(title)
         viewBinding.description.text = getSpannableFromHtml(context, description)
-        viewBinding.description.transformationMethod = LinkTransformationMethod()
-        viewBinding.description.movementMethod = LinkMovementMethod.getInstance()
+        viewBinding.description.enableWebLinks()
 
         if (image == null) {
             viewBinding.image.visibility = View.GONE

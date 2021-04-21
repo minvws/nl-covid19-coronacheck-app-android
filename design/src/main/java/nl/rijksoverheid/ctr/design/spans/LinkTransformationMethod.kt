@@ -16,7 +16,13 @@ import android.widget.TextView
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class LinkTransformationMethod : TransformationMethod {
+class LinkTransformationMethod(private val method: Method) : TransformationMethod {
+
+    sealed class Method {
+        object WebLinks : Method()
+        data class CustomLinks(val onLinkClick: () -> Unit) : Method()
+    }
+
     override fun getTransformation(source: CharSequence?, view: View?): CharSequence {
         if (view is TextView) {
             if (view.text == null || view.text !is Spannable) {
@@ -24,19 +30,34 @@ class LinkTransformationMethod : TransformationMethod {
             }
             val text = view.text as Spannable
             val spans = text.getSpans(0, view.length(), URLSpan::class.java)
+
             for (i in spans.indices.reversed()) {
                 val oldSpan = spans[i]
                 val start = text.getSpanStart(oldSpan)
                 val end = text.getSpanEnd(oldSpan)
                 val url = oldSpan.url
                 text.removeSpan(oldSpan)
-                text.setSpan(
-                    ChromeCustomTabsUrlSpan(url),
-                    start,
-                    end,
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                )
+
+                when (method) {
+                    is Method.CustomLinks -> {
+                        text.setSpan(
+                            CallbackUrlSpan(method.onLinkClick),
+                            start,
+                            end,
+                            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                        )
+                    }
+                    is Method.WebLinks -> {
+                        text.setSpan(
+                            ChromeCustomTabsUrlSpan(url),
+                            start,
+                            end,
+                            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                        )
+                    }
+                }
             }
+
             return text
         }
         return source ?: ""

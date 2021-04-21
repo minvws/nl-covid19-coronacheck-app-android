@@ -22,7 +22,6 @@ import org.koin.android.ext.android.inject
 
 class ScanResultValidExplanationDialogFragment : ExpandedBottomSheetDialogFragment() {
 
-    private val args: ScanResultValidExplanationDialogFragmentArgs by navArgs()
     private val personalDetailsUtil: PersonalDetailsUtil by inject()
 
     override fun onCreateView(
@@ -37,15 +36,6 @@ class ScanResultValidExplanationDialogFragment : ExpandedBottomSheetDialogFragme
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentScanResultValidReasonBinding.bind(view)
-
-        val testResultAttributes = args.qrResult.testResultAttributes
-        val personalDetails = personalDetailsUtil.getPersonalDetails(
-            testResultAttributes.firstNameInitial,
-            testResultAttributes.lastNameInitial,
-            testResultAttributes.birthDay,
-            testResultAttributes.birthMonth
-        )
-        binding.personalDetailsHolder.setPersonalDetails(personalDetails, true)
 
         if (requireContext().isScreenReaderOn()) {
             handleAccessibility(binding.container, binding.title, R.string.menu_close)

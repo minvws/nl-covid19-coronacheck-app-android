@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import nl.rijksoverheid.ctr.design.ext.enableHtmlLinks
+import nl.rijksoverheid.ctr.design.ext.enableWebLinks
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.R
 import nl.rijksoverheid.ctr.introduction.databinding.FragmentPrivacyConsentBinding
@@ -53,7 +53,7 @@ class PrivacyConsentFragment : Fragment(R.layout.fragment_privacy_consent) {
 
         binding.description.text =
             getString(R.string.privacy_policy_description).fromHtml()
-        binding.description.enableHtmlLinks()
+        binding.description.enableWebLinks()
 
         args.introductionData.privacyPolicyItems.forEach { item ->
             val viewBinding =

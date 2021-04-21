@@ -21,7 +21,7 @@ import nl.rijksoverheid.ctr.shared.ext.fromHtml
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.fakeVerifiedQr
 import nl.rijksoverheid.ctr.verifier.models.VerifiedQrResultState
-import nl.rijksoverheid.ctr.verifier.ui.scanner.ScanResultFragment
+import nl.rijksoverheid.ctr.verifier.ui.scanner.ScanResultInvalidFragment
 import nl.rijksoverheid.ctr.verifier.ui.scanner.util.ScannerUtil
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -168,7 +168,7 @@ class ScanResultFragmentTest : AutoCloseKoinTest() {
             themeResId = R.style.AppTheme,
             fragmentArgs = bundleOf("validatedResult" to state)
         ) {
-            ScanResultFragment().also {
+            ScanResultInvalidFragment().also {
                 it.viewLifecycleOwnerLiveData.observeForever { viewLifecycleOwner ->
                     if (viewLifecycleOwner != null) {
                         Navigation.setViewNavController(it.requireView(), navController)

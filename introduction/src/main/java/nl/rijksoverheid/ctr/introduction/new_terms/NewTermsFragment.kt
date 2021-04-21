@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import nl.rijksoverheid.ctr.design.ext.enableWebLinks
 import nl.rijksoverheid.ctr.design.spans.LinkTransformationMethod
 import nl.rijksoverheid.ctr.design.utils.getSpannableFromHtml
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
@@ -47,8 +48,7 @@ class NewTermsFragment : Fragment(R.layout.fragment_new_terms) {
             getSpannableFromHtml(requireContext(), getString(R.string.new_terms_highlights))
 
         binding.terms.text = getString(R.string.new_terms).fromHtml()
-        binding.terms.transformationMethod = LinkTransformationMethod()
-        binding.terms.movementMethod = LinkMovementMethod.getInstance()
+        binding.terms.enableWebLinks()
 
         if (args.newTerms.needsConsent) {
             binding.positiveButton.visibility = View.VISIBLE

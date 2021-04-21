@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
-        tools:background="@color/red">
+        android:background="@color/red">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -28,10 +28,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
+            android:src="@drawable/illustration_scan_result_invalid"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
-            tools:src="@drawable/illustration_scan_result_valid" />
+            app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
         <nl.rijksoverheid.ctr.design.views.AccessibilityHeaderWidget
             android:id="@+id/title"
@@ -40,24 +40,11 @@
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="32dp"
             android:textAlignment="center"
+            android:text="@string/scan_result_invalid_title"
             android:textAppearance="?attr/textAppearanceHeadline5"
             app:layout_constraintEnd_toEndOf="@+id/image"
             app:layout_constraintStart_toStartOf="@+id/image"
-            app:layout_constraintTop_toBottomOf="@+id/image"
-            tools:text="@string/scan_result_invalid_title" />
-
-        <nl.rijksoverheid.ctr.design.views.AbbreviatedPersonalDetailsWidget
-            android:id="@+id/personalDetailsHolder"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="56dp"
-            android:gravity="center_horizontal"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/title"
-            tools:minHeight="48dp"
-            tools:visibility="visible" />
+            app:layout_constraintTop_toBottomOf="@+id/image" />
 
         <TextView
             android:id="@+id/subtitle"
@@ -67,14 +54,15 @@
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             android:textAlignment="center"
+            android:textColorLink="?android:textColorPrimary"
             android:textAppearance="?attr/textAppearanceBody1"
+            android:text="@string/scan_result_invalid_subtitle"
             app:layout_constraintBottom_toTopOf="@id/button"
             app:layout_constraintEnd_toEndOf="@+id/image"
             app:layout_constraintStart_toStartOf="@+id/image"
-            app:layout_constraintTop_toBottomOf="@+id/personalDetailsHolder"
+            app:layout_constraintTop_toBottomOf="@+id/title"
             app:layout_constraintVertical_bias="0.0"
-            app:layout_goneMarginTop="32dp"
-            tools:text="@string/scan_result_invalid_subtitle" />
+            app:layout_goneMarginTop="32dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button"
