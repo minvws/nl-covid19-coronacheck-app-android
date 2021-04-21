@@ -8,8 +8,8 @@ import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.introduction.BuildConfig
-import nl.rijksoverheid.ctr.introduction.IntroductionFragment
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.R
 import nl.rijksoverheid.ctr.introduction.databinding.FragmentPrivacyConsentBinding
@@ -27,7 +27,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  */
 class PrivacyConsentFragment : Fragment(R.layout.fragment_privacy_consent) {
 
-    private val introductionData by lazy { (parentFragment?.parentFragment as IntroductionFragment).introductionData }
+    private val args: PrivacyConsentFragmentArgs by navArgs()
     private val introductionViewModel: IntroductionViewModel by viewModel()
     private lateinit var binding: FragmentPrivacyConsentBinding
 
@@ -58,7 +58,7 @@ class PrivacyConsentFragment : Fragment(R.layout.fragment_privacy_consent) {
             BuildConfig.URL_PRIVACY_STATEMENT.launchUrl(requireActivity())
         }
 
-        introductionData.privacyPolicyItems.forEach { item ->
+        args.introductionData.privacyPolicyItems.forEach { item ->
             val viewBinding =
                 ItemPrivacyConsentBinding.inflate(layoutInflater, binding.items, true)
             viewBinding.icon.setImageResource(item.iconResource)
@@ -80,7 +80,7 @@ class PrivacyConsentFragment : Fragment(R.layout.fragment_privacy_consent) {
         }
 
         binding.button.setOnClickListener {
-            introductionViewModel.saveIntroductionFinished()
+            introductionViewModel.saveIntroductionFinished(args.introductionData.newTerms)
             requireActivity().findNavController(R.id.main_nav_host_fragment)
                 .navigate(R.id.action_main)
         }

@@ -17,9 +17,12 @@ inline fun clmobile.Result.successString(): String {
     }
 }
 
+
+class ClmobileVerifyException(s: String?) : IllegalStateException(s)
+
 fun clmobile.Result.verify(): ByteArray {
     if (this.error.isNotEmpty()) {
-        throw Exception(this.error)
+        throw ClmobileVerifyException(this.error)
     } else {
         return this.value
     }

@@ -1,6 +1,8 @@
 package nl.rijksoverheid.ctr.introduction
 
 import androidx.lifecycle.ViewModel
+import nl.rijksoverheid.ctr.introduction.models.IntroductionStatus
+import nl.rijksoverheid.ctr.introduction.models.NewTerms
 import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
 
 /*
@@ -12,19 +14,22 @@ import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceMana
  */
 
 abstract class IntroductionViewModel : ViewModel() {
-    abstract fun introductionFinished(): Boolean
-    abstract fun saveIntroductionFinished()
+    abstract fun getIntroductionStatus(): IntroductionStatus
+    abstract fun saveIntroductionFinished(newTerms: NewTerms? = null)
 }
 
-class IntroductionViewModelImpl(private val introductionPersistenceManager: IntroductionPersistenceManager) :
+class IntroductionViewModelImpl(
+    private val introductionPersistenceManager: IntroductionPersistenceManager,
+    private val introductionStatusUseCase: IntroductionStatusUseCase
+) :
     IntroductionViewModel() {
 
-    override fun introductionFinished(): Boolean {
-        return introductionPersistenceManager.getIntroductionFinished()
-    }
+    override fun getIntroductionStatus() = introductionStatusUseCase.get()
 
-    override fun saveIntroductionFinished() {
+    override fun saveIntroductionFinished(newTerms: NewTerms?) {
         introductionPersistenceManager.saveIntroductionFinished()
+        newTerms?.let {
+            introductionPersistenceManager.saveNewTermsSeen(it.version)
+        }
     }
-
 }

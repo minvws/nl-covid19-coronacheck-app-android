@@ -50,7 +50,6 @@ abstract class BaseMainFragment(
             }
 
             navController.addOnDestinationChangedListener { _, destination, _ ->
-
                 if (topLevelDestinations.contains(destination.id)) {
                     drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
                 } else {

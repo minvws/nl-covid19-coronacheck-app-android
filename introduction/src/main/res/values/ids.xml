@@ -8,4 +8,14 @@
     <item name="onboarding_next" type="string" />
     <item name="onboarding_page_indicator_label" type="string" />
     <item name="action_main" type="id" />
+    <item name="new_terms_title" type="string" />
+    <item name="new_terms_highlights" type="string" />
+    <item name="new_terms" type="string" />
+    <item name="new_terms_consent_button" type="string" />
+    <item name="new_terms_no_consent_button" type="string" />
+    <item name="new_terms_consent_needed_positive_button" type="string" />
+    <item name="new_terms_consent_needed_negative_button" type="string" />
+    <item name="new_terms_no_consent_dialog_title" type="string" />
+    <item name="new_terms_no_consent_dialog_message" type="string" />
+    <item name="new_terms_no_consent_dialog_button" type="string" />
 </resources>

@@ -7,8 +7,6 @@ import android.os.Looper
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
-import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.snackbar.Snackbar
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
@@ -23,7 +21,7 @@ import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewHeaderAdapterIt
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewNavigationCardAdapterItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewTestResultAdapterItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewTestResultExpiredAdapterItem
-import nl.rijksoverheid.ctr.shared.ext.executeAfterAllAnimationsAreFinished
+import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.ext.show
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
@@ -48,14 +46,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
     private val section = Section()
 
     private val localTestResultHandler = Handler(Looper.getMainLooper())
-    private val localTestResultRunnable = object : Runnable {
-        override fun run() {
-            localTestResultViewModel.getLocalTestResult()
-
-            // Refresh every 10 seconds
-            localTestResultHandler.postDelayed(this, TimeUnit.SECONDS.toMillis(10))
-        }
-    }
+    private val localTestResultRunnable = Runnable { getLocalTestResult() }
 
     private val localTestResultViewModel: LocalTestResultViewModel by sharedViewModel()
 
@@ -68,7 +59,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
             it.add(section)
         }
         binding.recyclerView.adapter = adapter
-        (binding.recyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+        binding.recyclerView.itemAnimator = null
         setItems()
 
         localTestResultViewModel.localTestResultStateLiveData.observe(
@@ -84,25 +75,21 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                         )
                     }
                     is LocalTestResultState.Valid -> {
-                        // Wait until other RecyclerView animations are finished before adding this view
-                        // Else it can cause weird glitches
-                        binding.recyclerView.executeAfterAllAnimationsAreFinished {
-                            setItems(
-                                localTestResult = localTestResultState.localTestResult
-                            )
+                        setItems(
+                            localTestResult = localTestResultState.localTestResult
+                        )
 
-                            // Show a SnackBar if this qr is created for the first time
-                            if (localTestResultState.firstTimeCreated) {
-                                Snackbar.make(
-                                    requireView(),
-                                    R.string.my_overview_qr_created_snackbar_message,
-                                    Snackbar.LENGTH_LONG
-                                ).also {
-                                    it.setAction(R.string.my_overview_qr_created_snackbar_button) {
-                                        BuildConfig.URL_FAQ.launchUrl(requireContext())
-                                    }
-                                }.show(requireActivity())
-                            }
+                        // Show a SnackBar if this qr is created for the first time
+                        if (localTestResultState.firstTimeCreated) {
+                            Snackbar.make(
+                                requireView(),
+                                R.string.my_overview_qr_created_snackbar_message,
+                                Snackbar.LENGTH_LONG
+                            ).also {
+                                it.setAction(R.string.my_overview_qr_created_snackbar_button) {
+                                    BuildConfig.URL_FAQ.launchUrl(requireContext())
+                                }
+                            }.show(requireActivity())
                         }
                     }
                 }
@@ -121,9 +108,14 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
         }
     }
 
+    private fun getLocalTestResult() {
+        localTestResultViewModel.getLocalTestResult()
+        localTestResultHandler.postDelayed(localTestResultRunnable, TimeUnit.SECONDS.toMillis(10))
+    }
+
     override fun onResume() {
         super.onResume()
-        localTestResultHandler.postAtFrontOfQueue(localTestResultRunnable)
+        getLocalTestResult()
     }
 
     override fun onPause() {
@@ -149,7 +141,9 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                 MyOverviewTestResultAdapterItem(
                     localTestResult = it,
                     onButtonClick = {
-                        findNavController().navigate(MyOverviewFragmentDirections.actionQrCode())
+                        findNavControllerSafety(R.id.nav_my_overview)?.navigate(
+                            MyOverviewFragmentDirections.actionQrCode()
+                        )
                     }
                 )
             )
@@ -161,7 +155,9 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
             backgroundDrawable = R.drawable.illustration_make_appointment,
             buttonText = R.string.my_overview_no_qr_make_appointment_button,
             onButtonClick = {
-                findNavController().navigate(MyOverviewFragmentDirections.actionMakeAppointment())
+                findNavControllerSafety(R.id.nav_my_overview)?.navigate(
+                    MyOverviewFragmentDirections.actionMakeAppointment()
+                )
             }
         ))
         items.add(MyOverviewNavigationCardAdapterItem(
@@ -171,7 +167,9 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
             backgroundDrawable = R.drawable.illustration_create_qr,
             buttonText = if (localTestResult == null) R.string.my_overview_no_qr_make_qr_button else R.string.my_overview_no_qr_replace_qr_button,
             onButtonClick = {
-                findNavController().navigate(MyOverviewFragmentDirections.actionChooseProvider())
+                findNavControllerSafety(R.id.nav_my_overview)?.navigate(
+                    MyOverviewFragmentDirections.actionChooseProvider()
+                )
             }
         ))
         section.update(items)

@@ -30,20 +30,22 @@ import java.util.concurrent.TimeUnit
 class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
 
     private var _binding: FragmentQrCodeBinding? = null
-    private val binding: FragmentQrCodeBinding by lazy { _binding!! }
+    private val binding get() = _binding!!
     private val localTestResultViewModel: LocalTestResultViewModel by sharedViewModel()
     private val qrCodeHandler = Handler(Looper.getMainLooper())
-    private val qrCodeRunnable = object : Runnable {
-        override fun run() {
-            val canGenerateQrCode = localTestResultViewModel.generateQrCode(
-                size = resources.displayMetrics.widthPixels
+    private val qrCodeRunnable = Runnable { generateQrCode() }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (BuildConfig.FLAVOR == "prod") {
+            requireActivity().window.setFlags(
+                WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE
             )
-            if (canGenerateQrCode) {
-                val refreshMillis =
-                    if (BuildConfig.FLAVOR == "tst") TimeUnit.SECONDS.toMillis(10) else (QrCodeConstants.VALID_FOR_SECONDS / 2) * 1000
-                qrCodeHandler.postDelayed(this, refreshMillis)
-            }
         }
+        val params = requireActivity().window.attributes
+        params?.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_FULL
+        requireActivity().window.attributes = params
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -52,8 +54,6 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
         requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         _binding = FragmentQrCodeBinding.bind(view)
-        requireActivity().window.attributes.screenBrightness =
-            WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_FULL
 
         localTestResultViewModel.qrCodeLiveData.observe(viewLifecycleOwner) {
             binding.image.setImageBitmap(it.qrCode)
@@ -70,10 +70,21 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
         }
     }
 
+    private fun generateQrCode() {
+        val canGenerateQrCode = localTestResultViewModel.generateQrCode(
+            size = resources.displayMetrics.widthPixels
+        )
+        if (canGenerateQrCode) {
+            val refreshMillis =
+                if (BuildConfig.FLAVOR == "tst") TimeUnit.SECONDS.toMillis(10) else (QrCodeConstants.VALID_FOR_SECONDS / 2) * 1000
+            qrCodeHandler.postDelayed(qrCodeRunnable, refreshMillis)
+        }
+    }
+
     override fun onResume() {
         super.onResume()
         presentQrLoading(true)
-        qrCodeHandler.post(qrCodeRunnable)
+        generateQrCode()
 
         // If the qr code has expired close this screen
         val localTestResult = localTestResultViewModel.retrievedLocalTestResult
@@ -92,8 +103,11 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
         super.onDestroyView()
         _binding = null
 
-        requireActivity().window.attributes.screenBrightness =
-            WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE
+        // Set brightness back to previous
+        val params = requireActivity().window.attributes
+        params?.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE
+        requireActivity().window.attributes = params
+
         (parentFragment?.parentFragment as HolderMainFragment).presentLoading(false)
 
         setFragmentResult(

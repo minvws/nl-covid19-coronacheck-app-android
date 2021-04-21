@@ -9,10 +9,11 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.view.forEachIndexed
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
-import nl.rijksoverheid.ctr.introduction.IntroductionFragment
 import nl.rijksoverheid.ctr.introduction.R
 import nl.rijksoverheid.ctr.introduction.databinding.FragmentOnboardingBinding
+import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.getNavigationIconView
 import nl.rijksoverheid.ctr.shared.ext.setAccessibilityFocus
 
@@ -25,7 +26,7 @@ import nl.rijksoverheid.ctr.shared.ext.setAccessibilityFocus
  */
 class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
 
-    private val introductionData by lazy { (parentFragment?.parentFragment as IntroductionFragment).introductionData }
+    private val args: OnboardingFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -36,34 +37,39 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
             OnboardingPagerAdapter(
                 childFragmentManager,
                 lifecycle,
-                introductionData.onboardingItems
+                args.introductionData.onboardingItems
             )
-        binding.viewPager.offscreenPageLimit = introductionData.onboardingItems.size
-        binding.viewPager.adapter = adapter
-        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                binding.toolbar.visibility = if (position == 0) View.GONE else View.VISIBLE
-                updateCurrentIndicator(binding, position)
 
-                binding.indicators.contentDescription = getString(
-                    R.string.onboarding_page_indicator_label,
-                    (position + 1).toString(),
-                    adapter.itemCount.toString()
-                )
+        if (args.introductionData.onboardingItems.isNotEmpty()) {
+            binding.viewPager.offscreenPageLimit = args.introductionData.onboardingItems.size
+            binding.viewPager.adapter = adapter
+            binding.viewPager.registerOnPageChangeCallback(object :
+                ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    binding.toolbar.visibility = if (position == 0) View.GONE else View.VISIBLE
+                    updateCurrentIndicator(binding, position)
 
-                // Apply bottom elevation if the view inside the viewpager is scrollable
-                val scrollView =
-                    childFragmentManager.fragments[position]?.view?.findViewById<ScrollView>(R.id.scroll)
-                if (scrollView?.canScrollVertically(1) == true) {
-                    binding.bottom.cardElevation =
-                        resources.getDimensionPixelSize(R.dimen.onboarding_bottom_scroll_elevation)
-                            .toFloat()
-                } else {
-                    binding.bottom.cardElevation = 0f
+                    binding.indicators.contentDescription = getString(
+                        R.string.onboarding_page_indicator_label,
+                        (position + 1).toString(),
+                        adapter.itemCount.toString()
+                    )
+
+                    // Apply bottom elevation if the view inside the viewpager is scrollable
+                    val scrollView =
+                        childFragmentManager.fragments[position]?.view?.findViewById<ScrollView>(R.id.scroll)
+                    if (scrollView?.canScrollVertically(1) == true) {
+                        binding.bottom.cardElevation =
+                            resources.getDimensionPixelSize(R.dimen.onboarding_bottom_scroll_elevation)
+                                .toFloat()
+                    } else {
+                        binding.bottom.cardElevation = 0f
+                    }
                 }
-            }
-        })
+            })
+        }
+
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object :
             OnBackPressedCallback(true) {
@@ -87,7 +93,11 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
         binding.button.setOnClickListener {
             val currentItem = binding.viewPager.currentItem
             if (currentItem == adapter.itemCount - 1) {
-                findNavController().navigate(OnboardingFragmentDirections.actionPrivacyPolicy())
+                findNavControllerSafety(R.id.nav_onboarding)?.navigate(
+                    OnboardingFragmentDirections.actionPrivacyPolicy(
+                        args.introductionData
+                    )
+                )
             } else {
                 binding.viewPager.currentItem = currentItem + 1
                 binding.toolbar.getNavigationIconView()?.setAccessibilityFocus()

@@ -3,12 +3,34 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_introduction"
-    app:startDestination="@+id/nav_setup">
+    app:startDestination="@+id/nav_status">
+
+    <fragment
+        android:id="@+id/nav_status"
+        android:name="nl.rijksoverheid.ctr.introduction.IntroductionStatusFragment">
+
+        <action
+            android:id="@+id/action_setup"
+            app:destination="@id/nav_setup"
+            app:popUpTo="@id/nav_introduction"
+            app:popUpToInclusive="true" />
+
+        <action
+            android:id="@+id/action_new_terms"
+            app:destination="@id/nav_new_terms"
+            app:popUpTo="@id/nav_introduction"
+            app:popUpToInclusive="true" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/nav_setup"
         android:name="nl.rijksoverheid.ctr.introduction.setup.SetupFragment"
         tools:layout="@layout/fragment_setup">
+
+        <argument
+            android:name="introduction_data"
+            app:argType="nl.rijksoverheid.ctr.introduction.models.IntroductionData" />
 
         <action
             android:id="@+id/action_onboarding"
@@ -45,6 +67,10 @@
             app:popEnterAnim="@anim/fragment_close_enter"
             app:popExitAnim="@anim/fragment_close_exit" />
 
+        <argument
+            android:name="introduction_data"
+            app:argType="nl.rijksoverheid.ctr.introduction.models.IntroductionData" />
+
     </fragment>
 
     <fragment
@@ -52,11 +78,26 @@
         android:name="nl.rijksoverheid.ctr.introduction.privacy_consent.PrivacyConsentFragment"
         tools:layout="@layout/fragment_privacy_consent">
 
+        <argument
+            android:name="introduction_data"
+            app:argType="nl.rijksoverheid.ctr.introduction.models.IntroductionData" />
+
     </fragment>
 
     <fragment
         android:id="@+id/nav_app_status"
         android:name="nl.rijksoverheid.ctr.appconfig.AppStatusFragment"
         tools:layout="@layout/fragment_app_status" />
+
+    <fragment
+        android:id="@+id/nav_new_terms"
+        android:name="nl.rijksoverheid.ctr.introduction.new_terms.NewTermsFragment"
+        tools:layout="@layout/fragment_app_status">
+
+        <argument
+            android:name="new_terms"
+            app:argType="nl.rijksoverheid.ctr.introduction.models.NewTerms" />
+
+    </fragment>
 
 </navigation>

@@ -4,6 +4,7 @@ import nl.rijksoverheid.ctr.shared.QrCodeConstants
 import java.time.Clock
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
+import kotlin.math.abs
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -22,9 +23,11 @@ class QrCodeUtilImpl(private val clock: Clock) : QrCodeUtil {
         return if (isPaperProof == "1") {
             true
         } else {
-            ChronoUnit.SECONDS.between(
-                creationDate,
-                OffsetDateTime.now(clock)
+            abs(
+                ChronoUnit.SECONDS.between(
+                    creationDate,
+                    OffsetDateTime.now(clock)
+                )
             ) <= QrCodeConstants.VALID_FOR_SECONDS
         }
     }

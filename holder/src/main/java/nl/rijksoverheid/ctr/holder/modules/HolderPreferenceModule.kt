@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.verifier
+package nl.rijksoverheid.ctr.holder.modules
 
 import androidx.security.crypto.EncryptedSharedPreferences
 import nl.rijksoverheid.ctr.shared.util.AndroidUtil
@@ -12,7 +12,7 @@ import org.koin.dsl.module
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-val verifierPreferenceModule = module {
+val holderPreferenceModule = module {
     single {
         val androidUtil = get<AndroidUtil>()
 

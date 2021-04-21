@@ -6,6 +6,8 @@ import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
 import nl.rijksoverheid.ctr.appconfig.model.AppStatus
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
+import nl.rijksoverheid.ctr.introduction.models.IntroductionStatus
+import nl.rijksoverheid.ctr.introduction.models.NewTerms
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.TestResultAttributes
 import nl.rijksoverheid.ctr.shared.util.TestResultUtil
@@ -33,14 +35,14 @@ fun fakeAppConfigViewModel(appStatus: AppStatus = AppStatus.NoActionRequired) =
     }
 
 fun fakeIntroductionViewModel(
-    introductionFinished: Boolean
+    introductionStatus: IntroductionStatus = IntroductionStatus.IntroductionFinished.NoActionRequired,
 ): IntroductionViewModel {
     return object : IntroductionViewModel() {
-        override fun introductionFinished(): Boolean {
-            return introductionFinished
+        override fun getIntroductionStatus(): IntroductionStatus {
+            return introductionStatus
         }
 
-        override fun saveIntroductionFinished() {
+        override fun saveIntroductionFinished(newTerms: NewTerms?) {
 
         }
     }

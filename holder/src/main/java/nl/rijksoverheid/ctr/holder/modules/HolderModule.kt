@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.holder
+package nl.rijksoverheid.ctr.holder.modules
 
 import androidx.preference.PreferenceManager
 import com.squareup.moshi.Moshi
@@ -7,6 +7,8 @@ import nl.rijksoverheid.ctr.api.signing.certificates.DIGICERT_BTC_ROOT_CA
 import nl.rijksoverheid.ctr.api.signing.certificates.EV_ROOT_CA
 import nl.rijksoverheid.ctr.api.signing.certificates.PRIVATE_ROOT_CA
 import nl.rijksoverheid.ctr.api.signing.certificates.ROOT_CA_G3
+import nl.rijksoverheid.ctr.holder.BuildConfig
+import nl.rijksoverheid.ctr.holder.SharedPreferenceMigration
 import nl.rijksoverheid.ctr.holder.api.HolderApiClient
 import nl.rijksoverheid.ctr.holder.api.RemoteTestStatusJsonAdapter
 import nl.rijksoverheid.ctr.holder.api.TestProviderApiClient
