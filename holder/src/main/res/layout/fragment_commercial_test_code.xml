@@ -118,7 +118,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textAppearance="?attr/textAppearanceHeadline6"
-                android:text="Testresultaat ophalen..." />
+                android:text="@string/commercial_test_verification_code_retrieval_placeholder" />
         </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

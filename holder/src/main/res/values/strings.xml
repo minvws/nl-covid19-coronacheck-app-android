@@ -73,7 +73,6 @@
     <string name="commercial_test_verification_code_helper_text">Je krijgt een code via sms of e-mail</string>
     <string name="commercial_test_verification_code_send_again_in">Stuur opnieuw in %1$s</string>
     <string name="commercial_test_verification_code_send_again">Stuur opnieuw</string>
-    <string name="commercial_test_verification_code_description_deeplink">Vul jouw verficatie code in om je negatieve testresultaat op te halen. Deze krijg je in een sms of e-mail van je testlocatie.</string>
     <string name="commercial_test_button">Haal testuitslag op</string>
     <string name="commercial_test_invalid_qr_title">Ongeldige QR-code</string>
     <string name="commercial_test_invalid_qr_message">Deze QR-code is niet geldig. Scan de QR-code die je van je testlocatie hebt gekregen.</string>
@@ -164,6 +163,8 @@
     <string name="new_terms_no_consent_dialog_title">Je kan niet verder als je niet akkoord gaat</string>
     <string name="new_terms_no_consent_dialog_message">Zonder akkoord met de bijgewerkte voorwaarden heb je geen toegang tot de CoronaCheck-app.</string>
     <string name="new_terms_no_consent_dialog_button">Ok</string>
+    <string name="commercial_test_verification_code_retrieval_placeholder">Testresultaat ophalen...</string>
+    <string name="commercial_test_verification_code_description_deeplink">Vul jouw verficatie code in om je negatieve testresultaat op te halen. Deze krijg je in een sms of e-mail van je testlocatie.</string>
     <string name="accessibility_logo_label_ministry">Logo Rijksoverheid</string>
     <string name="url_faq">https://coronacheck.nl/nl/faq-in-app.html</string>
     <string name="url_privacy_statement">https://coronacheck.nl/nl/privacy-in-app</string>
