@@ -18,7 +18,7 @@
     <string name="privacy_policy_1"><![CDATA[In de QR-code staan <b>minimale gegevens</b> van de bezoeker]]></string>
     <string name="privacy_policy_2"><![CDATA[Deze gegevens mag je alleen gebruiken voor <b>controle van het testbewijs</b>]]></string>
     <string name="privacy_policy_3"><![CDATA[Gegevens van de bezoeker worden <b>nergens centraal opgeslagen</b> ]]></string>
-    <string name="privacy_policy_checkbox_text">Ik heb de gebruikersverklaring gelezen en ga hiermee akkoord</string>
+    <string name="privacy_policy_checkbox_text">Ik heb de gebruikersvoorwaarden gelezen en ga hiermee akkoord</string>
     <string name="dialog_error_title">Technische fout</string>
     <string name="dialog_error_message">Excuus, er is een technische fout opgetreden</string>
     <string name="ok">Ok</string>
@@ -32,7 +32,7 @@
     <string name="scan_result_demo_title">Demo QR-code gescand</string>
     <string name="scan_result_valid_title">Geldige QR-code</string>
     <string name="scan_result_valid_subtitle"><![CDATA[Controleer of deze gegevens hetzelfde zijn als de gegevens op het identiteitsbewijs. <b><u>Lees meer</b></u>]]></string>
-    <string name="scan_result_invalid_title">Geen geldige QR-code</string>
+    <string name="scan_result_invalid_title">Ongeldige QR-code</string>
     <string name="scan_result_invalid_subtitle"><![CDATA[De bezoeker heeft geen geldig negatief testbewijs. <b><u>Lees mogelijke oorzaken</b></u>]]></string>
     <string name="scan_result_invalid_button">Scan volgende</string>
     <string name="scan_result_invalid_reason_title">Ongeldige QR-code</string>
@@ -84,7 +84,7 @@
     <string name="menu_close">Sluiten</string>
     <string name="new_terms_title">Onze voorwaarden zijn vernieuwd</string>
     <string name="new_terms_highlights"><![CDATA[<b>Dit is veranderd</b><br\><br\><ul><li>Beschrijving van gebruiksregels</li><li>Uitleg over gebruik van de app</li><li>Toestemming voor gebruik camera</li></ul>]]></string>
-    <string name="new_terms"><![CDATA[Lees <a href="https://coronacheck.nl/nl/gebruikersvoorwaarden-in-app">hier</a> de volledige gebruikersverklaring.]]></string>
+    <string name="new_terms"><![CDATA[Lees <a href="https://coronacheck.nl/nl/gebruikersvoorwaarden-in-app">hier</a> de volledige gebruikersvoorwaarden.]]></string>
     <string name="new_terms_consent_button">Volgende</string>
     <string name="new_terms_consent_needed_positive_button">Akkoord</string>
     <string name="new_terms_consent_needed_negative_button">Niet akkoord</string>

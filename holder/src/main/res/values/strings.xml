@@ -14,7 +14,7 @@
     <string name="onboarding_screen_3_description">Wil je toegang krijgen tot een bepaalde sociale, culturele of sportieve activiteit? Zorg dat jouw QR-code binnen %1$s uur na het moment van testen gescand is bij de ingang. Als je testbewijs verloopt verdwijnt de QR-code uit de app.</string>
     <string name="onboarding_next">Volgende</string>
     <string name="privacy_policy_title">Zo gebruikt deze app jouw gegevens</string>
-    <string name="privacy_policy_description"><![CDATA[In de <a href="https://coronacheck.nl/nl/privacy-in-app">privacyverklaring</a> staat hoe CoronaCheck omgaat met jouw gegevens. Dit zijn de belangrijkste punten:]]></string>
+    <string name="privacy_policy_description"><![CDATA[In de <a href="#">privacyverklaring</a> staat hoe CoronaCheck omgaat met jouw gegevens. Dit zijn de belangrijkste punten:]]></string>
     <string name="privacy_policy_1"><![CDATA[Jouw gegevens worden <b>nergens centraal opgeslagen</b>]]></string>
     <string name="privacy_policy_2"><![CDATA[Je GPS- of locatiegegevens worden <b>niet gebruikt of bewaard</b>]]></string>
     <string name="privacy_policy_3"><![CDATA[In de QR-code staan minimale <b>persoonsgegevens</b>.]]></string>
@@ -164,4 +164,7 @@
     <string name="new_terms_no_consent_dialog_message">Zonder akkoord met de bijgewerkte voorwaarden heb je geen toegang tot de CoronaCheck-app.</string>
     <string name="new_terms_no_consent_dialog_button">Ok</string>
     <string name="accessibility_logo_label_ministry">Logo Rijksoverheid</string>
+    <string name="url_faq">https://coronacheck.nl/nl/faq-in-app.html</string>
+    <string name="url_privacy_statement">https://coronacheck.nl/nl/privacy-in-app</string>
+    <string name="url_make_appointment">https://coronacheck.nl/nl/testaanbieders-fieldlab-in-de-app</string>
 </resources>
