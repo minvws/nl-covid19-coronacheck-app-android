@@ -2,6 +2,8 @@ package nl.rijksoverheid.ctr.holder
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
+import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
+import nl.rijksoverheid.ctr.holder.persistence.SharedPreferencesPersistenceManager
 import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
 
 /*
@@ -24,16 +26,20 @@ class SharedPreferenceMigration(
      * If a user skipped the onboarding it has saved preferences in old shared preferences, so migrate
      */
     fun migrate() {
+        // Only migrate if we finished the onboarding before and we don't have credentials stored
         if (oldSharedPreferences.getBoolean(
                 IntroductionPersistenceManager.INTRODUCTION_FINISHED,
                 false
-            )
+            ) && newSharedPreferences.getString(SharedPreferencesPersistenceManager.CREDENTIALS, null) == null
         ) {
             for (entry in oldSharedPreferences.all.entries) {
                 val key = entry.key
                 val value: Any? = entry.value
                 newSharedPreferences.set(key, value)
             }
+
+            // Only run migration once
+            oldSharedPreferences.set(IntroductionPersistenceManager.INTRODUCTION_FINISHED, false)
         }
     }
 }
