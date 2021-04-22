@@ -110,7 +110,6 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
                     binding.uniqueCodeInput.error =
                         getString(R.string.commercial_test_error_invalid_code)
                     binding.verificationCodeInput.isVisible = false
-                    binding.uniqueCodeInput.isEnabled = true
                 }
                 is TestResult.NetworkError -> {
                     dialogUtil.presentDialog(
@@ -123,7 +122,6 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
                         },
                         negativeButtonText = R.string.dialog_close
                     )
-                    binding.uniqueCodeInput.isEnabled = true
                 }
                 is TestResult.ServerError -> {
                     dialogUtil.presentDialog(
@@ -139,7 +137,6 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
                         },
                         negativeButtonText = R.string.dialog_close
                     )
-                    binding.uniqueCodeInput.isEnabled = true
                 }
                 is TestResult.NegativeTestResult -> {
                     findNavController().navigate(CommercialTestCodeFragmentDirections.actionYourNegativeResult())
@@ -188,10 +185,7 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
 
         // If a location token is set, automatically fill it in
         navArgs.token?.let { token ->
-            binding.uniqueCodeText.apply {
-                setText(token)
-                isEnabled = false
-            }
+            binding.uniqueCodeText.setText(token)
             fetchTestResults(binding, fromDeeplink = true)
         }
 
