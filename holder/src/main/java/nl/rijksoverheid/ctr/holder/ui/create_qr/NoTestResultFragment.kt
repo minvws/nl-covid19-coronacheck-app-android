@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
-import nl.rijksoverheid.ctr.design.utils.getSpannableFromHtml
 import nl.rijksoverheid.ctr.holder.databinding.FragmentNoTestResultBinding
 
 /*
@@ -32,6 +31,6 @@ class NoTestResultFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentNoTestResultBinding.bind(view)
         binding.title.text = args.title
-        binding.description.text = getSpannableFromHtml(requireContext(), args.description)
+        binding.description.setHtmlTextWithBullets(args.description, false)
     }
 }

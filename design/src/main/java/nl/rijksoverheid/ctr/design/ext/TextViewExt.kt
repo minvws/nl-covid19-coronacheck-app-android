@@ -11,7 +11,7 @@ import nl.rijksoverheid.ctr.design.spans.LinkTransformationMethod
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-fun TextView.enableWebLinks() {
+fun TextView.enableHtmlLinks() {
     this.transformationMethod = LinkTransformationMethod(method = LinkTransformationMethod.Method.WebLinks)
     this.movementMethod = LinkMovementMethod.getInstance()
 }

@@ -7,7 +7,6 @@ import nl.rijksoverheid.ctr.appconfig.AppConfigUtil
 import nl.rijksoverheid.ctr.introduction.R
 import nl.rijksoverheid.ctr.introduction.databinding.FragmentOnboardingItemBinding
 import nl.rijksoverheid.ctr.introduction.onboarding.models.OnboardingItem
-import nl.rijksoverheid.ctr.shared.ext.fromHtml
 import nl.rijksoverheid.ctr.shared.util.AndroidUtil
 import org.koin.android.ext.android.inject
 
@@ -48,10 +47,9 @@ class OnboardingItemFragment : Fragment(R.layout.fragment_onboarding_item) {
 
         binding.title.text = getString(item.titleResource)
         if (item.descriptionHasTestValidity) {
-            binding.description.text =
-                appConfigUtil.getStringWithTestValidity(item.description).fromHtml()
+            binding.description.setHtmlText(appConfigUtil.getStringWithTestValidity(item.description), false)
         } else {
-            binding.description.text = getString(item.description).fromHtml()
+            binding.description.setHtmlText(getString(item.description), false)
         }
 
         if (androidUtil.isSmallScreen()) {

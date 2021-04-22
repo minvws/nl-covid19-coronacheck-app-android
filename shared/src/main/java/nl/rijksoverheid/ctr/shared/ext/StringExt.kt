@@ -20,14 +20,6 @@ inline fun <reified O> String.toObject(moshi: Moshi): O {
         ?: throw Exception("Failed to create object from json string")
 }
 
-inline fun String.fromHtml(): Spanned {
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        Html.fromHtml(this, Html.FROM_HTML_MODE_LEGACY)
-    } else {
-        Html.fromHtml(this)
-    }
-}
-
 fun String.launchUrl(context: Context) {
     CustomTabsIntent.Builder().build().also {
         it.launchUrl(context, Uri.parse(this))

@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import nl.rijksoverheid.ctr.shared.ext.fromHtml
+import nl.rijksoverheid.ctr.design.ext.enableCustomLinks
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanQrBinding
 import nl.rijksoverheid.ctr.verifier.ui.scanner.util.ScannerUtil
@@ -27,8 +27,7 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
         super.onViewCreated(view, savedInstanceState)
 
         val binding = FragmentScanQrBinding.bind(view)
-        binding.description.text = binding.description.text.toString().fromHtml()
-        binding.description.setOnClickListener {
+        binding.description.enableCustomLinks {
             findNavController().navigate(ScanQrFragmentDirections.actionScanInstructions())
         }
 

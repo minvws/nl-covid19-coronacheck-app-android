@@ -51,17 +51,18 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/title">
 
-                <TextView
+                <nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
                     android:id="@+id/highlights"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="16dp"
                     android:textAppearance="?attr/textAppearanceBody1"
+                    app:htmlTextWithList="@string/new_terms_highlights"
                     tools:text="Content" />
 
             </androidx.cardview.widget.CardView>
 
-            <TextView
+            <nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
                 android:id="@+id/terms"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -71,6 +72,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/highlights_container"
+                app:htmlText="@string/new_terms"
+                app:enableHtmlLinks="true"
                 tools:text="Content" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

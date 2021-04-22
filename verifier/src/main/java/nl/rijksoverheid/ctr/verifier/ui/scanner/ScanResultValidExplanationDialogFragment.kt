@@ -12,14 +12,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.design.ExpandedBottomSheetDialogFragment
 import nl.rijksoverheid.ctr.design.ext.isScreenReaderOn
-import nl.rijksoverheid.ctr.shared.ext.fromHtml
-import nl.rijksoverheid.ctr.shared.util.PersonalDetailsUtil
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanResultValidReasonBinding
-import org.koin.android.ext.android.inject
 
 class ScanResultValidExplanationDialogFragment : ExpandedBottomSheetDialogFragment() {
 
@@ -35,9 +31,6 @@ class ScanResultValidExplanationDialogFragment : ExpandedBottomSheetDialogFragme
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentScanResultValidReasonBinding.bind(view)
-
-        binding.description.text = getString(R.string.scan_result_valid_reason_description).fromHtml()
-
         if (requireContext().isScreenReaderOn()) {
             handleAccessibility(binding.container, binding.title, R.string.menu_close)
         }

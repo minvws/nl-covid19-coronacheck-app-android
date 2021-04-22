@@ -9,7 +9,6 @@ import nl.rijksoverheid.ctr.design.ExpandedBottomSheetDialogFragment
 import nl.rijksoverheid.ctr.design.ext.isScreenReaderOn
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.DialogYourNegativeTestResultExplanationBinding
-import nl.rijksoverheid.ctr.shared.ext.fromHtml
 import nl.rijksoverheid.ctr.shared.util.PersonalDetailsUtil
 import org.koin.android.ext.android.inject
 
@@ -37,10 +36,6 @@ class YourNegativeTestResultExplanationDialogFragment : ExpandedBottomSheetDialo
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = DialogYourNegativeTestResultExplanationBinding.bind(view)
-        binding.paragraph1.text =
-            getString(R.string.your_negative_test_results_explanation_paragraph_1).fromHtml()
-        binding.paragraph2.text =
-            getString(R.string.your_negative_test_results_explanation_paragraph_2).fromHtml()
 
         val holder = args.holder
 
