@@ -15,6 +15,7 @@ import nl.rijksoverheid.ctr.holder.*
 import nl.rijksoverheid.ctr.holder.models.LocalTestResult
 import nl.rijksoverheid.ctr.holder.models.LocalTestResultState
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
+import nl.rijksoverheid.ctr.shared.models.PersonalDetails
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -86,7 +87,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                     sampleDate = OffsetDateTime.now(),
                     expireDate = OffsetDateTime.now(),
                     testType = "dummy",
-                    personalDetails = listOf("X", "X", "X", "X")
+                    personalDetails = PersonalDetails("X", "X", "X", "X")
                 ),
                 firstTimeCreated = false
             )
@@ -172,7 +173,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                     sampleDate = OffsetDateTime.now(),
                     expireDate = OffsetDateTime.now(),
                     testType = "dummy",
-                    personalDetails = listOf("X", "X", "X", "X")
+                    personalDetails = PersonalDetails("X", "X", "X", "X")
                 ),
                 firstTimeCreated = true
             )
@@ -210,7 +211,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                     sampleDate = OffsetDateTime.now(),
                     expireDate = OffsetDateTime.now(),
                     testType = "dummy",
-                    personalDetails = listOf("X", "X", "X", "X")
+                    personalDetails = PersonalDetails("X", "X", "X", "X")
                 ),
                 firstTimeCreated = false
             )
