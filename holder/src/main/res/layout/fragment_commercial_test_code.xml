@@ -73,17 +73,17 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/send_again_button"
+            android:id="@+id/no_code_received_btn"
+            android:visibility="gone"
             style="?attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:visibility="gone"
+            android:text="@string/commercial_test_type_no_code_title"
             app:layout_constraintEnd_toEndOf="@+id/description"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="@+id/description"
-            app:layout_constraintTop_toBottomOf="@+id/verification_code_input"
-            tools:text="@string/commercial_test_verification_code_send_again" />
+            app:layout_constraintTop_toBottomOf="@+id/verification_code_input" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button"
@@ -99,7 +99,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/send_again_button"
+            app:layout_constraintTop_toBottomOf="@+id/no_code_received_btn"
             app:layout_constraintVertical_bias="1" />
 
         <FrameLayout
