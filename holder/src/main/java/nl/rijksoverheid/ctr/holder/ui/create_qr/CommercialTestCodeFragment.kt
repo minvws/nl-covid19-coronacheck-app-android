@@ -109,6 +109,8 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
                 TestResult.InvalidToken -> {
                     binding.uniqueCodeInput.error =
                         getString(R.string.commercial_test_error_invalid_code)
+                    binding.verificationCodeInput.isVisible = false
+                    binding.uniqueCodeInput.isEnabled = true
                 }
                 is TestResult.NetworkError -> {
                     dialogUtil.presentDialog(
@@ -196,8 +198,8 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
                 (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
             } else {
                 // Show different loading state when loading from deeplink
-                binding.loading.isVisible = it
-                binding.contentGroup.isVisible = !it
+                binding.loadingOverlay.isVisible = it
+                binding.button.isVisible = !it
 
                 if (viewModel.verificationRequired) {
                     binding.uniqueCodeInput.isVisible = false

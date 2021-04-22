@@ -74,8 +74,8 @@ class TestResultsViewModel(
     }
 
     fun getTestResult(fromDeeplink : Boolean = false) {
-        (loading as MutableLiveData).value = Event(true)
         this.fromDeeplink = fromDeeplink
+        (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {
             try {
                 val result = testResultUseCase.testResult(testCode, verificationCode)
