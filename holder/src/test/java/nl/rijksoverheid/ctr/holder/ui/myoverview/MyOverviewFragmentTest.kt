@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview
 
+import androidx.core.text.parseAsHtml
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
@@ -14,7 +15,6 @@ import io.mockk.InternalPlatformDsl.toStr
 import nl.rijksoverheid.ctr.holder.*
 import nl.rijksoverheid.ctr.holder.models.LocalTestResult
 import nl.rijksoverheid.ctr.holder.models.LocalTestResultState
-import nl.rijksoverheid.ctr.shared.ext.fromHtml
 import nl.rijksoverheid.ctr.shared.models.PersonalDetails
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -148,7 +148,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
             position = 1,
             targetViewId = R.id.text,
             text = ApplicationProvider.getApplicationContext<HolderApplication>()
-                .getString(R.string.item_test_result_expired).fromHtml().toStr()
+                .getString(R.string.item_test_result_expired).parseAsHtml().toStr()
         )
         assertDisplayedAtPosition(
             listId = R.id.recyclerView,
