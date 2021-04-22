@@ -48,13 +48,21 @@ class YourNegativeTestResultExplanationDialogFragment : ExpandedBottomSheetDialo
             firstNameInitial = holder.firstNameInitial,
             lastNameInitial = holder.lastNameInitial,
             birthDay = holder.birthDay,
-            birthMonth = holder.birthMonth
+            birthMonth = holder.birthMonth,
+            includeBirthMonthNumber = false
         )
 
-        binding.personalDetailsHolder.setPersonalDetails(
-            items = personalDetails,
-            showPosition = true
-        )
+        binding.firstNameInitial.itemText.text = personalDetails.firstNameInitial
+        binding.firstNameInitial.itemPosition.text = "1"
+
+        binding.lastNameInitial.itemText.text = personalDetails.lastNameInitial
+        binding.lastNameInitial.itemPosition.text = "2"
+
+        binding.birthDay.itemText.text = personalDetails.birthDay
+        binding.birthDay.itemPosition.text = "3"
+
+        binding.birthMonth.itemText.text = personalDetails.birthMonth
+        binding.birthMonth.itemPosition.text = "4"
 
         if (requireContext().isScreenReaderOn()) {
             handleAccessibility(binding.container, binding.title, R.string.menu_close)

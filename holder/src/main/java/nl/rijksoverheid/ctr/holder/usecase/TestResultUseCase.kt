@@ -8,6 +8,7 @@ import nl.rijksoverheid.ctr.holder.models.TestIsmResult
 import nl.rijksoverheid.ctr.holder.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.repositories.TestProviderRepository
 import nl.rijksoverheid.ctr.holder.ui.myoverview.util.TokenValidatorUtil
+import nl.rijksoverheid.ctr.shared.models.PersonalDetails
 import nl.rijksoverheid.ctr.shared.util.PersonalDetailsUtil
 import nl.rijksoverheid.ctr.shared.util.TestResultUtil
 import retrofit2.HttpException
@@ -86,7 +87,8 @@ class TestResultUseCase(
                 firstNameInitial = result.holder.firstNameInitial,
                 lastNameInitial = result.holder.lastNameInitial,
                 birthDay = result.holder.birthDay,
-                birthMonth = result.holder.birthMonth
+                birthMonth = result.holder.birthMonth,
+                includeBirthMonthNumber = false
             )
 
             if (remoteTestResult.result.negativeResult && testResultUtil.isValid(
@@ -160,7 +162,7 @@ sealed class TestResult {
     object NoNegativeTestResult : TestResult()
     data class NegativeTestResult(
         val remoteTestResult: RemoteTestResult,
-        val personalDetails: List<String>,
+        val personalDetails: PersonalDetails,
         val signedResponseWithTestResult: SignedResponseWithModel<RemoteTestResult>
     ) : TestResult()
 

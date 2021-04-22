@@ -73,7 +73,7 @@ class YourNegativeTestResultFragment : Fragment(R.layout.fragment_your_negative_
 
             binding.rowPersonalDetails.text = getString(
                 R.string.your_negative_test_results_row_personal_details,
-                "${retrievedResult.personalDetails[0]} ${retrievedResult.personalDetails[1]} ${retrievedResult.personalDetails[2]} ${retrievedResult.personalDetails[3]}"
+                "${retrievedResult.personalDetails.firstNameInitial} ${retrievedResult.personalDetails.lastNameInitial} ${retrievedResult.personalDetails.birthDay} ${retrievedResult.personalDetails.birthMonth}"
             )
         }
 

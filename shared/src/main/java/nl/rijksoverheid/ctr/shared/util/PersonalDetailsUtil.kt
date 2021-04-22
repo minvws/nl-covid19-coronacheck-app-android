@@ -14,13 +14,6 @@ interface PersonalDetailsUtil {
         firstNameInitial: String,
         lastNameInitial: String,
         birthDay: String,
-        birthMonth: String
-    ): List<String>
-
-    fun getPersonalDetailsNew(
-        firstNameInitial: String,
-        lastNameInitial: String,
-        birthDay: String,
         birthMonth: String,
         includeBirthMonthNumber: Boolean
     ): PersonalDetails
@@ -29,32 +22,6 @@ interface PersonalDetailsUtil {
 class PersonalDetailsUtilImpl(private val passportMonths: List<String>) : PersonalDetailsUtil {
 
     override fun getPersonalDetails(
-        firstNameInitial: String,
-        lastNameInitial: String,
-        birthDay: String,
-        birthMonth: String,
-    ): List<String> {
-        val birthDayReadableString = try {
-            String.format("%02d", birthDay.toInt())
-        } catch (e: Exception) {
-            birthDay
-        }
-
-        val birthMonthReadableString = try {
-            passportMonths[birthMonth.toInt() - 1]
-        } catch (e: Exception) {
-            birthMonth
-        }
-
-        return listOf(
-            if (firstNameInitial.isEmpty()) "_" else firstNameInitial,
-            if (lastNameInitial.isEmpty()) "_" else lastNameInitial,
-            if (birthDayReadableString.isEmpty()) "_" else birthDayReadableString,
-            if (birthMonthReadableString.isEmpty()) "_" else birthMonthReadableString
-        )
-    }
-
-    override fun getPersonalDetailsNew(
         firstNameInitial: String,
         lastNameInitial: String,
         birthDay: String,

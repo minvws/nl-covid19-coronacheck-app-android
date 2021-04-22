@@ -15,8 +15,6 @@ import com.schibsted.spain.barista.interaction.BaristaClickInteractions.clickOn
 import com.schibsted.spain.barista.interaction.BaristaScrollInteractions.scrollTo
 import io.mockk.mockk
 import io.mockk.verify
-import nl.rijksoverheid.ctr.design.views.AbbreviatedPersonalDetailsItemWidget
-import nl.rijksoverheid.ctr.design.views.AbbreviatedPersonalDetailsWidget
 import nl.rijksoverheid.ctr.shared.ext.fromHtml
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.fakeVerifiedQr

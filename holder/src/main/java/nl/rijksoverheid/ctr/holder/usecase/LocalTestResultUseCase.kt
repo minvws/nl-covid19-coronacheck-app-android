@@ -60,7 +60,8 @@ open class LocalTestResultUseCaseImpl(
                             firstNameInitial = testAttributes.firstNameInitial,
                             lastNameInitial = testAttributes.lastNameInitial,
                             birthDay = testAttributes.birthDay,
-                            birthMonth = testAttributes.birthMonth
+                            birthMonth = testAttributes.birthMonth,
+                            includeBirthMonthNumber = false
                         )
 
                         // First time created if previous state is null (app first launch) or if previous state is different

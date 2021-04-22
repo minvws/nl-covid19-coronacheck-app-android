@@ -92,7 +92,7 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
         binding.personalDetails.root.visibility = View.VISIBLE
         binding.toolbar.setTitle(R.string.scan_result_valid_title)
         val testResultAttributes = args.validData.verifiedQr.testResultAttributes
-        val personalDetails = personalDetailsUtil.getPersonalDetailsNew(
+        val personalDetails = personalDetailsUtil.getPersonalDetails(
             testResultAttributes.firstNameInitial,
             testResultAttributes.lastNameInitial,
             testResultAttributes.birthDay,
