@@ -31,6 +31,11 @@
                     android:host="${deepLinkHost}"
                     android:path="/app/redeem"
                     android:scheme="https" />
+
+                <data
+                    android:host="www.${deepLinkHost}"
+                    android:path="/app/redeem"
+                    android:scheme="https" />
             </intent-filter>
 
         </activity>
