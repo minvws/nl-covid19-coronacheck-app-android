@@ -14,9 +14,9 @@ import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentCommercialTestCodeBinding
+import nl.rijksoverheid.ctr.holder.usecase.TestResult
 import nl.rijksoverheid.ctr.shared.ext.hideKeyboard
 import nl.rijksoverheid.ctr.shared.ext.showKeyboard
-import nl.rijksoverheid.ctr.holder.usecase.TestResult
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ViewModelOwner.Companion.from
@@ -75,12 +75,6 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
         super.onViewCreated(view, savedInstanceState)
 
         _binding = FragmentCommercialTestCodeBinding.bind(view)
-
-        viewModel.loading.observe(viewLifecycleOwner, EventObserver {
-            (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
-            binding.loadingOverlay.isVisible = it
-            binding.button.isVisible != it
-        })
 
         binding.uniqueCodeText.addTextChangedListener {
             viewModel.testCode = it?.toString()?.toUpperCase() ?: ""
@@ -169,7 +163,7 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
                             getString(R.string.commercial_test_error_invalid_combination)
                     }
 
-                    if(viewModel.usingSuppliedToken){
+                    if (viewModel.fromDeeplink) {
                         binding.description.setText(R.string.commercial_test_verification_code_description_deeplink)
                         binding.uniqueCodeInput.isVisible = false
                     }
@@ -190,20 +184,33 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
 
         // If a location token is set, automatically fill it in
         navArgs.token?.let { token ->
-            binding.uniqueCodeText.apply{
+            binding.uniqueCodeText.apply {
                 setText(token)
                 isEnabled = false
             }
-            viewModel.usingSuppliedToken = true
-            (parentFragment?.parentFragment as HolderMainFragment).updateTitle(getString(R.string.commercial_test_type_title))
-            fetchTestResults(binding)
+            fetchTestResults(binding, fromDeeplink = true)
         }
+
+        viewModel.loading.observe(viewLifecycleOwner, EventObserver {
+            if (!viewModel.fromDeeplink) {
+                (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
+            } else {
+                // Show different loading state when loading from deeplink
+                binding.loading.isVisible = it
+                binding.contentGroup.isVisible = !it
+
+                if (viewModel.verificationRequired) {
+                    binding.uniqueCodeInput.isVisible = false
+                }
+            }
+        })
+
 
         if (viewModel.verificationRequired) {
             showKeyboard(binding.verificationCodeText)
         } else {
             // Don't show keyboard if token is set through external flow
-            if(!viewModel.usingSuppliedToken) {
+            if (!viewModel.fromDeeplink) {
                 showKeyboard(binding.uniqueCodeText)
             }
         }
@@ -221,10 +228,13 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
         _binding = null
     }
 
-    private fun fetchTestResults(binding: FragmentCommercialTestCodeBinding) {
+    private fun fetchTestResults(
+        binding: FragmentCommercialTestCodeBinding,
+        fromDeeplink: Boolean = false
+    ) {
         binding.verificationCodeInput.error = null
         binding.uniqueCodeInput.error = null
-        viewModel.getTestResult()
+        viewModel.getTestResult(fromDeeplink)
         hideKeyboard()
     }
 }

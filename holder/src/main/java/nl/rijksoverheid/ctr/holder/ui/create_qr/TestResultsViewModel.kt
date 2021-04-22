@@ -46,7 +46,7 @@ class TestResultsViewModel(
             updateViewState()
         }
 
-    var usingSuppliedToken : Boolean = savedStateHandle["supplied_token"] ?: false
+    var fromDeeplink : Boolean = savedStateHandle["supplied_token"] ?: false
         set(value) {
             field = value
             savedStateHandle["supplied_token"] = value
@@ -69,12 +69,13 @@ class TestResultsViewModel(
         (viewState as MutableLiveData).value = currentViewState.copy(
             verificationRequired = verificationRequired,
             canRetrieveResult = (testCode.isNotEmpty() && !verificationRequired) || (verificationRequired && testCode.isNotEmpty() && verificationCode.isNotEmpty()),
-            usingSuppliedToken = usingSuppliedToken
+            fromDeeplink = fromDeeplink
         )
     }
 
-    fun getTestResult() {
+    fun getTestResult(fromDeeplink : Boolean = false) {
         (loading as MutableLiveData).value = Event(true)
+        this.fromDeeplink = fromDeeplink
         viewModelScope.launch {
             try {
                 val result = testResultUseCase.testResult(testCode, verificationCode)
@@ -122,5 +123,5 @@ class TestResultsViewModel(
 data class ViewState(
     val verificationRequired: Boolean = false,
     val canRetrieveResult: Boolean = false,
-    val usingSuppliedToken: Boolean = false
+    val fromDeeplink: Boolean = false
 )
