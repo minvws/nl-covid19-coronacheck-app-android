@@ -1,29 +1,24 @@
 package nl.rijksoverheid.ctr.verifier.ui.scanqr
 
-import android.widget.TextView
 import androidx.core.os.bundleOf
+import androidx.core.text.parseAsHtml
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.openLinkWithUri
-import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.platform.app.InstrumentationRegistry
-import com.schibsted.spain.barista.assertion.BaristaAssertions.assertAny
 import com.schibsted.spain.barista.assertion.BaristaBackgroundAssertions.assertHasBackground
 import com.schibsted.spain.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
-import com.schibsted.spain.barista.assertion.BaristaVisibilityAssertions.assertNotDisplayed
 import com.schibsted.spain.barista.interaction.BaristaClickInteractions.clickOn
 import com.schibsted.spain.barista.interaction.BaristaScrollInteractions.scrollTo
 import com.schibsted.spain.barista.internal.performActionOnView
+import io.mockk.InternalPlatformDsl.toStr
 import io.mockk.mockk
 import io.mockk.verify
-import nl.rijksoverheid.ctr.shared.ext.fromHtml
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.fakeVerifiedQr
-import nl.rijksoverheid.ctr.verifier.models.VerifiedQrResultState
 import nl.rijksoverheid.ctr.verifier.ui.scanner.ScanResultInvalidFragment
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultInvalidData
 import nl.rijksoverheid.ctr.verifier.ui.scanner.util.ScannerUtil
@@ -43,7 +38,7 @@ import org.robolectric.RobolectricTestRunner
  *
  */
 @RunWith(RobolectricTestRunner::class)
-class ScanResultInvalidFragment : AutoCloseKoinTest() {
+class ScanResultInvalidFragmentTest : AutoCloseKoinTest() {
 
     private lateinit var navController: TestNavHostController
     private val scannerUtil: ScannerUtil = mockk(relaxed = true)
@@ -57,7 +52,7 @@ class ScanResultInvalidFragment : AutoCloseKoinTest() {
         assertDisplayed(
             R.id.subtitle,
             InstrumentationRegistry.getInstrumentation().context.getString(R.string.scan_result_invalid_subtitle)
-                .fromHtml().toString()
+                .parseAsHtml().toStr()
         )
     }
 
