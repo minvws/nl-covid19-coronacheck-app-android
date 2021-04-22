@@ -103,6 +103,7 @@
             app:layout_constraintVertical_bias="1" />
 
         <ProgressBar
+            android:visibility="gone"
             android:id="@+id/loading"
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
