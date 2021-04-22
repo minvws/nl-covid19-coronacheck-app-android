@@ -15,7 +15,7 @@ interface PersonalDetailsUtil {
         lastNameInitial: String,
         birthDay: String,
         birthMonth: String,
-        includeBirthMonthNumber: Boolean
+        includeBirthMonthNumber: Boolean = false
     ): PersonalDetails
 }
 

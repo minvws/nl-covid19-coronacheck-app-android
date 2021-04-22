@@ -25,10 +25,25 @@ class PersonalDetailsUtilImplTest {
             birthDay = "2",
             birthMonth = "3"
         )
-        assertEquals("B", personalDetails[0])
-        assertEquals("N", personalDetails[1])
-        assertEquals("02", personalDetails[2])
-        assertEquals("MAR", personalDetails[3])
+        assertEquals("B", personalDetails.firstNameInitial)
+        assertEquals("N", personalDetails.lastNameInitial)
+        assertEquals("02", personalDetails.birthDay)
+        assertEquals("MAR", personalDetails.birthMonth)
+    }
+
+    @Test
+    fun `getPersonalDetails returns correct personal details in order with valid date inputs and includes birth month number`() {
+        val personalDetails = personalDetailsUtil.getPersonalDetails(
+            firstNameInitial = "B",
+            lastNameInitial = "N",
+            birthDay = "2",
+            birthMonth = "3",
+            includeBirthMonthNumber = true
+        )
+        assertEquals("B", personalDetails.firstNameInitial)
+        assertEquals("N", personalDetails.lastNameInitial)
+        assertEquals("02", personalDetails.birthDay)
+        assertEquals("MAR (03)", personalDetails.birthMonth)
     }
 
     @Test
@@ -39,10 +54,10 @@ class PersonalDetailsUtilImplTest {
             birthDay = "X",
             birthMonth = "X"
         )
-        assertEquals("B", personalDetails[0])
-        assertEquals("N", personalDetails[1])
-        assertEquals("X", personalDetails[2])
-        assertEquals("X", personalDetails[3])
+        assertEquals("B", personalDetails.firstNameInitial)
+        assertEquals("N", personalDetails.lastNameInitial)
+        assertEquals("X", personalDetails.birthDay)
+        assertEquals("X", personalDetails.birthMonth)
     }
 
     @Test
@@ -53,10 +68,10 @@ class PersonalDetailsUtilImplTest {
             birthDay = "",
             birthMonth = ""
         )
-        assertEquals("_", personalDetails[0])
-        assertEquals("_", personalDetails[1])
-        assertEquals("_", personalDetails[2])
-        assertEquals("_", personalDetails[3])
+        assertEquals("_", personalDetails.firstNameInitial)
+        assertEquals("_", personalDetails.lastNameInitial)
+        assertEquals("_", personalDetails.birthDay)
+        assertEquals("_", personalDetails.birthMonth)
     }
 
 }
