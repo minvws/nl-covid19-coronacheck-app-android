@@ -123,6 +123,7 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
                         },
                         negativeButtonText = R.string.dialog_close
                     )
+                    binding.uniqueCodeInput.isEnabled = true
                 }
                 is TestResult.ServerError -> {
                     dialogUtil.presentDialog(
@@ -138,6 +139,7 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
                         },
                         negativeButtonText = R.string.dialog_close
                     )
+                    binding.uniqueCodeInput.isEnabled = true
                 }
                 is TestResult.NegativeTestResult -> {
                     findNavController().navigate(CommercialTestCodeFragmentDirections.actionYourNegativeResult())
