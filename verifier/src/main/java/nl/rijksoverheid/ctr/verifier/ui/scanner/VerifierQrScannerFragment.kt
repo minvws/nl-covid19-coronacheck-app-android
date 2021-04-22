@@ -85,7 +85,7 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
               is VerifiedQrResultState.Invalid -> {
                   findNavController().navigate(
                       VerifierQrScannerFragmentDirections.actionScanResultInvalid(
-                          validData = ScanResultInvalidData.Invalid(
+                          invalidData = ScanResultInvalidData.Invalid(
                               verifiedQr = it.verifiedQr
                           )
                       )
@@ -94,7 +94,7 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
               is VerifiedQrResultState.Error -> {
                   findNavController().navigate(
                       VerifierQrScannerFragmentDirections.actionScanResultInvalid(
-                          validData = ScanResultInvalidData.Error(
+                          invalidData = ScanResultInvalidData.Error(
                               error = it.error
                           )
                       )
@@ -102,5 +102,27 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
               }
           }
         })
+
+        Handler().postDelayed({
+            findNavController().navigate(
+                VerifierQrScannerFragmentDirections.actionScanResultInvalid(
+                    invalidData = ScanResultInvalidData.Invalid(
+                        verifiedQr = VerifiedQr(
+                            creationDateSeconds = 0L,
+                            testResultAttributes = TestResultAttributes(
+                                sampleTime = 0L,
+                                testType = "",
+                                birthDay = "1",
+                                birthMonth = "1",
+                                firstNameInitial = "B",
+                                lastNameInitial = "N",
+                                isPaperProof = "0",
+                                isSpecimen = "0"
+                            )
+                        )
+                    )
+                )
+            )
+        }, 3000)
     }
 }

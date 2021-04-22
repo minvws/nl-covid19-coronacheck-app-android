@@ -34,7 +34,7 @@
         tools:layout="@layout/fragment_scan_result_invalid">
 
         <argument
-            android:name="validData"
+            android:name="invalidData"
             app:argType="nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultInvalidData" />
 
         <action
