@@ -102,5 +102,27 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
               }
           }
         })
+
+        Handler().postDelayed({
+            findNavController().navigate(
+                VerifierQrScannerFragmentDirections.actionScanResultValid(
+                    validData = ScanResultValidData.Valid(
+                        verifiedQr = VerifiedQr(
+                            creationDateSeconds = 0L,
+                            testResultAttributes = TestResultAttributes(
+                                sampleTime = 0L,
+                                testType = "",
+                                birthDay = "1",
+                                birthMonth = "1",
+                                firstNameInitial = "B",
+                                lastNameInitial = "N",
+                                isPaperProof = "0",
+                                isSpecimen = "0"
+                            )
+                        )
+                    )
+                )
+            )
+        }, 3000)
     }
 }

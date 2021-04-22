@@ -69,6 +69,35 @@ class ScanResultValidFragmentTest : AutoCloseKoinTest() {
     }
 
     @Test
+    fun `Screen shows correct content after click`() {
+        launchScanResultValidFragment(data = ScanResultValidData.Valid(verifiedQr = fakeVerifiedQr(
+            firstNameInitial = "B",
+            lastNameInitial = "N",
+            birthDay = "2",
+            birthMonth = "7"
+        )))
+
+        // Click screen
+        clickOn(R.id.root)
+
+        // Assert correct content is displayed on screen
+        assertDisplayed(R.id.personal_details)
+        scrollTo(R.id.first_name_initial)
+        assertDisplayed(R.id.first_name_initial, "B")
+        scrollTo(R.id.last_name_initial)
+        assertDisplayed(R.id.last_name_initial, "N")
+        scrollTo(R.id.birth_day)
+        assertDisplayed(R.id.birth_day, "02")
+        scrollTo(R.id.birth_month)
+        assertDisplayed(R.id.birth_month, "JUL (07)")
+
+        // Assert button click
+        safelyScrollTo(R.id.button)
+        clickOn(R.id.button)
+        verify { scannerUtil.launchScanner(any()) }
+    }
+
+    @Test
     fun `Screen shows correct content after 800ms`() {
         launchScanResultValidFragment(data = ScanResultValidData.Valid(verifiedQr = fakeVerifiedQr(
             firstNameInitial = "B",

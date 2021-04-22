@@ -85,6 +85,12 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
             scannerUtil.launchScanner(requireActivity())
         }
 
+        if (binding.personalDetails.root.visibility == View.GONE) {
+            binding.root.setOnClickListener {
+                presentPersonalDetails()
+            }
+        }
+
         transitionPersonalDetailsHandler.postDelayed(transitionPersonalDetailsRunnable, TimeUnit.MILLISECONDS.toMillis(800))
     }
 
@@ -118,5 +124,6 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
         super.onDestroyView()
         _binding = null
         autoCloseHandler.removeCallbacks(autoCloseRunnable)
+        transitionPersonalDetailsHandler.removeCallbacks(autoCloseRunnable)
     }
 }
