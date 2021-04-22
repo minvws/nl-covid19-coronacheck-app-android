@@ -2,12 +2,13 @@ package nl.rijksoverheid.ctr.verifier.ui.scanner.models
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
+import nl.rijksoverheid.ctr.verifier.models.VerifiedQr
 import nl.rijksoverheid.ctr.verifier.models.VerifiedQrResultState
 
-sealed class ScanResultValidData : Parcelable {
+sealed class ScanResultValidData(open val verifiedQr: VerifiedQr) : Parcelable {
     @Parcelize
-    data class Valid(val valid: VerifiedQrResultState.Valid) : ScanResultValidData(), Parcelable
+    data class Valid(override val verifiedQr: VerifiedQr) : ScanResultValidData(verifiedQr), Parcelable
 
     @Parcelize
-    data class Demo(val demo: VerifiedQrResultState.Demo): ScanResultValidData(), Parcelable
+    data class Demo(override val verifiedQr: VerifiedQr): ScanResultValidData(verifiedQr), Parcelable
 }

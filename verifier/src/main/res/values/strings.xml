@@ -35,6 +35,7 @@
     <string name="scan_result_valid_first_name">Voornaam</string>
     <string name="scan_result_valid_birth_day">Geboortedag</string>
     <string name="scan_result_valid_birth_month">Geboortemaand</string>
+    <string name="scan_result_valid_personal_details_title">Controleer de gegevens</string>
     <string name="scan_result_invalid_title">Geen geldige QR-code</string>
     <string name="scan_result_invalid_subtitle"><![CDATA[De bezoeker heeft geen geldig negatief testbewijs. <a href="#"><b>Lees mogelijke oorzaken</b></a>]]></string>
     <string name="scan_result_invalid_button">Scan volgende</string>

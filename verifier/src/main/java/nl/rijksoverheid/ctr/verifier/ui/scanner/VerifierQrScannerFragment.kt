@@ -68,7 +68,7 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
                   findNavController().navigate(
                       VerifierQrScannerFragmentDirections.actionScanResultValid(
                           validData = ScanResultValidData.Valid(
-                              valid = it
+                              verifiedQr = it.verifiedQr
                           )
                       )
                   )
@@ -77,7 +77,7 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
                   findNavController().navigate(
                       VerifierQrScannerFragmentDirections.actionScanResultValid(
                           validData = ScanResultValidData.Demo(
-                              demo = it
+                              verifiedQr = it.verifiedQr
                           )
                       )
                   )
@@ -86,7 +86,7 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
                   findNavController().navigate(
                       VerifierQrScannerFragmentDirections.actionScanResultInvalid(
                           validData = ScanResultInvalidData.Invalid(
-                              invalid = it
+                              verifiedQr = it.verifiedQr
                           )
                       )
                   )
@@ -95,7 +95,7 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
                   findNavController().navigate(
                       VerifierQrScannerFragmentDirections.actionScanResultInvalid(
                           validData = ScanResultInvalidData.Error(
-                              error = it
+                              error = it.error
                           )
                       )
                   )
