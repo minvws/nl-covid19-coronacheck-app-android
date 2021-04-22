@@ -137,10 +137,4 @@ class HolderMainFragment : BaseMainFragment(
             .styleTitle(context, R.attr.textAppearanceBody1)
     }
 
-    /**
-     * Allow screens to dynamically update their title
-     */
-    fun updateTitle(title: String){
-        binding.toolbar.title = title
-    }
 }

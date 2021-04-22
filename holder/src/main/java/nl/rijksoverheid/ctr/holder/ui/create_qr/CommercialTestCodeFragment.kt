@@ -205,7 +205,6 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
             }
         })
 
-
         if (viewModel.verificationRequired) {
             showKeyboard(binding.verificationCodeText)
         } else {
@@ -214,7 +213,6 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
                 showKeyboard(binding.uniqueCodeText)
             }
         }
-
     }
 
     override fun onPause() {
