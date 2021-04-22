@@ -11,8 +11,16 @@
         tools:layout="@layout/fragment_scanner">
 
         <action
-            android:id="@+id/action_scan_result"
-            app:destination="@id/nav_scan_result"
+            android:id="@+id/action_scan_result_valid"
+            app:destination="@id/nav_scan_result_valid"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
+
+        <action
+            android:id="@+id/action_scan_result_invalid"
+            app:destination="@id/nav_scan_result_invalid"
             app:enterAnim="@anim/fragment_open_enter"
             app:exitAnim="@anim/fragment_open_exit"
             app:popEnterAnim="@anim/fragment_close_enter"
@@ -21,13 +29,38 @@
     </fragment>
 
     <fragment
-        android:id="@+id/nav_scan_result"
-        android:name="nl.rijksoverheid.ctr.verifier.ui.scanner.ScanResultFragment"
-        tools:layout="@layout/fragment_scan_result">
+        android:id="@+id/nav_scan_result_invalid"
+        android:name="nl.rijksoverheid.ctr.verifier.ui.scanner.ScanResultInvalidFragment"
+        tools:layout="@layout/fragment_scan_result_invalid">
 
         <argument
-            android:name="validatedResult"
-            app:argType="nl.rijksoverheid.ctr.verifier.models.VerifiedQrResultState" />
+            android:name="invalidData"
+            app:argType="nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultInvalidData" />
+
+        <action
+            android:id="@+id/action_nav_main"
+            app:destination="@id/nav_main"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit"
+            app:popUpTo="@id/nav_main"
+            app:popUpToInclusive="true" />
+
+        <action
+            android:id="@+id/action_show_invalid_explanation"
+            app:destination="@id/invalid_explanation_bottomsheet" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_scan_result_valid"
+        android:name="nl.rijksoverheid.ctr.verifier.ui.scanner.ScanResultValidFragment"
+        tools:layout="@layout/fragment_scan_result_valid">
+
+        <argument
+            android:name="validData"
+            app:argType="nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultValidData" />
 
         <action
             android:id="@+id/action_nav_main"
@@ -43,21 +76,13 @@
             android:id="@+id/action_show_valid_explanation"
             app:destination="@id/valid_explanation_bottomsheet" />
 
-        <action
-            android:id="@+id/action_show_invalid_explanation"
-            app:destination="@id/invalid_explanation_bottomsheet" />
-
     </fragment>
 
     <dialog
         android:id="@+id/valid_explanation_bottomsheet"
         android:name="nl.rijksoverheid.ctr.verifier.ui.scanner.ScanResultValidExplanationDialogFragment"
         android:label="ScanResultValidExplanationDialogFragment"
-        tools:layout="@layout/fragment_scan_result_valid_reason">
-        <argument
-            android:name="qrResult"
-            app:argType="nl.rijksoverheid.ctr.verifier.models.VerifiedQr" />
-    </dialog>
+        tools:layout="@layout/fragment_scan_result_valid_reason"/>
 
     <dialog
         android:id="@+id/invalid_explanation_bottomsheet"

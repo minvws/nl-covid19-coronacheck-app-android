@@ -11,4 +11,9 @@
     <declare-styleable name="AccessibilityHeaderWidget">
         <attr name="isAccessibilityHeader" format="boolean" />
     </declare-styleable>
+    <declare-styleable name="HtmlTextViewWidget">
+        <attr name="htmlText" format="string" />
+        <attr name="htmlTextWithList" format="string" />
+        <attr name="enableHtmlLinks" format="boolean" />
+    </declare-styleable>
 </resources>

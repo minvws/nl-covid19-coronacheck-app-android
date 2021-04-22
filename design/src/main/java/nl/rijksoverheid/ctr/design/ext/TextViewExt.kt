@@ -12,6 +12,11 @@ import nl.rijksoverheid.ctr.design.spans.LinkTransformationMethod
  *
  */
 fun TextView.enableHtmlLinks() {
-    this.transformationMethod = LinkTransformationMethod()
+    this.transformationMethod = LinkTransformationMethod(method = LinkTransformationMethod.Method.WebLinks)
+    this.movementMethod = LinkMovementMethod.getInstance()
+}
+
+fun TextView.enableCustomLinks(onLinkClick: () -> Unit) {
+    this.transformationMethod = LinkTransformationMethod(method = LinkTransformationMethod.Method.CustomLinks(onLinkClick))
     this.movementMethod = LinkMovementMethod.getInstance()
 }

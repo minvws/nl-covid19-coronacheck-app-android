@@ -38,7 +38,7 @@
             app:layout_constraintTop_toBottomOf="@+id/image"
             tools:text="Title" />
 
-        <TextView
+        <nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
             android:id="@+id/description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

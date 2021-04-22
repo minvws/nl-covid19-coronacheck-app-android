@@ -64,12 +64,12 @@
     <string name="commercial_test_type_qr_code_title">Ik heb een QR-code</string>
     <string name="commercial_test_type_no_code_title">Ik heb geen code</string>
     <string name="commercial_test_type_no_code_description"><![CDATA[Je krijgt van de testlocatie een code met cijfers en letters.<br\><br\>Heb je geen code gekregen? Of ben je ‘m kwijtgeraakt? Neem dan contact op met de testlocatie.<br\><br\>Het kan zijn dat je je opnieuw moet laten testen.]]></string>
-    <string name="commercial_test_code_title">Unieke code invullen</string>
+    <string name="commercial_test_code_title">Testuitslag ophalen</string>
     <string name="commercial_test_code_description">Vul jouw unieke code in. Deze heb je van je testlocatie gekregen.</string>
     <string name="commercial_test_unique_code_header">Unieke code</string>
     <string name="commercial_test_unique_code_hint">Bijv. BRB-YYYYYYYYY1-Z2</string>
     <string name="commercial_test_verification_code_header">Verificatiecode</string>
-    <string name="commercial_test_verification_code_hint">Bijv. 1234</string>
+    <string name="commercial_test_verification_code_hint">Bijv. 123456</string>
     <string name="commercial_test_verification_code_helper_text">Je krijgt een code via sms of e-mail</string>
     <string name="commercial_test_verification_code_send_again_in">Stuur opnieuw in %1$s</string>
     <string name="commercial_test_verification_code_send_again">Stuur opnieuw</string>
@@ -80,7 +80,7 @@
     <string name="commercial_test_scanner_custom_message">Richt je toestel op de QR-code die je van de testlocatie hebt gekregen.</string>
     <string name="your_negative_test_results_title">Controleer je testuitslag</string>
     <string name="your_negative_test_results_description">Deze testuitslag is opgehaald bij de testlocatie. Op het moment van testen had je geen corona.&lt;br\&gt;&lt;br\&gt;Kloppen de gegevens hieronder? Dan kun je van de negatieve testuitslag een QR-code maken. Dat is jouw bewijs.</string>
-    <string name="your_negative_test_results_header">Opgehaalde testuitslagen</string>
+    <string name="your_negative_test_results_header">Opgehaalde testuitslag</string>
     <string name="your_negative_test_results_row_title">Negatieve testuitslag</string>
     <string name="your_negative_test_results_row_personal_details">Identificatiegegevens: %1$s</string>
     <string name="your_negative_test_results_row_button">QR-code maken</string>

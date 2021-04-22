@@ -14,7 +14,6 @@ import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.R
 import nl.rijksoverheid.ctr.introduction.databinding.FragmentPrivacyConsentBinding
 import nl.rijksoverheid.ctr.introduction.databinding.ItemPrivacyConsentBinding
-import nl.rijksoverheid.ctr.shared.ext.fromHtml
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /*
@@ -51,16 +50,11 @@ class PrivacyConsentFragment : Fragment(R.layout.fragment_privacy_consent) {
             }
         }
 
-        binding.description.text =
-            getString(R.string.privacy_policy_description).fromHtml()
-        binding.description.enableHtmlLinks()
-
         args.introductionData.privacyPolicyItems.forEach { item ->
             val viewBinding =
                 ItemPrivacyConsentBinding.inflate(layoutInflater, binding.items, true)
             viewBinding.icon.setImageResource(item.iconResource)
-            viewBinding.description.text =
-                viewBinding.description.context.getString(item.textResource).fromHtml()
+            viewBinding.description.setHtmlText(viewBinding.description.context.getString(item.textResource), false)
         }
         binding.scroll.doOnPreDraw {
             if (binding.scroll.canScrollVertically(1)) {

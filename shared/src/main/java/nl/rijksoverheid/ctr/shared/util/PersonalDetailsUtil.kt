@@ -1,5 +1,7 @@
 package nl.rijksoverheid.ctr.shared.util
 
+import nl.rijksoverheid.ctr.shared.models.PersonalDetails
+
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
  *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
@@ -12,8 +14,9 @@ interface PersonalDetailsUtil {
         firstNameInitial: String,
         lastNameInitial: String,
         birthDay: String,
-        birthMonth: String
-    ): List<String>
+        birthMonth: String,
+        includeBirthMonthNumber: Boolean = false
+    ): PersonalDetails
 }
 
 class PersonalDetailsUtilImpl(private val passportMonths: List<String>) : PersonalDetailsUtil {
@@ -22,8 +25,9 @@ class PersonalDetailsUtilImpl(private val passportMonths: List<String>) : Person
         firstNameInitial: String,
         lastNameInitial: String,
         birthDay: String,
-        birthMonth: String
-    ): List<String> {
+        birthMonth: String,
+        includeBirthMonthNumber: Boolean
+    ): PersonalDetails {
         val birthDayReadableString = try {
             String.format("%02d", birthDay.toInt())
         } catch (e: Exception) {
@@ -31,16 +35,21 @@ class PersonalDetailsUtilImpl(private val passportMonths: List<String>) : Person
         }
 
         val birthMonthReadableString = try {
-            passportMonths[birthMonth.toInt() - 1]
+            val withoutNumber = passportMonths[birthMonth.toInt() - 1]
+            if (includeBirthMonthNumber) {
+                "$withoutNumber (${String.format("%02d", birthMonth.toInt())})"
+            } else {
+                withoutNumber
+            }
         } catch (e: Exception) {
             birthMonth
         }
 
-        return listOf(
-            if (firstNameInitial.isEmpty()) "_" else firstNameInitial,
-            if (lastNameInitial.isEmpty()) "_" else lastNameInitial,
-            if (birthDayReadableString.isEmpty()) "_" else birthDayReadableString,
-            if (birthMonthReadableString.isEmpty()) "_" else birthMonthReadableString
+        return PersonalDetails(
+            firstNameInitial = if (firstNameInitial.isEmpty()) "_" else firstNameInitial,
+            lastNameInitial = if (lastNameInitial.isEmpty()) "_" else lastNameInitial,
+            birthDay = if (birthDayReadableString.isEmpty()) "_" else birthDayReadableString,
+            birthMonth = if (birthMonthReadableString.isEmpty()) "_" else birthMonthReadableString
         )
     }
 

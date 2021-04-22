@@ -26,7 +26,7 @@
             app:layout_constraintVertical_chainStyle="packed"
             tools:text="Title" />
 
-        <TextView
+        <nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
             android:id="@+id/description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

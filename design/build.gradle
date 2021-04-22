@@ -44,4 +44,5 @@ dependencies {
     implementation "androidx.appcompat:appcompat:${appcompat_version}"
     implementation "com.google.android.material:material:${material_version}"
     implementation "org.koin:koin-android:$koin_version"
+    implementation "androidx.core:core-ktx:$core_ktx_version"
 }

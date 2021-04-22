@@ -9,7 +9,6 @@ import nl.rijksoverheid.ctr.design.ExpandedBottomSheetDialogFragment
 import nl.rijksoverheid.ctr.design.ext.isScreenReaderOn
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.DialogYourNegativeTestResultExplanationBinding
-import nl.rijksoverheid.ctr.shared.ext.fromHtml
 import nl.rijksoverheid.ctr.shared.util.PersonalDetailsUtil
 import org.koin.android.ext.android.inject
 
@@ -37,10 +36,6 @@ class YourNegativeTestResultExplanationDialogFragment : ExpandedBottomSheetDialo
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = DialogYourNegativeTestResultExplanationBinding.bind(view)
-        binding.paragraph1.text =
-            getString(R.string.your_negative_test_results_explanation_paragraph_1).fromHtml()
-        binding.paragraph2.text =
-            getString(R.string.your_negative_test_results_explanation_paragraph_2).fromHtml()
 
         val holder = args.holder
 
@@ -48,13 +43,21 @@ class YourNegativeTestResultExplanationDialogFragment : ExpandedBottomSheetDialo
             firstNameInitial = holder.firstNameInitial,
             lastNameInitial = holder.lastNameInitial,
             birthDay = holder.birthDay,
-            birthMonth = holder.birthMonth
+            birthMonth = holder.birthMonth,
+            includeBirthMonthNumber = false
         )
 
-        binding.personalDetailsHolder.setPersonalDetails(
-            items = personalDetails,
-            showPosition = true
-        )
+        binding.firstNameInitial.itemText.text = personalDetails.firstNameInitial
+        binding.firstNameInitial.itemPosition.text = "1"
+
+        binding.lastNameInitial.itemText.text = personalDetails.lastNameInitial
+        binding.lastNameInitial.itemPosition.text = "2"
+
+        binding.birthDay.itemText.text = personalDetails.birthDay
+        binding.birthDay.itemPosition.text = "3"
+
+        binding.birthMonth.itemText.text = personalDetails.birthMonth
+        binding.birthMonth.itemPosition.text = "4"
 
         if (requireContext().isScreenReaderOn()) {
             handleAccessibility(binding.container, binding.title, R.string.menu_close)

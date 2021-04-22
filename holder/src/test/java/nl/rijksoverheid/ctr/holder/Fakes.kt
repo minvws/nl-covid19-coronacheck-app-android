@@ -17,6 +17,7 @@ import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.models.IntroductionStatus
 import nl.rijksoverheid.ctr.introduction.models.NewTerms
 import nl.rijksoverheid.ctr.shared.livedata.Event
+import nl.rijksoverheid.ctr.shared.models.PersonalDetails
 import nl.rijksoverheid.ctr.shared.models.TestResultAttributes
 import nl.rijksoverheid.ctr.shared.usecase.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.shared.util.PersonalDetailsUtil
@@ -61,9 +62,15 @@ fun fakePersonalDetailsUtil(
         firstNameInitial: String,
         lastNameInitial: String,
         birthDay: String,
-        birthMonth: String
-    ): List<String> {
-        return listOf()
+        birthMonth: String,
+        includeBirthMonthNumber: Boolean
+    ): PersonalDetails {
+        return PersonalDetails(
+            firstNameInitial = firstNameInitial,
+            lastNameInitial = lastNameInitial,
+            birthDay = birthDay,
+            birthMonth = birthMonth
+        )
     }
 }
 
@@ -146,7 +153,7 @@ fun fakeLocalTestResultViewModel(
                             sampleDate = OffsetDateTime.now(),
                             expireDate = OffsetDateTime.now(),
                             testType = "dummy",
-                            personalDetails = listOf()
+                            personalDetails = PersonalDetails("X", "X", "X", "X")
                         ),
                         qrCode = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
                     )

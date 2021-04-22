@@ -1,13 +1,19 @@
 package nl.rijksoverheid.ctr.verifier.ui.scanner
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import com.google.mlkit.vision.barcode.Barcode
 import nl.rijksoverheid.ctr.qrscanner.QrCodeScannerFragment
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
+import nl.rijksoverheid.ctr.shared.models.TestResultAttributes
 import nl.rijksoverheid.ctr.verifier.BuildConfig
 import nl.rijksoverheid.ctr.verifier.R
+import nl.rijksoverheid.ctr.verifier.models.VerifiedQr
+import nl.rijksoverheid.ctr.verifier.models.VerifiedQrResultState
+import nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultInvalidData
+import nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultValidData
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -57,7 +63,44 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
         })
 
         scanQrViewModel.validatedQrLiveData.observe(viewLifecycleOwner, EventObserver {
-            findNavController().navigate(VerifierQrScannerFragmentDirections.actionScanResult(it))
+          when (it) {
+              is VerifiedQrResultState.Valid -> {
+                  findNavController().navigate(
+                      VerifierQrScannerFragmentDirections.actionScanResultValid(
+                          validData = ScanResultValidData.Valid(
+                              verifiedQr = it.verifiedQr
+                          )
+                      )
+                  )
+              }
+              is VerifiedQrResultState.Demo -> {
+                  findNavController().navigate(
+                      VerifierQrScannerFragmentDirections.actionScanResultValid(
+                          validData = ScanResultValidData.Demo(
+                              verifiedQr = it.verifiedQr
+                          )
+                      )
+                  )
+              }
+              is VerifiedQrResultState.Invalid -> {
+                  findNavController().navigate(
+                      VerifierQrScannerFragmentDirections.actionScanResultInvalid(
+                          invalidData = ScanResultInvalidData.Invalid(
+                              verifiedQr = it.verifiedQr
+                          )
+                      )
+                  )
+              }
+              is VerifiedQrResultState.Error -> {
+                  findNavController().navigate(
+                      VerifierQrScannerFragmentDirections.actionScanResultInvalid(
+                          invalidData = ScanResultInvalidData.Error(
+                              error = it.error
+                          )
+                      )
+                  )
+              }
+          }
         })
     }
 }

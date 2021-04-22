@@ -25,39 +25,62 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
+        <nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
             android:id="@+id/paragraph1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:textAppearance="?attr/textAppearanceBody1"
-            app:layout_constraintBottom_toTopOf="@+id/personalDetailsHolder"
+            app:htmlText="@string/your_negative_test_results_explanation_paragraph_1"
+            app:layout_constraintBottom_toTopOf="@+id/personalDetails"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/title"
-            tools:text="@string/your_negative_test_results_explanation_paragraph_1" />
+            app:layout_constraintTop_toBottomOf="@+id/title" />
 
-        <nl.rijksoverheid.ctr.design.views.AbbreviatedPersonalDetailsWidget
-            android:id="@+id/personalDetailsHolder"
+        <LinearLayout
+            android:id="@+id/personalDetails"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
+            android:orientation="horizontal"
             android:gravity="center_horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/paragraph1" />
+            app:layout_constraintTop_toBottomOf="@id/paragraph1">
 
-        <TextView
+            <include layout="@layout/view_dialog_your_negative_test_result_explanation_personal_detail"
+                android:id="@+id/firstNameInitial"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <include layout="@layout/view_dialog_your_negative_test_result_explanation_personal_detail"
+                android:id="@+id/lastNameInitial"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <include layout="@layout/view_dialog_your_negative_test_result_explanation_personal_detail"
+                android:id="@+id/birthDay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <include layout="@layout/view_dialog_your_negative_test_result_explanation_personal_detail"
+                android:id="@+id/birthMonth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
             android:id="@+id/paragraph2"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginTop="32dp"
             android:textAppearance="?attr/textAppearanceBody1"
+            app:htmlText="@string/your_negative_test_results_explanation_paragraph_2"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/personalDetailsHolder"
-            tools:text="@string/your_negative_test_results_explanation_paragraph_1" />
+            app:layout_constraintTop_toBottomOf="@+id/personalDetails" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
