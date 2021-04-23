@@ -150,7 +150,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
         items.add(MyOverviewNavigationCardAdapterItem(
             title = R.string.my_overview_no_qr_make_appointment_title,
             description = R.string.my_overview_no_qr_make_appointment_description,
-            backgroundColor = R.color.light_blue,
+            backgroundColor = R.color.secondary_blue,
             backgroundDrawable = R.drawable.illustration_make_appointment,
             buttonText = R.string.my_overview_no_qr_make_appointment_button,
             onButtonClick = {
@@ -162,7 +162,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
         items.add(MyOverviewNavigationCardAdapterItem(
             title = if (localTestResult == null) R.string.my_overview_no_qr_make_qr_title else R.string.my_overview_no_qr_replace_qr_title,
             description = R.string.my_overview_no_qr_make_qr_description,
-            backgroundColor = R.color.green,
+            backgroundColor = R.color.secondary_green,
             backgroundDrawable = R.drawable.illustration_create_qr,
             buttonText = if (localTestResult == null) R.string.my_overview_no_qr_make_qr_button else R.string.my_overview_no_qr_replace_qr_button,
             onButtonClick = {

@@ -14,7 +14,7 @@
             android:id="@+id/image"
             android:layout_width="match_parent"
             android:layout_height="260dp"
-            android:background="@color/light_blue"
+            android:background="@color/secondary_blue"
             android:contentDescription="@null"
             android:scaleType="centerInside"
             android:src="@drawable/illustration_make_appointment_big"

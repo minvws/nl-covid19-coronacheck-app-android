@@ -44,7 +44,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                app:cardBackgroundColor="@color/blue_background_highlight"
+                app:cardBackgroundColor="@color/message_container"
                 app:cardCornerRadius="10dp"
                 app:layout_constraintBottom_toTopOf="@+id/terms"
                 app:layout_constraintEnd_toEndOf="parent"
