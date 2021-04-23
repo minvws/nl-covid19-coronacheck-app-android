@@ -1,7 +1,6 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr
 
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.core.view.isVisible
@@ -15,6 +14,7 @@ import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentCommercialTestCodeBinding
 import nl.rijksoverheid.ctr.holder.usecase.TestResult
+import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.hideKeyboard
 import nl.rijksoverheid.ctr.shared.ext.showKeyboard
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
@@ -22,8 +22,6 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ViewModelOwner.Companion.from
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.scope.emptyState
-import java.util.concurrent.TimeUnit
-import kotlin.math.roundToInt
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -49,28 +47,6 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
     private val dialogUtil: DialogUtil by inject()
     private val navArgs: CommercialTestCodeFragmentArgs by navArgs()
 
-    private val verificationCodeTimer =
-        object : CountDownTimer(
-            TimeUnit.SECONDS.toMillis(10),
-            TimeUnit.SECONDS.toMillis(1)
-        ) {
-            override fun onTick(millisUntilFinished: Long) {
-                binding.sendAgainButton.visibility = View.VISIBLE
-                val secondsUntilFinished = (millisUntilFinished / 1000f).roundToInt()
-                binding.sendAgainButton.isEnabled = false
-                binding.sendAgainButton.text = getString(
-                    R.string.commercial_test_verification_code_send_again_in,
-                    secondsUntilFinished.toString()
-                )
-            }
-
-            override fun onFinish() {
-                binding.sendAgainButton.isEnabled = true
-                binding.sendAgainButton.text =
-                    getString(R.string.commercial_test_verification_code_send_again)
-            }
-        }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -90,14 +66,16 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
                 (if (it.verificationRequired) EditorInfo.IME_ACTION_NEXT else EditorInfo.IME_ACTION_SEND)
             binding.verificationCodeInput.visibility =
                 if (it.verificationRequired) View.VISIBLE else View.GONE
+            binding.noVerificationRecievedBtn.visibility =
+                if (it.verificationRequired) View.VISIBLE else View.GONE
+            binding.noTokenReceivedBtn.visibility =
+                if (!it.verificationRequired) View.VISIBLE else View.GONE
 
             if (it.fromDeeplink && it.verificationRequired) {
                 binding.uniqueCodeInput.isVisible = false
+                binding.noTokenReceivedBtn.isVisible = false
                 binding.description.setText(R.string.commercial_test_verification_code_description_deeplink)
             }
-
-            // Start send verification code timer countdown once
-            if (it.verificationRequired && binding.sendAgainButton.visibility == View.GONE) verificationCodeTimer.start()
         }
 
         binding.uniqueCodeText.setOnEditorActionListener { _, actionId, _ ->
@@ -173,9 +151,18 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
             }
         })
 
-        binding.sendAgainButton.setOnClickListener {
-            viewModel.sendVerificationCode()
-            verificationCodeTimer.start()
+        // Show dialog to send verification code again
+        binding.noVerificationRecievedBtn.setOnClickListener {
+            dialogUtil.presentDialog(
+                context = requireContext(),
+                title = R.string.dialog_verification_code_title,
+                message = getString(R.string.dialog_verification_code_message),
+                positiveButtonText = R.string.dialog_verification_code_positive_button,
+                positiveButtonCallback = {
+                    viewModel.sendVerificationCode()
+                },
+                negativeButtonText = R.string.dialog_close
+            )
         }
 
         binding.button.setOnClickListener {
@@ -206,6 +193,12 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
                 showKeyboard(binding.uniqueCodeText)
             }
         }
+
+        binding.noTokenReceivedBtn.setOnClickListener {
+            findNavControllerSafety(R.id.nav_commercial_test_code)?.navigate(
+                CommercialTestCodeFragmentDirections.actionNoCode()
+            )
+        }
     }
 
     override fun onPause() {
@@ -215,7 +208,6 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
 
     override fun onDestroyView() {
         super.onDestroyView()
-        verificationCodeTimer.cancel()
         _binding = null
     }
 

@@ -8,6 +8,7 @@ import nl.rijksoverheid.ctr.holder.models.TestIsmResult
 import nl.rijksoverheid.ctr.holder.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.repositories.TestProviderRepository
 import nl.rijksoverheid.ctr.holder.ui.myoverview.util.TokenValidatorUtil
+import nl.rijksoverheid.ctr.shared.ext.removeWhitespace
 import nl.rijksoverheid.ctr.shared.models.PersonalDetails
 import nl.rijksoverheid.ctr.shared.util.PersonalDetailsUtil
 import nl.rijksoverheid.ctr.shared.util.TestResultUtil
@@ -65,8 +66,8 @@ class TestResultUseCase(
 
             val signedResponseWithTestResult = testProviderRepository.remoteTestResult(
                 url = testProvider.resultUrl,
-                token = token.trim(),
-                verifierCode = verificationCode,
+                token = token.removeWhitespace(),
+                verifierCode = verificationCode?.removeWhitespace(),
                 signingCertificateBytes = testProvider.publicKey
             )
 

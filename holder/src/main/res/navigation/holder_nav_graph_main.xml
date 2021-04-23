@@ -67,22 +67,6 @@
         tools:layout="@layout/fragment_choose_provider">
 
         <action
-            android:id="@+id/action_commercial_test_type"
-            app:destination="@id/nav_commercial_test_type"
-            app:enterAnim="@anim/fragment_open_enter_slide"
-            app:exitAnim="@anim/fragment_open_exit_slide"
-            app:popEnterAnim="@anim/fragment_close_enter_slide"
-            app:popExitAnim="@anim/fragment_close_exit_slide" />
-
-    </fragment>
-
-    <fragment
-        android:id="@+id/nav_commercial_test_type"
-        android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.CommercialTestTypeFragment"
-        android:label="@string/commercial_test_type_title"
-        tools:layout="@layout/fragment_commercial_test_type">
-
-        <action
             android:id="@+id/action_commercial_test_code"
             app:destination="@id/nav_commercial_test"
             app:enterAnim="@anim/slide_in_right"
@@ -90,16 +74,7 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
 
-        <action
-            android:id="@+id/action_no_code"
-            app:destination="@id/nav_no_code" />
-
     </fragment>
-
-    <dialog
-        android:id="@+id/nav_no_code"
-        android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.NoCodeExplanationDialogFragment"
-        tools:layout="@layout/dialog_no_code_explanation" />
 
     <navigation
         android:id="@+id/nav_commercial_test"
@@ -143,7 +118,16 @@
                 app:popEnterAnim="@anim/slide_in_left"
                 app:popExitAnim="@anim/slide_out_right" />
 
+            <action
+                android:id="@+id/action_no_code"
+                app:destination="@id/nav_no_code" />
+
         </fragment>
+
+        <dialog
+            android:id="@+id/nav_no_code"
+            android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.NoCodeExplanationDialogFragment"
+            tools:layout="@layout/dialog_no_code_explanation" />
 
         <fragment
             android:id="@+id/nav_your_negative_result"
