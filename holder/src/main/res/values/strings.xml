@@ -167,6 +167,5 @@
     <string name="url_faq">https://coronacheck.nl/nl/faq-in-app.html</string>
     <string name="url_privacy_statement">https://coronacheck.nl/nl/privacy-in-app</string>
     <string name="url_make_appointment">https://coronacheck.nl/nl/testaanbieders-fieldlab-in-de-app</string>
-    <string name="commercial_test_verification_code_retrieval_placeholder">Testresultaat ophalen...</string>
     <string name="commercial_test_verification_code_description_deeplink">Vul jouw verficatie code in om je negatieve testresultaat op te halen. Deze krijg je in een sms of e-mail van je testlocatie.</string>
 </resources>
