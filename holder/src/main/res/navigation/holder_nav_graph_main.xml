@@ -108,7 +108,7 @@
         <!-- Nested navs require an argument in both the root and the
              fragment where you wish to use it -->
         <argument
-            android:name="locationToken"
+            android:name="token"
             android:defaultValue="@null"
             app:argType="string"
             app:nullable="true" />
@@ -119,8 +119,10 @@
             android:label="@string/commercial_test_type_code_toolbar_title"
             tools:layout="@layout/fragment_commercial_test_code">
 
+            <deepLink app:uri=".*/app/redeem#{token}" />
+
             <argument
-                android:name="locationToken"
+                android:name="token"
                 android:defaultValue="@null"
                 app:argType="string"
                 app:nullable="true" />

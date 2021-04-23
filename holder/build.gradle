@@ -35,6 +35,9 @@ android {
         buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "true"
         buildConfigField "boolean", "FEATURE_TEST_PROVIDER_API_CHECKS", "true"
         buildConfigField "String", "BASE_API_URL", "\"https://holder-api.coronacheck.nl/v3/\""
+        buildConfigField "String", "DIGI_D_BASE_URL", "\"https://login.ggdghor.nl/coronitacc\""
+        buildConfigField "String", "DIGI_D_CLIENT_ID", "\"6456237456911667336\""
+        manifestPlaceholders = [appLabel: "@string/app_name", deepLinkHost: "coronacheck.nl"]
     }
 
     signingConfigs {
@@ -65,7 +68,7 @@ android {
             dimension "environment"
             versionNameSuffix "-test"
             applicationIdSuffix ".test"
-            manifestPlaceholders = [appLabel: "@string/app_name_test"]
+            manifestPlaceholders = [appLabel: "@string/app_name_test", deepLinkHost: "web.acc.coronacheck.nl"]
             apply plugin: 'com.google.gms.google-services'
             apply plugin: 'com.google.firebase.crashlytics'
         }
@@ -76,15 +79,12 @@ android {
             dimension "environment"
             versionNameSuffix "-acc"
             applicationIdSuffix ".acc"
-            manifestPlaceholders = [appLabel: "@string/app_name_acc"]
+            manifestPlaceholders = [appLabel: "@string/app_name_acc", deepLinkHost: "web.acc.coronacheck.nl"]
             apply plugin: 'com.google.gms.google-services'
             apply plugin: 'com.google.firebase.crashlytics'
         }
         prod {
-            buildConfigField "String", "DIGI_D_BASE_URL", "\"https://login.ggdghor.nl/coronitacc\""
-            buildConfigField "String", "DIGI_D_CLIENT_ID", "\"6456237456911667336\""
             dimension "environment"
-            manifestPlaceholders = [appLabel: "@string/app_name"]
         }
     }
 

@@ -136,4 +136,5 @@ class HolderMainFragment : BaseMainFragment(
         binding.navView.menu.findItem(R.id.nav_terms_of_use)
             .styleTitle(context, R.attr.textAppearanceBody1)
     }
+
 }

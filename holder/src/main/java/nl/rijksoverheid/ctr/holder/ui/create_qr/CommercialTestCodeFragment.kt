@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -13,9 +14,9 @@ import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentCommercialTestCodeBinding
+import nl.rijksoverheid.ctr.holder.usecase.TestResult
 import nl.rijksoverheid.ctr.shared.ext.hideKeyboard
 import nl.rijksoverheid.ctr.shared.ext.showKeyboard
-import nl.rijksoverheid.ctr.holder.usecase.TestResult
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ViewModelOwner.Companion.from
@@ -75,16 +76,6 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
 
         _binding = FragmentCommercialTestCodeBinding.bind(view)
 
-        if (viewModel.verificationRequired) {
-            showKeyboard(binding.verificationCodeText)
-        } else {
-            showKeyboard(binding.uniqueCodeText)
-        }
-
-        viewModel.loading.observe(viewLifecycleOwner, EventObserver {
-            (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
-        })
-
         binding.uniqueCodeText.addTextChangedListener {
             viewModel.testCode = it?.toString()?.toUpperCase() ?: ""
         }
@@ -99,6 +90,11 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
                 (if (it.verificationRequired) EditorInfo.IME_ACTION_NEXT else EditorInfo.IME_ACTION_SEND)
             binding.verificationCodeInput.visibility =
                 if (it.verificationRequired) View.VISIBLE else View.GONE
+
+            if (it.fromDeeplink && it.verificationRequired) {
+                binding.uniqueCodeInput.isVisible = false
+                binding.description.setText(R.string.commercial_test_verification_code_description_deeplink)
+            }
 
             // Start send verification code timer countdown once
             if (it.verificationRequired && binding.sendAgainButton.visibility == View.GONE) verificationCodeTimer.start()
@@ -118,6 +114,7 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
                 TestResult.InvalidToken -> {
                     binding.uniqueCodeInput.error =
                         getString(R.string.commercial_test_error_invalid_code)
+                    binding.verificationCodeInput.isVisible = false
                 }
                 is TestResult.NetworkError -> {
                     dialogUtil.presentDialog(
@@ -171,7 +168,6 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
                         binding.verificationCodeInput.error =
                             getString(R.string.commercial_test_error_invalid_combination)
                     }
-
                     binding.verificationCodeInput.requestFocus()
                 }
             }
@@ -187,8 +183,28 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
         }
 
         // If a location token is set, automatically fill it in
-        navArgs.locationToken?.let { token ->
+        navArgs.token?.let { token ->
             binding.uniqueCodeText.setText(token)
+            fetchTestResults(binding, fromDeeplink = true)
+        }
+
+        viewModel.loading.observe(viewLifecycleOwner, EventObserver {
+            if (!viewModel.fromDeeplink) {
+                (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
+            } else {
+                // Show different loading state when loading from deeplink
+                binding.loadingOverlay.isVisible = it
+                binding.button.isVisible = !it
+            }
+        })
+
+        if (viewModel.verificationRequired) {
+            showKeyboard(binding.verificationCodeText)
+        } else {
+            // Don't show keyboard if token is set through external flow
+            if (!viewModel.fromDeeplink) {
+                showKeyboard(binding.uniqueCodeText)
+            }
         }
     }
 
@@ -203,10 +219,13 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
         _binding = null
     }
 
-    private fun fetchTestResults(binding: FragmentCommercialTestCodeBinding) {
+    private fun fetchTestResults(
+        binding: FragmentCommercialTestCodeBinding,
+        fromDeeplink: Boolean = false
+    ) {
         binding.verificationCodeInput.error = null
         binding.uniqueCodeInput.error = null
-        viewModel.getTestResult()
+        viewModel.getTestResult(fromDeeplink)
         hideKeyboard()
     }
 }

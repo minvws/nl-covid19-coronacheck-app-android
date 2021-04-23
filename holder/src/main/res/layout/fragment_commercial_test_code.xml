@@ -16,9 +16,11 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="32dp"
+            android:layout_marginBottom="32dp"
             android:labelFor="@id/unique_code_text"
             android:text="@string/commercial_test_code_description"
             android:textAppearance="?attr/textAppearanceBody1"
+            app:layout_constraintBottom_toTopOf="@id/unique_code_input"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -28,12 +30,11 @@
             style="@style/Widget.App.TextInputLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
             android:hint="@string/commercial_test_unique_code_header"
             app:errorEnabled="true"
+            app:layout_constraintBottom_toTopOf="@id/verification_code_input"
             app:layout_constraintEnd_toEndOf="@+id/description"
-            app:layout_constraintStart_toStartOf="@+id/description"
-            app:layout_constraintTop_toBottomOf="@+id/description">
+            app:layout_constraintStart_toStartOf="@+id/description">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/unique_code_text"
@@ -44,7 +45,6 @@
                 android:inputType="text"
                 android:lines="1">
 
-                <requestFocus />
             </com.google.android.material.textfield.TextInputEditText>
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -101,6 +101,26 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/send_again_button"
             app:layout_constraintVertical_bias="1" />
+
+        <FrameLayout
+            android:id="@+id/loading_overlay"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="?attr/colorSurface"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ProgressBar
+                android:id="@+id/loading"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+        </FrameLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
