@@ -42,7 +42,7 @@ class ScanResultValidFragmentTest : AutoCloseKoinTest() {
     @Test
     fun `Screen shows correct content when data is Valid`() {
         launchScanResultValidFragment(data = ScanResultValidData.Valid(verifiedQr = fakeVerifiedQr()))
-        assertHasBackground(R.id.root, R.color.green)
+        assertHasBackground(R.id.root, R.color.secondary_green)
         assertDisplayed(R.id.title, R.string.scan_result_valid_title)
         assertNotDisplayed(R.id.personal_details)
     }
@@ -50,19 +50,23 @@ class ScanResultValidFragmentTest : AutoCloseKoinTest() {
     @Test
     fun `Screen shows correct content when data is Demo`() {
         launchScanResultValidFragment(data = ScanResultValidData.Demo(verifiedQr = fakeVerifiedQr()))
-        assertHasBackground(R.id.root, R.color.grey_medium)
+        assertHasBackground(R.id.root, R.color.grey_2)
         assertDisplayed(R.id.title, R.string.scan_result_valid_title)
         assertNotDisplayed(R.id.personal_details)
     }
 
     @Test
     fun `Screen shows correct content after click`() {
-        launchScanResultValidFragment(data = ScanResultValidData.Valid(verifiedQr = fakeVerifiedQr(
-            firstNameInitial = "B",
-            lastNameInitial = "N",
-            birthDay = "2",
-            birthMonth = "7"
-        )))
+        launchScanResultValidFragment(
+            data = ScanResultValidData.Valid(
+                verifiedQr = fakeVerifiedQr(
+                    firstNameInitial = "B",
+                    lastNameInitial = "N",
+                    birthDay = "2",
+                    birthMonth = "7"
+                )
+            )
+        )
 
         // Click screen
         clickOn(R.id.root)
@@ -86,12 +90,16 @@ class ScanResultValidFragmentTest : AutoCloseKoinTest() {
 
     @Test
     fun `Screen shows correct content after 800ms`() {
-        launchScanResultValidFragment(data = ScanResultValidData.Valid(verifiedQr = fakeVerifiedQr(
-            firstNameInitial = "B",
-            lastNameInitial = "N",
-            birthDay = "2",
-            birthMonth = "7"
-        )))
+        launchScanResultValidFragment(
+            data = ScanResultValidData.Valid(
+                verifiedQr = fakeVerifiedQr(
+                    firstNameInitial = "B",
+                    lastNameInitial = "N",
+                    birthDay = "2",
+                    birthMonth = "7"
+                )
+            )
+        )
 
         // Wait 800ms until personal details are shown
         BaristaSleepInteractions.sleep(800)

@@ -4,6 +4,7 @@
     <color name="primary_blue">#1540eb</color>
     <color name="secondary_blue">#69dbff</color>
     <color name="secondary_green">#3dec94</color>
+    <color name="red">#FF745F</color>
     <color name="error">#b30900</color>
     <color name="link">#007AFF</color>
     <color name="black">#383836</color>
