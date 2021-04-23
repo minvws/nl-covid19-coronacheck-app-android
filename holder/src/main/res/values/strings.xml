@@ -63,6 +63,7 @@
     <string name="commercial_test_type_code_toolbar_title">Unieke code invullen</string>
     <string name="commercial_test_type_qr_code_title">Ik heb een QR-code</string>
     <string name="commercial_test_type_no_code_title">Ik heb geen code</string>
+    <string name="commercial_test_type_no_code_received_title">Ik heb geen code ontvangen</string>
     <string name="commercial_test_type_no_code_description"><![CDATA[Je krijgt van de testlocatie een code met cijfers en letters.<br\><br\>Heb je geen code gekregen? Of ben je ‘m kwijtgeraakt? Neem dan contact op met de testlocatie.<br\><br\>Het kan zijn dat je je opnieuw moet laten testen.]]></string>
     <string name="commercial_test_code_title">Testuitslag ophalen</string>
     <string name="commercial_test_code_description">Vul jouw unieke code in. Deze heb je van je testlocatie gekregen.</string>

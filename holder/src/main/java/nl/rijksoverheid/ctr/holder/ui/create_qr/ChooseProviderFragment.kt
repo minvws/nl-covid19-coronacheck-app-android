@@ -35,7 +35,7 @@ class ChooseProviderFragment : Fragment(R.layout.fragment_choose_provider) {
             R.string.choose_provider_commercial_title,
             R.string.choose_provider_commercial_subtitle
         ) {
-            findNavController().navigate(ChooseProviderFragmentDirections.actionCommercialTestType())
+            findNavController().navigate(ChooseProviderFragmentDirections.actionCommercialTestCode())
         }
 
         binding.providerGgd.bind(

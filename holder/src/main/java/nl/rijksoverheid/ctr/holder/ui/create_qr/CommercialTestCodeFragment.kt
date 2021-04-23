@@ -14,6 +14,7 @@ import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentCommercialTestCodeBinding
 import nl.rijksoverheid.ctr.holder.usecase.TestResult
+import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.hideKeyboard
 import nl.rijksoverheid.ctr.shared.ext.showKeyboard
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
@@ -65,11 +66,14 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
                 (if (it.verificationRequired) EditorInfo.IME_ACTION_NEXT else EditorInfo.IME_ACTION_SEND)
             binding.verificationCodeInput.visibility =
                 if (it.verificationRequired) View.VISIBLE else View.GONE
-            binding.noCodeReceivedBtn.visibility =
+            binding.noVerificationRecievedBtn.visibility =
                 if (it.verificationRequired) View.VISIBLE else View.GONE
+            binding.noTokenReceivedBtn.visibility =
+                if (!it.verificationRequired) View.VISIBLE else View.GONE
 
             if (it.fromDeeplink && it.verificationRequired) {
                 binding.uniqueCodeInput.isVisible = false
+                binding.noTokenReceivedBtn.isVisible = false
                 binding.description.setText(R.string.commercial_test_verification_code_description_deeplink)
             }
         }
@@ -148,7 +152,7 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
         })
 
         // Show dialog to send verification code again
-        binding.noCodeReceivedBtn.setOnClickListener {
+        binding.noVerificationRecievedBtn.setOnClickListener {
             dialogUtil.presentDialog(
                 context = requireContext(),
                 title = R.string.dialog_verification_code_title,
@@ -188,6 +192,12 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
             if (!viewModel.fromDeeplink) {
                 showKeyboard(binding.uniqueCodeText)
             }
+        }
+
+        binding.noTokenReceivedBtn.setOnClickListener {
+            findNavControllerSafety(R.id.nav_commercial_test_code)?.navigate(
+                CommercialTestCodeFragmentDirections.actionNoCode()
+            )
         }
     }
 

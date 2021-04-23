@@ -74,6 +74,14 @@
             app:popEnterAnim="@anim/fragment_close_enter_slide"
             app:popExitAnim="@anim/fragment_close_exit_slide" />
 
+        <action
+            android:id="@+id/action_commercial_test_code"
+            app:destination="@id/nav_commercial_test"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
     </fragment>
 
     <fragment
@@ -96,10 +104,6 @@
 
     </fragment>
 
-    <dialog
-        android:id="@+id/nav_no_code"
-        android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.NoCodeExplanationDialogFragment"
-        tools:layout="@layout/dialog_no_code_explanation" />
 
     <navigation
         android:id="@+id/nav_commercial_test"
@@ -143,7 +147,16 @@
                 app:popEnterAnim="@anim/slide_in_left"
                 app:popExitAnim="@anim/slide_out_right" />
 
+            <action
+                android:id="@+id/action_no_code"
+                app:destination="@id/nav_no_code" />
+
         </fragment>
+
+        <dialog
+            android:id="@+id/nav_no_code"
+            android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.NoCodeExplanationDialogFragment"
+            tools:layout="@layout/dialog_no_code_explanation" />
 
         <fragment
             android:id="@+id/nav_your_negative_result"
