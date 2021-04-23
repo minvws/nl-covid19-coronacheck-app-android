@@ -1,9 +1,9 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview.items
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.view.View
-import androidx.core.content.ContextCompat
 import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.design.ext.formatDateTime
 import nl.rijksoverheid.ctr.design.ext.getAppThemeWindowBackgroundColor
@@ -42,7 +42,7 @@ class MyOverviewTestResultAdapterItem(
                 backgroundColor,
                 backgroundColor,
                 backgroundColor,
-                ContextCompat.getColor(viewBinding.root.context, R.color.transparent_white)
+                Color.parseColor("#00FFFFFF")
             )
         )
 
@@ -50,7 +50,13 @@ class MyOverviewTestResultAdapterItem(
 
         viewBinding.personalDetails.text =
             "${personalDetails.firstNameInitial} ${personalDetails.lastNameInitial} ${personalDetails.birthDay} ${personalDetails.birthMonth}"
-        viewBinding.personalDetails.contentDescription = context.getString(R.string.accessibility_label_my_overview_test_result_personal_data, personalDetails.firstNameInitial, personalDetails.lastNameInitial, personalDetails.birthDay, personalDetails.birthMonth)
+        viewBinding.personalDetails.contentDescription = context.getString(
+            R.string.accessibility_label_my_overview_test_result_personal_data,
+            personalDetails.firstNameInitial,
+            personalDetails.lastNameInitial,
+            personalDetails.birthDay,
+            personalDetails.birthMonth
+        )
 
         viewBinding.validity.text = context.getString(
             R.string.my_overview_test_result_validity,

@@ -2,21 +2,21 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="colorPrimary">@color/blue</item>
-        <item name="colorSecondary">@color/blue</item>
-        <item name="colorAccent">@color/blue</item>
+        <item name="colorPrimary">@color/primary_blue</item>
+        <item name="colorSecondary">@color/primary_blue</item>
+        <item name="colorAccent">@color/primary_blue</item>
         <item name="colorSurface">@color/white</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
         <item name="colorControlNormal">@color/black</item>
-        <item name="android:textColorHint">@color/hint</item>
+        <item name="android:textColorHint">@color/secondary_text</item>
         <item name="colorError">@color/error</item>
 
         <!-- Text Styles -->
         <item name="android:textColorPrimary">@color/black</item>
-        <item name="android:textColorSecondary">@color/grey</item>
+        <item name="android:textColorSecondary">@color/secondary_text</item>
         <item name="textAppearanceBody1">@style/App.TextAppearance.MaterialComponents.Body1</item>
         <item name="textAppearanceBody2">@style/App.TextAppearance.MaterialComponents.Body2</item>
         <item name="textAppearanceHeadline5">
@@ -37,11 +37,12 @@
     <style name="ThemeOverlay.App.NavigationView" parent="">
         <item name="android:textColorPrimary">@color/white</item>
         <item name="colorControlNormal">@color/white</item>
-        <item name="colorSurface">@color/blue</item>
+        <item name="colorSurface">@color/primary_blue</item>
         <item name="colorOnSurface">@color/white</item>
         <item name="textAppearanceBody1">
-            @style/App.TextAppearance.MaterialComponents.Body1.Montserrat
+            @style/App.TextAppearance.MaterialComponents.Body1.Montserrat.Secondary
         </item>
+        <item name="android:textColorSecondary">@color/white_80</item>
         <item name="android:listDivider">@android:color/transparent</item>
     </style>
 
@@ -53,7 +54,7 @@
     </style>
 
     <style name="ThemeOverlay.AppTheme.Splash" parent="">
-        <item name="android:textColorPrimary">@color/grey</item>
+        <item name="android:textColorPrimary">@color/grey_1</item>
     </style>
 
     <style name="ThemeOverlay.App.Menu" parent="">

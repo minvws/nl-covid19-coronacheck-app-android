@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview.items
 
+import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.view.View
 import androidx.annotation.ColorRes
@@ -38,7 +39,7 @@ class MyOverviewNavigationCardAdapterItem(
                 backgroundColor,
                 backgroundColor,
                 backgroundColor,
-                ContextCompat.getColor(viewBinding.root.context, R.color.transparent_white)
+                Color.parseColor("#00FFFFFF")
             )
         )
 

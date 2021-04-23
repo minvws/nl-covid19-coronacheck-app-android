@@ -60,10 +60,10 @@
         <item name="android:textSize">20sp</item>
     </style>
 
-    <style name="App.TextAppearance.MaterialComponents.Body1.Montserrat" parent="android:TextAppearance">
+    <style name="App.TextAppearance.MaterialComponents.Body1.Montserrat.Secondary" parent="android:TextAppearance">
         <item name="android:fontFamily">@font/montserrat_semibold</item>
-        <item name="android:textColor">@color/white_80</item>
         <item name="android:textSize">16sp</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
     </style>
 
 </resources>

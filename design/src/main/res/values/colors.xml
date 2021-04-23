@@ -1,29 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Specific -->
-    <color name="divider">#d0d0d0</color>
-    <color name="scanner_overlay_color">#99000000</color>
-    <!-- Used for statusbar coloring, as transparancy doesn't work correctly here -->
-    <color name="black_12_no_transparency">#5a5a5a</color>
-    <color name="hint">#727679</color>
-    <color name="error">#b30900</color>
-    <color name="blue_background_highlight">#f2f7ff</color>
-
     <!-- Palette -->
+    <color name="primary_blue">#1540eb</color>
+    <color name="secondary_blue">#69dbff</color>
+    <color name="secondary_green">#3dec94</color>
+    <color name="error">#b30900</color>
+    <color name="link">#007AFF</color>
+    <color name="black">#383836</color>
     <color name="white">#FFFFFF</color>
-    <color name="transparent_white">#00FFFFFF</color>
-    <color name="white_20">#33FFFFFF</color>
     <color name="white_60">#99FFFFFF</color>
     <color name="white_80">#CCFFFFFF</color>
-    <color name="black">#383836</color>
-    <color name="blue">#1540eb</color>
-    <color name="grey">#8F8F93</color>
-    <color name="grey_30">#4D8A8A8E</color>
-    <color name="grey_darker">#FF666666</color>
-    <color name="grey_medium">#e5e5ea</color>
-    <color name="grey_light">#f2f2f7</color>
-    <color name="black_12">#1e000000</color>
-    <color name="light_blue">#69dbff</color>
-    <color name="green">#3dec94</color>
-    <color name="red">#ff745f</color>
+    <color name="message_container">#F2F7FF</color>
+    <color name="secondary_text">#727679</color>
+    <color name="grey_1">#666666</color>
+    <color name="grey_2">#8F8F93</color>
+    <color name="grey_3">#C7C7CC</color>
+    <color name="grey_4">#E5E5EA</color>
+    <color name="grey_5">#F2F2F7</color>
 </resources>

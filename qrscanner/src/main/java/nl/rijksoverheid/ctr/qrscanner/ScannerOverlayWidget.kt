@@ -12,7 +12,6 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
-import androidx.core.content.ContextCompat
 
 class ScannerOverlayWidget @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -21,12 +20,12 @@ class ScannerOverlayWidget @JvmOverloads constructor(
     private val cornerRadius = resources.getDimension(R.dimen.overlay_cutout_corner_radius)
     private val overlayMargin = resources.getDimensionPixelSize(R.dimen.overlay_cutout_margin)
     private val overlayPaint = Paint().apply {
-        color = ContextCompat.getColor(context, R.color.scanner_overlay_color)
+        color = Color.parseColor("#99000000")
         style = Paint.Style.FILL
         isAntiAlias = true
     }
 
-    var bottomOfOverlayWindow : Int = 0
+    var bottomOfOverlayWindow: Int = 0
 
     private val overlayRectPath = Path()
 

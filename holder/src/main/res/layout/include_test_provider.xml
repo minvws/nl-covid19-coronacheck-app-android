@@ -9,42 +9,42 @@
   ~
   -->
 
-<androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/commercial_container"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:foreground="?attr/selectableItemBackground"
-    app:cardBackgroundColor="@color/grey_light"
-    app:cardElevation="2dp"
+    app:cardBackgroundColor="@color/grey_5"
     app:cardCornerRadius="@dimen/test_button_corner_radius"
+    app:cardElevation="2dp"
     tools:showIn="@layout/fragment_choose_provider">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:duplicateParentState="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:duplicateParentState="true"
         android:paddingHorizontal="24dp"
         android:paddingVertical="16dp">
 
         <TextView
-            android:duplicateParentState="true"
             android:id="@+id/provider_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            tools:text="@string/choose_provider_commercial_title"
+            android:duplicateParentState="true"
             android:textAppearance="?attr/textAppearanceBody1"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/choose_provider_commercial_title" />
 
         <TextView
-            android:duplicateParentState="true"
             android:id="@+id/provider_subtitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:duplicateParentState="true"
             android:text="@string/choose_provider_commercial_subtitle"
             android:textAppearance="?attr/textAppearanceBody1"
             app:layout_constraintEnd_toEndOf="parent"
@@ -55,4 +55,3 @@
 
 </androidx.cardview.widget.CardView>
 
-        

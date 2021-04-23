@@ -6,7 +6,6 @@ import android.os.Looper
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.view.doOnLayout
-import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -17,7 +16,6 @@ import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanResultValidBinding
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultValidData
 import nl.rijksoverheid.ctr.verifier.ui.scanner.util.ScannerUtil
 import org.koin.android.ext.android.inject
-import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
@@ -53,7 +51,7 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
                 binding.root.setBackgroundColor(
                     ContextCompat.getColor(
                         requireContext(),
-                        R.color.grey_medium
+                        R.color.grey_2
                     )
                 )
             }
@@ -61,7 +59,7 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
                 binding.root.setBackgroundColor(
                     ContextCompat.getColor(
                         requireContext(),
-                        R.color.green
+                        R.color.secondary_green
                     )
                 )
             }
@@ -91,7 +89,10 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
             }
         }
 
-        transitionPersonalDetailsHandler.postDelayed(transitionPersonalDetailsRunnable, TimeUnit.MILLISECONDS.toMillis(800))
+        transitionPersonalDetailsHandler.postDelayed(
+            transitionPersonalDetailsRunnable,
+            TimeUnit.MILLISECONDS.toMillis(800)
+        )
     }
 
     private fun presentPersonalDetails() {
