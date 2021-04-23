@@ -66,7 +66,7 @@ class TestResultUseCase(
 
             val signedResponseWithTestResult = testProviderRepository.remoteTestResult(
                 url = testProvider.resultUrl,
-                token = token.trim(),
+                token = token.removeWhitespace(),
                 verifierCode = verificationCode?.removeWhitespace(),
                 signingCertificateBytes = testProvider.publicKey
             )
