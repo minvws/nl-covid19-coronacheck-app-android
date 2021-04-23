@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/commercial_test_unique_code_header"
             app:errorEnabled="true"
-            app:layout_constraintBottom_toTopOf="@id/verification_code_input"
+            app:layout_constraintBottom_toTopOf="@id/no_token_received_btn"
             app:layout_constraintEnd_toEndOf="@+id/description"
             app:layout_constraintStart_toStartOf="@+id/description">
 
@@ -49,6 +49,18 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <Button
+            android:id="@+id/no_token_received_btn"
+            style="?attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/commercial_test_type_no_code_title"
+            app:layout_constraintEnd_toEndOf="@+id/description"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="@+id/description"
+            app:layout_constraintTop_toBottomOf="@+id/unique_code_input" />
+
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/verification_code_input"
             style="@style/Widget.App.TextInputLayout"
@@ -59,7 +71,7 @@
             app:helperText="@string/commercial_test_verification_code_helper_text"
             app:layout_constraintEnd_toEndOf="@+id/description"
             app:layout_constraintStart_toStartOf="@+id/description"
-            app:layout_constraintTop_toBottomOf="@+id/unique_code_input">
+            app:layout_constraintTop_toBottomOf="@id/no_token_received_btn">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/verification_code_text"
@@ -73,13 +85,13 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/no_code_received_btn"
-            android:visibility="gone"
+            android:id="@+id/no_verification_recieved_btn"
             style="?attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="@string/commercial_test_type_no_code_title"
+            android:text="@string/commercial_test_type_no_code_received_title"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="@+id/description"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="@+id/description"
@@ -99,7 +111,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/no_code_received_btn"
+
             app:layout_constraintVertical_bias="1" />
 
         <FrameLayout
