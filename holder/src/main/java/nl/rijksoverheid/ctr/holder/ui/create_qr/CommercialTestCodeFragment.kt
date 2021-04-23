@@ -91,6 +91,11 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
             binding.verificationCodeInput.visibility =
                 if (it.verificationRequired) View.VISIBLE else View.GONE
 
+            if (it.fromDeeplink && it.verificationRequired) {
+                binding.uniqueCodeInput.isVisible = false
+                binding.description.setText(R.string.commercial_test_verification_code_description_deeplink)
+            }
+
             // Start send verification code timer countdown once
             if (it.verificationRequired && binding.sendAgainButton.visibility == View.GONE) verificationCodeTimer.start()
         }
@@ -163,12 +168,6 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
                         binding.verificationCodeInput.error =
                             getString(R.string.commercial_test_error_invalid_combination)
                     }
-
-                    if (viewModel.fromDeeplink) {
-                        binding.description.setText(R.string.commercial_test_verification_code_description_deeplink)
-                        binding.uniqueCodeInput.isVisible = false
-                    }
-
                     binding.verificationCodeInput.requestFocus()
                 }
             }
@@ -196,10 +195,6 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
                 // Show different loading state when loading from deeplink
                 binding.loadingOverlay.isVisible = it
                 binding.button.isVisible = !it
-
-                if (viewModel.verificationRequired) {
-                    binding.uniqueCodeInput.isVisible = false
-                }
             }
         })
 
