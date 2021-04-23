@@ -12,15 +12,14 @@ import com.squareup.moshi.JsonClass
 import com.squareup.moshi.JsonWriter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import nl.rijksoverheid.ctr.api.BuildConfig
 import nl.rijksoverheid.ctr.api.json.Base64JsonAdapter
-import nl.rijksoverheid.ctr.api.signing.http.SignedRequest
-import nl.rijksoverheid.ctr.signing.SignatureValidationException
-import nl.rijksoverheid.ctr.signing.SignatureValidator
 import nl.rijksoverheid.ctr.api.signing.certificates.EV_ROOT_CA
 import nl.rijksoverheid.ctr.api.signing.certificates.PRIVATE_ROOT_CA
 import nl.rijksoverheid.ctr.api.signing.certificates.ROOT_CA_G3
 import nl.rijksoverheid.ctr.api.signing.certificates.ROOT_UZI
+import nl.rijksoverheid.ctr.api.signing.http.SignedRequest
+import nl.rijksoverheid.ctr.signing.SignatureValidationException
+import nl.rijksoverheid.ctr.signing.SignatureValidator
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.Response
@@ -59,10 +58,6 @@ class SignedResponseInterceptor(
             .tag(Invocation::class.java)
             ?.method()
             ?.getAnnotation(SignedRequest::class.java) ?: return response
-
-        if (response.code !in 200..299 && response.code !in 400..499) {
-            return response
-        }
 
         val body = response.body?.bytes() ?: return response
 
