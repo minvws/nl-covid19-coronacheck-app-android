@@ -2,10 +2,12 @@ name: Build, test and distribute
 on:
   push:
     branches:
-      - release-candidate-1153
+      - main
+      - release-candidate*
   pull_request:
     branches:
-      - release-candidate-1153
+      - main
+      - release-candidate*
 
 jobs:
   build-and-test:
