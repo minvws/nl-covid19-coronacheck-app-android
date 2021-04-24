@@ -60,7 +60,7 @@ class TestResultUseCase(
 //        }
 
         return try {
-            val testProvider = testProviderUseCase.testProvider(providerIdentifier)
+            val testProvider = testProviderUseCase.testProvider(providerIdentifier.removeWhitespace())
                 ?: return TestResult.InvalidToken
 
             val signedResponseWithTestResult = testProviderRepository.remoteTestResult(
