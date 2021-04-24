@@ -33,3 +33,7 @@ fun String.launchUrl(context: Context) {
         it.launchUrl(context, Uri.parse(this))
     }
 }
+
+fun String.removeWhitespace() : String {
+    return this.replace("\\s+".toRegex(), "")
+}
