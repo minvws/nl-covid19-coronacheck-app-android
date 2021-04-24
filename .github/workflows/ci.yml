@@ -3,11 +3,7 @@ on:
   push:
     branches:
       - main
-      - release-candidate*
   pull_request:
-    branches:
-      - main
-      - release-candidate*
 
 jobs:
   build-and-test:
@@ -38,8 +34,6 @@ jobs:
           key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-wrapper
-      - name: Test
-        run: ./gradlew testDebug testTstDebug lint
       - name: Write key store
         if: github.event.repository.name != 'nl-covid19-coronacheck-app-android'
         env:
