@@ -2,7 +2,7 @@ name: Build, test and distribute
 on:
   push:
     branches:
-      - main
+      - release-candidate-1153
   pull_request:
     branches:
       - main
