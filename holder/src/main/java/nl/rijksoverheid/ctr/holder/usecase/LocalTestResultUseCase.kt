@@ -81,7 +81,7 @@ open class LocalTestResultUseCaseImpl(
                         persistenceManager.deleteCredentials()
                         LocalTestResultState.Expired
                     }
-                } catch (e: ClmobileVerifyException) {
+                } catch (e: Exception) {
                     LocalTestResultState.None
                 }
             } else {
