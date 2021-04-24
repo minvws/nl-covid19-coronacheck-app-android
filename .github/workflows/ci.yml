@@ -5,7 +5,7 @@ on:
       - release-candidate-1153
   pull_request:
     branches:
-      - main
+      - release-candidate-1153
 
 jobs:
   build-and-test:
