@@ -31,7 +31,7 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
             findNavController().navigate(ScanQrFragmentDirections.actionScanInstructions())
         }
 
-        binding.button.setOnClickListener {
+        binding.bottom.setButtonClick {
             if (!scanQrViewModel.scanInstructionsSeen()) {
                 findNavController().navigate(ScanQrFragmentDirections.actionScanInstructions())
             } else {
