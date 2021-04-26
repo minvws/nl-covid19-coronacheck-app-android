@@ -61,7 +61,7 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
                         childFragmentManager.fragments[position]?.view?.findViewById<ScrollView>(R.id.scroll)
                     if (scrollView?.canScrollVertically(1) == true) {
                         binding.bottom.cardElevation =
-                            resources.getDimensionPixelSize(R.dimen.onboarding_bottom_scroll_elevation)
+                            resources.getDimensionPixelSize(R.dimen.scroll_view_button_elevation)
                                 .toFloat()
                     } else {
                         binding.bottom.cardElevation = 0f

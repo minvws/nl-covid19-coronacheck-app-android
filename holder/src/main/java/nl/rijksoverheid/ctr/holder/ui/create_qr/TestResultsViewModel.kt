@@ -46,7 +46,7 @@ class TestResultsViewModel(
             updateViewState()
         }
 
-    var fromDeeplink : Boolean = savedStateHandle["supplied_token"] ?: false
+    var fromDeeplink: Boolean = savedStateHandle["supplied_token"] ?: false
         private set(value) {
             field = value
             savedStateHandle["supplied_token"] = value
@@ -73,7 +73,7 @@ class TestResultsViewModel(
         )
     }
 
-    fun getTestResult(fromDeeplink : Boolean = false) {
+    fun getTestResult(fromDeeplink: Boolean = false) {
         this.fromDeeplink = fromDeeplink
         (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {

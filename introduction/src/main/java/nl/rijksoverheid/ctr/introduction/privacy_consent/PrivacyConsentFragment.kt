@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -58,21 +57,12 @@ class PrivacyConsentFragment : Fragment(R.layout.fragment_privacy_consent) {
                 false
             )
         }
-        binding.scroll.doOnPreDraw {
-            if (binding.scroll.canScrollVertically(1)) {
-                binding.bottom.cardElevation =
-                    resources.getDimensionPixelSize(R.dimen.onboarding_bottom_scroll_elevation)
-                        .toFloat()
-            } else {
-                binding.bottom.cardElevation = 0f
-            }
-        }
 
         binding.checkbox.setOnCheckedChangeListener { _, isChecked ->
-            binding.button.isEnabled = isChecked
+            binding.bottom.setButtonEnabled(isChecked)
         }
 
-        binding.button.setOnClickListener {
+        binding.bottom.setButtonClick {
             introductionViewModel.saveIntroductionFinished(args.introductionData.newTerms)
             requireActivity().findNavControllerSafety(R.id.main_nav_host_fragment)
                 ?.navigate(R.id.action_main)

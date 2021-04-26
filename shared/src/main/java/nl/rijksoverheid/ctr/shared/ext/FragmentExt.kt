@@ -37,10 +37,10 @@ fun Fragment.findNavControllerSafety(currentId: Int): NavController? {
 fun Fragment.showKeyboard(editText: EditText) {
     editText.requestFocus()
     val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-    imm.showSoftInput(editText, 0)
+    imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT)
 }
 
 fun Fragment.hideKeyboard() {
     val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-    imm.hideSoftInputFromWindow(requireView().windowToken, 0)
+    imm.hideSoftInputFromWindow(requireView().windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
 }
