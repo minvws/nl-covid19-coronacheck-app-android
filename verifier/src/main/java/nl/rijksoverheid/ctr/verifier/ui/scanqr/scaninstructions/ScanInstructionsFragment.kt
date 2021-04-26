@@ -8,7 +8,7 @@ import com.xwray.groupie.GroupieViewHolder
 import nl.rijksoverheid.ctr.appconfig.AppConfigUtil
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanInstructionsBinding
-import nl.rijksoverheid.ctr.verifier.ui.scanner.util.ScannerUtil
+import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
 import org.koin.android.ext.android.inject
 
 /*

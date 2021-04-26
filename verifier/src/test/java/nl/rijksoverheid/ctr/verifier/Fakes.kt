@@ -16,7 +16,7 @@ import nl.rijksoverheid.ctr.verifier.ui.scanner.models.VerifiedQr
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.VerifiedQrResultState
 import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.TestResultValidUseCase
 import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.VerifyQrUseCase
-import nl.rijksoverheid.ctr.verifier.ui.scanner.util.QrCodeUtil
+import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.QrCodeUtil
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrViewModel
 import java.time.OffsetDateTime
 

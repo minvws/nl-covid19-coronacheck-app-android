@@ -20,7 +20,7 @@ import io.mockk.verify
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.fakeVerifiedQr
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultInvalidData
-import nl.rijksoverheid.ctr.verifier.ui.scanner.util.ScannerUtil
+import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith

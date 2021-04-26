@@ -7,7 +7,7 @@ import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.design.ext.enableCustomLinks
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanQrBinding
-import nl.rijksoverheid.ctr.verifier.ui.scanner.util.ScannerUtil
+import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

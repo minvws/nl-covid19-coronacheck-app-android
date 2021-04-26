@@ -17,7 +17,7 @@ import io.mockk.verify
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.fakeVerifiedQr
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultValidData
-import nl.rijksoverheid.ctr.verifier.ui.scanner.util.ScannerUtil
+import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.core.context.loadKoinModules

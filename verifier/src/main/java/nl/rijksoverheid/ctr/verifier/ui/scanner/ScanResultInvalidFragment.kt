@@ -16,7 +16,7 @@ import nl.rijksoverheid.ctr.verifier.BuildConfig
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanResultInvalidBinding
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultInvalidData
-import nl.rijksoverheid.ctr.verifier.ui.scanner.util.ScannerUtil
+import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
 import org.koin.android.ext.android.inject
 import java.util.concurrent.TimeUnit
 

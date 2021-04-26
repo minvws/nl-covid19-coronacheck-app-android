@@ -5,7 +5,7 @@ import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.shared.util.TestResultUtil
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.VerifiedQrResultState
-import nl.rijksoverheid.ctr.verifier.ui.scanner.util.QrCodeUtil
+import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.QrCodeUtil
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
