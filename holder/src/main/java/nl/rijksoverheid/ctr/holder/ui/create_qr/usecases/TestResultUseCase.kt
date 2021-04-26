@@ -10,8 +10,8 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.TestProviderReposit
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TokenValidatorUtil
 import nl.rijksoverheid.ctr.shared.ext.removeWhitespace
 import nl.rijksoverheid.ctr.shared.models.PersonalDetails
-import nl.rijksoverheid.ctr.shared.util.PersonalDetailsUtil
-import nl.rijksoverheid.ctr.shared.util.TestResultUtil
+import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
+import nl.rijksoverheid.ctr.shared.utils.TestResultUtil
 import retrofit2.HttpException
 import timber.log.Timber
 import java.io.IOException

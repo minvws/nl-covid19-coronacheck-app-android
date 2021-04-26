@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.shared.util
+package nl.rijksoverheid.ctr.shared.utils
 
 import android.content.Context
 import android.content.res.Configuration

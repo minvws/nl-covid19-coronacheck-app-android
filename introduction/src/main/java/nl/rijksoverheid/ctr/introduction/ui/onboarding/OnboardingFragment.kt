@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.introduction.onboarding
+package nl.rijksoverheid.ctr.introduction.ui.onboarding
 
 import android.os.Bundle
 import android.view.View

@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.introduction.setup
+package nl.rijksoverheid.ctr.introduction.ui.setup
 
 import android.os.Bundle
 import android.view.View

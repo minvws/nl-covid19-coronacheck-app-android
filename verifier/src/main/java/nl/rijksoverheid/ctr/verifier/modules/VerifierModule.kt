@@ -1,7 +1,7 @@
 package nl.rijksoverheid.ctr.verifier.modules
 
 import com.squareup.moshi.Moshi
-import nl.rijksoverheid.ctr.introduction.models.NewTerms
+import nl.rijksoverheid.ctr.introduction.ui.new_terms.models.NewTerms
 import nl.rijksoverheid.ctr.verifier.ui.scanner.datamappers.VerifiedQrDataMapper
 import nl.rijksoverheid.ctr.verifier.ui.scanner.datamappers.VerifiedQrDataMapperImpl
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager

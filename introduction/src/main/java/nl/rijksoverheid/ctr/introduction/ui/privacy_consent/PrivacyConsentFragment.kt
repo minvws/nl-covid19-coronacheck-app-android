@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.introduction.privacy_consent
+package nl.rijksoverheid.ctr.introduction.ui.privacy_consent
 
 import android.os.Bundle
 import android.view.LayoutInflater

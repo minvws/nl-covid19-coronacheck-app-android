@@ -10,7 +10,7 @@ import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.design.ExpandedBottomSheetDialogFragment
 import nl.rijksoverheid.ctr.holder.databinding.DialogYourNegativeTestResultExplanationBinding
-import nl.rijksoverheid.ctr.shared.util.PersonalDetailsUtil
+import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import org.koin.android.ext.android.inject
 
 /*

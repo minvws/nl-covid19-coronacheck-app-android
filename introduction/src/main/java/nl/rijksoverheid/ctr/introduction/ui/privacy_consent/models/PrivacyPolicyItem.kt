@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.introduction.models
+package nl.rijksoverheid.ctr.introduction.ui.privacy_consent.models
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
@@ -11,7 +11,7 @@ import kotlinx.parcelize.Parcelize
  *
  */
 @Parcelize
-data class NewTerms(
-    val version: Int,
-    val needsConsent: Boolean
+data class PrivacyPolicyItem(
+    val iconResource: Int,
+    val textResource: Int
 ) : Parcelable

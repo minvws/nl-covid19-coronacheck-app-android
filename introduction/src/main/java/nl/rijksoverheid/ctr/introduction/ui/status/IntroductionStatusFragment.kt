@@ -1,9 +1,9 @@
-package nl.rijksoverheid.ctr.introduction
+package nl.rijksoverheid.ctr.introduction.ui.status
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import nl.rijksoverheid.ctr.introduction.models.IntroductionStatus
+import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.shared.util
+package nl.rijksoverheid.ctr.shared.utils
 
 import android.annotation.SuppressLint
 import android.os.Handler

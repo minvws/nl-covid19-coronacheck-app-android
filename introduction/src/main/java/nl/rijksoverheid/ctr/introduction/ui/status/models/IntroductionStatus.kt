@@ -1,7 +1,9 @@
-package nl.rijksoverheid.ctr.introduction.models
+package nl.rijksoverheid.ctr.introduction.ui.status.models
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
+import nl.rijksoverheid.ctr.introduction.IntroductionData
+import nl.rijksoverheid.ctr.introduction.ui.new_terms.models.NewTerms
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

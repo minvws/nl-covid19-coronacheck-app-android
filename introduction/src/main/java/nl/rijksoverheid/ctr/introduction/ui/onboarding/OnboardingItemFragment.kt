@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.introduction.onboarding
+package nl.rijksoverheid.ctr.introduction.ui.onboarding
 
 import android.os.Bundle
 import android.view.View
@@ -6,8 +6,8 @@ import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.appconfig.AppConfigUtil
 import nl.rijksoverheid.ctr.introduction.R
 import nl.rijksoverheid.ctr.introduction.databinding.FragmentOnboardingItemBinding
-import nl.rijksoverheid.ctr.introduction.onboarding.models.OnboardingItem
-import nl.rijksoverheid.ctr.shared.util.AndroidUtil
+import nl.rijksoverheid.ctr.introduction.ui.onboarding.models.OnboardingItem
+import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 import org.koin.android.ext.android.inject
 
 /*

@@ -1,7 +1,7 @@
-package nl.rijksoverheid.ctr.introduction
+package nl.rijksoverheid.ctr.introduction.ui.status.usecases
 
-import nl.rijksoverheid.ctr.introduction.models.IntroductionData
-import nl.rijksoverheid.ctr.introduction.models.IntroductionStatus
+import nl.rijksoverheid.ctr.introduction.IntroductionData
+import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
 
 /*

@@ -9,7 +9,7 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentChooseProviderBinding
 import nl.rijksoverheid.ctr.holder.databinding.IncludeTestProviderBinding
 import nl.rijksoverheid.ctr.shared.ext.setAsAccessibilityButton
-import nl.rijksoverheid.ctr.shared.util.AndroidUtil
+import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 import org.koin.android.ext.android.inject
 
 /*

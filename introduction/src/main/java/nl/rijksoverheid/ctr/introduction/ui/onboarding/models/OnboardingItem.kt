@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.introduction.onboarding.models
+package nl.rijksoverheid.ctr.introduction.ui.onboarding.models
 
 import android.os.Parcelable
 import androidx.annotation.DrawableRes

@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.shared.ext
+package nl.rijksoverheid.ctr.design.ext
 
 import android.content.Context
 import android.text.Spannable
@@ -14,7 +14,7 @@ import android.view.MenuItem
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-inline fun MenuItem.styleTitle(context: Context, appearance: Int) {
+fun MenuItem.styleTitle(context: Context, appearance: Int) {
     val title = this.title
     val outValue = TypedValue()
     context.theme.resolveAttribute(
