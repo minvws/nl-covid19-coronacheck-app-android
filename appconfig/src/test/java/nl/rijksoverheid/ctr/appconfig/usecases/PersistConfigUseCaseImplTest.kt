@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.appconfig
+package nl.rijksoverheid.ctr.appconfig.usecases
 
 import com.squareup.moshi.Moshi
 import io.mockk.coVerify
@@ -6,7 +6,8 @@ import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
-import nl.rijksoverheid.ctr.appconfig.usecase.PersistConfigUseCaseImpl
+import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
+import nl.rijksoverheid.ctr.appconfig.usecases.PersistConfigUseCaseImpl
 import org.junit.Test
 
 /*

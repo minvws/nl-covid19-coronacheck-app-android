@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.appconfig
 import com.squareup.moshi.Moshi
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
+import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
 import nl.rijksoverheid.ctr.shared.ext.toObject
 
 /*

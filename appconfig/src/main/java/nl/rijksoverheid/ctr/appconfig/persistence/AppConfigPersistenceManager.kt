@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.appconfig
+package nl.rijksoverheid.ctr.appconfig.persistence
 
 import android.content.SharedPreferences
 

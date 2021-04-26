@@ -1,9 +1,9 @@
-package nl.rijksoverheid.ctr.appconfig.usecase
+package nl.rijksoverheid.ctr.appconfig.usecases
 
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import nl.rijksoverheid.ctr.appconfig.AppConfigPersistenceManager
+import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
 

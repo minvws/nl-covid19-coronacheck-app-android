@@ -16,7 +16,7 @@ import android.view.View
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.appconfig.databinding.FragmentAppStatusBinding
-import nl.rijksoverheid.ctr.appconfig.model.AppStatus
+import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 import org.koin.android.ext.android.inject
 

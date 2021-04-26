@@ -4,7 +4,7 @@ import android.content.Intent
 import androidx.navigation.findNavController
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
-import nl.rijksoverheid.ctr.appconfig.model.AppStatus
+import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.introduction.IntroductionData
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 import org.junit.After

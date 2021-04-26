@@ -6,7 +6,7 @@
  *
  */
 
-package nl.rijksoverheid.ctr.appconfig
+package nl.rijksoverheid.ctr.appconfig.usecases
 
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -14,9 +14,10 @@ import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.appconfig.api.AppConfigApi
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
-import nl.rijksoverheid.ctr.appconfig.model.ConfigResult
+import nl.rijksoverheid.ctr.appconfig.models.ConfigResult
+import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.repositories.ConfigRepositoryImpl
-import nl.rijksoverheid.ctr.appconfig.usecase.AppConfigUseCaseImpl
+import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigUseCaseImpl
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.io.IOException

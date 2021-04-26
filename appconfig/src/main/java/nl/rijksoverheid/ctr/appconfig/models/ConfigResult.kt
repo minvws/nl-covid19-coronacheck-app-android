@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.appconfig.model
+package nl.rijksoverheid.ctr.appconfig.models
 
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys

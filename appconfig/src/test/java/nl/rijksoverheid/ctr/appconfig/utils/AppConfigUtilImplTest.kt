@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.appconfig.util
+package nl.rijksoverheid.ctr.appconfig.utils
 
 import android.content.Context
 import io.mockk.InternalPlatformDsl.toStr

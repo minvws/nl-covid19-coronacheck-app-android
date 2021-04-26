@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.appconfig.usecase
+package nl.rijksoverheid.ctr.appconfig.usecases
 
 import clmobile.Clmobile
 import com.squareup.moshi.Moshi

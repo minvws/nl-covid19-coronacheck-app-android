@@ -1,11 +1,13 @@
-package nl.rijksoverheid.ctr.appconfig
+package nl.rijksoverheid.ctr.appconfig.usecases
 
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
-import nl.rijksoverheid.ctr.appconfig.model.AppStatus
-import nl.rijksoverheid.ctr.appconfig.model.ConfigResult
-import nl.rijksoverheid.ctr.appconfig.usecase.AppStatusUseCaseImpl
+import nl.rijksoverheid.ctr.appconfig.fakeAppConfig
+import nl.rijksoverheid.ctr.appconfig.fakeAppConfigPersistenceManager
+import nl.rijksoverheid.ctr.appconfig.fakeCachedAppConfigUseCase
+import nl.rijksoverheid.ctr.appconfig.models.AppStatus
+import nl.rijksoverheid.ctr.appconfig.models.ConfigResult
 import org.junit.Assert
 import org.junit.Test
 import java.time.Clock

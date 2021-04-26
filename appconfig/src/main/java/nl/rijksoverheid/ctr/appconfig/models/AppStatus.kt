@@ -6,7 +6,7 @@
  *
  */
 
-package nl.rijksoverheid.ctr.appconfig.model
+package nl.rijksoverheid.ctr.appconfig.models
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
