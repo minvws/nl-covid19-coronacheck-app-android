@@ -15,6 +15,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
@@ -42,10 +43,21 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
     val binding get() = _binding!!
 
     companion object {
-        private const val PERMISSION_CAMERA_REQUEST = 1
         private const val RATIO_4_3_VALUE = 4.0 / 3.0
         private const val RATIO_16_9_VALUE = 16.0 / 9.0
     }
+
+    private val requestPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+            if (isCameraPermissionGranted()) {
+                setupCamera()
+            } else {
+                val rationaleDialog = getCopy().rationaleDialog
+                if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) && rationaleDialog != null) {
+                    showRationaleDialog(rationaleDialog)
+                }
+            }
+        }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -113,9 +125,8 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
     }
 
     private fun requestPermission() {
-        requestPermissions(
-            arrayOf(Manifest.permission.CAMERA),
-            PERMISSION_CAMERA_REQUEST
+        requestPermissionLauncher.launch(
+            Manifest.permission.CAMERA
         )
     }
 
@@ -279,24 +290,6 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
             return AspectRatio.RATIO_4_3
         }
         return AspectRatio.RATIO_16_9
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
-    ) {
-        if (requestCode == PERMISSION_CAMERA_REQUEST) {
-            if (isCameraPermissionGranted()) {
-                setupCamera()
-            } else {
-                val rationaleDialog = getCopy().rationaleDialog
-                if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) && rationaleDialog != null) {
-                    showRationaleDialog(rationaleDialog)
-                }
-            }
-        }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     private fun isCameraPermissionGranted(): Boolean {
