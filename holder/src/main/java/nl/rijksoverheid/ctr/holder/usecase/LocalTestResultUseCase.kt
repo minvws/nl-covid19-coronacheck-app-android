@@ -64,7 +64,7 @@ open class LocalTestResultUseCaseImpl(
                             includeBirthMonthNumber = false
                         )
 
-                        // First time created if previous state is null (app first launch) or if previous state is different
+                        // First time created if previous state is null (app first launch) and current state is different than previous state is different
                         val firstTimeCreated =
                             currentLocalTestResultState != null && currentLocalTestResultState !is LocalTestResultState.Valid
 
@@ -82,7 +82,7 @@ open class LocalTestResultUseCaseImpl(
                         persistenceManager.deleteCredentials()
                         LocalTestResultState.Expired
                     }
-                } catch (e: ClmobileVerifyException) {
+                } catch (e: Exception) {
                     LocalTestResultState.None
                 }
             } else {

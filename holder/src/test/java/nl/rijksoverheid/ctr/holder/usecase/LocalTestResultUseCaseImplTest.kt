@@ -143,7 +143,7 @@ class LocalTestResultUseCaseImplTest {
                 cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
                 testResultAttributesUseCase = object : TestResultAttributesUseCase {
                     override fun get(credentials: String): TestResultAttributes {
-                        throw ClmobileVerifyException("")
+                        throw Exception("")
                     }
                 },
                 personalDetailsUtil = fakePersonalDetailsUtil()
