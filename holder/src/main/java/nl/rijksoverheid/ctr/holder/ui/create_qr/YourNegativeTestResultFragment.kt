@@ -81,13 +81,13 @@ class YourNegativeTestResultFragment : Fragment(R.layout.fragment_your_negative_
             }
         })
 
-        binding.button.setOnClickListener {
+        binding.bottom.setButtonClick {
             viewModel.saveTestResult()
         }
 
         viewModel.loading.observe(viewLifecycleOwner, EventObserver {
             (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
-            binding.button.isEnabled = !it
+            binding.bottom.setButtonEnabled(!it)
         })
 
         viewModel.signedTestResult.observe(viewLifecycleOwner, EventObserver {

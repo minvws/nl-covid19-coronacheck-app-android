@@ -45,7 +45,7 @@ class ScrollViewButtonWidget @JvmOverloads constructor(
                 setButtonEnabled(
                     getBoolean(
                         R.styleable.ScrollViewButtonWidget_buttonEnabled,
-                        false
+                        true
                     )
                 )
 
