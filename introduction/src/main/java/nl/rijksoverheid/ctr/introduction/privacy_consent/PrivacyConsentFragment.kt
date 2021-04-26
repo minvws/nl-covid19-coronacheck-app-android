@@ -6,14 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import nl.rijksoverheid.ctr.design.ext.enableHtmlLinks
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.R
 import nl.rijksoverheid.ctr.introduction.databinding.FragmentPrivacyConsentBinding
 import nl.rijksoverheid.ctr.introduction.databinding.ItemPrivacyConsentBinding
+import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /*
@@ -54,7 +53,10 @@ class PrivacyConsentFragment : Fragment(R.layout.fragment_privacy_consent) {
             val viewBinding =
                 ItemPrivacyConsentBinding.inflate(layoutInflater, binding.items, true)
             viewBinding.icon.setImageResource(item.iconResource)
-            viewBinding.description.setHtmlText(viewBinding.description.context.getString(item.textResource), false)
+            viewBinding.description.setHtmlText(
+                viewBinding.description.context.getString(item.textResource),
+                false
+            )
         }
         binding.scroll.doOnPreDraw {
             if (binding.scroll.canScrollVertically(1)) {
@@ -72,8 +74,8 @@ class PrivacyConsentFragment : Fragment(R.layout.fragment_privacy_consent) {
 
         binding.button.setOnClickListener {
             introductionViewModel.saveIntroductionFinished(args.introductionData.newTerms)
-            requireActivity().findNavController(R.id.main_nav_host_fragment)
-                .navigate(R.id.action_main)
+            requireActivity().findNavControllerSafety(R.id.main_nav_host_fragment)
+                ?.navigate(R.id.action_main)
         }
     }
 }
