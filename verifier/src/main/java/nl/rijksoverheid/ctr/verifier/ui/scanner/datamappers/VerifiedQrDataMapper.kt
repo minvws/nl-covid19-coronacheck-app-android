@@ -1,10 +1,10 @@
-package nl.rijksoverheid.ctr.verifier.datamappers
+package nl.rijksoverheid.ctr.verifier.ui.scanner.datamappers
 
 import clmobile.Clmobile
 import com.squareup.moshi.Moshi
 import nl.rijksoverheid.ctr.shared.ext.toObject
 import nl.rijksoverheid.ctr.shared.ext.verify
-import nl.rijksoverheid.ctr.verifier.models.VerifiedQr
+import nl.rijksoverheid.ctr.verifier.ui.scanner.models.VerifiedQr
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

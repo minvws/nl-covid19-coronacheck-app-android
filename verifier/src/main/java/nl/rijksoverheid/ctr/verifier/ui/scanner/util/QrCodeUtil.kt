@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.verifier.util
+package nl.rijksoverheid.ctr.verifier.ui.scanner.util
 
 import nl.rijksoverheid.ctr.shared.QrCodeConstants
 import java.time.Clock

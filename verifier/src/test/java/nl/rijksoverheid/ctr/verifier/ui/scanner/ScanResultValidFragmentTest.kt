@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.verifier.ui.scanqr
+package nl.rijksoverheid.ctr.verifier.ui.scanner
 
 import androidx.core.os.bundleOf
 import androidx.fragment.app.testing.launchFragmentInContainer
@@ -16,7 +16,6 @@ import io.mockk.mockk
 import io.mockk.verify
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.fakeVerifiedQr
-import nl.rijksoverheid.ctr.verifier.ui.scanner.ScanResultValidFragment
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultValidData
 import nl.rijksoverheid.ctr.verifier.ui.scanner.util.ScannerUtil
 import org.junit.Test

@@ -13,7 +13,7 @@ import io.mockk.verify
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.fakeScanQrViewModel
 import nl.rijksoverheid.ctr.verifier.fakeVerifiedQr
-import nl.rijksoverheid.ctr.verifier.models.VerifiedQrResultState
+import nl.rijksoverheid.ctr.verifier.ui.scanner.models.VerifiedQrResultState
 import nl.rijksoverheid.ctr.verifier.ui.scanner.util.ScannerUtil
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -70,9 +70,6 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
     }
 
     private fun launchScanQrFragment(
-        state: VerifiedQrResultState = VerifiedQrResultState.Valid(
-            fakeVerifiedQr()
-        ),
         hasSeenScanInstructions: Boolean = true
     ) {
         loadKoinModules(
@@ -87,7 +84,6 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
 
                 viewModel {
                     fakeScanQrViewModel(
-                        result = state,
                         scanInstructionsSeen = hasSeenScanInstructions
                     )
                 }

@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.verifier.util
+package nl.rijksoverheid.ctr.verifier.ui.scanner.util
 
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue

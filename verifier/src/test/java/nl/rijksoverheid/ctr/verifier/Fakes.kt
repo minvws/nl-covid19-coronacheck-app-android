@@ -11,12 +11,13 @@ import nl.rijksoverheid.ctr.introduction.models.NewTerms
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.TestResultAttributes
 import nl.rijksoverheid.ctr.shared.util.TestResultUtil
-import nl.rijksoverheid.ctr.verifier.models.VerifiedQr
-import nl.rijksoverheid.ctr.verifier.models.VerifiedQrResultState
+import nl.rijksoverheid.ctr.verifier.ui.scanner.ScannerViewModel
+import nl.rijksoverheid.ctr.verifier.ui.scanner.models.VerifiedQr
+import nl.rijksoverheid.ctr.verifier.ui.scanner.models.VerifiedQrResultState
+import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.TestResultValidUseCase
+import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.VerifyQrUseCase
+import nl.rijksoverheid.ctr.verifier.ui.scanner.util.QrCodeUtil
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrViewModel
-import nl.rijksoverheid.ctr.verifier.usecases.TestResultValidUseCase
-import nl.rijksoverheid.ctr.verifier.usecases.VerifyQrUseCase
-import nl.rijksoverheid.ctr.verifier.util.QrCodeUtil
 import java.time.OffsetDateTime
 
 /*
@@ -49,15 +50,18 @@ fun fakeIntroductionViewModel(
 }
 
 fun fakeScanQrViewModel(
-    result: VerifiedQrResultState,
     scanInstructionsSeen: Boolean
 ) = object : ScanQrViewModel() {
-    override fun validate(qrContent: String) {
-        validatedQrLiveData.value = Event(result)
-    }
-
     override fun scanInstructionsSeen(): Boolean {
         return scanInstructionsSeen
+    }
+}
+
+fun fakeScannerViewModel(
+    verifiedQrResultState: VerifiedQrResultState
+) = object : ScannerViewModel() {
+    override fun validate(qrContent: String) {
+        verifiedQrResultStateLiveData.value = Event(verifiedQrResultState)
     }
 }
 
@@ -84,7 +88,8 @@ fun fakeVerifiedQr(
     birthDay: String = "dummy",
     birthMonth: String = "dummy",
     firstNameInitial: String = "dummy",
-    lastNameInitial: String = "dummy"
+    lastNameInitial: String = "dummy",
+    isPaperProof: String = "0"
 ) = VerifiedQr(
     creationDateSeconds = 0,
     testResultAttributes = TestResultAttributes(
@@ -94,7 +99,7 @@ fun fakeVerifiedQr(
         birthMonth = birthMonth,
         firstNameInitial = firstNameInitial,
         lastNameInitial = lastNameInitial,
-        isPaperProof = "0",
+        isPaperProof = isPaperProof,
         isSpecimen = isSpecimen
     )
 )

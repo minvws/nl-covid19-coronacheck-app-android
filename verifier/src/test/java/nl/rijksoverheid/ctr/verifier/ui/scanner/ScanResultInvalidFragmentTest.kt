@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.verifier.ui.scanqr
+package nl.rijksoverheid.ctr.verifier.ui.scanner
 
 import androidx.core.os.bundleOf
 import androidx.core.text.parseAsHtml
@@ -19,7 +19,6 @@ import io.mockk.mockk
 import io.mockk.verify
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.fakeVerifiedQr
-import nl.rijksoverheid.ctr.verifier.ui.scanner.ScanResultInvalidFragment
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultInvalidData
 import nl.rijksoverheid.ctr.verifier.ui.scanner.util.ScannerUtil
 import org.junit.Assert.assertEquals
@@ -69,7 +68,6 @@ class ScanResultInvalidFragmentTest : AutoCloseKoinTest() {
     @Test
     fun `Clicking scan again button opens scanner`() {
         launchScanResultInvalidFragment()
-        scrollTo(R.id.button)
         clickOn(R.id.button)
         verify { scannerUtil.launchScanner(any()) }
     }

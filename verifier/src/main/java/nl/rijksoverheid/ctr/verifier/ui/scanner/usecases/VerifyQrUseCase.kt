@@ -1,9 +1,9 @@
-package nl.rijksoverheid.ctr.verifier.usecases
+package nl.rijksoverheid.ctr.verifier.ui.scanner.usecases
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import nl.rijksoverheid.ctr.verifier.datamappers.VerifiedQrDataMapper
-import nl.rijksoverheid.ctr.verifier.models.VerifiedQr
+import nl.rijksoverheid.ctr.verifier.ui.scanner.datamappers.VerifiedQrDataMapper
+import nl.rijksoverheid.ctr.verifier.ui.scanner.models.VerifiedQr
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

@@ -6,7 +6,7 @@
  *
  */
 
-package nl.rijksoverheid.ctr.verifier.models
+package nl.rijksoverheid.ctr.verifier.ui.scanner.models
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

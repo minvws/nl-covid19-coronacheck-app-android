@@ -1,11 +1,11 @@
-package nl.rijksoverheid.ctr.verifier.usecases
+package nl.rijksoverheid.ctr.verifier.ui.scanner.usecases
 
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.verifier.*
-import nl.rijksoverheid.ctr.verifier.datamappers.VerifiedQrDataMapper
-import nl.rijksoverheid.ctr.verifier.models.VerifiedQrResultState
+import nl.rijksoverheid.ctr.verifier.ui.scanner.datamappers.VerifiedQrDataMapper
+import nl.rijksoverheid.ctr.verifier.ui.scanner.models.VerifiedQrResultState
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
