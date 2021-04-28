@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/nav_status"
-        android:name="nl.rijksoverheid.ctr.introduction.IntroductionStatusFragment">
+        android:name="nl.rijksoverheid.ctr.introduction.ui.status.IntroductionStatusFragment">
 
         <action
             android:id="@+id/action_setup"
@@ -25,12 +25,12 @@
 
     <fragment
         android:id="@+id/nav_setup"
-        android:name="nl.rijksoverheid.ctr.introduction.setup.SetupFragment"
+        android:name="nl.rijksoverheid.ctr.introduction.ui.setup.SetupFragment"
         tools:layout="@layout/fragment_setup">
 
         <argument
             android:name="introduction_data"
-            app:argType="nl.rijksoverheid.ctr.introduction.models.IntroductionData" />
+            app:argType="nl.rijksoverheid.ctr.introduction.IntroductionData" />
 
         <action
             android:id="@+id/action_onboarding"
@@ -56,7 +56,7 @@
 
     <fragment
         android:id="@+id/nav_onboarding"
-        android:name="nl.rijksoverheid.ctr.introduction.onboarding.OnboardingFragment"
+        android:name="nl.rijksoverheid.ctr.introduction.ui.onboarding.OnboardingFragment"
         tools:layout="@layout/fragment_onboarding">
 
         <action
@@ -69,18 +69,18 @@
 
         <argument
             android:name="introduction_data"
-            app:argType="nl.rijksoverheid.ctr.introduction.models.IntroductionData" />
+            app:argType="nl.rijksoverheid.ctr.introduction.IntroductionData" />
 
     </fragment>
 
     <fragment
         android:id="@+id/nav_privacy_policy"
-        android:name="nl.rijksoverheid.ctr.introduction.privacy_consent.PrivacyConsentFragment"
+        android:name="nl.rijksoverheid.ctr.introduction.ui.privacy_consent.PrivacyConsentFragment"
         tools:layout="@layout/fragment_privacy_consent">
 
         <argument
             android:name="introduction_data"
-            app:argType="nl.rijksoverheid.ctr.introduction.models.IntroductionData" />
+            app:argType="nl.rijksoverheid.ctr.introduction.IntroductionData" />
 
     </fragment>
 
@@ -91,12 +91,12 @@
 
     <fragment
         android:id="@+id/nav_new_terms"
-        android:name="nl.rijksoverheid.ctr.introduction.new_terms.NewTermsFragment"
+        android:name="nl.rijksoverheid.ctr.introduction.ui.new_terms.NewTermsFragment"
         tools:layout="@layout/fragment_app_status">
 
         <argument
             android:name="new_terms"
-            app:argType="nl.rijksoverheid.ctr.introduction.models.NewTerms" />
+            app:argType="nl.rijksoverheid.ctr.introduction.ui.new_terms.models.NewTerms" />
 
     </fragment>
 

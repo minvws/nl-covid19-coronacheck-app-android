@@ -1,0 +1,36 @@
+package nl.rijksoverheid.ctr.appconfig.usecases
+
+import com.squareup.moshi.Moshi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
+import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
+import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
+
+/*
+ *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+ *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+ *
+ *   SPDX-License-Identifier: EUPL-1.2
+ *
+ */
+
+interface PersistConfigUseCase {
+    suspend fun persist(appConfig: AppConfig, publicKeys: PublicKeys)
+}
+
+class PersistConfigUseCaseImpl(
+    private val appConfigPersistenceManager: AppConfigPersistenceManager,
+    private val moshi: Moshi
+) : PersistConfigUseCase {
+
+    override suspend fun persist(appConfig: AppConfig, publicKeys: PublicKeys) =
+        withContext(Dispatchers.IO) {
+            appConfigPersistenceManager.saveAppConfigJson(
+                json = appConfig.toJson(moshi)
+            )
+            appConfigPersistenceManager.savePublicKeysJson(
+                json = publicKeys.toJson(moshi)
+            )
+        }
+}

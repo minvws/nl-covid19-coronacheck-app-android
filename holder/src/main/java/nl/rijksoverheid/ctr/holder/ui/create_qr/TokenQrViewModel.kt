@@ -11,7 +11,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import nl.rijksoverheid.ctr.holder.usecase.TokenQrUseCase
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.TokenQrUseCase
 import nl.rijksoverheid.ctr.shared.livedata.Event
 
 class TokenQrViewModel(private val tokenQrUseCase: TokenQrUseCase) : ViewModel() {

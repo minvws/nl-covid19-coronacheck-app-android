@@ -1,6 +1,5 @@
 package nl.rijksoverheid.ctr.shared.utils
 
-import nl.rijksoverheid.ctr.shared.util.PersonalDetailsUtilImpl
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

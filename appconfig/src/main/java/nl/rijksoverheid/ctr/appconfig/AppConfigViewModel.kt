@@ -12,12 +12,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import nl.rijksoverheid.ctr.appconfig.model.AppStatus
-import nl.rijksoverheid.ctr.appconfig.model.ConfigResult
-import nl.rijksoverheid.ctr.appconfig.usecase.AppConfigUseCase
-import nl.rijksoverheid.ctr.appconfig.usecase.AppStatusUseCase
-import nl.rijksoverheid.ctr.appconfig.usecase.LoadPublicKeysUseCase
-import nl.rijksoverheid.ctr.appconfig.usecase.PersistConfigUseCase
+import nl.rijksoverheid.ctr.appconfig.models.AppStatus
+import nl.rijksoverheid.ctr.appconfig.models.ConfigResult
+import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigUseCase
+import nl.rijksoverheid.ctr.appconfig.usecases.AppStatusUseCase
+import nl.rijksoverheid.ctr.appconfig.usecases.LoadPublicKeysUseCase
+import nl.rijksoverheid.ctr.appconfig.usecases.PersistConfigUseCase
 
 abstract class AppConfigViewModel : ViewModel() {
     val appStatusLiveData = MutableLiveData<AppStatus>()

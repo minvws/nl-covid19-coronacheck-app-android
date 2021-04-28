@@ -62,7 +62,7 @@
 
     <fragment
         android:id="@+id/nav_new_terms"
-        android:name="nl.rijksoverheid.ctr.introduction.new_terms.NewTermsFragment"
+        android:name="nl.rijksoverheid.ctr.introduction.ui.new_terms.NewTermsFragment"
         tools:layout="@layout/fragment_new_terms" />
 
 </navigation>

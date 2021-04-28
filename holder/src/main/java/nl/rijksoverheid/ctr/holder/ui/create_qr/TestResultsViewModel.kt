@@ -3,9 +3,9 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
-import nl.rijksoverheid.ctr.holder.usecase.SignedTestResult
-import nl.rijksoverheid.ctr.holder.usecase.TestResult
-import nl.rijksoverheid.ctr.holder.usecase.TestResultUseCase
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SignedTestResult
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.TestResult
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.TestResultUseCase
 import nl.rijksoverheid.ctr.shared.livedata.Event
 
 /*
@@ -46,7 +46,7 @@ class TestResultsViewModel(
             updateViewState()
         }
 
-    var fromDeeplink : Boolean = savedStateHandle["supplied_token"] ?: false
+    var fromDeeplink: Boolean = savedStateHandle["supplied_token"] ?: false
         private set(value) {
             field = value
             savedStateHandle["supplied_token"] = value
@@ -73,7 +73,7 @@ class TestResultsViewModel(
         )
     }
 
-    fun getTestResult(fromDeeplink : Boolean = false) {
+    fun getTestResult(fromDeeplink: Boolean = false) {
         this.fromDeeplink = fromDeeplink
         (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {

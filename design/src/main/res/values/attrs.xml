@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
   ~   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
   ~
@@ -15,5 +14,10 @@
         <attr name="htmlText" format="string" />
         <attr name="htmlTextWithList" format="string" />
         <attr name="enableHtmlLinks" format="boolean" />
+    </declare-styleable>
+    <declare-styleable name="ScrollViewButtonWidget">
+        <attr name="buttonText" format="string" />
+        <attr name="buttonEnabled" format="boolean" />
+        <attr name="attachToScrollView" format="reference" />
     </declare-styleable>
 </resources>

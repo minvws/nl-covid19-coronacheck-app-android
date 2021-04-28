@@ -21,7 +21,7 @@ import nl.rijksoverheid.ctr.design.ext.isScreenReaderOn
 import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppData
 import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppFragment
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
-import nl.rijksoverheid.ctr.shared.ext.styleTitle
+import nl.rijksoverheid.ctr.design.ext.styleTitle
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentMainBinding
 
 class VerifierMainFragment :

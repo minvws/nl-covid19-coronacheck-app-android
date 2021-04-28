@@ -5,16 +5,16 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import androidx.core.content.ContextCompat
-import androidx.core.view.doOnLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import nl.rijksoverheid.ctr.shared.util.PersonalDetailsUtil
+import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
+import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import nl.rijksoverheid.ctr.verifier.BuildConfig
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanResultValidBinding
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultValidData
-import nl.rijksoverheid.ctr.verifier.ui.scanner.util.ScannerUtil
+import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
 import org.koin.android.ext.android.inject
 import java.util.concurrent.TimeUnit
 
@@ -34,7 +34,9 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
 
     private val autoCloseHandler = Handler(Looper.getMainLooper())
     private val autoCloseRunnable = Runnable {
-        findNavController().navigate(ScanResultValidFragmentDirections.actionNavMain())
+        findNavControllerSafety(R.id.nav_scan_result_valid)?.navigate(
+            ScanResultValidFragmentDirections.actionNavMain()
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -65,21 +67,11 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
             }
         }
 
-        binding.personalDetails.scroll.doOnLayout {
-            if (binding.personalDetails.scroll.canScrollVertically(1)) {
-                binding.personalDetails.bottom.cardElevation =
-                    resources.getDimensionPixelSize(nl.rijksoverheid.ctr.introduction.R.dimen.onboarding_bottom_scroll_elevation)
-                        .toFloat()
-            } else {
-                binding.personalDetails.bottom.cardElevation = 0f
-            }
-        }
-
         binding.personalDetails.icon.setOnClickListener {
             findNavController().navigate(ScanResultValidFragmentDirections.actionShowValidExplanation())
         }
 
-        binding.personalDetails.button.setOnClickListener {
+        binding.personalDetails.bottom.setButtonClick {
             scannerUtil.launchScanner(requireActivity())
         }
 

@@ -4,12 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.AccessibilityDelegateCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.design.ExpandedBottomSheetDialogFragment
-import nl.rijksoverheid.ctr.design.ext.isScreenReaderOn
-import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.DialogYourNegativeTestResultExplanationBinding
-import nl.rijksoverheid.ctr.shared.util.PersonalDetailsUtil
+import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import org.koin.android.ext.android.inject
 
 /*
@@ -59,9 +60,19 @@ class YourNegativeTestResultExplanationDialogFragment : ExpandedBottomSheetDialo
         binding.birthMonth.itemText.text = personalDetails.birthMonth
         binding.birthMonth.itemPosition.text = "4"
 
-        if (requireContext().isScreenReaderOn()) {
-            handleAccessibility(binding.container, binding.title, R.string.menu_close)
+        binding.close.setOnClickListener {
+            dismiss()
         }
+
+        ViewCompat.setAccessibilityDelegate(binding.close, object : AccessibilityDelegateCompat() {
+            override fun onInitializeAccessibilityNodeInfo(
+                host: View?,
+                info: AccessibilityNodeInfoCompat?
+            ) {
+                info?.setTraversalBefore(binding.title)
+                super.onInitializeAccessibilityNodeInfo(host, info)
+            }
+        })
     }
 }
 

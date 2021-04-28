@@ -19,11 +19,20 @@
             android:layout_height="wrap_content"
             android:text="@string/your_negative_test_results_explanation_title"
             android:textAppearance="?attr/textAppearanceHeadline5"
-
             app:layout_constraintBottom_toTopOf="@+id/paragraph1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/actionBarItemBackground"
+            android:src="@drawable/ic_close"
+            app:layout_constraintBottom_toBottomOf="@+id/title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/title" />
 
         <nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
             android:id="@+id/paragraph1"

@@ -13,7 +13,7 @@ import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentCommercialTestCodeBinding
-import nl.rijksoverheid.ctr.holder.usecase.TestResult
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.TestResult
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.hideKeyboard
 import nl.rijksoverheid.ctr.shared.ext.showKeyboard
@@ -61,7 +61,7 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
         }
 
         viewModel.viewState.observe(viewLifecycleOwner) {
-            binding.button.isEnabled = it.canRetrieveResult
+            binding.bottom.setButtonEnabled(it.canRetrieveResult)
             binding.uniqueCodeText.imeOptions =
                 (if (it.verificationRequired) EditorInfo.IME_ACTION_NEXT else EditorInfo.IME_ACTION_SEND)
             binding.verificationCodeInput.visibility =
@@ -165,15 +165,15 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
             )
         }
 
-        binding.button.setOnClickListener {
+        binding.bottom.setButtonClick {
             fetchTestResults(binding)
         }
 
-        // If a location token is set, automatically fill it in
+        // If a location token is set, automatically fill it in. Else we show the keyboard focussing on first code input field
         navArgs.token?.let { token ->
             binding.uniqueCodeText.setText(token)
             fetchTestResults(binding, fromDeeplink = true)
-        }
+        } ?: showKeyboard(binding.uniqueCodeText)
 
         viewModel.loading.observe(viewLifecycleOwner, EventObserver {
             if (!viewModel.fromDeeplink) {
@@ -181,18 +181,8 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
             } else {
                 // Show different loading state when loading from deeplink
                 binding.loadingOverlay.isVisible = it
-                binding.button.isVisible = !it
             }
         })
-
-        if (viewModel.verificationRequired) {
-            showKeyboard(binding.verificationCodeText)
-        } else {
-            // Don't show keyboard if token is set through external flow
-            if (!viewModel.fromDeeplink) {
-                showKeyboard(binding.uniqueCodeText)
-            }
-        }
 
         binding.noTokenReceivedBtn.setOnClickListener {
             findNavControllerSafety(R.id.nav_commercial_test_code)?.navigate(
@@ -218,6 +208,5 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
         binding.verificationCodeInput.error = null
         binding.uniqueCodeInput.error = null
         viewModel.getTestResult(fromDeeplink)
-        hideKeyboard()
     }
 }

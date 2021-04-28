@@ -1,9 +1,10 @@
 package nl.rijksoverheid.ctr.introduction
 
 import androidx.lifecycle.ViewModel
-import nl.rijksoverheid.ctr.introduction.models.IntroductionStatus
-import nl.rijksoverheid.ctr.introduction.models.NewTerms
+import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
+import nl.rijksoverheid.ctr.introduction.ui.new_terms.models.NewTerms
 import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
+import nl.rijksoverheid.ctr.introduction.ui.status.usecases.IntroductionStatusUseCase
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

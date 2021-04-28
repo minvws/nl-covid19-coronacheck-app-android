@@ -11,7 +11,7 @@ import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentYourNegativeTestResultsBinding
-import nl.rijksoverheid.ctr.holder.usecase.SignedTestResult
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SignedTestResult
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.android.ext.android.inject
@@ -81,13 +81,13 @@ class YourNegativeTestResultFragment : Fragment(R.layout.fragment_your_negative_
             }
         })
 
-        binding.button.setOnClickListener {
+        binding.bottom.setButtonClick {
             viewModel.saveTestResult()
         }
 
         viewModel.loading.observe(viewLifecycleOwner, EventObserver {
             (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
-            binding.button.isEnabled = !it
+            binding.bottom.setButtonEnabled(!it)
         })
 
         viewModel.signedTestResult.observe(viewLifecycleOwner, EventObserver {

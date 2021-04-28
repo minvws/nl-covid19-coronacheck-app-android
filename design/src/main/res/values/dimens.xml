@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="bullet_point_span_gap_width">16dp</dimen>
+    <dimen name="scroll_view_button_elevation">8dp</dimen>
 </resources>

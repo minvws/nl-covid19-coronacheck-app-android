@@ -1,7 +1,5 @@
 package nl.rijksoverheid.ctr.shared.utils
 
-import nl.rijksoverheid.ctr.shared.util.TestResultUtil
-import nl.rijksoverheid.ctr.shared.util.TestResultUtilImpl
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test

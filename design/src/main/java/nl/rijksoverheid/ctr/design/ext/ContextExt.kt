@@ -25,7 +25,7 @@ fun Context.getAppThemeWindowBackgroundColor(): Int {
 
 fun Context.isScreenReaderOn(): Boolean {
     val am = getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager
-    if (am != null && am.isEnabled) {
+    if (am.isEnabled) {
         val serviceInfoList =
             am.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_SPOKEN)
         if (serviceInfoList.isNotEmpty())

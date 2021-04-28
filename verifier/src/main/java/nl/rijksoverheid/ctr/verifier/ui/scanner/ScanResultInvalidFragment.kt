@@ -10,12 +10,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import nl.rijksoverheid.ctr.design.ext.enableCustomLinks
-import nl.rijksoverheid.ctr.shared.util.MultiTapDetector
+import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
+import nl.rijksoverheid.ctr.shared.utils.MultiTapDetector
 import nl.rijksoverheid.ctr.verifier.BuildConfig
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanResultInvalidBinding
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultInvalidData
-import nl.rijksoverheid.ctr.verifier.ui.scanner.util.ScannerUtil
+import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
 import org.koin.android.ext.android.inject
 import java.util.concurrent.TimeUnit
 
@@ -33,7 +34,9 @@ class ScanResultInvalidFragment : Fragment(R.layout.fragment_scan_result_invalid
 
     private val autoCloseHandler = Handler(Looper.getMainLooper())
     private val autoCloseRunnable = Runnable {
-        findNavController().navigate(ScanResultInvalidFragmentDirections.actionNavMain())
+        findNavControllerSafety(R.id.nav_scan_result_invalid)?.navigate(
+            ScanResultInvalidFragmentDirections.actionNavMain()
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

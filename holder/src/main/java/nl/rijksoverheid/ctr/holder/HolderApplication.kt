@@ -2,7 +2,7 @@ package nl.rijksoverheid.ctr.holder
 
 import nl.rijksoverheid.ctr.api.apiModule
 import nl.rijksoverheid.ctr.appconfig.*
-import nl.rijksoverheid.ctr.appconfig.usecase.LoadPublicKeysUseCase
+import nl.rijksoverheid.ctr.appconfig.usecases.LoadPublicKeysUseCase
 import nl.rijksoverheid.ctr.design.designModule
 import nl.rijksoverheid.ctr.holder.modules.holderIntroductionModule
 import nl.rijksoverheid.ctr.holder.modules.holderModule
