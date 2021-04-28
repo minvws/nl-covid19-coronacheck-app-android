@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SecretKeyUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SignedTestResult
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.TestResult
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.TestResultUseCase
@@ -18,7 +19,8 @@ import nl.rijksoverheid.ctr.shared.livedata.Event
 class TestResultsViewModel(
     private val savedStateHandle: SavedStateHandle,
     private val testResultUseCase: TestResultUseCase,
-    private val persistenceManager: PersistenceManager
+    private val persistenceManager: PersistenceManager,
+    private val secretKeyUseCase: SecretKeyUseCase
 ) : ViewModel() {
 
     val testResult: LiveData<Event<TestResult>> = MutableLiveData()
@@ -104,6 +106,8 @@ class TestResultsViewModel(
         (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {
             try {
+                // Fixes 62688 - trying to sign result without persisted key
+                secretKeyUseCase.persist()
                 retrievedResult?.let {
                     val result = testResultUseCase.signTestResult(
                         signedResponseWithTestResult = it.signedResponseWithTestResult
