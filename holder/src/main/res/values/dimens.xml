@@ -2,5 +2,5 @@
 <resources>
     <dimen name="onboarding_item_indicator_spacing">6dp</dimen>
     <dimen name="test_button_corner_radius">10dp</dimen>
-    <dimen name="test_provider_title_without_subtitle_padding">13dp</dimen>
+    <dimen name="test_provider_title_without_subtitle_padding">8dp</dimen>
 </resources>
