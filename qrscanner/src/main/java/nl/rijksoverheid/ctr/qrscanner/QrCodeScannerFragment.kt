@@ -64,8 +64,6 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
 
         _binding = FragmentScannerBinding.bind(view)
 
-        requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-
         // Set overlay to software accelerated only to fix transparency on certain devices
         binding.overlay.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
 
@@ -93,6 +91,7 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
     override fun onStart() {
         super.onStart()
         setupCamera()
+        requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
     }
 
     private fun setupCamera() {
