@@ -60,9 +60,9 @@ private fun IncludeTestProviderBinding.bind(
         providerSubtitle.visibility = View.GONE
         providerTitle.setPadding(
             providerTitle.paddingLeft,
-            providerTitle.context.resources.getDimensionPixelSize(R.dimen.test_provider_title_alternate_padding),
+            providerTitle.context.resources.getDimensionPixelSize(R.dimen.test_provider_title_without_subtitle_padding),
             providerTitle.paddingRight,
-            providerTitle.context.resources.getDimensionPixelSize(R.dimen.test_provider_title_alternate_padding)
+            providerTitle.context.resources.getDimensionPixelSize(R.dimen.test_provider_title_without_subtitle_padding)
         )
     }
 
