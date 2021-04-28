@@ -85,7 +85,7 @@ fun holderModule(baseUrl: String) = module {
     }
 
     // ViewModels
-    viewModel<LocalTestResultViewModel> { LocalTestResultViewModelImpl(get(), get(), get()) }
+    viewModel<LocalTestResultViewModel> { LocalTestResultViewModelImpl(get(), get()) }
     viewModel { DigiDViewModel(get()) }
     viewModel { TestResultsViewModel(get(), get(), get(), get()) }
     viewModel { TokenQrViewModel(get()) }

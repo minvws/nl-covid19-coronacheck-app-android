@@ -32,14 +32,12 @@ abstract class LocalTestResultViewModel : ViewModel() {
 }
 
 open class LocalTestResultViewModelImpl(
-    private val secretKeyUseCase: SecretKeyUseCase,
     private val localTestResultUseCase: LocalTestResultUseCase,
     private val qrCodeUseCase: QrCodeUseCase
 ) : LocalTestResultViewModel() {
 
     override fun getLocalTestResult() {
         viewModelScope.launch {
-            secretKeyUseCase.persist()
             val localTestResultState = localTestResultUseCase.get(localTestResultStateLiveData.value?.peekContent())
             localTestResultStateLiveData.value = Event(localTestResultState)
         }

@@ -106,7 +106,6 @@ class TestResultsViewModel(
         (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {
             try {
-                // Fixes 62688 - trying to sign result without persisted key
                 secretKeyUseCase.persist()
                 retrievedResult?.let {
                     val result = testResultUseCase.signTestResult(
