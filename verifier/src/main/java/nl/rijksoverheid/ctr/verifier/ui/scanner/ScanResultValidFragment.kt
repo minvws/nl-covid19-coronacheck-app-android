@@ -74,7 +74,7 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
         }
 
         // If you touch the screen before personal details screen animation started, immediately show personal details screen without animating
-        binding.personalDetails.scroll.setOnTouchListener { v, event ->
+        binding.personalDetails.scroll.setOnTouchListener { _, _ ->
             binding.personalDetails.root.animate().cancel()
             binding.personalDetails.root.alpha = 1f
             false
