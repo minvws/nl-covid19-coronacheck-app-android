@@ -3,8 +3,10 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.StringRes
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import nl.rijksoverheid.ctr.design.ext.dp
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentChooseProviderBinding
 import nl.rijksoverheid.ctr.holder.databinding.IncludeTestProviderBinding
@@ -33,14 +35,14 @@ class ChooseProviderFragment : Fragment(R.layout.fragment_choose_provider) {
 
         binding.providerCommercial.bind(
             R.string.choose_provider_commercial_title,
-            R.string.choose_provider_commercial_subtitle
+            null
         ) {
             findNavController().navigate(ChooseProviderFragmentDirections.actionCommercialTestCode())
         }
 
         binding.providerGgd.bind(
             R.string.choose_provider_ggd_title,
-            R.string.choose_provider_ggd_subtitle
+            getString(R.string.choose_provider_ggd_subtitle)
         ) {
         }
 
@@ -50,11 +52,22 @@ class ChooseProviderFragment : Fragment(R.layout.fragment_choose_provider) {
 
 private fun IncludeTestProviderBinding.bind(
     @StringRes title: Int,
-    @StringRes subtitle: Int,
+    subtitle: String?,
     onClick: () -> Unit
 ) {
     providerTitle.setText(title)
-    providerSubtitle.setText(subtitle)
+    providerSubtitle.text = subtitle
+
+    if (subtitle.isNullOrEmpty()) {
+        providerSubtitle.visibility = View.GONE
+        providerTitle.setPadding(
+            providerTitle.paddingLeft,
+            13.dp,
+            providerTitle.paddingRight,
+            13.dp
+        )
+    }
+
     root.setOnClickListener {
         onClick()
     }
