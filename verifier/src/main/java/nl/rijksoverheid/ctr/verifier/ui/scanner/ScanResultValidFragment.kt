@@ -19,7 +19,6 @@ import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
 import org.koin.android.ext.android.inject
 import java.util.concurrent.TimeUnit
 
-
 class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
 
     private var _binding: FragmentScanResultValidBinding? = null
@@ -28,6 +27,13 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
     private val args: ScanResultValidFragmentArgs by navArgs()
     private val scannerUtil: ScannerUtil by inject()
     private val personalDetailsUtil: PersonalDetailsUtil by inject()
+
+    private val transitionPersonalDetailsHandler = Handler(Looper.getMainLooper())
+    private val transitionPersonalDetailsRunnable = Runnable {
+        binding.personalDetails.root.alpha = 0f
+        binding.personalDetails.root.animate().alpha(1f).setDuration(500).start()
+        presentPersonalDetails()
+    }
 
     private val autoCloseHandler = Handler(Looper.getMainLooper())
     private val autoCloseRunnable = Runnable {
@@ -74,20 +80,22 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
         }
 
         // If you touch the screen before personal details screen animation started, immediately show personal details screen without animating
-        binding.personalDetails.scroll.setOnTouchListener { _, _ ->
-            binding.personalDetails.root.animate().cancel()
+        binding.root.setOnClickListener {
             binding.personalDetails.root.alpha = 1f
-            false
+            binding.personalDetails.root.animate().cancel()
+            transitionPersonalDetailsHandler.removeCallbacks(transitionPersonalDetailsRunnable)
+            presentPersonalDetails()
         }
 
-        binding.personalDetails.root.alpha = 0f
-        binding.personalDetails.root.animate().alpha(1f).setDuration(500).setStartDelay(800)
-            .start()
-
-        presentPersonalDetails()
+        transitionPersonalDetailsHandler.postDelayed(
+            transitionPersonalDetailsRunnable,
+            TimeUnit.MILLISECONDS.toMillis(800)
+        )
     }
 
     private fun presentPersonalDetails() {
+        binding.personalDetails.root.visibility = View.VISIBLE
+        binding.toolbar.setTitle(R.string.scan_result_valid_title)
         val testResultAttributes = args.validData.verifiedQr.testResultAttributes
         val personalDetails = personalDetailsUtil.getPersonalDetails(
             testResultAttributes.firstNameInitial,
@@ -115,5 +123,6 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
         super.onDestroyView()
         _binding = null
         autoCloseHandler.removeCallbacks(autoCloseRunnable)
+        transitionPersonalDetailsHandler.removeCallbacks(autoCloseRunnable)
     }
 }
