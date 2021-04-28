@@ -171,8 +171,11 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
 
         // If a location token is set, automatically fill it in. Else we show the keyboard focussing on first code input field
         navArgs.token?.let { token ->
-            binding.uniqueCodeText.setText(token)
-            fetchTestResults(binding, fromDeeplink = true)
+            // Only run this once. If the token has been handled once don't try to retrieve a testresult automatically again.
+            if (viewModel.testCode.isEmpty()) {
+                binding.uniqueCodeText.setText(token)
+                fetchTestResults(binding, fromDeeplink = true)
+            }
         } ?: showKeyboard(binding.uniqueCodeText)
 
         viewModel.loading.observe(viewLifecycleOwner, EventObserver {

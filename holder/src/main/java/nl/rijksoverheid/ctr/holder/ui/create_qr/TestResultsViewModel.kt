@@ -46,10 +46,10 @@ class TestResultsViewModel(
             updateViewState()
         }
 
-    var fromDeeplink: Boolean = savedStateHandle["supplied_token"] ?: false
+    var fromDeeplink: Boolean = savedStateHandle["from_deeplink"] ?: false
         private set(value) {
             field = value
-            savedStateHandle["supplied_token"] = value
+            savedStateHandle["from_deeplink"] = value
             updateViewState()
         }
 
