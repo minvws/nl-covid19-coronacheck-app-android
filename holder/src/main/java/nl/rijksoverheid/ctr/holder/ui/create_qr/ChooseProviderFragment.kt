@@ -33,14 +33,14 @@ class ChooseProviderFragment : Fragment(R.layout.fragment_choose_provider) {
 
         binding.providerCommercial.bind(
             R.string.choose_provider_commercial_title,
-            R.string.choose_provider_commercial_subtitle
+            null
         ) {
             findNavController().navigate(ChooseProviderFragmentDirections.actionCommercialTestCode())
         }
 
         binding.providerGgd.bind(
             R.string.choose_provider_ggd_title,
-            R.string.choose_provider_ggd_subtitle
+            getString(R.string.choose_provider_ggd_subtitle)
         ) {
         }
 
@@ -50,11 +50,22 @@ class ChooseProviderFragment : Fragment(R.layout.fragment_choose_provider) {
 
 private fun IncludeTestProviderBinding.bind(
     @StringRes title: Int,
-    @StringRes subtitle: Int,
+    subtitle: String?,
     onClick: () -> Unit
 ) {
     providerTitle.setText(title)
-    providerSubtitle.setText(subtitle)
+    providerSubtitle.text = subtitle
+
+    if (subtitle.isNullOrEmpty()) {
+        providerSubtitle.visibility = View.GONE
+        providerTitle.setPadding(
+            providerTitle.paddingLeft,
+            providerTitle.context.resources.getDimensionPixelSize(R.dimen.test_provider_title_without_subtitle_padding),
+            providerTitle.paddingRight,
+            providerTitle.context.resources.getDimensionPixelSize(R.dimen.test_provider_title_without_subtitle_padding)
+        )
+    }
+
     root.setOnClickListener {
         onClick()
     }
