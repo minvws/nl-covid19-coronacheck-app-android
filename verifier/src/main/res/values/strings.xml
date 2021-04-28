@@ -41,8 +41,8 @@
     <string name="scan_result_invalid_button">Scan volgende</string>
     <string name="scan_result_invalid_reason_title">Ongeldige QR-code</string>
     <string name="scan_result_invalid_reason_description"><![CDATA[Dit betekent <b>niet</b> dat deze bezoeker corona heeft.<br\><br\><b>Mogelijke oorzaken</b><br\><ul><li>De persoon is niet getest</li><li>De QR-code is doorgestuurd</li><li>De QR-code is vervalst</li></ul><br\><b>Wat nu?</b><br\>Vraag de bezoeker eerst een test te doen. Als de testuitslag bekend is kan de bezoeker er in de CoronaCheck-app een QR-code van maken.]]></string>
-    <string name="scan_result_valid_reason_title">Identificatiegegevens controleren</string>
-    <string name="scan_result_valid_reason_description"><![CDATA[Controleer of de QR-code ook echt bij de bezoeker hoort. Kijk daarvoor of deze gegevens hetzelfde zijn als de gegevens op het identiteitsbewijs.<br\><br\><b>Er kunnen gegevens wegvallen</b><br\>djsbsjbdmnsbcnm…<br\><br\><b>Kloppen de gegevens niet?</b><br\>Dan mag de persoon niet naar binnen.]]></string>
+    <string name="scan_result_valid_reason_title">Over de controle</string>
+    <string name="scan_result_valid_reason_description"><![CDATA[Controleer of de QR-code ook echt bij de bezoeker hoort. Kijk daarvoor of deze gegevens hetzelfde zijn als de gegevens op het identiteitsbewijs.<br\><br\><b>Let op: er kunnen gegevens wegvallen</b><br\>Om privacy te beschermen zie je soms niet alle gegevens op jouw scherm. Dan staat er een streepje (-) in het vak. Controle van de gegevens die je wel ziet is dan voldoende.<br\><br\><b>Kloppen de gegevens niet?</b><br\> Dan kun je de bezoeker geen toegang geven.]]></string>
     <string name="about_this_app_description">CoronaCheck Scanner is ontwikkeld zodat sociale, culturele en sportieve locaties hun deuren kunnen openen. Denk bijvoorbeeld aan evenementen, musea en concerten. Met behulp van deze app krijgen alleen bezoekers die kortgeleden negatief op corona getest zijn toegang. Zo kan Nederland meer buiten de deur doen.</string>
     <string name="scan_instructions">Zo werkt scannen</string>
     <string name="scan_instructions_1_title">1. Houd afstand</string>
