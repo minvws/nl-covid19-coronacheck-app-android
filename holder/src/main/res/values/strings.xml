@@ -47,7 +47,7 @@
     <string name="my_overview_no_qr_make_qr_description">Zet jouw negatieve testuitslag om in een persoonlijke QR-code.</string>
     <string name="my_overview_no_qr_make_qr_button">Maak QR-code</string>
     <string name="my_overview_no_qr_replace_qr_button">Vervang QR-code</string>
-    <string name="my_overview_qr_created_snackbar_message">Jouw QR-code is gemaakt. Lees hier welke informatie in jouw QR-code staat.</string>
+    <string name="my_overview_qr_created_snackbar_message">Jouw QR-code is gemaakt. Bekijk welke informatie in jouw QR-code staat.</string>
     <string name="my_overview_qr_created_snackbar_button">Lees meer</string>
     <string name="choose_provider_toolbar">QR-code maken</string>
     <string name="choose_provider_title">Waar ben je getest?</string>
@@ -58,16 +58,16 @@
     <string name="choose_provider_ggd_subtitle">Log in met je DigiD</string>
     <string name="choose_provider_no_digid">Ik heb geen DigiD</string>
     <string name="commercial_test_type_title">Testuitslag ophalen</string>
-    <string name="commercial_test_type_description">Om je testuitslag op te halen heb je een unieke code nodig.</string>
-    <string name="commercial_test_type_code_title">Ik heb een unieke code</string>
-    <string name="commercial_test_type_code_toolbar_title">Unieke code invullen</string>
+    <string name="commercial_test_type_description">Om je testuitslag op te halen heb je een ophaalcode nodig.</string>
+    <string name="commercial_test_type_code_title">Ik heb een ophaalcode</string>
+    <string name="commercial_test_type_code_toolbar_title">Ophaalcode invullen</string>
     <string name="commercial_test_type_qr_code_title">Ik heb een QR-code</string>
     <string name="commercial_test_type_no_code_title">Ik heb geen code</string>
-    <string name="commercial_test_type_no_code_received_title">Ik heb geen code ontvangen</string>
+    <string name="commercial_test_type_no_code_received_title">Ik heb geen code gekregen</string>
     <string name="commercial_test_type_no_code_description"><![CDATA[Je krijgt van de testlocatie een code met cijfers en letters.<br\><br\>Heb je geen code gekregen? Of ben je ‘m kwijtgeraakt? Neem dan contact op met de testlocatie.<br\><br\>Het kan zijn dat je je opnieuw moet laten testen.]]></string>
     <string name="commercial_test_code_title">Testuitslag ophalen</string>
-    <string name="commercial_test_code_description">Vul jouw unieke code in. Deze heb je van je testlocatie gekregen.</string>
-    <string name="commercial_test_unique_code_header">Unieke code</string>
+    <string name="commercial_test_code_description">Vul jouw ophaalcode in. Deze heb je van je testlocatie gekregen.</string>
+    <string name="commercial_test_unique_code_header">Ophaalcode</string>
     <string name="commercial_test_unique_code_hint">Bijv. BRB-YYYYYYYYY1-Z2</string>
     <string name="commercial_test_verification_code_header">Verificatiecode</string>
     <string name="commercial_test_verification_code_hint">Bijv. 123456</string>
@@ -80,7 +80,7 @@
     <string name="commercial_test_scanner_custom_title">QR-code scannen</string>
     <string name="commercial_test_scanner_custom_message">Richt je toestel op de QR-code die je van de testlocatie hebt gekregen.</string>
     <string name="your_negative_test_results_title">Controleer je testuitslag</string>
-    <string name="your_negative_test_results_description">Deze testuitslag is opgehaald bij de testlocatie. Op het moment van testen had je geen corona.&lt;br\&gt;&lt;br\&gt;Kloppen de gegevens hieronder? Dan kun je van de negatieve testuitslag een QR-code maken. Dat is jouw bewijs.</string>
+    <string name="your_negative_test_results_description">Deze testuitslag is opgehaald bij de testlocatie.&lt;br\&gt;&lt;br\&gt;Kloppen de gegevens hieronder? Dan kun je van de negatieve testuitslag een QR-code maken. Dat is jouw bewijs.</string>
     <string name="your_negative_test_results_header">Opgehaalde testuitslag</string>
     <string name="your_negative_test_results_row_title">Negatieve testuitslag</string>
     <string name="your_negative_test_results_row_personal_details">Identificatiegegevens: %1$s</string>
@@ -168,8 +168,8 @@
     <string name="url_faq">https://coronacheck.nl/nl/faq-in-app.html</string>
     <string name="url_privacy_statement">https://coronacheck.nl/nl/privacy-in-app</string>
     <string name="url_make_appointment">https://coronacheck.nl/nl/testaanbieders-fieldlab-in-de-app</string>
-    <string name="commercial_test_verification_code_description_deeplink">Vul jouw verficatie code in om je negatieve testresultaat op te halen. Deze krijg je in een sms of e-mail van je testlocatie.</string>
     <string name="dialog_verification_code_title">Nieuwe verificatiecode nodig?</string>
-    <string name="dialog_verification_code_message">Je krijgt de verificatiecode via een sms of e-mail van de testlocatie. Niet gekregen? Dan kunnen we een nieuwe code sturen.</string>
+    <string name="dialog_verification_code_message">Je krijgt de verificatiecode via een sms of e-mail van de testlocatie. Niet ontvangen? Dan kun je een nieuwe code krijgen.</string>
     <string name="dialog_verification_code_positive_button">Stuur code</string>
+    <string name="commercial_test_verification_code_description_deeplink">Vul jouw verificatiecode in om je negatieve testresultaat op te halen.</string>
 </resources>
