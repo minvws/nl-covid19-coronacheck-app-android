@@ -5,7 +5,6 @@ import android.view.View
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import nl.rijksoverheid.ctr.design.ext.dp
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentChooseProviderBinding
 import nl.rijksoverheid.ctr.holder.databinding.IncludeTestProviderBinding
@@ -61,9 +60,9 @@ private fun IncludeTestProviderBinding.bind(
         providerSubtitle.visibility = View.GONE
         providerTitle.setPadding(
             providerTitle.paddingLeft,
-            13.dp,
+            providerTitle.context.resources.getDimensionPixelSize(R.dimen.test_provider_title_alternate_padding),
             providerTitle.paddingRight,
-            13.dp
+            providerTitle.context.resources.getDimensionPixelSize(R.dimen.test_provider_title_alternate_padding)
         )
     }
 
