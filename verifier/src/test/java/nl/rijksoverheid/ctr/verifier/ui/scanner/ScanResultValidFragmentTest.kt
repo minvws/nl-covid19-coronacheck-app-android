@@ -50,7 +50,7 @@ class ScanResultValidFragmentTest : AutoCloseKoinTest() {
     fun `Screen shows correct content when data is Demo`() {
         launchScanResultValidFragment(data = ScanResultValidData.Demo(verifiedQr = fakeVerifiedQr()))
         assertHasBackground(R.id.root, R.color.grey_2)
-        assertDisplayed(R.id.title, R.string.scan_result_valid_title)
+        assertDisplayed(R.id.title, R.string.scan_result_demo_title)
         assertNotDisplayed(R.id.personal_details)
     }
 
