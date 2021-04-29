@@ -6,12 +6,10 @@ import androidx.navigation.fragment.findNavController
 import com.google.mlkit.vision.barcode.Barcode
 import nl.rijksoverheid.ctr.qrscanner.QrCodeScannerFragment
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
-import nl.rijksoverheid.ctr.shared.models.TestResultAttributes
 import nl.rijksoverheid.ctr.verifier.BuildConfig
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultInvalidData
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultValidData
-import nl.rijksoverheid.ctr.verifier.ui.scanner.models.VerifiedQr
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.VerifiedQrResultState
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -100,25 +98,5 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
                 }
             }
         })
-
-        findNavController().navigate(
-            VerifierQrScannerFragmentDirections.actionScanResultValid(
-                validData = ScanResultValidData.Valid(
-                    verifiedQr = VerifiedQr(
-                        creationDateSeconds = 0L,
-                        testResultAttributes = TestResultAttributes(
-                            sampleTime = 0L,
-                            testType = "",
-                            birthDay = "1",
-                            birthMonth = "1",
-                            firstNameInitial = "B",
-                            lastNameInitial = "N",
-                            isPaperProof = "0",
-                            isSpecimen = "0"
-                        )
-                    )
-                )
-            )
-        )
     }
 }
