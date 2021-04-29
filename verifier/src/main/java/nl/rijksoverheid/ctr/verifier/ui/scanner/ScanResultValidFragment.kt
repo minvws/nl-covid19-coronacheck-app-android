@@ -124,7 +124,6 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
         super.onDestroyView()
         _binding = null
         autoCloseHandler.removeCallbacks(autoCloseRunnable)
-        transitionPersonalDetailsHandler.removeCallbacks(autoCloseRunnable)
         transitionPersonalDetailsHandler.removeCallbacks(transitionPersonalDetailsRunnable)
     }
 }
