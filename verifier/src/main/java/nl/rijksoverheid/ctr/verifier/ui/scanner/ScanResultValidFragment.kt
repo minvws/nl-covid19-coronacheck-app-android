@@ -54,6 +54,7 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
 
         when (args.validData) {
             is ScanResultValidData.Demo -> {
+                binding.title.text = getString(R.string.scan_result_demo_title)
                 binding.root.setBackgroundColor(
                     ContextCompat.getColor(
                         requireContext(),
@@ -62,6 +63,7 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
                 )
             }
             is ScanResultValidData.Valid -> {
+                binding.title.text = getString(R.string.scan_result_valid_title)
                 binding.root.setBackgroundColor(
                     ContextCompat.getColor(
                         requireContext(),
@@ -86,8 +88,6 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
             transitionPersonalDetailsHandler.removeCallbacks(transitionPersonalDetailsRunnable)
             presentPersonalDetails()
         }
-
-
     }
 
     private fun presentPersonalDetails() {
