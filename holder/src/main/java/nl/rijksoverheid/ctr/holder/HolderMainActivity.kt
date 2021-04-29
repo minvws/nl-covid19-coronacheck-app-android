@@ -8,6 +8,7 @@
 
 package nl.rijksoverheid.ctr.holder
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
@@ -70,5 +71,18 @@ class HolderMainActivity : AppCompatActivity() {
         if (introductionViewModel.getIntroductionStatus() is IntroductionStatus.IntroductionFinished) {
             appStatusViewModel.refresh()
         }
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+
+        // Handle if an external app sets the launch mode of this activity to single top of single task.
+        // In this case we need to set the graph again and handle the deeplink ourselves so that the entire
+        // graph is traversed to find the deeplink
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
+        navController.setGraph(R.navigation.holder_nav_graph_root)
+        navController.handleDeepLink(intent)
     }
 }
