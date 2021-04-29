@@ -87,10 +87,7 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
             presentPersonalDetails()
         }
 
-        transitionPersonalDetailsHandler.postDelayed(
-            transitionPersonalDetailsRunnable,
-            TimeUnit.MILLISECONDS.toMillis(800)
-        )
+
     }
 
     private fun presentPersonalDetails() {
@@ -117,6 +114,10 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
                 3
             )
         autoCloseHandler.postDelayed(autoCloseRunnable, autoCloseDuration)
+        transitionPersonalDetailsHandler.postDelayed(
+            transitionPersonalDetailsRunnable,
+            TimeUnit.MILLISECONDS.toMillis(800)
+        )
     }
 
     override fun onDestroyView() {
@@ -124,5 +125,6 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
         _binding = null
         autoCloseHandler.removeCallbacks(autoCloseRunnable)
         transitionPersonalDetailsHandler.removeCallbacks(autoCloseRunnable)
+        transitionPersonalDetailsHandler.removeCallbacks(transitionPersonalDetailsRunnable)
     }
 }
