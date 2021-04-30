@@ -1,13 +1,12 @@
 package nl.rijksoverheid.ctr.verifier.ui.scanner
 
+import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.*
+import com.schibsted.spain.barista.assertion.BaristaAssertions.assertAny
 import com.schibsted.spain.barista.assertion.BaristaBackgroundAssertions.assertHasBackground
 import com.schibsted.spain.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
 import com.schibsted.spain.barista.assertion.BaristaVisibilityAssertions.assertNotDisplayed
@@ -74,8 +73,10 @@ class ScanResultValidFragmentTest : AutoCloseKoinTest() {
         clickOn(R.id.root)
 
         // Make sure the correct title is shown in toolbar
-        onView(withId(R.id.toolbar)).check(matches(isDisplayed()))
-        onView(withId(R.id.toolbar)).check(matches(hasDescendant(withText(R.string.scan_result_valid_title))))
+        assertDisplayed(R.id.toolbar)
+        assertAny<Toolbar>(R.id.toolbar, "Toolbar shows correct title"){
+            it.title == it.context.getString(R.string.scan_result_valid_title)
+        }
 
         // Assert correct content is displayed on screen
         assertDisplayed(R.id.personal_details)
@@ -111,8 +112,10 @@ class ScanResultValidFragmentTest : AutoCloseKoinTest() {
         BaristaSleepInteractions.sleep(800)
 
         // Make sure the correct title is shown in toolbar
-        onView(withId(R.id.toolbar)).check(matches(isDisplayed()))
-        onView(withId(R.id.toolbar)).check(matches(hasDescendant(withText(R.string.scan_result_valid_title))))
+        assertDisplayed(R.id.toolbar)
+        assertAny<Toolbar>(R.id.toolbar, "Toolbar shows correct title"){
+            it.title == it.context.getString(R.string.scan_result_valid_title)
+        }
 
         // Assert correct content is displayed on screen
         assertDisplayed(R.id.personal_details)
@@ -131,7 +134,6 @@ class ScanResultValidFragmentTest : AutoCloseKoinTest() {
         verify { scannerUtil.launchScanner(any()) }
     }
 
-
     @Test
     fun `Screen shows correct content with demo QR after click`() {
         launchScanResultValidFragment(
@@ -149,8 +151,10 @@ class ScanResultValidFragmentTest : AutoCloseKoinTest() {
         clickOn(R.id.root)
 
         // Make sure the correct title is shown in toolbar
-        onView(withId(R.id.toolbar)).check(matches(isDisplayed()))
-        onView(withId(R.id.toolbar)).check(matches(hasDescendant(withText(R.string.scan_result_demo_title))))
+        assertDisplayed(R.id.toolbar)
+        assertAny<Toolbar>(R.id.toolbar, "Toolbar shows correct title"){
+            it.title == it.context.getString(R.string.scan_result_demo_title)
+        }
 
         // Assert correct content is displayed on screen
         assertDisplayed(R.id.personal_details)
@@ -186,8 +190,10 @@ class ScanResultValidFragmentTest : AutoCloseKoinTest() {
         BaristaSleepInteractions.sleep(800)
 
         // Make sure the correct title is shown in toolbar
-        onView(withId(R.id.toolbar)).check(matches(isDisplayed()))
-        onView(withId(R.id.toolbar)).check(matches(hasDescendant(withText(R.string.scan_result_demo_title))))
+        assertDisplayed(R.id.toolbar)
+        assertAny<Toolbar>(R.id.toolbar, "Toolbar shows correct title"){
+            it.title == it.context.getString(R.string.scan_result_demo_title)
+        }
 
         // Assert correct content is displayed on screen
         assertDisplayed(R.id.personal_details)
