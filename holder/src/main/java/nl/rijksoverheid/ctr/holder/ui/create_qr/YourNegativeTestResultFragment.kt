@@ -111,7 +111,7 @@ class YourNegativeTestResultFragment : Fragment(R.layout.fragment_your_negative_
                         "${it.httpCode.toString()}"
                     ) else getString(
                         R.string.dialog_error_message_with_error_code,
-                        "${it.httpCode.toString()}/${it.errorCode.toString()}"
+                        "${it.httpCode}/${it.errorCode}"
                     )
                     dialogUtil.presentDialog(
                         context = requireContext(),
@@ -129,6 +129,23 @@ class YourNegativeTestResultFragment : Fragment(R.layout.fragment_your_negative_
                         context = requireContext(),
                         title = R.string.dialog_no_internet_connection_title,
                         message = getString(R.string.dialog_no_internet_connection_description),
+                        positiveButtonText = R.string.dialog_retry,
+                        positiveButtonCallback = {
+                            viewModel.saveTestResult()
+                        },
+                        negativeButtonText = R.string.dialog_close
+                    )
+                }
+                is SignedTestResult.CouldNotVerifyCredentials -> {
+                    // Should never happen, but if the backend returns a 200 with faulty credentials it should not be saved
+                    // and show this error dialog with 19992 (same as iOS) so that we know what went wrong
+                    dialogUtil.presentDialog(
+                        context = requireContext(),
+                        title = R.string.dialog_error_title,
+                        message = getString(
+                            R.string.dialog_error_message_with_error_code,
+                            "19992"
+                        ),
                         positiveButtonText = R.string.dialog_retry,
                         positiveButtonCallback = {
                             viewModel.saveTestResult()
