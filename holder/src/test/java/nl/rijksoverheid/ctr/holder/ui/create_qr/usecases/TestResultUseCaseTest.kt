@@ -4,6 +4,8 @@ import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.holder.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.TestProviderRepository
+import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
+import nl.rijksoverheid.ctr.shared.models.TestResultAttributes
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -33,7 +35,8 @@ class TestResultUseCaseTest {
             personalDetailsUtil = fakePersonalDetailsUtil(),
             cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
             testResultUtil = fakeTestResultUtil(),
-            tokenValidatorUtil = fakeTokenValidatorUtil()
+            tokenValidatorUtil = fakeTokenValidatorUtil(),
+            testResultAttributesUseCase = fakeTestResultAttributesUseCase()
         )
         val result = usecase.testResult(uniqueCode = "dummy")
         assertTrue(result is TestResult.InvalidToken)
@@ -51,7 +54,8 @@ class TestResultUseCaseTest {
             personalDetailsUtil = fakePersonalDetailsUtil(),
             cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
             testResultUtil = fakeTestResultUtil(),
-            tokenValidatorUtil = fakeTokenValidatorUtil()
+            tokenValidatorUtil = fakeTokenValidatorUtil(),
+            testResultAttributesUseCase = fakeTestResultAttributesUseCase()
         )
         val result = usecase.testResult(uniqueCode = "dummy-dummy")
         assertTrue(result is TestResult.InvalidToken)
@@ -71,7 +75,8 @@ class TestResultUseCaseTest {
             testResultUtil = fakeTestResultUtil(),
             tokenValidatorUtil = fakeTokenValidatorUtil(
                 isValid = false
-            )
+            ),
+            testResultAttributesUseCase = fakeTestResultAttributesUseCase()
         )
         val result = usecase.testResult(uniqueCode = "provider-code-t1")
         assertTrue(result is TestResult.InvalidToken)
@@ -89,7 +94,8 @@ class TestResultUseCaseTest {
             personalDetailsUtil = fakePersonalDetailsUtil(),
             cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
             testResultUtil = fakeTestResultUtil(),
-            tokenValidatorUtil = fakeTokenValidatorUtil()
+            tokenValidatorUtil = fakeTokenValidatorUtil(),
+            testResultAttributesUseCase = fakeTestResultAttributesUseCase()
         )
         val result = usecase.testResult(uniqueCode = "provider-code-t1")
         assertTrue(result is TestResult.InvalidToken)
@@ -116,7 +122,8 @@ class TestResultUseCaseTest {
                 personalDetailsUtil = fakePersonalDetailsUtil(),
                 cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
                 testResultUtil = fakeTestResultUtil(),
-                tokenValidatorUtil = fakeTokenValidatorUtil()
+                tokenValidatorUtil = fakeTokenValidatorUtil(),
+                testResultAttributesUseCase = fakeTestResultAttributesUseCase()
             )
             val result = usecase.testResult(uniqueCode = "$providerIdentifier-code-t1")
             assertTrue(result is TestResult.NegativeTestResult)
@@ -143,7 +150,8 @@ class TestResultUseCaseTest {
                 personalDetailsUtil = fakePersonalDetailsUtil(),
                 cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
                 testResultUtil = fakeTestResultUtil(isValid = false),
-                tokenValidatorUtil = fakeTokenValidatorUtil()
+                tokenValidatorUtil = fakeTokenValidatorUtil(),
+                testResultAttributesUseCase = fakeTestResultAttributesUseCase()
             )
             val result = usecase.testResult(uniqueCode = "$providerIdentifier-code-t1")
             assertTrue(result is TestResult.NoNegativeTestResult)
@@ -173,7 +181,8 @@ class TestResultUseCaseTest {
                 personalDetailsUtil = fakePersonalDetailsUtil(),
                 cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
                 testResultUtil = fakeTestResultUtil(),
-                tokenValidatorUtil = fakeTokenValidatorUtil()
+                tokenValidatorUtil = fakeTokenValidatorUtil(),
+                testResultAttributesUseCase = fakeTestResultAttributesUseCase()
             )
             val result = usecase.testResult(uniqueCode = "$providerIdentifier-code-t1")
             assertTrue(result is TestResult.NoNegativeTestResult)
@@ -200,7 +209,8 @@ class TestResultUseCaseTest {
                 personalDetailsUtil = fakePersonalDetailsUtil(),
                 cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
                 testResultUtil = fakeTestResultUtil(),
-                tokenValidatorUtil = fakeTokenValidatorUtil()
+                tokenValidatorUtil = fakeTokenValidatorUtil(),
+                testResultAttributesUseCase = fakeTestResultAttributesUseCase()
             )
             val result = usecase.testResult(uniqueCode = "$providerIdentifier-code-t1")
             assertTrue(result is TestResult.VerificationRequired)
@@ -227,7 +237,8 @@ class TestResultUseCaseTest {
                 personalDetailsUtil = fakePersonalDetailsUtil(),
                 cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
                 testResultUtil = fakeTestResultUtil(),
-                tokenValidatorUtil = fakeTokenValidatorUtil()
+                tokenValidatorUtil = fakeTokenValidatorUtil(),
+                testResultAttributesUseCase = fakeTestResultAttributesUseCase()
             )
             val result = usecase.testResult(uniqueCode = "$providerIdentifier-code-t1")
             assertTrue(result is TestResult.InvalidToken)
@@ -258,7 +269,8 @@ class TestResultUseCaseTest {
                 personalDetailsUtil = fakePersonalDetailsUtil(),
                 cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
                 testResultUtil = fakeTestResultUtil(),
-                tokenValidatorUtil = fakeTokenValidatorUtil()
+                tokenValidatorUtil = fakeTokenValidatorUtil(),
+                testResultAttributesUseCase = fakeTestResultAttributesUseCase()
             )
             val result = usecase.testResult(uniqueCode = "$providerIdentifier-code-t1")
             assertTrue(result is TestResult.ServerError)
@@ -291,7 +303,8 @@ class TestResultUseCaseTest {
                 personalDetailsUtil = fakePersonalDetailsUtil(),
                 cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
                 testResultUtil = fakeTestResultUtil(),
-                tokenValidatorUtil = fakeTokenValidatorUtil()
+                tokenValidatorUtil = fakeTokenValidatorUtil(),
+                testResultAttributesUseCase = fakeTestResultAttributesUseCase()
             )
             val result = usecase.testResult(uniqueCode = "$providerIdentifier-code-t1")
             assertTrue(result is TestResult.NetworkError)
@@ -318,7 +331,8 @@ class TestResultUseCaseTest {
                 personalDetailsUtil = fakePersonalDetailsUtil(),
                 cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
                 testResultUtil = fakeTestResultUtil(),
-                tokenValidatorUtil = fakeTokenValidatorUtil()
+                tokenValidatorUtil = fakeTokenValidatorUtil(),
+                testResultAttributesUseCase = fakeTestResultAttributesUseCase()
             )
             val result = usecase.testResult(uniqueCode = "$providerIdentifier-code-t1")
             assertTrue(result is TestResult.Pending)
@@ -341,12 +355,43 @@ class TestResultUseCaseTest {
                 personalDetailsUtil = fakePersonalDetailsUtil(),
                 cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
                 testResultUtil = fakeTestResultUtil(),
-                tokenValidatorUtil = fakeTokenValidatorUtil()
+                tokenValidatorUtil = fakeTokenValidatorUtil(),
+                testResultAttributesUseCase = fakeTestResultAttributesUseCase()
             )
             val result = usecase.signTestResult(getRemoteTestResult())
             assertTrue(result is SignedTestResult.Complete)
         }
     }
+
+    @Test
+    fun `signTestResult returns CouldNotVerifyCredentials if credentials can not be verified`() =
+        runBlocking {
+            runBlocking {
+                val usecase = TestResultUseCase(
+                    testProviderUseCase = fakeTestProviderUseCase(),
+                    testProviderRepository = fakeTestProviderRepository(),
+                    coronaCheckRepository = fakeCoronaCheckRepository(
+                        testIsmResult = TestIsmResult.Success(
+                            body = "dummy"
+                        )
+                    ),
+                    commitmentMessageUseCase = fakeCommitmentMessageUsecase(),
+                    secretKeyUseCase = fakeSecretKeyUseCase(),
+                    createCredentialUseCase = fakeCreateCredentialUseCase(),
+                    personalDetailsUtil = fakePersonalDetailsUtil(),
+                    cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
+                    testResultUtil = fakeTestResultUtil(),
+                    tokenValidatorUtil = fakeTokenValidatorUtil(),
+                    testResultAttributesUseCase = object : TestResultAttributesUseCase {
+                        override fun get(credentials: String): TestResultAttributes {
+                            throw Exception("Could not verify")
+                        }
+                    }
+                )
+                val result = usecase.signTestResult(getRemoteTestResult())
+                assertTrue(result is SignedTestResult.CouldNotVerifyCredentials)
+            }
+        }
 
     @Test
     fun `signTestResult returns AlreadySigned if TestIsmResult is Error with CODE_ALREADY_SIGNED error`() =
@@ -375,7 +420,8 @@ class TestResultUseCaseTest {
                     personalDetailsUtil = fakePersonalDetailsUtil(),
                     cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
                     testResultUtil = fakeTestResultUtil(),
-                    tokenValidatorUtil = fakeTokenValidatorUtil()
+                    tokenValidatorUtil = fakeTokenValidatorUtil(),
+                    testResultAttributesUseCase = fakeTestResultAttributesUseCase()
                 )
                 val result = usecase.signTestResult(getRemoteTestResult())
                 assertTrue(result is SignedTestResult.AlreadySigned)
@@ -408,7 +454,8 @@ class TestResultUseCaseTest {
                 personalDetailsUtil = fakePersonalDetailsUtil(),
                 cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
                 testResultUtil = fakeTestResultUtil(),
-                tokenValidatorUtil = fakeTokenValidatorUtil()
+                tokenValidatorUtil = fakeTokenValidatorUtil(),
+                testResultAttributesUseCase = fakeTestResultAttributesUseCase()
             )
             val result = usecase.signTestResult(getRemoteTestResult())
             assertTrue(result is SignedTestResult.ServerError)
@@ -439,7 +486,8 @@ class TestResultUseCaseTest {
                 personalDetailsUtil = fakePersonalDetailsUtil(),
                 cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
                 testResultUtil = fakeTestResultUtil(),
-                tokenValidatorUtil = fakeTokenValidatorUtil()
+                tokenValidatorUtil = fakeTokenValidatorUtil(),
+                testResultAttributesUseCase = fakeTestResultAttributesUseCase()
             )
             val result = usecase.signTestResult(getRemoteTestResult())
             assertTrue(result is SignedTestResult.ServerError)
@@ -466,7 +514,8 @@ class TestResultUseCaseTest {
                 personalDetailsUtil = fakePersonalDetailsUtil(),
                 cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
                 testResultUtil = fakeTestResultUtil(),
-                tokenValidatorUtil = fakeTokenValidatorUtil()
+                tokenValidatorUtil = fakeTokenValidatorUtil(),
+                testResultAttributesUseCase = fakeTestResultAttributesUseCase()
             )
             val result = usecase.signTestResult(getRemoteTestResult())
             assertTrue(result is SignedTestResult.NetworkError)

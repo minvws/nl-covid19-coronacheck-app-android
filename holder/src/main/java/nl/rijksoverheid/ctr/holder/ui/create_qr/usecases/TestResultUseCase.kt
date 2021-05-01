@@ -7,6 +7,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.TestIsmResult
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.TestProviderRepository
+import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TokenValidatorUtil
 import nl.rijksoverheid.ctr.shared.ext.removeWhitespace
 import nl.rijksoverheid.ctr.shared.models.PersonalDetails
@@ -34,6 +35,7 @@ class TestResultUseCase(
     private val personalDetailsUtil: PersonalDetailsUtil,
     private val testResultUtil: TestResultUtil,
     private val cachedAppConfigUseCase: CachedAppConfigUseCase,
+    private val testResultAttributesUseCase: TestResultAttributesUseCase,
     private val tokenValidatorUtil: TokenValidatorUtil
 ) {
 
@@ -136,12 +138,23 @@ class TestResultUseCase(
                 is TestIsmResult.Success -> {
                     Timber.i("Received test ism json ${testIsm.body}")
 
-                    val credential = createCredentialUseCase.get(
+                    val credentials = createCredentialUseCase.get(
                         secretKeyJson = secretKeyUseCase.json(),
                         testIsmBody = testIsm.body
                     )
 
-                    return SignedTestResult.Complete(credential)
+                    val credentialsVerified = try {
+                        testResultAttributesUseCase.get(credentials)
+                        true
+                    } catch (e: Exception) {
+                        false
+                    }
+
+                    return if (credentialsVerified) {
+                        SignedTestResult.Complete(credentials)
+                    } else {
+                        SignedTestResult.CouldNotVerifyCredentials
+                    }
                 }
                 is TestIsmResult.Error -> {
                     return if (testIsm.responseError.code == ResponseError.CODE_ALREADY_SIGNED) {
@@ -179,4 +192,5 @@ sealed class SignedTestResult {
     object AlreadySigned : SignedTestResult()
     data class ServerError(val httpCode: Int, val errorCode: Int? = null) : SignedTestResult()
     object NetworkError : SignedTestResult()
+    object CouldNotVerifyCredentials : SignedTestResult()
 }
