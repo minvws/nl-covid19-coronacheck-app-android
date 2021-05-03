@@ -62,7 +62,7 @@ class AppStatusFragment : Fragment(R.layout.fragment_app_status) {
                     R.string.app_status_update_required_title,
                     R.string.app_status_update_required_message,
                     R.string.app_status_update_required_action,
-                    R.drawable.illustration_app_status_update
+                    R.drawable.illustration_app_status_update_required
                 ) {
                     openPlayStore()
                 }
@@ -72,7 +72,7 @@ class AppStatusFragment : Fragment(R.layout.fragment_app_status) {
                     R.string.app_status_internet_required_title,
                     R.string.app_status_internet_required_message,
                     R.string.app_status_internet_required_action,
-                    R.drawable.illustration_app_status_no_internet
+                    R.drawable.illustration_app_status_internet_required
                 ) {
                     val launchIntent =
                         requireContext().packageManager.getLaunchIntentForPackage(requireContext().packageName)
