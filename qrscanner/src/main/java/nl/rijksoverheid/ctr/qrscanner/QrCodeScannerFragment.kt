@@ -19,10 +19,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.doOnLayout
+import androidx.core.view.updateMargins
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -85,6 +87,15 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
             set.clone(binding.root)
             set.setGuidelineBegin(binding.headerGuideline.id, binding.overlay.bottomOfOverlayWindow)
             set.applyTo(binding.root)
+        }
+
+        // Make sure scrollable container doesn't overlap nav bar
+        val navBarResourceId: Int =
+            resources.getIdentifier("navigation_bar_height", "dimen", "android")
+        if (navBarResourceId > 0) {
+            (binding.scannerHeaderContainer.layoutParams as ConstraintLayout.LayoutParams).updateMargins(
+                bottom = resources.getDimensionPixelSize(navBarResourceId)
+            )
         }
     }
 
