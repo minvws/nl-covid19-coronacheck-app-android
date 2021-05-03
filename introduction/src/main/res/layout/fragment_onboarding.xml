@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            android:contentDescription="@string/back"
+            app:navigationContentDescription="@string/back"
             android:touchscreenBlocksFocus="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
