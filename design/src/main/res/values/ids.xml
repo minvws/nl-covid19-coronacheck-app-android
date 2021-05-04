@@ -16,4 +16,5 @@
     <item name="app_version" type="string" />
     <item name="toolbar" type="id" />
     <item name="menu_close" type="string" />
+    <item name="about_this_app_read_more" type="id" />
 </resources>

@@ -28,11 +28,6 @@
             android:checkable="false"
             android:title="@string/about_this_app" />
 
-        <item
-            android:id="@+id/nav_privacy_statement"
-            android:checkable="false"
-            android:title="@string/privacy_statement" />
-
         <!-- TODO: Implement terms of use -->
         <item
             android:id="@+id/nav_terms_of_use"

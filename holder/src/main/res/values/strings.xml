@@ -64,7 +64,7 @@
     <string name="commercial_test_type_qr_code_title">Ik heb een QR-code</string>
     <string name="commercial_test_type_no_code_title">Ik heb geen code</string>
     <string name="commercial_test_type_no_code_received_title">Ik heb geen code gekregen</string>
-    <string name="commercial_test_type_no_code_description"><![CDATA[Je krijgt van de testlocatie een code met cijfers en letters.<br\><br\>Heb je geen code gekregen? Of ben je ‘m kwijtgeraakt? Neem dan contact op met de testlocatie.<br\><br\>Het kan zijn dat je je opnieuw moet laten testen.]]></string>
+    <string name="commercial_test_type_no_code_description"><![CDATA[Je krijgt van de testlocatie een ophaalcode met cijfers en letters.<br\><br\>Heb je geen code gekregen? Of ben je ‘m kwijtgeraakt? Neem dan contact op met de testlocatie.<br\><br\>Het kan zijn dat je je opnieuw moet laten testen.]]></string>
     <string name="commercial_test_code_title">Testuitslag ophalen</string>
     <string name="commercial_test_code_description">Vul jouw ophaalcode in. Deze heb je van je testlocatie gekregen.</string>
     <string name="commercial_test_unique_code_header">Ophaalcode</string>
@@ -167,9 +167,15 @@
     <string name="accessibility_logo_label_ministry">Logo Rijksoverheid</string>
     <string name="url_faq">https://coronacheck.nl/nl/faq-in-app.html</string>
     <string name="url_privacy_statement">https://coronacheck.nl/nl/privacy-in-app</string>
-    <string name="url_make_appointment">https://coronacheck.nl/nl/testaanbieders-fieldlab-in-de-app</string>
+    <string name="url_make_appointment">https://coronacheck.nl/nl/testafspraak-in-app</string>
     <string name="dialog_verification_code_title">Nieuwe verificatiecode nodig?</string>
     <string name="dialog_verification_code_message">Je krijgt de verificatiecode via een sms of e-mail van de testlocatie. Niet ontvangen? Dan kun je een nieuwe code krijgen.</string>
     <string name="dialog_verification_code_positive_button">Stuur code</string>
     <string name="commercial_test_verification_code_description_deeplink">Vul jouw verificatiecode in om je negatieve testresultaat op te halen.</string>
+    <string name="dialog_rooted_device_title">Alert titel voor rooted device</string>
+    <string name="dialog_rooted_device_message">Alert content voor rooted device</string>
+    <string name="dialog_rooted_device_positive_button">Ok</string>
+    <string name="about_this_app_read_more">Lees meer</string>
+    <string name="about_this_app_accessibility">Toegankelijkheid</string>
+    <string name="url_accessibility">https://coronacheck.nl/nl/accessibility-in-app</string>
 </resources>
