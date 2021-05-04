@@ -104,4 +104,5 @@
     <string name="dialog_rooted_device_positive_button">Ok</string>
     <string name="about_this_app_read_more">Lees meer</string>
     <string name="about_this_app_accessibility">Toegankelijkheid</string>
+    <string name="url_accessibility">https://coronacheck.nl/nl/accessibility-in-app</string>
 </resources>

@@ -167,7 +167,7 @@
     <string name="accessibility_logo_label_ministry">Logo Rijksoverheid</string>
     <string name="url_faq">https://coronacheck.nl/nl/faq-in-app.html</string>
     <string name="url_privacy_statement">https://coronacheck.nl/nl/privacy-in-app</string>
-    <string name="url_make_appointment">https://coronacheck.nl/nl/testaanbieders-fieldlab-in-de-app</string>
+    <string name="url_make_appointment">https://coronacheck.nl/nl/testafspraak-in-app</string>
     <string name="dialog_verification_code_title">Nieuwe verificatiecode nodig?</string>
     <string name="dialog_verification_code_message">Je krijgt de verificatiecode via een sms of e-mail van de testlocatie. Niet ontvangen? Dan kun je een nieuwe code krijgen.</string>
     <string name="dialog_verification_code_positive_button">Stuur code</string>
@@ -177,4 +177,5 @@
     <string name="dialog_rooted_device_positive_button">Ok</string>
     <string name="about_this_app_read_more">Lees meer</string>
     <string name="about_this_app_accessibility">Toegankelijkheid</string>
+    <string name="url_accessibility">https://coronacheck.nl/nl/accessibility-in-app</string>
 </resources>

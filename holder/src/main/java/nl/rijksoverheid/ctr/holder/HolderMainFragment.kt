@@ -18,12 +18,12 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import nl.rijksoverheid.ctr.design.BaseMainFragment
+import nl.rijksoverheid.ctr.design.ext.styleTitle
 import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppData
 import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppFragment
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMainBinding
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.ext.setAccessibilityFocus
-import nl.rijksoverheid.ctr.design.ext.styleTitle
 
 class HolderMainFragment : BaseMainFragment(
     R.layout.fragment_main, setOf(
@@ -75,7 +75,17 @@ class HolderMainFragment : BaseMainFragment(
                         R.id.nav_about_this_app, AboutThisAppFragment.getBundle(
                             data = AboutThisAppData(
                                 versionName = BuildConfig.VERSION_NAME,
-                                versionCode = BuildConfig.VERSION_CODE.toString()
+                                versionCode = BuildConfig.VERSION_CODE.toString(),
+                                readMoreItems = listOf(
+                                    AboutThisAppData.ReadMoreItem(
+                                        text = getString(R.string.privacy_statement),
+                                        url = getString(R.string.url_privacy_statement),
+                                    ),
+                                    AboutThisAppData.ReadMoreItem(
+                                        text = getString(R.string.about_this_app_accessibility),
+                                        url = getString(R.string.url_accessibility),
+                                    )
+                                )
                             )
                         )
                     )

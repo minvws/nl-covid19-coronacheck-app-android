@@ -9,10 +9,13 @@
 package nl.rijksoverheid.ctr.design.menu.about
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.design.R
+import nl.rijksoverheid.ctr.design.databinding.AboutThisAppRowBinding
 import nl.rijksoverheid.ctr.design.databinding.FragmentAboutAppBinding
+import nl.rijksoverheid.ctr.shared.ext.launchUrl
 
 class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
 
@@ -32,6 +35,18 @@ class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
 
         val aboutThisAppData = arguments?.getParcelable<AboutThisAppData>(EXTRA_ABOUT_THIS_APP_DATA)
             ?: throw IllegalStateException("AboutThisAppData should be set")
+
+        aboutThisAppData.readMoreItems.forEach { item ->
+            val view = AboutThisAppRowBinding.inflate(
+                LayoutInflater.from(requireContext()),
+                binding.readMoreItems,
+                true
+            )
+            view.title.text = item.text
+            view.root.setOnClickListener {
+                item.url.launchUrl(requireContext())
+            }
+        }
 
         binding.appVersion.text = getString(
             R.string.app_version,
