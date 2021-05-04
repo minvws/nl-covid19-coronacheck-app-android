@@ -90,12 +90,12 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
         }
 
         // Make sure scrollable container doesn't overlap nav bar
-        val navBarResourceId: Int =
-            resources.getIdentifier("navigation_bar_height", "dimen", "android")
-        if (navBarResourceId > 0) {
-            (binding.scannerHeaderContainer.layoutParams as ConstraintLayout.LayoutParams).updateMargins(
-                bottom = resources.getDimensionPixelSize(navBarResourceId)
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.scannerHeaderContainer) { view, insets ->
+            (view.layoutParams as ConstraintLayout.LayoutParams).updateMargins(
+                bottom = insets.systemWindowInsetBottom
             )
+            insets
         }
     }
 
