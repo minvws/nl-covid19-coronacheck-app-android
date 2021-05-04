@@ -90,9 +90,6 @@ class HolderMainFragment : BaseMainFragment(
                         )
                     )
                 }
-                R.id.nav_privacy_statement -> {
-                    getString(R.string.url_privacy_statement).launchUrl(requireActivity())
-                }
                 else -> {
                     NavigationUI.onNavDestinationSelected(item, navController)
                 }
@@ -140,8 +137,6 @@ class HolderMainFragment : BaseMainFragment(
         binding.navView.menu.findItem(R.id.nav_about_this_app)
             .styleTitle(context, R.attr.textAppearanceBody1)
         binding.navView.menu.findItem(R.id.nav_frequently_asked_questions)
-            .styleTitle(context, R.attr.textAppearanceBody1)
-        binding.navView.menu.findItem(R.id.nav_privacy_statement)
             .styleTitle(context, R.attr.textAppearanceBody1)
         binding.navView.menu.findItem(R.id.nav_terms_of_use)
             .styleTitle(context, R.attr.textAppearanceBody1)

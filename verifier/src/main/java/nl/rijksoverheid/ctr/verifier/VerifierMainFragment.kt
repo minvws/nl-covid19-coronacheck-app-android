@@ -74,9 +74,6 @@ class VerifierMainFragment :
                         )
                     )
                 }
-                R.id.nav_privacy_statement -> {
-                    getString(R.string.url_terms_of_use).launchUrl(requireActivity())
-                }
                 R.id.nav_close_menu -> {
                     binding.navView.menu.close()
                 }
@@ -120,8 +117,6 @@ class VerifierMainFragment :
         binding.navView.menu.findItem(R.id.nav_about_this_app)
             .styleTitle(context, R.attr.textAppearanceBody1)
         binding.navView.menu.findItem(R.id.nav_give_us_feedback)
-            .styleTitle(context, R.attr.textAppearanceBody1)
-        binding.navView.menu.findItem(R.id.nav_privacy_statement)
             .styleTitle(context, R.attr.textAppearanceBody1)
         binding.navView.menu.findItem(R.id.nav_close_menu)
             .styleTitle(context, R.attr.textAppearanceBody1)
