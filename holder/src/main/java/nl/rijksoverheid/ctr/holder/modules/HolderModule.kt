@@ -6,6 +6,8 @@ import nl.rijksoverheid.ctr.api.signing.certificates.DIGICERT_BTC_ROOT_CA
 import nl.rijksoverheid.ctr.api.signing.certificates.EV_ROOT_CA
 import nl.rijksoverheid.ctr.api.signing.certificates.PRIVATE_ROOT_CA
 import nl.rijksoverheid.ctr.api.signing.certificates.ROOT_CA_G3
+import nl.rijksoverheid.ctr.appconfig.usecases.DeviceRootedUseCase
+import nl.rijksoverheid.ctr.appconfig.usecases.DeviceRootedUseCaseImpl
 import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.SharedPreferencesPersistenceManager
@@ -20,6 +22,8 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.ResponseError
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
+import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModel
+import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.LocalTestResultViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.LocalTestResultViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.LocalTestResultUseCase
@@ -31,6 +35,7 @@ import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import okhttp3.tls.HandshakeCertificates
 import okhttp3.tls.decodeCertificatePem
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -95,12 +100,14 @@ fun holderModule(baseUrl: String) = module {
     factory {
         TokenQrUseCase(get())
     }
+    factory<DeviceRootedUseCase> { DeviceRootedUseCaseImpl(androidContext()) }
 
     // ViewModels
     viewModel<LocalTestResultViewModel> { LocalTestResultViewModelImpl(get(), get()) }
     viewModel { DigiDViewModel(get()) }
     viewModel { TestResultsViewModel(get(), get(), get(), get()) }
     viewModel { TokenQrViewModel(get()) }
+    viewModel<DeviceRootedViewModel> { DeviceRootedViewModelImpl(get()) }
 
     // Repositories
     single { AuthenticationRepository() }

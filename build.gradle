@@ -47,6 +47,7 @@ buildscript {
     ext.androidx_arch_core_version = '2.1.0'
     ext.app_auth_version = '0.8.1'
     ext.security_crypto_version = '1.0.0-rc04'
+    ext.rootbeer_version = '0.0.9'
 
     repositories {
         google()
