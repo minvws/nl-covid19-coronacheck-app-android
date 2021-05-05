@@ -15,14 +15,14 @@ import nl.rijksoverheid.ctr.holder.ui.myoverview.LocalTestResultViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.LocalTestResult
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.LocalTestResultState
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.LocalTestResultUseCase
+import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TokenValidatorUtil
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
-import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.introduction.ui.new_terms.models.NewTerms
+import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.PersonalDetails
 import nl.rijksoverheid.ctr.shared.models.TestResultAttributes
-import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import nl.rijksoverheid.ctr.shared.utils.TestResultUtil
 import java.time.OffsetDateTime
@@ -328,6 +328,14 @@ fun fakePersistenceManager(
 
         override fun setHasSeenCameraRationale(hasSeen: Boolean) {
 
+        }
+
+        override fun hasDismissedRootedDeviceDialog(): Boolean {
+            return false
+        }
+
+        override fun setHasDismissedRootedDeviceDialog() {
+            
         }
     }
 }
