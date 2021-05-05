@@ -77,7 +77,8 @@ class HolderMainActivity : AppCompatActivity() {
                     title = R.string.dialog_rooted_device_title,
                     message = getString(R.string.dialog_rooted_device_message),
                     positiveButtonText = R.string.dialog_rooted_device_positive_button,
-                    positiveButtonCallback = { }
+                    positiveButtonCallback = { },
+                    onDismissCallback = { deviceRootedViewModel.setHasDismissedRootedDeviceDialog() }
                 )
             }
         })

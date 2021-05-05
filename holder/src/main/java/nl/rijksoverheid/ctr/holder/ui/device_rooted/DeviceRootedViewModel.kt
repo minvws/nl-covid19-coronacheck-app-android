@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.appconfig.usecases.DeviceRootedUseCase
+import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.shared.livedata.Event
 
 /*
@@ -16,15 +17,27 @@ import nl.rijksoverheid.ctr.shared.livedata.Event
  */
 abstract class DeviceRootedViewModel : ViewModel() {
     val deviceRootedLiveData = MutableLiveData<Event<Boolean>>()
+    abstract fun setHasDismissedRootedDeviceDialog()
 }
 
-class DeviceRootedViewModelImpl(private val deviceRootedUseCase: DeviceRootedUseCase) :
+class DeviceRootedViewModelImpl(
+    private val deviceRootedUseCase: DeviceRootedUseCase,
+    private val persistenceManager: PersistenceManager
+) :
     DeviceRootedViewModel() {
 
     init {
         viewModelScope.launch {
-            deviceRootedLiveData.postValue(Event(deviceRootedUseCase.isDeviceRooted()))
+            // When the device rooted dialog has never been dismissed, keep checking if we are dealing
+            // with a rooted device
+            if (!persistenceManager.hasDismissedRootedDeviceDialog()) {
+                deviceRootedLiveData.postValue(Event(deviceRootedUseCase.isDeviceRooted()))
+            }
         }
+    }
+
+    override fun setHasDismissedRootedDeviceDialog() {
+        persistenceManager.setHasDismissedRootedDeviceDialog()
     }
 }
 

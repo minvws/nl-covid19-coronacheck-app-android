@@ -19,7 +19,8 @@ interface DialogUtil {
         @StringRes positiveButtonText: Int,
         positiveButtonCallback: () -> Unit,
         @StringRes negativeButtonText: Int? = null,
-        negativeButtonCallback: (() -> Unit)? = null
+        negativeButtonCallback: (() -> Unit)? = null,
+        onDismissCallback: (() -> Unit)? = null
     )
 }
 
@@ -32,7 +33,8 @@ class DialogUtilImpl : DialogUtil {
         @StringRes positiveButtonText: Int,
         positiveButtonCallback: () -> Unit,
         @StringRes negativeButtonText: Int?,
-        negativeButtonCallback: (() -> Unit)?
+        negativeButtonCallback: (() -> Unit)?,
+        onDismissCallback: (() -> Unit)?
     ) {
         val builder = MaterialAlertDialogBuilder(context)
             .setTitle(title)
@@ -45,6 +47,10 @@ class DialogUtilImpl : DialogUtil {
             builder.setNegativeButton(
                 negativeButtonText
             ) { _, _ -> negativeButtonCallback?.invoke() }
+        }
+
+        builder.setOnDismissListener {
+            onDismissCallback?.invoke()
         }
 
         builder.show()
