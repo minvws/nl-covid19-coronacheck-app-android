@@ -19,10 +19,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.doOnLayout
+import androidx.core.view.updateMargins
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -71,12 +73,15 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
             findNavController().navigateUp()
         }
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.toolbar) { _, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
             binding.toolbar.setPadding(0, insets.systemWindowInsetTop, 0, 0)
+            (binding.scannerFooterContainer.layoutParams as ConstraintLayout.LayoutParams).updateMargins(
+                bottom = insets.systemWindowInsetBottom
+            )
             insets
         }
 
-        binding.scannerHeader.text = getCopy().message
+        binding.scannerFooter.text = getCopy().message
         binding.toolbar.title = getCopy().title
 
         // Show header below overlay window after overlay finishes drawing

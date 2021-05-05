@@ -52,7 +52,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
-        android:id="@+id/scanner_header_container"
+        android:id="@+id/scanner_footer_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="32dp"
@@ -62,7 +62,7 @@
         app:layout_constraintTop_toBottomOf="@id/header_guideline">
 
         <TextView
-            android:id="@+id/scanner_header"
+            android:id="@+id/scanner_footer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/overlay_cutout_margin"
