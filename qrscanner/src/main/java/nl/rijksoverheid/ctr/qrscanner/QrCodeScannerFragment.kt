@@ -73,12 +73,15 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
             findNavController().navigateUp()
         }
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.toolbar) { _, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
             binding.toolbar.setPadding(0, insets.systemWindowInsetTop, 0, 0)
+            (binding.scannerFooterContainer.layoutParams as ConstraintLayout.LayoutParams).updateMargins(
+                bottom = insets.systemWindowInsetBottom
+            )
             insets
         }
 
-        binding.scannerHeader.text = getCopy().message
+        binding.scannerFooter.text = getCopy().message
         binding.toolbar.title = getCopy().title
 
         // Show header below overlay window after overlay finishes drawing
@@ -87,15 +90,6 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
             set.clone(binding.root)
             set.setGuidelineBegin(binding.headerGuideline.id, binding.overlay.bottomOfOverlayWindow)
             set.applyTo(binding.root)
-        }
-
-        // Make sure scrollable container doesn't overlap nav bar
-
-        ViewCompat.setOnApplyWindowInsetsListener(binding.scannerHeaderContainer) { view, insets ->
-            (view.layoutParams as ConstraintLayout.LayoutParams).updateMargins(
-                bottom = insets.systemWindowInsetBottom
-            )
-            insets
         }
     }
 
