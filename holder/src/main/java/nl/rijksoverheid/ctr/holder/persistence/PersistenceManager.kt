@@ -17,6 +17,8 @@ interface PersistenceManager {
     fun deleteCredentials()
     fun hasSeenCameraRationale(): Boolean?
     fun setHasSeenCameraRationale(hasSeen: Boolean)
+    fun hasDismissedRootedDeviceDialog(): Boolean
+    fun setHasDismissedRootedDeviceDialog()
 }
 
 class SharedPreferencesPersistenceManager(
@@ -28,6 +30,7 @@ class SharedPreferencesPersistenceManager(
         const val SECRET_KEY_JSON = "SECRET_KEY_JSON"
         const val CREDENTIALS = "CREDENTIALS"
         const val HAS_SEEN_CAMERA_RATIONALE = "HAS_SEEN_CAMERA_RATIONALE"
+        const val HAS_SEEN_ROOTED_DEVICE_DIALOG = "HAS_SEEN_ROOTED_DEVICE_DIALOG"
     }
 
     override fun saveSecretKeyJson(json: String) {
@@ -68,6 +71,18 @@ class SharedPreferencesPersistenceManager(
             sharedPreferences.edit().putBoolean(HAS_SEEN_CAMERA_RATIONALE, hasSeen).commit()
         if (!result) {
             throw IllegalStateException("Failed to set camera rationale has been seen in shared preference")
+        }
+    }
+
+    override fun hasDismissedRootedDeviceDialog(): Boolean {
+        return sharedPreferences.getBoolean(HAS_SEEN_ROOTED_DEVICE_DIALOG, false)
+    }
+
+    override fun setHasDismissedRootedDeviceDialog() {
+        val result =
+            sharedPreferences.edit().putBoolean(HAS_SEEN_ROOTED_DEVICE_DIALOG, true).commit()
+        if (!result) {
+            throw IllegalStateException("Failed to set rooted device dialog has been seen in shared preference")
         }
     }
 }

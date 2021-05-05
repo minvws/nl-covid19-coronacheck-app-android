@@ -107,7 +107,7 @@ fun holderModule(baseUrl: String) = module {
     viewModel { DigiDViewModel(get()) }
     viewModel { TestResultsViewModel(get(), get(), get(), get()) }
     viewModel { TokenQrViewModel(get()) }
-    viewModel<DeviceRootedViewModel> { DeviceRootedViewModelImpl(get()) }
+    viewModel<DeviceRootedViewModel> { DeviceRootedViewModelImpl(get(), get()) }
 
     // Repositories
     single { AuthenticationRepository() }
