@@ -7,6 +7,8 @@ import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
+import nl.rijksoverheid.ctr.holder.ui.create_qr.TestResultsViewModel
+import nl.rijksoverheid.ctr.holder.ui.create_qr.TestResultsViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.TestProviderRepository
@@ -164,6 +166,26 @@ fun fakeLocalTestResultViewModel(
             } else {
                 return false
             }
+        }
+    }
+}
+
+fun fakeTestResultsViewModel(): TestResultsViewModel {
+    return object : TestResultsViewModel() {
+        override fun updateViewState() {
+
+        }
+
+        override fun getTestResult(fromDeeplink: Boolean) {
+
+        }
+
+        override fun sendVerificationCode() {
+
+        }
+
+        override fun saveTestResult() {
+
         }
     }
 }

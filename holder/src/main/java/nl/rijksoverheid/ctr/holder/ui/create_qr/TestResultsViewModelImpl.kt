@@ -16,12 +16,21 @@ import nl.rijksoverheid.ctr.shared.livedata.Event
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class TestResultsViewModel(
+
+abstract class TestResultsViewModel : ViewModel(){
+    abstract fun updateViewState()
+    abstract fun getTestResult(fromDeeplink: Boolean = false)
+    abstract fun sendVerificationCode()
+    abstract fun saveTestResult()
+}
+
+
+open class TestResultsViewModelImpl(
     private val savedStateHandle: SavedStateHandle,
     private val testResultUseCase: TestResultUseCase,
     private val persistenceManager: PersistenceManager,
     private val secretKeyUseCase: SecretKeyUseCase
-) : ViewModel() {
+) : TestResultsViewModel() {
 
     val testResult: LiveData<Event<TestResult>> = MutableLiveData()
     val signedTestResult: LiveData<Event<SignedTestResult>> = MutableLiveData()
@@ -67,7 +76,7 @@ class TestResultsViewModel(
         updateViewState()
     }
 
-    private fun updateViewState() {
+    override fun updateViewState() {
         (viewState as MutableLiveData).value = currentViewState.copy(
             verificationRequired = verificationRequired,
             canRetrieveResult = (testCode.isNotEmpty() && !verificationRequired) || (verificationRequired && testCode.isNotEmpty() && verificationCode.isNotEmpty()),
@@ -75,7 +84,7 @@ class TestResultsViewModel(
         )
     }
 
-    fun getTestResult(fromDeeplink: Boolean = false) {
+    override fun getTestResult(fromDeeplink: Boolean) {
         this.fromDeeplink = fromDeeplink
         (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {
@@ -91,7 +100,7 @@ class TestResultsViewModel(
         }
     }
 
-    fun sendVerificationCode() {
+    override fun sendVerificationCode() {
         viewModelScope.launch {
             val result = testResultUseCase.testResult(testCode, "")
 
@@ -102,7 +111,7 @@ class TestResultsViewModel(
         }
     }
 
-    fun saveTestResult() {
+    override fun saveTestResult() {
         (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {
             try {

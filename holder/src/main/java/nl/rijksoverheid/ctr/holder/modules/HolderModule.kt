@@ -11,7 +11,7 @@ import nl.rijksoverheid.ctr.appconfig.usecases.DeviceRootedUseCaseImpl
 import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.SharedPreferencesPersistenceManager
-import nl.rijksoverheid.ctr.holder.ui.create_qr.TestResultsViewModel
+import nl.rijksoverheid.ctr.holder.ui.create_qr.TestResultsViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.TokenQrViewModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.HolderApiClient
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.RemoteTestStatusJsonAdapter
@@ -105,7 +105,7 @@ fun holderModule(baseUrl: String) = module {
     // ViewModels
     viewModel<LocalTestResultViewModel> { LocalTestResultViewModelImpl(get(), get()) }
     viewModel { DigiDViewModel(get()) }
-    viewModel { TestResultsViewModel(get(), get(), get(), get()) }
+    viewModel { TestResultsViewModelImpl(get(), get(), get(), get()) }
     viewModel { TokenQrViewModel(get()) }
     viewModel<DeviceRootedViewModel> { DeviceRootedViewModelImpl(get(), get()) }
 

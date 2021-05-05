@@ -32,7 +32,7 @@ import java.time.ZoneOffset
 class YourNegativeTestResultFragment : Fragment(R.layout.fragment_your_negative_test_results) {
 
     private val dialogUtil: DialogUtil by inject()
-    private val viewModel: TestResultsViewModel by sharedViewModelWithOwner(
+    private val viewModel: TestResultsViewModelImpl by sharedViewModelWithOwner(
         state = emptyState(),
         owner = {
             ViewModelOwner.from(
