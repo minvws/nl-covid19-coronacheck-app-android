@@ -236,7 +236,7 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
     /**
      * Process frames from CameraX and extract QR codes
      */
-    @SuppressLint("UnsafeExperimentalUsageError")
+    @SuppressLint("UnsafeExperimentalUsageError", "UnsafeOptInUsageError")
     private fun processCameraFrame(
         cameraProvider: ProcessCameraProvider,
         barcodeScanner: BarcodeScanner,
