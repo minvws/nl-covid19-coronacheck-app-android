@@ -14,7 +14,7 @@
     <string name="onboarding_screen_3_description">Want access to a certain social, cultural or sports events? Make sure your QR code is scanned at the entrance within %1$s hour(s) after the moment you\'ve been tested. When your negative test declaration expires, the QR code disappears from the app.</string>
     <string name="onboarding_next">Next</string>
     <string name="privacy_policy_title">This is how the app uses your data</string>
-    <string name="privacy_policy_description"><![CDATA[The <a href="https://coronacheck.nl/nl/privacy-in-app">privacy statement</a> details how CoronaCheck handles your data. These are the most important points:]]></string>
+    <string name="privacy_policy_description"><![CDATA[The <a href="https://coronacheck.nl/en/privacy-in-app">privacy statement</a> details how CoronaCheck handles your data. These are the most important points:]]></string>
     <string name="privacy_policy_1"><![CDATA[Your data is <b>not centrally stored anywhere</b>]]></string>
     <string name="privacy_policy_2"><![CDATA[Your GPS or location data is <b>not used or saved</b>]]></string>
     <string name="privacy_policy_3"><![CDATA[The QR code contains a minimum amount of personal <b>data</b>.]]></string>
@@ -157,7 +157,7 @@
     <string name="dialog_retry">Try again</string>
     <string name="new_terms_title">We\'ve updated our policy</string>
     <string name="new_terms_highlights"><![CDATA[<b>This has changed/b><br\><ul><li> Initials and day and month of birth are included in the QR code</li><li>This data is displayed on the Scanner app for ID verification purposes</li></ul>]]></string>
-    <string name="new_terms"><![CDATA[Read the full privacy statement <a href="https://coronacheck.nl/nl/privacy-in-app">here</a>.]]></string>
+    <string name="new_terms"><![CDATA[Read the full privacy statement <a href="https://coronacheck.nl/en/privacy-in-app">here</a>.]]></string>
     <string name="new_terms_consent_button">Next</string>
     <string name="new_terms_consent_needed_positive_button">Agree</string>
     <string name="new_terms_consent_needed_negative_button">Don\'t agree</string>
@@ -166,7 +166,7 @@
     <string name="new_terms_no_consent_dialog_button">OK</string>
     <string name="accessibility_logo_label_ministry">Logo Central Government</string>
     <string name="url_faq">https://coronacheck.nl/en/faq-in-app.html</string>
-    <string name="url_privacy_statement">https://coronacheck.nl/nl/privacy-in-app</string>
+    <string name="url_privacy_statement">https://coronacheck.nl/en/privacy-in-app</string>
     <string name="url_make_appointment">https://coronacheck.nl/en/testafspraak-in-app</string>
     <string name="dialog_verification_code_title">Need a new verification code?</string>
     <string name="dialog_verification_code_message">The test location sends you a verification code via text or e-mail. Didn\'t get one? Then you can request a new code.</string>

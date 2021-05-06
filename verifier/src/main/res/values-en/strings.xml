@@ -14,7 +14,7 @@
     <string name="onboarding_screen_4_description"><![CDATA[With this app, you can receive visitors again. But only if your social, cultural or athletic activity falls under the designated locations.]]></string>
     <string name="onboarding_next">Next</string>
     <string name="privacy_policy_title">Acceptable use policy</string>
-    <string name="privacy_policy_description"><![CDATA[The <a href="https://coronacheck.nl/nl/gebruikersvoorwaarden-in-app">acceptable use policy</a> details how CoronaCheck Scanner uses your data and what your rights are.]]></string>
+    <string name="privacy_policy_description"><![CDATA[The <a href="https://coronacheck.nl/en/gebruikersvoorwaarden-in-app">acceptable use policy</a> details how CoronaCheck Scanner uses your data and what your rights are.]]></string>
     <string name="privacy_policy_1"><![CDATA[The QR code contains <b>minimal data</b> of the visitor]]></string>
     <string name="privacy_policy_2"><![CDATA[You\'re only allowed to use this data to <b>check the valid negative test result</b>]]></string>
     <string name="privacy_policy_3"><![CDATA[The visitor\'s data is <br>not centrally stored anywhere</b>]]></string>
@@ -87,7 +87,7 @@
     <string name="menu_close">Close</string>
     <string name="new_terms_title">We\'ve updated our policy</string>
     <string name="new_terms_highlights"><![CDATA[<b>Here\'s what changed</b><br\><ul><li>Description of acceptable use policy</li><li>App usage explanation</li><li>Camera usage permission</li></ul>]]></string>
-    <string name="new_terms"><![CDATA[Read the full acceptable use policy <a href="https://coronacheck.nl/nl/gebruikersvoorwaarden-in-app">here</a>.]]></string>
+    <string name="new_terms"><![CDATA[Read the full acceptable use policy <a href="https://coronacheck.nl/en/gebruikersvoorwaarden-in-app">here</a>.]]></string>
     <string name="new_terms_consent_button">Next</string>
     <string name="new_terms_consent_needed_positive_button">Agree</string>
     <string name="new_terms_consent_needed_negative_button">Don\'t agree</string>
@@ -95,9 +95,9 @@
     <string name="new_terms_no_consent_dialog_message">You don\'t have access to the CoronaCheck Scanner app if you don\'t agree to the updated policy.</string>
     <string name="new_terms_no_consent_dialog_button">OK</string>
     <string name="accessibility_logo_label_ministry">Logo Central Government</string>
-    <string name="url_faq">https://www.coronacheck.nl/nl/faq-scanner-in-app</string>
-    <string name="url_privacy_statement">https://coronacheck.nl/nl/privacy-in-app</string>
-    <string name="url_terms_of_use">https://coronacheck.nl/nl/gebruikersvoorwaarden-in-app</string>
+    <string name="url_faq">https://www.coronacheck.nl/en/faq-scanner-in-app</string>
+    <string name="url_privacy_statement">https://coronacheck.nl/en/privacy-in-app</string>
+    <string name="url_terms_of_use">https://coronacheck.nl/en/gebruikersvoorwaarden-in-app</string>
     <string name="about_this_app_read_more">Read more</string>
     <string name="about_this_app_accessibility">Accessibility</string>
     <string name="url_accessibility">https://coronacheck.nl/en/accessibility-in-app</string>
