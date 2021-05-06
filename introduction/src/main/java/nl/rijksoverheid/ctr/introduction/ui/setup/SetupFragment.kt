@@ -10,6 +10,7 @@ import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.AppStatusFragment
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.introduction.R
+import nl.rijksoverheid.ctr.shared.utils.Accessibility
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /*
@@ -26,6 +27,8 @@ class SetupFragment : Fragment(R.layout.fragment_setup) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        Accessibility.announce(requireContext(), getString(R.string.app_setup_text))
 
         appStatusViewModel.appStatusLiveData.observe(viewLifecycleOwner, {
             if (it is AppStatus.NoActionRequired) {
