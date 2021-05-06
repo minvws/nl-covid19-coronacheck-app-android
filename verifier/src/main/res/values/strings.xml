@@ -49,8 +49,10 @@
     <string name="scan_instructions_1_description">Druk op de knop ‘Start Scannen’ en vraag de bezoeker de QR-code te laten zien. Dat mag zowel via de CoronaCheck-app als op papier. De QR-code geldt als testbewijs en kan op veilige afstand uitgelezen worden.</string>
     <string name="scan_instructions_2_title">2. Scan de QR-code</string>
     <string name="scan_instructions_2_description">Richt de camera van je telefoon op het testbewijs van de bezoeker en scan de QR-code.</string>
+    <string name="scan_instructions_3_image">Persoon houdt een telefoon vast met een groen scherm en een zwart vinkje.</string>
     <string name="scan_instructions_3_title">3. Groen scherm</string>
     <string name="scan_instructions_3_description">Groen scherm? De bezoeker heeft een geldige negatieve testuitslag. Controleer nu of de gegevens op het groene scherm hetzelfde zijn als de gegevens op het identiteitsbewijs. Check? Dan mag de bezoeker naar binnen. Het kan zijn dat er ook een toegangskaartje nodig is.</string>
+    <string name="scan_instructions_4_image">Persoon houdt een telefoon vast met een rood scherm en een zwart kruis.</string>
     <string name="scan_instructions_4_title">4. Rood scherm</string>
     <string name="scan_instructions_4_description"><![CDATA[Rood scherm? Dat betekent niet dat de bezoeker corona heeft. Het betekent alleen dat de QR-code ongeldig is. Er is dus geen bewijs van een recente negatieve testuitslag. Dit kun je doen:<br\><br\><ul><li>Controleer of de bezoeker de QR-code vanuit de CoronaCheck-app laat zien. Een schermafbeelding of kopie van een QR-code uit de app geeft altijd een rood scherm.</li><li>Vraag de bezoeker de app volledig af te sluiten en opnieuw op te starten. Scan daarna opnieuw de QR-code.</li><li>Blijft er een rood scherm komen, terwijl de bezoeker wel een negatieve testuitslag heeft? Stuur de bezoeker naar onze helpdesk, telefoonnummer: 0800-1421.</li></ul> <br\>Er is altijd een groen scherm nodig voor toegang.</a> Heeft de bezoeker geen (geldige) QR-code? Dan kun je de bezoeker niet binnenlaten. Kijk <a href="https://www.coronacheck.nl/scanner">hier</a> voor meer informatie.
 ]]></string>
