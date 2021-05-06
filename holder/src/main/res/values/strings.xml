@@ -172,8 +172,8 @@
     <string name="dialog_verification_code_message">Je krijgt de verificatiecode via een sms of e-mail van de testlocatie. Niet ontvangen? Dan kun je een nieuwe code krijgen.</string>
     <string name="dialog_verification_code_positive_button">Stuur code</string>
     <string name="commercial_test_verification_code_description_deeplink">Vul jouw verificatiecode in om je negatieve testresultaat op te halen.</string>
-    <string name="dialog_rooted_device_title">Alert titel voor rooted device</string>
-    <string name="dialog_rooted_device_message">Alert content voor rooted device</string>
+    <string name="dialog_rooted_device_title">Er zijn beveiligingsrisico’s gevonden</string>
+    <string name="dialog_rooted_device_message">Let op: je apparaat is geroot. Je gegevens zijn mogelijk niet veilig.</string>
     <string name="dialog_rooted_device_positive_button">Ok</string>
     <string name="about_this_app_read_more">Lees meer</string>
     <string name="about_this_app_accessibility">Toegankelijkheid</string>
