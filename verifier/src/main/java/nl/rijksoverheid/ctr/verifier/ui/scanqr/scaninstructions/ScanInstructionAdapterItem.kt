@@ -17,7 +17,8 @@ import nl.rijksoverheid.ctr.verifier.databinding.ItemScanInstructionBinding
 class ScanInstructionAdapterItem(
     @StringRes private val title: Int,
     private val description: String,
-    @DrawableRes private val image: Int? = null
+    @DrawableRes private val image: Int? = null,
+    private val imageDescription: String? = null,
 ) : BindableItem<ItemScanInstructionBinding>() {
     override fun bind(viewBinding: ItemScanInstructionBinding, position: Int) {
         viewBinding.title.setText(title)
@@ -31,6 +32,7 @@ class ScanInstructionAdapterItem(
         } else {
             viewBinding.image.visibility = View.VISIBLE
             viewBinding.image.setImageResource(image)
+            viewBinding.image.contentDescription = imageDescription
         }
     }
 
