@@ -11,7 +11,7 @@
     <string name="onboarding_screen_4_title">Minimum amount of data</string>
     <string name="onboarding_screen_4_description">Your QR code only states when you tested negative (no coronavirus), the time of testing, and the minimum amount of identifying data: your first name initial, your last name initial, your day of birth, and your month of both. We verify this information to make sure the test result is yours.</string>
     <string name="onboarding_screen_3_title">Validity of your negative test declaration</string>
-    <string name="onboarding_screen_3_description">Want access to a certain social, cultural or sports events? Make sure your QR code is scanned at the entrance within %1$s hour(s) after the moment you\'ve been tested. When your negative test declaration expires, the QR code disappears from the app.</string>
+    <string name="onboarding_screen_3_description">Want access to a certain social, cultural or sports event? Make sure your QR code is scanned at the entrance within %1$s hour(s) after the moment you\'ve been tested. When your negative test declaration expires, the QR code disappears from the app.</string>
     <string name="onboarding_next">Next</string>
     <string name="privacy_policy_title">This is how the app uses your data</string>
     <string name="privacy_policy_description"><![CDATA[The <a href="https://coronacheck.nl/en/privacy-in-app">privacy statement</a> details how CoronaCheck handles your data. These are the most important points:]]></string>
