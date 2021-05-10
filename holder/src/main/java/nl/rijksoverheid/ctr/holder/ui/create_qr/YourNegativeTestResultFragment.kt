@@ -13,10 +13,10 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentYourNegativeTestResultsBinding
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SignedTestResult
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
+import nl.rijksoverheid.ctr.shared.ext.sharedViewModelWithOwner
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ViewModelOwner
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.scope.emptyState
 import java.time.Instant
 import java.time.OffsetDateTime
@@ -32,7 +32,7 @@ import java.time.ZoneOffset
 class YourNegativeTestResultFragment : Fragment(R.layout.fragment_your_negative_test_results) {
 
     private val dialogUtil: DialogUtil by inject()
-    private val viewModel: TestResultsViewModel by sharedViewModel(
+    private val viewModel: TestResultsViewModel by sharedViewModelWithOwner(
         state = emptyState(),
         owner = {
             ViewModelOwner.from(

@@ -36,7 +36,7 @@ android {
 dependencies {
     implementation project(':clcore')
 
-    implementation "org.koin:koin-android:$koin_version"
+    implementation "io.insert-koin:koin-android:$koin_version"
     implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
     implementation "com.jakewharton.timber:timber:${timber_version}"
     implementation(platform("com.squareup.okhttp3:okhttp-bom:$okhttp_version"))
