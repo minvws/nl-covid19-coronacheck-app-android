@@ -7,7 +7,7 @@ package nl.rijksoverheid.ctr.holder.persistence.database.entities
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-sealed class GreenCardType : DatabaseType {
+sealed class GreenCardType {
 
     companion object {
         const val TYPE_DOMESTIC = "domestic"
