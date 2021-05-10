@@ -15,6 +15,10 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.CredentialEntit
  */
 @Dao
 interface CredentialDao {
+
+    @Query("SELECT * FROM credential")
+    suspend fun getAll(): List<CredentialEntity>
+
     @Insert
     suspend fun insert(entity: CredentialEntity)
 
