@@ -7,7 +7,7 @@ package nl.rijksoverheid.ctr.holder.persistence.database.entities
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-sealed class EventType : DatabaseType {
+sealed class EventType {
 
     companion object {
         const val TYPE_VACCINATION = "vaccination"
