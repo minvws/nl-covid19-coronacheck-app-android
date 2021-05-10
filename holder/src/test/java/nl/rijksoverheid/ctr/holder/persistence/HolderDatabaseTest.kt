@@ -14,6 +14,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
 import java.io.IOException
 import java.time.Instant
@@ -28,7 +29,7 @@ import java.time.ZoneOffset
  *
  */
 @RunWith(RobolectricTestRunner::class)
-class HolderDatabaseTest {
+class HolderDatabaseTest : AutoCloseKoinTest() {
 
     private lateinit var db: HolderDatabase
 
