@@ -3,14 +3,16 @@ package nl.rijksoverheid.ctr.holder.ui.myoverview
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.QrCodeData
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.QrCodeUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.LocalTestResult
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.LocalTestResultState
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.QrCodeData
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.LocalTestResultUseCase
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.QrCodeUseCase
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SecretKeyUseCase
 import nl.rijksoverheid.ctr.shared.livedata.Event
+import timber.log.Timber
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -32,13 +34,18 @@ abstract class LocalTestResultViewModel : ViewModel() {
 }
 
 open class LocalTestResultViewModelImpl(
+    private val holderDatabase: HolderDatabase,
     private val localTestResultUseCase: LocalTestResultUseCase,
     private val qrCodeUseCase: QrCodeUseCase
 ) : LocalTestResultViewModel() {
 
     override fun getLocalTestResult() {
         viewModelScope.launch {
-            val localTestResultState = localTestResultUseCase.get(localTestResultStateLiveData.value?.peekContent())
+            holderDatabase.walletDao().get().collect {
+                Timber.v("IK KOM HIER: " + it.first().walletEntity.label)
+            }
+            val localTestResultState =
+                localTestResultUseCase.get(localTestResultStateLiveData.value?.peekContent())
             localTestResultStateLiveData.value = Event(localTestResultState)
         }
     }

@@ -56,10 +56,10 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 fun holderModule(baseUrl: String) = module {
 
     single {
-        Room.databaseBuilder(
-            androidContext(),
-            HolderDatabase::class.java, "holder-database"
-        ).build()
+        Room
+            .databaseBuilder(androidContext(), HolderDatabase::class.java, "holder-database")
+            .createFromAsset("database/holder-database.db")
+            .build()
     }
 
     single<PersistenceManager> {
@@ -112,7 +112,7 @@ fun holderModule(baseUrl: String) = module {
     factory<DeviceRootedUseCase> { DeviceRootedUseCaseImpl(androidContext()) }
 
     // ViewModels
-    viewModel<LocalTestResultViewModel> { LocalTestResultViewModelImpl(get(), get()) }
+    viewModel<LocalTestResultViewModel> { LocalTestResultViewModelImpl(get(), get(), get()) }
     viewModel { DigiDViewModel(get()) }
     viewModel { TestResultsViewModel(get(), get(), get(), get()) }
     viewModel { TokenQrViewModel(get()) }
