@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.holder.modules
 
+import androidx.room.Room
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import nl.rijksoverheid.ctr.api.signing.certificates.DIGICERT_BTC_ROOT_CA
@@ -11,6 +12,7 @@ import nl.rijksoverheid.ctr.appconfig.usecases.DeviceRootedUseCaseImpl
 import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.SharedPreferencesPersistenceManager
+import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.TestResultsViewModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.TokenQrViewModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.HolderApiClient
@@ -52,6 +54,13 @@ import retrofit2.converter.moshi.MoshiConverterFactory
  *
  */
 fun holderModule(baseUrl: String) = module {
+
+    single {
+        Room.databaseBuilder(
+            androidContext(),
+            HolderDatabase::class.java, "holder-database"
+        ).build()
+    }
 
     single<PersistenceManager> {
         SharedPreferencesPersistenceManager(
