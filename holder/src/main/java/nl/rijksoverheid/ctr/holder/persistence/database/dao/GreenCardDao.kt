@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardEntity
 
 /*
@@ -15,6 +16,10 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardEntity
  */
 @Dao
 interface GreenCardDao {
+
+    @Query("SELECT * FROM green_card")
+    suspend fun getAll(): List<GreenCardEntity>
+
     @Insert
     suspend fun insert(entity: GreenCardEntity)
 

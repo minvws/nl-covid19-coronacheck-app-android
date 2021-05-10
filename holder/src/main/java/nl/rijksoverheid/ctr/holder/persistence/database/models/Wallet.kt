@@ -21,12 +21,12 @@ data class Wallet(
         entityColumn = "wallet_id",
         entity = EventEntity::class
     )
-    val eventEntities: List<EventEntity>,
+    val eventEntities: List<EventEntity> = listOf(),
 
     @Relation(
         parentColumn = "id",
         entityColumn = "wallet_id",
         entity = GreenCardEntity::class
     )
-    val greenCards: List<GreenCard>
+    val greenCards: List<GreenCard> = listOf()
 )

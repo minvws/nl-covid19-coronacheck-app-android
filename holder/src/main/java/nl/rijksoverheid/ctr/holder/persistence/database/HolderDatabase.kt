@@ -5,6 +5,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import nl.rijksoverheid.ctr.holder.persistence.database.converters.HolderDatabaseConverter
 import nl.rijksoverheid.ctr.holder.persistence.database.dao.CredentialDao
+import nl.rijksoverheid.ctr.holder.persistence.database.dao.EventDao
 import nl.rijksoverheid.ctr.holder.persistence.database.dao.GreenCardDao
 import nl.rijksoverheid.ctr.holder.persistence.database.dao.WalletDao
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.CredentialEntity
@@ -28,4 +29,5 @@ abstract class HolderDatabase : RoomDatabase() {
     abstract fun walletDao(): WalletDao
     abstract fun greenCardDao(): GreenCardDao
     abstract fun credentialDao(): CredentialDao
+    abstract fun eventDao(): EventDao
 }

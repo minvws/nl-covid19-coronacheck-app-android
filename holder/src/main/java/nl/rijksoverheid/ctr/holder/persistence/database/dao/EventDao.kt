@@ -3,9 +3,7 @@ package nl.rijksoverheid.ctr.holder.persistence.database.dao
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import kotlinx.coroutines.flow.Flow
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.WalletEntity
-import nl.rijksoverheid.ctr.holder.persistence.database.models.Wallet
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventEntity
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -15,14 +13,14 @@ import nl.rijksoverheid.ctr.holder.persistence.database.models.Wallet
  *
  */
 @Dao
-interface WalletDao {
+interface EventDao {
 
-    @Query("SELECT * FROM wallet")
-    fun get(): Flow<List<Wallet>>
+    @Query("SELECT * FROM event")
+    suspend fun getAll(): List<EventEntity>
 
     @Insert
-    suspend fun insert(entity: WalletEntity)
+    suspend fun insert(entity: EventEntity)
 
-    @Query("DELETE FROM wallet WHERE id = :id")
+    @Query("DELETE FROM event WHERE id = :id")
     suspend fun delete(id: Int)
 }
