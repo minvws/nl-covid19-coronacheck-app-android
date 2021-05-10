@@ -124,7 +124,7 @@ dependencies {
 
     testImplementation "junit:junit:$junit_version"
     testImplementation "io.mockk:mockk:$mock_version"
-    testImplementation "io.insert-koin:koin-test:$koin_version"
+    testImplementation "io.insert-koin:koin-test-junit4:$koin_version"
     testImplementation("org.robolectric:robolectric:$robolectric_version") {
         exclude group: 'org.bouncycastle'
     }

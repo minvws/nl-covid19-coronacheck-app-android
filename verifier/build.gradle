@@ -116,7 +116,7 @@ dependencies {
     testImplementation("com.schibsted.spain:barista:$barista_version") {
         exclude group: "org.jetbrains.kotlin"
     }
-    testImplementation "io.insert-koin:koin-test:$koin_version"
+    testImplementation "io.insert-koin:koin-test-junit4:$koin_version"
     testImplementation "androidx.navigation:navigation-testing:$navigation_version"
 
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$desugar_jdk_version"
