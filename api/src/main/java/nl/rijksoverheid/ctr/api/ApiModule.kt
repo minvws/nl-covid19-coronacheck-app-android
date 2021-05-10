@@ -37,7 +37,7 @@ fun apiModule(
 ) = module(override = true) {
 
     single {
-        val context = get(Context::class.java)
+        val context = get<Context>(Context::class)
         val cache = Cache(File(context.cacheDir, "http"), 10 * 1024 * 1024)
 
         OkHttpClient.Builder()
@@ -63,7 +63,7 @@ fun apiModule(
     }
 
     single {
-        val okHttpClient = get(OkHttpClient::class.java)
+        val okHttpClient = get<OkHttpClient>(OkHttpClient::class)
             .newBuilder()
             .apply {
                 if (coronaCheckApiChecks) {

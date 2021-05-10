@@ -138,7 +138,7 @@ fun holderModule(baseUrl: String) = module {
     }
 
     single {
-        val okHttpClient = get(OkHttpClient::class.java)
+        val okHttpClient = get<OkHttpClient>(OkHttpClient::class)
             .newBuilder()
             .apply {
                 if (BuildConfig.FEATURE_TEST_PROVIDER_API_CHECKS) {
@@ -166,11 +166,11 @@ fun holderModule(baseUrl: String) = module {
     }
 
     single {
-        get(Retrofit::class).create(HolderApiClient::class.java)
+        get<Retrofit>(Retrofit::class).create(HolderApiClient::class.java)
     }
 
     single<Converter<ResponseBody, SignedResponseWithModel<RemoteTestResult>>>(named("SignedResponseWithModel")) {
-        get(Retrofit::class.java).responseBodyConverter(
+        get<Retrofit>(Retrofit::class).responseBodyConverter(
             Types.newParameterizedType(
                 SignedResponseWithModel::class.java,
                 RemoteTestResult::class.java
@@ -179,12 +179,12 @@ fun holderModule(baseUrl: String) = module {
     }
 
     single<Converter<ResponseBody, ResponseError>>(named("ResponseError")) {
-        get(Retrofit::class.java).responseBodyConverter(
+        get<Retrofit>(Retrofit::class).responseBodyConverter(
             ResponseError::class.java, emptyArray()
         )
     }
 
     single {
-        get(Moshi.Builder::class).add(RemoteTestStatusJsonAdapter()).build()
+        get<Moshi.Builder>(Moshi.Builder::class).add(RemoteTestStatusJsonAdapter()).build()
     }
 }

@@ -16,11 +16,11 @@ import nl.rijksoverheid.ctr.holder.databinding.FragmentCommercialTestCodeBinding
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.TestResult
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.hideKeyboard
+import nl.rijksoverheid.ctr.shared.ext.sharedViewModelWithOwner
 import nl.rijksoverheid.ctr.shared.ext.showKeyboard
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ViewModelOwner.Companion.from
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.scope.emptyState
 
 /*
@@ -34,7 +34,7 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
 
     private var _binding: FragmentCommercialTestCodeBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: TestResultsViewModel by sharedViewModel(
+    private val viewModel: TestResultsViewModel by sharedViewModelWithOwner(
         state = emptyState(),
         owner = {
             from(

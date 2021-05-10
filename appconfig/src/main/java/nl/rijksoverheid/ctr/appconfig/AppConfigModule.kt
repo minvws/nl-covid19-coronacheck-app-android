@@ -38,8 +38,8 @@ fun appConfigModule(path: String, versionCode: Int) = module {
 
 
     single {
-        val okHttpClient = get(OkHttpClient::class.java).newBuilder().build()
-        val retrofit = get(Retrofit::class.java)
+        val okHttpClient = get<OkHttpClient>(OkHttpClient::class).newBuilder().build()
+        val retrofit = get<Retrofit>(Retrofit::class)
         val baseUrl = retrofit.baseUrl().newBuilder().addPathSegments("$path/").build()
         retrofit.newBuilder().baseUrl(baseUrl).client(okHttpClient).build()
             .create(AppConfigApi::class.java)
