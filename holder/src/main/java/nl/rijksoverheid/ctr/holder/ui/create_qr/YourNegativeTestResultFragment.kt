@@ -6,6 +6,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import nl.rijksoverheid.ctr.design.ext.formatDateTime
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
@@ -13,7 +14,9 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentYourNegativeTestResultsBinding
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SignedTestResult
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
+import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.ext.sharedViewModelWithOwner
+import nl.rijksoverheid.ctr.shared.ext.show
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ViewModelOwner
@@ -96,6 +99,17 @@ class YourNegativeTestResultFragment : Fragment(R.layout.fragment_your_negative_
                     findNavController().navigate(
                         YourNegativeTestResultFragmentDirections.actionMyOverview()
                     )
+                    // Show snackbar after result has been saved
+                    Snackbar.make(
+                        requireView(),
+                        R.string.my_overview_qr_created_snackbar_message,
+                        Snackbar.LENGTH_LONG
+                    ).also {
+                        it.setAction(R.string.my_overview_qr_created_snackbar_button) {
+                            getString(R.string.url_faq).launchUrl(requireContext())
+                        }
+                    }.show(requireActivity())
+
                 }
                 is SignedTestResult.AlreadySigned -> {
                     findNavController().navigate(

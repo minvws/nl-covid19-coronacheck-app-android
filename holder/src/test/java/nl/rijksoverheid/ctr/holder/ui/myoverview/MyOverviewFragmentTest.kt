@@ -163,25 +163,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
             textId = R.string.my_overview_no_qr_make_qr_title
         )
     }
-
-    @Test
-    fun `First time creating qr code shows snackbar`() {
-        launchOverviewFragment(
-            localTestResultState = LocalTestResultState.Valid(
-                LocalTestResult(
-                    credentials = "dummy",
-                    sampleDate = OffsetDateTime.now(),
-                    expireDate = OffsetDateTime.now(),
-                    testType = "dummy",
-                    personalDetails = PersonalDetails("X", "X", "X", "X")
-                ),
-                firstTimeCreated = true
-            )
-        )
-        onView(ViewMatchers.withId(com.google.android.material.R.id.snackbar_text))
-            .check(matches(ViewMatchers.withText(R.string.my_overview_qr_created_snackbar_message)))
-    }
-
+    
     @Test
     fun `Clicking close button in MyOverviewTestResultExpiredAdapterItem removes the view from RecyclerView`() {
         launchOverviewFragment(
