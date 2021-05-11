@@ -1,6 +1,6 @@
 package nl.rijksoverheid.ctr.shared
 
-import nl.rijksoverheid.ctr.shared.util.*
+import nl.rijksoverheid.ctr.shared.utils.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import java.time.Clock

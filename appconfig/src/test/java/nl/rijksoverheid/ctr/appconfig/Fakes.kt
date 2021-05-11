@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.appconfig
 
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
+import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

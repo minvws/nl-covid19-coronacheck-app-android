@@ -4,12 +4,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import nl.rijksoverheid.ctr.holder.models.LocalTestResult
-import nl.rijksoverheid.ctr.holder.models.LocalTestResultState
-import nl.rijksoverheid.ctr.holder.models.QrCodeData
-import nl.rijksoverheid.ctr.holder.usecase.LocalTestResultUseCase
-import nl.rijksoverheid.ctr.holder.usecase.QrCodeUseCase
-import nl.rijksoverheid.ctr.holder.usecase.SecretKeyUseCase
+import nl.rijksoverheid.ctr.holder.ui.myoverview.models.LocalTestResult
+import nl.rijksoverheid.ctr.holder.ui.myoverview.models.LocalTestResultState
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.QrCodeData
+import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.LocalTestResultUseCase
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.QrCodeUseCase
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SecretKeyUseCase
 import nl.rijksoverheid.ctr.shared.livedata.Event
 
 /*
@@ -32,14 +32,12 @@ abstract class LocalTestResultViewModel : ViewModel() {
 }
 
 open class LocalTestResultViewModelImpl(
-    private val secretKeyUseCase: SecretKeyUseCase,
     private val localTestResultUseCase: LocalTestResultUseCase,
     private val qrCodeUseCase: QrCodeUseCase
 ) : LocalTestResultViewModel() {
 
     override fun getLocalTestResult() {
         viewModelScope.launch {
-            secretKeyUseCase.persist()
             val localTestResultState = localTestResultUseCase.get(localTestResultStateLiveData.value?.peekContent())
             localTestResultStateLiveData.value = Event(localTestResultState)
         }

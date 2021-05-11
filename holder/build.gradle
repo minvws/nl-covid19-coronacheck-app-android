@@ -7,8 +7,8 @@ plugins {
     id "androidx.navigation.safeargs.kotlin"
 }
 
-def appVersionCode = System.getenv("GITHUB_RUN_NUMBER") != null ? System.getenv("GITHUB_RUN_NUMBER").toInteger() : 502
-version = "1.1.5.1"
+def appVersionCode = System.getenv("GITHUB_RUN_NUMBER") != null ? System.getenv("GITHUB_RUN_NUMBER").toInteger() : 1000000
+version = "1.3.0"
 archivesBaseName = "holder-v${version}-${appVersionCode}"
 
 android {
@@ -35,9 +35,9 @@ android {
         buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "true"
         buildConfigField "boolean", "FEATURE_TEST_PROVIDER_API_CHECKS", "true"
         buildConfigField "String", "BASE_API_URL", "\"https://holder-api.coronacheck.nl/v3/\""
-        buildConfigField "String", "URL_FAQ", "\"https://coronacheck.nl/nl/faq-in-app.html\""
-        buildConfigField "String", "URL_PRIVACY_STATEMENT", "\"https://coronacheck.nl/nl/privacy-in-app\""
-        buildConfigField "String", "URL_MAKE_APPOINTMENT", "\"https://coronacheck.nl/nl/testaanbieders-fieldlab-in-de-app\""
+        buildConfigField "String", "DIGI_D_BASE_URL", "\"https://login.ggdghor.nl/coronitacc\""
+        buildConfigField "String", "DIGI_D_CLIENT_ID", "\"6456237456911667336\""
+        manifestPlaceholders = [appLabel: "@string/app_name", deepLinkHost: "coronacheck.nl"]
     }
 
     signingConfigs {
@@ -68,7 +68,7 @@ android {
             dimension "environment"
             versionNameSuffix "-test"
             applicationIdSuffix ".test"
-            manifestPlaceholders = [appLabel: "@string/app_name_test"]
+            manifestPlaceholders = [appLabel: "@string/app_name_test", deepLinkHost: "web.acc.coronacheck.nl"]
             apply plugin: 'com.google.gms.google-services'
             apply plugin: 'com.google.firebase.crashlytics'
         }
@@ -79,15 +79,12 @@ android {
             dimension "environment"
             versionNameSuffix "-acc"
             applicationIdSuffix ".acc"
-            manifestPlaceholders = [appLabel: "@string/app_name_acc"]
+            manifestPlaceholders = [appLabel: "@string/app_name_acc", deepLinkHost: "web.acc.coronacheck.nl"]
             apply plugin: 'com.google.gms.google-services'
             apply plugin: 'com.google.firebase.crashlytics'
         }
         prod {
-            buildConfigField "String", "DIGI_D_BASE_URL", "\"https://login.ggdghor.nl/coronitacc\""
-            buildConfigField "String", "DIGI_D_CLIENT_ID", "\"6456237456911667336\""
             dimension "environment"
-            manifestPlaceholders = [appLabel: "@string/app_name"]
         }
     }
 
@@ -126,6 +123,7 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
     implementation "androidx.security:security-crypto:$security_crypto_version"
     implementation "com.google.zxing:core:$zxing_core_version"
+    implementation "com.scottyab:rootbeer-lib:${rootbeer_version}"
 
     testImplementation "junit:junit:$junit_version"
     testImplementation "io.mockk:mockk:$mock_version"

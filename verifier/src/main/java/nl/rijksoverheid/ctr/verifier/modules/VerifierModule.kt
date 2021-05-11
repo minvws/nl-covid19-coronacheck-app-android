@@ -1,24 +1,23 @@
 package nl.rijksoverheid.ctr.verifier.modules
 
-import androidx.preference.PreferenceManager
 import com.squareup.moshi.Moshi
-import nl.rijksoverheid.ctr.introduction.models.NewTerms
-import nl.rijksoverheid.ctr.verifier.SharedPreferenceMigration
-import nl.rijksoverheid.ctr.verifier.datamappers.VerifiedQrDataMapper
-import nl.rijksoverheid.ctr.verifier.datamappers.VerifiedQrDataMapperImpl
+import nl.rijksoverheid.ctr.introduction.ui.new_terms.models.NewTerms
+import nl.rijksoverheid.ctr.verifier.ui.scanner.datamappers.VerifiedQrDataMapper
+import nl.rijksoverheid.ctr.verifier.ui.scanner.datamappers.VerifiedQrDataMapperImpl
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 import nl.rijksoverheid.ctr.verifier.persistance.SharedPreferencesPersistenceManager
-import nl.rijksoverheid.ctr.verifier.ui.scanner.util.ScannerUtil
-import nl.rijksoverheid.ctr.verifier.ui.scanner.util.ScannerUtilImpl
+import nl.rijksoverheid.ctr.verifier.ui.scanner.ScannerViewModel
+import nl.rijksoverheid.ctr.verifier.ui.scanner.ScannerViewModelImpl
+import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
+import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtilImpl
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrViewModel
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrViewModelImpl
-import nl.rijksoverheid.ctr.verifier.usecases.TestResultValidUseCase
-import nl.rijksoverheid.ctr.verifier.usecases.TestResultValidUseCaseImpl
-import nl.rijksoverheid.ctr.verifier.usecases.VerifyQrUseCase
-import nl.rijksoverheid.ctr.verifier.usecases.VerifyQrUseCaseImpl
-import nl.rijksoverheid.ctr.verifier.util.QrCodeUtil
-import nl.rijksoverheid.ctr.verifier.util.QrCodeUtilImpl
-import org.koin.android.ext.koin.androidContext
+import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.TestResultValidUseCase
+import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.TestResultValidUseCaseImpl
+import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.VerifyQrUseCase
+import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.VerifyQrUseCaseImpl
+import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.QrCodeUtil
+import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.QrCodeUtilImpl
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -50,19 +49,13 @@ val verifierModule = module {
     }
     factory<VerifiedQrDataMapper> { VerifiedQrDataMapperImpl(get()) }
 
-    factory {
-        SharedPreferenceMigration(
-            oldSharedPreferences = PreferenceManager.getDefaultSharedPreferences(androidContext()),
-            newSharedPreferences = get()
-        )
-    }
-
     // Utils
     factory<QrCodeUtil> { QrCodeUtilImpl(get()) }
     factory<ScannerUtil> { ScannerUtilImpl() }
 
     // ViewModels
-    viewModel<ScanQrViewModel> { ScanQrViewModelImpl(get(), get()) }
+    viewModel<ScanQrViewModel> { ScanQrViewModelImpl(get()) }
+    viewModel<ScannerViewModel> { ScannerViewModelImpl(get()) }
 
     single {
         get(Moshi.Builder::class).build()

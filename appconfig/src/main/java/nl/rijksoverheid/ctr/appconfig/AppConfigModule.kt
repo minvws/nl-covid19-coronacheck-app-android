@@ -9,9 +9,11 @@
 package nl.rijksoverheid.ctr.appconfig
 
 import nl.rijksoverheid.ctr.appconfig.api.AppConfigApi
+import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
+import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManagerImpl
 import nl.rijksoverheid.ctr.appconfig.repositories.ConfigRepository
 import nl.rijksoverheid.ctr.appconfig.repositories.ConfigRepositoryImpl
-import nl.rijksoverheid.ctr.appconfig.usecase.*
+import nl.rijksoverheid.ctr.appconfig.usecases.*
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel

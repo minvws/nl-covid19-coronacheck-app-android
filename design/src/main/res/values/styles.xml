@@ -15,13 +15,20 @@
         <item name="android:textColor">?colorOnSurface</item>
     </style>
 
+    <style name="Widget.App.Button.Surface.Small" parent="Widget.App.Button.Small">
+        <item name="android:backgroundTint">?colorSurface</item>
+        <item name="android:textColor">?colorOnSurface</item>
+    </style>
+
     <style name="Widget.App.Button" parent="Widget.MaterialComponents.Button">
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">56dp</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:insetBottom">0dp</item>
         <item name="android:insetTop">0dp</item>
         <item name="android:insetLeft">0dp</item>
         <item name="android:insetRight">0dp</item>
+        <item name="android:paddingTop">16dp</item>
+        <item name="android:paddingBottom">16dp</item>
         <item name="android:paddingStart">56dp</item>
         <item name="android:paddingEnd">56dp</item>
         <item name="cornerRadius">26dp</item>
@@ -60,10 +67,10 @@
         <item name="android:textSize">20sp</item>
     </style>
 
-    <style name="App.TextAppearance.MaterialComponents.Body1.Montserrat" parent="android:TextAppearance">
+    <style name="App.TextAppearance.MaterialComponents.Body1.Montserrat.Secondary" parent="android:TextAppearance">
         <item name="android:fontFamily">@font/montserrat_semibold</item>
-        <item name="android:textColor">@color/white_80</item>
         <item name="android:textSize">16sp</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
     </style>
 
 </resources>

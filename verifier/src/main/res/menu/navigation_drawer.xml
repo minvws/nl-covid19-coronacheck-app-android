@@ -5,6 +5,7 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/nav_scan_qr"
+            android:checkable="false"
             android:title="@string/scan_qr_title" />
     </group>
     <group
@@ -12,26 +13,26 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/nav_support"
+            android:checkable="false"
             android:title="@string/support" />
 
         <item
             android:id="@+id/nav_about_this_app"
+            android:checkable="false"
             android:title="@string/about_this_app" />
-
-        <item
-            android:id="@+id/nav_privacy_statement"
-            android:title="@string/privacy_statement" />
 
         <!-- TODO: Implement give us feedback -->
         <item
             android:id="@+id/nav_give_us_feedback"
+            android:checkable="false"
             android:title="@string/give_us_feedback"
             android:visible="false" />
 
-        <item android:id="@+id/nav_close_menu"
+        <item
+            android:id="@+id/nav_close_menu"
+            android:checkable="false"
             android:title="@string/menu_close"
-            android:visible="false"
-            />
+            android:visible="false" />
 
     </group>
 </menu>

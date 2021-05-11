@@ -13,11 +13,12 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.appconfig.databinding.FragmentAppStatusBinding
-import nl.rijksoverheid.ctr.appconfig.model.AppStatus
-import nl.rijksoverheid.ctr.shared.util.AndroidUtil
+import nl.rijksoverheid.ctr.appconfig.models.AppStatus
+import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 import org.koin.android.ext.android.inject
 
 class AppStatusFragment : Fragment(R.layout.fragment_app_status) {
@@ -50,7 +51,8 @@ class AppStatusFragment : Fragment(R.layout.fragment_app_status) {
                 binding.bind(
                     R.string.app_status_deactivated_title,
                     R.string.app_status_deactivated_message,
-                    R.string.app_status_deactivated_action
+                    R.string.app_status_deactivated_action,
+                    R.drawable.illustration_app_status_deactivated
                 ) {
                     startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(appStatus.informationUrl)))
                 }
@@ -59,7 +61,8 @@ class AppStatusFragment : Fragment(R.layout.fragment_app_status) {
                 binding.bind(
                     R.string.app_status_update_required_title,
                     R.string.app_status_update_required_message,
-                    R.string.app_status_update_required_action
+                    R.string.app_status_update_required_action,
+                    R.drawable.illustration_app_status_update_required
                 ) {
                     openPlayStore()
                 }
@@ -68,7 +71,8 @@ class AppStatusFragment : Fragment(R.layout.fragment_app_status) {
                 binding.bind(
                     R.string.app_status_internet_required_title,
                     R.string.app_status_internet_required_message,
-                    R.string.app_status_internet_required_action
+                    R.string.app_status_internet_required_action,
+                    R.drawable.illustration_app_status_internet_required
                 ) {
                     val launchIntent =
                         requireContext().packageManager.getLaunchIntentForPackage(requireContext().packageName)
@@ -110,11 +114,13 @@ private fun FragmentAppStatusBinding.bind(
     @StringRes title: Int,
     @StringRes message: Int,
     @StringRes action: Int,
+    @DrawableRes illustration: Int,
     onClick: () -> Unit
 ) {
     this.title.setText(title)
     this.message.setText(message)
     this.action.setText(action)
+    this.illustration.setImageResource(illustration)
     this.action.setOnClickListener {
         onClick()
     }

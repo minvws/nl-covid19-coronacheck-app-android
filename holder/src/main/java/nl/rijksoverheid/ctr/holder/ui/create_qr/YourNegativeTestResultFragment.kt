@@ -11,9 +11,8 @@ import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentYourNegativeTestResultsBinding
-import nl.rijksoverheid.ctr.holder.usecase.SignedTestResult
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SignedTestResult
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
-import nl.rijksoverheid.ctr.shared.ext.fromHtml
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ViewModelOwner
@@ -46,9 +45,6 @@ class YourNegativeTestResultFragment : Fragment(R.layout.fragment_your_negative_
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentYourNegativeTestResultsBinding.bind(view)
 
-        binding.description.text =
-            getString(R.string.your_negative_test_results_description).fromHtml()
-
         val retrievedResult = viewModel.retrievedResult
         if (retrievedResult == null) {
             // restored from state, no result anymore
@@ -73,7 +69,7 @@ class YourNegativeTestResultFragment : Fragment(R.layout.fragment_your_negative_
 
             binding.rowPersonalDetails.text = getString(
                 R.string.your_negative_test_results_row_personal_details,
-                "${retrievedResult.personalDetails[0]} ${retrievedResult.personalDetails[1]} ${retrievedResult.personalDetails[2]} ${retrievedResult.personalDetails[3]}"
+                "${retrievedResult.personalDetails.firstNameInitial} ${retrievedResult.personalDetails.lastNameInitial} ${retrievedResult.personalDetails.birthDay} ${retrievedResult.personalDetails.birthMonth}"
             )
         }
 
@@ -85,13 +81,13 @@ class YourNegativeTestResultFragment : Fragment(R.layout.fragment_your_negative_
             }
         })
 
-        binding.button.setOnClickListener {
+        binding.bottom.setButtonClick {
             viewModel.saveTestResult()
         }
 
         viewModel.loading.observe(viewLifecycleOwner, EventObserver {
             (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
-            binding.button.isEnabled = !it
+            binding.bottom.setButtonEnabled(!it)
         })
 
         viewModel.signedTestResult.observe(viewLifecycleOwner, EventObserver {
@@ -115,7 +111,7 @@ class YourNegativeTestResultFragment : Fragment(R.layout.fragment_your_negative_
                         "${it.httpCode.toString()}"
                     ) else getString(
                         R.string.dialog_error_message_with_error_code,
-                        "${it.httpCode.toString()}/${it.errorCode.toString()}"
+                        "${it.httpCode}/${it.errorCode}"
                     )
                     dialogUtil.presentDialog(
                         context = requireContext(),
@@ -133,6 +129,23 @@ class YourNegativeTestResultFragment : Fragment(R.layout.fragment_your_negative_
                         context = requireContext(),
                         title = R.string.dialog_no_internet_connection_title,
                         message = getString(R.string.dialog_no_internet_connection_description),
+                        positiveButtonText = R.string.dialog_retry,
+                        positiveButtonCallback = {
+                            viewModel.saveTestResult()
+                        },
+                        negativeButtonText = R.string.dialog_close
+                    )
+                }
+                is SignedTestResult.CouldNotVerifyCredentials -> {
+                    // Should never happen, but if the backend returns a 200 with faulty credentials it should not be saved
+                    // and show this error dialog with 19992 (same as iOS) so that we know what went wrong
+                    dialogUtil.presentDialog(
+                        context = requireContext(),
+                        title = R.string.dialog_error_title,
+                        message = getString(
+                            R.string.dialog_error_message_with_error_code,
+                            "19992"
+                        ),
                         positiveButtonText = R.string.dialog_retry,
                         positiveButtonCallback = {
                             viewModel.saveTestResult()

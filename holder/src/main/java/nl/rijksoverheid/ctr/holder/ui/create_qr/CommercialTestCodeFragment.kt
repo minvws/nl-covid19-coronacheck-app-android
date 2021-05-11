@@ -1,9 +1,9 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr
 
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -13,16 +13,15 @@ import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentCommercialTestCodeBinding
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.TestResult
+import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.hideKeyboard
 import nl.rijksoverheid.ctr.shared.ext.showKeyboard
-import nl.rijksoverheid.ctr.holder.usecase.TestResult
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ViewModelOwner.Companion.from
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.scope.emptyState
-import java.util.concurrent.TimeUnit
-import kotlin.math.roundToInt
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -48,42 +47,10 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
     private val dialogUtil: DialogUtil by inject()
     private val navArgs: CommercialTestCodeFragmentArgs by navArgs()
 
-    private val verificationCodeTimer =
-        object : CountDownTimer(
-            TimeUnit.SECONDS.toMillis(10),
-            TimeUnit.SECONDS.toMillis(1)
-        ) {
-            override fun onTick(millisUntilFinished: Long) {
-                binding.sendAgainButton.visibility = View.VISIBLE
-                val secondsUntilFinished = (millisUntilFinished / 1000f).roundToInt()
-                binding.sendAgainButton.isEnabled = false
-                binding.sendAgainButton.text = getString(
-                    R.string.commercial_test_verification_code_send_again_in,
-                    secondsUntilFinished.toString()
-                )
-            }
-
-            override fun onFinish() {
-                binding.sendAgainButton.isEnabled = true
-                binding.sendAgainButton.text =
-                    getString(R.string.commercial_test_verification_code_send_again)
-            }
-        }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         _binding = FragmentCommercialTestCodeBinding.bind(view)
-
-        if (viewModel.verificationRequired) {
-            showKeyboard(binding.verificationCodeText)
-        } else {
-            showKeyboard(binding.uniqueCodeText)
-        }
-
-        viewModel.loading.observe(viewLifecycleOwner, EventObserver {
-            (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
-        })
 
         binding.uniqueCodeText.addTextChangedListener {
             viewModel.testCode = it?.toString()?.toUpperCase() ?: ""
@@ -94,14 +61,21 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
         }
 
         viewModel.viewState.observe(viewLifecycleOwner) {
-            binding.button.isEnabled = it.canRetrieveResult
+            binding.bottom.setButtonEnabled(it.canRetrieveResult)
             binding.uniqueCodeText.imeOptions =
                 (if (it.verificationRequired) EditorInfo.IME_ACTION_NEXT else EditorInfo.IME_ACTION_SEND)
             binding.verificationCodeInput.visibility =
                 if (it.verificationRequired) View.VISIBLE else View.GONE
+            binding.noVerificationRecievedBtn.visibility =
+                if (it.verificationRequired) View.VISIBLE else View.GONE
+            binding.noTokenReceivedBtn.visibility =
+                if (!it.verificationRequired) View.VISIBLE else View.GONE
 
-            // Start send verification code timer countdown once
-            if (it.verificationRequired && binding.sendAgainButton.visibility == View.GONE) verificationCodeTimer.start()
+            if (it.fromDeeplink && it.verificationRequired) {
+                binding.uniqueCodeInput.isVisible = false
+                binding.noTokenReceivedBtn.isVisible = false
+                binding.description.setText(R.string.commercial_test_verification_code_description_deeplink)
+            }
         }
 
         binding.uniqueCodeText.setOnEditorActionListener { _, actionId, _ ->
@@ -118,6 +92,7 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
                 TestResult.InvalidToken -> {
                     binding.uniqueCodeInput.error =
                         getString(R.string.commercial_test_error_invalid_code)
+                    binding.verificationCodeInput.isVisible = false
                 }
                 is TestResult.NetworkError -> {
                     dialogUtil.presentDialog(
@@ -171,24 +146,51 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
                         binding.verificationCodeInput.error =
                             getString(R.string.commercial_test_error_invalid_combination)
                     }
-
                     binding.verificationCodeInput.requestFocus()
                 }
             }
         })
 
-        binding.sendAgainButton.setOnClickListener {
-            viewModel.sendVerificationCode()
-            verificationCodeTimer.start()
+        // Show dialog to send verification code again
+        binding.noVerificationRecievedBtn.setOnClickListener {
+            dialogUtil.presentDialog(
+                context = requireContext(),
+                title = R.string.dialog_verification_code_title,
+                message = getString(R.string.dialog_verification_code_message),
+                positiveButtonText = R.string.dialog_verification_code_positive_button,
+                positiveButtonCallback = {
+                    viewModel.sendVerificationCode()
+                },
+                negativeButtonText = R.string.dialog_close
+            )
         }
 
-        binding.button.setOnClickListener {
+        binding.bottom.setButtonClick {
             fetchTestResults(binding)
         }
 
-        // If a location token is set, automatically fill it in
-        navArgs.locationToken?.let { token ->
-            binding.uniqueCodeText.setText(token)
+        // If a location token is set, automatically fill it in. Else we show the keyboard focussing on first code input field
+        navArgs.token?.let { token ->
+            // Only run this once. If the token has been handled once don't try to retrieve a testresult automatically again.
+            if (viewModel.testCode.isEmpty()) {
+                binding.uniqueCodeText.setText(token)
+                fetchTestResults(binding, fromDeeplink = true)
+            }
+        } ?: showKeyboard(binding.uniqueCodeText)
+
+        viewModel.loading.observe(viewLifecycleOwner, EventObserver {
+            if (!viewModel.fromDeeplink) {
+                (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
+            } else {
+                // Show different loading state when loading from deeplink
+                binding.loadingOverlay.isVisible = it
+            }
+        })
+
+        binding.noTokenReceivedBtn.setOnClickListener {
+            findNavControllerSafety(R.id.nav_commercial_test_code)?.navigate(
+                CommercialTestCodeFragmentDirections.actionNoCode()
+            )
         }
     }
 
@@ -199,14 +201,15 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
 
     override fun onDestroyView() {
         super.onDestroyView()
-        verificationCodeTimer.cancel()
         _binding = null
     }
 
-    private fun fetchTestResults(binding: FragmentCommercialTestCodeBinding) {
+    private fun fetchTestResults(
+        binding: FragmentCommercialTestCodeBinding,
+        fromDeeplink: Boolean = false
+    ) {
         binding.verificationCodeInput.error = null
         binding.uniqueCodeInput.error = null
-        viewModel.getTestResult()
-        hideKeyboard()
+        viewModel.getTestResult(fromDeeplink)
     }
 }

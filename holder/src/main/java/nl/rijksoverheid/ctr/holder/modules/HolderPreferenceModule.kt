@@ -1,7 +1,7 @@
 package nl.rijksoverheid.ctr.holder.modules
 
 import androidx.security.crypto.EncryptedSharedPreferences
-import nl.rijksoverheid.ctr.shared.util.AndroidUtil
+import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 

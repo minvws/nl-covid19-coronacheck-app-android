@@ -8,7 +8,8 @@ import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentChooseProviderBinding
 import nl.rijksoverheid.ctr.holder.databinding.IncludeTestProviderBinding
-import nl.rijksoverheid.ctr.shared.util.AndroidUtil
+import nl.rijksoverheid.ctr.shared.ext.setAsAccessibilityButton
+import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 import org.koin.android.ext.android.inject
 
 /*
@@ -32,26 +33,39 @@ class ChooseProviderFragment : Fragment(R.layout.fragment_choose_provider) {
 
         binding.providerCommercial.bind(
             R.string.choose_provider_commercial_title,
-            R.string.choose_provider_commercial_subtitle
+            null
         ) {
-            findNavController().navigate(ChooseProviderFragmentDirections.actionCommercialTestType())
+            findNavController().navigate(ChooseProviderFragmentDirections.actionCommercialTestCode())
         }
 
         binding.providerGgd.bind(
             R.string.choose_provider_ggd_title,
-            R.string.choose_provider_ggd_subtitle
+            getString(R.string.choose_provider_ggd_subtitle)
         ) {
         }
+
+        binding.providerCommercial.root.setAsAccessibilityButton(isButton = true)
     }
 }
 
 private fun IncludeTestProviderBinding.bind(
     @StringRes title: Int,
-    @StringRes subtitle: Int,
+    subtitle: String?,
     onClick: () -> Unit
 ) {
     providerTitle.setText(title)
-    providerSubtitle.setText(subtitle)
+    providerSubtitle.text = subtitle
+
+    if (subtitle.isNullOrEmpty()) {
+        providerSubtitle.visibility = View.GONE
+        providerTitle.setPadding(
+            providerTitle.paddingLeft,
+            providerTitle.context.resources.getDimensionPixelSize(R.dimen.test_provider_title_without_subtitle_padding),
+            providerTitle.paddingRight,
+            providerTitle.context.resources.getDimensionPixelSize(R.dimen.test_provider_title_without_subtitle_padding)
+        )
+    }
+
     root.setOnClickListener {
         onClick()
     }

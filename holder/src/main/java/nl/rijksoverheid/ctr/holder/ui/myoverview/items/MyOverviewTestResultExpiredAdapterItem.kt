@@ -1,10 +1,10 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview.items
 
 import android.view.View
+import androidx.core.text.parseAsHtml
 import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.ItemMyOverviewTestResultExpiredBinding
-import nl.rijksoverheid.ctr.shared.ext.fromHtml
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -17,7 +17,7 @@ class MyOverviewTestResultExpiredAdapterItem(private val onDismissClick: () -> U
     BindableItem<ItemMyOverviewTestResultExpiredBinding>(R.layout.item_my_overview_test_result_expired.toLong()) {
     override fun bind(viewBinding: ItemMyOverviewTestResultExpiredBinding, position: Int) {
         viewBinding.text.text =
-            viewBinding.root.context.getString(R.string.item_test_result_expired).fromHtml()
+            viewBinding.root.context.getString(R.string.item_test_result_expired).parseAsHtml()
         viewBinding.close.setOnClickListener {
             onDismissClick.invoke()
         }

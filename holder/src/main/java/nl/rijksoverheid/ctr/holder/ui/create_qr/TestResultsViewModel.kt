@@ -3,9 +3,10 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
-import nl.rijksoverheid.ctr.holder.usecase.SignedTestResult
-import nl.rijksoverheid.ctr.holder.usecase.TestResult
-import nl.rijksoverheid.ctr.holder.usecase.TestResultUseCase
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SecretKeyUseCase
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SignedTestResult
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.TestResult
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.TestResultUseCase
 import nl.rijksoverheid.ctr.shared.livedata.Event
 
 /*
@@ -18,7 +19,8 @@ import nl.rijksoverheid.ctr.shared.livedata.Event
 class TestResultsViewModel(
     private val savedStateHandle: SavedStateHandle,
     private val testResultUseCase: TestResultUseCase,
-    private val persistenceManager: PersistenceManager
+    private val persistenceManager: PersistenceManager,
+    private val secretKeyUseCase: SecretKeyUseCase
 ) : ViewModel() {
 
     val testResult: LiveData<Event<TestResult>> = MutableLiveData()
@@ -46,6 +48,13 @@ class TestResultsViewModel(
             updateViewState()
         }
 
+    var fromDeeplink: Boolean = savedStateHandle["from_deeplink"] ?: false
+        private set(value) {
+            field = value
+            savedStateHandle["from_deeplink"] = value
+            updateViewState()
+        }
+
     val viewState: LiveData<ViewState> = MutableLiveData(ViewState())
 
     val retrievedResult: TestResult.NegativeTestResult?
@@ -61,11 +70,13 @@ class TestResultsViewModel(
     private fun updateViewState() {
         (viewState as MutableLiveData).value = currentViewState.copy(
             verificationRequired = verificationRequired,
-            canRetrieveResult = (testCode.isNotEmpty() && !verificationRequired) || (verificationRequired && testCode.isNotEmpty() && verificationCode.isNotEmpty())
+            canRetrieveResult = (testCode.isNotEmpty() && !verificationRequired) || (verificationRequired && testCode.isNotEmpty() && verificationCode.isNotEmpty()),
+            fromDeeplink = fromDeeplink
         )
     }
 
-    fun getTestResult() {
+    fun getTestResult(fromDeeplink: Boolean = false) {
+        this.fromDeeplink = fromDeeplink
         (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {
             try {
@@ -95,6 +106,7 @@ class TestResultsViewModel(
         (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {
             try {
+                secretKeyUseCase.persist()
                 retrievedResult?.let {
                     val result = testResultUseCase.signTestResult(
                         signedResponseWithTestResult = it.signedResponseWithTestResult
@@ -113,5 +125,6 @@ class TestResultsViewModel(
 
 data class ViewState(
     val verificationRequired: Boolean = false,
-    val canRetrieveResult: Boolean = false
+    val canRetrieveResult: Boolean = false,
+    val fromDeeplink: Boolean = false
 )

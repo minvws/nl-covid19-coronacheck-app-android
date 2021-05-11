@@ -10,17 +10,21 @@ package nl.rijksoverheid.ctr.qrscanner
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.doOnLayout
+import androidx.core.view.updateMargins
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -41,10 +45,21 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
     val binding get() = _binding!!
 
     companion object {
-        private const val PERMISSION_CAMERA_REQUEST = 1
         private const val RATIO_4_3_VALUE = 4.0 / 3.0
         private const val RATIO_16_9_VALUE = 16.0 / 9.0
     }
+
+    private val requestPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+            if (isCameraPermissionGranted()) {
+                setupCamera()
+            } else {
+                val rationaleDialog = getCopy().rationaleDialog
+                if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) && rationaleDialog != null) {
+                    showRationaleDialog(rationaleDialog)
+                }
+            }
+        }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -58,12 +73,15 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
             findNavController().navigateUp()
         }
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.toolbar) { _, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
             binding.toolbar.setPadding(0, insets.systemWindowInsetTop, 0, 0)
+            (binding.scannerFooterContainer.layoutParams as ConstraintLayout.LayoutParams).updateMargins(
+                bottom = insets.systemWindowInsetBottom
+            )
             insets
         }
 
-        binding.scannerHeader.text = getCopy().message
+        binding.scannerFooter.text = getCopy().message
         binding.toolbar.title = getCopy().title
 
         // Show header below overlay window after overlay finishes drawing
@@ -78,6 +96,7 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
     override fun onStart() {
         super.onStart()
         setupCamera()
+        requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
     }
 
     private fun setupCamera() {
@@ -110,9 +129,8 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
     }
 
     private fun requestPermission() {
-        requestPermissions(
-            arrayOf(Manifest.permission.CAMERA),
-            PERMISSION_CAMERA_REQUEST
+        requestPermissionLauncher.launch(
+            Manifest.permission.CAMERA
         )
     }
 
@@ -218,7 +236,7 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
     /**
      * Process frames from CameraX and extract QR codes
      */
-    @SuppressLint("UnsafeExperimentalUsageError")
+    @SuppressLint("UnsafeExperimentalUsageError", "UnsafeOptInUsageError")
     private fun processCameraFrame(
         cameraProvider: ProcessCameraProvider,
         barcodeScanner: BarcodeScanner,
@@ -255,6 +273,8 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        requireActivity().requestedOrientation =
+            ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
     }
 
     /**
@@ -274,24 +294,6 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
             return AspectRatio.RATIO_4_3
         }
         return AspectRatio.RATIO_16_9
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
-    ) {
-        if (requestCode == PERMISSION_CAMERA_REQUEST) {
-            if (isCameraPermissionGranted()) {
-                setupCamera()
-            } else {
-                val rationaleDialog = getCopy().rationaleDialog
-                if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) && rationaleDialog != null) {
-                    showRationaleDialog(rationaleDialog)
-                }
-            }
-        }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     private fun isCameraPermissionGranted(): Boolean {

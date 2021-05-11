@@ -4,7 +4,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
-import nl.rijksoverheid.ctr.introduction.models.IntroductionStatus
+import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
+import nl.rijksoverheid.ctr.introduction.ui.status.IntroductionStatusFragment
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

@@ -1,12 +1,9 @@
 package nl.rijksoverheid.ctr.verifier.ui.scanqr.scaninstructions
 
-import android.text.method.LinkMovementMethod
 import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.xwray.groupie.viewbinding.BindableItem
-import nl.rijksoverheid.ctr.design.spans.LinkTransformationMethod
-import nl.rijksoverheid.ctr.design.utils.getSpannableFromHtml
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.ItemScanInstructionBinding
 
@@ -20,20 +17,22 @@ import nl.rijksoverheid.ctr.verifier.databinding.ItemScanInstructionBinding
 class ScanInstructionAdapterItem(
     @StringRes private val title: Int,
     private val description: String,
-    @DrawableRes private val image: Int? = null
+    @DrawableRes private val image: Int? = null,
+    private val imageDescription: String? = null,
 ) : BindableItem<ItemScanInstructionBinding>() {
     override fun bind(viewBinding: ItemScanInstructionBinding, position: Int) {
-        val context = viewBinding.root.context
         viewBinding.title.setText(title)
-        viewBinding.description.text = getSpannableFromHtml(context, description)
-        viewBinding.description.transformationMethod = LinkTransformationMethod()
-        viewBinding.description.movementMethod = LinkMovementMethod.getInstance()
+        viewBinding.description.setHtmlTextWithBullets(
+            htmlText = description,
+            htmlLinksEnabled = true
+        )
 
         if (image == null) {
             viewBinding.image.visibility = View.GONE
         } else {
             viewBinding.image.visibility = View.VISIBLE
             viewBinding.image.setImageResource(image)
+            viewBinding.image.contentDescription = imageDescription
         }
     }
 

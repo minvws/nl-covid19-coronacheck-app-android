@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:windowBackground">
+
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toTopOf="@+id/bottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+
+            <nl.rijksoverheid.ctr.design.views.AccessibilityHeaderWidget
+                android:id="@+id/title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="16dp"
+                android:text="@string/scan_result_valid_personal_details_title"
+                android:textAppearance="?attr/textAppearanceHeadline5"
+                app:layout_constraintEnd_toStartOf="@+id/icon"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_question"
+                app:layout_constraintBottom_toBottomOf="@+id/title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/title" />
+
+            <TextView
+                android:id="@+id/last_name_header"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="48dp"
+                android:layout_marginTop="48dp"
+                android:layout_marginEnd="48dp"
+                android:text="@string/scan_result_valid_last_name"
+                android:textAppearance="?attr/textAppearanceCaption"
+                android:textColor="?android:textColorPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/title" />
+
+            <TextView
+                android:id="@+id/last_name_initial"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/shape_personal_detail_background"
+                android:padding="16dp"
+                android:textAlignment="center"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                app:layout_constraintEnd_toEndOf="@+id/last_name_header"
+                app:layout_constraintStart_toStartOf="@+id/last_name_header"
+                app:layout_constraintTop_toBottomOf="@+id/last_name_header"
+                tools:text="M" />
+
+            <TextView
+                android:id="@+id/first_name_header"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/scan_result_valid_first_name"
+                android:textAppearance="?attr/textAppearanceCaption"
+                android:textColor="?android:textColorPrimary"
+                app:layout_constraintEnd_toEndOf="@+id/last_name_header"
+                app:layout_constraintStart_toStartOf="@+id/last_name_header"
+                app:layout_constraintTop_toBottomOf="@+id/last_name_initial" />
+
+            <TextView
+                android:id="@+id/first_name_initial"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/shape_personal_detail_background"
+                android:padding="16dp"
+                android:textAlignment="center"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                app:layout_constraintEnd_toEndOf="@+id/last_name_header"
+                app:layout_constraintStart_toStartOf="@+id/last_name_header"
+                app:layout_constraintTop_toBottomOf="@+id/first_name_header"
+                tools:text="S" />
+
+            <TextView
+                android:id="@+id/birth_day_header"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="24dp"
+                android:text="@string/scan_result_valid_birth_day"
+                android:textAppearance="?attr/textAppearanceCaption"
+                android:textColor="?android:textColorPrimary"
+                app:layout_constraintEnd_toStartOf="@+id/birth_month_header"
+                app:layout_constraintHorizontal_weight="4"
+                app:layout_constraintStart_toStartOf="@+id/last_name_header"
+                app:layout_constraintTop_toBottomOf="@+id/first_name_initial" />
+
+            <TextView
+                android:id="@+id/birth_day"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/shape_personal_detail_background"
+                android:padding="16dp"
+                android:textAlignment="center"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                app:layout_constraintEnd_toEndOf="@+id/birth_day_header"
+                app:layout_constraintStart_toStartOf="@+id/birth_day_header"
+                app:layout_constraintTop_toBottomOf="@+id/birth_day_header"
+                tools:text="06" />
+
+            <TextView
+                android:id="@+id/birth_month_header"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/scan_result_valid_birth_month"
+                android:textAppearance="?attr/textAppearanceCaption"
+                android:textColor="?android:textColorPrimary"
+                app:layout_constraintBottom_toBottomOf="@+id/birth_day_header"
+                app:layout_constraintEnd_toEndOf="@+id/last_name_header"
+                app:layout_constraintHorizontal_weight="6"
+                app:layout_constraintStart_toEndOf="@+id/birth_day_header"
+                app:layout_constraintTop_toTopOf="@+id/birth_day_header" />
+
+            <TextView
+                android:id="@+id/birth_month"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/shape_personal_detail_background"
+                android:padding="16dp"
+                android:textAlignment="center"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                app:layout_constraintEnd_toEndOf="@+id/birth_month_header"
+                app:layout_constraintStart_toStartOf="@+id/birth_month_header"
+                app:layout_constraintTop_toBottomOf="@+id/birth_month_header"
+                tools:text="AUG (08)" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+    <nl.rijksoverheid.ctr.design.views.ScrollViewButtonWidget
+        android:id="@+id/bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:attachToScrollView="@+id/scroll"
+        app:buttonText="@string/scan_result_invalid_button"
+        app:cardElevation="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scroll" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
