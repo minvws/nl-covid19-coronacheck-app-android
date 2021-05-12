@@ -15,6 +15,8 @@ import nl.rijksoverheid.ctr.holder.persistence.SharedPreferencesPersistenceManag
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.TestResultsViewModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.TokenQrViewModel
+import nl.rijksoverheid.ctr.holder.ui.create_qr.VaccinationViewModel
+import nl.rijksoverheid.ctr.holder.ui.create_qr.VaccinationViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.HolderApiClient
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.RemoteTestStatusJsonAdapter
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.TestProviderApiClient
@@ -84,8 +86,8 @@ fun holderModule(baseUrl: String) = module {
     factory<CommitmentMessageUseCase> {
         CommitmentMessageUseCaseImpl(get())
     }
-    factory<TestProviderUseCase> {
-        TestProviderUseCaseImpl(get())
+    factory<ConfigProvidersUseCase> {
+        ConfigProvidersUseCaseImpl(get())
     }
     factory {
         TestResultUseCase(
@@ -110,6 +112,8 @@ fun holderModule(baseUrl: String) = module {
         TokenQrUseCase(get())
     }
     factory<DeviceRootedUseCase> { DeviceRootedUseCaseImpl(androidContext()) }
+    factory<AccessTokenUseCase> { AccessTokenUseCaseImpl(get()) }
+    factory<EventUseCase> { EventUseCaseImpl(get()) }
 
     // ViewModels
     viewModel<LocalTestResultViewModel> { LocalTestResultViewModelImpl(get(), get()) }
@@ -117,6 +121,7 @@ fun holderModule(baseUrl: String) = module {
     viewModel { TestResultsViewModel(get(), get(), get(), get()) }
     viewModel { TokenQrViewModel(get()) }
     viewModel<DeviceRootedViewModel> { DeviceRootedViewModelImpl(get(), get()) }
+    viewModel<VaccinationViewModel> { VaccinationViewModelImpl(get()) }
 
     // Repositories
     single { AuthenticationRepository() }

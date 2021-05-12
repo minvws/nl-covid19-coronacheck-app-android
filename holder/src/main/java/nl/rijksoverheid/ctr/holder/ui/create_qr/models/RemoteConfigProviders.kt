@@ -11,7 +11,7 @@ import com.squareup.moshi.JsonClass
  *
  */
 @JsonClass(generateAdapter = true)
-data class RemoteTestProviders(
+data class RemoteConfigProviders(
     @Json(name = "corona_test_providers") val testProviders: List<TestProvider>,
     @Json(name = "event_providers") val eventProviders: List<EventProvider>
 ) {
