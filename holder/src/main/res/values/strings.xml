@@ -92,6 +92,7 @@
     <string name="your_negative_test_results_explanation_title">Meer over testuitslagen</string>
     <string name="your_negative_test_results_explanation_paragraph_1"><![CDATA[In een testuitslag staan de uitslag, het tijdstip van de test en minimale gegevens van jou.<br\><br\>Je gegevens bestaan uit: (1) de eerste letter van je voornaam, (2) de eerste letter van je achternaam, (3) je geboortedag en (4) geboortemaand.]]></string>
     <string name="your_negative_test_results_explanation_paragraph_2"><![CDATA[<b>Zijn deze gegevens anders dan op je identiteitsbewijs?</b><br\>Neem contact op met je testlocatie. Zij kunnen je gegevens aanpassen.]]></string>
+    <string name="your_negative_test_results_characteristic_format">Kenmerk %s is %s</string>
     <string name="testresult_not_known_title">Testuitslag nog niet bekend</string>
     <string name="testresult_not_known_description">Je testuitslag is nog niet bekend. Probeer het later nog eens.\nHeb je het idee dat dit niet klopt? Neem dan contact op met de testlocatie.</string>
     <string name="testresult_to_qr_code_title">Van jouw testuitslag wordt nu een QR-code gemaakt</string>
