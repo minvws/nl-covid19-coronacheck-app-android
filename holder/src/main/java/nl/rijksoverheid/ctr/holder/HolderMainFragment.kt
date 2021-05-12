@@ -67,9 +67,16 @@ class HolderMainFragment : BaseMainFragment(
         }
 
         binding.navView.setNavigationItemSelectedListener { item ->
+            if (appBarConfiguration.topLevelDestinations.contains(R.id.nav_qr_explanation)) {
+                appBarConfiguration.topLevelDestinations.remove(R.id.nav_qr_explanation)
+            }
             when (item.itemId) {
                 R.id.nav_frequently_asked_questions -> {
                     getString(R.string.url_faq).launchUrl(requireActivity())
+                }
+                R.id.nav_create_qr -> {
+                    appBarConfiguration.topLevelDestinations.add(R.id.nav_qr_explanation)
+                    navController.navigate(R.id.nav_qr_explanation)
                 }
                 R.id.nav_about_this_app -> {
                     navController.navigate(
@@ -129,7 +136,7 @@ class HolderMainFragment : BaseMainFragment(
         }
     }
 
-    fun getToolbar() : Toolbar {
+    fun getToolbar(): Toolbar {
         return binding.toolbar
     }
 
@@ -144,6 +151,8 @@ class HolderMainFragment : BaseMainFragment(
         binding.navView.menu.findItem(R.id.nav_frequently_asked_questions)
             .styleTitle(context, R.attr.textAppearanceBody1)
         binding.navView.menu.findItem(R.id.nav_terms_of_use)
+            .styleTitle(context, R.attr.textAppearanceBody1)
+        binding.navView.menu.findItem(R.id.nav_create_qr)
             .styleTitle(context, R.attr.textAppearanceBody1)
     }
 

@@ -10,7 +10,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/flash"
+        android:id="@+id/add_qr"
         android:icon="@drawable/ic_add"
         android:title=""
         app:contentDescription="@string/my_overview_no_qr_make_qr_button"

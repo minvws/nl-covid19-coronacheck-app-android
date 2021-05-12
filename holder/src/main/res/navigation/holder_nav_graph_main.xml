@@ -76,6 +76,12 @@
 
     </fragment>
 
+    <fragment
+        android:id="@+id/nav_qr_explanation"
+        android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.QrExplanationFragment"
+        android:label="@string/choose_provider_toolbar"
+        tools:layout="@layout/fragment_qr_explanation" />
+
     <navigation
         android:id="@+id/nav_commercial_test"
         app:startDestination="@id/nav_commercial_test_code">
