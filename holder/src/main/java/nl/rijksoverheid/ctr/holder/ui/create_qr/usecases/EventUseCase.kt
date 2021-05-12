@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEvents
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
+import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.TestProviderRepository
 import retrofit2.HttpException
 import timber.log.Timber
 import java.io.IOException
@@ -19,7 +20,8 @@ interface EventUseCase {
 
 class EventUseCaseImpl(
     private val configProvidersUseCase: ConfigProvidersUseCase,
-    private val coronaCheckRepository: CoronaCheckRepository
+    private val coronaCheckRepository: CoronaCheckRepository,
+    private val testProviderRepository: TestProviderRepository
 ) : EventUseCase {
 
     override suspend fun getEvents(): EventResult {
@@ -29,6 +31,37 @@ class EventUseCaseImpl(
 
             val accessTokens = coronaCheckRepository.accessTokens("999999011")
             Timber.v("VACFLOW: Fetched access tokens: $accessTokens")
+
+            val eventProvidersWithAccessTokenMap =
+                eventProviders.associateWith { eventProvider -> accessTokens.tokens.first { eventProvider.providerIdentifier == it.providerIdentifier } }
+
+            Timber.v("VACFLOW: Mapped event providers to access token: $eventProvidersWithAccessTokenMap")
+
+            // A list of event providers that have events
+            val eventProviderWithEvents = eventProvidersWithAccessTokenMap.filter {
+                val eventProvider = it.key
+                val accessToken = it.value
+
+                val correctUrl = if (eventProvider.unomiUrl.contains("https")) {
+                    eventProvider.unomiUrl
+                } else {
+                    eventProvider.unomiUrl.replace("http", "https")
+                }
+
+                try {
+                    val unomi = testProviderRepository.unomi(
+                        url = correctUrl,
+                        token = accessToken.unomi
+                    )
+                    unomi.informationAvailable
+                } catch (e: HttpException) {
+                    false
+                } catch (e: IOException) {
+                    false
+                }
+            }.keys.toList()
+            
+            Timber.v("VACFLOW: Event providers with events: $eventProviderWithEvents")
 
             EventResult.Success(
                 remoteEvents = RemoteEvents("1")

@@ -8,9 +8,10 @@
 
 package nl.rijksoverheid.ctr.holder.ui.create_qr.api
 
-import nl.rijksoverheid.ctr.api.signing.http.SignedRequest
 import nl.rijksoverheid.ctr.api.interceptors.SigningCertificate
+import nl.rijksoverheid.ctr.api.signing.http.SignedRequest
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteUnomi
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.post.GetTestResultPostData
 import retrofit2.http.*
@@ -21,8 +22,16 @@ interface TestProviderApiClient {
     suspend fun getTestResult(
         @Url url: String,
         @Header("Authorization") authorization: String,
-        @Header("CoronaCheck-Protocol-Version") protocolVersion: String,
+        @Header("CoronaCheck-Protocol-Version") protocolVersion: String = "3.0",
         @Body data: GetTestResultPostData?,
         @Tag certificate: SigningCertificate
     ): SignedResponseWithModel<RemoteTestResult>
+
+    @POST
+    @SignedRequest
+    suspend fun unomi(
+        @Url url: String,
+        @Header("Authorization") authorization: String,
+        @Header("CoronaCheck-Protocol-Version") protocolVersion: String = "3.0",
+    ): RemoteUnomi
 }
