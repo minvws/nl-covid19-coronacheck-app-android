@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr
 
 import android.os.Bundle
+import android.text.InputFilter
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.core.view.isVisible
@@ -52,6 +53,7 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
 
         _binding = FragmentCommercialTestCodeBinding.bind(view)
 
+        binding.uniqueCodeText.filters = arrayOf(InputFilter.AllCaps())
         binding.uniqueCodeText.addTextChangedListener {
             viewModel.testCode = it?.toString()?.toUpperCase() ?: ""
         }

@@ -52,7 +52,8 @@
                     android:layout_height="match_parent"
                     android:hint="@string/commercial_test_unique_code_hint"
                     android:imeOptions="actionSend"
-                    android:inputType="text"
+                    android:inputType="textVisiblePassword|textCapCharacters|textAutoComplete"
+                    android:textAllCaps="true"
                     android:lines="1">
 
                 </com.google.android.material.textfield.TextInputEditText>
