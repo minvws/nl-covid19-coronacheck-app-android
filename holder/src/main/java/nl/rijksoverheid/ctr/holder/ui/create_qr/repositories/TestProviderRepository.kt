@@ -5,6 +5,7 @@ import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.api.interceptors.SigningCertificate
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.TestProviderApiClient
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteUnomi
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.post.GetTestResultPostData
 import okhttp3.ResponseBody
@@ -25,6 +26,11 @@ interface TestProviderRepository {
         verifierCode: String?,
         signingCertificateBytes: ByteArray
     ): SignedResponseWithModel<RemoteTestResult>
+
+    suspend fun unomi(
+        url: String,
+        token: String
+    ): RemoteUnomi
 }
 
 class TestProviderRepositoryImpl(
@@ -47,8 +53,7 @@ class TestProviderRepositoryImpl(
                         it
                     )
                 },
-                certificate = SigningCertificate(signingCertificateBytes),
-                protocolVersion = "3.0"
+                certificate = SigningCertificate(signingCertificateBytes)
             )
         } catch (ex: HttpException) {
             // if there's no error body, this must be something else than expected
@@ -61,5 +66,13 @@ class TestProviderRepositoryImpl(
                 throw ex
             }
         }
+    }
+
+    override suspend fun unomi(url: String, token: String): RemoteUnomi {
+        return testProviderApiClient
+            .unomi(
+                url = url,
+                authorization = "Bearer $token",
+            )
     }
 }
