@@ -28,6 +28,10 @@ android {
         }
     }
 
+    buildFeatures {
+        dataBinding = true
+    }
+
     compileOptions {
         coreLibraryDesugaringEnabled true
     }

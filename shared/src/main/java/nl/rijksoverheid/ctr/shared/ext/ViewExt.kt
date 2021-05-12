@@ -15,45 +15,22 @@ import android.widget.Button
 import androidx.core.view.AccessibilityDelegateCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
+import nl.rijksoverheid.ctr.shared.utils.Accessibility
 
 
 /**
  * Request focus for accessibility framework
  */
-fun View.setAccessibilityFocus(): View {
-    this.performAccessibilityAction(AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS, null)
-    this.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED)
-    return this
-}
-
-private fun View.setAccessibilityDelegate(callback: (host: View, info: AccessibilityNodeInfoCompat) -> Unit) {
-    ViewCompat.setAccessibilityDelegate(
-        this,
-        object : AccessibilityDelegateCompat() {
-            override fun onInitializeAccessibilityNodeInfo(
-                host: View,
-                info: AccessibilityNodeInfoCompat
-            ) {
-                super.onInitializeAccessibilityNodeInfo(host, info)
-                callback(host, info)
-            }
-        }
-    )
-}
-
-fun View.accessibilityHeading(isHeading: Boolean) {
-    this.setAccessibilityDelegate { _, info ->
-        info.isHeading = isHeading
-    }
-}
-
-
-fun View.setAsAccessibilityButton(isButton: Boolean) {
-    this.setAccessibilityDelegate { _, info ->
-        info.className = if (isButton) {
-            Button::class.java.name
-        } else {
-            this::class.java.name
-        }
-    }
-}
+//fun View.setAccessibilityFocus(): View {
+//    Accessibility.focus(this)
+//    return this
+//}
+//
+//fun View.setAsAccessibilityHeading(isHeading: Boolean = true) {
+//    Accessibility.heading(this, isHeading)
+//}
+//
+//
+//fun View.setAsAccessibilityButton(isButton: Boolean) {
+//    Accessibility.button(this, isButton)
+//}
