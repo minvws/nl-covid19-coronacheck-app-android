@@ -112,8 +112,7 @@ fun holderModule(baseUrl: String) = module {
         TokenQrUseCase(get())
     }
     factory<DeviceRootedUseCase> { DeviceRootedUseCaseImpl(androidContext()) }
-    factory<AccessTokenUseCase> { AccessTokenUseCaseImpl(get()) }
-    factory<EventUseCase> { EventUseCaseImpl(get()) }
+    factory<EventUseCase> { EventUseCaseImpl(get(), get()) }
 
     // ViewModels
     viewModel<LocalTestResultViewModel> { LocalTestResultViewModelImpl(get(), get()) }

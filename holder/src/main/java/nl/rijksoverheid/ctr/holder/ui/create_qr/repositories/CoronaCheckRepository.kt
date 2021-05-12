@@ -4,6 +4,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.HolderApiClient
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.post.AccessTokenPostData
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.post.GetTestIsmPostData
 import okhttp3.ResponseBody
 import org.json.JSONObject
@@ -20,7 +21,7 @@ import retrofit2.HttpException
 
 interface CoronaCheckRepository {
     suspend fun configProviders(): RemoteConfigProviders
-    suspend fun accessTokens(bsn: String): RemoteAccessTokens
+    suspend fun accessTokens(tvsToken: String): RemoteAccessTokens
     suspend fun getTestIsm(test: String, sToken: String, icm: String): TestIsmResult
     suspend fun remoteNonce(): RemoteNonce
 }
@@ -34,8 +35,10 @@ open class CoronaCheckRepositoryImpl(
         return api.getConfigCtp()
     }
 
-    override suspend fun accessTokens(bsn: String): RemoteAccessTokens {
-        return api.getAccessTokens(bsn)
+    override suspend fun accessTokens(tvnToken: String): RemoteAccessTokens {
+        return api.getAccessTokens(
+            data = AccessTokenPostData(tvnToken)
+        )
     }
 
     @Suppress("BlockingMethodInNonBlockingContext")
