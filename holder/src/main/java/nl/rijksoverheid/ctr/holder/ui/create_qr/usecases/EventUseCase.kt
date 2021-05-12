@@ -21,7 +21,7 @@ class EventUseCaseImpl(private val configProvidersUseCase: ConfigProvidersUseCas
     override suspend fun getEvents(): EventResult {
         return try {
             val eventProviders = configProvidersUseCase.eventProviders()
-            Timber.v("VACFLOW: Fetched test providers: $eventProviders")
+            Timber.v("VACFLOW: Fetched event providers: $eventProviders")
 
             EventResult.Success(
                 remoteEvents = RemoteEvents("1")
