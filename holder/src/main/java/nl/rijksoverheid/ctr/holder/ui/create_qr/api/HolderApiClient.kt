@@ -2,15 +2,15 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.api
 
 import nl.rijksoverheid.ctr.api.signing.http.SignedRequest
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteAccessTokens
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteNonce
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteConfigProviders
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteNonce
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.post.AccessTokenPostData
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.post.GetTestIsmPostData
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
-import retrofit2.http.Query
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -28,9 +28,9 @@ interface HolderApiClient {
     @SignedRequest
     suspend fun getConfigCtp(): RemoteConfigProviders
 
-    @GET("holder/access_tokens")
+    @POST("holder/access_tokens")
     @SignedRequest
-    suspend fun getAccessTokens(@Query("bsn") bsn: String): RemoteAccessTokens
+    suspend fun getAccessTokens(@Body data: AccessTokenPostData): RemoteAccessTokens
 
     @POST("holder/get_test_ism")
     @SignedRequest
