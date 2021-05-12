@@ -7,6 +7,7 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="16dp"
     android:layout_marginTop="32dp"
+    android:importantForAccessibility="no"
     android:clipToPadding="false"
     app:cardCornerRadius="15dp"
     app:cardElevation="8dp">
@@ -15,7 +16,6 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:screenReaderFocusable="true"
         tools:background="#68d2ff">
 
         <ImageView
@@ -39,13 +39,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
+        <nl.rijksoverheid.ctr.design.views.AccessibilityHeaderWidget
             android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="24dp"
             android:layout_marginTop="24dp"
-            android:focusable="false"
+            android:focusable="true"
             android:textAppearance="?attr/textAppearanceHeadline6"
             app:layout_constraintBottom_toTopOf="@+id/description"
             app:layout_constraintEnd_toEndOf="parent"
@@ -59,7 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="64dp"
-            android:focusable="false"
+            android:focusable="true"
             android:textAppearance="?attr/textAppearanceBody1"
             app:layout_constraintBottom_toTopOf="@+id/button"
             app:layout_constraintEnd_toEndOf="@+id/title"
@@ -77,7 +77,6 @@
             android:layout_marginTop="36dp"
             android:layout_marginBottom="24dp"
             android:focusable="true"
-            android:screenReaderFocusable="true"
             app:layout_constrainedWidth="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/title"
