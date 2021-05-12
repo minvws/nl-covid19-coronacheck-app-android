@@ -84,7 +84,6 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
 
         binding.scannerFooter.text = getCopy().message
         binding.toolbar.title = getCopy().title
-        binding.toolbar.setNavigationContentDescription(R.string.back)
 
         // Show header below overlay window after overlay finishes drawing
         binding.overlay.doOnLayout {
