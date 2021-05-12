@@ -1,7 +1,7 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
 import kotlinx.coroutines.runBlocking
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestProviders
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteConfigProviders
 import nl.rijksoverheid.ctr.holder.fakeCoronaCheckRepository
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -15,13 +15,13 @@ import org.junit.Test
  */
 class TestTestProviderUseCaseImplTest {
 
-    private val testProvider1 = RemoteTestProviders.TestProvider(
+    private val testProvider1 = RemoteConfigProviders.TestProvider(
         name = "dummy",
         providerIdentifier = "1",
         resultUrl = "dummy",
         publicKey = "dummy".toByteArray()
     )
-    private val testProvider2 = RemoteTestProviders.TestProvider(
+    private val testProvider2 = RemoteConfigProviders.TestProvider(
         name = "dummy",
         providerIdentifier = "2",
         resultUrl = "dummy",
@@ -32,7 +32,7 @@ class TestTestProviderUseCaseImplTest {
     fun `Existing test provider should return one`() = runBlocking {
         val usecase = TestProviderUseCaseImpl(
             coronaCheckRepository = fakeCoronaCheckRepository(
-                testProviders = RemoteTestProviders(listOf(testProvider1, testProvider2))
+                testProviders = RemoteConfigProviders(listOf(testProvider1, testProvider2))
             )
         )
         assertEquals(testProvider1, usecase.testProvider("1"))
@@ -42,7 +42,7 @@ class TestTestProviderUseCaseImplTest {
     fun `Non-existing test provider should return null`() = runBlocking {
         val usecase = TestProviderUseCaseImpl(
             coronaCheckRepository = fakeCoronaCheckRepository(
-                testProviders = RemoteTestProviders(listOf(testProvider1, testProvider2))
+                testProviders = RemoteConfigProviders(listOf(testProvider1, testProvider2))
             )
         )
         assertEquals(null, usecase.testProvider("3"))

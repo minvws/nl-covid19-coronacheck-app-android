@@ -44,6 +44,13 @@ class ChooseProviderFragment : Fragment(R.layout.fragment_choose_provider) {
         ) {
         }
 
+        binding.providerVaccination.bind(
+            R.string.dummy_vaccination,
+            null
+        ) {
+            findNavController().navigate(ChooseProviderFragmentDirections.actionVaccination())
+        }
+
         binding.providerCommercial.root.setAsAccessibilityButton(isButton = true)
     }
 }

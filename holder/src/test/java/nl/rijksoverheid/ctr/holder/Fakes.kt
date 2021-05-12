@@ -238,24 +238,24 @@ fun fakeTestProviderRepository(
 }
 
 fun fakeTestProviderUseCase(
-    provider: RemoteTestProviders.TestProvider? = null
+    provider: RemoteConfigProviders.TestProvider? = null
 ): TestProviderUseCase {
     return object : TestProviderUseCase {
-        override suspend fun testProvider(id: String): RemoteTestProviders.TestProvider? {
+        override suspend fun testProvider(id: String): RemoteConfigProviders.TestProvider? {
             return provider
         }
     }
 }
 
 fun fakeCoronaCheckRepository(
-    testProviders: RemoteTestProviders = RemoteTestProviders(listOf()),
+    testProviders: RemoteConfigProviders = RemoteConfigProviders(listOf()),
     testIsmResult: TestIsmResult = TestIsmResult.Success(""),
     testIsmExceptionCallback: (() -> Unit)? = null,
     remoteNonce: RemoteNonce = RemoteNonce("", ""),
 
     ): CoronaCheckRepository {
     return object : CoronaCheckRepository {
-        override suspend fun testProviders(): RemoteTestProviders {
+        override suspend fun testProviders(): RemoteConfigProviders {
             return testProviders
         }
 
