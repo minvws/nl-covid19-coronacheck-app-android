@@ -12,6 +12,7 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
 import com.xwray.groupie.viewbinding.BindableItem
+import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMyOverviewBinding
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewHeaderAdapterItem
@@ -53,13 +54,17 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
         super.onViewCreated(view, savedInstanceState)
 
         val binding = FragmentMyOverviewBinding.bind(view)
-
         val adapter = GroupAdapter<GroupieViewHolder>().also {
             it.add(section)
         }
         binding.recyclerView.adapter = adapter
         binding.recyclerView.itemAnimator = null
         setItems()
+
+        (parentFragment?.parentFragment as HolderMainFragment).getToolbar().let {
+            it.menu.clear()
+            it.inflateMenu(R.menu.overview_toolbar)
+        }
 
         localTestResultViewModel.localTestResultStateLiveData.observe(
             viewLifecycleOwner,
@@ -120,6 +125,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
     override fun onPause() {
         super.onPause()
         localTestResultHandler.removeCallbacks(localTestResultRunnable)
+        (parentFragment?.parentFragment as HolderMainFragment).getToolbar().menu.clear()
     }
 
     private fun setItems(

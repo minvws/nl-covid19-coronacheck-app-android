@@ -11,6 +11,7 @@ package nl.rijksoverheid.ctr.holder
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.fragment.NavHostFragment
@@ -126,6 +127,10 @@ class HolderMainFragment : BaseMainFragment(
         } else {
             binding.toolbar.setAccessibilityFocus()
         }
+    }
+
+    fun getToolbar() : Toolbar {
+        return binding.toolbar
     }
 
     private fun navigationDrawerStyling() {
