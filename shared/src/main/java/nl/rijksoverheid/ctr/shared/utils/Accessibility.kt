@@ -122,7 +122,7 @@ object Accessibility {
      *
      * @param isHeading Value to apply
      */
-    fun View.setAccessibilityHeading(isHeading: Boolean = true): View {
+    fun View.setAsAccessibilityHeading(isHeading: Boolean = true): View {
         return heading(this, isHeading)
     }
 
@@ -150,7 +150,7 @@ object Accessibility {
      *
      * @param isButton Value to apply
      */
-    fun View.setAccessibilityButton(isButton: Boolean = true): View {
+    fun View.setAsAccessibilityButton(isButton: Boolean = true): View {
         return button(this, isButton)
     }
 }
