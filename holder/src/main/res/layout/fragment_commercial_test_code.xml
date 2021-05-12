@@ -52,7 +52,7 @@
                     android:layout_height="match_parent"
                     android:hint="@string/commercial_test_unique_code_hint"
                     android:imeOptions="actionSend"
-                    android:inputType="textVisiblePassword|textCapCharacters|textAutoComplete"
+                    android:inputType="text|textCapCharacters|textAutoComplete"
                     android:textAllCaps="true"
                     android:lines="1">
 
