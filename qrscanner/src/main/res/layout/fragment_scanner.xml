@@ -21,6 +21,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/ic_back"
+        app:navigationContentDescription="@string/back"
         app:menu="@menu/menu_scanner"
         tools:title="QR-Code scannen" />
 
