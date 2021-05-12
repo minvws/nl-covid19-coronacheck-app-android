@@ -17,11 +17,17 @@ import nl.rijksoverheid.ctr.shared.livedata.Event
  *
  */
 
-abstract class TestResultsViewModel : ViewModel(){
+abstract class TestResultsViewModel : ViewModel() {
     abstract fun updateViewState()
     abstract fun getTestResult(fromDeeplink: Boolean = false)
     abstract fun sendVerificationCode()
     abstract fun saveTestResult()
+    abstract fun getRetrievedResult(): TestResult.NegativeTestResult?
+
+    val testResult: LiveData<Event<TestResult>> = MutableLiveData()
+    val signedTestResult = MutableLiveData<Event<SignedTestResult>>()
+    val loading: LiveData<Event<Boolean>> = MutableLiveData()
+    val viewState: LiveData<ViewState> = MutableLiveData(ViewState())
 }
 
 
@@ -32,9 +38,10 @@ open class TestResultsViewModelImpl(
     private val secretKeyUseCase: SecretKeyUseCase
 ) : TestResultsViewModel() {
 
-    val testResult: LiveData<Event<TestResult>> = MutableLiveData()
-    val signedTestResult: LiveData<Event<SignedTestResult>> = MutableLiveData()
-    val loading: LiveData<Event<Boolean>> = MutableLiveData()
+    override fun getRetrievedResult(): TestResult.NegativeTestResult? {
+        return (testResult.value?.peekContent() as? TestResult.NegativeTestResult)
+    }
+
 
     var verificationCode: String = savedStateHandle["verification_code"] ?: ""
         set(value) {
@@ -64,10 +71,6 @@ open class TestResultsViewModelImpl(
             updateViewState()
         }
 
-    val viewState: LiveData<ViewState> = MutableLiveData(ViewState())
-
-    val retrievedResult: TestResult.NegativeTestResult?
-        get() = (testResult.value?.peekContent() as? TestResult.NegativeTestResult)
 
     private val currentViewState: ViewState
         get() = viewState.value!!
@@ -116,7 +119,7 @@ open class TestResultsViewModelImpl(
         viewModelScope.launch {
             try {
                 secretKeyUseCase.persist()
-                retrievedResult?.let {
+                getRetrievedResult()?.let {
                     val result = testResultUseCase.signTestResult(
                         signedResponseWithTestResult = it.signedResponseWithTestResult
                     )
