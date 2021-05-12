@@ -42,15 +42,9 @@ class EventUseCaseImpl(
                 val eventProvider = it.key
                 val accessToken = it.value
 
-                val correctUrl = if (eventProvider.unomiUrl.contains("https")) {
-                    eventProvider.unomiUrl
-                } else {
-                    eventProvider.unomiUrl.replace("http", "https")
-                }
-
                 try {
                     val unomi = testProviderRepository.unomi(
-                        url = correctUrl,
+                        url = eventProvider.unomiUrl,
                         token = accessToken.unomi
                     )
                     unomi.informationAvailable
@@ -60,7 +54,7 @@ class EventUseCaseImpl(
                     false
                 }
             }.keys.toList()
-            
+
             Timber.v("VACFLOW: Event providers with events: $eventProviderWithEvents")
 
             EventResult.Success(
