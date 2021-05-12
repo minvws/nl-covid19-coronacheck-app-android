@@ -238,10 +238,10 @@ fun fakeTestProviderRepository(
 }
 
 fun fakeTestProviderUseCase(
-    provider: RemoteTestProviders.Provider? = null
+    provider: RemoteTestProviders.TestProvider? = null
 ): TestProviderUseCase {
     return object : TestProviderUseCase {
-        override suspend fun testProvider(id: String): RemoteTestProviders.Provider? {
+        override suspend fun testProvider(id: String): RemoteTestProviders.TestProvider? {
             return provider
         }
     }

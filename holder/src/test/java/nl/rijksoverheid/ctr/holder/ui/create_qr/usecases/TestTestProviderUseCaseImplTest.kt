@@ -13,15 +13,15 @@ import org.junit.Test
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class TestProviderUseCaseImplTest {
+class TestTestProviderUseCaseImplTest {
 
-    private val testProvider1 = RemoteTestProviders.Provider(
+    private val testProvider1 = RemoteTestProviders.TestProvider(
         name = "dummy",
         providerIdentifier = "1",
         resultUrl = "dummy",
         publicKey = "dummy".toByteArray()
     )
-    private val testProvider2 = RemoteTestProviders.Provider(
+    private val testProvider2 = RemoteTestProviders.TestProvider(
         name = "dummy",
         providerIdentifier = "2",
         resultUrl = "dummy",

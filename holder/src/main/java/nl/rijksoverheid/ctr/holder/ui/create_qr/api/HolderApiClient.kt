@@ -22,7 +22,7 @@ interface HolderApiClient {
     @SignedRequest
     suspend fun getNonce(): RemoteNonce
 
-    @GET("holder/config_ctp")
+    @GET("holder/config_providers")
     @SignedRequest
     suspend fun getConfigCtp(): RemoteTestProviders
 

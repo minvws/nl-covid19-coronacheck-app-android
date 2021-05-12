@@ -11,13 +11,13 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckReposito
  *
  */
 interface TestProviderUseCase {
-    suspend fun testProvider(id: String): RemoteTestProviders.Provider?
+    suspend fun testProvider(id: String): RemoteTestProviders.TestProvider?
 }
 
 class TestProviderUseCaseImpl(private val coronaCheckRepository: CoronaCheckRepository) :
     TestProviderUseCase {
 
-    override suspend fun testProvider(id: String): RemoteTestProviders.Provider? {
-        return coronaCheckRepository.testProviders().providers.firstOrNull { it.providerIdentifier == id }
+    override suspend fun testProvider(id: String): RemoteTestProviders.TestProvider? {
+        return coronaCheckRepository.testProviders().testProviders.firstOrNull { it.providerIdentifier == id }
     }
 }
