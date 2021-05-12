@@ -12,11 +12,12 @@ import com.squareup.moshi.JsonClass
  */
 @JsonClass(generateAdapter = true)
 data class RemoteTestProviders(
-    @Json(name = "corona_test_providers") val providers: List<Provider>
+    @Json(name = "corona_test_providers") val testProviders: List<TestProvider>,
+    @Json(name = "event_providers") val eventProviders: List<EventProvider>
 ) {
 
     @JsonClass(generateAdapter = true)
-    data class Provider(
+    data class TestProvider(
         val name: String,
         @Json(name = "provider_identifier") val providerIdentifier: String,
         @Json(name = "result_url") val resultUrl: String,
@@ -26,7 +27,7 @@ data class RemoteTestProviders(
             if (this === other) return true
             if (javaClass != other?.javaClass) return false
 
-            other as Provider
+            other as TestProvider
 
             if (name != other.name) return false
             if (providerIdentifier != other.providerIdentifier) return false
@@ -44,4 +45,13 @@ data class RemoteTestProviders(
             return result
         }
     }
+
+    data class EventProvider(
+        val name: String,
+        @Json(name = "provider_identifier") val providerIdentifier: String,
+        @Json(name = "unomi_url") val unomiUrl: String,
+        @Json(name = "event_url") val eventUrl: String,
+        val cms: String,
+        val tls: String
+    )
 }

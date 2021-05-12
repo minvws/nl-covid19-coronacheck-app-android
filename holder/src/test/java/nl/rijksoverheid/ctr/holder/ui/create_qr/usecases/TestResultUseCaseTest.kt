@@ -522,8 +522,8 @@ class TestResultUseCaseTest {
         }
     }
 
-    private fun getRemoteTestProvider(identifier: String): RemoteTestProviders.Provider {
-        return RemoteTestProviders.Provider(
+    private fun getRemoteTestProvider(identifier: String): RemoteTestProviders.TestProvider {
+        return RemoteTestProviders.TestProvider(
             name = "dummy",
             providerIdentifier = identifier,
             resultUrl = "dummy",
