@@ -14,13 +14,13 @@ import timber.log.Timber
  *
  */
 abstract class VaccinationViewModel : ViewModel() {
-    abstract fun getEvents()
+    abstract fun getEvents(digidToken: String)
 }
 
 class VaccinationViewModelImpl(private val eventUseCase: EventUseCase) : VaccinationViewModel() {
-    override fun getEvents() {
+    override fun getEvents(digidToken: String) {
         viewModelScope.launch {
-            val result = eventUseCase.getEvents()
+            val result = eventUseCase.getEvents(digidToken)
             Timber.v("VACFLOW: Fetched test providers: $result")
         }
     }

@@ -14,7 +14,7 @@ import java.io.IOException
  *
  */
 interface EventUseCase {
-    suspend fun getEvents(): EventResult
+    suspend fun getEvents(digidToken: String): EventResult
 }
 
 class EventUseCaseImpl(
@@ -23,12 +23,12 @@ class EventUseCaseImpl(
     private val eventProviderRepository: EventProviderRepository
 ) : EventUseCase {
 
-    override suspend fun getEvents(): EventResult {
+    override suspend fun getEvents(digidToken: String): EventResult {
         return try {
             val eventProviders = configProvidersUseCase.eventProviders()
             Timber.v("VACFLOW: Fetched event providers: $eventProviders")
 
-            val accessTokens = coronaCheckRepository.accessTokens("999999011")
+            val accessTokens = coronaCheckRepository.accessTokens(digidToken)
             Timber.v("VACFLOW: Fetched access tokens: $accessTokens")
 
             val eventProvidersWithAccessTokenMap =

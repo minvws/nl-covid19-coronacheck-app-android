@@ -12,7 +12,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-open class DigiDFragment : Fragment(0) {
+open class DigiDFragment(contentLayoutId: Int) : Fragment(contentLayoutId) {
 
     protected val digidViewModel: DigiDViewModel by viewModel()
     private val authService by lazy { AuthorizationService(requireActivity()) }
@@ -22,7 +22,7 @@ open class DigiDFragment : Fragment(0) {
             digidViewModel.handleActivityResult(it, authService)
         }
 
-    fun login() {
+    fun loginWithDigiD() {
         digidViewModel.login(loginResult, authService)
     }
 }
