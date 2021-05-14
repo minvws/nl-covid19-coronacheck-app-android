@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.databinding.FragmentVaccinationBinding
+import nl.rijksoverheid.ctr.holder.databinding.FragmentGetVaccinationBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /*
@@ -14,14 +14,14 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class VaccinationFragment : Fragment(R.layout.fragment_vaccination) {
+class GetVaccinationFragment : Fragment(R.layout.fragment_get_vaccination) {
 
     private val vaccinationViewModel: VaccinationViewModel by viewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val binding = FragmentVaccinationBinding.bind(view)
+        val binding = FragmentGetVaccinationBinding.bind(view)
         binding.button.setOnClickListener {
             vaccinationViewModel.getEvents()
         }

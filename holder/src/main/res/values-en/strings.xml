@@ -183,4 +183,13 @@
     <string name="create_qr_explanation_menu_title_alternative">Voeg een QR-code toe</string>
     <string name="create_qr_explanation_title">Over het maken van een QR-code</string>
     <string name="create_qr_explanation_description"><![CDATA[Je kan een QR-code maken van een negatieve testuitslag, een herstelverklaring of van een vaccinatie. Dat is jouw bewijs.<br/><br/><b>Meerdere bewijzen</b><br/>Je kunt meerdere bewijzen tegelijkertijd hebben. Zowel een vaccinatiebewijs als een testbewijs, bijvoorbeeld. Ook kun je een bewijs voor je kinderen maken.<br/><br/><b>Ga je naar het buitenland?</b><br/>Als je een QR-code maakt, krijg je automatisch een QR-code voor binnen Nederland en een die in Europa bruikbaar is. Gebruik in het buitenland de Europese QR-code.<br/><br/><b>Geldigheid in Europa</b><br/>Weten welke test- en vaccinatiebewijzen geldig zijn in het land dat je bezoekt? Bekijk <a href="#">deze pagina.</a> Zo voorkom je onverwachtse verrassingen ter plekke.]]></string>
+    <string name="qr_code_type_title">Waar wil je een QR-code van maken?</string>
+    <string name="qr_code_type_description">Je kan een QR-code maken van een negatieve testuitslag.</string>
+    <string name="qr_code_type_negative_test_title">Een negatieve testuitslag</string>
+    <string name="qr_code_type_negative_test_description">Uit de test blijkt dat ik geen corona heb</string>
+    <string name="qr_code_type_vaccination_title">Een vaccinatiebewijs</string>
+    <string name="qr_code_type_vaccination_description">Ik ben volledig gevaccineerd</string>
+    <string name="get_vaccination_title">Vaccinatie ophalen</string>
+    <string name="get_vaccination_description"><![CDATA[Ben je volledig gevaccineerd? Dan kun je een vaccinatiebewijs maken.<br\><br\> Vragen over vaccinaties? <a href="http://www.google.com">Lees hier meer.</a>]]></string>
+    <string name="get_vaccination_button">Login met DigiD</string>
 </resources>
