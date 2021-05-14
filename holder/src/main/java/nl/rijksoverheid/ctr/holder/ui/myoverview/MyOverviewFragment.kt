@@ -66,14 +66,6 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
             if (toolbar?.menu?.size() == 0) {
                 toolbar.apply {
                     inflateMenu(R.menu.overview_toolbar)
-                    setOnMenuItemClickListener { menuItem ->
-                        if (menuItem.itemId == R.id.add_qr) {
-                            findNavControllerSafety(R.id.nav_my_overview)?.navigate(
-                                R.id.nav_qr_explanation
-                            )
-                        }
-                        true
-                    }
                 }
             }
         }

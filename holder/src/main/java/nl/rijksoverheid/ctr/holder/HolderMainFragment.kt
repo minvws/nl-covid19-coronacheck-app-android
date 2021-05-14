@@ -73,6 +73,10 @@ class HolderMainFragment : BaseMainFragment(
             NavigationUI.navigateUp(navController, appBarConfiguration)
         }
 
+        binding.toolbar.setOnMenuItemClickListener {
+            NavigationUI.onNavDestinationSelected(it, navController)
+        }
+
         binding.navView.setNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_frequently_asked_questions -> {
