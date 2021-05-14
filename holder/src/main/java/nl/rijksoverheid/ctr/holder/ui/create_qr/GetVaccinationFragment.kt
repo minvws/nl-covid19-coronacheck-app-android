@@ -2,9 +2,10 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentGetVaccinationBinding
+import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigiDFragment
+import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /*
@@ -14,7 +15,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class GetVaccinationFragment : Fragment(R.layout.fragment_get_vaccination) {
+class GetVaccinationFragment : DigiDFragment(R.layout.fragment_get_vaccination) {
 
     private val vaccinationViewModel: VaccinationViewModel by viewModel()
 
@@ -22,8 +23,13 @@ class GetVaccinationFragment : Fragment(R.layout.fragment_get_vaccination) {
         super.onViewCreated(view, savedInstanceState)
 
         val binding = FragmentGetVaccinationBinding.bind(view)
+
+        digidViewModel.accessTokenLiveData.observe(viewLifecycleOwner, EventObserver {
+            vaccinationViewModel.getEvents(it)
+        })
+
         binding.button.setOnClickListener {
-            vaccinationViewModel.getEvents()
+            loginWithDigiD()
         }
     }
 }
