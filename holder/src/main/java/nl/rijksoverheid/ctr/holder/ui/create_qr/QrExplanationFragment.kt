@@ -11,6 +11,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentQrExplanationBinding
 
@@ -21,7 +22,7 @@ class QrExplanationFragment : Fragment(R.layout.fragment_qr_explanation) {
 
         val binding = FragmentQrExplanationBinding.bind(view)
         binding.button.setOnClickListener {
-            // Todo : Link to new screen
+            findNavController().navigate(R.id.nav_choose_provider)
         }
     }
 }
