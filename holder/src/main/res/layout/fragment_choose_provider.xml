@@ -48,7 +48,7 @@
 
         <include
             android:id="@+id/provider_commercial"
-            layout="@layout/include_test_provider"
+            layout="@layout/include_content_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
@@ -58,23 +58,11 @@
 
         <include
             android:id="@+id/provider_ggd"
-            layout="@layout/include_test_provider"
+            layout="@layout/include_content_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/title"
-            app:layout_constraintStart_toStartOf="@+id/title"
-            app:layout_constraintTop_toBottomOf="@id/provider_commercial"
-            app:layout_constraintVertical_bias="0" />
-
-        <include
-            android:id="@+id/provider_vaccination"
-            layout="@layout/include_test_provider"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/title"
             app:layout_constraintStart_toStartOf="@+id/title"
