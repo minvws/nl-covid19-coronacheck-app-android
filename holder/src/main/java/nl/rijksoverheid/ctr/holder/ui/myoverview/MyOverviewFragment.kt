@@ -177,7 +177,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
             buttonText = if (localTestResult == null) R.string.my_overview_no_qr_make_qr_button else R.string.my_overview_no_qr_replace_qr_button,
             onButtonClick = {
                 findNavControllerSafety(R.id.nav_my_overview)?.navigate(
-                    R.id.nav_qr_explanation
+                    MyOverviewFragmentDirections.actionQrExplanation()
                 )
             }
         ))

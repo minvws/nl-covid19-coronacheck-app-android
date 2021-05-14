@@ -22,7 +22,7 @@ class QrExplanationFragment : Fragment(R.layout.fragment_qr_explanation) {
 
         val binding = FragmentQrExplanationBinding.bind(view)
         binding.button.setOnClickListener {
-            findNavController().navigate(R.id.nav_choose_provider)
+            findNavController().navigate(QrExplanationFragmentDirections.actionChooseProvider())
         }
     }
 }
