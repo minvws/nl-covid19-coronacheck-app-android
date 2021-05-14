@@ -247,7 +247,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
             position = 2,
             childId = R.id.button
         )
-        assertEquals(navController.currentDestination?.id, R.id.nav_choose_provider)
+        assertEquals(navController.currentDestination?.id, R.id.nav_qr_explanation)
     }
 
     private fun launchOverviewFragment(localTestResultState: LocalTestResultState) {
