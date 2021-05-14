@@ -61,8 +61,9 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
         binding.recyclerView.itemAnimator = null
         setItems()
 
-        (parentFragment?.parentFragment as HolderMainFragment).getToolbar().let { toolbar ->
-            if (toolbar.menu.size() == 0) {
+        // Nullable so tests don't trip over parentFragment
+        (parentFragment?.parentFragment as HolderMainFragment?)?.getToolbar().let { toolbar ->
+            if (toolbar?.menu?.size() == 0) {
                 toolbar.apply {
                     inflateMenu(R.menu.overview_toolbar)
                     setOnMenuItemClickListener { menuItem ->
@@ -158,7 +159,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                     localTestResult = it,
                     onButtonClick = {
                         findNavControllerSafety(R.id.nav_my_overview)?.navigate(
-                            MyOverviewFragmentDirections.actionQrCode()
+                            R.id.nav_qr_explanation
                         )
                     }
                 )

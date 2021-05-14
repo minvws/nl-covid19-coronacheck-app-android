@@ -18,7 +18,6 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.snackbar.Snackbar
 import nl.rijksoverheid.ctr.design.BaseMainFragment
 import nl.rijksoverheid.ctr.design.ext.styleTitle
 import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppData
@@ -28,14 +27,14 @@ import nl.rijksoverheid.ctr.holder.ui.myoverview.LocalTestResultViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.LocalTestResultState
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.ext.setAccessibilityFocus
-import nl.rijksoverheid.ctr.shared.ext.show
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class HolderMainFragment : BaseMainFragment(
     R.layout.fragment_main, setOf(
         R.id.nav_my_overview,
-        R.id.nav_about_this_app
+        R.id.nav_about_this_app,
+        R.id.nav_create_qr
     )
 ) {
 
@@ -75,16 +74,12 @@ class HolderMainFragment : BaseMainFragment(
         }
 
         binding.navView.setNavigationItemSelectedListener { item ->
-            if (appBarConfiguration.topLevelDestinations.contains(R.id.nav_qr_explanation)) {
-                appBarConfiguration.topLevelDestinations.remove(R.id.nav_qr_explanation)
-            }
             when (item.itemId) {
                 R.id.nav_frequently_asked_questions -> {
                     getString(R.string.url_faq).launchUrl(requireActivity())
                 }
                 R.id.nav_create_qr -> {
-                    appBarConfiguration.topLevelDestinations.add(R.id.nav_qr_explanation)
-                    navController.navigate(R.id.nav_qr_explanation)
+                    navController.navigate(R.id.nav_create_qr)
                 }
                 R.id.nav_about_this_app -> {
                     navController.navigate(
@@ -138,7 +133,8 @@ class HolderMainFragment : BaseMainFragment(
                         // Nothing
                     }
                     is LocalTestResultState.Valid -> {
-                        binding.navView.menu.findItem(R.id.nav_create_qr).title = getString(R.string.create_qr_explanation_menu_title_alternative)
+                        binding.navView.menu.findItem(R.id.nav_create_qr).title =
+                            getString(R.string.create_qr_explanation_menu_title_alternative)
                         navigationDrawerStyling()
                     }
                 }
