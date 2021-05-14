@@ -10,6 +10,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.api
 
 import nl.rijksoverheid.ctr.api.interceptors.SigningCertificate
 import nl.rijksoverheid.ctr.api.signing.http.SignedRequest
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEvents
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteUnomi
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
@@ -34,4 +35,12 @@ interface TestProviderApiClient {
         @Header("Authorization") authorization: String,
         @Header("CoronaCheck-Protocol-Version") protocolVersion: String = "3.0",
     ): RemoteUnomi
+
+    @POST
+    @SignedRequest
+    suspend fun events(
+        @Url url: String,
+        @Header("Authorization") authorization: String,
+        @Header("CoronaCheck-Protocol-Version") protocolVersion: String = "3.0",
+    ): RemoteEvents
 }
