@@ -18,13 +18,19 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.snackbar.Snackbar
 import nl.rijksoverheid.ctr.design.BaseMainFragment
 import nl.rijksoverheid.ctr.design.ext.styleTitle
 import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppData
 import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppFragment
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMainBinding
+import nl.rijksoverheid.ctr.holder.ui.myoverview.LocalTestResultViewModel
+import nl.rijksoverheid.ctr.holder.ui.myoverview.models.LocalTestResultState
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.ext.setAccessibilityFocus
+import nl.rijksoverheid.ctr.shared.ext.show
+import nl.rijksoverheid.ctr.shared.livedata.EventObserver
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class HolderMainFragment : BaseMainFragment(
     R.layout.fragment_main, setOf(
@@ -35,6 +41,8 @@ class HolderMainFragment : BaseMainFragment(
 
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
+
+    private val localTestResultViewModel: LocalTestResultViewModel by sharedViewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -120,6 +128,21 @@ class HolderMainFragment : BaseMainFragment(
                 }
             }
         })
+
+        localTestResultViewModel.localTestResultStateLiveData.observe(
+            viewLifecycleOwner,
+            EventObserver { localTestResultState ->
+                when (localTestResultState) {
+                    is LocalTestResultState.None,
+                    is LocalTestResultState.Expired -> {
+                        // Nothing
+                    }
+                    is LocalTestResultState.Valid -> {
+                        binding.navView.menu.findItem(R.id.nav_create_qr).title = getString(R.string.create_qr_explanation_menu_title_alternative)
+                        navigationDrawerStyling()
+                    }
+                }
+            })
     }
 
     override fun onDestroyView() {

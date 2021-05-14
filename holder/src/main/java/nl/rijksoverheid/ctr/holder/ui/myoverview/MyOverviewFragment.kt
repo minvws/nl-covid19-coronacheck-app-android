@@ -61,16 +61,19 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
         binding.recyclerView.itemAnimator = null
         setItems()
 
-        (parentFragment?.parentFragment as HolderMainFragment).getToolbar().let { it ->
-            it.menu.clear()
-            it.inflateMenu(R.menu.overview_toolbar)
-            it.setOnMenuItemClickListener { menuItem ->
-                if (menuItem.itemId == R.id.add_qr) {
-                    findNavControllerSafety(R.id.nav_my_overview)?.navigate(
-                        R.id.nav_qr_explanation
-                    )
+        (parentFragment?.parentFragment as HolderMainFragment).getToolbar().let { toolbar ->
+            if (toolbar.menu.size() == 0) {
+                toolbar.apply {
+                    inflateMenu(R.menu.overview_toolbar)
+                    setOnMenuItemClickListener { menuItem ->
+                        if (menuItem.itemId == R.id.add_qr) {
+                            findNavControllerSafety(R.id.nav_my_overview)?.navigate(
+                                R.id.nav_qr_explanation
+                            )
+                        }
+                        true
+                    }
                 }
-                true
             }
         }
 
