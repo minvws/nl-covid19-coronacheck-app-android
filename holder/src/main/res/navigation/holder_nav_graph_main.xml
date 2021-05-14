@@ -43,6 +43,14 @@
             app:popExitAnim="@anim/fragment_close_exit" />
 
         <action
+            android:id="@+id/action_qr_explanation"
+            app:destination="@id/nav_qr_explanation"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
+
+        <action
             android:id="@+id/action_about_this_app"
             app:destination="@id/nav_about_this_app" />
 
@@ -83,6 +91,28 @@
             app:popExitAnim="@anim/slide_out_right" />
 
     </fragment>
+
+    <fragment
+        android:id="@+id/nav_qr_explanation"
+        android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.QrExplanationFragment"
+        android:label="@string/choose_provider_toolbar"
+        tools:layout="@layout/fragment_qr_explanation">
+
+        <action
+            android:id="@+id/action_choose_provider"
+            app:destination="@id/nav_choose_provider"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_create_qr"
+        android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.QrExplanationFragment"
+        android:label="@string/choose_provider_toolbar"
+        tools:layout="@layout/fragment_qr_explanation" />
 
     <fragment
         android:id="@+id/nav_vaccination"

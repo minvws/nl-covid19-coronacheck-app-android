@@ -11,6 +11,7 @@ package nl.rijksoverheid.ctr.holder
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.fragment.NavHostFragment
@@ -22,18 +23,25 @@ import nl.rijksoverheid.ctr.design.ext.styleTitle
 import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppData
 import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppFragment
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMainBinding
+import nl.rijksoverheid.ctr.holder.ui.myoverview.LocalTestResultViewModel
+import nl.rijksoverheid.ctr.holder.ui.myoverview.models.LocalTestResultState
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.ext.setAccessibilityFocus
+import nl.rijksoverheid.ctr.shared.livedata.EventObserver
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class HolderMainFragment : BaseMainFragment(
     R.layout.fragment_main, setOf(
         R.id.nav_my_overview,
-        R.id.nav_about_this_app
+        R.id.nav_about_this_app,
+        R.id.nav_create_qr
     )
 ) {
 
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
+
+    private val localTestResultViewModel: LocalTestResultViewModel by sharedViewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -63,6 +71,10 @@ class HolderMainFragment : BaseMainFragment(
             }
 
             NavigationUI.navigateUp(navController, appBarConfiguration)
+        }
+
+        binding.toolbar.setOnMenuItemClickListener {
+            NavigationUI.onNavDestinationSelected(it, navController)
         }
 
         binding.navView.setNavigationItemSelectedListener { item ->
@@ -112,6 +124,22 @@ class HolderMainFragment : BaseMainFragment(
                 }
             }
         })
+
+        localTestResultViewModel.localTestResultStateLiveData.observe(
+            viewLifecycleOwner,
+            EventObserver { localTestResultState ->
+                when (localTestResultState) {
+                    is LocalTestResultState.None,
+                    is LocalTestResultState.Expired -> {
+                        // Nothing
+                    }
+                    is LocalTestResultState.Valid -> {
+                        binding.navView.menu.findItem(R.id.nav_create_qr).title =
+                            getString(R.string.create_qr_explanation_menu_title_alternative)
+                        navigationDrawerStyling()
+                    }
+                }
+            })
     }
 
     override fun onDestroyView() {
@@ -128,6 +156,10 @@ class HolderMainFragment : BaseMainFragment(
         }
     }
 
+    fun getToolbar(): Toolbar {
+        return binding.toolbar
+    }
+
     private fun navigationDrawerStyling() {
         val context = binding.navView.context
         binding.navView.menu.findItem(R.id.nav_my_overview)
@@ -139,6 +171,8 @@ class HolderMainFragment : BaseMainFragment(
         binding.navView.menu.findItem(R.id.nav_frequently_asked_questions)
             .styleTitle(context, R.attr.textAppearanceBody1)
         binding.navView.menu.findItem(R.id.nav_terms_of_use)
+            .styleTitle(context, R.attr.textAppearanceBody1)
+        binding.navView.menu.findItem(R.id.nav_create_qr)
             .styleTitle(context, R.attr.textAppearanceBody1)
     }
 
