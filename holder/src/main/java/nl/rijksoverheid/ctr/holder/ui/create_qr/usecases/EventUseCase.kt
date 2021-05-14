@@ -1,6 +1,5 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEvents
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.TestProviderRepository
 import retrofit2.HttpException
@@ -53,13 +52,24 @@ class EventUseCaseImpl(
                 } catch (e: IOException) {
                     false
                 }
-            }.keys.toList()
+            }
 
             Timber.v("VACFLOW: Event providers with events: $eventProviderWithEvents")
 
-            EventResult.Success(
-                remoteEvents = RemoteEvents("1")
-            )
+            val remoteEvents = eventProviderWithEvents.map {
+                val eventProvider = it.key
+                val accessToken = it.value
+
+                testProviderRepository
+                    .event(
+                        url = eventProvider.eventUrl,
+                        token = accessToken.event
+                    )
+            }
+
+            Timber.v("VACFLOW: Fetched events: $remoteEvents")
+
+            EventResult.Success()
         } catch (ex: HttpException) {
             return EventResult.ServerError(ex.code())
         } catch (ex: IOException) {
@@ -69,7 +79,7 @@ class EventUseCaseImpl(
 }
 
 sealed class EventResult {
-    data class Success(val remoteEvents: RemoteEvents) : EventResult()
+    data class Success(val dummyObject: Boolean = true) : EventResult()
     data class ServerError(val httpCode: Int) : EventResult()
     object NetworkError : EventResult()
 }

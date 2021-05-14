@@ -18,6 +18,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.TokenQrViewModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.VaccinationViewModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.VaccinationViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.HolderApiClient
+import nl.rijksoverheid.ctr.holder.ui.create_qr.api.RemoteEventsStatusJsonAdapter
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.RemoteTestStatusJsonAdapter
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.TestProviderApiClient
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigiDViewModel
@@ -198,6 +199,9 @@ fun holderModule(baseUrl: String) = module {
     }
 
     single {
-        get<Moshi.Builder>(Moshi.Builder::class).add(RemoteTestStatusJsonAdapter()).build()
+        get<Moshi.Builder>(Moshi.Builder::class)
+            .add(RemoteTestStatusJsonAdapter())
+            .add(RemoteEventsStatusJsonAdapter())
+            .build()
     }
 }
