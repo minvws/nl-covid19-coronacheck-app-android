@@ -4,7 +4,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.api.interceptors.SigningCertificate
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.TestProviderApiClient
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.post.GetTestResultPostData
 import okhttp3.ResponseBody
 import retrofit2.Converter
@@ -24,16 +25,6 @@ interface TestProviderRepository {
         verifierCode: String?,
         signingCertificateBytes: ByteArray
     ): SignedResponseWithModel<RemoteTestResult>
-
-    suspend fun unomi(
-        url: String,
-        token: String
-    ): RemoteUnomi
-
-    suspend fun event(
-        url: String,
-        token: String
-    ): RemoteEvents
 }
 
 class TestProviderRepositoryImpl(
@@ -69,20 +60,5 @@ class TestProviderRepositoryImpl(
                 throw ex
             }
         }
-    }
-
-    override suspend fun unomi(url: String, token: String): RemoteUnomi {
-        return testProviderApiClient
-            .unomi(
-                url = url,
-                authorization = "Bearer $token",
-            )
-    }
-
-    override suspend fun event(url: String, token: String): RemoteEvents {
-        return testProviderApiClient.events(
-            url = url,
-            authorization = "Bearer $token"
-        )
     }
 }
