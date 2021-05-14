@@ -78,9 +78,6 @@ class HolderMainFragment : BaseMainFragment(
                 R.id.nav_frequently_asked_questions -> {
                     getString(R.string.url_faq).launchUrl(requireActivity())
                 }
-                R.id.nav_create_qr -> {
-                    navController.navigate(R.id.nav_create_qr)
-                }
                 R.id.nav_about_this_app -> {
                     navController.navigate(
                         R.id.nav_about_this_app, AboutThisAppFragment.getBundle(
