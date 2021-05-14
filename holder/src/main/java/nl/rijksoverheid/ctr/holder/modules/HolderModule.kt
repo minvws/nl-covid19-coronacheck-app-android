@@ -137,6 +137,11 @@ fun holderModule(baseUrl: String) = module {
             get(named("SignedResponseWithModel"))
         )
     }
+    factory<EventProviderRepository> {
+        EventProviderRepositoryImpl(
+            get()
+        )
+    }
 
     // Utils
     factory<QrCodeUtil> { QrCodeUtilImpl() }

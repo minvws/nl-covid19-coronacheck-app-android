@@ -1,7 +1,7 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
-import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.TestProviderRepository
+import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.EventProviderRepository
 import retrofit2.HttpException
 import timber.log.Timber
 import java.io.IOException
@@ -20,7 +20,7 @@ interface EventUseCase {
 class EventUseCaseImpl(
     private val configProvidersUseCase: ConfigProvidersUseCase,
     private val coronaCheckRepository: CoronaCheckRepository,
-    private val testProviderRepository: TestProviderRepository
+    private val eventProviderRepository: EventProviderRepository
 ) : EventUseCase {
 
     override suspend fun getEvents(): EventResult {
@@ -42,7 +42,7 @@ class EventUseCaseImpl(
                 val accessToken = it.value
 
                 try {
-                    val unomi = testProviderRepository.unomi(
+                    val unomi = eventProviderRepository.unomi(
                         url = eventProvider.unomiUrl,
                         token = accessToken.unomi
                     )
@@ -60,7 +60,7 @@ class EventUseCaseImpl(
                 val eventProvider = it.key
                 val accessToken = it.value
 
-                testProviderRepository
+                eventProviderRepository
                     .event(
                         url = eventProvider.eventUrl,
                         token = accessToken.event

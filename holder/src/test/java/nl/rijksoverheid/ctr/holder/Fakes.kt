@@ -237,10 +237,14 @@ fun fakeTestProviderRepository(
     }
 }
 
-fun fakeTestProviderUseCase(
+fun fakeConfigProviderUseCase(
     provider: RemoteConfigProviders.TestProvider? = null
-): TestProviderUseCase {
-    return object : TestProviderUseCase {
+): ConfigProvidersUseCase {
+    return object : ConfigProvidersUseCase {
+        override suspend fun eventProviders(): List<RemoteConfigProviders.EventProvider> {
+            return listOf()
+        }
+
         override suspend fun testProvider(id: String): RemoteConfigProviders.TestProvider? {
             return provider
         }
@@ -248,15 +252,21 @@ fun fakeTestProviderUseCase(
 }
 
 fun fakeCoronaCheckRepository(
-    testProviders: RemoteConfigProviders = RemoteConfigProviders(listOf()),
+    testProviders: RemoteConfigProviders = RemoteConfigProviders(listOf(), listOf()),
     testIsmResult: TestIsmResult = TestIsmResult.Success(""),
     testIsmExceptionCallback: (() -> Unit)? = null,
     remoteNonce: RemoteNonce = RemoteNonce("", ""),
+    accessTokens: RemoteAccessTokens = RemoteAccessTokens(tokens = listOf())
 
-    ): CoronaCheckRepository {
+): CoronaCheckRepository {
     return object : CoronaCheckRepository {
-        override suspend fun testProviders(): RemoteConfigProviders {
+
+        override suspend fun configProviders(): RemoteConfigProviders {
             return testProviders
+        }
+
+        override suspend fun accessTokens(tvsToken: String): RemoteAccessTokens {
+            return accessTokens
         }
 
         override suspend fun getTestIsm(test: String, sToken: String, icm: String): TestIsmResult {
@@ -335,7 +345,7 @@ fun fakePersistenceManager(
         }
 
         override fun setHasDismissedRootedDeviceDialog() {
-            
+
         }
     }
 }

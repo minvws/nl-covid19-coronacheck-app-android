@@ -26,7 +26,7 @@ class TestResultUseCaseTest {
     @Test
     fun `testResult returns InvalidToken if a uniquecode has 1 part`() = runBlocking {
         val usecase = TestResultUseCase(
-            testProviderUseCase = fakeTestProviderUseCase(),
+            configProviderUseCase = fakeConfigProviderUseCase(),
             testProviderRepository = fakeTestProviderRepository(),
             coronaCheckRepository = fakeCoronaCheckRepository(),
             commitmentMessageUseCase = fakeCommitmentMessageUsecase(),
@@ -45,7 +45,7 @@ class TestResultUseCaseTest {
     @Test
     fun `testResult returns InvalidToken if a uniquecode has 2 parts`() = runBlocking {
         val usecase = TestResultUseCase(
-            testProviderUseCase = fakeTestProviderUseCase(),
+            configProviderUseCase = fakeConfigProviderUseCase(),
             testProviderRepository = fakeTestProviderRepository(),
             coronaCheckRepository = fakeCoronaCheckRepository(),
             commitmentMessageUseCase = fakeCommitmentMessageUsecase(),
@@ -64,7 +64,7 @@ class TestResultUseCaseTest {
     @Test
     fun `testResult returns InvalidToken if token validator fails`() = runBlocking {
         val usecase = TestResultUseCase(
-            testProviderUseCase = fakeTestProviderUseCase(),
+            configProviderUseCase = fakeConfigProviderUseCase(),
             testProviderRepository = fakeTestProviderRepository(),
             coronaCheckRepository = fakeCoronaCheckRepository(),
             commitmentMessageUseCase = fakeCommitmentMessageUsecase(),
@@ -85,7 +85,7 @@ class TestResultUseCaseTest {
     @Test
     fun `testResult returns InvalidToken if no provider matches`() = runBlocking {
         val usecase = TestResultUseCase(
-            testProviderUseCase = fakeTestProviderUseCase(),
+            configProviderUseCase = fakeConfigProviderUseCase(),
             testProviderRepository = fakeTestProviderRepository(),
             coronaCheckRepository = fakeCoronaCheckRepository(),
             commitmentMessageUseCase = fakeCommitmentMessageUsecase(),
@@ -106,7 +106,7 @@ class TestResultUseCaseTest {
         runBlocking {
             val providerIdentifier = "provider"
             val usecase = TestResultUseCase(
-                testProviderUseCase = fakeTestProviderUseCase(
+                configProviderUseCase = fakeConfigProviderUseCase(
                     provider = getRemoteTestProvider(
                         identifier = providerIdentifier
                     )
@@ -134,7 +134,7 @@ class TestResultUseCaseTest {
         runBlocking {
             val providerIdentifier = "provider"
             val usecase = TestResultUseCase(
-                testProviderUseCase = fakeTestProviderUseCase(
+                configProviderUseCase = fakeConfigProviderUseCase(
                     provider = getRemoteTestProvider(
                         identifier = providerIdentifier
                     )
@@ -162,7 +162,7 @@ class TestResultUseCaseTest {
         runBlocking {
             val providerIdentifier = "provider"
             val usecase = TestResultUseCase(
-                testProviderUseCase = fakeTestProviderUseCase(
+                configProviderUseCase = fakeConfigProviderUseCase(
                     provider = getRemoteTestProvider(
                         identifier = providerIdentifier
                     )
@@ -193,7 +193,7 @@ class TestResultUseCaseTest {
         runBlocking {
             val providerIdentifier = "provider"
             val usecase = TestResultUseCase(
-                testProviderUseCase = fakeTestProviderUseCase(
+                configProviderUseCase = fakeConfigProviderUseCase(
                     provider = getRemoteTestProvider(
                         identifier = providerIdentifier
                     )
@@ -221,7 +221,7 @@ class TestResultUseCaseTest {
         runBlocking {
             val providerIdentifier = "provider"
             val usecase = TestResultUseCase(
-                testProviderUseCase = fakeTestProviderUseCase(
+                configProviderUseCase = fakeConfigProviderUseCase(
                     provider = getRemoteTestProvider(
                         identifier = providerIdentifier
                     )
@@ -249,7 +249,7 @@ class TestResultUseCaseTest {
         runBlocking {
             val providerIdentifier = "provider"
             val usecase = TestResultUseCase(
-                testProviderUseCase = fakeTestProviderUseCase(
+                configProviderUseCase = fakeConfigProviderUseCase(
                     provider = getRemoteTestProvider(
                         identifier = providerIdentifier
                     )
@@ -281,7 +281,7 @@ class TestResultUseCaseTest {
         runBlocking {
             val providerIdentifier = "provider"
             val usecase = TestResultUseCase(
-                testProviderUseCase = fakeTestProviderUseCase(
+                configProviderUseCase = fakeConfigProviderUseCase(
                     provider = getRemoteTestProvider(
                         identifier = providerIdentifier
                     )
@@ -315,7 +315,7 @@ class TestResultUseCaseTest {
         runBlocking {
             val providerIdentifier = "provider"
             val usecase = TestResultUseCase(
-                testProviderUseCase = fakeTestProviderUseCase(
+                configProviderUseCase = fakeConfigProviderUseCase(
                     provider = getRemoteTestProvider(
                         identifier = providerIdentifier
                     )
@@ -342,7 +342,7 @@ class TestResultUseCaseTest {
     fun `signTestResult returns Complete if TestIsmResult is Success`() = runBlocking {
         runBlocking {
             val usecase = TestResultUseCase(
-                testProviderUseCase = fakeTestProviderUseCase(),
+                configProviderUseCase = fakeConfigProviderUseCase(),
                 testProviderRepository = fakeTestProviderRepository(),
                 coronaCheckRepository = fakeCoronaCheckRepository(
                     testIsmResult = TestIsmResult.Success(
@@ -368,7 +368,7 @@ class TestResultUseCaseTest {
         runBlocking {
             runBlocking {
                 val usecase = TestResultUseCase(
-                    testProviderUseCase = fakeTestProviderUseCase(),
+                    configProviderUseCase = fakeConfigProviderUseCase(),
                     testProviderRepository = fakeTestProviderRepository(),
                     coronaCheckRepository = fakeCoronaCheckRepository(
                         testIsmResult = TestIsmResult.Success(
@@ -399,7 +399,7 @@ class TestResultUseCaseTest {
             runBlocking {
                 val providerIdentifier = "provider"
                 val usecase = TestResultUseCase(
-                    testProviderUseCase = fakeTestProviderUseCase(
+                    configProviderUseCase = fakeConfigProviderUseCase(
                         provider = getRemoteTestProvider(
                             identifier = providerIdentifier
                         )
@@ -433,7 +433,7 @@ class TestResultUseCaseTest {
         runBlocking {
             val providerIdentifier = "provider"
             val usecase = TestResultUseCase(
-                testProviderUseCase = fakeTestProviderUseCase(
+                configProviderUseCase = fakeConfigProviderUseCase(
                     provider = getRemoteTestProvider(
                         identifier = providerIdentifier
                     )
@@ -467,7 +467,7 @@ class TestResultUseCaseTest {
         runBlocking {
             val providerIdentifier = "provider"
             val usecase = TestResultUseCase(
-                testProviderUseCase = fakeTestProviderUseCase(
+                configProviderUseCase = fakeConfigProviderUseCase(
                     provider = getRemoteTestProvider(
                         identifier = providerIdentifier
                     )
@@ -499,7 +499,7 @@ class TestResultUseCaseTest {
         runBlocking {
             val providerIdentifier = "provider"
             val usecase = TestResultUseCase(
-                testProviderUseCase = fakeTestProviderUseCase(
+                configProviderUseCase = fakeConfigProviderUseCase(
                     provider = getRemoteTestProvider(
                         identifier = providerIdentifier
                     )
