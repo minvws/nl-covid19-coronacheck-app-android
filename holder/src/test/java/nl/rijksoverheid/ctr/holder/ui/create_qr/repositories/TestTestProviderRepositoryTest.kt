@@ -25,7 +25,7 @@ import java.io.EOFException
  *
  */
 @RunWith(RobolectricTestRunner::class)
-class TestProviderRepositoryTest : AutoCloseKoinTest() {
+class TestTestProviderRepositoryTest : AutoCloseKoinTest() {
 
     private lateinit var mockWebServer: MockWebServer
     private val certificate = """-----BEGIN CERTIFICATE-----
