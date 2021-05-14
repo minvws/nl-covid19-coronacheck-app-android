@@ -74,6 +74,14 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
 
+        <action
+            android:id="@+id/action_vaccination"
+            app:destination="@id/nav_vaccination"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
     </fragment>
 
     <fragment
@@ -87,6 +95,12 @@
         android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.QrExplanationFragment"
         android:label="@string/choose_provider_toolbar"
         tools:layout="@layout/fragment_qr_explanation" />
+
+    <fragment
+        android:id="@+id/nav_vaccination"
+        android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.VaccinationFragment"
+        android:label="Vaccination"
+        tools:layout="@layout/fragment_vaccination" />
 
     <navigation
         android:id="@+id/nav_commercial_test"
