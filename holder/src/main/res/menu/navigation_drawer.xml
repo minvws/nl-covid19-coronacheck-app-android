@@ -39,5 +39,11 @@
             android:checkable="false"
             android:title="@string/terms_of_use"
             android:visible="false" />
+
+        <item
+            android:id="@+id/nav_retrieved_vaccinations"
+            android:checkable="false"
+            android:title="@string/your_retrieved_vaccinations_toolbar"
+            />
     </group>
 </menu>
