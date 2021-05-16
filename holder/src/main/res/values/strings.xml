@@ -204,4 +204,10 @@
     <string name="retrieved_vaccinations_backbutton_message">Je moet dan later opnieuw met DigiD inloggen om je vaccinatie op te halen.</string>
     <string name="validity_type_european_title">Europa</string>
     <string name="validity_type_dutch_title">Nederland</string>
+    <string name="qr_card_vaccination_validity_nl">Vaccinatiebewijs:\ngeldig tot %1$s</string>
+    <string name="qr_card_test_validity_nl">Testbewijs:\ngeldig tot: %1$s</string>
+    <string name="qr_card_recovery_validity_nl">Herstelverklaring:\ngeldig tot %1$s</string>
+    <string name="qr_card_vaccination_validity_europe">Vaccinatiedatum:\n%1$s</string>
+    <string name="qr_card_test_validity_europe">Testdatum:\n%1$s</string>
+    <string name="qr_card_recovery_validity_europe">Herstelverklaring:\ngeldig vanaf %1$s</string>
 </resources>
