@@ -63,7 +63,8 @@ class HolderMainFragment : BaseMainFragment(
 
         binding.toolbar.setNavigationOnClickListener {
             when (navController.currentDestination?.id) {
-                R.id.nav_your_negative_result -> {
+                R.id.nav_your_negative_result,
+                R.id.nav_retrieved_vaccinations -> {
                     // Trigger custom dispatcher in destination
                     requireActivity().onBackPressedDispatcher.onBackPressed()
                     return@setNavigationOnClickListener
