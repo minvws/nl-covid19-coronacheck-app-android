@@ -25,6 +25,9 @@
         <item name="textAppearanceHeadline6">
             @style/App.TextAppearance.MaterialComponents.Headline6.Montserrat
         </item>
+        <item name="textAppearanceSubtitle2">
+            @style/App.TextAppearance.MaterialComponents.Subtitle2
+        </item>
 
         <!-- Component Styles -->
         <item name="navigationViewStyle">@style/Widget.App.NavigationView</item>

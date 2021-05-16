@@ -202,4 +202,6 @@
     <string name="retrieved_vaccination_subtitle">Vaccinatiedatum: %1$s</string>
     <string name="retrieved_vaccinations_backbutton_title">Weet je zeker dat je wilt stoppen?</string>
     <string name="retrieved_vaccinations_backbutton_message">Je moet dan later opnieuw met DigiD inloggen om je vaccinatie op te halen.</string>
+    <string name="validity_type_european_title">Europa</string>
+    <string name="validity_type_dutch_title">Nederland</string>
 </resources>
