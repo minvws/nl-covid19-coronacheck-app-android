@@ -7,7 +7,7 @@ import android.os.Looper
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
-import com.google.android.material.snackbar.Snackbar
+import androidx.navigation.fragment.findNavController
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
@@ -22,10 +22,11 @@ import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewTestResultExpir
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.LocalTestResult
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.LocalTestResultState
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
-import nl.rijksoverheid.ctr.shared.ext.launchUrl
-import nl.rijksoverheid.ctr.shared.ext.show
+import nl.rijksoverheid.ctr.shared.ext.sharedViewModelWithOwner
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ViewModelOwner
+import org.koin.androidx.viewmodel.scope.emptyState
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 
@@ -48,7 +49,14 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
     private val localTestResultHandler = Handler(Looper.getMainLooper())
     private val localTestResultRunnable = Runnable { getLocalTestResult() }
 
-    private val localTestResultViewModel: LocalTestResultViewModel by sharedViewModel()
+    private val localTestResultViewModel: LocalTestResultViewModel by sharedViewModelWithOwner(
+        state = emptyState(),
+        owner = {
+            ViewModelOwner.from(
+                findNavController().getViewModelStoreOwner(R.id.main_nav),
+                this
+            )
+        })
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -73,6 +81,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
         localTestResultViewModel.localTestResultStateLiveData.observe(
             viewLifecycleOwner,
             EventObserver { localTestResultState ->
+                Timber.v("OBSERVE")
                 when (localTestResultState) {
                     is LocalTestResultState.None -> {
                         // Nothing
