@@ -33,7 +33,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/validity_type_dutch_title"
-            android:textAppearance="?attr/textAppearanceSubtitle2"
+            android:textAppearance="?attr/textAppearanceBody1"
+            android:textColor="@color/primary_blue"
+            android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/imageView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
