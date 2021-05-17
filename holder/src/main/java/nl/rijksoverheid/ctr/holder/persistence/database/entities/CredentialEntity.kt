@@ -26,5 +26,6 @@ data class CredentialEntity(
     @PrimaryKey val id: Int,
     @ColumnInfo(name = "green_card_id") val greenCardId: Int,
     val qrData: String,
+    val credentialVersion: Int,
     val validFrom: OffsetDateTime
 )

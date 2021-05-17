@@ -2,7 +2,7 @@ package nl.rijksoverheid.ctr.holder.persistence.database.models
 
 import androidx.room.Embedded
 import androidx.room.Relation
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventEntity
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.WalletEntity
 
@@ -19,9 +19,9 @@ data class Wallet(
     @Relation(
         parentColumn = "id",
         entityColumn = "wallet_id",
-        entity = EventEntity::class
+        entity = EventGroupEntity::class
     )
-    val eventEntities: List<EventEntity> = listOf(),
+    val eventEntities: List<EventGroupEntity> = listOf(),
 
     @Relation(
         parentColumn = "id",

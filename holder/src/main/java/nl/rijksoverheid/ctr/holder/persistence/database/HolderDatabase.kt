@@ -5,11 +5,11 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import nl.rijksoverheid.ctr.holder.persistence.database.converters.HolderDatabaseConverter
 import nl.rijksoverheid.ctr.holder.persistence.database.dao.CredentialDao
-import nl.rijksoverheid.ctr.holder.persistence.database.dao.EventDao
+import nl.rijksoverheid.ctr.holder.persistence.database.dao.EventGroupDao
 import nl.rijksoverheid.ctr.holder.persistence.database.dao.GreenCardDao
 import nl.rijksoverheid.ctr.holder.persistence.database.dao.WalletDao
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.CredentialEntity
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventEntity
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.WalletEntity
 
@@ -21,7 +21,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.WalletEntity
  *
  */
 @Database(
-    entities = [WalletEntity::class, EventEntity::class, GreenCardEntity::class, CredentialEntity::class],
+    entities = [WalletEntity::class, EventGroupEntity::class, GreenCardEntity::class, CredentialEntity::class],
     version = 1
 )
 @TypeConverters(HolderDatabaseConverter::class)
@@ -29,5 +29,5 @@ abstract class HolderDatabase : RoomDatabase() {
     abstract fun walletDao(): WalletDao
     abstract fun greenCardDao(): GreenCardDao
     abstract fun credentialDao(): CredentialDao
-    abstract fun eventDao(): EventDao
+    abstract fun eventGroupDao(): EventGroupDao
 }
