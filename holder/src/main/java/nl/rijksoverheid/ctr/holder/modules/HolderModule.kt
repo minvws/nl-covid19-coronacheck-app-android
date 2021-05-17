@@ -118,7 +118,7 @@ fun holderModule(baseUrl: String) = module {
     factory<SaveEventsUseCase> { SaveEventsUseCaseImpl(get()) }
 
     // ViewModels
-    viewModel<LocalTestResultViewModel> { LocalTestResultViewModelImpl(get(), get(), get()) }
+    viewModel<LocalTestResultViewModel> { LocalTestResultViewModelImpl(get(), get()) }
     viewModel<TestResultsViewModel> { TestResultsViewModelImpl(get(), get(), get(), get()) }
     viewModel { DigiDViewModel(get()) }
     viewModel { TestResultsViewModelImpl(get(), get(), get(), get()) }

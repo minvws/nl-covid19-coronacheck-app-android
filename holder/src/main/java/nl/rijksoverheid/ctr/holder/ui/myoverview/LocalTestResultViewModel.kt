@@ -34,18 +34,9 @@ abstract class LocalTestResultViewModel : ViewModel() {
 }
 
 open class LocalTestResultViewModelImpl(
-    private val holderDatabase: HolderDatabase,
     private val localTestResultUseCase: LocalTestResultUseCase,
     private val qrCodeUseCase: QrCodeUseCase
 ) : LocalTestResultViewModel() {
-
-    init {
-        viewModelScope.launch {
-            holderDatabase.walletDao().get().collect {
-                Timber.v("Got wallet $it")
-            }
-        }
-    }
 
     override fun getLocalTestResult() {
         viewModelScope.launch {
