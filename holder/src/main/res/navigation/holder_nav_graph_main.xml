@@ -109,13 +109,14 @@
     </fragment>
 
     <fragment
-        android:id="@+id/nav_retrieved_vaccinations"
-        android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.YourRetrievedVaccinationsFragment"
+        android:id="@+id/nav_your_events"
+        android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.YourEventsFragment"
         android:label="@string/your_retrieved_vaccinations_toolbar"
-        tools:layout="@layout/fragment_retrieved_vaccinations">
+        tools:layout="@layout/fragment_your_events">
+
         <action
             android:id="@+id/action_show_explanation"
-            app:destination="@id/nav_retrieved_vaccinations_explanation"
+            app:destination="@id/nav_your_event_explanation"
             app:enterAnim="@anim/fragment_open_enter"
             app:exitAnim="@anim/fragment_open_exit"
             app:popEnterAnim="@anim/fragment_close_enter"
@@ -133,10 +134,10 @@
     </fragment>
 
     <fragment
-        android:id="@+id/nav_retrieved_vaccinations_explanation"
-        android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.YourRetrievedVaccinationsExplanationFragment"
+        android:id="@+id/nav_your_event_explanation"
+        android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.YourEventExplanationFragment"
         android:label="@string/your_retrieved_vaccinations_toolbar"
-        tools:layout="@layout/fragment_retrieved_vaccinations_explanation" />
+        tools:layout="@layout/fragment_your_event_explanation" />
 
     <fragment
         android:id="@+id/nav_create_qr"
@@ -150,6 +151,13 @@
         android:label="@string/choose_provider_toolbar"
         tools:layout="@layout/fragment_get_vaccination">
 
+        <action
+            android:id="@+id/action_your_events"
+            app:destination="@id/nav_your_events"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
 
     </fragment>
 

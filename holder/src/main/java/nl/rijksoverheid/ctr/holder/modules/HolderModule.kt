@@ -13,10 +13,7 @@ import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.SharedPreferencesPersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
-import nl.rijksoverheid.ctr.holder.ui.create_qr.EventViewModel
-import nl.rijksoverheid.ctr.holder.ui.create_qr.EventViewModelImpl
-import nl.rijksoverheid.ctr.holder.ui.create_qr.TestResultsViewModelImpl
-import nl.rijksoverheid.ctr.holder.ui.create_qr.TokenQrViewModel
+import nl.rijksoverheid.ctr.holder.ui.create_qr.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.HolderApiClient
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.RemoteEventsStatusJsonAdapter
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.RemoteTestStatusJsonAdapter
@@ -116,6 +113,7 @@ fun holderModule(baseUrl: String) = module {
 
     // ViewModels
     viewModel<LocalTestResultViewModel> { LocalTestResultViewModelImpl(get(), get()) }
+    viewModel<TestResultsViewModel> { TestResultsViewModelImpl(get(), get(), get(), get()) }
     viewModel { DigiDViewModel(get()) }
     viewModel { TestResultsViewModelImpl(get(), get(), get(), get()) }
     viewModel { TokenQrViewModel(get()) }

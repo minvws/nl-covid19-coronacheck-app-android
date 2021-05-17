@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr
 
 import android.os.Bundle
 import android.view.View
+import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
@@ -40,7 +41,7 @@ class GetVaccinationFragment : DigiDFragment(R.layout.fragment_get_vaccination) 
         eventViewModel.eventResult.observe(viewLifecycleOwner, EventObserver {
             when (it) {
                 is EventResult.Success -> {
-
+                    findNavController().navigate(GetVaccinationFragmentDirections.actionYourEvents())
                 }
                 is EventResult.NetworkError -> {
                     dialogUtil.presentDialog(

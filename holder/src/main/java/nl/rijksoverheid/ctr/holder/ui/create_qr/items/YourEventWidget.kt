@@ -14,10 +14,10 @@ import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
 import nl.rijksoverheid.ctr.design.ext.formatDate
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.databinding.ItemRetrievedVaccinationsResultBinding
+import nl.rijksoverheid.ctr.holder.databinding.ItemYourEventBinding
 import java.time.OffsetDateTime
 
-class RetrievedVaccinationWidget @JvmOverloads constructor(
+class YourEventWidget @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyle: Int = 0,
@@ -25,9 +25,9 @@ class RetrievedVaccinationWidget @JvmOverloads constructor(
 ) : ConstraintLayout(context, attrs, defStyle, defStyleRes) {
 
     val binding =
-        ItemRetrievedVaccinationsResultBinding.inflate(LayoutInflater.from(context), this, true)
+        ItemYourEventBinding.inflate(LayoutInflater.from(context), this, true)
 
-    fun setContent(position: Int, date: OffsetDateTime, infoClickListener : () -> Unit) {
+    fun setContent(position: Int, date: OffsetDateTime, infoClickListener: () -> Unit) {
         binding.rowTitle.text = resources.getString(R.string.retrieved_vaccination_title, position)
         binding.rowSubtitle.text =
             resources.getString(R.string.retrieved_vaccination_subtitle, date.formatDate())
