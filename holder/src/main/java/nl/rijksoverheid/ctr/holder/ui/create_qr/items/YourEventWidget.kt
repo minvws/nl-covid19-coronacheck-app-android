@@ -12,10 +12,8 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
-import nl.rijksoverheid.ctr.design.ext.formatDate
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.ItemYourEventBinding
-import java.time.OffsetDateTime
 
 class YourEventWidget @JvmOverloads constructor(
     context: Context,
@@ -27,10 +25,10 @@ class YourEventWidget @JvmOverloads constructor(
     val binding =
         ItemYourEventBinding.inflate(LayoutInflater.from(context), this, true)
 
-    fun setContent(position: Int, date: OffsetDateTime, infoClickListener: () -> Unit) {
+    fun setContent(position: Int, date: String, infoClickListener: () -> Unit) {
         binding.rowTitle.text = resources.getString(R.string.retrieved_vaccination_title, position)
         binding.rowSubtitle.text =
-            resources.getString(R.string.retrieved_vaccination_subtitle, date.formatDate())
+            resources.getString(R.string.retrieved_vaccination_subtitle, date)
 
         binding.info.setOnClickListener {
             infoClickListener.invoke()

@@ -16,7 +16,7 @@ import java.io.IOException
  *
  */
 interface EventUseCase {
-    suspend fun getEvents(digidToken: String): EventResult
+    suspend fun getVaccinationEvents(digidToken: String): EventResult
 }
 
 class EventUseCaseImpl(
@@ -25,18 +25,18 @@ class EventUseCaseImpl(
     private val eventProviderRepository: EventProviderRepository
 ) : EventUseCase {
 
-    override suspend fun getEvents(digidToken: String): EventResult {
+    override suspend fun getVaccinationEvents(digidToken: String): EventResult {
         return try {
+
+            // Fetch event providers
             val eventProviders = configProvidersUseCase.eventProviders()
-            Timber.v("VACFLOW: Fetched event providers: $eventProviders")
 
+            // Fetch access tokens
             val accessTokens = coronaCheckRepository.accessTokens(digidToken)
-            Timber.v("VACFLOW: Fetched access tokens: $accessTokens")
 
+            // Map event providers to access tokens
             val eventProvidersWithAccessTokenMap =
                 eventProviders.associateWith { eventProvider -> accessTokens.tokens.first { eventProvider.providerIdentifier == it.providerIdentifier } }
-
-            Timber.v("VACFLOW: Mapped event providers to access token: $eventProvidersWithAccessTokenMap")
 
             // A list of event providers that have events
             val eventProviderWithEvents = eventProvidersWithAccessTokenMap.filter {
@@ -56,8 +56,7 @@ class EventUseCaseImpl(
                 }
             }
 
-            Timber.v("VACFLOW: Event providers with events: $eventProviderWithEvents")
-
+            // Get vaccination events from event providers
             val remoteEvents = eventProviderWithEvents.map {
                 val eventProvider = it.key
                 val accessToken = it.value
@@ -72,8 +71,11 @@ class EventUseCaseImpl(
 
             Timber.v("VACFLOW: Fetched events: $remoteEvents")
 
+            val vaccinationEvents = remoteEvents.map { it.model }.map { it.events }.flatten()
+
             EventResult.Success(
-                signedRemoteEvents = remoteEvents
+                vaccinationEvents = vaccinationEvents,
+                signedModels = remoteEvents
             )
         } catch (ex: HttpException) {
             return EventResult.ServerError(ex.code())
@@ -84,7 +86,10 @@ class EventUseCaseImpl(
 }
 
 sealed class EventResult {
-    data class Success(val signedRemoteEvents: List<SignedResponseWithModel<RemoteEvents>>) :
+    data class Success(
+        val vaccinationEvents: List<RemoteEvents.Event>,
+        val signedModels: List<SignedResponseWithModel<RemoteEvents>>
+    ) :
         EventResult()
 
     data class ServerError(val httpCode: Int) : EventResult()

@@ -9,9 +9,12 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentGetVaccinationBinding
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigiDFragment
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.EventResult
+import nl.rijksoverheid.ctr.shared.ext.sharedViewModelWithOwner
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ViewModelOwner
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.scope.emptyState
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -23,7 +26,14 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class GetVaccinationFragment : DigiDFragment(R.layout.fragment_get_vaccination) {
 
     private val dialogUtil: DialogUtil by inject()
-    private val eventViewModel: EventViewModel by viewModel()
+    private val eventViewModel: EventViewModel by sharedViewModelWithOwner(
+        state = emptyState(),
+        owner = {
+            ViewModelOwner.from(
+                findNavController().getViewModelStoreOwner(R.id.nav_graph_get_vaccination),
+                this
+            )
+        })
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
