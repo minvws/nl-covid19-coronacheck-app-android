@@ -7,6 +7,7 @@ import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
+import nl.rijksoverheid.ctr.holder.ui.create_qr.TestResultsViewModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.TestProviderRepository
@@ -164,6 +165,36 @@ fun fakeLocalTestResultViewModel(
             } else {
                 return false
             }
+        }
+    }
+}
+
+fun fakeTestResultsViewModel(
+    retrievedTestResult: TestResult.NegativeTestResult? = null,
+    fakeSignedTestResult: SignedTestResult? = null
+): TestResultsViewModel {
+    return object : TestResultsViewModel() {
+
+        override fun updateViewState() {
+
+        }
+
+        override fun getTestResult(fromDeeplink: Boolean) {
+
+        }
+
+        override fun sendVerificationCode() {
+
+        }
+
+        override fun saveTestResult() {
+            fakeSignedTestResult?.let {
+                signedTestResult.value = Event(it)
+            }
+        }
+
+        override fun getRetrievedResult(): TestResult.NegativeTestResult? {
+            return retrievedTestResult
         }
     }
 }
@@ -345,7 +376,7 @@ fun fakePersistenceManager(
         }
 
         override fun setHasDismissedRootedDeviceDialog() {
-
+            
         }
     }
 }

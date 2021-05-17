@@ -13,7 +13,7 @@ import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.SharedPreferencesPersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
-import nl.rijksoverheid.ctr.holder.ui.create_qr.TestResultsViewModel
+import nl.rijksoverheid.ctr.holder.ui.create_qr.TestResultsViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.TokenQrViewModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.VaccinationViewModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.VaccinationViewModelImpl
@@ -47,7 +47,6 @@ import org.koin.dsl.module
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -118,7 +117,7 @@ fun holderModule(baseUrl: String) = module {
     // ViewModels
     viewModel<LocalTestResultViewModel> { LocalTestResultViewModelImpl(get(), get()) }
     viewModel { DigiDViewModel(get()) }
-    viewModel { TestResultsViewModel(get(), get(), get(), get()) }
+    viewModel { TestResultsViewModelImpl(get(), get(), get(), get()) }
     viewModel { TokenQrViewModel(get()) }
     viewModel<DeviceRootedViewModel> { DeviceRootedViewModelImpl(get(), get()) }
     viewModel<VaccinationViewModel> { VaccinationViewModelImpl(get()) }

@@ -86,19 +86,6 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                         setItems(
                             localTestResult = localTestResultState.localTestResult
                         )
-
-                        // Show a SnackBar if this qr is created for the first time
-                        if (localTestResultState.firstTimeCreated) {
-                            Snackbar.make(
-                                requireView(),
-                                R.string.my_overview_qr_created_snackbar_message,
-                                Snackbar.LENGTH_LONG
-                            ).also {
-                                it.setAction(R.string.my_overview_qr_created_snackbar_button) {
-                                    getString(R.string.url_faq).launchUrl(requireContext())
-                                }
-                            }.show(requireActivity())
-                        }
                     }
                 }
             })
