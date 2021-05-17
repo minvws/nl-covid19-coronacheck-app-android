@@ -57,7 +57,6 @@ fun holderModule(baseUrl: String) = module {
     single {
         Room
             .databaseBuilder(androidContext(), HolderDatabase::class.java, "holder-database")
-            .createFromAsset("database/holder-database.db")
             .build()
     }
 
@@ -109,16 +108,17 @@ fun holderModule(baseUrl: String) = module {
         TokenQrUseCase(get())
     }
     factory<DeviceRootedUseCase> { DeviceRootedUseCaseImpl(androidContext()) }
-    factory<EventUseCase> { EventUseCaseImpl(get(), get(), get()) }
+    factory<GetEventsUseCase> { GetEventsUseCaseImpl(get(), get(), get()) }
+    factory<SaveEventsUseCase> { SaveEventsUseCaseImpl(get()) }
 
     // ViewModels
-    viewModel<LocalTestResultViewModel> { LocalTestResultViewModelImpl(get(), get()) }
+    viewModel<LocalTestResultViewModel> { LocalTestResultViewModelImpl(get(), get(), get()) }
     viewModel<TestResultsViewModel> { TestResultsViewModelImpl(get(), get(), get(), get()) }
     viewModel { DigiDViewModel(get()) }
     viewModel { TestResultsViewModelImpl(get(), get(), get(), get()) }
     viewModel { TokenQrViewModel(get()) }
     viewModel<DeviceRootedViewModel> { DeviceRootedViewModelImpl(get(), get()) }
-    viewModel<EventViewModel> { EventViewModelImpl(get()) }
+    viewModel<EventViewModel> { EventViewModelImpl(get(), get()) }
 
     // Repositories
     single { AuthenticationRepository() }

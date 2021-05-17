@@ -18,6 +18,7 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentYourEventsBinding
 import nl.rijksoverheid.ctr.holder.ui.create_qr.items.YourEventWidget
 import nl.rijksoverheid.ctr.shared.ext.sharedViewModelWithOwner
+import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.androidx.viewmodel.ViewModelOwner
 import org.koin.androidx.viewmodel.scope.emptyState
 
@@ -41,19 +42,27 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
         if (retrievedResult == null) {
             findNavController().navigate(YourEventsFragmentDirections.actionMyOverview())
         } else {
-            retrievedResult.vaccinationEvents.forEachIndexed { index, event ->
-                val eventWidget = YourEventWidget(requireContext()).also {
-                    it.setContent(
-                        position = index + 1,
-                        date = event.vaccination.date,
-                        infoClickListener = {
-                            findNavController().navigate(YourEventsFragmentDirections.actionShowExplanation())
-                        }
-                    )
+            retrievedResult.signedModels.map { it.model }.map { it.events }.flatten()
+                .sortedBy { it.getDate().toEpochDay() }
+                .forEachIndexed { index, event ->
+                    val eventWidget = YourEventWidget(requireContext()).also {
+                        it.setContent(
+                            position = index + 1,
+                            date = event.getDate(),
+                            infoClickListener = {
+                                findNavController().navigate(YourEventsFragmentDirections.actionShowExplanation())
+                            }
+                        )
+                    }
+                    binding.eventsGroup.addView(eventWidget)
                 }
-                binding.eventsGroup.addView(eventWidget)
-            }
         }
+
+        eventViewModel.savedEvents.observe(viewLifecycleOwner, EventObserver {
+            findNavController().navigate(
+                YourEventsFragmentDirections.actionMyOverview()
+            )
+        })
 
         // Catch back button to show modal instead
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object :
@@ -62,6 +71,10 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                 handleBackButton()
             }
         })
+
+        binding.bottom.setButtonClick {
+            eventViewModel.saveEvents()
+        }
     }
 
 

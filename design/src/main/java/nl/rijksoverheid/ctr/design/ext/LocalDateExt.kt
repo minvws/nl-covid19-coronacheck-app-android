@@ -1,8 +1,7 @@
 package nl.rijksoverheid.ctr.design.ext
 
-import android.content.Context
 import android.text.format.DateFormat
-import java.time.OffsetDateTime
+import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -18,10 +17,10 @@ import java.util.*
 // Change to Locale.getDefault() to support multiple languages
 private val locale = Locale("nl")
 
-fun OffsetDateTime.formatDateTime(context: Context): String =
+fun LocalDate.formatDate(): String =
     DateTimeFormatter.ofPattern(
         DateFormat.getBestDateTimePattern(
             locale,
-            if (DateFormat.is24HourFormat(context)) "EEEE d MMMM HH:mm" else "EEEE d MMMM hh:mm"
+            "EEEE dd MMMM"
         )
     ).withLocale(locale).withZone(ZoneId.of("CET")).format(this)

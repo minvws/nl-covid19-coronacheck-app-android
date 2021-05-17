@@ -1,6 +1,8 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.models
 
 import com.squareup.moshi.JsonClass
+import java.time.LocalDate
+import java.time.LocalDateTime
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -42,12 +44,12 @@ data class RemoteEvents(
     data class Event(
         val type: String,
         val unique: String,
-        val vaccination: Vaccination
+        val vaccination: Vaccination?
     ) {
 
         @JsonClass(generateAdapter = true)
         data class Vaccination(
-            val date: String,
+            val date: LocalDate,
             val hpkCode: String,
             val type: String,
             val brand: String,
@@ -57,6 +59,14 @@ data class RemoteEvents(
             val country: String,
             val manufacturer: String
         )
+
+        fun getDate(): LocalDate {
+            if (type == "vaccination") {
+                return vaccination!!.date
+            } else {
+                throw IllegalStateException("We do not support any other events than vaccination yet")
+            }
+        }
     }
 }
 

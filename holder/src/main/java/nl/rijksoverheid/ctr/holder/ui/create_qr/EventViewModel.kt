@@ -5,8 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.EventResult
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.EventUseCase
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.EventsResult
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetEventsUseCase
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SaveEventsUseCase
 import nl.rijksoverheid.ctr.shared.livedata.Event
 
 /*
@@ -18,23 +19,45 @@ import nl.rijksoverheid.ctr.shared.livedata.Event
  */
 abstract class EventViewModel : ViewModel() {
     val loading: LiveData<Event<Boolean>> = MutableLiveData()
-    val eventResult: LiveData<Event<EventResult>> = MutableLiveData()
+    val eventsResult: LiveData<Event<EventsResult>> = MutableLiveData()
+    val savedEvents: LiveData<Event<Boolean>> = MutableLiveData()
 
-    abstract fun getRetrievedResult(): EventResult.Success?
+    abstract fun getRetrievedResult(): EventsResult.Success?
     abstract fun getEvents(digidToken: String)
+    abstract fun saveEvents()
 }
 
-class EventViewModelImpl(private val eventUseCase: EventUseCase) : EventViewModel() {
-    override fun getRetrievedResult(): EventResult.Success? {
-        return eventResult.value?.peekContent() as? EventResult.Success
+class EventViewModelImpl(
+    private val eventUseCase: GetEventsUseCase,
+    private val saveEventsUseCase: SaveEventsUseCase
+) : EventViewModel() {
+    override fun getRetrievedResult(): EventsResult.Success? {
+        return eventsResult.value?.peekContent() as? EventsResult.Success
     }
 
     override fun getEvents(digidToken: String) {
         (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {
-            (eventResult as MutableLiveData).value =
-                Event(eventUseCase.getVaccinationEvents(digidToken))
-            loading.value = Event(false)
+            try {
+                (eventsResult as MutableLiveData).value =
+                    Event(eventUseCase.getVaccinationEvents(digidToken))
+            } finally {
+                loading.value = Event(false)
+            }
+        }
+    }
+
+    override fun saveEvents() {
+        (loading as MutableLiveData).value = Event(true)
+        viewModelScope.launch {
+            try {
+                getRetrievedResult()?.let {
+                    saveEventsUseCase.save(it.signedModels)
+                }
+                (savedEvents as MutableLiveData).value = Event(true)
+            } finally {
+                loading.value = Event(false)
+            }
         }
     }
 }

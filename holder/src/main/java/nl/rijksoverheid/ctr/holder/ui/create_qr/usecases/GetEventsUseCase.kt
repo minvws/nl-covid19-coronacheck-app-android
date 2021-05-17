@@ -5,7 +5,6 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.EventProviderRepository
 import retrofit2.HttpException
-import timber.log.Timber
 import java.io.IOException
 
 /*
@@ -15,17 +14,17 @@ import java.io.IOException
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-interface EventUseCase {
-    suspend fun getVaccinationEvents(digidToken: String): EventResult
+interface GetEventsUseCase {
+    suspend fun getVaccinationEvents(digidToken: String): EventsResult
 }
 
-class EventUseCaseImpl(
+class GetEventsUseCaseImpl(
     private val configProvidersUseCase: ConfigProvidersUseCase,
     private val coronaCheckRepository: CoronaCheckRepository,
     private val eventProviderRepository: EventProviderRepository
-) : EventUseCase {
+) : GetEventsUseCase {
 
-    override suspend fun getVaccinationEvents(digidToken: String): EventResult {
+    override suspend fun getVaccinationEvents(digidToken: String): EventsResult {
         return try {
 
             // Fetch event providers
@@ -69,29 +68,27 @@ class EventUseCaseImpl(
                     )
             }
 
-            Timber.v("VACFLOW: Fetched events: $remoteEvents")
+            // For now we only support vaccination events
+            val vaccinationEvents =
+                remoteEvents.filter { remoteEvent -> remoteEvent.model.events.any { event -> event.type == "vaccination" } }
 
-            val vaccinationEvents = remoteEvents.map { it.model }.map { it.events }.flatten()
-
-            EventResult.Success(
-                vaccinationEvents = vaccinationEvents,
-                signedModels = remoteEvents
+            EventsResult.Success(
+                signedModels = vaccinationEvents
             )
         } catch (ex: HttpException) {
-            return EventResult.ServerError(ex.code())
+            return EventsResult.ServerError(ex.code())
         } catch (ex: IOException) {
-            return EventResult.NetworkError
+            return EventsResult.NetworkError
         }
     }
 }
 
-sealed class EventResult {
+sealed class EventsResult {
     data class Success(
-        val vaccinationEvents: List<RemoteEvents.Event>,
         val signedModels: List<SignedResponseWithModel<RemoteEvents>>
     ) :
-        EventResult()
+        EventsResult()
 
-    data class ServerError(val httpCode: Int) : EventResult()
-    object NetworkError : EventResult()
+    data class ServerError(val httpCode: Int) : EventsResult()
+    object NetworkError : EventsResult()
 }

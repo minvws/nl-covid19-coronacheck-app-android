@@ -8,12 +8,11 @@ import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentGetVaccinationBinding
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigiDFragment
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.EventResult
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.EventsResult
 import nl.rijksoverheid.ctr.shared.ext.sharedViewModelWithOwner
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ViewModelOwner
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.androidx.viewmodel.scope.emptyState
 
 /*
@@ -48,12 +47,12 @@ class GetVaccinationFragment : DigiDFragment(R.layout.fragment_get_vaccination) 
             (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
         })
 
-        eventViewModel.eventResult.observe(viewLifecycleOwner, EventObserver {
+        eventViewModel.eventsResult.observe(viewLifecycleOwner, EventObserver {
             when (it) {
-                is EventResult.Success -> {
+                is EventsResult.Success -> {
                     findNavController().navigate(GetVaccinationFragmentDirections.actionYourEvents())
                 }
-                is EventResult.NetworkError -> {
+                is EventsResult.NetworkError -> {
                     dialogUtil.presentDialog(
                         context = requireContext(),
                         title = R.string.dialog_no_internet_connection_title,
@@ -65,7 +64,7 @@ class GetVaccinationFragment : DigiDFragment(R.layout.fragment_get_vaccination) 
                         negativeButtonText = R.string.dialog_close
                     )
                 }
-                is EventResult.ServerError -> {
+                is EventsResult.ServerError -> {
                     dialogUtil.presentDialog(
                         context = requireContext(),
                         title = R.string.dialog_error_title,

@@ -1,5 +1,7 @@
 package nl.rijksoverheid.ctr.holder
 
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.api.apiModule
 import nl.rijksoverheid.ctr.appconfig.*
 import nl.rijksoverheid.ctr.appconfig.usecases.LoadPublicKeysUseCase
@@ -7,6 +9,8 @@ import nl.rijksoverheid.ctr.design.designModule
 import nl.rijksoverheid.ctr.holder.modules.holderIntroductionModule
 import nl.rijksoverheid.ctr.holder.modules.holderModule
 import nl.rijksoverheid.ctr.holder.modules.holderPreferenceModule
+import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.WalletEntity
 import nl.rijksoverheid.ctr.introduction.introductionModule
 import nl.rijksoverheid.ctr.shared.SharedApplication
 import nl.rijksoverheid.ctr.shared.sharedModule
@@ -27,6 +31,7 @@ open class HolderApplication : SharedApplication() {
 
     private val loadPublicKeysUseCase: LoadPublicKeysUseCase by inject()
     private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
+    private val holderDatabase: HolderDatabase by inject()
 
     override fun onCreate() {
         super.onCreate()
@@ -54,6 +59,18 @@ open class HolderApplication : SharedApplication() {
         // If we have public keys stored, load them so they can be used by CTCL
         cachedAppConfigUseCase.getCachedPublicKeys()?.let {
             loadPublicKeysUseCase.load(it)
+        }
+
+        // Create default wallet in database if empty
+        GlobalScope.launch {
+            if (holderDatabase.walletDao().getAll().isEmpty()) {
+                holderDatabase.walletDao().insert(
+                    WalletEntity(
+                        id = 1,
+                        label = "main"
+                    )
+                )
+            }
         }
     }
 

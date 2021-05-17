@@ -124,7 +124,7 @@ open class TestResultsViewModelImpl(
                     if (result is SignedTestResult.Complete) {
                         persistenceManager.saveCredentials(result.credentials)
                     }
-                    (signedTestResult as MutableLiveData).value = Event(result)
+                    signedTestResult.value = Event(result)
                 }
             } finally {
                 loading.value = Event(false)
