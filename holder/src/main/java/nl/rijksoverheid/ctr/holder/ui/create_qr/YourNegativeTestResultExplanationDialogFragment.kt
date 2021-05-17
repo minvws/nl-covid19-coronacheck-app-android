@@ -9,7 +9,9 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.design.ExpandedBottomSheetDialogFragment
+import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.DialogYourNegativeTestResultExplanationBinding
+import nl.rijksoverheid.ctr.holder.databinding.ViewDialogYourNegativeTestResultExplanationPersonalDetailBinding
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import org.koin.android.ext.android.inject
 
@@ -34,6 +36,12 @@ class YourNegativeTestResultExplanationDialogFragment : ExpandedBottomSheetDialo
         return DialogYourNegativeTestResultExplanationBinding.inflate(inflater).root
     }
 
+    private fun bindDetails(binding: ViewDialogYourNegativeTestResultExplanationPersonalDetailBinding, position: String, details: String) {
+        binding.itemPosition.text = position
+        binding.itemText.text = details
+        binding.itemLayout.contentDescription = getString(R.string.your_negative_test_results_characteristic_format, position, details)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = DialogYourNegativeTestResultExplanationBinding.bind(view)
@@ -48,17 +56,10 @@ class YourNegativeTestResultExplanationDialogFragment : ExpandedBottomSheetDialo
             includeBirthMonthNumber = false
         )
 
-        binding.firstNameInitial.itemText.text = personalDetails.firstNameInitial
-        binding.firstNameInitial.itemPosition.text = "1"
-
-        binding.lastNameInitial.itemText.text = personalDetails.lastNameInitial
-        binding.lastNameInitial.itemPosition.text = "2"
-
-        binding.birthDay.itemText.text = personalDetails.birthDay
-        binding.birthDay.itemPosition.text = "3"
-
-        binding.birthMonth.itemText.text = personalDetails.birthMonth
-        binding.birthMonth.itemPosition.text = "4"
+        bindDetails(binding.firstNameInitial, "1", personalDetails.firstNameInitial)
+        bindDetails(binding.lastNameInitial, "2", personalDetails.lastNameInitial)
+        bindDetails(binding.birthDay, "3", personalDetails.birthDay)
+        bindDetails(binding.birthMonth, "4", personalDetails.birthMonth)
 
         binding.close.setOnClickListener {
             dismiss()

@@ -11,6 +11,7 @@ import net.openid.appauth.AuthorizationException
 import net.openid.appauth.AuthorizationResponse
 import net.openid.appauth.AuthorizationService
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.AuthenticationRepository
+import nl.rijksoverheid.ctr.shared.livedata.Event
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -21,7 +22,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.AuthenticationRepos
  */
 class DigiDViewModel(private val authenticationRepository: AuthenticationRepository) : ViewModel() {
 
-    val accessTokenLiveData = MutableLiveData<String>()
+    val accessTokenLiveData = MutableLiveData<Event<String>>()
 
     fun login(
         activityResultLauncher: ActivityResultLauncher<Intent>,
@@ -44,13 +45,14 @@ class DigiDViewModel(private val authenticationRepository: AuthenticationReposit
                     authResponse != null -> {
                         val accessToken =
                             authenticationRepository.accessToken(authService, authResponse)
-                        accessTokenLiveData.postValue(accessToken)
+                        accessTokenLiveData.postValue(Event(accessToken))
                     }
                     else -> {
+
                     }
                 }
             } else {
-                
+
             }
         }
     }

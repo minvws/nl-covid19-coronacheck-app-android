@@ -8,8 +8,11 @@
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_layout"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:focusable="true"
+    android:importantForAccessibility="yes">
 
     <TextView
         android:id="@+id/item_text"
@@ -17,6 +20,7 @@
         android:layout_height="44dp"
         android:layout_gravity="top"
         android:layout_marginHorizontal="6dp"
+        android:focusable="false"
         android:background="@drawable/shape_personal_detail_item_background"
         android:ellipsize="end"
         android:gravity="center"
@@ -31,6 +35,7 @@
         android:layout_height="20dp"
         android:layout_gravity="bottom|center_horizontal"
         android:layout_marginTop="56dp"
+        android:focusable="false"
         android:background="@drawable/shape_personal_detail_item_position_background"
         android:gravity="center"
         android:textAppearance="?attr/textAppearanceCaption"

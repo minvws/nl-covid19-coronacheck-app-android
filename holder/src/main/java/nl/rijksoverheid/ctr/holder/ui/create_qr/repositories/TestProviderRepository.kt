@@ -47,8 +47,7 @@ class TestProviderRepositoryImpl(
                         it
                     )
                 },
-                certificate = SigningCertificate(signingCertificateBytes),
-                protocolVersion = "2.0"
+                certificate = SigningCertificate(signingCertificateBytes)
             )
         } catch (ex: HttpException) {
             // if there's no error body, this must be something else than expected

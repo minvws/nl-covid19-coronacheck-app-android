@@ -19,6 +19,11 @@
         android:id="@+id/info"
         android:checkableBehavior="single">
         <item
+            android:id="@+id/nav_create_qr"
+            android:checkable="false"
+            android:title="@string/choose_provider_toolbar" />
+
+        <item
             android:id="@+id/nav_frequently_asked_questions"
             android:checkable="false"
             android:title="@string/frequently_asked_questions" />
@@ -34,5 +39,11 @@
             android:checkable="false"
             android:title="@string/terms_of_use"
             android:visible="false" />
+
+        <item
+            android:id="@+id/nav_retrieved_vaccinations"
+            android:checkable="false"
+            android:title="@string/your_retrieved_vaccinations_toolbar"
+            />
     </group>
 </menu>

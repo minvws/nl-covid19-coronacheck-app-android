@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.holder.modules
 
+import androidx.room.Room
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import nl.rijksoverheid.ctr.api.signing.certificates.DIGICERT_BTC_ROOT_CA
@@ -11,9 +12,13 @@ import nl.rijksoverheid.ctr.appconfig.usecases.DeviceRootedUseCaseImpl
 import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.SharedPreferencesPersistenceManager
+import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.TestResultsViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.TokenQrViewModel
+import nl.rijksoverheid.ctr.holder.ui.create_qr.VaccinationViewModel
+import nl.rijksoverheid.ctr.holder.ui.create_qr.VaccinationViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.HolderApiClient
+import nl.rijksoverheid.ctr.holder.ui.create_qr.api.RemoteEventsStatusJsonAdapter
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.RemoteTestStatusJsonAdapter
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.TestProviderApiClient
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigiDViewModel
@@ -43,7 +48,6 @@ import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
  *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
@@ -52,6 +56,13 @@ import retrofit2.converter.moshi.MoshiConverterFactory
  *
  */
 fun holderModule(baseUrl: String) = module {
+
+    single {
+        Room
+            .databaseBuilder(androidContext(), HolderDatabase::class.java, "holder-database")
+            .createFromAsset("database/holder-database.db")
+            .build()
+    }
 
     single<PersistenceManager> {
         SharedPreferencesPersistenceManager(
@@ -75,8 +86,8 @@ fun holderModule(baseUrl: String) = module {
     factory<CommitmentMessageUseCase> {
         CommitmentMessageUseCaseImpl(get())
     }
-    factory<TestProviderUseCase> {
-        TestProviderUseCaseImpl(get())
+    factory<ConfigProvidersUseCase> {
+        ConfigProvidersUseCaseImpl(get())
     }
     factory {
         TestResultUseCase(
@@ -101,6 +112,7 @@ fun holderModule(baseUrl: String) = module {
         TokenQrUseCase(get())
     }
     factory<DeviceRootedUseCase> { DeviceRootedUseCaseImpl(androidContext()) }
+    factory<EventUseCase> { EventUseCaseImpl(get(), get(), get()) }
 
     // ViewModels
     viewModel<LocalTestResultViewModel> { LocalTestResultViewModelImpl(get(), get()) }
@@ -108,6 +120,7 @@ fun holderModule(baseUrl: String) = module {
     viewModel { TestResultsViewModelImpl(get(), get(), get(), get()) }
     viewModel { TokenQrViewModel(get()) }
     viewModel<DeviceRootedViewModel> { DeviceRootedViewModelImpl(get(), get()) }
+    viewModel<VaccinationViewModel> { VaccinationViewModelImpl(get()) }
 
     // Repositories
     single { AuthenticationRepository() }
@@ -121,6 +134,11 @@ fun holderModule(baseUrl: String) = module {
         TestProviderRepositoryImpl(
             get(),
             get(named("SignedResponseWithModel"))
+        )
+    }
+    factory<EventProviderRepository> {
+        EventProviderRepositoryImpl(
+            get()
         )
     }
 
@@ -185,6 +203,9 @@ fun holderModule(baseUrl: String) = module {
     }
 
     single {
-        get<Moshi.Builder>(Moshi.Builder::class).add(RemoteTestStatusJsonAdapter()).build()
+        get<Moshi.Builder>(Moshi.Builder::class)
+            .add(RemoteTestStatusJsonAdapter())
+            .add(RemoteEventsStatusJsonAdapter())
+            .build()
     }
 }
