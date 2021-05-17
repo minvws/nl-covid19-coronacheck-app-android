@@ -30,7 +30,6 @@ abstract class TestResultsViewModel : ViewModel() {
     val viewState: LiveData<ViewState> = MutableLiveData(ViewState())
 }
 
-
 open class TestResultsViewModelImpl(
     private val savedStateHandle: SavedStateHandle,
     private val testResultUseCase: TestResultUseCase,
@@ -41,7 +40,6 @@ open class TestResultsViewModelImpl(
     override fun getRetrievedResult(): TestResult.NegativeTestResult? {
         return (testResult.value?.peekContent() as? TestResult.NegativeTestResult)
     }
-
 
     var verificationCode: String = savedStateHandle["verification_code"] ?: ""
         set(value) {
