@@ -81,7 +81,6 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
         localTestResultViewModel.localTestResultStateLiveData.observe(
             viewLifecycleOwner,
             EventObserver { localTestResultState ->
-                Timber.v("OBSERVE")
                 when (localTestResultState) {
                     is LocalTestResultState.None -> {
                         // Nothing
@@ -92,6 +91,10 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                         )
                     }
                     is LocalTestResultState.Valid -> {
+                        (parentFragment?.parentFragment as HolderMainFragment?)?.changeMenuItem(
+                            menuItemId = R.id.nav_create_qr,
+                            text = R.string.create_qr_explanation_menu_title_alternative
+                        )
                         setItems(
                             localTestResult = localTestResultState.localTestResult
                         )
