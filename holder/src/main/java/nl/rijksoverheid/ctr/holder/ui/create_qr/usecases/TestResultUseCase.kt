@@ -101,11 +101,7 @@ class TestResultUseCase(
                     )
                 )
             ) {
-                TestResult.NegativeTestResult(
-                    remoteTestResult,
-                    personalDetails,
-                    signedResponseWithTestResult
-                )
+                TestResult.ServerError(500)
             } else {
                 TestResult.NoNegativeTestResult
             }

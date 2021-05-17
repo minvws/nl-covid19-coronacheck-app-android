@@ -8,19 +8,14 @@
 
 package nl.rijksoverheid.ctr.holder.ui.create_qr
 
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.lifecycle.ViewModelStore
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.Espresso
-import androidx.test.espresso.assertion.ViewAssertions
-import androidx.test.espresso.matcher.ViewMatchers
 import com.schibsted.spain.barista.assertion.BaristaVisibilityAssertions.assertContains
 import com.schibsted.spain.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
 import com.schibsted.spain.barista.interaction.BaristaClickInteractions.clickOn
-import com.schibsted.spain.barista.interaction.BaristaSleepInteractions.sleep
 import junit.framework.Assert.assertEquals
 import nl.rijksoverheid.ctr.design.ext.formatDateTime
 import nl.rijksoverheid.ctr.holder.R
@@ -38,9 +33,12 @@ import org.koin.core.context.loadKoinModules
 import org.koin.dsl.module
 import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.shadows.ShadowAlertDialog
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
+import kotlin.test.assertNotNull
+
 
 @RunWith(RobolectricTestRunner::class)
 class YourNegativeTestResultFragmentTest : AutoCloseKoinTest() {
@@ -77,30 +75,17 @@ class YourNegativeTestResultFragmentTest : AutoCloseKoinTest() {
         )
         // Check if personal details are shown
         assertContains(
-            R.id.row_personal_details, "${negativeTestResult.personalDetails.firstNameInitial} ${negativeTestResult.personalDetails.lastNameInitial} ${negativeTestResult.personalDetails.birthDay} ${negativeTestResult.personalDetails.birthMonth}"
+            R.id.row_personal_details,
+            "${negativeTestResult.personalDetails.firstNameInitial} ${negativeTestResult.personalDetails.lastNameInitial} ${negativeTestResult.personalDetails.birthDay} ${negativeTestResult.personalDetails.birthMonth}"
         )
     }
-
-    @Test
-    fun `Snackbar is shown if retrieved result is saved`() {
-        val negativeTestResult = getNegativeRetrievedTestResult()
-        launchNegativeTestResultFragment(
-            retrievedTestResult = negativeTestResult, fakeSignedTestResult = SignedTestResult.Complete("dummy")
-        )
-        // Click save button
-        clickOn(R.id.bottom)
-
-
-        Espresso.onView(ViewMatchers.withId(com.google.android.material.R.id.snackbar_text))
-            .check(ViewAssertions.matches(ViewMatchers.withText(R.string.my_overview_qr_created_snackbar_message)))
-    }
-
 
     @Test
     fun `Show 'already signed' screen if test result is already signed`() {
         val negativeTestResult = getNegativeRetrievedTestResult()
         launchNegativeTestResultFragment(
-            retrievedTestResult = negativeTestResult, fakeSignedTestResult = SignedTestResult.AlreadySigned
+            retrievedTestResult = negativeTestResult,
+            fakeSignedTestResult = SignedTestResult.AlreadySigned
         )
         // Click save button
         clickOn(R.id.bottom)
@@ -111,14 +96,15 @@ class YourNegativeTestResultFragmentTest : AutoCloseKoinTest() {
     fun `Show network error popup if network error occurs`() {
         val negativeTestResult = getNegativeRetrievedTestResult()
         launchNegativeTestResultFragment(
-            retrievedTestResult = negativeTestResult, fakeSignedTestResult = SignedTestResult.NetworkError
+            retrievedTestResult = negativeTestResult,
+            fakeSignedTestResult = SignedTestResult.NetworkError
         )
+
         // Click save button
         clickOn(R.id.bottom)
-        sleep(500)
-        assertContains(R.string.dialog_no_internet_connection_title)
-    }
 
+        assertNotNull(ShadowAlertDialog.getLatestDialog())
+    }
 
 
     private fun getNegativeRetrievedTestResult(): TestResult.NegativeTestResult {

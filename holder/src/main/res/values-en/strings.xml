@@ -47,8 +47,6 @@
     <string name="my_overview_no_qr_make_qr_description">Turn your negative test result into a personal QR code.</string>
     <string name="my_overview_no_qr_make_qr_button">Make QR code</string>
     <string name="my_overview_no_qr_replace_qr_button">Replace QR code</string>
-    <string name="my_overview_qr_created_snackbar_message">Your QR code has been made. See which information the QR code contains.</string>
-    <string name="my_overview_qr_created_snackbar_button">Read more</string>
     <string name="choose_provider_toolbar">Make QR code</string>
     <string name="choose_provider_title">Where were you tested?</string>
     <string name="choose_provider_description">Does the test prove you don\'t have coronavirus? Then you can make a QR code out of the test result. Indicate where you were tested.</string>
