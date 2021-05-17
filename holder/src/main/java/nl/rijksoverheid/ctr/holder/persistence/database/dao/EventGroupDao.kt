@@ -3,7 +3,7 @@ package nl.rijksoverheid.ctr.holder.persistence.database.dao
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventEntity
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -13,14 +13,14 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventEntity
  *
  */
 @Dao
-interface EventDao {
+interface EventGroupDao {
 
-    @Query("SELECT * FROM event")
-    suspend fun getAll(): List<EventEntity>
+    @Query("SELECT * FROM event_group")
+    suspend fun getAll(): List<EventGroupEntity>
 
     @Insert
-    suspend fun insert(entity: EventEntity)
+    suspend fun insert(entity: EventGroupEntity)
 
-    @Query("DELETE FROM event WHERE id = :id")
+    @Query("DELETE FROM event_group WHERE id = :id")
     suspend fun delete(id: Int)
 }

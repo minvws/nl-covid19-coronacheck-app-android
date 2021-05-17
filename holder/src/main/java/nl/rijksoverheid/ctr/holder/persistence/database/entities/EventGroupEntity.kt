@@ -14,7 +14,7 @@ import java.time.OffsetDateTime
  *
  */
 @Entity(
-    tableName = "event",
+    tableName = "event_group",
     foreignKeys = [ForeignKey(
         entity = WalletEntity::class,
         parentColumns = arrayOf("id"),
@@ -22,9 +22,10 @@ import java.time.OffsetDateTime
         onDelete = ForeignKey.CASCADE
     )]
 )
-data class EventEntity(
+data class EventGroupEntity(
     @PrimaryKey val id: Int,
     @ColumnInfo(name = "wallet_id", index = true) val walletId: Int,
+    @ColumnInfo(name = "provider_identifier") val providerIdentifier: String,
     val type: EventType,
     val issuedAt: OffsetDateTime,
     val jsonData: String

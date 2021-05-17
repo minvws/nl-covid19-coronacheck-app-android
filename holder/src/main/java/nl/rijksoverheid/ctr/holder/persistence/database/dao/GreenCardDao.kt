@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardEntity
 
 /*
