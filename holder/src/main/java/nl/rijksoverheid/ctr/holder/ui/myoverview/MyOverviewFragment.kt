@@ -15,6 +15,7 @@ import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMyOverviewBinding
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEvents
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.*
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.LocalTestResult
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.LocalTestResultState
@@ -180,16 +181,61 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
         ))
 
         items.add(MyOverviewQrCardAdapterItem(
-           events = emptyList(),
+            events = getDummyData(),
             isEuropean = false,
             { }
         ))
 
         items.add(MyOverviewQrCardAdapterItem(
-            events = emptyList(),
+            events = getDummyData(),
             isEuropean = true,
             { }
         ))
         section.update(items)
+    }
+
+    private fun getDummyData(): List<RemoteEvents.Event> {
+        return listOf(
+            RemoteEvents.Event(
+                type = "vaccination",
+                unique = "1111",
+                vaccination = RemoteEvents.Event.Vaccination(
+                    date = "1970-01-01",
+                    hpkCode = "dummy",
+                    type = "dummy",
+                    brand = "dummy",
+                    batchNumber = "dummy",
+                    administeringCenter = "dummy",
+                    country = "NL"
+                )
+            ),
+            RemoteEvents.Event(
+                type = "test",
+                unique = "1111",
+                vaccination = RemoteEvents.Event.Vaccination(
+                    date = "1970-01-01",
+                    hpkCode = "dummy",
+                    type = "dummy",
+                    brand = "dummy",
+                    batchNumber = "dummy",
+                    administeringCenter = "dummy",
+                    country = "NL"
+                )
+            ),
+            RemoteEvents.Event(
+                type = "recovery",
+                unique = "1111",
+                vaccination = RemoteEvents.Event.Vaccination(
+                    date = "1970-01-01",
+                    hpkCode = "dummy",
+                    type = "dummy",
+                    brand = "dummy",
+                    batchNumber = "dummy",
+                    administeringCenter = "dummy",
+                    country = "NL"
+                )
+            )
+        )
+
     }
 }

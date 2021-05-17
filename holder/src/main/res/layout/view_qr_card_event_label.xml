@@ -9,6 +9,7 @@
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:textAppearance="@style/App.TextAppearance.MaterialComponents.Body1"
-    tools:text="@string/qr_card_vaccination_validity_nl" />
+    tools:text="@string/qr_card_vaccination_validity_nl"
+    android:paddingBottom="24dp"/>

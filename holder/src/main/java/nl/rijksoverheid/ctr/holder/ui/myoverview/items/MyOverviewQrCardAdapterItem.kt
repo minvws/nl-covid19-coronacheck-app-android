@@ -63,7 +63,7 @@ class MyOverviewQrCardAdapterItem(
         events.forEach {
             val label = inflater.inflate(
                 R.layout.view_qr_card_event_label,
-                viewBinding.resultsContainer
+                null
             ) as TextView
             when (it.type) {
                 "vaccination" -> {
@@ -88,6 +88,8 @@ class MyOverviewQrCardAdapterItem(
                     }
                 }
             }
+
+            viewBinding.resultsContainer.addView(label)
         }
 
     }
