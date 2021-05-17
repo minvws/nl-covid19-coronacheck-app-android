@@ -60,6 +60,10 @@ fun fakeCachedAppConfigUseCase(
         return cachedAppConfigMaxValidityHours
     }
 
+    override fun getCachedAppConfigVaccinationEventValidity(): Int {
+        return appConfig.vaccinationEventValidity
+    }
+
     override fun persistPublicKeys(publicKeys: PublicKeys) {
 
     }
