@@ -25,7 +25,7 @@ data class EventGroupEntity(
     @ColumnInfo(name = "wallet_id", index = true) val walletId: Int,
     @ColumnInfo(name = "provider_identifier") val providerIdentifier: String,
     val type: EventType,
-    val issuedAt: LocalDate,
+    val maxIssuedAt: LocalDate,
     @ColumnInfo(typeAffinity = ColumnInfo.BLOB) val jsonData: ByteArray
 ) {
     override fun equals(other: Any?): Boolean {
@@ -38,7 +38,7 @@ data class EventGroupEntity(
         if (walletId != other.walletId) return false
         if (providerIdentifier != other.providerIdentifier) return false
         if (type != other.type) return false
-        if (issuedAt != other.issuedAt) return false
+        if (maxIssuedAt != other.maxIssuedAt) return false
         if (!jsonData.contentEquals(other.jsonData)) return false
 
         return true
@@ -49,7 +49,7 @@ data class EventGroupEntity(
         result = 31 * result + walletId
         result = 31 * result + providerIdentifier.hashCode()
         result = 31 * result + type.hashCode()
-        result = 31 * result + issuedAt.hashCode()
+        result = 31 * result + maxIssuedAt.hashCode()
         result = 31 * result + jsonData.contentHashCode()
         return result
     }

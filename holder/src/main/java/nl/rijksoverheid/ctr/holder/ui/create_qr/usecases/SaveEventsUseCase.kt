@@ -27,7 +27,7 @@ class SaveEventsUseCaseImpl(private val holderDatabase: HolderDatabase) : SaveEv
                 walletId = 1,
                 providerIdentifier = signedResponseWithModel.model.providerIdentifier,
                 type = EventType.Vaccination,
-                issuedAt = model.events.map { it.getDate() }.maxByOrNull { it.toEpochDay() }!!,
+                maxIssuedAt = model.events.map { it.getDate() }.maxByOrNull { it.toEpochDay() }!!,
                 jsonData = signedResponseWithModel.rawResponse
             )
         }

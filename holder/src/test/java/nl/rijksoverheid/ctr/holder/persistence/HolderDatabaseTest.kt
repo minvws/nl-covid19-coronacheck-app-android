@@ -85,7 +85,7 @@ class HolderDatabaseTest : AutoCloseKoinTest() {
                 id = 1,
                 walletId = 1,
                 type = EventType.Vaccination,
-                issuedAt = LocalDate.of(2020, Month.JANUARY, 1),
+                maxIssuedAt = LocalDate.of(2020, Month.JANUARY, 1),
                 jsonData = "".toByteArray(),
                 providerIdentifier = "1"
             ),
@@ -93,7 +93,7 @@ class HolderDatabaseTest : AutoCloseKoinTest() {
                 id = 2,
                 walletId = 1,
                 type = EventType.Vaccination,
-                issuedAt = LocalDate.of(2020, Month.JANUARY, 1),
+                maxIssuedAt = LocalDate.of(2020, Month.JANUARY, 1),
                 jsonData = "".toByteArray(),
                 providerIdentifier = "2"
             )

@@ -13,6 +13,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckReposito
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.TestProviderRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
 import nl.rijksoverheid.ctr.holder.ui.myoverview.LocalTestResultViewModel
+import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.LocalTestResult
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.LocalTestResultState
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.LocalTestResultUseCase
@@ -102,6 +103,10 @@ fun fakeCachedAppConfigUseCase(
         return appConfig.maxValidityHours
     }
 
+    override fun getCachedAppConfigVaccinationEventValidity(): Int {
+        return appConfig.vaccinationEventValidity
+    }
+
     override fun persistPublicKeys(publicKeys: PublicKeys) {
 
     }
@@ -165,6 +170,16 @@ fun fakeLocalTestResultViewModel(
             } else {
                 return false
             }
+        }
+    }
+}
+
+fun fakeMyOverviewModel(
+
+): MyOverviewViewModel {
+    return object : MyOverviewViewModel() {
+        override fun sync() {
+
         }
     }
 }
@@ -376,7 +391,7 @@ fun fakePersistenceManager(
         }
 
         override fun setHasDismissedRootedDeviceDialog() {
-            
+
         }
     }
 }

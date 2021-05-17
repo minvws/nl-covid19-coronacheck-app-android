@@ -13,6 +13,8 @@ import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.SharedPreferencesPersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
+import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
+import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncerImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.HolderApiClient
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.RemoteEventsStatusJsonAdapter
@@ -28,6 +30,8 @@ import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModel
 import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.LocalTestResultViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.LocalTestResultViewModelImpl
+import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewViewModel
+import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.LocalTestResultUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.LocalTestResultUseCaseImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
@@ -59,6 +63,8 @@ fun holderModule(baseUrl: String) = module {
             .databaseBuilder(androidContext(), HolderDatabase::class.java, "holder-database")
             .build()
     }
+
+    factory<HolderDatabaseSyncer> { HolderDatabaseSyncerImpl(get(), get()) }
 
     single<PersistenceManager> {
         SharedPreferencesPersistenceManager(
@@ -119,6 +125,7 @@ fun holderModule(baseUrl: String) = module {
     viewModel { TokenQrViewModel(get()) }
     viewModel<DeviceRootedViewModel> { DeviceRootedViewModelImpl(get(), get()) }
     viewModel<EventViewModel> { EventViewModelImpl(get(), get()) }
+    viewModel<MyOverviewViewModel> { MyOverviewViewModelImpl(get(), get()) }
 
     // Repositories
     single { AuthenticationRepository() }

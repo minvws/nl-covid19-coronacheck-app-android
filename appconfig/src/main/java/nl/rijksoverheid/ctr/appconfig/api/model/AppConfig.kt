@@ -25,5 +25,6 @@ data class AppConfig(
     @Json(name = "appDeactivated") val appDeactivated: Boolean,
     @Json(name = "informationURL") val informationURL: String,
     @Json(name = "configTTL") val configTtlSeconds: Int,
-    @Json(name = "maxValidityHours") val maxValidityHours: Int
+    @Json(name = "maxValidityHours") val maxValidityHours: Int,
+    @Json(name = "vaccinationEventValidity") val vaccinationEventValidity: Int = 14600
 ) : JSON()

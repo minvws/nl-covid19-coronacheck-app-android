@@ -1,9 +1,6 @@
 package nl.rijksoverheid.ctr.holder.persistence.database.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
 
 /*
@@ -22,6 +19,6 @@ interface EventGroupDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(entity: List<EventGroupEntity>)
 
-    @Query("DELETE FROM event_group WHERE id = :id")
-    suspend fun delete(id: Int)
+    @Delete
+    suspend fun delete(entity: EventGroupEntity)
 }
