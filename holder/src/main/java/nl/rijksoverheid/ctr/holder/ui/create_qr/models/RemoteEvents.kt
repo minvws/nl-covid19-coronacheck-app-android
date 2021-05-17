@@ -32,7 +32,7 @@ data class RemoteEvents(
 
     @JsonClass(generateAdapter = true)
     data class Holder(
-        val identityHash: String?,
+        val infix: String?,
         val firstName: String?,
         val lastName: String?,
         val birthDate: String?
@@ -51,9 +51,11 @@ data class RemoteEvents(
             val hpkCode: String,
             val type: String,
             val brand: String,
-            val batchNumber: String,
-            val administeringCenter: String,
-            val country: String
+            val completedByMedicalStatement: String?,
+            val doseNumber: String?,
+            val totalDoses: String?,
+            val country: String,
+            val manufacturer: String
         )
     }
 }

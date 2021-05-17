@@ -13,10 +13,10 @@ import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.SharedPreferencesPersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
+import nl.rijksoverheid.ctr.holder.ui.create_qr.EventViewModel
+import nl.rijksoverheid.ctr.holder.ui.create_qr.EventViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.TestResultsViewModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.TokenQrViewModel
-import nl.rijksoverheid.ctr.holder.ui.create_qr.VaccinationViewModel
-import nl.rijksoverheid.ctr.holder.ui.create_qr.VaccinationViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.HolderApiClient
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.RemoteEventsStatusJsonAdapter
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.RemoteTestStatusJsonAdapter
@@ -121,7 +121,7 @@ fun holderModule(baseUrl: String) = module {
     viewModel { TestResultsViewModel(get(), get(), get(), get()) }
     viewModel { TokenQrViewModel(get()) }
     viewModel<DeviceRootedViewModel> { DeviceRootedViewModelImpl(get(), get()) }
-    viewModel<VaccinationViewModel> { VaccinationViewModelImpl(get()) }
+    viewModel<EventViewModel> { EventViewModelImpl(get()) }
 
     // Repositories
     single { AuthenticationRepository() }
