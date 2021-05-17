@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit
  *
  */
 class TestResultUseCase(
-    private val configProviderUseCase: ConfigProvidersUseCase,
+    private val testProviderUseCase: TestProviderUseCase,
     private val testProviderRepository: TestProviderRepository,
     private val coronaCheckRepository: CoronaCheckRepository,
     private val commitmentMessageUseCase: CommitmentMessageUseCase,
@@ -63,7 +63,7 @@ class TestResultUseCase(
 //        }
 
         return try {
-            val testProvider = configProviderUseCase.testProvider(providerIdentifier)
+            val testProvider = testProviderUseCase.testProvider(providerIdentifier)
                 ?: return TestResult.InvalidToken
 
             val signedResponseWithTestResult = testProviderRepository.remoteTestResult(
@@ -101,7 +101,11 @@ class TestResultUseCase(
                     )
                 )
             ) {
-                TestResult.ServerError(500)
+                TestResult.NegativeTestResult(
+                    remoteTestResult,
+                    personalDetails,
+                    signedResponseWithTestResult
+                )
             } else {
                 TestResult.NoNegativeTestResult
             }
