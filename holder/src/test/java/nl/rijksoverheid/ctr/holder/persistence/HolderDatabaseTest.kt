@@ -72,7 +72,7 @@ class HolderDatabaseTest : AutoCloseKoinTest() {
 
         // Database entries should no longer exist
         assertEquals(db.walletDao().get().first(), listOf<Wallet>())
-        assertEquals(db.eventDao().getAll(), listOf<EventEntity>())
+        assertEquals(db.eventGroupDao().getAll(), listOf<EventGroupEntity>())
         assertEquals(db.greenCardDao().getAll(), listOf<GreenCardEntity>())
         assertEquals(db.credentialDao().getAll(), listOf<CredentialEntity>())
     }
@@ -83,19 +83,21 @@ class HolderDatabaseTest : AutoCloseKoinTest() {
             label = "main"
         ),
         eventEntities = listOf(
-            EventEntity(
+            EventGroupEntity(
                 id = 1,
                 walletId = 1,
                 type = EventType.Vaccination,
                 issuedAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(1), ZoneOffset.UTC),
-                jsonData = ""
+                jsonData = "",
+                providerIdentifier = "1"
             ),
-            EventEntity(
+            EventGroupEntity(
                 id = 2,
                 walletId = 1,
                 type = EventType.Vaccination,
                 issuedAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(2), ZoneOffset.UTC),
-                jsonData = ""
+                jsonData = "",
+                providerIdentifier = "1"
             )
         ),
         greenCards = listOf(
@@ -117,7 +119,8 @@ class HolderDatabaseTest : AutoCloseKoinTest() {
                         validFrom = OffsetDateTime.ofInstant(
                             Instant.ofEpochSecond(1),
                             ZoneOffset.UTC
-                        )
+                        ),
+                        credentialVersion = 1
                     )
                 )
             ),
@@ -139,7 +142,8 @@ class HolderDatabaseTest : AutoCloseKoinTest() {
                         validFrom = OffsetDateTime.ofInstant(
                             Instant.ofEpochSecond(2),
                             ZoneOffset.UTC
-                        )
+                        ),
+                        credentialVersion = 1
                     )
                 )
             )
@@ -149,7 +153,7 @@ class HolderDatabaseTest : AutoCloseKoinTest() {
     private suspend fun insertWalletInDatabase(wallet: Wallet) {
         db.walletDao().insert(wallet.walletEntity)
         wallet.eventEntities.forEach {
-            db.eventDao().insert(it)
+            db.eventGroupDao().insert(it)
         }
         wallet.greenCards.forEach { greenCard ->
             db.greenCardDao().insert(greenCard.greenCardEntity)

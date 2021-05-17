@@ -45,7 +45,7 @@ class YourNegativeTestResultFragment : Fragment(R.layout.fragment_your_negative_
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentYourNegativeTestResultsBinding.bind(view)
 
-        val retrievedResult = viewModel.retrievedResult
+        val retrievedResult = viewModel.getRetrievedResult()
         if (retrievedResult == null) {
             // restored from state, no result anymore
             findNavController().navigate(YourNegativeTestResultFragmentDirections.actionMyOverview())

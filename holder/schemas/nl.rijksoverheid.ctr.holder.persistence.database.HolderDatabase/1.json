@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "f68dacdb77b878d401bbf9120431ea56",
+    "identityHash": "d4179d3bc783e6fb2795b0524e8f3754",
     "entities": [
       {
         "tableName": "wallet",
@@ -31,8 +31,8 @@
         "foreignKeys": []
       },
       {
-        "tableName": "event",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `wallet_id` INTEGER NOT NULL, `type` TEXT NOT NULL, `issuedAt` INTEGER NOT NULL, `jsonData` TEXT NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`wallet_id`) REFERENCES `wallet`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "tableName": "event_group",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `wallet_id` INTEGER NOT NULL, `provider_identifier` TEXT NOT NULL, `type` TEXT NOT NULL, `issuedAt` INTEGER NOT NULL, `jsonData` TEXT NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`wallet_id`) REFERENCES `wallet`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -44,6 +44,12 @@
             "fieldPath": "walletId",
             "columnName": "wallet_id",
             "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "providerIdentifier",
+            "columnName": "provider_identifier",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -73,12 +79,12 @@
         },
         "indices": [
           {
-            "name": "index_event_wallet_id",
+            "name": "index_event_group_wallet_id",
             "unique": false,
             "columnNames": [
               "wallet_id"
             ],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_event_wallet_id` ON `${TABLE_NAME}` (`wallet_id`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_event_group_wallet_id` ON `${TABLE_NAME}` (`wallet_id`)"
           }
         ],
         "foreignKeys": [
@@ -156,7 +162,7 @@
       },
       {
         "tableName": "credential",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `green_card_id` INTEGER NOT NULL, `qrData` TEXT NOT NULL, `validFrom` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`green_card_id`) REFERENCES `green_card`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `green_card_id` INTEGER NOT NULL, `qrData` TEXT NOT NULL, `credentialVersion` INTEGER NOT NULL, `validFrom` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`green_card_id`) REFERENCES `green_card`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -174,6 +180,12 @@
             "fieldPath": "qrData",
             "columnName": "qrData",
             "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "credentialVersion",
+            "columnName": "credentialVersion",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -208,7 +220,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f68dacdb77b878d401bbf9120431ea56')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd4179d3bc783e6fb2795b0524e8f3754')"
     ]
   }
 }
