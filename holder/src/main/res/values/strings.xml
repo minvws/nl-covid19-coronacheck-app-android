@@ -203,6 +203,13 @@
     <string name="retrieved_vaccination_subtitle">Vaccinatiedatum: %1$s</string>
     <string name="retrieved_vaccinations_backbutton_title">Weet je zeker dat je wilt stoppen?</string>
     <string name="retrieved_vaccinations_backbutton_message">Je moet dan later opnieuw met DigiD inloggen om je vaccinatie op te halen.</string>
+    <string name="travel_toggle_europe">Ik reis binnen Europa</string>
+    <string name="travel_toggle_domestic">Ik ben in Nederland</string>
+    <string name="travel_toggle_change">Wijzigen</string>
+    <string name="travel_button_domestic">Nederland</string>
+    <string name="travel_button_europe">Europa</string>
+    <string name="travel_fragment_description">Gebruik binnen Nederland altijd je Nederlandse QR-code. Ga je de Nederlandse grens over of reis je in Europa? Gebruik dan je Europese bewijs.</string>
+    <string name="travel_fragment_footer">In je Nederlandse QR-code staan alleen je initialen en je geboortedag en maand.</string>
     <string name="dialog_negative_test_result_something_wrong_title">Er klopt iets niet</string>
     <string name="dialog_negative_test_result_something_wrong_description">Kloppen jouw gegevens niet met je identiteitsbewijs? Neem contact op met je testlocatie om je  gegevens te laten aanpassen.</string>
     <string name="your_vaccination_result_explanation_title">Over jouw vaccinatie</string>

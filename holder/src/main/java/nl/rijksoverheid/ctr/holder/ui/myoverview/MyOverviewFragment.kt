@@ -78,6 +78,10 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
         binding.recyclerView.itemAnimator = null
         setItems()
 
+        binding.include.button.setOnClickListener {
+            findNavController().navigate(MyOverviewFragmentDirections.actionShowTravelMode())
+        }
+
         // Nullable so tests don't trip over parentFragment
         (parentFragment?.parentFragment as HolderMainFragment?)?.getToolbar().let { toolbar ->
             if (toolbar?.menu?.size() == 0) {

@@ -2,11 +2,12 @@ package nl.rijksoverheid.ctr.design.ext
 
 import android.accessibilityservice.AccessibilityServiceInfo
 import android.content.Context
-import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
+import android.content.res.ColorStateList
 import android.util.TypedValue
 import android.view.ContextThemeWrapper
 import android.view.accessibility.AccessibilityManager
+import androidx.annotation.AttrRes
+import androidx.appcompat.content.res.AppCompatResources
 import nl.rijksoverheid.ctr.design.R
 
 /*
@@ -32,4 +33,12 @@ fun Context.isScreenReaderOn(): Boolean {
             return true
     }
     return false
+}
+
+fun Context.getThemeColor(@AttrRes attribute: Int): ColorStateList = TypedValue().let {
+    theme.resolveAttribute(
+        attribute,
+        it,
+        true
+    ); AppCompatResources.getColorStateList(this, it.resourceId)
 }
