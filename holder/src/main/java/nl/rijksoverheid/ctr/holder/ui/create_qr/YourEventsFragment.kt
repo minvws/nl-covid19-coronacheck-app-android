@@ -131,6 +131,10 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                 )
             }
         }
+
+        binding.somethingWrongButton.setOnClickListener {
+            findNavController().navigate(YourEventsFragmentDirections.actionShowSomethingWrong())
+        }
     }
 
     private fun presentVaccinations(
@@ -185,5 +189,8 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                 remoteEvents = remoteEvents
             )
         }
+
+        // Hide something wrong button
+        binding.somethingWrongButton.visibility = View.GONE
     }
 }
