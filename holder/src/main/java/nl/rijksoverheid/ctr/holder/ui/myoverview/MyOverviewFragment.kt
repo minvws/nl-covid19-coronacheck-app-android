@@ -7,7 +7,6 @@ import android.os.Looper
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
-import com.google.android.material.snackbar.Snackbar
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
@@ -22,10 +21,9 @@ import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewTestResultExpir
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.LocalTestResult
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.LocalTestResultState
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
-import nl.rijksoverheid.ctr.shared.ext.launchUrl
-import nl.rijksoverheid.ctr.shared.ext.show
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 
@@ -46,8 +44,12 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
     private val section = Section()
 
     private val localTestResultHandler = Handler(Looper.getMainLooper())
-    private val localTestResultRunnable = Runnable { getLocalTestResult() }
+    private val localTestResultRunnable = Runnable { getLocalTestResult(); sync() }
 
+    // New viewmodel that supports database backed events
+    private val myOverviewViewModel: MyOverviewViewModel by sharedViewModel()
+
+    // Old viewmodel that works via shared pref stored single test result
     private val localTestResultViewModel: LocalTestResultViewModel by sharedViewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -83,12 +85,20 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                         )
                     }
                     is LocalTestResultState.Valid -> {
+                        (parentFragment?.parentFragment as HolderMainFragment?)?.changeMenuItem(
+                            menuItemId = R.id.nav_create_qr,
+                            text = R.string.create_qr_explanation_menu_title_alternative
+                        )
                         setItems(
                             localTestResult = localTestResultState.localTestResult
                         )
                     }
                 }
             })
+
+        myOverviewViewModel.walletLiveData.observe(viewLifecycleOwner, {
+            Timber.v("Wallet: $it")
+        })
 
         setFragmentResultListener(
             REQUEST_KEY
@@ -103,8 +113,13 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
         }
     }
 
+    private fun sync() {
+        myOverviewViewModel.sync()
+    }
+
     private fun getLocalTestResult() {
         localTestResultViewModel.getLocalTestResult()
+        sync()
         localTestResultHandler.postDelayed(localTestResultRunnable, TimeUnit.SECONDS.toMillis(10))
     }
 

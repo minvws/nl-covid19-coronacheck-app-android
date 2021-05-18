@@ -13,10 +13,9 @@ import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.SharedPreferencesPersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
-import nl.rijksoverheid.ctr.holder.ui.create_qr.TestResultsViewModelImpl
-import nl.rijksoverheid.ctr.holder.ui.create_qr.TokenQrViewModel
-import nl.rijksoverheid.ctr.holder.ui.create_qr.VaccinationViewModel
-import nl.rijksoverheid.ctr.holder.ui.create_qr.VaccinationViewModelImpl
+import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
+import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncerImpl
+import nl.rijksoverheid.ctr.holder.ui.create_qr.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.HolderApiClient
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.RemoteEventsStatusJsonAdapter
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.RemoteTestStatusJsonAdapter
@@ -31,6 +30,8 @@ import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModel
 import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.LocalTestResultViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.LocalTestResultViewModelImpl
+import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewViewModel
+import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.LocalTestResultUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.LocalTestResultUseCaseImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
@@ -60,9 +61,10 @@ fun holderModule(baseUrl: String) = module {
     single {
         Room
             .databaseBuilder(androidContext(), HolderDatabase::class.java, "holder-database")
-            .createFromAsset("database/holder-database.db")
             .build()
     }
+
+    factory<HolderDatabaseSyncer> { HolderDatabaseSyncerImpl(get(), get()) }
 
     single<PersistenceManager> {
         SharedPreferencesPersistenceManager(
@@ -112,15 +114,18 @@ fun holderModule(baseUrl: String) = module {
         TokenQrUseCase(get())
     }
     factory<DeviceRootedUseCase> { DeviceRootedUseCaseImpl(androidContext()) }
-    factory<EventUseCase> { EventUseCaseImpl(get(), get(), get()) }
+    factory<GetEventsUseCase> { GetEventsUseCaseImpl(get(), get(), get()) }
+    factory<SaveEventsUseCase> { SaveEventsUseCaseImpl(get()) }
 
     // ViewModels
     viewModel<LocalTestResultViewModel> { LocalTestResultViewModelImpl(get(), get()) }
+    viewModel<TestResultsViewModel> { TestResultsViewModelImpl(get(), get(), get(), get()) }
     viewModel { DigiDViewModel(get()) }
     viewModel { TestResultsViewModelImpl(get(), get(), get(), get()) }
     viewModel { TokenQrViewModel(get()) }
     viewModel<DeviceRootedViewModel> { DeviceRootedViewModelImpl(get(), get()) }
-    viewModel<VaccinationViewModel> { VaccinationViewModelImpl(get()) }
+    viewModel<EventViewModel> { EventViewModelImpl(get(), get()) }
+    viewModel<MyOverviewViewModel> { MyOverviewViewModelImpl(get(), get()) }
 
     // Repositories
     single { AuthenticationRepository() }

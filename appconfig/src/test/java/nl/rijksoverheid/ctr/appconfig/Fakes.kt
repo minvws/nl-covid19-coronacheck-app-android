@@ -47,6 +47,7 @@ fun fakeCachedAppConfigUseCase(
     appConfig: AppConfig? = fakeAppConfig(),
     publicKeys: PublicKeys = PublicKeys(listOf()),
     cachedAppConfigMaxValidityHours: Int = 0,
+    cachedAppConfigVaccinationEventValidity: Int = 0
 ) = object : CachedAppConfigUseCase {
     override fun persistAppConfig(appConfig: AppConfig) {
 
@@ -58,6 +59,10 @@ fun fakeCachedAppConfigUseCase(
 
     override fun getCachedAppConfigMaxValidityHours(): Int {
         return cachedAppConfigMaxValidityHours
+    }
+
+    override fun getCachedAppConfigVaccinationEventValidity(): Int {
+        return cachedAppConfigVaccinationEventValidity
     }
 
     override fun persistPublicKeys(publicKeys: PublicKeys) {

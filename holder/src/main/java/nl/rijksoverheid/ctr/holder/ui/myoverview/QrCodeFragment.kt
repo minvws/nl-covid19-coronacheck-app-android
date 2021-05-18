@@ -32,6 +32,7 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
     private var _binding: FragmentQrCodeBinding? = null
     private val binding get() = _binding!!
     private val localTestResultViewModel: LocalTestResultViewModel by sharedViewModel()
+
     private val qrCodeHandler = Handler(Looper.getMainLooper())
     private val qrCodeRunnable = Runnable { generateQrCode() }
 

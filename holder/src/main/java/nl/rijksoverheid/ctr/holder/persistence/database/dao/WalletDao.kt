@@ -20,6 +20,9 @@ interface WalletDao {
     @Query("SELECT * FROM wallet")
     fun get(): Flow<List<Wallet>>
 
+    @Query("SELECT * FROM wallet")
+    suspend fun getAll(): List<WalletEntity>
+
     @Insert
     suspend fun insert(entity: WalletEntity)
 

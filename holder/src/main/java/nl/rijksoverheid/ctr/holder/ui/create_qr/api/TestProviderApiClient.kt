@@ -42,5 +42,6 @@ interface TestProviderApiClient {
         @Url url: String,
         @Header("Authorization") authorization: String,
         @Header("CoronaCheck-Protocol-Version") protocolVersion: String = "3.0",
-    ): RemoteEvents
+        @Tag certificate: SigningCertificate
+    ): SignedResponseWithModel<RemoteEvents>
 }

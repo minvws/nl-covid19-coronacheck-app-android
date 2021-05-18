@@ -4,6 +4,7 @@ import androidx.room.TypeConverter
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import java.time.Instant
+import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 
@@ -16,13 +17,23 @@ import java.time.ZoneOffset
  */
 class HolderDatabaseConverter {
     @TypeConverter
-    fun fromTimestamp(value: Long?): OffsetDateTime? {
+    fun fromTimestampToOffsetDateTime(value: Long?): OffsetDateTime? {
         return value?.let { OffsetDateTime.ofInstant(Instant.ofEpochSecond(it), ZoneOffset.UTC) }
     }
 
     @TypeConverter
-    fun dateToTimestamp(date: OffsetDateTime?): Long? {
+    fun offsetDateTimeToTimestamp(date: OffsetDateTime?): Long? {
         return date?.toEpochSecond()
+    }
+
+    @TypeConverter
+    fun fromStringToLocalDate(value: String?): LocalDate? {
+        return value?.let { LocalDate.parse(it) }
+    }
+
+    @TypeConverter
+    fun localDateToString(date: LocalDate?): String? {
+        return date.toString()
     }
 
     @TypeConverter

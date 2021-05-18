@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "d4179d3bc783e6fb2795b0524e8f3754",
+    "identityHash": "286bb09dfb5173415043f161145d688a",
     "entities": [
       {
         "tableName": "wallet",
@@ -32,7 +32,7 @@
       },
       {
         "tableName": "event_group",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `wallet_id` INTEGER NOT NULL, `provider_identifier` TEXT NOT NULL, `type` TEXT NOT NULL, `issuedAt` INTEGER NOT NULL, `jsonData` TEXT NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`wallet_id`) REFERENCES `wallet`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `wallet_id` INTEGER NOT NULL, `provider_identifier` TEXT NOT NULL, `type` TEXT NOT NULL, `maxIssuedAt` TEXT NOT NULL, `jsonData` BLOB NOT NULL, FOREIGN KEY(`wallet_id`) REFERENCES `wallet`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -59,15 +59,15 @@
             "notNull": true
           },
           {
-            "fieldPath": "issuedAt",
-            "columnName": "issuedAt",
-            "affinity": "INTEGER",
+            "fieldPath": "maxIssuedAt",
+            "columnName": "maxIssuedAt",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
             "fieldPath": "jsonData",
             "columnName": "jsonData",
-            "affinity": "TEXT",
+            "affinity": "BLOB",
             "notNull": true
           }
         ],
@@ -75,9 +75,18 @@
           "columnNames": [
             "id"
           ],
-          "autoGenerate": false
+          "autoGenerate": true
         },
         "indices": [
+          {
+            "name": "index_event_group_provider_identifier_type",
+            "unique": true,
+            "columnNames": [
+              "provider_identifier",
+              "type"
+            ],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_event_group_provider_identifier_type` ON `${TABLE_NAME}` (`provider_identifier`, `type`)"
+          },
           {
             "name": "index_event_group_wallet_id",
             "unique": false,
@@ -220,7 +229,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd4179d3bc783e6fb2795b0524e8f3754')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '286bb09dfb5173415043f161145d688a')"
     ]
   }
 }

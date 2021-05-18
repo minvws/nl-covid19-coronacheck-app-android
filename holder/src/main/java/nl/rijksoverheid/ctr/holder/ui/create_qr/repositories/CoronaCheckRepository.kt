@@ -37,7 +37,7 @@ open class CoronaCheckRepositoryImpl(
 
     override suspend fun accessTokens(tvnToken: String): RemoteAccessTokens {
         return api.getAccessTokens(
-            data = AccessTokenPostData(tvnToken)
+            data = AccessTokenPostData("999999011")
         )
     }
 

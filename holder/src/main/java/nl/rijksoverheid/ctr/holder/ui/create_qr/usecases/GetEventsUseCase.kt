@@ -1,9 +1,10 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEvents
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.EventProviderRepository
 import retrofit2.HttpException
-import timber.log.Timber
 import java.io.IOException
 
 /*
@@ -13,28 +14,28 @@ import java.io.IOException
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-interface EventUseCase {
-    suspend fun getEvents(digidToken: String): EventResult
+interface GetEventsUseCase {
+    suspend fun getVaccinationEvents(digidToken: String): EventsResult
 }
 
-class EventUseCaseImpl(
+class GetEventsUseCaseImpl(
     private val configProvidersUseCase: ConfigProvidersUseCase,
     private val coronaCheckRepository: CoronaCheckRepository,
     private val eventProviderRepository: EventProviderRepository
-) : EventUseCase {
+) : GetEventsUseCase {
 
-    override suspend fun getEvents(digidToken: String): EventResult {
+    override suspend fun getVaccinationEvents(digidToken: String): EventsResult {
         return try {
+
+            // Fetch event providers
             val eventProviders = configProvidersUseCase.eventProviders()
-            Timber.v("VACFLOW: Fetched event providers: $eventProviders")
 
+            // Fetch access tokens
             val accessTokens = coronaCheckRepository.accessTokens(digidToken)
-            Timber.v("VACFLOW: Fetched access tokens: $accessTokens")
 
+            // Map event providers to access tokens
             val eventProvidersWithAccessTokenMap =
                 eventProviders.associateWith { eventProvider -> accessTokens.tokens.first { eventProvider.providerIdentifier == it.providerIdentifier } }
-
-            Timber.v("VACFLOW: Mapped event providers to access token: $eventProvidersWithAccessTokenMap")
 
             // A list of event providers that have events
             val eventProviderWithEvents = eventProvidersWithAccessTokenMap.filter {
@@ -54,8 +55,7 @@ class EventUseCaseImpl(
                 }
             }
 
-            Timber.v("VACFLOW: Event providers with events: $eventProviderWithEvents")
-
+            // Get vaccination events from event providers
             val remoteEvents = eventProviderWithEvents.map {
                 val eventProvider = it.key
                 val accessToken = it.value
@@ -63,23 +63,32 @@ class EventUseCaseImpl(
                 eventProviderRepository
                     .event(
                         url = eventProvider.eventUrl,
-                        token = accessToken.event
+                        token = accessToken.event,
+                        signingCertificateBytes = eventProvider.cms
                     )
             }
 
-            Timber.v("VACFLOW: Fetched events: $remoteEvents")
+            // For now we only support vaccination events
+            val vaccinationEvents =
+                remoteEvents.filter { remoteEvent -> remoteEvent.model.events.any { event -> event.type == "vaccination" } }
 
-            EventResult.Success()
+            EventsResult.Success(
+                signedModels = vaccinationEvents
+            )
         } catch (ex: HttpException) {
-            return EventResult.ServerError(ex.code())
+            return EventsResult.ServerError(ex.code())
         } catch (ex: IOException) {
-            return EventResult.NetworkError
+            return EventsResult.NetworkError
         }
     }
 }
 
-sealed class EventResult {
-    data class Success(val dummyObject: Boolean = true) : EventResult()
-    data class ServerError(val httpCode: Int) : EventResult()
-    object NetworkError : EventResult()
+sealed class EventsResult {
+    data class Success(
+        val signedModels: List<SignedResponseWithModel<RemoteEvents>>
+    ) :
+        EventsResult()
+
+    data class ServerError(val httpCode: Int) : EventsResult()
+    object NetworkError : EventsResult()
 }

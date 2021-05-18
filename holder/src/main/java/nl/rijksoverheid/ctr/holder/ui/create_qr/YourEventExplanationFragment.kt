@@ -12,13 +12,13 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.databinding.FragmentRetrievedVaccinationsExplanationBinding
+import nl.rijksoverheid.ctr.holder.databinding.FragmentYourEventExplanationBinding
 
-class YourRetrievedVaccinationsExplanationFragment : Fragment(R.layout.fragment_retrieved_vaccinations_explanation) {
+class YourEventExplanationFragment : Fragment(R.layout.fragment_your_event_explanation) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val binding = FragmentRetrievedVaccinationsExplanationBinding.bind(view)
+        val binding = FragmentYourEventExplanationBinding.bind(view)
 
         // Todo: Catch navargs to show Holder based personal details
     }

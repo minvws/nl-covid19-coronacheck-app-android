@@ -12,7 +12,7 @@ import com.squareup.moshi.JsonClass
  */
 @JsonClass(generateAdapter = true)
 data class RemoteAccessTokens(
-    val tokens: List<Token>
+    val tokens: List<Token> = listOf()
 ) {
     @JsonClass(generateAdapter = true)
     data class Token(

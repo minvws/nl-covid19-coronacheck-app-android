@@ -51,7 +51,33 @@ data class RemoteConfigProviders(
         @Json(name = "provider_identifier") val providerIdentifier: String,
         @Json(name = "unomi_url") val unomiUrl: String,
         @Json(name = "event_url") val eventUrl: String,
-        val cms: String,
-        val tls: String
-    )
+        val cms: ByteArray,
+        val tls: ByteArray
+    ) {
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (javaClass != other?.javaClass) return false
+
+            other as EventProvider
+
+            if (name != other.name) return false
+            if (providerIdentifier != other.providerIdentifier) return false
+            if (unomiUrl != other.unomiUrl) return false
+            if (eventUrl != other.eventUrl) return false
+            if (!cms.contentEquals(other.cms)) return false
+            if (!tls.contentEquals(other.tls)) return false
+
+            return true
+        }
+
+        override fun hashCode(): Int {
+            var result = name.hashCode()
+            result = 31 * result + providerIdentifier.hashCode()
+            result = 31 * result + unomiUrl.hashCode()
+            result = 31 * result + eventUrl.hashCode()
+            result = 31 * result + cms.contentHashCode()
+            result = 31 * result + tls.contentHashCode()
+            return result
+        }
+    }
 }

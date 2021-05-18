@@ -18,6 +18,7 @@ interface CachedAppConfigUseCase {
     fun persistAppConfig(appConfig: AppConfig)
     fun getCachedAppConfig(): AppConfig?
     fun getCachedAppConfigMaxValidityHours(): Int
+    fun getCachedAppConfigVaccinationEventValidity(): Int
     fun persistPublicKeys(publicKeys: PublicKeys)
     fun getCachedPublicKeys(): PublicKeys?
 }
@@ -38,6 +39,11 @@ class CachedAppConfigUseCaseImpl constructor(
 
     override fun getCachedAppConfigMaxValidityHours(): Int {
         return getCachedAppConfig()?.maxValidityHours
+            ?: throw IllegalStateException("AppConfig should be cached")
+    }
+
+    override fun getCachedAppConfigVaccinationEventValidity(): Int {
+        return getCachedAppConfig()?.vaccinationEventValidity
             ?: throw IllegalStateException("AppConfig should be cached")
     }
 

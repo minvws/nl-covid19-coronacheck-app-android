@@ -24,12 +24,16 @@ abstract class TestResultsViewModel : ViewModel() {
     abstract fun saveTestResult()
     abstract fun getRetrievedResult(): TestResult.NegativeTestResult?
 
+    open var verificationCode: String = ""
+    open var verificationRequired: Boolean = false
+    open var testCode: String = ""
+    open var fromDeeplink: Boolean = false
+
     val testResult: LiveData<Event<TestResult>> = MutableLiveData()
     val signedTestResult = MutableLiveData<Event<SignedTestResult>>()
     val loading: LiveData<Event<Boolean>> = MutableLiveData()
     val viewState: LiveData<ViewState> = MutableLiveData(ViewState())
 }
-
 
 open class TestResultsViewModelImpl(
     private val savedStateHandle: SavedStateHandle,
@@ -42,30 +46,29 @@ open class TestResultsViewModelImpl(
         return (testResult.value?.peekContent() as? TestResult.NegativeTestResult)
     }
 
-
-    var verificationCode: String = savedStateHandle["verification_code"] ?: ""
+    override var verificationCode: String = savedStateHandle["verification_code"] ?: ""
         set(value) {
             field = value
             savedStateHandle["verification_code"] = value
             updateViewState()
         }
 
-    var verificationRequired: Boolean = savedStateHandle["verification_required"] ?: false
-        private set(value) {
+    override var verificationRequired: Boolean = savedStateHandle["verification_required"] ?: false
+        set(value) {
             field = value
             savedStateHandle["verification_required"] = value
             updateViewState()
         }
 
-    var testCode: String = savedStateHandle["test_code"] ?: ""
+    override var testCode: String = savedStateHandle["test_code"] ?: ""
         set(value) {
             field = value
             savedStateHandle["test_code"] = value
             updateViewState()
         }
 
-    var fromDeeplink: Boolean = savedStateHandle["from_deeplink"] ?: false
-        private set(value) {
+    override var fromDeeplink: Boolean = savedStateHandle["from_deeplink"] ?: false
+        set(value) {
             field = value
             savedStateHandle["from_deeplink"] = value
             updateViewState()
@@ -126,7 +129,7 @@ open class TestResultsViewModelImpl(
                     if (result is SignedTestResult.Complete) {
                         persistenceManager.saveCredentials(result.credentials)
                     }
-                    (signedTestResult as MutableLiveData).value = Event(result)
+                    signedTestResult.value = Event(result)
                 }
             } finally {
                 loading.value = Event(false)

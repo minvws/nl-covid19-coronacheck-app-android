@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.digid
 import android.content.Intent
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -22,14 +23,17 @@ import nl.rijksoverheid.ctr.shared.livedata.Event
  */
 class DigiDViewModel(private val authenticationRepository: AuthenticationRepository) : ViewModel() {
 
+    val loading: LiveData<Event<Boolean>> = MutableLiveData()
     val accessTokenLiveData = MutableLiveData<Event<String>>()
 
     fun login(
         activityResultLauncher: ActivityResultLauncher<Intent>,
         authService: AuthorizationService
     ) {
+        (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {
             authenticationRepository.authResponse(activityResultLauncher, authService)
+            loading.value = Event(false)
         }
     }
 

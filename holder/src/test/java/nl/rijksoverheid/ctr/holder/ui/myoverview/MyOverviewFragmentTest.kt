@@ -5,9 +5,6 @@ import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers
 import com.schibsted.spain.barista.assertion.BaristaListAssertions.assertDisplayedAtPosition
 import com.schibsted.spain.barista.assertion.BaristaListAssertions.assertListItemCount
 import com.schibsted.spain.barista.interaction.BaristaListInteractions.clickListItemChild
@@ -163,7 +160,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
             textId = R.string.my_overview_no_qr_make_qr_title
         )
     }
-    
+
     @Test
     fun `Clicking close button in MyOverviewTestResultExpiredAdapterItem removes the view from RecyclerView`() {
         launchOverviewFragment(
@@ -239,6 +236,9 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                     fakeLocalTestResultViewModel(
                         localTestResultState = localTestResultState
                     )
+                }
+                viewModel {
+                    fakeMyOverviewModel()
                 }
                 factory {
                     fakePersistenceManager(

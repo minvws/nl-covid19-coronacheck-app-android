@@ -1,8 +1,10 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.repositories
 
+import nl.rijksoverheid.ctr.api.interceptors.SigningCertificate
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.TestProviderApiClient
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEvents
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteUnomi
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -19,8 +21,9 @@ interface EventProviderRepository {
 
     suspend fun event(
         url: String,
-        token: String
-    ): RemoteEvents
+        token: String,
+        signingCertificateBytes: ByteArray
+    ): SignedResponseWithModel<RemoteEvents>
 }
 
 class EventProviderRepositoryImpl(
@@ -35,10 +38,15 @@ class EventProviderRepositoryImpl(
             )
     }
 
-    override suspend fun event(url: String, token: String): RemoteEvents {
+    override suspend fun event(
+        url: String,
+        token: String,
+        signingCertificateBytes: ByteArray
+    ): SignedResponseWithModel<RemoteEvents> {
         return testProviderApiClient.events(
             url = url,
-            authorization = "Bearer $token"
+            authorization = "Bearer $token",
+            certificate = SigningCertificate(signingCertificateBytes)
         )
     }
 }

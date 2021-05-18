@@ -17,9 +17,7 @@ import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
 import java.io.IOException
-import java.time.Instant
-import java.time.OffsetDateTime
-import java.time.ZoneOffset
+import java.time.*
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -87,17 +85,17 @@ class HolderDatabaseTest : AutoCloseKoinTest() {
                 id = 1,
                 walletId = 1,
                 type = EventType.Vaccination,
-                issuedAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(1), ZoneOffset.UTC),
-                jsonData = "",
+                maxIssuedAt = LocalDate.of(2020, Month.JANUARY, 1),
+                jsonData = "".toByteArray(),
                 providerIdentifier = "1"
             ),
             EventGroupEntity(
                 id = 2,
                 walletId = 1,
                 type = EventType.Vaccination,
-                issuedAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(2), ZoneOffset.UTC),
-                jsonData = "",
-                providerIdentifier = "1"
+                maxIssuedAt = LocalDate.of(2020, Month.JANUARY, 1),
+                jsonData = "".toByteArray(),
+                providerIdentifier = "2"
             )
         ),
         greenCards = listOf(
@@ -152,9 +150,7 @@ class HolderDatabaseTest : AutoCloseKoinTest() {
 
     private suspend fun insertWalletInDatabase(wallet: Wallet) {
         db.walletDao().insert(wallet.walletEntity)
-        wallet.eventEntities.forEach {
-            db.eventGroupDao().insert(it)
-        }
+        db.eventGroupDao().insertAll(wallet.eventEntities)
         wallet.greenCards.forEach { greenCard ->
             db.greenCardDao().insert(greenCard.greenCardEntity)
             greenCard.credentialEntities.forEach {
