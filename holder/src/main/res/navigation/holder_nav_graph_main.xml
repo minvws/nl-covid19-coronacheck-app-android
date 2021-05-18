@@ -54,6 +54,10 @@
             android:id="@+id/action_about_this_app"
             app:destination="@id/nav_about_this_app" />
 
+        <action
+            android:id="@+id/action_show_travel_mode"
+            app:destination="@id/travel_mode_bottomsheet" />
+
     </fragment>
 
     <fragment
@@ -308,5 +312,11 @@
             app:popExitAnim="@anim/slide_out_right" />
 
     </fragment>
+
+    <dialog
+        android:id="@+id/travel_mode_bottomsheet"
+        android:name="nl.rijksoverheid.ctr.holder.ui.myoverview.TravelModeDialogFragment"
+        android:label="TravelModeDialog"
+        tools:layout="@layout/fragment_travel_mode"/>
 
 </navigation>

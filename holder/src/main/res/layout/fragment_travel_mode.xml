@@ -40,52 +40,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/close" />
 
-        <com.google.android.material.button.MaterialButtonToggleGroup
-            android:id="@+id/toggle_container"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:background="@drawable/shape_toggle_group_background"
-            android:orientation="horizontal"
-            android:padding="4dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/description"
-            app:singleSelection="true">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnA"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:insetTop="0dp"
-                android:insetBottom="0dp"
-                android:text="Nederland"
-                android:textColor="@color/primary_blue"
-                app:backgroundTint="@color/white"
-                app:cornerRadius="8dp"
-                app:strokeColor="@color/primary_blue"
-                app:strokeWidth="1dp" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnS"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:insetTop="0dp"
-                android:insetBottom="0dp"
-
-                android:text="Europa"
-                app:cornerRadius="8dp"
-                app:strokeColor="@color/primary_blue"
-                app:strokeWidth="1dp" />
-
-
-        </com.google.android.material.button.MaterialButtonToggleGroup>
-
-
         <LinearLayout
             android:id="@+id/button_container"
             android:layout_width="match_parent"
@@ -94,37 +48,39 @@
             android:background="@drawable/shape_toggle_group_background"
             android:orientation="horizontal"
             android:padding="4dp"
-            app:layout_constraintEnd_toEndOf="@+id/toggle_container"
-            app:layout_constraintStart_toStartOf="@+id/toggle_container"
-            app:layout_constraintTop_toBottomOf="@+id/toggle_container">
+            app:layout_constraintEnd_toEndOf="@+id/description"
+            app:layout_constraintStart_toStartOf="@+id/description"
+            app:layout_constraintTop_toBottomOf="@+id/description">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnd"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            <nl.rijksoverheid.ctr.design.views.OutlinedToggleButtonWidget
+                android:id="@+id/button_domestic"
+                style="@style/Widget.App.Button.Toggle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:insetTop="0dp"
-                android:insetBottom="0dp"
-                android:text="Nederland"
-                android:textColor="@color/primary_blue"
-                app:backgroundTint="@color/white"
-                app:cornerRadius="8dp"
-                app:strokeColor="@color/primary_blue"
-                app:strokeWidth="1dp" />
+                android:text="Nederland" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnSf"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
+            <nl.rijksoverheid.ctr.design.views.OutlinedToggleButtonWidget
+                android:id="@+id/button_foreign"
+                style="@style/Widget.App.Button.Toggle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:insetTop="0dp"
-                android:insetBottom="0dp"
-                android:checkable="true"
                 android:text="Europa" />
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/footer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="In je Nederlandse QR-code staan alleen je initialen en je geboortedag en maand."
+            android:textAppearance="@style/App.TextAppearance.MaterialComponents.Body1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/button_container" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
