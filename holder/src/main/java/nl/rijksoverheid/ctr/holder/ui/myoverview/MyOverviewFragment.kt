@@ -179,63 +179,6 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                 )
             }
         ))
-
-        items.add(MyOverviewQrCardAdapterItem(
-            events = getDummyData(),
-            isEuropean = false,
-            { }
-        ))
-
-        items.add(MyOverviewQrCardAdapterItem(
-            events = getDummyData(),
-            isEuropean = true,
-            { }
-        ))
         section.update(items)
-    }
-
-    private fun getDummyData(): List<RemoteEvents.Event> {
-        return listOf(
-            RemoteEvents.Event(
-                type = "vaccination",
-                unique = "1111",
-                vaccination = RemoteEvents.Event.Vaccination(
-                    date = "1970-01-01",
-                    hpkCode = "dummy",
-                    type = "dummy",
-                    brand = "dummy",
-                    batchNumber = "dummy",
-                    administeringCenter = "dummy",
-                    country = "NL"
-                )
-            ),
-            RemoteEvents.Event(
-                type = "test",
-                unique = "1111",
-                vaccination = RemoteEvents.Event.Vaccination(
-                    date = "1970-01-01",
-                    hpkCode = "dummy",
-                    type = "dummy",
-                    brand = "dummy",
-                    batchNumber = "dummy",
-                    administeringCenter = "dummy",
-                    country = "NL"
-                )
-            ),
-            RemoteEvents.Event(
-                type = "recovery",
-                unique = "1111",
-                vaccination = RemoteEvents.Event.Vaccination(
-                    date = "1970-01-01",
-                    hpkCode = "dummy",
-                    type = "dummy",
-                    brand = "dummy",
-                    batchNumber = "dummy",
-                    administeringCenter = "dummy",
-                    country = "NL"
-                )
-            )
-        )
-
     }
 }
