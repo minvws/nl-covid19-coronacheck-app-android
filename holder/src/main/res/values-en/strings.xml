@@ -81,7 +81,9 @@
     <string name="your_negative_test_results_description">This test result is retrieved from the test location.&lt;br\&gt;&lt;br\&gt;Is the below correct? Then you can convert the negative test result into a QR code. This is your test declaration.</string>
     <string name="your_negative_test_results_header">Retrieved test result</string>
     <string name="your_negative_test_results_row_title">Negative test result</string>
+    <string name="your_negative_test_results_row_subtitle"><![CDATA[Testdatum: %1$s<br/>Geldig tot: %2$s<br/>Jouw gegevens: %3$s]]></string>
     <string name="your_negative_test_results_row_personal_details">Identification details: %1$s</string>
+    <string name="your_negative_test_results_something_wrong_button">Klopt er iets niet?</string>
     <string name="your_negative_test_results_row_button">Make QR code</string>
     <string name="your_negative_test_results_backbutton_title">Are you sure you want to stop?</string>
     <string name="your_negative_test_results_backbutton_message">You must use your code to get your test result again later.</string>
@@ -209,4 +211,8 @@
 
     <string name="retrieved_vaccinations_backbutton_title">Weet je zeker dat je wilt stoppen?</string>
     <string name="retrieved_vaccinations_backbutton_message">Je moet dan later opnieuw met DigiD inloggen om je vaccinatie op te halen.</string>
+    <string name="dialog_negative_test_result_something_wrong_title">Er klopt iets niet</string>
+    <string name="dialog_negative_test_result_something_wrong_description">Kloppen jouw gegevens niet met je identiteitsbewijs? Neem contact op met je testlocatie om je  gegevens te laten aanpassen.</string>
+    <string name="your_vaccination_result_toolbar_title">Jouw vaccinaties</string>
+    <string name="your_vaccination_result_explanation_toolbar_title">Over jouw vaccinatie</string>
 </resources>

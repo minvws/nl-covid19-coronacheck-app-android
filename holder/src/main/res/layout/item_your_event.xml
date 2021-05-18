@@ -34,7 +34,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
         android:id="@+id/row_subtitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "286bb09dfb5173415043f161145d688a",
+    "identityHash": "04b9808907ed2ac4f75ef6a68b7dcbe8",
     "entities": [
       {
         "tableName": "wallet",
@@ -32,7 +32,7 @@
       },
       {
         "tableName": "event_group",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `wallet_id` INTEGER NOT NULL, `provider_identifier` TEXT NOT NULL, `type` TEXT NOT NULL, `maxIssuedAt` TEXT NOT NULL, `jsonData` BLOB NOT NULL, FOREIGN KEY(`wallet_id`) REFERENCES `wallet`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `wallet_id` INTEGER NOT NULL, `provider_identifier` TEXT NOT NULL, `type` TEXT NOT NULL, `maxIssuedAt` INTEGER NOT NULL, `jsonData` BLOB NOT NULL, FOREIGN KEY(`wallet_id`) REFERENCES `wallet`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -61,7 +61,7 @@
           {
             "fieldPath": "maxIssuedAt",
             "columnName": "maxIssuedAt",
-            "affinity": "TEXT",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -229,7 +229,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '286bb09dfb5173415043f161145d688a')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '04b9808907ed2ac4f75ef6a68b7dcbe8')"
     ]
   }
 }

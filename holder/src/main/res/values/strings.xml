@@ -81,6 +81,8 @@
     <string name="your_negative_test_results_description">Deze testuitslag is opgehaald bij de testlocatie.&lt;br\&gt;&lt;br\&gt;Kloppen de gegevens hieronder? Dan kun je van de negatieve testuitslag een QR-code maken. Dat is jouw bewijs.</string>
     <string name="your_negative_test_results_header">Opgehaalde testuitslag</string>
     <string name="your_negative_test_results_row_title">Negatieve testuitslag</string>
+    <string name="your_negative_test_results_row_subtitle"><![CDATA[Testdatum: %1$s<br/>Geldig tot: %2$s<br/>Jouw gegevens: %3$s]]></string>
+    <string name="your_negative_test_results_something_wrong_button">Klopt er iets niet?</string>
     <string name="your_negative_test_results_row_personal_details">Identificatiegegevens: %1$s</string>
     <string name="your_negative_test_results_row_button">QR-code maken</string>
     <string name="your_negative_test_results_backbutton_title">Weet je zeker dat je wilt stoppen?</string>
@@ -192,7 +194,8 @@
     <string name="get_vaccination_button">Login met DigiD</string>
     <string name="your_retrieved_vaccinations_title">Jouw opgehaalde vaccinaties</string>
     <string name="your_retrieved_vaccinations_description">Je kan een QR-code maken van je vaccinaties. Dat is jouw bewijs.</string>
-    <string name="your_vaccination_result_explanation_title">Over jouw vaccinatie</string>
+    <string name="your_vaccination_result_toolbar_title">Jouw vaccinaties</string>
+    <string name="your_vaccination_result_explanation_toolbar_title">Over jouw vaccinatie</string>
     <string name="your_vaccination_result_explanation_description"><![CDATA[Voor een Nederlandse QR-code worden er minimale gegevens opgehaald: je vaccinatiedatum en enkele gegevens van jou. Jouw gegevens bestaan uit de eerste letter van je voornaam, de eerste letter van je achternaam, je geboortedag en geboortemaand.<br/><br/>Jouw gegevens: %1$s %2$s %3$s %4$s]]></string>
     <string name="your_vaccination_result_explanation_subtitle">Gegevens voor Nederland</string>
     <string name="your_retrieved_vaccinations_toolbar">Vaccinatie ophalen</string>
@@ -200,6 +203,9 @@
     <string name="retrieved_vaccination_subtitle">Vaccinatiedatum: %1$s</string>
     <string name="retrieved_vaccinations_backbutton_title">Weet je zeker dat je wilt stoppen?</string>
     <string name="retrieved_vaccinations_backbutton_message">Je moet dan later opnieuw met DigiD inloggen om je vaccinatie op te halen.</string>
+    <string name="dialog_negative_test_result_something_wrong_title">Er klopt iets niet</string>
+    <string name="dialog_negative_test_result_something_wrong_description">Kloppen jouw gegevens niet met je identiteitsbewijs? Neem contact op met je testlocatie om je  gegevens te laten aanpassen.</string>
+    <string name="your_vaccination_result_explanation_title">Over jouw vaccinatie</string>
     <string name="validity_type_european_title">Europa</string>
     <string name="validity_type_dutch_title">Nederland</string>
     <string name="qr_card_vaccination_validity_nl">Vaccinatiebewijs:\ngeldig tot %1$s</string>

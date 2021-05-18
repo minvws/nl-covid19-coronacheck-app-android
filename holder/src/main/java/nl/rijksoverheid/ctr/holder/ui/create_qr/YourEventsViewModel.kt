@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.EventsResult
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetEventsUseCase
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEvents
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SaveEventsUseCase
 import nl.rijksoverheid.ctr.shared.livedata.Event
 
@@ -17,43 +17,35 @@ import nl.rijksoverheid.ctr.shared.livedata.Event
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-abstract class EventViewModel : ViewModel() {
+abstract class YourEventsViewModel : ViewModel() {
     val loading: LiveData<Event<Boolean>> = MutableLiveData()
-    val eventsResult: LiveData<Event<EventsResult>> = MutableLiveData()
     val savedEvents: LiveData<Event<Boolean>> = MutableLiveData()
 
-    abstract fun getRetrievedResult(): EventsResult.Success?
-    abstract fun getEvents(digidToken: String)
-    abstract fun saveEvents()
+    abstract fun saveRemoteTestResult(remoteTestResult: RemoteTestResult, rawResponse: ByteArray)
+    abstract fun saveRemoteEvents(remoteEvents: Map<RemoteEvents, ByteArray>)
 }
 
-class EventViewModelImpl(
-    private val eventUseCase: GetEventsUseCase,
+class YourEventsViewModelImpl(
     private val saveEventsUseCase: SaveEventsUseCase
-) : EventViewModel() {
-    override fun getRetrievedResult(): EventsResult.Success? {
-        return eventsResult.value?.peekContent() as? EventsResult.Success
-    }
+) : YourEventsViewModel() {
 
-    override fun getEvents(digidToken: String) {
+    override fun saveRemoteTestResult(remoteTestResult: RemoteTestResult, rawResponse: ByteArray) {
         (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {
             try {
-                (eventsResult as MutableLiveData).value =
-                    Event(eventUseCase.getVaccinationEvents(digidToken))
+                saveEventsUseCase.save(remoteTestResult, rawResponse)
+                (savedEvents as MutableLiveData).value = Event(true)
             } finally {
                 loading.value = Event(false)
             }
         }
     }
 
-    override fun saveEvents() {
+    override fun saveRemoteEvents(remoteEvents: Map<RemoteEvents, ByteArray>) {
         (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {
             try {
-                getRetrievedResult()?.let {
-                    saveEventsUseCase.save(it.signedModels)
-                }
+                saveEventsUseCase.save(remoteEvents)
                 (savedEvents as MutableLiveData).value = Event(true)
             } finally {
                 loading.value = Event(false)

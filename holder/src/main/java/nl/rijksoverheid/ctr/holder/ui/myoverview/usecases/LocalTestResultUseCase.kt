@@ -8,7 +8,6 @@ import nl.rijksoverheid.ctr.holder.ui.myoverview.models.LocalTestResult
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.LocalTestResultState
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import nl.rijksoverheid.ctr.shared.utils.TestResultUtil
-import timber.log.Timber
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -82,7 +81,6 @@ open class LocalTestResultUseCaseImpl(
                         LocalTestResultState.Expired
                     }
                 } catch (e: Exception) {
-                    Timber.v("CHECK EXCEPTION: " + e.toString())
                     LocalTestResultState.None
                 }
             } else {
