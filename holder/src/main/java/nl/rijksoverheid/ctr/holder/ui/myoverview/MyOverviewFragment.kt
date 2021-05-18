@@ -7,6 +7,7 @@ import android.os.Looper
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
+import androidx.navigation.fragment.findNavController
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
@@ -14,10 +15,7 @@ import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMyOverviewBinding
-import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewHeaderAdapterItem
-import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewNavigationCardAdapterItem
-import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewTestResultAdapterItem
-import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewTestResultExpiredAdapterItem
+import nl.rijksoverheid.ctr.holder.ui.myoverview.items.*
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.LocalTestResult
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.LocalTestResultState
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
@@ -184,5 +182,11 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
             }
         ))
         section.update(items)
+
+        section.setFooter(
+            Section(listOf(MyOverviewTravelToggleAdapterItem {
+                findNavController().navigate(MyOverviewFragmentDirections.actionShowTravelMode())
+            }))
+        )
     }
 }
