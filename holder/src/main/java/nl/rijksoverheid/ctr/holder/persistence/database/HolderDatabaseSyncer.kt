@@ -1,7 +1,7 @@
 package nl.rijksoverheid.ctr.holder.persistence.database
 
 import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
-import java.time.LocalDateTime
+import java.time.OffsetDateTime
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -29,9 +29,9 @@ class HolderDatabaseSyncerImpl(
     private suspend fun removeExpiredEventGroups() {
         val events = holderDatabase.eventGroupDao().getAll()
         events.forEach {
-            if (it.maxIssuedAt.atStartOfDay().plusHours(
+            if (it.maxIssuedAt.plusHours(
                     cachedAppConfigUseCase.getCachedAppConfigVaccinationEventValidity().toLong()
-                ) <= LocalDateTime.now()
+                ) <= OffsetDateTime.now()
             ) {
                 holderDatabase.eventGroupDao().delete(it)
             }

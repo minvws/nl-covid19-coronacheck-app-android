@@ -9,11 +9,9 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentGetVaccinationBinding
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigiDFragment
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.EventsResult
-import nl.rijksoverheid.ctr.shared.ext.sharedViewModelWithOwner
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ViewModelOwner
-import org.koin.androidx.viewmodel.scope.emptyState
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -25,14 +23,7 @@ import org.koin.androidx.viewmodel.scope.emptyState
 class GetVaccinationFragment : DigiDFragment(R.layout.fragment_get_vaccination) {
 
     private val dialogUtil: DialogUtil by inject()
-    private val eventViewModel: EventViewModel by sharedViewModelWithOwner(
-        state = emptyState(),
-        owner = {
-            ViewModelOwner.from(
-                findNavController().getViewModelStoreOwner(R.id.nav_graph_get_vaccination),
-                this
-            )
-        })
+    private val getVaccinationViewModel: GetVaccinationViewModel by viewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -43,14 +34,22 @@ class GetVaccinationFragment : DigiDFragment(R.layout.fragment_get_vaccination) 
             (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
         })
 
-        eventViewModel.loading.observe(viewLifecycleOwner, EventObserver {
+        getVaccinationViewModel.loading.observe(viewLifecycleOwner, EventObserver {
             (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
         })
 
-        eventViewModel.eventsResult.observe(viewLifecycleOwner, EventObserver {
+        getVaccinationViewModel.eventsResult.observe(viewLifecycleOwner, EventObserver {
             when (it) {
                 is EventsResult.Success -> {
-                    findNavController().navigate(GetVaccinationFragmentDirections.actionYourEvents())
+                    findNavController().navigate(
+                        GetVaccinationFragmentDirections.actionYourEvents(
+                            type = YourEventsFragmentType.Vaccination(
+                                remoteEvents = it.signedModels.map { signedModel -> signedModel.model to signedModel.rawResponse }
+                                    .toMap()
+                            ),
+                            toolbarTitle = getString(R.string.your_vaccination_result_toolbar_title)
+                        )
+                    )
                 }
                 is EventsResult.NetworkError -> {
                     dialogUtil.presentDialog(
@@ -83,7 +82,7 @@ class GetVaccinationFragment : DigiDFragment(R.layout.fragment_get_vaccination) 
         })
 
         digidViewModel.accessTokenLiveData.observe(viewLifecycleOwner, EventObserver {
-            eventViewModel.getEvents(it)
+            getVaccinationViewModel.getEvents(it)
         })
 
         binding.button.setOnClickListener {

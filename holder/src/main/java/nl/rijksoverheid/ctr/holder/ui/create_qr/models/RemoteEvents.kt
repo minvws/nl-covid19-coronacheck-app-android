@@ -1,8 +1,9 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.models
 
+import android.os.Parcelable
 import com.squareup.moshi.JsonClass
+import kotlinx.parcelize.Parcelize
 import java.time.LocalDate
-import java.time.LocalDateTime
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -11,6 +12,7 @@ import java.time.LocalDateTime
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
+@Parcelize
 @JsonClass(generateAdapter = true)
 data class RemoteEvents(
     val events: List<Event>,
@@ -18,7 +20,7 @@ data class RemoteEvents(
     val providerIdentifier: String,
     val status: Status,
     val holder: Holder
-) {
+) : Parcelable {
 
     enum class Status(val apiStatus: String) {
         UNKNOWN(""),
@@ -32,21 +34,24 @@ data class RemoteEvents(
         }
     }
 
+    @Parcelize
     @JsonClass(generateAdapter = true)
     data class Holder(
         val infix: String?,
         val firstName: String?,
         val lastName: String?,
         val birthDate: String?
-    )
+    ) : Parcelable
 
+    @Parcelize
     @JsonClass(generateAdapter = true)
     data class Event(
         val type: String,
         val unique: String,
         val vaccination: Vaccination?
-    ) {
+    ) : Parcelable {
 
+        @Parcelize
         @JsonClass(generateAdapter = true)
         data class Vaccination(
             val date: LocalDate,
@@ -58,7 +63,7 @@ data class RemoteEvents(
             val totalDoses: String?,
             val country: String,
             val manufacturer: String
-        )
+        ) : Parcelable
 
         fun getDate(): LocalDate {
             if (type == "vaccination") {
