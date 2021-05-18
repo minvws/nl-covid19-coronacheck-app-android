@@ -39,7 +39,7 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
         state = emptyState(),
         owner = {
             from(
-                findNavController().getViewModelStoreOwner(R.id.nav_commercial_test),
+                findNavController().getViewModelStoreOwner(R.id.nav_graph_create_qr),
                 this
             )
         })
@@ -124,7 +124,14 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
                     )
                 }
                 is TestResult.NegativeTestResult -> {
-                    findNavController().navigate(CommercialTestCodeFragmentDirections.actionYourNegativeResult())
+                    findNavController().navigate(
+                        CommercialTestCodeFragmentDirections.actionYourEvents(
+                            type = YourEventsFragmentType.TestResult(
+                                remoteTestResult = it.remoteTestResult,
+                                rawResponse = it.signedResponseWithTestResult.rawResponse
+                            )
+                        )
+                    )
                 }
                 is TestResult.NoNegativeTestResult -> {
                     findNavController().navigate(

@@ -1,6 +1,8 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.models
 
+import android.os.Parcelable
 import com.squareup.moshi.JsonClass
+import kotlinx.parcelize.Parcelize
 import java.time.OffsetDateTime
 
 /*
@@ -10,13 +12,14 @@ import java.time.OffsetDateTime
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
+@Parcelize
 @JsonClass(generateAdapter = true)
 data class RemoteTestResult(
     val result: Result?,
     val protocolVersion: String,
     val providerIdentifier: String,
     val status: Status
-) {
+) : Parcelable {
 
     enum class Status(val apiStatus: String) {
         UNKNOWN(""),
@@ -32,6 +35,7 @@ data class RemoteTestResult(
         }
     }
 
+    @Parcelize
     @JsonClass(generateAdapter = true)
     data class Result(
         val unique: String,
@@ -39,5 +43,5 @@ data class RemoteTestResult(
         val testType: String,
         val negativeResult: Boolean,
         val holder: Holder
-    )
+    ) : Parcelable
 }

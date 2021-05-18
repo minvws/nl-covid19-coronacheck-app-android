@@ -81,6 +81,7 @@
     <string name="your_negative_test_results_description">Deze testuitslag is opgehaald bij de testlocatie.&lt;br\&gt;&lt;br\&gt;Kloppen de gegevens hieronder? Dan kun je van de negatieve testuitslag een QR-code maken. Dat is jouw bewijs.</string>
     <string name="your_negative_test_results_header">Opgehaalde testuitslag</string>
     <string name="your_negative_test_results_row_title">Negatieve testuitslag</string>
+    <string name="your_negative_test_results_row_subtitle"><![CDATA[Testdatum: %1$s<br/>Geldig tot: %2$s<br/>Jouw gegevens: %3$s]]></string>
     <string name="your_negative_test_results_row_personal_details">Identificatiegegevens: %1$s</string>
     <string name="your_negative_test_results_row_button">QR-code maken</string>
     <string name="your_negative_test_results_backbutton_title">Weet je zeker dat je wilt stoppen?</string>

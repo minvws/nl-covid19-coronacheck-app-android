@@ -36,7 +36,7 @@ class YourNegativeTestResultFragment : Fragment(R.layout.fragment_your_negative_
         state = emptyState(),
         owner = {
             ViewModelOwner.from(
-                findNavController().getViewModelStoreOwner(R.id.nav_commercial_test),
+                findNavController().getViewModelStoreOwner(R.id.nav_graph_create_qr),
                 this
             )
         })

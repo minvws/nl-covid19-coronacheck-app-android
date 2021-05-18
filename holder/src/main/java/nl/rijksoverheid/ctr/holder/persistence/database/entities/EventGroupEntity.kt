@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.holder.persistence.database.entities
 
 import androidx.room.*
 import java.time.LocalDate
+import java.time.OffsetDateTime
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -25,7 +26,7 @@ data class EventGroupEntity(
     @ColumnInfo(name = "wallet_id", index = true) val walletId: Int,
     @ColumnInfo(name = "provider_identifier") val providerIdentifier: String,
     val type: EventType,
-    val maxIssuedAt: LocalDate,
+    val maxIssuedAt: OffsetDateTime,
     @ColumnInfo(typeAffinity = ColumnInfo.BLOB) val jsonData: ByteArray
 ) {
     override fun equals(other: Any?): Boolean {

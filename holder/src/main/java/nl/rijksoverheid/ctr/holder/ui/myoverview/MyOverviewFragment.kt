@@ -7,6 +7,7 @@ import android.os.Looper
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
+import androidx.navigation.fragment.findNavController
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
@@ -21,8 +22,10 @@ import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewTestResultExpir
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.LocalTestResult
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.LocalTestResultState
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
+import nl.rijksoverheid.ctr.shared.ext.sharedViewModelWithOwner
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ViewModelOwner
+import org.koin.androidx.viewmodel.scope.emptyState
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
@@ -47,10 +50,24 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
     private val localTestResultRunnable = Runnable { getLocalTestResult(); sync() }
 
     // New viewmodel that supports database backed events
-    private val myOverviewViewModel: MyOverviewViewModel by sharedViewModel()
+    private val myOverviewViewModel: MyOverviewViewModel by sharedViewModelWithOwner(
+        state = emptyState(),
+        owner = {
+            ViewModelOwner.from(
+                findNavController().getViewModelStoreOwner(R.id.nav_graph_overview),
+                this
+            )
+        })
 
     // Old viewmodel that works via shared pref stored single test result
-    private val localTestResultViewModel: LocalTestResultViewModel by sharedViewModel()
+    private val localTestResultViewModel: LocalTestResultViewModel by sharedViewModelWithOwner(
+        state = emptyState(),
+        owner = {
+            ViewModelOwner.from(
+                findNavController().getViewModelStoreOwner(R.id.nav_graph_overview),
+                this
+            )
+        })
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -96,6 +113,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                 }
             })
 
+        Timber.v("IK KOM HIER")
         myOverviewViewModel.walletLiveData.observe(viewLifecycleOwner, {
             Timber.v("Wallet: $it")
         })
@@ -126,6 +144,11 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
     override fun onResume() {
         super.onResume()
         getLocalTestResult()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Timber.v("Destroy view")
     }
 
     override fun onPause() {
@@ -179,7 +202,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
             buttonText = if (localTestResult == null) R.string.my_overview_no_qr_make_qr_button else R.string.my_overview_no_qr_replace_qr_button,
             onButtonClick = {
                 findNavControllerSafety(R.id.nav_my_overview)?.navigate(
-                    MyOverviewFragmentDirections.actionQrExplanation()
+                    MyOverviewFragmentDirections.actionCreateQr()
                 )
             }
         ))
