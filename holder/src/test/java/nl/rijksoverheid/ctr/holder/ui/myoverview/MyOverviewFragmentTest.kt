@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.holder.ui.myoverview
 
 import androidx.core.text.parseAsHtml
 import androidx.fragment.app.testing.launchFragmentInContainer
+import androidx.lifecycle.ViewModelStore
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
@@ -36,6 +37,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
     private val navController = TestNavHostController(
         ApplicationProvider.getApplicationContext()
     ).also {
+        it.setViewModelStore(ViewModelStore())
         it.setGraph(R.navigation.holder_nav_graph_main)
         it.setCurrentDestination(R.id.nav_my_overview)
     }

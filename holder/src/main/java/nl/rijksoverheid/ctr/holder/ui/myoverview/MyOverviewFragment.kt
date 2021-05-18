@@ -145,11 +145,6 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
         getLocalTestResult()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        Timber.v("Destroy view")
-    }
-
     override fun onPause() {
         super.onPause()
         localTestResultHandler.removeCallbacks(localTestResultRunnable)
