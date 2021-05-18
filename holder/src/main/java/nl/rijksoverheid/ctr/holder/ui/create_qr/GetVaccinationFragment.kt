@@ -46,7 +46,8 @@ class GetVaccinationFragment : DigiDFragment(R.layout.fragment_get_vaccination) 
                             type = YourEventsFragmentType.Vaccination(
                                 remoteEvents = it.signedModels.map { signedModel -> signedModel.model to signedModel.rawResponse }
                                     .toMap()
-                            )
+                            ),
+                            toolbarTitle = getString(R.string.your_vaccination_result_toolbar_title)
                         )
                     )
                 }

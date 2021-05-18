@@ -204,4 +204,6 @@
     <string name="retrieved_vaccinations_backbutton_message">Je moet dan later opnieuw met DigiD inloggen om je vaccinatie op te halen.</string>
     <string name="dialog_negative_test_result_something_wrong_title">Er klopt iets niet</string>
     <string name="dialog_negative_test_result_something_wrong_description">Kloppen jouw gegevens niet met je identiteitsbewijs? Neem contact op met je testlocatie om je  gegevens te laten aanpassen.</string>
+    <string name="your_vaccination_result_toolbar_title">Jouw vaccinaties</string>
+    <string name="your_vaccination_result_explanation_toolbar_title">Over jouw vaccinatie</string>
 </resources>

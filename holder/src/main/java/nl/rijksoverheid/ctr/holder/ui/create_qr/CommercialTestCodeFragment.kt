@@ -129,7 +129,8 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
                             type = YourEventsFragmentType.TestResult(
                                 remoteTestResult = it.remoteTestResult,
                                 rawResponse = it.signedResponseWithTestResult.rawResponse
-                            )
+                            ),
+                            toolbarTitle = getString(R.string.commercial_test_type_title)
                         )
                     )
                 }

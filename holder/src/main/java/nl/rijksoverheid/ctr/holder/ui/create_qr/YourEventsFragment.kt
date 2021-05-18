@@ -141,7 +141,7 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
         binding: FragmentYourEventsBinding,
         remoteEvents: Map<RemoteEvents, ByteArray>
     ) {
-        binding.title.text = getString(R.string.your_retrieved_vaccinations_title)
+        binding.title.visibility = View.GONE
         binding.description.text =
             getString(R.string.your_retrieved_vaccinations_description)
 

@@ -113,7 +113,6 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                 }
             })
 
-        Timber.v("IK KOM HIER")
         myOverviewViewModel.walletLiveData.observe(viewLifecycleOwner, {
             Timber.v("Wallet: $it")
         })

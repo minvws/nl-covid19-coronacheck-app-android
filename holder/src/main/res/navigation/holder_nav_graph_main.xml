@@ -147,7 +147,7 @@
         <fragment
             android:id="@+id/nav_your_event_explanation"
             android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.YourEventExplanationFragment"
-            android:label="@string/your_retrieved_vaccinations_toolbar"
+            android:label="@string/your_vaccination_result_explanation_toolbar_title"
             tools:layout="@layout/fragment_your_event_explanation" />
 
         <dialog
@@ -158,8 +158,12 @@
         <fragment
             android:id="@+id/nav_your_events"
             android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.YourEventsFragment"
-            android:label="@string/your_retrieved_vaccinations_toolbar"
+            android:label="{toolbarTitle}"
             tools:layout="@layout/fragment_your_events">
+
+            <argument
+                android:name="toolbarTitle"
+                app:argType="string" />
 
             <argument
                 android:name="type"

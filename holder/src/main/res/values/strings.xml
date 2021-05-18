@@ -194,7 +194,8 @@
     <string name="get_vaccination_button">Login met DigiD</string>
     <string name="your_retrieved_vaccinations_title">Jouw opgehaalde vaccinaties</string>
     <string name="your_retrieved_vaccinations_description">Je kan een QR-code maken van je vaccinaties. Dat is jouw bewijs.</string>
-    <string name="your_vaccination_result_explanation_title">Over jouw vaccinatie</string>
+    <string name="your_vaccination_result_toolbar_title">Jouw vaccinaties</string>
+    <string name="your_vaccination_result_explanation_toolbar_title">Over jouw vaccinatie</string>
     <string name="your_vaccination_result_explanation_description"><![CDATA[Voor een Nederlandse QR-code worden er minimale gegevens opgehaald: je vaccinatiedatum en enkele gegevens van jou. Jouw gegevens bestaan uit de eerste letter van je voornaam, de eerste letter van je achternaam, je geboortedag en geboortemaand.<br/><br/>Jouw gegevens: %1$s %2$s %3$s %4$s]]></string>
     <string name="your_vaccination_result_explanation_subtitle">Gegevens voor Nederland</string>
     <string name="your_retrieved_vaccinations_toolbar">Vaccinatie ophalen</string>
