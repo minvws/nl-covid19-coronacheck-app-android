@@ -203,4 +203,8 @@
     <string name="travel_toggle_europe">Ik reis binnen Europa</string>
     <string name="travel_toggle_domestic">Ik ben in Nederland</string>
     <string name="travel_toggle_change">Wijzigen</string>
+    <string name="travel_button_domestic">Nederland</string>
+    <string name="travel_button_europe">Europa</string>
+    <string name="travel_fragment_description">Gebruik binnen Nederland altijd je Nederlandse QR-code. Ga je de Nederlandse grens over of reis je in Europa? Gebruik dan je Europese bewijs.</string>
+    <string name="travel_fragment_footer">In je Nederlandse QR-code staan alleen je initialen en je geboortedag en maand.</string>
 </resources>

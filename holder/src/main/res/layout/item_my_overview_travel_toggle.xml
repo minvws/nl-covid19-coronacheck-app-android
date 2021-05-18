@@ -27,6 +27,7 @@
         android:insetTop="0dp"
         android:insetBottom="0dp"
         android:text="@string/travel_toggle_change"
+        android:textColor="@color/link"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/description"
         app:layout_constraintStart_toStartOf="@+id/description"

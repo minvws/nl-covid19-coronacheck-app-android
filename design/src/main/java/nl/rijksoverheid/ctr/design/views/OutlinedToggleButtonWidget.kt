@@ -9,13 +9,13 @@
 package nl.rijksoverheid.ctr.design.views
 
 import android.content.Context
-import android.graphics.Color
+import android.content.res.ColorStateList
 import android.util.AttributeSet
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.ViewCompat
 import com.google.android.material.button.MaterialButton
 import nl.rijksoverheid.ctr.design.R
+import nl.rijksoverheid.ctr.design.ext.getThemeColor
 
 class OutlinedToggleButtonWidget @JvmOverloads constructor(
     context: Context,
@@ -28,16 +28,15 @@ class OutlinedToggleButtonWidget @JvmOverloads constructor(
     fun setToggled(isToggled: Boolean) {
         this.isToggled = isToggled
         if (isToggled) {
-            DrawableCompat.setTint(
-                this.background,
-                ContextCompat.getColor(this.context, R.color.white)
-            )
+            backgroundTintList = context.getThemeColor(R.attr.colorSurface)
             setStrokeColorResource(R.color.primary_blue)
             ViewCompat.setElevation(this, 2f)
         } else {
-            DrawableCompat.setTint(
-                this.background,
-                ContextCompat.getColor(this.context, android.R.color.transparent)
+            backgroundTintList = ColorStateList.valueOf(
+                ContextCompat.getColor(
+                    this.context,
+                    android.R.color.transparent
+                )
             )
             setStrokeColorResource(android.R.color.transparent)
             ViewCompat.setElevation(this, 0f)
