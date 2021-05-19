@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.AccessibilityDelegateCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import nl.rijksoverheid.ctr.design.ExpandedBottomSheetDialogFragment
 import nl.rijksoverheid.ctr.holder.databinding.DialogYourEventsResultSomethingWrongBinding
 
@@ -23,5 +26,25 @@ class YourEventsTestResultSomethingWrongDialogFragment : ExpandedBottomSheetDial
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
         return DialogYourEventsResultSomethingWrongBinding.inflate(inflater).root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val binding = DialogYourEventsResultSomethingWrongBinding.bind(view)
+
+        binding.close.setOnClickListener {
+            dismiss()
+        }
+
+        ViewCompat.setAccessibilityDelegate(binding.close, object : AccessibilityDelegateCompat() {
+            override fun onInitializeAccessibilityNodeInfo(
+                host: View?,
+                info: AccessibilityNodeInfoCompat?
+            ) {
+                info?.setTraversalBefore(binding.description)
+                super.onInitializeAccessibilityNodeInfo(host, info)
+            }
+        })
+
     }
 }
