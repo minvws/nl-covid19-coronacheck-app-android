@@ -84,13 +84,7 @@
             android:id="@+id/qr_code_explanation_bottomsheet"
             android:name="nl.rijksoverheid.ctr.holder.ui.myoverview.QrCodeExplanationDialogFragment"
             android:label="QrCodeExplanationDialog"
-            tools:layout="@layout/dialog_qr_explanation">
-
-            <argument
-                android:name="isDomestic"
-                app:argType="boolean" />
-
-        </dialog>
+            tools:layout="@layout/dialog_qr_explanation" />
 
     </navigation>
 
