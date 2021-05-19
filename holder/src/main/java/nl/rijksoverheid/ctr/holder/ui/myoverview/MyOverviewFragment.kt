@@ -15,8 +15,10 @@ import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMyOverviewBinding
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEvents
-import nl.rijksoverheid.ctr.holder.ui.myoverview.items.*
+import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewHeaderAdapterItem
+import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewNavigationCardAdapterItem
+import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewTestResultAdapterItem
+import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewTestResultExpiredAdapterItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.LocalTestResult
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.LocalTestResultState
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
@@ -105,7 +107,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                     }
                     is LocalTestResultState.Valid -> {
                         (parentFragment?.parentFragment as HolderMainFragment?)?.changeMenuItem(
-                            menuItemId = R.id.nav_create_qr,
+                            menuItemId = R.id.nav_qr_explanation,
                             text = R.string.create_qr_explanation_menu_title_alternative
                         )
                         setItems(

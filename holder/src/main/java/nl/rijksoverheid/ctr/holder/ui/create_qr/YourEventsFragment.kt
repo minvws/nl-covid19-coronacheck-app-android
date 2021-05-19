@@ -115,7 +115,7 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                         .setMessage(getString(R.string.your_negative_test_results_backbutton_message))
                         .setPositiveButton(R.string.your_negative_test_results_backbutton_ok) { _, _ ->
                             findNavController().navigate(
-                                YourNegativeTestResultFragmentDirections.actionMyOverview()
+                                YourEventsFragmentDirections.actionMyOverview()
                             )
                         }
                         .setNegativeButton(R.string.your_negative_test_results_backbutton_cancel) { _, _ -> }
