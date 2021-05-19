@@ -10,7 +10,6 @@ import androidx.core.view.AccessibilityDelegateCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.accessibility.AccessibilityEventCompat
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
-import androidx.databinding.BindingAdapter
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -108,8 +107,6 @@ object Accessibility {
      * @param view View to mark
      * @param isHeading Value to apply
      */
-    @JvmStatic
-    @BindingAdapter("accessibilityHeading")
     fun heading(view: View, isHeading: Boolean = true): View {
         accessibilityDelegate(view) { _, info ->
             info.isHeading = isHeading
@@ -132,8 +129,6 @@ object Accessibility {
      * @param view View to mark
      * @param isButton Value to apply
      */
-    @JvmStatic
-    @BindingAdapter("accessibilityButton")
     fun button(view: View, isButton: Boolean = true): View {
         accessibilityDelegate(view) { _, info ->
             info.className = if (isButton) {
