@@ -2,14 +2,11 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr
 
 import android.os.Bundle
 import android.view.View
-import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentChooseProviderBinding
-import nl.rijksoverheid.ctr.holder.databinding.IncludeTestProviderBinding
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAsAccessibilityButton
-import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAsAccessibilityHeading
 import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 import org.koin.android.ext.android.inject
 
@@ -46,32 +43,5 @@ class ChooseProviderFragment : Fragment(R.layout.fragment_choose_provider) {
         }
 
         binding.providerCommercial.root.setAsAccessibilityButton()
-    }
-}
-
-private fun IncludeTestProviderBinding.bind(
-    @StringRes title: Int,
-    subtitle: String?,
-    onClick: () -> Unit
-) {
-    providerTitle.setText(title)
-    providerSubtitle.text = subtitle
-
-    if (subtitle.isNullOrEmpty()) {
-        providerSubtitle.visibility = View.GONE
-        providerTitle.setPadding(
-            providerTitle.paddingLeft,
-            providerTitle.context.resources.getDimensionPixelSize(R.dimen.test_provider_title_without_subtitle_padding),
-            providerTitle.paddingRight,
-            providerTitle.context.resources.getDimensionPixelSize(R.dimen.test_provider_title_without_subtitle_padding)
-        )
-
-        root.contentDescription = providerTitle.text
-    } else {
-        root.contentDescription = String.format("%s. %s.", providerTitle.text, providerSubtitle.text)
-    }
-
-    root.setOnClickListener {
-        onClick()
     }
 }

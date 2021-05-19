@@ -2,12 +2,10 @@ package nl.rijksoverheid.ctr.holder.ui.myoverview
 
 import androidx.core.text.parseAsHtml
 import androidx.fragment.app.testing.launchFragmentInContainer
+import androidx.lifecycle.ViewModelStore
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers
 import com.schibsted.spain.barista.assertion.BaristaListAssertions.assertDisplayedAtPosition
 import com.schibsted.spain.barista.assertion.BaristaListAssertions.assertListItemCount
 import com.schibsted.spain.barista.interaction.BaristaListInteractions.clickListItemChild
@@ -39,6 +37,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
     private val navController = TestNavHostController(
         ApplicationProvider.getApplicationContext()
     ).also {
+        it.setViewModelStore(ViewModelStore())
         it.setGraph(R.navigation.holder_nav_graph_main)
         it.setCurrentDestination(R.id.nav_my_overview)
     }
@@ -165,24 +164,6 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `First time creating qr code shows snackbar`() {
-        launchOverviewFragment(
-            localTestResultState = LocalTestResultState.Valid(
-                LocalTestResult(
-                    credentials = "dummy",
-                    sampleDate = OffsetDateTime.now(),
-                    expireDate = OffsetDateTime.now(),
-                    testType = "dummy",
-                    personalDetails = PersonalDetails("X", "X", "X", "X")
-                ),
-                firstTimeCreated = true
-            )
-        )
-        onView(ViewMatchers.withId(com.google.android.material.R.id.snackbar_text))
-            .check(matches(ViewMatchers.withText(R.string.my_overview_qr_created_snackbar_message)))
-    }
-
-    @Test
     fun `Clicking close button in MyOverviewTestResultExpiredAdapterItem removes the view from RecyclerView`() {
         launchOverviewFragment(
             localTestResultState = LocalTestResultState.Expired
@@ -247,7 +228,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
             position = 2,
             childId = R.id.button
         )
-        assertEquals(navController.currentDestination?.id, R.id.nav_choose_provider)
+        assertEquals(navController.currentDestination?.id, R.id.nav_qr_explanation)
     }
 
     private fun launchOverviewFragment(localTestResultState: LocalTestResultState) {
@@ -257,6 +238,9 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                     fakeLocalTestResultViewModel(
                         localTestResultState = localTestResultState
                     )
+                }
+                viewModel {
+                    fakeMyOverviewModel()
                 }
                 factory {
                     fakePersistenceManager(

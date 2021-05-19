@@ -32,13 +32,19 @@ class HtmlTextViewWidget @JvmOverloads constructor(
                 val htmlText =
                     getText(R.styleable.HtmlTextViewWidget_htmlText)
                 if (htmlText?.isNotEmpty() == true) {
-                    setHtmlText(htmlText.toString(), getBoolean(R.styleable.HtmlTextViewWidget_enableHtmlLinks, false))
+                    setHtmlText(
+                        htmlText.toString(),
+                        getBoolean(R.styleable.HtmlTextViewWidget_enableHtmlLinks, false)
+                    )
                     text = htmlText.toString().parseAsHtml()
                 }
 
                 val htmlTextWithBullets = getText(R.styleable.HtmlTextViewWidget_htmlTextWithList)
                 if (htmlTextWithBullets?.isNotEmpty() == true) {
-                    setHtmlTextWithBullets(htmlTextWithBullets.toString(), getBoolean(R.styleable.HtmlTextViewWidget_enableHtmlLinks, false))
+                    setHtmlTextWithBullets(
+                        htmlTextWithBullets.toString(),
+                        getBoolean(R.styleable.HtmlTextViewWidget_enableHtmlLinks, false)
+                    )
 
                 }
             } finally {
@@ -47,14 +53,14 @@ class HtmlTextViewWidget @JvmOverloads constructor(
         }
     }
 
-    fun setHtmlText(htmlText: String, htmlLinksEnabled: Boolean) {
+    fun setHtmlText(htmlText: String, htmlLinksEnabled: Boolean = false) {
         text = htmlText.parseAsHtml()
         if (htmlLinksEnabled) {
             enableHtmlLinks()
         }
     }
 
-    fun setHtmlTextWithBullets(htmlText: String, htmlLinksEnabled: Boolean) {
+    fun setHtmlTextWithBullets(htmlText: String, htmlLinksEnabled: Boolean = false) {
         text = getSpannableFromHtml(htmlText)
         if (htmlLinksEnabled) {
             enableHtmlLinks()

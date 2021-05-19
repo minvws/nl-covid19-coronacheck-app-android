@@ -5,12 +5,10 @@ import androidx.lifecycle.ViewModel
 import org.koin.android.ext.android.getDefaultScope
 import org.koin.androidx.viewmodel.ViewModelOwner
 import org.koin.androidx.viewmodel.ViewModelOwnerDefinition
-import org.koin.androidx.viewmodel.ext.android.getSharedViewModel
 import org.koin.androidx.viewmodel.scope.BundleDefinition
 import org.koin.androidx.viewmodel.scope.getViewModel
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.qualifier.Qualifier
-import kotlin.reflect.KClass
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

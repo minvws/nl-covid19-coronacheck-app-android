@@ -7,11 +7,12 @@ import android.os.Looper
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
-import com.google.android.material.snackbar.Snackbar
+import androidx.navigation.fragment.findNavController
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
 import com.xwray.groupie.viewbinding.BindableItem
+import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMyOverviewBinding
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewHeaderAdapterItem
@@ -21,10 +22,11 @@ import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewTestResultExpir
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.LocalTestResult
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.LocalTestResultState
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
-import nl.rijksoverheid.ctr.shared.ext.launchUrl
-import nl.rijksoverheid.ctr.shared.ext.show
+import nl.rijksoverheid.ctr.shared.ext.sharedViewModelWithOwner
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ViewModelOwner
+import org.koin.androidx.viewmodel.scope.emptyState
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 
@@ -45,21 +47,51 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
     private val section = Section()
 
     private val localTestResultHandler = Handler(Looper.getMainLooper())
-    private val localTestResultRunnable = Runnable { getLocalTestResult() }
+    private val localTestResultRunnable = Runnable { getLocalTestResult(); sync() }
 
-    private val localTestResultViewModel: LocalTestResultViewModel by sharedViewModel()
+    // New viewmodel that supports database backed events
+    private val myOverviewViewModel: MyOverviewViewModel by sharedViewModelWithOwner(
+        state = emptyState(),
+        owner = {
+            ViewModelOwner.from(
+                findNavController().getViewModelStoreOwner(R.id.nav_graph_overview),
+                this
+            )
+        })
+
+    // Old viewmodel that works via shared pref stored single test result
+    private val localTestResultViewModel: LocalTestResultViewModel by sharedViewModelWithOwner(
+        state = emptyState(),
+        owner = {
+            ViewModelOwner.from(
+                findNavController().getViewModelStoreOwner(R.id.nav_graph_overview),
+                this
+            )
+        })
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val binding = FragmentMyOverviewBinding.bind(view)
-
         val adapter = GroupAdapter<GroupieViewHolder>().also {
             it.add(section)
         }
         binding.recyclerView.adapter = adapter
         binding.recyclerView.itemAnimator = null
         setItems()
+
+        binding.include.button.setOnClickListener {
+            findNavController().navigate(MyOverviewFragmentDirections.actionShowTravelMode())
+        }
+
+        // Nullable so tests don't trip over parentFragment
+        (parentFragment?.parentFragment as HolderMainFragment?)?.getToolbar().let { toolbar ->
+            if (toolbar?.menu?.size() == 0) {
+                toolbar.apply {
+                    inflateMenu(R.menu.overview_toolbar)
+                }
+            }
+        }
 
         localTestResultViewModel.localTestResultStateLiveData.observe(
             viewLifecycleOwner,
@@ -74,25 +106,20 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                         )
                     }
                     is LocalTestResultState.Valid -> {
+                        (parentFragment?.parentFragment as HolderMainFragment?)?.changeMenuItem(
+                            menuItemId = R.id.nav_qr_explanation,
+                            text = R.string.create_qr_explanation_menu_title_alternative
+                        )
                         setItems(
                             localTestResult = localTestResultState.localTestResult
                         )
-
-                        // Show a SnackBar if this qr is created for the first time
-                        if (localTestResultState.firstTimeCreated) {
-                            Snackbar.make(
-                                requireView(),
-                                R.string.my_overview_qr_created_snackbar_message,
-                                Snackbar.LENGTH_LONG
-                            ).also {
-                                it.setAction(R.string.my_overview_qr_created_snackbar_button) {
-                                    getString(R.string.url_faq).launchUrl(requireContext())
-                                }
-                            }.show(requireActivity())
-                        }
                     }
                 }
             })
+
+        myOverviewViewModel.walletLiveData.observe(viewLifecycleOwner, {
+            Timber.v("Wallet: $it")
+        })
 
         setFragmentResultListener(
             REQUEST_KEY
@@ -107,8 +134,13 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
         }
     }
 
+    private fun sync() {
+        myOverviewViewModel.sync()
+    }
+
     private fun getLocalTestResult() {
         localTestResultViewModel.getLocalTestResult()
+        sync()
         localTestResultHandler.postDelayed(localTestResultRunnable, TimeUnit.SECONDS.toMillis(10))
     }
 
@@ -120,6 +152,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
     override fun onPause() {
         super.onPause()
         localTestResultHandler.removeCallbacks(localTestResultRunnable)
+        (parentFragment?.parentFragment as HolderMainFragment).getToolbar().menu.clear()
     }
 
     private fun setItems(
@@ -167,7 +200,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
             buttonText = if (localTestResult == null) R.string.my_overview_no_qr_make_qr_button else R.string.my_overview_no_qr_replace_qr_button,
             onButtonClick = {
                 findNavControllerSafety(R.id.nav_my_overview)?.navigate(
-                    MyOverviewFragmentDirections.actionChooseProvider()
+                    MyOverviewFragmentDirections.actionCreateQr()
                 )
             }
         ))

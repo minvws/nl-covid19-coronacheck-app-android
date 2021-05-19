@@ -16,49 +16,64 @@ import nl.rijksoverheid.ctr.shared.livedata.Event
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class TestResultsViewModel(
+
+abstract class TestResultsViewModel : ViewModel() {
+    abstract fun updateViewState()
+    abstract fun getTestResult(fromDeeplink: Boolean = false)
+    abstract fun sendVerificationCode()
+    abstract fun saveTestResult()
+    abstract fun getRetrievedResult(): TestResult.NegativeTestResult?
+
+    open var verificationCode: String = ""
+    open var verificationRequired: Boolean = false
+    open var testCode: String = ""
+    open var fromDeeplink: Boolean = false
+
+    val testResult: LiveData<Event<TestResult>> = MutableLiveData()
+    val signedTestResult = MutableLiveData<Event<SignedTestResult>>()
+    val loading: LiveData<Event<Boolean>> = MutableLiveData()
+    val viewState: LiveData<ViewState> = MutableLiveData(ViewState())
+}
+
+open class TestResultsViewModelImpl(
     private val savedStateHandle: SavedStateHandle,
     private val testResultUseCase: TestResultUseCase,
     private val persistenceManager: PersistenceManager,
     private val secretKeyUseCase: SecretKeyUseCase
-) : ViewModel() {
+) : TestResultsViewModel() {
 
-    val testResult: LiveData<Event<TestResult>> = MutableLiveData()
-    val signedTestResult: LiveData<Event<SignedTestResult>> = MutableLiveData()
-    val loading: LiveData<Event<Boolean>> = MutableLiveData()
+    override fun getRetrievedResult(): TestResult.NegativeTestResult? {
+        return (testResult.value?.peekContent() as? TestResult.NegativeTestResult)
+    }
 
-    var verificationCode: String = savedStateHandle["verification_code"] ?: ""
+    override var verificationCode: String = savedStateHandle["verification_code"] ?: ""
         set(value) {
             field = value
             savedStateHandle["verification_code"] = value
             updateViewState()
         }
 
-    var verificationRequired: Boolean = savedStateHandle["verification_required"] ?: false
-        private set(value) {
+    override var verificationRequired: Boolean = savedStateHandle["verification_required"] ?: false
+        set(value) {
             field = value
             savedStateHandle["verification_required"] = value
             updateViewState()
         }
 
-    var testCode: String = savedStateHandle["test_code"] ?: ""
+    override var testCode: String = savedStateHandle["test_code"] ?: ""
         set(value) {
             field = value
             savedStateHandle["test_code"] = value
             updateViewState()
         }
 
-    var fromDeeplink: Boolean = savedStateHandle["from_deeplink"] ?: false
-        private set(value) {
+    override var fromDeeplink: Boolean = savedStateHandle["from_deeplink"] ?: false
+        set(value) {
             field = value
             savedStateHandle["from_deeplink"] = value
             updateViewState()
         }
 
-    val viewState: LiveData<ViewState> = MutableLiveData(ViewState())
-
-    val retrievedResult: TestResult.NegativeTestResult?
-        get() = (testResult.value?.peekContent() as? TestResult.NegativeTestResult)
 
     private val currentViewState: ViewState
         get() = viewState.value!!
@@ -67,7 +82,7 @@ class TestResultsViewModel(
         updateViewState()
     }
 
-    private fun updateViewState() {
+    override fun updateViewState() {
         (viewState as MutableLiveData).value = currentViewState.copy(
             verificationRequired = verificationRequired,
             canRetrieveResult = (testCode.isNotEmpty() && !verificationRequired) || (verificationRequired && testCode.isNotEmpty() && verificationCode.isNotEmpty()),
@@ -75,7 +90,7 @@ class TestResultsViewModel(
         )
     }
 
-    fun getTestResult(fromDeeplink: Boolean = false) {
+    override fun getTestResult(fromDeeplink: Boolean) {
         this.fromDeeplink = fromDeeplink
         (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {
@@ -91,7 +106,7 @@ class TestResultsViewModel(
         }
     }
 
-    fun sendVerificationCode() {
+    override fun sendVerificationCode() {
         viewModelScope.launch {
             val result = testResultUseCase.testResult(testCode, "")
 
@@ -102,19 +117,19 @@ class TestResultsViewModel(
         }
     }
 
-    fun saveTestResult() {
+    override fun saveTestResult() {
         (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {
             try {
                 secretKeyUseCase.persist()
-                retrievedResult?.let {
+                getRetrievedResult()?.let {
                     val result = testResultUseCase.signTestResult(
                         signedResponseWithTestResult = it.signedResponseWithTestResult
                     )
                     if (result is SignedTestResult.Complete) {
                         persistenceManager.saveCredentials(result.credentials)
                     }
-                    (signedTestResult as MutableLiveData).value = Event(result)
+                    signedTestResult.value = Event(result)
                 }
             } finally {
                 loading.value = Event(false)

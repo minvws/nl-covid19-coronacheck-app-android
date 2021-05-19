@@ -7,11 +7,13 @@ import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
+import nl.rijksoverheid.ctr.holder.ui.create_qr.TestResultsViewModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.TestProviderRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
 import nl.rijksoverheid.ctr.holder.ui.myoverview.LocalTestResultViewModel
+import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.LocalTestResult
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.LocalTestResultState
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.LocalTestResultUseCase
@@ -101,6 +103,10 @@ fun fakeCachedAppConfigUseCase(
         return appConfig.maxValidityHours
     }
 
+    override fun getCachedAppConfigVaccinationEventValidity(): Int {
+        return appConfig.vaccinationEventValidity
+    }
+
     override fun persistPublicKeys(publicKeys: PublicKeys) {
 
     }
@@ -164,6 +170,46 @@ fun fakeLocalTestResultViewModel(
             } else {
                 return false
             }
+        }
+    }
+}
+
+fun fakeMyOverviewModel(
+
+): MyOverviewViewModel {
+    return object : MyOverviewViewModel() {
+        override fun sync() {
+
+        }
+    }
+}
+
+fun fakeTestResultsViewModel(
+    retrievedTestResult: TestResult.NegativeTestResult? = null,
+    fakeSignedTestResult: SignedTestResult? = null
+): TestResultsViewModel {
+    return object : TestResultsViewModel() {
+
+        override fun updateViewState() {
+
+        }
+
+        override fun getTestResult(fromDeeplink: Boolean) {
+
+        }
+
+        override fun sendVerificationCode() {
+
+        }
+
+        override fun saveTestResult() {
+            fakeSignedTestResult?.let {
+                signedTestResult.value = Event(it)
+            }
+        }
+
+        override fun getRetrievedResult(): TestResult.NegativeTestResult? {
+            return retrievedTestResult
         }
     }
 }
@@ -237,26 +283,36 @@ fun fakeTestProviderRepository(
     }
 }
 
-fun fakeTestProviderUseCase(
-    provider: RemoteTestProviders.Provider? = null
-): TestProviderUseCase {
-    return object : TestProviderUseCase {
-        override suspend fun testProvider(id: String): RemoteTestProviders.Provider? {
+fun fakeConfigProviderUseCase(
+    provider: RemoteConfigProviders.TestProvider? = null
+): ConfigProvidersUseCase {
+    return object : ConfigProvidersUseCase {
+        override suspend fun eventProviders(): List<RemoteConfigProviders.EventProvider> {
+            return listOf()
+        }
+
+        override suspend fun testProvider(id: String): RemoteConfigProviders.TestProvider? {
             return provider
         }
     }
 }
 
 fun fakeCoronaCheckRepository(
-    testProviders: RemoteTestProviders = RemoteTestProviders(listOf()),
+    testProviders: RemoteConfigProviders = RemoteConfigProviders(listOf(), listOf()),
     testIsmResult: TestIsmResult = TestIsmResult.Success(""),
     testIsmExceptionCallback: (() -> Unit)? = null,
     remoteNonce: RemoteNonce = RemoteNonce("", ""),
+    accessTokens: RemoteAccessTokens = RemoteAccessTokens(tokens = listOf())
 
-    ): CoronaCheckRepository {
+): CoronaCheckRepository {
     return object : CoronaCheckRepository {
-        override suspend fun testProviders(): RemoteTestProviders {
+
+        override suspend fun configProviders(): RemoteConfigProviders {
             return testProviders
+        }
+
+        override suspend fun accessTokens(tvsToken: String): RemoteAccessTokens {
+            return accessTokens
         }
 
         override suspend fun getTestIsm(test: String, sToken: String, icm: String): TestIsmResult {
@@ -335,7 +391,7 @@ fun fakePersistenceManager(
         }
 
         override fun setHasDismissedRootedDeviceDialog() {
-            
+
         }
     }
 }

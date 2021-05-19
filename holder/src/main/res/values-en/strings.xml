@@ -47,8 +47,6 @@
     <string name="my_overview_no_qr_make_qr_description">Turn your negative test result into a personal QR code.</string>
     <string name="my_overview_no_qr_make_qr_button">Make QR code</string>
     <string name="my_overview_no_qr_replace_qr_button">Replace QR code</string>
-    <string name="my_overview_qr_created_snackbar_message">Your QR code has been made. See which information the QR code contains.</string>
-    <string name="my_overview_qr_created_snackbar_button">Read more</string>
     <string name="choose_provider_toolbar">Make QR code</string>
     <string name="choose_provider_title">Where were you tested?</string>
     <string name="choose_provider_description">Does the test prove you don\'t have coronavirus? Then you can make a QR code out of the test result. Indicate where you were tested.</string>
@@ -83,7 +81,9 @@
     <string name="your_negative_test_results_description">This test result is retrieved from the test location.&lt;br\&gt;&lt;br\&gt;Is the below correct? Then you can convert the negative test result into a QR code. This is your test declaration.</string>
     <string name="your_negative_test_results_header">Retrieved test result</string>
     <string name="your_negative_test_results_row_title">Negative test result</string>
+    <string name="your_negative_test_results_row_subtitle"><![CDATA[Testdatum: %1$s<br/>Geldig tot: %2$s<br/>Jouw gegevens: %3$s]]></string>
     <string name="your_negative_test_results_row_personal_details">Identification details: %1$s</string>
+    <string name="your_negative_test_results_something_wrong_button">Klopt er iets niet?</string>
     <string name="your_negative_test_results_row_button">Make QR code</string>
     <string name="your_negative_test_results_backbutton_title">Are you sure you want to stop?</string>
     <string name="your_negative_test_results_backbutton_message">You must use your code to get your test result again later.</string>
@@ -92,6 +92,7 @@
     <string name="your_negative_test_results_explanation_title">More about test results</string>
     <string name="your_negative_test_results_explanation_paragraph_1"><![CDATA[Your test result states your test result, the time of testing, and a minimum amount of personal data.<br\><br\>Your details consist of: (1) the first letter of your first name, (2) the first letter of your last name, (3) your day of birth and (4) your month of birth.]]></string>
     <string name="your_negative_test_results_explanation_paragraph_2"><![CDATA[Are these details different than the details on your identification card? Contact your test location. They can edit your details.]]></string>
+    <string name="your_negative_test_results_characteristic_format">Characteristic %s is %s</string>
     <string name="testresult_not_known_title">Test result not yet known</string>
     <string name="testresult_not_known_description">Your test result not yet known. Please try again later. Is this not correct? Contact the test location.</string>
     <string name="testresult_to_qr_code_title">Your test result is now being made into a QR code</string>
@@ -178,4 +179,46 @@
     <string name="about_this_app_read_more">Read more</string>
     <string name="about_this_app_accessibility">Accessibility</string>
     <string name="url_accessibility">https://coronacheck.nl/en/accessibility-in-app</string>
+    <string name="create_qr_explanation_menu_title">QR-code maken</string>
+    <string name="create_qr_explanation_menu_title_alternative">Voeg een QR-code toe</string>
+    <string name="create_qr_explanation_title">Over het maken van een QR-code</string>
+    <string name="create_qr_explanation_description"><![CDATA[Je kan een QR-code maken van een negatieve testuitslag, een herstelverklaring of van een vaccinatie. Dat is jouw bewijs.<br/><br/><b>Meerdere bewijzen</b><br/>Je kunt meerdere bewijzen tegelijkertijd hebben. Zowel een vaccinatiebewijs als een testbewijs, bijvoorbeeld. Ook kun je een bewijs voor je kinderen maken.<br/><br/><b>Ga je naar het buitenland?</b><br/>Als je een QR-code maakt, krijg je automatisch een QR-code voor binnen Nederland en een die in Europa bruikbaar is. Gebruik in het buitenland de Europese QR-code.<br/><br/><b>Geldigheid in Europa</b><br/>Weten welke test- en vaccinatiebewijzen geldig zijn in het land dat je bezoekt? Bekijk <a href="#">deze pagina.</a> Zo voorkom je onverwachtse verrassingen ter plekke.]]></string>
+    <string name="qr_code_type_title">Waar wil je een QR-code van maken?</string>
+    <string name="qr_code_type_description">Je kan een QR-code maken van een negatieve testuitslag.</string>
+    <string name="qr_code_type_negative_test_title">Een negatieve testuitslag</string>
+    <string name="qr_code_type_negative_test_description">Uit de test blijkt dat ik geen corona heb</string>
+    <string name="qr_code_type_vaccination_title">Een vaccinatiebewijs</string>
+    <string name="qr_code_type_vaccination_description">Ik ben volledig gevaccineerd</string>
+    <string name="get_vaccination_title">Vaccinatie ophalen</string>
+    <string name="get_vaccination_description"><![CDATA[Ben je volledig gevaccineerd? Dan kun je een vaccinatiebewijs maken.<br\><br\> Vragen over vaccinaties? <a href="http://www.google.com">Lees hier meer.</a>]]></string>
+    <string name="get_vaccination_button">Login met DigiD</string>
+    <string name="your_retrieved_vaccinations_title">Jouw opgehaalde vaccinaties</string>
+    <string name="your_retrieved_vaccinations_description">Je kan een QR-code maken van je vaccinaties. Dat is jouw bewijs.</string>
+    <string name="your_vaccination_result_explanation_title">Over jouw vaccinatie</string>
+    <string name="your_vaccination_result_explanation_description"><![CDATA[Voor een Nederlandse QR-code worden er minimale gegevens opgehaald: je vaccinatiedatum en enkele gegevens van jou. Jouw gegevens bestaan uit de eerste letter van je voornaam, de eerste letter van je achternaam, je geboortedag en geboortemaand.<br/><br/>Jouw gegevens: %1$s %2$s %3$s %4$s]]></string>
+    <string name="your_vaccination_result_explanation_subtitle">Gegevens voor Nederland</string>
+    <string name="your_retrieved_vaccinations_toolbar">Vaccinatie ophalen</string>
+    <string name="retrieved_vaccination_title">Vaccinatie %1$d</string>
+    <string name="retrieved_vaccination_subtitle">Vaccinatiedatum: %1$s</string>
+    <string name="validity_type_european_title">Europa</string>
+    <string name="validity_type_dutch_title">Nederland</string>
+    <string name="qr_card_vaccination_validity_nl">Vaccinatiebewijs:\ngeldig tot %1$s</string>
+    <string name="qr_card_test_validity_nl">Testbewijs:\ngeldig tot: %1$s</string>
+    <string name="qr_card_recovery_validity_nl">Herstelverklaring:\ngeldig tot %1$s</string>
+    <string name="qr_card_vaccination_validity_europe">Vaccinatiedatum:\n%1$s</string>
+    <string name="qr_card_test_validity_europe">Testdatum:\n%1$s</string>
+    <string name="qr_card_recovery_validity_europe">Herstelverklaring:\ngeldig vanaf %1$s</string>
+    <string name="retrieved_vaccinations_backbutton_title">Weet je zeker dat je wilt stoppen?</string>
+    <string name="retrieved_vaccinations_backbutton_message">Je moet dan later opnieuw met DigiD inloggen om je vaccinatie op te halen.</string>
+    <string name="travel_toggle_europe">Ik reis binnen Europa</string>
+    <string name="travel_toggle_domestic">Ik ben in Nederland</string>
+    <string name="travel_toggle_change">Wijzigen</string>
+    <string name="travel_button_domestic">Nederland</string>
+    <string name="travel_button_europe">Europa</string>
+    <string name="travel_fragment_description">Gebruik binnen Nederland altijd je Nederlandse QR-code. Ga je de Nederlandse grens over of reis je in Europa? Gebruik dan je Europese bewijs.</string>
+    <string name="travel_fragment_footer">In je Nederlandse QR-code staan alleen je initialen en je geboortedag en maand.</string>
+    <string name="dialog_negative_test_result_something_wrong_title">Er klopt iets niet</string>
+    <string name="dialog_negative_test_result_something_wrong_description">Kloppen jouw gegevens niet met je identiteitsbewijs? Neem contact op met je testlocatie om je  gegevens te laten aanpassen.</string>
+    <string name="your_vaccination_result_toolbar_title">Jouw vaccinaties</string>
+    <string name="your_vaccination_result_explanation_toolbar_title">Over jouw vaccinatie</string>
 </resources>

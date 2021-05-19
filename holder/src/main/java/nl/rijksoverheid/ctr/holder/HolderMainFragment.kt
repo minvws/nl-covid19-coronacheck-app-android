@@ -11,6 +11,9 @@ package nl.rijksoverheid.ctr.holder
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.annotation.IdRes
+import androidx.annotation.StringRes
+import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.fragment.NavHostFragment
@@ -27,8 +30,9 @@ import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAccessibilityFocus
 
 class HolderMainFragment : BaseMainFragment(
     R.layout.fragment_main, setOf(
-        R.id.nav_my_overview,
-        R.id.nav_about_this_app
+        R.id.nav_graph_overview,
+        R.id.nav_about_this_app,
+        R.id.nav_qr_explanation_root
     )
 ) {
 
@@ -55,7 +59,7 @@ class HolderMainFragment : BaseMainFragment(
 
         binding.toolbar.setNavigationOnClickListener {
             when (navController.currentDestination?.id) {
-                R.id.nav_your_negative_result -> {
+                R.id.nav_your_events -> {
                     // Trigger custom dispatcher in destination
                     requireActivity().onBackPressedDispatcher.onBackPressed()
                     return@setNavigationOnClickListener
@@ -63,6 +67,10 @@ class HolderMainFragment : BaseMainFragment(
             }
 
             NavigationUI.navigateUp(navController, appBarConfiguration)
+        }
+
+        binding.toolbar.setOnMenuItemClickListener {
+            NavigationUI.onNavDestinationSelected(it, navController)
         }
 
         binding.navView.setNavigationItemSelectedListener { item ->
@@ -119,6 +127,11 @@ class HolderMainFragment : BaseMainFragment(
         _binding = null
     }
 
+    fun changeMenuItem(@IdRes menuItemId: Int, @StringRes text: Int) {
+        binding.navView.menu.findItem(menuItemId).title = getString(text)
+        navigationDrawerStyling()
+    }
+
     fun presentLoading(loading: Boolean) {
         binding.loading.visibility = if (loading) View.VISIBLE else View.GONE
         if (loading) {
@@ -128,9 +141,13 @@ class HolderMainFragment : BaseMainFragment(
         }
     }
 
+    fun getToolbar(): Toolbar {
+        return binding.toolbar
+    }
+
     private fun navigationDrawerStyling() {
         val context = binding.navView.context
-        binding.navView.menu.findItem(R.id.nav_my_overview)
+        binding.navView.menu.findItem(R.id.nav_graph_overview)
             .styleTitle(context, R.attr.textAppearanceHeadline6)
         binding.navView.menu.findItem(R.id.nav_settings)
             .styleTitle(context, R.attr.textAppearanceHeadline6)
@@ -139,6 +156,8 @@ class HolderMainFragment : BaseMainFragment(
         binding.navView.menu.findItem(R.id.nav_frequently_asked_questions)
             .styleTitle(context, R.attr.textAppearanceBody1)
         binding.navView.menu.findItem(R.id.nav_terms_of_use)
+            .styleTitle(context, R.attr.textAppearanceBody1)
+        binding.navView.menu.findItem(R.id.nav_qr_explanation_root)
             .styleTitle(context, R.attr.textAppearanceBody1)
     }
 

@@ -15,8 +15,10 @@ import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentQrCodeBinding
 import nl.rijksoverheid.ctr.shared.QrCodeConstants
+import nl.rijksoverheid.ctr.shared.ext.sharedViewModelWithOwner
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAccessibilityFocus
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ViewModelOwner
+import org.koin.androidx.viewmodel.scope.emptyState
 import java.util.concurrent.TimeUnit
 
 
@@ -31,7 +33,15 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
 
     private var _binding: FragmentQrCodeBinding? = null
     private val binding get() = _binding!!
-    private val localTestResultViewModel: LocalTestResultViewModel by sharedViewModel()
+    private val localTestResultViewModel: LocalTestResultViewModel by sharedViewModelWithOwner(
+        state = emptyState(),
+        owner = {
+            ViewModelOwner.from(
+                findNavController().getViewModelStoreOwner(R.id.nav_graph_overview),
+                this
+            )
+        })
+
     private val qrCodeHandler = Handler(Looper.getMainLooper())
     private val qrCodeRunnable = Runnable { generateQrCode() }
 
