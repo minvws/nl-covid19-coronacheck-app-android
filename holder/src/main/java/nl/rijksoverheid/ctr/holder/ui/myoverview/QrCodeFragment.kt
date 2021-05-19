@@ -69,6 +69,15 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
             binding.image.setImageBitmap(it.qrCode)
             presentQrLoading(false)
         }
+
+        // Nullable so tests don't trip over parentFragment
+        (parentFragment?.parentFragment as HolderMainFragment?)?.getToolbar().let { toolbar ->
+            if (toolbar?.menu?.size() == 0) {
+                toolbar.apply {
+                    inflateMenu(R.menu.my_qr_toolbar)
+                }
+            }
+        }
     }
 
     private fun presentQrLoading(loading: Boolean) {
@@ -107,6 +116,7 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
     override fun onPause() {
         super.onPause()
         qrCodeHandler.removeCallbacks(qrCodeRunnable)
+        (parentFragment?.parentFragment as HolderMainFragment).getToolbar().menu.clear()
     }
 
     override fun onDestroyView() {
