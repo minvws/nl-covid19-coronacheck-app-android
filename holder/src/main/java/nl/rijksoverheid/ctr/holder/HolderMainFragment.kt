@@ -30,9 +30,9 @@ import nl.rijksoverheid.ctr.shared.ext.setAccessibilityFocus
 
 class HolderMainFragment : BaseMainFragment(
     R.layout.fragment_main, setOf(
-        R.id.nav_my_overview,
+        R.id.nav_graph_overview,
         R.id.nav_about_this_app,
-        R.id.nav_create_qr
+        R.id.nav_qr_explanation_root
     )
 ) {
 
@@ -59,7 +59,6 @@ class HolderMainFragment : BaseMainFragment(
 
         binding.toolbar.setNavigationOnClickListener {
             when (navController.currentDestination?.id) {
-                R.id.nav_your_negative_result,
                 R.id.nav_your_events -> {
                     // Trigger custom dispatcher in destination
                     requireActivity().onBackPressedDispatcher.onBackPressed()
@@ -148,7 +147,7 @@ class HolderMainFragment : BaseMainFragment(
 
     private fun navigationDrawerStyling() {
         val context = binding.navView.context
-        binding.navView.menu.findItem(R.id.nav_my_overview)
+        binding.navView.menu.findItem(R.id.nav_graph_overview)
             .styleTitle(context, R.attr.textAppearanceHeadline6)
         binding.navView.menu.findItem(R.id.nav_settings)
             .styleTitle(context, R.attr.textAppearanceHeadline6)
@@ -158,7 +157,7 @@ class HolderMainFragment : BaseMainFragment(
             .styleTitle(context, R.attr.textAppearanceBody1)
         binding.navView.menu.findItem(R.id.nav_terms_of_use)
             .styleTitle(context, R.attr.textAppearanceBody1)
-        binding.navView.menu.findItem(R.id.nav_create_qr)
+        binding.navView.menu.findItem(R.id.nav_qr_explanation_root)
             .styleTitle(context, R.attr.textAppearanceBody1)
     }
 
