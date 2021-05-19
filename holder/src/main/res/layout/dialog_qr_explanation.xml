@@ -33,7 +33,8 @@
             android:src="@drawable/ic_close"
             app:layout_constraintBottom_toBottomOf="@+id/title"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/title" />
+            app:layout_constraintTop_toTopOf="@+id/title"
+            app:layout_constraintVertical_bias="0.0" />
 
         <nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
             android:id="@+id/description"

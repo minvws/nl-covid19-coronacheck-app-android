@@ -15,10 +15,14 @@ import android.view.ViewGroup
 import androidx.core.view.AccessibilityDelegateCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
+import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.design.ExpandedBottomSheetDialogFragment
+import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.DialogQrExplanationBinding
 
 class QrCodeExplanationDialogFragment : ExpandedBottomSheetDialogFragment() {
+
+    private val args: QrCodeExplanationDialogFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,6 +39,13 @@ class QrCodeExplanationDialogFragment : ExpandedBottomSheetDialogFragment() {
 
         binding.close.setOnClickListener {
             dismiss()
+        }
+        if (args.isDomestic) {
+            binding.title.text = resources.getString(R.string.qr_explanation_title_domestic)
+            binding.description.setHtmlText(resources.getString(R.string.qr_explanation_description_domestic))
+        } else {
+            binding.title.text = resources.getString(R.string.qr_explanation_title_eu)
+            binding.description.setHtmlText(resources.getString(R.string.qr_explanation_description_eu))
         }
 
         ViewCompat.setAccessibilityDelegate(binding.close, object : AccessibilityDelegateCompat() {

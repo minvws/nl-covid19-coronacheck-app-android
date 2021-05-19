@@ -75,6 +75,12 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
             if (toolbar?.menu?.size() == 0) {
                 toolbar.apply {
                     inflateMenu(R.menu.my_qr_toolbar)
+                    setOnMenuItemClickListener {
+                        if(it.itemId == R.id.show_explanation){
+                            findNavController().navigate(QrCodeFragmentDirections.actionShowQrExplanation(true))
+                        }
+                        true
+                    }
                 }
             }
         }
@@ -109,7 +115,7 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
         val localTestResult = localTestResultViewModel.retrievedLocalTestResult
         if (localTestResult == null) {
             // No credentials in cache, go back to overview
-            findNavController().popBackStack()
+            //findNavController().popBackStack()
         }
     }
 

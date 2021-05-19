@@ -70,7 +70,7 @@
             android:label="@string/my_overview_test_result_title"
             tools:layout="@layout/fragment_qr_code">
             <action
-                android:id="@+id/action_show_explanation"
+                android:id="@+id/action_show_qr_explanation"
                 app:destination="@id/qr_code_explanation_bottomsheet" />
         </fragment>
 
@@ -84,7 +84,13 @@
             android:id="@+id/qr_code_explanation_bottomsheet"
             android:name="nl.rijksoverheid.ctr.holder.ui.myoverview.QrCodeExplanationDialogFragment"
             android:label="QrCodeExplanationDialog"
-            tools:layout="@layout/dialog_qr_explanation" />
+            tools:layout="@layout/dialog_qr_explanation">
+
+            <argument
+                android:name="isDomestic"
+                app:argType="boolean" />
+
+        </dialog>
 
     </navigation>
 
