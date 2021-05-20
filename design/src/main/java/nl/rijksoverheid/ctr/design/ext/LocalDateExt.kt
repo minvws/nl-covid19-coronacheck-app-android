@@ -13,7 +13,6 @@ import java.util.*
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-
 // Change to Locale.getDefault() to support multiple languages
 private val locale = Locale("nl")
 
@@ -21,6 +20,6 @@ fun LocalDate.formatDate(): String =
     DateTimeFormatter.ofPattern(
         DateFormat.getBestDateTimePattern(
             locale,
-            "EEEE dd MMMM"
+            "d MMMM YYYY"
         )
     ).withLocale(locale).withZone(ZoneId.of("CET")).format(this)

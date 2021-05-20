@@ -24,4 +24,7 @@ interface OriginDao {
 
     @Insert
     suspend fun insert(entity: OriginEntity)
+
+    @Query("DELETE FROM origin")
+    suspend fun deleteAll()
 }

@@ -4,7 +4,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import java.time.OffsetDateTime
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -23,8 +22,7 @@ import java.time.OffsetDateTime
     )]
 )
 data class GreenCardEntity(
-    @PrimaryKey val id: Int,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
     @ColumnInfo(name = "wallet_id", index = true) val walletId: Int,
     val type: GreenCardType,
-    val issuedAt: OffsetDateTime
 )

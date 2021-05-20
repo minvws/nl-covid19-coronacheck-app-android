@@ -7,7 +7,6 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="16dp"
     android:layout_marginTop="32dp"
-
     app:cardCornerRadius="16dp"
     app:cardElevation="8dp"
     app:layout_constraintEnd_toEndOf="parent"
@@ -27,11 +26,11 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-
         <TextView
             android:id="@+id/type_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
             android:text="@string/validity_type_dutch_title"
             android:textAppearance="?attr/textAppearanceBody1"
             android:textColor="@color/primary_blue"
@@ -47,30 +46,48 @@
             android:layout_marginTop="8dp"
             android:text="@string/my_overview_test_result_title"
             android:textAppearance="?attr/textAppearanceHeadline6"
-            app:layout_constraintEnd_toStartOf="@+id/imageView"
+            app:layout_constraintEnd_toEndOf="@+id/type_title"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/type_title" />
 
-        <LinearLayout
-            android:id="@+id/results_container"
-            android:layout_width="0dp"
+        <TextView
+            android:id="@+id/proof1"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imageView" />
+            android:layout_marginTop="32dp"
+            android:textAppearance="@style/App.TextAppearance.MaterialComponents.Body1"
+            app:layout_constraintTop_toBottomOf="@+id/title"
+            tools:text="@string/qr_card_vaccination_validity_nl" />
+
+        <TextView
+            android:id="@+id/proof2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:textAppearance="@style/App.TextAppearance.MaterialComponents.Body1"
+            app:layout_constraintTop_toBottomOf="@+id/proof1"
+            tools:text="@string/qr_card_vaccination_validity_nl" />
+
+        <TextView
+            android:id="@+id/proof3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:textAppearance="@style/App.TextAppearance.MaterialComponents.Body1"
+            app:layout_constraintTop_toBottomOf="@+id/proof2"
+            tools:text="@string/qr_card_vaccination_validity_nl" />
 
         <Button
             android:id="@+id/button"
             style="@style/Widget.App.Button.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
             android:text="@string/my_overview_test_result_button"
             app:layout_constrainedWidth="true"
-            android:layout_marginTop="32dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/results_container" />
+            app:layout_constraintTop_toBottomOf="@id/proof3" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

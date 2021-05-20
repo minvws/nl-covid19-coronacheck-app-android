@@ -20,8 +20,9 @@
     <string name="privacy_policy_3"><![CDATA[In de QR-code staan minimale <b>persoonsgegevens</b>.]]></string>
     <string name="privacy_policy_checkbox_text">Ik heb de privacyverklaring gelezen en geef toestemming voor het verwerken van mijn persoonsgegevens.</string>
     <string name="my_overview">Mijn overzicht</string>
-    <string name="my_overview_description">Laat je QR code scannen voor de ingang van een uitgaansgelegenheid, om naar binnen te mogen.</string>
-    <string name="my_overview_no_qr_description">Voor toegang tot een pilot-event heb je een negatieve testuitslag nodig. Daar maak je een QR-code van. Laat bij de ingang de QR-code én je identiteitsbewijs zien.</string>
+    <string name="my_overview_description">Laat zowel de QR-code als je identiteitsbewijs zien bij de ingang van de locatie die je bezoekt.</string>
+    <string name="my_overview_description_eu">Gebruik bij de grens en buiten Nederland de Europese QR-code. Controleer voor vertrek of jouw QR-codes geldig zijn in het land waar je heen reist.</string>
+    <string name="my_overview_no_qr_description"><![CDATA[Heb je een bewijs nodig? Laat je eerst vaccineren of doe een test bij een <a href="https://coronacheck.nl/nl/testafspraak-in-app">aangesloten testlocatie</a>. Daarna kun je een QR-code maken.]]></string>
     <string name="dialog_error_title">Sorry, er ging iets mis</string>
     <string name="dialog_error_message">Dat komt door een technische fout.</string>
     <string name="dialog_error_message_with_error_code">Dat komt door een technische fout (%1$s).</string>
@@ -44,7 +45,7 @@
     <string name="my_overview_no_qr_make_appointment_button">Maak afspraak</string>
     <string name="my_overview_no_qr_make_qr_title">QR-code maken</string>
     <string name="my_overview_no_qr_replace_qr_title">QR-code vervangen</string>
-    <string name="my_overview_no_qr_make_qr_description">Zet jouw negatieve testuitslag om in een persoonlijke QR-code.</string>
+    <string name="my_overview_no_qr_make_qr_description">Zet jouw testuitslag of vaccinatie om in een persoonlijke QR-code.</string>
     <string name="my_overview_no_qr_make_qr_button">Maak QR-code</string>
     <string name="my_overview_no_qr_replace_qr_button">Vervang QR-code</string>
     <string name="choose_provider_toolbar">QR-code maken</string>
@@ -218,9 +219,9 @@
     <string name="qr_card_vaccination_validity_nl">Vaccinatiebewijs:\ngeldig tot %1$s</string>
     <string name="qr_card_test_validity_nl">Testbewijs:\ngeldig tot: %1$s</string>
     <string name="qr_card_recovery_validity_nl">Herstelverklaring:\ngeldig tot %1$s</string>
-    <string name="qr_card_vaccination_validity_europe">Vaccinatiedatum:\n%1$s</string>
-    <string name="qr_card_test_validity_europe">Testdatum:\n%1$s</string>
-    <string name="qr_card_recovery_validity_europe">Herstelverklaring:\ngeldig vanaf %1$s</string>
+    <string name="qr_card_vaccination_validity_domestic">Vaccinatiedatum:\n%1$s</string>
+    <string name="qr_card_recovery_validity_domestic">Herstelverklaring:\ngeldig vanaf %1$s</string>
+    <string name="qr_card_test_validity_domestic">Testdatum:\n%1$s</string>
     <string name="qr_explanation_title_domestic">Over mijn Nederlandse QR-code</string>
     <string name="qr_explanation_description_domestic"><![CDATA[In jouw Nederlandse QR-code staan minimale gegevens. In de QR-code staat dat je een groen scherm krijgt. In de QR-code staat niet of je een testbewijs, herstelverklaring of vaccinatie hebt.<br/><br/>Daarnaast staan er enkele gegevens van jou in de QR-code. Dit is ter controle, om zeker te zijn dat de QR-code bij jou hoort.<br/>De gegevens bestaan uit de eerste letter van je voornaam, de eerste letter van je achternaam, je geboortedag en geboortemaand. Er kunnen gegevens wegvallen om de herleidbaarheid naar jou zo klein mogelijk te maken.<br/><br/>Jouw gegevens: <b>%1$s %2$s %3$s %4$s</b><br/><br/>Gebruik in Nederland altijd de Nederlandse QR-code. De Europese QR-code is niet geldig in Nederland.]]></string>
     <string name="qr_explanation_title_eu">Over mijn Europese QR-code</string>

@@ -21,4 +21,7 @@ interface EventGroupDao {
 
     @Delete
     suspend fun delete(entity: EventGroupEntity)
+
+    @Query("DELETE FROM event_group")
+    suspend fun deleteAll()
 }

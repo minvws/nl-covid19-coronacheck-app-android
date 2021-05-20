@@ -15,17 +15,16 @@ import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMyOverviewBinding
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItem
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItems
+import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewGreenCardAdapterItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewHeaderAdapterItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewNavigationCardAdapterItem
-import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewTestResultAdapterItem
-import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewTestResultExpiredAdapterItem
-import nl.rijksoverheid.ctr.holder.ui.myoverview.models.LocalTestResult
-import nl.rijksoverheid.ctr.holder.ui.myoverview.models.LocalTestResultState
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.sharedViewModelWithOwner
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.androidx.viewmodel.ViewModelOwner
-import org.koin.androidx.viewmodel.scope.emptyState
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
@@ -46,22 +45,10 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
 
     private val section = Section()
 
-    private val localTestResultHandler = Handler(Looper.getMainLooper())
-    private val localTestResultRunnable = Runnable { getLocalTestResult(); sync() }
+    private val getQrCardsHandler = Handler(Looper.getMainLooper())
+    private val getQrCardsRunnable = Runnable { getQrCards() }
 
-    // New viewmodel that supports database backed events
     private val myOverviewViewModel: MyOverviewViewModel by sharedViewModelWithOwner(
-        state = emptyState(),
-        owner = {
-            ViewModelOwner.from(
-                findNavController().getViewModelStoreOwner(R.id.nav_graph_overview),
-                this
-            )
-        })
-
-    // Old viewmodel that works via shared pref stored single test result
-    private val localTestResultViewModel: LocalTestResultViewModel by sharedViewModelWithOwner(
-        state = emptyState(),
         owner = {
             ViewModelOwner.from(
                 findNavController().getViewModelStoreOwner(R.id.nav_graph_overview),
@@ -78,48 +65,6 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
         }
         binding.recyclerView.adapter = adapter
         binding.recyclerView.itemAnimator = null
-        setItems()
-
-        binding.include.button.setOnClickListener {
-            findNavController().navigate(MyOverviewFragmentDirections.actionShowTravelMode())
-        }
-
-        // Nullable so tests don't trip over parentFragment
-        (parentFragment?.parentFragment as HolderMainFragment?)?.getToolbar().let { toolbar ->
-            if (toolbar?.menu?.size() == 0) {
-                toolbar.apply {
-                    inflateMenu(R.menu.overview_toolbar)
-                }
-            }
-        }
-
-        localTestResultViewModel.localTestResultStateLiveData.observe(
-            viewLifecycleOwner,
-            EventObserver { localTestResultState ->
-                when (localTestResultState) {
-                    is LocalTestResultState.None -> {
-                        // Nothing
-                    }
-                    is LocalTestResultState.Expired -> {
-                        setItems(
-                            isExpired = true
-                        )
-                    }
-                    is LocalTestResultState.Valid -> {
-                        (parentFragment?.parentFragment as HolderMainFragment?)?.changeMenuItem(
-                            menuItemId = R.id.nav_qr_explanation,
-                            text = R.string.create_qr_explanation_menu_title_alternative
-                        )
-                        setItems(
-                            localTestResult = localTestResultState.localTestResult
-                        )
-                    }
-                }
-            })
-
-        myOverviewViewModel.walletLiveData.observe(viewLifecycleOwner, {
-            Timber.v("Wallet: $it")
-        })
 
         setFragmentResultListener(
             REQUEST_KEY
@@ -132,78 +77,101 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                     ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
             }
         }
-    }
 
-    private fun sync() {
         myOverviewViewModel.sync()
+
+        myOverviewViewModel.myOverviewItemsLiveData.observe(
+            viewLifecycleOwner,
+            EventObserver { myOverviewItems ->
+                setItems(
+                    binding = binding,
+                    myOverviewItems = myOverviewItems
+                )
+            })
     }
 
-    private fun getLocalTestResult() {
-        localTestResultViewModel.getLocalTestResult()
-        sync()
-        localTestResultHandler.postDelayed(localTestResultRunnable, TimeUnit.SECONDS.toMillis(10))
+    private fun getQrCards() {
+        myOverviewViewModel.refreshOverviewItems()
+        getQrCardsHandler.postDelayed(getQrCardsRunnable, TimeUnit.SECONDS.toMillis(10))
     }
 
     override fun onResume() {
         super.onResume()
-        getLocalTestResult()
+        getQrCards()
+
+        (parentFragment?.parentFragment as HolderMainFragment?)?.getToolbar().let { toolbar ->
+            if (toolbar?.menu?.size() == 0) {
+                toolbar.apply {
+                    inflateMenu(R.menu.overview_toolbar)
+                }
+            }
+        }
     }
 
     override fun onPause() {
         super.onPause()
-        localTestResultHandler.removeCallbacks(localTestResultRunnable)
+        getQrCardsHandler.removeCallbacks(getQrCardsRunnable)
         (parentFragment?.parentFragment as HolderMainFragment).getToolbar().menu.clear()
     }
 
     private fun setItems(
-        isExpired: Boolean = false,
-        localTestResult: LocalTestResult? = null,
+        binding: FragmentMyOverviewBinding,
+        myOverviewItems: MyOverviewItems
     ) {
-        val items = mutableListOf<BindableItem<*>>()
-        items.add(MyOverviewHeaderAdapterItem())
-        if (isExpired) {
-            items.add(MyOverviewTestResultExpiredAdapterItem(onDismissClick = {
-                setItems(
-                    isExpired = false
-                )
-            }))
-        }
-        localTestResult?.let {
-            items.add(
-                MyOverviewTestResultAdapterItem(
-                    localTestResult = it,
-                    onButtonClick = {
-                        findNavControllerSafety(R.id.nav_my_overview)?.navigate(
-                            MyOverviewFragmentDirections.actionQrCode()
+        val adapterItems = mutableListOf<BindableItem<*>>()
+        myOverviewItems.items.forEach { myOverviewItem ->
+            when (myOverviewItem) {
+                is MyOverviewItem.Header -> {
+                    adapterItems.add(
+                        MyOverviewHeaderAdapterItem(
+                            text = myOverviewItem.text
                         )
+                    )
+                }
+                is MyOverviewItem.CreateQrCard -> {
+                    adapterItems.add(MyOverviewNavigationCardAdapterItem(
+                        title = if (myOverviewItem.hasGreenCards) R.string.my_overview_no_qr_replace_qr_title else R.string.my_overview_no_qr_make_qr_title,
+                        description = R.string.my_overview_no_qr_make_qr_description,
+                        backgroundColor = R.color.secondary_green,
+                        backgroundDrawable = R.drawable.illustration_create_qr,
+                        buttonText = if (myOverviewItem.hasGreenCards) R.string.my_overview_no_qr_replace_qr_button else R.string.my_overview_no_qr_make_qr_button,
+                        onButtonClick = {
+                            findNavControllerSafety(R.id.nav_my_overview)?.navigate(
+                                MyOverviewFragmentDirections.actionCreateQr()
+                            )
+                        }
+                    ))
+                }
+                is MyOverviewItem.GreenCardItem -> {
+                    adapterItems.add(MyOverviewGreenCardAdapterItem(
+                        greenCard = myOverviewItem.greenCard,
+                        onButtonClick = {
+
+                        }
+                    ))
+                }
+                is MyOverviewItem.BannerItem -> {
+
+                }
+                is MyOverviewItem.ToggleGreenCardTypeItem -> {
+                    binding.typeToggle.root.visibility = View.VISIBLE
+
+                    when (myOverviewItems.type) {
+                        is GreenCardType.Domestic -> {
+                            binding.typeToggle.description.setText(R.string.travel_toggle_domestic)
+                        }
+                        is GreenCardType.Eu -> {
+                            binding.typeToggle.description.setText(R.string.travel_toggle_europe)
+                        }
                     }
-                )
-            )
+
+                    binding.typeToggle.button.setOnClickListener {
+                        findNavController().navigate(MyOverviewFragmentDirections.actionShowTravelMode())
+                    }
+                }
+            }
         }
-        items.add(MyOverviewNavigationCardAdapterItem(
-            title = R.string.my_overview_no_qr_make_appointment_title,
-            description = R.string.my_overview_no_qr_make_appointment_description,
-            backgroundColor = R.color.secondary_blue,
-            backgroundDrawable = R.drawable.illustration_make_appointment,
-            buttonText = R.string.my_overview_no_qr_make_appointment_button,
-            onButtonClick = {
-                findNavControllerSafety(R.id.nav_my_overview)?.navigate(
-                    MyOverviewFragmentDirections.actionMakeAppointment()
-                )
-            }
-        ))
-        items.add(MyOverviewNavigationCardAdapterItem(
-            title = if (localTestResult == null) R.string.my_overview_no_qr_make_qr_title else R.string.my_overview_no_qr_replace_qr_title,
-            description = R.string.my_overview_no_qr_make_qr_description,
-            backgroundColor = R.color.secondary_green,
-            backgroundDrawable = R.drawable.illustration_create_qr,
-            buttonText = if (localTestResult == null) R.string.my_overview_no_qr_make_qr_button else R.string.my_overview_no_qr_replace_qr_button,
-            onButtonClick = {
-                findNavControllerSafety(R.id.nav_my_overview)?.navigate(
-                    MyOverviewFragmentDirections.actionCreateQr()
-                )
-            }
-        ))
-        section.update(items)
+
+        section.update(adapterItems)
     }
 }

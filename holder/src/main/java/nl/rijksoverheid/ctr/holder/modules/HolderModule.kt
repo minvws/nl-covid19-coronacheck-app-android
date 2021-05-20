@@ -64,7 +64,7 @@ fun holderModule(baseUrl: String) = module {
             .build()
     }
 
-    factory<HolderDatabaseSyncer> { HolderDatabaseSyncerImpl(get(), get()) }
+    factory<HolderDatabaseSyncer> { HolderDatabaseSyncerImpl(get(), get(), get()) }
 
     single<PersistenceManager> {
         SharedPreferencesPersistenceManager(
@@ -109,6 +109,9 @@ fun holderModule(baseUrl: String) = module {
     factory<LocalTestResultUseCase> {
         LocalTestResultUseCaseImpl(get(), get(), get(), get(), get())
     }
+    factory<GetMyOverviewItemsUseCase> {
+        GetMyOverviewItemsUseCaseImpl(get())
+    }
     factory<TokenValidatorUtil> { TokenValidatorUtilImpl() }
     factory {
         TokenQrUseCase(get())
@@ -124,7 +127,7 @@ fun holderModule(baseUrl: String) = module {
     viewModel { TestResultsViewModelImpl(get(), get(), get(), get()) }
     viewModel { TokenQrViewModel(get()) }
     viewModel<DeviceRootedViewModel> { DeviceRootedViewModelImpl(get(), get()) }
-    viewModel<YourEventsViewModel> { YourEventsViewModelImpl(get()) }
+    viewModel<YourEventsViewModel> { YourEventsViewModelImpl(get(), get()) }
     viewModel<GetVaccinationViewModel> { GetVaccinationViewModelImpl(get()) }
     viewModel<MyOverviewViewModel> { MyOverviewViewModelImpl(get(), get()) }
 

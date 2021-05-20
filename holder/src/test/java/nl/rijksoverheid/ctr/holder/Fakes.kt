@@ -7,6 +7,7 @@ import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.TestResultsViewModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
@@ -178,6 +179,14 @@ fun fakeMyOverviewModel(
 
 ): MyOverviewViewModel {
     return object : MyOverviewViewModel() {
+        override fun getSelectedType(): GreenCardType {
+            return GreenCardType.Eu
+        }
+
+        override fun refreshOverviewItems(selectType: GreenCardType?) {
+
+        }
+
         override fun sync() {
 
         }
@@ -302,7 +311,11 @@ fun fakeCoronaCheckRepository(
     testIsmResult: TestIsmResult = TestIsmResult.Success(""),
     testIsmExceptionCallback: (() -> Unit)? = null,
     remoteNonce: RemoteNonce = RemoteNonce("", ""),
-    accessTokens: RemoteAccessTokens = RemoteAccessTokens(tokens = listOf())
+    accessTokens: RemoteAccessTokens = RemoteAccessTokens(tokens = listOf()),
+    remoteCredentials: RemoteCredentials = RemoteCredentials(
+        domesticGreencard = null,
+        euGreencards = null
+    )
 
 ): CoronaCheckRepository {
     return object : CoronaCheckRepository {
@@ -322,6 +335,10 @@ fun fakeCoronaCheckRepository(
 
         override suspend fun remoteNonce(): RemoteNonce {
             return remoteNonce
+        }
+
+        override suspend fun getCredentials(): RemoteCredentials {
+            return remoteCredentials
         }
     }
 }

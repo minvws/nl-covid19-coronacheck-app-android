@@ -23,9 +23,9 @@ import java.time.OffsetDateTime
     )]
 )
 data class CredentialEntity(
-    @PrimaryKey val id: Int,
-    @ColumnInfo(name = "green_card_id") val greenCardId: Int,
-    val qrData: String,
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    @ColumnInfo(name = "green_card_id") val greenCardId: Long,
+    val data: String,
     val credentialVersion: Int,
     val validFrom: OffsetDateTime
 )
