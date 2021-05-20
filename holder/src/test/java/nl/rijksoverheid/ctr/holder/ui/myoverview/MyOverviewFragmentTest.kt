@@ -1,28 +1,7 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview
 
-import androidx.core.text.parseAsHtml
-import androidx.fragment.app.testing.launchFragmentInContainer
-import androidx.lifecycle.ViewModelStore
-import androidx.navigation.Navigation
-import androidx.navigation.testing.TestNavHostController
-import androidx.test.core.app.ApplicationProvider
-import com.schibsted.spain.barista.assertion.BaristaListAssertions.assertDisplayedAtPosition
-import com.schibsted.spain.barista.assertion.BaristaListAssertions.assertListItemCount
-import com.schibsted.spain.barista.interaction.BaristaListInteractions.clickListItemChild
-import io.mockk.InternalPlatformDsl.toStr
-import nl.rijksoverheid.ctr.holder.*
-import nl.rijksoverheid.ctr.holder.ui.myoverview.models.LocalTestResult
-import nl.rijksoverheid.ctr.holder.ui.myoverview.models.LocalTestResultState
-import nl.rijksoverheid.ctr.shared.models.PersonalDetails
-import org.junit.Assert.assertEquals
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.core.context.loadKoinModules
-import org.koin.dsl.module
 import org.koin.test.AutoCloseKoinTest
-import org.robolectric.RobolectricTestRunner
-import java.time.OffsetDateTime
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -31,8 +10,12 @@ import java.time.OffsetDateTime
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-@RunWith(RobolectricTestRunner::class)
 class MyOverviewFragmentTest : AutoCloseKoinTest() {
+
+    @Test
+    fun test() {
+
+    }
 
 //    private val navController = TestNavHostController(
 //        ApplicationProvider.getApplicationContext()
