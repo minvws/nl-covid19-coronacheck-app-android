@@ -116,7 +116,10 @@ class HolderDatabaseTest : AutoCloseKoinTest() {
                         greenCardId = 1,
                         data = "",
                         credentialVersion = 1,
-                        validFrom = OffsetDateTime.now()
+                        validFrom = OffsetDateTime.ofInstant(
+                            Instant.ofEpochSecond(1),
+                            ZoneOffset.UTC
+                        )
                     )
                 ),
                 origins = listOf(
@@ -147,7 +150,10 @@ class HolderDatabaseTest : AutoCloseKoinTest() {
                         greenCardId = 2,
                         data = "",
                         credentialVersion = 1,
-                        validFrom = OffsetDateTime.now()
+                        validFrom = OffsetDateTime.ofInstant(
+                            Instant.ofEpochSecond(1),
+                            ZoneOffset.UTC
+                        )
                     )
                 ),
                 origins = listOf(
