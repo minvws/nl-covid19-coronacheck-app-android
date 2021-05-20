@@ -73,6 +73,7 @@ class HolderDatabaseTest : AutoCloseKoinTest() {
         assertEquals(db.eventGroupDao().getAll(), listOf<EventGroupEntity>())
         assertEquals(db.greenCardDao().getAll(), listOf<GreenCardEntity>())
         assertEquals(db.credentialDao().getAll(), listOf<CredentialEntity>())
+        assertEquals(db.originDao().getAll(), listOf<OriginEntity>())
     }
 
     private fun getDummyWallet() = Wallet(
@@ -124,6 +125,21 @@ class HolderDatabaseTest : AutoCloseKoinTest() {
                         ),
                         credentialVersion = 1
                     )
+                ),
+                origins = listOf(
+                    OriginEntity(
+                        id = 1,
+                        greenCardId = 1,
+                        type = OriginType.Recovery,
+                        eventTime = OffsetDateTime.ofInstant(
+                            Instant.ofEpochSecond(1),
+                            ZoneOffset.UTC
+                        ),
+                        expirationTime = OffsetDateTime.ofInstant(
+                            Instant.ofEpochSecond(1),
+                            ZoneOffset.UTC
+                        )
+                    )
                 )
             ),
             GreenCard(
@@ -147,6 +163,21 @@ class HolderDatabaseTest : AutoCloseKoinTest() {
                         ),
                         credentialVersion = 1
                     )
+                ),
+                origins = listOf(
+                    OriginEntity(
+                        id = 2,
+                        greenCardId = 2,
+                        type = OriginType.Test,
+                        eventTime = OffsetDateTime.ofInstant(
+                            Instant.ofEpochSecond(1),
+                            ZoneOffset.UTC
+                        ),
+                        expirationTime = OffsetDateTime.ofInstant(
+                            Instant.ofEpochSecond(1),
+                            ZoneOffset.UTC
+                        )
+                    )
                 )
             )
         )
@@ -157,6 +188,7 @@ class HolderDatabaseTest : AutoCloseKoinTest() {
         db.eventGroupDao().insertAll(wallet.eventEntities)
         wallet.greenCards.forEach { greenCard ->
             db.greenCardDao().insert(greenCard.greenCardEntity)
+            db.originDao().insertAll(greenCard.origins)
             greenCard.credentialEntities.forEach {
                 db.credentialDao().insert(it)
             }
