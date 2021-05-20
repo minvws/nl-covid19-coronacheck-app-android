@@ -1,4 +1,12 @@
-package nl.rijksoverheid.ctr.holder.ui.create_qr
+/*
+ *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+ *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+ *
+ *   SPDX-License-Identifier: EUPL-1.2
+ *
+ */
+
+package nl.rijksoverheid.ctr.holder.ui.myoverview
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,16 +16,10 @@ import androidx.core.view.AccessibilityDelegateCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import nl.rijksoverheid.ctr.design.ExpandedBottomSheetDialogFragment
-import nl.rijksoverheid.ctr.holder.databinding.DialogYourEventsResultSomethingWrongBinding
+import nl.rijksoverheid.ctr.holder.databinding.DialogQrExplanationBinding
 
-/*
- *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
- *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
- *
- *   SPDX-License-Identifier: EUPL-1.2
- *
- */
-class YourEventsTestResultSomethingWrongDialogFragment : ExpandedBottomSheetDialogFragment() {
+class QrCodeExplanationDialogFragment : ExpandedBottomSheetDialogFragment() {
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,12 +27,12 @@ class YourEventsTestResultSomethingWrongDialogFragment : ExpandedBottomSheetDial
         savedInstanceState: Bundle?
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
-        return DialogYourEventsResultSomethingWrongBinding.inflate(inflater).root
+        return DialogQrExplanationBinding.inflate(inflater).root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val binding = DialogYourEventsResultSomethingWrongBinding.bind(view)
+        val binding = DialogQrExplanationBinding.bind(view)
 
         binding.close.setOnClickListener {
             dismiss()
@@ -45,6 +47,5 @@ class YourEventsTestResultSomethingWrongDialogFragment : ExpandedBottomSheetDial
                 super.onInitializeAccessibilityNodeInfo(host, info)
             }
         })
-
     }
 }
