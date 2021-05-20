@@ -6,7 +6,9 @@ import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.BulletSpan
+import android.text.style.ClickableSpan
 import android.util.AttributeSet
+import android.view.accessibility.AccessibilityEvent
 import androidx.core.text.HtmlCompat
 import androidx.core.text.getSpans
 import androidx.core.text.parseAsHtml
@@ -151,5 +153,16 @@ class HtmlTextViewWidget @JvmOverloads constructor(
         return spannableBuilder
     }
 
+    // Add support for activating links with assistive technologies
+    override fun dispatchPopulateAccessibilityEvent(event: AccessibilityEvent?): Boolean {
+        if (event != null && event.eventType == AccessibilityEvent.TYPE_VIEW_CLICKED) {
+            (text as? Spanned)?.let { spanned ->
+                val clickableSpans = spanned.getSpans(0, spanned.length, ClickableSpan::class.java)
 
+                // Activate the first clickable span
+                clickableSpans.first()?.onClick(this)
+            }
+        }
+        return super.dispatchPopulateAccessibilityEvent(event)
+    }
 }
