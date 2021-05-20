@@ -50,10 +50,7 @@ class HolderDatabaseConverter {
     fun fromGreenCardType(value: String?): GreenCardType? {
         return when (value) {
             GreenCardType.TYPE_DOMESTIC -> GreenCardType.Domestic
-            GreenCardType.TYPE_EU_ALL_IN_ONE -> GreenCardType.EuAllInOne
-            GreenCardType.TYPE_EU_RECOVERY -> GreenCardType.EuRecovery
-            GreenCardType.TYPE_EU_TEST -> GreenCardType.EuTest
-            GreenCardType.TYPE_EU_VACCINATION -> GreenCardType.EuVaccination
+            GreenCardType.TYPE_EU -> GreenCardType.Eu
             else -> null
         }
     }
@@ -62,10 +59,7 @@ class HolderDatabaseConverter {
     fun greenCardTypeToString(type: GreenCardType?): String? {
         return when (type) {
             GreenCardType.Domestic -> GreenCardType.TYPE_DOMESTIC
-            GreenCardType.EuAllInOne -> GreenCardType.TYPE_EU_ALL_IN_ONE
-            GreenCardType.EuRecovery -> GreenCardType.TYPE_EU_RECOVERY
-            GreenCardType.EuTest -> GreenCardType.TYPE_EU_TEST
-            GreenCardType.EuVaccination -> GreenCardType.TYPE_EU_VACCINATION
+            GreenCardType.Eu -> GreenCardType.TYPE_EU
             else -> null
         }
     }

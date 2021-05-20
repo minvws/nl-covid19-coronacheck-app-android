@@ -4,7 +4,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import java.time.OffsetDateTime
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -27,5 +26,4 @@ data class CredentialEntity(
     @ColumnInfo(name = "green_card_id") val greenCardId: Int,
     val qrData: String,
     val credentialVersion: Int,
-    val validFrom: OffsetDateTime
 )

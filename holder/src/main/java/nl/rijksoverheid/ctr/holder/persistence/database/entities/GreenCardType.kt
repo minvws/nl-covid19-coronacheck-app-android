@@ -11,15 +11,9 @@ sealed class GreenCardType {
 
     companion object {
         const val TYPE_DOMESTIC = "domestic"
-        const val TYPE_EU_VACCINATION = "eu_vaccination"
-        const val TYPE_EU_TEST = "eu_test"
-        const val TYPE_EU_RECOVERY = "eu_recovery"
-        const val TYPE_EU_ALL_IN_ONE = "eu_allinone"
+        const val TYPE_EU = "eu"
     }
 
     object Domestic : GreenCardType()
-    object EuVaccination : GreenCardType()
-    object EuTest : GreenCardType()
-    object EuRecovery : GreenCardType()
-    object EuAllInOne : GreenCardType()
+    object Eu : GreenCardType()
 }

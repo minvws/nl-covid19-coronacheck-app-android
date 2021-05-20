@@ -108,21 +108,13 @@ class HolderDatabaseTest : AutoCloseKoinTest() {
                 greenCardEntity = GreenCardEntity(
                     id = 1,
                     walletId = 1,
-                    type = GreenCardType.EuTest,
-                    issuedAt = OffsetDateTime.ofInstant(
-                        Instant.ofEpochSecond(1),
-                        ZoneOffset.UTC
-                    )
+                    type = GreenCardType.Eu,
                 ),
                 credentialEntities = listOf(
                     CredentialEntity(
                         id = 1,
                         greenCardId = 1,
                         qrData = "",
-                        validFrom = OffsetDateTime.ofInstant(
-                            Instant.ofEpochSecond(1),
-                            ZoneOffset.UTC
-                        ),
                         credentialVersion = 1
                     )
                 ),
@@ -146,21 +138,13 @@ class HolderDatabaseTest : AutoCloseKoinTest() {
                 greenCardEntity = GreenCardEntity(
                     id = 2,
                     walletId = 1,
-                    type = GreenCardType.EuVaccination,
-                    issuedAt = OffsetDateTime.ofInstant(
-                        Instant.ofEpochSecond(2),
-                        ZoneOffset.UTC
-                    )
+                    type = GreenCardType.Eu,
                 ),
                 credentialEntities = listOf(
                     CredentialEntity(
                         id = 2,
                         greenCardId = 2,
                         qrData = "",
-                        validFrom = OffsetDateTime.ofInstant(
-                            Instant.ofEpochSecond(2),
-                            ZoneOffset.UTC
-                        ),
                         credentialVersion = 1
                     )
                 ),

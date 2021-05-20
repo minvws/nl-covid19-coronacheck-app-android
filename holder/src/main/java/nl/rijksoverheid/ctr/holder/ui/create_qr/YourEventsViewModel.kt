@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEvents
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SaveEventsUseCase
@@ -26,7 +27,8 @@ abstract class YourEventsViewModel : ViewModel() {
 }
 
 class YourEventsViewModelImpl(
-    private val saveEventsUseCase: SaveEventsUseCase
+    private val saveEventsUseCase: SaveEventsUseCase,
+    private val holderDatabaseSyncer: HolderDatabaseSyncer
 ) : YourEventsViewModel() {
 
     override fun saveRemoteTestResult(remoteTestResult: RemoteTestResult, rawResponse: ByteArray) {
@@ -46,6 +48,9 @@ class YourEventsViewModelImpl(
         viewModelScope.launch {
             try {
                 saveEventsUseCase.save(remoteEvents)
+                holderDatabaseSyncer.sync(
+                    syncWithRemote = true
+                )
                 (savedEvents as MutableLiveData).value = Event(true)
             } finally {
                 loading.value = Event(false)

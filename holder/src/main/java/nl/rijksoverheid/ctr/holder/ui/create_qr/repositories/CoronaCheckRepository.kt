@@ -24,6 +24,7 @@ interface CoronaCheckRepository {
     suspend fun accessTokens(tvsToken: String): RemoteAccessTokens
     suspend fun getTestIsm(test: String, sToken: String, icm: String): TestIsmResult
     suspend fun remoteNonce(): RemoteNonce
+    suspend fun getCredentials(): RemoteCredentials
 }
 
 open class CoronaCheckRepositoryImpl(
@@ -72,5 +73,9 @@ open class CoronaCheckRepositoryImpl(
 
     override suspend fun remoteNonce(): RemoteNonce {
         return api.getNonce()
+    }
+
+    override suspend fun getCredentials(): RemoteCredentials {
+        return api.getCredentials()
     }
 }

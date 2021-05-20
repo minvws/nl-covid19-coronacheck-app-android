@@ -66,7 +66,7 @@ android {
     flavorDimensions "environment"
     productFlavors {
         tst {
-            buildConfigField "String", "BASE_API_URL", "\"https://api-ct.bananenhalen.nl/v3/\""
+            buildConfigField "String", "BASE_API_URL", "\"https://qrdaar.scriptbase.org/v3/\""
             buildConfigField "String", "DIGI_D_BASE_URL", "\"https://login.ggdghor.nl/coronitacc\""
             buildConfigField "String", "DIGI_D_CLIENT_ID", "\"6456237456911667336\""
             buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "false"
