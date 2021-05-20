@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentChooseProviderBinding
-import nl.rijksoverheid.ctr.shared.ext.setAsAccessibilityButton
+import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAsAccessibilityButton
 import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 import org.koin.android.ext.android.inject
 
@@ -42,6 +42,6 @@ class ChooseProviderFragment : Fragment(R.layout.fragment_choose_provider) {
         ) {
         }
 
-        binding.providerCommercial.root.setAsAccessibilityButton(isButton = true)
+        binding.providerCommercial.root.setAsAccessibilityButton()
     }
 }

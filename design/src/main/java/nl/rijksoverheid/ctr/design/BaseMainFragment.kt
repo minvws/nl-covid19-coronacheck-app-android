@@ -8,7 +8,6 @@
 
 package nl.rijksoverheid.ctr.design
 
-import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
@@ -21,7 +20,7 @@ import nl.rijksoverheid.ctr.design.databinding.MenuHeaderBinding
 import nl.rijksoverheid.ctr.design.ext.isScreenReaderOn
 import nl.rijksoverheid.ctr.shared.AccessibilityConstants
 import nl.rijksoverheid.ctr.shared.ext.getNavigationIconView
-import nl.rijksoverheid.ctr.shared.ext.setAccessibilityFocus
+import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAccessibilityFocus
 
 
 /**

@@ -4,8 +4,12 @@ import android.content.Context
 import android.view.View
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityManager
+import android.widget.Button
 import androidx.core.content.ContextCompat
+import androidx.core.view.AccessibilityDelegateCompat
+import androidx.core.view.ViewCompat
 import androidx.core.view.accessibility.AccessibilityEventCompat
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -62,10 +66,86 @@ object Accessibility {
      *
      * @param view View to move accessibility focus to
      */
-    fun focus(view: View) {
+    fun focus(view: View): View {
         view.isFocusable = true
         view.isFocusableInTouchMode = true
         view.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED)
+        return view
+    }
+
+    /**
+     * Extension to move the accessibility focus to the given view
+     */
+    fun View.setAccessibilityFocus(): View {
+        return focus(this)
+    }
+
+    /**
+     * Helper method to set accessibility delegate with callback
+     *
+     * @param view View to set the delegate of
+     * @param callback Callback used to set properties of AccessibilityNodeInfoCompat
+     */
+    fun accessibilityDelegate(view: View, callback: (host: View, info: AccessibilityNodeInfoCompat) -> Unit) {
+        ViewCompat.setAccessibilityDelegate(
+                view,
+                object : AccessibilityDelegateCompat() {
+                    override fun onInitializeAccessibilityNodeInfo(
+                            host: View,
+                            info: AccessibilityNodeInfoCompat
+                    ) {
+                        super.onInitializeAccessibilityNodeInfo(host, info)
+                        callback(host, info)
+                    }
+                }
+        )
+    }
+
+    /**
+     * Helper method to mark a view as accessibility heading
+     *
+     * @param view View to mark
+     * @param isHeading Value to apply
+     */
+    fun heading(view: View, isHeading: Boolean = true): View {
+        accessibilityDelegate(view) { _, info ->
+            info.isHeading = isHeading
+        }
+        return view
+    }
+
+    /**
+     * Extension to mark the given view as accessibility heading
+     *
+     * @param isHeading Value to apply
+     */
+    fun View.setAsAccessibilityHeading(isHeading: Boolean = true): View {
+        return heading(this, isHeading)
+    }
+
+    /**
+     * Helper method to mark a view as accessibility button
+     *
+     * @param view View to mark
+     * @param isButton Value to apply
+     */
+    fun button(view: View, isButton: Boolean = true): View {
+        accessibilityDelegate(view) { _, info ->
+            info.className = if (isButton) {
+                Button::class.java.name
+            } else {
+                this::class.java.name
+            }
+        }
+        return view
+    }
+
+    /**
+     * Extension to mark the given view as accessibility button
+     *
+     * @param isButton Value to apply
+     */
+    fun View.setAsAccessibilityButton(isButton: Boolean = true): View {
+        return button(this, isButton)
     }
 }
-
