@@ -16,7 +16,7 @@ data class RemoteCredentials(
     val euGreencards: List<EuGreenCard>?
 ) {
     data class DomesticGreenCard(
-        val origin: List<Origin>,
+        val origins: List<Origin>,
         val createCredentialMessages: ByteArray
     ) {
         override fun equals(other: Any?): Boolean {
@@ -25,21 +25,21 @@ data class RemoteCredentials(
 
             other as DomesticGreenCard
 
-            if (origin != other.origin) return false
+            if (origins != other.origins) return false
             if (!createCredentialMessages.contentEquals(other.createCredentialMessages)) return false
 
             return true
         }
 
         override fun hashCode(): Int {
-            var result = origin.hashCode()
+            var result = origins.hashCode()
             result = 31 * result + createCredentialMessages.contentHashCode()
             return result
         }
     }
 
     data class EuGreenCard(
-        val origin: Origin,
+        val origins: Origin,
         val credential: String
     )
 

@@ -12,16 +12,26 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.AccessibilityDelegateCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
+import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.design.ExpandedBottomSheetDialogFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentTravelModeBinding
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.shared.ext.sharedViewModelWithOwner
+import org.koin.androidx.viewmodel.ViewModelOwner
 
 class TravelModeDialogFragment : ExpandedBottomSheetDialogFragment() {
+
+    private val myOverviewViewModel: MyOverviewViewModel by sharedViewModelWithOwner(
+        owner = {
+            ViewModelOwner.from(
+                findNavController().getViewModelStoreOwner(R.id.nav_graph_overview),
+                this
+            )
+        })
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,11 +51,13 @@ class TravelModeDialogFragment : ExpandedBottomSheetDialogFragment() {
         }
 
         binding.buttonDomestic.setOnClickListener {
+            myOverviewViewModel.refreshOverviewItems(GreenCardType.Domestic)
             binding.buttonDomestic.setToggled(true)
             binding.buttonForeign.setToggled(false)
         }
 
         binding.buttonForeign.setOnClickListener {
+            myOverviewViewModel.refreshOverviewItems(GreenCardType.Eu)
             binding.buttonDomestic.setToggled(false)
             binding.buttonForeign.setToggled(true)
         }
@@ -61,8 +73,14 @@ class TravelModeDialogFragment : ExpandedBottomSheetDialogFragment() {
         })
 
 
-        // Dummy, pretend NL is always toggled
-        binding.buttonDomestic.setToggled(true)
+        when (myOverviewViewModel.getSelectedType()) {
+            is GreenCardType.Domestic -> {
+                binding.buttonDomestic.setToggled(true)
+            }
+            is GreenCardType.Eu -> {
+                binding.buttonForeign.setToggled(true)
+            }
+        }
     }
 
 }

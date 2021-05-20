@@ -109,6 +109,9 @@ fun holderModule(baseUrl: String) = module {
     factory<LocalTestResultUseCase> {
         LocalTestResultUseCaseImpl(get(), get(), get(), get(), get())
     }
+    factory<GetMyOverviewItemsUseCase> {
+        GetMyOverviewItemsUseCaseImpl(get())
+    }
     factory<TokenValidatorUtil> { TokenValidatorUtilImpl() }
     factory {
         TokenQrUseCase(get())

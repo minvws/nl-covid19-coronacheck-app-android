@@ -20,8 +20,8 @@
     <string name="privacy_policy_3"><![CDATA[The QR code contains a minimum amount of personal <b>data</b>.]]></string>
     <string name="privacy_policy_checkbox_text">I\'ve read the privacy statement and give consent for processing my personal data.</string>
     <string name="my_overview">My overview</string>
-    <string name="my_overview_description">To get access, have your QR code scanned at the entrance of an entertainment venue.</string>
-    <string name="my_overview_no_qr_description">To get access to a pilot event, you need a negative test result. You can convert this into a QR code. Display your QR code and proof of identity at the entrance.</string>
+    <string name="my_overview_description">Laat zowel de QR-code als je identiteitsbewijs zien bij de ingang van de locatie die je bezoekt.</string>
+    <string name="my_overview_no_qr_description"><![CDATA[Heb je een bewijs nodig? Laat je eerst vaccineren of doe een test bij een <a href="https://coronacheck.nl/nl/testafspraak-in-app">aangesloten testlocatie</a>. Daarna kun je een QR-code maken.]]></string>
     <string name="dialog_error_title">Sorry, something went wrong</string>
     <string name="dialog_error_message">Because of a technical error.</string>
     <string name="dialog_error_message_with_error_code">Because of a technical error (%1$s).</string>
@@ -205,9 +205,6 @@
     <string name="qr_card_vaccination_validity_nl">Vaccinatiebewijs:\ngeldig tot %1$s</string>
     <string name="qr_card_test_validity_nl">Testbewijs:\ngeldig tot: %1$s</string>
     <string name="qr_card_recovery_validity_nl">Herstelverklaring:\ngeldig tot %1$s</string>
-    <string name="qr_card_vaccination_validity_europe">Vaccinatiedatum:\n%1$s</string>
-    <string name="qr_card_test_validity_europe">Testdatum:\n%1$s</string>
-    <string name="qr_card_recovery_validity_europe">Herstelverklaring:\ngeldig vanaf %1$s</string>
     <string name="retrieved_vaccinations_backbutton_title">Weet je zeker dat je wilt stoppen?</string>
     <string name="retrieved_vaccinations_backbutton_message">Je moet dan later opnieuw met DigiD inloggen om je vaccinatie op te halen.</string>
     <string name="travel_toggle_europe">Ik reis binnen Europa</string>
@@ -226,4 +223,8 @@
     <string name="qr_explanation_title_eu">Over mijn Europese QR-code</string>
     <string name="qr_explanation_description_eu"><![CDATA[Als je de Nederlandse grens over gaat of  in Europa reist zijn er meer gegevens nodig. Daarom staan in de Europese QR-code de volgende gegevens:<br/><br/>Naam: <b>%1$s</b><br/>Geboortedatum: <b>%2$s</b><br/>Vaccin: <b>%3$s</b><br/>Vaccinatiedatum: <b>%4$s</b><br/><br/>Gebruik in de andere Europese landen altijd de Europese QR-code. De Nederlandse QR-code is niet geldig buiten Nederland.]]></string>
     <string name="qr_explanation_icon_label">Uitleg over QR code</string>
+    <string name="my_overview_description_eu">Gebruik bij de grens en buiten Nederland de Europese QR-code. Controleer voor vertrek of jouw QR-codes geldig zijn in het land waar je heen reist.</string>
+    <string name="qr_card_vaccination_validity_domestic">Vaccinatiedatum:\n%1$s</string>
+    <string name="qr_card_recovery_validity_domestic">Herstelverklaring:\ngeldig vanaf %1$s</string>
+    <string name="qr_card_test_validity_domestic">Testdatum:\n%1$s</string>
 </resources>

@@ -77,7 +77,7 @@ class HolderDatabaseSyncerImpl(
                 )
 
                 // Create origins for domestic green card
-                remoteDomesticGreenCard.origin.forEach { remoteOrigin ->
+                remoteDomesticGreenCard.origins.forEach { remoteOrigin ->
                     val type = when (remoteOrigin.type) {
                         OriginType.TYPE_VACCINATION -> OriginType.Vaccination
                         OriginType.TYPE_RECOVERY -> OriginType.Recovery
@@ -127,7 +127,7 @@ class HolderDatabaseSyncerImpl(
                 )
 
                 // Create origins for domestic green card
-                val remoteOrigin = remoteEuropeanGreenCard.origin
+                val remoteOrigin = remoteEuropeanGreenCard.origins
                 val type = when (remoteOrigin.type) {
                     OriginType.TYPE_VACCINATION -> OriginType.Vaccination
                     OriginType.TYPE_RECOVERY -> OriginType.Recovery
