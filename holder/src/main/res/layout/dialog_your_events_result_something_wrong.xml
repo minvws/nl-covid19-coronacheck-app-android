@@ -29,6 +29,7 @@
             android:layout_height="wrap_content"
             android:background="?attr/actionBarItemBackground"
             android:src="@drawable/ic_close"
+            android:contentDescription="@string/menu_close"
             app:layout_constraintBottom_toBottomOf="@+id/title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/title" />

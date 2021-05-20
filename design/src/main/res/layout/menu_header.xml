@@ -22,10 +22,10 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:clickable="true"
-        android:contentDescription="@string/menu_close"
         android:focusable="true"
         android:importantForAccessibility="yes"
         android:src="@drawable/ic_close"
+        android:contentDescription="@string/menu_close"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
