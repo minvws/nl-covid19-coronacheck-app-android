@@ -30,7 +30,7 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Description" />
 
-        <TextView
+        <nl.rijksoverheid.ctr.design.views.AccessibilityHeaderWidget
             android:id="@+id/read_more"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
