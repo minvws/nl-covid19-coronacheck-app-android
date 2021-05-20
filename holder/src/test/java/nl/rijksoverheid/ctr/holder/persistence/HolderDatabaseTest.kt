@@ -115,7 +115,8 @@ class HolderDatabaseTest : AutoCloseKoinTest() {
                         id = 1,
                         greenCardId = 1,
                         data = "",
-                        credentialVersion = 1
+                        credentialVersion = 1,
+                        validFrom = OffsetDateTime.now()
                     )
                 ),
                 origins = listOf(
@@ -145,7 +146,8 @@ class HolderDatabaseTest : AutoCloseKoinTest() {
                         id = 2,
                         greenCardId = 2,
                         data = "",
-                        credentialVersion = 1
+                        credentialVersion = 1,
+                        validFrom = OffsetDateTime.now()
                     )
                 ),
                 origins = listOf(

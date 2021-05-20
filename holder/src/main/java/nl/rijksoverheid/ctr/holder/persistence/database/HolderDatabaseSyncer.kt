@@ -100,7 +100,17 @@ class HolderDatabaseSyncerImpl(
                     entity = CredentialEntity(
                         greenCardId = localDomesticGreenCardId,
                         data = "Dummy Data",
-                        credentialVersion = 1
+                        credentialVersion = 1,
+                        validFrom = OffsetDateTime.now().minusDays(5)
+                    )
+                )
+
+                holderDatabase.credentialDao().insert(
+                    entity = CredentialEntity(
+                        greenCardId = localDomesticGreenCardId,
+                        data = "Dummy Data",
+                        credentialVersion = 1,
+                        validFrom = OffsetDateTime.now().plusDays(5)
                     )
                 )
             }
@@ -140,7 +150,17 @@ class HolderDatabaseSyncerImpl(
                     entity = CredentialEntity(
                         greenCardId = localEuropeanGreenCardId,
                         data = "Dummy Data",
-                        credentialVersion = 1
+                        credentialVersion = 1,
+                        validFrom = OffsetDateTime.now().minusDays(5)
+                    )
+                )
+
+                holderDatabase.credentialDao().insert(
+                    entity = CredentialEntity(
+                        greenCardId = localEuropeanGreenCardId,
+                        data = "Dummy Data",
+                        credentialVersion = 1,
+                        validFrom = OffsetDateTime.now().plusDays(5)
                     )
                 )
             }
