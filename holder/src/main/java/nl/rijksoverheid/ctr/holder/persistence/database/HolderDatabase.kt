@@ -3,6 +3,8 @@ package nl.rijksoverheid.ctr.holder.persistence.database
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import net.sqlcipher.database.SQLiteDatabase
+import net.sqlcipher.database.SupportFactory
 import nl.rijksoverheid.ctr.holder.persistence.database.converters.HolderDatabaseConverter
 import nl.rijksoverheid.ctr.holder.persistence.database.dao.*
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
@@ -25,4 +27,15 @@ abstract class HolderDatabase : RoomDatabase() {
     abstract fun credentialDao(): CredentialDao
     abstract fun eventGroupDao(): EventGroupDao
     abstract fun originDao(): OriginDao
+
+    companion object {
+        fun createInstance(context: Context, secretKeyUseCase: SecretKeyUseCase): HolderDatabase {
+            secretKeyUseCase.persist()
+            val supportFactory = SupportFactory(SQLiteDatabase.getBytes(secretKeyUseCase.json().toCharArray()))
+            return Room
+                .databaseBuilder(context, HolderDatabase::class.java, "holder-database")
+                .openHelperFactory(supportFactory)
+                .build()
+        }
+    }
 }

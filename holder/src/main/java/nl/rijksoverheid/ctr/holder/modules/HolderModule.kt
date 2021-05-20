@@ -1,6 +1,5 @@
 package nl.rijksoverheid.ctr.holder.modules
 
-import androidx.room.Room
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import nl.rijksoverheid.ctr.api.signing.certificates.DIGICERT_BTC_ROOT_CA
@@ -59,9 +58,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 fun holderModule(baseUrl: String) = module {
 
     single {
-        Room
-            .databaseBuilder(androidContext(), HolderDatabase::class.java, "holder-database")
-            .build()
+        HolderDatabase.createInstance(androidContext(), get())
     }
 
     factory<HolderDatabaseSyncer> { HolderDatabaseSyncerImpl(get(), get(), get()) }
