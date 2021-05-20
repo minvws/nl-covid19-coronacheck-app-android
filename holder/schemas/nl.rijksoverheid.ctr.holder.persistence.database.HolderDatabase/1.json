@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "d9751c90c0335da5cd6ad5212d20adcb",
+    "identityHash": "19caf4e6f7dcf2b4b8a2a4d00075c3f7",
     "entities": [
       {
         "tableName": "wallet",
@@ -112,7 +112,7 @@
       },
       {
         "tableName": "green_card",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `wallet_id` INTEGER NOT NULL, `type` TEXT NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`wallet_id`) REFERENCES `wallet`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `wallet_id` INTEGER NOT NULL, `type` TEXT NOT NULL, FOREIGN KEY(`wallet_id`) REFERENCES `wallet`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -137,7 +137,7 @@
           "columnNames": [
             "id"
           ],
-          "autoGenerate": false
+          "autoGenerate": true
         },
         "indices": [
           {
@@ -165,7 +165,7 @@
       },
       {
         "tableName": "credential",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `green_card_id` INTEGER NOT NULL, `qrData` TEXT NOT NULL, `credentialVersion` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`green_card_id`) REFERENCES `green_card`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `green_card_id` INTEGER NOT NULL, `data` TEXT NOT NULL, `credentialVersion` INTEGER NOT NULL, FOREIGN KEY(`green_card_id`) REFERENCES `green_card`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -180,8 +180,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "qrData",
-            "columnName": "qrData",
+            "fieldPath": "data",
+            "columnName": "data",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -196,7 +196,7 @@
           "columnNames": [
             "id"
           ],
-          "autoGenerate": false
+          "autoGenerate": true
         },
         "indices": [],
         "foreignKeys": [
@@ -215,7 +215,7 @@
       },
       {
         "tableName": "origin",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `green_card_id` INTEGER NOT NULL, `type` TEXT NOT NULL, `eventTime` INTEGER NOT NULL, `expirationTime` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`green_card_id`) REFERENCES `green_card`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `green_card_id` INTEGER NOT NULL, `type` TEXT NOT NULL, `eventTime` INTEGER NOT NULL, `expirationTime` INTEGER NOT NULL, FOREIGN KEY(`green_card_id`) REFERENCES `green_card`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -252,7 +252,7 @@
           "columnNames": [
             "id"
           ],
-          "autoGenerate": false
+          "autoGenerate": true
         },
         "indices": [],
         "foreignKeys": [
@@ -273,7 +273,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd9751c90c0335da5cd6ad5212d20adcb')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '19caf4e6f7dcf2b4b8a2a4d00075c3f7')"
     ]
   }
 }

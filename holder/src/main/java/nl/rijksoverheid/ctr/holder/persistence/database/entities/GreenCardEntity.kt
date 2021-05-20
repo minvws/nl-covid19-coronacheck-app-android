@@ -22,7 +22,7 @@ import androidx.room.PrimaryKey
     )]
 )
 data class GreenCardEntity(
-    @PrimaryKey val id: Int,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
     @ColumnInfo(name = "wallet_id", index = true) val walletId: Int,
     val type: GreenCardType,
 )

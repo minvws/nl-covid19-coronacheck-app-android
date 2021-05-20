@@ -27,4 +27,7 @@ interface CredentialDao {
 
     @Query("DELETE FROM credential WHERE id = :id")
     suspend fun delete(id: Int)
+
+    @Query("DELETE FROM credential")
+    suspend fun deleteAll()
 }

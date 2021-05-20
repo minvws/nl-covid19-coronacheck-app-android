@@ -114,7 +114,7 @@ class HolderDatabaseTest : AutoCloseKoinTest() {
                     CredentialEntity(
                         id = 1,
                         greenCardId = 1,
-                        qrData = "",
+                        data = "",
                         credentialVersion = 1
                     )
                 ),
@@ -144,7 +144,7 @@ class HolderDatabaseTest : AutoCloseKoinTest() {
                     CredentialEntity(
                         id = 2,
                         greenCardId = 2,
-                        qrData = "",
+                        data = "",
                         credentialVersion = 1
                     )
                 ),
