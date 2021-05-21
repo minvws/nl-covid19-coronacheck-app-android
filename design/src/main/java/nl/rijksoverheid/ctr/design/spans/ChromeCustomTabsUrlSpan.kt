@@ -2,7 +2,6 @@ package nl.rijksoverheid.ctr.design.spans
 
 import android.text.style.URLSpan
 import android.view.View
-import android.webkit.URLUtil
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 
 /*
@@ -15,8 +14,6 @@ import nl.rijksoverheid.ctr.shared.ext.launchUrl
 class ChromeCustomTabsUrlSpan(url: String?) : URLSpan(url) {
     override fun onClick(widget: View) {
         super.onClick(widget)
-        if (URLUtil.isNetworkUrl(url)) {
             url?.launchUrl(widget.context)
-        }
     }
 }
