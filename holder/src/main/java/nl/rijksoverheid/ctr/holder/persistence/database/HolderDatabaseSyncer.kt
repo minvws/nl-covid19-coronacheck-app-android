@@ -126,23 +126,23 @@ class HolderDatabaseSyncerImpl(
                     )
                 )
 
-                // Create origins for domestic green card
-                val remoteOrigin = remoteEuropeanGreenCard.origins
-                val type = when (remoteOrigin.type) {
-                    OriginType.TYPE_VACCINATION -> OriginType.Vaccination
-                    OriginType.TYPE_RECOVERY -> OriginType.Recovery
-                    OriginType.TYPE_TEST -> OriginType.Test
-                    else -> throw IllegalStateException("Type not known")
-                }
-
-                holderDatabase.originDao().insert(
-                    OriginEntity(
-                        greenCardId = localEuropeanGreenCardId,
-                        type = type,
-                        eventTime = remoteOrigin.eventTime,
-                        expirationTime = remoteOrigin.expirationTime
+                // Create origins for european green card
+                remoteEuropeanGreenCard.origins.forEach { remoteOrigin ->
+                    val type = when (remoteOrigin.type) {
+                        OriginType.TYPE_VACCINATION -> OriginType.Vaccination
+                        OriginType.TYPE_RECOVERY -> OriginType.Recovery
+                        OriginType.TYPE_TEST -> OriginType.Test
+                        else -> throw IllegalStateException("Type not known")
+                    }
+                    holderDatabase.originDao().insert(
+                        OriginEntity(
+                            greenCardId = localEuropeanGreenCardId,
+                            type = type,
+                            eventTime = remoteOrigin.eventTime,
+                            expirationTime = remoteOrigin.expirationTime
+                        )
                     )
-                )
+                }
 
                 // Create credentials for domestic green card
                 // TODO Read with createCredentials, insert dummy credential for now

@@ -39,7 +39,7 @@ data class RemoteCredentials(
     }
 
     data class EuGreenCard(
-        val origins: Origin,
+        val origins: List<Origin>,
         val credential: String
     )
 
