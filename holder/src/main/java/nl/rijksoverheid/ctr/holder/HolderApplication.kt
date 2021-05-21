@@ -11,6 +11,7 @@ import nl.rijksoverheid.ctr.holder.modules.holderModule
 import nl.rijksoverheid.ctr.holder.modules.holderPreferenceModule
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.WalletEntity
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SecretKeyUseCase
 import nl.rijksoverheid.ctr.introduction.introductionModule
 import nl.rijksoverheid.ctr.shared.SharedApplication
 import nl.rijksoverheid.ctr.shared.sharedModule
@@ -31,10 +32,12 @@ open class HolderApplication : SharedApplication() {
 
     private val loadPublicKeysUseCase: LoadPublicKeysUseCase by inject()
     private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
+    private val secretKeyUseCase: SecretKeyUseCase by inject()
     private val holderDatabase: HolderDatabase by inject()
 
     override fun onCreate() {
         super.onCreate()
+
 
         startKoin {
             androidContext(this@HolderApplication)
@@ -55,6 +58,9 @@ open class HolderApplication : SharedApplication() {
                 designModule
             )
         }
+
+        // Generate and store secret key to be used by rest of the app
+        secretKeyUseCase.persist()
 
         // If we have public keys stored, load them so they can be used by CTCL
         cachedAppConfigUseCase.getCachedPublicKeys()?.let {

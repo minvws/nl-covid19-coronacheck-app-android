@@ -121,7 +121,6 @@ open class TestResultsViewModelImpl(
         (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {
             try {
-                secretKeyUseCase.persist()
                 getRetrievedResult()?.let {
                     val result = testResultUseCase.signTestResult(
                         signedResponseWithTestResult = it.signedResponseWithTestResult
