@@ -6,6 +6,7 @@ import nl.rijksoverheid.ctr.api.apiModule
 import nl.rijksoverheid.ctr.appconfig.*
 import nl.rijksoverheid.ctr.appconfig.usecases.LoadPublicKeysUseCase
 import nl.rijksoverheid.ctr.design.designModule
+import nl.rijksoverheid.ctr.holder.modules.holderClmobileModule
 import nl.rijksoverheid.ctr.holder.modules.holderIntroductionModule
 import nl.rijksoverheid.ctr.holder.modules.holderModule
 import nl.rijksoverheid.ctr.holder.modules.holderPreferenceModule
@@ -60,7 +61,7 @@ open class HolderApplication : SharedApplication() {
         }
 
         // Generate and store secret key to be used by rest of the app
-        //secretKeyUseCase.persist()
+        secretKeyUseCase.persist()
 
         // If we have public keys stored, load them so they can be used by CTCL
         cachedAppConfigUseCase.getCachedPublicKeys()?.let {
@@ -81,6 +82,6 @@ open class HolderApplication : SharedApplication() {
     }
 
     override fun getAdditionalModules(): List<Module> {
-        return listOf(holderPreferenceModule)
+        return listOf(holderPreferenceModule, holderClmobileModule)
     }
 }

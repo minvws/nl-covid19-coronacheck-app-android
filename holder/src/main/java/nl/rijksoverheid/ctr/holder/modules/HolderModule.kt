@@ -77,13 +77,14 @@ fun holderModule(baseUrl: String) = module {
         QrCodeUseCaseImpl(
             get(),
             get(),
+            get()
         )
     }
     factory<SecretKeyUseCase> {
-        SecretKeyUseCaseImpl(get())
+        SecretKeyUseCaseImpl(get(), get())
     }
     factory<CommitmentMessageUseCase> {
-        CommitmentMessageUseCaseImpl(get())
+        CommitmentMessageUseCaseImpl(get(), get())
     }
     factory<ConfigProvidersUseCase> {
         ConfigProvidersUseCaseImpl(get())
@@ -154,11 +155,11 @@ fun holderModule(baseUrl: String) = module {
 
     // Usecases
     factory<CreateCredentialUseCase> {
-        CreateCredentialUseCaseImpl()
+        CreateCredentialUseCaseImpl(get())
     }
 
     factory<TestResultAttributesUseCase> {
-        TestResultAttributesUseCaseImpl(get())
+        TestResultAttributesUseCaseImpl(get(), get())
     }
 
     single {

@@ -1,8 +1,7 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
-import clmobile.Clmobile
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
-import nl.rijksoverheid.ctr.shared.ext.successString
+import nl.rijksoverheid.ctr.shared.ClmobileWrapper
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -18,7 +17,8 @@ interface SecretKeyUseCase {
 }
 
 class SecretKeyUseCaseImpl(
-    private val persistenceManager: PersistenceManager
+    private val persistenceManager: PersistenceManager,
+    private val clmobileWrapper: ClmobileWrapper
 ) : SecretKeyUseCase {
 
     override fun json(): String {
@@ -28,7 +28,7 @@ class SecretKeyUseCaseImpl(
 
     override fun persist() {
         if (persistenceManager.getSecretKeyJson() == null) {
-            persistenceManager.saveSecretKeyJson(json = Clmobile.generateHolderSk().successString())
+            persistenceManager.saveSecretKeyJson(json = clmobileWrapper.generateHolderSk())
         }
     }
 }

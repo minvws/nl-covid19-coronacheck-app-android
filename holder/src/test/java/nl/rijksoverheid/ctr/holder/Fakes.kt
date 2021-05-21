@@ -24,6 +24,7 @@ import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TokenValidatorUtil
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.ui.new_terms.models.NewTerms
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
+import nl.rijksoverheid.ctr.shared.ClmobileWrapper
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.PersonalDetails
 import nl.rijksoverheid.ctr.shared.models.TestResultAttributes
@@ -411,6 +412,37 @@ fun fakePersistenceManager(
         override fun setHasDismissedRootedDeviceDialog() {
 
         }
+    }
+}
+
+fun fakeClmobileWrapper(): ClmobileWrapper {
+    return object : ClmobileWrapper {
+        override fun loadIssuerPks(bytes: ByteArray) {
+        }
+
+        override fun createCredential(secretKey: ByteArray, body: ByteArray): String {
+            return ""
+        }
+
+        override fun readCredential(credentials: ByteArray): ByteArray {
+            return ByteArray(0)
+        }
+
+        override fun createCommitmentMessage(secretKey: ByteArray, nonce: ByteArray): String {
+            return ""
+        }
+
+        override fun discloseAllWithTimeQrEncoded(
+            secretKey: ByteArray,
+            credentials: ByteArray
+        ): String {
+            return ""
+        }
+
+        override fun generateHolderSk(): String {
+            return ""
+        }
+
     }
 }
 

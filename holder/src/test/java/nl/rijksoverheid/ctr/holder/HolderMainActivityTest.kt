@@ -103,10 +103,6 @@ class HolderMainActivityTest : AutoCloseKoinTest() {
                 factory {
                     fakeCachedAppConfigUseCase()
                 }
-                single{
-                    val context = ApplicationProvider.getApplicationContext<Context>()
-                    Room.inMemoryDatabaseBuilder(context, HolderDatabase::class.java).build()
-                }
             })
 
         scenario = ActivityScenario.launch(
