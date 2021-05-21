@@ -1,10 +1,13 @@
 package nl.rijksoverheid.ctr.holder
 
+import android.content.Context
 import android.content.Intent
 import androidx.navigation.findNavController
+import androidx.room.Room
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
+import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.introduction.IntroductionData
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 import org.junit.After
@@ -99,6 +102,10 @@ class HolderMainActivityTest : AutoCloseKoinTest() {
                 }
                 factory {
                     fakeCachedAppConfigUseCase()
+                }
+                single{
+                    val context = ApplicationProvider.getApplicationContext<Context>()
+                    Room.inMemoryDatabaseBuilder(context, HolderDatabase::class.java).build()
                 }
             })
 

@@ -60,7 +60,7 @@ open class HolderApplication : SharedApplication() {
         }
 
         // Generate and store secret key to be used by rest of the app
-        secretKeyUseCase.persist()
+        //secretKeyUseCase.persist()
 
         // If we have public keys stored, load them so they can be used by CTCL
         cachedAppConfigUseCase.getCachedPublicKeys()?.let {

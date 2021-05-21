@@ -33,6 +33,7 @@ abstract class HolderDatabase : RoomDatabase() {
 
     companion object {
         fun createInstance(context: Context, secretKeyUseCase: SecretKeyUseCase): HolderDatabase {
+            secretKeyUseCase.persist()
             val supportFactory =
                 SupportFactory(SQLiteDatabase.getBytes(secretKeyUseCase.json().toCharArray()))
             return Room
