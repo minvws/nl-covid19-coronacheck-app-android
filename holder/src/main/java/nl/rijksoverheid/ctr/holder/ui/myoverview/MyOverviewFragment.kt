@@ -25,7 +25,6 @@ import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.sharedViewModelWithOwner
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.androidx.viewmodel.ViewModelOwner
-import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 
@@ -121,14 +120,14 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
         val adapterItems = mutableListOf<BindableItem<*>>()
         myOverviewItems.items.forEach { myOverviewItem ->
             when (myOverviewItem) {
-                is MyOverviewItem.Header -> {
+                is MyOverviewItem.HeaderItem -> {
                     adapterItems.add(
                         MyOverviewHeaderAdapterItem(
                             text = myOverviewItem.text
                         )
                     )
                 }
-                is MyOverviewItem.CreateQrCard -> {
+                is MyOverviewItem.CreateQrCardItem -> {
                     adapterItems.add(MyOverviewNavigationCardAdapterItem(
                         title = if (myOverviewItem.hasGreenCards) R.string.my_overview_no_qr_replace_qr_title else R.string.my_overview_no_qr_make_qr_title,
                         description = R.string.my_overview_no_qr_make_qr_description,
@@ -153,7 +152,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                 is MyOverviewItem.BannerItem -> {
 
                 }
-                is MyOverviewItem.ToggleGreenCardTypeItem -> {
+                is MyOverviewItem.TravelModeItem -> {
                     binding.typeToggle.root.visibility = View.VISIBLE
 
                     when (myOverviewItems.type) {

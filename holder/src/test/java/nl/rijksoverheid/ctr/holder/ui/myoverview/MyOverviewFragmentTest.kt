@@ -1,7 +1,35 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview
 
+import androidx.fragment.app.testing.launchFragmentInContainer
+import androidx.lifecycle.ViewModelStore
+import androidx.navigation.Navigation
+import androidx.navigation.testing.TestNavHostController
+import androidx.test.core.app.ApplicationProvider
+import androidx.test.platform.app.InstrumentationRegistry
+import com.schibsted.spain.barista.assertion.BaristaListAssertions.assertDisplayedAtPosition
+import com.schibsted.spain.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
+import com.schibsted.spain.barista.assertion.BaristaVisibilityAssertions.assertNotDisplayed
+import nl.rijksoverheid.ctr.design.ext.formatDate
+import nl.rijksoverheid.ctr.design.ext.formatDateTime
+import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.fakeMyOverviewModel
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardEntity
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItem
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItems
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.context.loadKoinModules
+import org.koin.dsl.module
 import org.koin.test.AutoCloseKoinTest
+import org.robolectric.RobolectricTestRunner
+import java.time.Instant
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -10,240 +38,267 @@ import org.koin.test.AutoCloseKoinTest
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
+@RunWith(RobolectricTestRunner::class)
 class MyOverviewFragmentTest : AutoCloseKoinTest() {
 
-    @Test
-    fun test() {
-
+    private val navController = TestNavHostController(
+        ApplicationProvider.getApplicationContext()
+    ).also {
+        it.setViewModelStore(ViewModelStore())
+        it.setGraph(R.navigation.holder_nav_graph_main)
+        it.setCurrentDestination(R.id.nav_my_overview)
     }
 
-//    private val navController = TestNavHostController(
-//        ApplicationProvider.getApplicationContext()
-//    ).also {
-//        it.setViewModelStore(ViewModelStore())
-//        it.setGraph(R.navigation.holder_nav_graph_main)
-//        it.setCurrentDestination(R.id.nav_my_overview)
-//    }
-//
-//    @Test
-//    fun `Recyclerview has MyOverviewHeaderAdapterItem and two MyOverviewNavigationCardAdapterItem when LocalTestResult does not exist`() {
-//        launchOverviewFragment(
-//            localTestResultState = LocalTestResultState.None
-//        )
-//        assertListItemCount(
-//            listId = R.id.recyclerView,
-//            expectedItemCount = 3
-//        )
-//        assertDisplayedAtPosition(
-//            listId = R.id.recyclerView,
-//            position = 0,
-//            targetViewId = R.id.test_description,
-//            textId = R.string.my_overview_no_qr_description
-//        )
-//        assertDisplayedAtPosition(
-//            listId = R.id.recyclerView,
-//            position = 1,
-//            targetViewId = R.id.title,
-//            textId = R.string.my_overview_no_qr_make_appointment_title
-//        )
-//        assertDisplayedAtPosition(
-//            listId = R.id.recyclerView,
-//            position = 2,
-//            targetViewId = R.id.title,
-//            textId = R.string.my_overview_no_qr_make_qr_title
-//        )
-//        assertDisplayedAtPosition(
-//            listId = R.id.recyclerView,
-//            position = 2,
-//            targetViewId = R.id.button,
-//            textId = R.string.my_overview_no_qr_make_qr_button
-//        )
-//    }
-//
-//    @Test
-//    fun `Recyclerview has MyOverviewHeaderAdapterItem, MyOverviewTestResultAdapterItem and two MyOverviewNavigationCardAdapterItem when LocalTestResult is valid`() {
-//        launchOverviewFragment(
-//            localTestResultState = LocalTestResultState.Valid(
-//                LocalTestResult(
-//                    credentials = "dummy",
-//                    sampleDate = OffsetDateTime.now(),
-//                    expireDate = OffsetDateTime.now(),
-//                    testType = "dummy",
-//                    personalDetails = PersonalDetails("X", "X", "X", "X")
-//                ),
-//                firstTimeCreated = false
-//            )
-//        )
-//        assertListItemCount(
-//            listId = R.id.recyclerView,
-//            expectedItemCount = 4
-//        )
-//        assertDisplayedAtPosition(
-//            listId = R.id.recyclerView,
-//            position = 0,
-//            targetViewId = R.id.test_description,
-//            textId = R.string.my_overview_no_qr_description
-//        )
-//        assertDisplayedAtPosition(
-//            listId = R.id.recyclerView,
-//            position = 1,
-//            targetViewId = R.id.title,
-//            textId = R.string.my_overview_test_result_title
-//        )
-//        assertDisplayedAtPosition(
-//            listId = R.id.recyclerView,
-//            position = 2,
-//            targetViewId = R.id.title,
-//            textId = R.string.my_overview_no_qr_make_appointment_title
-//        )
-//        assertDisplayedAtPosition(
-//            listId = R.id.recyclerView,
-//            position = 3,
-//            targetViewId = R.id.title,
-//            textId = R.string.my_overview_no_qr_replace_qr_title
-//        )
-//        assertDisplayedAtPosition(
-//            listId = R.id.recyclerView,
-//            position = 3,
-//            targetViewId = R.id.button,
-//            textId = R.string.my_overview_no_qr_replace_qr_button
-//        )
-//    }
-//
-//    @Test
-//    fun `Recyclerview has MyOverviewHeaderAdapterItem, MyOverviewTestResultExpiredAdapterItem and two MyOverviewNavigationCardAdapterItem when LocalTestResult is expired`() {
-//        launchOverviewFragment(
-//            localTestResultState = LocalTestResultState.Expired
-//        )
-//        assertListItemCount(
-//            listId = R.id.recyclerView,
-//            expectedItemCount = 4
-//        )
-//        assertDisplayedAtPosition(
-//            listId = R.id.recyclerView,
-//            position = 0,
-//            targetViewId = R.id.test_description,
-//            textId = R.string.my_overview_no_qr_description
-//        )
-//        assertDisplayedAtPosition(
-//            listId = R.id.recyclerView,
-//            position = 1,
-//            targetViewId = R.id.text,
-//            text = ApplicationProvider.getApplicationContext<HolderApplication>()
-//                .getString(R.string.item_test_result_expired).parseAsHtml().toStr()
-//        )
-//        assertDisplayedAtPosition(
-//            listId = R.id.recyclerView,
-//            position = 2,
-//            targetViewId = R.id.title,
-//            textId = R.string.my_overview_no_qr_make_appointment_title
-//        )
-//        assertDisplayedAtPosition(
-//            listId = R.id.recyclerView,
-//            position = 3,
-//            targetViewId = R.id.title,
-//            textId = R.string.my_overview_no_qr_make_qr_title
-//        )
-//    }
-//
-//    @Test
-//    fun `Clicking close button in MyOverviewTestResultExpiredAdapterItem removes the view from RecyclerView`() {
-//        launchOverviewFragment(
-//            localTestResultState = LocalTestResultState.Expired
-//        )
-//        assertListItemCount(
-//            listId = R.id.recyclerView,
-//            expectedItemCount = 4
-//        )
-//        clickListItemChild(
-//            id = R.id.recyclerView,
-//            position = 1,
-//            childId = R.id.close
-//        )
-//        assertListItemCount(
-//            listId = R.id.recyclerView,
-//            expectedItemCount = 3
-//        )
-//    }
-//
-//    @Test
-//    fun `Clicking button in MyOverviewTestResultAdapterItem navigates to qr code screen`() {
-//        launchOverviewFragment(
-//            localTestResultState = LocalTestResultState.Valid(
-//                LocalTestResult(
-//                    credentials = "dummy",
-//                    sampleDate = OffsetDateTime.now(),
-//                    expireDate = OffsetDateTime.now(),
-//                    testType = "dummy",
-//                    personalDetails = PersonalDetails("X", "X", "X", "X")
-//                ),
-//                firstTimeCreated = false
-//            )
-//        )
-//        clickListItemChild(
-//            id = R.id.recyclerView,
-//            position = 1,
-//            childId = R.id.button
-//        )
-//        assertEquals(navController.currentDestination?.id, R.id.nav_qr_code)
-//    }
-//
-//    @Test
-//    fun `Clicking button in first MyOverviewNavigationCardAdapterItem navigates to new screen`() {
-//        launchOverviewFragment(
-//            localTestResultState = LocalTestResultState.None
-//        )
-//        clickListItemChild(
-//            id = R.id.recyclerView,
-//            position = 1,
-//            childId = R.id.button
-//        )
-//        assertEquals(navController.currentDestination?.id, R.id.nav_make_appointment)
-//    }
-//
-//    @Test
-//    fun `Clicking button in second MyOverviewNavigationCardAdapterItem navigates to new screen`() {
-//        launchOverviewFragment(
-//            localTestResultState = LocalTestResultState.None
-//        )
-//        clickListItemChild(
-//            id = R.id.recyclerView,
-//            position = 2,
-//            childId = R.id.button
-//        )
-//        assertEquals(navController.currentDestination?.id, R.id.nav_qr_explanation)
-//    }
-//
-//    private fun launchOverviewFragment(localTestResultState: LocalTestResultState) {
-//        loadKoinModules(
-//            module(override = true) {
-//                viewModel {
-//                    fakeLocalTestResultViewModel(
-//                        localTestResultState = localTestResultState
-//                    )
-//                }
-//                viewModel {
-//                    fakeMyOverviewModel()
-//                }
-//                factory {
-//                    fakePersistenceManager(
-//                        secretKeyJson = ""
-//                    )
-//                }
-//                factory {
-//                    fakeQrCodeUseCase()
-//                }
-//            }
-//        )
-//
-//        launchFragmentInContainer(themeResId = R.style.AppTheme) {
-//            MyOverviewFragment().also {
-//                it.viewLifecycleOwnerLiveData.observeForever { viewLifecycleOwner ->
-//                    if (viewLifecycleOwner != null) {
-//                        Navigation.setViewNavController(it.requireView(), navController)
-//                    }
-//                }
-//            }
-//        }
-//    }
+    @Test
+    fun `HeaderItem maps to MyOverviewHeaderAdapterItem in UI`() {
+        launchOverviewFragment(
+            items = MyOverviewItems(
+                type = GreenCardType.Domestic,
+                items = listOf(
+                    MyOverviewItem.HeaderItem(
+                        text = R.string.ok
+                    )
+                )
+            )
+        )
+
+        assertDisplayedAtPosition(
+            listId = R.id.recyclerView,
+            position = 0,
+            targetViewId = R.id.text,
+            textId = R.string.ok
+        )
+    }
+
+    @Test
+    fun `CreateQrCardItem with no green cards maps to correct MyOverviewNavigationCardAdapterItem in UI`() {
+        launchOverviewFragment(
+            items = MyOverviewItems(
+                type = GreenCardType.Domestic,
+                items = listOf(
+                    MyOverviewItem.CreateQrCardItem(
+                        hasGreenCards = false
+                    )
+                )
+            )
+        )
+
+        assertDisplayedAtPosition(
+            listId = R.id.recyclerView,
+            position = 0,
+            targetViewId = R.id.title,
+            textId = R.string.my_overview_no_qr_make_qr_title
+        )
+
+        assertDisplayedAtPosition(
+            listId = R.id.recyclerView,
+            position = 0,
+            targetViewId = R.id.button,
+            textId = R.string.my_overview_no_qr_make_qr_button
+        )
+    }
+
+    @Test
+    fun `CreateQrCardItem with green cards maps to correct MyOverviewNavigationCardAdapterItem in UI`() {
+        launchOverviewFragment(
+            items = MyOverviewItems(
+                type = GreenCardType.Domestic,
+                items = listOf(
+                    MyOverviewItem.CreateQrCardItem(
+                        hasGreenCards = true
+                    )
+                )
+            )
+        )
+
+        assertDisplayedAtPosition(
+            listId = R.id.recyclerView,
+            position = 0,
+            targetViewId = R.id.title,
+            textId = R.string.my_overview_no_qr_replace_qr_title
+        )
+
+        assertDisplayedAtPosition(
+            listId = R.id.recyclerView,
+            position = 0,
+            targetViewId = R.id.button,
+            textId = R.string.my_overview_no_qr_replace_qr_button
+        )
+    }
+
+    @Test
+    fun `GreenCardItem with type domestic maps to correct MyOverviewGreenCardAdapterItem in UI`() {
+        launchOverviewFragment(
+            items = MyOverviewItems(
+                type = GreenCardType.Domestic,
+                items = getGreenCardItems(
+                    type = GreenCardType.Domestic
+                )
+            )
+        )
+
+        assertDisplayedAtPosition(
+            listId = R.id.recyclerView,
+            position = 0,
+            targetViewId = R.id.proof1,
+            text = InstrumentationRegistry.getInstrumentation().context.getString(
+                R.string.qr_card_test_validity_domestic,
+                OffsetDateTime.ofInstant(
+                    Instant.ofEpochSecond(1),
+                    ZoneOffset.UTC
+                ).formatDateTime(InstrumentationRegistry.getInstrumentation().context)
+            )
+        )
+
+        assertDisplayedAtPosition(
+            listId = R.id.recyclerView,
+            position = 0,
+            targetViewId = R.id.proof2,
+            text = InstrumentationRegistry.getInstrumentation().context.getString(
+                R.string.qr_card_vaccination_validity_domestic,
+                OffsetDateTime.ofInstant(
+                    Instant.ofEpochSecond(1),
+                    ZoneOffset.UTC
+                ).formatDateTime(InstrumentationRegistry.getInstrumentation().context)
+            )
+        )
+
+        assertDisplayedAtPosition(
+            listId = R.id.recyclerView,
+            position = 0,
+            targetViewId = R.id.proof3,
+            text = InstrumentationRegistry.getInstrumentation().context.getString(
+                R.string.qr_card_recovery_validity_domestic,
+                OffsetDateTime.ofInstant(
+                    Instant.ofEpochSecond(1),
+                    ZoneOffset.UTC
+                ).formatDateTime(InstrumentationRegistry.getInstrumentation().context)
+            )
+        )
+    }
+
+    @Test
+    fun `GreenCardItem with type eu maps to correct MyOverviewGreenCardAdapterItem in UI`() {
+        launchOverviewFragment(
+            items = MyOverviewItems(
+                type = GreenCardType.Eu,
+                items = getGreenCardItems(
+                    type = GreenCardType.Eu
+                )
+            )
+        )
+
+        assertDisplayedAtPosition(
+            listId = R.id.recyclerView,
+            position = 0,
+            targetViewId = R.id.proof1,
+            text = InstrumentationRegistry.getInstrumentation().context.getString(
+                R.string.qr_card_test_validity_eu,
+                OffsetDateTime.ofInstant(
+                    Instant.ofEpochSecond(1),
+                    ZoneOffset.UTC
+                ).toLocalDate().formatDate()
+            )
+        )
+    }
+
+    @Test
+    fun `If ToggleGreenCardTypeItem exists show travel mode`() {
+        launchOverviewFragment(
+            items = MyOverviewItems(
+                type = GreenCardType.Eu,
+                items = listOf(MyOverviewItem.TravelModeItem)
+            )
+        )
+
+        assertDisplayed(R.id.description)
+    }
+
+    @Test
+    fun `If ToggleGreenCardTypeItem does not exist hide travel mode`() {
+        launchOverviewFragment(
+            items = MyOverviewItems(
+                type = GreenCardType.Eu,
+                items = listOf()
+            )
+        )
+
+        assertNotDisplayed(R.id.description)
+    }
+
+    private fun getGreenCardItems(type: GreenCardType) = listOf(
+        MyOverviewItem.GreenCardItem(
+            greenCard = GreenCard(
+                greenCardEntity = GreenCardEntity(
+                    id = 1,
+                    walletId = 1,
+                    type = type
+                ),
+                origins = listOf(
+                    OriginEntity(
+                        id = 1,
+                        greenCardId = 1,
+                        type = OriginType.Test,
+                        eventTime = OffsetDateTime.ofInstant(
+                            Instant.ofEpochSecond(1),
+                            ZoneOffset.UTC
+                        ),
+                        expirationTime = OffsetDateTime.ofInstant(
+                            Instant.ofEpochSecond(1),
+                            ZoneOffset.UTC
+                        )
+                    ),
+                    OriginEntity(
+                        id = 1,
+                        greenCardId = 1,
+                        type = OriginType.Vaccination,
+                        eventTime = OffsetDateTime.ofInstant(
+                            Instant.ofEpochSecond(1),
+                            ZoneOffset.UTC
+                        ),
+                        expirationTime = OffsetDateTime.ofInstant(
+                            Instant.ofEpochSecond(1),
+                            ZoneOffset.UTC
+                        )
+                    ),
+                    OriginEntity(
+                        id = 1,
+                        greenCardId = 1,
+                        type = OriginType.Recovery,
+                        eventTime = OffsetDateTime.ofInstant(
+                            Instant.ofEpochSecond(1),
+                            ZoneOffset.UTC
+                        ),
+                        expirationTime = OffsetDateTime.ofInstant(
+                            Instant.ofEpochSecond(1),
+                            ZoneOffset.UTC
+                        )
+                    )
+                ),
+                credentialEntities = listOf()
+            )
+        )
+    )
+
+    private fun launchOverviewFragment(items: MyOverviewItems) {
+        loadKoinModules(
+            module(override = true) {
+                viewModel {
+                    fakeMyOverviewModel(
+                        items = items
+                    )
+                }
+            }
+        )
+
+        launchFragmentInContainer(themeResId = R.style.AppTheme) {
+            MyOverviewFragment().also {
+                it.viewLifecycleOwnerLiveData.observeForever { viewLifecycleOwner ->
+                    if (viewLifecycleOwner != null) {
+                        Navigation.setViewNavController(it.requireView(), navController)
+                    }
+                }
+            }
+        }
+    }
 }

@@ -41,23 +41,23 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase) 
             is GreenCardType.Domestic -> {
                 if (greenCards.isEmpty()) {
                     listOf(
-                        MyOverviewItem.Header(
+                        MyOverviewItem.HeaderItem(
                             text = R.string.my_overview_no_qr_description
                         ),
-                        MyOverviewItem.CreateQrCard(greenCards.isNotEmpty()),
+                        MyOverviewItem.CreateQrCardItem(greenCards.isNotEmpty()),
                     )
                 } else {
                     val qrCards = greenCards.map { MyOverviewItem.GreenCardItem(it) }
                     val items = mutableListOf<MyOverviewItem>()
                     items.add(
-                        MyOverviewItem.Header(
+                        MyOverviewItem.HeaderItem(
                             text = R.string.my_overview_description
                         )
                     )
                     qrCards.forEach { qrCard ->
                         items.add(qrCard)
                     }
-                    items.add(MyOverviewItem.ToggleGreenCardTypeItem)
+                    items.add(MyOverviewItem.TravelModeItem)
                     items
                 }
             }
@@ -65,14 +65,14 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase) 
                 val qrCards = greenCards.map { MyOverviewItem.GreenCardItem(it) }
                 val items = mutableListOf<MyOverviewItem>()
                 items.add(
-                    MyOverviewItem.Header(
+                    MyOverviewItem.HeaderItem(
                         text = R.string.my_overview_description_eu
                     )
                 )
                 qrCards.forEach { qrCard ->
                     items.add(qrCard)
                 }
-                items.add(MyOverviewItem.ToggleGreenCardTypeItem)
+                items.add(MyOverviewItem.TravelModeItem)
                 items
             }
         }
@@ -91,8 +91,8 @@ data class MyOverviewItems(
 
 sealed class MyOverviewItem {
 
-    data class Header(@StringRes val text: Int) : MyOverviewItem()
-    data class CreateQrCard(val hasGreenCards: Boolean) : MyOverviewItem()
+    data class HeaderItem(@StringRes val text: Int) : MyOverviewItem()
+    data class CreateQrCardItem(val hasGreenCards: Boolean) : MyOverviewItem()
 
     data class GreenCardItem(
         val greenCard: GreenCard
@@ -121,5 +121,5 @@ sealed class MyOverviewItem {
         }
     }
 
-    object ToggleGreenCardTypeItem : MyOverviewItem()
+    object TravelModeItem : MyOverviewItem()
 }
