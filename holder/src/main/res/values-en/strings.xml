@@ -202,9 +202,9 @@
     <string name="retrieved_vaccination_subtitle">Vaccinatiedatum: %1$s</string>
     <string name="validity_type_european_title">Europa</string>
     <string name="validity_type_dutch_title">Nederland</string>
-    <string name="qr_card_vaccination_validity_nl">Vaccinatiebewijs:\ngeldig tot %1$s</string>
-    <string name="qr_card_test_validity_nl">Testbewijs:\ngeldig tot: %1$s</string>
-    <string name="qr_card_recovery_validity_nl">Herstelverklaring:\ngeldig tot %1$s</string>
+    <string name="qr_card_vaccination_validity_domestic">Vaccinatiebewijs:\ngeldig tot %1$s</string>
+    <string name="qr_card_test_validity_domestic">Testbewijs:\ngeldig tot: %1$s</string>
+    <string name="qr_card_recovery_validity_domestic">Herstelverklaring:\ngeldig tot %1$s</string>
     <string name="retrieved_vaccinations_backbutton_title">Weet je zeker dat je wilt stoppen?</string>
     <string name="retrieved_vaccinations_backbutton_message">Je moet dan later opnieuw met DigiD inloggen om je vaccinatie op te halen.</string>
     <string name="travel_toggle_europe">Ik reis binnen Europa</string>
@@ -224,7 +224,7 @@
     <string name="qr_explanation_description_eu"><![CDATA[Als je de Nederlandse grens over gaat of  in Europa reist zijn er meer gegevens nodig. Daarom staan in de Europese QR-code de volgende gegevens:<br/><br/>Naam: <b>%1$s</b><br/>Geboortedatum: <b>%2$s</b><br/>Vaccin: <b>%3$s</b><br/>Vaccinatiedatum: <b>%4$s</b><br/><br/>Gebruik in de andere Europese landen altijd de Europese QR-code. De Nederlandse QR-code is niet geldig buiten Nederland.]]></string>
     <string name="qr_explanation_icon_label">Uitleg over QR code</string>
     <string name="my_overview_description_eu">Gebruik bij de grens en buiten Nederland de Europese QR-code. Controleer voor vertrek of jouw QR-codes geldig zijn in het land waar je heen reist.</string>
-    <string name="qr_card_vaccination_validity_domestic">Vaccinatiedatum:\n%1$s</string>
-    <string name="qr_card_recovery_validity_domestic">Herstelverklaring:\ngeldig vanaf %1$s</string>
-    <string name="qr_card_test_validity_domestic">Testdatum:\n%1$s</string>
+    <string name="qr_card_vaccination_validity_eu">Vaccinatiedatum:\n%1$s</string>
+    <string name="qr_card_recovery_validity_eu">Herstelverklaring:\ngeldig vanaf %1$s</string>
+    <string name="qr_card_test_validity_eu">Testdatum:\n%1$s</string>
 </resources>

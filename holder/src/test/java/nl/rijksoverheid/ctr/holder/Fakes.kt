@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.holder
 
 import android.graphics.Bitmap
+import androidx.lifecycle.MutableLiveData
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
@@ -176,7 +177,7 @@ fun fakeLocalTestResultViewModel(
 }
 
 fun fakeMyOverviewModel(
-
+    items: MyOverviewItems
 ): MyOverviewViewModel {
     return object : MyOverviewViewModel() {
         override fun getSelectedType(): GreenCardType {
@@ -188,7 +189,7 @@ fun fakeMyOverviewModel(
         }
 
         override fun sync() {
-
+            (myOverviewItemsLiveData as MutableLiveData).value = Event(items)
         }
     }
 }

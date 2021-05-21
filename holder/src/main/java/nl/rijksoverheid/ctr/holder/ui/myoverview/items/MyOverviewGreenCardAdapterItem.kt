@@ -82,19 +82,19 @@ class MyOverviewGreenCardAdapterItem(
                 when (origin.type) {
                     is OriginType.Test -> {
                         viewBinding.proof1.text = context.getString(
-                            R.string.qr_card_test_validity_domestic,
+                            R.string.qr_card_test_validity_eu,
                             origin.expirationTime.toLocalDate().formatDate()
                         )
                     }
                     is OriginType.Vaccination -> {
                         viewBinding.proof1.text = context.getString(
-                            R.string.qr_card_vaccination_validity_domestic,
+                            R.string.qr_card_vaccination_validity_eu,
                             origin.expirationTime.toLocalDate().formatDate()
                         )
                     }
                     is OriginType.Recovery -> {
                         viewBinding.proof1.text = context.getString(
-                            R.string.qr_card_recovery_validity_domestic,
+                            R.string.qr_card_recovery_validity_eu,
                             origin.expirationTime.toLocalDate().formatDate()
                         )
                     }
@@ -107,21 +107,21 @@ class MyOverviewGreenCardAdapterItem(
                     when (origin.type) {
                         is OriginType.Test -> {
                             viewBinding.proof1.text = context.getString(
-                                R.string.qr_card_test_validity_nl,
+                                R.string.qr_card_test_validity_domestic,
                                 origin.expirationTime.formatDateTime(context)
                             )
                             viewBinding.proof1.visibility = View.VISIBLE
                         }
                         is OriginType.Vaccination -> {
                             viewBinding.proof2.text = context.getString(
-                                R.string.qr_card_vaccination_validity_nl,
+                                R.string.qr_card_vaccination_validity_domestic,
                                 origin.expirationTime.formatDateTime(context)
                             )
                             viewBinding.proof2.visibility = View.VISIBLE
                         }
                         is OriginType.Recovery -> {
                             viewBinding.proof3.text = context.getString(
-                                R.string.qr_card_recovery_validity_nl,
+                                R.string.qr_card_recovery_validity_domestic,
                                 origin.expirationTime.formatDateTime(context)
                             )
                             viewBinding.proof3.visibility = View.VISIBLE
