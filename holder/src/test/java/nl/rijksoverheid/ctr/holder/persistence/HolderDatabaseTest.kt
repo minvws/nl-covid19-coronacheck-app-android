@@ -114,8 +114,8 @@ class HolderDatabaseTest : AutoCloseKoinTest() {
                     CredentialEntity(
                         id = 1,
                         greenCardId = 1,
-                        data = "",
-                        credentialVersion = "1",
+                        data = "".toByteArray(),
+                        credentialVersion = 1,
                         validFrom = OffsetDateTime.ofInstant(
                             Instant.ofEpochSecond(1),
                             ZoneOffset.UTC
@@ -152,8 +152,8 @@ class HolderDatabaseTest : AutoCloseKoinTest() {
                     CredentialEntity(
                         id = 2,
                         greenCardId = 2,
-                        data = "",
-                        credentialVersion = "1",
+                        data = "".toByteArray(),
+                        credentialVersion = 1,
                         validFrom = OffsetDateTime.ofInstant(
                             Instant.ofEpochSecond(1),
                             ZoneOffset.UTC
