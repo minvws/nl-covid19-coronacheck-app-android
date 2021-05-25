@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
-import nl.rijksoverheid.ctr.shared.ClmobileWrapper
+import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -20,7 +20,7 @@ interface QrCodeUseCase {
 class QrCodeUseCaseImpl(
     private val persistenceManager: PersistenceManager,
     private val generateHolderQrCodeUseCase: GenerateHolderQrCodeUseCase,
-    private val clmobileWrapper: ClmobileWrapper
+    private val mobileCoreWrapper: MobileCoreWrapper
 ) : QrCodeUseCase {
 
     override suspend fun qrCode(
@@ -32,7 +32,7 @@ class QrCodeUseCaseImpl(
             val secretKey = persistenceManager.getSecretKeyJson()
                 ?: throw IllegalStateException("Secret key should exist")
 
-            val qrCodeContent = clmobileWrapper.discloseAllWithTimeQrEncoded(
+            val qrCodeContent = mobileCoreWrapper.discloseAllWithTimeQrEncoded(
                 secretKey.toByteArray(),
                 credentials
             )

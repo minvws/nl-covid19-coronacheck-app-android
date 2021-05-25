@@ -1,7 +1,7 @@
 package nl.rijksoverheid.ctr.verifier.ui.scanner.datamappers
 
-import clmobile.Clmobile
 import com.squareup.moshi.Moshi
+import mobilecore.Mobilecore
 import nl.rijksoverheid.ctr.shared.ext.toObject
 import nl.rijksoverheid.ctr.shared.ext.verify
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.VerifiedQr
@@ -22,7 +22,7 @@ class VerifiedQrDataMapperImpl(private val moshi: Moshi) : VerifiedQrDataMapper 
         qrContent: String
     ): VerifiedQr {
         val result =
-            Clmobile.verifyQREncoded(
+            Mobilecore.verifyQREncoded(
                 qrContent.toByteArray()
             ).verify()
 

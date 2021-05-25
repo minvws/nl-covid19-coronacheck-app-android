@@ -24,7 +24,7 @@ class TestHolderApplication : HolderApplication() {
                 PreferenceManager.getDefaultSharedPreferences(this@TestHolderApplication)
             }
         }, module {
-            factory { fakeClmobileWrapper() }
+            factory { fakeMobileCoreWrapper() }
         })
     }
 }

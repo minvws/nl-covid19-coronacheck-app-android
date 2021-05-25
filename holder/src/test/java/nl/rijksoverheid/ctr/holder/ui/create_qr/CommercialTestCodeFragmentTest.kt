@@ -14,13 +14,11 @@ import androidx.lifecycle.ViewModelStore
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
-import com.schibsted.spain.barista.assertion.BaristaAssistiveTextAssertions.assertAssistiveText
 import com.schibsted.spain.barista.assertion.BaristaEnabledAssertions.assertDisabled
 import com.schibsted.spain.barista.assertion.BaristaHintAssertions.assertHint
-import com.schibsted.spain.barista.assertion.BaristaVisibilityAssertions
 import com.schibsted.spain.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
-import com.schibsted.spain.barista.interaction.BaristaClickInteractions.clickOn
-import nl.rijksoverheid.ctr.holder.*
+import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.fakeCommercialTestResultViewModel
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -53,7 +51,7 @@ class CommercialTestCodeFragmentTest : AutoCloseKoinTest() {
         loadKoinModules(
             module(override = true) {
                 viewModel {
-                    fakeTestResultsViewModel()
+                    fakeCommercialTestResultViewModel()
                 }
             }
         )

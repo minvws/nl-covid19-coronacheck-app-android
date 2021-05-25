@@ -26,6 +26,7 @@ data class CredentialEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     @ColumnInfo(name = "green_card_id") val greenCardId: Long,
     val data: String,
-    val credentialVersion: Int,
-    val validFrom: OffsetDateTime
+    val credentialVersion: String,
+    val validFrom: OffsetDateTime,
+    val expirationTime: OffsetDateTime
 )

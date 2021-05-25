@@ -1,10 +1,12 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.repositories
 
+import android.util.Base64
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.HolderApiClient
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.post.AccessTokenPostData
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.post.GetCredentialsPostData
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.post.GetTestIsmPostData
 import okhttp3.ResponseBody
 import org.json.JSONObject
@@ -24,7 +26,13 @@ interface CoronaCheckRepository {
     suspend fun accessTokens(tvsToken: String): RemoteAccessTokens
     suspend fun getTestIsm(test: String, sToken: String, icm: String): TestIsmResult
     suspend fun remoteNonce(): RemoteNonce
-    suspend fun getCredentials(): RemoteCredentials
+    suspend fun getCredentials(
+        stoken: String,
+        events: String,
+        issueCommitmentMessage: String
+    ): RemoteCredentials
+
+    suspend fun getPrepareIssue(): RemotePrepareIssue
 }
 
 open class CoronaCheckRepositoryImpl(
@@ -75,7 +83,24 @@ open class CoronaCheckRepositoryImpl(
         return api.getNonce()
     }
 
-    override suspend fun getCredentials(): RemoteCredentials {
-        return api.getCredentials()
+    override suspend fun getCredentials(
+        stoken: String,
+        events: String,
+        issueCommitmentMessage: String
+    ): RemoteCredentials {
+        return api.getCredentials(
+            data = GetCredentialsPostData(
+                stoken = stoken,
+                events = listOf(),
+                issueCommitmentMessage = Base64.encodeToString(
+                    issueCommitmentMessage.toByteArray(),
+                    Base64.NO_WRAP
+                )
+            )
+        )
+    }
+
+    override suspend fun getPrepareIssue(): RemotePrepareIssue {
+        return api.getPrepareIssue()
     }
 }

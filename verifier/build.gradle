@@ -91,7 +91,7 @@ dependencies {
     implementation project(":design")
     implementation project(":introduction")
     implementation project(":api")
-    implementation project(':clcore')
+    implementation project(':mobilecore')
     implementation project(":qrscanner")
 
     implementation "com.github.lisawray.groupie:groupie:${groupie_version}"

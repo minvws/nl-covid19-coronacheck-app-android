@@ -1,11 +1,15 @@
 package nl.rijksoverheid.ctr.holder.persistence.database
 
 import androidx.room.Transaction
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteCredentials
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SecretKeyUseCase
+import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import retrofit2.HttpException
-import timber.log.Timber
 import java.io.IOException
 import java.time.OffsetDateTime
 
@@ -23,16 +27,20 @@ interface HolderDatabaseSyncer {
 class HolderDatabaseSyncerImpl(
     private val holderDatabase: HolderDatabase,
     private val cachedAppConfigUseCase: CachedAppConfigUseCase,
-    private val coronaCheckRepository: CoronaCheckRepository
+    private val coronaCheckRepository: CoronaCheckRepository,
+    private val mobileCoreWrapper: MobileCoreWrapper,
+    private val secretKeyUseCase: SecretKeyUseCase,
 ) : HolderDatabaseSyncer {
 
     override suspend fun sync(syncWithRemote: Boolean): DatabaseSyncerResult {
-        removeExpiredEventGroups()
+        return withContext(Dispatchers.IO) {
+            removeExpiredEventGroups()
 
-        return if (syncWithRemote) {
-            syncGreenCards()
-        } else {
-            DatabaseSyncerResult.Success
+            if (syncWithRemote) {
+                syncGreenCards()
+            } else {
+                DatabaseSyncerResult.Success
+            }
         }
     }
 
@@ -55,113 +63,22 @@ class HolderDatabaseSyncerImpl(
     @Transaction
     private suspend fun syncGreenCards(): DatabaseSyncerResult {
         return try {
-            val remoteCredentials = coronaCheckRepository.getCredentials()
-            Timber.v(
-                "Remote credentials: $remoteCredentials"
-            )
+            val remoteCredentials = getRemoteCredentials()
 
-            // Clear database entries
-            holderDatabase.greenCardDao().deleteAll()
-            holderDatabase.originDao().deleteAll()
-            holderDatabase.credentialDao().deleteAll()
+            // Remove all green cards from database
+            removeAllGreenCards()
 
             // Create domestic green card with origins and credentials
             remoteCredentials.domesticGreencard?.let { remoteDomesticGreenCard ->
-
-                // Create domestic green card
-                val localDomesticGreenCardId = holderDatabase.greenCardDao().insert(
-                    GreenCardEntity(
-                        walletId = 1,
-                        type = GreenCardType.Domestic
-                    )
-                )
-
-                // Create origins for domestic green card
-                remoteDomesticGreenCard.origins.forEach { remoteOrigin ->
-                    val type = when (remoteOrigin.type) {
-                        OriginType.TYPE_VACCINATION -> OriginType.Vaccination
-                        OriginType.TYPE_RECOVERY -> OriginType.Recovery
-                        OriginType.TYPE_TEST -> OriginType.Test
-                        else -> throw IllegalStateException("Type not known")
-                    }
-                    holderDatabase.originDao().insert(
-                        OriginEntity(
-                            greenCardId = localDomesticGreenCardId,
-                            type = type,
-                            eventTime = remoteOrigin.eventTime,
-                            expirationTime = remoteOrigin.expirationTime
-                        )
-                    )
-                }
-
-                // Create credentials for domestic green card
-                // TODO Read with createCredentials, insert dummy credential for now
-                holderDatabase.credentialDao().insert(
-                    entity = CredentialEntity(
-                        greenCardId = localDomesticGreenCardId,
-                        data = "Dummy Data",
-                        credentialVersion = 1,
-                        validFrom = OffsetDateTime.now().minusDays(5)
-                    )
-                )
-
-                holderDatabase.credentialDao().insert(
-                    entity = CredentialEntity(
-                        greenCardId = localDomesticGreenCardId,
-                        data = "Dummy Data",
-                        credentialVersion = 1,
-                        validFrom = OffsetDateTime.now().plusDays(5)
-                    )
+                createDomesticGreenCards(
+                    remoteDomesticGreenCard = remoteDomesticGreenCard
                 )
             }
 
             // Create european green card with origins and credentials
             remoteCredentials.euGreencards?.forEach { remoteEuropeanGreenCard ->
-
-                // Create european green card
-                val localEuropeanGreenCardId = holderDatabase.greenCardDao().insert(
-                    GreenCardEntity(
-                        walletId = 1,
-                        type = GreenCardType.Eu
-                    )
-                )
-
-                // Create origins for european green card
-                remoteEuropeanGreenCard.origins.forEach { remoteOrigin ->
-                    val type = when (remoteOrigin.type) {
-                        OriginType.TYPE_VACCINATION -> OriginType.Vaccination
-                        OriginType.TYPE_RECOVERY -> OriginType.Recovery
-                        OriginType.TYPE_TEST -> OriginType.Test
-                        else -> throw IllegalStateException("Type not known")
-                    }
-                    holderDatabase.originDao().insert(
-                        OriginEntity(
-                            greenCardId = localEuropeanGreenCardId,
-                            type = type,
-                            eventTime = remoteOrigin.eventTime,
-                            expirationTime = remoteOrigin.expirationTime
-                        )
-                    )
-                }
-
-                // Create credentials for domestic green card
-                // TODO Read with createCredentials, insert dummy credential for now
-                holderDatabase.credentialDao().insert(
-                    entity = CredentialEntity(
-                        greenCardId = localEuropeanGreenCardId,
-                        data = "Dummy Data",
-                        credentialVersion = 1,
-                        validFrom = OffsetDateTime.now().minusDays(5)
-                    )
-                )
-
-                holderDatabase.credentialDao().insert(
-                    entity = CredentialEntity(
-                        greenCardId = localEuropeanGreenCardId,
-                        data = "Dummy Data",
-                        credentialVersion = 1,
-                        validFrom = OffsetDateTime.now().plusDays(5)
-                    )
+                createEuropeanGreenCards(
+                    remoteEuropeanGreenCard = remoteEuropeanGreenCard
                 )
             }
 
@@ -170,6 +87,100 @@ class HolderDatabaseSyncerImpl(
             DatabaseSyncerResult.ServerError(e.code())
         } catch (e: IOException) {
             DatabaseSyncerResult.NetworkError
+        }
+    }
+
+    private suspend fun getRemoteCredentials(): RemoteCredentials {
+        val prepareIssue = coronaCheckRepository.getPrepareIssue()
+
+        val commitmentMessage = mobileCoreWrapper.createCommitmentMessage(
+            secretKey = secretKeyUseCase.json().toByteArray(),
+            nonce = prepareIssue.prepareIssueMessage
+        )
+
+        return coronaCheckRepository.getCredentials(
+            stoken = prepareIssue.stoken,
+            events = "",
+            issueCommitmentMessage = commitmentMessage
+        )
+    }
+
+    private suspend fun removeAllGreenCards() {
+        holderDatabase.greenCardDao().deleteAll()
+        holderDatabase.originDao().deleteAll()
+        holderDatabase.credentialDao().deleteAll()
+    }
+
+    private suspend fun createDomesticGreenCards(remoteDomesticGreenCard: RemoteCredentials.DomesticGreenCard) {
+        // Create green card
+        val localDomesticGreenCardId = holderDatabase.greenCardDao().insert(
+            GreenCardEntity(
+                walletId = 1,
+                type = GreenCardType.Domestic
+            )
+        )
+
+        // Create origins
+        remoteDomesticGreenCard.origins.forEach { remoteOrigin ->
+            val type = when (remoteOrigin.type) {
+                OriginType.TYPE_VACCINATION -> OriginType.Vaccination
+                OriginType.TYPE_RECOVERY -> OriginType.Recovery
+                OriginType.TYPE_TEST -> OriginType.Test
+                else -> throw IllegalStateException("Type not known")
+            }
+            holderDatabase.originDao().insert(
+                OriginEntity(
+                    greenCardId = localDomesticGreenCardId,
+                    type = type,
+                    eventTime = remoteOrigin.eventTime,
+                    expirationTime = remoteOrigin.expirationTime
+                )
+            )
+        }
+
+        // Create credentials
+        val domesticCredentials = mobileCoreWrapper.getDomesticCredentials(
+            createCredentials = remoteDomesticGreenCard.createCredentialMessages
+        )
+
+        val entities = domesticCredentials.map { domesticCredential ->
+            CredentialEntity(
+                greenCardId = localDomesticGreenCardId,
+                data = domesticCredential.credential.toString(),
+                credentialVersion = domesticCredential.attributes.credentialVersion,
+                validFrom = OffsetDateTime.now(),
+                expirationTime = OffsetDateTime.now()
+            )
+        }
+
+        holderDatabase.credentialDao().insertAll(entities)
+    }
+
+    private suspend fun createEuropeanGreenCards(remoteEuropeanGreenCard: RemoteCredentials.EuGreenCard) {
+        // Create green card
+        val localEuropeanGreenCardId = holderDatabase.greenCardDao().insert(
+            GreenCardEntity(
+                walletId = 1,
+                type = GreenCardType.Eu
+            )
+        )
+
+        // Create origins for european green card
+        remoteEuropeanGreenCard.origins.forEach { remoteOrigin ->
+            val type = when (remoteOrigin.type) {
+                OriginType.TYPE_VACCINATION -> OriginType.Vaccination
+                OriginType.TYPE_RECOVERY -> OriginType.Recovery
+                OriginType.TYPE_TEST -> OriginType.Test
+                else -> throw IllegalStateException("Type not known")
+            }
+            holderDatabase.originDao().insert(
+                OriginEntity(
+                    greenCardId = localEuropeanGreenCardId,
+                    type = type,
+                    eventTime = remoteOrigin.eventTime,
+                    expirationTime = remoteOrigin.expirationTime
+                )
+            )
         }
     }
 }

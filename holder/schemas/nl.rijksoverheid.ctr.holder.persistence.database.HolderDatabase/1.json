@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "21340d4494408226e6740512d27eaa22",
+    "identityHash": "0485ac369828155ad3ba9bc9217d8644",
     "entities": [
       {
         "tableName": "wallet",
@@ -165,7 +165,7 @@
       },
       {
         "tableName": "credential",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `green_card_id` INTEGER NOT NULL, `data` TEXT NOT NULL, `credentialVersion` INTEGER NOT NULL, `validFrom` INTEGER NOT NULL, FOREIGN KEY(`green_card_id`) REFERENCES `green_card`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `green_card_id` INTEGER NOT NULL, `data` TEXT NOT NULL, `credentialVersion` TEXT NOT NULL, `validFrom` INTEGER NOT NULL, `expirationTime` INTEGER NOT NULL, FOREIGN KEY(`green_card_id`) REFERENCES `green_card`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -188,12 +188,18 @@
           {
             "fieldPath": "credentialVersion",
             "columnName": "credentialVersion",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
             "fieldPath": "validFrom",
             "columnName": "validFrom",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "expirationTime",
+            "columnName": "expirationTime",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -279,7 +285,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '21340d4494408226e6740512d27eaa22')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0485ac369828155ad3ba9bc9217d8644')"
     ]
   }
 }
