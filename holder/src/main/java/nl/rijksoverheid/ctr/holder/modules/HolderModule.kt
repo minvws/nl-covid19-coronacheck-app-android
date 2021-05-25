@@ -1,6 +1,5 @@
 package nl.rijksoverheid.ctr.holder.modules
 
-import androidx.room.Room
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import nl.rijksoverheid.ctr.api.signing.certificates.DIGICERT_BTC_ROOT_CA
@@ -59,9 +58,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 fun holderModule(baseUrl: String) = module {
 
     single {
-        Room
-            .databaseBuilder(androidContext(), HolderDatabase::class.java, "holder-database")
-            .build()
+        HolderDatabase.createInstance(androidContext(), get())
     }
 
     factory<HolderDatabaseSyncer> { HolderDatabaseSyncerImpl(get(), get(), get()) }
@@ -80,13 +77,14 @@ fun holderModule(baseUrl: String) = module {
         QrCodeUseCaseImpl(
             get(),
             get(),
+            get()
         )
     }
     factory<SecretKeyUseCase> {
-        SecretKeyUseCaseImpl(get())
+        SecretKeyUseCaseImpl(get(), get())
     }
     factory<CommitmentMessageUseCase> {
-        CommitmentMessageUseCaseImpl(get())
+        CommitmentMessageUseCaseImpl(get(), get())
     }
     factory<ConfigProvidersUseCase> {
         ConfigProvidersUseCaseImpl(get())
@@ -157,11 +155,11 @@ fun holderModule(baseUrl: String) = module {
 
     // Usecases
     factory<CreateCredentialUseCase> {
-        CreateCredentialUseCaseImpl()
+        CreateCredentialUseCaseImpl(get())
     }
 
     factory<TestResultAttributesUseCase> {
-        TestResultAttributesUseCaseImpl(get())
+        TestResultAttributesUseCaseImpl(get(), get())
     }
 
     single {

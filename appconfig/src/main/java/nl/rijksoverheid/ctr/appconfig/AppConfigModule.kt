@@ -33,7 +33,7 @@ fun appConfigModule(path: String, versionCode: Int) = module {
     factory<AppConfigPersistenceManager> { AppConfigPersistenceManagerImpl(get()) }
     factory<CachedAppConfigUseCase> { CachedAppConfigUseCaseImpl(get(), get()) }
     factory<PersistConfigUseCase> { PersistConfigUseCaseImpl(get(), get()) }
-    factory<LoadPublicKeysUseCase> { LoadPublicKeysUseCaseImpl(get()) }
+    factory<LoadPublicKeysUseCase> { LoadPublicKeysUseCaseImpl(get(), get()) }
     factory<AppConfigUtil> { AppConfigUtilImpl(androidContext(), get()) }
 
 

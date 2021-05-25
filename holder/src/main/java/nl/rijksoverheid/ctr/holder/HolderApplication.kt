@@ -6,11 +6,13 @@ import nl.rijksoverheid.ctr.api.apiModule
 import nl.rijksoverheid.ctr.appconfig.*
 import nl.rijksoverheid.ctr.appconfig.usecases.LoadPublicKeysUseCase
 import nl.rijksoverheid.ctr.design.designModule
+import nl.rijksoverheid.ctr.holder.modules.holderClmobileModule
 import nl.rijksoverheid.ctr.holder.modules.holderIntroductionModule
 import nl.rijksoverheid.ctr.holder.modules.holderModule
 import nl.rijksoverheid.ctr.holder.modules.holderPreferenceModule
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.WalletEntity
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SecretKeyUseCase
 import nl.rijksoverheid.ctr.introduction.introductionModule
 import nl.rijksoverheid.ctr.shared.SharedApplication
 import nl.rijksoverheid.ctr.shared.sharedModule
@@ -31,10 +33,12 @@ open class HolderApplication : SharedApplication() {
 
     private val loadPublicKeysUseCase: LoadPublicKeysUseCase by inject()
     private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
+    private val secretKeyUseCase: SecretKeyUseCase by inject()
     private val holderDatabase: HolderDatabase by inject()
 
     override fun onCreate() {
         super.onCreate()
+
 
         startKoin {
             androidContext(this@HolderApplication)
@@ -56,6 +60,9 @@ open class HolderApplication : SharedApplication() {
             )
         }
 
+        // Generate and store secret key to be used by rest of the app
+        secretKeyUseCase.persist()
+
         // If we have public keys stored, load them so they can be used by CTCL
         cachedAppConfigUseCase.getCachedPublicKeys()?.let {
             loadPublicKeysUseCase.load(it)
@@ -75,6 +82,6 @@ open class HolderApplication : SharedApplication() {
     }
 
     override fun getAdditionalModules(): List<Module> {
-        return listOf(holderPreferenceModule)
+        return listOf(holderPreferenceModule, holderClmobileModule)
     }
 }
