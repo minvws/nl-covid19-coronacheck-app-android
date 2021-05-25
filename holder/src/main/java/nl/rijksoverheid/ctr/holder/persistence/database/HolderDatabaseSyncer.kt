@@ -148,7 +148,7 @@ class HolderDatabaseSyncerImpl(
         val entities = domesticCredentials.map { domesticCredential ->
             CredentialEntity(
                 greenCardId = localDomesticGreenCardId,
-                data = domesticCredential.credential.toString().toByteArray(),
+                data = domesticCredential.credential.toString().replace("\\/", "/").toByteArray(),
                 credentialVersion = domesticCredential.attributes.credentialVersion,
                 validFrom = OffsetDateTime.ofInstant(
                     Instant.ofEpochSecond(domesticCredential.attributes.validFrom),
