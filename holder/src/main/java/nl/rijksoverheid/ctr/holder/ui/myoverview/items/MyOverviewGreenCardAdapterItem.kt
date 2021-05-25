@@ -11,16 +11,19 @@ package nl.rijksoverheid.ctr.holder.ui.myoverview.items
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.xwray.groupie.viewbinding.BindableItem
-import nl.rijksoverheid.ctr.design.ext.formatDate
 import nl.rijksoverheid.ctr.design.ext.formatDateTime
+import nl.rijksoverheid.ctr.design.ext.formatDayMonth
+import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.ItemMyOverviewGreenCardBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 
 class MyOverviewGreenCardAdapterItem(
     private val greenCard: GreenCard,
+    private val sortedOrigins: List<OriginEntity>,
     private val onButtonClick: () -> Unit,
 ) :
     BindableItem<ItemMyOverviewGreenCardBinding>(R.layout.item_my_overview_green_card.toLong()) {
@@ -83,19 +86,19 @@ class MyOverviewGreenCardAdapterItem(
                     is OriginType.Test -> {
                         viewBinding.proof1.text = context.getString(
                             R.string.qr_card_test_validity_eu,
-                            origin.expirationTime.toLocalDate().formatDate()
+                            origin.expirationTime.formatDateTime(context)
                         )
                     }
                     is OriginType.Vaccination -> {
                         viewBinding.proof1.text = context.getString(
                             R.string.qr_card_vaccination_validity_eu,
-                            origin.expirationTime.toLocalDate().formatDate()
+                            origin.eventTime.toLocalDate().formatDayMonthYear()
                         )
                     }
                     is OriginType.Recovery -> {
                         viewBinding.proof1.text = context.getString(
                             R.string.qr_card_recovery_validity_eu,
-                            origin.expirationTime.toLocalDate().formatDate()
+                            origin.expirationTime.toLocalDate().formatDayMonth()
                         )
                     }
                 }
@@ -103,7 +106,7 @@ class MyOverviewGreenCardAdapterItem(
             }
             is GreenCardType.Domestic -> {
                 // Domestic cards can have multiple origins
-                greenCard.origins.forEach { origin ->
+                sortedOrigins.forEach { origin ->
                     when (origin.type) {
                         is OriginType.Test -> {
                             viewBinding.proof1.text = context.getString(
@@ -115,14 +118,14 @@ class MyOverviewGreenCardAdapterItem(
                         is OriginType.Vaccination -> {
                             viewBinding.proof2.text = context.getString(
                                 R.string.qr_card_vaccination_validity_domestic,
-                                origin.expirationTime.formatDateTime(context)
+                                origin.expirationTime.toLocalDate().formatDayMonthYear()
                             )
                             viewBinding.proof2.visibility = View.VISIBLE
                         }
                         is OriginType.Recovery -> {
                             viewBinding.proof3.text = context.getString(
                                 R.string.qr_card_recovery_validity_domestic,
-                                origin.expirationTime.formatDateTime(context)
+                                origin.expirationTime.toLocalDate().formatDayMonth()
                             )
                             viewBinding.proof3.visibility = View.VISIBLE
                         }

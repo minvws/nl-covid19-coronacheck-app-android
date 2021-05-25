@@ -144,6 +144,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                 is MyOverviewItem.GreenCardItem -> {
                     adapterItems.add(MyOverviewGreenCardAdapterItem(
                         greenCard = myOverviewItem.greenCard,
+                        sortedOrigins = myOverviewItem.sortedOrigins,
                         onButtonClick = {
 
                         }

@@ -16,10 +16,18 @@ import java.util.*
 // Change to Locale.getDefault() to support multiple languages
 private val locale = Locale("nl")
 
-fun LocalDate.formatDate(): String =
+fun LocalDate.formatDayMonthYear(): String =
     DateTimeFormatter.ofPattern(
         DateFormat.getBestDateTimePattern(
             locale,
             "d MMMM YYYY"
+        )
+    ).withLocale(locale).withZone(ZoneId.of("CET")).format(this)
+
+fun LocalDate.formatDayMonth(): String =
+    DateTimeFormatter.ofPattern(
+        DateFormat.getBestDateTimePattern(
+            locale,
+            "d MMMM"
         )
     ).withLocale(locale).withZone(ZoneId.of("CET")).format(this)
