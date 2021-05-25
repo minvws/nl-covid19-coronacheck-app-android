@@ -139,7 +139,7 @@ class MyOverviewGreenCardAdapterItem(
                     }
                 }
 
-                // If there is only one origin we can show a countdown
+                // If there is only one origin we can show a countdown if required
                 if (sortedOrigins.size == 1) {
                     when (val expireCountDownResult =
                         testResultAdapterItemUtil.getExpireCountdownText(expireDate = sortedOrigins.first().expirationTime)) {
