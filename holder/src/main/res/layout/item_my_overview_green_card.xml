@@ -57,7 +57,7 @@
             android:layout_marginTop="32dp"
             android:textAppearance="@style/App.TextAppearance.MaterialComponents.Body1"
             app:layout_constraintTop_toBottomOf="@+id/title"
-            tools:text="@string/qr_card_vaccination_validity_nl" />
+            tools:text="Geldigheid #1" />
 
         <TextView
             android:id="@+id/proof2"
@@ -66,7 +66,7 @@
             android:layout_marginTop="32dp"
             android:textAppearance="@style/App.TextAppearance.MaterialComponents.Body1"
             app:layout_constraintTop_toBottomOf="@+id/proof1"
-            tools:text="@string/qr_card_vaccination_validity_nl" />
+            tools:text="Geldigheid #2" />
 
         <TextView
             android:id="@+id/proof3"
@@ -75,7 +75,22 @@
             android:layout_marginTop="32dp"
             android:textAppearance="@style/App.TextAppearance.MaterialComponents.Body1"
             app:layout_constraintTop_toBottomOf="@+id/proof2"
-            tools:text="@string/qr_card_vaccination_validity_nl" />
+            tools:text="Geldigheid #3" />
+
+        <TextView
+            android:id="@+id/expires_in"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textAppearance="?attr/textAppearanceBody1"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/proof3"
+            tools:text="Verloopt in 5 uur 59 min"
+            tools:visibility="visible" />
 
         <Button
             android:id="@+id/button"
@@ -87,7 +102,7 @@
             app:layout_constrainedWidth="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/proof3" />
+            app:layout_constraintTop_toBottomOf="@id/expires_in" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

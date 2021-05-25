@@ -20,13 +20,20 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
+import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TestResultAdapterItemUtil
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 class MyOverviewGreenCardAdapterItem(
     private val greenCard: GreenCard,
     private val sortedOrigins: List<OriginEntity>,
     private val onButtonClick: () -> Unit,
 ) :
-    BindableItem<ItemMyOverviewGreenCardBinding>(R.layout.item_my_overview_green_card.toLong()) {
+    BindableItem<ItemMyOverviewGreenCardBinding>(R.layout.item_my_overview_green_card.toLong()),
+    KoinComponent {
+
+    private val testResultAdapterItemUtil: TestResultAdapterItemUtil by inject()
+
     override fun bind(viewBinding: ItemMyOverviewGreenCardBinding, position: Int) {
         applyStyling(
             viewBinding = viewBinding
@@ -128,6 +135,31 @@ class MyOverviewGreenCardAdapterItem(
                                 origin.expirationTime.toLocalDate().formatDayMonth()
                             )
                             viewBinding.proof3.visibility = View.VISIBLE
+                        }
+                    }
+                }
+
+                // If there is only one origin we can show a countdown
+                if (sortedOrigins.size == 1) {
+                    when (val expireCountDownResult =
+                        testResultAdapterItemUtil.getExpireCountdownText(expireDate = sortedOrigins.first().expirationTime)) {
+                        is TestResultAdapterItemUtil.ExpireCountDown.Hide -> {
+                            viewBinding.expiresIn.visibility = View.GONE
+                        }
+                        is TestResultAdapterItemUtil.ExpireCountDown.Show -> {
+                            viewBinding.expiresIn.visibility = View.VISIBLE
+                            if (expireCountDownResult.hoursLeft == 0L) {
+                                viewBinding.expiresIn.text = context.getString(
+                                    R.string.my_overview_test_result_expires_in_minutes,
+                                    expireCountDownResult.minutesLeft.toString()
+                                )
+                            } else {
+                                viewBinding.expiresIn.text = context.getString(
+                                    R.string.my_overview_test_result_expires_in_hours_minutes,
+                                    expireCountDownResult.hoursLeft.toString(),
+                                    expireCountDownResult.minutesLeft.toString()
+                                )
+                            }
                         }
                     }
                 }
