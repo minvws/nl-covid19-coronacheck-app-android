@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "0485ac369828155ad3ba9bc9217d8644",
+    "identityHash": "86b8327c7939f21ec4a7f50a523a1365",
     "entities": [
       {
         "tableName": "wallet",
@@ -165,7 +165,7 @@
       },
       {
         "tableName": "credential",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `green_card_id` INTEGER NOT NULL, `data` TEXT NOT NULL, `credentialVersion` TEXT NOT NULL, `validFrom` INTEGER NOT NULL, `expirationTime` INTEGER NOT NULL, FOREIGN KEY(`green_card_id`) REFERENCES `green_card`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `green_card_id` INTEGER NOT NULL, `data` BLOB NOT NULL, `credentialVersion` INTEGER NOT NULL, `validFrom` INTEGER NOT NULL, `expirationTime` INTEGER NOT NULL, FOREIGN KEY(`green_card_id`) REFERENCES `green_card`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -182,13 +182,13 @@
           {
             "fieldPath": "data",
             "columnName": "data",
-            "affinity": "TEXT",
+            "affinity": "BLOB",
             "notNull": true
           },
           {
             "fieldPath": "credentialVersion",
             "columnName": "credentialVersion",
-            "affinity": "TEXT",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -285,7 +285,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0485ac369828155ad3ba9bc9217d8644')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '86b8327c7939f21ec4a7f50a523a1365')"
     ]
   }
 }

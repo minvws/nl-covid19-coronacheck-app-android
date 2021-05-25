@@ -10,11 +10,11 @@ package nl.rijksoverheid.ctr.shared.models
 data class DomesticCredentialAttributes(
     val birthDay: String,
     val birthMonth: String,
-    val credentialVersion: String,
+    val credentialVersion: Int,
     val firstNameInitial: String,
     val isSpecimen: String,
     val lastNameInitial: String,
     val stripType: String,
-    val validForHours: String,
-    val validFrom: String
+    val validForHours: Long,
+    val validFrom: Long
 )

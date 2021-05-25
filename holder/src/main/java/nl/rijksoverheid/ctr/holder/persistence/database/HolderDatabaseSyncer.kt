@@ -11,7 +11,9 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SecretKeyUseCase
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import retrofit2.HttpException
 import java.io.IOException
+import java.time.Instant
 import java.time.OffsetDateTime
+import java.time.ZoneOffset
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -146,10 +148,16 @@ class HolderDatabaseSyncerImpl(
         val entities = domesticCredentials.map { domesticCredential ->
             CredentialEntity(
                 greenCardId = localDomesticGreenCardId,
-                data = domesticCredential.credential.toString(),
+                data = domesticCredential.credential.toString().toByteArray(),
                 credentialVersion = domesticCredential.attributes.credentialVersion,
-                validFrom = OffsetDateTime.now(),
-                expirationTime = OffsetDateTime.now()
+                validFrom = OffsetDateTime.ofInstant(
+                    Instant.ofEpochSecond(domesticCredential.attributes.validFrom),
+                    ZoneOffset.UTC
+                ),
+                expirationTime = OffsetDateTime.ofInstant(
+                    Instant.ofEpochSecond(domesticCredential.attributes.validFrom),
+                    ZoneOffset.UTC
+                ).plusHours(domesticCredential.attributes.validForHours)
             )
         }
 
