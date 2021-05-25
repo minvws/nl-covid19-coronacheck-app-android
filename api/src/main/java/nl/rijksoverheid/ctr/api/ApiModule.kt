@@ -6,6 +6,7 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import nl.rijksoverheid.ctr.api.interceptors.CacheOverrideInterceptor
 import nl.rijksoverheid.ctr.api.interceptors.SignedResponseInterceptor
 import nl.rijksoverheid.ctr.api.json.Base64JsonAdapter
+import nl.rijksoverheid.ctr.api.json.JsonObjectJsonAdapter
 import nl.rijksoverheid.ctr.api.json.LocalDateJsonAdapter
 import nl.rijksoverheid.ctr.api.json.OffsetDateTimeJsonAdapter
 import nl.rijksoverheid.ctr.api.signing.certificates.EV_ROOT_CA
@@ -93,6 +94,7 @@ fun apiModule(
         Moshi.Builder()
             .add(KotlinJsonAdapterFactory())
             .add(Base64JsonAdapter())
+            .add(JsonObjectJsonAdapter())
             .add(OffsetDateTimeJsonAdapter())
             .add(LocalDateJsonAdapter())
     }

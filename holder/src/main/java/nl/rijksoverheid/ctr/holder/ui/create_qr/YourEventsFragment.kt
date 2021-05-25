@@ -17,6 +17,7 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.design.ext.formatDateTime
+import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentYourEventsBinding
 import nl.rijksoverheid.ctr.holder.ui.create_qr.items.YourEventWidget
@@ -60,6 +61,11 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                 )
             }
         }
+
+        yourEventsViewModel.loading.observe(viewLifecycleOwner, EventObserver {
+            (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
+            binding.bottom.setButtonEnabled(!it)
+        })
 
         yourEventsViewModel.savedEvents.observe(viewLifecycleOwner, EventObserver {
             findNavController().navigate(

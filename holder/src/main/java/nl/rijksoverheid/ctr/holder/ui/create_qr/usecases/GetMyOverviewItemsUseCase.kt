@@ -2,6 +2,8 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
@@ -32,26 +34,42 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase) 
         walletId: Int,
         type: GreenCardType
     ): MyOverviewItems {
-        val greenCards = holderDatabase.greenCardDao().getAll(
-            walletId = walletId,
-            type = type
-        )
+        return withContext(Dispatchers.IO) {
+            val greenCards = holderDatabase.greenCardDao().getAll(
+                walletId = walletId,
+                type = type
+            )
 
-        val items = when (type) {
-            is GreenCardType.Domestic -> {
-                if (greenCards.isEmpty()) {
-                    listOf(
-                        MyOverviewItem.HeaderItem(
-                            text = R.string.my_overview_no_qr_description
-                        ),
-                        MyOverviewItem.CreateQrCardItem(greenCards.isNotEmpty()),
-                    )
-                } else {
+            val items = when (type) {
+                is GreenCardType.Domestic -> {
+                    if (greenCards.isEmpty()) {
+                        listOf(
+                            MyOverviewItem.HeaderItem(
+                                text = R.string.my_overview_no_qr_description
+                            ),
+                            MyOverviewItem.CreateQrCardItem(greenCards.isNotEmpty()),
+                        )
+                    } else {
+                        val qrCards = greenCards.map { MyOverviewItem.GreenCardItem(it) }
+                        val items = mutableListOf<MyOverviewItem>()
+                        items.add(
+                            MyOverviewItem.HeaderItem(
+                                text = R.string.my_overview_description
+                            )
+                        )
+                        qrCards.forEach { qrCard ->
+                            items.add(qrCard)
+                        }
+                        items.add(MyOverviewItem.TravelModeItem)
+                        items
+                    }
+                }
+                is GreenCardType.Eu -> {
                     val qrCards = greenCards.map { MyOverviewItem.GreenCardItem(it) }
                     val items = mutableListOf<MyOverviewItem>()
                     items.add(
                         MyOverviewItem.HeaderItem(
-                            text = R.string.my_overview_description
+                            text = R.string.my_overview_description_eu
                         )
                     )
                     qrCards.forEach { qrCard ->
@@ -61,26 +79,12 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase) 
                     items
                 }
             }
-            is GreenCardType.Eu -> {
-                val qrCards = greenCards.map { MyOverviewItem.GreenCardItem(it) }
-                val items = mutableListOf<MyOverviewItem>()
-                items.add(
-                    MyOverviewItem.HeaderItem(
-                        text = R.string.my_overview_description_eu
-                    )
-                )
-                qrCards.forEach { qrCard ->
-                    items.add(qrCard)
-                }
-                items.add(MyOverviewItem.TravelModeItem)
-                items
-            }
-        }
 
-        return MyOverviewItems(
-            type = type,
-            items = items
-        )
+            MyOverviewItems(
+                type = type,
+                items = items
+            )
+        }
     }
 }
 

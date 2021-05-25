@@ -34,7 +34,7 @@ android {
 }
 
 dependencies {
-    implementation project(':clcore')
+    implementation project(':mobilecore')
 
     implementation "io.insert-koin:koin-android:$koin_version"
     implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"

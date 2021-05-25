@@ -1,7 +1,9 @@
 cd ../
-git clone git@github.com:minvws/nl-covid19-coronacheck-cl-core-private tmp-clcore
-cd tmp-clcore
-gomobile bind -target android -o clcore.aar github.com/minvws/nl-covid19-coronacheck-cl-core/clmobile
+git clone git@github.com:minvws/nl-covid19-coronacheck-mobile-core-private.git tmp-mobilecore
+cd tmp-mobilecore
+go get golang.org/x/mobile/cmd/gobind@latest
+gomobile init
+gomobile bind -target android -o mobilecore.aar github.com/minvws/nl-covid19-coronacheck-mobile-core
 cd ../
-cp tmp-clcore/clcore.aar clcore
-rm -rf tmp-clcore
+cp tmp-mobilecore/mobilecore.aar mobilecore
+rm -rf tmp-mobilecore

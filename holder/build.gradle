@@ -105,7 +105,7 @@ dependencies {
     implementation project(":design")
     implementation project(":introduction")
     implementation project(":api")
-    implementation project(':clcore')
+    implementation project(':mobilecore')
     implementation project(":qrscanner")
 
     implementation "net.openid:appauth:${app_auth_version}"

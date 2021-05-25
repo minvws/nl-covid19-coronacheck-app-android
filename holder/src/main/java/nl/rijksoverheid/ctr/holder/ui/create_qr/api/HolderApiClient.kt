@@ -1,11 +1,9 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.api
 
 import nl.rijksoverheid.ctr.api.signing.http.SignedRequest
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteAccessTokens
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteConfigProviders
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteCredentials
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteNonce
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.post.AccessTokenPostData
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.post.GetCredentialsPostData
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.post.GetTestIsmPostData
 import okhttp3.ResponseBody
 import retrofit2.Response
@@ -25,8 +23,13 @@ interface HolderApiClient {
     @SignedRequest
     suspend fun getNonce(): RemoteNonce
 
+    @GET("prepare_issue")
+    suspend fun getPrepareIssue(): RemotePrepareIssue
+
     @POST("get_credentials")
-    suspend fun getCredentials(): RemoteCredentials
+    suspend fun getCredentials(
+        @Body data: GetCredentialsPostData
+    ): RemoteCredentials
 
     @GET("holder/config_providers")
     @SignedRequest

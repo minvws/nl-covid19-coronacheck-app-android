@@ -1,10 +1,8 @@
 package nl.rijksoverheid.ctr.holder.persistence.database.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.CredentialEntity
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -21,6 +19,9 @@ interface CredentialDao {
 
     @Insert
     suspend fun insert(entity: CredentialEntity)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(entity: List<CredentialEntity>)
 
     @Update
     suspend fun update(entity: CredentialEntity)

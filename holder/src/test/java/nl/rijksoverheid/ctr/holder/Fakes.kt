@@ -9,7 +9,7 @@ import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
-import nl.rijksoverheid.ctr.holder.ui.create_qr.TestResultsViewModel
+import nl.rijksoverheid.ctr.holder.ui.create_qr.CommercialTestCodeViewModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.TestProviderRepository
@@ -24,8 +24,9 @@ import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TokenValidatorUtil
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.ui.new_terms.models.NewTerms
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
-import nl.rijksoverheid.ctr.shared.ClmobileWrapper
+import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.livedata.Event
+import nl.rijksoverheid.ctr.shared.models.DomesticCredential
 import nl.rijksoverheid.ctr.shared.models.PersonalDetails
 import nl.rijksoverheid.ctr.shared.models.TestResultAttributes
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
@@ -195,11 +196,8 @@ fun fakeMyOverviewModel(
     }
 }
 
-fun fakeTestResultsViewModel(
-    retrievedTestResult: TestResult.NegativeTestResult? = null,
-    fakeSignedTestResult: SignedTestResult? = null
-): TestResultsViewModel {
-    return object : TestResultsViewModel() {
+fun fakeCommercialTestResultViewModel(): CommercialTestCodeViewModel {
+    return object : CommercialTestCodeViewModel() {
 
         override fun updateViewState() {
 
@@ -211,16 +209,6 @@ fun fakeTestResultsViewModel(
 
         override fun sendVerificationCode() {
 
-        }
-
-        override fun saveTestResult() {
-            fakeSignedTestResult?.let {
-                signedTestResult.value = Event(it)
-            }
-        }
-
-        override fun getRetrievedResult(): TestResult.NegativeTestResult? {
-            return retrievedTestResult
         }
     }
 }
@@ -317,6 +305,10 @@ fun fakeCoronaCheckRepository(
     remoteCredentials: RemoteCredentials = RemoteCredentials(
         domesticGreencard = null,
         euGreencards = null
+    ),
+    prepareIssue: RemotePrepareIssue = RemotePrepareIssue(
+        stoken = "",
+        prepareIssueMessage = "".toByteArray()
     )
 
 ): CoronaCheckRepository {
@@ -339,8 +331,16 @@ fun fakeCoronaCheckRepository(
             return remoteNonce
         }
 
-        override suspend fun getCredentials(): RemoteCredentials {
+        override suspend fun getCredentials(
+            stoken: String,
+            events: String,
+            issueCommitmentMessage: String
+        ): RemoteCredentials {
             return remoteCredentials
+        }
+
+        override suspend fun getPrepareIssue(): RemotePrepareIssue {
+            return prepareIssue
         }
     }
 }
@@ -415,12 +415,12 @@ fun fakePersistenceManager(
     }
 }
 
-fun fakeClmobileWrapper(): ClmobileWrapper {
-    return object : ClmobileWrapper {
+fun fakeMobileCoreWrapper(): MobileCoreWrapper {
+    return object : MobileCoreWrapper {
         override fun loadIssuerPks(bytes: ByteArray) {
         }
 
-        override fun createCredential(secretKey: ByteArray, body: ByteArray): String {
+        override fun createCredentials(body: ByteArray): String {
             return ""
         }
 
@@ -443,6 +443,9 @@ fun fakeClmobileWrapper(): ClmobileWrapper {
             return ""
         }
 
+        override fun getDomesticCredentials(createCredentials: ByteArray): List<DomesticCredential> {
+            return listOf()
+        }
     }
 }
 

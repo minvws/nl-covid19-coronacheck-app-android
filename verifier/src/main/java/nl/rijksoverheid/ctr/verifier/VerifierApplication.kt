@@ -7,9 +7,7 @@ import nl.rijksoverheid.ctr.design.designModule
 import nl.rijksoverheid.ctr.introduction.introductionModule
 import nl.rijksoverheid.ctr.shared.SharedApplication
 import nl.rijksoverheid.ctr.shared.sharedModule
-import nl.rijksoverheid.ctr.verifier.modules.verifierIntroductionModule
-import nl.rijksoverheid.ctr.verifier.modules.verifierModule
-import nl.rijksoverheid.ctr.verifier.modules.verifierPreferenceModule
+import nl.rijksoverheid.ctr.verifier.modules.*
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -49,7 +47,7 @@ open class VerifierApplication : SharedApplication() {
                 designModule
             )
         }
-        
+
         // If we have public keys stored, load them so they can be used by CTCL
         cachedAppConfigUseCase.getCachedPublicKeys()?.let {
             loadPublicKeysUseCase.load(it)
@@ -57,6 +55,6 @@ open class VerifierApplication : SharedApplication() {
     }
 
     override fun getAdditionalModules(): List<Module> {
-        return listOf(verifierPreferenceModule)
+        return listOf(verifierPreferenceModule, verifierMobileCoreModule)
     }
 }

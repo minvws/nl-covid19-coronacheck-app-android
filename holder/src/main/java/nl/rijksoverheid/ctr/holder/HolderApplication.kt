@@ -6,10 +6,7 @@ import nl.rijksoverheid.ctr.api.apiModule
 import nl.rijksoverheid.ctr.appconfig.*
 import nl.rijksoverheid.ctr.appconfig.usecases.LoadPublicKeysUseCase
 import nl.rijksoverheid.ctr.design.designModule
-import nl.rijksoverheid.ctr.holder.modules.holderClmobileModule
-import nl.rijksoverheid.ctr.holder.modules.holderIntroductionModule
-import nl.rijksoverheid.ctr.holder.modules.holderModule
-import nl.rijksoverheid.ctr.holder.modules.holderPreferenceModule
+import nl.rijksoverheid.ctr.holder.modules.*
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.WalletEntity
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SecretKeyUseCase
@@ -82,6 +79,6 @@ open class HolderApplication : SharedApplication() {
     }
 
     override fun getAdditionalModules(): List<Module> {
-        return listOf(holderPreferenceModule, holderClmobileModule)
+        return listOf(holderPreferenceModule, holderMobileCoreModule)
     }
 }

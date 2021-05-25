@@ -34,7 +34,7 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
 
     private var _binding: FragmentCommercialTestCodeBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: TestResultsViewModel by stateViewModel(
+    private val viewModel: CommercialTestCodeViewModel by stateViewModel(
         state = emptyState(),
     )
 
