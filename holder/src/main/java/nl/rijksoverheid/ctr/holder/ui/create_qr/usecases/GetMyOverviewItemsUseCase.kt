@@ -7,6 +7,7 @@ import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 
 /*
@@ -50,7 +51,10 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase) 
                             MyOverviewItem.CreateQrCardItem(greenCards.isNotEmpty()),
                         )
                     } else {
-                        val qrCards = greenCards.map { MyOverviewItem.GreenCardItem(it) }
+                        val qrCards = greenCards.map { greenCard ->
+                            val orderedOrigins = greenCard.origins.sortedBy { it.expirationTime }
+                            MyOverviewItem.GreenCardItem(greenCard, orderedOrigins)
+                        }
                         val items = mutableListOf<MyOverviewItem>()
                         items.add(
                             MyOverviewItem.HeaderItem(
@@ -65,7 +69,10 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase) 
                     }
                 }
                 is GreenCardType.Eu -> {
-                    val qrCards = greenCards.map { MyOverviewItem.GreenCardItem(it) }
+                    val qrCards = greenCards.map { greenCard ->
+                        val orderedOrigins = greenCard.origins.sortedBy { it.eventTime }
+                        MyOverviewItem.GreenCardItem(greenCard, orderedOrigins)
+                    }
                     val items = mutableListOf<MyOverviewItem>()
                     items.add(
                         MyOverviewItem.HeaderItem(
@@ -99,7 +106,8 @@ sealed class MyOverviewItem {
     data class CreateQrCardItem(val hasGreenCards: Boolean) : MyOverviewItem()
 
     data class GreenCardItem(
-        val greenCard: GreenCard
+        val greenCard: GreenCard,
+        val sortedOrigins: List<OriginEntity>
     ) : MyOverviewItem()
 
     sealed class BannerItem(

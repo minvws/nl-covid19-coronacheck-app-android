@@ -9,8 +9,9 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.schibsted.spain.barista.assertion.BaristaListAssertions.assertDisplayedAtPosition
 import com.schibsted.spain.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
 import com.schibsted.spain.barista.assertion.BaristaVisibilityAssertions.assertNotDisplayed
-import nl.rijksoverheid.ctr.design.ext.formatDate
 import nl.rijksoverheid.ctr.design.ext.formatDateTime
+import nl.rijksoverheid.ctr.design.ext.formatDayMonth
+import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.fakeMyOverviewModel
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardEntity
@@ -159,7 +160,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                 OffsetDateTime.ofInstant(
                     Instant.ofEpochSecond(1),
                     ZoneOffset.UTC
-                ).formatDateTime(InstrumentationRegistry.getInstrumentation().context)
+                ).toLocalDate().formatDayMonthYear()
             )
         )
 
@@ -172,7 +173,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                 OffsetDateTime.ofInstant(
                     Instant.ofEpochSecond(1),
                     ZoneOffset.UTC
-                ).formatDateTime(InstrumentationRegistry.getInstrumentation().context)
+                ).toLocalDate().formatDayMonth()
             )
         )
     }
@@ -197,7 +198,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                 OffsetDateTime.ofInstant(
                     Instant.ofEpochSecond(1),
                     ZoneOffset.UTC
-                ).toLocalDate().formatDate()
+                ).formatDateTime(InstrumentationRegistry.getInstrumentation().context)
             )
         )
     }
@@ -226,59 +227,64 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
         assertNotDisplayed(R.id.description)
     }
 
-    private fun getGreenCardItems(type: GreenCardType) = listOf(
-        MyOverviewItem.GreenCardItem(
-            greenCard = GreenCard(
-                greenCardEntity = GreenCardEntity(
-                    id = 1,
-                    walletId = 1,
-                    type = type
+    private fun getGreenCardItems(type: GreenCardType): List<MyOverviewItem.GreenCardItem> {
+        val origins = listOf(
+            OriginEntity(
+                id = 1,
+                greenCardId = 1,
+                type = OriginType.Test,
+                eventTime = OffsetDateTime.ofInstant(
+                    Instant.ofEpochSecond(1),
+                    ZoneOffset.UTC
                 ),
-                origins = listOf(
-                    OriginEntity(
-                        id = 1,
-                        greenCardId = 1,
-                        type = OriginType.Test,
-                        eventTime = OffsetDateTime.ofInstant(
-                            Instant.ofEpochSecond(1),
-                            ZoneOffset.UTC
-                        ),
-                        expirationTime = OffsetDateTime.ofInstant(
-                            Instant.ofEpochSecond(1),
-                            ZoneOffset.UTC
-                        )
-                    ),
-                    OriginEntity(
-                        id = 1,
-                        greenCardId = 1,
-                        type = OriginType.Vaccination,
-                        eventTime = OffsetDateTime.ofInstant(
-                            Instant.ofEpochSecond(1),
-                            ZoneOffset.UTC
-                        ),
-                        expirationTime = OffsetDateTime.ofInstant(
-                            Instant.ofEpochSecond(1),
-                            ZoneOffset.UTC
-                        )
-                    ),
-                    OriginEntity(
-                        id = 1,
-                        greenCardId = 1,
-                        type = OriginType.Recovery,
-                        eventTime = OffsetDateTime.ofInstant(
-                            Instant.ofEpochSecond(1),
-                            ZoneOffset.UTC
-                        ),
-                        expirationTime = OffsetDateTime.ofInstant(
-                            Instant.ofEpochSecond(1),
-                            ZoneOffset.UTC
-                        )
-                    )
+                expirationTime = OffsetDateTime.ofInstant(
+                    Instant.ofEpochSecond(1),
+                    ZoneOffset.UTC
+                )
+            ),
+            OriginEntity(
+                id = 1,
+                greenCardId = 1,
+                type = OriginType.Vaccination,
+                eventTime = OffsetDateTime.ofInstant(
+                    Instant.ofEpochSecond(1),
+                    ZoneOffset.UTC
                 ),
-                credentialEntities = listOf()
+                expirationTime = OffsetDateTime.ofInstant(
+                    Instant.ofEpochSecond(1),
+                    ZoneOffset.UTC
+                )
+            ),
+            OriginEntity(
+                id = 1,
+                greenCardId = 1,
+                type = OriginType.Recovery,
+                eventTime = OffsetDateTime.ofInstant(
+                    Instant.ofEpochSecond(1),
+                    ZoneOffset.UTC
+                ),
+                expirationTime = OffsetDateTime.ofInstant(
+                    Instant.ofEpochSecond(1),
+                    ZoneOffset.UTC
+                )
             )
         )
-    )
+
+        return listOf(
+            MyOverviewItem.GreenCardItem(
+                greenCard = GreenCard(
+                    greenCardEntity = GreenCardEntity(
+                        id = 1,
+                        walletId = 1,
+                        type = type
+                    ),
+                    origins = origins,
+                    credentialEntities = listOf(),
+                ),
+                sortedOrigins = origins
+            )
+        )
+    }
 
     private fun launchOverviewFragment(items: MyOverviewItems) {
         loadKoinModules(
