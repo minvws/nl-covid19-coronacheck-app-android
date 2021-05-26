@@ -18,10 +18,10 @@
     <string name="privacy_policy_1"><![CDATA[Jouw gegevens worden <b>nergens centraal opgeslagen</b>]]></string>
     <string name="privacy_policy_2"><![CDATA[Je GPS- of locatiegegevens worden <b>niet gebruikt of bewaard</b>]]></string>
     <string name="privacy_policy_3"><![CDATA[In de QR-code staan minimale <b>persoonsgegevens</b>.]]></string>
-    <string name="privacy_policy_checkbox_text">Ik heb de privacyverklaring gelezen en geef toestemming voor het verwerken van mijn persoonsgegevens.</string>
+    <string name="privacy_policy_checkbox_text">Ik heb de privacyverklaring gelezen en begrijp hoe CoronaCheck met mijn gegevens omgaat</string>
     <string name="my_overview">Mijn overzicht</string>
     <string name="my_overview_description">Laat je QR code scannen voor de ingang van een uitgaansgelegenheid, om naar binnen te mogen.</string>
-    <string name="my_overview_no_qr_description">Voor toegang tot een pilot-event heb je een negatieve testuitslag nodig. Daar maak je een QR-code van. Laat bij de ingang de QR-code én je identiteitsbewijs zien.</string>
+    <string name="my_overview_no_qr_description">Voor toegang tot bepaalde locaties of activiteiten heb je een negatieve testuitslag nodig. Daar maak je een QR-code van. Laat bij de ingang de QR-code én je identiteitsbewijs zien.</string>
     <string name="dialog_error_title">Sorry, er ging iets mis</string>
     <string name="dialog_error_message">Dat komt door een technische fout.</string>
     <string name="dialog_error_message_with_error_code">Dat komt door een technische fout (%1$s).</string>
