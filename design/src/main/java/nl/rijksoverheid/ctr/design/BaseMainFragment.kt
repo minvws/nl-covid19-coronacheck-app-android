@@ -59,12 +59,13 @@ abstract class BaseMainFragment(
                 } else {
                     drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
                 }
-
-                requireView().findViewById<Toolbar>(R.id.toolbar).getNavigationIconView()?.let {
-                    it.postDelayed(
-                        { it.setAccessibilityFocus() },
-                        AccessibilityConstants.ACCESSIBILITY_FOCUS_DELAY
-                    )
+                if (requireActivity().isScreenReaderOn()) {
+                    requireView().findViewById<Toolbar>(R.id.toolbar).getNavigationIconView()?.let {
+                        it.postDelayed(
+                            { it.setAccessibilityFocus() },
+                            AccessibilityConstants.ACCESSIBILITY_FOCUS_DELAY
+                        )
+                    }
                 }
             }
 
