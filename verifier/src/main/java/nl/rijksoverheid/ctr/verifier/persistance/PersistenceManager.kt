@@ -16,6 +16,9 @@ interface PersistenceManager {
     fun getSecretKeyJson(): String?
     fun saveLocalTestResultJson(localTestResultJson: String)
     fun getLocalTestResultJson(): String?
+    fun getEuPublicKeyPath()
+    fun storeEuPublicKeys()
+    fun euPublicKeysValid() : Boolean
 }
 
 class SharedPreferencesPersistenceManager(private val sharedPreferences: SharedPreferences) :
@@ -49,5 +52,17 @@ class SharedPreferencesPersistenceManager(private val sharedPreferences: SharedP
 
     override fun getLocalTestResultJson(): String? {
         return sharedPreferences.getString(LOCAL_TEST_RESULT, null)
+    }
+
+    override fun getEuPublicKeyPath() {
+
+    }
+
+    override fun storeEuPublicKeys() {
+
+    }
+
+    override fun euPublicKeysValid(): Boolean {
+        return true
     }
 }
