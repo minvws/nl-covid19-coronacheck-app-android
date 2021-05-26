@@ -19,12 +19,12 @@
         tools:layout="@layout/fragment_my_overview">
 
         <action
-            android:id="@+id/action_choose_provider"
-            app:destination="@id/nav_choose_provider"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:exitAnim="@anim/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit" />
+            android:id="@+id/action_commercial_test_code"
+            app:destination="@id/nav_commercial_test"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
 
         <action
             android:id="@+id/action_make_appointment"
@@ -59,22 +59,6 @@
         android:name="nl.rijksoverheid.ctr.holder.ui.make_appointment.MakeAppointmentFragment"
         android:label="@string/test_appointment_info_toolbar_title"
         tools:layout="@layout/fragment_make_appointment" />
-
-    <fragment
-        android:id="@+id/nav_choose_provider"
-        android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.ChooseProviderFragment"
-        android:label="@string/choose_provider_toolbar"
-        tools:layout="@layout/fragment_choose_provider">
-
-        <action
-            android:id="@+id/action_commercial_test_code"
-            app:destination="@id/nav_commercial_test"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
-
-    </fragment>
 
     <navigation
         android:id="@+id/nav_commercial_test"
