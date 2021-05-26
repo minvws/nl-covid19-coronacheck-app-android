@@ -34,15 +34,15 @@
             app:layout_constraintEnd_toStartOf="@+id/close"
             app:layout_constraintStart_toEndOf="@+id/icon"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="@string/item_test_result_expired" />
+            tools:text="@string/qr_card_expired_eu" />
 
         <ImageView
             android:id="@+id/close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?attr/actionBarItemBackground"
-            android:src="@drawable/ic_close"
             android:contentDescription="@string/menu_close"
+            android:src="@drawable/ic_close"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

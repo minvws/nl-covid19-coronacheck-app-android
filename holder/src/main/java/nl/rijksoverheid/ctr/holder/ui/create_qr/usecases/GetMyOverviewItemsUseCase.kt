@@ -1,6 +1,5 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
-import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -9,6 +8,8 @@ import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
+import timber.log.Timber
+import java.time.OffsetDateTime
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -24,7 +25,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 interface GetMyOverviewItemsUseCase {
     suspend fun get(
         walletId: Int,
-        type: GreenCardType
+        selectedType: GreenCardType
     ): MyOverviewItems
 }
 
@@ -33,105 +34,148 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase) 
 
     override suspend fun get(
         walletId: Int,
-        type: GreenCardType
+        selectedType: GreenCardType
     ): MyOverviewItems {
         return withContext(Dispatchers.IO) {
-            val greenCards = holderDatabase.greenCardDao().getAll(
-                walletId = walletId,
-                type = type
+            val allGreenCards = holderDatabase.greenCardDao().getAll()
+            val greenCardsForSelectedType =
+                allGreenCards.filter { it.greenCardEntity.type == selectedType }
+
+            val items = mutableListOf<MyOverviewItem>()
+            items.add(
+                getHeaderItem(
+                    hasGreenCards = greenCardsForSelectedType.isNotEmpty(),
+                    type = selectedType
+                )
             )
 
-            val items = when (type) {
-                is GreenCardType.Domestic -> {
-                    if (greenCards.isEmpty()) {
-                        listOf(
-                            MyOverviewItem.HeaderItem(
-                                text = R.string.my_overview_no_qr_description
-                            ),
-                            MyOverviewItem.CreateQrCardItem(greenCards.isNotEmpty()),
-                        )
-                    } else {
-                        val qrCards = greenCards.map { greenCard ->
-                            val orderedOrigins = greenCard.origins.sortedBy { it.expirationTime }
-                            MyOverviewItem.GreenCardItem(greenCard, orderedOrigins)
-                        }
-                        val items = mutableListOf<MyOverviewItem>()
-                        items.add(
-                            MyOverviewItem.HeaderItem(
-                                text = R.string.my_overview_description
-                            )
-                        )
-                        qrCards.forEach { qrCard ->
-                            items.add(qrCard)
-                        }
-                        items.add(MyOverviewItem.TravelModeItem)
-                        items
-                    }
-                }
-                is GreenCardType.Eu -> {
-                    val qrCards = greenCards.map { greenCard ->
-                        val orderedOrigins = greenCard.origins.sortedBy { it.eventTime }
-                        MyOverviewItem.GreenCardItem(greenCard, orderedOrigins)
-                    }
-                    val items = mutableListOf<MyOverviewItem>()
-                    items.add(
-                        MyOverviewItem.HeaderItem(
-                            text = R.string.my_overview_description_eu
-                        )
-                    )
-                    qrCards.forEach { qrCard ->
-                        items.add(qrCard)
-                    }
-                    items.add(MyOverviewItem.TravelModeItem)
-                    items
-                }
+            items.addAll(
+                getGreenCardItems(
+                    greenCards = greenCardsForSelectedType
+                )
+            )
+
+            getCreateQrCardItem(
+                hasGreenCards = items.any { it is MyOverviewItem.GreenCardItem },
+                selectedType = selectedType,
+            )?.let {
+                items.add(it)
+            }
+
+            getTravelModeItem(
+                greenCards = allGreenCards,
+                selectedType = selectedType
+            )?.let {
+                items.add(it)
             }
 
             MyOverviewItems(
-                type = type,
-                items = items
+                items = items,
+                selectedType = selectedType
             )
+        }
+    }
+
+    private fun getHeaderItem(hasGreenCards: Boolean, type: GreenCardType): MyOverviewItem {
+        // Text for header depends on some factors
+        val text = when (type) {
+            is GreenCardType.Domestic -> {
+                if (hasGreenCards) {
+                    R.string.my_overview_description
+                } else {
+                    R.string.my_overview_no_qr_description
+                }
+            }
+            is GreenCardType.Eu -> {
+                R.string.my_overview_description_eu
+            }
+        }
+
+        return MyOverviewItem.HeaderItem(
+            text = text
+        )
+    }
+
+    private suspend fun getGreenCardItems(greenCards: List<GreenCard>): List<MyOverviewItem> {
+        if (greenCards.isEmpty()) {
+            return listOf()
+        } else {
+            return greenCards.map { greenCard ->
+                val orderedOrigins = greenCard.origins.sortedBy { it.expirationTime }
+
+                // If the origin with the highest possible expiration time is expired
+                if (OffsetDateTime.now() >= orderedOrigins.minByOrNull { it.expirationTime }!!.expirationTime) {
+
+                    // Remove green card from database
+                    holderDatabase.greenCardDao().delete(greenCard.greenCardEntity)
+
+                    // Show green card expired banner
+                    MyOverviewItem.GreenCardExpiredItem(greenCardType = greenCard.greenCardEntity.type)
+
+                } else {
+                    // Show green card
+                    MyOverviewItem.GreenCardItem(greenCard, orderedOrigins)
+                }
+            }
+        }
+    }
+
+    private fun getCreateQrCardItem(
+        hasGreenCards: Boolean,
+        selectedType: GreenCardType
+    ): MyOverviewItem? {
+        return if (hasGreenCards) {
+            null
+        } else {
+            // Only return create qr card if there are not green cards on the screen and we have domestic type selected
+            if (selectedType == GreenCardType.Domestic) {
+                MyOverviewItem.CreateQrCardItem
+            } else {
+                null
+            }
+        }
+    }
+
+    private fun getTravelModeItem(
+        greenCards: List<GreenCard>,
+        selectedType: GreenCardType
+    ): MyOverviewItem? {
+        return when (selectedType) {
+            is GreenCardType.Eu -> {
+                MyOverviewItem.TravelModeItem(R.string.travel_toggle_europe)
+            }
+            is GreenCardType.Domestic -> {
+                val hasEuGreenCard = greenCards.any { it.greenCardEntity.type == GreenCardType.Eu }
+                if (hasEuGreenCard) {
+                    // Only return travel mode item if there are eu green cards
+                    MyOverviewItem.TravelModeItem(R.string.travel_toggle_domestic)
+                } else {
+                    null
+                }
+            }
         }
     }
 }
 
 data class MyOverviewItems(
-    val type: GreenCardType,
-    val items: List<MyOverviewItem>
+    val items: List<MyOverviewItem>,
+    val selectedType: GreenCardType
 )
 
 sealed class MyOverviewItem {
 
     data class HeaderItem(@StringRes val text: Int) : MyOverviewItem()
-    data class CreateQrCardItem(val hasGreenCards: Boolean) : MyOverviewItem()
+
+    object CreateQrCardItem : MyOverviewItem()
 
     data class GreenCardItem(
         val greenCard: GreenCard,
         val sortedOrigins: List<OriginEntity>
     ) : MyOverviewItem()
 
-    sealed class BannerItem(
-        @StringRes open val text: Int,
-        @DrawableRes open val icon: Int,
-    ) : MyOverviewItem() {
-        // UI card with info icon
-        data class Close(
-            override val text: Int
-        ) : BannerItem(text, R.drawable.ic_close)
+    data class GreenCardExpiredItem(
+        val greenCardType: GreenCardType
+    ) : MyOverviewItem()
 
-        // UI card with close icon
-        data class Info(
-            override val text: Int,
-            override val icon: Int,
-            val screen: Screen
-        ) : BannerItem(text, R.drawable.ic_question) {
-
-            data class Screen(
-                @StringRes val title: Int,
-                @StringRes val description: Int
-            )
-        }
-    }
-
-    object TravelModeItem : MyOverviewItem()
+    data class TravelModeItem(@StringRes val text: Int) : MyOverviewItem()
 }

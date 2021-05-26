@@ -54,7 +54,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
     fun `HeaderItem maps to MyOverviewHeaderAdapterItem in UI`() {
         launchOverviewFragment(
             items = MyOverviewItems(
-                type = GreenCardType.Domestic,
+                selectedType = GreenCardType.Domestic,
                 items = listOf(
                     MyOverviewItem.HeaderItem(
                         text = R.string.ok
@@ -75,11 +75,9 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
     fun `CreateQrCardItem with no green cards maps to correct MyOverviewNavigationCardAdapterItem in UI`() {
         launchOverviewFragment(
             items = MyOverviewItems(
-                type = GreenCardType.Domestic,
+                selectedType = GreenCardType.Domestic,
                 items = listOf(
-                    MyOverviewItem.CreateQrCardItem(
-                        hasGreenCards = false
-                    )
+                    MyOverviewItem.CreateQrCardItem
                 )
             )
         )
@@ -103,11 +101,9 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
     fun `CreateQrCardItem with green cards maps to correct MyOverviewNavigationCardAdapterItem in UI`() {
         launchOverviewFragment(
             items = MyOverviewItems(
-                type = GreenCardType.Domestic,
+                selectedType = GreenCardType.Domestic,
                 items = listOf(
-                    MyOverviewItem.CreateQrCardItem(
-                        hasGreenCards = true
-                    )
+                    MyOverviewItem.CreateQrCardItem
                 )
             )
         )
@@ -116,14 +112,14 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
             listId = R.id.recyclerView,
             position = 0,
             targetViewId = R.id.title,
-            textId = R.string.my_overview_no_qr_replace_qr_title
+            textId = R.string.my_overview_no_qr_make_qr_title
         )
 
         assertDisplayedAtPosition(
             listId = R.id.recyclerView,
             position = 0,
             targetViewId = R.id.button,
-            textId = R.string.my_overview_no_qr_replace_qr_button
+            textId = R.string.my_overview_no_qr_make_qr_button
         )
     }
 
@@ -131,7 +127,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
     fun `GreenCardItem with type domestic maps to correct MyOverviewGreenCardAdapterItem in UI`() {
         launchOverviewFragment(
             items = MyOverviewItems(
-                type = GreenCardType.Domestic,
+                selectedType = GreenCardType.Domestic,
                 items = getGreenCardItems(
                     type = GreenCardType.Domestic
                 )
@@ -182,7 +178,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
     fun `GreenCardItem with type eu maps to correct MyOverviewGreenCardAdapterItem in UI`() {
         launchOverviewFragment(
             items = MyOverviewItems(
-                type = GreenCardType.Eu,
+                selectedType = GreenCardType.Eu,
                 items = getGreenCardItems(
                     type = GreenCardType.Eu
                 )
@@ -207,8 +203,8 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
     fun `If ToggleGreenCardTypeItem exists show travel mode`() {
         launchOverviewFragment(
             items = MyOverviewItems(
-                type = GreenCardType.Eu,
-                items = listOf(MyOverviewItem.TravelModeItem)
+                selectedType = GreenCardType.Eu,
+                items = listOf(MyOverviewItem.TravelModeItem(R.string.ok))
             )
         )
 
@@ -219,7 +215,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
     fun `If ToggleGreenCardTypeItem does not exist hide travel mode`() {
         launchOverviewFragment(
             items = MyOverviewItems(
-                type = GreenCardType.Eu,
+                selectedType = GreenCardType.Eu,
                 items = listOf()
             )
         )
