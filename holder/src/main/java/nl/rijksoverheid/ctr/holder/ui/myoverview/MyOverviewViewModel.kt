@@ -29,7 +29,8 @@ class MyOverviewViewModelImpl(
 ) : MyOverviewViewModel() {
 
     override fun getSelectedType(): GreenCardType {
-        return (myOverviewItemsLiveData.value?.peekContent()?.type ?: GreenCardType.Domestic)
+        return (myOverviewItemsLiveData.value?.peekContent()?.selectedType
+            ?: GreenCardType.Domestic)
     }
 
     /**
@@ -41,7 +42,7 @@ class MyOverviewViewModelImpl(
             (myOverviewItemsLiveData as MutableLiveData).postValue(
                 Event(
                     getMyOverviewItemsUseCase.get(
-                        type = selectType ?: getSelectedType(),
+                        selectedType = selectType ?: getSelectedType(),
                         walletId = 1
                     )
                 )

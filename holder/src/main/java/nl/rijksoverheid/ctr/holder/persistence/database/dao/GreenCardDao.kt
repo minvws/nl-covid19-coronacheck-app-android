@@ -1,9 +1,6 @@
 package nl.rijksoverheid.ctr.holder.persistence.database.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
@@ -24,14 +21,14 @@ interface GreenCardDao {
     @Query("SELECT * FROM green_card WHERE type = :type AND wallet_id = :walletId")
     suspend fun getAll(type: GreenCardType, walletId: Int): List<GreenCard>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(entity: GreenCardEntity): Long
 
     @Update
     suspend fun update(entity: GreenCardEntity)
 
-    @Query("DELETE FROM green_card WHERE id = :id")
-    suspend fun delete(id: Int)
+    @Delete
+    suspend fun delete(entity: GreenCardEntity)
 
     @Query("DELETE FROM green_card")
     suspend fun deleteAll()

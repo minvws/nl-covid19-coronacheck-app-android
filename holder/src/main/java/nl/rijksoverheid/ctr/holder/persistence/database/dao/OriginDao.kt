@@ -22,7 +22,7 @@ interface OriginDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(entity: List<OriginEntity>)
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(entity: OriginEntity)
 
     @Query("DELETE FROM origin")

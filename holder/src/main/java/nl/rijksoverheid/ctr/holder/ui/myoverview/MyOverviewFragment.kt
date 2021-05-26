@@ -15,10 +15,10 @@ import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMyOverviewBinding
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItems
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewGreenCardAdapterItem
+import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewGreenCardExpiredAdapterItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewHeaderAdapterItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewNavigationCardAdapterItem
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
@@ -117,6 +117,8 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
         binding: FragmentMyOverviewBinding,
         myOverviewItems: MyOverviewItems
     ) {
+        binding.typeToggle.root.visibility = View.GONE
+
         val adapterItems = mutableListOf<BindableItem<*>>()
         myOverviewItems.items.forEach { myOverviewItem ->
             when (myOverviewItem) {
@@ -129,11 +131,11 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                 }
                 is MyOverviewItem.CreateQrCardItem -> {
                     adapterItems.add(MyOverviewNavigationCardAdapterItem(
-                        title = if (myOverviewItem.hasGreenCards) R.string.my_overview_no_qr_replace_qr_title else R.string.my_overview_no_qr_make_qr_title,
+                        title = R.string.my_overview_no_qr_make_qr_title,
                         description = R.string.my_overview_no_qr_make_qr_description,
                         backgroundColor = R.color.secondary_green,
                         backgroundDrawable = R.drawable.illustration_create_qr,
-                        buttonText = if (myOverviewItem.hasGreenCards) R.string.my_overview_no_qr_replace_qr_button else R.string.my_overview_no_qr_make_qr_button,
+                        buttonText = R.string.my_overview_no_qr_make_qr_button,
                         onButtonClick = {
                             findNavControllerSafety(R.id.nav_my_overview)?.navigate(
                                 MyOverviewFragmentDirections.actionCreateQr()
@@ -142,28 +144,28 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                     ))
                 }
                 is MyOverviewItem.GreenCardItem -> {
-                    adapterItems.add(MyOverviewGreenCardAdapterItem(
-                        greenCard = myOverviewItem.greenCard,
-                        sortedOrigins = myOverviewItem.sortedOrigins,
-                        onButtonClick = {
+                    adapterItems.add(
+                        MyOverviewGreenCardAdapterItem(
+                            greenCard = myOverviewItem.greenCard,
+                            sortedOrigins = myOverviewItem.sortedOrigins,
+                            onButtonClick = {
 
+                            })
+                    )
+                }
+                is MyOverviewItem.GreenCardExpiredItem -> {
+                    adapterItems.add(MyOverviewGreenCardExpiredAdapterItem(
+                        greenCardType = myOverviewItem.greenCardType,
+                        onDismissClick = {
+
+                            // Refresh so card is removed
+                            myOverviewViewModel.refreshOverviewItems()
                         }
                     ))
                 }
-                is MyOverviewItem.BannerItem -> {
-
-                }
                 is MyOverviewItem.TravelModeItem -> {
                     binding.typeToggle.root.visibility = View.VISIBLE
-
-                    when (myOverviewItems.type) {
-                        is GreenCardType.Domestic -> {
-                            binding.typeToggle.description.setText(R.string.travel_toggle_domestic)
-                        }
-                        is GreenCardType.Eu -> {
-                            binding.typeToggle.description.setText(R.string.travel_toggle_europe)
-                        }
-                    }
+                    binding.typeToggle.description.setText(myOverviewItem.text)
 
                     binding.typeToggle.button.setOnClickListener {
                         findNavController().navigate(MyOverviewFragmentDirections.actionShowTravelMode())

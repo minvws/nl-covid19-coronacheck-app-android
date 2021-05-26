@@ -227,4 +227,6 @@
     <string name="qr_card_vaccination_validity_eu">Vaccinatiedatum:\n%1$s</string>
     <string name="qr_card_recovery_validity_eu">Herstelverklaring:\ngeldig vanaf %1$s</string>
     <string name="qr_card_test_validity_eu">Testdatum:\n%1$s</string>
+    <string name="qr_card_expired_domestic">De Nederandse QR-code van je testbewijs is verlopen.</string>
+    <string name="qr_card_expired_eu">De Europese QR-code van je testuitslag is verlopen.</string>
 </resources>

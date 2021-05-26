@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.holder.persistence.database.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.WalletEntity
