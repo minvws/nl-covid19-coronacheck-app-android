@@ -67,8 +67,8 @@ android {
     productFlavors {
         tst {
             buildConfigField "String", "BASE_API_URL", "\"https://qrdaar.scriptbase.org/v3/\""
-            buildConfigField "String", "DIGI_D_BASE_URL", "\"https://login.ggdghor.nl/coronitacc\""
-            buildConfigField "String", "DIGI_D_CLIENT_ID", "\"6456237456911667336\""
+            buildConfigField "String", "DIGI_D_BASE_URL", "\"https://tvs.acc.coronacheck.nl\""
+            buildConfigField "String", "DIGI_D_CLIENT_ID", "\"test_client\""
             buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "false"
             buildConfigField "boolean", "FEATURE_TEST_PROVIDER_API_CHECKS", "false"
             dimension "environment"
@@ -80,8 +80,8 @@ android {
         }
         acc {
             buildConfigField "String", "BASE_API_URL", "\"https://holder-api.acc.coronacheck.nl/v3/\""
-            buildConfigField "String", "DIGI_D_BASE_URL", "\"https://login.ggdghor.nl/coronitacc\""
-            buildConfigField "String", "DIGI_D_CLIENT_ID", "\"6456237456911667336\""
+            buildConfigField "String", "DIGI_D_BASE_URL", "\"https://tvs.acc.coronacheck.nl\""
+            buildConfigField "String", "DIGI_D_CLIENT_ID", "\"test_client\""
             dimension "environment"
             versionNameSuffix "-acc"
             applicationIdSuffix ".acc"
