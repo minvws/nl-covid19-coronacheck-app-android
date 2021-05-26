@@ -154,4 +154,7 @@ dependencies {
     accImplementation "com.google.firebase:firebase-crashlytics-ktx:$crashlytics_version"
 
     kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
+
+    // Needed in order for room to work with Apple Sillicon M1
+    kapt "org.xerial:sqlite-jdbc:$sqlite_jdbc"
 }
