@@ -38,7 +38,7 @@ open class VerifierApplication : SharedApplication() {
                     BuildConfig.FEATURE_CORONA_CHECK_API_CHECKS,
                     BuildConfig.FEATURE_TEST_PROVIDER_API_CHECKS
                 ),
-                verifierModule,
+                verifierModule("verifier"),
                 verifierIntroductionModule,
                 sharedModule,
                 appConfigModule("verifier", BuildConfig.VERSION_CODE),

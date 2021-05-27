@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.verifier.persistance
 
 import android.content.SharedPreferences
+import java.io.File
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -16,9 +17,10 @@ interface PersistenceManager {
     fun getSecretKeyJson(): String?
     fun saveLocalTestResultJson(localTestResultJson: String)
     fun getLocalTestResultJson(): String?
-    fun getEuPublicKeyPath()
-    fun storeEuPublicKeys()
-    fun euPublicKeysValid() : Boolean
+    fun saveEuPublicKeyPath(path: String)
+    fun getEuPublicKeyPath() : String?
+    fun getEuPublicKeysLastFetchedSeconds(): Long
+    fun saveEuPublicKeysLastFetchedSeconds(seconds: Long)
 }
 
 class SharedPreferencesPersistenceManager(private val sharedPreferences: SharedPreferences) :
@@ -28,6 +30,8 @@ class SharedPreferencesPersistenceManager(private val sharedPreferences: SharedP
         const val SCAN_INSTRUCTIONS_SEEN = "SCAN_INSTRUCTIONS_SEEN"
         const val SECRET_KEY_JSON = "SECRET_KEY_JSON"
         const val LOCAL_TEST_RESULT = "LOCAL_TEST_RESULT"
+        const val EU_PUBLIC_KEYS_PATH = "EU_PUBLIC_KEYS_PATH"
+        const val EU_PUBLIC_KEYS_LAST_FETCHED_SECONDS = "EU_PUBLIC_KEYS_LAST_FETCHED_SECONDS"
     }
 
     override fun getScanInstructionsSeen(): Boolean {
@@ -54,15 +58,20 @@ class SharedPreferencesPersistenceManager(private val sharedPreferences: SharedP
         return sharedPreferences.getString(LOCAL_TEST_RESULT, null)
     }
 
-    override fun getEuPublicKeyPath() {
-
+    override fun saveEuPublicKeyPath(path : String) {
+        sharedPreferences.edit().putString(EU_PUBLIC_KEYS_PATH, path).apply()
     }
 
-    override fun storeEuPublicKeys() {
-
+    override fun getEuPublicKeyPath() : String? {
+        return sharedPreferences.getString(EU_PUBLIC_KEYS_PATH, null)
     }
 
-    override fun euPublicKeysValid(): Boolean {
-        return true
+
+    override fun getEuPublicKeysLastFetchedSeconds(): Long {
+        return sharedPreferences.getLong(EU_PUBLIC_KEYS_LAST_FETCHED_SECONDS, 0L)
+    }
+
+    override fun saveEuPublicKeysLastFetchedSeconds(seconds: Long) {
+        sharedPreferences.edit().putLong(EU_PUBLIC_KEYS_LAST_FETCHED_SECONDS, seconds).apply()
     }
 }
