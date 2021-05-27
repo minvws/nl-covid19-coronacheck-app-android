@@ -14,9 +14,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.TestProviderRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
-import nl.rijksoverheid.ctr.holder.ui.myoverview.LocalTestResultViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewViewModel
-import nl.rijksoverheid.ctr.holder.ui.myoverview.models.LocalTestResult
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.LocalTestResultState
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.LocalTestResultUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
@@ -146,35 +144,6 @@ fun fakeIntroductionViewModel(
 
         }
 
-    }
-}
-
-fun fakeLocalTestResultViewModel(
-    localTestResultState: LocalTestResultState = LocalTestResultState.None,
-): LocalTestResultViewModel {
-    return object : LocalTestResultViewModel() {
-        override fun getLocalTestResult() {
-            localTestResultStateLiveData.value = Event(localTestResultState)
-        }
-
-        override fun generateQrCode(size: Int): Boolean {
-            if (localTestResultState is LocalTestResultState.Valid) {
-                qrCodeLiveData.value =
-                    QrCodeData(
-                        localTestResult = LocalTestResult(
-                            credentials = "dummy",
-                            sampleDate = OffsetDateTime.now(),
-                            expireDate = OffsetDateTime.now(),
-                            testType = "dummy",
-                            personalDetails = PersonalDetails("X", "X", "X", "X")
-                        ),
-                        qrCode = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
-                    )
-                return true
-            } else {
-                return false
-            }
-        }
     }
 }
 
@@ -429,6 +398,10 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
         }
 
         override fun createCommitmentMessage(secretKey: ByteArray, nonce: ByteArray): String {
+            return ""
+        }
+
+        override fun diclose(secretKey: ByteArray, credential: ByteArray): String {
             return ""
         }
 
