@@ -14,7 +14,7 @@ import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
  *
  */
 interface QrCodeUseCase {
-    suspend fun qrCode(credentials: ByteArray, qrCodeWidth: Int, qrCodeHeight: Int): Bitmap
+    suspend fun qrCode(credential: ByteArray, qrCodeWidth: Int, qrCodeHeight: Int): Bitmap
 }
 
 class QrCodeUseCaseImpl(
@@ -24,7 +24,7 @@ class QrCodeUseCaseImpl(
 ) : QrCodeUseCase {
 
     override suspend fun qrCode(
-        credentials: ByteArray,
+        credential: ByteArray,
         qrCodeWidth: Int,
         qrCodeHeight: Int
     ): Bitmap =
@@ -32,9 +32,9 @@ class QrCodeUseCaseImpl(
             val secretKey = persistenceManager.getSecretKeyJson()
                 ?: throw IllegalStateException("Secret key should exist")
 
-            val qrCodeContent = mobileCoreWrapper.discloseAllWithTimeQrEncoded(
+            val qrCodeContent = mobileCoreWrapper.diclose(
                 secretKey.toByteArray(),
-                credentials
+                credential
             )
 
             generateHolderQrCodeUseCase.bitmap(

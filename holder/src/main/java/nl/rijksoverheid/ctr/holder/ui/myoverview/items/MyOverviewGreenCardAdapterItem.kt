@@ -36,7 +36,7 @@ class MyOverviewGreenCardAdapterItem(
     private val greenCard: GreenCard,
     private val sortedOrigins: List<OriginEntity>,
     private val credential: CredentialEntity?,
-    private val onButtonClick: () -> Unit,
+    private val onButtonClick: (qrCodeContent: ByteArray) -> Unit,
 ) :
     BindableItem<ItemMyOverviewGreenCardBinding>(R.layout.item_my_overview_green_card.toLong()),
     KoinComponent {
@@ -53,7 +53,9 @@ class MyOverviewGreenCardAdapterItem(
         )
 
         viewBinding.button.setOnClickListener {
-            onButtonClick.invoke()
+            credential?.let {
+                onButtonClick.invoke(it.data)
+            }
         }
     }
 

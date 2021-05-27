@@ -113,18 +113,18 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase) 
                     MyOverviewItem.GreenCardExpiredItem(greenCardType = greenCard.greenCardEntity.type)
                 } else {
                     // Check if we have a credential
-                    var credential = greenCard.credentialEntities.firstOrNull {
+                    var activeCredential = greenCard.credentialEntities.firstOrNull {
                         it.validFrom.isBefore(
                         OffsetDateTime.now()) && it.expirationTime.isAfter(OffsetDateTime.now())
                     }
 
                     // Invalidate this credential if we only have one origin and that origin is not yet valid
                     if (greenCard.origins.size == 1 && greenCard.origins.first().validFrom.isAfter(OffsetDateTime.now())) {
-                        credential = null
+                        activeCredential = null
                     }
 
                     // Show green card
-                    MyOverviewItem.GreenCardItem(greenCard, orderedOrigins, credential)
+                    MyOverviewItem.GreenCardItem(greenCard, orderedOrigins, activeCredential)
                 }
             }
         }
@@ -181,7 +181,7 @@ sealed class MyOverviewItem {
     data class GreenCardItem(
         val greenCard: GreenCard,
         val sortedOrigins: List<OriginEntity>,
-        val credential: CredentialEntity?
+        val activeCredential: CredentialEntity?
     ) : MyOverviewItem()
 
     data class GreenCardExpiredItem(

@@ -12,19 +12,24 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
 import com.xwray.groupie.viewbinding.BindableItem
+import mobilecore.Mobilecore
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMyOverviewBinding
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItems
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SecretKeyUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewGreenCardAdapterItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewGreenCardExpiredAdapterItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewHeaderAdapterItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewNavigationCardAdapterItem
+import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeFragmentData
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.sharedViewModelWithOwner
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ViewModelOwner
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 
@@ -148,9 +153,13 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                         MyOverviewGreenCardAdapterItem(
                             greenCard = myOverviewItem.greenCard,
                             sortedOrigins = myOverviewItem.sortedOrigins,
-                            credential = myOverviewItem.credential,
+                            credential = myOverviewItem.activeCredential,
                             onButtonClick = {
-
+                                findNavController().navigate(MyOverviewFragmentDirections.actionQrCode(
+                                    QrCodeFragmentData(
+                                        credential = it
+                                    )
+                                ))
                             })
                     )
                 }
@@ -158,7 +167,6 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                     adapterItems.add(MyOverviewGreenCardExpiredAdapterItem(
                         greenCardType = myOverviewItem.greenCardType,
                         onDismissClick = {
-
                             // Refresh so card is removed
                             myOverviewViewModel.refreshOverviewItems()
                         }
