@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "86b8327c7939f21ec4a7f50a523a1365",
+    "identityHash": "4091789e7500218c095cbba2e175ec78",
     "entities": [
       {
         "tableName": "wallet",
@@ -227,7 +227,7 @@
       },
       {
         "tableName": "origin",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `green_card_id` INTEGER NOT NULL, `type` TEXT NOT NULL, `eventTime` INTEGER NOT NULL, `expirationTime` INTEGER NOT NULL, FOREIGN KEY(`green_card_id`) REFERENCES `green_card`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `green_card_id` INTEGER NOT NULL, `type` TEXT NOT NULL, `eventTime` INTEGER NOT NULL, `expirationTime` INTEGER NOT NULL, `validFrom` INTEGER NOT NULL, FOREIGN KEY(`green_card_id`) REFERENCES `green_card`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -258,6 +258,12 @@
             "columnName": "expirationTime",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "validFrom",
+            "columnName": "validFrom",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -285,7 +291,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '86b8327c7939f21ec4a7f50a523a1365')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4091789e7500218c095cbba2e175ec78')"
     ]
   }
 }

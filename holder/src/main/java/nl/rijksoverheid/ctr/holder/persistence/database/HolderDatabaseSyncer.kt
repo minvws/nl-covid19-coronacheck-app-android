@@ -135,7 +135,8 @@ class HolderDatabaseSyncerImpl(
                     greenCardId = localDomesticGreenCardId,
                     type = type,
                     eventTime = remoteOrigin.eventTime,
-                    expirationTime = remoteOrigin.expirationTime
+                    expirationTime = remoteOrigin.expirationTime,
+                    validFrom = remoteOrigin.validFrom
                 )
             )
         }
@@ -186,7 +187,8 @@ class HolderDatabaseSyncerImpl(
                     greenCardId = localEuropeanGreenCardId,
                     type = type,
                     eventTime = remoteOrigin.eventTime,
-                    expirationTime = remoteOrigin.expirationTime
+                    expirationTime = remoteOrigin.expirationTime,
+                    validFrom = remoteOrigin.validFrom
                 )
             )
         }

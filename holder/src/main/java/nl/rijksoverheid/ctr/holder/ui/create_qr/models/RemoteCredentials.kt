@@ -46,6 +46,7 @@ data class RemoteCredentials(
     data class Origin(
         val type: String,
         val eventTime: OffsetDateTime,
-        val expirationTime: OffsetDateTime
+        val expirationTime: OffsetDateTime,
+        val validFrom: OffsetDateTime
     )
 }

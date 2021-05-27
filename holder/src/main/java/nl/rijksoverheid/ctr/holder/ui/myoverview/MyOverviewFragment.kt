@@ -148,6 +148,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                         MyOverviewGreenCardAdapterItem(
                             greenCard = myOverviewItem.greenCard,
                             sortedOrigins = myOverviewItem.sortedOrigins,
+                            credential = myOverviewItem.credential,
                             onButtonClick = {
 
                             })
