@@ -27,5 +27,6 @@ data class OriginEntity(
     @ColumnInfo(name = "green_card_id") val greenCardId: Long,
     val type: OriginType,
     val eventTime: OffsetDateTime,
-    val expirationTime: OffsetDateTime
+    val expirationTime: OffsetDateTime,
+    val validFrom: OffsetDateTime
 )

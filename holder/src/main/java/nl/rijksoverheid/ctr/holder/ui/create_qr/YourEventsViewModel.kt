@@ -36,9 +36,7 @@ class YourEventsViewModelImpl(
         viewModelScope.launch {
             try {
                 saveEventsUseCase.save(remoteTestResult, rawResponse)
-                holderDatabaseSyncer.sync(
-                    syncWithRemote = true
-                )
+                holderDatabaseSyncer.sync()
                 (savedEvents as MutableLiveData).value = Event(true)
             } finally {
                 loading.value = Event(false)
@@ -51,9 +49,7 @@ class YourEventsViewModelImpl(
         viewModelScope.launch {
             try {
                 saveEventsUseCase.save(remoteEvents)
-                holderDatabaseSyncer.sync(
-                    syncWithRemote = true
-                )
+                holderDatabaseSyncer.sync()
                 (savedEvents as MutableLiveData).value = Event(true)
             } finally {
                 loading.value = Event(false)

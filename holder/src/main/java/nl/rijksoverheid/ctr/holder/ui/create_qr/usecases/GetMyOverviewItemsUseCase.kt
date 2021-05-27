@@ -5,6 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.CredentialEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
@@ -105,16 +106,25 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase) 
 
                 // If the origin with the highest possible expiration time is expired
                 if (OffsetDateTime.now() >= orderedOrigins.minByOrNull { it.expirationTime }!!.expirationTime) {
-
                     // Remove green card from database
                     holderDatabase.greenCardDao().delete(greenCard.greenCardEntity)
 
                     // Show green card expired banner
                     MyOverviewItem.GreenCardExpiredItem(greenCardType = greenCard.greenCardEntity.type)
-
                 } else {
+                    // Check if we have a credential
+                    var activeCredential = greenCard.credentialEntities.firstOrNull {
+                        it.validFrom.isBefore(
+                        OffsetDateTime.now()) && it.expirationTime.isAfter(OffsetDateTime.now())
+                    }
+
+                    // Invalidate this credential if we only have one origin and that origin is not yet valid
+                    if (greenCard.origins.size == 1 && greenCard.origins.first().validFrom.isAfter(OffsetDateTime.now())) {
+                        activeCredential = null
+                    }
+
                     // Show green card
-                    MyOverviewItem.GreenCardItem(greenCard, orderedOrigins)
+                    MyOverviewItem.GreenCardItem(greenCard, orderedOrigins, activeCredential)
                 }
             }
         }
@@ -170,7 +180,8 @@ sealed class MyOverviewItem {
 
     data class GreenCardItem(
         val greenCard: GreenCard,
-        val sortedOrigins: List<OriginEntity>
+        val sortedOrigins: List<OriginEntity>,
+        val activeCredential: CredentialEntity?
     ) : MyOverviewItem()
 
     data class GreenCardExpiredItem(

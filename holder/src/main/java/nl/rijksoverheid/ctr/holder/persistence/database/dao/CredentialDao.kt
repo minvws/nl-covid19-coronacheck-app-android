@@ -17,7 +17,7 @@ interface CredentialDao {
     @Query("SELECT * FROM credential")
     suspend fun getAll(): List<CredentialEntity>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(entity: CredentialEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

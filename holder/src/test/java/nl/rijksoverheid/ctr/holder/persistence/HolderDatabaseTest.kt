@@ -138,6 +138,10 @@ class HolderDatabaseTest : AutoCloseKoinTest() {
                         expirationTime = OffsetDateTime.ofInstant(
                             Instant.ofEpochSecond(1),
                             ZoneOffset.UTC
+                        ),
+                        OffsetDateTime.ofInstant(
+                            Instant.ofEpochSecond(1),
+                            ZoneOffset.UTC
                         )
                     )
                 )
@@ -174,6 +178,10 @@ class HolderDatabaseTest : AutoCloseKoinTest() {
                             ZoneOffset.UTC
                         ),
                         expirationTime = OffsetDateTime.ofInstant(
+                            Instant.ofEpochSecond(1),
+                            ZoneOffset.UTC
+                        ),
+                        validFrom = OffsetDateTime.ofInstant(
                             Instant.ofEpochSecond(1),
                             ZoneOffset.UTC
                         )

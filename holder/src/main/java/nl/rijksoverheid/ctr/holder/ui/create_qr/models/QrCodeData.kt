@@ -11,6 +11,5 @@ import nl.rijksoverheid.ctr.holder.ui.myoverview.models.LocalTestResult
  *
  */
 data class QrCodeData(
-    val localTestResult: LocalTestResult,
     val qrCode: Bitmap
 )

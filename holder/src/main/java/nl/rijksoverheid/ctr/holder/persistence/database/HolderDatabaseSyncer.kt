@@ -23,7 +23,7 @@ import java.time.ZoneOffset
  *
  */
 interface HolderDatabaseSyncer {
-    suspend fun sync(syncWithRemote: Boolean = false): DatabaseSyncerResult
+    suspend fun sync(): DatabaseSyncerResult
 }
 
 class HolderDatabaseSyncerImpl(
@@ -34,15 +34,10 @@ class HolderDatabaseSyncerImpl(
     private val secretKeyUseCase: SecretKeyUseCase,
 ) : HolderDatabaseSyncer {
 
-    override suspend fun sync(syncWithRemote: Boolean): DatabaseSyncerResult {
+    override suspend fun sync(): DatabaseSyncerResult {
         return withContext(Dispatchers.IO) {
             removeExpiredEventGroups()
-
-            if (syncWithRemote) {
-                syncGreenCards()
-            } else {
-                DatabaseSyncerResult.Success
-            }
+            syncGreenCards()
         }
     }
 
@@ -64,31 +59,35 @@ class HolderDatabaseSyncerImpl(
 
     @Transaction
     private suspend fun syncGreenCards(): DatabaseSyncerResult {
-        return try {
-            val remoteCredentials = getRemoteCredentials()
+        if (holderDatabase.eventGroupDao().getAll().isNotEmpty()) {
+            return try {
+                val remoteCredentials = getRemoteCredentials()
 
-            // Remove all green cards from database
-            removeAllGreenCards()
+                // Remove all green cards from database
+                removeAllGreenCards()
 
-            // Create domestic green card with origins and credentials
-            remoteCredentials.domesticGreencard?.let { remoteDomesticGreenCard ->
-                createDomesticGreenCards(
-                    remoteDomesticGreenCard = remoteDomesticGreenCard
-                )
+                // Create domestic green card with origins and credentials
+                remoteCredentials.domesticGreencard?.let { remoteDomesticGreenCard ->
+                    createDomesticGreenCards(
+                        remoteDomesticGreenCard = remoteDomesticGreenCard
+                    )
+                }
+
+                // Create european green card with origins and credentials
+                remoteCredentials.euGreencards?.forEach { remoteEuropeanGreenCard ->
+                    createEuropeanGreenCards(
+                        remoteEuropeanGreenCard = remoteEuropeanGreenCard
+                    )
+                }
+
+                DatabaseSyncerResult.Success
+            } catch (e: HttpException) {
+                DatabaseSyncerResult.ServerError(e.code())
+            } catch (e: IOException) {
+                DatabaseSyncerResult.NetworkError
             }
-
-            // Create european green card with origins and credentials
-            remoteCredentials.euGreencards?.forEach { remoteEuropeanGreenCard ->
-                createEuropeanGreenCards(
-                    remoteEuropeanGreenCard = remoteEuropeanGreenCard
-                )
-            }
-
-            DatabaseSyncerResult.Success
-        } catch (e: HttpException) {
-            DatabaseSyncerResult.ServerError(e.code())
-        } catch (e: IOException) {
-            DatabaseSyncerResult.NetworkError
+        } else {
+            return DatabaseSyncerResult.Success
         }
     }
 
@@ -135,7 +134,8 @@ class HolderDatabaseSyncerImpl(
                     greenCardId = localDomesticGreenCardId,
                     type = type,
                     eventTime = remoteOrigin.eventTime,
-                    expirationTime = remoteOrigin.expirationTime
+                    expirationTime = remoteOrigin.expirationTime,
+                    validFrom = remoteOrigin.validFrom
                 )
             )
         }
@@ -186,7 +186,8 @@ class HolderDatabaseSyncerImpl(
                     greenCardId = localEuropeanGreenCardId,
                     type = type,
                     eventTime = remoteOrigin.eventTime,
-                    expirationTime = remoteOrigin.expirationTime
+                    expirationTime = remoteOrigin.expirationTime,
+                    validFrom = remoteOrigin.validFrom
                 )
             )
         }

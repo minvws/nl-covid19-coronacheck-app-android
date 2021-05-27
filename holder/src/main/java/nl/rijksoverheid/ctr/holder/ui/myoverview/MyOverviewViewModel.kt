@@ -2,11 +2,13 @@ package nl.rijksoverheid.ctr.holder.ui.myoverview
 
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
+import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetMyOverviewItemsUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItems
 import nl.rijksoverheid.ctr.shared.livedata.Event
+import timber.log.Timber
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -52,13 +54,19 @@ class MyOverviewViewModelImpl(
 
     /**
      * Sync the database
-     * This will do the correctly insert, update and delete calls
-     * On each update, [walletLiveData] is automatically called with a new Wallet with updated entities
+     * This will fetch all green cards, origins and credentials from remote
+     * Clear all green cards, origins and credentials from database if remote call is succesfull
      */
     override fun sync() {
         viewModelScope.launch {
-            holderDatabaseSyncer.sync()
+            when (holderDatabaseSyncer.sync()) {
+                is DatabaseSyncerResult.Success -> {
+                    refreshOverviewItems()
+                }
+                else -> {
+                    // Failed to sync database, user should restart app
+                }
+            }
         }
     }
-
 }
