@@ -9,6 +9,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.CredentialEntit
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CredentialUtil
 import timber.log.Timber
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -31,7 +32,8 @@ interface GetMyOverviewItemsUseCase {
     ): MyOverviewItems
 }
 
-class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase) :
+class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
+                                    private val credentialUtil: CredentialUtil) :
     GetMyOverviewItemsUseCase {
 
     override suspend fun get(
@@ -114,13 +116,12 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase) 
                     MyOverviewItem.GreenCardExpiredItem(greenCardType = greenCard.greenCardEntity.type)
                 } else {
                     // Check if we have a credential
-                    var activeCredential = greenCard.credentialEntities.firstOrNull {
-                        it.validFrom.isBefore(
-                        OffsetDateTime.now(ZoneOffset.UTC)) && it.expirationTime.isAfter(OffsetDateTime.now(ZoneOffset.UTC))
-                    }
+                    var activeCredential = credentialUtil.getActiveCredential(
+                        entities = greenCard.credentialEntities
+                    )
 
-                    // Invalidate this credential if we only have one origin and that origin is not yet valid
-                    if (greenCard.origins.size == 1 && greenCard.origins.first().validFrom.isAfter(OffsetDateTime.now(ZoneOffset.UTC))) {
+                    // Do not make this credential active if there is one origin that is not yet valid
+                    if (!credentialUtil.getIsActiveCredentialValid(origins = greenCard.origins))  {
                         activeCredential = null
                     }
 
