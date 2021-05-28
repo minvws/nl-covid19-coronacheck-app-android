@@ -29,6 +29,7 @@ import nl.rijksoverheid.ctr.shared.ext.sharedViewModelWithOwner
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ViewModelOwner
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
@@ -52,13 +53,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
     private val getQrCardsHandler = Handler(Looper.getMainLooper())
     private val getQrCardsRunnable = Runnable { getQrCards() }
 
-    private val myOverviewViewModel: MyOverviewViewModel by sharedViewModelWithOwner(
-        owner = {
-            ViewModelOwner.from(
-                findNavController().getViewModelStoreOwner(R.id.nav_graph_overview),
-                this
-            )
-        })
+    private val myOverviewViewModel: MyOverviewViewModel by viewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
