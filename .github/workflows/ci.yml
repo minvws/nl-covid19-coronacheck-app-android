@@ -54,7 +54,6 @@ jobs:
         if: ${{github.event.repository.name != 'nl-covid19-coronacheck-app-android'}}
         run: rm keystore.jks   
       - name: Archive apks
-        if: ${{ (github.ref == 'refs/heads/main' && github.event.repository.name != 'nl-covid19-coronacheck-app-android') || (github.event.repository.name != 'nl-covid19-coronacheck-app-android' && contains(github.head_ref, 'release-candidate')) }}
         uses: actions/upload-artifact@v2
         with:
           name: apks
