@@ -75,6 +75,13 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
             if (toolbar?.menu?.size() == 0) {
                 toolbar.apply {
                     inflateMenu(R.menu.my_qr_toolbar)
+
+                    setOnMenuItemClickListener {
+                        if (it.itemId == R.id.action_show_qr_explanation) {
+                            findNavController().navigate(QrCodeFragmentDirections.actionShowQrExplanation())
+                        }
+                        false
+                    }
                 }
             }
         }

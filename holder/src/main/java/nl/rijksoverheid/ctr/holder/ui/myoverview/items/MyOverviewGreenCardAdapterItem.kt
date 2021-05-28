@@ -24,12 +24,11 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteCredentials
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TestResultAdapterItemUtil
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import timber.log.Timber
 import java.time.OffsetDateTime
+import java.time.ZoneOffset
 import java.time.temporal.ChronoUnit
 
 class MyOverviewGreenCardAdapterItem(
@@ -133,11 +132,11 @@ class MyOverviewGreenCardAdapterItem(
                         is OriginType.Vaccination -> {
                             viewBinding.proof2Title.setText(R.string.qr_card_vaccination_title_domestic)
 
-                            if (origin.validFrom.isAfter(OffsetDateTime.now())) {
+                            if (origin.validFrom.isAfter(OffsetDateTime.now(ZoneOffset.UTC))) {
                                 viewBinding.proof2Subtitle.setTextColor(ContextCompat.getColor(context, R.color.link))
 
                                 val hoursBetweenExpiration =
-                                    ChronoUnit.HOURS.between(OffsetDateTime.now(), origin.validFrom)
+                                    ChronoUnit.HOURS.between(OffsetDateTime.now(ZoneOffset.UTC), origin.validFrom)
 
                                 if (hoursBetweenExpiration >= 24) {
                                     viewBinding.proof2Subtitle.text = context.getString(R.string.qr_card_validity_future_days,

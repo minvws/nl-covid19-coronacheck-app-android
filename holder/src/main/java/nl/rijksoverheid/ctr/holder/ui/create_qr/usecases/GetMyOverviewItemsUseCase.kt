@@ -11,6 +11,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import timber.log.Timber
 import java.time.OffsetDateTime
+import java.time.ZoneOffset
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -105,7 +106,7 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase) 
                 val orderedOrigins = greenCard.origins.sortedBy { it.expirationTime }
 
                 // If the origin with the highest possible expiration time is expired
-                if (OffsetDateTime.now() >= orderedOrigins.minByOrNull { it.expirationTime }!!.expirationTime) {
+                if (OffsetDateTime.now(ZoneOffset.UTC) >= orderedOrigins.minByOrNull { it.expirationTime }!!.expirationTime) {
                     // Remove green card from database
                     holderDatabase.greenCardDao().delete(greenCard.greenCardEntity)
 
@@ -115,11 +116,11 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase) 
                     // Check if we have a credential
                     var activeCredential = greenCard.credentialEntities.firstOrNull {
                         it.validFrom.isBefore(
-                        OffsetDateTime.now()) && it.expirationTime.isAfter(OffsetDateTime.now())
+                        OffsetDateTime.now(ZoneOffset.UTC)) && it.expirationTime.isAfter(OffsetDateTime.now(ZoneOffset.UTC))
                     }
 
                     // Invalidate this credential if we only have one origin and that origin is not yet valid
-                    if (greenCard.origins.size == 1 && greenCard.origins.first().validFrom.isAfter(OffsetDateTime.now())) {
+                    if (greenCard.origins.size == 1 && greenCard.origins.first().validFrom.isAfter(OffsetDateTime.now(ZoneOffset.UTC))) {
                         activeCredential = null
                     }
 
