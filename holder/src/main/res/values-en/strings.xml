@@ -18,10 +18,10 @@
     <string name="privacy_policy_1"><![CDATA[Your data is <b>not centrally stored anywhere</b>]]></string>
     <string name="privacy_policy_2"><![CDATA[Your GPS or location data is <b>not used or saved</b>]]></string>
     <string name="privacy_policy_3"><![CDATA[The QR code contains a minimum amount of personal <b>data</b>.]]></string>
-    <string name="privacy_policy_checkbox_text">I\'ve read the privacy statement and give consent for processing my personal data.</string>
+    <string name="privacy_policy_checkbox_text">I have read the privacy statement and understand how CoronaCheck processes my data</string>
     <string name="my_overview">My overview</string>
     <string name="my_overview_description">To get access, have your QR code scanned at the entrance of an entertainment venue.</string>
-    <string name="my_overview_no_qr_description">To get access to a pilot event, you need a negative test result. You can convert this into a QR code. Display your QR code and proof of identity at the entrance.</string>
+    <string name="my_overview_no_qr_description">To get access to certain locations or activities, you need a negative test result. You can convert this into a QR code. Display your QR code and proof of identity at the entrance.</string>
     <string name="dialog_error_title">Sorry, something went wrong</string>
     <string name="dialog_error_message">Because of a technical error.</string>
     <string name="dialog_error_message_with_error_code">Because of a technical error (%1$s).</string>
