@@ -25,6 +25,8 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.ResponseError
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CredentialUtil
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CredentialUtilImpl
 import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModel
 import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewViewModel
@@ -47,6 +49,7 @@ import org.koin.dsl.module
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.time.Clock
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -108,9 +111,10 @@ fun holderModule(baseUrl: String) = module {
         LocalTestResultUseCaseImpl(get(), get(), get(), get(), get())
     }
     factory<GetMyOverviewItemsUseCase> {
-        GetMyOverviewItemsUseCaseImpl(get())
+        GetMyOverviewItemsUseCaseImpl(get(), get())
     }
     factory<TokenValidatorUtil> { TokenValidatorUtilImpl() }
+    factory<CredentialUtil> { CredentialUtilImpl(Clock.systemUTC()) }
     factory {
         TokenQrUseCase(get())
     }
