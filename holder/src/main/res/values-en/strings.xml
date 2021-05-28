@@ -7,11 +7,11 @@
     <string name="onboarding_screen_1_title">Access only after testing</string>
     <string name="onboarding_screen_1_description">Your health and other people\'s health matters. Get tested when visiting certain social, cultural or sports events. Even when you\'ve already been vaccinated. Does your test prove you don\'t have coronavirus (negative test result)? Then you can get access.</string>
     <string name="onboarding_screen_2_title">Your QR code in your pocket</string>
-    <string name="onboarding_screen_2_description">If your test proves you don\'t have coronavirus, you can make a personal QR code in this app. This will be your test declaration. The QR code is scanned before you get access.</string>
+    <string name="onboarding_screen_2_description">If your test proves you don\'t have coronavirus, you can make a personal QR code in this app. This will be your test certificate. The QR code is scanned before you get access.</string>
     <string name="onboarding_screen_4_title">Minimum amount of data</string>
     <string name="onboarding_screen_4_description">Your QR code only states when you tested negative (no coronavirus), the time of testing, and the minimum amount of identifying data: your first name initial, your last name initial, your day of birth, and your month of both. We verify this information to make sure the test result is yours.</string>
-    <string name="onboarding_screen_3_title">Validity of your negative test declaration</string>
-    <string name="onboarding_screen_3_description">Want access to a certain social, cultural or sports event? Make sure your QR code is scanned at the entrance within %1$s hour(s) after the moment you\'ve been tested. When your negative test declaration expires, the QR code disappears from the app.</string>
+    <string name="onboarding_screen_3_title">Validity of your negative test certificate</string>
+    <string name="onboarding_screen_3_description">Want access to a certain social, cultural or sports event? Make sure your QR code is scanned at the entrance within %1$s hour(s) after the moment you\'ve been tested. When your negative test certificate expires, the QR code disappears from the app.</string>
     <string name="onboarding_next">Next</string>
     <string name="privacy_policy_title">This is how the app uses your data</string>
     <string name="privacy_policy_description"><![CDATA[The <a href="https://coronacheck.nl/en/privacy-in-app">privacy statement</a> details how CoronaCheck handles your data. These are the most important points:]]></string>
@@ -80,7 +80,7 @@
     <string name="commercial_test_scanner_custom_title">Scan QR code</string>
     <string name="commercial_test_scanner_custom_message">Point your device at the QR code the test location gave you.</string>
     <string name="your_negative_test_results_title">Check your test result</string>
-    <string name="your_negative_test_results_description">This test result is retrieved from the test location.&lt;br\&gt;&lt;br\&gt;Is the below correct? Then you can convert the negative test result into a QR code. This is your test declaration.</string>
+    <string name="your_negative_test_results_description">This test result is retrieved from the test location.&lt;br\&gt;&lt;br\&gt;Is the below correct? Then you can convert the negative test result into a QR code. This is your test certificate.</string>
     <string name="your_negative_test_results_header">Retrieved test result</string>
     <string name="your_negative_test_results_row_title">Negative test result</string>
     <string name="your_negative_test_results_row_personal_details">Identification details: %1$s</string>
@@ -109,7 +109,7 @@
     <string name="item_test_result_expired"><![CDATA[Your QR code has expired.<br\>Get tested again.]]></string>
     <string name="test_appointment_info_toolbar_title">Make test appointment</string>
     <string name="test_appointment_info_title">Book test appointment</string>
-    <string name="test_appointment_info_description"><![CDATA[You must get tested before you make a QR code. You can only turn a negative test result into a QR code.<br\><br\>A negative test declaration is valid until %1$s hour(s) after the moment you\'ve been tested. So schedule your test on time. And make sure your QR code is scanned at the entrance within %1$s hour(s).]]></string>
+    <string name="test_appointment_info_description"><![CDATA[You must get tested before you make a QR code. You can only turn a negative test result into a QR code.<br\><br\>A negative test certificate is valid until %1$s hour(s) after the moment you\'ve been tested. So schedule your test on time. And make sure your QR code is scanned at the entrance within %1$s hour(s).]]></string>
     <string name="test_appointment_info_button">Make an appointment</string>
     <string name="camera_rationale_dialog_title">CoronaCheck wants to access your camera</string>
     <string name="camera_rationale_dialog_description">This is the only way the app can scan your QR code.</string>
