@@ -36,6 +36,7 @@ class CredentialUtilImpl(private val clock: Clock): CredentialUtil {
     override fun getIsActiveCredentialValid(
         origins: List<OriginEntity>
     ): Boolean {
+        // A active credential is active if a single origin falls in between the time window
         return origins.any {
             it.validFrom.isBefore(OffsetDateTime.now(clock))
                     && it.expirationTime.isAfter(OffsetDateTime.now(clock))
