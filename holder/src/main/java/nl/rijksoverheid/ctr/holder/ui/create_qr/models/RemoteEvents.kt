@@ -4,8 +4,6 @@ import android.os.Parcelable
 import com.squareup.moshi.JsonClass
 import kotlinx.parcelize.Parcelize
 import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.OffsetDateTime
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
