@@ -3,14 +3,14 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.CredentialEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
-import org.junit.Assert.assertEquals
+import org.junit.Assert.*
 import org.junit.Test
 import java.time.*
 
 class CredentialUtilImplTest {
 
     @Test
-    fun `getActiveCredential returns active credential with higest expiration time`() {
+    fun `getActiveCredential returns active credential with highest expiration time`() {
         val clock = Clock.fixed(Instant.ofEpochSecond(50), ZoneId.of("UTC"))
         val credentialUtil = CredentialUtilImpl(clock)
 
@@ -66,7 +66,7 @@ class CredentialUtilImplTest {
             entities = listOf(credential1, credential2)
         )
 
-        assertEquals(null, activeCredential)
+        assertNull(null, activeCredential)
     }
 
     @Test
@@ -96,7 +96,7 @@ class CredentialUtilImplTest {
             origins = listOf(originEntity1, originEntity2)
         )
 
-        assertEquals(true, isValid)
+        assertTrue(isValid)
     }
 
     @Test
@@ -117,6 +117,6 @@ class CredentialUtilImplTest {
             origins = listOf(originEntity1)
         )
 
-        assertEquals(false, isValid)
+        assertFalse( isValid)
     }
 }
