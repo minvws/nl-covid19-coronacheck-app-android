@@ -10,10 +10,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.api
 
 import nl.rijksoverheid.ctr.api.interceptors.SigningCertificate
 import nl.rijksoverheid.ctr.api.signing.http.SignedRequest
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEvents
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteUnomi
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.post.GetTestResultPostData
 import retrofit2.http.*
 
@@ -42,6 +39,16 @@ interface TestProviderApiClient {
         @Url url: String,
         @Header("Authorization") authorization: String,
         @Header("CoronaCheck-Protocol-Version") protocolVersion: String = "3.0",
-        @Tag certificate: SigningCertificate
+        @Tag certificate: SigningCertificate,
     ): SignedResponseWithModel<RemoteEvents>
+
+    @POST
+    @SignedRequest
+    suspend fun negativeTestEvents(
+        @Url url: String,
+        @Header("Authorization") authorization: String,
+        @Header("CoronaCheck-Protocol-Version") protocolVersion: String = "3.0",
+        @Tag certificate: SigningCertificate,
+        @Body filter: String = "negativetest",
+    ): SignedResponseWithModel<RemoteEventsNegativeTests>
 }

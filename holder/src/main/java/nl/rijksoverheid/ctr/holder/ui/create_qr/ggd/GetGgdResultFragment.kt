@@ -7,9 +7,9 @@ import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentGetVaccinationBinding
-import nl.rijksoverheid.ctr.holder.ui.create_qr.GetVaccinationFragmentDirections
 import nl.rijksoverheid.ctr.holder.ui.create_qr.YourEventsFragmentType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigiDFragment
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsNegativeTests
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.EventsResult
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.android.ext.android.inject
@@ -42,10 +42,10 @@ class GetGgdResultFragment : DigiDFragment(R.layout.fragment_get_vaccination) {
 
         getGgdResultViewModel.eventsResult.observe(viewLifecycleOwner, EventObserver {
             when (it) {
-                is EventsResult.Success -> {
+                is EventsResult.Success<RemoteEventsNegativeTests> -> {
                     findNavController().navigate(
                         GetGgdResultFragmentDirections.actionYourEvents(
-                            type = YourEventsFragmentType.Vaccination(
+                            type = YourEventsFragmentType.NegativeTest(
                                 remoteEvents = it.signedModels.map { signedModel -> signedModel.model to signedModel.rawResponse }
                                     .toMap()
                             ),
