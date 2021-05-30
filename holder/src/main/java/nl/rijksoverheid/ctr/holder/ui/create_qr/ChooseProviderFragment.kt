@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentChooseProviderBinding
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAsAccessibilityButton
@@ -40,6 +41,7 @@ class ChooseProviderFragment : Fragment(R.layout.fragment_choose_provider) {
             R.string.choose_provider_ggd_title,
             getString(R.string.choose_provider_ggd_subtitle)
         ) {
+            findNavController().navigate(ChooseProviderFragmentDirections.actionGgdTestCode())
         }
 
         binding.providerCommercial.root.setAsAccessibilityButton()

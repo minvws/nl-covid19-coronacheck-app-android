@@ -50,7 +50,7 @@
     <string name="choose_provider_toolbar">Make QR code</string>
     <string name="choose_provider_title">Where were you tested?</string>
     <string name="choose_provider_description">Does the test prove you don\'t have coronavirus? Then you can make a QR code out of the test result. Indicate where you were tested.</string>
-    <string name="choose_provider_commercial_title">Testen voor Toegang</string>
+    <string name="choose_provider_commercial_title">Andere testlocatie</string>
     <string name="choose_provider_commercial_subtitle">Retrieve test result</string>
     <string name="choose_provider_ggd_title">GGD</string>
     <string name="choose_provider_ggd_subtitle">Log in with your DigiD</string>
