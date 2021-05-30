@@ -140,10 +140,7 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
 
             // Handle button
             binding.bottom.setButtonClick {
-//                yourEventsViewModel.saveRemoteTestResult(
-//                    remoteTestResult = remoteTestResult,
-//                    rawResponse = remoteTestResultRawResponse
-//                )
+                yourEventsViewModel.saveRemoteNegativeResultEvents(remoteEvents)
             }
         }
 

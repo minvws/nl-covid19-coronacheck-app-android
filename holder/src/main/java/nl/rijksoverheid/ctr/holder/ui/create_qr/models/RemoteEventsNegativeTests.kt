@@ -63,5 +63,7 @@ class RemoteEventsNegativeTests(
             val name: String,
             val manufacturer: String
         ) : Parcelable
+
+        fun getDate(): LocalDate = negativeTest.resultDate
     }
 }
