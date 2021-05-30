@@ -39,4 +39,8 @@ sealed class YourEventsFragmentType : Parcelable {
     @Parcelize
     data class Vaccination(val remoteEvents: Map<RemoteEvents, ByteArray>) :
         YourEventsFragmentType(), Parcelable
+
+    @Parcelize
+    data class NegativeTest(val remoteEvents: Map<RemoteEvents, ByteArray>) :
+        YourEventsFragmentType(), Parcelable
 }
