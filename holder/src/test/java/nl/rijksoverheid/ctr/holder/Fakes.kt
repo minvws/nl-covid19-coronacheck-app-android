@@ -29,6 +29,7 @@ import nl.rijksoverheid.ctr.shared.models.PersonalDetails
 import nl.rijksoverheid.ctr.shared.models.TestResultAttributes
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import nl.rijksoverheid.ctr.shared.utils.TestResultUtil
+import org.json.JSONObject
 import java.time.OffsetDateTime
 
 /*
@@ -124,6 +125,7 @@ fun fakeQrCodeUseCase(
     return object : QrCodeUseCase {
         override suspend fun qrCode(
             credentials: ByteArray,
+            shouldDisclose: Boolean,
             qrCodeWidth: Int,
             qrCodeHeight: Int
         ): Bitmap {
@@ -405,19 +407,16 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
             return ""
         }
 
-        override fun discloseAllWithTimeQrEncoded(
-            secretKey: ByteArray,
-            credentials: ByteArray
-        ): String {
-            return ""
-        }
-
         override fun generateHolderSk(): String {
             return ""
         }
 
-        override fun getDomesticCredentials(createCredentials: ByteArray): List<DomesticCredential> {
+        override fun createDomesticCredentials(createCredentials: ByteArray): List<DomesticCredential> {
             return listOf()
+        }
+
+        override fun readEuropeanCredential(credential: ByteArray): JSONObject {
+            return JSONObject()
         }
     }
 }
