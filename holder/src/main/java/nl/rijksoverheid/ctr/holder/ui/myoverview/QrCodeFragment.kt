@@ -99,7 +99,8 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
     private fun generateQrCode() {
         qrCodeViewModel.generateQrCode(
             size = resources.displayMetrics.widthPixels,
-            credential = args.data.credential
+            credential = args.data.credential,
+            shouldDisclose = args.data.shouldDisclose
         )
         val refreshMillis =
             if (BuildConfig.FLAVOR == "tst") TimeUnit.SECONDS.toMillis(10) else (QrCodeConstants.VALID_FOR_SECONDS / 2) * 1000

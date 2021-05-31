@@ -1,7 +1,6 @@
 cd ../
 git clone git@github.com:minvws/nl-covid19-coronacheck-mobile-core-private.git tmp-mobilecore
 cd tmp-mobilecore
-git checkout debug-pkid
 git submodule init
 git submodule update
 go get golang.org/x/mobile/cmd/gobind@latest

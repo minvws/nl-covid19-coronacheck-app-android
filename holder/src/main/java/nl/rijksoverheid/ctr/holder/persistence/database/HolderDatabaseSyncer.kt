@@ -141,7 +141,7 @@ class HolderDatabaseSyncerImpl(
         }
 
         // Create credentials
-        val domesticCredentials = mobileCoreWrapper.getDomesticCredentials(
+        val domesticCredentials = mobileCoreWrapper.createDomesticCredentials(
             createCredentials = remoteDomesticGreenCard.createCredentialMessages
         )
 
@@ -191,6 +191,27 @@ class HolderDatabaseSyncerImpl(
                 )
             )
         }
+
+        // Create credential
+        val europeanCredential = mobileCoreWrapper.readEuropeanCredential(
+            credential = remoteEuropeanGreenCard.credential.toByteArray()
+        )
+
+        val entity = CredentialEntity(
+            greenCardId = localEuropeanGreenCardId,
+            data = europeanCredential.toString().replace("\\/", "/").toByteArray(),
+            credentialVersion = europeanCredential.getInt("credentialVersion"),
+            validFrom = OffsetDateTime.ofInstant(
+                Instant.ofEpochSecond(europeanCredential.getLong("issuedAt")),
+                ZoneOffset.UTC
+            ),
+            expirationTime = OffsetDateTime.ofInstant(
+                Instant.ofEpochSecond(europeanCredential.getLong("expirationTime")),
+                ZoneOffset.UTC
+            )
+        )
+
+        holderDatabase.credentialDao().insert(entity)
     }
 }
 

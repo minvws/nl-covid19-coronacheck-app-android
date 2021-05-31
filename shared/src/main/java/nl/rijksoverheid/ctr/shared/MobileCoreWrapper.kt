@@ -12,9 +12,12 @@ import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import mobilecore.Mobilecore
+import nl.rijksoverheid.ctr.shared.ext.successJsonObject
 import nl.rijksoverheid.ctr.shared.ext.successString
 import nl.rijksoverheid.ctr.shared.ext.verify
 import nl.rijksoverheid.ctr.shared.models.DomesticCredential
+import org.json.JSONObject
+import timber.log.Timber
 import java.lang.reflect.Type
 
 interface MobileCoreWrapper {
@@ -23,9 +26,9 @@ interface MobileCoreWrapper {
     fun readCredential(credentials: ByteArray): ByteArray
     fun createCommitmentMessage(secretKey: ByteArray, nonce: ByteArray): String
     fun diclose(secretKey: ByteArray, credential: ByteArray): String
-    fun discloseAllWithTimeQrEncoded(secretKey: ByteArray, credentials: ByteArray): String
     fun generateHolderSk(): String
-    fun getDomesticCredentials(createCredentials: ByteArray): List<DomesticCredential>
+    fun createDomesticCredentials(createCredentials: ByteArray): List<DomesticCredential>
+    fun readEuropeanCredential(credential: ByteArray): JSONObject
 }
 
 class MobileCoreWrapperImpl(private val moshi: Moshi) : MobileCoreWrapper {
@@ -57,21 +60,11 @@ class MobileCoreWrapperImpl(private val moshi: Moshi) : MobileCoreWrapper {
         ).successString()
     }
 
-    override fun discloseAllWithTimeQrEncoded(
-        secretKey: ByteArray,
-        credentials: ByteArray
-    ): String {
-        return Mobilecore.discloseAllWithTimeQrEncoded(
-            secretKey,
-            credentials
-        ).successString()
-    }
-
     override fun generateHolderSk(): String {
         return Mobilecore.generateHolderSk().successString()
     }
 
-    override fun getDomesticCredentials(createCredentials: ByteArray): List<DomesticCredential> {
+    override fun createDomesticCredentials(createCredentials: ByteArray): List<DomesticCredential> {
         val createCredentialsResult =
             Mobilecore.createCredentials(createCredentials).successString()
 
@@ -83,5 +76,9 @@ class MobileCoreWrapperImpl(private val moshi: Moshi) : MobileCoreWrapper {
         val adapter: JsonAdapter<List<DomesticCredential>> = moshi.adapter(type)
         return adapter.fromJson(createCredentialsResult)
             ?: throw IllegalStateException("Could not create domestic credentials")
+    }
+
+    override fun readEuropeanCredential(credential: ByteArray): JSONObject {
+        return Mobilecore.readEuropeanCredential(credential).successJsonObject()
     }
 }
