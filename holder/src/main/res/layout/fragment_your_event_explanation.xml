@@ -27,7 +27,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="24dp"
-                android:text="@string/your_vaccination_result_explanation_subtitle"
                 android:textAppearance="?attr/textAppearanceBody1"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -40,7 +39,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:textAppearance="?attr/textAppearanceBody1"
-                app:htmlText="@string/your_vaccination_result_explanation_description"
                 app:layout_constraintEnd_toEndOf="@+id/subheader"
                 app:layout_constraintStart_toStartOf="@+id/subheader"
                 app:layout_constraintTop_toBottomOf="@+id/subheader" />

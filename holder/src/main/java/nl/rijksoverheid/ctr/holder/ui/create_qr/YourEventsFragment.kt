@@ -115,7 +115,7 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                         "${personalDetails.firstNameInitial} ${personalDetails.lastNameInitial} ${personalDetails.birthDay} ${personalDetails.birthMonth}"
                     ),
                     infoClickListener = {
-                        findNavController().navigate(YourEventsFragmentDirections.actionShowExplanation())
+
                     }
                 )
             }
@@ -166,22 +166,33 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                 includeBirthMonthNumber = false
             )
 
+            val testDate = OffsetDateTime.ofInstant(
+                Instant.ofEpochSecond(result.sampleDate.toEpochSecond()),
+                ZoneOffset.UTC
+            ).formatDateTime(requireContext())
+
             val eventWidget = YourEventWidget(requireContext()).also {
                 it.setContent(
                     title = getString(R.string.your_negative_test_results_row_title),
                     subtitle = getString(
                         R.string.your_negative_test_results_row_subtitle,
-                        OffsetDateTime.ofInstant(
-                            Instant.ofEpochSecond(result.sampleDate.toEpochSecond()),
-                            ZoneOffset.UTC
-                        ).formatDateTime(requireContext()),
+                        testDate,
                         result.sampleDate.plusHours(
                             cachedAppConfigUseCase.getCachedAppConfigMaxValidityHours().toLong()
                         ).formatDateTime(requireContext()),
                         "${personalDetails.firstNameInitial} ${personalDetails.lastNameInitial} ${personalDetails.birthDay} ${personalDetails.birthMonth}"
                     ),
                     infoClickListener = {
-                        findNavController().navigate(YourEventsFragmentDirections.actionShowExplanation())
+                        findNavController().navigate(YourEventsFragmentDirections.actionShowExplanation(
+                            toolbarTitle = getString(R.string.your_test_result_explanation_toolbar_title),
+                            description =
+                            getString(R.string.your_test_result_explanation_description,
+                                "${personalDetails.firstNameInitial} ${personalDetails.lastNameInitial} ${personalDetails.birthDay} ${personalDetails.birthMonth}",
+                                result.testType,
+                                testDate,
+                                getString(R.string.your_test_result_explanation_negative_test_result)
+                            )
+                        ))
                     }
                 )
             }
@@ -240,7 +251,7 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                             event.getDate()
                         ),
                         infoClickListener = {
-                            findNavController().navigate(YourEventsFragmentDirections.actionShowExplanation())
+
                         }
                     )
                 }
