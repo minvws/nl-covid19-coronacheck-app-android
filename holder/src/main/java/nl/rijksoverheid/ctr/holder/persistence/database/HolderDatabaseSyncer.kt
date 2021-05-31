@@ -212,11 +212,6 @@ class HolderDatabaseSyncerImpl(
             )
         )
 
-        Timber.v("Expiration TIme: " + OffsetDateTime.ofInstant(
-            Instant.ofEpochSecond(europeanCredential.getLong("expirationTime")),
-            ZoneOffset.UTC
-        ))
-
         holderDatabase.credentialDao().insert(entity)
     }
 }
