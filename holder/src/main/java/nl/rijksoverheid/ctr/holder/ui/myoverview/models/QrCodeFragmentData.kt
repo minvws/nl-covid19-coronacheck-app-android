@@ -6,7 +6,8 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class QrCodeFragmentData(
     val credential: ByteArray,
-    val shouldDisclose: Boolean // If we should refresh this qr based on a time interval
+    val shouldDisclose: Boolean, // If we should refresh this qr based on a time interval,
+    val credentialExpirationTimeSeconds: Long
 ): Parcelable {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -16,6 +17,7 @@ data class QrCodeFragmentData(
 
         if (!credential.contentEquals(other.credential)) return false
         if (shouldDisclose != other.shouldDisclose) return false
+        if (credentialExpirationTimeSeconds != other.credentialExpirationTimeSeconds) return false
 
         return true
     }
@@ -23,6 +25,7 @@ data class QrCodeFragmentData(
     override fun hashCode(): Int {
         var result = credential.contentHashCode()
         result = 31 * result + shouldDisclose.hashCode()
+        result = 31 * result + credentialExpirationTimeSeconds.hashCode()
         return result
     }
 }

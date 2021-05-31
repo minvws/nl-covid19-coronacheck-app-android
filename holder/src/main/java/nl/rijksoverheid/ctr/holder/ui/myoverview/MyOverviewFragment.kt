@@ -156,7 +156,8 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                                 findNavController().navigate(MyOverviewFragmentDirections.actionQrCode(
                                     QrCodeFragmentData(
                                         shouldDisclose = greenCard.greenCardEntity.type == GreenCardType.Domestic,
-                                        credential = credential
+                                        credential = credential.data,
+                                        credentialExpirationTimeSeconds = credential.expirationTime.toEpochSecond()
                                     )
                                 ))
                             }
