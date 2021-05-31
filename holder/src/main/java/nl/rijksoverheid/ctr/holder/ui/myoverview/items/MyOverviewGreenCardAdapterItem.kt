@@ -8,12 +8,7 @@
 
 package nl.rijksoverheid.ctr.holder.ui.myoverview.items
 
-import android.content.Context
-import android.graphics.BlendModeColorFilter
-import android.graphics.PorterDuff
 import android.view.View
-import android.widget.TextView
-import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.design.ext.*
@@ -35,7 +30,7 @@ class MyOverviewGreenCardAdapterItem(
     private val greenCard: GreenCard,
     private val sortedOrigins: List<OriginEntity>,
     private val credential: CredentialEntity?,
-    private val onButtonClick: (qrCodeContent: ByteArray) -> Unit,
+    private val onButtonClick: (greenCard: GreenCard, credential: ByteArray) -> Unit,
 ) :
     BindableItem<ItemMyOverviewGreenCardBinding>(R.layout.item_my_overview_green_card.toLong()),
     KoinComponent {
@@ -53,7 +48,7 @@ class MyOverviewGreenCardAdapterItem(
 
         viewBinding.button.setOnClickListener {
             credential?.let {
-                onButtonClick.invoke(it.data)
+                onButtonClick.invoke(greenCard, it.data)
             }
         }
     }

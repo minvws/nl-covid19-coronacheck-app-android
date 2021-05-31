@@ -9,17 +9,18 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.QrCodeUseCase
 
 abstract class QrCodeViewModel : ViewModel() {
     val qrCodeLiveData = MutableLiveData<Bitmap>()
-    abstract fun generateQrCode(size: Int, credential: ByteArray)
+    abstract fun generateQrCode(size: Int, credential: ByteArray, shouldDisclose: Boolean)
 }
 
 class QrCodeViewModelImpl( private val qrCodeUseCase: QrCodeUseCase) : QrCodeViewModel() {
 
-    override fun generateQrCode(size: Int, credential: ByteArray) {
+    override fun generateQrCode(size: Int, credential: ByteArray, shouldDisclose: Boolean) {
         viewModelScope.launch {
             val qrCodeBitmap = qrCodeUseCase.qrCode(
                 credential = credential,
                 qrCodeWidth = size,
-                qrCodeHeight = size
+                qrCodeHeight = size,
+                shouldDisclose = shouldDisclose
             )
             qrCodeLiveData.postValue(qrCodeBitmap)
         }
