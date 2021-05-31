@@ -304,7 +304,7 @@ fun fakeCoronaCheckRepository(
 
         override suspend fun getCredentials(
             stoken: String,
-            events: String,
+            events: List<String>,
             issueCommitmentMessage: String
         ): RemoteCredentials {
             return remoteCredentials
