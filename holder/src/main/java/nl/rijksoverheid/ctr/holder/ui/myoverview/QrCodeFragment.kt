@@ -24,6 +24,9 @@ import org.koin.androidx.viewmodel.ViewModelOwner
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.androidx.viewmodel.scope.emptyState
 import timber.log.Timber
+import java.time.Instant
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
 import java.util.concurrent.TimeUnit
 
 
@@ -41,7 +44,10 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
     private val args: QrCodeFragmentArgs by navArgs()
 
     private val qrCodeHandler = Handler(Looper.getMainLooper())
-    private val qrCodeRunnable = Runnable { generateQrCode() }
+    private val qrCodeRunnable = Runnable {
+        generateQrCode()
+        checkIfCredentialExpired()
+    }
 
     private val qrCodeViewModel: QrCodeViewModel by viewModel()
 
@@ -105,6 +111,17 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
         val refreshMillis =
             if (BuildConfig.FLAVOR == "tst") TimeUnit.SECONDS.toMillis(10) else (QrCodeConstants.VALID_FOR_SECONDS / 2) * 1000
         qrCodeHandler.postDelayed(qrCodeRunnable, refreshMillis)
+    }
+
+    /**
+     * If the QR is expired we close this fragment
+     * The [MyOverviewFragment] should correctly handle new or expired credentials
+     */
+    private fun checkIfCredentialExpired() {
+        val expirationTime = OffsetDateTime.ofInstant(Instant.ofEpochSecond(args.data.credentialExpirationTimeSeconds), ZoneOffset.UTC)
+        if (OffsetDateTime.now(ZoneOffset.UTC).isAfter(expirationTime)) {
+            findNavController().popBackStack()
+        }
     }
 
     override fun onResume() {
