@@ -10,7 +10,6 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckReposito
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SecretKeyUseCase
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import retrofit2.HttpException
-import timber.log.Timber
 import java.io.IOException
 import java.time.Instant
 import java.time.OffsetDateTime
