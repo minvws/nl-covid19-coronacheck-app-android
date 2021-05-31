@@ -36,16 +36,20 @@ class HolderDatabaseSyncerImpl(
 
     override suspend fun sync(): DatabaseSyncerResult {
         return withContext(Dispatchers.IO) {
-            removeExpiredEventGroups()
-            syncGreenCards()
+            val events = holderDatabase.eventGroupDao().getAll()
+            removeExpiredEventGroups(
+                events = events
+            )
+            syncGreenCards(
+                events = events
+            )
         }
     }
 
     /**
      * Check if we need to remove events from the database
      */
-    private suspend fun removeExpiredEventGroups() {
-        val events = holderDatabase.eventGroupDao().getAll()
+    private suspend fun removeExpiredEventGroups(events: List<EventGroupEntity>) {
         events.forEach {
             val expireDate =
                 if (it.type == EventType.Vaccination) cachedAppConfigUseCase.getCachedAppConfigVaccinationEventValidity()
@@ -58,10 +62,12 @@ class HolderDatabaseSyncerImpl(
     }
 
     @Transaction
-    private suspend fun syncGreenCards(): DatabaseSyncerResult {
-        if (holderDatabase.eventGroupDao().getAll().isNotEmpty()) {
+    private suspend fun syncGreenCards(events: List<EventGroupEntity>): DatabaseSyncerResult {
+        if (events.isNotEmpty()) {
             return try {
-                val remoteCredentials = getRemoteCredentials()
+                val remoteCredentials = getRemoteCredentials(
+                    events = events
+                )
 
                 // Remove all green cards from database
                 removeAllGreenCards()
@@ -91,7 +97,7 @@ class HolderDatabaseSyncerImpl(
         }
     }
 
-    private suspend fun getRemoteCredentials(): RemoteCredentials {
+    private suspend fun getRemoteCredentials(events: List<EventGroupEntity>): RemoteCredentials {
         val prepareIssue = coronaCheckRepository.getPrepareIssue()
 
         val commitmentMessage = mobileCoreWrapper.createCommitmentMessage(
@@ -101,7 +107,7 @@ class HolderDatabaseSyncerImpl(
 
         return coronaCheckRepository.getCredentials(
             stoken = prepareIssue.stoken,
-            events = "",
+            events = events.map { String(it.jsonData) },
             issueCommitmentMessage = commitmentMessage
         )
     }
