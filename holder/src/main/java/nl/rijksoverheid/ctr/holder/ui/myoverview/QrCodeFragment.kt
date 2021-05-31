@@ -86,7 +86,7 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
                         if (it.itemId == R.id.action_show_qr_explanation) {
                             findNavController().navigate(QrCodeFragmentDirections.actionShowQrExplanation())
                         }
-                        false
+                        true
                     }
                 }
             }
@@ -133,7 +133,10 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
     override fun onPause() {
         super.onPause()
         qrCodeHandler.removeCallbacks(qrCodeRunnable)
-        (parentFragment?.parentFragment as HolderMainFragment).getToolbar().menu.clear()
+        (parentFragment?.parentFragment as HolderMainFragment).let{
+            it.getToolbar().menu.clear()
+            it.resetMenuItemListener()
+        }
     }
 
     override fun onDestroyView() {
