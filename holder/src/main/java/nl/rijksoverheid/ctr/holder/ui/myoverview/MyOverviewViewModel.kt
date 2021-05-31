@@ -22,7 +22,6 @@ abstract class MyOverviewViewModel : ViewModel() {
 
     abstract fun getSelectedType(): GreenCardType
     abstract fun refreshOverviewItems(selectType: GreenCardType? = null)
-    abstract fun sync()
 }
 
 class MyOverviewViewModelImpl(
@@ -49,24 +48,6 @@ class MyOverviewViewModelImpl(
                     )
                 )
             )
-        }
-    }
-
-    /**
-     * Sync the database
-     * This will fetch all green cards, origins and credentials from remote
-     * Clear all green cards, origins and credentials from database if remote call is succesfull
-     */
-    override fun sync() {
-        viewModelScope.launch {
-            when (holderDatabaseSyncer.sync()) {
-                is DatabaseSyncerResult.Success -> {
-                    refreshOverviewItems()
-                }
-                else -> {
-                    // Failed to sync database, user should restart app
-                }
-            }
         }
     }
 }

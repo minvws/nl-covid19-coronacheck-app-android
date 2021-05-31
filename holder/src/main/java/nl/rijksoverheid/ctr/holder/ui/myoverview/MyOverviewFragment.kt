@@ -80,8 +80,6 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
             }
         }
 
-        myOverviewViewModel.sync()
-
         myOverviewViewModel.myOverviewItemsLiveData.observe(
             viewLifecycleOwner,
             EventObserver { myOverviewItems ->
@@ -150,8 +148,8 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                     adapterItems.add(
                         MyOverviewGreenCardAdapterItem(
                             greenCard = myOverviewItem.greenCard,
-                            sortedOrigins = myOverviewItem.sortedOrigins,
-                            credential = myOverviewItem.activeCredential,
+                            originStates = myOverviewItem.originStates,
+                            credentialState = myOverviewItem.credentialState,
                             onButtonClick = { greenCard, credential ->
                                 findNavController().navigate(MyOverviewFragmentDirections.actionQrCode(
                                     QrCodeFragmentData(

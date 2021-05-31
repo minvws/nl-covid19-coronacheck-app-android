@@ -27,6 +27,8 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CredentialUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CredentialUtilImpl
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginUtil
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginUtilImpl
 import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModel
 import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewViewModel
@@ -111,10 +113,11 @@ fun holderModule(baseUrl: String) = module {
         LocalTestResultUseCaseImpl(get(), get(), get(), get(), get())
     }
     factory<GetMyOverviewItemsUseCase> {
-        GetMyOverviewItemsUseCaseImpl(get(), get())
+        GetMyOverviewItemsUseCaseImpl(get(), get(), get())
     }
     factory<TokenValidatorUtil> { TokenValidatorUtilImpl() }
     factory<CredentialUtil> { CredentialUtilImpl(Clock.systemUTC()) }
+    factory<OriginUtil> { OriginUtilImpl(Clock.systemUTC()) }
     factory {
         TokenQrUseCase(get())
     }

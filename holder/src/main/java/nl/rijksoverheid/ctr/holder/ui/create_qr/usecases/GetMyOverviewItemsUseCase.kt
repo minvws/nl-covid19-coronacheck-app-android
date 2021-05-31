@@ -9,7 +9,10 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.CredentialEntit
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItem.*
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItem.GreenCardItem.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CredentialUtil
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginUtil
 import timber.log.Timber
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -33,7 +36,8 @@ interface GetMyOverviewItemsUseCase {
 }
 
 class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
-                                    private val credentialUtil: CredentialUtil) :
+                                    private val credentialUtil: CredentialUtil,
+                                    private val originUtil: OriginUtil) :
     GetMyOverviewItemsUseCase {
 
     override suspend fun get(
@@ -60,7 +64,7 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
             )
 
             getCreateQrCardItem(
-                hasGreenCards = items.any { it is MyOverviewItem.GreenCardItem },
+                hasGreenCards = items.any { it is GreenCardItem },
                 selectedType = selectedType,
             )?.let {
                 items.add(it)
@@ -95,7 +99,7 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
             }
         }
 
-        return MyOverviewItem.HeaderItem(
+        return HeaderItem(
             text = text
         )
     }
@@ -113,20 +117,36 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
                     holderDatabase.greenCardDao().delete(greenCard.greenCardEntity)
 
                     // Show green card expired banner
-                    MyOverviewItem.GreenCardExpiredItem(greenCardType = greenCard.greenCardEntity.type)
+                    GreenCardExpiredItem(greenCardType = greenCard.greenCardEntity.type)
                 } else {
                     // Check if we have a credential
-                    var activeCredential = credentialUtil.getActiveCredential(
+                    val activeCredential = credentialUtil.getActiveCredential(
                         entities = greenCard.credentialEntities
                     )
 
-                    // Do not make this credential active if there is one origin that is not yet valid
-                    if (!credentialUtil.getIsActiveCredentialValid(origins = greenCard.origins))  {
-                        activeCredential = null
+                    // Check if all of our origins are valid (are in between the current time window)
+                    val validOrigins = originUtil.getValidOrigins(
+                        origins = greenCard.origins
+                    )
+
+                    // Map our origin to more readable states
+                    val originStates = orderedOrigins.map { origin ->
+                        if (validOrigins.contains(origin)) OriginState.ValidOrigin(origin) else OriginState.InvalidOrigin(origin)
+                    }
+
+                    // More our credential to a more readable state
+                    val credentialState = when {
+                        activeCredential == null -> CredentialState.NoCredential
+                        validOrigins.isEmpty() -> CredentialState.NoCredential
+                        else -> CredentialState.HasCredential(activeCredential)
                     }
 
                     // Show green card
-                    MyOverviewItem.GreenCardItem(greenCard, orderedOrigins, activeCredential)
+                    GreenCardItem(
+                        greenCard = greenCard,
+                        originStates = originStates,
+                        credentialState = credentialState
+                    )
                 }
             }
         }
@@ -141,7 +161,7 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
         } else {
             // Only return create qr card if there are not green cards on the screen and we have domestic type selected
             if (selectedType == GreenCardType.Domestic) {
-                MyOverviewItem.CreateQrCardItem
+                CreateQrCardItem
             } else {
                 null
             }
@@ -154,13 +174,13 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
     ): MyOverviewItem? {
         return when (selectedType) {
             is GreenCardType.Eu -> {
-                MyOverviewItem.TravelModeItem(R.string.travel_toggle_europe)
+                TravelModeItem(R.string.travel_toggle_europe)
             }
             is GreenCardType.Domestic -> {
                 val hasEuGreenCard = greenCards.any { it.greenCardEntity.type == GreenCardType.Eu }
                 if (hasEuGreenCard) {
                     // Only return travel mode item if there are eu green cards
-                    MyOverviewItem.TravelModeItem(R.string.travel_toggle_domestic)
+                    TravelModeItem(R.string.travel_toggle_domestic)
                 } else {
                     null
                 }
@@ -182,9 +202,20 @@ sealed class MyOverviewItem {
 
     data class GreenCardItem(
         val greenCard: GreenCard,
-        val sortedOrigins: List<OriginEntity>,
-        val activeCredential: CredentialEntity?
-    ) : MyOverviewItem()
+        val originStates: List<OriginState>,
+        val credentialState: CredentialState
+    ) : MyOverviewItem() {
+
+        sealed class OriginState(open val origin: OriginEntity) {
+            data class ValidOrigin(override val origin: OriginEntity): OriginState(origin)
+            data class InvalidOrigin(override val origin: OriginEntity): OriginState(origin)
+        }
+
+        sealed class CredentialState {
+            data class HasCredential(val credential: CredentialEntity): CredentialState()
+            object NoCredential : CredentialState()
+        }
+    }
 
     data class GreenCardExpiredItem(
         val greenCardType: GreenCardType
