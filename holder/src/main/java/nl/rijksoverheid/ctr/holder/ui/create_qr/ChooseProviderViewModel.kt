@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import nl.rijksoverheid.ctr.holder.ui.create_qr.ggd.GetGgdResultViewModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsNegativeTests
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.EventsResult
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetEventsUseCase

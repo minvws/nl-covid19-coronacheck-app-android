@@ -1,8 +1,6 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEvents
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsNegativeTests
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.EventProviderRepository
 import retrofit2.HttpException
@@ -26,36 +24,40 @@ class GetEventsUseCaseImpl(
     private val eventProviderRepository: EventProviderRepository
 ) : GetEventsUseCase {
 
+    private suspend fun getEventProviderWithEvent(digidToken: String):  Map<RemoteConfigProviders.EventProvider, RemoteAccessTokens.Token> {
+        // Fetch event providers
+        val eventProviders = configProvidersUseCase.eventProviders()
+
+        // Fetch access tokens
+        val accessTokens = coronaCheckRepository.accessTokens(digidToken)
+
+        // Map event providers to access tokens
+        val eventProvidersWithAccessTokenMap =
+            eventProviders.associateWith { eventProvider -> accessTokens.tokens.first { eventProvider.providerIdentifier == it.providerIdentifier } }
+
+        // A list of event providers that have events
+        return eventProvidersWithAccessTokenMap.filter {
+            val eventProvider = it.key
+            val accessToken = it.value
+
+            try {
+                val unomi = eventProviderRepository.unomi(
+                    url = eventProvider.unomiUrl,
+                    token = accessToken.unomi
+                )
+                unomi.informationAvailable
+            } catch (e: HttpException) {
+                false
+            } catch (e: IOException) {
+                false
+            }
+        }
+    }
+
     override suspend fun getVaccinationEvents(digidToken: String): EventsResult<RemoteEvents>{
         return try {
 
-            // Fetch event providers
-            val eventProviders = configProvidersUseCase.eventProviders()
-
-            // Fetch access tokens
-            val accessTokens = coronaCheckRepository.accessTokens(digidToken)
-
-            // Map event providers to access tokens
-            val eventProvidersWithAccessTokenMap =
-                eventProviders.associateWith { eventProvider -> accessTokens.tokens.first { eventProvider.providerIdentifier == it.providerIdentifier } }
-
-            // A list of event providers that have events
-            val eventProviderWithEvents = eventProvidersWithAccessTokenMap.filter {
-                val eventProvider = it.key
-                val accessToken = it.value
-
-                try {
-                    val unomi = eventProviderRepository.unomi(
-                        url = eventProvider.unomiUrl,
-                        token = accessToken.unomi
-                    )
-                    unomi.informationAvailable
-                } catch (e: HttpException) {
-                    false
-                } catch (e: IOException) {
-                    false
-                }
-            }
+            val eventProviderWithEvents = getEventProviderWithEvent(digidToken)
 
             // Get vaccination events from event providers
             val remoteEvents = eventProviderWithEvents.map {
@@ -87,33 +89,7 @@ class GetEventsUseCaseImpl(
     override suspend fun getNegativeTestEvents(digidToken: String): EventsResult<RemoteEventsNegativeTests> {
         return try {
 
-            // Fetch event providers
-            val eventProviders = configProvidersUseCase.eventProviders()
-
-            // Fetch access tokens
-            val accessTokens = coronaCheckRepository.accessTokens(digidToken)
-
-            // Map event providers to access tokens
-            val eventProvidersWithAccessTokenMap =
-                eventProviders.associateWith { eventProvider -> accessTokens.tokens.first { eventProvider.providerIdentifier == it.providerIdentifier } }
-
-            // A list of event providers that have events
-            val eventProviderWithEvents = eventProvidersWithAccessTokenMap.filter {
-                val eventProvider = it.key
-                val accessToken = it.value
-
-                try {
-                    val unomi = eventProviderRepository.unomi(
-                        url = eventProvider.unomiUrl,
-                        token = accessToken.unomi
-                    )
-                    unomi.informationAvailable
-                } catch (e: HttpException) {
-                    false
-                } catch (e: IOException) {
-                    false
-                }
-            }
+            val eventProviderWithEvents = getEventProviderWithEvent(digidToken)
 
             // Get vaccination events from event providers
             val negativeTestEvents = eventProviderWithEvents.map {
