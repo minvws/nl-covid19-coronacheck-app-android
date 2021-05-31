@@ -2,15 +2,12 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.snackbar.Snackbar
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentChooseProviderBinding
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigiDFragment
-import nl.rijksoverheid.ctr.holder.ui.create_qr.ggd.GetGgdResultFragmentDirections
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsNegativeTests
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.EventsResult
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
@@ -64,7 +61,7 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
             when (it) {
                 is EventsResult.Success<RemoteEventsNegativeTests> -> {
                     findNavController().navigate(
-                        GetGgdResultFragmentDirections.actionYourEvents(
+                        ChooseProviderFragmentDirections.actionYourEvents(
                             type = YourEventsFragmentType.NegativeTest(
                                 remoteEvents = it.signedModels.map { signedModel -> signedModel.model to signedModel.rawResponse }
                                     .toMap()

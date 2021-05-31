@@ -106,10 +106,10 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                     subtitle = getString(
                         R.string.your_negative_test_results_row_subtitle,
                         OffsetDateTime.ofInstant(
-                            Instant.ofEpochSecond(lastNegativeTestResult.negativeTest.sampleDate.toEpochSecond()),
+                            Instant.ofEpochSecond(lastNegativeTestResult.getOffsetDateTime().toEpochSecond()),
                             ZoneOffset.UTC
                         ).formatDateTime(requireContext()),
-                        lastNegativeTestResult.negativeTest.sampleDate.plusHours(
+                        lastNegativeTestResult.getOffsetDateTime().plusHours(
                             cachedAppConfigUseCase.getCachedAppConfigMaxValidityHours().toLong()
                         ).formatDateTime(requireContext()),
                         "${personalDetails.firstNameInitial} ${personalDetails.lastNameInitial} ${personalDetails.birthDay} ${personalDetails.birthMonth}"

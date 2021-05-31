@@ -50,7 +50,7 @@ class RemoteEventsNegativeTests(
         val type: String,
         val unique: String,
         val isSpecimen: Boolean,
-        val negativeTest: NegativeTest,
+        val negativeTest: NegativeTest?,
     ) : Parcelable {
         @Parcelize
         @JsonClass(generateAdapter = true)
@@ -64,6 +64,7 @@ class RemoteEventsNegativeTests(
             val manufacturer: String
         ) : Parcelable
 
-        fun getDate(): LocalDate = negativeTest.resultDate
+        fun getDate(): LocalDate = negativeTest?.resultDate ?: LocalDate.now()
+        fun getOffsetDateTime(): OffsetDateTime = negativeTest?.sampleDate ?: OffsetDateTime.now()
     }
 }
