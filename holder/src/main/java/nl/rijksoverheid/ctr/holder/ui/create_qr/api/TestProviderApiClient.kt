@@ -49,6 +49,6 @@ interface TestProviderApiClient {
         @Header("Authorization") authorization: String,
         @Header("CoronaCheck-Protocol-Version") protocolVersion: String = "3.0",
         @Tag certificate: SigningCertificate,
-        @Body filter: String = "negativetest",
+        @Body params: Map<String, String> = mapOf("filter" to "negativetest"),
     ): SignedResponseWithModel<RemoteEventsNegativeTests>
 }

@@ -24,13 +24,13 @@ class RemoteEventsNegativeTests(
 ) : Parcelable {
 
     enum class Status(val apiStatus: String) {
-        UNKNOWN(""),
-        PENDING("pending"),
-        COMPLETE("complete");
+        unknown(""),
+        pending("pending"),
+        complete("complete");
 
         companion object {
             fun fromValue(value: String?): Status {
-                return values().firstOrNull { it.apiStatus == value } ?: UNKNOWN
+                return values().firstOrNull { it.apiStatus == value } ?: unknown
             }
         }
     }
