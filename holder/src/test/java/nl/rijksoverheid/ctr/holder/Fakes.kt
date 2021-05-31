@@ -160,10 +160,6 @@ fun fakeMyOverviewModel(
         override fun refreshOverviewItems(selectType: GreenCardType?) {
 
         }
-
-        override fun sync() {
-            (myOverviewItemsLiveData as MutableLiveData).value = Event(items)
-        }
     }
 }
 

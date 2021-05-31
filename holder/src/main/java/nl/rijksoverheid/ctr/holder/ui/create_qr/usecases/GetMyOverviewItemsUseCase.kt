@@ -124,7 +124,7 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
                         entities = greenCard.credentialEntities
                     )
 
-                    // Check if all of our origins are valid (are in between the curren time window)
+                    // Check if all of our origins are valid (are in between the current time window)
                     val validOrigins = originUtil.getValidOrigins(
                         origins = greenCard.origins
                     )
