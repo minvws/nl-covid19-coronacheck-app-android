@@ -22,6 +22,7 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentYourEventsBinding
 import nl.rijksoverheid.ctr.holder.ui.create_qr.items.YourEventWidget
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEvents
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsNegativeTests
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
@@ -53,6 +54,12 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                     remoteEvents = type.remoteEvents
                 )
             }
+            is YourEventsFragmentType.NegativeTest -> {
+                presentNegativeTestResult(
+                    binding = binding,
+                    remoteEvents = type.remoteEvents,
+                )
+            }
             is YourEventsFragmentType.TestResult -> {
                 presentTestResult(
                     binding = binding,
@@ -72,6 +79,74 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                 YourEventsFragmentDirections.actionMyOverview()
             )
         })
+    }
+
+    private fun presentNegativeTestResult(
+        binding: FragmentYourEventsBinding,
+        remoteEvents: Map<RemoteEventsNegativeTests, ByteArray>
+    ) {
+        binding.title.setText(R.string.your_negative_test_results_title)
+        binding.description.setHtmlText(getString(R.string.your_negative_test_results_description))
+
+        val lastNegativeTestResult = remoteEvents.keys.map { it.events }.flatten().firstOrNull()
+        val holder = remoteEvents.keys.map { it.holder }.firstOrNull()
+
+        if (holder != null && lastNegativeTestResult != null) {
+            val personalDetails = personalDetailsUtil.getPersonalDetails(
+                firstNameInitial = holder.firstName,
+                lastNameInitial = holder.lastName,
+                birthDay = holder.birthDate,
+                birthMonth = holder.birthDate,
+                includeBirthMonthNumber = false
+            )
+
+            val eventWidget = YourEventWidget(requireContext()).also {
+                it.setContent(
+                    title = getString(R.string.your_negative_test_results_row_title),
+                    subtitle = getString(
+                        R.string.your_negative_test_results_row_subtitle,
+                        OffsetDateTime.ofInstant(
+                            Instant.ofEpochSecond(lastNegativeTestResult.getOffsetDateTime().toEpochSecond()),
+                            ZoneOffset.UTC
+                        ).formatDateTime(requireContext()),
+                        lastNegativeTestResult.getOffsetDateTime().plusHours(
+                            cachedAppConfigUseCase.getCachedAppConfigMaxValidityHours().toLong()
+                        ).formatDateTime(requireContext()),
+                        "${personalDetails.firstNameInitial} ${personalDetails.lastNameInitial} ${personalDetails.birthDay} ${personalDetails.birthMonth}"
+                    ),
+                    infoClickListener = {
+                        findNavController().navigate(YourEventsFragmentDirections.actionShowExplanation())
+                    }
+                )
+            }
+            binding.eventsGroup.addView(eventWidget)
+
+            // Catch back button to show modal instead
+            requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object :
+                OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    MaterialAlertDialogBuilder(requireContext())
+                        .setTitle(getString(R.string.your_negative_test_results_backbutton_title))
+                        .setMessage(getString(R.string.your_negative_test_results_backbutton_message))
+                        .setPositiveButton(R.string.your_negative_test_results_backbutton_ok) { _, _ ->
+                            findNavController().navigate(
+                                YourEventsFragmentDirections.actionMyOverview()
+                            )
+                        }
+                        .setNegativeButton(R.string.your_negative_test_results_backbutton_cancel) { _, _ -> }
+                        .show()
+                }
+            })
+
+            // Handle button
+            binding.bottom.setButtonClick {
+                yourEventsViewModel.saveRemoteNegativeResultEvents(remoteEvents)
+            }
+        }
+
+        binding.somethingWrongButton.setOnClickListener {
+            findNavController().navigate(YourEventsFragmentDirections.actionShowSomethingWrong())
+        }
     }
 
     private fun presentTestResult(

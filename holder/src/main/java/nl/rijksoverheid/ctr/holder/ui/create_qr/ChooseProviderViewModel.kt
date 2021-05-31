@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEvents
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsNegativeTests
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.EventsResult
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetEventsUseCase
 import nl.rijksoverheid.ctr.shared.livedata.Event
@@ -17,29 +17,26 @@ import nl.rijksoverheid.ctr.shared.livedata.Event
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-abstract class GetVaccinationViewModel : ViewModel() {
+abstract class ChooseProviderViewModel : ViewModel() {
     val loading: LiveData<Event<Boolean>> = MutableLiveData()
-    val eventsResult: LiveData<Event<EventsResult<RemoteEvents>>> = MutableLiveData()
+    val eventsResult: LiveData<Event<EventsResult<RemoteEventsNegativeTests>>> = MutableLiveData()
 
     abstract fun getEvents(digidToken: String)
 }
 
-class GetVaccinationViewModelImpl(
+class ChooseProviderViewModelImpl(
     private val eventUseCase: GetEventsUseCase
-) : GetVaccinationViewModel() {
+) : ChooseProviderViewModel() {
 
     override fun getEvents(digidToken: String) {
         (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {
             try {
                 (eventsResult as MutableLiveData).value =
-                    Event(eventUseCase.getVaccinationEvents(digidToken))
+                    Event(eventUseCase.getNegativeTestEvents(digidToken))
             } finally {
                 loading.value = Event(false)
             }
         }
     }
 }
-
-
-
