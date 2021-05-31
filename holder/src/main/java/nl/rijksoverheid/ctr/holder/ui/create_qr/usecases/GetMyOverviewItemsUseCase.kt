@@ -124,14 +124,17 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
                         entities = greenCard.credentialEntities
                     )
 
+                    // Check if all of our origins are valid (are in between the curren time window)
                     val validOrigins = originUtil.getValidOrigins(
                         origins = greenCard.origins
                     )
 
+                    // Map our origin to more readable states
                     val originStates = orderedOrigins.map { origin ->
                         if (validOrigins.contains(origin)) OriginState.ValidOrigin(origin) else OriginState.InvalidOrigin(origin)
                     }
 
+                    // More our credential to a more readable state
                     val credentialState = when {
                         activeCredential == null -> CredentialState.NoCredential
                         validOrigins.isEmpty() -> CredentialState.NoCredential
