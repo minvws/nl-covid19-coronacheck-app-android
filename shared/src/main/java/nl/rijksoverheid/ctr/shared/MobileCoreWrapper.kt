@@ -81,7 +81,7 @@ class MobileCoreWrapperImpl(private val moshi: Moshi) : MobileCoreWrapper {
     }
 
     override fun readEuropeanCredential(credential: ByteArray): JSONObject {
-        return Mobilecore.verify(credential).successJsonObject()
+        return Mobilecore.readEuropeanCredential(credential).successJsonObject()
     }
 
     override fun initializeVerifier(configFilesPath: String) = Mobilecore.initializeVerifier(configFilesPath)
