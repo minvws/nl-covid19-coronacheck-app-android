@@ -6,7 +6,7 @@
  *
  */
 
-package nl.rijksoverheid.ctr.verifier.eu.api
+package nl.rijksoverheid.ctr.appconfig.eu.api
 
 import nl.rijksoverheid.ctr.api.signing.http.SignedRequest
 import okhttp3.ResponseBody
@@ -14,8 +14,13 @@ import retrofit2.http.GET
 import retrofit2.http.Streaming
 
 interface EuPublicKeysApi {
-    @GET("public_keys")
+    @GET("get_public_keys")
     @SignedRequest
     @Streaming
     suspend fun getPublicKeys(): ResponseBody
+
+    @GET("config")
+    @SignedRequest
+    @Streaming
+    suspend fun config(): ResponseBody
 }

@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.AppStatusFragment
@@ -25,6 +27,7 @@ class VerifierMainActivity : AppCompatActivity() {
 
     private val introductionViewModel: IntroductionViewModel by viewModel()
     private val appStatusViewModel: AppConfigViewModel by viewModel()
+    private val verifierConfigViewModel: VerifierConfigViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
@@ -64,7 +67,7 @@ class VerifierMainActivity : AppCompatActivity() {
         // Only get app config on every app foreground when introduction is finished
         if (introductionViewModel.getIntroductionStatus() is IntroductionStatus.IntroductionFinished) {
             appStatusViewModel.refresh()
+            verifierConfigViewModel.refresh()
         }
     }
-
 }

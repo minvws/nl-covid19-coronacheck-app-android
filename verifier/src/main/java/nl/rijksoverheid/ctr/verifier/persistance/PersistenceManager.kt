@@ -1,7 +1,6 @@
 package nl.rijksoverheid.ctr.verifier.persistance
 
 import android.content.SharedPreferences
-import java.io.File
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

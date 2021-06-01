@@ -6,7 +6,7 @@
  *
  */
 
-package nl.rijksoverheid.ctr.verifier.eu.usecases
+package nl.rijksoverheid.ctr.appconfig.eu.usecases
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -16,16 +16,17 @@ import java.io.*
 
 
 interface PersistEuPublicKeysUsecase {
-    suspend fun persist(euPublicKeys: ResponseBody)
+    suspend fun persist(fileName: String, euPublicKeys: ResponseBody): StoreFileResult
 }
 
-class PersistEuPublicKeysUsecaseImpl(private val cacheDir: File, private val persistenceManager: PersistenceManager) : PersistEuPublicKeysUsecase {
-    override suspend fun persist(euPublicKeys: ResponseBody) = withContext(Dispatchers.IO) {
+class PersistEuPublicKeysUsecaseImpl(private val cacheDir: File,
+                                     private val persistenceManager: PersistenceManager) : PersistEuPublicKeysUsecase {
+    override suspend fun persist(fileName: String, euPublicKeys: ResponseBody) = withContext(Dispatchers.IO) {
         var inputStream: InputStream? = null
         var outputStream: OutputStream? = null
-        val destinationFile = File(cacheDir, "pubkey_filename")
+        val destinationFile = File(cacheDir, fileName)
 
-        try {
+        return@withContext try {
             inputStream = euPublicKeys.byteStream()
             outputStream = FileOutputStream(destinationFile)
             val data = ByteArray(4096)
@@ -35,14 +36,20 @@ class PersistEuPublicKeysUsecaseImpl(private val cacheDir: File, private val per
             }
             outputStream.flush()
             persistenceManager.saveEuPublicKeyPath(cacheDir.path)
-
+            println("GIO Succcess ${cacheDir.path}")
+            StoreFileResult.Success
         } catch (e: IOException) {
             e.printStackTrace()
+            StoreFileResult.Error(e.message ?: "error storing $fileName")
         } finally {
             inputStream?.close()
             outputStream?.close()
         }
     }
 
+}
 
+sealed class StoreFileResult {
+    object Success: StoreFileResult()
+    class Error(message: String): StoreFileResult()
 }

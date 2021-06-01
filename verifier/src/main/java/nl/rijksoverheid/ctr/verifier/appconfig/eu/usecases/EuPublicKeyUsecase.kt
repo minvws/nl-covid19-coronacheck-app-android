@@ -6,12 +6,12 @@
  *
  */
 
-package nl.rijksoverheid.ctr.verifier.eu.usecases
+package nl.rijksoverheid.ctr.appconfig.eu.usecases
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import nl.rijksoverheid.ctr.verifier.eu.models.EuPublicKeysResult
-import nl.rijksoverheid.ctr.verifier.eu.repositories.EuPublicKeysRepository
+import nl.rijksoverheid.ctr.appconfig.eu.models.EuPublicKeysResult
+import nl.rijksoverheid.ctr.appconfig.eu.repositories.EuPublicKeysRepository
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 import retrofit2.HttpException
 import java.io.IOException
@@ -25,14 +25,17 @@ interface EuPublicKeyUsecase {
 
 class EuPublicKeyUsecaseImpl(
     private val clock: Clock,
+    private val euPublicKeysRepository: EuPublicKeysRepository,
     private val verifierPeristenceManager: PersistenceManager,
-    private val euPublicKeysRepository: EuPublicKeysRepository
 ) : EuPublicKeyUsecase {
     override suspend fun retrieveEuPublicKeys()
             : EuPublicKeysResult = withContext(Dispatchers.IO) {
         try {
+            val publicKeys = euPublicKeysRepository.getPublicKeys()
+            val config = euPublicKeysRepository.config()
             val success = EuPublicKeysResult.Success(
-                publicKeys = euPublicKeysRepository.getPublicKeys()
+                publicKeys = publicKeys,
+                config = config,
             )
             verifierPeristenceManager.saveEuPublicKeysLastFetchedSeconds(
                 OffsetDateTime.now(clock).toEpochSecond()

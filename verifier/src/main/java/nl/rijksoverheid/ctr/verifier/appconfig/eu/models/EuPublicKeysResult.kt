@@ -6,11 +6,11 @@
  *
  */
 
-package nl.rijksoverheid.ctr.verifier.eu.models
+package nl.rijksoverheid.ctr.appconfig.eu.models
 
 import okhttp3.ResponseBody
 
 sealed class EuPublicKeysResult {
-    data class Success(val publicKeys: ResponseBody) : EuPublicKeysResult()
+    data class Success(val publicKeys: ResponseBody, val config: ResponseBody) : EuPublicKeysResult()
     object Error : EuPublicKeysResult()
 }

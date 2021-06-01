@@ -1,14 +1,24 @@
+/*
+ *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+ *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+ *
+ *   SPDX-License-Identifier: EUPL-1.2
+ *
+ */
+
 package nl.rijksoverheid.ctr.verifier.modules
 
 import com.squareup.moshi.Moshi
 import nl.rijksoverheid.ctr.introduction.ui.new_terms.models.NewTerms
-import nl.rijksoverheid.ctr.verifier.eu.api.EuPublicKeysApi
-import nl.rijksoverheid.ctr.verifier.eu.repositories.EuPublicKeysRepository
-import nl.rijksoverheid.ctr.verifier.eu.repositories.EuPublicKeysRepositoryImpl
-import nl.rijksoverheid.ctr.verifier.eu.usecases.EuPublicKeyUsecase
-import nl.rijksoverheid.ctr.verifier.eu.usecases.EuPublicKeyUsecaseImpl
-import nl.rijksoverheid.ctr.verifier.eu.usecases.PersistEuPublicKeysUsecase
-import nl.rijksoverheid.ctr.verifier.eu.usecases.PersistEuPublicKeysUsecaseImpl
+import nl.rijksoverheid.ctr.appconfig.eu.api.EuPublicKeysApi
+import nl.rijksoverheid.ctr.appconfig.eu.repositories.EuPublicKeysRepository
+import nl.rijksoverheid.ctr.appconfig.eu.repositories.EuPublicKeysRepositoryImpl
+import nl.rijksoverheid.ctr.appconfig.eu.usecases.EuPublicKeyUsecase
+import nl.rijksoverheid.ctr.appconfig.eu.usecases.EuPublicKeyUsecaseImpl
+import nl.rijksoverheid.ctr.appconfig.eu.usecases.PersistEuPublicKeysUsecase
+import nl.rijksoverheid.ctr.appconfig.eu.usecases.PersistEuPublicKeysUsecaseImpl
+import nl.rijksoverheid.ctr.verifier.VerifierConfigViewModel
+import nl.rijksoverheid.ctr.verifier.VerifierConfigViewModelImpl
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 import nl.rijksoverheid.ctr.verifier.persistance.SharedPreferencesPersistenceManager
 import nl.rijksoverheid.ctr.verifier.ui.scanner.ScannerViewModel
@@ -84,6 +94,7 @@ fun verifierModule(path: String) = module {
     // ViewModels
     viewModel<ScanQrViewModel> { ScanQrViewModelImpl(get()) }
     viewModel<ScannerViewModel> { ScannerViewModelImpl(get()) }
+    viewModel<VerifierConfigViewModel> { VerifierConfigViewModelImpl(get(), get(), get(), androidContext().cacheDir.path) }
 
     single {
         get<Moshi.Builder>(Moshi.Builder::class).build()
