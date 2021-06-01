@@ -42,5 +42,6 @@ data class AppConfig(
     @Json(name = "euTestManufacturers") val euTestManufacturers: List<Code> = listOf()
 ) : JSON() {
 
+    @JsonClass(generateAdapter = true)
     data class Code(val code: String, val name: String): JSON()
 }
