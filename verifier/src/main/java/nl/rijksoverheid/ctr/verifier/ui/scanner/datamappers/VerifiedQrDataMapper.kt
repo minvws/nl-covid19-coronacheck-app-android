@@ -22,7 +22,7 @@ class VerifiedQrDataMapperImpl(private val moshi: Moshi, private val mobileCoreW
     override fun transform(
         qrContent: String
     ): VerifiedQr {
-        val mobileLibraryResult = Mobilecore.verify(
+        val mobileLibraryResult = mobileCoreWrapper.verify(
             qrContent.toByteArray()
         )
 
