@@ -2,13 +2,13 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.api
 
 import nl.rijksoverheid.ctr.api.signing.http.SignedRequest
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.post.AccessTokenPostData
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.post.GetCredentialsPostData
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.post.GetTestIsmPostData
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
 
 /*
@@ -37,7 +37,7 @@ interface HolderApiClient {
 
     @POST("holder/access_tokens")
     @SignedRequest
-    suspend fun getAccessTokens(@Body data: AccessTokenPostData): RemoteAccessTokens
+    suspend fun getAccessTokens(@Header("Authorization") authorization: String): RemoteAccessTokens
 
     @POST("holder/get_test_ism")
     @SignedRequest

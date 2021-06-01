@@ -21,19 +21,19 @@ abstract class GetVaccinationViewModel : ViewModel() {
     val loading: LiveData<Event<Boolean>> = MutableLiveData()
     val eventsResult: LiveData<Event<EventsResult<RemoteEventsVaccinations>>> = MutableLiveData()
 
-    abstract fun getEvents(digidToken: String)
+    abstract fun getEvents(jwt: String)
 }
 
 class GetVaccinationViewModelImpl(
     private val eventUseCase: GetEventsUseCase
 ) : GetVaccinationViewModel() {
 
-    override fun getEvents(digidToken: String) {
+    override fun getEvents(jwt: String) {
         (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {
             try {
                 (eventsResult as MutableLiveData).value =
-                    Event(eventUseCase.getVaccinationEvents(digidToken))
+                    Event(eventUseCase.getVaccinationEvents(jwt))
             } finally {
                 loading.value = Event(false)
             }
