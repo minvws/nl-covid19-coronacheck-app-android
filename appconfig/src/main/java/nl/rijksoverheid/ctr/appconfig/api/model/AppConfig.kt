@@ -24,7 +24,19 @@ data class AppConfig(
     @Json(name = "androidMinimumVersion") val minimumVersion: Int,
     @Json(name = "appDeactivated") val appDeactivated: Boolean,
     @Json(name = "informationURL") val informationURL: String,
+    @Json(name = "requireUpdateBefore") val requireUpdateBefore: Int,
+    @Json(name = "temporarilyDisabled") val temporarilyDisabled: Boolean,
+    @Json(name = "recoveryEventValidity") val recoveryEventValidity: Int,
+    @Json(name = "testEventValidity") val testEventValidity: Int,
+    @Json(name = "domesticCredentialValidity") val domesticCredentialValidity: Int,
+    @Json(name = "credentialRenewalDays") val credentialRenewalDays: Int,
     @Json(name = "configTTL") val configTtlSeconds: Int,
     @Json(name = "maxValidityHours") val maxValidityHours: Int,
-    @Json(name = "vaccinationEventValidity") val vaccinationEventValidity: Int = 14600
-) : JSON()
+    @Json(name = "vaccinationEventValidity") val vaccinationEventValidity: Int = 14600,
+    @Json(name = "euLaunchDate") val euLaunchDate: String,
+    @Json(name = "hpkCodes") val hpkCodes: List<Code>,
+    @Json(name = "euBrands") val euBrands: List<Code>
+) : JSON() {
+
+    data class Code(val code: String, val name: String): JSON()
+}

@@ -94,7 +94,7 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
 
         remoteEvents.keys.forEach { negativeTests ->
             val fullName =
-                "${negativeTests.holder?.firstName} ${negativeTests.holder?.infix} ${negativeTests.holder?.lastName}"
+                "${negativeTests.holder?.lastName}, ${negativeTests.holder?.firstName}"
 
             negativeTests.events?.forEach { event ->
 
@@ -102,6 +102,10 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                 val testLocation = event.negativeTest?.facility ?: ""
 
                 val testDate = event.negativeTest?.sampleDate?.let { sampleDate ->
+                    sampleDate.formatDateTime(requireContext())
+                } ?: ""
+
+                val resultDate = event.negativeTest?.resultDate?.let { sampleDate ->
                     sampleDate.formatDateTime(requireContext())
                 } ?: ""
 
@@ -141,9 +145,13 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                                     fullName,
                                     birthDate,
                                     testType,
-                                    testLocation,
+                                    event.negativeTest?.name ?: "",
                                     testDate,
-                                    getString(R.string.your_test_result_explanation_negative_test_result)
+                                    resultDate,
+                                    getString(R.string.your_test_result_explanation_negative_test_result),
+                                    "",
+                                    "",
+                                    ""
                                 )
                             ))
                         }
@@ -221,7 +229,8 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                                 "${personalDetails.firstNameInitial} ${personalDetails.lastNameInitial} ${personalDetails.birthDay} ${personalDetails.birthMonth}",
                                 result.testType,
                                 testDate,
-                                getString(R.string.your_test_result_explanation_negative_test_result)
+                                getString(R.string.your_test_result_explanation_negative_test_result),
+                                result.unique
                             )
                         ))
                     }

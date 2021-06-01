@@ -234,9 +234,9 @@
     <string name="qr_card_validity_future_days">wordt automatisch geldig over %1$s dagen</string>
     <string name="qr_card_validity_future_hours">wordt automatisch geldig in %1$s uur</string>
     <string name="your_test_result_explanation_toolbar_title">Over de testuitslag</string>
-    <string name="your_test_result_explanation_description"><![CDATA[De volgende gegevens zijn opgehaald bij de testlocatie:<br\><br\>Jouw gegevens:  <b>%1$s</b><br/>Type test: <b>%2$s</b><br/>Testdatum: <b>%3$s</b><br/>Testuitslag: <b>%4$s</b><br/>]]></string>
+    <string name="your_test_result_explanation_description"><![CDATA[De volgende gegevens zijn opgehaald bij de testlocatie:<br\><br\>Jouw gegevens:  <b>%1$s</b><br/><br/>Type test: <b>%2$s</b><br/>Testdatum: <b>%3$s</b><br/>Testuitslag: <b>%4$s</b><br/>Identificatiecode: <b>%5$s</b>]]></string>
     <string name="your_test_result_explanation_negative_test_result">negatief (geen corona)</string>
-    <string name="your_test_result_3.0_explanation_description"><![CDATA[De volgende gegevens zijn opgehaald bij de testlocatie:<br\><br\>Naam:  <b>%1$s</b><br/>Geboortedatum: <b>%2$s</b><br/>Type test: <b>%3$s</b><br/>Testlocatie: <b>%4$s</b><br/>Testdatum: <b>%5$s</b><br/>Testuitslag: <b>%6$s</b>]]></string>
+    <string name="your_test_result_3.0_explanation_description"><![CDATA[De volgende gegevens zijn opgehaald bij de testlocatie:<br\><br\>Naam:  <b>%1$s</b><br/>Geboortedatum: <b>%2$s</b><br/><br/>Type test: <b>%3$s</b><br/>Test naam: <b>%4$s</b><br/>Testdatum: <b>%5$s</b><br/>Uitslagdatum: <b>%6$s</b><br/>Testuitslag: <b>%7$s</b><br/>Testlocatie: <b>%8$s</b><br/>Testproducent: <b>%9$s</b><br/>Identificatiecode: <b>%10$s</b>]]></string>
     <string name="your_negative_test_3.0_results_row_subtitle"><![CDATA[Testdatum: %1$s<br/>Geldig tot: %2$s<br/>Naam: %3$s<br/>Geboortedatum: %4$s]]></string>
     <string name="your_vaccination_row_subtitle"><![CDATA[Naam: %1$s<br/>Geboortedatum: %2$s]]></string>
     <string name="your_vaccination_explanation_toolbar_title">Over jouw vaccinatie</string>
