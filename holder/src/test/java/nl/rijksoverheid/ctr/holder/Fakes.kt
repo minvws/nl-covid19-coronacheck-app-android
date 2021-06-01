@@ -399,7 +399,7 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
             return ""
         }
 
-        override fun diclose(secretKey: ByteArray, credential: ByteArray): String {
+        override fun disclose(secretKey: ByteArray, credential: ByteArray): String {
             return ""
         }
 

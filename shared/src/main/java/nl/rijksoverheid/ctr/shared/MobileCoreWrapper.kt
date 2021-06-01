@@ -12,6 +12,7 @@ import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import mobilecore.Mobilecore
+import mobilecore.Result
 import nl.rijksoverheid.ctr.shared.ext.successJsonObject
 import nl.rijksoverheid.ctr.shared.ext.successString
 import nl.rijksoverheid.ctr.shared.ext.verify
@@ -24,10 +25,12 @@ interface MobileCoreWrapper {
     fun createCredentials(body: ByteArray): String
     fun readCredential(credentials: ByteArray): ByteArray
     fun createCommitmentMessage(secretKey: ByteArray, nonce: ByteArray): String
-    fun diclose(secretKey: ByteArray, credential: ByteArray): String
+    fun disclose(secretKey: ByteArray, credential: ByteArray): String
     fun generateHolderSk(): String
     fun createDomesticCredentials(createCredentials: ByteArray): List<DomesticCredential>
     fun readEuropeanCredential(credential: ByteArray): JSONObject
+    fun initializeVerifier(configFilesPath: String)
+    fun verify(credential: ByteArray): Result
 }
 
 class MobileCoreWrapperImpl(private val moshi: Moshi) : MobileCoreWrapper {
@@ -52,7 +55,7 @@ class MobileCoreWrapperImpl(private val moshi: Moshi) : MobileCoreWrapper {
         ).successString()
     }
 
-    override fun diclose(secretKey: ByteArray, credential: ByteArray): String {
+    override fun disclose(secretKey: ByteArray, credential: ByteArray): String {
         return Mobilecore.disclose(
             secretKey,
             credential
@@ -80,4 +83,8 @@ class MobileCoreWrapperImpl(private val moshi: Moshi) : MobileCoreWrapper {
     override fun readEuropeanCredential(credential: ByteArray): JSONObject {
         return Mobilecore.verify(credential).successJsonObject()
     }
+
+    override fun initializeVerifier(configFilesPath: String) = Mobilecore.initializeVerifier(configFilesPath)
+
+    override fun verify(credential: ByteArray): Result = Mobilecore.verify(credential)
 }
