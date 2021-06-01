@@ -2,7 +2,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.repositories
 
 import nl.rijksoverheid.ctr.api.interceptors.SigningCertificate
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.TestProviderApiClient
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEvents
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsVaccinations
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsNegativeTests
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteUnomi
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
@@ -20,11 +20,11 @@ interface EventProviderRepository {
         token: String
     ): RemoteUnomi
 
-    suspend fun event(
+    suspend fun vaccinationEvents(
         url: String,
         token: String,
         signingCertificateBytes: ByteArray
-    ): SignedResponseWithModel<RemoteEvents>
+    ): SignedResponseWithModel<RemoteEventsVaccinations>
 
     suspend fun negativeTestEvent(
         url: String,
@@ -45,12 +45,12 @@ class EventProviderRepositoryImpl(
             )
     }
 
-    override suspend fun event(
+    override suspend fun vaccinationEvents(
         url: String,
         token: String,
         signingCertificateBytes: ByteArray
-    ): SignedResponseWithModel<RemoteEvents> {
-        return testProviderApiClient.events(
+    ): SignedResponseWithModel<RemoteEventsVaccinations> {
+        return testProviderApiClient.vaccinationEvents(
             url = url,
             authorization = "Bearer $token",
             certificate = SigningCertificate(signingCertificateBytes)

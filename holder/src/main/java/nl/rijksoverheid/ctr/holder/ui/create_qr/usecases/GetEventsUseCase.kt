@@ -14,7 +14,7 @@ import java.io.IOException
  *
  */
 interface GetEventsUseCase {
-    suspend fun getVaccinationEvents(digidToken: String): EventsResult<RemoteEvents>
+    suspend fun getVaccinationEvents(digidToken: String): EventsResult<RemoteEventsVaccinations>
     suspend fun getNegativeTestEvents(digidToken: String): EventsResult<RemoteEventsNegativeTests>
 }
 
@@ -54,7 +54,7 @@ class GetEventsUseCaseImpl(
         }
     }
 
-    override suspend fun getVaccinationEvents(digidToken: String): EventsResult<RemoteEvents>{
+    override suspend fun getVaccinationEvents(digidToken: String): EventsResult<RemoteEventsVaccinations>{
         return try {
 
             val eventProviderWithEvents = getEventProviderWithEvent(digidToken)
@@ -65,19 +65,15 @@ class GetEventsUseCaseImpl(
                 val accessToken = it.value
 
                 eventProviderRepository
-                    .event(
+                    .vaccinationEvents(
                         url = eventProvider.eventUrl,
                         token = accessToken.event,
                         signingCertificateBytes = eventProvider.cms
                     )
             }
 
-            // For now we only support vaccination events
-            val vaccinationEvents =
-                remoteEvents.filter { remoteEvent -> remoteEvent.model.events.any { event -> event.type == "vaccination" } }
-
             EventsResult.Success(
-                signedModels = vaccinationEvents
+                signedModels = remoteEvents
             )
         } catch (ex: HttpException) {
             return EventsResult.ServerError(ex.code())

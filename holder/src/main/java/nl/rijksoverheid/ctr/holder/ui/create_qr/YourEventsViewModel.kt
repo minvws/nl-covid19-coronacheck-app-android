@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEvents
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsVaccinations
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsNegativeTests
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SaveEventsUseCase
@@ -24,7 +24,7 @@ abstract class YourEventsViewModel : ViewModel() {
     val savedEvents: LiveData<Event<Boolean>> = MutableLiveData()
 
     abstract fun saveRemoteTestResult(remoteTestResult: RemoteTestResult, rawResponse: ByteArray)
-    abstract fun saveRemoteEvents(remoteEvents: Map<RemoteEvents, ByteArray>)
+    abstract fun saveRemoteEvents(remoteEvents: Map<RemoteEventsVaccinations, ByteArray>)
     abstract fun saveRemoteNegativeResultEvents(remoteEvents: Map<RemoteEventsNegativeTests, ByteArray>)
 }
 
@@ -46,7 +46,7 @@ class YourEventsViewModelImpl(
         }
     }
 
-    override fun saveRemoteEvents(remoteEvents: Map<RemoteEvents, ByteArray>) {
+    override fun saveRemoteEvents(remoteEvents: Map<RemoteEventsVaccinations, ByteArray>) {
         (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {
             try {

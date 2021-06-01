@@ -198,7 +198,6 @@
     <string name="your_vaccination_result_toolbar_title">Jouw vaccinaties</string>
     <string name="your_retrieved_vaccinations_toolbar">Vaccinatie ophalen</string>
     <string name="retrieved_vaccination_title">Vaccinatie %1$d</string>
-    <string name="retrieved_vaccination_subtitle">Vaccinatiedatum: %1$s</string>
     <string name="retrieved_vaccinations_backbutton_title">Weet je zeker dat je wilt stoppen?</string>
     <string name="retrieved_vaccinations_backbutton_message">Je moet dan later opnieuw met DigiD inloggen om je vaccinatie op te halen.</string>
     <string name="travel_toggle_europe">Ik reis binnen Europa</string>
@@ -210,7 +209,6 @@
     <string name="travel_fragment_footer">In je Nederlandse QR-code staan alleen je initialen en je geboortedag en maand.</string>
     <string name="dialog_negative_test_result_something_wrong_title">Er klopt iets niet</string>
     <string name="dialog_negative_test_result_something_wrong_description">Kloppen jouw gegevens niet met je identiteitsbewijs? Neem contact op met je testlocatie om je  gegevens te laten aanpassen.</string>
-    <string name="your_vaccination_result_explanation_title">Over jouw vaccinatie</string>
     <string name="validity_type_european_title">Europa</string>
     <string name="validity_type_dutch_title">Nederland</string>
     <string name="qr_card_vaccination_validity_domestic">Vaccinatiebewijs:\ngeldig tot en met %1$s</string>
@@ -238,4 +236,11 @@
     <string name="your_test_result_explanation_toolbar_title">Over de testuitslag</string>
     <string name="your_test_result_explanation_description"><![CDATA[De volgende gegevens zijn opgehaald bij de testlocatie:<br\><br\>Jouw gegevens:  <b>%1$s</b><br/>Type test: <b>%2$s</b><br/>Testdatum: <b>%3$s</b><br/>Testuitslag: <b>%4$s</b><br/>]]></string>
     <string name="your_test_result_explanation_negative_test_result">negatief (geen corona)</string>
+    <string name="your_test_result_3.0_explanation_description"><![CDATA[De volgende gegevens zijn opgehaald bij de testlocatie:<br\><br\>Naam:  <b>%1$s</b><br/>Geboortedatum: <b>%2$s</b><br/>Type test: <b>%3$s</b><br/>Testlocatie: <b>%4$s</b><br/>Testdatum: <b>%5$s</b><br/>Testuitslag: <b>%6$s</b>]]></string>
+    <string name="your_negative_test_3.0_results_row_subtitle"><![CDATA[Testdatum: %1$s<br/>Geldig tot: %2$s<br/>Naam: %3$s<br/>Geboortedatum: %4$s]]></string>
+    <string name="your_vaccination_row_subtitle"><![CDATA[Naam: %1$s<br/>Geboortedatum: %2$s]]></string>
+    <string name="your_vaccination_explanation_toolbar_title">Over jouw vaccinatie</string>
+    <string name="your_vaccination_explanation_description"><![CDATA[De volgende vaccinatie gegevens zijn opgehaald:<br/><br/>Naam: <b>%1$s</b><br/>Geboortedatum: <b>%2$s</b><br/><br/>Ziekteverwekker: <b>%3$s</b><br/>Vaccin: <b>%4$s</b><br/>Doses: <b>%5$s</b><br/>Prikdatum: <b>%6$s</b><br/>Land van vaccinatie: <b>%7$s</b><br/>Unieke identificatiecode: <b>%8$s</b>]]></string>
+    <string name="your_vaccination_explanation_covid_19">COVID-19</string>
+    <string name="your_vaccination_explanation_doses">%1$s van %2$s</string>
 </resources>
