@@ -14,6 +14,7 @@ import nl.rijksoverheid.ctr.appconfig.eu.models.EuPublicKeysResult
 import nl.rijksoverheid.ctr.appconfig.eu.repositories.EuPublicKeysRepository
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 import retrofit2.HttpException
+import java.io.File
 import java.io.IOException
 import java.time.Clock
 import java.time.OffsetDateTime
@@ -21,12 +22,14 @@ import java.time.OffsetDateTime
 interface EuPublicKeyUsecase {
     suspend fun retrieveEuPublicKeys(): EuPublicKeysResult
     fun checkEuPublicKeysValidity(): Boolean
+    fun areConfigFilesPresent(): Boolean
 }
 
 class EuPublicKeyUsecaseImpl(
     private val clock: Clock,
     private val euPublicKeysRepository: EuPublicKeysRepository,
     private val verifierPeristenceManager: PersistenceManager,
+    private val cacheDir: String,
 ) : EuPublicKeyUsecase {
     override suspend fun retrieveEuPublicKeys()
             : EuPublicKeysResult = withContext(Dispatchers.IO) {
@@ -55,4 +58,10 @@ class EuPublicKeyUsecaseImpl(
         ).toEpochSecond()
     }
 
+    override fun areConfigFilesPresent(): Boolean {
+        val configFile = File(cacheDir, "config.json")
+        val publicKeysFile = File(cacheDir, "public_keys.json")
+
+        return configFile.exists() && publicKeysFile.exists()
+    }
 }

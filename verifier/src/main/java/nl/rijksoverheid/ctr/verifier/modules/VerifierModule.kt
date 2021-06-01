@@ -80,7 +80,7 @@ fun verifierModule(path: String) = module {
     factory<VerifiedQrDataMapper> { VerifiedQrDataMapperImpl(get()) }
 
     factory<EuPublicKeyUsecase> {
-        EuPublicKeyUsecaseImpl(get(), get(), get())
+        EuPublicKeyUsecaseImpl(get(), get(), get(), androidContext().cacheDir.path)
     }
 
     factory<PersistEuPublicKeysUsecase> {
@@ -94,7 +94,7 @@ fun verifierModule(path: String) = module {
     // ViewModels
     viewModel<ScanQrViewModel> { ScanQrViewModelImpl(get()) }
     viewModel<ScannerViewModel> { ScannerViewModelImpl(get()) }
-    viewModel<VerifierConfigViewModel> { VerifierConfigViewModelImpl(get(), get(), get(), androidContext().cacheDir.path) }
+    viewModel<VerifierConfigViewModel> { VerifierConfigViewModelImpl(get(), get(), get(), get(), get(), androidContext().cacheDir.path) }
 
     single {
         get<Moshi.Builder>(Moshi.Builder::class).build()

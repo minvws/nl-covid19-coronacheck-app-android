@@ -22,9 +22,6 @@ import org.koin.core.module.Module
  */
 open class VerifierApplication : SharedApplication() {
 
-    private val loadPublicKeysUseCase: LoadPublicKeysUseCase by inject()
-    private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
-
     override fun onCreate() {
         super.onCreate()
 
@@ -46,11 +43,6 @@ open class VerifierApplication : SharedApplication() {
                 *getAdditionalModules().toTypedArray(),
                 designModule
             )
-        }
-
-        // If we have public keys stored, load them so they can be used by CTCL
-        cachedAppConfigUseCase.getCachedPublicKeys()?.let {
-            loadPublicKeysUseCase.load(it)
         }
     }
 
