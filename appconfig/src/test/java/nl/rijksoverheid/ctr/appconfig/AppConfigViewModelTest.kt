@@ -12,10 +12,12 @@ import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.appconfig.models.ConfigResult
+import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
 import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.AppStatusUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.LoadPublicKeysUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.PersistConfigUseCase
+import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
@@ -37,13 +39,17 @@ class AppConfigViewModelTest {
     private val appStatusUseCase: AppStatusUseCase = mockk(relaxed = true)
     private val persistConfigUseCase: PersistConfigUseCase = mockk(relaxed = true)
     private val loadPublicKeyUseCase: LoadPublicKeysUseCase = mockk(relaxed = true)
+    private val appConfigStorageManager: AppConfigStorageManager = mockk(relaxed = true)
     private val appConfigViewModel = AppConfigViewModelImpl(
         appConfigUseCase = appConfigUseCase,
         appStatusUseCase = appStatusUseCase,
         persistConfigUseCase = persistConfigUseCase,
         loadPublicKeysUseCase = loadPublicKeyUseCase,
+        appConfigStorageManager = appConfigStorageManager,
+        cacheDirPath = "",
         versionCode = 0
     )
+    private val mobileCoreWrapper: MobileCoreWrapper = mockk(relaxed = true)
 
     @Before
     fun setup() {
@@ -73,7 +79,7 @@ class AppConfigViewModelTest {
 
         coEvery { appStatusUseCase.get(any(), any()) } answers { AppStatus.NoActionRequired }
 
-        appConfigViewModel.refresh()
+        appConfigViewModel.refresh(mobileCoreWrapper)
 
         coVerify { persistConfigUseCase.persist(appConfig, publicKeys) }
         coVerify { loadPublicKeyUseCase.load(publicKeys) }
@@ -87,7 +93,7 @@ class AppConfigViewModelTest {
 
         coEvery { appStatusUseCase.get(any(), any()) } answers { AppStatus.InternetRequired }
 
-        appConfigViewModel.refresh()
+        appConfigViewModel.refresh(mobileCoreWrapper)
 
         Assert.assertEquals(appConfigViewModel.appStatusLiveData.value, AppStatus.InternetRequired)
     }

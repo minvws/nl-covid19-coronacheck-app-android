@@ -14,7 +14,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.appconfig.models.ConfigResult
-import nl.rijksoverheid.ctr.appconfig.persistence.StorageResult
+import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
 import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.AppStatusUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.LoadPublicKeysUseCase
@@ -32,6 +32,7 @@ class AppConfigViewModelImpl(
     private val appStatusUseCase: AppStatusUseCase,
     private val persistConfigUseCase: PersistConfigUseCase,
     private val loadPublicKeysUseCase: LoadPublicKeysUseCase,
+    private val appConfigStorageManager: AppConfigStorageManager,
     private val cacheDirPath: String,
     private val versionCode: Int
 ) : AppConfigViewModel() {
@@ -48,8 +49,14 @@ class AppConfigViewModelImpl(
                 loadPublicKeysUseCase.load(
                     publicKeys = configResult.publicKeys
                 )
-                mobileCoreWrapper.initializeVerifier(cacheDirPath)
             }
+
+            if (!appConfigStorageManager.areConfigFilesPresent()) {
+                return@launch appStatusLiveData.postValue(AppStatus.InternetRequired)
+            }
+
+            mobileCoreWrapper.initializeVerifier(cacheDirPath)
+
             appStatusLiveData.postValue(appStatus)
         }
     }

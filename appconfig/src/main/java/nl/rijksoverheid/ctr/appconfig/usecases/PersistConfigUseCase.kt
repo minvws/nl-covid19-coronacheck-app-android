@@ -45,7 +45,6 @@ class PersistConfigUseCaseImpl(
             val configStorageResult = appConfigStorageManager.storageFile(configFile, configContents)
             val publicKeysStorageResult = appConfigStorageManager.storageFile(publicKeysFile, publicKeysContents)
 
-
             return@withContext if (configStorageResult is StorageResult.Success && publicKeysStorageResult is StorageResult.Success) {
                 StorageResult.Success
             } else if (configStorageResult is StorageResult.Error) {
