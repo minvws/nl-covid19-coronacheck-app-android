@@ -62,13 +62,13 @@ class SaveEventsUseCaseImpl(private val holderDatabase: HolderDatabase) : SaveEv
         val entities = remoteEventsNegativeTests.map {
             EventGroupEntity(
                 walletId = 1,
-                providerIdentifier = it.key.providerIdentifier,
+                providerIdentifier = it.key.providerIdentifier ?: error("providerIdentifier is required"),
                 type = EventType.Vaccination,
-                maxIssuedAt = it.key.events.map { event -> event.getDate() }
-                    .maxByOrNull { date -> date.toEpochDay() }
+                maxIssuedAt = it.key.events?.map { event -> event.getDate() }
+                    ?.maxByOrNull { date -> date.toEpochDay() }
                     ?.atStartOfDay()?.atOffset(
                         ZoneOffset.UTC
-                    )!!,
+                    ) ?: error("At least one event must be present with a date"),
                 jsonData = it.value
             )
         }

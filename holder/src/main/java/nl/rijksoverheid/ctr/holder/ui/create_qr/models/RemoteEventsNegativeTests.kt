@@ -16,11 +16,11 @@ import java.time.OffsetDateTime
 @Parcelize
 @JsonClass(generateAdapter = true)
 class RemoteEventsNegativeTests(
-    val events: List<Event>,
-    val protocolVersion: String,
-    val providerIdentifier: String,
-    val status: Status,
-    val holder: Holder
+    val events: List<Event>?,
+    val protocolVersion: String?,
+    val providerIdentifier: String?,
+    val status: Status?,
+    val holder: Holder?
 ) : Parcelable {
 
     enum class Status(val apiStatus: String) {
@@ -38,30 +38,30 @@ class RemoteEventsNegativeTests(
     @Parcelize
     @JsonClass(generateAdapter = true)
     data class Holder(
-        val infix: String,
-        val firstName: String,
-        val lastName: String,
-        val birthDate: String,
+        val infix: String?,
+        val firstName: String?,
+        val lastName: String?,
+        val birthDate: String?,
     ) : Parcelable
 
     @Parcelize
     @JsonClass(generateAdapter = true)
     data class Event(
-        val type: String,
-        val unique: String,
-        val isSpecimen: Boolean,
+        val type: String?,
+        val unique: String?,
+        val isSpecimen: Boolean?,
         val negativeTest: NegativeTest?,
     ) : Parcelable {
         @Parcelize
         @JsonClass(generateAdapter = true)
         data class NegativeTest(
-            val sampleDate: OffsetDateTime,
-            val resultDate: LocalDate,
-            val negativeResult: Boolean,
-            val facility: String,
-            val type: String,
-            val name: String,
-            val manufacturer: String
+            val sampleDate: OffsetDateTime?,
+            val resultDate: LocalDate?,
+            val negativeResult: Boolean?,
+            val facility: String?,
+            val type: String?,
+            val name: String?,
+            val manufacturer: String?
         ) : Parcelable
 
         fun getDate(): LocalDate = negativeTest?.resultDate ?: LocalDate.now()

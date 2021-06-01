@@ -66,7 +66,7 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
                                 remoteEvents = it.signedModels.map { signedModel -> signedModel.model to signedModel.rawResponse }
                                     .toMap()
                             ),
-                            toolbarTitle = getString(R.string.your_vaccination_result_toolbar_title)
+                            toolbarTitle = getString(R.string.commercial_test_type_title)
                         )
                     )
                 }

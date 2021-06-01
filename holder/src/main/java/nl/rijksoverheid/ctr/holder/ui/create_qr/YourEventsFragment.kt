@@ -17,6 +17,8 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.design.ext.formatDateTime
+import nl.rijksoverheid.ctr.design.ext.formatDayMonth
+import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentYourEventsBinding
@@ -28,9 +30,12 @@ import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.lang.Exception
 import java.time.Instant
+import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 
 class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
 
@@ -88,38 +93,68 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
         binding.title.setText(R.string.your_negative_test_results_title)
         binding.description.setHtmlText(getString(R.string.your_negative_test_results_description))
 
-        val lastNegativeTestResult = remoteEvents.keys.map { it.events }.flatten().firstOrNull()
-        val holder = remoteEvents.keys.map { it.holder }.firstOrNull()
+        remoteEvents.keys.forEach { negativeTests ->
+            val fullName =
+                "${negativeTests.holder?.firstName} ${negativeTests.holder?.infix} ${negativeTests.holder?.lastName}"
 
-        if (holder != null && lastNegativeTestResult != null) {
-            val personalDetails = personalDetailsUtil.getPersonalDetails(
-                firstNameInitial = holder.firstName,
-                lastNameInitial = holder.lastName,
-                birthDay = holder.birthDate,
-                birthMonth = holder.birthDate,
-                includeBirthMonthNumber = false
-            )
+            negativeTests.events?.forEach { event ->
 
-            val eventWidget = YourEventWidget(requireContext()).also {
-                it.setContent(
-                    title = getString(R.string.your_negative_test_results_row_title),
-                    subtitle = getString(
-                        R.string.your_negative_test_results_row_subtitle,
-                        OffsetDateTime.ofInstant(
-                            Instant.ofEpochSecond(lastNegativeTestResult.getOffsetDateTime().toEpochSecond()),
-                            ZoneOffset.UTC
-                        ).formatDateTime(requireContext()),
-                        lastNegativeTestResult.getOffsetDateTime().plusHours(
-                            cachedAppConfigUseCase.getCachedAppConfigMaxValidityHours().toLong()
-                        ).formatDateTime(requireContext()),
-                        "${personalDetails.firstNameInitial} ${personalDetails.lastNameInitial} ${personalDetails.birthDay} ${personalDetails.birthMonth}"
-                    ),
-                    infoClickListener = {
+                val testType = event.negativeTest?.type ?: ""
+                val testLocation = event.negativeTest?.facility ?: ""
 
+                val testDate = event.negativeTest?.sampleDate?.let { sampleDate ->
+                    OffsetDateTime.ofInstant(
+                        Instant.ofEpochSecond(sampleDate.toEpochSecond()),
+                        ZoneOffset.UTC
+                    )
+                } ?: ""
+
+                val validUntil = event.negativeTest?.sampleDate?.let { sampleDate ->
+                    OffsetDateTime.ofInstant(
+                        Instant.ofEpochSecond(sampleDate.toEpochSecond()),
+                        ZoneOffset.UTC
+                    ).plusHours(
+                        cachedAppConfigUseCase.getCachedAppConfigMaxValidityHours().toLong()
+                    ).formatDateTime(requireContext())
+                } ?: ""
+
+                val birthDate = negativeTests.holder?.birthDate?.let { birthDate ->
+                    try {
+                        LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).formatDayMonthYear()
+                    } catch (e: Exception) {
+                        ""
                     }
-                )
+                } ?: ""
+
+                val eventWidget = YourEventWidget(requireContext()).also {
+                    it.setContent(
+                        title = getString(R.string.your_negative_test_results_row_title),
+                        subtitle = getString(
+                            R.string.your_negative_test_3_0_results_row_subtitle,
+                            testDate,
+                            validUntil,
+                            fullName,
+                            birthDate
+                        ),
+                        infoClickListener = {
+                            findNavController().navigate(YourEventsFragmentDirections.actionShowExplanation(
+                                toolbarTitle = getString(R.string.your_test_result_explanation_toolbar_title),
+                                description =
+                                getString(
+                                    R.string.your_test_result_3_0_explanation_description,
+                                    fullName,
+                                    birthDate,
+                                    testType,
+                                    testLocation,
+                                    testDate,
+                                    getString(R.string.your_test_result_explanation_negative_test_result)
+                                )
+                            ))
+                        }
+                    )
+                }
+                binding.eventsGroup.addView(eventWidget)
             }
-            binding.eventsGroup.addView(eventWidget)
 
             // Catch back button to show modal instead
             requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object :
