@@ -1,7 +1,7 @@
 package nl.rijksoverheid.ctr.verifier.modules
 
-import nl.rijksoverheid.ctr.shared.ClmobileWrapper
-import nl.rijksoverheid.ctr.shared.ClmobileWrapperImpl
+import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
+import nl.rijksoverheid.ctr.shared.MobileCoreWrapperImpl
 import org.koin.dsl.module
 
 /*
@@ -12,7 +12,7 @@ import org.koin.dsl.module
  *
  */
 val verifierClmobileModule = module {
-    single<ClmobileWrapper> {
-        ClmobileWrapperImpl()
+    single<MobileCoreWrapper> {
+        MobileCoreWrapperImpl(get())
     }
 }
