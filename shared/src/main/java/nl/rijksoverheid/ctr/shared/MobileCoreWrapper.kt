@@ -17,7 +17,6 @@ import nl.rijksoverheid.ctr.shared.ext.successString
 import nl.rijksoverheid.ctr.shared.ext.verify
 import nl.rijksoverheid.ctr.shared.models.DomesticCredential
 import org.json.JSONObject
-import timber.log.Timber
 import java.lang.reflect.Type
 
 interface MobileCoreWrapper {
@@ -79,6 +78,6 @@ class MobileCoreWrapperImpl(private val moshi: Moshi) : MobileCoreWrapper {
     }
 
     override fun readEuropeanCredential(credential: ByteArray): JSONObject {
-        return Mobilecore.readEuropeanCredential(credential).successJsonObject()
+        return Mobilecore.verify(credential).successJsonObject()
     }
 }
