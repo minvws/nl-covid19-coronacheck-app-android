@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.verifier
 
+import mobilecore.Result
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
@@ -8,7 +9,9 @@ import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.ui.new_terms.models.NewTerms
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
+import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.livedata.Event
+import nl.rijksoverheid.ctr.shared.models.DomesticCredential
 import nl.rijksoverheid.ctr.shared.models.TestResultAttributes
 import nl.rijksoverheid.ctr.shared.utils.TestResultUtil
 import nl.rijksoverheid.ctr.verifier.ui.scanner.ScannerViewModel
@@ -18,6 +21,7 @@ import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.TestResultValidUseCase
 import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.VerifyQrUseCase
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.QrCodeUtil
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrViewModel
+import org.json.JSONObject
 import java.time.OffsetDateTime
 
 /*
@@ -28,16 +32,9 @@ import java.time.OffsetDateTime
  *
  */
 
-fun fakeVerifierConfigViewModel() =
-    object: VerifierConfigViewModel() {
-        override fun refresh() {
-
-        }
-    }
-
 fun fakeAppConfigViewModel(appStatus: AppStatus = AppStatus.NoActionRequired) =
     object : AppConfigViewModel() {
-        override fun refresh() {
+        override fun refresh(mobileCoreWrapper: MobileCoreWrapper) {
             appStatusLiveData.value = appStatus
         }
     }
@@ -178,5 +175,44 @@ fun fakeCachedAppConfigUseCase(
     }
 }
 
+fun fakeMobileCoreWrapper(): MobileCoreWrapper {
+    return object : MobileCoreWrapper {
+        override fun loadIssuerPks(bytes: ByteArray) {
+        }
 
+        override fun createCredentials(body: ByteArray): String {
+            return ""
+        }
+
+        override fun readCredential(credentials: ByteArray): ByteArray {
+            return ByteArray(0)
+        }
+
+        override fun createCommitmentMessage(secretKey: ByteArray, nonce: ByteArray): String {
+            return ""
+        }
+
+        override fun disclose(secretKey: ByteArray, credential: ByteArray): String {
+            return ""
+        }
+
+        override fun generateHolderSk(): String {
+            return ""
+        }
+
+        override fun createDomesticCredentials(createCredentials: ByteArray): List<DomesticCredential> {
+            return listOf()
+        }
+
+        override fun readEuropeanCredential(credential: ByteArray): JSONObject {
+            return JSONObject()
+        }
+
+        override fun initializeVerifier(configFilesPath: String) = Unit
+
+        override fun verify(credential: ByteArray): Result {
+            TODO("Not yet implemented")
+        }
+    }
+}
 

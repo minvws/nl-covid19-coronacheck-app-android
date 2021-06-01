@@ -53,7 +53,7 @@ fun verifierModule(path: String) = module {
     factory<TestResultValidUseCase> {
         TestResultValidUseCaseImpl(get(), get(), get(), get())
     }
-    factory<VerifiedQrDataMapper> { VerifiedQrDataMapperImpl(get()) }
+    factory<VerifiedQrDataMapper> { VerifiedQrDataMapperImpl(get(), get()) }
 
     // Utils
     factory<QrCodeUtil> { QrCodeUtilImpl(get()) }

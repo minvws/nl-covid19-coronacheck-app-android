@@ -1,7 +1,7 @@
 package nl.rijksoverheid.ctr.holder
 
 import android.graphics.Bitmap
-import androidx.lifecycle.MutableLiveData
+import mobilecore.Result
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
@@ -23,7 +23,6 @@ import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.ui.new_terms.models.NewTerms
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
-import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.DomesticCredential
 import nl.rijksoverheid.ctr.shared.models.PersonalDetails
 import nl.rijksoverheid.ctr.shared.models.TestResultAttributes
@@ -42,7 +41,7 @@ import java.time.OffsetDateTime
 
 fun fakeAppConfigViewModel(appStatus: AppStatus = AppStatus.NoActionRequired) =
     object : AppConfigViewModel() {
-        override fun refresh() {
+        override fun refresh(mobileCoreWrapper: MobileCoreWrapper) {
             appStatusLiveData.value = appStatus
         }
     }
@@ -413,6 +412,12 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
 
         override fun readEuropeanCredential(credential: ByteArray): JSONObject {
             return JSONObject()
+        }
+
+        override fun initializeVerifier(configFilesPath: String) = Unit
+
+        override fun verify(credential: ByteArray): Result {
+            TODO("Not yet implemented")
         }
     }
 }

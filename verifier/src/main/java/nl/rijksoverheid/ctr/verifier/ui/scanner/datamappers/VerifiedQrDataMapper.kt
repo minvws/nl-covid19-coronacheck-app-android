@@ -1,8 +1,7 @@
 package nl.rijksoverheid.ctr.verifier.ui.scanner.datamappers
 
 import com.squareup.moshi.Moshi
-import mobilecore.Mobilecore
-import nl.rijksoverheid.ctr.shared.ext.toObject
+import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.ext.verify
 import nl.rijksoverheid.ctr.shared.models.TestResultAttributes
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.VerifiedQr
@@ -19,12 +18,12 @@ interface VerifiedQrDataMapper {
 }
 
 //TODO to be fixed in the next ticket
-class VerifiedQrDataMapperImpl(private val moshi: Moshi) : VerifiedQrDataMapper {
+class VerifiedQrDataMapperImpl(private val moshi: Moshi, private val mobileCoreWrapper: MobileCoreWrapper) : VerifiedQrDataMapper {
     override fun transform(
         qrContent: String
     ): VerifiedQr {
         val result =
-            Mobilecore.verify(
+            mobileCoreWrapper.verify(
                 qrContent.toByteArray()
             ).verify()
 
