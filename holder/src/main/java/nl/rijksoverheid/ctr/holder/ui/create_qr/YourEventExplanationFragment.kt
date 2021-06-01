@@ -24,6 +24,5 @@ class YourEventExplanationFragment : Fragment(R.layout.fragment_your_event_expla
         val binding = FragmentYourEventExplanationBinding.bind(view)
 
         binding.description.setHtmlText(args.description)
-        // Todo: Catch navargs to show Holder based personal details
     }
 }
