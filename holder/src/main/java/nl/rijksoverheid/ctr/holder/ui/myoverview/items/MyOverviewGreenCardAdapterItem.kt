@@ -110,7 +110,7 @@ class MyOverviewGreenCardAdapterItem(
                         setSubtitle(
                             textView = viewBinding.proof1Subtitle,
                             originState = originState,
-                            subtitle = origin.eventTime.formatDateTime(context)
+                            subtitle = origin.eventTime.toLocalDate().formatDayMonthYear()
                         )
                     }
                     is OriginType.Recovery -> {
@@ -118,7 +118,7 @@ class MyOverviewGreenCardAdapterItem(
                         setSubtitle(
                             textView = viewBinding.proof1Subtitle,
                             originState = originState,
-                            subtitle = origin.eventTime.toLocalDate().formatDayMonth()
+                            subtitle = origin.eventTime.toLocalDate().formatDayMonthYear()
                         )
                     }
                 }
