@@ -97,4 +97,33 @@ class AppConfigViewModelTest {
 
         Assert.assertEquals(appConfigViewModel.appStatusLiveData.value, AppStatus.InternetRequired)
     }
+
+    @Test
+    fun `refresh with no config files emits internet required status`() = runBlocking {
+        val appConfig = AppConfig(
+            minimumVersion = 0,
+            appDeactivated = false,
+            informationURL = "dummy",
+            configTtlSeconds = 0,
+            maxValidityHours = 0
+        )
+
+        val publicKeys = PublicKeys(
+            clKeys = listOf()
+        )
+
+        coEvery { appConfigUseCase.get() } answers {
+            ConfigResult.Success(
+                appConfig = appConfig,
+                publicKeys = publicKeys
+            )
+        }
+
+        coEvery { appStatusUseCase.get(any(), any()) } answers { AppStatus.NoActionRequired }
+        coEvery { appConfigStorageManager.areConfigFilesPresent() } returns false
+
+        appConfigViewModel.refresh(mobileCoreWrapper)
+
+        Assert.assertEquals(appConfigViewModel.appStatusLiveData.value, AppStatus.InternetRequired)
+    }
 }
