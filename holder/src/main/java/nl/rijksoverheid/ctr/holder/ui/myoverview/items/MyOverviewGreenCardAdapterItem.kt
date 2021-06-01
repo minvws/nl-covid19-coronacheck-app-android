@@ -9,25 +9,30 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview.items
 
 import android.view.View
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.xwray.groupie.viewbinding.BindableItem
-import nl.rijksoverheid.ctr.design.ext.formatDateTime
-import nl.rijksoverheid.ctr.design.ext.formatDayMonth
-import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
+import nl.rijksoverheid.ctr.design.ext.*
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.ItemMyOverviewGreenCardBinding
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.CredentialEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TestResultAdapterItemUtil
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
+import java.time.temporal.ChronoUnit
 
 class MyOverviewGreenCardAdapterItem(
     private val greenCard: GreenCard,
-    private val sortedOrigins: List<OriginEntity>,
-    private val onButtonClick: () -> Unit,
+    private val originStates: List<MyOverviewItem.GreenCardItem.OriginState>,
+    private val credentialState: MyOverviewItem.GreenCardItem.CredentialState,
+    private val onButtonClick: (greenCard: GreenCard, credential: CredentialEntity) -> Unit,
 ) :
     BindableItem<ItemMyOverviewGreenCardBinding>(R.layout.item_my_overview_green_card.toLong()),
     KoinComponent {
@@ -44,7 +49,9 @@ class MyOverviewGreenCardAdapterItem(
         )
 
         viewBinding.button.setOnClickListener {
-            onButtonClick.invoke()
+            if (credentialState is MyOverviewItem.GreenCardItem.CredentialState.HasCredential) {
+                onButtonClick.invoke(greenCard, credentialState.credential)
+            }
         }
     }
 
@@ -56,93 +63,116 @@ class MyOverviewGreenCardAdapterItem(
                     text = context.getString(R.string.validity_type_european_title)
                     setTextColor(ContextCompat.getColor(context, R.color.darkened_blue))
                 }
-                viewBinding.button.setBackgroundColor(
-                    ContextCompat.getColor(
-                        context,
-                        R.color.darkened_blue
-                    )
-                )
+                viewBinding.button.setButtonColor(R.color.darkened_blue)
             }
             is GreenCardType.Domestic -> {
                 viewBinding.typeTitle.apply {
                     text = context.getString(R.string.validity_type_dutch_title)
                     setTextColor(ContextCompat.getColor(context, R.color.primary_blue))
                 }
-                viewBinding.button.setBackgroundColor(
-                    ContextCompat.getColor(
-                        context,
-                        R.color.primary_blue
-                    )
-                )
+                viewBinding.button.setButtonColor(R.color.primary_blue)
             }
         }
+
+        // Check enabling button
+        viewBinding.button.isEnabled = credentialState is MyOverviewItem.GreenCardItem.CredentialState.HasCredential
     }
 
     private fun setContent(viewBinding: ItemMyOverviewGreenCardBinding) {
         val context = viewBinding.root.context
 
-        viewBinding.proof1.visibility = View.GONE
-        viewBinding.proof2.visibility = View.GONE
-        viewBinding.proof3.visibility = View.GONE
+        viewBinding.proof1Title.visibility = View.GONE
+        viewBinding.proof1Subtitle.visibility = View.GONE
+        viewBinding.proof2Title.visibility = View.GONE
+        viewBinding.proof2Subtitle.visibility = View.GONE
+        viewBinding.proof3Title.visibility = View.GONE
+        viewBinding.proof3Subtitle.visibility = View.GONE
+        viewBinding.proof1Subtitle.setTextColor(context.getThemeColor(android.R.attr.textColorPrimary))
+        viewBinding.proof2Subtitle.setTextColor(context.getThemeColor(android.R.attr.textColorPrimary))
+        viewBinding.proof3Subtitle.setTextColor(context.getThemeColor(android.R.attr.textColorPrimary))
 
         when (greenCard.greenCardEntity.type) {
             is GreenCardType.Eu -> {
                 // European card only has one origin
-                val origin = greenCard.origins.first()
+                val originState = originStates.first()
+                val origin = originState.origin
                 when (origin.type) {
                     is OriginType.Test -> {
-                        viewBinding.proof1.text = context.getString(
-                            R.string.qr_card_test_validity_eu,
-                            origin.expirationTime.formatDateTime(context)
+                        viewBinding.proof1Title.setText(R.string.qr_card_test_title_eu)
+                        setSubtitle(
+                            textView = viewBinding.proof1Subtitle,
+                            originState = originState,
+                            subtitle = origin.expirationTime.formatDateTime(context)
                         )
                     }
                     is OriginType.Vaccination -> {
-                        viewBinding.proof1.text = context.getString(
-                            R.string.qr_card_vaccination_validity_eu,
-                            origin.eventTime.toLocalDate().formatDayMonthYear()
+                        viewBinding.proof1Title.setText(R.string.qr_card_vaccination_title_eu)
+                        setSubtitle(
+                            textView = viewBinding.proof1Subtitle,
+                            originState = originState,
+                            subtitle = origin.expirationTime.formatDateTime(context)
                         )
                     }
                     is OriginType.Recovery -> {
-                        viewBinding.proof1.text = context.getString(
-                            R.string.qr_card_recovery_validity_eu,
-                            origin.expirationTime.toLocalDate().formatDayMonth()
+                        viewBinding.proof1Title.setText(R.string.qr_card_recovery_title_eu)
+                        setSubtitle(
+                            textView = viewBinding.proof1Subtitle,
+                            originState = originState,
+                            subtitle = origin.expirationTime.toLocalDate().formatDayMonth()
                         )
                     }
                 }
-                viewBinding.proof1.visibility = View.VISIBLE
+                viewBinding.proof1Title.visibility = View.VISIBLE
+                viewBinding.proof1Subtitle.visibility = View.VISIBLE
             }
             is GreenCardType.Domestic -> {
-                // Domestic cards can have multiple origins
-                sortedOrigins.forEach { origin ->
+                originStates.forEach { originState ->
+                    val origin = originState.origin
                     when (origin.type) {
                         is OriginType.Test -> {
-                            viewBinding.proof1.text = context.getString(
-                                R.string.qr_card_test_validity_domestic,
-                                origin.expirationTime.formatDateTime(context)
+                            viewBinding.proof1Title.setText(R.string.qr_card_test_domestic)
+                            setSubtitle(
+                                textView = viewBinding.proof1Subtitle,
+                                originState = originState,
+                                subtitle = context.getString(
+                                    R.string.qr_card_validity_valid,
+                                    origin.expirationTime.formatDateTime(context)
+                                )
                             )
-                            viewBinding.proof1.visibility = View.VISIBLE
+                            viewBinding.proof1Title.visibility = View.VISIBLE
+                            viewBinding.proof1Subtitle.visibility = View.VISIBLE
                         }
                         is OriginType.Vaccination -> {
-                            viewBinding.proof2.text = context.getString(
-                                R.string.qr_card_vaccination_validity_domestic,
-                                origin.expirationTime.toLocalDate().formatDayMonthYear()
+                            viewBinding.proof2Title.setText(R.string.qr_card_vaccination_title_domestic)
+                            setSubtitle(
+                                textView = viewBinding.proof2Subtitle,
+                                originState = originState,
+                                subtitle = context.getString(
+                                    R.string.qr_card_validity_valid,
+                                    origin.expirationTime.toLocalDate().formatDayMonthYear()
+                                )
                             )
-                            viewBinding.proof2.visibility = View.VISIBLE
+                            viewBinding.proof2Title.visibility = View.VISIBLE
+                            viewBinding.proof2Subtitle.visibility = View.VISIBLE
                         }
                         is OriginType.Recovery -> {
-                            viewBinding.proof3.text = context.getString(
-                                R.string.qr_card_recovery_validity_domestic,
-                                origin.expirationTime.toLocalDate().formatDayMonth()
+                            viewBinding.proof3Title.setText(R.string.qr_card_recovery_title_domestic)
+                            setSubtitle(
+                                textView = viewBinding.proof3Subtitle,
+                                originState = originState,
+                                subtitle = context.getString(
+                                    R.string.qr_card_validity_valid,
+                                    origin.expirationTime.toLocalDate().formatDayMonth()
+                                )
                             )
-                            viewBinding.proof3.visibility = View.VISIBLE
                         }
                     }
                 }
 
-                // If there is only one origin we can show a countdown if required
-                if (sortedOrigins.size == 1) {
+                // If there is only one origin we can show a countdown if the green card almost expires
+                if (originStates.size == 1) {
                     when (val expireCountDownResult =
-                        testResultAdapterItemUtil.getExpireCountdownText(expireDate = sortedOrigins.first().expirationTime)) {
+                        testResultAdapterItemUtil.getExpireCountdownText(expireDate = originStates.first().origin.expirationTime)) {
                         is TestResultAdapterItemUtil.ExpireCountDown.Hide -> {
                             viewBinding.expiresIn.visibility = View.GONE
                         }
@@ -162,6 +192,34 @@ class MyOverviewGreenCardAdapterItem(
                             }
                         }
                     }
+                }
+            }
+        }
+    }
+
+    private fun setSubtitle(
+        textView: TextView,
+        originState: MyOverviewItem.GreenCardItem.OriginState,
+        subtitle: String
+    ) {
+        val context = textView.context
+        when (originState) {
+            is MyOverviewItem.GreenCardItem.OriginState.ValidOrigin -> {
+                textView.text = subtitle
+            }
+            is MyOverviewItem.GreenCardItem.OriginState.InvalidOrigin -> {
+                val origin = originState.origin
+                textView.setTextColor(ContextCompat.getColor(context, R.color.link))
+
+                val hoursBetweenExpiration =
+                    ChronoUnit.HOURS.between(OffsetDateTime.now(), origin.validFrom)
+
+                if (hoursBetweenExpiration >= 24) {
+                    textView.text = context.getString(R.string.qr_card_validity_future_days,
+                        ChronoUnit.DAYS.between(OffsetDateTime.now(), origin.validFrom).coerceAtLeast(1).toString())
+                } else {
+                    textView.text = context.getString(R.string.qr_card_validity_future_hours,
+                        hoursBetweenExpiration.coerceAtLeast(1).toString())
                 }
             }
         }

@@ -25,12 +25,16 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.ResponseError
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CredentialUtil
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CredentialUtilImpl
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginUtil
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginUtilImpl
 import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModel
 import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModelImpl
-import nl.rijksoverheid.ctr.holder.ui.myoverview.LocalTestResultViewModel
-import nl.rijksoverheid.ctr.holder.ui.myoverview.LocalTestResultViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewViewModelImpl
+import nl.rijksoverheid.ctr.holder.ui.myoverview.QrCodeViewModel
+import nl.rijksoverheid.ctr.holder.ui.myoverview.QrCodeViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.LocalTestResultUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.LocalTestResultUseCaseImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
@@ -47,6 +51,7 @@ import org.koin.dsl.module
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.time.Clock
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -108,9 +113,11 @@ fun holderModule(baseUrl: String) = module {
         LocalTestResultUseCaseImpl(get(), get(), get(), get(), get())
     }
     factory<GetMyOverviewItemsUseCase> {
-        GetMyOverviewItemsUseCaseImpl(get())
+        GetMyOverviewItemsUseCaseImpl(get(), get(), get())
     }
     factory<TokenValidatorUtil> { TokenValidatorUtilImpl() }
+    factory<CredentialUtil> { CredentialUtilImpl(Clock.systemUTC()) }
+    factory<OriginUtil> { OriginUtilImpl(Clock.systemUTC()) }
     factory {
         TokenQrUseCase(get())
     }
@@ -119,13 +126,14 @@ fun holderModule(baseUrl: String) = module {
     factory<SaveEventsUseCase> { SaveEventsUseCaseImpl(get()) }
 
     // ViewModels
-    viewModel<LocalTestResultViewModel> { LocalTestResultViewModelImpl(get(), get()) }
+    viewModel<QrCodeViewModel> { QrCodeViewModelImpl(get()) }
     viewModel<CommercialTestCodeViewModel> { CommercialTestCodeViewModelImpl(get(), get()) }
     viewModel { DigiDViewModel(get()) }
     viewModel { TokenQrViewModel(get()) }
     viewModel<DeviceRootedViewModel> { DeviceRootedViewModelImpl(get(), get()) }
     viewModel<YourEventsViewModel> { YourEventsViewModelImpl(get(), get()) }
     viewModel<GetVaccinationViewModel> { GetVaccinationViewModelImpl(get()) }
+    viewModel<ChooseProviderViewModel> { ChooseProviderViewModelImpl(get()) }
     viewModel<MyOverviewViewModel> { MyOverviewViewModelImpl(get(), get()) }
 
     // Repositories

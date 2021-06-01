@@ -50,7 +50,7 @@
     <string name="choose_provider_toolbar">Make QR code</string>
     <string name="choose_provider_title">Where were you tested?</string>
     <string name="choose_provider_description">Does the test prove you don\'t have coronavirus? Then you can make a QR code out of the test result. Indicate where you were tested.</string>
-    <string name="choose_provider_commercial_title">Testen voor Toegang</string>
+    <string name="choose_provider_commercial_title">Andere testlocatie</string>
     <string name="choose_provider_commercial_subtitle">Retrieve test result</string>
     <string name="choose_provider_ggd_title">GGD</string>
     <string name="choose_provider_ggd_subtitle">Log in with your DigiD</string>
@@ -229,4 +229,13 @@
     <string name="qr_card_test_validity_eu">Testdatum:\n%1$s</string>
     <string name="qr_card_expired_domestic">De Nederandse QR-code van je testbewijs is verlopen.</string>
     <string name="qr_card_expired_eu">De Europese QR-code van je testuitslag is verlopen.</string>
+    <string name="qr_card_vaccination_title_domestic">Vaccinatiebewijs:</string>
+    <string name="qr_card_test_domestic">Testbewijs:</string>
+    <string name="qr_card_recovery_title_domestic">Herstelverklaring:</string>
+    <string name="qr_card_vaccination_title_eu">Vaccinatiedatum:</string>
+    <string name="qr_card_test_title_eu">Testdatum:</string>
+    <string name="qr_card_recovery_title_eu">Hersteldatum:</string>
+    <string name="qr_card_validity_valid">geldig tot en met %1$s</string>
+    <string name="qr_card_validity_future_days">wordt automatisch geldig over %1$s dagen</string>
+    <string name="qr_card_validity_future_hours">wordt automatisch geldig in %1$s uur</string>
 </resources>

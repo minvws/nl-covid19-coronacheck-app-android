@@ -14,9 +14,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.TestProviderRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
-import nl.rijksoverheid.ctr.holder.ui.myoverview.LocalTestResultViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewViewModel
-import nl.rijksoverheid.ctr.holder.ui.myoverview.models.LocalTestResult
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.LocalTestResultState
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.LocalTestResultUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
@@ -31,6 +29,7 @@ import nl.rijksoverheid.ctr.shared.models.PersonalDetails
 import nl.rijksoverheid.ctr.shared.models.TestResultAttributes
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import nl.rijksoverheid.ctr.shared.utils.TestResultUtil
+import org.json.JSONObject
 import java.time.OffsetDateTime
 
 /*
@@ -126,6 +125,7 @@ fun fakeQrCodeUseCase(
     return object : QrCodeUseCase {
         override suspend fun qrCode(
             credentials: ByteArray,
+            shouldDisclose: Boolean,
             qrCodeWidth: Int,
             qrCodeHeight: Int
         ): Bitmap {
@@ -149,35 +149,6 @@ fun fakeIntroductionViewModel(
     }
 }
 
-fun fakeLocalTestResultViewModel(
-    localTestResultState: LocalTestResultState = LocalTestResultState.None,
-): LocalTestResultViewModel {
-    return object : LocalTestResultViewModel() {
-        override fun getLocalTestResult() {
-            localTestResultStateLiveData.value = Event(localTestResultState)
-        }
-
-        override fun generateQrCode(size: Int): Boolean {
-            if (localTestResultState is LocalTestResultState.Valid) {
-                qrCodeLiveData.value =
-                    QrCodeData(
-                        localTestResult = LocalTestResult(
-                            credentials = "dummy",
-                            sampleDate = OffsetDateTime.now(),
-                            expireDate = OffsetDateTime.now(),
-                            testType = "dummy",
-                            personalDetails = PersonalDetails("X", "X", "X", "X")
-                        ),
-                        qrCode = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
-                    )
-                return true
-            } else {
-                return false
-            }
-        }
-    }
-}
-
 fun fakeMyOverviewModel(
     items: MyOverviewItems
 ): MyOverviewViewModel {
@@ -188,10 +159,6 @@ fun fakeMyOverviewModel(
 
         override fun refreshOverviewItems(selectType: GreenCardType?) {
 
-        }
-
-        override fun sync() {
-            (myOverviewItemsLiveData as MutableLiveData).value = Event(items)
         }
     }
 }
@@ -333,7 +300,7 @@ fun fakeCoronaCheckRepository(
 
         override suspend fun getCredentials(
             stoken: String,
-            events: String,
+            events: List<String>,
             issueCommitmentMessage: String
         ): RemoteCredentials {
             return remoteCredentials
@@ -432,10 +399,7 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
             return ""
         }
 
-        override fun discloseAllWithTimeQrEncoded(
-            secretKey: ByteArray,
-            credentials: ByteArray
-        ): String {
+        override fun diclose(secretKey: ByteArray, credential: ByteArray): String {
             return ""
         }
 
@@ -443,8 +407,12 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
             return ""
         }
 
-        override fun getDomesticCredentials(createCredentials: ByteArray): List<DomesticCredential> {
+        override fun createDomesticCredentials(createCredentials: ByteArray): List<DomesticCredential> {
             return listOf()
+        }
+
+        override fun readEuropeanCredential(credential: ByteArray): JSONObject {
+            return JSONObject()
         }
     }
 }

@@ -28,8 +28,7 @@ import java.util.concurrent.TimeUnit
  *
  */
 class ScanResultInvalidFragment : Fragment(R.layout.fragment_scan_result_invalid) {
-
-    private val args: ScanResultInvalidFragmentArgs by navArgs()
+    
     private val scannerUtil: ScannerUtil by inject()
 
     private val autoCloseHandler = Handler(Looper.getMainLooper())
@@ -56,29 +55,6 @@ class ScanResultInvalidFragment : Fragment(R.layout.fragment_scan_result_invalid
             scannerUtil.launchScanner(requireActivity())
         }
 
-        val invalidData = args.invalidData
-        MultiTapDetector(binding.image) { amount, _ ->
-            if (amount == 3) {
-                when (invalidData) {
-                    is ScanResultInvalidData.Invalid -> {
-                        presentDebugDialog(invalidData.verifiedQr.getDebugHtmlString())
-                    }
-                    is ScanResultInvalidData.Error -> {
-                        presentDebugDialog(invalidData.error)
-                    }
-                }
-            }
-        }
-    }
-
-    private fun presentDebugDialog(message: String) {
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle("Debug Info")
-            .setMessage(message.parseAsHtml())
-            .setPositiveButton(
-                "Ok"
-            ) { _, _ -> }
-            .show()
     }
 
     override fun onResume() {

@@ -15,12 +15,15 @@ import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMyOverviewBinding
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItems
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewGreenCardAdapterItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewGreenCardExpiredAdapterItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewHeaderAdapterItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewNavigationCardAdapterItem
+import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeFragmentData
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.sharedViewModelWithOwner
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
@@ -76,8 +79,6 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                     ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
             }
         }
-
-        myOverviewViewModel.sync()
 
         myOverviewViewModel.myOverviewItemsLiveData.observe(
             viewLifecycleOwner,
@@ -147,17 +148,24 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                     adapterItems.add(
                         MyOverviewGreenCardAdapterItem(
                             greenCard = myOverviewItem.greenCard,
-                            sortedOrigins = myOverviewItem.sortedOrigins,
-                            onButtonClick = {
-
-                            })
+                            originStates = myOverviewItem.originStates,
+                            credentialState = myOverviewItem.credentialState,
+                            onButtonClick = { greenCard, credential ->
+                                findNavController().navigate(MyOverviewFragmentDirections.actionQrCode(
+                                    QrCodeFragmentData(
+                                        shouldDisclose = greenCard.greenCardEntity.type == GreenCardType.Domestic,
+                                        credential = credential.data,
+                                        credentialExpirationTimeSeconds = credential.expirationTime.toEpochSecond()
+                                    )
+                                ))
+                            }
+                        )
                     )
                 }
                 is MyOverviewItem.GreenCardExpiredItem -> {
                     adapterItems.add(MyOverviewGreenCardExpiredAdapterItem(
                         greenCardType = myOverviewItem.greenCardType,
                         onDismissClick = {
-
                             // Refresh so card is removed
                             myOverviewViewModel.refreshOverviewItems()
                         }

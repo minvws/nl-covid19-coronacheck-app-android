@@ -23,7 +23,7 @@ import java.time.ZoneOffset
  *
  */
 interface HolderDatabaseSyncer {
-    suspend fun sync(syncWithRemote: Boolean = false): DatabaseSyncerResult
+    suspend fun sync(): DatabaseSyncerResult
 }
 
 class HolderDatabaseSyncerImpl(
@@ -34,23 +34,22 @@ class HolderDatabaseSyncerImpl(
     private val secretKeyUseCase: SecretKeyUseCase,
 ) : HolderDatabaseSyncer {
 
-    override suspend fun sync(syncWithRemote: Boolean): DatabaseSyncerResult {
+    override suspend fun sync(): DatabaseSyncerResult {
         return withContext(Dispatchers.IO) {
-            removeExpiredEventGroups()
-
-            if (syncWithRemote) {
-                syncGreenCards()
-            } else {
-                DatabaseSyncerResult.Success
-            }
+            val events = holderDatabase.eventGroupDao().getAll()
+            removeExpiredEventGroups(
+                events = events
+            )
+            syncGreenCards(
+                events = events
+            )
         }
     }
 
     /**
      * Check if we need to remove events from the database
      */
-    private suspend fun removeExpiredEventGroups() {
-        val events = holderDatabase.eventGroupDao().getAll()
+    private suspend fun removeExpiredEventGroups(events: List<EventGroupEntity>) {
         events.forEach {
             val expireDate =
                 if (it.type == EventType.Vaccination) cachedAppConfigUseCase.getCachedAppConfigVaccinationEventValidity()
@@ -63,36 +62,42 @@ class HolderDatabaseSyncerImpl(
     }
 
     @Transaction
-    private suspend fun syncGreenCards(): DatabaseSyncerResult {
-        return try {
-            val remoteCredentials = getRemoteCredentials()
-
-            // Remove all green cards from database
-            removeAllGreenCards()
-
-            // Create domestic green card with origins and credentials
-            remoteCredentials.domesticGreencard?.let { remoteDomesticGreenCard ->
-                createDomesticGreenCards(
-                    remoteDomesticGreenCard = remoteDomesticGreenCard
+    private suspend fun syncGreenCards(events: List<EventGroupEntity>): DatabaseSyncerResult {
+        if (events.isNotEmpty()) {
+            return try {
+                val remoteCredentials = getRemoteCredentials(
+                    events = events
                 )
-            }
 
-            // Create european green card with origins and credentials
-            remoteCredentials.euGreencards?.forEach { remoteEuropeanGreenCard ->
-                createEuropeanGreenCards(
-                    remoteEuropeanGreenCard = remoteEuropeanGreenCard
-                )
-            }
+                // Remove all green cards from database
+                removeAllGreenCards()
 
-            DatabaseSyncerResult.Success
-        } catch (e: HttpException) {
-            DatabaseSyncerResult.ServerError(e.code())
-        } catch (e: IOException) {
-            DatabaseSyncerResult.NetworkError
+                // Create domestic green card with origins and credentials
+                remoteCredentials.domesticGreencard?.let { remoteDomesticGreenCard ->
+                    createDomesticGreenCards(
+                        remoteDomesticGreenCard = remoteDomesticGreenCard
+                    )
+                }
+
+                // Create european green card with origins and credentials
+                remoteCredentials.euGreencards?.forEach { remoteEuropeanGreenCard ->
+                    createEuropeanGreenCards(
+                        remoteEuropeanGreenCard = remoteEuropeanGreenCard
+                    )
+                }
+
+                DatabaseSyncerResult.Success
+            } catch (e: HttpException) {
+                DatabaseSyncerResult.ServerError(e.code())
+            } catch (e: IOException) {
+                DatabaseSyncerResult.NetworkError
+            }
+        } else {
+            return DatabaseSyncerResult.Success
         }
     }
 
-    private suspend fun getRemoteCredentials(): RemoteCredentials {
+    private suspend fun getRemoteCredentials(events: List<EventGroupEntity>): RemoteCredentials {
         val prepareIssue = coronaCheckRepository.getPrepareIssue()
 
         val commitmentMessage = mobileCoreWrapper.createCommitmentMessage(
@@ -102,7 +107,7 @@ class HolderDatabaseSyncerImpl(
 
         return coronaCheckRepository.getCredentials(
             stoken = prepareIssue.stoken,
-            events = "",
+            events = events.map { String(it.jsonData) },
             issueCommitmentMessage = commitmentMessage
         )
     }
@@ -135,13 +140,14 @@ class HolderDatabaseSyncerImpl(
                     greenCardId = localDomesticGreenCardId,
                     type = type,
                     eventTime = remoteOrigin.eventTime,
-                    expirationTime = remoteOrigin.expirationTime
+                    expirationTime = remoteOrigin.expirationTime,
+                    validFrom = remoteOrigin.validFrom
                 )
             )
         }
 
         // Create credentials
-        val domesticCredentials = mobileCoreWrapper.getDomesticCredentials(
+        val domesticCredentials = mobileCoreWrapper.createDomesticCredentials(
             createCredentials = remoteDomesticGreenCard.createCredentialMessages
         )
 
@@ -186,10 +192,32 @@ class HolderDatabaseSyncerImpl(
                     greenCardId = localEuropeanGreenCardId,
                     type = type,
                     eventTime = remoteOrigin.eventTime,
-                    expirationTime = remoteOrigin.expirationTime
+                    expirationTime = remoteOrigin.expirationTime,
+                    validFrom = remoteOrigin.validFrom
                 )
             )
         }
+
+        // Create credential
+        val europeanCredential = mobileCoreWrapper.readEuropeanCredential(
+            credential = remoteEuropeanGreenCard.credential.toByteArray()
+        )
+
+        val entity = CredentialEntity(
+            greenCardId = localEuropeanGreenCardId,
+            data = europeanCredential.toString().replace("\\/", "/").toByteArray(),
+            credentialVersion = europeanCredential.getInt("credentialVersion"),
+            validFrom = OffsetDateTime.ofInstant(
+                Instant.ofEpochSecond(europeanCredential.getLong("issuedAt")),
+                ZoneOffset.UTC
+            ),
+            expirationTime = OffsetDateTime.ofInstant(
+                Instant.ofEpochSecond(europeanCredential.getLong("expirationTime")),
+                ZoneOffset.UTC
+            )
+        )
+
+        holderDatabase.credentialDao().insert(entity)
     }
 }
 

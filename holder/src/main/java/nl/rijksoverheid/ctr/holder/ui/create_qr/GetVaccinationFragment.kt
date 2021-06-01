@@ -8,6 +8,7 @@ import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentGetVaccinationBinding
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigiDFragment
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEvents
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.EventsResult
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.android.ext.android.inject
@@ -40,7 +41,7 @@ class GetVaccinationFragment : DigiDFragment(R.layout.fragment_get_vaccination) 
 
         getVaccinationViewModel.eventsResult.observe(viewLifecycleOwner, EventObserver {
             when (it) {
-                is EventsResult.Success -> {
+                is EventsResult.Success<RemoteEvents> -> {
                     findNavController().navigate(
                         GetVaccinationFragmentDirections.actionYourEvents(
                             type = YourEventsFragmentType.Vaccination(

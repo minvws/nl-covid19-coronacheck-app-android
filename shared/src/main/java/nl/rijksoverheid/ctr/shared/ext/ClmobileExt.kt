@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.shared.ext
 
 import mobilecore.VerifyResult
+import org.json.JSONObject
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -9,7 +10,7 @@ import mobilecore.VerifyResult
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-inline fun mobilecore.Result.successString(): String {
+fun mobilecore.Result.successString(): String {
     if (this.error.isNotEmpty()) {
         throw Exception(this.error)
     } else {
@@ -17,6 +18,13 @@ inline fun mobilecore.Result.successString(): String {
     }
 }
 
+fun mobilecore.Result.successJsonObject(): JSONObject {
+    if (this.error.isNotEmpty()) {
+        throw Exception(this.error)
+    } else {
+        return JSONObject(String(this.value))
+    }
+}
 
 class ClmobileVerifyException(s: String?) : IllegalStateException(s)
 

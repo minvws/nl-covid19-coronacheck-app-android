@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEvents
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsNegativeTests
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SaveEventsUseCase
 import nl.rijksoverheid.ctr.shared.livedata.Event
@@ -24,6 +25,7 @@ abstract class YourEventsViewModel : ViewModel() {
 
     abstract fun saveRemoteTestResult(remoteTestResult: RemoteTestResult, rawResponse: ByteArray)
     abstract fun saveRemoteEvents(remoteEvents: Map<RemoteEvents, ByteArray>)
+    abstract fun saveRemoteNegativeResultEvents(remoteEvents: Map<RemoteEventsNegativeTests, ByteArray>)
 }
 
 class YourEventsViewModelImpl(
@@ -36,9 +38,7 @@ class YourEventsViewModelImpl(
         viewModelScope.launch {
             try {
                 saveEventsUseCase.save(remoteTestResult, rawResponse)
-                holderDatabaseSyncer.sync(
-                    syncWithRemote = true
-                )
+                holderDatabaseSyncer.sync()
                 (savedEvents as MutableLiveData).value = Event(true)
             } finally {
                 loading.value = Event(false)
@@ -51,9 +51,20 @@ class YourEventsViewModelImpl(
         viewModelScope.launch {
             try {
                 saveEventsUseCase.save(remoteEvents)
-                holderDatabaseSyncer.sync(
-                    syncWithRemote = true
-                )
+                holderDatabaseSyncer.sync()
+                (savedEvents as MutableLiveData).value = Event(true)
+            } finally {
+                loading.value = Event(false)
+            }
+        }
+    }
+
+    override fun saveRemoteNegativeResultEvents(remoteEvents: Map<RemoteEventsNegativeTests, ByteArray>) {
+        (loading as MutableLiveData).value = Event(true)
+        viewModelScope.launch {
+            try {
+                saveEventsUseCase.saveRemoteEventsNegativeTests(remoteEvents)
+                holderDatabaseSyncer.sync()
                 (savedEvents as MutableLiveData).value = Event(true)
             } finally {
                 loading.value = Event(false)

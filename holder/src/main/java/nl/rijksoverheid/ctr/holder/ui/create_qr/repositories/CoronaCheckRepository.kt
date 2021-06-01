@@ -28,7 +28,7 @@ interface CoronaCheckRepository {
     suspend fun remoteNonce(): RemoteNonce
     suspend fun getCredentials(
         stoken: String,
-        events: String,
+        events: List<String>,
         issueCommitmentMessage: String
     ): RemoteCredentials
 
@@ -85,13 +85,13 @@ open class CoronaCheckRepositoryImpl(
 
     override suspend fun getCredentials(
         stoken: String,
-        events: String,
+        events: List<String>,
         issueCommitmentMessage: String
     ): RemoteCredentials {
         return api.getCredentials(
             data = GetCredentialsPostData(
                 stoken = stoken,
-                events = listOf(),
+                events = events,
                 issueCommitmentMessage = Base64.encodeToString(
                     issueCommitmentMessage.toByteArray(),
                     Base64.NO_WRAP

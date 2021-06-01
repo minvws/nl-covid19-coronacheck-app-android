@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.repositories
 import nl.rijksoverheid.ctr.api.interceptors.SigningCertificate
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.TestProviderApiClient
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEvents
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsNegativeTests
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteUnomi
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
 
@@ -24,6 +25,12 @@ interface EventProviderRepository {
         token: String,
         signingCertificateBytes: ByteArray
     ): SignedResponseWithModel<RemoteEvents>
+
+    suspend fun negativeTestEvent(
+        url: String,
+        token: String,
+        signingCertificateBytes: ByteArray
+    ): SignedResponseWithModel<RemoteEventsNegativeTests>
 }
 
 class EventProviderRepositoryImpl(
@@ -44,6 +51,18 @@ class EventProviderRepositoryImpl(
         signingCertificateBytes: ByteArray
     ): SignedResponseWithModel<RemoteEvents> {
         return testProviderApiClient.events(
+            url = url,
+            authorization = "Bearer $token",
+            certificate = SigningCertificate(signingCertificateBytes)
+        )
+    }
+
+    override suspend fun negativeTestEvent(
+        url: String,
+        token: String,
+        signingCertificateBytes: ByteArray
+    ): SignedResponseWithModel<RemoteEventsNegativeTests> {
+        return testProviderApiClient.negativeTestEvents(
             url = url,
             authorization = "Bearer $token",
             certificate = SigningCertificate(signingCertificateBytes)

@@ -4,6 +4,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEvents
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsNegativeTests
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult
 import java.time.ZoneOffset
 
@@ -16,6 +17,7 @@ import java.time.ZoneOffset
  */
 interface SaveEventsUseCase {
     suspend fun save(remoteEvents: Map<RemoteEvents, ByteArray>)
+    suspend fun saveRemoteEventsNegativeTests(remoteEventsNegativeTests: Map<RemoteEventsNegativeTests, ByteArray>)
     suspend fun save(remoteTestResult: RemoteTestResult, rawResponse: ByteArray)
 }
 
@@ -53,5 +55,25 @@ class SaveEventsUseCaseImpl(private val holderDatabase: HolderDatabase) : SaveEv
 
         // Save entity in database
         holderDatabase.eventGroupDao().insertAll(listOf(entity))
+    }
+
+    override suspend fun saveRemoteEventsNegativeTests(remoteEventsNegativeTests: Map<RemoteEventsNegativeTests, ByteArray>) {
+        // Map remote events to EventGroupEntity to save in the database
+        val entities = remoteEventsNegativeTests.map {
+            EventGroupEntity(
+                walletId = 1,
+                providerIdentifier = it.key.providerIdentifier,
+                type = EventType.Vaccination,
+                maxIssuedAt = it.key.events.map { event -> event.getDate() }
+                    .maxByOrNull { date -> date.toEpochDay() }
+                    ?.atStartOfDay()?.atOffset(
+                        ZoneOffset.UTC
+                    )!!,
+                jsonData = it.value
+            )
+        }
+
+        // Save entities in database
+        holderDatabase.eventGroupDao().insertAll(entities)
     }
 }

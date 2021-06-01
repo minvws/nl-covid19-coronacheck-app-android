@@ -4,12 +4,15 @@ import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.os.Parcelable
 import android.view.View
 import android.view.WindowManager
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import kotlinx.parcelize.Parcelize
 import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
@@ -18,7 +21,12 @@ import nl.rijksoverheid.ctr.shared.QrCodeConstants
 import nl.rijksoverheid.ctr.shared.ext.sharedViewModelWithOwner
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAccessibilityFocus
 import org.koin.androidx.viewmodel.ViewModelOwner
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.androidx.viewmodel.scope.emptyState
+import timber.log.Timber
+import java.time.Instant
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
 import java.util.concurrent.TimeUnit
 
 
@@ -33,17 +41,15 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
 
     private var _binding: FragmentQrCodeBinding? = null
     private val binding get() = _binding!!
-    private val localTestResultViewModel: LocalTestResultViewModel by sharedViewModelWithOwner(
-        state = emptyState(),
-        owner = {
-            ViewModelOwner.from(
-                findNavController().getViewModelStoreOwner(R.id.nav_graph_overview),
-                this
-            )
-        })
+    private val args: QrCodeFragmentArgs by navArgs()
 
     private val qrCodeHandler = Handler(Looper.getMainLooper())
-    private val qrCodeRunnable = Runnable { generateQrCode() }
+    private val qrCodeRunnable = Runnable {
+        generateQrCode()
+        checkIfCredentialExpired()
+    }
+
+    private val qrCodeViewModel: QrCodeViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,8 +71,8 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
 
         _binding = FragmentQrCodeBinding.bind(view)
 
-        localTestResultViewModel.qrCodeLiveData.observe(viewLifecycleOwner) {
-            binding.image.setImageBitmap(it.qrCode)
+        qrCodeViewModel.qrCodeLiveData.observe(viewLifecycleOwner) {
+            binding.image.setImageBitmap(it)
             presentQrLoading(false)
         }
 
@@ -75,6 +81,13 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
             if (toolbar?.menu?.size() == 0) {
                 toolbar.apply {
                     inflateMenu(R.menu.my_qr_toolbar)
+
+                    setOnMenuItemClickListener {
+                        if (it.itemId == R.id.action_show_qr_explanation) {
+                            findNavController().navigate(QrCodeFragmentDirections.actionShowQrExplanation())
+                        }
+                        false
+                    }
                 }
             }
         }
@@ -90,13 +103,24 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
     }
 
     private fun generateQrCode() {
-        val canGenerateQrCode = localTestResultViewModel.generateQrCode(
-            size = resources.displayMetrics.widthPixels
+        qrCodeViewModel.generateQrCode(
+            size = resources.displayMetrics.widthPixels,
+            credential = args.data.credential,
+            shouldDisclose = args.data.shouldDisclose
         )
-        if (canGenerateQrCode) {
-            val refreshMillis =
-                if (BuildConfig.FLAVOR == "tst") TimeUnit.SECONDS.toMillis(10) else (QrCodeConstants.VALID_FOR_SECONDS / 2) * 1000
-            qrCodeHandler.postDelayed(qrCodeRunnable, refreshMillis)
+        val refreshMillis =
+            if (BuildConfig.FLAVOR == "tst") TimeUnit.SECONDS.toMillis(10) else (QrCodeConstants.VALID_FOR_SECONDS / 2) * 1000
+        qrCodeHandler.postDelayed(qrCodeRunnable, refreshMillis)
+    }
+
+    /**
+     * If the QR is expired we close this fragment
+     * The [MyOverviewFragment] should correctly handle new or expired credentials
+     */
+    private fun checkIfCredentialExpired() {
+        val expirationTime = OffsetDateTime.ofInstant(Instant.ofEpochSecond(args.data.credentialExpirationTimeSeconds), ZoneOffset.UTC)
+        if (OffsetDateTime.now(ZoneOffset.UTC).isAfter(expirationTime)) {
+            findNavController().popBackStack()
         }
     }
 
@@ -104,13 +128,6 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
         super.onResume()
         presentQrLoading(true)
         generateQrCode()
-
-        // If the qr code has expired close this screen
-        val localTestResult = localTestResultViewModel.retrievedLocalTestResult
-        if (localTestResult == null) {
-            // No credentials in cache, go back to overview
-            findNavController().popBackStack()
-        }
     }
 
     override fun onPause() {

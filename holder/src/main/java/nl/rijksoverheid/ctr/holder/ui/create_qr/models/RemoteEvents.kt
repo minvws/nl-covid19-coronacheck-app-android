@@ -69,7 +69,8 @@ data class RemoteEvents(
             if (type == "vaccination") {
                 return vaccination!!.date
             } else {
-                throw IllegalStateException("We do not support any other events than vaccination yet")
+                // TODO Parse dates for other types
+                return LocalDate.now()
             }
         }
     }
