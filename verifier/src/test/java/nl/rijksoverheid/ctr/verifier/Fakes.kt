@@ -97,14 +97,13 @@ fun fakeVerifiedQr(
 ) = VerifiedQr(
     creationDateSeconds = 0,
     testResultAttributes = TestResultAttributes(
-        sampleTime = 0,
-        testType = "dummy",
         birthDay = birthDay,
         birthMonth = birthMonth,
         firstNameInitial = firstNameInitial,
         lastNameInitial = lastNameInitial,
-        isPaperProof = isPaperProof,
-        isSpecimen = isSpecimen
+        isSpecimen = isSpecimen,
+        isNLDCC = "1",
+        credentialVersion = "1",
     )
 )
 
@@ -113,14 +112,13 @@ fun fakeVerifyQrUseCase(
         verifiedQr = VerifiedQr(
             creationDateSeconds = 0,
             testResultAttributes = TestResultAttributes(
-                sampleTime = 0,
-                testType = "dummy",
                 birthDay = "dummy",
                 birthMonth = "dummy",
                 firstNameInitial = "dummy",
                 lastNameInitial = "dummy",
-                isPaperProof = "0",
-                isSpecimen = "0"
+                isSpecimen = "0",
+                isNLDCC = "1",
+                credentialVersion = "1",
             )
         )
     )

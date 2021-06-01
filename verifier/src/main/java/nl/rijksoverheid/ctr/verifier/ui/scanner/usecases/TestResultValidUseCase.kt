@@ -34,34 +34,42 @@ class TestResultValidUseCaseImpl(
             when (val verifyQrResult = verifyQrUseCase.get(qrContent)) {
                 is VerifyQrUseCase.VerifyQrResult.Success -> {
                     val verifiedQr = verifyQrResult.verifiedQr
-                    val validity =
-                        TimeUnit.HOURS.toSeconds(
-                            cachedAppConfigUseCase.getCachedAppConfigMaxValidityHours().toLong()
-                        )
-                    val isValid = testResultUtil.isValid(
-                        sampleDate = OffsetDateTime.ofInstant(
-                            Instant.ofEpochSecond(verifiedQr.testResultAttributes.sampleTime),
-                            ZoneOffset.UTC
-                        ),
-                        validitySeconds = validity,
-                    ) && qrCodeUtil.isValid(
-                        creationDate = OffsetDateTime.ofInstant(
-                            Instant.ofEpochSecond(verifiedQr.creationDateSeconds),
-                            ZoneOffset.UTC
-                        ),
-                        isPaperProof = verifiedQr.testResultAttributes.isPaperProof
-                    )
-                    if (isValid) {
-                        if (verifiedQr.testResultAttributes.isSpecimen == "1") {
-                            VerifiedQrResultState.Demo(verifiedQr)
-                        } else {
-                            VerifiedQrResultState.Valid(verifiedQr)
-                        }
-                    } else {
-                        VerifiedQrResultState.Invalid(verifiedQr)
+//                    val validity =
+//                        TimeUnit.HOURS.toSeconds(
+//                            cachedAppConfigUseCase.getCachedAppConfigMaxValidityHours().toLong()
+//                        )
+//                    val isValid = testResultUtil.isValid(
+//                        sampleDate = OffsetDateTime.ofInstant(
+//                            Instant.ofEpochSecond(verifiedQr.testResultAttributes.sampleTime),
+//                            ZoneOffset.UTC
+//                        ),
+//                        validitySeconds = validity,
+//                    ) && qrCodeUtil.isValid(
+//                        creationDate = OffsetDateTime.ofInstant(
+//                            Instant.ofEpochSecond(verifiedQr.creationDateSeconds),
+//                            ZoneOffset.UTC
+//                        ),
+//                        isPaperProof = verifiedQr.testResultAttributes.isPaperProof
+//                    )
+                    val europeanQrCodeInNL = verifiedQr.testResultAttributes.isNLDCC == "1"
+                    println("GIO check2")
+                    when {
+                        verifiedQr.testResultAttributes.isSpecimen == "1" -> VerifiedQrResultState.Demo(verifiedQr)
+                        europeanQrCodeInNL -> VerifiedQrResultState.Invalid(verifiedQr)
+                        else -> VerifiedQrResultState.Valid(verifiedQr)
                     }
+//                    if () {
+//                        if (verifiedQr.testResultAttributes.isSpecimen == "1") {
+//                            VerifiedQrResultState.Demo(verifiedQr)
+//                        } else {
+//                            VerifiedQrResultState.Valid(verifiedQr)
+//                        }
+//                    } else {
+//                        VerifiedQrResultState.Invalid(verifiedQr)
+//                    }
                 }
                 is VerifyQrUseCase.VerifyQrResult.Failed -> {
+                    println("GIO fail2")
                     VerifiedQrResultState.Error(verifyQrResult.error)
                 }
             }

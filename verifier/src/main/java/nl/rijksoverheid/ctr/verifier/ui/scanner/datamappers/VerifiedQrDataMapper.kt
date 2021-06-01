@@ -2,8 +2,8 @@ package nl.rijksoverheid.ctr.verifier.ui.scanner.datamappers
 
 import com.squareup.moshi.Moshi
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
+import nl.rijksoverheid.ctr.shared.ext.toObject
 import nl.rijksoverheid.ctr.shared.ext.verify
-import nl.rijksoverheid.ctr.shared.models.TestResultAttributes
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.VerifiedQr
 
 /*
@@ -22,37 +22,14 @@ class VerifiedQrDataMapperImpl(private val moshi: Moshi, private val mobileCoreW
     override fun transform(
         qrContent: String
     ): VerifiedQr {
-        val mobileLibraryResult = mobileCoreWrapper.verify(
-            qrContent.toByteArray()
-        )
-
-        val successfulResult = mobileLibraryResult.verify()
-
-        //TODO check the structure and use an appropriate data class
-        println("GIO ${mobileLibraryResult.value.decodeToString()}")
-
-//        mobileLibraryResult.value.decodeToString().toObject(moshi)
 
         val result =
             mobileCoreWrapper.verify(
                 qrContent.toByteArray()
             ).verify()
 
-//        return VerifiedQr(
-//            creationDateSeconds = result.unixTimeSeconds,
-//            testResultAttributes = result.attributesJson.decodeToString().toObject(moshi)
-//        )
         return VerifiedQr(
             creationDateSeconds = 0,
-            testResultAttributes = TestResultAttributes(
-                sampleTime = 0,
-                testType = "dummy",
-                birthDay =  "dummy",
-                birthMonth =  "dummy",
-                firstNameInitial =  "dummy",
-                lastNameInitial =  "dummy",
-                isPaperProof =  "dummy",
-                isSpecimen =  "dummy"
-            ))
+            testResultAttributes = result.decodeToString().toObject(moshi))
     }
 }

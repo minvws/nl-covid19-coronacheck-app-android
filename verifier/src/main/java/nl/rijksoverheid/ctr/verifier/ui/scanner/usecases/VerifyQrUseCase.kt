@@ -30,6 +30,7 @@ class VerifyQrUseCaseImpl(
     override suspend fun get(
         content: String
     ): VerifyQrUseCase.VerifyQrResult = withContext(Dispatchers.IO) {
+        println("GIO check")
         try {
             VerifyQrUseCase.VerifyQrResult.Success(
                 verifiedQrDataMapper.transform(
@@ -37,6 +38,7 @@ class VerifyQrUseCaseImpl(
                 )
             )
         } catch (e: Exception) {
+            println("GIO fail")
             VerifyQrUseCase.VerifyQrResult.Failed(e.toString())
         }
     }

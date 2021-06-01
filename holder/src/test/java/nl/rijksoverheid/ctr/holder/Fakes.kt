@@ -324,14 +324,13 @@ fun fakeTestResultAttributesUseCase(
     return object : TestResultAttributesUseCase {
         override fun get(credentials: String): TestResultAttributes {
             return TestResultAttributes(
-                sampleTime = sampleTimeSeconds,
-                testType = testType,
                 birthDay = birthDay,
                 birthMonth = birthMonth,
                 firstNameInitial = firstNameInitial,
                 lastNameInitial = lastNameInitial,
                 isSpecimen = isSpecimen,
-                isPaperProof = isPaperProof
+                isNLDCC = "1",
+                credentialVersion = "1",
             )
         }
     }

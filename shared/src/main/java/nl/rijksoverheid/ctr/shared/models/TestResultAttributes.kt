@@ -14,12 +14,11 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 @JsonClass(generateAdapter = true)
 data class TestResultAttributes(
-    val sampleTime: Long,
-    val testType: String,
     val birthDay: String,
     val birthMonth: String,
+    val credentialVersion: String,
     val firstNameInitial: String,
     val lastNameInitial: String,
-    val isPaperProof: String,
+    val isNLDCC: String,
     val isSpecimen: String
 ) : Parcelable
