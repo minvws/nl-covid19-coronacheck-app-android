@@ -35,6 +35,8 @@
     <string name="my_overview_test_result_title">My QR code</string>
     <string name="my_overview_test_result_validity">Valid until %1$s</string>
     <string name="accessibility_label_my_overview_test_result_personal_data">Your personal data: %1$s %2$s %3$s %4$s</string>
+    <string name="accessibility_label_selected">Selected</string>
+    <string name="accessibility_label_not_selected">Niet geselecteerd</string>
     <string name="my_overview_test_result_expires_in_hours_minutes">Expires in %1$s hour(s) %2$s min</string>
     <string name="my_overview_test_result_expires_in_minutes">Expires in %1$s min</string>
     <string name="my_overview_test_result_footer">Show QR code at the entrance</string>
