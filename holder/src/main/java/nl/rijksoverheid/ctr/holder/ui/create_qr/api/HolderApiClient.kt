@@ -23,10 +23,12 @@ interface HolderApiClient {
     @SignedRequest
     suspend fun getNonce(): RemoteNonce
 
-    @GET("prepare_issue")
+    @GET("holder/prepare_issue")
+    @SignedRequest
     suspend fun getPrepareIssue(): RemotePrepareIssue
 
-    @POST("get_credentials")
+    @POST("holder/get_credentials")
+    @SignedRequest
     suspend fun getCredentials(
         @Body data: GetCredentialsPostData
     ): RemoteCredentials

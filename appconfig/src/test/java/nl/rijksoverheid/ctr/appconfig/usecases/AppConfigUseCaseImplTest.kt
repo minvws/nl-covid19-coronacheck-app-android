@@ -28,11 +28,18 @@ import java.time.ZoneId
 class AppConfigUseCaseImplTest {
 
     private val appConfig = AppConfig(
-        appDeactivated = true,
         minimumVersion = 0,
+        appDeactivated = false,
         informationURL = "dummy",
         configTtlSeconds = 0,
-        maxValidityHours = 0
+        maxValidityHours = 0,
+        euLaunchDate = "",
+        credentialRenewalDays = 0,
+        domesticCredentialValidity = 0,
+        testEventValidity = 0,
+        recoveryEventValidity = 0,
+        temporarilyDisabled = false,
+        requireUpdateBefore = 0
     )
 
     private val publicKeys = PublicKeys(

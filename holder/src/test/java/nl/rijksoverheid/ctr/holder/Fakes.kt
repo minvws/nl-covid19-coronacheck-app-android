@@ -1,7 +1,6 @@
 package nl.rijksoverheid.ctr.holder
 
 import android.graphics.Bitmap
-import androidx.lifecycle.MutableLiveData
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
@@ -15,15 +14,12 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckReposito
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.TestProviderRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewViewModel
-import nl.rijksoverheid.ctr.holder.ui.myoverview.models.LocalTestResultState
-import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.LocalTestResultUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TokenValidatorUtil
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.ui.new_terms.models.NewTerms
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
-import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.DomesticCredential
 import nl.rijksoverheid.ctr.shared.models.PersonalDetails
 import nl.rijksoverheid.ctr.shared.models.TestResultAttributes
@@ -88,7 +84,14 @@ fun fakeCachedAppConfigUseCase(
         appDeactivated = false,
         informationURL = "dummy",
         configTtlSeconds = 0,
-        maxValidityHours = 0
+        maxValidityHours = 0,
+        euLaunchDate = "",
+        credentialRenewalDays = 0,
+        domesticCredentialValidity = 0,
+        testEventValidity = 0,
+        recoveryEventValidity = 0,
+        temporarilyDisabled = false,
+        requireUpdateBefore = 0
     ),
     publicKeys: PublicKeys = PublicKeys(
         clKeys = listOf()
@@ -176,16 +179,6 @@ fun fakeCommercialTestResultViewModel(): CommercialTestCodeViewModel {
 
         override fun sendVerificationCode() {
 
-        }
-    }
-}
-
-fun fakeLocalTestResultUseCase(
-    state: LocalTestResultState = LocalTestResultState.None
-): LocalTestResultUseCase {
-    return object : LocalTestResultUseCase {
-        override suspend fun get(currentLocalTestResultState: LocalTestResultState?): LocalTestResultState {
-            return state
         }
     }
 }

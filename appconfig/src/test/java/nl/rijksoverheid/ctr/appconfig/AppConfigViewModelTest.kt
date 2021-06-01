@@ -57,7 +57,14 @@ class AppConfigViewModelTest {
             appDeactivated = false,
             informationURL = "dummy",
             configTtlSeconds = 0,
-            maxValidityHours = 0
+            maxValidityHours = 0,
+            euLaunchDate = "",
+            credentialRenewalDays = 0,
+            domesticCredentialValidity = 0,
+            testEventValidity = 0,
+            recoveryEventValidity = 0,
+            temporarilyDisabled = false,
+            requireUpdateBefore = 0
         )
 
         val publicKeys = PublicKeys(

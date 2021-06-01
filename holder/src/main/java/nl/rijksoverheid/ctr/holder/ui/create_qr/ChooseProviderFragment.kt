@@ -63,7 +63,7 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
                 is EventsResult.Success<RemoteEventsNegativeTests> -> {
                     findNavController().navigate(
                         ChooseProviderFragmentDirections.actionYourEvents(
-                            type = YourEventsFragmentType.NegativeTest(
+                            type = YourEventsFragmentType.TestResult3(
                                 remoteEvents = it.signedModels.map { signedModel -> signedModel.model to signedModel.rawResponse }
                                     .toMap()
                             ),
