@@ -3,7 +3,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventType
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEvents
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsVaccinations
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsNegativeTests
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult
 import java.time.ZoneOffset
@@ -16,25 +16,25 @@ import java.time.ZoneOffset
  *
  */
 interface SaveEventsUseCase {
-    suspend fun save(remoteEvents: Map<RemoteEvents, ByteArray>)
+    suspend fun save(remoteEvents: Map<RemoteEventsVaccinations, ByteArray>)
     suspend fun saveRemoteEventsNegativeTests(remoteEventsNegativeTests: Map<RemoteEventsNegativeTests, ByteArray>)
     suspend fun save(remoteTestResult: RemoteTestResult, rawResponse: ByteArray)
 }
 
 class SaveEventsUseCaseImpl(private val holderDatabase: HolderDatabase) : SaveEventsUseCase {
 
-    override suspend fun save(remoteEvents: Map<RemoteEvents, ByteArray>) {
+    override suspend fun save(remoteEvents: Map<RemoteEventsVaccinations, ByteArray>) {
         // Map remote events to EventGroupEntity to save in the database
         val entities = remoteEvents.map {
             EventGroupEntity(
                 walletId = 1,
-                providerIdentifier = it.key.providerIdentifier,
+                providerIdentifier = it.key.providerIdentifier ?: error("providerIdentifier is required"),
                 type = EventType.Vaccination,
-                maxIssuedAt = it.key.events.map { event -> event.getDate() }
-                    .maxByOrNull { date -> date.toEpochDay() }
+                maxIssuedAt = it.key.events?.map { event -> event.vaccination?.date }
+                    ?.maxByOrNull { date -> date?.toEpochDay() ?: error("Date should not be null") }
                     ?.atStartOfDay()?.atOffset(
                         ZoneOffset.UTC
-                    )!!,
+                    ) ?: error("At least one event must be present with a date"),
                 jsonData = it.value
             )
         }
@@ -64,11 +64,9 @@ class SaveEventsUseCaseImpl(private val holderDatabase: HolderDatabase) : SaveEv
                 walletId = 1,
                 providerIdentifier = it.key.providerIdentifier ?: error("providerIdentifier is required"),
                 type = EventType.Vaccination,
-                maxIssuedAt = it.key.events?.map { event -> event.getDate() }
-                    ?.maxByOrNull { date -> date.toEpochDay() }
-                    ?.atStartOfDay()?.atOffset(
-                        ZoneOffset.UTC
-                    ) ?: error("At least one event must be present with a date"),
+                maxIssuedAt = it.key.events?.map { event -> event.negativeTest?.resultDate }
+                    ?.maxByOrNull { date -> date?.toEpochSecond() ?: error("Date should not be null") }
+                    ?: error("At least one event must be present with a date"),
                 jsonData = it.value
             )
         }
