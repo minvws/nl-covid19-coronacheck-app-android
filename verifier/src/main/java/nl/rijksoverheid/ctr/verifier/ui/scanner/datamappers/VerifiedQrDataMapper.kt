@@ -22,6 +22,17 @@ class VerifiedQrDataMapperImpl(private val moshi: Moshi, private val mobileCoreW
     override fun transform(
         qrContent: String
     ): VerifiedQr {
+        val mobileLibraryResult = Mobilecore.verify(
+            qrContent.toByteArray()
+        )
+
+        val successfulResult = mobileLibraryResult.verify()
+
+        //TODO check the structure and use an appropriate data class
+        println("GIO ${mobileLibraryResult.value.decodeToString()}")
+
+//        mobileLibraryResult.value.decodeToString().toObject(moshi)
+
         val result =
             mobileCoreWrapper.verify(
                 qrContent.toByteArray()
