@@ -25,6 +25,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.items.YourEventWidget
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsVaccinations
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsNegativeTests
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.InfoScreenUtil
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import org.koin.android.ext.android.inject
@@ -42,6 +43,7 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
 
     private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
     private val personalDetailsUtil: PersonalDetailsUtil by inject()
+    private val infoScreenUtil: InfoScreenUtil by inject()
 
     private val yourEventsViewModel: YourEventsViewModel by viewModel()
 
@@ -58,14 +60,14 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                     remoteEvents = type.remoteEvents
                 )
             }
-            is YourEventsFragmentType.NegativeTest -> {
-                presentNegativeTestResult(
+            is YourEventsFragmentType.TestResult3 -> {
+                presentTestResult3(
                     binding = binding,
                     remoteEvents = type.remoteEvents,
                 )
             }
-            is YourEventsFragmentType.TestResult -> {
-                presentTestResult(
+            is YourEventsFragmentType.TestResult2 -> {
+                presentTestResult2(
                     binding = binding,
                     remoteTestResult = type.remoteTestResult,
                     remoteTestResultRawResponse = type.rawResponse
@@ -85,7 +87,7 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
         })
     }
 
-    private fun presentNegativeTestResult(
+    private fun presentTestResult3(
         binding: FragmentYourEventsBinding,
         remoteEvents: Map<RemoteEventsNegativeTests, ByteArray>
     ) {
@@ -94,18 +96,11 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
 
         remoteEvents.keys.forEach { negativeTests ->
             val fullName =
-                "${negativeTests.holder?.lastName}, ${negativeTests.holder?.firstName}"
+                "${negativeTests.holder?.infix} ${negativeTests.holder?.lastName}, ${negativeTests.holder?.firstName}"
 
             negativeTests.events?.forEach { event ->
 
-                val testType = event.negativeTest?.type ?: ""
-                val testLocation = event.negativeTest?.facility ?: ""
-
                 val testDate = event.negativeTest?.sampleDate?.let { sampleDate ->
-                    sampleDate.formatDateTime(requireContext())
-                } ?: ""
-
-                val resultDate = event.negativeTest?.resultDate?.let { sampleDate ->
                     sampleDate.formatDateTime(requireContext())
                 } ?: ""
 
@@ -126,7 +121,16 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                     }
                 } ?: ""
 
+                val infoScreen = infoScreenUtil.getForRemoteTestResult3(
+                    event = event,
+                    fullName = fullName,
+                    testDate = testDate,
+                    validUntil = validUntil,
+                    birthDate = birthDate
+                )
+
                 val eventWidget = YourEventWidget(requireContext()).also {
+
                     it.setContent(
                         title = getString(R.string.your_negative_test_results_row_title),
                         subtitle = getString(
@@ -138,21 +142,8 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                         ),
                         infoClickListener = {
                             findNavController().navigate(YourEventsFragmentDirections.actionShowExplanation(
-                                toolbarTitle = getString(R.string.your_test_result_explanation_toolbar_title),
-                                description =
-                                getString(
-                                    R.string.your_test_result_3_0_explanation_description,
-                                    fullName,
-                                    birthDate,
-                                    testType,
-                                    event.negativeTest?.name ?: "",
-                                    testDate,
-                                    resultDate,
-                                    getString(R.string.your_test_result_explanation_negative_test_result),
-                                    "",
-                                    "",
-                                    ""
-                                )
+                                toolbarTitle = infoScreen.title,
+                                description = infoScreen.description
                             ))
                         }
                     )
@@ -188,7 +179,7 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
         }
     }
 
-    private fun presentTestResult(
+    private fun presentTestResult2(
         binding: FragmentYourEventsBinding,
         remoteTestResult: RemoteTestResult,
         remoteTestResultRawResponse: ByteArray,
@@ -210,6 +201,12 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                 ZoneOffset.UTC
             ).formatDateTime(requireContext())
 
+            val infoScreen = infoScreenUtil.getForRemoteTestResult2(
+                result = remoteTestResult.result,
+                personalDetails = personalDetails,
+                testDate = testDate
+            )
+
             val eventWidget = YourEventWidget(requireContext()).also {
                 it.setContent(
                     title = getString(R.string.your_negative_test_results_row_title),
@@ -223,15 +220,8 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                     ),
                     infoClickListener = {
                         findNavController().navigate(YourEventsFragmentDirections.actionShowExplanation(
-                            toolbarTitle = getString(R.string.your_test_result_explanation_toolbar_title),
-                            description =
-                            getString(R.string.your_test_result_explanation_description,
-                                "${personalDetails.firstNameInitial} ${personalDetails.lastNameInitial} ${personalDetails.birthDay} ${personalDetails.birthMonth}",
-                                result.testType,
-                                testDate,
-                                getString(R.string.your_test_result_explanation_negative_test_result),
-                                result.unique
-                            )
+                            toolbarTitle = infoScreen.title,
+                            description = infoScreen.description
                         ))
                     }
                 )
@@ -279,7 +269,7 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
 
         remoteEvents.keys.forEach { vaccinationEvents ->
             val fullName =
-                "${vaccinationEvents.holder?.firstName} ${vaccinationEvents.holder?.infix} ${vaccinationEvents.holder?.lastName}"
+                "${vaccinationEvents.holder?.infix} ${vaccinationEvents.holder?.lastName}, ${vaccinationEvents.holder?.firstName}"
 
             val birthDate = vaccinationEvents.holder?.birthDate?.let { birthDate ->
                 try {
@@ -294,11 +284,11 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                     .sortedBy { it.vaccination?.date?.toEpochDay() }
                     .forEachIndexed { index, event ->
 
-                        val doses = if (event.vaccination?.doseNumber != null && event.vaccination.totalDoses != null) {
-                            getString(R.string.your_vaccination_explanation_doses, event.vaccination?.doseNumber, event.vaccination.totalDoses)
-                        } else {
-                            ""
-                        }
+                        val infoScreen = infoScreenUtil.getForRemoteVaccination(
+                            event = event,
+                            fullName = fullName,
+                            birthDate = birthDate
+                        )
 
                         val eventWidget = YourEventWidget(requireContext()).also {
                             it.setContent(
@@ -313,19 +303,8 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                                 ),
                                 infoClickListener = {
                                     findNavController().navigate(YourEventsFragmentDirections.actionShowExplanation(
-                                        toolbarTitle = getString(R.string.your_vaccination_explanation_toolbar_title),
-                                        description =
-                                        getString(
-                                            R.string.your_vaccination_explanation_description,
-                                            fullName,
-                                            birthDate,
-                                            getString(R.string.your_vaccination_explanation_covid_19),
-                                            event.vaccination?.hpkCode ?: "",
-                                            doses,
-                                            event.vaccination?.date?.formatDayMonthYear() ?: "",
-                                            event.vaccination?.country ?: "",
-                                            event.unique ?: ""
-                                        )
+                                        toolbarTitle = infoScreen.title,
+                                        description = infoScreen.description
                                     ))
                                 }
                             )

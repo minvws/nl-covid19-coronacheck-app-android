@@ -34,8 +34,12 @@ data class AppConfig(
     @Json(name = "maxValidityHours") val maxValidityHours: Int,
     @Json(name = "vaccinationEventValidity") val vaccinationEventValidity: Int = 14600,
     @Json(name = "euLaunchDate") val euLaunchDate: String,
-    @Json(name = "hpkCodes") val hpkCodes: List<Code>,
-    @Json(name = "euBrands") val euBrands: List<Code>
+    @Json(name = "hpkCodes") val hpkCodes: List<Code> = listOf(),
+    @Json(name = "euBrands") val euBrands: List<Code> = listOf(),
+    @Json(name = "euVaccinations") val euVaccinations: List<Code> = listOf(),
+    @Json(name = "euManufacturers") val euManufacturers: List<Code> = listOf(),
+    @Json(name = "euTestTypes") val euTestTypes: List<Code> = listOf(),
+    @Json(name = "euTestManufacturers") val euTestManufacturers: List<Code> = listOf()
 ) : JSON() {
 
     data class Code(val code: String, val name: String): JSON()
