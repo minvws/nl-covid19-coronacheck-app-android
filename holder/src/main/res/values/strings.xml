@@ -36,6 +36,8 @@
     <string name="my_overview_test_result_title">Mijn QR-code</string>
     <string name="my_overview_test_result_validity">Geldig tot %1$s</string>
     <string name="accessibility_label_my_overview_test_result_personal_data">Jouw persoonsgegevens: %1$s %2$s %3$s %4$s</string>
+    <string name="accessibility_label_selected">Geselecteerd</string>
+    <string name="accessibility_label_not_selected">Niet geselecteerd</string>
     <string name="my_overview_test_result_expires_in_hours_minutes">Verloopt in %1$s uur %2$s min</string>
     <string name="my_overview_test_result_expires_in_minutes">Verloopt over %1$s min</string>
     <string name="my_overview_test_result_footer">Laat QR-code zien bij ingang</string>

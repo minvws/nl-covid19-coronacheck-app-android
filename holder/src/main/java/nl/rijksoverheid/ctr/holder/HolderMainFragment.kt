@@ -16,6 +16,7 @@ import androidx.annotation.StringRes
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
@@ -38,6 +39,8 @@ class HolderMainFragment : BaseMainFragment(
 
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
+    private var _navController : NavController? = null
+    private val navController get() = _navController!!
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -46,7 +49,7 @@ class HolderMainFragment : BaseMainFragment(
 
         val navHostFragment =
             childFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        val navController = navHostFragment.navController
+        _navController = navHostFragment.navController
 
         binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         val appBarConfiguration = AppBarConfiguration(
@@ -143,6 +146,12 @@ class HolderMainFragment : BaseMainFragment(
 
     fun getToolbar(): Toolbar {
         return binding.toolbar
+    }
+
+    fun resetMenuItemListener(){
+        binding.toolbar.setOnMenuItemClickListener {
+            NavigationUI.onNavDestinationSelected(it, navController)
+        }
     }
 
     private fun navigationDrawerStyling() {
