@@ -87,6 +87,9 @@ class VerifierMainActivityTest : AutoCloseKoinTest() {
                         appStatus = appStatus
                     )
                 }
+                viewModel {
+                    fakeVerifierConfigViewModel()
+                }
                 factory {
                     fakeCachedAppConfigUseCase()
                 }

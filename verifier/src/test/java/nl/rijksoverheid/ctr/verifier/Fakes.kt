@@ -28,6 +28,13 @@ import java.time.OffsetDateTime
  *
  */
 
+fun fakeVerifierConfigViewModel() =
+    object: VerifierConfigViewModel() {
+        override fun refresh() {
+
+        }
+    }
+
 fun fakeAppConfigViewModel(appStatus: AppStatus = AppStatus.NoActionRequired) =
     object : AppConfigViewModel() {
         override fun refresh() {
