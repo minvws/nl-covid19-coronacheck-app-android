@@ -195,8 +195,6 @@
     <string name="your_retrieved_vaccinations_title">Jouw opgehaalde vaccinaties</string>
     <string name="your_retrieved_vaccinations_description">Je kan een QR-code maken van je vaccinaties. Dat is jouw bewijs.</string>
     <string name="your_vaccination_result_explanation_title">Over jouw vaccinatie</string>
-    <string name="your_vaccination_result_explanation_description"><![CDATA[Voor een Nederlandse QR-code worden er minimale gegevens opgehaald: je vaccinatiedatum en enkele gegevens van jou. Jouw gegevens bestaan uit de eerste letter van je voornaam, de eerste letter van je achternaam, je geboortedag en geboortemaand.<br/><br/>Jouw gegevens: %1$s %2$s %3$s %4$s]]></string>
-    <string name="your_vaccination_result_explanation_subtitle">Gegevens voor Nederland</string>
     <string name="your_retrieved_vaccinations_toolbar">Vaccinatie ophalen</string>
     <string name="retrieved_vaccination_title">Vaccinatie %1$d</string>
     <string name="retrieved_vaccination_subtitle">Vaccinatiedatum: %1$s</string>
@@ -217,7 +215,6 @@
     <string name="dialog_negative_test_result_something_wrong_title">Er klopt iets niet</string>
     <string name="dialog_negative_test_result_something_wrong_description">Kloppen jouw gegevens niet met je identiteitsbewijs? Neem contact op met je testlocatie om je  gegevens te laten aanpassen.</string>
     <string name="your_vaccination_result_toolbar_title">Jouw vaccinaties</string>
-    <string name="your_vaccination_result_explanation_toolbar_title">Over jouw vaccinatie</string>
     <string name="qr_explanation_title_domestic">Over mijn Nederlandse QR-code</string>
     <string name="qr_explanation_description_domestic"><![CDATA[In jouw Nederlandse QR-code staan minimale gegevens. In de QR-code staat dat je een groen scherm krijgt. In de QR-code staat niet of je een testbewijs, herstelverklaring of vaccinatie hebt.<br/><br/>Daarnaast staan er enkele gegevens van jou in de QR-code. Dit is ter controle, om zeker te zijn dat de QR-code bij jou hoort.<br/>De gegevens bestaan uit de eerste letter van je voornaam, de eerste letter van je achternaam, je geboortedag en geboortemaand. Er kunnen gegevens wegvallen om de herleidbaarheid naar jou zo klein mogelijk te maken.<br/><br/>Jouw gegevens: <b>%1$s %2$s %3$s %4$s</b><br/><br/>Gebruik in Nederland altijd de Nederlandse QR-code. De Europese QR-code is niet geldig in Nederland.]]></string>
     <string name="qr_explanation_title_eu">Over mijn Europese QR-code</string>
@@ -238,4 +235,7 @@
     <string name="qr_card_validity_valid">geldig tot en met %1$s</string>
     <string name="qr_card_validity_future_days">wordt automatisch geldig over %1$s dagen</string>
     <string name="qr_card_validity_future_hours">wordt automatisch geldig in %1$s uur</string>
+    <string name="your_test_result_explanation_toolbar_title">Over de testuitslag</string>
+    <string name="your_test_result_explanation_description"><![CDATA[De volgende gegevens zijn opgehaald bij de testlocatie:<br\><br\>Jouw gegevens:  <b>%1$s<b/><br/>Type test: <b>%2$s</b><br/>Testdatum: <b>%3$s</b><br/>Testuitslag: <b>%4$s</b><br/>]]></string>
+    <string name="your_test_result_explanation_negative_test_result">negatief (geen corona)</string>
 </resources>

@@ -200,8 +200,18 @@
     <fragment
         android:id="@+id/nav_your_event_explanation"
         android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.YourEventExplanationFragment"
-        android:label="@string/your_vaccination_result_explanation_toolbar_title"
-        tools:layout="@layout/fragment_your_event_explanation" />
+        android:label="{toolbarTitle}"
+        tools:layout="@layout/fragment_your_event_explanation">
+
+        <argument
+            android:name="toolbarTitle"
+            app:argType="string"/>
+
+        <argument
+            android:name="description"
+            app:argType="string"/>
+
+    </fragment>
 
     <dialog
         android:id="@+id/nav_your_events_test_result_something_wrong"
