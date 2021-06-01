@@ -18,6 +18,7 @@ interface VerifiedQrDataMapper {
     fun transform(qrContent: String): VerifiedQr
 }
 
+//TODO to be fixed in the next ticket
 class VerifiedQrDataMapperImpl(private val moshi: Moshi) : VerifiedQrDataMapper {
     override fun transform(
         qrContent: String
