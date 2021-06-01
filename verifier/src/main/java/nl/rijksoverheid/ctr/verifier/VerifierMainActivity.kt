@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.AppStatusFragment
@@ -13,7 +11,9 @@ import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.introduction.IntroductionFragment
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
+import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.verifier.databinding.ActivityMainBinding
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /*
@@ -27,7 +27,7 @@ class VerifierMainActivity : AppCompatActivity() {
 
     private val introductionViewModel: IntroductionViewModel by viewModel()
     private val appStatusViewModel: AppConfigViewModel by viewModel()
-    private val verifierConfigViewModel: VerifierConfigViewModel by viewModel()
+    private val mobileCoreWrapper: MobileCoreWrapper by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
@@ -66,8 +66,7 @@ class VerifierMainActivity : AppCompatActivity() {
         super.onStart()
         // Only get app config on every app foreground when introduction is finished
         if (introductionViewModel.getIntroductionStatus() is IntroductionStatus.IntroductionFinished) {
-            appStatusViewModel.refresh()
-            verifierConfigViewModel.refresh()
+            appStatusViewModel.refresh(mobileCoreWrapper)
         }
     }
 }

@@ -7,6 +7,8 @@ import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.appconfig.models.ConfigResult
+import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
+import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import java.time.Clock
 import java.time.OffsetDateTime
 
@@ -24,11 +26,16 @@ interface AppStatusUseCase {
 class AppStatusUseCaseImpl(
     private val clock: Clock,
     private val cachedAppConfigUseCase: CachedAppConfigUseCase,
-    private val appConfigPersistenceManager: AppConfigPersistenceManager
+    private val appConfigPersistenceManager: AppConfigPersistenceManager,
+    private val appConfigStorageManager: AppConfigStorageManager,
 ) :
     AppStatusUseCase {
+
     override suspend fun get(config: ConfigResult, currentVersionCode: Int): AppStatus =
         withContext(Dispatchers.IO) {
+            if (!appConfigStorageManager.areConfigFilesPresent()) {
+                return@withContext AppStatus.InternetRequired
+            }
             when (config) {
                 is ConfigResult.Success -> {
                     checkIfActionRequired(
