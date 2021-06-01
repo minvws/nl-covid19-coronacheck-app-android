@@ -135,6 +135,7 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
         qrCodeHandler.removeCallbacks(qrCodeRunnable)
         (parentFragment?.parentFragment as HolderMainFragment).let{
             it.getToolbar().menu.clear()
+            // Reset menu item listener to default
             it.resetMenuItemListener()
         }
     }
