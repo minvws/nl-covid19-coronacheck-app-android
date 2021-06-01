@@ -32,8 +32,6 @@ import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.QrCodeViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.QrCodeViewModelImpl
-import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.LocalTestResultUseCase
-import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.LocalTestResultUseCaseImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCaseImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.*
@@ -105,9 +103,6 @@ fun holderModule(baseUrl: String) = module {
             get(),
             get()
         )
-    }
-    factory<LocalTestResultUseCase> {
-        LocalTestResultUseCaseImpl(get(), get(), get(), get(), get())
     }
     factory<GetMyOverviewItemsUseCase> {
         GetMyOverviewItemsUseCaseImpl(get(), get(), get())
