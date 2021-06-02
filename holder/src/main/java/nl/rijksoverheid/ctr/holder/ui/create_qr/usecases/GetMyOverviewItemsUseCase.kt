@@ -47,7 +47,6 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
         selectedType: GreenCardType
     ): MyOverviewItems {
         return withContext(Dispatchers.IO) {
-            val events = holderDatabase.eventGroupDao().getAll()
             val allGreenCards = holderDatabase.greenCardDao().getAll()
             val greenCardsForSelectedType =
                 allGreenCards.filter { it.greenCardEntity.type == selectedType }
@@ -137,26 +136,33 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
                         if (validOrigins.contains(origin)) OriginState.ValidOrigin(origin) else OriginState.InvalidOrigin(origin)
                     }
 
-                    var isActive = true
-                    if (greenCard.greenCardEntity.type == GreenCardType.Eu) {
-                        val euLaunchDate = cachedAppConfigUseCase.getCachedAppConfig()!!.euLaunchDate
-                        isActive = originUtil.isActiveInEu(euLaunchDate)
+                    val euLaunchDateString = cachedAppConfigUseCase.getCachedAppConfig()!!.euLaunchDate
+                    val euLaunchDate = originUtil.activeAt(euLaunchDateString)
+                    val euCardActiveAt = if (greenCard.greenCardEntity.type == GreenCardType.Eu && OffsetDateTime.now().isBefore(euLaunchDate)) {
+                        euLaunchDate
+                    } else {
+                        originStates.first().origin.validFrom
                     }
+                    val euCardIsInactive = OffsetDateTime.now().isBefore(euCardActiveAt)
 
                     // More our credential to a more readable state
                     val credentialState = when {
                         activeCredential == null -> CredentialState.NoCredential
                         validOrigins.isEmpty() -> CredentialState.NoCredential
-                        !isActive -> CredentialState.NoCredential
+                        euCardIsInactive -> CredentialState.NoCredential
                         else -> CredentialState.HasCredential(activeCredential)
                     }
 
                     // Show green card
                     GreenCardItem(
                         greenCard = greenCard,
-                        originStates = originStates,
+                        originStates = if (euCardIsInactive) {
+                            listOf(OriginState.InvalidOrigin(originStates.first().origin))
+                        } else {
+                            originStates
+                        },
                         credentialState = credentialState,
-                        isActive = isActive,
+                        euActiveAt = euCardActiveAt,
                     )
                 }
             }
@@ -215,7 +221,7 @@ sealed class MyOverviewItem {
         val greenCard: GreenCard,
         val originStates: List<OriginState>,
         val credentialState: CredentialState,
-        val isActive: Boolean = true,
+        val euActiveAt: OffsetDateTime,
     ) : MyOverviewItem() {
 
         sealed class OriginState(open val origin: OriginEntity) {
