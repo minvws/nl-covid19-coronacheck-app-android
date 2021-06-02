@@ -27,7 +27,7 @@ interface InfoScreenUtil {
     fun getForRemoteVaccination(event: RemoteEventsVaccinations.Event,
                                 fullName: String,
                                 birthDate: String): InfoScreen
-    fun getForDomesticQr(): InfoScreen
+    fun getForDomesticQr(personalDetails: PersonalDetails): InfoScreen
     fun getForEuropeanTestQr(): InfoScreen
     fun getForEuropeanVaccinationQr(): InfoScreen
 }
@@ -149,8 +149,15 @@ class InfoScreenUtilImpl(private val application: Application,
 
     }
 
-    override fun getForDomesticQr(): InfoScreen {
-        TODO("Not yet implemented")
+    override fun getForDomesticQr(personalDetails: PersonalDetails): InfoScreen {
+        val title = application.getString(R.string.qr_explanation_title_domestic)
+        val description = application.getString(R.string.qr_explanation_description_domestic,
+            "${personalDetails.firstNameInitial} ${personalDetails.lastNameInitial} ${personalDetails.birthDay} ${personalDetails.birthMonth}")
+
+        return InfoScreen(
+            title = title,
+            description = description
+        )
     }
 
     override fun getForEuropeanTestQr(): InfoScreen {

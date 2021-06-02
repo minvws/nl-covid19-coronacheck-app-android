@@ -85,13 +85,24 @@
         <action
             android:id="@+id/action_show_qr_explanation"
             app:destination="@id/qr_code_explanation_bottomsheet" />
+
     </fragment>
 
     <dialog
         android:id="@+id/qr_code_explanation_bottomsheet"
         android:name="nl.rijksoverheid.ctr.holder.ui.myoverview.QrCodeExplanationDialogFragment"
         android:label="QrCodeExplanationDialog"
-        tools:layout="@layout/dialog_qr_explanation" />
+        tools:layout="@layout/dialog_qr_explanation">
+
+        <argument
+            android:name="title"
+            app:argType="string"/>
+
+        <argument
+            android:name="description"
+            app:argType="string"/>
+
+    </dialog>
 
     <fragment
         android:id="@+id/nav_qr_explanation_root"
