@@ -21,6 +21,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TestResultAdapterItemUtil
+import nl.rijksoverheid.ctr.shared.ext.setVisible
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.time.OffsetDateTime
@@ -30,6 +31,7 @@ class MyOverviewGreenCardAdapterItem(
     private val greenCard: GreenCard,
     private val originStates: List<MyOverviewItem.GreenCardItem.OriginState>,
     private val credentialState: MyOverviewItem.GreenCardItem.CredentialState,
+    private val isActive: Boolean,
     private val onButtonClick: (greenCard: GreenCard, credential: CredentialEntity) -> Unit,
 ) :
     BindableItem<ItemMyOverviewGreenCardBinding>(R.layout.item_my_overview_green_card.toLong()),
@@ -119,7 +121,10 @@ class MyOverviewGreenCardAdapterItem(
                             subtitle = origin.eventTime.toLocalDate().formatDayMonthYear()
                         )
                     }
+
                 }
+
+                viewBinding.launchText.setVisible(!isActive)
                 viewBinding.proof1Title.visibility = View.VISIBLE
                 viewBinding.proof1Subtitle.visibility = View.VISIBLE
             }

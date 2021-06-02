@@ -205,7 +205,7 @@ class HolderDatabaseSyncerImpl(
 
         val entity = CredentialEntity(
             greenCardId = localEuropeanGreenCardId,
-            data = europeanCredential.toString().replace("\\/", "/").toByteArray(),
+            data = remoteEuropeanGreenCard.credential.toByteArray(),
             credentialVersion = europeanCredential.getInt("credentialVersion"),
             validFrom = OffsetDateTime.ofInstant(
                 Instant.ofEpochSecond(europeanCredential.getLong("issuedAt")),

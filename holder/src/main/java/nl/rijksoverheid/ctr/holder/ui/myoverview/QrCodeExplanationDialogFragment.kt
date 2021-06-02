@@ -15,11 +15,13 @@ import android.view.ViewGroup
 import androidx.core.view.AccessibilityDelegateCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
+import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.design.ExpandedBottomSheetDialogFragment
 import nl.rijksoverheid.ctr.holder.databinding.DialogQrExplanationBinding
 
 class QrCodeExplanationDialogFragment : ExpandedBottomSheetDialogFragment() {
 
+    private val args: QrCodeExplanationDialogFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,5 +49,8 @@ class QrCodeExplanationDialogFragment : ExpandedBottomSheetDialogFragment() {
                 super.onInitializeAccessibilityNodeInfo(host, info)
             }
         })
+
+        binding.title.text = args.title
+        binding.description.setHtmlText(args.description)
     }
 }

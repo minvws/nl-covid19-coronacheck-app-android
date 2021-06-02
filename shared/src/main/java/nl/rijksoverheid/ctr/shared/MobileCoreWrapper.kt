@@ -15,14 +15,17 @@ import mobilecore.Mobilecore
 import mobilecore.Result
 import nl.rijksoverheid.ctr.shared.ext.successJsonObject
 import nl.rijksoverheid.ctr.shared.ext.successString
+import nl.rijksoverheid.ctr.shared.ext.toObject
 import nl.rijksoverheid.ctr.shared.ext.verify
 import nl.rijksoverheid.ctr.shared.models.DomesticCredential
+import nl.rijksoverheid.ctr.shared.models.ReadDomesticCredential
 import org.json.JSONObject
 import java.lang.reflect.Type
 
 interface MobileCoreWrapper {
     fun loadIssuerPks(bytes: ByteArray)
     fun createCredentials(body: ByteArray): String
+    fun readDomesticCredential(credential: ByteArray): ReadDomesticCredential
     fun readCredential(credentials: ByteArray): ByteArray
     fun createCommitmentMessage(secretKey: ByteArray, prepareIssueMessage: ByteArray): String
     fun disclose(secretKey: ByteArray, credential: ByteArray): String
@@ -42,6 +45,10 @@ class MobileCoreWrapperImpl(private val moshi: Moshi) : MobileCoreWrapper {
         return Mobilecore.createCredentials(
             body
         ).successString()
+    }
+
+    override fun readDomesticCredential(credential: ByteArray): ReadDomesticCredential {
+        return Mobilecore.readDomesticCredential(credential).successString().toObject(moshi)
     }
 
     override fun readCredential(credentials: ByteArray): ByteArray {

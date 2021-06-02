@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.holder
 
 import android.graphics.Bitmap
+import mobilecore.Mobilecore
 import mobilecore.Result
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
@@ -21,8 +22,11 @@ import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.ui.new_terms.models.NewTerms
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
+import nl.rijksoverheid.ctr.shared.ext.successString
+import nl.rijksoverheid.ctr.shared.ext.toObject
 import nl.rijksoverheid.ctr.shared.models.DomesticCredential
 import nl.rijksoverheid.ctr.shared.models.PersonalDetails
+import nl.rijksoverheid.ctr.shared.models.ReadDomesticCredential
 import nl.rijksoverheid.ctr.shared.models.TestResultAttributes
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import nl.rijksoverheid.ctr.shared.utils.TestResultUtil
@@ -412,6 +416,20 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
 
         override fun verify(credential: ByteArray): Result {
             TODO("Not yet implemented")
+        }
+
+        override fun readDomesticCredential(credential: ByteArray): ReadDomesticCredential {
+            return ReadDomesticCredential(
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+            )
         }
     }
 }

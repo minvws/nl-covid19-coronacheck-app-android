@@ -105,7 +105,7 @@ fun holderModule(baseUrl: String) = module {
         )
     }
     factory<GetMyOverviewItemsUseCase> {
-        GetMyOverviewItemsUseCaseImpl(get(), get(), get())
+        GetMyOverviewItemsUseCaseImpl(get(), get(), get(), get())
     }
     factory<TokenValidatorUtil> { TokenValidatorUtilImpl() }
     factory<CredentialUtil> { CredentialUtilImpl(Clock.systemUTC()) }
@@ -157,6 +157,8 @@ fun holderModule(baseUrl: String) = module {
     factory<CreateCredentialUseCase> {
         CreateCredentialUseCaseImpl(get())
     }
+
+    factory<QrCodeDataUseCase> { QrCodeDataUseCaseImpl(get(), get()) }
 
     factory<TestResultAttributesUseCase> {
         TestResultAttributesUseCaseImpl(get(), get())

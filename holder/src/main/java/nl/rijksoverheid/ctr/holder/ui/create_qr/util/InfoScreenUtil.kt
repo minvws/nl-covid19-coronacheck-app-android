@@ -2,15 +2,15 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
 import android.app.Application
 import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.design.ext.formatDateTime
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsNegativeTests
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsVaccinations
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.TestResult
+import nl.rijksoverheid.ctr.shared.ext.getStringOrNull
 import nl.rijksoverheid.ctr.shared.models.PersonalDetails
-import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
-import java.lang.Exception
+import org.json.JSONObject
 import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
@@ -27,9 +27,9 @@ interface InfoScreenUtil {
     fun getForRemoteVaccination(event: RemoteEventsVaccinations.Event,
                                 fullName: String,
                                 birthDate: String): InfoScreen
-    fun getForDomesticQr(): InfoScreen
-    fun getForEuropeanTestQr(): InfoScreen
-    fun getForEuropeanVaccinationQr(): InfoScreen
+    fun getForDomesticQr(personalDetails: PersonalDetails): InfoScreen
+    fun getForEuropeanTestQr(readEuropeanCredential: JSONObject): InfoScreen
+    fun getForEuropeanVaccinationQr(readEuropeanCredential: JSONObject): InfoScreen
 }
 
 class InfoScreenUtilImpl(private val application: Application,
@@ -38,6 +38,10 @@ class InfoScreenUtilImpl(private val application: Application,
         result: RemoteTestResult.Result,
         personalDetails: PersonalDetails,
         testDate: String): InfoScreen {
+        val testType = cachedAppConfigUseCase.getCachedAppConfig()?.nlTestTypes?.firstOrNull {
+            it.code == result.testType
+        }?.name ?: result.testType
+
         val title = application.getString(R.string.your_test_result_explanation_toolbar_title)
         val description = application.getString(R.string.your_test_result_explanation_description,
             "${personalDetails.firstNameInitial} ${personalDetails.lastNameInitial} ${personalDetails.birthDay} ${personalDetails.birthMonth}",
@@ -149,16 +153,136 @@ class InfoScreenUtilImpl(private val application: Application,
 
     }
 
-    override fun getForDomesticQr(): InfoScreen {
-        TODO("Not yet implemented")
+    override fun getForDomesticQr(personalDetails: PersonalDetails): InfoScreen {
+        val title = application.getString(R.string.qr_explanation_title_domestic)
+        val description = application.getString(R.string.qr_explanation_description_domestic,
+            "${personalDetails.firstNameInitial} ${personalDetails.lastNameInitial} ${personalDetails.birthDay} ${personalDetails.birthMonth}")
+
+        return InfoScreen(
+            title = title,
+            description = description
+        )
     }
 
-    override fun getForEuropeanTestQr(): InfoScreen {
-        TODO("Not yet implemented")
+    override fun getForEuropeanTestQr(readEuropeanCredential: JSONObject): InfoScreen {
+        val dcc = readEuropeanCredential.optJSONObject("dcc")
+        val test = dcc.getJSONArray("t").optJSONObject(0)
+
+        val title = application.getString(R.string.qr_explanation_title_eu)
+
+        val fullName = "${dcc.optJSONObject("nam").getStringOrNull("fn")}, ${dcc.optJSONObject("nam").getStringOrNull("gn")}"
+
+        val birthDate = dcc.getStringOrNull("dob")?.let { birthDate ->
+            try {
+                LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).formatDayMonthYear()
+            } catch (e: Exception) {
+                ""
+            }
+        } ?: ""
+
+        val desease = application.getString(R.string.your_vaccination_explanation_covid_19)
+
+        val testType = cachedAppConfigUseCase.getCachedAppConfig()?.euTestTypes?.firstOrNull {
+            it.code == test.getStringOrNull("tt") }?.name ?: test.getStringOrNull("tt") ?: ""
+
+        val testName = test.getStringOrNull("nm") ?: ""
+
+        val testDate = test.getStringOrNull("sc")?.let {
+            try {
+                OffsetDateTime.parse(it, DateTimeFormatter.ISO_OFFSET_DATE_TIME).formatDateTime(application)
+            } catch (e: Exception) {
+                ""
+            }
+        } ?: ""
+
+        val testResult = application.getString(R.string.your_test_result_explanation_negative_test_result)
+
+        val testLocation = test.getStringOrNull("tc") ?: ""
+
+        val manufacturer = cachedAppConfigUseCase.getCachedAppConfig()?.euManufacturers?.firstOrNull {
+            it.code == test.getStringOrNull("ma") }?.name ?: test.getStringOrNull("ma") ?: ""
+
+        val vaccinationCountry = test.getStringOrNull("co")
+        val uniqueCode = test.getStringOrNull("ci")
+
+        val description = application.getString(
+            R.string.qr_explanation_description_eu_test,
+            fullName,
+            birthDate,
+            desease,
+            testType,
+            testName,
+            testDate,
+            testResult,
+            testLocation,
+            manufacturer,
+            vaccinationCountry,
+            uniqueCode)
+
+        return InfoScreen(
+            title = title,
+            description = description
+        )
     }
 
-    override fun getForEuropeanVaccinationQr(): InfoScreen {
-        TODO("Not yet implemented")
+    override fun getForEuropeanVaccinationQr(readEuropeanCredential: JSONObject): InfoScreen {
+        val dcc = readEuropeanCredential.optJSONObject("dcc")
+        val vaccination = dcc.getJSONArray("v").optJSONObject(0)
+
+        val title = application.getString(R.string.qr_explanation_title_eu)
+
+        val fullName = "${dcc.optJSONObject("nam").getStringOrNull("fn")}, ${dcc.optJSONObject("nam").getStringOrNull("gn")}"
+
+        val birthDate = dcc.getStringOrNull("dob")?.let { birthDate ->
+            try {
+                LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).formatDayMonthYear()
+            } catch (e: Exception) {
+                ""
+            }
+        } ?: ""
+
+        val desease = application.getString(R.string.your_vaccination_explanation_covid_19)
+
+        val vaccin = cachedAppConfigUseCase.getCachedAppConfig()?.euBrands?.firstOrNull {
+            it.code == vaccination.getStringOrNull("mp") }?.name ?: vaccination.getStringOrNull("mp") ?: ""
+
+        val vaccinType = cachedAppConfigUseCase.getCachedAppConfig()?.euVaccinations?.firstOrNull {
+            it.code == vaccination.getStringOrNull("vp") }?.name ?: vaccination.getStringOrNull("vp") ?: ""
+
+        val manufacturer = cachedAppConfigUseCase.getCachedAppConfig()?.euManufacturers?.firstOrNull {
+            it.code == vaccination.getStringOrNull("ma") }?.name ?: vaccination.getStringOrNull("ma") ?: ""
+
+        val doses = if (vaccination.getStringOrNull("dn") != null && vaccination.getStringOrNull("sd") != null) {
+            application.getString(R.string.your_vaccination_explanation_doses, vaccination.getStringOrNull("dn"), vaccination.getStringOrNull("sd"))
+        } else ""
+
+        val vaccinationDate = vaccination.getStringOrNull("dt")?.let { vaccinationDate ->
+            try {
+                LocalDate.parse(vaccinationDate, DateTimeFormatter.ISO_DATE).formatDayMonthYear()
+            } catch (e: Exception) {
+                ""
+            }
+        } ?: ""
+
+        val vaccinationCountry = vaccination.getStringOrNull("co")
+        val uniqueCode = vaccination.getStringOrNull("ci")
+
+        return InfoScreen(
+            title = title,
+            description = application.getString(
+                R.string.qr_explanation_description_eu_vaccination,
+                fullName,
+                birthDate,
+                desease,
+                vaccin,
+                vaccinType,
+                manufacturer,
+                doses,
+                vaccinationDate,
+                vaccinationCountry,
+                uniqueCode
+            )
+        )
     }
 
 }
