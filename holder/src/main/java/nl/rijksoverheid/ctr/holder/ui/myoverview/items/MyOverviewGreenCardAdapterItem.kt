@@ -32,7 +32,7 @@ class MyOverviewGreenCardAdapterItem(
     private val greenCard: GreenCard,
     private val originStates: List<MyOverviewItem.GreenCardItem.OriginState>,
     private val credentialState: MyOverviewItem.GreenCardItem.CredentialState,
-    private val euActiveAt: OffsetDateTime?,
+    private val euActiveAt: OffsetDateTime,
     private val onButtonClick: (greenCard: GreenCard, credential: CredentialEntity) -> Unit,
 ) :
     BindableItem<ItemMyOverviewGreenCardBinding>(R.layout.item_my_overview_green_card.toLong()),
@@ -106,7 +106,6 @@ class MyOverviewGreenCardAdapterItem(
                             textView = viewBinding.proof1Subtitle,
                             originState = originState,
                             subtitle = origin.eventTime.formatDateTime(context),
-                            euLaunchDate = euActiveAt,
                         )
                     }
                     is OriginType.Vaccination -> {
@@ -115,7 +114,6 @@ class MyOverviewGreenCardAdapterItem(
                             textView = viewBinding.proof1Subtitle,
                             originState = originState,
                             subtitle = origin.eventTime.toLocalDate().formatDayMonthYear(),
-                            euLaunchDate = euActiveAt,
                         )
                     }
                     is OriginType.Recovery -> {
@@ -124,7 +122,6 @@ class MyOverviewGreenCardAdapterItem(
                             textView = viewBinding.proof1Subtitle,
                             originState = originState,
                             subtitle = origin.eventTime.toLocalDate().formatDayMonthYear(),
-                            euLaunchDate = euActiveAt,
                         )
                     }
 
@@ -132,12 +129,7 @@ class MyOverviewGreenCardAdapterItem(
                 viewBinding.proof1Title.visibility = View.VISIBLE
                 viewBinding.proof1Subtitle.visibility = View.VISIBLE
 
-                val dateToCompareWith = if (OffsetDateTime.now().isBefore(euActiveAt)) {
-                    euActiveAt!!
-                } else {
-                    origin.validFrom
-                }
-                val dateString = dateToCompareWith.format(DateTimeFormatter.ofPattern("d MMMM"))
+                val dateString = euActiveAt.format(DateTimeFormatter.ofPattern("d MMMM"))
                 viewBinding.launchText.text = context.getString(R.string.qr_card_validity_eu, dateString)
                 viewBinding.launchText.setVisible(true)
             }
@@ -217,7 +209,6 @@ class MyOverviewGreenCardAdapterItem(
         textView: TextView,
         originState: MyOverviewItem.GreenCardItem.OriginState,
         subtitle: String,
-        euLaunchDate: OffsetDateTime? = null,
     ) {
         val context = textView.context
         when (originState) {
@@ -225,21 +216,14 @@ class MyOverviewGreenCardAdapterItem(
                 textView.text = subtitle
             }
             is MyOverviewItem.GreenCardItem.OriginState.InvalidOrigin -> {
-                val origin = originState.origin
                 textView.setTextColor(ContextCompat.getColor(context, R.color.link))
 
-                val dateToCompareWith = if (euLaunchDate != null && euLaunchDate.isAfter(OffsetDateTime.now())) {
-                    euLaunchDate
-                } else {
-                    origin.validFrom
-                }
-
                 val hoursBetweenExpiration =
-                    ChronoUnit.HOURS.between(OffsetDateTime.now(), dateToCompareWith)
+                    ChronoUnit.HOURS.between(OffsetDateTime.now(), euActiveAt)
 
                 if (hoursBetweenExpiration >= 24) {
                     textView.text = context.getString(R.string.qr_card_validity_future_days,
-                        ChronoUnit.DAYS.between(OffsetDateTime.now(), dateToCompareWith).coerceAtLeast(1).toString())
+                        ChronoUnit.DAYS.between(OffsetDateTime.now(), euActiveAt).coerceAtLeast(1).toString())
                 } else {
                     textView.text = context.getString(R.string.qr_card_validity_future_hours,
                         hoursBetweenExpiration.coerceAtLeast(1).toString())

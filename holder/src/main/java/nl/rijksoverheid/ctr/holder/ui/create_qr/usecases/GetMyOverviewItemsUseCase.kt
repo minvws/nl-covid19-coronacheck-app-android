@@ -136,31 +136,33 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
                         if (validOrigins.contains(origin)) OriginState.ValidOrigin(origin) else OriginState.InvalidOrigin(origin)
                     }
 
-                    var cardActiveAt: OffsetDateTime? = null
-                    if (greenCard.greenCardEntity.type == GreenCardType.Eu) {
-                        val euLaunchDate = cachedAppConfigUseCase.getCachedAppConfig()!!.euLaunchDate
-                        cardActiveAt = originUtil.activeAt(euLaunchDate)
+                    val euLaunchDateString = cachedAppConfigUseCase.getCachedAppConfig()!!.euLaunchDate
+                    val euLaunchDate = originUtil.activeAt(euLaunchDateString)
+                    val euCardActiveAt = if (greenCard.greenCardEntity.type == GreenCardType.Eu && OffsetDateTime.now().isBefore(euLaunchDate)) {
+                        euLaunchDate
+                    } else {
+                        originStates.first().origin.validFrom
                     }
-                    val cardInActive = cardActiveAt != null
+                    val euCardIsInactive = OffsetDateTime.now().isBefore(euCardActiveAt)
 
                     // More our credential to a more readable state
                     val credentialState = when {
                         activeCredential == null -> CredentialState.NoCredential
                         validOrigins.isEmpty() -> CredentialState.NoCredential
-                        cardInActive -> CredentialState.NoCredential
+                        euCardIsInactive -> CredentialState.NoCredential
                         else -> CredentialState.HasCredential(activeCredential)
                     }
 
                     // Show green card
                     GreenCardItem(
                         greenCard = greenCard,
-                        originStates = if (cardInActive) {
+                        originStates = if (euCardIsInactive) {
                             listOf(OriginState.InvalidOrigin(originStates.first().origin))
                         } else {
                             originStates
                         },
                         credentialState = credentialState,
-                        activeAt = cardActiveAt,
+                        euActiveAt = euCardActiveAt,
                     )
                 }
             }
@@ -219,7 +221,7 @@ sealed class MyOverviewItem {
         val greenCard: GreenCard,
         val originStates: List<OriginState>,
         val credentialState: CredentialState,
-        val activeAt: OffsetDateTime? = null,
+        val euActiveAt: OffsetDateTime,
     ) : MyOverviewItem() {
 
         sealed class OriginState(open val origin: OriginEntity) {
