@@ -17,9 +17,15 @@ import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentQrCodeBinding
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.InfoScreenUtil
+import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeData
 import nl.rijksoverheid.ctr.shared.QrCodeConstants
 import nl.rijksoverheid.ctr.shared.ext.sharedViewModelWithOwner
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAccessibilityFocus
+import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ViewModelOwner
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.androidx.viewmodel.scope.emptyState
@@ -42,6 +48,8 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
     private var _binding: FragmentQrCodeBinding? = null
     private val binding get() = _binding!!
     private val args: QrCodeFragmentArgs by navArgs()
+    private val personalDetailsUtil: PersonalDetailsUtil by inject()
+    private val infoScreenUtil: InfoScreenUtil by inject()
 
     private val qrCodeHandler = Handler(Looper.getMainLooper())
     private val qrCodeRunnable = Runnable {
@@ -71,25 +79,72 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
 
         _binding = FragmentQrCodeBinding.bind(view)
 
-        qrCodeViewModel.qrCodeLiveData.observe(viewLifecycleOwner) {
-            binding.image.setImageBitmap(it)
+        qrCodeViewModel.qrCodeDataLiveData.observe(viewLifecycleOwner) { qrCodeData ->
+            binding.image.setImageBitmap(qrCodeData.bitmap)
             presentQrLoading(false)
-        }
 
-        // Nullable so tests don't trip over parentFragment
-        (parentFragment?.parentFragment as HolderMainFragment?)?.getToolbar().let { toolbar ->
-            if (toolbar?.menu?.size() == 0) {
-                toolbar.apply {
-                    inflateMenu(R.menu.my_qr_toolbar)
+            // Nullable so tests don't trip over parentFragment
+            (parentFragment?.parentFragment as HolderMainFragment?)?.getToolbar().let { toolbar ->
+                if (toolbar?.menu?.size() == 0) {
+                    toolbar.apply {
+                        inflateMenu(R.menu.my_qr_toolbar)
 
-                    setOnMenuItemClickListener {
-                        if (it.itemId == R.id.action_show_qr_explanation) {
-                            findNavController().navigate(QrCodeFragmentDirections.actionShowQrExplanation())
+                        setOnMenuItemClickListener {
+                            if (it.itemId == R.id.action_show_qr_explanation) {
+
+                                when (qrCodeData) {
+                                    is QrCodeData.Domestic -> {
+                                        val personalDetails = personalDetailsUtil.getPersonalDetails(
+                                            firstNameInitial = qrCodeData.readDomesticCredential.firstNameInitial,
+                                            lastNameInitial = qrCodeData.readDomesticCredential.lastNameInitial,
+                                            birthDay = qrCodeData.readDomesticCredential.birthDay,
+                                            birthMonth = qrCodeData.readDomesticCredential.birthMonth
+                                        )
+
+                                        val infoScreen = infoScreenUtil.getForDomesticQr(
+                                            personalDetails = personalDetails
+                                        )
+
+                                        findNavController().navigate(QrCodeFragmentDirections.actionShowQrExplanation(
+                                            title = infoScreen.title,
+                                            description = infoScreen.description
+                                        ))
+                                    }
+                                    is QrCodeData.European -> {
+                                        when (args.data.originType) {
+                                            is OriginType.Test -> {
+                                                val infoScreen = infoScreenUtil.getForEuropeanTestQr(
+                                                    qrCodeData.readEuropeanCredential
+                                                )
+
+                                                findNavController().navigate(QrCodeFragmentDirections.actionShowQrExplanation(
+                                                    title = infoScreen.title,
+                                                    description = infoScreen.description
+                                                ))
+                                            }
+                                            is OriginType.Vaccination -> {
+                                                val infoScreen = infoScreenUtil.getForEuropeanVaccinationQr(
+                                                    qrCodeData.readEuropeanCredential
+                                                )
+
+                                                findNavController().navigate(QrCodeFragmentDirections.actionShowQrExplanation(
+                                                    title = infoScreen.title,
+                                                    description = infoScreen.description
+                                                ))
+                                            }
+                                            is OriginType.Recovery -> {
+                                                // TODO
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            true
                         }
-                        true
                     }
                 }
             }
+
         }
     }
 
@@ -104,6 +159,7 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
 
     private fun generateQrCode() {
         qrCodeViewModel.generateQrCode(
+            type = args.data.type,
             size = resources.displayMetrics.widthPixels,
             credential = args.data.credential,
             shouldDisclose = args.data.shouldDisclose

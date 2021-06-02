@@ -158,6 +158,8 @@ fun holderModule(baseUrl: String) = module {
         CreateCredentialUseCaseImpl(get())
     }
 
+    factory<QrCodeDataUseCase> { QrCodeDataUseCaseImpl(get(), get()) }
+
     factory<TestResultAttributesUseCase> {
         TestResultAttributesUseCaseImpl(get(), get())
     }

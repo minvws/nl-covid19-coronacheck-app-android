@@ -155,7 +155,9 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                                     QrCodeFragmentData(
                                         shouldDisclose = greenCard.greenCardEntity.type == GreenCardType.Domestic,
                                         credential = credential.data,
-                                        credentialExpirationTimeSeconds = credential.expirationTime.toEpochSecond()
+                                        credentialExpirationTimeSeconds = credential.expirationTime.toEpochSecond(),
+                                        type = greenCard.greenCardEntity.type,
+                                        originType = greenCard.origins.first().type
                                     )
                                 ))
                             }
