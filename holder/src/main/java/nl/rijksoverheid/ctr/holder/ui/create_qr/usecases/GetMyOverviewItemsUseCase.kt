@@ -17,6 +17,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginUtil
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -140,17 +141,15 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
                 // Filter out origins that are expired
                 val filteredOriginStates = originStates.filter { it !is OriginState.Expired }
 
-                var isActive = true
-                if (greenCard.greenCardEntity.type == GreenCardType.Eu) {
-                    val euLaunchDate = cachedAppConfigUseCase.getCachedAppConfig()!!.euLaunchDate
-                    isActive = originUtil.isActiveInEu(euLaunchDate)
-                }
+                val euLaunchDate = OffsetDateTime.parse(cachedAppConfigUseCase.getCachedAppConfig()!!.euLaunchDate, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+
+                val launchDate = if (greenCard.greenCardEntity.type == GreenCardType.Eu) euLaunchDate else OffsetDateTime.now()
 
                 // More our credential to a more readable state
                 val credentialState = when {
                     activeCredential == null -> CredentialState.NoCredential
                     filteredOriginStates.isEmpty() -> CredentialState.NoCredential
-                    !isActive -> CredentialState.NoCredential
+                    launchDate.isAfter(OffsetDateTime.now()) -> CredentialState.NoCredential
                     else -> CredentialState.HasCredential(activeCredential)
                 }
 
@@ -159,7 +158,7 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
                     greenCard = greenCard,
                     originStates = filteredOriginStates,
                     credentialState = credentialState,
-                    isActive = isActive,
+                    launchDate = launchDate,
                 )
             }
         }.toMutableList()
@@ -234,7 +233,7 @@ sealed class MyOverviewItem {
         val greenCard: GreenCard,
         val originStates: List<OriginState>,
         val credentialState: CredentialState,
-        val isActive: Boolean = true,
+        val launchDate: OffsetDateTime
     ) : MyOverviewItem() {
 
         sealed class CredentialState {

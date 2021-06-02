@@ -25,3 +25,4 @@ fun OffsetDateTime.formatDateTime(context: Context): String =
             if (DateFormat.is24HourFormat(context)) "EEEE d MMMM HH:mm" else "EEEE d MMMM hh:mm"
         )
     ).withLocale(locale).withZone(ZoneId.of("CET")).format(this)
+
