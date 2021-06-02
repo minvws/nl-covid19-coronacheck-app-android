@@ -18,6 +18,7 @@ import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentQrCodeBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.InfoScreenUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeData
 import nl.rijksoverheid.ctr.shared.QrCodeConstants
@@ -110,7 +111,31 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
                                         ))
                                     }
                                     is QrCodeData.European -> {
+                                        when (args.data.originType) {
+                                            is OriginType.Test -> {
+                                                val infoScreen = infoScreenUtil.getForEuropeanTestQr(
+                                                    qrCodeData.readEuropeanCredential
+                                                )
 
+                                                findNavController().navigate(QrCodeFragmentDirections.actionShowQrExplanation(
+                                                    title = infoScreen.title,
+                                                    description = infoScreen.description
+                                                ))
+                                            }
+                                            is OriginType.Vaccination -> {
+                                                val infoScreen = infoScreenUtil.getForEuropeanVaccinationQr(
+                                                    qrCodeData.readEuropeanCredential
+                                                )
+
+                                                findNavController().navigate(QrCodeFragmentDirections.actionShowQrExplanation(
+                                                    title = infoScreen.title,
+                                                    description = infoScreen.description
+                                                ))
+                                            }
+                                            is OriginType.Recovery -> {
+                                                // TODO
+                                            }
+                                        }
                                     }
                                 }
                             }
