@@ -14,12 +14,12 @@ import java.time.LocalDate
  */
 @Parcelize
 @JsonClass(generateAdapter = true)
-data class RemoteEvents(
-    val events: List<Event>,
-    val protocolVersion: String,
-    val providerIdentifier: String,
-    val status: Status,
-    val holder: Holder
+data class RemoteEventsVaccinations(
+    val events: List<Event>?,
+    val protocolVersion: String?,
+    val providerIdentifier: String?,
+    val status: Status?,
+    val holder: Holder?
 ) : Parcelable {
 
     enum class Status(val apiStatus: String) {
@@ -46,33 +46,25 @@ data class RemoteEvents(
     @Parcelize
     @JsonClass(generateAdapter = true)
     data class Event(
-        val type: String,
-        val unique: String,
+        val type: String?,
+        val unique: String?,
         val vaccination: Vaccination?
     ) : Parcelable {
 
         @Parcelize
         @JsonClass(generateAdapter = true)
         data class Vaccination(
-            val date: LocalDate,
-            val hpkCode: String,
-            val type: String,
-            val brand: String,
+            val date: LocalDate?,
+            val hpkCode: String?,
+            val type: String?,
+            val brand: String?,
             val completedByMedicalStatement: String?,
             val doseNumber: String?,
             val totalDoses: String?,
-            val country: String,
-            val manufacturer: String
+            val country: String?,
+            val manufacturer: String?
         ) : Parcelable
 
-        fun getDate(): LocalDate {
-            if (type == "vaccination") {
-                return vaccination!!.date
-            } else {
-                // TODO Parse dates for other types
-                return LocalDate.now()
-            }
-        }
     }
 }
 

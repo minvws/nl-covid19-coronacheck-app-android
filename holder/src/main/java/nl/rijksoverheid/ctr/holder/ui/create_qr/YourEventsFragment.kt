@@ -17,20 +17,25 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.design.ext.formatDateTime
+import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentYourEventsBinding
 import nl.rijksoverheid.ctr.holder.ui.create_qr.items.YourEventWidget
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEvents
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsVaccinations
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsNegativeTests
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.InfoScreenUtil
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.lang.Exception
 import java.time.Instant
+import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 
 class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
 
@@ -38,6 +43,7 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
 
     private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
     private val personalDetailsUtil: PersonalDetailsUtil by inject()
+    private val infoScreenUtil: InfoScreenUtil by inject()
 
     private val yourEventsViewModel: YourEventsViewModel by viewModel()
 
@@ -54,14 +60,14 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                     remoteEvents = type.remoteEvents
                 )
             }
-            is YourEventsFragmentType.NegativeTest -> {
-                presentNegativeTestResult(
+            is YourEventsFragmentType.TestResult3 -> {
+                presentTestResult3(
                     binding = binding,
                     remoteEvents = type.remoteEvents,
                 )
             }
-            is YourEventsFragmentType.TestResult -> {
-                presentTestResult(
+            is YourEventsFragmentType.TestResult2 -> {
+                presentTestResult2(
                     binding = binding,
                     remoteTestResult = type.remoteTestResult,
                     remoteTestResultRawResponse = type.rawResponse
@@ -81,45 +87,69 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
         })
     }
 
-    private fun presentNegativeTestResult(
+    private fun presentTestResult3(
         binding: FragmentYourEventsBinding,
         remoteEvents: Map<RemoteEventsNegativeTests, ByteArray>
     ) {
         binding.title.setText(R.string.your_negative_test_results_title)
         binding.description.setHtmlText(getString(R.string.your_negative_test_results_description))
 
-        val lastNegativeTestResult = remoteEvents.keys.map { it.events }.flatten().firstOrNull()
-        val holder = remoteEvents.keys.map { it.holder }.firstOrNull()
+        remoteEvents.keys.forEach { negativeTests ->
+            val fullName =
+                "${negativeTests.holder?.infix} ${negativeTests.holder?.lastName}, ${negativeTests.holder?.firstName}"
 
-        if (holder != null && lastNegativeTestResult != null) {
-            val personalDetails = personalDetailsUtil.getPersonalDetails(
-                firstNameInitial = holder.firstName,
-                lastNameInitial = holder.lastName,
-                birthDay = holder.birthDate,
-                birthMonth = holder.birthDate,
-                includeBirthMonthNumber = false
-            )
+            negativeTests.events?.forEach { event ->
 
-            val eventWidget = YourEventWidget(requireContext()).also {
-                it.setContent(
-                    title = getString(R.string.your_negative_test_results_row_title),
-                    subtitle = getString(
-                        R.string.your_negative_test_results_row_subtitle,
-                        OffsetDateTime.ofInstant(
-                            Instant.ofEpochSecond(lastNegativeTestResult.getOffsetDateTime().toEpochSecond()),
-                            ZoneOffset.UTC
-                        ).formatDateTime(requireContext()),
-                        lastNegativeTestResult.getOffsetDateTime().plusHours(
-                            cachedAppConfigUseCase.getCachedAppConfigMaxValidityHours().toLong()
-                        ).formatDateTime(requireContext()),
-                        "${personalDetails.firstNameInitial} ${personalDetails.lastNameInitial} ${personalDetails.birthDay} ${personalDetails.birthMonth}"
-                    ),
-                    infoClickListener = {
-                        findNavController().navigate(YourEventsFragmentDirections.actionShowExplanation())
+                val testDate = event.negativeTest?.sampleDate?.let { sampleDate ->
+                    sampleDate.formatDateTime(requireContext())
+                } ?: ""
+
+                val validUntil = event.negativeTest?.sampleDate?.let { sampleDate ->
+                    OffsetDateTime.ofInstant(
+                        Instant.ofEpochSecond(sampleDate.toEpochSecond()),
+                        ZoneOffset.UTC
+                    ).plusHours(
+                        cachedAppConfigUseCase.getCachedAppConfigMaxValidityHours().toLong()
+                    ).formatDateTime(requireContext())
+                } ?: ""
+
+                val birthDate = negativeTests.holder?.birthDate?.let { birthDate ->
+                    try {
+                        LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).formatDayMonthYear()
+                    } catch (e: Exception) {
+                        ""
                     }
+                } ?: ""
+
+                val infoScreen = infoScreenUtil.getForRemoteTestResult3(
+                    event = event,
+                    fullName = fullName,
+                    testDate = testDate,
+                    validUntil = validUntil,
+                    birthDate = birthDate
                 )
+
+                val eventWidget = YourEventWidget(requireContext()).also {
+
+                    it.setContent(
+                        title = getString(R.string.your_negative_test_results_row_title),
+                        subtitle = getString(
+                            R.string.your_negative_test_3_0_results_row_subtitle,
+                            testDate,
+                            validUntil,
+                            fullName,
+                            birthDate
+                        ),
+                        infoClickListener = {
+                            findNavController().navigate(YourEventsFragmentDirections.actionShowExplanation(
+                                toolbarTitle = infoScreen.title,
+                                description = infoScreen.description
+                            ))
+                        }
+                    )
+                }
+                binding.eventsGroup.addView(eventWidget)
             }
-            binding.eventsGroup.addView(eventWidget)
 
             // Catch back button to show modal instead
             requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object :
@@ -149,7 +179,7 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
         }
     }
 
-    private fun presentTestResult(
+    private fun presentTestResult2(
         binding: FragmentYourEventsBinding,
         remoteTestResult: RemoteTestResult,
         remoteTestResultRawResponse: ByteArray,
@@ -166,22 +196,33 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                 includeBirthMonthNumber = false
             )
 
+            val testDate = OffsetDateTime.ofInstant(
+                Instant.ofEpochSecond(result.sampleDate.toEpochSecond()),
+                ZoneOffset.UTC
+            ).formatDateTime(requireContext())
+
+            val infoScreen = infoScreenUtil.getForRemoteTestResult2(
+                result = remoteTestResult.result,
+                personalDetails = personalDetails,
+                testDate = testDate
+            )
+
             val eventWidget = YourEventWidget(requireContext()).also {
                 it.setContent(
                     title = getString(R.string.your_negative_test_results_row_title),
                     subtitle = getString(
                         R.string.your_negative_test_results_row_subtitle,
-                        OffsetDateTime.ofInstant(
-                            Instant.ofEpochSecond(result.sampleDate.toEpochSecond()),
-                            ZoneOffset.UTC
-                        ).formatDateTime(requireContext()),
+                        testDate,
                         result.sampleDate.plusHours(
                             cachedAppConfigUseCase.getCachedAppConfigMaxValidityHours().toLong()
                         ).formatDateTime(requireContext()),
                         "${personalDetails.firstNameInitial} ${personalDetails.lastNameInitial} ${personalDetails.birthDay} ${personalDetails.birthMonth}"
                     ),
                     infoClickListener = {
-                        findNavController().navigate(YourEventsFragmentDirections.actionShowExplanation())
+                        findNavController().navigate(YourEventsFragmentDirections.actionShowExplanation(
+                            toolbarTitle = infoScreen.title,
+                            description = infoScreen.description
+                        ))
                     }
                 )
             }
@@ -220,32 +261,58 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
 
     private fun presentVaccinations(
         binding: FragmentYourEventsBinding,
-        remoteEvents: Map<RemoteEvents, ByteArray>
+        remoteEvents: Map<RemoteEventsVaccinations, ByteArray>
     ) {
         binding.title.visibility = View.GONE
         binding.description.text =
             getString(R.string.your_retrieved_vaccinations_description)
 
-        remoteEvents.keys.map { it.events }.flatten()
-            .sortedBy { it.getDate().toEpochDay() }
-            .forEachIndexed { index, event ->
-                val eventWidget = YourEventWidget(requireContext()).also {
-                    it.setContent(
-                        title = resources.getString(
-                            R.string.retrieved_vaccination_title,
-                            index + 1
-                        ),
-                        subtitle = resources.getString(
-                            R.string.retrieved_vaccination_subtitle,
-                            event.getDate()
-                        ),
-                        infoClickListener = {
-                            findNavController().navigate(YourEventsFragmentDirections.actionShowExplanation())
-                        }
-                    )
+        remoteEvents.keys.forEach { vaccinationEvents ->
+            val fullName =
+                "${vaccinationEvents.holder?.infix} ${vaccinationEvents.holder?.lastName}, ${vaccinationEvents.holder?.firstName}"
+
+            val birthDate = vaccinationEvents.holder?.birthDate?.let { birthDate ->
+                try {
+                    LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).formatDayMonthYear()
+                } catch (e: Exception) {
+                    ""
                 }
-                binding.eventsGroup.addView(eventWidget)
+            } ?: ""
+
+            vaccinationEvents.events?.let { events ->
+                events
+                    .sortedBy { it.vaccination?.date?.toEpochDay() }
+                    .forEachIndexed { index, event ->
+
+                        val infoScreen = infoScreenUtil.getForRemoteVaccination(
+                            event = event,
+                            fullName = fullName,
+                            birthDate = birthDate
+                        )
+
+                        val eventWidget = YourEventWidget(requireContext()).also {
+                            it.setContent(
+                                title = resources.getString(
+                                    R.string.retrieved_vaccination_title,
+                                    index + 1
+                                ),
+                                subtitle = resources.getString(
+                                    R.string.your_vaccination_row_subtitle,
+                                    fullName,
+                                    birthDate
+                                ),
+                                infoClickListener = {
+                                    findNavController().navigate(YourEventsFragmentDirections.actionShowExplanation(
+                                        toolbarTitle = infoScreen.title,
+                                        description = infoScreen.description
+                                    ))
+                                }
+                            )
+                        }
+                        binding.eventsGroup.addView(eventWidget)
+                    }
             }
+        }
 
         // Catch back button to show modal instead
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object :

@@ -8,7 +8,8 @@ import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentGetVaccinationBinding
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigiDFragment
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEvents
+import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigidResult
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsVaccinations
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.EventsResult
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.android.ext.android.inject
@@ -41,7 +42,7 @@ class GetVaccinationFragment : DigiDFragment(R.layout.fragment_get_vaccination) 
 
         getVaccinationViewModel.eventsResult.observe(viewLifecycleOwner, EventObserver {
             when (it) {
-                is EventsResult.Success<RemoteEvents> -> {
+                is EventsResult.Success<RemoteEventsVaccinations> -> {
                     findNavController().navigate(
                         GetVaccinationFragmentDirections.actionYourEvents(
                             type = YourEventsFragmentType.Vaccination(
@@ -82,8 +83,24 @@ class GetVaccinationFragment : DigiDFragment(R.layout.fragment_get_vaccination) 
             }
         })
 
-        digidViewModel.accessTokenLiveData.observe(viewLifecycleOwner, EventObserver {
-            getVaccinationViewModel.getEvents(it)
+        digidViewModel.digidResultLiveData.observe(viewLifecycleOwner, EventObserver {
+            when (it) {
+                is DigidResult.Success -> {
+                    getVaccinationViewModel.getEvents(it.jwt)
+                }
+                is DigidResult.Failed -> {
+                    dialogUtil.presentDialog(
+                        context = requireContext(),
+                        title = R.string.dialog_error_title,
+                        message = it.error ?: getString(R.string.dialog_error_message),
+                        positiveButtonText = R.string.dialog_retry,
+                        positiveButtonCallback = {
+                            loginWithDigiD()
+                        },
+                        negativeButtonText = R.string.dialog_close
+                    )
+                }
+            }
         })
 
         binding.button.setOnClickListener {

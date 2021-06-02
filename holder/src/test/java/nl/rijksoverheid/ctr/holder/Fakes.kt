@@ -15,8 +15,6 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckReposito
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.TestProviderRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewViewModel
-import nl.rijksoverheid.ctr.holder.ui.myoverview.models.LocalTestResultState
-import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.LocalTestResultUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TokenValidatorUtil
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
@@ -87,7 +85,14 @@ fun fakeCachedAppConfigUseCase(
         appDeactivated = false,
         informationURL = "dummy",
         configTtlSeconds = 0,
-        maxValidityHours = 0
+        maxValidityHours = 0,
+        euLaunchDate = "",
+        credentialRenewalDays = 0,
+        domesticCredentialValidity = 0,
+        testEventValidity = 0,
+        recoveryEventValidity = 0,
+        temporarilyDisabled = false,
+        requireUpdateBefore = 0
     ),
     publicKeys: PublicKeys = PublicKeys(
         clKeys = listOf()
@@ -175,16 +180,6 @@ fun fakeCommercialTestResultViewModel(): CommercialTestCodeViewModel {
 
         override fun sendVerificationCode() {
 
-        }
-    }
-}
-
-fun fakeLocalTestResultUseCase(
-    state: LocalTestResultState = LocalTestResultState.None
-): LocalTestResultUseCase {
-    return object : LocalTestResultUseCase {
-        override suspend fun get(currentLocalTestResultState: LocalTestResultState?): LocalTestResultState {
-            return state
         }
     }
 }

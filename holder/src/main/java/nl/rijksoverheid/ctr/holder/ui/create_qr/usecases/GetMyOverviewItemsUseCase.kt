@@ -45,6 +45,7 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
         selectedType: GreenCardType
     ): MyOverviewItems {
         return withContext(Dispatchers.IO) {
+            val events = holderDatabase.eventGroupDao().getAll()
             val allGreenCards = holderDatabase.greenCardDao().getAll()
             val greenCardsForSelectedType =
                 allGreenCards.filter { it.greenCardEntity.type == selectedType }

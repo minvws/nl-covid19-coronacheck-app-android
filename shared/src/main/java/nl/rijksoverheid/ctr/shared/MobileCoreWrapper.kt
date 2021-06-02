@@ -48,10 +48,10 @@ class MobileCoreWrapperImpl(private val moshi: Moshi) : MobileCoreWrapper {
         return Mobilecore.readDomesticCredential(credentials).verify()
     }
 
-    override fun createCommitmentMessage(secretKey: ByteArray, nonce: ByteArray): String {
+    override fun createCommitmentMessage(secretKey: ByteArray, prepareIssueMessage: ByteArray): String {
         return Mobilecore.createCommitmentMessage(
             secretKey,
-            nonce
+            prepareIssueMessage
         ).successString()
     }
 

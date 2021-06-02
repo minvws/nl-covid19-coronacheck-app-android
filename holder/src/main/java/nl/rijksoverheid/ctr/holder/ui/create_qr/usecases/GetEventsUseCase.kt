@@ -14,8 +14,8 @@ import java.io.IOException
  *
  */
 interface GetEventsUseCase {
-    suspend fun getVaccinationEvents(digidToken: String): EventsResult<RemoteEvents>
-    suspend fun getNegativeTestEvents(digidToken: String): EventsResult<RemoteEventsNegativeTests>
+    suspend fun getVaccinationEvents(jwt: String): EventsResult<RemoteEventsVaccinations>
+    suspend fun getNegativeTestEvents(jwt: String): EventsResult<RemoteEventsNegativeTests>
 }
 
 class GetEventsUseCaseImpl(
@@ -24,12 +24,12 @@ class GetEventsUseCaseImpl(
     private val eventProviderRepository: EventProviderRepository
 ) : GetEventsUseCase {
 
-    private suspend fun getEventProviderWithEvent(digidToken: String):  Map<RemoteConfigProviders.EventProvider, RemoteAccessTokens.Token> {
+    private suspend fun getEventProviderWithEvent(jwt: String):  Map<RemoteConfigProviders.EventProvider, RemoteAccessTokens.Token> {
         // Fetch event providers
         val eventProviders = configProvidersUseCase.eventProviders()
 
         // Fetch access tokens
-        val accessTokens = coronaCheckRepository.accessTokens(digidToken)
+        val accessTokens = coronaCheckRepository.accessTokens(jwt)
 
         // Map event providers to access tokens
         val eventProvidersWithAccessTokenMap =
@@ -54,10 +54,10 @@ class GetEventsUseCaseImpl(
         }
     }
 
-    override suspend fun getVaccinationEvents(digidToken: String): EventsResult<RemoteEvents>{
+    override suspend fun getVaccinationEvents(jwt: String): EventsResult<RemoteEventsVaccinations>{
         return try {
 
-            val eventProviderWithEvents = getEventProviderWithEvent(digidToken)
+            val eventProviderWithEvents = getEventProviderWithEvent(jwt)
 
             // Get vaccination events from event providers
             val remoteEvents = eventProviderWithEvents.map {
@@ -65,19 +65,15 @@ class GetEventsUseCaseImpl(
                 val accessToken = it.value
 
                 eventProviderRepository
-                    .event(
+                    .vaccinationEvents(
                         url = eventProvider.eventUrl,
                         token = accessToken.event,
                         signingCertificateBytes = eventProvider.cms
                     )
             }
 
-            // For now we only support vaccination events
-            val vaccinationEvents =
-                remoteEvents.filter { remoteEvent -> remoteEvent.model.events.any { event -> event.type == "vaccination" } }
-
             EventsResult.Success(
-                signedModels = vaccinationEvents
+                signedModels = remoteEvents
             )
         } catch (ex: HttpException) {
             return EventsResult.ServerError(ex.code())
@@ -86,10 +82,10 @@ class GetEventsUseCaseImpl(
         }
     }
 
-    override suspend fun getNegativeTestEvents(digidToken: String): EventsResult<RemoteEventsNegativeTests> {
+    override suspend fun getNegativeTestEvents(jwt: String): EventsResult<RemoteEventsNegativeTests> {
         return try {
 
-            val eventProviderWithEvents = getEventProviderWithEvent(digidToken)
+            val eventProviderWithEvents = getEventProviderWithEvent(jwt)
 
             // Get vaccination events from event providers
             val negativeTestEvents = eventProviderWithEvents.map {
