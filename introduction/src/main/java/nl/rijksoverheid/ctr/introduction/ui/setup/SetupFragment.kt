@@ -10,7 +10,9 @@ import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.AppStatusFragment
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.introduction.R
+import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.utils.Accessibility
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /*
@@ -24,6 +26,7 @@ class SetupFragment : Fragment(R.layout.fragment_setup) {
 
     private val args: SetupFragmentArgs by navArgs()
     private val appStatusViewModel: AppConfigViewModel by viewModel()
+    private val mobileCoreWrapper: MobileCoreWrapper by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -39,6 +42,6 @@ class SetupFragment : Fragment(R.layout.fragment_setup) {
             }
         })
 
-        appStatusViewModel.refresh()
+        appStatusViewModel.refresh(mobileCoreWrapper)
     }
 }

@@ -1,3 +1,11 @@
+/*
+ *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+ *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+ *
+ *   SPDX-License-Identifier: EUPL-1.2
+ *
+ */
+
 package nl.rijksoverheid.ctr.verifier.modules
 
 import com.squareup.moshi.Moshi
@@ -21,14 +29,12 @@ import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrViewModelImpl
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
-/*
- *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
- *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+/**
+ * Configure app config dependencies
  *
- *   SPDX-License-Identifier: EUPL-1.2
- *
+ * @param path Path for the public keys api, for example "keys" to fetch the config from <baseurl>/keys/public_keys
  */
-val verifierModule = module {
+fun verifierModule(path: String) = module {
 
     factory<NewTerms?> {
         NewTerms(version = 1, true)
@@ -47,7 +53,7 @@ val verifierModule = module {
     factory<TestResultValidUseCase> {
         TestResultValidUseCaseImpl(get(), get(), get(), get())
     }
-    factory<VerifiedQrDataMapper> { VerifiedQrDataMapperImpl(get()) }
+    factory<VerifiedQrDataMapper> { VerifiedQrDataMapperImpl(get(), get()) }
 
     // Utils
     factory<QrCodeUtil> { QrCodeUtilImpl(get()) }
