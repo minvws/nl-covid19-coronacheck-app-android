@@ -49,17 +49,17 @@ class AuthenticationRepository {
         ).setScope("openid email profile").build()
     }
 
-    suspend fun accessToken(
+    suspend fun jwt(
         authService: AuthorizationService,
         authResponse: AuthorizationResponse
     ): String {
         return suspendCoroutine { continuation ->
             authService.performTokenRequest(authResponse.createTokenExchangeRequest()) { resp, error ->
-                val accessToken = resp?.accessToken
+                val jwt = resp?.idToken
                 when {
-                    accessToken != null -> continuation.resume(accessToken)
+                    jwt != null -> continuation.resume(jwt)
                     error != null -> continuation.resumeWithException(error)
-                    else -> continuation.resumeWithException(Exception("Could not get AccessToken"))
+                    else -> continuation.resumeWithException(Exception("Could not get jwt"))
                 }
             }
         }

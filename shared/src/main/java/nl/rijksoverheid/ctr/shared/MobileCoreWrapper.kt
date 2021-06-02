@@ -24,7 +24,7 @@ interface MobileCoreWrapper {
     fun loadIssuerPks(bytes: ByteArray)
     fun createCredentials(body: ByteArray): String
     fun readCredential(credentials: ByteArray): ByteArray
-    fun createCommitmentMessage(secretKey: ByteArray, nonce: ByteArray): String
+    fun createCommitmentMessage(secretKey: ByteArray, prepareIssueMessage: ByteArray): String
     fun disclose(secretKey: ByteArray, credential: ByteArray): String
     fun generateHolderSk(): String
     fun createDomesticCredentials(createCredentials: ByteArray): List<DomesticCredential>
@@ -48,10 +48,10 @@ class MobileCoreWrapperImpl(private val moshi: Moshi) : MobileCoreWrapper {
         return Mobilecore.readDomesticCredential(credentials).verify()
     }
 
-    override fun createCommitmentMessage(secretKey: ByteArray, nonce: ByteArray): String {
+    override fun createCommitmentMessage(secretKey: ByteArray, prepareIssueMessage: ByteArray): String {
         return Mobilecore.createCommitmentMessage(
             secretKey,
-            nonce
+            prepareIssueMessage
         ).successString()
     }
 

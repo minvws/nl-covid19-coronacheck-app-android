@@ -24,7 +24,7 @@ import nl.rijksoverheid.ctr.shared.livedata.Event
 class DigiDViewModel(private val authenticationRepository: AuthenticationRepository) : ViewModel() {
 
     val loading: LiveData<Event<Boolean>> = MutableLiveData()
-    val accessTokenLiveData = MutableLiveData<Event<String>>()
+    val digidResultLiveData = MutableLiveData<Event<DigidResult>>()
 
     fun login(
         activityResultLauncher: ActivityResultLauncher<Intent>,
@@ -45,18 +45,23 @@ class DigiDViewModel(private val authenticationRepository: AuthenticationReposit
                 val authError = AuthorizationException.fromIntent(intent)
                 when {
                     authError != null -> {
+                        digidResultLiveData.postValue(Event(DigidResult.Failed("$authError.error ${authError.errorDescription}")))
                     }
                     authResponse != null -> {
-                        val accessToken =
-                            authenticationRepository.accessToken(authService, authResponse)
-                        accessTokenLiveData.postValue(Event(accessToken))
+                        try {
+                            val jwt =
+                                authenticationRepository.jwt(authService, authResponse)
+                            digidResultLiveData.postValue(Event(DigidResult.Success(jwt)))
+                        } catch (e: Exception) {
+                            digidResultLiveData.postValue(Event(DigidResult.Failed(e.toString())))
+                        }
                     }
                     else -> {
-
+                        digidResultLiveData.postValue(Event(DigidResult.Failed(null)))
                     }
                 }
             } else {
-
+                digidResultLiveData.postValue(Event(DigidResult.Failed(null)))
             }
         }
     }

@@ -120,7 +120,7 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
                 is TestResult.NegativeTestResult -> {
                     findNavController().navigate(
                         CommercialTestCodeFragmentDirections.actionYourEvents(
-                            type = YourEventsFragmentType.TestResult(
+                            type = YourEventsFragmentType.TestResult2(
                                 remoteTestResult = it.remoteTestResult,
                                 rawResponse = it.signedResponseWithTestResult.rawResponse
                             ),

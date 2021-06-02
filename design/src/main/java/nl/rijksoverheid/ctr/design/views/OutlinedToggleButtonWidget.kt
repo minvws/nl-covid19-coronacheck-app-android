@@ -25,12 +25,17 @@ class OutlinedToggleButtonWidget @JvmOverloads constructor(
 
     private var isToggled: Boolean = false
 
+    init {
+        contentDescription = "$text - ${context.getString(R.string.accessibility_label_not_selected)}"
+    }
+
     fun setToggled(isToggled: Boolean) {
         this.isToggled = isToggled
         if (isToggled) {
             backgroundTintList = context.getThemeColor(R.attr.colorSurface)
             setStrokeColorResource(R.color.primary_blue)
             ViewCompat.setElevation(this, 2f)
+            contentDescription = "$text - ${context.getString(R.string.accessibility_label_selected)}"
         } else {
             backgroundTintList = ColorStateList.valueOf(
                 ContextCompat.getColor(
@@ -40,6 +45,7 @@ class OutlinedToggleButtonWidget @JvmOverloads constructor(
             )
             setStrokeColorResource(android.R.color.transparent)
             ViewCompat.setElevation(this, 0f)
+            contentDescription = "$text - ${context.getString(R.string.accessibility_label_not_selected)}"
         }
     }
 

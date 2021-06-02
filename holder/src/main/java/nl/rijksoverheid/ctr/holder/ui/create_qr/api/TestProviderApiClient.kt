@@ -35,12 +35,13 @@ interface TestProviderApiClient {
 
     @POST
     @SignedRequest
-    suspend fun events(
+    suspend fun vaccinationEvents(
         @Url url: String,
         @Header("Authorization") authorization: String,
         @Header("CoronaCheck-Protocol-Version") protocolVersion: String = "3.0",
         @Tag certificate: SigningCertificate,
-    ): SignedResponseWithModel<RemoteEvents>
+        @Body params: Map<String, String> = mapOf("filter" to "vaccination"),
+    ): SignedResponseWithModel<RemoteEventsVaccinations>
 
     @POST
     @SignedRequest

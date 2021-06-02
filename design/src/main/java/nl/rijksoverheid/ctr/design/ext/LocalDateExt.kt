@@ -20,7 +20,7 @@ fun LocalDate.formatDayMonthYear(): String =
     DateTimeFormatter.ofPattern(
         DateFormat.getBestDateTimePattern(
             locale,
-            "d MMMM YYYY"
+            "d MMMM yyyy"
         )
     ).withLocale(locale).withZone(ZoneId.of("CET")).format(this)
 

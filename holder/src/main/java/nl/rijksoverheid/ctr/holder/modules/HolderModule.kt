@@ -25,18 +25,13 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.ResponseError
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CredentialUtil
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CredentialUtilImpl
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginUtil
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginUtilImpl
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
 import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModel
 import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.QrCodeViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.QrCodeViewModelImpl
-import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.LocalTestResultUseCase
-import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.LocalTestResultUseCaseImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCaseImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.*
@@ -109,9 +104,6 @@ fun holderModule(baseUrl: String) = module {
             get()
         )
     }
-    factory<LocalTestResultUseCase> {
-        LocalTestResultUseCaseImpl(get(), get(), get(), get(), get())
-    }
     factory<GetMyOverviewItemsUseCase> {
         GetMyOverviewItemsUseCaseImpl(get(), get(), get())
     }
@@ -159,6 +151,7 @@ fun holderModule(baseUrl: String) = module {
     // Utils
     factory<QrCodeUtil> { QrCodeUtilImpl() }
     factory<TestResultAdapterItemUtil> { TestResultAdapterItemUtilImpl(get()) }
+    factory<InfoScreenUtil> { InfoScreenUtilImpl(get(), get()) }
 
     // Usecases
     factory<CreateCredentialUseCase> {

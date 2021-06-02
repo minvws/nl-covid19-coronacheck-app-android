@@ -102,7 +102,7 @@ class HolderDatabaseSyncerImpl(
 
         val commitmentMessage = mobileCoreWrapper.createCommitmentMessage(
             secretKey = secretKeyUseCase.json().toByteArray(),
-            nonce = prepareIssue.prepareIssueMessage
+            prepareIssueMessage = prepareIssue.prepareIssueMessage
         )
 
         return coronaCheckRepository.getCredentials(
