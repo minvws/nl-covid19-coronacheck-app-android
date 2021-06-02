@@ -2,7 +2,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
-import org.junit.Assert.assertEquals
+import org.junit.Assert.*
 import org.junit.Test
 import java.time.*
 
@@ -36,5 +36,25 @@ class OriginUtilImplTest {
         )
 
         assertEquals(listOf(originEntity1), validOrigins)
+    }
+
+    @Test
+    fun `given a future launch date isActiveInEu returns false`() {
+        val clockFromThePast = Clock.fixed(Instant.ofEpochSecond(50), ZoneId.of("UTC"))
+        val originUtil = OriginUtilImpl(clockFromThePast)
+
+        val isActive = originUtil.isActiveInEu("2021-07-01")
+
+        assertFalse(isActive)
+    }
+
+    @Test
+    fun `given a past launch date isActiveInEu returns true`() {
+        val clockFromTheFuture = Clock.fixed(Instant.ofEpochSecond(53 * 12 * 30 * 24 * 60 * 60), ZoneId.of("UTC"))
+        val originUtil = OriginUtilImpl(clockFromTheFuture)
+
+        val isActive = originUtil.isActiveInEu("2021-07-01")
+
+        assertTrue(isActive)
     }
 }
