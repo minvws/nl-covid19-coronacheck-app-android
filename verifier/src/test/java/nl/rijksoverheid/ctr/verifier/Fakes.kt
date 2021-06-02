@@ -12,6 +12,7 @@ import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.DomesticCredential
+import nl.rijksoverheid.ctr.shared.models.ReadDomesticCredential
 import nl.rijksoverheid.ctr.shared.models.TestResultAttributes
 import nl.rijksoverheid.ctr.shared.utils.TestResultUtil
 import nl.rijksoverheid.ctr.verifier.ui.scanner.ScannerViewModel
@@ -220,6 +221,19 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
         override fun verify(credential: ByteArray): Result {
             TODO("Not yet implemented")
         }
+
+        override fun readDomesticCredential(credential: ByteArray): ReadDomesticCredential {
+            return ReadDomesticCredential(
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+            )
     }
 }
 
