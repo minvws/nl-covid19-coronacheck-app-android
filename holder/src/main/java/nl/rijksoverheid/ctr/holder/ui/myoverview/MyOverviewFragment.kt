@@ -19,10 +19,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItems
-import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewGreenCardAdapterItem
-import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewGreenCardExpiredAdapterItem
-import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewHeaderAdapterItem
-import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewNavigationCardAdapterItem
+import nl.rijksoverheid.ctr.holder.ui.myoverview.items.*
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeFragmentData
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.sharedViewModelWithOwner
@@ -171,6 +168,15 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                         onDismissClick = {
                             // Refresh so card is removed
                             myOverviewViewModel.refreshOverviewItems()
+                        }
+                    ))
+                }
+                is MyOverviewItem.OriginInfoItem -> {
+                    adapterItems.add(MyOverviewOriginInfoAdapterItem(
+                        greenCardType = myOverviewItem.greenCardType,
+                        originType = myOverviewItem.originType,
+                        onInfoClick = {
+
                         }
                     ))
                 }

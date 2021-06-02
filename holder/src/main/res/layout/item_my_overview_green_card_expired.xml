@@ -30,11 +30,11 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="24dp"
             android:textAppearance="?attr/textAppearanceBody1"
+            android:text="@string/qr_card_expired"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/close"
             app:layout_constraintStart_toEndOf="@+id/icon"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="@string/qr_card_expired_eu" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/close"

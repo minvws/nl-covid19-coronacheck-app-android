@@ -9,7 +9,7 @@ import java.time.*
 class OriginUtilImplTest {
 
     @Test
-    fun `getValidOrigins returns origin that are in time window`() {
+    fun `getOriginStates returns correct states`() {
         val clock = Clock.fixed(Instant.ofEpochSecond(50), ZoneId.of("UTC"))
         val originUtil = OriginUtilImpl(clock)
 
@@ -31,11 +31,22 @@ class OriginUtilImplTest {
             expirationTime = OffsetDateTime.ofInstant(Instant.ofEpochSecond(200), ZoneOffset.UTC)
         )
 
-        val validOrigins = originUtil.getValidOrigins(
-            origins = listOf(originEntity1, originEntity2)
+        val originEntity3 = OriginEntity(
+            id = 0,
+            greenCardId = 1,
+            type = OriginType.Test,
+            eventTime = OffsetDateTime.ofInstant(Instant.ofEpochSecond(1), ZoneOffset.UTC),
+            validFrom = OffsetDateTime.ofInstant(Instant.ofEpochSecond(1), ZoneOffset.UTC),
+            expirationTime = OffsetDateTime.ofInstant(Instant.ofEpochSecond(49), ZoneOffset.UTC)
         )
 
-        assertEquals(listOf(originEntity1), validOrigins)
+        val validOrigins = originUtil.getOriginState(
+            origins = listOf(originEntity1, originEntity2, originEntity3)
+        )
+
+        assertEquals(validOrigins[0], OriginState.Valid(originEntity1))
+        assertEquals(validOrigins[1], OriginState.Future(originEntity2))
+        assertEquals(validOrigins[2], OriginState.Expired(originEntity3))
     }
 
     @Test

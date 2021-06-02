@@ -20,6 +20,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItem
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TestResultAdapterItemUtil
 import nl.rijksoverheid.ctr.shared.ext.setVisible
 import org.koin.core.component.KoinComponent
@@ -29,7 +30,7 @@ import java.time.temporal.ChronoUnit
 
 class MyOverviewGreenCardAdapterItem(
     private val greenCard: GreenCard,
-    private val originStates: List<MyOverviewItem.GreenCardItem.OriginState>,
+    private val originStates: List<OriginState>,
     private val credentialState: MyOverviewItem.GreenCardItem.CredentialState,
     private val isActive: Boolean,
     private val onButtonClick: (greenCard: GreenCard, credential: CredentialEntity) -> Unit,
@@ -202,15 +203,15 @@ class MyOverviewGreenCardAdapterItem(
 
     private fun setSubtitle(
         textView: TextView,
-        originState: MyOverviewItem.GreenCardItem.OriginState,
+        originState: OriginState,
         subtitle: String
     ) {
         val context = textView.context
         when (originState) {
-            is MyOverviewItem.GreenCardItem.OriginState.ValidOrigin -> {
+            is OriginState.Valid -> {
                 textView.text = subtitle
             }
-            is MyOverviewItem.GreenCardItem.OriginState.InvalidOrigin -> {
+            is OriginState.Future -> {
                 val origin = originState.origin
                 textView.setTextColor(ContextCompat.getColor(context, R.color.link))
 
@@ -224,6 +225,9 @@ class MyOverviewGreenCardAdapterItem(
                     textView.text = context.getString(R.string.qr_card_validity_future_hours,
                         hoursBetweenExpiration.coerceAtLeast(1).toString())
                 }
+            }
+            is OriginState.Expired -> {
+                // Should be filtered out and never reach here
             }
         }
     }
