@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.holder
 
 import android.graphics.Bitmap
+import mobilecore.Result
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
@@ -38,7 +39,7 @@ import java.time.OffsetDateTime
 
 fun fakeAppConfigViewModel(appStatus: AppStatus = AppStatus.NoActionRequired) =
     object : AppConfigViewModel() {
-        override fun refresh() {
+        override fun refresh(mobileCoreWrapper: MobileCoreWrapper) {
             appStatusLiveData.value = appStatus
         }
     }
@@ -392,7 +393,7 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
             return ""
         }
 
-        override fun diclose(secretKey: ByteArray, credential: ByteArray): String {
+        override fun disclose(secretKey: ByteArray, credential: ByteArray): String {
             return ""
         }
 
@@ -406,6 +407,12 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
 
         override fun readEuropeanCredential(credential: ByteArray): JSONObject {
             return JSONObject()
+        }
+
+        override fun initializeVerifier(configFilesPath: String) = Unit
+
+        override fun verify(credential: ByteArray): Result {
+            TODO("Not yet implemented")
         }
     }
 }

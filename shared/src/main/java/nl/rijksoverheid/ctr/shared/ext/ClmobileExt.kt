@@ -1,6 +1,5 @@
 package nl.rijksoverheid.ctr.shared.ext
 
-import mobilecore.VerifyResult
 import org.json.JSONObject
 
 /*
@@ -35,12 +34,3 @@ fun mobilecore.Result.verify(): ByteArray {
         return this.value
     }
 }
-
-inline fun VerifyResult.verify(): VerifyResult {
-    if (this.error.isNotEmpty()) {
-        throw Exception(this.error)
-    }
-    return this
-}
-
-

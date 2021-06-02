@@ -7,7 +7,7 @@ import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
-import nl.rijksoverheid.ctr.appconfig.usecases.PersistConfigUseCaseImpl
+import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
 import org.junit.Test
 
 /*
@@ -20,6 +20,7 @@ import org.junit.Test
 class PersistConfigUseCaseImplTest {
 
     private val appConfigPersistenceManager: AppConfigPersistenceManager = mockk(relaxed = true)
+    private val appConfigStorageManager: AppConfigStorageManager = mockk(relaxed = true)
 
     @Test
     fun `Usecase persists configs locally`() = runBlocking {
@@ -44,6 +45,8 @@ class PersistConfigUseCaseImplTest {
 
         val usecase = PersistConfigUseCaseImpl(
             appConfigPersistenceManager = appConfigPersistenceManager,
+            appConfigStorageManager = appConfigStorageManager,
+            cacheDir = "",
             moshi = Moshi.Builder().build()
         )
 

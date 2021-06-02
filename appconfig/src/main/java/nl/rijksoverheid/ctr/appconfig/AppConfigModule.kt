@@ -11,6 +11,8 @@ package nl.rijksoverheid.ctr.appconfig
 import nl.rijksoverheid.ctr.appconfig.api.AppConfigApi
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManagerImpl
+import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
+import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManagerImpl
 import nl.rijksoverheid.ctr.appconfig.repositories.ConfigRepository
 import nl.rijksoverheid.ctr.appconfig.repositories.ConfigRepositoryImpl
 import nl.rijksoverheid.ctr.appconfig.usecases.*
@@ -31,11 +33,11 @@ fun appConfigModule(path: String, versionCode: Int) = module {
     factory<AppConfigUseCase> { AppConfigUseCaseImpl(get(), get(), get()) }
     factory<AppStatusUseCase> { AppStatusUseCaseImpl(get(), get(), get()) }
     factory<AppConfigPersistenceManager> { AppConfigPersistenceManagerImpl(get()) }
+    factory<AppConfigStorageManager> { AppConfigStorageManagerImpl(androidContext().cacheDir.path) }
     factory<CachedAppConfigUseCase> { CachedAppConfigUseCaseImpl(get(), get()) }
-    factory<PersistConfigUseCase> { PersistConfigUseCaseImpl(get(), get()) }
+    factory<PersistConfigUseCase> { PersistConfigUseCaseImpl(get(), get(), androidContext().cacheDir.path, get()) }
     factory<LoadPublicKeysUseCase> { LoadPublicKeysUseCaseImpl(get(), get()) }
     factory<AppConfigUtil> { AppConfigUtilImpl(androidContext(), get()) }
-
 
     single {
         val okHttpClient = get<OkHttpClient>(OkHttpClient::class).newBuilder().build()
@@ -46,6 +48,6 @@ fun appConfigModule(path: String, versionCode: Int) = module {
     }
 
     viewModel<AppConfigViewModel> {
-        AppConfigViewModelImpl(get(), get(), get(), get(), versionCode)
+        AppConfigViewModelImpl(get(), get(), get(), get(), get(), androidContext().cacheDir.path, versionCode)
     }
 }

@@ -33,7 +33,7 @@ class QrCodeUseCaseImpl(
             val secretKey = persistenceManager.getSecretKeyJson()
                 ?: throw IllegalStateException("Secret key should exist")
 
-            val qrCodeContent = if (shouldDisclose) mobileCoreWrapper.diclose(
+            val qrCodeContent = if (shouldDisclose) mobileCoreWrapper.disclose(
                 secretKey.toByteArray(),
                 credential
             ) else String(credential)
