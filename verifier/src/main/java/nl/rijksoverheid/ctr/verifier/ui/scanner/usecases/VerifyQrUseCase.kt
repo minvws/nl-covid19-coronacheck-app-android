@@ -30,7 +30,6 @@ class VerifyQrUseCaseImpl(
     override suspend fun get(
         content: String
     ): VerifyQrUseCase.VerifyQrResult = withContext(Dispatchers.IO) {
-        println("GIO check $content")
         try {
             VerifyQrUseCase.VerifyQrResult.Success(
                 verifiedQrDataMapper.transform(
@@ -38,8 +37,6 @@ class VerifyQrUseCaseImpl(
                 )
             )
         } catch (e: Exception) {
-            //Could not verify domestic credential: Could not base45 decode proof
-            println("GIO fail ${e.message}")
             VerifyQrUseCase.VerifyQrResult.Failed(e.toString())
         }
     }

@@ -91,7 +91,6 @@ class MyOverviewGreenCardAdapterItem(
 
         when (greenCard.greenCardEntity.type) {
             is GreenCardType.Eu -> {
-                println("GIO edw EU type")
                 // European card only has one origin
                 val originState = originStates.first()
                 val origin = originState.origin
@@ -125,7 +124,6 @@ class MyOverviewGreenCardAdapterItem(
                 viewBinding.proof1Subtitle.visibility = View.VISIBLE
             }
             is GreenCardType.Domestic -> {
-                println("GIO edw Domestic type")
                 originStates.forEach { originState ->
                     val origin = originState.origin
                     when (origin.type) {

@@ -23,21 +23,10 @@ class VerifiedQrDataMapperImpl(private val moshi: Moshi, private val mobileCoreW
         qrContent: String
     ): VerifiedQr {
 
-        println("GIO qrcontent: $qrContent")
-        println("GIO qrcontent bytes: ${qrContent.toByteArray()}")
         val result =
             mobileCoreWrapper.verify(
                 qrContent.toByteArray()
             ).verify()
-
-        println("GIO edw string: ${result.decodeToString()}")
-        try {
-            val r = result.decodeToString().toObject<TestResultAttributes>(moshi)
-            println("GIO edw $r")
-        } catch (exc: Exception) {
-            exc.printStackTrace()
-            println("GIO edw: ${exc.message}")
-        }
 
         return VerifiedQr(
             creationDateSeconds = 0,
