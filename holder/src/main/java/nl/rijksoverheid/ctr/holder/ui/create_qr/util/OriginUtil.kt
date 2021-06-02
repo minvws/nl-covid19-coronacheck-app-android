@@ -2,11 +2,15 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
 import java.time.*
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 
 interface OriginUtil {
     fun getValidOrigins(origins: List<OriginEntity>): List<OriginEntity>
 
     fun isActiveInEu(euLaunchDate: String): Boolean
+
+    fun daysSinceActive(euLaunchDate: String): Long
 }
 
 class OriginUtilImpl(private val clock: Clock): OriginUtil {
@@ -17,8 +21,16 @@ class OriginUtilImpl(private val clock: Clock): OriginUtil {
         }
     }
 
-    //euLaunchDate format: "2021-07-01"
+    //euLaunchDate format: "2021-06-03T14:00:00+00:00"
     override fun isActiveInEu(euLaunchDate: String): Boolean {
-        return LocalDate.now(clock).isAfter(LocalDate.parse(euLaunchDate))
+        val timeFormatter = DateTimeFormatter.ISO_DATE_TIME
+        val euLaunchDateInstant = Instant.from(timeFormatter.parse(euLaunchDate))
+        return Instant.now(clock).isAfter(euLaunchDateInstant)
+    }
+
+    override fun daysSinceActive(euLaunchDate: String): Long {
+        val timeFormatter = DateTimeFormatter.ISO_DATE_TIME
+        val euLaunchDateInstant = Instant.from(timeFormatter.parse(euLaunchDate))
+        return Instant.now(clock).until(euLaunchDateInstant, ChronoUnit.DAYS) + 1
     }
 }

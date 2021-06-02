@@ -149,7 +149,7 @@
         app:layout_constraintEnd_toEndOf="@id/test_result"
         android:visibility="invisible"
         android:text="@string/qr_card_validity_eu"
-        tools:text="Je Europese Qr-code wordt automatisch geldig als de Europese regelgeving ingaat (vanaf 1 Juli)" />
+        tools:text="Je Europese Qr-code wordt automatisch geldig als de Europese regelgeving ingaat (over 5 dagen)" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

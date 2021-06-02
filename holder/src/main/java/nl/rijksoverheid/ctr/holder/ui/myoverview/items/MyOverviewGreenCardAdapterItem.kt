@@ -31,7 +31,7 @@ class MyOverviewGreenCardAdapterItem(
     private val greenCard: GreenCard,
     private val originStates: List<MyOverviewItem.GreenCardItem.OriginState>,
     private val credentialState: MyOverviewItem.GreenCardItem.CredentialState,
-    private val isActive: Boolean,
+    private val isCardActive: MyOverviewItem.CardActive,
     private val onButtonClick: (greenCard: GreenCard, credential: CredentialEntity) -> Unit,
 ) :
     BindableItem<ItemMyOverviewGreenCardBinding>(R.layout.item_my_overview_green_card.toLong()),
@@ -91,6 +91,9 @@ class MyOverviewGreenCardAdapterItem(
         viewBinding.proof2Subtitle.setTextColor(context.getThemeColor(android.R.attr.textColorPrimary))
         viewBinding.proof3Subtitle.setTextColor(context.getThemeColor(android.R.attr.textColorPrimary))
 
+        viewBinding.launchText.text = context.getString(R.string.qr_card_validity_eu, isCardActive.activeInDays)
+        viewBinding.launchText.setVisible(!isCardActive.isActive)
+
         when (greenCard.greenCardEntity.type) {
             is GreenCardType.Eu -> {
                 // European card only has one origin
@@ -123,8 +126,6 @@ class MyOverviewGreenCardAdapterItem(
                     }
 
                 }
-
-                viewBinding.launchText.setVisible(!isActive)
                 viewBinding.proof1Title.visibility = View.VISIBLE
                 viewBinding.proof1Subtitle.visibility = View.VISIBLE
             }

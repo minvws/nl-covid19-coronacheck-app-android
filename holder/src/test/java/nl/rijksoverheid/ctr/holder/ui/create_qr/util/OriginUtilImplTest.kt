@@ -43,7 +43,7 @@ class OriginUtilImplTest {
         val clockFromThePast = Clock.fixed(Instant.ofEpochSecond(50), ZoneId.of("UTC"))
         val originUtil = OriginUtilImpl(clockFromThePast)
 
-        val isActive = originUtil.isActiveInEu("2021-07-01")
+        val isActive = originUtil.isActiveInEu("2021-06-03T14:00:00+00:00")
 
         assertFalse(isActive)
     }
@@ -53,8 +53,18 @@ class OriginUtilImplTest {
         val clockFromTheFuture = Clock.fixed(Instant.ofEpochSecond(53 * 12 * 30 * 24 * 60 * 60), ZoneId.of("UTC"))
         val originUtil = OriginUtilImpl(clockFromTheFuture)
 
-        val isActive = originUtil.isActiveInEu("2021-07-01")
+        val isActive = originUtil.isActiveInEu("2021-06-03T14:00:00+00:00")
 
         assertTrue(isActive)
+    }
+
+    @Test
+    fun `given a future launch date daysSinceActive returns days till then`() {
+        val clockFromThePast = Clock.fixed(Instant.ofEpochSecond(50), ZoneId.of("UTC"))
+        val originUtil = OriginUtilImpl(clockFromThePast)
+
+        val daysLeft = originUtil.daysSinceActive("2021-06-03T14:00:00+00:00")
+
+        assertEquals(18782, daysLeft)
     }
 }
