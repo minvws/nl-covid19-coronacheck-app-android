@@ -224,8 +224,7 @@
     <string name="qr_card_vaccination_validity_eu">Vaccinatiedatum:\n%1$s</string>
     <string name="qr_card_recovery_validity_eu">Herstelverklaring:\ngeldig vanaf %1$s</string>
     <string name="qr_card_test_validity_eu">Testdatum:\n%1$s</string>
-    <string name="qr_card_expired_domestic">De Nederandse QR-code van je testbewijs is verlopen.</string>
-    <string name="qr_card_expired_eu">De Europese QR-code van je testuitslag is verlopen.</string>
+    <string name="qr_card_expired">De QR-code is verlopen.</string>
     <string name="qr_card_vaccination_title_domestic">Vaccinatiebewijs:</string>
     <string name="qr_card_test_domestic">Testbewijs:</string>
     <string name="qr_card_recovery_title_domestic">Herstelverklaring:</string>
@@ -247,4 +246,14 @@
     <string name="your_vaccination_explanation_covid_19">COVID-19</string>
     <string name="your_vaccination_explanation_doses">%1$s van %2$s</string>
     <string name="qr_explanation_description_eu_test"><![CDATA[Reis je buiten Nederland, maar binnen de Europese Unie? Dan zijn er meer gegevens nodig. Daarom staan in de Europese QR-code de volgende gegevens:<br/><br/> Naam: <b>%1$s</b><br/> Geboortedatum: <b>%2$s</b><br/><br/> Ziekteverwekker: <b>%3$s</b><br/> Type test: <b>%4$s</b><br/> Test naam: <b>%5$s</b><br/> Test datum: <b>%6$s</b><br/> Testuitslag: <b>%7$s</b><br/> Testlocatie: <b>%8$s</b><br/> Producent: <b>%9$s</b><br/> Land van test: <b>%10$s</b><br/> Identificatiecode: <b>%11$s</b><br/><br/> Gebruik in de andere Europese landen altijd de Europese QR-code. De Nederlandse QR-code is niet geldig buiten Nederland.]]></string>
+    <string name="my_overview_not_valid_domestic_but_is_in_eu">Je %1$s is niet geldig in Nederland. Je hebt alleen een Europese QR-code.</string>
+    <string name="my_overview_not_valid_eu_but_is_in_domestic">Je %1$s is niet geldig in Europa. Je hebt alleen een Nederlandse QR-code.</string>
+    <string name="type_recovery">herstelverklaring</string>
+    <string name="type_test">testbewijs</string>
+    <string name="type_vaccination">vaccinatiebewijs</string>
+    <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_title">Over je %1$s</string>
+    <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_eu_test"><![CDATA[Jouw testbewijs is niet geldig in de Europese Unie. Daarom is er alleen een Nederlandse QR-code gemaakt. Deze is geldig in Nederland.<br/><br/>Dit kan verschillende oorzaken hebben. Het kan bijvoorbeeld zijn dat je type test niet geaccepteerd wordt in de Europese Unie.]]></string>
+    <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_eu_vaccination"><![CDATA[Jouw testbewijs is niet geldig in de Europese Unie. Daarom is er alleen een Nederlandse QR-code gemaakt. Deze is geldig in Nederland.<br/><br/>Dit kan verschillende oorzaken hebben. Het kan bijvoorbeeld zijn dat je type test niet geaccepteerd wordt in de Europese Unie.]]></string>
+    <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_domestic_test"><![CDATA[Jouw testbewijs is niet geldig in de Europese Unie. Daarom is er alleen een Nederlandse QR-code gemaakt. Deze is geldig in Nederland.<br/><br/>Dit kan verschillende oorzaken hebben. Het kan bijvoorbeeld zijn dat je type test niet geaccepteerd wordt in de Europese Unie.]]></string>
+    <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_domestic_vaccination"><![CDATA[Jouw testbewijs is niet geldig in de Europese Unie. Daarom is er alleen een Nederlandse QR-code gemaakt. Deze is geldig in Nederland.<br/><br/>Dit kan verschillende oorzaken hebben. Het kan bijvoorbeeld zijn dat je type test niet geaccepteerd wordt in de Europese Unie.]]></string>
 </resources>

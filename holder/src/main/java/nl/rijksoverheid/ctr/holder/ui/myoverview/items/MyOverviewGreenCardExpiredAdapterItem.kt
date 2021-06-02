@@ -19,14 +19,6 @@ class MyOverviewGreenCardExpiredAdapterItem(
 ) :
     BindableItem<ItemMyOverviewGreenCardExpiredBinding>(R.layout.item_my_overview_green_card_expired.toLong()) {
     override fun bind(viewBinding: ItemMyOverviewGreenCardExpiredBinding, position: Int) {
-        when (greenCardType) {
-            is GreenCardType.Domestic -> {
-                viewBinding.text.setText(R.string.qr_card_expired_domestic)
-            }
-            is GreenCardType.Eu -> {
-                viewBinding.text.setText(R.string.qr_card_expired_eu)
-            }
-        }
         viewBinding.close.setOnClickListener {
             onDismissClick.invoke()
         }

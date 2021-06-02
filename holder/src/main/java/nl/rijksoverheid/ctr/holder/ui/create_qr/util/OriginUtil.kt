@@ -8,22 +8,30 @@ import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 
 interface OriginUtil {
-    fun getValidOrigins(origins: List<OriginEntity>): List<OriginEntity>
-
-    fun activeAt(euLaunchDate: String): OffsetDateTime
+    fun getOriginState(origins: List<OriginEntity>): List<OriginState>
 }
 
 class OriginUtilImpl(private val clock: Clock): OriginUtil {
-    override fun getValidOrigins(origins: List<OriginEntity>): List<OriginEntity> {
-        return origins.filter {
-            it.validFrom.isBefore(OffsetDateTime.now(clock))
-                    && it.expirationTime.isAfter(OffsetDateTime.now(clock))
+
+    override fun getOriginState(origins: List<OriginEntity>): List<OriginState> {
+        return origins.map { origin ->
+            when {
+                origin.expirationTime.isBefore(OffsetDateTime.now(clock)) -> {
+                    OriginState.Expired(origin)
+                }
+                origin.validFrom.isAfter(OffsetDateTime.now(clock)) -> {
+                    OriginState.Future(origin)
+                }
+                else -> {
+                    OriginState.Valid(origin)
+                }
+            }
         }
     }
+}
 
-    override fun activeAt(euLaunchDate: String): OffsetDateTime {
-        val timeFormatter = DateTimeFormatter.ISO_DATE_TIME
-        val euLaunchDateInstant = Instant.from(timeFormatter.parse(euLaunchDate))
-        return OffsetDateTime.ofInstant(euLaunchDateInstant, ZoneOffset.UTC)
-    }
+sealed class OriginState(open val origin: OriginEntity) {
+    data class Valid(override val origin: OriginEntity) : OriginState(origin)
+    data class Future(override val origin: OriginEntity) : OriginState(origin)
+    data class Expired(override val origin: OriginEntity) : OriginState(origin)
 }
