@@ -234,6 +234,7 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
                 "",
                 ""
             )
+        }
     }
 }
 
