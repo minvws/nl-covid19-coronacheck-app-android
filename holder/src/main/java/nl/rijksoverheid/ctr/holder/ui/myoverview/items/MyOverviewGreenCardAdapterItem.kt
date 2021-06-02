@@ -17,7 +17,6 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.ItemMyOverviewGreenCardBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.CredentialEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItem
@@ -25,7 +24,6 @@ import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TestResultAdapterItemUtil
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.time.OffsetDateTime
-import java.time.ZoneOffset
 import java.time.temporal.ChronoUnit
 
 class MyOverviewGreenCardAdapterItem(
@@ -93,6 +91,7 @@ class MyOverviewGreenCardAdapterItem(
 
         when (greenCard.greenCardEntity.type) {
             is GreenCardType.Eu -> {
+                println("GIO edw EU type")
                 // European card only has one origin
                 val originState = originStates.first()
                 val origin = originState.origin
@@ -126,6 +125,7 @@ class MyOverviewGreenCardAdapterItem(
                 viewBinding.proof1Subtitle.visibility = View.VISIBLE
             }
             is GreenCardType.Domestic -> {
+                println("GIO edw Domestic type")
                 originStates.forEach { originState ->
                     val origin = originState.origin
                     when (origin.type) {
