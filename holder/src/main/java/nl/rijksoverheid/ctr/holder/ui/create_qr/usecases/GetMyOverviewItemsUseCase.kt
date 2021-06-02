@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 import androidx.annotation.StringRes
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.CredentialEntity
@@ -10,10 +11,10 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItem.*
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItem.GreenCardItem.*
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItem.GreenCardItem.CredentialState
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItem.GreenCardItem.OriginState
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CredentialUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginUtil
-import timber.log.Timber
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 
@@ -37,6 +38,7 @@ interface GetMyOverviewItemsUseCase {
 
 class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
                                     private val credentialUtil: CredentialUtil,
+                                    private val cachedAppConfigUseCase: CachedAppConfigUseCase,
                                     private val originUtil: OriginUtil) :
     GetMyOverviewItemsUseCase {
 
@@ -142,11 +144,18 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
                         else -> CredentialState.HasCredential(activeCredential)
                     }
 
+                    var hasLaunched = true
+                    if (greenCard.greenCardEntity.type == GreenCardType.Eu) {
+                        val euLaunchDate = cachedAppConfigUseCase.getCachedAppConfig()!!.euLaunchDate
+                        hasLaunched = originUtil.hasLaunchedInEu(euLaunchDate)
+                    }
+
                     // Show green card
                     GreenCardItem(
                         greenCard = greenCard,
                         originStates = originStates,
-                        credentialState = credentialState
+                        credentialState = credentialState,
+                        hasLaunched = hasLaunched,
                     )
                 }
             }
@@ -204,7 +213,8 @@ sealed class MyOverviewItem {
     data class GreenCardItem(
         val greenCard: GreenCard,
         val originStates: List<OriginState>,
-        val credentialState: CredentialState
+        val credentialState: CredentialState,
+        val hasLaunched: Boolean = true,
     ) : MyOverviewItem() {
 
         sealed class OriginState(open val origin: OriginEntity) {
