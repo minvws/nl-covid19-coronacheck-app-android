@@ -1,16 +1,16 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
-import java.time.*
+import java.time.Clock
+import java.time.Instant
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
-import java.time.temporal.ChronoUnit
 
 interface OriginUtil {
     fun getValidOrigins(origins: List<OriginEntity>): List<OriginEntity>
 
-    fun isActiveInEu(euLaunchDate: String): Boolean
-
-    fun daysSinceActive(euLaunchDate: String): Long
+    fun activeAt(euLaunchDate: String): OffsetDateTime
 }
 
 class OriginUtilImpl(private val clock: Clock): OriginUtil {
@@ -21,16 +21,9 @@ class OriginUtilImpl(private val clock: Clock): OriginUtil {
         }
     }
 
-    //euLaunchDate format: "2021-06-03T14:00:00+00:00"
-    override fun isActiveInEu(euLaunchDate: String): Boolean {
+    override fun activeAt(euLaunchDate: String): OffsetDateTime {
         val timeFormatter = DateTimeFormatter.ISO_DATE_TIME
         val euLaunchDateInstant = Instant.from(timeFormatter.parse(euLaunchDate))
-        return Instant.now(clock).isAfter(euLaunchDateInstant)
-    }
-
-    override fun daysSinceActive(euLaunchDate: String): Long {
-        val timeFormatter = DateTimeFormatter.ISO_DATE_TIME
-        val euLaunchDateInstant = Instant.from(timeFormatter.parse(euLaunchDate))
-        return Instant.now(clock).until(euLaunchDateInstant, ChronoUnit.DAYS) + 1
+        return OffsetDateTime.ofInstant(euLaunchDateInstant, ZoneOffset.UTC)
     }
 }

@@ -136,33 +136,31 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
                         if (validOrigins.contains(origin)) OriginState.ValidOrigin(origin) else OriginState.InvalidOrigin(origin)
                     }
 
-                    var cardActive = CardActive()
+                    var cardActiveAt: OffsetDateTime? = null
                     if (greenCard.greenCardEntity.type == GreenCardType.Eu) {
                         val euLaunchDate = cachedAppConfigUseCase.getCachedAppConfig()!!.euLaunchDate
-                        cardActive = CardActive(
-                            isActive = originUtil.isActiveInEu(euLaunchDate),
-                            activeInDays = originUtil.daysSinceActive(euLaunchDate),
-                        )
+                        cardActiveAt = originUtil.activeAt(euLaunchDate)
                     }
+                    val cardInActive = cardActiveAt != null
 
                     // More our credential to a more readable state
                     val credentialState = when {
                         activeCredential == null -> CredentialState.NoCredential
                         validOrigins.isEmpty() -> CredentialState.NoCredential
-                        !cardActive.isActive -> CredentialState.NoCredential
+                        cardInActive -> CredentialState.NoCredential
                         else -> CredentialState.HasCredential(activeCredential)
                     }
 
                     // Show green card
                     GreenCardItem(
                         greenCard = greenCard,
-                        originStates = if (!cardActive.isActive) {
+                        originStates = if (cardInActive) {
                             listOf(OriginState.InvalidOrigin(originStates.first().origin))
                         } else {
                             originStates
                         },
                         credentialState = credentialState,
-                        active = cardActive,
+                        activeAt = cardActiveAt,
                     )
                 }
             }
@@ -217,13 +215,11 @@ sealed class MyOverviewItem {
 
     object CreateQrCardItem : MyOverviewItem()
 
-    data class CardActive(val isActive: Boolean = true, val activeInDays: Long = 0)
-
     data class GreenCardItem(
         val greenCard: GreenCard,
         val originStates: List<OriginState>,
         val credentialState: CredentialState,
-        val active: CardActive,
+        val activeAt: OffsetDateTime? = null,
     ) : MyOverviewItem() {
 
         sealed class OriginState(open val origin: OriginEntity) {

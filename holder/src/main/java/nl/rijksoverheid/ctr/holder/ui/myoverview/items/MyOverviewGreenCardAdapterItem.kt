@@ -25,13 +25,14 @@ import nl.rijksoverheid.ctr.shared.ext.setVisible
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.time.OffsetDateTime
+import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 
 class MyOverviewGreenCardAdapterItem(
     private val greenCard: GreenCard,
     private val originStates: List<MyOverviewItem.GreenCardItem.OriginState>,
     private val credentialState: MyOverviewItem.GreenCardItem.CredentialState,
-    private val isCardActive: MyOverviewItem.CardActive,
+    private val cardActiveAt: OffsetDateTime?,
     private val onButtonClick: (greenCard: GreenCard, credential: CredentialEntity) -> Unit,
 ) :
     BindableItem<ItemMyOverviewGreenCardBinding>(R.layout.item_my_overview_green_card.toLong()),
@@ -91,8 +92,10 @@ class MyOverviewGreenCardAdapterItem(
         viewBinding.proof2Subtitle.setTextColor(context.getThemeColor(android.R.attr.textColorPrimary))
         viewBinding.proof3Subtitle.setTextColor(context.getThemeColor(android.R.attr.textColorPrimary))
 
-        viewBinding.launchText.text = context.getString(R.string.qr_card_validity_eu, isCardActive.activeInDays)
-        viewBinding.launchText.setVisible(!isCardActive.isActive)
+        val cardIsInactive = cardActiveAt != null && OffsetDateTime.now().isBefore(cardActiveAt)
+        val dateString = cardActiveAt?.format(DateTimeFormatter.ofPattern("d MMMM")) ?: ""
+        viewBinding.launchText.text = context.getString(R.string.qr_card_validity_eu, dateString)
+        viewBinding.launchText.setVisible(cardIsInactive)
 
         when (greenCard.greenCardEntity.type) {
             is GreenCardType.Eu -> {
@@ -105,7 +108,8 @@ class MyOverviewGreenCardAdapterItem(
                         setSubtitle(
                             textView = viewBinding.proof1Subtitle,
                             originState = originState,
-                            subtitle = origin.eventTime.formatDateTime(context)
+                            subtitle = origin.eventTime.formatDateTime(context),
+                            euLaunchDate = cardActiveAt,
                         )
                     }
                     is OriginType.Vaccination -> {
@@ -113,7 +117,8 @@ class MyOverviewGreenCardAdapterItem(
                         setSubtitle(
                             textView = viewBinding.proof1Subtitle,
                             originState = originState,
-                            subtitle = origin.eventTime.toLocalDate().formatDayMonthYear()
+                            subtitle = origin.eventTime.toLocalDate().formatDayMonthYear(),
+                            euLaunchDate = cardActiveAt,
                         )
                     }
                     is OriginType.Recovery -> {
@@ -121,7 +126,8 @@ class MyOverviewGreenCardAdapterItem(
                         setSubtitle(
                             textView = viewBinding.proof1Subtitle,
                             originState = originState,
-                            subtitle = origin.eventTime.toLocalDate().formatDayMonthYear()
+                            subtitle = origin.eventTime.toLocalDate().formatDayMonthYear(),
+                            euLaunchDate = cardActiveAt,
                         )
                     }
 
@@ -204,7 +210,8 @@ class MyOverviewGreenCardAdapterItem(
     private fun setSubtitle(
         textView: TextView,
         originState: MyOverviewItem.GreenCardItem.OriginState,
-        subtitle: String
+        subtitle: String,
+        euLaunchDate: OffsetDateTime? = null,
     ) {
         val context = textView.context
         when (originState) {
@@ -215,12 +222,18 @@ class MyOverviewGreenCardAdapterItem(
                 val origin = originState.origin
                 textView.setTextColor(ContextCompat.getColor(context, R.color.link))
 
+                val dateToCompareWith = if (euLaunchDate != null && euLaunchDate.isAfter(OffsetDateTime.now())) {
+                    euLaunchDate
+                } else {
+                    origin.validFrom
+                }
+
                 val hoursBetweenExpiration =
-                    ChronoUnit.HOURS.between(OffsetDateTime.now(), origin.validFrom)
+                    ChronoUnit.HOURS.between(OffsetDateTime.now(), dateToCompareWith)
 
                 if (hoursBetweenExpiration >= 24) {
                     textView.text = context.getString(R.string.qr_card_validity_future_days,
-                        ChronoUnit.DAYS.between(OffsetDateTime.now(), origin.validFrom).coerceAtLeast(1).toString())
+                        ChronoUnit.DAYS.between(OffsetDateTime.now(), dateToCompareWith).coerceAtLeast(1).toString())
                 } else {
                     textView.text = context.getString(R.string.qr_card_validity_future_hours,
                         hoursBetweenExpiration.coerceAtLeast(1).toString())

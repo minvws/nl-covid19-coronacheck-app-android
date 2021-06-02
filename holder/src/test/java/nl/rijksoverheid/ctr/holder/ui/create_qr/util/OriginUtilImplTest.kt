@@ -5,6 +5,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import org.junit.Assert.*
 import org.junit.Test
 import java.time.*
+import java.util.*
 
 class OriginUtilImplTest {
 
@@ -39,32 +40,13 @@ class OriginUtilImplTest {
     }
 
     @Test
-    fun `given a future launch date isActiveInEu returns false`() {
+    fun `given a future launch date activeAt can be formatted to 3 June`() {
         val clockFromThePast = Clock.fixed(Instant.ofEpochSecond(50), ZoneId.of("UTC"))
         val originUtil = OriginUtilImpl(clockFromThePast)
 
-        val isActive = originUtil.isActiveInEu("2021-06-03T14:00:00+00:00")
+        val date = originUtil.activeAt("2021-06-03T14:00:00+00:00")
 
-        assertFalse(isActive)
-    }
-
-    @Test
-    fun `given a past launch date isActiveInEu returns true`() {
-        val clockFromTheFuture = Clock.fixed(Instant.ofEpochSecond(53 * 12 * 30 * 24 * 60 * 60), ZoneId.of("UTC"))
-        val originUtil = OriginUtilImpl(clockFromTheFuture)
-
-        val isActive = originUtil.isActiveInEu("2021-06-03T14:00:00+00:00")
-
-        assertTrue(isActive)
-    }
-
-    @Test
-    fun `given a future launch date daysSinceActive returns days till then`() {
-        val clockFromThePast = Clock.fixed(Instant.ofEpochSecond(50), ZoneId.of("UTC"))
-        val originUtil = OriginUtilImpl(clockFromThePast)
-
-        val daysLeft = originUtil.daysSinceActive("2021-06-03T14:00:00+00:00")
-
-        assertEquals(18782, daysLeft)
+        val locale = Locale.US
+        assertEquals("3 June", "${date.dayOfMonth} ${date.month.toString().toLowerCase(locale).capitalize(locale)}")
     }
 }
