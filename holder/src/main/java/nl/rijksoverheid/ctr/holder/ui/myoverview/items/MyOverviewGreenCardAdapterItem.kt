@@ -32,7 +32,7 @@ class MyOverviewGreenCardAdapterItem(
     private val greenCard: GreenCard,
     private val originStates: List<MyOverviewItem.GreenCardItem.OriginState>,
     private val credentialState: MyOverviewItem.GreenCardItem.CredentialState,
-    private val cardActiveAt: OffsetDateTime?,
+    private val euActiveAt: OffsetDateTime?,
     private val onButtonClick: (greenCard: GreenCard, credential: CredentialEntity) -> Unit,
 ) :
     BindableItem<ItemMyOverviewGreenCardBinding>(R.layout.item_my_overview_green_card.toLong()),
@@ -91,11 +91,8 @@ class MyOverviewGreenCardAdapterItem(
         viewBinding.proof1Subtitle.setTextColor(context.getThemeColor(android.R.attr.textColorPrimary))
         viewBinding.proof2Subtitle.setTextColor(context.getThemeColor(android.R.attr.textColorPrimary))
         viewBinding.proof3Subtitle.setTextColor(context.getThemeColor(android.R.attr.textColorPrimary))
-
-        val cardIsInactive = cardActiveAt != null && OffsetDateTime.now().isBefore(cardActiveAt)
-        val dateString = cardActiveAt?.format(DateTimeFormatter.ofPattern("d MMMM")) ?: ""
-        viewBinding.launchText.text = context.getString(R.string.qr_card_validity_eu, dateString)
-        viewBinding.launchText.setVisible(cardIsInactive)
+        viewBinding.launchText.text = ""
+        viewBinding.launchText.setVisible(false)
 
         when (greenCard.greenCardEntity.type) {
             is GreenCardType.Eu -> {
@@ -109,7 +106,7 @@ class MyOverviewGreenCardAdapterItem(
                             textView = viewBinding.proof1Subtitle,
                             originState = originState,
                             subtitle = origin.eventTime.formatDateTime(context),
-                            euLaunchDate = cardActiveAt,
+                            euLaunchDate = euActiveAt,
                         )
                     }
                     is OriginType.Vaccination -> {
@@ -118,7 +115,7 @@ class MyOverviewGreenCardAdapterItem(
                             textView = viewBinding.proof1Subtitle,
                             originState = originState,
                             subtitle = origin.eventTime.toLocalDate().formatDayMonthYear(),
-                            euLaunchDate = cardActiveAt,
+                            euLaunchDate = euActiveAt,
                         )
                     }
                     is OriginType.Recovery -> {
@@ -127,13 +124,22 @@ class MyOverviewGreenCardAdapterItem(
                             textView = viewBinding.proof1Subtitle,
                             originState = originState,
                             subtitle = origin.eventTime.toLocalDate().formatDayMonthYear(),
-                            euLaunchDate = cardActiveAt,
+                            euLaunchDate = euActiveAt,
                         )
                     }
 
                 }
                 viewBinding.proof1Title.visibility = View.VISIBLE
                 viewBinding.proof1Subtitle.visibility = View.VISIBLE
+
+                val dateToCompareWith = if (OffsetDateTime.now().isBefore(euActiveAt)) {
+                    euActiveAt!!
+                } else {
+                    origin.validFrom
+                }
+                val dateString = dateToCompareWith.format(DateTimeFormatter.ofPattern("d MMMM"))
+                viewBinding.launchText.text = context.getString(R.string.qr_card_validity_eu, dateString)
+                viewBinding.launchText.setVisible(true)
             }
             is GreenCardType.Domestic -> {
                 originStates.forEach { originState ->
