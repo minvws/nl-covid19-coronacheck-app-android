@@ -31,7 +31,7 @@ class MyOverviewGreenCardAdapterItem(
     private val greenCard: GreenCard,
     private val originStates: List<MyOverviewItem.GreenCardItem.OriginState>,
     private val credentialState: MyOverviewItem.GreenCardItem.CredentialState,
-    private val hasLaunched: Boolean,
+    private val isActive: Boolean,
     private val onButtonClick: (greenCard: GreenCard, credential: CredentialEntity) -> Unit,
 ) :
     BindableItem<ItemMyOverviewGreenCardBinding>(R.layout.item_my_overview_green_card.toLong()),
@@ -124,8 +124,7 @@ class MyOverviewGreenCardAdapterItem(
 
                 }
 
-                viewBinding.button.isEnabled = hasLaunched
-                viewBinding.launchText.setVisible(!hasLaunched)
+                viewBinding.launchText.setVisible(!isActive)
                 viewBinding.proof1Title.visibility = View.VISIBLE
                 viewBinding.proof1Subtitle.visibility = View.VISIBLE
             }

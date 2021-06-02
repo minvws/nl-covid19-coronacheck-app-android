@@ -1,14 +1,12 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
-import java.time.Clock
-import java.time.OffsetDateTime
-import java.time.ZonedDateTime
+import java.time.*
 
 interface OriginUtil {
     fun getValidOrigins(origins: List<OriginEntity>): List<OriginEntity>
 
-    fun hasLaunchedInEu(euLaunchDate: String): Boolean
+    fun isActiveInEu(euLaunchDate: String): Boolean
 }
 
 class OriginUtilImpl(private val clock: Clock): OriginUtil {
@@ -20,8 +18,7 @@ class OriginUtilImpl(private val clock: Clock): OriginUtil {
     }
 
     //euLaunchDate format: "2021-07-01"
-    override fun hasLaunchedInEu(euLaunchDate: String): Boolean {
-        return ZonedDateTime.parse(euLaunchDate).withFixedOffsetZone().isAfter(
-            ZonedDateTime.now(clock))
+    override fun isActiveInEu(euLaunchDate: String): Boolean {
+        return LocalDate.now(clock).isAfter(LocalDate.parse(euLaunchDate))
     }
 }

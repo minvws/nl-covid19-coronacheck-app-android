@@ -137,17 +137,18 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
                         if (validOrigins.contains(origin)) OriginState.ValidOrigin(origin) else OriginState.InvalidOrigin(origin)
                     }
 
+                    var isActive = true
+                    if (greenCard.greenCardEntity.type == GreenCardType.Eu) {
+                        val euLaunchDate = cachedAppConfigUseCase.getCachedAppConfig()!!.euLaunchDate
+                        isActive = originUtil.isActiveInEu(euLaunchDate)
+                    }
+
                     // More our credential to a more readable state
                     val credentialState = when {
                         activeCredential == null -> CredentialState.NoCredential
                         validOrigins.isEmpty() -> CredentialState.NoCredential
+                        !isActive -> CredentialState.NoCredential
                         else -> CredentialState.HasCredential(activeCredential)
-                    }
-
-                    var hasLaunched = true
-                    if (greenCard.greenCardEntity.type == GreenCardType.Eu) {
-                        val euLaunchDate = cachedAppConfigUseCase.getCachedAppConfig()!!.euLaunchDate
-                        hasLaunched = originUtil.hasLaunchedInEu(euLaunchDate)
                     }
 
                     // Show green card
@@ -155,7 +156,7 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
                         greenCard = greenCard,
                         originStates = originStates,
                         credentialState = credentialState,
-                        hasLaunched = hasLaunched,
+                        isActive = isActive,
                     )
                 }
             }
@@ -214,7 +215,7 @@ sealed class MyOverviewItem {
         val greenCard: GreenCard,
         val originStates: List<OriginState>,
         val credentialState: CredentialState,
-        val hasLaunched: Boolean = true,
+        val isActive: Boolean = true,
     ) : MyOverviewItem() {
 
         sealed class OriginState(open val origin: OriginEntity) {
