@@ -45,55 +45,14 @@ class MyOverviewViewModelImpl(
      */
     override fun refreshOverviewItems(selectType: GreenCardType?) {
         viewModelScope.launch {
-
-            viewModelScope.launch {
-                holderDatabase.greenCardDao().insert(
-                    GreenCardEntity(
-                        id = 1,
-                        walletId = 1,
-                        type = GreenCardType.Domestic
+            (myOverviewItemsLiveData as MutableLiveData).postValue(
+                Event(
+                    getMyOverviewItemsUseCase.get(
+                        selectedType = selectType ?: getSelectedType(),
+                        walletId = 1
                     )
                 )
-
-                holderDatabase.originDao().insert(
-                    OriginEntity(
-                        id = 1,
-                        greenCardId = 1,
-                        type = OriginType.Vaccination,
-                        eventTime = OffsetDateTime.now(),
-                        expirationTime = OffsetDateTime.now().minusHours(5),
-                        validFrom = OffsetDateTime.now().minusHours(5)
-                    )
-                )
-
-                holderDatabase.greenCardDao().insert(
-                    GreenCardEntity(
-                        id = 2,
-                        walletId = 1,
-                        type = GreenCardType.Eu
-                    )
-                )
-
-                holderDatabase.originDao().insert(
-                    OriginEntity(
-                        id = 2,
-                        greenCardId = 2,
-                        type = OriginType.Vaccination,
-                        eventTime = OffsetDateTime.now(),
-                        expirationTime = OffsetDateTime.now().plusHours(5),
-                        validFrom = OffsetDateTime.now().minusHours(5)
-                    )
-                )
-
-                (myOverviewItemsLiveData as MutableLiveData).postValue(
-                    Event(
-                        getMyOverviewItemsUseCase.get(
-                            selectedType = selectType ?: getSelectedType(),
-                            walletId = 1
-                        )
-                    )
-                )
-            }
+            )
         }
     }
 }
