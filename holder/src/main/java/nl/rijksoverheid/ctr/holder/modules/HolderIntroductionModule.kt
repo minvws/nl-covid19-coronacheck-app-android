@@ -52,8 +52,8 @@ val holderIntroductionModule = module {
                 )
             ),
             newTerms = NewTerms(
-                version = 1,
-                needsConsent = true
+                version = 2,
+                needsConsent = false
             )
         )
     }

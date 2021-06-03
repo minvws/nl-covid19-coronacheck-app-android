@@ -158,9 +158,8 @@
     <string name="dialog_no_internet_connection_description">Je bent nu niet verbonden met het internet.</string>
     <string name="dialog_close">Sluiten</string>
     <string name="dialog_retry">Probeer opnieuw</string>
-    <string name="new_terms_title">Onze voorwaarden zijn vernieuwd</string>
-    <string name="new_terms_highlights"><![CDATA[<b>Dit is wat er is veranderd</b><br\><br\><ul><li>Initialen en geboortedag en -maand zijn opgenomen in QR-code</li><li>Deze gegevens worden getoond op de Scanner app voor ID-controle</li></ul>]]></string>
-    <string name="new_terms"><![CDATA[Lees <a href="https://coronacheck.nl/nl/privacy-in-app">hier</a> de volledige privacyverklaring.]]></string>
+    <string name="new_terms_title">Nieuw in de app</string>
+    <string name="new_terms_highlights"><![CDATA[<b>Vaccinatiebewijs</b><br/>Ben je gevaccineerd? Je kunt nu ook je vaccinatiebewijs ophalen in de app. En daar een persoonlijke QR-code van maken. Hiermee krijg je toegang tot bepaalde locaties of activiteiten. Ook krijg je een QR-code om te reizen binnen de Europese Unie.</b>]]></string>
     <string name="new_terms_consent_button">Volgende</string>
     <string name="new_terms_consent_needed_positive_button">Akkoord</string>
     <string name="new_terms_consent_needed_negative_button">Niet akkoord</string>
