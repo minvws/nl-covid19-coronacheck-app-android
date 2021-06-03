@@ -3,12 +3,17 @@ package nl.rijksoverheid.ctr.holder.ui.myoverview
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
+import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetMyOverviewItemsUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItems
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import timber.log.Timber
+import java.time.OffsetDateTime
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -26,7 +31,7 @@ abstract class MyOverviewViewModel : ViewModel() {
 
 class MyOverviewViewModelImpl(
     private val getMyOverviewItemsUseCase: GetMyOverviewItemsUseCase,
-    private val holderDatabaseSyncer: HolderDatabaseSyncer
+    private val holderDatabase: HolderDatabase
 ) : MyOverviewViewModel() {
 
     override fun getSelectedType(): GreenCardType {
