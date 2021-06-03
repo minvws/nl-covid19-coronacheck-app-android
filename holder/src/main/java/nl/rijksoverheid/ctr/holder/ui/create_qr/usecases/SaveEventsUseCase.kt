@@ -16,16 +16,16 @@ import java.time.ZoneOffset
  *
  */
 interface SaveEventsUseCase {
-    suspend fun save(remoteEvents: Map<RemoteEventsVaccinations, ByteArray>)
-    suspend fun saveRemoteEventsNegativeTests(remoteEventsNegativeTests: Map<RemoteEventsNegativeTests, ByteArray>)
-    suspend fun save(remoteTestResult: RemoteTestResult, rawResponse: ByteArray)
+    suspend fun saveNegativeTest2(negativeTest2: RemoteTestResult, rawResponse: ByteArray)
+    suspend fun saveNegativeTests3(negativeTests3: Map<RemoteEventsNegativeTests, ByteArray>)
+    suspend fun saveVaccinations(vaccinations: Map<RemoteEventsVaccinations, ByteArray>)
 }
 
 class SaveEventsUseCaseImpl(private val holderDatabase: HolderDatabase) : SaveEventsUseCase {
 
-    override suspend fun save(remoteEvents: Map<RemoteEventsVaccinations, ByteArray>) {
+    override suspend fun saveVaccinations(vaccinations: Map<RemoteEventsVaccinations, ByteArray>) {
         // Map remote events to EventGroupEntity to save in the database
-        val entities = remoteEvents.map {
+        val entities = vaccinations.map {
             EventGroupEntity(
                 walletId = 1,
                 providerIdentifier = it.key.providerIdentifier ?: error("providerIdentifier is required"),
@@ -43,13 +43,13 @@ class SaveEventsUseCaseImpl(private val holderDatabase: HolderDatabase) : SaveEv
         holderDatabase.eventGroupDao().insertAll(entities)
     }
 
-    override suspend fun save(remoteTestResult: RemoteTestResult, rawResponse: ByteArray) {
+    override suspend fun saveNegativeTest2(negativeTest2: RemoteTestResult, rawResponse: ByteArray) {
         // Make remote test results to event group entities to save in the database
         val entity = EventGroupEntity(
             walletId = 1,
-            providerIdentifier = remoteTestResult.providerIdentifier,
+            providerIdentifier = negativeTest2.providerIdentifier,
             type = EventType.Test,
-            maxIssuedAt = remoteTestResult.result?.sampleDate!!,
+            maxIssuedAt = negativeTest2.result?.sampleDate!!,
             jsonData = rawResponse
         )
 
@@ -57,9 +57,9 @@ class SaveEventsUseCaseImpl(private val holderDatabase: HolderDatabase) : SaveEv
         holderDatabase.eventGroupDao().insertAll(listOf(entity))
     }
 
-    override suspend fun saveRemoteEventsNegativeTests(remoteEventsNegativeTests: Map<RemoteEventsNegativeTests, ByteArray>) {
+    override suspend fun saveNegativeTests3(negativeTests3: Map<RemoteEventsNegativeTests, ByteArray>) {
         // Map remote events to EventGroupEntity to save in the database
-        val entities = remoteEventsNegativeTests.map {
+        val entities = negativeTests3.map {
             EventGroupEntity(
                 walletId = 1,
                 providerIdentifier = it.key.providerIdentifier ?: error("providerIdentifier is required"),

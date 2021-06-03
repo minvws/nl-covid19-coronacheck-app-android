@@ -6,9 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsVaccinations
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsNegativeTests
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.HasOriginUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SaveEventsUseCase
 import nl.rijksoverheid.ctr.shared.livedata.Event
 
@@ -21,51 +23,70 @@ import nl.rijksoverheid.ctr.shared.livedata.Event
  */
 abstract class YourEventsViewModel : ViewModel() {
     val loading: LiveData<Event<Boolean>> = MutableLiveData()
-    val savedEvents: LiveData<Event<Boolean>> = MutableLiveData()
+    val hasOriginLiveData: LiveData<Event<Boolean>> = MutableLiveData()
 
-    abstract fun saveRemoteTestResult(remoteTestResult: RemoteTestResult, rawResponse: ByteArray)
-    abstract fun saveRemoteEvents(remoteEvents: Map<RemoteEventsVaccinations, ByteArray>)
-    abstract fun saveRemoteNegativeResultEvents(remoteEvents: Map<RemoteEventsNegativeTests, ByteArray>)
+    abstract fun saveNegativeTest2(remoteTestResult: RemoteTestResult, rawResponse: ByteArray)
+    abstract fun saveVaccinations(remoteEvents: Map<RemoteEventsVaccinations, ByteArray>)
+    abstract fun saveNegativeTests3(remoteEvents: Map<RemoteEventsNegativeTests, ByteArray>)
 }
 
 class YourEventsViewModelImpl(
     private val saveEventsUseCase: SaveEventsUseCase,
-    private val holderDatabaseSyncer: HolderDatabaseSyncer
+    private val holderDatabaseSyncer: HolderDatabaseSyncer,
+    private val hasOriginUseCase: HasOriginUseCase
 ) : YourEventsViewModel() {
 
-    override fun saveRemoteTestResult(remoteTestResult: RemoteTestResult, rawResponse: ByteArray) {
+    override fun saveNegativeTest2(negativeTest2: RemoteTestResult, rawResponse: ByteArray) {
         (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {
             try {
-                saveEventsUseCase.save(remoteTestResult, rawResponse)
+                // Save the event in the database
+                saveEventsUseCase.saveNegativeTest2(negativeTest2, rawResponse)
+
+                // Send all events to database and create green cards, origins and credentials
                 holderDatabaseSyncer.sync()
-                (savedEvents as MutableLiveData).value = Event(true)
+
+                // Check if we have origin of type test saved (else something went wrong)
+                val hasOrigin = hasOriginUseCase.hasOrigin(OriginType.Test)
+                (hasOriginLiveData as MutableLiveData).value = Event(hasOrigin)
             } finally {
                 loading.value = Event(false)
             }
         }
     }
 
-    override fun saveRemoteEvents(remoteEvents: Map<RemoteEventsVaccinations, ByteArray>) {
+    override fun saveNegativeTests3(remoteEvents: Map<RemoteEventsNegativeTests, ByteArray>) {
         (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {
             try {
-                saveEventsUseCase.save(remoteEvents)
+                // Save the events in the database
+                saveEventsUseCase.saveNegativeTests3(remoteEvents)
+
+                // Send all events to database and create green cards, origins and credentials
                 holderDatabaseSyncer.sync()
-                (savedEvents as MutableLiveData).value = Event(true)
+
+                // Check if we have origin of type test saved (else something went wrong)
+                val hasOrigin = hasOriginUseCase.hasOrigin(OriginType.Test)
+                (hasOriginLiveData as MutableLiveData).value = Event(hasOrigin)
             } finally {
                 loading.value = Event(false)
             }
         }
     }
 
-    override fun saveRemoteNegativeResultEvents(remoteEvents: Map<RemoteEventsNegativeTests, ByteArray>) {
+    override fun saveVaccinations(vaccinations: Map<RemoteEventsVaccinations, ByteArray>) {
         (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {
             try {
-                saveEventsUseCase.saveRemoteEventsNegativeTests(remoteEvents)
+                // Save the events in the database
+                saveEventsUseCase.saveVaccinations(vaccinations)
+
+                // Send all events to database and create green cards, origins and credentials
                 holderDatabaseSyncer.sync()
-                (savedEvents as MutableLiveData).value = Event(true)
+
+                // Check if we have origin of type test saved (else something went wrong)
+                val hasOrigin = hasOriginUseCase.hasOrigin(OriginType.Test)
+                (hasOriginLiveData as MutableLiveData).value = Event(hasOrigin)
             } finally {
                 loading.value = Event(false)
             }
