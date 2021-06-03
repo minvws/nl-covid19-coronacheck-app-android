@@ -70,9 +70,6 @@ fun holderModule(baseUrl: String) = module {
     }
 
     // Use cases
-    single {
-        GenerateHolderQrCodeUseCase(get())
-    }
     factory<QrCodeUseCase> {
         QrCodeUseCaseImpl(
             get(),
@@ -159,7 +156,7 @@ fun holderModule(baseUrl: String) = module {
         CreateCredentialUseCaseImpl(get())
     }
 
-    factory<QrCodeDataUseCase> { QrCodeDataUseCaseImpl(get(), get()) }
+    factory<QrCodeDataUseCase> { QrCodeDataUseCaseImpl(get(), get(), get()) }
 
     factory<TestResultAttributesUseCase> {
         TestResultAttributesUseCaseImpl(get(), get())

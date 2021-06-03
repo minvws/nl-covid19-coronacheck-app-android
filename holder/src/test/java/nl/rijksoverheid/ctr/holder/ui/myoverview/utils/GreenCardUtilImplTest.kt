@@ -1,11 +1,13 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview.utils
 
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtilImpl
+import org.junit.Assert
 import org.junit.Test
 import java.time.Clock
 import java.time.Instant
@@ -118,6 +120,22 @@ class GreenCardUtilImplTest {
         )
 
         assertEquals(false, greenCardUtil.isExpired(greenCard))
+    }
+
+    @Test
+    fun `getErrorCorrectionLevel returns correct levels for domestic green card type`() {
+        val clock = Clock.fixed(Instant.ofEpochSecond(50), ZoneId.of("UTC"))
+        val greenCardUtil = GreenCardUtilImpl(clock)
+
+        assertEquals(ErrorCorrectionLevel.M, greenCardUtil.getErrorCorrectionLevel(GreenCardType.Domestic))
+    }
+
+    @Test
+    fun `getErrorCorrectionLevel returns correct levels for eu green card type`() {
+        val clock = Clock.fixed(Instant.ofEpochSecond(50), ZoneId.of("UTC"))
+        val greenCardUtil = GreenCardUtilImpl(clock)
+
+        assertEquals(ErrorCorrectionLevel.Q, greenCardUtil.getErrorCorrectionLevel(GreenCardType.Eu))
     }
 
 }
