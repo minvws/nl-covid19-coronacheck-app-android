@@ -32,7 +32,11 @@ class DigiDViewModel(private val authenticationRepository: AuthenticationReposit
     ) {
         (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {
-            authenticationRepository.authResponse(activityResultLauncher, authService)
+            try {
+                authenticationRepository.authResponse(activityResultLauncher, authService)
+            } catch (e: Exception) {
+                digidResultLiveData.postValue(Event(DigidResult.Failed(e.toString())))
+            }
             loading.value = Event(false)
         }
     }
