@@ -49,10 +49,6 @@ val holderIntroductionModule = module {
                 PrivacyPolicyItem(
                     R.drawable.shield,
                     R.string.privacy_policy_2
-                ),
-                PrivacyPolicyItem(
-                    R.drawable.shield,
-                    R.string.privacy_policy_3
                 )
             ),
             newTerms = NewTerms(

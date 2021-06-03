@@ -17,7 +17,6 @@
     <string name="privacy_policy_description"><![CDATA[The <a href="https://coronacheck.nl/en/privacy-in-app">privacy statement</a> details how CoronaCheck handles your data. These are the most important points:]]></string>
     <string name="privacy_policy_1"><![CDATA[Your data is <b>not centrally stored anywhere</b>]]></string>
     <string name="privacy_policy_2"><![CDATA[Your GPS or location data is <b>not used or saved</b>]]></string>
-    <string name="privacy_policy_3"><![CDATA[The QR code contains a minimum amount of personal <b>data</b>.]]></string>
     <string name="privacy_policy_checkbox_text">I\'ve read the privacy statement and give consent for processing my personal data.</string>
     <string name="my_overview">My overview</string>
     <string name="my_overview_description">Laat zowel de QR-code als je identiteitsbewijs zien bij de ingang van de locatie die je bezoekt.</string>
