@@ -61,7 +61,7 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
         chooseProviderViewModel.eventsResult.observe(viewLifecycleOwner, EventObserver {
             when (it) {
                 is EventsResult.Success<RemoteEventsNegativeTests> -> {
-                    if (it.signedModels.isEmpty()) {
+                    if (it.signedModels.map { models -> models.model.events ?: listOf() }.flatten().isEmpty()) {
                         findNavController().navigate(
                             ChooseProviderFragmentDirections.actionCouldNotCreateQr(
                                 toolbarTitle = getString(R.string.commercial_test_type_title),
