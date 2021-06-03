@@ -261,4 +261,8 @@
     <string name="rule_engine_no_test_origin_description"><![CDATA[Op dit moment kunnen we geen bewijs maken van jouw testbewijs. Dit kan verschillende oorzaken hebben. <a href="https://www.coronacheck.nl/wegwijzer">Lees hier meer.</a>]]></string>
     <string name="rule_engine_no_vaccination_origin_description"><![CDATA[Op dit moment kunnen we geen bewijs maken van jouw vaccinatie. Dit kan verschillende oorzaken hebben. <a href="https://www.coronacheck.nl/wegwijzer">Lees hier meer.</a>]]></string>
     <string name="back_to_overview">Terug naar mijn overzicht</string>
+    <string name="no_vaccinations_title">Geen vaccinaties beschikbaar</string>
+    <string name="no_vaccinations_description">Er zijn geen gegevens over je vaccinatie beschikbaar. Dit kan verschillende oorzaken hebben. Kijk <a href="https://www.coronacheck.nl/wegwijzer">hier</a> voor meer informatie<br/><br/>Ben je kortgeleden gevaccineerd? Dan kan het even duren totdat de gegevens beschikbaar zijn.</string>
+    <string name="no_test_results_title">Geen testbewijs beschikbaar</string>
+    <string name="no_test_results_description"><![CDATA[Er zijn geen gegevens over je testbewijs beschikbaar. Dit kan verschillende oorzaken hebben. Kijk <a href="https://www.coronacheck.nl/wegwijzer">hier</a> voor meer informatie.<br/><br/>Heb je al een negatieve testuitslag van de GGD gekregen? Dan kan het nog tot 2 uur duren voordat je de uitslag hier kunt ophalen. Probeer het later opnieuw.]]></string>
 </resources>
