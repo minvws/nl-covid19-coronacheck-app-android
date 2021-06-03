@@ -17,7 +17,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 class MyOverviewOriginInfoAdapterItem(
     private val greenCardType: GreenCardType,
     private val originType: OriginType,
-    private val onInfoClick: () -> Unit
+    private val onInfoClick: (greenCardType: GreenCardType, originType: OriginType) -> Unit
 ) :
     BindableItem<ItemMyOverviewOriginInfoBinding>(R.layout.item_my_overview_origin_info.toLong()) {
     override fun bind(viewBinding: ItemMyOverviewOriginInfoBinding, position: Int) {
@@ -38,7 +38,7 @@ class MyOverviewOriginInfoAdapterItem(
             }
         }
         viewBinding.info.setOnClickListener {
-            onInfoClick.invoke()
+            onInfoClick.invoke(greenCardType, originType)
         }
     }
 

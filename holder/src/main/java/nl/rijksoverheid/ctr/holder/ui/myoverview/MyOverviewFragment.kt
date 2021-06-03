@@ -16,6 +16,7 @@ import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMyOverviewBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItems
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.*
@@ -174,8 +175,47 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                     adapterItems.add(MyOverviewOriginInfoAdapterItem(
                         greenCardType = myOverviewItem.greenCardType,
                         originType = myOverviewItem.originType,
-                        onInfoClick = {
-
+                        onInfoClick = { greenCardType, originType ->
+                            when (greenCardType) {
+                                is GreenCardType.Domestic -> {
+                                    when (originType) {
+                                        is OriginType.Test -> {
+                                            findNavController().navigate(MyOverviewFragmentDirections.actionShowQrExplanation(
+                                                title = getString(R.string.my_overview_green_card_not_valid_title_test),
+                                                description = getString(R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_test)
+                                            ))
+                                        }
+                                        is OriginType.Vaccination -> {
+                                            findNavController().navigate(MyOverviewFragmentDirections.actionShowQrExplanation(
+                                                title = getString(R.string.my_overview_green_card_not_valid_title_vaccination),
+                                                description = getString(R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_vaccination)
+                                            ))
+                                        }
+                                        is OriginType.Recovery -> {
+                                            // TODO
+                                        }
+                                    }
+                                }
+                                is GreenCardType.Eu -> {
+                                    when (originType) {
+                                        is OriginType.Test -> {
+                                            findNavController().navigate(MyOverviewFragmentDirections.actionShowQrExplanation(
+                                                title = getString(R.string.my_overview_green_card_not_valid_title_test),
+                                                description = getString(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_test)
+                                            ))
+                                        }
+                                        is OriginType.Vaccination -> {
+                                            findNavController().navigate(MyOverviewFragmentDirections.actionShowQrExplanation(
+                                                title = getString(R.string.my_overview_green_card_not_valid_title_vaccination),
+                                                description = getString(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_vaccination)
+                                            ))
+                                        }
+                                        is OriginType.Recovery -> {
+                                            // TODO
+                                        }
+                                    }
+                                }
+                            }
                         }
                     ))
                 }
