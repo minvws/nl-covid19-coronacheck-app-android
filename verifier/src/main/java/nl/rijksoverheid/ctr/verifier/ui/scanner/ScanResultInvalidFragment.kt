@@ -38,6 +38,8 @@ class ScanResultInvalidFragment : Fragment(R.layout.fragment_scan_result_invalid
         )
     }
 
+    private val args: ScanResultInvalidFragmentArgs by navArgs()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -47,8 +49,16 @@ class ScanResultInvalidFragment : Fragment(R.layout.fragment_scan_result_invalid
             findNavController().navigate(ScanResultInvalidFragmentDirections.actionNavMain())
         }
 
-        binding.subtitle.enableCustomLinks {
-            findNavController().navigate(ScanResultInvalidFragmentDirections.actionShowInvalidExplanation())
+        when (args.invalidData) {
+            is ScanResultInvalidData.Invalid -> {
+                binding.title.text = getString(R.string.scan_result_european_nl_invalid_title)
+                binding.subtitle.text = getString(R.string.scan_result_european_nl_invalid_subtitle)
+            }
+            is ScanResultInvalidData.Error -> {
+                binding.subtitle.enableCustomLinks {
+                    findNavController().navigate(ScanResultInvalidFragmentDirections.actionShowInvalidExplanation())
+                }
+            }
         }
 
         binding.button.setOnClickListener {

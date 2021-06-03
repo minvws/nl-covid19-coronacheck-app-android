@@ -1,7 +1,6 @@
 package nl.rijksoverheid.ctr.holder
 
 import android.graphics.Bitmap
-import mobilecore.Mobilecore
 import mobilecore.Result
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
@@ -323,14 +322,16 @@ fun fakeTestResultAttributesUseCase(
     return object : TestResultAttributesUseCase {
         override fun get(credentials: String): TestResultAttributes {
             return TestResultAttributes(
-                sampleTime = sampleTimeSeconds,
-                testType = testType,
                 birthDay = birthDay,
                 birthMonth = birthMonth,
                 firstNameInitial = firstNameInitial,
                 lastNameInitial = lastNameInitial,
                 isSpecimen = isSpecimen,
-                isPaperProof = isPaperProof
+                isNLDCC = "1",
+                credentialVersion = "1",
+                stripType = "0",
+                validForHours = "24",
+                validFrom = "1622633766",
             )
         }
     }
