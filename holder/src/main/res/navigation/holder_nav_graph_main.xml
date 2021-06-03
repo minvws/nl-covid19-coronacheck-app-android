@@ -202,6 +202,10 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
 
+        <action
+            android:id="@+id/action_not_yet_tested"
+            app:destination="@id/nav_not_yet_tested"/>
+
     </fragment>
 
     <fragment
@@ -377,5 +381,10 @@
         android:name="nl.rijksoverheid.ctr.design.menu.about.AboutThisAppFragment"
         android:label="@string/about_this_app"
         tools:layout="@layout/fragment_about_app" />
+
+    <dialog
+        android:id="@+id/nav_not_yet_tested"
+        android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.NotYetTestedFragment"
+        tools:layout="@layout/dialog_not_yet_tested"/>
 
 </navigation>

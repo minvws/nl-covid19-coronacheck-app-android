@@ -57,7 +57,7 @@
     <string name="choose_provider_commercial_subtitle">Haal testuitslag op</string>
     <string name="choose_provider_ggd_title">GGD</string>
     <string name="choose_provider_ggd_subtitle">Log in met je DigiD</string>
-    <string name="choose_provider_no_digid">Ik heb geen DigiD</string>
+    <string name="choose_provider_not_yet_tested">Ik ben nog niet getest</string>
     <string name="commercial_test_type_title">Testuitslag ophalen</string>
     <string name="commercial_test_type_description">Om je testuitslag op te halen heb je een ophaalcode nodig.</string>
     <string name="commercial_test_type_code_title">Ik heb een ophaalcode</string>
@@ -265,4 +265,7 @@
     <string name="no_vaccinations_description"><![CDATA[Er zijn geen gegevens over je vaccinatie beschikbaar. Dit kan verschillende oorzaken hebben. Kijk <a href="https://www.coronacheck.nl/wegwijzer">hier</a> voor meer informatie<br/><br/>Ben je kortgeleden gevaccineerd? Dan kan het even duren totdat de gegevens beschikbaar zijn.]]></string>
     <string name="no_test_results_title">Geen testbewijs beschikbaar</string>
     <string name="no_test_results_description"><![CDATA[Er zijn geen gegevens over je testbewijs beschikbaar. Dit kan verschillende oorzaken hebben. Kijk <a href="https://www.coronacheck.nl/wegwijzer">hier</a> voor meer informatie.<br/><br/>Heb je al een negatieve testuitslag van de GGD gekregen? Dan kan het nog tot 2 uur duren voordat je de uitslag hier kunt ophalen. Probeer het later opnieuw.]]></string>
+    <string name="not_yet_tested_title">Ik ben nog niet getest</string>
+    <string name="not_yet_tested_description"><![CDATA[Voor een QR-code moet je eerst een test doen. Blijkt uit de test dat je geen corona hebt? Dan kan je jouw QR-code maken.<br/><br/>Een testbewijs is geldig tot %1$s uur na het moment van testen. Plan je test dus op tijd. En zorg dat jouw QR-code binnen %2$s uur gecheckt is bij de ingang.]]></string>
+    <string name="not_yet_tested_button">Maak een afspraak</string>
 </resources>

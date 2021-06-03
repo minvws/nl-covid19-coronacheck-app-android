@@ -26,17 +26,12 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  */
 class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) {
 
-    private val androidUtil: AndroidUtil by inject()
     private val dialogUtil: DialogUtil by inject()
     private val chooseProviderViewModel: ChooseProviderViewModel by viewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentChooseProviderBinding.bind(view)
-
-        if (androidUtil.isSmallScreen()) {
-            binding.image.visibility = View.GONE
-        }
 
         binding.providerCommercial.bind(
             R.string.choose_provider_commercial_title,
@@ -50,6 +45,10 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
             getString(R.string.choose_provider_ggd_subtitle)
         ) {
             loginWithDigiD()
+        }
+
+        binding.notYetTested.setOnClickListener {
+            findNavController().navigate(ChooseProviderFragmentDirections.actionNotYetTested())
         }
 
         binding.providerCommercial.root.setAsAccessibilityButton()
