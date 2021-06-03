@@ -62,6 +62,10 @@
                 android:id="@+id/action_show_travel_mode"
                 app:destination="@id/travel_mode_bottomsheet" />
 
+            <action
+                android:id="@+id/action_show_qr_explanation"
+                app:destination="@id/qr_code_explanation_bottomsheet" />
+
         </fragment>
 
         <dialog
