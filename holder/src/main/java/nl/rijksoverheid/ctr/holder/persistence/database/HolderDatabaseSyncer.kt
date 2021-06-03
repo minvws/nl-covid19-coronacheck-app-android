@@ -151,6 +151,8 @@ class HolderDatabaseSyncerImpl(
             createCredentials = remoteDomesticGreenCard.createCredentialMessages
         )
 
+        println("GIO domesticCredentials ${domesticCredentials.size} ${domesticCredentials.first()}")
+
         val entities = domesticCredentials.map { domesticCredential ->
             CredentialEntity(
                 greenCardId = localDomesticGreenCardId,

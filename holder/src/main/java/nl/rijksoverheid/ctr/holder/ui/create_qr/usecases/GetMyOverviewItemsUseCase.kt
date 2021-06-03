@@ -141,7 +141,9 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
                 // Filter out origins that are expired
                 val filteredOriginStates = originStates.filter { it !is OriginState.Expired }
 
-                val euLaunchDate = OffsetDateTime.parse(cachedAppConfigUseCase.getCachedAppConfig()!!.euLaunchDate, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+                val euL = "2021-06-03T14:00:00+00:00"
+
+                val euLaunchDate = OffsetDateTime.parse(euL, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
 
                 val launchDate = if (greenCard.greenCardEntity.type == GreenCardType.Eu) euLaunchDate else OffsetDateTime.now()
 

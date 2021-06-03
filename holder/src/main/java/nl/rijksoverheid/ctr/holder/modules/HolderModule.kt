@@ -14,6 +14,8 @@ import nl.rijksoverheid.ctr.holder.persistence.SharedPreferencesPersistenceManag
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncerImpl
+import nl.rijksoverheid.ctr.holder.persistence.database.migration.TestResultsMigrationManager
+import nl.rijksoverheid.ctr.holder.persistence.database.migration.TestResultsMigrationManagerImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.HolderApiClient
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.RemoteEventsStatusJsonAdapter
@@ -116,6 +118,8 @@ fun holderModule(baseUrl: String) = module {
     factory<DeviceRootedUseCase> { DeviceRootedUseCaseImpl(androidContext()) }
     factory<GetEventsUseCase> { GetEventsUseCaseImpl(get(), get(), get()) }
     factory<SaveEventsUseCase> { SaveEventsUseCaseImpl(get()) }
+
+    factory<TestResultsMigrationManager> { TestResultsMigrationManagerImpl(get(), get(), get(), get(), get()) }
 
     // ViewModels
     viewModel<QrCodeViewModel> { QrCodeViewModelImpl(get()) }
