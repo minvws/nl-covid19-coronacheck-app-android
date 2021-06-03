@@ -43,7 +43,8 @@ class GetVaccinationFragment : DigiDFragment(R.layout.fragment_get_vaccination) 
         getVaccinationViewModel.eventsResult.observe(viewLifecycleOwner, EventObserver {
             when (it) {
                 is EventsResult.Success<RemoteEventsVaccinations> -> {
-                    if (it.signedModels.map { models -> models.model.events ?: listOf() }.flatten().isEmpty()) {
+                    val hasNoEvents = it.signedModels.map { models -> models.model.events ?: listOf() }.flatten().isEmpty()
+                    if (hasNoEvents) {
                         findNavController().navigate(
                             GetVaccinationFragmentDirections.actionCouldNotCreateQr(
                                 toolbarTitle = getString(R.string.your_vaccination_result_toolbar_title),
