@@ -36,6 +36,8 @@
     <string name="scan_result_valid_birth_day">Day of birth</string>
     <string name="scan_result_valid_birth_month">Birth month</string>
     <string name="scan_result_valid_personal_details_title">Check personal details</string>
+    <string name="scan_result_european_nl_invalid_title">This is a european QR-code</string>
+    <string name="scan_result_european_nl_invalid_subtitle">This is not a valid declaration in the Netherlands. Ask the visitor to show a dutch QR-code.</string>
     <string name="scan_result_invalid_title">Invalid QR code</string>
     <string name="scan_result_invalid_subtitle"><![CDATA[The visitor doesn\'t have a valid negative test declaration. <b><a href=\"#\"><b>Read possible causes</b></a>]]></string>
     <string name="scan_result_invalid_button">Scan next</string>

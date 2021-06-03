@@ -98,30 +98,36 @@ fun fakeVerifiedQr(
 ) = VerifiedQr(
     creationDateSeconds = 0,
     testResultAttributes = TestResultAttributes(
-        sampleTime = 0,
-        testType = "dummy",
         birthDay = birthDay,
         birthMonth = birthMonth,
         firstNameInitial = firstNameInitial,
         lastNameInitial = lastNameInitial,
-        isPaperProof = isPaperProof,
-        isSpecimen = isSpecimen
+        isSpecimen = isSpecimen,
+        isNLDCC = "1",
+        credentialVersion = "1",
+        stripType = "0",
+        validForHours = "24",
+        validFrom = "1622633766",
     )
 )
 
 fun fakeVerifyQrUseCase(
+    isNLDCC: String = "0",
+    isSpecimen: String = "0",
     result: VerifyQrUseCase.VerifyQrResult = VerifyQrUseCase.VerifyQrResult.Success(
         verifiedQr = VerifiedQr(
             creationDateSeconds = 0,
             testResultAttributes = TestResultAttributes(
-                sampleTime = 0,
-                testType = "dummy",
                 birthDay = "dummy",
                 birthMonth = "dummy",
                 firstNameInitial = "dummy",
                 lastNameInitial = "dummy",
-                isPaperProof = "0",
-                isSpecimen = "0"
+                isSpecimen = isSpecimen,
+                isNLDCC = isNLDCC,
+                credentialVersion = "1",
+                stripType = "0",
+                validForHours = "24",
+                validFrom = "1622633766",
             )
         )
     )
