@@ -45,7 +45,9 @@ class DigiDViewModel(private val authenticationRepository: AuthenticationReposit
                 val authError = AuthorizationException.fromIntent(intent)
                 when {
                     authError != null -> {
-                        digidResultLiveData.postValue(Event(DigidResult.Failed("$authError.error ${authError.errorDescription}")))
+                        if (authError != AuthorizationException.GeneralErrors.USER_CANCELED_AUTH_FLOW) {
+                            digidResultLiveData.postValue(Event(DigidResult.Failed("$authError.error ${authError.errorDescription}")))
+                        }
                     }
                     authResponse != null -> {
                         try {
