@@ -25,6 +25,7 @@ import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.sharedViewModelWithOwner
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.androidx.viewmodel.ViewModelOwner
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 
@@ -166,8 +167,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                     adapterItems.add(MyOverviewGreenCardExpiredAdapterItem(
                         greenCardType = myOverviewItem.greenCardType,
                         onDismissClick = {
-                            // Refresh so card is removed
-                            myOverviewViewModel.refreshOverviewItems()
+                            section.remove(it)
                         }
                     ))
                 }

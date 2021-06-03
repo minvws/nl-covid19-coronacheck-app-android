@@ -15,12 +15,12 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
  */
 class MyOverviewGreenCardExpiredAdapterItem(
     private val greenCardType: GreenCardType,
-    private val onDismissClick: () -> Unit
+    private val onDismissClick: (item: BindableItem<*>) -> Unit
 ) :
     BindableItem<ItemMyOverviewGreenCardExpiredBinding>(R.layout.item_my_overview_green_card_expired.toLong()) {
     override fun bind(viewBinding: ItemMyOverviewGreenCardExpiredBinding, position: Int) {
         viewBinding.close.setOnClickListener {
-            onDismissClick.invoke()
+            onDismissClick.invoke(this)
         }
     }
 
