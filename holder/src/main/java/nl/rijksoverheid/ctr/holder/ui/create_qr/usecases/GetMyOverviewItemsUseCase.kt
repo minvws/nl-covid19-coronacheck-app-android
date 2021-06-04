@@ -207,11 +207,15 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
     ): MyOverviewItem? {
         return when (selectedType) {
             is GreenCardType.Eu -> {
-                TravelModeItem(R.string.travel_toggle_europe)
+                TravelModeItem(
+                    text = R.string.travel_toggle_europe,
+                    buttonText = R.string.travel_toggle_change_domestic)
             }
             is GreenCardType.Domestic -> {
                 if (greenCards.isNotEmpty()) {
-                    TravelModeItem(R.string.travel_toggle_domestic)
+                    TravelModeItem(
+                        text = R.string.travel_toggle_domestic,
+                        buttonText = R.string.travel_toggle_change_eu)
                 } else {
                     null
                 }
@@ -248,6 +252,6 @@ sealed class MyOverviewItem {
         val greenCardType: GreenCardType
     ) : MyOverviewItem()
 
-    data class TravelModeItem(@StringRes val text: Int) : MyOverviewItem()
+    data class TravelModeItem(@StringRes val text: Int, @StringRes val buttonText: Int) : MyOverviewItem()
     data class OriginInfoItem(val greenCardType: GreenCardType, val originType: OriginType): MyOverviewItem()
 }

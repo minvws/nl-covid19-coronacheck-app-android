@@ -222,6 +222,8 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                     binding.typeToggle.root.visibility = View.VISIBLE
                     binding.typeToggle.description.setText(myOverviewItem.text)
 
+                    binding.typeToggle.button.setText(myOverviewItem.buttonText)
+
                     binding.typeToggle.button.setOnClickListener {
                         findNavController().navigate(MyOverviewFragmentDirections.actionShowTravelMode())
                     }

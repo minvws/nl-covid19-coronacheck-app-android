@@ -4,24 +4,24 @@
     <string name="app_name_acc">CoronaCheck (Acc)</string>
     <string name="app_name">CoronaCheck</string>
     <string name="onboarding_title">Onboarding</string>
-    <string name="onboarding_screen_1_title">Alleen toegang na testen</string>
-    <string name="onboarding_screen_1_description">Jouw gezondheid en die van anderen is belangrijk. Laat je daarom testen als je bepaalde sociale, culturele of sportieve activiteiten bezoekt. Ook als je al gevaccineerd bent. Blijkt uit de test dat je geen corona hebt (negatieve testuitslag)? Dan krijg je toegang.</string>
-    <string name="onboarding_screen_2_title">Jouw QR-code op zak</string>
-    <string name="onboarding_screen_2_description">Als uit de test blijkt dat je geen corona hebt kun je in deze app een persoonlijke QR-code maken. Dat is jouw testbewijs. De QR-code wordt gescand om toegang te krijgen.</string>
-    <string name="onboarding_screen_4_title">Zo min mogelijk gegevens</string>
-    <string name="onboarding_screen_4_description">In jouw QR-code staan alleen je negatieve testuitslag (geen corona), het tijdstip van de test en minimale gegevens: de eerste letter van je voornaam, de eerste letter van je achternaam, je geboortedag en geboortemaand. Dit is ter controle, om zeker te zijn dat de testuitslag bij jou hoort.</string>
-    <string name="onboarding_screen_3_title">Geldigheid van je bewijs</string>
-    <string name="onboarding_screen_3_description">Wil je toegang krijgen tot een bepaalde sociale, culturele of sportieve activiteit? Zorg dat jouw QR-code binnen %1$s uur na het moment van testen gescand is bij de ingang. Als je testbewijs verloopt verdwijnt de QR-code uit de app.</string>
+    <string name="onboarding_screen_1_title">Alleen toegang met een bewijs</string>
+    <string name="onboarding_screen_1_description">"Jouw gezondheid en die van anderen is belangrijk. Laat je daarom testen en/of vaccineren als je op reis gaat. Of als je bepaalde activiteiten of locaties bezoekt. Kun je bewijzen dat je gevaccineerd bent of geen corona hebt? Dan krijg je toegang. "</string>
+    <string name="onboarding_screen_2_title">Bewijs van test of vaccinatie</string>
+    <string name="onboarding_screen_2_description">Je kunt een bewijs maken als je bent gevaccineerd. Of als uit een test blijkt dat je geen corona hebt. Goed om te weten: je kunt meerdere bewijzen tegelijk hebben.</string>
+    <string name="onboarding_screen_4_title">QR-code = jouw bewijs</string>
+    <string name="onboarding_screen_4_description">Deze app maakt van jouw testuitslag of vaccinatie een QR-code. Dat is jouw bewijs. Je hebt dit bewijs nodig om toegang te krijgen tot bepaalde locaties of activiteiten. En als je reist binnen de Europese Unie. Verloopt je bewijs? Dan verdwijnt de QR-code.</string>
+    <string name="onboarding_screen_3_title">QR-codes voor Nederland en Europa</string>
+    <string name="onboarding_screen_3_description">De app maakt twee QR-codes: één voor Nederland en één voor Europa. Beide QR-codes vind je in de app. Reis je buiten Nederland, maar binnen de Europese Unie? Gebruik dan je Europese QR-code.</string>
     <string name="onboarding_next">Volgende</string>
-    <string name="privacy_policy_title">Zo gebruikt deze app jouw gegevens</string>
-    <string name="privacy_policy_description"><![CDATA[In de <a href="https://coronacheck.nl/nl/privacy-in-app">privacyverklaring</a> staat hoe CoronaCheck omgaat met jouw gegevens. Dit zijn de belangrijkste punten:]]></string>
+    <string name="privacy_policy_title">Zo gebruikt de app jouw gegevens</string>
+    <string name="privacy_policy_description"><![CDATA[In de <a href="https://coronacheck.nl/nl/privacy-in-app">privacyverklaring</a> staat hoe de app omgaat met jouw gegevens. Dit zijn de belangrijkste punten:]]></string>
     <string name="privacy_policy_1"><![CDATA[Jouw gegevens worden <b>nergens centraal opgeslagen</b>]]></string>
     <string name="privacy_policy_2"><![CDATA[Je GPS- of locatiegegevens worden <b>niet gebruikt of bewaard</b>]]></string>
-    <string name="privacy_policy_checkbox_text">Ik heb de privacyverklaring gelezen en geef toestemming voor het verwerken van mijn persoonsgegevens.</string>
+    <string name="privacy_policy_checkbox_text">Ik heb de privacyverklaring gelezen en begrijp hoe de app met mijn gegevens omgaat.</string>
     <string name="my_overview">Mijn overzicht</string>
-    <string name="my_overview_description">Laat zowel de QR-code als je identiteitsbewijs zien bij de ingang van de locatie die je bezoekt.</string>
-    <string name="my_overview_description_eu">Gebruik bij de grens en buiten Nederland de Europese QR-code. Controleer voor vertrek of jouw QR-codes geldig zijn in het land waar je heen reist.</string>
-    <string name="my_overview_no_qr_description"><![CDATA[Heb je een bewijs nodig? Laat je eerst vaccineren of doe een test bij een <a href="https://coronacheck.nl/nl/testafspraak-in-app">aangesloten testlocatie</a>. Daarna kun je een QR-code maken.]]></string>
+    <string name="my_overview_description">Laat je QR code scannen voor de ingang van een uitgaansgelegenheid, om naar binnen te mogen.</string>
+    <string name="my_overview_description_eu">Je kunt een bewijs maken als je bent gevaccineerd. Of als uit een test blijkt dat je geen corona hebt. Goed om te weten: je kunt meerdere bewijzen tegelijk hebben.</string>
+    <string name="my_overview_no_qr_description"><![CDATA[Je kunt op twee manieren een bewijs krijgen. Dat kan als je gevaccineerd bent of door een test te doen bij een aangesloten testlocatie. Daarna kun je een QR-code maken.]]></string>
     <string name="dialog_error_title">Sorry, er ging iets mis</string>
     <string name="dialog_error_message">Dat komt door een technische fout.</string>
     <string name="dialog_error_message_with_error_code">Dat komt door een technische fout (%1$s).</string>
@@ -31,7 +31,7 @@
     <string name="about_this_app">Over deze app</string>
     <string name="frequently_asked_questions">Meestgestelde vragen</string>
     <string name="privacy_statement">Privacyverklaring</string>
-    <string name="terms_of_use">Gebruiksvoorwaarden</string>
+    <string name="terms_of_use">Gebruikersvoorwaarden</string>
     <string name="my_overview_test_result_title">Mijn QR-code</string>
     <string name="my_overview_test_result_validity">Geldig tot %1$s</string>
     <string name="accessibility_label_my_overview_test_result_personal_data">Jouw persoonsgegevens: %1$s %2$s %3$s %4$s</string>
@@ -46,13 +46,13 @@
     <string name="my_overview_no_qr_make_appointment_button">Maak afspraak</string>
     <string name="my_overview_no_qr_make_qr_title">QR-code maken</string>
     <string name="my_overview_no_qr_replace_qr_title">QR-code vervangen</string>
-    <string name="my_overview_no_qr_make_qr_description">Zet jouw testuitslag of vaccinatie om in een persoonlijke QR-code.</string>
+    <string name="my_overview_no_qr_make_qr_description">Zet jouw negatieve testuitslag om in een persoonlijke QR-code.</string>
     <string name="my_overview_no_qr_make_qr_button">Maak QR-code</string>
     <string name="my_overview_no_qr_replace_qr_button">Vervang QR-code</string>
     <string name="choose_provider_toolbar">QR-code maken</string>
     <string name="choose_provider_title">Waar ben je getest?</string>
     <string name="choose_provider_description">Blijkt uit de test dat je geen corona hebt? Dan kan je van de testuitslag een QR-code maken. Geef aan waar je getest bent.</string>
-    <string name="choose_provider_commercial_title">Andere testlocatie</string>
+    <string name="choose_provider_commercial_title">Testen voor Toegang</string>
     <string name="choose_provider_commercial_subtitle">Haal testuitslag op</string>
     <string name="choose_provider_ggd_title">GGD</string>
     <string name="choose_provider_ggd_subtitle">Log in met je DigiD</string>
@@ -64,7 +64,7 @@
     <string name="commercial_test_type_qr_code_title">Ik heb een QR-code</string>
     <string name="commercial_test_type_no_code_title">Ik heb geen code</string>
     <string name="commercial_test_type_no_code_received_title">Ik heb geen code gekregen</string>
-    <string name="commercial_test_type_no_code_description"><![CDATA[Je krijgt van de testlocatie een ophaalcode met cijfers en letters.<br\><br\>Heb je geen code gekregen? Of ben je ‘m kwijtgeraakt? Neem dan contact op met de testlocatie.<br\><br\>Het kan zijn dat je je opnieuw moet laten testen.]]></string>
+    <string name="commercial_test_type_no_code_description"><![CDATA[Je krijgt van de testlocatie een ophaalcode met cijfers en letters.<br\><br\>Heb je geen code gekregen? Of ben je ‘m kwijtgeraakt? Neem dan contact op met de testlocatie.<br\><br\>]]></string>
     <string name="commercial_test_code_title">Testuitslag ophalen</string>
     <string name="commercial_test_code_description">Vul jouw ophaalcode in. Deze heb je van je testlocatie gekregen.</string>
     <string name="commercial_test_unique_code_header">Ophaalcode</string>
@@ -78,7 +78,7 @@
     <string name="commercial_test_invalid_qr_title">Ongeldige QR-code</string>
     <string name="commercial_test_invalid_qr_message">Deze QR-code is niet geldig. Scan de QR-code die je van je testlocatie hebt gekregen.</string>
     <string name="commercial_test_scanner_custom_title">QR-code scannen</string>
-    <string name="commercial_test_scanner_custom_message">Richt je toestel op de QR-code die je van de testlocatie hebt gekregen.</string>
+    <string name="commercial_test_scanner_custom_message">Richt je telefoon op de QR-code die je van de testlocatie hebt gekregen.</string>
     <string name="your_negative_test_results_title">Controleer je testuitslag</string>
     <string name="your_negative_test_results_description">Deze testuitslag is opgehaald bij de testlocatie.&lt;br\&gt;&lt;br\&gt;Kloppen de gegevens hieronder? Dan kun je van de negatieve testuitslag een QR-code maken. Dat is jouw bewijs.</string>
     <string name="your_negative_test_results_header">Opgehaalde testuitslag</string>
@@ -98,7 +98,7 @@
     <string name="testresult_not_known_title">Testuitslag nog niet bekend</string>
     <string name="testresult_not_known_description">Je testuitslag is nog niet bekend. Probeer het later nog eens.\nHeb je het idee dat dit niet klopt? Neem dan contact op met de testlocatie.</string>
     <string name="testresult_to_qr_code_title">Van jouw testuitslag wordt nu een QR-code gemaakt</string>
-    <string name="testresult_to_qr_code_description">In de QR-code wordt verwerkt dat je negatief getest bent op 2 februari om 14:06.\nIn de CoronaCheck-app is alleen de anonieme QR-code zichtbaar, zonder testdetails.</string>
+    <string name="testresult_to_qr_code_description">In de QR-code staat dat je negatief getest bent op 2 februari om 14:06.\nIn de CoronaCheck-app is alleen de anonieme QR-code zichtbaar, zonder testdetails.</string>
     <string name="button_continue">Verder</string>
     <string name="commercial_test_error_invalid_code">Deze code is niet geldig</string>
     <string name="commercial_test_error_invalid_combination">Geen geldige combinatie</string>
@@ -106,9 +106,9 @@
     <string name="no_negative_test_result_description"><![CDATA[Er is geen negatieve testuitslag beschikbaar.]]></string>
     <string name="test_result_not_known_title">Testuitslag nog niet bekend</string>
     <string name="test_result_not_known_description"><![CDATA[Probeer het later nog eens.<br\><br\>Neem voor vragen contact op met jouw testlocatie.]]></string>
-    <string name="about_this_app_description">CoronaCheck is ontwikkeld zodat bezoekers weer naar sociale, culturele en sportieve locaties kunnen. Met behulp van deze app bewijzen bezoekers dat ze kortgeleden negatief getest zijn op corona. Zo kan Nederland meer buiten de deur doen.</string>
+    <string name="about_this_app_description">CoronaCheck is ontwikkeld om de samenleving beetje bij beetje te openen. Met behulp van deze app bewijzen bezoekers dat ze gevaccineerd zijn. Of dat ze kortgeleden negatief getest zijn op corona. Zo kunnen Nederlanders meer buiten de deur doen en weer op reis binnen de Europese Unie.</string>
     <string name="test_result_already_signed_title">Testuitslag is al opgehaald</string>
-    <string name="test_result_already_signed_description"><![CDATA[Je testuitslag is al opgehaald en in een QR-code omgezet.<br\><br\> Klopt dit niet? Neem dan contact op met de testlocatie.]]></string>
+    <string name="test_result_already_signed_description"><![CDATA[Je testuitslag is al opgehaald. Ook is er al een QR-code van gemaakt..<br\><br\> Klopt dit niet? Neem dan contact op met de testlocatie.]]></string>
     <string name="item_test_result_expired"><![CDATA[Je QR-code is verlopen.<br\>Laat je opnieuw testen.]]></string>
     <string name="test_appointment_info_toolbar_title">Testafspraak maken</string>
     <string name="test_appointment_info_title">Testafspraak maken</string>
@@ -124,7 +124,7 @@
     <string name="app_status_deactivated_message">De app is niet meer in gebruik. Ga voor meer informatie naar CoronaCheck.nl</string>
     <string name="app_status_deactivated_action">Lees meer op de website</string>
     <string name="app_status_update_required_title">Tijd voor een update</string>
-    <string name="app_status_update_required_message">Download de laatste versie van de app om verder te gaan.</string>
+    <string name="app_status_update_required_message">Je hebt de laatste versie van de app nodig om verder te gaan.</string>
     <string name="app_status_update_required_action">Installeer update</string>
     <string name="app_status_internet_required_title">Je hebt geen internetverbinding</string>
     <string name="app_status_internet_required_message">Om de app op te starten heb je internet nodig.</string>
@@ -147,7 +147,7 @@
     <string name="your_negative_test_results_tooltip">Alleen testuitslagen die niet ouder zijn dan %1$s uur kun je gebruiken om een QR-code te maken.</string>
     <string name="your_negative_test_results_info">Alleen testuitslagen die niet ouder zijn dan %1$s uur kun je gebruiken om een QR-code van te maken.</string>
     <string name="create_qr_code_title">Van jouw testuitslag is een QR-code gemaakt</string>
-    <string name="create_qr_code_description"><![CDATA[In de QR-code is verwerkt dat je <b>negatief getest</b> bent (geen corona) op <b>%1$s om %2$s</b>.<br\><br\>In deze app is alleen de anonieme QR-code zichtbaar, zonder verdere testinformatie.]]></string>
+    <string name="create_qr_code_description"><![CDATA[In de QR-code staat dat je <b>negatief getest</b> bent (geen corona) op <b>%1$s om %2$s</b>.<br\><br\>In deze app is alleen de anonieme QR-code zichtbaar, zonder verdere testinformatie.]]></string>
     <string name="create_qr_code_button">Naar mijn QR</string>
     <string name="back">Terug</string>
     <string name="onboarding_page_indicator_label">Pagina %1$s van %2$s</string>
@@ -182,47 +182,48 @@
     <string name="url_accessibility">https://coronacheck.nl/nl/accessibility-in-app</string>
     <string name="create_qr_explanation_menu_title">QR-code maken</string>
     <string name="create_qr_explanation_menu_title_alternative">Voeg een QR-code toe</string>
-    <string name="create_qr_explanation_title">Over het maken van een QR-code</string>
-    <string name="create_qr_explanation_description"><![CDATA[Je kan een QR-code maken van een negatieve testuitslag, een herstelverklaring of van een vaccinatie. Dat is jouw bewijs.<br/><br/><b>Meerdere bewijzen</b><br/>Je kunt meerdere bewijzen tegelijkertijd hebben. Zowel een vaccinatiebewijs als een testbewijs, bijvoorbeeld. Ook kun je een bewijs voor je kinderen maken.<br/><br/><b>Ga je naar het buitenland?</b><br/>Als je een QR-code maakt, krijg je automatisch een QR-code voor binnen Nederland en een die in Europa bruikbaar is. Gebruik in het buitenland de Europese QR-code.<br/><br/><b>Geldigheid in Europa</b><br/>Weten welke test- en vaccinatiebewijzen geldig zijn in het land dat je bezoekt? Bekijk <a href="https://coronacheck.nl/nl/">deze pagina.</a> Zo voorkom je onverwachtse verrassingen ter plekke.]]></string>
+    <string name="create_qr_explanation_title">Een QR-code maken</string>
+    <string name="create_qr_explanation_description"><![CDATA[De app maakt in 3 stappen een QR-code. De QR-code is jouw persoonlijke bewijs.<br/><br/><b>1. Vaccinatie- of testbewijs?</b><br/>Je kunt een QR-code laten maken van een vaccinatie of van een negatieve testuitslag.<br/><br/><b>2. Automatisch gegevens ophalen </b><br/>De app haalt direct de gegevens van je vaccinatie of je testuitslag op.<br/><br/><b>  3. Gegevens controleren</b><br/>Check of de gegevens van je vaccinatie en/of testuitslag kloppen.<br/><br/><b>  Ga je naar het buitenland?</b><br/> De app maakt twee QR-codes: één voor Nederland en één voor Europa. Reis je buiten Nederland, maar binnen Europa? Gebruik dan je Europese QR-code.  In <a href="https://www.nederlandwereldwijd.nl/reizen-naar-het-buitenland"> dit overzicht</a> lees je of een QR-code geldig is in het land dat je bezoekt.]]></string>
     <string name="qr_code_type_title">Waar wil je een QR-code van maken?</string>
-    <string name="qr_code_type_description">Je kan een QR-code maken van een negatieve testuitslag.</string>
+    <string name="qr_code_type_description">Je kunt een QR-code maken van een negatieve testuitslag of van een vaccinatie.</string>
     <string name="qr_code_type_negative_test_title">Een negatieve testuitslag</string>
     <string name="qr_code_type_negative_test_description">Uit de test blijkt dat ik geen corona heb</string>
-    <string name="qr_code_type_vaccination_title">Een vaccinatiebewijs</string>
-    <string name="qr_code_type_vaccination_description">Ik ben volledig gevaccineerd</string>
+    <string name="qr_code_type_vaccination_title">Een vaccinatie</string>
+    <string name="qr_code_type_vaccination_description">Ik heb mijn prik of prikken gehad</string>
     <string name="get_vaccination_title">Vaccinatie ophalen</string>
     <string name="get_vaccination_description"><![CDATA[Ben je volledig gevaccineerd? Dan kun je een vaccinatiebewijs maken.<br\><br\> Vragen over vaccinaties? <a href="http://www.google.com">Lees hier meer.</a>]]></string>
-    <string name="get_vaccination_button">Login met DigiD</string>
+    <string name="get_vaccination_button">Log in met DigiD</string>
     <string name="your_retrieved_vaccinations_title">Jouw opgehaalde vaccinaties</string>
-    <string name="your_retrieved_vaccinations_description">Je kan een QR-code maken van je vaccinaties. Dat is jouw bewijs.</string>
+    <string name="your_retrieved_vaccinations_description">Je kunt een QR-code maken van je vaccinatie. Dat is jouw bewijs.</string>
     <string name="your_vaccination_result_toolbar_title">Jouw vaccinaties</string>
-    <string name="your_retrieved_vaccinations_toolbar">Vaccinatie ophalen</string>
+    <string name="your_retrieved_vaccinations_toolbar">Gegevens van je vaccinatie ophalen</string>
     <string name="retrieved_vaccination_title">Vaccinatie %1$d</string>
     <string name="retrieved_vaccinations_backbutton_title">Weet je zeker dat je wilt stoppen?</string>
     <string name="retrieved_vaccinations_backbutton_message">Je moet dan later opnieuw met DigiD inloggen om je vaccinatie op te halen.</string>
-    <string name="travel_toggle_europe">Ik reis binnen Europa</string>
+    <string name="travel_toggle_europe">Ik reis binnen de Europese Unie</string>
     <string name="travel_toggle_domestic">Ik ben in Nederland</string>
-    <string name="travel_toggle_change">Wijzigen</string>
+    <string name="travel_toggle_change_domestic">Aanpassen naar NL</string>
+    <string name="travel_toggle_change_eu">Aanpassen naar EU</string>
     <string name="travel_button_domestic">Nederland</string>
-    <string name="travel_button_europe">Europa</string>
-    <string name="travel_fragment_description">Gebruik binnen Nederland altijd je Nederlandse QR-code. Ga je de Nederlandse grens over of reis je in Europa? Gebruik dan je Europese bewijs.</string>
+    <string name="travel_button_europe">Europese Unie</string>
+    <string name="travel_fragment_description">Gebruik binnen Nederland altijd je Nederlandse QR-code. Reis je buiten Nederland, maar binnen de Europese Unie? Gebruik dan je Europese QR-code.</string>
     <string name="travel_fragment_footer">In je Nederlandse QR-code staan alleen je initialen en je geboortedag en maand.</string>
     <string name="dialog_negative_test_result_something_wrong_title">Er klopt iets niet</string>
-    <string name="dialog_negative_test_result_something_wrong_description">Kloppen jouw gegevens niet met je identiteitsbewijs? Neem contact op met je testlocatie om je  gegevens te laten aanpassen.</string>
-    <string name="validity_type_european_title">Europa</string>
+    <string name="dialog_negative_test_result_something_wrong_description">Zijn jouw gegevens anders dan op je identiteitsbewijs? Neem contact op met je testlocatie. Zij kunnen je gegevens laten aanpassen.</string>
+    <string name="validity_type_european_title">Europese Unie</string>
     <string name="validity_type_dutch_title">Nederland</string>
-    <string name="qr_card_vaccination_validity_domestic">Vaccinatiebewijs:\ngeldig tot en met %1$s</string>
-    <string name="qr_card_test_validity_domestic">Testbewijs:\ngeldig tot en met: %1$s</string>
+    <string name="qr_card_vaccination_validity_domestic">Vaccinatiebewijs:\ngeldig t/m %1$s</string>
+    <string name="qr_card_test_validity_domestic">Testbewijs:\ngeldig t/m %1$s</string>
     <string name="qr_card_recovery_validity_domestic">Herstelverklaring:\ngeldig tot en met %1$s</string>
     <string name="qr_card_vaccination_validity_eu">Vaccinatiedatum:\n%1$s</string>
     <string name="qr_card_recovery_validity_eu">Herstelverklaring:\ngeldig vanaf %1$s</string>
     <string name="qr_card_test_validity_eu">Testdatum:\n%1$s</string>
     <string name="qr_explanation_title_domestic">Over mijn Nederlandse QR-code</string>
-    <string name="qr_explanation_description_domestic"><![CDATA[In jouw Nederlandse QR-code staan minimale gegevens. In de QR-code staat dat je een groen scherm krijgt. In de QR-code staat niet of je een testbewijs, herstelverklaring of vaccinatie hebt.<br/><br/>Daarnaast staan er enkele gegevens van jou in de QR-code. Dit is ter controle, om zeker te zijn dat de QR-code bij jou hoort.<br/>De gegevens bestaan uit de eerste letter van je voornaam, de eerste letter van je achternaam, je geboortedag en geboortemaand. Er kunnen gegevens wegvallen om de herleidbaarheid naar jou zo klein mogelijk te maken.<br/><br/>Jouw gegevens: <b>%1$s</b><br/><br/>Gebruik in Nederland altijd de Nederlandse QR-code. De Europese QR-code is niet geldig in Nederland.]]></string>
+    <string name="qr_explanation_description_domestic"><![CDATA[In jouw Nederlandse QR-code staan minimale gegevens. In de QR-code staat niet of je een testbewijs of vaccinatie hebt. Maar wel of de QR-code geldig is.  Ook staan er enkele gegevens van jou in de QR-code. Dit is ter controle, om zeker te zijn dat de QR-code bij jou hoort. De gegevens bestaan uit de eerste letter van je voornaam, de eerste letter van je achternaam, je geboortedag en geboortemaand. Uit veiligheidsredenen kunnen er gegevens wegvallen.<br/><br/>Jouw gegevens: <b>%1$s</b><br/><br/>Gebruik in Nederland altijd de Nederlandse QR-code. De Europese QR-code is niet geldig in Nederland.]]></string>
     <string name="qr_explanation_title_eu">Over mijn Europese QR-code</string>
-    <string name="qr_explanation_description_eu_vaccination"><![CDATA[Reis je buiten Nederland, maar binnen de Europese Unie? Dan zijn er meer gegevens nodig. Daarom staan in de Europese QR-code de volgende gegevens:<br/><br/> Naam: <b>%1$s</b><br/> Geboortedatum: <b>%2$s</b><br/><br/> Ziekteverwekker: <b>%3$s</b><br/> Vaccin: <b>%4$s</b><br/> Vaccin type: <b>%5$s</b><br/> Producent: <b>%6$s</b><br/> Doses: <b>%7$s</b><br/> Prikdatum: <b>%8$s</b><br/> Land van vaccinatie: <b>%9$s</b><br/> Identificatiecode: <b>%10$s</b><br/><br/> Gebruik in de andere Europese landen altijd de Europese QR-code. De Nederlandse QR-code is niet geldig buiten Nederland.]]></string>
-    <string name="qr_explanation_description_eu_test"><![CDATA[Reis je buiten Nederland, maar binnen de Europese Unie? Dan zijn er meer gegevens nodig. Daarom staan in de Europese QR-code de volgende gegevens:<br/><br/> Naam: <b>%1$s</b><br/> Geboortedatum: <b>%2$s</b><br/><br/> Ziekteverwekker: <b>%3$s</b><br/> Type test: <b>%4$s</b><br/> Test naam: <b>%5$s</b><br/> Test datum: <b>%6$s</b><br/> Testuitslag: <b>%7$s</b><br/> Testlocatie: <b>%8$s</b><br/> Producent: <b>%9$s</b><br/> Land van vaccinatie: <b>%10$s</b><br/> Identificatiecode: <b>%11$s</b><br/><br/> Gebruik in de andere Europese landen altijd de Europese QR-code. De Nederlandse QR-code is niet geldig buiten Nederland.]]></string>
-    <string name="qr_explanation_icon_label">Uitleg over QR code</string>
+    <string name="qr_explanation_description_eu_vaccination"><![CDATA[Reis je buiten Nederland, maar binnen de Europese Unie? Dan zijn er meer gegevens nodig. Daarom staan in de Europese QR-code de volgende gegevens:<br/><br/> Naam: <b>%1$s</b><br/> Geboortedatum: <b>%2$s</b><br/><br/> Ziekteverwekker: <b>%3$s</b><br/> Vaccin: <b>%4$s</b><br/> Type vaccin: <b>%5$s</b><br/> Producent: <b>%6$s</b><br/> Doses: <b>%7$s</b><br/> Prikdatum: <b>%8$s</b><br/> Gevaccineerd in: <b>%9$s</b><br/> Identificatiecode: <b>%10$s</b><br/><br/> Gebruik in de andere Europese landen altijd de Europese QR-code. De Nederlandse QR-code is niet geldig buiten Nederland.]]></string>
+    <string name="qr_explanation_description_eu_test"><![CDATA[Reis je buiten Nederland, maar binnen de Europese Unie? Dan zijn er meer gegevens nodig. Daarom staan in de Europese QR-code de volgende gegevens:<br/><br/> Naam: <b>%1$s</b><br/> Geboortedatum: <b>%2$s</b><br/><br/> Ziekteverwekker: <b>%3$s</b><br/> Test: <b>%4$s</b><br/> Type test: <b>%5$s</b><br/> Testdatum: <b>%6$s</b><br/> Testuitslag: <b>%7$s</b><br/> Testlocatie: <b>%8$s</b><br/> Producent: <b>%9$s</b><br/> Getest in: <b>%10$s</b><br/> Identificatiecode: <b>%11$s</b><br/><br/> Gebruik in de andere Europese landen altijd de Europese QR-code. De Nederlandse QR-code is niet geldig buiten Nederland.]]></string>
+    <string name="qr_explanation_icon_label">Uitleg over QR-code</string>
     <string name="qr_card_expired">De QR-code is verlopen.</string>
     <string name="qr_card_vaccination_title_domestic">Vaccinatiebewijs:</string>
     <string name="qr_card_test_domestic">Testbewijs:</string>
@@ -230,18 +231,18 @@
     <string name="qr_card_vaccination_title_eu">Vaccinatiedatum:</string>
     <string name="qr_card_test_title_eu">Testdatum:</string>
     <string name="qr_card_recovery_title_eu">Hersteldatum:</string>
-    <string name="qr_card_validity_valid">geldig tot en met %1$s</string>
+    <string name="qr_card_validity_valid">geldig t/m %1$s</string>
     <string name="qr_card_validity_future_days">wordt automatisch geldig over %1$s dagen</string>
-    <string name="qr_card_validity_future_hours">wordt automatisch geldig in %1$s uur</string>
-    <string name="qr_card_validity_eu">Je Europese Qr-code wordt automatisch geldig als de Europese regelgeving ingaat (vanaf %1$s)</string>
-    <string name="your_test_result_explanation_toolbar_title">Over de testuitslag</string>
-    <string name="your_test_result_explanation_description"><![CDATA[De volgende gegevens zijn opgehaald bij de testlocatie:<br\><br\>Jouw gegevens:  <b>%1$s</b><br/><br/>Type test: <b>%2$s</b><br/>Testdatum: <b>%3$s</b><br/>Testuitslag: <b>%4$s</b><br/>Identificatiecode: <b>%5$s</b>]]></string>
+    <string name="qr_card_validity_future_hours">wordt automatisch geldig over %1$s uur</string>
+    <string name="qr_card_validity_eu">Je Europese QR-code wordt automatisch geldig als de Europese regelgeving ingaat (vanaf %1$s)</string>
+    <string name="your_test_result_explanation_toolbar_title">Wat is er opgehaald?</string>
+    <string name="your_test_result_explanation_description"><![CDATA[De volgende gegevens zijn opgehaald bij de testlocatie:<br\><br\>Jouw gegevens:  <b>%1$s</b><br/><br/>Type test: <b>%2$s</b><br/>Testdatum: <b>%3$s</b><br/>Testuitslag: <b>%4$s</b><br/>Testlocatie:<b>%5$s</b><br/>Identificatiecode: <b>%6$s</b>]]></string>
     <string name="your_test_result_explanation_negative_test_result">negatief (geen corona)</string>
     <string name="your_test_result_3.0_explanation_description"><![CDATA[De volgende gegevens zijn opgehaald bij de testlocatie:<br\><br\>Naam:  <b>%1$s</b><br/>Geboortedatum: <b>%2$s</b><br/><br/>Type test: <b>%3$s</b><br/>Test naam: <b>%4$s</b><br/>Testdatum: <b>%5$s</b><br/>Testuitslag: <b>%6$s</b><br/>Testlocatie: <b>%7$s</b><br/>Testproducent: <b>%8$s</b><br/>Identificatiecode: <b>%9$s</b>]]></string>
     <string name="your_negative_test_3.0_results_row_subtitle"><![CDATA[Testdatum: %1$s<br/>Geldig tot: %2$s<br/>Naam: %3$s<br/>Geboortedatum: %4$s]]></string>
     <string name="your_vaccination_row_subtitle"><![CDATA[Naam: %1$s<br/>Geboortedatum: %2$s]]></string>
     <string name="your_vaccination_explanation_toolbar_title">Over jouw vaccinatie</string>
-    <string name="your_vaccination_explanation_description"><![CDATA[De volgende vaccinatie gegevens zijn opgehaald:<br/><br/>Naam: <b>%1$s</b><br/>Geboortedatum: <b>%2$s</b><br/><br/>Ziekteverwekker: <b>%3$s</b><br/>Vaccin: <b>%4$s</b><br/>Vaccin type: <b>%5$s</b><br/>Producent: <b>%6$s</b><br/>Doses: <b>%7$s</b><br/>Prikdatum: <b>%8$s</b><br/>Land van test: <b>%9$s</b><br/>Identificatiecode: <b>%10$s</b>]]></string>
+    <string name="your_vaccination_explanation_description"><![CDATA[Deze gegevens van je vaccinatie zijn opgehaald:<br/><br/>Naam: <b>%1$s</b><br/>Geboortedatum: <b>%2$s</b><br/><br/>Ziekteverwekker: <b>%3$s</b><br/>Vaccin: <b>%4$s</b><br/>Doses: <b>%5$s</b><br/>Prikdatum: <b>%6$s</b><br/>Gevaccineerd in: <b>%7$s</b><br/>Identificatiecode: <b>%8$s</b>]]></string>
     <string name="your_vaccination_explanation_covid_19">COVID-19</string>
     <string name="your_vaccination_explanation_doses">%1$s van %2$s</string>
     <string name="my_overview_not_valid_domestic_but_is_in_eu">Je %1$s is niet geldig in Nederland. Je hebt alleen een Europese QR-code.</string>
@@ -253,19 +254,22 @@
     <string name="my_overview_green_card_not_valid_title_test">Over je testbewijs</string>
     <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_test"><![CDATA[Jouw testbewijs is niet (meer) geldig in Nederland. Daarom is er alleen een Europese QR-code gemaakt. Deze is geldig in de Europese Unie.<br/><br/>Dit kan verschillende oorzaken hebben. Het kan bijvoorbeeld zijn dat de geldigheidsduur in Nederland (40 uur) korter is dan de geldigheidsduur in de Europese Unie.<br/><br/>Wil je reizen binnen de Europese Unie? Bekijk op <a href="https://www.coronacheck.nl">deze pagina</a> waar je je kan laten testen.]]></string>
     <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_vaccination"><![CDATA[Jouw vaccinatiebewijs is niet (meer) geldig in Nederland. Daarom is er alleen een Europese QR-code gemaakt. Deze is geldig in de Europese Unie.<br/><br/>Dit kan verschillende oorzaken hebben. Het kan bijvoorbeeld zijn dat je maar één prik hebt gehad.]]></string>
-    <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_test"><![CDATA[Jouw testbewijs is niet geldig in de Europese Unie. Daarom is er alleen een Nederlandse QR-code gemaakt. Deze is geldig in Nederland.<br/><br/>Dit kan verschillende oorzaken hebben. Het kan bijvoorbeeld zijn dat je type test niet geaccepteerd wordt in de Europese Unie.]]></string>
-    <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_vaccination"><![CDATA[Jouw vaccinatiebewijs is niet geldig in de Europese Unie. Daarom is er alleen een Nederlandse QR-code gemaakt. Deze is geldig in Nederland.<br/><br/>Dit kan verschillende oorzaken hebben. Het kan bijvoorbeeld zijn dat je type vaccinatie  niet geaccepteerd wordt in de Europese Unie.]]></string>
+    <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_test"><![CDATA[Jouw testbewijs is niet geldig in de Europese Unie. Daarom is er alleen een Nederlandse QR-code gemaakt. Deze is geldig in Nederland.<br/><br/>Dit kan verschillende oorzaken hebben. Het kan bijvoorbeeld zijn dat dit type test niet geaccepteerd wordt in de Europese Unie.]]></string>
+    <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_vaccination"><![CDATA[Jouw vaccinatiebewijs is niet geldig in de Europese Unie. Daarom is er alleen een Nederlandse QR-code gemaakt. Deze is geldig in Nederland.<br/><br/>Dit kan verschillende oorzaken hebben. Het kan bijvoorbeeld zijn dat dit type vaccinatie niet geaccepteerd wordt in de Europese Unie.]]></string>
     <string name="rule_engine_no_origin_title">We kunnen geen bewijs maken</string>
-    <string name="rule_engine_no_test_origin_description"><![CDATA[Op dit moment kunnen we geen bewijs maken van jouw testbewijs. Dit kan verschillende oorzaken hebben. <a href="https://www.coronacheck.nl/wegwijzer">Lees hier meer.</a>]]></string>
+    <string name="rule_engine_no_test_origin_description"><![CDATA[Op dit moment kunnen we geen bewijs maken van jouw negatieve testuitslag. Dit kan verschillende oorzaken hebben. <a href="https://www.coronacheck.nl/wegwijzer">Lees hier meer.</a>]]></string>
     <string name="rule_engine_no_vaccination_origin_description"><![CDATA[Op dit moment kunnen we geen bewijs maken van jouw vaccinatie. Dit kan verschillende oorzaken hebben. <a href="https://www.coronacheck.nl/wegwijzer">Lees hier meer.</a>]]></string>
-    <string name="back_to_overview">Terug naar mijn overzicht</string>
-    <string name="no_vaccinations_title">Geen vaccinaties beschikbaar</string>
-    <string name="no_vaccinations_description"><![CDATA[Er zijn geen gegevens over je vaccinatie beschikbaar. Dit kan verschillende oorzaken hebben. Kijk <a href="https://www.coronacheck.nl/wegwijzer">hier</a> voor meer informatie<br/><br/>Ben je kortgeleden gevaccineerd? Dan kan het even duren totdat de gegevens beschikbaar zijn.]]></string>
-    <string name="no_test_results_title">Geen testbewijs beschikbaar</string>
-    <string name="no_test_results_description"><![CDATA[Er zijn geen gegevens over je testbewijs beschikbaar. Dit kan verschillende oorzaken hebben. Kijk <a href="https://www.coronacheck.nl/wegwijzer">hier</a> voor meer informatie.<br/><br/>Heb je al een negatieve testuitslag van de GGD gekregen? Dan kan het nog tot 2 uur duren voordat je de uitslag hier kunt ophalen. Probeer het later opnieuw.]]></string>
+    <string name="back_to_overview">Naar Mijn overzicht</string>
+    <string name="no_vaccinations_title">Geen vaccinatie(s) beschikbaar</string>
+    <string name="no_vaccinations_description"><![CDATA[Er zijn geen gegevens over je vaccinatie(s) beschikbaar. Dit kan verschillende oorzaken hebben. Kijk <a href="https://www.coronacheck.nl/wegwijzer">hier</a> voor meer informatie<br/><br/>Ben je kortgeleden gevaccineerd? Dan kan het even duren tot de gegevens beschikbaar zijn.]]></string>
+    <string name="no_test_results_title">Geen testuitslag beschikbaar</string>
+    <string name="no_test_results_description"><![CDATA[Er zijn geen gegevens over je testuitslag beschikbaar. Dit kan verschillende oorzaken hebben. Kijk <a href="https://www.coronacheck.nl/wegwijzer">hier</a> voor meer informatie.<br/><br/>Heb je al een negatieve testuitslag van de GGD gekregen? Dan kan het nog tot een paar uur duren voordat je de uitslag hier kunt ophalen. Probeer het later opnieuw.]]></string>
     <string name="not_yet_tested_title">Ik ben nog niet getest</string>
-    <string name="not_yet_tested_description"><![CDATA[Voor een QR-code moet je eerst een test doen. Blijkt uit de test dat je geen corona hebt? Dan kan je jouw QR-code maken.<br/><br/>Een testbewijs is geldig tot %1$s uur na het moment van testen. Plan je test dus op tijd. En zorg dat jouw QR-code binnen %2$s uur gecheckt is bij de ingang.]]></string>
+    <string name="not_yet_tested_description"><![CDATA[Voor een testbewijs moet je eerst een test doen. Blijkt uit de test dat je geen corona hebt? Dan kan je jouw QR-code maken.<br/><br/>Een testbewijs is geldig tot %1$s uur na het moment van testen. Plan je test dus op tijd. En zorg dat de QR-code binnen %2$s uur gecheckt is bij de ingang.]]></string>
     <string name="not_yet_tested_button">Maak een afspraak</string>
+    <string name="privacy_policy_3"><![CDATA[In de QR-code staan minimale <b>persoonsgegevens</b>.]]></string>
+    <string name="choose_provider_no_digid">Ik heb geen DigiD</string>
+    <string name="new_terms"><![CDATA[Lees <a href="https://coronacheck.nl/nl/privacy-in-app">hier</a> de volledige privacyverklaring.]]></string>
     <string name="too_busy_title">Sorry, het is erg druk</string>
     <string name="too_busy_description">Het is druk bij een aangesloten partij. Daardoor kunnen je gegevens nu niet worden opgehaald. Probeer het later nog eens.</string>
 </resources>
