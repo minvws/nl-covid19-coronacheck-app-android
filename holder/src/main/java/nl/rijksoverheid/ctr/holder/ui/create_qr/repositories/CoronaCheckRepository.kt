@@ -23,7 +23,6 @@ import retrofit2.HttpException
 interface CoronaCheckRepository {
     suspend fun configProviders(): RemoteConfigProviders
     suspend fun accessTokens(jwt: String): RemoteAccessTokens
-    suspend fun getTestIsm(test: String, sToken: String, icm: String): TestIsmResult
     suspend fun remoteNonce(): RemoteNonce
     suspend fun getCredentials(
         stoken: String,
@@ -45,35 +44,6 @@ open class CoronaCheckRepositoryImpl(
 
     override suspend fun accessTokens(jwt: String): RemoteAccessTokens {
         return api.getAccessTokens(authorization = "Bearer $jwt")
-    }
-
-    @Suppress("BlockingMethodInNonBlockingContext")
-    override suspend fun getTestIsm(
-        test: String,
-        sToken: String,
-        icm: String
-    ): TestIsmResult {
-        val response = api.getTestIsm(
-            GetTestIsmPostData(
-                test = test,
-                sToken = sToken,
-                icm = JSONObject(icm).toString()
-            )
-        )
-
-        return if (response.isSuccessful) {
-            val body =
-                response.body()?.string()
-                    ?: throw IllegalStateException("Body should not be null")
-            TestIsmResult.Success(body)
-        } else {
-            val errorBody = response.errorBody() ?: throw HttpException(response)
-            withContext(Dispatchers.IO) {
-                val responseError =
-                    errorResponseConverter.convert(errorBody) ?: throw HttpException(response)
-                TestIsmResult.Error(response.code(), responseError)
-            }
-        }
     }
 
     override suspend fun remoteNonce(): RemoteNonce {
