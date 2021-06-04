@@ -25,6 +25,7 @@ interface PersistConfigUseCase {
 class PersistConfigUseCaseImpl(
     private val appConfigPersistenceManager: AppConfigPersistenceManager,
     private val appConfigStorageManager: AppConfigStorageManager,
+    private val isVerifierApp: Boolean,
     private val cacheDir: String,
     private val moshi: Moshi
 ) : PersistConfigUseCase {
@@ -40,17 +41,19 @@ class PersistConfigUseCaseImpl(
                 json = publicKeysContents
             )
 
-            val configFile = File(cacheDir, "config.json")
-            val publicKeysFile = File(cacheDir, "public_keys.json")
-            val configStorageResult = appConfigStorageManager.storageFile(configFile, configContents)
-            val publicKeysStorageResult = appConfigStorageManager.storageFile(publicKeysFile, publicKeysContents)
-
-            return@withContext if (configStorageResult is StorageResult.Success && publicKeysStorageResult is StorageResult.Success) {
-                StorageResult.Success
-            } else if (configStorageResult is StorageResult.Error) {
-                configStorageResult
-            } else {
-                publicKeysStorageResult
+            if (isVerifierApp) {
+                val configFile = File(cacheDir, "config.json")
+                val publicKeysFile = File(cacheDir, "public_keys.json")
+                val configStorageResult = appConfigStorageManager.storageFile(configFile, configContents)
+                val publicKeysStorageResult = appConfigStorageManager.storageFile(publicKeysFile, publicKeysContents)
+                if (configStorageResult is StorageResult.Error) {
+                    return@withContext configStorageResult
+                }
+                if (publicKeysStorageResult is StorageResult.Error) {
+                    return@withContext configStorageResult
+                }
             }
+
+            return@withContext StorageResult.Success
         }
 }
