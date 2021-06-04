@@ -29,66 +29,77 @@ class GetEventsUseCaseImpl(
         data class Success(val eventProviderWithEvents: Map<RemoteConfigProviders.EventProvider, RemoteAccessTokens.Token>):
             EventProviderWithEventResult()
 
+        data class ServerError(val httpCode: Int) : EventProviderWithEventResult()
+        object NetworkError : EventProviderWithEventResult()
         object TooBusy: EventProviderWithEventResult()
     }
 
+    /**
+     * Get a list of event providers that have events for us
+     */
     private suspend fun getEventProviderWithEvents(jwt: String, originType: OriginType): EventProviderWithEventResult {
-        // Fetch event providers
-        val eventProviders = configProvidersUseCase.eventProviders()
+        try {
+            // Fetch event providers
+            val eventProviders = configProvidersUseCase.eventProviders()
 
-        // Fetch access tokens
-        val accessTokens = coronaCheckRepository.accessTokens(jwt)
+            // Fetch access tokens
+            val accessTokens = coronaCheckRepository.accessTokens(jwt)
 
-        // Map event providers to access tokens
-        val eventProvidersWithAccessTokenMap =
-            eventProviders.associateWith { eventProvider -> accessTokens.tokens.first { eventProvider.providerIdentifier == it.providerIdentifier } }
+            // Map event providers to access tokens
+            val eventProvidersWithAccessTokenMap =
+                eventProviders.associateWith { eventProvider -> accessTokens.tokens.first { eventProvider.providerIdentifier == it.providerIdentifier } }
 
-        // A list of event providers that have events
-        val eventProviderWithEvents = eventProvidersWithAccessTokenMap.filter {
-            val eventProvider = it.key
-            val accessToken = it.value
+            // A list of event providers that have events
+            val eventProviderWithEvents = eventProvidersWithAccessTokenMap.filter {
+                val eventProvider = it.key
+                val accessToken = it.value
 
-            when (originType) {
-                is OriginType.Test -> {
-                    try {
-                        val unomi = eventProviderRepository.unomiTestEvents(
-                            url = eventProvider.unomiUrl,
-                            token = accessToken.unomi
-                        )
-                        unomi.informationAvailable
-                    } catch (e: HttpException) {
-                        if (e.code() == 429) {
-                            return EventProviderWithEventResult.TooBusy
+                when (originType) {
+                    is OriginType.Test -> {
+                        try {
+                            val unomi = eventProviderRepository.unomiTestEvents(
+                                url = eventProvider.unomiUrl,
+                                token = accessToken.unomi
+                            )
+                            unomi.informationAvailable
+                        } catch (e: HttpException) {
+                            if (e.code() == 429) {
+                                return EventProviderWithEventResult.TooBusy
+                            }
+                            false
+                        } catch (e: IOException) {
+                            false
                         }
-                        false
-                    } catch (e: IOException) {
+                    }
+                    is OriginType.Vaccination -> {
+                        try {
+                            val unomi = eventProviderRepository.unomiVaccinationEvents(
+                                url = eventProvider.unomiUrl,
+                                token = accessToken.unomi
+                            )
+                            unomi.informationAvailable
+                        } catch (e: HttpException) {
+                            if (e.code() == 429) {
+                                return EventProviderWithEventResult.TooBusy
+                            }
+                            false
+                        } catch (e: IOException) {
+                            false
+                        }
+                    }
+                    is OriginType.Recovery -> {
+                        // TODO
                         false
                     }
-                }
-                is OriginType.Vaccination -> {
-                    try {
-                        val unomi = eventProviderRepository.unomiVaccinationEvents(
-                            url = eventProvider.unomiUrl,
-                            token = accessToken.unomi
-                        )
-                        unomi.informationAvailable
-                    } catch (e: HttpException) {
-                        if (e.code() == 429) {
-                            return EventProviderWithEventResult.TooBusy
-                        }
-                        false
-                    } catch (e: IOException) {
-                        false
-                    }
-                }
-                is OriginType.Recovery -> {
-                    // TODO
-                    false
                 }
             }
-        }
 
-        return EventProviderWithEventResult.Success(eventProviderWithEvents)
+            return EventProviderWithEventResult.Success(eventProviderWithEvents)
+        } catch (e: HttpException) {
+            return EventProviderWithEventResult.ServerError(e.code())
+        } catch (e: IOException) {
+            return EventProviderWithEventResult.NetworkError
+        }
     }
 
     override suspend fun getVaccinationEvents(jwt: String): EventsResult<RemoteEventsVaccinations>{
@@ -107,9 +118,14 @@ class GetEventsUseCaseImpl(
                             )
                     }
 
-                    EventsResult.Success(
-                        signedModels = vaccinationEvents
-                    )
+                    val hasNoEvents = vaccinationEvents.map { models -> models.model.events ?: listOf() }.flatten().isEmpty()
+                    if (hasNoEvents) {
+                        EventsResult.HasNoEvents
+                    } else {
+                        EventsResult.Success(
+                            signedModels = vaccinationEvents
+                        )
+                    }
                 } catch (e: HttpException) {
                     return if (e.code() == 429) {
                         EventsResult.TooBusy
@@ -122,6 +138,12 @@ class GetEventsUseCaseImpl(
             }
             is EventProviderWithEventResult.TooBusy -> {
                 return EventsResult.TooBusy
+            }
+            is EventProviderWithEventResult.NetworkError -> {
+                return EventsResult.NetworkError
+            }
+            is EventProviderWithEventResult.ServerError -> {
+                return EventsResult.ServerError(result.httpCode)
             }
         }
     }
@@ -142,9 +164,14 @@ class GetEventsUseCaseImpl(
                             )
                     }
 
-                    EventsResult.Success(
-                        signedModels = negativeTestEvents
-                    )
+                    val hasNoEvents = negativeTestEvents.map { models -> models.model.events ?: listOf() }.flatten().isEmpty()
+                    if (hasNoEvents) {
+                        EventsResult.HasNoEvents
+                    } else {
+                        EventsResult.Success(
+                            signedModels = negativeTestEvents
+                        )
+                    }
                 } catch (e: HttpException) {
                     return if (e.code() == 429) {
                         EventsResult.TooBusy
@@ -158,6 +185,12 @@ class GetEventsUseCaseImpl(
             is EventProviderWithEventResult.TooBusy -> {
                 return EventsResult.TooBusy
             }
+            is EventProviderWithEventResult.ServerError -> {
+                return EventsResult.ServerError(result.httpCode)
+            }
+            is EventProviderWithEventResult.NetworkError -> {
+                return EventsResult.NetworkError
+            }
         }
     }
 }
@@ -167,6 +200,7 @@ sealed class EventsResult<out T> {
         val signedModels: List<SignedResponseWithModel<T>>
     ) :
         EventsResult<T>()
+    object HasNoEvents: EventsResult<Nothing>()
     data class ServerError(val httpCode: Int) : EventsResult<Nothing>()
     object TooBusy : EventsResult<Nothing>()
     object NetworkError : EventsResult<Nothing>()
