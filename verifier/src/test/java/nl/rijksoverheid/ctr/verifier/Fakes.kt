@@ -241,6 +241,10 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
                 ""
             )
         }
+
+        override fun readCredentialLegacy(credentials: ByteArray): DomesticCredential {
+            TODO("Not yet implemented")
+        }
     }
 }
 

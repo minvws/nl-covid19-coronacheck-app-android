@@ -22,7 +22,6 @@ class TestResultsMigrationManagerImpl(
 
         val existingCredentials = persistenceManager.getCredentials()
         if (existingCredentials != null) {
-
             try {
                 val localDomesticGreenCardId = holderDatabase.greenCardDao().insert(
                     GreenCardEntity(
