@@ -47,6 +47,7 @@ class AppConfigViewModelTest {
         loadPublicKeysUseCase = loadPublicKeyUseCase,
         appConfigStorageManager = appConfigStorageManager,
         cacheDirPath = "",
+        isVerifierApp = false,
         versionCode = 0
     )
     private val mobileCoreWrapper: MobileCoreWrapper = mockk(relaxed = true)
@@ -106,7 +107,17 @@ class AppConfigViewModelTest {
     }
 
     @Test
-    fun `refresh with no config files emits internet required status`() = runBlocking {
+    fun `refresh with no config files in verifier app emits internet required status`() = runBlocking {
+        val appConfigViewModel = AppConfigViewModelImpl(
+            appConfigUseCase = appConfigUseCase,
+            appStatusUseCase = appStatusUseCase,
+            persistConfigUseCase = persistConfigUseCase,
+            loadPublicKeysUseCase = loadPublicKeyUseCase,
+            appConfigStorageManager = appConfigStorageManager,
+            cacheDirPath = "",
+            isVerifierApp = true,
+            versionCode = 0
+        )
         val appConfig = AppConfig(
             minimumVersion = 0,
             appDeactivated = false,
@@ -132,5 +143,34 @@ class AppConfigViewModelTest {
         appConfigViewModel.refresh(mobileCoreWrapper)
 
         Assert.assertEquals(appConfigViewModel.appStatusLiveData.value, AppStatus.InternetRequired)
+    }
+
+    @Test
+    fun `refresh in the holder app has no interaction with config files and initialise the verifier`() {
+        val appConfig = AppConfig(
+            minimumVersion = 0,
+            appDeactivated = false,
+            informationURL = "dummy",
+            configTtlSeconds = 0,
+            maxValidityHours = 0
+        )
+
+        val publicKeys = PublicKeys(
+            clKeys = listOf()
+        )
+
+        coEvery { appConfigUseCase.get() } answers {
+            ConfigResult.Success(
+                appConfig = appConfig,
+                publicKeys = publicKeys
+            )
+        }
+
+        coEvery { appStatusUseCase.get(any(), any()) } answers { AppStatus.NoActionRequired }
+
+        appConfigViewModel.refresh(mobileCoreWrapper)
+
+        coVerify(exactly = 0) { mobileCoreWrapper.initializeVerifier(any()) }
+        coVerify(exactly = 0) { appConfigStorageManager.areConfigFilesPresent() }
     }
 }

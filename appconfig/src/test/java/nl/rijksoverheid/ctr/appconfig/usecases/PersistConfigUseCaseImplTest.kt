@@ -47,6 +47,7 @@ class PersistConfigUseCaseImplTest {
             appConfigPersistenceManager = appConfigPersistenceManager,
             appConfigStorageManager = appConfigStorageManager,
             cacheDir = "",
+            isVerifierApp = false,
             moshi = Moshi.Builder().build()
         )
 
