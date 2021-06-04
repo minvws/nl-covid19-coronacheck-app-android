@@ -25,7 +25,14 @@ class GetEventsUseCaseImpl(
     private val eventProviderRepository: EventProviderRepository
 ) : GetEventsUseCase {
 
-    private suspend fun getEventProviderWithEvent(jwt: String, originType: OriginType):  Map<RemoteConfigProviders.EventProvider, RemoteAccessTokens.Token> {
+    sealed class EventProviderWithEventResult{
+        data class Success(val eventProviderWithEvents: Map<RemoteConfigProviders.EventProvider, RemoteAccessTokens.Token>):
+            EventProviderWithEventResult()
+
+        object TooBusy: EventProviderWithEventResult()
+    }
+
+    private suspend fun getEventProviderWithEvents(jwt: String, originType: OriginType): EventProviderWithEventResult {
         // Fetch event providers
         val eventProviders = configProvidersUseCase.eventProviders()
 
@@ -37,7 +44,7 @@ class GetEventsUseCaseImpl(
             eventProviders.associateWith { eventProvider -> accessTokens.tokens.first { eventProvider.providerIdentifier == it.providerIdentifier } }
 
         // A list of event providers that have events
-        return eventProvidersWithAccessTokenMap.filter {
+        val eventProviderWithEvents = eventProvidersWithAccessTokenMap.filter {
             val eventProvider = it.key
             val accessToken = it.value
 
@@ -50,6 +57,9 @@ class GetEventsUseCaseImpl(
                         )
                         unomi.informationAvailable
                     } catch (e: HttpException) {
+                        if (e.code() == 429) {
+                            return EventProviderWithEventResult.TooBusy
+                        }
                         false
                     } catch (e: IOException) {
                         false
@@ -63,6 +73,9 @@ class GetEventsUseCaseImpl(
                         )
                         unomi.informationAvailable
                     } catch (e: HttpException) {
+                        if (e.code() == 429) {
+                            return EventProviderWithEventResult.TooBusy
+                        }
                         false
                     } catch (e: IOException) {
                         false
@@ -74,61 +87,77 @@ class GetEventsUseCaseImpl(
                 }
             }
         }
+
+        return EventProviderWithEventResult.Success(eventProviderWithEvents)
     }
 
     override suspend fun getVaccinationEvents(jwt: String): EventsResult<RemoteEventsVaccinations>{
-        return try {
+        return when (val result = getEventProviderWithEvents(jwt, OriginType.Vaccination)) {
+            is EventProviderWithEventResult.Success -> {
+                try {
+                    val vaccinationEvents = result.eventProviderWithEvents.map {
+                        val eventProvider = it.key
+                        val accessToken = it.value
 
-            val eventProviderWithEvents = getEventProviderWithEvent(jwt, OriginType.Vaccination)
+                        eventProviderRepository
+                            .vaccinationEvents(
+                                url = eventProvider.eventUrl,
+                                token = accessToken.event,
+                                signingCertificateBytes = eventProvider.cms
+                            )
+                    }
 
-            // Get vaccination events from event providers
-            val remoteEvents = eventProviderWithEvents.map {
-                val eventProvider = it.key
-                val accessToken = it.value
-
-                eventProviderRepository
-                    .vaccinationEvents(
-                        url = eventProvider.eventUrl,
-                        token = accessToken.event,
-                        signingCertificateBytes = eventProvider.cms
+                    EventsResult.Success(
+                        signedModels = vaccinationEvents
                     )
+                } catch (e: HttpException) {
+                    return if (e.code() == 429) {
+                        EventsResult.TooBusy
+                    } else {
+                        EventsResult.ServerError(e.code())
+                    }
+                } catch (e: IOException) {
+                    return EventsResult.NetworkError
+                }
             }
-
-            EventsResult.Success(
-                signedModels = remoteEvents
-            )
-        } catch (ex: HttpException) {
-            return EventsResult.ServerError(ex.code())
-        } catch (ex: IOException) {
-            return EventsResult.NetworkError
+            is EventProviderWithEventResult.TooBusy -> {
+                return EventsResult.TooBusy
+            }
         }
     }
 
     override suspend fun getTestResult3Events(jwt: String): EventsResult<RemoteEventsNegativeTests> {
-        return try {
+        return when (val result = getEventProviderWithEvents(jwt, OriginType.Test)) {
+            is EventProviderWithEventResult.Success -> {
+                try {
+                    val negativeTestEvents = result.eventProviderWithEvents.map {
+                        val eventProvider = it.key
+                        val accessToken = it.value
 
-            val eventProviderWithEvents = getEventProviderWithEvent(jwt, OriginType.Test)
+                        eventProviderRepository
+                            .negativeTestEvent(
+                                url = eventProvider.eventUrl,
+                                token = accessToken.event,
+                                signingCertificateBytes = eventProvider.cms
+                            )
+                    }
 
-            // Get vaccination events from event providers
-            val negativeTestEvents = eventProviderWithEvents.map {
-                val eventProvider = it.key
-                val accessToken = it.value
-
-                eventProviderRepository
-                    .negativeTestEvent(
-                        url = eventProvider.eventUrl,
-                        token = accessToken.event,
-                        signingCertificateBytes = eventProvider.cms
+                    EventsResult.Success(
+                        signedModels = negativeTestEvents
                     )
+                } catch (e: HttpException) {
+                    return if (e.code() == 429) {
+                        EventsResult.TooBusy
+                    } else {
+                        EventsResult.ServerError(e.code())
+                    }
+                } catch (e: IOException) {
+                    return EventsResult.NetworkError
+                }
             }
-
-            EventsResult.Success(
-                signedModels = negativeTestEvents
-            )
-        } catch (ex: HttpException) {
-            return EventsResult.ServerError(ex.code())
-        } catch (ex: IOException) {
-            return EventsResult.NetworkError
+            is EventProviderWithEventResult.TooBusy -> {
+                return EventsResult.TooBusy
+            }
         }
     }
 }
@@ -138,7 +167,7 @@ sealed class EventsResult<out T> {
         val signedModels: List<SignedResponseWithModel<T>>
     ) :
         EventsResult<T>()
-
     data class ServerError(val httpCode: Int) : EventsResult<Nothing>()
+    object TooBusy : EventsResult<Nothing>()
     object NetworkError : EventsResult<Nothing>()
 }

@@ -81,6 +81,13 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
                         )
                     }
                 }
+                is EventsResult.TooBusy -> {
+                    findNavController().navigate(ChooseProviderFragmentDirections.actionCouldNotCreateQr(
+                        toolbarTitle = getString(R.string.commercial_test_type_title),
+                        title = getString(R.string.too_busy_title),
+                        description = getString(R.string.too_busy_description)
+                    ))
+                }
                 is EventsResult.NetworkError -> {
                     dialogUtil.presentDialog(
                         context = requireContext(),

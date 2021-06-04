@@ -266,4 +266,6 @@
     <string name="not_yet_tested_title">Ik ben nog niet getest</string>
     <string name="not_yet_tested_description"><![CDATA[Voor een QR-code moet je eerst een test doen. Blijkt uit de test dat je geen corona hebt? Dan kan je jouw QR-code maken.<br/><br/>Een testbewijs is geldig tot %1$s uur na het moment van testen. Plan je test dus op tijd. En zorg dat jouw QR-code binnen %2$s uur gecheckt is bij de ingang.]]></string>
     <string name="not_yet_tested_button">Maak een afspraak</string>
+    <string name="too_busy_title">Sorry, het is erg druk</string>
+    <string name="too_busy_description">Het is druk bij een aangesloten partij. Daardoor kunnen je gegevens nu niet worden opgehaald. Probeer het later nog eens.</string>
 </resources>

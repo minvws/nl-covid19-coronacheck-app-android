@@ -64,6 +64,15 @@ class GetVaccinationFragment : DigiDFragment(R.layout.fragment_get_vaccination) 
                         )
                     }
                 }
+                is EventsResult.TooBusy -> {
+                    findNavController().navigate(
+                        GetVaccinationFragmentDirections.actionCouldNotCreateQr(
+                            toolbarTitle = getString(R.string.your_vaccination_result_toolbar_title),
+                            title = getString(R.string.too_busy_title),
+                            description = getString(R.string.too_busy_description)
+                        )
+                    )
+                }
                 is EventsResult.NetworkError -> {
                     dialogUtil.presentDialog(
                         context = requireContext(),
