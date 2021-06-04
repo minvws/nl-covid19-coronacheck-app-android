@@ -34,6 +34,7 @@ class AppConfigViewModelImpl(
     private val loadPublicKeysUseCase: LoadPublicKeysUseCase,
     private val appConfigStorageManager: AppConfigStorageManager,
     private val cacheDirPath: String,
+    private val isVerifierApp: Boolean,
     private val versionCode: Int
 ) : AppConfigViewModel() {
 
@@ -51,11 +52,13 @@ class AppConfigViewModelImpl(
                 )
             }
 
-            if (!appConfigStorageManager.areConfigFilesPresent()) {
-                return@launch appStatusLiveData.postValue(AppStatus.InternetRequired)
-            }
+            if (isVerifierApp) {
+                if (!appConfigStorageManager.areConfigFilesPresent()) {
+                    return@launch appStatusLiveData.postValue(AppStatus.InternetRequired)
+                }
 
-            mobileCoreWrapper.initializeVerifier(cacheDirPath)
+                mobileCoreWrapper.initializeVerifier(cacheDirPath)
+            }
 
             appStatusLiveData.postValue(appStatus)
         }
