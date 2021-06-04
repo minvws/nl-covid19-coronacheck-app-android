@@ -130,7 +130,8 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
                 }
                 is TestResult.NoNegativeTestResult -> {
                     findNavController().navigate(
-                        CommercialTestCodeFragmentDirections.actionNoTestResult(
+                        CommercialTestCodeFragmentDirections.actionCouldNotCreateQr(
+                            toolbarTitle = getString(R.string.commercial_test_type_title),
                             title = getString(R.string.no_negative_test_result_title),
                             description = appConfigUtil.getStringWithTestValidity(R.string.no_negative_test_result_description)
                         )
@@ -138,7 +139,8 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
                 }
                 is TestResult.Pending -> {
                     findNavController().navigate(
-                        CommercialTestCodeFragmentDirections.actionNoTestResult(
+                        CommercialTestCodeFragmentDirections.actionCouldNotCreateQr(
+                            toolbarTitle = getString(R.string.commercial_test_type_title),
                             title = getString(R.string.test_result_not_known_title),
                             description = getString(R.string.test_result_not_known_description)
                         )

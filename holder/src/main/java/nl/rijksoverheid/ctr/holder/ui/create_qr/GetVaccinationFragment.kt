@@ -43,15 +43,26 @@ class GetVaccinationFragment : DigiDFragment(R.layout.fragment_get_vaccination) 
         getVaccinationViewModel.eventsResult.observe(viewLifecycleOwner, EventObserver {
             when (it) {
                 is EventsResult.Success<RemoteEventsVaccinations> -> {
-                    findNavController().navigate(
-                        GetVaccinationFragmentDirections.actionYourEvents(
-                            type = YourEventsFragmentType.Vaccination(
-                                remoteEvents = it.signedModels.map { signedModel -> signedModel.model to signedModel.rawResponse }
-                                    .toMap()
-                            ),
-                            toolbarTitle = getString(R.string.your_vaccination_result_toolbar_title)
+                    val hasNoEvents = it.signedModels.map { models -> models.model.events ?: listOf() }.flatten().isEmpty()
+                    if (hasNoEvents) {
+                        findNavController().navigate(
+                            GetVaccinationFragmentDirections.actionCouldNotCreateQr(
+                                toolbarTitle = getString(R.string.your_vaccination_result_toolbar_title),
+                                title = getString(R.string.no_vaccinations_title),
+                                description = getString(R.string.no_vaccinations_description)
+                            )
                         )
-                    )
+                    } else {
+                        findNavController().navigate(
+                            GetVaccinationFragmentDirections.actionYourEvents(
+                                type = YourEventsFragmentType.Vaccination(
+                                    remoteEvents = it.signedModels.map { signedModel -> signedModel.model to signedModel.rawResponse }
+                                        .toMap()
+                                ),
+                                toolbarTitle = getString(R.string.your_vaccination_result_toolbar_title)
+                            )
+                        )
+                    }
                 }
                 is EventsResult.NetworkError -> {
                     dialogUtil.presentDialog(

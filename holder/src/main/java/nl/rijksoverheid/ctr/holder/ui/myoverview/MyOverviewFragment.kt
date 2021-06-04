@@ -166,8 +166,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                     adapterItems.add(MyOverviewGreenCardExpiredAdapterItem(
                         greenCardType = myOverviewItem.greenCardType,
                         onDismissClick = {
-                            // Refresh so card is removed
-                            myOverviewViewModel.refreshOverviewItems()
+                            section.remove(it)
                         }
                     ))
                 }

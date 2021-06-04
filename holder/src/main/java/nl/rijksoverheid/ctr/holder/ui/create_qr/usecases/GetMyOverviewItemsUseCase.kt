@@ -13,6 +13,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItem.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItem.GreenCardItem.CredentialState
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CredentialUtil
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginUtil
 import java.time.OffsetDateTime
@@ -40,6 +41,7 @@ interface GetMyOverviewItemsUseCase {
 class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
                                     private val credentialUtil: CredentialUtil,
                                     private val cachedAppConfigUseCase: CachedAppConfigUseCase,
+                                    private val greenCardUtil: GreenCardUtil,
                                     private val originUtil: OriginUtil) :
     GetMyOverviewItemsUseCase {
 
@@ -121,7 +123,7 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
         // Loop through all green cards that exists in the database and map them to UI models
         val items = greenCardsForSelectedType.map { greenCard ->
             // If the origin with the highest possible expiration time is expired
-            if (OffsetDateTime.now(ZoneOffset.UTC) >= greenCard.origins.maxByOrNull { it.expirationTime }!!.expirationTime) {
+            if (greenCardUtil.isExpired(greenCard)) {
                 // Remove green card from database
                 holderDatabase.greenCardDao().delete(greenCard.greenCardEntity)
 

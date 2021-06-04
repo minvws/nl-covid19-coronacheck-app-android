@@ -126,21 +126,6 @@ fun fakeCachedAppConfigUseCase(
     }
 }
 
-fun fakeQrCodeUseCase(
-    bitmap: Bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
-): QrCodeUseCase {
-    return object : QrCodeUseCase {
-        override suspend fun qrCode(
-            credentials: ByteArray,
-            shouldDisclose: Boolean,
-            qrCodeWidth: Int,
-            qrCodeHeight: Int
-        ): Bitmap {
-            return bitmap
-        }
-    }
-}
-
 fun fakeIntroductionViewModel(
     introductionStatus: IntroductionStatus = IntroductionStatus.IntroductionFinished.NoActionRequired,
 ): IntroductionViewModel {

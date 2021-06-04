@@ -5,8 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import nl.rijksoverheid.ctr.holder.databinding.FragmentNoTestResultBinding
+import nl.rijksoverheid.ctr.holder.databinding.FragmentCouldNotCreateQrBinding
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -15,22 +16,25 @@ import nl.rijksoverheid.ctr.holder.databinding.FragmentNoTestResultBinding
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class NoTestResultFragment : Fragment() {
+class CouldNotCreateQrFragment : Fragment() {
 
-    private val args: NoTestResultFragmentArgs by navArgs()
+    private val args: CouldNotCreateQrFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return FragmentNoTestResultBinding.inflate(inflater, container, false).root
+        return FragmentCouldNotCreateQrBinding.inflate(inflater, container, false).root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val binding = FragmentNoTestResultBinding.bind(view)
+        val binding = FragmentCouldNotCreateQrBinding.bind(view)
         binding.title.text = args.title
         binding.description.setHtmlTextWithBullets(args.description, false)
+        binding.bottom.setButtonClick {
+            findNavController().navigate(CouldNotCreateQrFragmentDirections.actionMyOverview())
+        }
     }
 }

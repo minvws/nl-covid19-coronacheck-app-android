@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.EventProviderRepository
@@ -15,7 +16,7 @@ import java.io.IOException
  */
 interface GetEventsUseCase {
     suspend fun getVaccinationEvents(jwt: String): EventsResult<RemoteEventsVaccinations>
-    suspend fun getNegativeTestEvents(jwt: String): EventsResult<RemoteEventsNegativeTests>
+    suspend fun getTestResult3Events(jwt: String): EventsResult<RemoteEventsNegativeTests>
 }
 
 class GetEventsUseCaseImpl(
@@ -24,7 +25,7 @@ class GetEventsUseCaseImpl(
     private val eventProviderRepository: EventProviderRepository
 ) : GetEventsUseCase {
 
-    private suspend fun getEventProviderWithEvent(jwt: String):  Map<RemoteConfigProviders.EventProvider, RemoteAccessTokens.Token> {
+    private suspend fun getEventProviderWithEvent(jwt: String, originType: OriginType):  Map<RemoteConfigProviders.EventProvider, RemoteAccessTokens.Token> {
         // Fetch event providers
         val eventProviders = configProvidersUseCase.eventProviders()
 
@@ -40,16 +41,37 @@ class GetEventsUseCaseImpl(
             val eventProvider = it.key
             val accessToken = it.value
 
-            try {
-                val unomi = eventProviderRepository.unomi(
-                    url = eventProvider.unomiUrl,
-                    token = accessToken.unomi
-                )
-                unomi.informationAvailable
-            } catch (e: HttpException) {
-                false
-            } catch (e: IOException) {
-                false
+            when (originType) {
+                is OriginType.Test -> {
+                    try {
+                        val unomi = eventProviderRepository.unomiTestEvents(
+                            url = eventProvider.unomiUrl,
+                            token = accessToken.unomi
+                        )
+                        unomi.informationAvailable
+                    } catch (e: HttpException) {
+                        false
+                    } catch (e: IOException) {
+                        false
+                    }
+                }
+                is OriginType.Vaccination -> {
+                    try {
+                        val unomi = eventProviderRepository.unomiVaccinationEvents(
+                            url = eventProvider.unomiUrl,
+                            token = accessToken.unomi
+                        )
+                        unomi.informationAvailable
+                    } catch (e: HttpException) {
+                        false
+                    } catch (e: IOException) {
+                        false
+                    }
+                }
+                is OriginType.Recovery -> {
+                    // TODO
+                    false
+                }
             }
         }
     }
@@ -57,7 +79,7 @@ class GetEventsUseCaseImpl(
     override suspend fun getVaccinationEvents(jwt: String): EventsResult<RemoteEventsVaccinations>{
         return try {
 
-            val eventProviderWithEvents = getEventProviderWithEvent(jwt)
+            val eventProviderWithEvents = getEventProviderWithEvent(jwt, OriginType.Vaccination)
 
             // Get vaccination events from event providers
             val remoteEvents = eventProviderWithEvents.map {
@@ -82,10 +104,10 @@ class GetEventsUseCaseImpl(
         }
     }
 
-    override suspend fun getNegativeTestEvents(jwt: String): EventsResult<RemoteEventsNegativeTests> {
+    override suspend fun getTestResult3Events(jwt: String): EventsResult<RemoteEventsNegativeTests> {
         return try {
 
-            val eventProviderWithEvents = getEventProviderWithEvent(jwt)
+            val eventProviderWithEvents = getEventProviderWithEvent(jwt, OriginType.Test)
 
             // Get vaccination events from event providers
             val negativeTestEvents = eventProviderWithEvents.map {
