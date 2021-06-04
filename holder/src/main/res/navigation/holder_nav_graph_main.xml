@@ -194,6 +194,18 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
 
+        <action
+            android:id="@+id/action_could_not_create_qr"
+            app:destination="@id/nav_could_not_create_qr"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/action_not_yet_tested"
+            app:destination="@id/nav_not_yet_tested"/>
+
     </fragment>
 
     <fragment
@@ -205,6 +217,14 @@
         <action
             android:id="@+id/action_your_events"
             app:destination="@id/nav_your_events"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/action_could_not_create_qr"
+            app:destination="@id/nav_could_not_create_qr"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
@@ -269,6 +289,14 @@
             android:id="@+id/action_show_something_wrong"
             app:destination="@id/nav_your_events_test_result_something_wrong" />
 
+        <action
+            android:id="@+id/action_could_not_create_qr"
+            app:destination="@id/nav_could_not_create_qr"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
     </fragment>
 
     <fragment
@@ -294,8 +322,8 @@
             app:popExitAnim="@anim/slide_out_right" />
 
         <action
-            android:id="@+id/action_no_test_result"
-            app:destination="@id/nav_no_test_result"
+            android:id="@+id/action_could_not_create_qr"
+            app:destination="@id/nav_could_not_create_qr"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
@@ -313,10 +341,14 @@
         tools:layout="@layout/dialog_no_code_explanation" />
 
     <fragment
-        android:id="@+id/nav_no_test_result"
-        android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.NoTestResultFragment"
-        android:label="@string/commercial_test_type_title"
-        tools:layout="@layout/fragment_no_test_result">
+        android:id="@+id/nav_could_not_create_qr"
+        android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.CouldNotCreateQrFragment"
+        android:label="{toolbarTitle}"
+        tools:layout="@layout/fragment_could_not_create_qr">
+
+        <argument
+            android:name="toolbarTitle"
+            app:argType="string"/>
 
         <argument
             android:name="title"
@@ -325,6 +357,16 @@
         <argument
             android:name="description"
             app:argType="string" />
+
+        <action
+            android:id="@+id/action_my_overview"
+            app:destination="@id/nav_graph_overview"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit"
+            app:popUpTo="@id/nav_graph_overview"
+            app:popUpToInclusive="true" />
 
     </fragment>
 
@@ -339,5 +381,10 @@
         android:name="nl.rijksoverheid.ctr.design.menu.about.AboutThisAppFragment"
         android:label="@string/about_this_app"
         tools:layout="@layout/fragment_about_app" />
+
+    <dialog
+        android:id="@+id/nav_not_yet_tested"
+        android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.NotYetTestedFragment"
+        tools:layout="@layout/dialog_not_yet_tested"/>
 
 </navigation>

@@ -5,6 +5,7 @@ import android.graphics.Color
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
 import com.google.zxing.MultiFormatWriter
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 import java.util.*
 
 /*
@@ -15,16 +16,17 @@ import java.util.*
  *
  */
 interface QrCodeUtil {
-    fun createQrCode(qrCodeContent: String, width: Int, height: Int): Bitmap
+    fun createQrCode(qrCodeContent: String, width: Int, height: Int, errorCorrectionLevel: ErrorCorrectionLevel): Bitmap
 }
 
 class QrCodeUtilImpl : QrCodeUtil {
-    override fun createQrCode(qrCodeContent: String, width: Int, height: Int): Bitmap {
+    override fun createQrCode(qrCodeContent: String, width: Int, height: Int, errorCorrectionLevel: ErrorCorrectionLevel): Bitmap {
         val multiFormatWriter = MultiFormatWriter()
         val hints: MutableMap<EncodeHintType, Any> = EnumMap(
             EncodeHintType::class.java
         )
         hints[EncodeHintType.MARGIN] = 0
+        hints[EncodeHintType.ERROR_CORRECTION] = errorCorrectionLevel
         val bitMatrix = multiFormatWriter.encode(
             qrCodeContent,
             BarcodeFormat.QR_CODE,

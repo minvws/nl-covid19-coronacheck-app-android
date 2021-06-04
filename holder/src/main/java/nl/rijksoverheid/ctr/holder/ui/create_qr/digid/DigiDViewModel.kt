@@ -32,7 +32,11 @@ class DigiDViewModel(private val authenticationRepository: AuthenticationReposit
     ) {
         (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {
-            authenticationRepository.authResponse(activityResultLauncher, authService)
+            try {
+                authenticationRepository.authResponse(activityResultLauncher, authService)
+            } catch (e: Exception) {
+                digidResultLiveData.postValue(Event(DigidResult.Failed(e.toString())))
+            }
             loading.value = Event(false)
         }
     }
@@ -45,7 +49,9 @@ class DigiDViewModel(private val authenticationRepository: AuthenticationReposit
                 val authError = AuthorizationException.fromIntent(intent)
                 when {
                     authError != null -> {
-                        digidResultLiveData.postValue(Event(DigidResult.Failed("$authError.error ${authError.errorDescription}")))
+                        if (authError != AuthorizationException.GeneralErrors.USER_CANCELED_AUTH_FLOW) {
+                            digidResultLiveData.postValue(Event(DigidResult.Failed("$authError.error ${authError.errorDescription}")))
+                        }
                     }
                     authResponse != null -> {
                         try {

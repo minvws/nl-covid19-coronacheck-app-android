@@ -27,10 +27,20 @@ interface TestProviderApiClient {
 
     @POST
     @SignedRequest
-    suspend fun unomi(
+    suspend fun unomiVaccinationEvents(
         @Url url: String,
         @Header("Authorization") authorization: String,
         @Header("CoronaCheck-Protocol-Version") protocolVersion: String = "3.0",
+        @Body params: Map<String, String> = mapOf("filter" to "vaccination")
+    ): RemoteUnomi
+
+    @POST
+    @SignedRequest
+    suspend fun unomiTestEvents(
+        @Url url: String,
+        @Header("Authorization") authorization: String,
+        @Header("CoronaCheck-Protocol-Version") protocolVersion: String = "3.0",
+        @Body params: Map<String, String> = mapOf("filter" to "negativetest")
     ): RemoteUnomi
 
     @POST

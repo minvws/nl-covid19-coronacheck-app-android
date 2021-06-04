@@ -72,15 +72,15 @@ fun holderModule(baseUrl: String) = module {
     }
 
     // Use cases
-    single {
-        GenerateHolderQrCodeUseCase(get())
-    }
     factory<QrCodeUseCase> {
         QrCodeUseCaseImpl(
             get(),
             get(),
             get()
         )
+    }
+    factory<HasOriginUseCase> {
+        HasOriginUseCaseImpl(get())
     }
     factory<SecretKeyUseCase> {
         SecretKeyUseCaseImpl(get(), get())
@@ -107,7 +107,7 @@ fun holderModule(baseUrl: String) = module {
         )
     }
     factory<GetMyOverviewItemsUseCase> {
-        GetMyOverviewItemsUseCaseImpl(get(), get(), get(), get())
+        GetMyOverviewItemsUseCaseImpl(get(), get(), get(), get(), get())
     }
     factory<TokenValidatorUtil> { TokenValidatorUtilImpl() }
     factory<CredentialUtil> { CredentialUtilImpl(Clock.systemUTC()) }
@@ -127,7 +127,7 @@ fun holderModule(baseUrl: String) = module {
     viewModel { DigiDViewModel(get()) }
     viewModel { TokenQrViewModel(get()) }
     viewModel<DeviceRootedViewModel> { DeviceRootedViewModelImpl(get(), get()) }
-    viewModel<YourEventsViewModel> { YourEventsViewModelImpl(get(), get()) }
+    viewModel<YourEventsViewModel> { YourEventsViewModelImpl(get(), get(), get()) }
     viewModel<GetVaccinationViewModel> { GetVaccinationViewModelImpl(get()) }
     viewModel<ChooseProviderViewModel> { ChooseProviderViewModelImpl(get()) }
     viewModel<MyOverviewViewModel> { MyOverviewViewModelImpl(get(), get()) }
@@ -156,13 +156,14 @@ fun holderModule(baseUrl: String) = module {
     factory<QrCodeUtil> { QrCodeUtilImpl() }
     factory<TestResultAdapterItemUtil> { TestResultAdapterItemUtilImpl(get()) }
     factory<InfoScreenUtil> { InfoScreenUtilImpl(get(), get()) }
+    factory<GreenCardUtil> { GreenCardUtilImpl(Clock.systemUTC()) }
 
     // Usecases
     factory<CreateCredentialUseCase> {
         CreateCredentialUseCaseImpl(get())
     }
 
-    factory<QrCodeDataUseCase> { QrCodeDataUseCaseImpl(get(), get()) }
+    factory<QrCodeDataUseCase> { QrCodeDataUseCaseImpl(get(), get(), get()) }
 
     factory<TestResultAttributesUseCase> {
         TestResultAttributesUseCaseImpl(get(), get())

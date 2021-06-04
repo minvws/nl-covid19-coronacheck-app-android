@@ -80,10 +80,36 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
             binding.bottom.setButtonEnabled(!it)
         })
 
-        yourEventsViewModel.savedEvents.observe(viewLifecycleOwner, EventObserver {
-            findNavController().navigate(
-                YourEventsFragmentDirections.actionMyOverview()
-            )
+        yourEventsViewModel.hasOriginLiveData.observe(viewLifecycleOwner, EventObserver { hasOrigin ->
+            if (hasOrigin) {
+                // We have a origin in the database that we expect, so success
+                findNavController().navigate(
+                    YourEventsFragmentDirections.actionMyOverview()
+                )
+            } else {
+                // We don't have an origin saved that we expect, so something went wrong with the rule engine
+                when (args.type) {
+                    is YourEventsFragmentType.TestResult2, is YourEventsFragmentType.TestResult3 -> {
+                        findNavController().navigate(
+                            YourEventsFragmentDirections.actionCouldNotCreateQr(
+                                toolbarTitle = args.toolbarTitle,
+                                title = getString(R.string.rule_engine_no_origin_title),
+                                description = getString(R.string.rule_engine_no_test_origin_description)
+                            )
+                        )
+                    }
+                    is YourEventsFragmentType.Vaccination -> {
+                        findNavController().navigate(
+                            YourEventsFragmentDirections.actionCouldNotCreateQr(
+                                toolbarTitle = args.toolbarTitle,
+                                title = getString(R.string.rule_engine_no_origin_title),
+                                description = getString(R.string.rule_engine_no_vaccination_origin_description)
+                            )
+                        )
+                    }
+                }
+            }
+
         })
     }
 
@@ -170,7 +196,7 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
 
             // Handle button
             binding.bottom.setButtonClick {
-                yourEventsViewModel.saveRemoteNegativeResultEvents(remoteEvents)
+                yourEventsViewModel.saveNegativeTests3(remoteEvents)
             }
         }
 
@@ -247,7 +273,7 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
 
             // Handle button
             binding.bottom.setButtonClick {
-                yourEventsViewModel.saveRemoteTestResult(
+                yourEventsViewModel.saveNegativeTest2(
                     remoteTestResult = remoteTestResult,
                     rawResponse = remoteTestResultRawResponse
                 )
@@ -333,7 +359,7 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
 
         // Handle button
         binding.bottom.setButtonClick {
-            yourEventsViewModel.saveRemoteEvents(
+            yourEventsViewModel.saveVaccinations(
                 remoteEvents = remoteEvents
             )
         }

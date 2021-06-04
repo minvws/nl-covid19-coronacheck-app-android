@@ -15,7 +15,12 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
  *
  */
 interface EventProviderRepository {
-    suspend fun unomi(
+    suspend fun unomiVaccinationEvents(
+        url: String,
+        token: String
+    ): RemoteUnomi
+
+    suspend fun unomiTestEvents(
         url: String,
         token: String
     ): RemoteUnomi
@@ -37,9 +42,17 @@ class EventProviderRepositoryImpl(
     private val testProviderApiClient: TestProviderApiClient
 ) : EventProviderRepository {
 
-    override suspend fun unomi(url: String, token: String): RemoteUnomi {
+    override suspend fun unomiTestEvents(url: String, token: String): RemoteUnomi {
         return testProviderApiClient
-            .unomi(
+            .unomiTestEvents(
+                url = url,
+                authorization = "Bearer $token",
+            )
+    }
+
+    override suspend fun unomiVaccinationEvents(url: String, token: String): RemoteUnomi {
+        return testProviderApiClient
+            .unomiVaccinationEvents(
                 url = url,
                 authorization = "Bearer $token",
             )

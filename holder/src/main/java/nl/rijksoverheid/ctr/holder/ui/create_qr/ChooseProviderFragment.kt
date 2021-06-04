@@ -26,17 +26,12 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  */
 class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) {
 
-    private val androidUtil: AndroidUtil by inject()
     private val dialogUtil: DialogUtil by inject()
     private val chooseProviderViewModel: ChooseProviderViewModel by viewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentChooseProviderBinding.bind(view)
-
-        if (androidUtil.isSmallScreen()) {
-            binding.image.visibility = View.GONE
-        }
 
         binding.providerCommercial.bind(
             R.string.choose_provider_commercial_title,
@@ -52,6 +47,10 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
             loginWithDigiD()
         }
 
+        binding.notYetTested.setOnClickListener {
+            findNavController().navigate(ChooseProviderFragmentDirections.actionNotYetTested())
+        }
+
         binding.providerCommercial.root.setAsAccessibilityButton()
 
         digidViewModel.loading.observe(viewLifecycleOwner, EventObserver {
@@ -61,15 +60,26 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
         chooseProviderViewModel.eventsResult.observe(viewLifecycleOwner, EventObserver {
             when (it) {
                 is EventsResult.Success<RemoteEventsNegativeTests> -> {
-                    findNavController().navigate(
-                        ChooseProviderFragmentDirections.actionYourEvents(
-                            type = YourEventsFragmentType.TestResult3(
-                                remoteEvents = it.signedModels.map { signedModel -> signedModel.model to signedModel.rawResponse }
-                                    .toMap()
-                            ),
-                            toolbarTitle = getString(R.string.commercial_test_type_title)
+                    val hasNoEvents = it.signedModels.map { models -> models.model.events ?: listOf() }.flatten().isEmpty()
+                    if (hasNoEvents) {
+                        findNavController().navigate(
+                            ChooseProviderFragmentDirections.actionCouldNotCreateQr(
+                                toolbarTitle = getString(R.string.commercial_test_type_title),
+                                title = getString(R.string.no_test_results_title),
+                                description = getString(R.string.no_test_results_description)
+                            )
                         )
-                    )
+                    } else {
+                        findNavController().navigate(
+                            ChooseProviderFragmentDirections.actionYourEvents(
+                                type = YourEventsFragmentType.TestResult3(
+                                    remoteEvents = it.signedModels.map { signedModel -> signedModel.model to signedModel.rawResponse }
+                                        .toMap()
+                                ),
+                                toolbarTitle = getString(R.string.commercial_test_type_title)
+                            )
+                        )
+                    }
                 }
                 is EventsResult.NetworkError -> {
                     dialogUtil.presentDialog(

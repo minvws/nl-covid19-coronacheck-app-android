@@ -17,7 +17,6 @@
     <string name="privacy_policy_description"><![CDATA[The <a href="https://coronacheck.nl/en/privacy-in-app">privacy statement</a> details how CoronaCheck handles your data. These are the most important points:]]></string>
     <string name="privacy_policy_1"><![CDATA[Your data is <b>not centrally stored anywhere</b>]]></string>
     <string name="privacy_policy_2"><![CDATA[Your GPS or location data is <b>not used or saved</b>]]></string>
-    <string name="privacy_policy_3"><![CDATA[The QR code contains a minimum amount of personal <b>data</b>.]]></string>
     <string name="privacy_policy_checkbox_text">I\'ve read the privacy statement and give consent for processing my personal data.</string>
     <string name="my_overview">My overview</string>
     <string name="my_overview_description">Laat zowel de QR-code als je identiteitsbewijs zien bij de ingang van de locatie die je bezoekt.</string>
@@ -56,7 +55,7 @@
     <string name="choose_provider_commercial_subtitle">Retrieve test result</string>
     <string name="choose_provider_ggd_title">GGD</string>
     <string name="choose_provider_ggd_subtitle">Log in with your DigiD</string>
-    <string name="choose_provider_no_digid">I don\'t have DigiD</string>
+    <string name="choose_provider_not_yet_tested">Ik ben nog niet getest</string>
     <string name="commercial_test_type_title">Retrieve test result</string>
     <string name="commercial_test_type_description">You need a retrieval code to retrieve your test result.</string>
     <string name="commercial_test_type_code_title">I have a retrieval code</string>
@@ -158,9 +157,8 @@
     <string name="dialog_no_internet_connection_description">You\'re not connected to the internet right now.</string>
     <string name="dialog_close">Close</string>
     <string name="dialog_retry">Try again</string>
-    <string name="new_terms_title">We\'ve updated our policy</string>
-    <string name="new_terms_highlights"><![CDATA[<b>This has changed/b><br\><ul><li> Initials and day and month of birth are included in the QR code</li><li>This data is displayed on the Scanner app for ID verification purposes</li></ul>]]></string>
-    <string name="new_terms"><![CDATA[Read the full privacy statement <a href="https://coronacheck.nl/en/privacy-in-app">here</a>.]]></string>
+    <string name="new_terms_title">Nieuw in de app</string>
+    <string name="new_terms_highlights"><![CDATA[<b>Vaccinatiebewijs</b><br/>Ben je gevaccineerd? Je kunt nu ook je vaccinatiebewijs ophalen in de app. En daar een persoonlijke QR-code van maken. Hiermee krijg je toegang tot bepaalde locaties of activiteiten. Ook krijg je een QR-code om te reizen binnen de Europese Unie.</b>]]></string>
     <string name="new_terms_consent_button">Next</string>
     <string name="new_terms_consent_needed_positive_button">Agree</string>
     <string name="new_terms_consent_needed_negative_button">Don\'t agree</string>
@@ -257,4 +255,15 @@
     <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_vaccination"><![CDATA[Jouw vaccinatiebewijs is niet (meer) geldig in Nederland. Daarom is er alleen een Europese QR-code gemaakt. Deze is geldig in de Europese Unie.<br/><br/>Dit kan verschillende oorzaken hebben. Het kan bijvoorbeeld zijn dat je maar één prik hebt gehad.]]></string>
     <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_test"><![CDATA[Jouw testbewijs is niet geldig in de Europese Unie. Daarom is er alleen een Nederlandse QR-code gemaakt. Deze is geldig in Nederland.<br/><br/>Dit kan verschillende oorzaken hebben. Het kan bijvoorbeeld zijn dat je type test niet geaccepteerd wordt in de Europese Unie.]]></string>
     <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_vaccination"><![CDATA[Jouw vaccinatiebewijs is niet geldig in de Europese Unie. Daarom is er alleen een Nederlandse QR-code gemaakt. Deze is geldig in Nederland.<br/><br/>Dit kan verschillende oorzaken hebben. Het kan bijvoorbeeld zijn dat je type vaccinatie  niet geaccepteerd wordt in de Europese Unie.]]></string>
+    <string name="rule_engine_no_origin_title">We kunnen geen bewijs maken</string>
+    <string name="rule_engine_no_test_origin_description"><![CDATA[Op dit moment kunnen we geen bewijs maken van jouw testbewijs. Dit kan verschillende oorzaken hebben. <a href="https://www.coronacheck.nl/wegwijzer">Lees hier meer.</a>]]></string>
+    <string name="rule_engine_no_vaccination_origin_description"><![CDATA[Op dit moment kunnen we geen bewijs maken van jouw vaccinatie. Dit kan verschillende oorzaken hebben. <a href="https://www.coronacheck.nl/wegwijzer">Lees hier meer.</a>]]></string>
+    <string name="back_to_overview">Terug naar mijn overzicht</string>
+    <string name="no_vaccinations_title">Geen vaccinaties beschikbaar</string>
+    <string name="no_vaccinations_description">Er zijn geen gegevens over je vaccinatie beschikbaar. Dit kan verschillende oorzaken hebben. Kijk <a href="https://www.coronacheck.nl/wegwijzer">hier</a> voor meer informatie<br/><br/>Ben je kortgeleden gevaccineerd? Dan kan het even duren totdat de gegevens beschikbaar zijn.</string>
+    <string name="no_test_results_title">Geen testbewijs beschikbaar</string>
+    <string name="no_test_results_description"><![CDATA[Er zijn geen gegevens over je testbewijs beschikbaar. Dit kan verschillende oorzaken hebben. Kijk <a href="https://www.coronacheck.nl/wegwijzer">hier</a> voor meer informatie.<br/><br/>Heb je al een negatieve testuitslag van de GGD gekregen? Dan kan het nog tot 2 uur duren voordat je de uitslag hier kunt ophalen. Probeer het later opnieuw.]]></string>
+    <string name="not_yet_tested_title">Ik ben nog niet getest</string>
+    <string name="not_yet_tested_description"><![CDATA[Voor een QR-code moet je eerst een test doen. Blijkt uit de test dat je geen corona hebt? Dan kan je jouw QR-code maken.<br/><br/>Een testbewijs is geldig tot %1$s uur na het moment van testen. Plan je test dus op tijd. En zorg dat jouw QR-code binnen %2$s uur gecheckt is bij de ingang.]]></string>
+    <string name="not_yet_tested_button">Maak een afspraak</string>
 </resources>
