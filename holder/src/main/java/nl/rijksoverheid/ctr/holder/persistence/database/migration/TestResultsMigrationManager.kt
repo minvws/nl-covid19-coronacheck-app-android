@@ -8,6 +8,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SecretKeyUseCase
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.models.DomesticCredential
 import nl.rijksoverheid.ctr.shared.models.DomesticCredentialAttributes
+import nl.rijksoverheid.ctr.shared.models.getFakeDomesticCredentials
 import org.json.JSONObject
 import java.time.Instant
 import java.time.OffsetDateTime
@@ -50,12 +51,12 @@ class TestResultsMigrationManagerImpl(private val persistenceManager: Persistenc
 
             println("GIO 2")
 
-            val prepareIssue = coronaCheckRepository.getPrepareIssue()
+//            val prepareIssue = coronaCheckRepository.getPrepareIssue()
 
-            val commitmentMessage = mobileCoreWrapper.createCommitmentMessage(
-                secretKey = secretKeyUseCase.json().toByteArray(),
-                prepareIssueMessage = prepareIssue.prepareIssueMessage
-            )
+//            val commitmentMessage = mobileCoreWrapper.createCommitmentMessage(
+//                secretKey = secretKeyUseCase.json().toByteArray(),
+//                prepareIssueMessage = prepareIssue.prepareIssueMessage
+//            )
 
             println("GIO 2 2")
 
@@ -63,29 +64,7 @@ class TestResultsMigrationManagerImpl(private val persistenceManager: Persistenc
 //                createCredentials = existingCredentials.toByteArray()
 //            )
 
-            val domesticCredentials = listOf(DomesticCredential(
-                JSONObject().apply {
-                                   put("birthDay", testAttributes.birthDay)
-                                   put("birthMonth", testAttributes.birthMonth)
-                                   put("credentialVersion", testAttributes.credentialVersion)
-                                   put("firstNameInitial", testAttributes.firstNameInitial)
-                                   put("isSpecimen", testAttributes.isSpecimen)
-                                   put("lastNameInitial", testAttributes.lastNameInitial)
-                                   put("stripType", testAttributes.stripType)
-                                   put("validForHours", 72)
-                                   put("validFrom", 1622710800)
-                }, DomesticCredentialAttributes(
-                    birthDay = testAttributes.birthDay,
-                    birthMonth = testAttributes.birthMonth,
-                    credentialVersion = 1,
-                    firstNameInitial = testAttributes.firstNameInitial,
-                    isSpecimen = testAttributes.isSpecimen,
-                    lastNameInitial = testAttributes.lastNameInitial,
-                    stripType = testAttributes.stripType,
-                    validForHours = 72,
-                    validFrom = 1622710800,
-                )
-            ))
+            val domesticCredentials = listOf(getFakeDomesticCredentials())
             println("GIO domesticCredentials $domesticCredentials")
 
             val entities = domesticCredentials.map { domesticCredential ->
