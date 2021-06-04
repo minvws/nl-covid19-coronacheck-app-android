@@ -271,11 +271,6 @@ fun fakeCoronaCheckRepository(
             return accessTokens
         }
 
-        override suspend fun getTestIsm(test: String, sToken: String, icm: String): TestIsmResult {
-            testIsmExceptionCallback?.invoke()
-            return testIsmResult
-        }
-
         override suspend fun remoteNonce(): RemoteNonce {
             return remoteNonce
         }
