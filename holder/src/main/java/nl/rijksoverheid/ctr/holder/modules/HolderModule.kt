@@ -119,7 +119,7 @@ fun holderModule(baseUrl: String) = module {
     factory<GetEventsUseCase> { GetEventsUseCaseImpl(get(), get(), get()) }
     factory<SaveEventsUseCase> { SaveEventsUseCaseImpl(get()) }
 
-    factory<TestResultsMigrationManager> { TestResultsMigrationManagerImpl(get(), get(), get(), get(), get()) }
+    factory<TestResultsMigrationManager> { TestResultsMigrationManagerImpl(get(), get(), get()) }
 
     // ViewModels
     viewModel<QrCodeViewModel> { QrCodeViewModelImpl(get()) }
