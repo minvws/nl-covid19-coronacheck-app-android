@@ -72,18 +72,18 @@ class HolderMainActivity : AppCompatActivity() {
             }
         })
 
-//        deviceRootedViewModel.deviceRootedLiveData.observe(this, EventObserver {
-//            if (it) {
-//                dialogUtil.presentDialog(
-//                    context = this,
-//                    title = R.string.dialog_rooted_device_title,
-//                    message = getString(R.string.dialog_rooted_device_message),
-//                    positiveButtonText = R.string.dialog_rooted_device_positive_button,
-//                    positiveButtonCallback = { },
-//                    onDismissCallback = { deviceRootedViewModel.setHasDismissedRootedDeviceDialog() }
-//                )
-//            }
-//        })
+        deviceRootedViewModel.deviceRootedLiveData.observe(this, EventObserver {
+            if (it) {
+                dialogUtil.presentDialog(
+                    context = this,
+                    title = R.string.dialog_rooted_device_title,
+                    message = getString(R.string.dialog_rooted_device_message),
+                    positiveButtonText = R.string.dialog_rooted_device_positive_button,
+                    positiveButtonCallback = { },
+                    onDismissCallback = { deviceRootedViewModel.setHasDismissedRootedDeviceDialog() }
+                )
+            }
+        })
     }
 
     override fun onStart() {
