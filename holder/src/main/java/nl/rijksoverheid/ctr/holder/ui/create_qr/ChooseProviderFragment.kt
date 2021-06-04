@@ -60,26 +60,31 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
         chooseProviderViewModel.eventsResult.observe(viewLifecycleOwner, EventObserver {
             when (it) {
                 is EventsResult.Success<RemoteEventsNegativeTests> -> {
-                    val hasNoEvents = it.signedModels.map { models -> models.model.events ?: listOf() }.flatten().isEmpty()
-                    if (hasNoEvents) {
-                        findNavController().navigate(
-                            ChooseProviderFragmentDirections.actionCouldNotCreateQr(
-                                toolbarTitle = getString(R.string.commercial_test_type_title),
-                                title = getString(R.string.no_test_results_title),
-                                description = getString(R.string.no_test_results_description)
-                            )
+                    findNavController().navigate(
+                        ChooseProviderFragmentDirections.actionYourEvents(
+                            type = YourEventsFragmentType.TestResult3(
+                                remoteEvents = it.signedModels.map { signedModel -> signedModel.model to signedModel.rawResponse }
+                                    .toMap()
+                            ),
+                            toolbarTitle = getString(R.string.commercial_test_type_title)
                         )
-                    } else {
-                        findNavController().navigate(
-                            ChooseProviderFragmentDirections.actionYourEvents(
-                                type = YourEventsFragmentType.TestResult3(
-                                    remoteEvents = it.signedModels.map { signedModel -> signedModel.model to signedModel.rawResponse }
-                                        .toMap()
-                                ),
-                                toolbarTitle = getString(R.string.commercial_test_type_title)
-                            )
+                    )
+                }
+                is EventsResult.HasNoEvents -> {
+                    findNavController().navigate(
+                        ChooseProviderFragmentDirections.actionCouldNotCreateQr(
+                            toolbarTitle = getString(R.string.commercial_test_type_title),
+                            title = getString(R.string.no_test_results_title),
+                            description = getString(R.string.no_test_results_description)
                         )
-                    }
+                    )
+                }
+                is EventsResult.TooBusy -> {
+                    findNavController().navigate(ChooseProviderFragmentDirections.actionCouldNotCreateQr(
+                        toolbarTitle = getString(R.string.commercial_test_type_title),
+                        title = getString(R.string.too_busy_title),
+                        description = getString(R.string.too_busy_description)
+                    ))
                 }
                 is EventsResult.NetworkError -> {
                     dialogUtil.presentDialog(

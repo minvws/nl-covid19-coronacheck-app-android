@@ -18,9 +18,11 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.design.ext.formatDateTime
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
+import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentYourEventsBinding
+import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.ui.create_qr.items.YourEventWidget
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsVaccinations
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsNegativeTests
@@ -44,6 +46,7 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
     private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
     private val personalDetailsUtil: PersonalDetailsUtil by inject()
     private val infoScreenUtil: InfoScreenUtil by inject()
+    private val dialogUtil: DialogUtil by inject()
 
     private val yourEventsViewModel: YourEventsViewModel by viewModel()
 
@@ -80,36 +83,62 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
             binding.bottom.setButtonEnabled(!it)
         })
 
-        yourEventsViewModel.hasOriginLiveData.observe(viewLifecycleOwner, EventObserver { hasOrigin ->
-            if (hasOrigin) {
-                // We have a origin in the database that we expect, so success
-                findNavController().navigate(
-                    YourEventsFragmentDirections.actionMyOverview()
-                )
-            } else {
-                // We don't have an origin saved that we expect, so something went wrong with the rule engine
-                when (args.type) {
-                    is YourEventsFragmentType.TestResult2, is YourEventsFragmentType.TestResult3 -> {
+        yourEventsViewModel.yourEventsResult.observe(viewLifecycleOwner, EventObserver { eventsResult ->
+            val databaseSyncerResult = eventsResult.databaseSyncerResult
+
+            when (databaseSyncerResult) {
+                is DatabaseSyncerResult.Success -> {
+                    if (eventsResult.hasOrigin) {
+                        // We have a origin in the database that we expect, so success
                         findNavController().navigate(
-                            YourEventsFragmentDirections.actionCouldNotCreateQr(
-                                toolbarTitle = args.toolbarTitle,
-                                title = getString(R.string.rule_engine_no_origin_title),
-                                description = getString(R.string.rule_engine_no_test_origin_description)
-                            )
+                            YourEventsFragmentDirections.actionMyOverview()
                         )
-                    }
-                    is YourEventsFragmentType.Vaccination -> {
-                        findNavController().navigate(
-                            YourEventsFragmentDirections.actionCouldNotCreateQr(
-                                toolbarTitle = args.toolbarTitle,
-                                title = getString(R.string.rule_engine_no_origin_title),
-                                description = getString(R.string.rule_engine_no_vaccination_origin_description)
-                            )
-                        )
+                    } else {
+                        // We don't have an origin saved that we expect, so something went wrong with the rule engine
+                        when (args.type) {
+                            is YourEventsFragmentType.TestResult2, is YourEventsFragmentType.TestResult3 -> {
+                                findNavController().navigate(
+                                    YourEventsFragmentDirections.actionCouldNotCreateQr(
+                                        toolbarTitle = args.toolbarTitle,
+                                        title = getString(R.string.rule_engine_no_origin_title),
+                                        description = getString(R.string.rule_engine_no_test_origin_description)
+                                    )
+                                )
+                            }
+                            is YourEventsFragmentType.Vaccination -> {
+                                findNavController().navigate(
+                                    YourEventsFragmentDirections.actionCouldNotCreateQr(
+                                        toolbarTitle = args.toolbarTitle,
+                                        title = getString(R.string.rule_engine_no_origin_title),
+                                        description = getString(R.string.rule_engine_no_vaccination_origin_description)
+                                    )
+                                )
+                            }
+                        }
                     }
                 }
+                is DatabaseSyncerResult.NetworkError -> {
+                    dialogUtil.presentDialog(
+                        context = requireContext(),
+                        title = R.string.dialog_no_internet_connection_title,
+                        message = getString(R.string.dialog_no_internet_connection_description),
+                        positiveButtonText = R.string.dialog_close,
+                        positiveButtonCallback = {}
+                    )
+                }
+                is DatabaseSyncerResult.ServerError -> {
+                    dialogUtil.presentDialog(
+                        context = requireContext(),
+                        title = R.string.dialog_error_title,
+                        message = getString(
+                            R.string.dialog_error_message_with_error_code,
+                            databaseSyncerResult.httpCode.toString()
+                        ),
+                        positiveButtonText = R.string.dialog_close,
+                        positiveButtonCallback = {}
+                    )
+                }
             }
-
         })
     }
 
