@@ -45,7 +45,7 @@ class PersistConfigUseCaseImpl(
                 val configFile = File(cacheDir, "config.json")
                 val publicKeysFile = File(cacheDir, "public_keys.json")
                 val configStorageResult = appConfigStorageManager.storageFile(configFile, configContents)
-                val publicKeysStorageResult = appConfigStorageManager.storageFile(publicKeysFile, publicKeysContents)
+                val publicKeysStorageResult = appConfigStorageManager.storageFile(publicKeysFile, publicKeysContents.replace("\\/", "/"))
                 if (configStorageResult is StorageResult.Error) {
                     return@withContext configStorageResult
                 }
