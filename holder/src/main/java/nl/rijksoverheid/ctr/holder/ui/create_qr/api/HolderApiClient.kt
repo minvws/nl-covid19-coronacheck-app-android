@@ -40,10 +40,4 @@ interface HolderApiClient {
     @POST("holder/access_tokens")
     @SignedRequest
     suspend fun getAccessTokens(@Header("Authorization") authorization: String): RemoteAccessTokens
-
-    @POST("holder/get_test_ism")
-    @SignedRequest
-    suspend fun getTestIsm(
-        @Body data: GetTestIsmPostData
-    ): Response<ResponseBody>
 }

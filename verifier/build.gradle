@@ -33,7 +33,7 @@ android {
         buildConfigField "String", "SIGNATURE_CERTIFICATE_CN_MATCH", '".coronatester.nl"'
         buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "true"
         buildConfigField "boolean", "FEATURE_TEST_PROVIDER_API_CHECKS", "true"
-        buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.coronacheck.nl/v3/\""
+        buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.coronacheck.nl/v4/\""
     }
 
     signingConfigs {
@@ -60,7 +60,7 @@ android {
             versionNameSuffix "-test"
             applicationIdSuffix ".test"
             manifestPlaceholders = [appLabel: "@string/app_name_test"]
-            buildConfigField "String", "BASE_API_URL", "\"https://api-ct.bananenhalen.nl/v3/\""
+            buildConfigField "String", "BASE_API_URL", "\"https://api-ct.bananenhalen.nl/v4/\""
             buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "false"
             buildConfigField "boolean", "FEATURE_TEST_PROVIDER_API_CHECKS", "false"
             apply plugin: 'com.google.gms.google-services'
@@ -71,7 +71,7 @@ android {
             versionNameSuffix "-acc"
             applicationIdSuffix ".acc"
             manifestPlaceholders = [appLabel: "@string/app_name_acc"]
-            buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.acc.coronacheck.nl/v3/\""
+            buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.acc.coronacheck.nl/v4/\""
             apply plugin: 'com.google.gms.google-services'
             apply plugin: 'com.google.firebase.crashlytics'
         }
@@ -104,6 +104,7 @@ dependencies {
     implementation "com.jakewharton.timber:timber:${timber_version}"
     implementation "androidx.security:security-crypto:$security_crypto_version"
     implementation "com.google.mlkit:barcode-scanning:${mlkit_barcode_version}"
+    implementation(platform("com.squareup.okhttp3:okhttp-bom:$okhttp_version"))
 
     testImplementation "androidx.test:runner:$androix_test_version"
     testImplementation "junit:junit:$junit_version"

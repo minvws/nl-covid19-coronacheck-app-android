@@ -2,12 +2,13 @@ package nl.rijksoverheid.ctr.appconfig.usecases
 
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
-import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
 import nl.rijksoverheid.ctr.appconfig.fakeAppConfig
 import nl.rijksoverheid.ctr.appconfig.fakeAppConfigPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.fakeCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.appconfig.models.ConfigResult
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert
 import org.junit.Test
 import java.time.Clock
@@ -23,7 +24,7 @@ import java.time.ZoneId
  */
 class AppStatusUseCaseImplTest {
 
-    private val publicKeys = PublicKeys(clKeys = listOf())
+    private val publicKeys = "{\"cl_keys\":[]}".toResponseBody("application/json".toMediaType()).source()
     private fun getAppConfig(minimumVersion: Int = 1, appDeactivated: Boolean = false) = AppConfig(
         minimumVersion = minimumVersion,
         appDeactivated = appDeactivated,
