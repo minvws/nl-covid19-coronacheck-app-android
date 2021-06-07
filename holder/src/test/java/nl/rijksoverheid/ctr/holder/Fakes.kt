@@ -1,11 +1,9 @@
 package nl.rijksoverheid.ctr.holder
 
-import android.graphics.Bitmap
 import mobilecore.Result
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
-import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
@@ -21,14 +19,15 @@ import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.ui.new_terms.models.NewTerms
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
-import nl.rijksoverheid.ctr.shared.ext.successString
-import nl.rijksoverheid.ctr.shared.ext.toObject
 import nl.rijksoverheid.ctr.shared.models.DomesticCredential
 import nl.rijksoverheid.ctr.shared.models.PersonalDetails
 import nl.rijksoverheid.ctr.shared.models.ReadDomesticCredential
 import nl.rijksoverheid.ctr.shared.models.TestResultAttributes
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import nl.rijksoverheid.ctr.shared.utils.TestResultUtil
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.ResponseBody.Companion.toResponseBody
+import okio.BufferedSource
 import org.json.JSONObject
 import java.time.OffsetDateTime
 
@@ -97,9 +96,7 @@ fun fakeCachedAppConfigUseCase(
         temporarilyDisabled = false,
         requireUpdateBefore = 0
     ),
-    publicKeys: PublicKeys = PublicKeys(
-        clKeys = listOf()
-    )
+    publicKeys: BufferedSource = "{\"cl_keys\":[]}".toResponseBody("application/json".toMediaType()).source()
 ): CachedAppConfigUseCase = object : CachedAppConfigUseCase {
     override fun persistAppConfig(appConfig: AppConfig) {
 
@@ -117,13 +114,7 @@ fun fakeCachedAppConfigUseCase(
         return appConfig.vaccinationEventValidity
     }
 
-    override fun persistPublicKeys(publicKeys: PublicKeys) {
-
-    }
-
-    override fun getCachedPublicKeys(): PublicKeys? {
-        return publicKeys
-    }
+    override fun getCachedPublicKeys() = publicKeys
 }
 
 fun fakeIntroductionViewModel(

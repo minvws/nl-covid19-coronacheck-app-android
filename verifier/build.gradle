@@ -104,6 +104,7 @@ dependencies {
     implementation "com.jakewharton.timber:timber:${timber_version}"
     implementation "androidx.security:security-crypto:$security_crypto_version"
     implementation "com.google.mlkit:barcode-scanning:${mlkit_barcode_version}"
+    implementation(platform("com.squareup.okhttp3:okhttp-bom:$okhttp_version"))
 
     testImplementation "androidx.test:runner:$androix_test_version"
     testImplementation "junit:junit:$junit_version"
