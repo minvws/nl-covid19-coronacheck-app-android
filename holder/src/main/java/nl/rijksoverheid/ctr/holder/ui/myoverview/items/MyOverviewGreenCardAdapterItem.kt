@@ -262,8 +262,12 @@ class MyOverviewGreenCardAdapterItem(
                     ChronoUnit.HOURS.between(OffsetDateTime.now(), realValidFrom)
 
                 if (hoursBetweenExpiration >= 24) {
-                    textView.text = context.getString(R.string.qr_card_validity_future_days,
-                        ChronoUnit.DAYS.between(OffsetDateTime.now(), realValidFrom).coerceAtLeast(1).toString())
+                    val daysBetween = ChronoUnit.DAYS.between(OffsetDateTime.now(), realValidFrom).coerceAtLeast(1)
+                    if (daysBetween == 1L) {
+                        textView.text = context.getString(R.string.qr_card_validity_future_day, daysBetween.toString())
+                    } else {
+                        textView.text = context.getString(R.string.qr_card_validity_future_days, daysBetween.toString())
+                    }
                 } else {
                     textView.text = context.getString(R.string.qr_card_validity_future_hours,
                         hoursBetweenExpiration.coerceAtLeast(1).toString())
