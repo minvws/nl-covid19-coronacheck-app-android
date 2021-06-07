@@ -59,7 +59,11 @@ class DigiDViewModel(private val authenticationRepository: AuthenticationReposit
                                 authenticationRepository.jwt(authService, authResponse)
                             digidResultLiveData.postValue(Event(DigidResult.Success(jwt)))
                         } catch (e: Exception) {
-                            digidResultLiveData.postValue(Event(DigidResult.Failed(e.toString())))
+                            if (e is AuthorizationException && e.error == "saml_authn_failed") {
+                                // User cancelled flow on DigiD website, so no real error
+                            } else {
+                                digidResultLiveData.postValue(Event(DigidResult.Failed(e.toString())))
+                            }
                         }
                     }
                     else -> {
