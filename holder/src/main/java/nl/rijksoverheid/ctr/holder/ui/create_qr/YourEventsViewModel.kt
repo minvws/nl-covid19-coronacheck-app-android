@@ -11,7 +11,6 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsVaccinations
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsNegativeTests
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.HasOriginUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SaveEventsUseCase
 import nl.rijksoverheid.ctr.shared.livedata.Event
 
@@ -24,7 +23,7 @@ import nl.rijksoverheid.ctr.shared.livedata.Event
  */
 abstract class YourEventsViewModel : ViewModel() {
     val loading: LiveData<Event<Boolean>> = MutableLiveData()
-    val yourEventsResult: LiveData<Event<YourEventsResult>> = MutableLiveData()
+    val yourEventsResult: LiveData<Event<DatabaseSyncerResult>> = MutableLiveData()
 
     abstract fun saveNegativeTest2(remoteTestResult: RemoteTestResult, rawResponse: ByteArray)
     abstract fun saveVaccinations(remoteEvents: Map<RemoteEventsVaccinations, ByteArray>)
@@ -33,8 +32,7 @@ abstract class YourEventsViewModel : ViewModel() {
 
 class YourEventsViewModelImpl(
     private val saveEventsUseCase: SaveEventsUseCase,
-    private val holderDatabaseSyncer: HolderDatabaseSyncer,
-    private val hasOriginUseCase: HasOriginUseCase
+    private val holderDatabaseSyncer: HolderDatabaseSyncer
 ) : YourEventsViewModel() {
 
     override fun saveNegativeTest2(negativeTest2: RemoteTestResult, rawResponse: ByteArray) {
@@ -45,15 +43,12 @@ class YourEventsViewModelImpl(
                 saveEventsUseCase.saveNegativeTest2(negativeTest2, rawResponse)
 
                 // Send all events to database and create green cards, origins and credentials
-                val databaseSyncerResult = holderDatabaseSyncer.sync()
+                val databaseSyncerResult = holderDatabaseSyncer.sync(
+                    expectedOriginType = OriginType.TYPE_TEST
+                )
 
-                // Check if we have origin of type test saved (else something went wrong)
-                val hasOrigin = hasOriginUseCase.hasOrigin(OriginType.Test)
                 (yourEventsResult as MutableLiveData).value = Event(
-                    YourEventsResult(
-                        hasOrigin = hasOrigin,
-                        databaseSyncerResult = databaseSyncerResult
-                    )
+                    databaseSyncerResult
                 )
             } finally {
                 loading.value = Event(false)
@@ -69,15 +64,12 @@ class YourEventsViewModelImpl(
                 saveEventsUseCase.saveNegativeTests3(remoteEvents)
 
                 // Send all events to database and create green cards, origins and credentials
-                val databaseSyncerResult = holderDatabaseSyncer.sync()
+                val databaseSyncerResult = holderDatabaseSyncer.sync(
+                    expectedOriginType = OriginType.TYPE_TEST
+                )
 
-                // Check if we have origin of type test saved (else something went wrong)
-                val hasOrigin = hasOriginUseCase.hasOrigin(OriginType.Test)
                 (yourEventsResult as MutableLiveData).value = Event(
-                    YourEventsResult(
-                        hasOrigin = hasOrigin,
-                        databaseSyncerResult = databaseSyncerResult
-                    )
+                    databaseSyncerResult
                 )
             } finally {
                 loading.value = Event(false)
@@ -93,15 +85,12 @@ class YourEventsViewModelImpl(
                 saveEventsUseCase.saveVaccinations(vaccinations)
 
                 // Send all events to database and create green cards, origins and credentials
-                val databaseSyncerResult = holderDatabaseSyncer.sync()
+                val databaseSyncerResult = holderDatabaseSyncer.sync(
+                    expectedOriginType = OriginType.TYPE_VACCINATION
+                )
 
-                // Check if we have origin of type test saved (else something went wrong)
-                val hasOrigin = hasOriginUseCase.hasOrigin(OriginType.Test)
                 (yourEventsResult as MutableLiveData).value = Event(
-                    YourEventsResult(
-                        hasOrigin = hasOrigin,
-                        databaseSyncerResult = databaseSyncerResult
-                    )
+                    databaseSyncerResult
                 )
             } finally {
                 loading.value = Event(false)
@@ -109,5 +98,3 @@ class YourEventsViewModelImpl(
         }
     }
 }
-
-data class YourEventsResult(val hasOrigin: Boolean, val databaseSyncerResult: DatabaseSyncerResult)
