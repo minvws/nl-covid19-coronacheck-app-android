@@ -39,10 +39,6 @@ class PersistConfigUseCaseImpl(
             appConfigPersistenceManager.saveAppConfigJson(
                 json = configContents
             )
-//            val publicKeysContents = publicKeys.toJson(moshi)
-//            appConfigPersistenceManager.savePublicKeysJson(
-//                json = publicKeysContents
-//            )
 
             val publicKeysFile = File(cacheDir, "public_keys.json")
             val contents = publicKeys.readUtf8()

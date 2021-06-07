@@ -18,8 +18,13 @@ import nl.rijksoverheid.ctr.appconfig.models.ConfigResult
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.repositories.ConfigRepositoryImpl
 import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigUseCaseImpl
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.ResponseBody
+import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert.assertEquals
 import org.junit.Test
+import retrofit2.Response
 import java.io.IOException
 import java.time.Clock
 import java.time.Instant
@@ -42,9 +47,7 @@ class AppConfigUseCaseImplTest {
         requireUpdateBefore = 0
     )
 
-    private val publicKeys = PublicKeys(
-        clKeys = listOf()
-    )
+    private val publicKeys = "{\"cl_keys\":[]}".toResponseBody("application/json".toMediaType())
 
     private val clock = Clock.fixed(Instant.ofEpochSecond(0), ZoneId.of("UTC"))
     private val appConfigPersistenceManager = mockk<AppConfigPersistenceManager>(relaxed = true)
@@ -53,7 +56,7 @@ class AppConfigUseCaseImplTest {
     fun `config returns Success when both calls succeed`() = runBlocking {
         val fakeApi = object : AppConfigApi {
             override suspend fun getConfig(): AppConfig = appConfig
-            override suspend fun getPublicKeys(): PublicKeys = publicKeys
+            override suspend fun getPublicKeys(): ResponseBody = publicKeys
         }
         val configRepository = ConfigRepositoryImpl(api = fakeApi)
         val appConfigUseCase =
@@ -61,7 +64,7 @@ class AppConfigUseCaseImplTest {
         assertEquals(
             appConfigUseCase.get(), ConfigResult.Success(
                 appConfig = appConfig,
-                publicKeys = publicKeys
+                publicKeys = publicKeys.source()
             )
         )
         coVerify { appConfigPersistenceManager.saveAppConfigLastFetchedSeconds(0) }
@@ -74,7 +77,7 @@ class AppConfigUseCaseImplTest {
                 throw IOException()
             }
 
-            override suspend fun getPublicKeys(): PublicKeys = publicKeys
+            override suspend fun getPublicKeys(): ResponseBody = publicKeys
         }
         val configRepository = ConfigRepositoryImpl(api = fakeApi)
         val appConfigUseCase =
@@ -89,7 +92,7 @@ class AppConfigUseCaseImplTest {
     fun `config returns Error when public keys call fails`() = runBlocking {
         val fakeApi = object : AppConfigApi {
             override suspend fun getConfig(): AppConfig = appConfig
-            override suspend fun getPublicKeys(): PublicKeys {
+            override suspend fun getPublicKeys(): ResponseBody {
                 throw IOException()
             }
         }
