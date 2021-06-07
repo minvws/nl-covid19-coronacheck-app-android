@@ -22,12 +22,11 @@ import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TestResultAdapterItemUtil
-import nl.rijksoverheid.ctr.shared.ext.setVisible
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.time.OffsetDateTime
-import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 
 class MyOverviewGreenCardAdapterItem(
@@ -42,6 +41,7 @@ class MyOverviewGreenCardAdapterItem(
 
     private val testResultAdapterItemUtil: TestResultAdapterItemUtil by inject()
     private val greenCardUtil: GreenCardUtil by inject()
+    private val originUtil: OriginUtil by inject()
 
     override fun bind(viewBinding: ItemMyOverviewGreenCardBinding, position: Int) {
         applyStyling(
@@ -104,24 +104,39 @@ class MyOverviewGreenCardAdapterItem(
                 val origin = originState.origin
                 when (origin.type) {
                     is OriginType.Test -> {
-                        viewBinding.proof1Title.setText(R.string.qr_card_test_title_eu)
-                        setSubtitle(
+                        setOriginTitle(
+                            textView = viewBinding.proof1Title,
+                            originState = originState,
+                            title = context.getString(R.string.qr_card_test_title_eu)
+                        )
+
+                        setOriginSubtitle(
                             textView = viewBinding.proof1Subtitle,
                             originState = originState,
                             subtitle = origin.eventTime.formatDateTime(context),
                         )
                     }
                     is OriginType.Vaccination -> {
-                        viewBinding.proof1Title.setText(R.string.qr_card_vaccination_title_eu)
-                        setSubtitle(
+                        setOriginTitle(
+                            textView = viewBinding.proof1Title,
+                            originState = originState,
+                            title = context.getString(R.string.qr_card_vaccination_title_eu)
+                        )
+
+                        setOriginSubtitle(
                             textView = viewBinding.proof1Subtitle,
                             originState = originState,
                             subtitle = origin.eventTime.toLocalDate().formatDayMonthYear(),
                         )
                     }
                     is OriginType.Recovery -> {
-                        viewBinding.proof1Title.setText(R.string.qr_card_recovery_title_eu)
-                        setSubtitle(
+                        setOriginTitle(
+                            textView = viewBinding.proof1Title,
+                            originState = originState,
+                            title = context.getString(R.string.qr_card_recovery_title_eu)
+                        )
+
+                        setOriginSubtitle(
                             textView = viewBinding.proof1Subtitle,
                             originState = originState,
                             subtitle = origin.eventTime.toLocalDate().formatDayMonthYear(),
@@ -129,8 +144,6 @@ class MyOverviewGreenCardAdapterItem(
                     }
 
                 }
-                viewBinding.proof1Title.visibility = View.VISIBLE
-                viewBinding.proof1Subtitle.visibility = View.VISIBLE
 
                 if (launchDate.isAfter(OffsetDateTime.now())) {
                     viewBinding.launchText.text = context.getString(R.string.qr_card_validity_eu, launchDate.toLocalDate().formatDayMonth())
@@ -142,8 +155,13 @@ class MyOverviewGreenCardAdapterItem(
                     val origin = originState.origin
                     when (origin.type) {
                         is OriginType.Test -> {
-                            viewBinding.proof1Title.setText(R.string.qr_card_test_domestic)
-                            setSubtitle(
+                            setOriginTitle(
+                                textView = viewBinding.proof1Title,
+                                originState = originState,
+                                title = context.getString(R.string.qr_card_test_domestic)
+                            )
+
+                            setOriginSubtitle(
                                 textView = viewBinding.proof1Subtitle,
                                 originState = originState,
                                 subtitle = context.getString(
@@ -151,12 +169,15 @@ class MyOverviewGreenCardAdapterItem(
                                     origin.expirationTime.formatDateTime(context)
                                 )
                             )
-                            viewBinding.proof1Title.visibility = View.VISIBLE
-                            viewBinding.proof1Subtitle.visibility = View.VISIBLE
                         }
                         is OriginType.Vaccination -> {
-                            viewBinding.proof2Title.setText(R.string.qr_card_vaccination_title_domestic)
-                            setSubtitle(
+                            setOriginTitle(
+                                textView = viewBinding.proof2Title,
+                                originState = originState,
+                                title = context.getString(R.string.qr_card_vaccination_title_domestic)
+                            )
+
+                            setOriginSubtitle(
                                 textView = viewBinding.proof2Subtitle,
                                 originState = originState,
                                 subtitle = context.getString(
@@ -164,12 +185,15 @@ class MyOverviewGreenCardAdapterItem(
                                     origin.expirationTime.toLocalDate().formatDayMonthYear()
                                 )
                             )
-                            viewBinding.proof2Title.visibility = View.VISIBLE
-                            viewBinding.proof2Subtitle.visibility = View.VISIBLE
                         }
                         is OriginType.Recovery -> {
-                            viewBinding.proof3Title.setText(R.string.qr_card_recovery_title_domestic)
-                            setSubtitle(
+                            setOriginTitle(
+                                textView = viewBinding.proof3Title,
+                                originState = originState,
+                                title = context.getString(R.string.qr_card_recovery_title_domestic)
+                            )
+
+                            setOriginSubtitle(
                                 textView = viewBinding.proof3Subtitle,
                                 originState = originState,
                                 subtitle = context.getString(
@@ -207,7 +231,17 @@ class MyOverviewGreenCardAdapterItem(
         }
     }
 
-    private fun setSubtitle(
+    private fun setOriginTitle(
+        textView: TextView,
+        originState: OriginState,
+        title: String
+    ) {
+        // Small hack, but if the subtitle is not present we remove the ":" from the title copy since that doesn't make sense
+        textView.text = if (!originUtil.presentSubtitle(greenCard.greenCardEntity.type, originState)) title.replace(":", "") else title
+        textView.visibility = View.VISIBLE
+    }
+
+    private fun setOriginSubtitle(
         textView: TextView,
         originState: OriginState,
         subtitle: String,
@@ -215,7 +249,12 @@ class MyOverviewGreenCardAdapterItem(
         val context = textView.context
 
         when {
-            originState is OriginState.Future || this.launchDate.isAfter(OffsetDateTime.now()) -> {
+            !originUtil.presentSubtitle(
+                greenCardType = greenCard.greenCardEntity.type,
+                originState = originState) -> {
+                    textView.text = ""
+            }
+            greenCard.greenCardEntity.type == GreenCardType.Eu && originState is OriginState.Future || this.launchDate.isAfter(OffsetDateTime.now()) -> {
                 val realValidFrom = if (this.launchDate.isAfter(OffsetDateTime.now())) this.launchDate else originState.origin.validFrom
                 textView.setTextColor(ContextCompat.getColor(context, R.color.link))
 
@@ -229,9 +268,12 @@ class MyOverviewGreenCardAdapterItem(
                     textView.text = context.getString(R.string.qr_card_validity_future_hours,
                         hoursBetweenExpiration.coerceAtLeast(1).toString())
                 }
+
+                textView.visibility = View.VISIBLE
             }
             originState is OriginState.Valid -> {
                 textView.text = subtitle
+                textView.visibility = View.VISIBLE
             }
             originState is OriginState.Expired -> {
                 // Should be filtered out and never reach here
