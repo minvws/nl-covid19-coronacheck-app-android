@@ -5,7 +5,6 @@ import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import java.time.Instant
-import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 
@@ -33,13 +32,8 @@ class TestResultsMigrationManagerImpl(
                 val legacyCredentials =
                     mobileCoreWrapper.readCredentialLegacy(existingCredentials.toByteArray())
 
-                val validFrom = OffsetDateTime.of(
-                    LocalDateTime.ofEpochSecond(
-                        legacyCredentials.attributes.validFrom,
-                        0,
-                        ZoneOffset.UTC
-                    ), ZoneOffset.UTC
-                )
+                val validFrom = OffsetDateTime.ofInstant(Instant.ofEpochSecond(legacyCredentials.attributes.validFrom), ZoneOffset.UTC)
+
                 val originType = OriginType.Test
                 holderDatabase.originDao().insert(
                     OriginEntity(
@@ -71,10 +65,8 @@ class TestResultsMigrationManagerImpl(
                 }
 
                 holderDatabase.credentialDao().insertAll(entities)
-
+            } finally {
                 persistenceManager.deleteCredentials()
-            } catch (exception: Exception) {
-                // what to do if migration failed ?
             }
         }
     }
