@@ -47,7 +47,9 @@ class GetEventsUseCaseImpl(
 
             // Map event providers to access tokens
             val eventProvidersWithAccessTokenMap =
-                eventProviders.associateWith { eventProvider -> accessTokens.tokens.first { eventProvider.providerIdentifier == it.providerIdentifier } }
+                eventProviders.associateWith { eventProvider -> accessTokens.tokens.firstOrNull { eventProvider.providerIdentifier == it.providerIdentifier } }
+                    .filterValues { it != null }
+                    .mapValues { it.value as RemoteAccessTokens.Token }
 
             // A list of event providers that have events
             val eventProviderWithEvents = eventProvidersWithAccessTokenMap.filter {
