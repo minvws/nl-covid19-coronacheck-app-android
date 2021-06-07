@@ -3,7 +3,6 @@ package nl.rijksoverheid.ctr.appconfig.api.model
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import nl.rijksoverheid.ctr.shared.models.JSON
-import org.json.JSONObject
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
