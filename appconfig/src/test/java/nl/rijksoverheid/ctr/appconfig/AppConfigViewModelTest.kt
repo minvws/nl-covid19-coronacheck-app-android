@@ -18,6 +18,7 @@ import nl.rijksoverheid.ctr.appconfig.usecases.AppStatusUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.LoadPublicKeysUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.PersistConfigUseCase
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
+import okio.BufferedSource
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
@@ -40,12 +41,14 @@ class AppConfigViewModelTest {
     private val persistConfigUseCase: PersistConfigUseCase = mockk(relaxed = true)
     private val loadPublicKeyUseCase: LoadPublicKeysUseCase = mockk(relaxed = true)
     private val appConfigStorageManager: AppConfigStorageManager = mockk(relaxed = true)
+    private val cachedAppConfigUseCase: CachedAppConfigUseCase = mockk(relaxed = true)
     private val appConfigViewModel = AppConfigViewModelImpl(
         appConfigUseCase = appConfigUseCase,
         appStatusUseCase = appStatusUseCase,
         persistConfigUseCase = persistConfigUseCase,
         loadPublicKeysUseCase = loadPublicKeyUseCase,
         appConfigStorageManager = appConfigStorageManager,
+        cachedAppConfigUseCase = cachedAppConfigUseCase,
         cacheDirPath = "",
         isVerifierApp = false,
         versionCode = 0
@@ -74,9 +77,8 @@ class AppConfigViewModelTest {
             requireUpdateBefore = 0
         )
 
-        val publicKeys = PublicKeys(
-            clKeys = listOf()
-        )
+        val publicKeys = mockk<BufferedSource>()
+        coEvery { publicKeys.readUtf8() } returns "file contents"
 
         coEvery { appConfigUseCase.get() } answers {
             ConfigResult.Success(
@@ -86,6 +88,7 @@ class AppConfigViewModelTest {
         }
 
         coEvery { appStatusUseCase.get(any(), any()) } answers { AppStatus.NoActionRequired }
+        coEvery { cachedAppConfigUseCase.getCachedPublicKeys() } returns publicKeys
 
         appConfigViewModel.refresh(mobileCoreWrapper)
 
@@ -114,6 +117,7 @@ class AppConfigViewModelTest {
             persistConfigUseCase = persistConfigUseCase,
             loadPublicKeysUseCase = loadPublicKeyUseCase,
             appConfigStorageManager = appConfigStorageManager,
+            cachedAppConfigUseCase = cachedAppConfigUseCase,
             cacheDirPath = "",
             isVerifierApp = true,
             versionCode = 0
@@ -126,9 +130,8 @@ class AppConfigViewModelTest {
             maxValidityHours = 0
         )
 
-        val publicKeys = PublicKeys(
-            clKeys = listOf()
-        )
+        val publicKeys = mockk<BufferedSource>()
+        coEvery { publicKeys.readUtf8() } returns "file contents"
 
         coEvery { appConfigUseCase.get() } answers {
             ConfigResult.Success(
@@ -155,9 +158,8 @@ class AppConfigViewModelTest {
             maxValidityHours = 0
         )
 
-        val publicKeys = PublicKeys(
-            clKeys = listOf()
-        )
+        val publicKeys = mockk<BufferedSource>()
+        coEvery { publicKeys.readUtf8() } returns "file contents"
 
         coEvery { appConfigUseCase.get() } answers {
             ConfigResult.Success(

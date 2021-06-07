@@ -4,7 +4,6 @@ import mobilecore.Result
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
-import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.ui.new_terms.models.NewTerms
@@ -22,6 +21,9 @@ import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.TestResultValidUseCase
 import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.VerifyQrUseCase
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.QrCodeUtil
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrViewModel
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.ResponseBody.Companion.toResponseBody
+import okio.BufferedSource
 import org.json.JSONObject
 import java.time.OffsetDateTime
 
@@ -160,9 +162,7 @@ fun fakeCachedAppConfigUseCase(
         temporarilyDisabled = false,
         requireUpdateBefore = 0
     ),
-    publicKeys: PublicKeys = PublicKeys(
-        clKeys = listOf()
-    )
+    publicKeys: BufferedSource = "{\"cl_keys\":[]}".toResponseBody("application/json".toMediaType()).source()
 ): CachedAppConfigUseCase = object : CachedAppConfigUseCase {
     override fun persistAppConfig(appConfig: AppConfig) {
 
@@ -180,18 +180,14 @@ fun fakeCachedAppConfigUseCase(
         return appConfig.vaccinationEventValidity
     }
 
-    override fun persistPublicKeys(publicKeys: PublicKeys) {
-
-    }
-
-    override fun getCachedPublicKeys(): PublicKeys? {
+    override fun getCachedPublicKeys(): BufferedSource {
         return publicKeys
     }
 }
 
 fun fakeMobileCoreWrapper(): MobileCoreWrapper {
     return object : MobileCoreWrapper {
-        override fun loadIssuerPks(bytes: ByteArray) {
+        override fun loadDomesticIssuerPks(bytes: ByteArray) {
         }
 
         override fun createCredentials(body: ByteArray): String {
