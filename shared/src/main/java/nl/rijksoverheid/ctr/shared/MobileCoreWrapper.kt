@@ -23,7 +23,7 @@ import org.json.JSONObject
 import java.lang.reflect.Type
 
 interface MobileCoreWrapper {
-    fun loadIssuerPks(bytes: ByteArray)
+    fun loadDomesticIssuerPks(bytes: ByteArray)
     fun createCredentials(body: ByteArray): String
     fun readDomesticCredential(credential: ByteArray): ReadDomesticCredential
     fun readCredential(credentials: ByteArray): ByteArray
@@ -37,7 +37,7 @@ interface MobileCoreWrapper {
 }
 
 class MobileCoreWrapperImpl(private val moshi: Moshi) : MobileCoreWrapper {
-    override fun loadIssuerPks(bytes: ByteArray) {
+    override fun loadDomesticIssuerPks(bytes: ByteArray) {
         Mobilecore.loadDomesticIssuerPks(bytes)
     }
 

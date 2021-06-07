@@ -191,7 +191,7 @@ fun fakeCachedAppConfigUseCase(
 
 fun fakeMobileCoreWrapper(): MobileCoreWrapper {
     return object : MobileCoreWrapper {
-        override fun loadIssuerPks(bytes: ByteArray) {
+        override fun loadDomesticIssuerPks(bytes: ByteArray) {
         }
 
         override fun createCredentials(body: ByteArray): String {

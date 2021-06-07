@@ -1,11 +1,10 @@
 package nl.rijksoverheid.ctr.appconfig.usecases
 
-import com.squareup.moshi.JsonReader
 import com.squareup.moshi.Moshi
 import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import okio.BufferedSource
-import okio.IOException
+import timber.log.Timber
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -26,6 +25,10 @@ class LoadPublicKeysUseCaseImpl(
     override fun load(publicKeysBufferedSource: BufferedSource) {
         val publicKeys = moshi.adapter(PublicKeys::class.java).fromJson(publicKeysBufferedSource)
         val json = moshi.adapter(List::class.java).toJson(publicKeys!!.clKeys)
-        mobileCoreWrapper.loadIssuerPks(json.toByteArray())
+        try {
+            mobileCoreWrapper.loadDomesticIssuerPks(json.toByteArray())
+        } catch (exception: Exception) {
+            Timber.e(exception)
+        }
     }
 }
