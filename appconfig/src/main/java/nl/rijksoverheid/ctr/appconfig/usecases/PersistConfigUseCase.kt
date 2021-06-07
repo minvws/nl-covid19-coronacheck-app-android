@@ -45,7 +45,8 @@ class PersistConfigUseCaseImpl(
 //            )
 
             val publicKeysFile = File(cacheDir, "public_keys.json")
-            val publicKeysStorageResult = appConfigStorageManager.storageFile(publicKeysFile, publicKeys)
+            val contents = publicKeys.readUtf8()
+            val publicKeysStorageResult = appConfigStorageManager.storageFile(publicKeysFile, contents)
             if (publicKeysStorageResult is StorageResult.Error) {
                 return@withContext publicKeysStorageResult
             }

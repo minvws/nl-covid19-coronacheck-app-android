@@ -24,9 +24,8 @@ class LoadPublicKeysUseCaseImpl(
 ) : LoadPublicKeysUseCase {
 
     override fun load(publicKeysBufferedSource: BufferedSource) {
-        val publicKeys = moshi.adapter(PublicKeys::class.java).lenient().fromJson(publicKeysBufferedSource)
+        val publicKeys = moshi.adapter(PublicKeys::class.java).fromJson(publicKeysBufferedSource)
         val json = moshi.adapter(List::class.java).toJson(publicKeys!!.clKeys)
-        println("GIO json $json")
         mobileCoreWrapper.loadIssuerPks(json.toByteArray())
     }
 }

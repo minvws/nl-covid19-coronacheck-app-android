@@ -17,7 +17,6 @@ import java.io.IOException
 
 interface AppConfigStorageManager {
     fun storageFile(file: File, fileContents: String): StorageResult
-    fun storageFile(file: File, fileContentsBufferedSource: BufferedSource): StorageResult
     fun areConfigFilesPresent(): Boolean
     fun getFileAsBufferedSource(file: File): BufferedSource?
 }
@@ -29,17 +28,6 @@ class AppConfigStorageManagerImpl(private val cacheDir: String): AppConfigStorag
             file.bufferedWriter().use {
                 it.write(fileContents)
             }
-            StorageResult.Success
-        } catch (exception: IOException) {
-            StorageResult.Error(exception.message ?: "error storing: $file")
-        }
-    }
-
-    override fun storageFile(file: File, fileContentsBufferedSource: BufferedSource): StorageResult {
-        return try {
-            file.parentFile?.mkdirs()
-            val sink = file.sink().buffer()
-            sink.writeAll(fileContentsBufferedSource)
             StorageResult.Success
         } catch (exception: IOException) {
             StorageResult.Error(exception.message ?: "error storing: $file")
