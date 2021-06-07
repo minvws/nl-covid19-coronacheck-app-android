@@ -332,7 +332,9 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
 
             vaccinationEvents.events?.let { events ->
                 events
-                    .sortedBy { it.vaccination?.date?.toEpochDay() }
+                    .sortedByDescending {
+                        it.vaccination?.date?.toEpochDay()
+                    }
                     .forEachIndexed { index, event ->
 
                         val infoScreen = infoScreenUtil.getForRemoteVaccination(
