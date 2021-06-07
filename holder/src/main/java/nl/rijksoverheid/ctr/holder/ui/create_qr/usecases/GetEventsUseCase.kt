@@ -4,6 +4,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.EventProviderRepository
+import nl.rijksoverheid.ctr.shared.ext.filterNotNullValues
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -47,9 +48,10 @@ class GetEventsUseCaseImpl(
 
             // Map event providers to access tokens
             val eventProvidersWithAccessTokenMap =
-                eventProviders.associateWith { eventProvider -> accessTokens.tokens.firstOrNull { eventProvider.providerIdentifier == it.providerIdentifier } }
-                    .filterValues { it != null }
-                    .mapValues { it.value as RemoteAccessTokens.Token }
+                eventProviders
+                    .associateWith { eventProvider -> accessTokens.tokens
+                        .firstOrNull { eventProvider.providerIdentifier == it.providerIdentifier } }
+                    .filterNotNullValues()
 
             // A list of event providers that have events
             val eventProviderWithEvents = eventProvidersWithAccessTokenMap.filter {
