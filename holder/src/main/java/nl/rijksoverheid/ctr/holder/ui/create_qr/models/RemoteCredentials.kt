@@ -49,4 +49,11 @@ data class RemoteCredentials(
         val expirationTime: OffsetDateTime,
         val validFrom: OffsetDateTime
     )
+
+    fun getAllOrigins(): List<String> {
+        val origins = mutableListOf<String>()
+        origins.addAll(domesticGreencard?.origins?.map { it.type } ?: listOf())
+        origins.addAll(euGreencards?.map { it.origins.map { it.type } }?.flatten() ?: listOf())
+        return origins
+    }
 }

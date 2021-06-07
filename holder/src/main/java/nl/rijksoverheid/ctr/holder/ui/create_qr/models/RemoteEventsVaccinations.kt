@@ -58,7 +58,7 @@ data class RemoteEventsVaccinations(
             val hpkCode: String?,
             val type: String?,
             val brand: String?,
-            val completedByMedicalStatement: String?,
+            val completedByMedicalStatement: Boolean?,
             val doseNumber: String?,
             val totalDoses: String?,
             val country: String?,
