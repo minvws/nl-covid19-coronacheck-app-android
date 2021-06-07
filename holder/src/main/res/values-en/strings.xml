@@ -52,7 +52,7 @@
     <string name="choose_provider_toolbar">QR-code maken</string>
     <string name="choose_provider_title">Waar ben je getest?</string>
     <string name="choose_provider_description">Blijkt uit de test dat je geen corona hebt? Dan kan je van de testuitslag een QR-code maken. Geef aan waar je getest bent.</string>
-    <string name="choose_provider_commercial_title">Testen voor Toegang</string>
+    <string name="choose_provider_commercial_title">Andere testlocatie</string>
     <string name="choose_provider_commercial_subtitle">Haal testuitslag op</string>
     <string name="choose_provider_ggd_title">GGD</string>
     <string name="choose_provider_ggd_subtitle">Log in met je DigiD</string>
@@ -212,12 +212,6 @@
     <string name="dialog_negative_test_result_something_wrong_description">Zijn jouw gegevens anders dan op je identiteitsbewijs? Neem contact op met je testlocatie. Zij kunnen je gegevens laten aanpassen.</string>
     <string name="validity_type_european_title">Europese Unie</string>
     <string name="validity_type_dutch_title">Nederland</string>
-    <string name="qr_card_vaccination_validity_domestic">Vaccinatiebewijs:\ngeldig t/m %1$s</string>
-    <string name="qr_card_test_validity_domestic">Testbewijs:\ngeldig t/m %1$s</string>
-    <string name="qr_card_recovery_validity_domestic">Herstelverklaring:\ngeldig tot en met %1$s</string>
-    <string name="qr_card_vaccination_validity_eu">Vaccinatiedatum:\n%1$s</string>
-    <string name="qr_card_recovery_validity_eu">Herstelverklaring:\ngeldig vanaf %1$s</string>
-    <string name="qr_card_test_validity_eu">Testdatum:\n%1$s</string>
     <string name="qr_explanation_title_domestic">Over mijn Nederlandse QR-code</string>
     <string name="qr_explanation_description_domestic"><![CDATA[In jouw Nederlandse QR-code staan minimale gegevens. In de QR-code staat niet of je een testbewijs of vaccinatie hebt. Maar wel of de QR-code geldig is.  Ook staan er enkele gegevens van jou in de QR-code. Dit is ter controle, om zeker te zijn dat de QR-code bij jou hoort. De gegevens bestaan uit de eerste letter van je voornaam, de eerste letter van je achternaam, je geboortedag en geboortemaand. Uit veiligheidsredenen kunnen er gegevens wegvallen.<br/><br/>Jouw gegevens: <b>%1$s</b><br/><br/>Gebruik in Nederland altijd de Nederlandse QR-code. De Europese QR-code is niet geldig in Nederland.]]></string>
     <string name="qr_explanation_title_eu">Over mijn Europese QR-code</string>
@@ -236,13 +230,13 @@
     <string name="qr_card_validity_future_hours">wordt automatisch geldig over %1$s uur</string>
     <string name="qr_card_validity_eu">Je Europese QR-code wordt automatisch geldig als de Europese regelgeving ingaat (vanaf %1$s)</string>
     <string name="your_test_result_explanation_toolbar_title">Wat is er opgehaald?</string>
-    <string name="your_test_result_explanation_description"><![CDATA[De volgende gegevens zijn opgehaald bij de testlocatie:<br\><br\>Jouw gegevens:  <b>%1$s</b><br/><br/>Type test: <b>%2$s</b><br/>Testdatum: <b>%3$s</b><br/>Testuitslag: <b>%4$s</b><br/>Testlocatie:<b>%5$s</b><br/>Identificatiecode: <b>%6$s</b>]]></string>
+    <string name="your_test_result_explanation_description"><![CDATA[De volgende gegevens zijn opgehaald bij de testlocatie:<br\><br\>Jouw gegevens:  <b>%1$s</b><br/><br/>Type test: <b>%2$s</b><br/>Testdatum: <b>%3$s</b><br/>Testuitslag: <b>%4$s</b><br/>Identificatiecode: <b>%5$s</b>]]></string>
     <string name="your_test_result_explanation_negative_test_result">negatief (geen corona)</string>
     <string name="your_test_result_3.0_explanation_description"><![CDATA[De volgende gegevens zijn opgehaald bij de testlocatie:<br\><br\>Naam:  <b>%1$s</b><br/>Geboortedatum: <b>%2$s</b><br/><br/>Type test: <b>%3$s</b><br/>Test naam: <b>%4$s</b><br/>Testdatum: <b>%5$s</b><br/>Testuitslag: <b>%6$s</b><br/>Testlocatie: <b>%7$s</b><br/>Testproducent: <b>%8$s</b><br/>Identificatiecode: <b>%9$s</b>]]></string>
     <string name="your_negative_test_3.0_results_row_subtitle"><![CDATA[Testdatum: %1$s<br/>Geldig tot: %2$s<br/>Naam: %3$s<br/>Geboortedatum: %4$s]]></string>
     <string name="your_vaccination_row_subtitle"><![CDATA[Naam: %1$s<br/>Geboortedatum: %2$s]]></string>
     <string name="your_vaccination_explanation_toolbar_title">Over jouw vaccinatie</string>
-    <string name="your_vaccination_explanation_description"><![CDATA[Deze gegevens van je vaccinatie zijn opgehaald:<br/><br/>Naam: <b>%1$s</b><br/>Geboortedatum: <b>%2$s</b><br/><br/>Ziekteverwekker: <b>%3$s</b><br/>Vaccin: <b>%4$s</b><br/>Doses: <b>%5$s</b><br/>Prikdatum: <b>%6$s</b><br/>Gevaccineerd in: <b>%7$s</b><br/>Identificatiecode: <b>%8$s</b>]]></string>
+    <string name="your_vaccination_explanation_description"><![CDATA[De volgende vaccinatie gegevens zijn opgehaald:<br/><br/>Naam: <b>%1$s</b><br/>Geboortedatum: <b>%2$s</b><br/><br/>Ziekteverwekker: <b>%3$s</b><br/>Vaccin: <b>%4$s</b><br/>Vaccin type: <b>%5$s</b><br/>Producent: <b>%6$s</b><br/>Doses: <b>%7$s</b><br/>Prikdatum: <b>%8$s</b><br/>Land van test: <b>%9$s</b><br/>Identificatiecode: <b>%10$s</b>]]></string>
     <string name="your_vaccination_explanation_covid_19">COVID-19</string>
     <string name="your_vaccination_explanation_doses">%1$s van %2$s</string>
     <string name="my_overview_not_valid_domestic_but_is_in_eu">Je %1$s is niet geldig in Nederland. Je hebt alleen een Europese QR-code.</string>

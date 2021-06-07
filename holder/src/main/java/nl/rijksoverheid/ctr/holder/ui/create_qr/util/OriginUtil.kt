@@ -1,17 +1,27 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
+import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import java.time.Clock
-import java.time.Instant
 import java.time.OffsetDateTime
-import java.time.ZoneOffset
-import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
+import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewGreenCardAdapterItem
 
 interface OriginUtil {
     fun getOriginState(origins: List<OriginEntity>): List<OriginState>
+
+    /**
+     * If the origin subtitle should be shown in the [MyOverviewGreenCardAdapterItem]
+     */
+    fun presentSubtitle(greenCardType: GreenCardType, originState: OriginState): Boolean
 }
 
 class OriginUtilImpl(private val clock: Clock): OriginUtil {
+
+    companion object {
+        private const val PRESENT_SUBTITLE_WHEN_LESS_THEN_YEARS = 3
+    }
 
     override fun getOriginState(origins: List<OriginEntity>): List<OriginState> {
         return origins.map { origin ->
@@ -27,6 +37,10 @@ class OriginUtilImpl(private val clock: Clock): OriginUtil {
                 }
             }
         }
+    }
+
+    override fun presentSubtitle(greenCardType: GreenCardType, originState: OriginState): Boolean {
+        return (greenCardType == GreenCardType.Domestic && ChronoUnit.YEARS.between(OffsetDateTime.now(clock), originState.origin.validFrom) < PRESENT_SUBTITLE_WHEN_LESS_THEN_YEARS) || greenCardType == GreenCardType.Eu
     }
 }
 

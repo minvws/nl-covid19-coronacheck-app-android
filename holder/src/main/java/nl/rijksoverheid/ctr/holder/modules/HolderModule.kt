@@ -77,9 +77,6 @@ fun holderModule(baseUrl: String) = module {
             get()
         )
     }
-    factory<HasOriginUseCase> {
-        HasOriginUseCaseImpl(get())
-    }
     factory<SecretKeyUseCase> {
         SecretKeyUseCaseImpl(get(), get())
     }
@@ -123,7 +120,7 @@ fun holderModule(baseUrl: String) = module {
     viewModel { DigiDViewModel(get()) }
     viewModel { TokenQrViewModel(get()) }
     viewModel<DeviceRootedViewModel> { DeviceRootedViewModelImpl(get(), get()) }
-    viewModel<YourEventsViewModel> { YourEventsViewModelImpl(get(), get(), get()) }
+    viewModel<YourEventsViewModel> { YourEventsViewModelImpl(get(), get()) }
     viewModel<GetVaccinationViewModel> { GetVaccinationViewModelImpl(get()) }
     viewModel<ChooseProviderViewModel> { ChooseProviderViewModelImpl(get()) }
     viewModel<MyOverviewViewModel> { MyOverviewViewModelImpl(get(), get()) }

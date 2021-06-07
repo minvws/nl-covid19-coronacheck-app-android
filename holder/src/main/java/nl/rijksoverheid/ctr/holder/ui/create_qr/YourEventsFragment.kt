@@ -83,37 +83,33 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
             binding.bottom.setButtonEnabled(!it)
         })
 
-        yourEventsViewModel.yourEventsResult.observe(viewLifecycleOwner, EventObserver { eventsResult ->
-            val databaseSyncerResult = eventsResult.databaseSyncerResult
-
+        yourEventsViewModel.yourEventsResult.observe(viewLifecycleOwner, EventObserver { databaseSyncerResult ->
             when (databaseSyncerResult) {
                 is DatabaseSyncerResult.Success -> {
-                    if (eventsResult.hasOrigin) {
-                        // We have a origin in the database that we expect, so success
-                        findNavController().navigate(
-                            YourEventsFragmentDirections.actionMyOverview()
-                        )
-                    } else {
-                        // We don't have an origin saved that we expect, so something went wrong with the rule engine
-                        when (args.type) {
-                            is YourEventsFragmentType.TestResult2, is YourEventsFragmentType.TestResult3 -> {
-                                findNavController().navigate(
-                                    YourEventsFragmentDirections.actionCouldNotCreateQr(
-                                        toolbarTitle = args.toolbarTitle,
-                                        title = getString(R.string.rule_engine_no_origin_title),
-                                        description = getString(R.string.rule_engine_no_test_origin_description)
-                                    )
+                    // We have a origin in the database that we expect, so success
+                    findNavController().navigate(
+                        YourEventsFragmentDirections.actionMyOverview()
+                    )
+                }
+                is DatabaseSyncerResult.MissingOrigin -> {
+                    when (args.type) {
+                        is YourEventsFragmentType.TestResult2, is YourEventsFragmentType.TestResult3 -> {
+                            findNavController().navigate(
+                                YourEventsFragmentDirections.actionCouldNotCreateQr(
+                                    toolbarTitle = args.toolbarTitle,
+                                    title = getString(R.string.rule_engine_no_origin_title),
+                                    description = getString(R.string.rule_engine_no_test_origin_description)
                                 )
-                            }
-                            is YourEventsFragmentType.Vaccination -> {
-                                findNavController().navigate(
-                                    YourEventsFragmentDirections.actionCouldNotCreateQr(
-                                        toolbarTitle = args.toolbarTitle,
-                                        title = getString(R.string.rule_engine_no_origin_title),
-                                        description = getString(R.string.rule_engine_no_vaccination_origin_description)
-                                    )
+                            )
+                        }
+                        is YourEventsFragmentType.Vaccination -> {
+                            findNavController().navigate(
+                                YourEventsFragmentDirections.actionCouldNotCreateQr(
+                                    toolbarTitle = args.toolbarTitle,
+                                    title = getString(R.string.rule_engine_no_origin_title),
+                                    description = getString(R.string.rule_engine_no_vaccination_origin_description)
                                 )
-                            }
+                            )
                         }
                     }
                 }

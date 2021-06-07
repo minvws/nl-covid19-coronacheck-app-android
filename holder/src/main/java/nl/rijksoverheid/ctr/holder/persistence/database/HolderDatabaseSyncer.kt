@@ -23,7 +23,11 @@ import java.time.ZoneOffset
  *
  */
 interface HolderDatabaseSyncer {
-    suspend fun sync(): DatabaseSyncerResult
+
+    /**
+     * @param expectedOriginType If not null checks if the remote credentials contain this origin
+     */
+    suspend fun sync(expectedOriginType: String? = null): DatabaseSyncerResult
 }
 
 class HolderDatabaseSyncerImpl(
@@ -34,14 +38,15 @@ class HolderDatabaseSyncerImpl(
     private val secretKeyUseCase: SecretKeyUseCase,
 ) : HolderDatabaseSyncer {
 
-    override suspend fun sync(): DatabaseSyncerResult {
+    override suspend fun sync(expectedOriginType: String?): DatabaseSyncerResult {
         return withContext(Dispatchers.IO) {
             val events = holderDatabase.eventGroupDao().getAll()
             removeExpiredEventGroups(
                 events = events
             )
             syncGreenCards(
-                events = events
+                events = events,
+                expectedOriginType = expectedOriginType
             )
         }
     }
@@ -62,12 +67,17 @@ class HolderDatabaseSyncerImpl(
     }
 
     @Transaction
-    private suspend fun syncGreenCards(events: List<EventGroupEntity>): DatabaseSyncerResult {
+    private suspend fun syncGreenCards(events: List<EventGroupEntity>, expectedOriginType: String?): DatabaseSyncerResult {
         if (events.isNotEmpty()) {
             return try {
                 val remoteCredentials = getRemoteCredentials(
                     events = events
                 )
+
+                if (!remoteCredentials.getAllOrigins().contains(expectedOriginType)) {
+                    return DatabaseSyncerResult.MissingOrigin
+                }
+
 
                 // Remove all green cards from database
                 removeAllGreenCards()
@@ -223,6 +233,7 @@ class HolderDatabaseSyncerImpl(
 
 sealed class DatabaseSyncerResult {
     object Success : DatabaseSyncerResult()
+    object MissingOrigin : DatabaseSyncerResult()
     data class ServerError(val httpCode: Int, val errorCode: Int? = null) : DatabaseSyncerResult()
     object NetworkError : DatabaseSyncerResult()
 }
