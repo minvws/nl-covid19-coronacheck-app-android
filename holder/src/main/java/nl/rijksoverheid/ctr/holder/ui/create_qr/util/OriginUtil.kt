@@ -19,6 +19,10 @@ interface OriginUtil {
 
 class OriginUtilImpl(private val clock: Clock): OriginUtil {
 
+    companion object {
+        private const val PRESENT_SUBTITLE_WHEN_LESS_THEN_YEARS = 3
+    }
+
     override fun getOriginState(origins: List<OriginEntity>): List<OriginState> {
         return origins.map { origin ->
             when {
@@ -36,7 +40,7 @@ class OriginUtilImpl(private val clock: Clock): OriginUtil {
     }
 
     override fun presentSubtitle(greenCardType: GreenCardType, originState: OriginState): Boolean {
-        return (greenCardType == GreenCardType.Domestic && ChronoUnit.YEARS.between(OffsetDateTime.now(clock), originState.origin.validFrom) < 3) || greenCardType == GreenCardType.Eu
+        return (greenCardType == GreenCardType.Domestic && ChronoUnit.YEARS.between(OffsetDateTime.now(clock), originState.origin.validFrom) < PRESENT_SUBTITLE_WHEN_LESS_THEN_YEARS) || greenCardType == GreenCardType.Eu
     }
 }
 
