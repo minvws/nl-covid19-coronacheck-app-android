@@ -95,7 +95,7 @@ class MyOverviewGreenCardAdapterItem(
         viewBinding.proof2Subtitle.setTextColor(context.getThemeColor(android.R.attr.textColorPrimary))
         viewBinding.proof3Subtitle.setTextColor(context.getThemeColor(android.R.attr.textColorPrimary))
         viewBinding.launchText.text = ""
-        viewBinding.launchText.setVisible(false)
+        viewBinding.launchText.visibility = View.GONE
 
         when (greenCard.greenCardEntity.type) {
             is GreenCardType.Eu -> {
@@ -134,7 +134,7 @@ class MyOverviewGreenCardAdapterItem(
 
                 if (launchDate.isAfter(OffsetDateTime.now())) {
                     viewBinding.launchText.text = context.getString(R.string.qr_card_validity_eu, launchDate.toLocalDate().formatDayMonth())
-                    viewBinding.launchText.setVisible(true)
+                    viewBinding.launchText.visibility = View.VISIBLE
                 }
             }
             is GreenCardType.Domestic -> {
