@@ -20,6 +20,9 @@ import nl.rijksoverheid.ctr.appconfig.usecases.AppStatusUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.LoadPublicKeysUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.PersistConfigUseCase
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
+import okio.buffer
+import okio.source
+import java.io.File
 
 abstract class AppConfigViewModel : ViewModel() {
     val appStatusLiveData = MutableLiveData<AppStatus>()
@@ -33,6 +36,7 @@ class AppConfigViewModelImpl(
     private val persistConfigUseCase: PersistConfigUseCase,
     private val loadPublicKeysUseCase: LoadPublicKeysUseCase,
     private val appConfigStorageManager: AppConfigStorageManager,
+    private val cachedAppConfigUseCase: CachedAppConfigUseCase,
     private val cacheDirPath: String,
     private val isVerifierApp: Boolean,
     private val versionCode: Int
@@ -47,9 +51,9 @@ class AppConfigViewModelImpl(
                     appConfig = configResult.appConfig,
                     publicKeys = configResult.publicKeys
                 )
-                loadPublicKeysUseCase.load(
-                    publicKeys = configResult.publicKeys
-                )
+                cachedAppConfigUseCase.getCachedPublicKeys()?.let {
+                    loadPublicKeysUseCase.load(it)
+                }
             }
 
             if (isVerifierApp) {

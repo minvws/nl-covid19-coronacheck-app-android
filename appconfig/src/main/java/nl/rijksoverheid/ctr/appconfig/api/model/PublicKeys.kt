@@ -15,7 +15,7 @@ import org.json.JSONObject
 @JsonClass(generateAdapter = true)
 data class PublicKeys(
     @Json(name = "cl_keys") val clKeys: List<ClKey>,
-    @Json(name = "eu_keys") val euKeys: JSONObject,
+    @Json(name = "eu_keys") val euKeys: JSONObject?,
 ) : JSON() {
     @JsonClass(generateAdapter = true)
     data class ClKey(

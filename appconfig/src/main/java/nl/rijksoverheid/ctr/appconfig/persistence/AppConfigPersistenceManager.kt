@@ -12,8 +12,8 @@ import android.content.SharedPreferences
  */
 
 interface AppConfigPersistenceManager {
-    fun savePublicKeysJson(json: String)
-    fun getPublicKeysJson(): String?
+//    fun savePublicKeysJson(json: String)
+//    fun getPublicKeysJson(): String?
     fun saveAppConfigJson(json: String)
     fun getAppConfigJson(): String?
     fun getAppConfigLastFetchedSeconds(): Long
@@ -24,18 +24,18 @@ class AppConfigPersistenceManagerImpl(private val sharedPreferences: SharedPrefe
     AppConfigPersistenceManager {
 
     companion object {
-        const val PUBLIC_KEYS_JSON = "PUBLIC_KEYS_JSON"
+//        const val PUBLIC_KEYS_JSON = "PUBLIC_KEYS_JSON"
         const val APP_CONFIG_JSON = "APP_CONFIG_JSON"
         const val APP_CONFIG_LAST_FETCHED_SECONDS = "APP_CONFIG_LAST_FETCHED_SECONDS"
     }
 
-    override fun savePublicKeysJson(json: String) {
-        sharedPreferences.edit().putString(PUBLIC_KEYS_JSON, json).apply()
-    }
-
-    override fun getPublicKeysJson(): String? {
-        return sharedPreferences.getString(PUBLIC_KEYS_JSON, null)
-    }
+//    override fun savePublicKeysJson(json: String) {
+//        sharedPreferences.edit().putString(PUBLIC_KEYS_JSON, json).apply()
+//    }
+//
+//    override fun getPublicKeysJson(): String? {
+//        return sharedPreferences.getString(PUBLIC_KEYS_JSON, null)
+//    }
 
     override fun saveAppConfigJson(json: String) {
         sharedPreferences.edit().putString(APP_CONFIG_JSON, json).apply()

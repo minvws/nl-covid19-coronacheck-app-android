@@ -8,7 +8,10 @@ import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
 import nl.rijksoverheid.ctr.appconfig.persistence.StorageResult
+import okhttp3.ResponseBody
+import okio.BufferedSource
 import java.io.File
+import java.io.InputStream
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -19,7 +22,7 @@ import java.io.File
  */
 
 interface PersistConfigUseCase {
-    suspend fun persist(appConfig: AppConfig, publicKeys: PublicKeys): StorageResult
+    suspend fun persist(appConfig: AppConfig, publicKeys: BufferedSource): StorageResult
 }
 
 class PersistConfigUseCaseImpl(
@@ -30,26 +33,27 @@ class PersistConfigUseCaseImpl(
     private val moshi: Moshi
 ) : PersistConfigUseCase {
 
-    override suspend fun persist(appConfig: AppConfig, publicKeys: PublicKeys) =
+    override suspend fun persist(appConfig: AppConfig, publicKeys: BufferedSource) =
         withContext(Dispatchers.IO) {
             val configContents = appConfig.toJson(moshi)
             appConfigPersistenceManager.saveAppConfigJson(
                 json = configContents
             )
-            val publicKeysContents = publicKeys.toJson(moshi)
-            appConfigPersistenceManager.savePublicKeysJson(
-                json = publicKeysContents
-            )
+//            val publicKeysContents = publicKeys.toJson(moshi)
+//            appConfigPersistenceManager.savePublicKeysJson(
+//                json = publicKeysContents
+//            )
+
+            val publicKeysFile = File(cacheDir, "public_keys.json")
+            val publicKeysStorageResult = appConfigStorageManager.storageFile(publicKeysFile, publicKeys)
+            if (publicKeysStorageResult is StorageResult.Error) {
+                return@withContext publicKeysStorageResult
+            }
 
             if (isVerifierApp) {
                 val configFile = File(cacheDir, "config.json")
-                val publicKeysFile = File(cacheDir, "public_keys.json")
                 val configStorageResult = appConfigStorageManager.storageFile(configFile, configContents)
-                val publicKeysStorageResult = appConfigStorageManager.storageFile(publicKeysFile, publicKeysContents.replace("\\/", "/"))
                 if (configStorageResult is StorageResult.Error) {
-                    return@withContext configStorageResult
-                }
-                if (publicKeysStorageResult is StorageResult.Error) {
                     return@withContext configStorageResult
                 }
             }

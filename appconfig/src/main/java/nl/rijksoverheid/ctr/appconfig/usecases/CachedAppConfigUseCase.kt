@@ -4,7 +4,10 @@ import com.squareup.moshi.Moshi
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
+import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
 import nl.rijksoverheid.ctr.shared.ext.toObject
+import okio.BufferedSource
+import java.io.File
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -19,12 +22,14 @@ interface CachedAppConfigUseCase {
     fun getCachedAppConfig(): AppConfig?
     fun getCachedAppConfigMaxValidityHours(): Int
     fun getCachedAppConfigVaccinationEventValidity(): Int
-    fun persistPublicKeys(publicKeys: PublicKeys)
-    fun getCachedPublicKeys(): PublicKeys?
+//    fun persistPublicKeys(publicKeys: PublicKeys)
+    fun getCachedPublicKeys(): BufferedSource?
 }
 
 class CachedAppConfigUseCaseImpl constructor(
     private val persistenceManager: AppConfigPersistenceManager,
+    private val appConfigStorageManager: AppConfigStorageManager,
+    private val cacheDir: String,
     private val moshi: Moshi
 ) : CachedAppConfigUseCase {
 
@@ -47,12 +52,13 @@ class CachedAppConfigUseCaseImpl constructor(
             ?: throw IllegalStateException("AppConfig should be cached")
     }
 
-    override fun persistPublicKeys(publicKeys: PublicKeys) {
-        val json = publicKeys.toJson(moshi)
-        persistenceManager.savePublicKeysJson(json)
-    }
+//    override fun persistPublicKeys(publicKeys: PublicKeys) {
+//        val json = publicKeys.toJson(moshi)
+//        persistenceManager.savePublicKeysJson(json)
+//    }
 
-    override fun getCachedPublicKeys(): PublicKeys? {
-        return persistenceManager.getPublicKeysJson()?.toObject(moshi)
+    override fun getCachedPublicKeys(): BufferedSource? {
+        val publicKeysFile = File(cacheDir, "public_keys.json")
+        return appConfigStorageManager.getFileAsBufferedSource(publicKeysFile)
     }
 }
