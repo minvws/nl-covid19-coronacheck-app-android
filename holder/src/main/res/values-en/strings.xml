@@ -266,4 +266,5 @@
     <string name="new_terms"><![CDATA[Lees <a href="https://coronacheck.nl/nl/privacy-in-app">hier</a> de volledige privacyverklaring.]]></string>
     <string name="too_busy_title">Sorry, het is erg druk</string>
     <string name="too_busy_description">Het is druk bij een aangesloten partij. Daardoor kunnen je gegevens nu niet worden opgehaald. Probeer het later nog eens.</string>
+    <string name="qr_card_validity_future_day">wordt automatisch geldig over %1$s dag</string>
 </resources>
