@@ -18,6 +18,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.design.ext.formatDateTime
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
+import nl.rijksoverheid.ctr.design.ext.formatMonth
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
@@ -347,7 +348,8 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                             it.setContent(
                                 title = resources.getString(
                                     R.string.retrieved_vaccination_title,
-                                    index + 1
+                                    event.vaccination?.date?.formatMonth(),
+                                    cachedAppConfigUseCase.getProviderName(vaccinationEvents.providerIdentifier)
                                 ),
                                 subtitle = resources.getString(
                                     R.string.your_vaccination_row_subtitle,

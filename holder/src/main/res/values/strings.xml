@@ -198,7 +198,7 @@
     <string name="your_retrieved_vaccinations_description">Je kunt een QR-code maken van je vaccinatie. Dat is jouw bewijs.</string>
     <string name="your_vaccination_result_toolbar_title">Jouw vaccinaties</string>
     <string name="your_retrieved_vaccinations_toolbar">Gegevens van je vaccinatie ophalen</string>
-    <string name="retrieved_vaccination_title">Vaccinatie %1$d</string>
+    <string name="retrieved_vaccination_title">Vaccinatie %1$s (%2$s)</string>
     <string name="retrieved_vaccinations_backbutton_title">Weet je zeker dat je wilt stoppen?</string>
     <string name="retrieved_vaccinations_backbutton_message">Je moet dan later opnieuw met DigiD inloggen om je vaccinatie op te halen.</string>
     <string name="travel_toggle_europe">Ik reis binnen de Europese Unie</string>
