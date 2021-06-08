@@ -156,13 +156,13 @@ class MyOverviewGreenCardAdapterItem(
                     when (origin.type) {
                         is OriginType.Test -> {
                             setOriginTitle(
-                                textView = viewBinding.proof1Title,
+                                textView = viewBinding.proof3Title,
                                 originState = originState,
                                 title = context.getString(R.string.qr_card_test_domestic)
                             )
 
                             setOriginSubtitle(
-                                textView = viewBinding.proof1Subtitle,
+                                textView = viewBinding.proof3Subtitle,
                                 originState = originState,
                                 subtitle = context.getString(
                                     R.string.qr_card_validity_valid,
@@ -172,13 +172,13 @@ class MyOverviewGreenCardAdapterItem(
                         }
                         is OriginType.Vaccination -> {
                             setOriginTitle(
-                                textView = viewBinding.proof2Title,
+                                textView = viewBinding.proof1Title,
                                 originState = originState,
                                 title = context.getString(R.string.qr_card_vaccination_title_domestic)
                             )
 
                             setOriginSubtitle(
-                                textView = viewBinding.proof2Subtitle,
+                                textView = viewBinding.proof1Subtitle,
                                 originState = originState,
                                 subtitle = context.getString(
                                     R.string.qr_card_validity_valid,
@@ -188,13 +188,13 @@ class MyOverviewGreenCardAdapterItem(
                         }
                         is OriginType.Recovery -> {
                             setOriginTitle(
-                                textView = viewBinding.proof3Title,
+                                textView = viewBinding.proof2Title,
                                 originState = originState,
                                 title = context.getString(R.string.qr_card_recovery_title_domestic)
                             )
 
                             setOriginSubtitle(
-                                textView = viewBinding.proof3Subtitle,
+                                textView = viewBinding.proof2Subtitle,
                                 originState = originState,
                                 subtitle = context.getString(
                                     R.string.qr_card_validity_valid,
