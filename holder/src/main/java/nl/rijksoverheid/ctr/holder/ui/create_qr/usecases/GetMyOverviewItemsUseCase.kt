@@ -212,7 +212,7 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
                     buttonText = R.string.travel_toggle_change_domestic)
             }
             is GreenCardType.Domestic -> {
-                val hasGreenCards = greenCards.map { greenCardUtil.isExpired(it) }.any { false }
+                val hasGreenCards = greenCards.map { greenCardUtil.isExpired(it) }.any { !it }
                 if (hasGreenCards) {
                     TravelModeItem(
                         text = R.string.travel_toggle_domestic,
