@@ -254,7 +254,7 @@ class MyOverviewGreenCardAdapterItem(
                 originState = originState) -> {
                     textView.text = ""
             }
-            greenCard.greenCardEntity.type == GreenCardType.Eu && originState is OriginState.Future || this.launchDate.isAfter(OffsetDateTime.now()) -> {
+            originState is OriginState.Future || (greenCard.greenCardEntity.type == GreenCardType.Eu&& this.launchDate.isAfter(OffsetDateTime.now())) -> {
                 val realValidFrom = if (this.launchDate.isAfter(OffsetDateTime.now())) this.launchDate else originState.origin.validFrom
                 textView.setTextColor(ContextCompat.getColor(context, R.color.link))
 
