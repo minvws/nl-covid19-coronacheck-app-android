@@ -193,6 +193,7 @@
     <string name="get_vaccination_title">Gegevens van je vaccinatie ophalen</string>
     <string name="get_vaccination_description"><![CDATA[Ben je al gevaccineerd? Log in met DigiD. De gegevens over je vaccinatie worden dan automatisch opgehaald.   Om een Europese QR-code te maken heb je aan één vaccinatie voldoende. Voor een Nederlandse QR-code moet je volledig gevaccineerd zijn.<br/><br/>Nog geen prik gehad? Laat je dan eerst vaccineren.]]></string>
     <string name="get_vaccination_button">Log in met DigiD</string>
+    <string name="get_vaccination_no_digid_button">Ik heb geen DigiD</string>
     <string name="your_retrieved_vaccinations_title">Jouw opgehaalde vaccinaties</string>
     <string name="your_retrieved_vaccinations_description">Je kunt een QR-code maken van je vaccinatie. Dat is jouw bewijs.</string>
     <string name="your_vaccination_result_toolbar_title">Jouw vaccinaties</string>
@@ -267,4 +268,5 @@
     <string name="new_terms"><![CDATA[Lees <a href="https://coronacheck.nl/nl/privacy-in-app">hier</a> de volledige privacyverklaring.]]></string>
     <string name="too_busy_title">Sorry, het is erg druk</string>
     <string name="too_busy_description">Het is druk bij een aangesloten partij. Daardoor kunnen je gegevens nu niet worden opgehaald. Probeer het later nog eens.</string>
+    <string name="no_digid_url">https://www.digid.nl/digid-aanvragen-activeren#hoe-vraag-ik-digid-aan</string>
 </resources>
