@@ -68,6 +68,7 @@ class MyOverviewGreenCardAdapterItem(
                     setTextColor(ContextCompat.getColor(context, R.color.darkened_blue))
                 }
                 viewBinding.button.setButtonColor(R.color.darkened_blue)
+                viewBinding.imageView.setImageResource(R.drawable.illustration_hand_qr_eu)
             }
             is GreenCardType.Domestic -> {
                 viewBinding.typeTitle.apply {
@@ -75,6 +76,7 @@ class MyOverviewGreenCardAdapterItem(
                     setTextColor(ContextCompat.getColor(context, R.color.primary_blue))
                 }
                 viewBinding.button.setButtonColor(R.color.primary_blue)
+                viewBinding.imageView.setImageResource(R.drawable.illustration_hand_qr_nl)
             }
         }
 
@@ -129,6 +131,7 @@ class MyOverviewGreenCardAdapterItem(
                             subtitle = origin.eventTime.toLocalDate().formatDayMonthYear(),
                         )
                     }
+
                     is OriginType.Recovery -> {
                         setOriginTitle(
                             textView = viewBinding.proof1Title,
