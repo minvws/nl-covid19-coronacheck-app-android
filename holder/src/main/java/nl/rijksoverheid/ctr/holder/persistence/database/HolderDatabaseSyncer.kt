@@ -25,9 +25,11 @@ import java.time.ZoneOffset
 interface HolderDatabaseSyncer {
 
     /**
-     * @param expectedOriginType If not null checks if the remote credentials contain this origin
+     * Synchronized the database. Does cleanup in the database based on expiration dates and can resync with remote
+     * @param expectedOriginType If not null checks if the remote credentials contain this origin. Will return [DatabaseSyncerResult.MissingOrigin] if it's not present.
+     * @param syncWithRemote If true and the data call to resync succeeds, clear all green cards in the database and re-add them
      */
-    suspend fun sync(expectedOriginType: String? = null): DatabaseSyncerResult
+    suspend fun sync(expectedOriginType: String? = null, syncWithRemote: Boolean = true): DatabaseSyncerResult
 }
 
 class HolderDatabaseSyncerImpl(
@@ -38,16 +40,24 @@ class HolderDatabaseSyncerImpl(
     private val secretKeyUseCase: SecretKeyUseCase,
 ) : HolderDatabaseSyncer {
 
-    override suspend fun sync(expectedOriginType: String?): DatabaseSyncerResult {
+    override suspend fun sync(expectedOriginType: String?, syncWithRemote: Boolean): DatabaseSyncerResult {
         return withContext(Dispatchers.IO) {
             val events = holderDatabase.eventGroupDao().getAll()
+
+            // Check if we need to remove any events
             removeExpiredEventGroups(
                 events = events
             )
-            syncGreenCards(
-                events = events,
-                expectedOriginType = expectedOriginType
-            )
+
+            // Sync with remote
+            if (syncWithRemote) {
+                syncGreenCards(
+                    events = events,
+                    expectedOriginType = expectedOriginType
+                )
+            } else {
+                DatabaseSyncerResult.Success
+            }
         }
     }
 

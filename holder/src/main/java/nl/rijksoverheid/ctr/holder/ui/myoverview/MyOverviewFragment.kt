@@ -45,7 +45,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
     private val section = Section()
 
     private val getQrCardsHandler = Handler(Looper.getMainLooper())
-    private val getQrCardsRunnable = Runnable { getQrCards() }
+    private val getQrCardsRunnable = Runnable { getQrCards(syncDatabase = false) }
 
     private val myOverviewViewModel: MyOverviewViewModel by sharedViewModelWithOwner(
         owner = {
@@ -87,14 +87,14 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
             })
     }
 
-    private fun getQrCards() {
-        myOverviewViewModel.refreshOverviewItems()
+    private fun getQrCards(syncDatabase: Boolean) {
+        myOverviewViewModel.refreshOverviewItems(syncDatabase = syncDatabase)
         getQrCardsHandler.postDelayed(getQrCardsRunnable, TimeUnit.SECONDS.toMillis(10))
     }
 
     override fun onResume() {
         super.onResume()
-        getQrCards()
+        getQrCards(syncDatabase = true)
 
         (parentFragment?.parentFragment as HolderMainFragment?)?.getToolbar().let { toolbar ->
             if (toolbar?.menu?.size() == 0) {

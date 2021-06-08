@@ -27,12 +27,18 @@ abstract class MyOverviewViewModel : ViewModel() {
     open val myOverviewItemsLiveData: LiveData<Event<MyOverviewItems>> = MutableLiveData()
 
     abstract fun getSelectedType(): GreenCardType
-    abstract fun refreshOverviewItems(selectType: GreenCardType? = null)
+
+    /**
+     * Refresh all the items we need to display on the overview
+     * @param selectType The type of green cards you want to show, null if refresh the current selected one
+     * @param syncDatabase If you want to sync the database before showing the items
+     */
+    abstract fun refreshOverviewItems(selectType: GreenCardType? = null, syncDatabase: Boolean = false)
 }
 
 class MyOverviewViewModelImpl(
     private val getMyOverviewItemsUseCase: GetMyOverviewItemsUseCase,
-    private val holderDatabase: HolderDatabase
+    private val holderDatabaseSyncer: HolderDatabaseSyncer
 ) : MyOverviewViewModel() {
 
     override fun getSelectedType(): GreenCardType {
@@ -40,12 +46,14 @@ class MyOverviewViewModelImpl(
             ?: GreenCardType.Domestic)
     }
 
-    /**
-     * Refresh all the items we need to display on the overview
-     * @param selectType The type of green cards you want to show, null if refresh the current selected one
-     */
-    override fun refreshOverviewItems(selectType: GreenCardType?) {
+    override fun refreshOverviewItems(selectType: GreenCardType?, syncDatabase: Boolean) {
         viewModelScope.launch {
+            if (syncDatabase) {
+                holderDatabaseSyncer.sync(
+                    syncWithRemote = false
+                )
+            }
+
             (myOverviewItemsLiveData as MutableLiveData).postValue(
                 Event(
                     getMyOverviewItemsUseCase.get(

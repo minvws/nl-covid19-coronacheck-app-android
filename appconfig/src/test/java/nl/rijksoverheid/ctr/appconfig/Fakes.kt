@@ -63,6 +63,10 @@ fun fakeCachedAppConfigUseCase(
     override fun getCachedPublicKeys(): BufferedSource {
         return publicKeys
     }
+
+    override fun getProviderName(providerIdentifier: String?): String {
+        return ""
+    }
 }
 
 fun fakeAppConfig(

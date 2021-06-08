@@ -22,6 +22,7 @@ interface CachedAppConfigUseCase {
     fun getCachedAppConfigMaxValidityHours(): Int
     fun getCachedAppConfigVaccinationEventValidity(): Int
     fun getCachedPublicKeys(): BufferedSource?
+    fun getProviderName(providerIdentifier: String?): String
 }
 
 class CachedAppConfigUseCaseImpl constructor(
@@ -53,5 +54,9 @@ class CachedAppConfigUseCaseImpl constructor(
     override fun getCachedPublicKeys(): BufferedSource? {
         val publicKeysFile = File(cacheDir, "public_keys.json")
         return appConfigStorageManager.getFileAsBufferedSource(publicKeysFile)
+    }
+
+    override fun getProviderName(providerIdentifier: String?): String {
+        return getCachedAppConfig()?.providerIdentifiers?.firstOrNull { provider -> provider.code == providerIdentifier }?.name ?: ""
     }
 }

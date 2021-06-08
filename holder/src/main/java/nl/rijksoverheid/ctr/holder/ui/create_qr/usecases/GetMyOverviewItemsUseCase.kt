@@ -17,7 +17,6 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginUtil
 import java.time.OffsetDateTime
-import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 
 /*
@@ -142,6 +141,7 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
 
                 // Check if we have any valid origins
                 val hasValidOriginStates = originStates.any { it is OriginState.Valid }
+                val nonExpiredOriginStates = originStates.filterNot { it is OriginState.Expired }
 
                 val euLaunchDate = OffsetDateTime.parse(cachedAppConfigUseCase.getCachedAppConfig()!!.euLaunchDate, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
 
@@ -158,7 +158,7 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
                 // Show green card
                 GreenCardItem(
                     greenCard = greenCard,
-                    originStates = originStates,
+                    originStates = nonExpiredOriginStates,
                     credentialState = credentialState,
                     launchDate = launchDate,
                 )
@@ -212,7 +212,8 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
                     buttonText = R.string.travel_toggle_change_domestic)
             }
             is GreenCardType.Domestic -> {
-                if (greenCards.isNotEmpty()) {
+                val hasGreenCards = greenCards.map { greenCardUtil.isExpired(it) }.any { !it }
+                if (hasGreenCards) {
                     TravelModeItem(
                         text = R.string.travel_toggle_domestic,
                         buttonText = R.string.travel_toggle_change_eu)

@@ -115,6 +115,10 @@ fun fakeCachedAppConfigUseCase(
     }
 
     override fun getCachedPublicKeys() = publicKeys
+
+    override fun getProviderName(providerIdentifier: String?): String {
+        return ""
+    }
 }
 
 fun fakeIntroductionViewModel(
@@ -129,20 +133,6 @@ fun fakeIntroductionViewModel(
 
         }
 
-    }
-}
-
-fun fakeMyOverviewModel(
-    items: MyOverviewItems
-): MyOverviewViewModel {
-    return object : MyOverviewViewModel() {
-        override fun getSelectedType(): GreenCardType {
-            return GreenCardType.Eu
-        }
-
-        override fun refreshOverviewItems(selectType: GreenCardType?) {
-
-        }
     }
 }
 

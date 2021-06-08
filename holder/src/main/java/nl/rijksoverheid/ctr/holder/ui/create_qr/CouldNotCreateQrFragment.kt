@@ -32,7 +32,7 @@ class CouldNotCreateQrFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentCouldNotCreateQrBinding.bind(view)
         binding.title.text = args.title
-        binding.description.setHtmlTextWithBullets(args.description, false)
+        binding.description.setHtmlTextWithBullets(args.description, true)
         binding.bottom.setButtonClick {
             findNavController().navigate(CouldNotCreateQrFragmentDirections.actionMyOverview())
         }
