@@ -10,7 +10,7 @@ import kotlinx.parcelize.Parcelize
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-sealed class OriginType : Parcelable {
+sealed class OriginType(val order: Int) : Parcelable {
 
     companion object {
         const val TYPE_VACCINATION = "vaccination"
@@ -19,11 +19,11 @@ sealed class OriginType : Parcelable {
     }
 
     @Parcelize
-    object Vaccination : OriginType(), Parcelable
+    object Vaccination : OriginType(1), Parcelable
 
     @Parcelize
-    object Recovery : OriginType(), Parcelable
+    object Recovery : OriginType(2), Parcelable
 
     @Parcelize
-    object Test : OriginType(), Parcelable
+    object Test : OriginType(3), Parcelable
 }
