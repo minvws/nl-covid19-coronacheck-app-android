@@ -269,4 +269,8 @@
     <string name="too_busy_title">Sorry, het is erg druk</string>
     <string name="too_busy_description">Het is druk bij een aangesloten partij. Daardoor kunnen je gegevens nu niet worden opgehaald. Probeer het later nog eens.</string>
     <string name="no_digid_url">https://www.digid.nl/digid-aanvragen-activeren#hoe-vraag-ik-digid-aan</string>
+
+    <!-- New Copy -->
+    <string name="travel_fragment_footer_eu">In de Europese QR-code zijn de volgende gegevens opgeslagen: o.a. je naam, geboortedatum en informatie over het vaccin.</string>
+
 </resources>
