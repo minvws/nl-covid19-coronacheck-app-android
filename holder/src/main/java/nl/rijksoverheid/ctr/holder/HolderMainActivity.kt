@@ -67,6 +67,7 @@ class HolderMainActivity : AppCompatActivity() {
         }
 
         appStatusViewModel.appStatusLiveData.observe(this, {
+            println("GIO gogogo")
             if (it !is AppStatus.NoActionRequired) {
                 navController.navigate(R.id.action_app_status, AppStatusFragment.getBundle(it))
             }
@@ -88,6 +89,7 @@ class HolderMainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+        println("GIO app resume")
         // Only get app config on every app foreground when introduction is finished
         if (introductionViewModel.getIntroductionStatus() is IntroductionStatus.IntroductionFinished) {
             appStatusViewModel.refresh(mobileCoreWrapper)
