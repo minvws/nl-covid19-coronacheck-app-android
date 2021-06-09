@@ -2,9 +2,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
 import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.ResponseError
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.TestIsmResult
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.TestProviderRepository
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
@@ -26,7 +24,7 @@ import java.util.concurrent.TimeUnit
  *
  */
 class TestResultUseCase(
-    private val testProviderUseCase: TestProviderUseCase,
+    private val configProviderUseCase: ConfigProvidersUseCase,
     private val testProviderRepository: TestProviderRepository,
     private val coronaCheckRepository: CoronaCheckRepository,
     private val commitmentMessageUseCase: CommitmentMessageUseCase,
@@ -63,7 +61,7 @@ class TestResultUseCase(
 //        }
 
         return try {
-            val testProvider = testProviderUseCase.testProvider(providerIdentifier)
+            val testProvider = configProviderUseCase.testProvider(providerIdentifier)
                 ?: return TestResult.InvalidToken
 
             val signedResponseWithTestResult = testProviderRepository.remoteTestResult(
@@ -117,59 +115,6 @@ class TestResultUseCase(
             TestResult.NetworkError
         }
     }
-
-    suspend fun signTestResult(
-        signedResponseWithTestResult: SignedResponseWithModel<RemoteTestResult>
-    ): SignedTestResult {
-        try {
-            // Persist encrypted test result
-            val remoteNonce = coronaCheckRepository.remoteNonce()
-            val commitmentMessage = commitmentMessageUseCase.json(
-                nonce = remoteNonce.nonce
-            )
-            Timber.i("Received commitment message $commitmentMessage")
-
-            val testIsm = coronaCheckRepository.getTestIsm(
-                test = signedResponseWithTestResult.rawResponse.toString(Charsets.UTF_8),
-                sToken = remoteNonce.sToken,
-                icm = commitmentMessage
-            )
-            when (testIsm) {
-                is TestIsmResult.Success -> {
-                    Timber.i("Received test ism json ${testIsm.body}")
-
-                    val credentials = createCredentialUseCase.get(
-                        secretKeyJson = secretKeyUseCase.json(),
-                        testIsmBody = testIsm.body
-                    )
-
-                    val credentialsVerified = try {
-                        testResultAttributesUseCase.get(credentials)
-                        true
-                    } catch (e: Exception) {
-                        false
-                    }
-
-                    return if (credentialsVerified) {
-                        SignedTestResult.Complete(credentials)
-                    } else {
-                        SignedTestResult.CouldNotVerifyCredentials
-                    }
-                }
-                is TestIsmResult.Error -> {
-                    return if (testIsm.responseError.code == ResponseError.CODE_ALREADY_SIGNED) {
-                        SignedTestResult.AlreadySigned
-                    } else {
-                        SignedTestResult.ServerError(testIsm.httpCode, testIsm.responseError.code)
-                    }
-                }
-            }
-        } catch (ex: HttpException) {
-            return SignedTestResult.ServerError(ex.code())
-        } catch (ex: IOException) {
-            return SignedTestResult.NetworkError
-        }
-    }
 }
 
 sealed class TestResult {
@@ -185,12 +130,4 @@ sealed class TestResult {
     object VerificationRequired : TestResult()
     data class ServerError(val httpCode: Int) : TestResult()
     object NetworkError : TestResult()
-}
-
-sealed class SignedTestResult {
-    data class Complete(val credentials: String) : SignedTestResult()
-    object AlreadySigned : SignedTestResult()
-    data class ServerError(val httpCode: Int, val errorCode: Int? = null) : SignedTestResult()
-    object NetworkError : SignedTestResult()
-    object CouldNotVerifyCredentials : SignedTestResult()
 }

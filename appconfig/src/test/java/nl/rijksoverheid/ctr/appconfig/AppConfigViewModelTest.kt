@@ -12,10 +12,13 @@ import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.appconfig.models.ConfigResult
+import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
 import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.AppStatusUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.LoadPublicKeysUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.PersistConfigUseCase
+import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
+import okio.BufferedSource
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
@@ -37,13 +40,20 @@ class AppConfigViewModelTest {
     private val appStatusUseCase: AppStatusUseCase = mockk(relaxed = true)
     private val persistConfigUseCase: PersistConfigUseCase = mockk(relaxed = true)
     private val loadPublicKeyUseCase: LoadPublicKeysUseCase = mockk(relaxed = true)
+    private val appConfigStorageManager: AppConfigStorageManager = mockk(relaxed = true)
+    private val cachedAppConfigUseCase: CachedAppConfigUseCase = mockk(relaxed = true)
     private val appConfigViewModel = AppConfigViewModelImpl(
         appConfigUseCase = appConfigUseCase,
         appStatusUseCase = appStatusUseCase,
         persistConfigUseCase = persistConfigUseCase,
         loadPublicKeysUseCase = loadPublicKeyUseCase,
+        appConfigStorageManager = appConfigStorageManager,
+        cachedAppConfigUseCase = cachedAppConfigUseCase,
+        cacheDirPath = "",
+        isVerifierApp = false,
         versionCode = 0
     )
+    private val mobileCoreWrapper: MobileCoreWrapper = mockk(relaxed = true)
 
     @Before
     fun setup() {
@@ -57,12 +67,18 @@ class AppConfigViewModelTest {
             appDeactivated = false,
             informationURL = "dummy",
             configTtlSeconds = 0,
-            maxValidityHours = 0
+            maxValidityHours = 0,
+            euLaunchDate = "",
+            credentialRenewalDays = 0,
+            domesticCredentialValidity = 0,
+            testEventValidity = 0,
+            recoveryEventValidity = 0,
+            temporarilyDisabled = false,
+            requireUpdateBefore = 0
         )
 
-        val publicKeys = PublicKeys(
-            clKeys = listOf()
-        )
+        val publicKeys = mockk<BufferedSource>()
+        coEvery { publicKeys.readUtf8() } returns "file contents"
 
         coEvery { appConfigUseCase.get() } answers {
             ConfigResult.Success(
@@ -72,8 +88,9 @@ class AppConfigViewModelTest {
         }
 
         coEvery { appStatusUseCase.get(any(), any()) } answers { AppStatus.NoActionRequired }
+        coEvery { cachedAppConfigUseCase.getCachedPublicKeys() } returns publicKeys
 
-        appConfigViewModel.refresh()
+        appConfigViewModel.refresh(mobileCoreWrapper)
 
         coVerify { persistConfigUseCase.persist(appConfig, publicKeys) }
         coVerify { loadPublicKeyUseCase.load(publicKeys) }
@@ -87,8 +104,75 @@ class AppConfigViewModelTest {
 
         coEvery { appStatusUseCase.get(any(), any()) } answers { AppStatus.InternetRequired }
 
-        appConfigViewModel.refresh()
+        appConfigViewModel.refresh(mobileCoreWrapper)
 
         Assert.assertEquals(appConfigViewModel.appStatusLiveData.value, AppStatus.InternetRequired)
+    }
+
+    @Test
+    fun `refresh with no config files in verifier app emits internet required status`() = runBlocking {
+        val appConfigViewModel = AppConfigViewModelImpl(
+            appConfigUseCase = appConfigUseCase,
+            appStatusUseCase = appStatusUseCase,
+            persistConfigUseCase = persistConfigUseCase,
+            loadPublicKeysUseCase = loadPublicKeyUseCase,
+            appConfigStorageManager = appConfigStorageManager,
+            cachedAppConfigUseCase = cachedAppConfigUseCase,
+            cacheDirPath = "",
+            isVerifierApp = true,
+            versionCode = 0
+        )
+        val appConfig = AppConfig(
+            minimumVersion = 0,
+            appDeactivated = false,
+            informationURL = "dummy",
+            configTtlSeconds = 0,
+            maxValidityHours = 0
+        )
+
+        val publicKeys = mockk<BufferedSource>()
+        coEvery { publicKeys.readUtf8() } returns "file contents"
+
+        coEvery { appConfigUseCase.get() } answers {
+            ConfigResult.Success(
+                appConfig = appConfig,
+                publicKeys = publicKeys
+            )
+        }
+
+        coEvery { appStatusUseCase.get(any(), any()) } answers { AppStatus.NoActionRequired }
+        coEvery { appConfigStorageManager.areConfigFilesPresent() } returns false
+
+        appConfigViewModel.refresh(mobileCoreWrapper)
+
+        Assert.assertEquals(appConfigViewModel.appStatusLiveData.value, AppStatus.InternetRequired)
+    }
+
+    @Test
+    fun `refresh in the holder app has no interaction with config files and initialise the verifier`() {
+        val appConfig = AppConfig(
+            minimumVersion = 0,
+            appDeactivated = false,
+            informationURL = "dummy",
+            configTtlSeconds = 0,
+            maxValidityHours = 0
+        )
+
+        val publicKeys = mockk<BufferedSource>()
+        coEvery { publicKeys.readUtf8() } returns "file contents"
+
+        coEvery { appConfigUseCase.get() } answers {
+            ConfigResult.Success(
+                appConfig = appConfig,
+                publicKeys = publicKeys
+            )
+        }
+
+        coEvery { appStatusUseCase.get(any(), any()) } answers { AppStatus.NoActionRequired }
+
+        appConfigViewModel.refresh(mobileCoreWrapper)
+
+        coVerify(exactly = 0) { mobileCoreWrapper.initializeVerifier(any()) }
+        coVerify(exactly = 0) { appConfigStorageManager.areConfigFilesPresent() }
     }
 }

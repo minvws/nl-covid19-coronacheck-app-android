@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr
 
 import android.os.Bundle
+import android.text.InputFilter
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.core.view.isVisible
@@ -19,8 +20,7 @@ import nl.rijksoverheid.ctr.shared.ext.hideKeyboard
 import nl.rijksoverheid.ctr.shared.ext.showKeyboard
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ViewModelOwner.Companion.from
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.stateViewModel
 import org.koin.androidx.viewmodel.scope.emptyState
 
 /*
@@ -34,14 +34,9 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
 
     private var _binding: FragmentCommercialTestCodeBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: TestResultsViewModel by sharedViewModel(
+    private val viewModel: CommercialTestCodeViewModel by stateViewModel(
         state = emptyState(),
-        owner = {
-            from(
-                findNavController().getViewModelStoreOwner(R.id.nav_commercial_test),
-                this
-            )
-        })
+    )
 
     private val appConfigUtil: AppConfigUtil by inject()
     private val dialogUtil: DialogUtil by inject()
@@ -52,6 +47,7 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
 
         _binding = FragmentCommercialTestCodeBinding.bind(view)
 
+        binding.uniqueCodeText.filters = arrayOf(InputFilter.AllCaps())
         binding.uniqueCodeText.addTextChangedListener {
             viewModel.testCode = it?.toString()?.toUpperCase() ?: ""
         }
@@ -122,11 +118,20 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
                     )
                 }
                 is TestResult.NegativeTestResult -> {
-                    findNavController().navigate(CommercialTestCodeFragmentDirections.actionYourNegativeResult())
+                    findNavController().navigate(
+                        CommercialTestCodeFragmentDirections.actionYourEvents(
+                            type = YourEventsFragmentType.TestResult2(
+                                remoteTestResult = it.remoteTestResult,
+                                rawResponse = it.signedResponseWithTestResult.rawResponse
+                            ),
+                            toolbarTitle = getString(R.string.commercial_test_type_title)
+                        )
+                    )
                 }
                 is TestResult.NoNegativeTestResult -> {
                     findNavController().navigate(
-                        CommercialTestCodeFragmentDirections.actionNoTestResult(
+                        CommercialTestCodeFragmentDirections.actionCouldNotCreateQr(
+                            toolbarTitle = getString(R.string.commercial_test_type_title),
                             title = getString(R.string.no_negative_test_result_title),
                             description = appConfigUtil.getStringWithTestValidity(R.string.no_negative_test_result_description)
                         )
@@ -134,7 +139,8 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
                 }
                 is TestResult.Pending -> {
                     findNavController().navigate(
-                        CommercialTestCodeFragmentDirections.actionNoTestResult(
+                        CommercialTestCodeFragmentDirections.actionCouldNotCreateQr(
+                            toolbarTitle = getString(R.string.commercial_test_type_title),
                             title = getString(R.string.test_result_not_known_title),
                             description = getString(R.string.test_result_not_known_description)
                         )

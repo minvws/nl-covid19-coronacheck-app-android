@@ -4,19 +4,19 @@
     <string name="app_name_acc">Scanner (Acc)</string>
     <string name="app_name">Scanner</string>
     <string name="onboarding_title">Onboarding</string>
-    <string name="onboarding_screen_1_title">Only access after testing</string>
-    <string name="onboarding_screen_1_description">Visitors of certain social, cultural or athletic activities must take a coronavirus test first. Even if they\'re vaccinated. Visitors only get access when the test proves they do not have coronavirus.</string>
+    <string name="onboarding_screen_1_title">Access only with a certificate</string>
+    <string name="onboarding_screen_1_description">Visitors of certain locations or activities must be vaccinated or having taken a coronavirus test. Does the person at the entrance show proof of vaccination or a negative test result (no coronavirus)? Then they can enter.</string>
     <string name="onboarding_screen_2_title">Scan QR code for access</string>
-    <string name="onboarding_screen_2_description">The visitor shows a QR code. This is the valid negative test result. With this app, you scan the visitor\'s QR code. The QR code must be scanned within %1$s hours after testing.</string>
+    <string name="onboarding_screen_2_description">Visitors first make a QR code of their vaccination or test result. Then you use this app to check the QR codes and see who is allowed to enter.</string>
     <string name="onboarding_screen_3_title">Proof of identity check</string>
-    <string name="onboarding_screen_3_description">Green screen? Ask the visitor to show their proof of identity. Check whether the data on your screen matches the proof of identity. This way, you\'re sure the test result belongs to the visitor and you can give them access.</string>
+    <string name="onboarding_screen_3_description">Green screen? Ask the visitor to show proof of identity. Check whether the data on your screen matches the data on the proof of identity. This goes for visitors from The Netherlands and visitors from other countries within the European Union.</string>
     <string name="onboarding_screen_4_title">Who is the scanner for?</string>
-    <string name="onboarding_screen_4_description"><![CDATA[With this app, you can receive visitors again. But only if your social, cultural or athletic activity falls under the designated locations.]]></string>
+    <string name="onboarding_screen_4_description"><![CDATA[With this app, you can receive visitors again. But only if your location or activity falls under the designated locations.]]></string>
     <string name="onboarding_next">Next</string>
     <string name="privacy_policy_title">Acceptable use policy</string>
     <string name="privacy_policy_description"><![CDATA[The <a href="https://coronacheck.nl/en/gebruikersvoorwaarden-in-app">acceptable use policy</a> details how CoronaCheck Scanner uses your data and what your rights are.]]></string>
-    <string name="privacy_policy_1"><![CDATA[The QR code contains <b>minimal data</b> of the visitor]]></string>
-    <string name="privacy_policy_2"><![CDATA[You\'re only allowed to use this data to <b>check the valid negative test result</b>]]></string>
+    <string name="privacy_policy_1"><![CDATA[GPS or location data are <b>not saved or used</b>]]></string>
+    <string name="privacy_policy_2"><![CDATA[You\'re only allowed to use this data to <b>check the valid certificate</b>]]></string>
     <string name="privacy_policy_3"><![CDATA[The visitor\'s data is <br>not centrally stored anywhere</b>]]></string>
     <string name="privacy_policy_checkbox_text">I\'ve read and agree to the acceptable use policy.</string>
     <string name="dialog_error_title">Technical error</string>
@@ -36,28 +36,30 @@
     <string name="scan_result_valid_birth_day">Day of birth</string>
     <string name="scan_result_valid_birth_month">Birth month</string>
     <string name="scan_result_valid_personal_details_title">Check personal details</string>
+    <string name="scan_result_european_nl_invalid_title">This is a European QR code</string>
+    <string name="scan_result_european_nl_invalid_subtitle">This is not a valid certificate in the Netherlands. Ask the visitor to show a Dutch QR code.</string>
     <string name="scan_result_invalid_title">Invalid QR code</string>
-    <string name="scan_result_invalid_subtitle"><![CDATA[The visitor doesn\'t have a valid negative test declaration. <b><a href=\"#\"><b>Read possible causes</b></a>]]></string>
+    <string name="scan_result_invalid_subtitle"><![CDATA[The visitor doesn\'t have a valid certificate. <b><a href=\"#\"><b>Read possible causes</b></a>]]></string>
     <string name="scan_result_invalid_button">Scan next</string>
     <string name="scan_result_invalid_reason_title">Invalid QR code</string>
-    <string name="scan_result_invalid_reason_description"><![CDATA[This does <b>not</b> mean the visitor has coronavirus. Possible causes<br\><br\><ul><li>The person hasn\'t been tested</li><li>The QR code has been forwarded</li><li>The QR code has been forged</li></ul><br\><b>What to do now?</b><br\>Ask the visitor to take a test first. Once the test result is known, the visitor can use the CoronaCheck app to turn it into a QR code.]]></string>
+    <string name="scan_result_invalid_reason_description"><![CDATA[This does <b>not</b> mean the visitor has coronavirus. Possible causes<br\><br\><ul><li>The person hasn\'t been tested</li><li>The QR code has been forwarded</li><li>The QR code has been forged</li><li>The time on the visitor\'s phone is incorrect</li></ul><br\><b>What to do now?</b><br\>Ask the visitor to get vaccinated or to take a test. After that, the visitor can use the CoronaCheck app to turn it into a QR code.]]></string>
     <string name="scan_result_valid_reason_title">About the check</string>
     <string name="scan_result_valid_reason_description"><![CDATA[Make sure the QR code belongs to the visitor by checking if the details on your screen correspond with their proof of identity.<br\><br\><b>Note: details may be incomplete</b><br/>In order to protect the visitor’s privacy, not all data is displayed. Some fields may contain a hyphen (-). It’s sufficient to check the details that are displayed.<br\><br\><b>If the details are incorrect, the visitor is not allowed access.</b>]]></string>
-    <string name="about_this_app_description">CoronaCheck Scanner is created so that social, cultural and sports locations can open their doors again. Think for example of events, museums and concerts. With this app, only visitors that are able to prove they’ve recently tested negative for corona can get access. This way, the Netherlands can head out more often.</string>
+    <string name="about_this_app_description">CoronaCheck Scanner is created so that certain locations and activities can open their doors again. Think for example of football matches and concerts. With this app, visitors are able to prove they\'re vaccinated or they’ve recently tested negative for corona. This way, the Netherlands can head out more often.</string>
     <string name="scan_instructions">How scanning works</string>
     <string name="scan_instructions_1_title">1. Keep a distance</string>
-    <string name="scan_instructions_1_description">Press the \'Start Scanning\' button and ask the visitor to show their QR code. They can show their code using the CoronaCheck app or the paper version. The QR code acts as a valid negative test declaration and can be read at a safe distance.</string>
+    <string name="scan_instructions_1_description">Press the \'Start Scanning\' button and ask the visitor to show their QR code. They can show their code using the CoronaCheck app or the paper version. The QR code acts as a certificate and can be read at a safe distance.</string>
     <string name="scan_instructions_2_title">2. Scan the QR code</string>
-    <string name="scan_instructions_2_description">Point your phone camera at the visitor\'s valid negative test declaration. Scan the QR code.</string>
+    <string name="scan_instructions_2_description">Point your phone camera at the visitor\'s valid negative test certificate. Scan the QR code.</string>
     <string name="scan_instructions_3_image">Person is holding a phone with a green screen and a black check mark.</string>
     <string name="scan_instructions_3_title">3. Green screen</string>
-    <string name="scan_instructions_3_description">Green screen? The visitor has a valid negative test declaration. Now check whether the data on your screen match the data on the proof of identity. All good? Then the visitor may enter. They might also need an entrance ticket.</string>
+    <string name="scan_instructions_3_description">Green screen? The visitor has a valid negative test certificate. Now check whether the data on your screen match the data on the proof of identity. All good? Then the visitor may enter. They might also need an entrance ticket.</string>
     <string name="scan_instructions_4_image">Person is holding a phone with a red screen and a black cross.</string>
     <string name="scan_instructions_4_title">4. Red screen</string>
-    <string name="scan_instructions_4_description"><![CDATA[Red screen? This does not mean the visitor has coronavirus. It just means the QR code is invalid. So there is no proof of a recent negative test result. Here\'s what you can do: <br\><br\><ul><li>Check whether the visitor shows the QR code using the CoronaCheck app. A screenshot or copy of the QR code always results in a red screen.</li><li>Ask the visitor to completely close the app and open it again. Then scan the QR code again.</li><li>Do you keep getting a red screen even though the visitor has a negative test result? Direct the visitor to our help desk. Phone number: <a href="tel:\\08001421">0800-1421</a>.</li></ul> <br\>A green screen is always needed for entry. Does the visitor not have a (valid) QR code? Then you cannot let them enter. Find more information <a href="https://www.coronacheck.nl/scanner">here</a>.]]></string>
+    <string name="scan_instructions_4_description"><![CDATA[Red screen? This does not mean the visitor has coronavirus. It just means the QR code is invalid. So there is no proof of a recent negative test result. Here\'s what you can do: <br\><br\><ul><li>Check whether the visitor shows the QR code using the CoronaCheck app. A screenshot or copy of the QR code always results in a red screen.</li><li>Ask the visitor to completely close the app and open it again. Then scan the QR code again.</li><li>Do you keep getting a red screen even though the visitor has a negative test result? Direct the visitor to our help desk. Phone number: <a href="tel:\\08001421">0800-1421</a>.</li></ul> <br\>A green screen is always needed for entry. Does the visitor not have a (valid) QR code? Then you cannot let them enter. Find more information <a href="https://www.coronacheck.nl/en/scanner">here</a>.]]></string>
     <string name="privacy_statement">Acceptable use policy</string>
     <string name="scanner_custom_title">Scan QR code</string>
-    <string name="scanner_custom_message">Point your device at the QR code on the visitor\'s screen. Or at their paper negative test declaration.</string>
+    <string name="scanner_custom_message">Point your device at the QR code on the visitor\'s screen. Or at their paper negative test certificate.</string>
     <string name="camera_rationale_dialog_title">Scanner wants to access your camera</string>
     <string name="camera_rationale_dialog_description">So the app can scan QR codes</string>
     <string name="app_setup_text">We\'re starting the app...</string>
@@ -103,4 +105,6 @@
     <string name="about_this_app_read_more">Read more</string>
     <string name="about_this_app_accessibility">Accessibility</string>
     <string name="url_accessibility">https://coronacheck.nl/en/accessibility-in-app</string>
+    <string name="accessibility_flash_on">Turn the flashlight on.</string>
+    <string name="accessibility_flash_off">Turn the flashlight off.</string>
 </resources>

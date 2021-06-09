@@ -4,7 +4,7 @@
         android:id="@+id/main"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_my_overview"
+            android:id="@+id/nav_graph_overview"
             android:checkable="false"
             android:title="@string/my_overview" />
 
@@ -18,6 +18,11 @@
     <group
         android:id="@+id/info"
         android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_qr_explanation_root"
+            android:checkable="false"
+            android:title="@string/choose_provider_toolbar" />
+
         <item
             android:id="@+id/nav_frequently_asked_questions"
             android:checkable="false"
@@ -34,5 +39,6 @@
             android:checkable="false"
             android:title="@string/terms_of_use"
             android:visible="false" />
+
     </group>
 </menu>

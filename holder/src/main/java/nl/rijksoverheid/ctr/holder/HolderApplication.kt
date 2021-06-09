@@ -1,12 +1,17 @@
 package nl.rijksoverheid.ctr.holder
 
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.api.apiModule
 import nl.rijksoverheid.ctr.appconfig.*
 import nl.rijksoverheid.ctr.appconfig.usecases.LoadPublicKeysUseCase
 import nl.rijksoverheid.ctr.design.designModule
-import nl.rijksoverheid.ctr.holder.modules.holderIntroductionModule
-import nl.rijksoverheid.ctr.holder.modules.holderModule
-import nl.rijksoverheid.ctr.holder.modules.holderPreferenceModule
+import nl.rijksoverheid.ctr.holder.modules.*
+import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
+import nl.rijksoverheid.ctr.holder.persistence.database.dao.OriginDao
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
+import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SecretKeyUseCase
 import nl.rijksoverheid.ctr.introduction.introductionModule
 import nl.rijksoverheid.ctr.shared.SharedApplication
 import nl.rijksoverheid.ctr.shared.sharedModule
@@ -14,6 +19,7 @@ import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
+import java.time.OffsetDateTime
 
 
 /*
@@ -27,9 +33,12 @@ open class HolderApplication : SharedApplication() {
 
     private val loadPublicKeysUseCase: LoadPublicKeysUseCase by inject()
     private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
+    private val secretKeyUseCase: SecretKeyUseCase by inject()
+    private val holderDatabase: HolderDatabase by inject()
 
     override fun onCreate() {
         super.onCreate()
+
 
         startKoin {
             androidContext(this@HolderApplication)
@@ -51,13 +60,28 @@ open class HolderApplication : SharedApplication() {
             )
         }
 
+        // Generate and store secret key to be used by rest of the app
+        secretKeyUseCase.persist()
+
         // If we have public keys stored, load them so they can be used by CTCL
         cachedAppConfigUseCase.getCachedPublicKeys()?.let {
             loadPublicKeysUseCase.load(it)
         }
+
+        // Create default wallet in database if empty
+        GlobalScope.launch {
+            if (holderDatabase.walletDao().getAll().isEmpty()) {
+                holderDatabase.walletDao().insert(
+                    WalletEntity(
+                        id = 1,
+                        label = "main"
+                    )
+                )
+            }
+        }
     }
 
     override fun getAdditionalModules(): List<Module> {
-        return listOf(holderPreferenceModule)
+        return listOf(holderPreferenceModule, holderMobileCoreModule)
     }
 }

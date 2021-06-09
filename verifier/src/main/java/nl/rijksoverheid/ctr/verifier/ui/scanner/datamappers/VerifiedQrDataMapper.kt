@@ -1,9 +1,10 @@
 package nl.rijksoverheid.ctr.verifier.ui.scanner.datamappers
 
-import clmobile.Clmobile
 import com.squareup.moshi.Moshi
+import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.ext.toObject
 import nl.rijksoverheid.ctr.shared.ext.verify
+import nl.rijksoverheid.ctr.shared.models.TestResultAttributes
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.VerifiedQr
 
 /*
@@ -17,18 +18,18 @@ interface VerifiedQrDataMapper {
     fun transform(qrContent: String): VerifiedQr
 }
 
-class VerifiedQrDataMapperImpl(private val moshi: Moshi) : VerifiedQrDataMapper {
+class VerifiedQrDataMapperImpl(private val moshi: Moshi, private val mobileCoreWrapper: MobileCoreWrapper) : VerifiedQrDataMapper {
     override fun transform(
         qrContent: String
     ): VerifiedQr {
+
         val result =
-            Clmobile.verifyQREncoded(
+            mobileCoreWrapper.verify(
                 qrContent.toByteArray()
             ).verify()
 
         return VerifiedQr(
-            creationDateSeconds = result.unixTimeSeconds,
-            testResultAttributes = result.attributesJson.decodeToString().toObject(moshi)
-        )
+            creationDateSeconds = 0,
+            testResultAttributes = result.decodeToString().toObject(moshi))
     }
 }

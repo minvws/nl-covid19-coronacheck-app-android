@@ -11,6 +11,8 @@ package nl.rijksoverheid.ctr.appconfig
 import nl.rijksoverheid.ctr.appconfig.api.AppConfigApi
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManagerImpl
+import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
+import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManagerImpl
 import nl.rijksoverheid.ctr.appconfig.repositories.ConfigRepository
 import nl.rijksoverheid.ctr.appconfig.repositories.ConfigRepositoryImpl
 import nl.rijksoverheid.ctr.appconfig.usecases.*
@@ -31,21 +33,21 @@ fun appConfigModule(path: String, versionCode: Int) = module {
     factory<AppConfigUseCase> { AppConfigUseCaseImpl(get(), get(), get()) }
     factory<AppStatusUseCase> { AppStatusUseCaseImpl(get(), get(), get()) }
     factory<AppConfigPersistenceManager> { AppConfigPersistenceManagerImpl(get()) }
-    factory<CachedAppConfigUseCase> { CachedAppConfigUseCaseImpl(get(), get()) }
-    factory<PersistConfigUseCase> { PersistConfigUseCaseImpl(get(), get()) }
-    factory<LoadPublicKeysUseCase> { LoadPublicKeysUseCaseImpl(get()) }
+    factory<AppConfigStorageManager> { AppConfigStorageManagerImpl(androidContext().cacheDir.path) }
+    factory<CachedAppConfigUseCase> { CachedAppConfigUseCaseImpl(get(), get(), androidContext().cacheDir.path, get()) }
+    factory<PersistConfigUseCase> { PersistConfigUseCaseImpl(get(), get(), androidContext().packageName.contains("verifier"),androidContext().cacheDir.path, get()) }
+    factory<LoadPublicKeysUseCase> { LoadPublicKeysUseCaseImpl(get(), get()) }
     factory<AppConfigUtil> { AppConfigUtilImpl(androidContext(), get()) }
 
-
     single {
-        val okHttpClient = get(OkHttpClient::class.java).newBuilder().build()
-        val retrofit = get(Retrofit::class.java)
+        val okHttpClient = get<OkHttpClient>(OkHttpClient::class).newBuilder().build()
+        val retrofit = get<Retrofit>(Retrofit::class)
         val baseUrl = retrofit.baseUrl().newBuilder().addPathSegments("$path/").build()
         retrofit.newBuilder().baseUrl(baseUrl).client(okHttpClient).build()
             .create(AppConfigApi::class.java)
     }
 
     viewModel<AppConfigViewModel> {
-        AppConfigViewModelImpl(get(), get(), get(), get(), versionCode)
+        AppConfigViewModelImpl(get(), get(), get(), get(), get(), get(), androidContext().cacheDir.path, androidContext().packageName.contains("verifier"),versionCode)
     }
 }

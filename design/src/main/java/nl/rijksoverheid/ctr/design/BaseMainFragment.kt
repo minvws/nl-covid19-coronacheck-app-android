@@ -8,7 +8,6 @@
 
 package nl.rijksoverheid.ctr.design
 
-import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
@@ -21,7 +20,7 @@ import nl.rijksoverheid.ctr.design.databinding.MenuHeaderBinding
 import nl.rijksoverheid.ctr.design.ext.isScreenReaderOn
 import nl.rijksoverheid.ctr.shared.AccessibilityConstants
 import nl.rijksoverheid.ctr.shared.ext.getNavigationIconView
-import nl.rijksoverheid.ctr.shared.ext.setAccessibilityFocus
+import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAccessibilityFocus
 
 
 /**
@@ -60,12 +59,13 @@ abstract class BaseMainFragment(
                 } else {
                     drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
                 }
-
-                requireView().findViewById<Toolbar>(R.id.toolbar).getNavigationIconView()?.let {
-                    it.postDelayed(
-                        { it.setAccessibilityFocus() },
-                        AccessibilityConstants.ACCESSIBILITY_FOCUS_DELAY
-                    )
+                if (requireActivity().isScreenReaderOn()) {
+                    requireView().findViewById<Toolbar>(R.id.toolbar).getNavigationIconView()?.let {
+                        it.postDelayed(
+                            { it.setAccessibilityFocus() },
+                            AccessibilityConstants.ACCESSIBILITY_FOCUS_DELAY
+                        )
+                    }
                 }
             }
 

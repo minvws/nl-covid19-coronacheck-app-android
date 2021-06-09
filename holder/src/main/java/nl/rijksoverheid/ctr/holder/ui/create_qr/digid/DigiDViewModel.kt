@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.digid
 import android.content.Intent
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,6 +12,7 @@ import net.openid.appauth.AuthorizationException
 import net.openid.appauth.AuthorizationResponse
 import net.openid.appauth.AuthorizationService
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.AuthenticationRepository
+import nl.rijksoverheid.ctr.shared.livedata.Event
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -21,14 +23,21 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.AuthenticationRepos
  */
 class DigiDViewModel(private val authenticationRepository: AuthenticationRepository) : ViewModel() {
 
-    val accessTokenLiveData = MutableLiveData<String>()
+    val loading: LiveData<Event<Boolean>> = MutableLiveData()
+    val digidResultLiveData = MutableLiveData<Event<DigidResult>>()
 
     fun login(
         activityResultLauncher: ActivityResultLauncher<Intent>,
         authService: AuthorizationService
     ) {
+        (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {
-            authenticationRepository.authResponse(activityResultLauncher, authService)
+            try {
+                authenticationRepository.authResponse(activityResultLauncher, authService)
+            } catch (e: Exception) {
+                digidResultLiveData.postValue(Event(DigidResult.Failed(e.toString())))
+            }
+            loading.value = Event(false)
         }
     }
 
@@ -40,17 +49,29 @@ class DigiDViewModel(private val authenticationRepository: AuthenticationReposit
                 val authError = AuthorizationException.fromIntent(intent)
                 when {
                     authError != null -> {
+                        if (authError != AuthorizationException.GeneralErrors.USER_CANCELED_AUTH_FLOW) {
+                            digidResultLiveData.postValue(Event(DigidResult.Failed("$authError.error ${authError.errorDescription}")))
+                        }
                     }
                     authResponse != null -> {
-                        val accessToken =
-                            authenticationRepository.accessToken(authService, authResponse)
-                        accessTokenLiveData.postValue(accessToken)
+                        try {
+                            val jwt =
+                                authenticationRepository.jwt(authService, authResponse)
+                            digidResultLiveData.postValue(Event(DigidResult.Success(jwt)))
+                        } catch (e: Exception) {
+                            if (e is AuthorizationException && e.error == "saml_authn_failed") {
+                                // User cancelled flow on DigiD website, so no real error
+                            } else {
+                                digidResultLiveData.postValue(Event(DigidResult.Failed(e.toString())))
+                            }
+                        }
                     }
                     else -> {
+                        digidResultLiveData.postValue(Event(DigidResult.Failed(null)))
                     }
                 }
             } else {
-                
+                digidResultLiveData.postValue(Event(DigidResult.Failed(null)))
             }
         }
     }

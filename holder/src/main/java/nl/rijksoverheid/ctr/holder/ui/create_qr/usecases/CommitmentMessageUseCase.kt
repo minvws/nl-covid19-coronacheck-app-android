@@ -1,7 +1,6 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
-import clmobile.Clmobile
-import nl.rijksoverheid.ctr.shared.ext.successString
+import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -15,14 +14,17 @@ interface CommitmentMessageUseCase {
     suspend fun json(nonce: String): String
 }
 
-class CommitmentMessageUseCaseImpl(private val secretKeyUseCase: SecretKeyUseCase) :
+class CommitmentMessageUseCaseImpl(
+    private val secretKeyUseCase: SecretKeyUseCase,
+    private val mobileCoreWrapper: MobileCoreWrapper
+) :
     CommitmentMessageUseCase {
 
     override suspend fun json(nonce: String): String {
         val secretKey = secretKeyUseCase.json()
-        return Clmobile.createCommitmentMessage(
+        return mobileCoreWrapper.createCommitmentMessage(
             secretKey.toByteArray(),
             nonce.toByteArray()
-        ).successString()
+        )
     }
 }

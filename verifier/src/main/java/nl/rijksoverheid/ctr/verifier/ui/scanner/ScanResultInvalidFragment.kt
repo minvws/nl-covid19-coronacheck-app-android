@@ -28,8 +28,7 @@ import java.util.concurrent.TimeUnit
  *
  */
 class ScanResultInvalidFragment : Fragment(R.layout.fragment_scan_result_invalid) {
-
-    private val args: ScanResultInvalidFragmentArgs by navArgs()
+    
     private val scannerUtil: ScannerUtil by inject()
 
     private val autoCloseHandler = Handler(Looper.getMainLooper())
@@ -38,6 +37,8 @@ class ScanResultInvalidFragment : Fragment(R.layout.fragment_scan_result_invalid
             ScanResultInvalidFragmentDirections.actionNavMain()
         )
     }
+
+    private val args: ScanResultInvalidFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -48,37 +49,22 @@ class ScanResultInvalidFragment : Fragment(R.layout.fragment_scan_result_invalid
             findNavController().navigate(ScanResultInvalidFragmentDirections.actionNavMain())
         }
 
-        binding.subtitle.enableCustomLinks {
-            findNavController().navigate(ScanResultInvalidFragmentDirections.actionShowInvalidExplanation())
+        when (args.invalidData) {
+            is ScanResultInvalidData.Invalid -> {
+                binding.title.text = getString(R.string.scan_result_european_nl_invalid_title)
+                binding.subtitle.text = getString(R.string.scan_result_european_nl_invalid_subtitle)
+            }
+            is ScanResultInvalidData.Error -> {
+                binding.subtitle.enableCustomLinks {
+                    findNavController().navigate(ScanResultInvalidFragmentDirections.actionShowInvalidExplanation())
+                }
+            }
         }
 
         binding.button.setOnClickListener {
             scannerUtil.launchScanner(requireActivity())
         }
 
-        val invalidData = args.invalidData
-        MultiTapDetector(binding.image) { amount, _ ->
-            if (amount == 3) {
-                when (invalidData) {
-                    is ScanResultInvalidData.Invalid -> {
-                        presentDebugDialog(invalidData.verifiedQr.getDebugHtmlString())
-                    }
-                    is ScanResultInvalidData.Error -> {
-                        presentDebugDialog(invalidData.error)
-                    }
-                }
-            }
-        }
-    }
-
-    private fun presentDebugDialog(message: String) {
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle("Debug Info")
-            .setMessage(message.parseAsHtml())
-            .setPositiveButton(
-                "Ok"
-            ) { _, _ -> }
-            .show()
     }
 
     override fun onResume() {

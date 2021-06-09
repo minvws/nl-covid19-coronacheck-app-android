@@ -22,9 +22,7 @@ data class VerifiedQr(
         return "<ul>" +
                 "<li>Current date: ${ZonedDateTime.now()}</li>" +
                 "<li>Creation date: ${creationDateSeconds}</li>" +
-                "<li>Sample time: ${testResultAttributes.sampleTime}</li>" +
-                "<li>Test type: ${testResultAttributes.testType}</li>" +
-                "<li>isPaperProof: ${testResultAttributes.isPaperProof}</li>" +
+                "<li>isPaperProof: ${testResultAttributes.isNLDCC}</li>" +
                 "<li>isSpecimen: ${testResultAttributes.isSpecimen}</li>" +
                 "</ul>"
     }

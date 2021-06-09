@@ -11,8 +11,12 @@ package nl.rijksoverheid.ctr.holder
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.annotation.IdRes
+import androidx.annotation.StringRes
+import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
@@ -23,17 +27,20 @@ import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppData
 import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppFragment
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMainBinding
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
-import nl.rijksoverheid.ctr.shared.ext.setAccessibilityFocus
+import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAccessibilityFocus
 
 class HolderMainFragment : BaseMainFragment(
     R.layout.fragment_main, setOf(
         R.id.nav_my_overview,
-        R.id.nav_about_this_app
+        R.id.nav_about_this_app,
+        R.id.nav_qr_explanation_root
     )
 ) {
 
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
+    private var _navController : NavController? = null
+    private val navController get() = _navController!!
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -42,7 +49,7 @@ class HolderMainFragment : BaseMainFragment(
 
         val navHostFragment =
             childFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        val navController = navHostFragment.navController
+        _navController = navHostFragment.navController
 
         binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         val appBarConfiguration = AppBarConfiguration(
@@ -55,7 +62,7 @@ class HolderMainFragment : BaseMainFragment(
 
         binding.toolbar.setNavigationOnClickListener {
             when (navController.currentDestination?.id) {
-                R.id.nav_your_negative_result -> {
+                R.id.nav_your_events -> {
                     // Trigger custom dispatcher in destination
                     requireActivity().onBackPressedDispatcher.onBackPressed()
                     return@setNavigationOnClickListener
@@ -63,6 +70,10 @@ class HolderMainFragment : BaseMainFragment(
             }
 
             NavigationUI.navigateUp(navController, appBarConfiguration)
+        }
+
+        binding.toolbar.setOnMenuItemClickListener {
+            NavigationUI.onNavDestinationSelected(it, navController)
         }
 
         binding.navView.setNavigationItemSelectedListener { item ->
@@ -119,6 +130,11 @@ class HolderMainFragment : BaseMainFragment(
         _binding = null
     }
 
+    fun changeMenuItem(@IdRes menuItemId: Int, @StringRes text: Int) {
+        binding.navView.menu.findItem(menuItemId).title = getString(text)
+        navigationDrawerStyling()
+    }
+
     fun presentLoading(loading: Boolean) {
         binding.loading.visibility = if (loading) View.VISIBLE else View.GONE
         if (loading) {
@@ -128,9 +144,19 @@ class HolderMainFragment : BaseMainFragment(
         }
     }
 
+    fun getToolbar(): Toolbar {
+        return binding.toolbar
+    }
+
+    fun resetMenuItemListener(){
+        binding.toolbar.setOnMenuItemClickListener {
+            NavigationUI.onNavDestinationSelected(it, navController)
+        }
+    }
+
     private fun navigationDrawerStyling() {
         val context = binding.navView.context
-        binding.navView.menu.findItem(R.id.nav_my_overview)
+        binding.navView.menu.findItem(R.id.nav_graph_overview)
             .styleTitle(context, R.attr.textAppearanceHeadline6)
         binding.navView.menu.findItem(R.id.nav_settings)
             .styleTitle(context, R.attr.textAppearanceHeadline6)
@@ -139,6 +165,8 @@ class HolderMainFragment : BaseMainFragment(
         binding.navView.menu.findItem(R.id.nav_frequently_asked_questions)
             .styleTitle(context, R.attr.textAppearanceBody1)
         binding.navView.menu.findItem(R.id.nav_terms_of_use)
+            .styleTitle(context, R.attr.textAppearanceBody1)
+        binding.navView.menu.findItem(R.id.nav_qr_explanation_root)
             .styleTitle(context, R.attr.textAppearanceBody1)
     }
 

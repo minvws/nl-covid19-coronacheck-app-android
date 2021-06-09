@@ -16,6 +16,7 @@ import nl.rijksoverheid.ctr.design.R
 import nl.rijksoverheid.ctr.design.databinding.AboutThisAppRowBinding
 import nl.rijksoverheid.ctr.design.databinding.FragmentAboutAppBinding
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
+import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAsAccessibilityButton
 
 class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
 
@@ -42,7 +43,12 @@ class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
                 binding.readMoreItems,
                 true
             )
+
             view.title.text = item.text
+
+            view.root.setAsAccessibilityButton(true)
+            view.root.contentDescription = item.text
+
             view.root.setOnClickListener {
                 item.url.launchUrl(requireContext())
             }

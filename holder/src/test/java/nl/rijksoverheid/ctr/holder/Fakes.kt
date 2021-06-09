@@ -1,30 +1,34 @@
 package nl.rijksoverheid.ctr.holder
 
-import android.graphics.Bitmap
+import mobilecore.Result
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
-import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.holder.ui.create_qr.CommercialTestCodeViewModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.TestProviderRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
-import nl.rijksoverheid.ctr.holder.ui.myoverview.LocalTestResultViewModel
-import nl.rijksoverheid.ctr.holder.ui.myoverview.models.LocalTestResult
-import nl.rijksoverheid.ctr.holder.ui.myoverview.models.LocalTestResultState
-import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.LocalTestResultUseCase
+import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TokenValidatorUtil
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.ui.new_terms.models.NewTerms
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
-import nl.rijksoverheid.ctr.shared.livedata.Event
+import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
+import nl.rijksoverheid.ctr.shared.models.DomesticCredential
 import nl.rijksoverheid.ctr.shared.models.PersonalDetails
+import nl.rijksoverheid.ctr.shared.models.ReadDomesticCredential
 import nl.rijksoverheid.ctr.shared.models.TestResultAttributes
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import nl.rijksoverheid.ctr.shared.utils.TestResultUtil
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.ResponseBody.Companion.toResponseBody
+import okio.BufferedSource
+import org.json.JSONObject
 import java.time.OffsetDateTime
 
 /*
@@ -37,7 +41,7 @@ import java.time.OffsetDateTime
 
 fun fakeAppConfigViewModel(appStatus: AppStatus = AppStatus.NoActionRequired) =
     object : AppConfigViewModel() {
-        override fun refresh() {
+        override fun refresh(mobileCoreWrapper: MobileCoreWrapper) {
             appStatusLiveData.value = appStatus
         }
     }
@@ -83,11 +87,16 @@ fun fakeCachedAppConfigUseCase(
         appDeactivated = false,
         informationURL = "dummy",
         configTtlSeconds = 0,
-        maxValidityHours = 0
+        maxValidityHours = 0,
+        euLaunchDate = "",
+        credentialRenewalDays = 0,
+        domesticCredentialValidity = 0,
+        testEventValidity = 0,
+        recoveryEventValidity = 0,
+        temporarilyDisabled = false,
+        requireUpdateBefore = 0
     ),
-    publicKeys: PublicKeys = PublicKeys(
-        clKeys = listOf()
-    )
+    publicKeys: BufferedSource = "{\"cl_keys\":[]}".toResponseBody("application/json".toMediaType()).source()
 ): CachedAppConfigUseCase = object : CachedAppConfigUseCase {
     override fun persistAppConfig(appConfig: AppConfig) {
 
@@ -101,26 +110,14 @@ fun fakeCachedAppConfigUseCase(
         return appConfig.maxValidityHours
     }
 
-    override fun persistPublicKeys(publicKeys: PublicKeys) {
-
+    override fun getCachedAppConfigVaccinationEventValidity(): Int {
+        return appConfig.vaccinationEventValidity
     }
 
-    override fun getCachedPublicKeys(): PublicKeys? {
-        return publicKeys
-    }
-}
+    override fun getCachedPublicKeys() = publicKeys
 
-fun fakeQrCodeUseCase(
-    bitmap: Bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
-): QrCodeUseCase {
-    return object : QrCodeUseCase {
-        override suspend fun qrCode(
-            credentials: ByteArray,
-            qrCodeWidth: Int,
-            qrCodeHeight: Int
-        ): Bitmap {
-            return bitmap
-        }
+    override fun getProviderName(providerIdentifier: String?): String {
+        return ""
     }
 }
 
@@ -139,41 +136,19 @@ fun fakeIntroductionViewModel(
     }
 }
 
-fun fakeLocalTestResultViewModel(
-    localTestResultState: LocalTestResultState = LocalTestResultState.None,
-): LocalTestResultViewModel {
-    return object : LocalTestResultViewModel() {
-        override fun getLocalTestResult() {
-            localTestResultStateLiveData.value = Event(localTestResultState)
+fun fakeCommercialTestResultViewModel(): CommercialTestCodeViewModel {
+    return object : CommercialTestCodeViewModel() {
+
+        override fun updateViewState() {
+
         }
 
-        override fun generateQrCode(size: Int): Boolean {
-            if (localTestResultState is LocalTestResultState.Valid) {
-                qrCodeLiveData.value =
-                    QrCodeData(
-                        localTestResult = LocalTestResult(
-                            credentials = "dummy",
-                            sampleDate = OffsetDateTime.now(),
-                            expireDate = OffsetDateTime.now(),
-                            testType = "dummy",
-                            personalDetails = PersonalDetails("X", "X", "X", "X")
-                        ),
-                        qrCode = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
-                    )
-                return true
-            } else {
-                return false
-            }
-        }
-    }
-}
+        override fun getTestResult(fromDeeplink: Boolean) {
 
-fun fakeLocalTestResultUseCase(
-    state: LocalTestResultState = LocalTestResultState.None
-): LocalTestResultUseCase {
-    return object : LocalTestResultUseCase {
-        override suspend fun get(currentLocalTestResultState: LocalTestResultState?): LocalTestResultState {
-            return state
+        }
+
+        override fun sendVerificationCode() {
+
         }
     }
 }
@@ -237,35 +212,60 @@ fun fakeTestProviderRepository(
     }
 }
 
-fun fakeTestProviderUseCase(
-    provider: RemoteTestProviders.Provider? = null
-): TestProviderUseCase {
-    return object : TestProviderUseCase {
-        override suspend fun testProvider(id: String): RemoteTestProviders.Provider? {
+fun fakeConfigProviderUseCase(
+    provider: RemoteConfigProviders.TestProvider? = null
+): ConfigProvidersUseCase {
+    return object : ConfigProvidersUseCase {
+        override suspend fun eventProviders(): List<RemoteConfigProviders.EventProvider> {
+            return listOf()
+        }
+
+        override suspend fun testProvider(id: String): RemoteConfigProviders.TestProvider? {
             return provider
         }
     }
 }
 
 fun fakeCoronaCheckRepository(
-    testProviders: RemoteTestProviders = RemoteTestProviders(listOf()),
+    testProviders: RemoteConfigProviders = RemoteConfigProviders(listOf(), listOf()),
     testIsmResult: TestIsmResult = TestIsmResult.Success(""),
     testIsmExceptionCallback: (() -> Unit)? = null,
     remoteNonce: RemoteNonce = RemoteNonce("", ""),
+    accessTokens: RemoteAccessTokens = RemoteAccessTokens(tokens = listOf()),
+    remoteCredentials: RemoteCredentials = RemoteCredentials(
+        domesticGreencard = null,
+        euGreencards = null
+    ),
+    prepareIssue: RemotePrepareIssue = RemotePrepareIssue(
+        stoken = "",
+        prepareIssueMessage = "".toByteArray()
+    )
 
-    ): CoronaCheckRepository {
+): CoronaCheckRepository {
     return object : CoronaCheckRepository {
-        override suspend fun testProviders(): RemoteTestProviders {
+
+        override suspend fun configProviders(): RemoteConfigProviders {
             return testProviders
         }
 
-        override suspend fun getTestIsm(test: String, sToken: String, icm: String): TestIsmResult {
-            testIsmExceptionCallback?.invoke()
-            return testIsmResult
+        override suspend fun accessTokens(tvsToken: String): RemoteAccessTokens {
+            return accessTokens
         }
 
         override suspend fun remoteNonce(): RemoteNonce {
             return remoteNonce
+        }
+
+        override suspend fun getCredentials(
+            stoken: String,
+            events: List<String>,
+            issueCommitmentMessage: String
+        ): RemoteCredentials {
+            return remoteCredentials
+        }
+
+        override suspend fun getPrepareIssue(): RemotePrepareIssue {
+            return prepareIssue
         }
     }
 }
@@ -283,14 +283,16 @@ fun fakeTestResultAttributesUseCase(
     return object : TestResultAttributesUseCase {
         override fun get(credentials: String): TestResultAttributes {
             return TestResultAttributes(
-                sampleTime = sampleTimeSeconds,
-                testType = testType,
                 birthDay = birthDay,
                 birthMonth = birthMonth,
                 firstNameInitial = firstNameInitial,
                 lastNameInitial = lastNameInitial,
                 isSpecimen = isSpecimen,
-                isPaperProof = isPaperProof
+                isNLDCC = "1",
+                credentialVersion = "1",
+                stripType = "0",
+                validForHours = "24",
+                validFrom = "1622633766",
             )
         }
     }
@@ -335,7 +337,62 @@ fun fakePersistenceManager(
         }
 
         override fun setHasDismissedRootedDeviceDialog() {
-            
+
+        }
+    }
+}
+
+fun fakeMobileCoreWrapper(): MobileCoreWrapper {
+    return object : MobileCoreWrapper {
+        override fun loadDomesticIssuerPks(bytes: ByteArray) {
+        }
+
+        override fun createCredentials(body: ByteArray): String {
+            return ""
+        }
+
+        override fun readCredential(credentials: ByteArray): ByteArray {
+            return ByteArray(0)
+        }
+
+        override fun createCommitmentMessage(secretKey: ByteArray, nonce: ByteArray): String {
+            return ""
+        }
+
+        override fun disclose(secretKey: ByteArray, credential: ByteArray): String {
+            return ""
+        }
+
+        override fun generateHolderSk(): String {
+            return ""
+        }
+
+        override fun createDomesticCredentials(createCredentials: ByteArray): List<DomesticCredential> {
+            return listOf()
+        }
+
+        override fun readEuropeanCredential(credential: ByteArray): JSONObject {
+            return JSONObject()
+        }
+
+        override fun initializeVerifier(configFilesPath: String) = Unit
+
+        override fun verify(credential: ByteArray): Result {
+            TODO("Not yet implemented")
+        }
+
+        override fun readDomesticCredential(credential: ByteArray): ReadDomesticCredential {
+            return ReadDomesticCredential(
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+            )
         }
     }
 }

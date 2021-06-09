@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="16dp">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/test_result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="24dp"
+            android:clipToPadding="false">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:src="@drawable/illustration_hand_qr_nl"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/type_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:text="@string/validity_type_dutch_title"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:textColor="@color/primary_blue"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/imageView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/my_overview_test_result_title"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                app:layout_constraintEnd_toEndOf="@+id/type_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/type_title" />
+
+            <TextView
+                android:id="@+id/proof1_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:textAppearance="@style/App.TextAppearance.MaterialComponents.Body1"
+                app:layout_constraintTop_toBottomOf="@+id/title"
+                tools:text="Geldigheid #1" />
+
+            <TextView
+                android:id="@+id/proof1_subtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/App.TextAppearance.MaterialComponents.Body1"
+                app:layout_constraintTop_toBottomOf="@+id/proof1_title"
+                tools:text="Geldig tot en met 7 februari 2022" />
+
+            <TextView
+                android:id="@+id/proof2_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:textAppearance="@style/App.TextAppearance.MaterialComponents.Body1"
+                app:layout_constraintTop_toBottomOf="@+id/proof1_subtitle"
+                tools:text="Geldigheid #2" />
+
+            <TextView
+                android:id="@+id/proof2_subtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/App.TextAppearance.MaterialComponents.Body1"
+                app:layout_constraintTop_toBottomOf="@+id/proof2_title"
+                tools:text="Geldig tot en met 7 februari 2022" />
+
+            <TextView
+                android:id="@+id/proof3_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:textAppearance="@style/App.TextAppearance.MaterialComponents.Body1"
+                app:layout_constraintTop_toBottomOf="@+id/proof2_subtitle"
+                tools:text="Geldigheid #2" />
+
+            <TextView
+                android:id="@+id/proof3_subtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/App.TextAppearance.MaterialComponents.Body1"
+                app:layout_constraintTop_toBottomOf="@+id/proof3_title"
+                tools:text="Geldig tot en met 7 februari 2022" />
+
+            <TextView
+                android:id="@+id/expires_in"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/proof3_subtitle"
+                tools:text="Verloopt in 5 uur 59 min"
+                tools:visibility="visible" />
+
+            <Button
+                android:id="@+id/button"
+                style="@style/Widget.App.Button.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="@string/my_overview_test_result_button"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/expires_in" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/launchText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/App.TextAppearance.MaterialComponents.Body2.Secondary"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/test_result"
+        app:layout_constraintStart_toStartOf="@id/test_result"
+        app:layout_constraintEnd_toEndOf="@id/test_result"
+        android:visibility="invisible"
+        android:text="@string/qr_card_validity_eu"
+        tools:text="Je Europese Qr-code wordt automatisch geldig als de Europese regelgeving ingaat (over 5 dagen)" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

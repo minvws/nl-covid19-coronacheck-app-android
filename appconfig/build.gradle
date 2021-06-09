@@ -40,14 +40,13 @@ android {
 dependencies {
     implementation(project(":design"))
     implementation(project(":shared"))
-    implementation(project(':clcore'))
+    implementation(project(':mobilecore'))
     implementation(project(":api"))
     api "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     api "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
     api "com.squareup.retrofit2:retrofit:$retrofit_version"
     api "com.squareup.moshi:moshi-kotlin:$moshi_version"
-    implementation "org.koin:koin-android:$koin_version"
-    implementation "org.koin:koin-androidx-viewmodel:$koin_version"
+    implementation "io.insert-koin:koin-android:$koin_version"
     implementation "com.jakewharton.timber:timber:$timber_version"
     implementation "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
     implementation "androidx.preference:preference-ktx:$preference_version"

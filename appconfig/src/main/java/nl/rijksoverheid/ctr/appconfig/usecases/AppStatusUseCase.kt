@@ -24,9 +24,10 @@ interface AppStatusUseCase {
 class AppStatusUseCaseImpl(
     private val clock: Clock,
     private val cachedAppConfigUseCase: CachedAppConfigUseCase,
-    private val appConfigPersistenceManager: AppConfigPersistenceManager
+    private val appConfigPersistenceManager: AppConfigPersistenceManager,
 ) :
     AppStatusUseCase {
+
     override suspend fun get(config: ConfigResult, currentVersionCode: Int): AppStatus =
         withContext(Dispatchers.IO) {
             when (config) {

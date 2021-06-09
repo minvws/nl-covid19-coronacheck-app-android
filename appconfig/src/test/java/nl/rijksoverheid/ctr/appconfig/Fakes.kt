@@ -1,8 +1,10 @@
 package nl.rijksoverheid.ctr.appconfig
 
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
-import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.ResponseBody.Companion.toResponseBody
+import okio.BufferedSource
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -17,13 +19,6 @@ fun fakeAppConfigPersistenceManager(
     appConfigJson: String? = null,
     lastFetchedSeconds: Long = 0L
 ) = object : AppConfigPersistenceManager {
-    override fun savePublicKeysJson(json: String) {
-
-    }
-
-    override fun getPublicKeysJson(): String? {
-        return publicKeysJson
-    }
 
     override fun saveAppConfigJson(json: String) {
 
@@ -45,8 +40,9 @@ fun fakeAppConfigPersistenceManager(
 
 fun fakeCachedAppConfigUseCase(
     appConfig: AppConfig? = fakeAppConfig(),
-    publicKeys: PublicKeys = PublicKeys(listOf()),
+    publicKeys: BufferedSource = "{\"cl_keys\":[]}".toResponseBody("application/json".toMediaType()).source(),
     cachedAppConfigMaxValidityHours: Int = 0,
+    cachedAppConfigVaccinationEventValidity: Int = 0
 ) = object : CachedAppConfigUseCase {
     override fun persistAppConfig(appConfig: AppConfig) {
 
@@ -60,12 +56,16 @@ fun fakeCachedAppConfigUseCase(
         return cachedAppConfigMaxValidityHours
     }
 
-    override fun persistPublicKeys(publicKeys: PublicKeys) {
-
+    override fun getCachedAppConfigVaccinationEventValidity(): Int {
+        return cachedAppConfigVaccinationEventValidity
     }
 
-    override fun getCachedPublicKeys(): PublicKeys? {
+    override fun getCachedPublicKeys(): BufferedSource {
         return publicKeys
+    }
+
+    override fun getProviderName(providerIdentifier: String?): String {
+        return ""
     }
 }
 
@@ -80,5 +80,12 @@ fun fakeAppConfig(
     appDeactivated = appDeactivated,
     informationURL = informationURL,
     configTtlSeconds = configTtlSeconds,
-    maxValidityHours = maxValidityHours
+    maxValidityHours = maxValidityHours,
+    euLaunchDate = "",
+    credentialRenewalDays = 0,
+    domesticCredentialValidity = 0,
+    testEventValidity = 0,
+    recoveryEventValidity = 0,
+    temporarilyDisabled = false,
+    requireUpdateBefore = 0
 )

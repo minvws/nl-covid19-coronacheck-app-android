@@ -49,7 +49,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="coronatester-app-dev" />
+                <data android:scheme="coronacheck" />
             </intent-filter>
         </activity>
 

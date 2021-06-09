@@ -10,11 +10,12 @@ package nl.rijksoverheid.ctr.appconfig.repositories
 
 import nl.rijksoverheid.ctr.appconfig.api.AppConfigApi
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
-import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
+import okio.BufferedSource
+import java.io.InputStream
 
 interface ConfigRepository {
     suspend fun getConfig(): AppConfig
-    suspend fun getPublicKeys(): PublicKeys
+    suspend fun getPublicKeys(): BufferedSource
 }
 
 class ConfigRepositoryImpl(private val api: AppConfigApi) : ConfigRepository {
@@ -22,7 +23,7 @@ class ConfigRepositoryImpl(private val api: AppConfigApi) : ConfigRepository {
         return api.getConfig()
     }
 
-    override suspend fun getPublicKeys(): PublicKeys {
-        return api.getPublicKeys()
+    override suspend fun getPublicKeys(): BufferedSource {
+        return api.getPublicKeys().source()
     }
 }

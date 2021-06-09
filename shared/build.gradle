@@ -12,13 +12,6 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
-
-        buildConfigField "String", "SIGNATURE_CERTIFICATE_CN_MATCH", '".coronatester.nl"'
-        buildConfigField "boolean", "FEATURE_API_SSL_ROOT_CA", "true"
-        buildConfigField "boolean", "FEATURE_TEST_PROVIDER_TRUSTED_ROOTS", "true"
-        buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.coronacheck.nl/v1/\""
-        buildConfigField "String", "DIGI_D_BASE_URL", "\"https://login.ggdghor.nl/coronitacc\""
-        buildConfigField "String", "DIGI_D_CLIENT_ID", "\"6456237456911667336\""
     }
 
     buildTypes {
@@ -34,9 +27,9 @@ android {
 }
 
 dependencies {
-    implementation project(':clcore')
+    implementation project(':mobilecore')
 
-    implementation "org.koin:koin-android:$koin_version"
+    implementation "io.insert-koin:koin-android:$koin_version"
     implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
     implementation "com.jakewharton.timber:timber:${timber_version}"
     implementation(platform("com.squareup.okhttp3:okhttp-bom:$okhttp_version"))

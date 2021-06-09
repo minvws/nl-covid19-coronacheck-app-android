@@ -1,7 +1,6 @@
 package nl.rijksoverheid.ctr.holder
 
 import androidx.preference.PreferenceManager
-import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.loadKoinModules
 import org.koin.core.module.Module
 import org.koin.dsl.module
@@ -24,6 +23,8 @@ class TestHolderApplication : HolderApplication() {
             factory {
                 PreferenceManager.getDefaultSharedPreferences(this@TestHolderApplication)
             }
+        }, module {
+            factory { fakeMobileCoreWrapper() }
         })
     }
 }

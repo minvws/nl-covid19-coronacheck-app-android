@@ -15,7 +15,7 @@ import nl.rijksoverheid.ctr.introduction.R
 import nl.rijksoverheid.ctr.introduction.databinding.FragmentOnboardingBinding
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.getNavigationIconView
-import nl.rijksoverheid.ctr.shared.ext.setAccessibilityFocus
+import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAccessibilityFocus
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

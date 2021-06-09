@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview.items
 
 import android.view.View
+import androidx.annotation.StringRes
 import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.ItemMyOverviewHeaderBinding
@@ -12,10 +13,13 @@ import nl.rijksoverheid.ctr.holder.databinding.ItemMyOverviewHeaderBinding
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class MyOverviewHeaderAdapterItem :
+class MyOverviewHeaderAdapterItem(@StringRes private val text: Int) :
     BindableItem<ItemMyOverviewHeaderBinding>(R.layout.item_my_overview_header.toLong()) {
     override fun bind(viewBinding: ItemMyOverviewHeaderBinding, position: Int) {
-
+        viewBinding.text.setHtmlText(
+            htmlText = viewBinding.root.context.getString(text),
+            htmlLinksEnabled = true
+        )
     }
 
     override fun getLayout(): Int {

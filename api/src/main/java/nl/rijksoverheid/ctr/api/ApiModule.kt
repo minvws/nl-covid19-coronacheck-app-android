@@ -6,6 +6,8 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import nl.rijksoverheid.ctr.api.interceptors.CacheOverrideInterceptor
 import nl.rijksoverheid.ctr.api.interceptors.SignedResponseInterceptor
 import nl.rijksoverheid.ctr.api.json.Base64JsonAdapter
+import nl.rijksoverheid.ctr.api.json.JsonObjectJsonAdapter
+import nl.rijksoverheid.ctr.api.json.LocalDateJsonAdapter
 import nl.rijksoverheid.ctr.api.json.OffsetDateTimeJsonAdapter
 import nl.rijksoverheid.ctr.api.signing.certificates.EV_ROOT_CA
 import okhttp3.Cache
@@ -37,7 +39,7 @@ fun apiModule(
 ) = module(override = true) {
 
     single {
-        val context = get(Context::class.java)
+        val context = get<Context>(Context::class)
         val cache = Cache(File(context.cacheDir, "http"), 10 * 1024 * 1024)
 
         OkHttpClient.Builder()
@@ -63,7 +65,7 @@ fun apiModule(
     }
 
     single {
-        val okHttpClient = get(OkHttpClient::class.java)
+        val okHttpClient = get<OkHttpClient>(OkHttpClient::class)
             .newBuilder()
             .apply {
                 if (coronaCheckApiChecks) {
@@ -92,7 +94,9 @@ fun apiModule(
         Moshi.Builder()
             .add(KotlinJsonAdapterFactory())
             .add(Base64JsonAdapter())
+            .add(JsonObjectJsonAdapter())
             .add(OffsetDateTimeJsonAdapter())
+            .add(LocalDateJsonAdapter())
     }
 
 }

@@ -29,7 +29,7 @@ class VerifierMainActivityTest : AutoCloseKoinTest() {
 
     @Test
     fun `If introduction not finished navigate to introduction`() {
-        val scenario = launchHolderMainActivity(
+        val scenario = launchVerifierMainActivity(
             introductionStatus = IntroductionStatus.IntroductionNotFinished(
                 introductionData = IntroductionData(
                     onboardingItems = listOf(),
@@ -49,7 +49,7 @@ class VerifierMainActivityTest : AutoCloseKoinTest() {
 
     @Test
     fun `If introduction finished navigate to main`() {
-        val scenario = launchHolderMainActivity()
+        val scenario = launchVerifierMainActivity()
         scenario.onActivity {
             assertEquals(
                 it.findNavController(R.id.main_nav_host_fragment).currentDestination?.id,
@@ -60,7 +60,7 @@ class VerifierMainActivityTest : AutoCloseKoinTest() {
 
     @Test
     fun `If app status is not NoActionRequired navigate to app status`() {
-        val scenario = launchHolderMainActivity(
+        val scenario = launchVerifierMainActivity(
             appStatus = AppStatus.InternetRequired
         )
         scenario.onActivity {
@@ -71,7 +71,7 @@ class VerifierMainActivityTest : AutoCloseKoinTest() {
         }
     }
 
-    private fun launchHolderMainActivity(
+    private fun launchVerifierMainActivity(
         introductionStatus: IntroductionStatus = IntroductionStatus.IntroductionFinished.NoActionRequired,
         appStatus: AppStatus = AppStatus.NoActionRequired
     ): ActivityScenario<VerifierMainActivity> {
@@ -89,6 +89,9 @@ class VerifierMainActivityTest : AutoCloseKoinTest() {
                 }
                 factory {
                     fakeCachedAppConfigUseCase()
+                }
+                factory {
+                    fakeMobileCoreWrapper()
                 }
             })
 

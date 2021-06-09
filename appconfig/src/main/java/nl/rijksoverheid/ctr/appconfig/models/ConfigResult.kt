@@ -1,7 +1,7 @@
 package nl.rijksoverheid.ctr.appconfig.models
 
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
-import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
+import okio.BufferedSource
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -11,6 +11,6 @@ import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
  *
  */
 sealed class ConfigResult {
-    data class Success(val appConfig: AppConfig, val publicKeys: PublicKeys) : ConfigResult()
+    data class Success(val appConfig: AppConfig, val publicKeys: BufferedSource) : ConfigResult()
     object Error : ConfigResult()
 }

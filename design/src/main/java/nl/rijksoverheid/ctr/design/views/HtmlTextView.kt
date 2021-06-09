@@ -6,7 +6,9 @@ import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.BulletSpan
+import android.text.style.ClickableSpan
 import android.util.AttributeSet
+import android.view.accessibility.AccessibilityEvent
 import androidx.core.text.HtmlCompat
 import androidx.core.text.getSpans
 import androidx.core.text.parseAsHtml
@@ -32,13 +34,19 @@ class HtmlTextViewWidget @JvmOverloads constructor(
                 val htmlText =
                     getText(R.styleable.HtmlTextViewWidget_htmlText)
                 if (htmlText?.isNotEmpty() == true) {
-                    setHtmlText(htmlText.toString(), getBoolean(R.styleable.HtmlTextViewWidget_enableHtmlLinks, false))
+                    setHtmlText(
+                        htmlText.toString(),
+                        getBoolean(R.styleable.HtmlTextViewWidget_enableHtmlLinks, false)
+                    )
                     text = htmlText.toString().parseAsHtml()
                 }
 
                 val htmlTextWithBullets = getText(R.styleable.HtmlTextViewWidget_htmlTextWithList)
                 if (htmlTextWithBullets?.isNotEmpty() == true) {
-                    setHtmlTextWithBullets(htmlTextWithBullets.toString(), getBoolean(R.styleable.HtmlTextViewWidget_enableHtmlLinks, false))
+                    setHtmlTextWithBullets(
+                        htmlTextWithBullets.toString(),
+                        getBoolean(R.styleable.HtmlTextViewWidget_enableHtmlLinks, false)
+                    )
 
                 }
             } finally {
@@ -47,14 +55,14 @@ class HtmlTextViewWidget @JvmOverloads constructor(
         }
     }
 
-    fun setHtmlText(htmlText: String, htmlLinksEnabled: Boolean) {
+    fun setHtmlText(htmlText: String, htmlLinksEnabled: Boolean = false) {
         text = htmlText.parseAsHtml()
         if (htmlLinksEnabled) {
             enableHtmlLinks()
         }
     }
 
-    fun setHtmlTextWithBullets(htmlText: String, htmlLinksEnabled: Boolean) {
+    fun setHtmlTextWithBullets(htmlText: String, htmlLinksEnabled: Boolean = false) {
         text = getSpannableFromHtml(htmlText)
         if (htmlLinksEnabled) {
             enableHtmlLinks()
@@ -145,5 +153,16 @@ class HtmlTextViewWidget @JvmOverloads constructor(
         return spannableBuilder
     }
 
+    // Add support for activating links with assistive technologies
+    override fun dispatchPopulateAccessibilityEvent(event: AccessibilityEvent?): Boolean {
+        if (event != null && event.eventType == AccessibilityEvent.TYPE_VIEW_CLICKED) {
+            (text as? Spanned)?.let { spanned ->
+                val clickableSpans = spanned.getSpans(0, spanned.length, ClickableSpan::class.java)
 
+                // Activate the first clickable span
+                clickableSpans.first()?.onClick(this)
+            }
+        }
+        return super.dispatchPopulateAccessibilityEvent(event)
+    }
 }

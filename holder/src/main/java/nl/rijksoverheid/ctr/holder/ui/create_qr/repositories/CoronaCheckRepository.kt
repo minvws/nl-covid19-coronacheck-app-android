@@ -1,12 +1,11 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.repositories
 
+import android.util.Base64
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.HolderApiClient
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteNonce
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestProviders
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.ResponseError
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.TestIsmResult
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.post.GetCredentialsPostData
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.post.GetTestIsmPostData
 import okhttp3.ResponseBody
 import org.json.JSONObject
@@ -22,9 +21,16 @@ import retrofit2.HttpException
  */
 
 interface CoronaCheckRepository {
-    suspend fun testProviders(): RemoteTestProviders
-    suspend fun getTestIsm(test: String, sToken: String, icm: String): TestIsmResult
+    suspend fun configProviders(): RemoteConfigProviders
+    suspend fun accessTokens(jwt: String): RemoteAccessTokens
     suspend fun remoteNonce(): RemoteNonce
+    suspend fun getCredentials(
+        stoken: String,
+        events: List<String>,
+        issueCommitmentMessage: String
+    ): RemoteCredentials
+
+    suspend fun getPrepareIssue(): RemotePrepareIssue
 }
 
 open class CoronaCheckRepositoryImpl(
@@ -32,40 +38,36 @@ open class CoronaCheckRepositoryImpl(
     private val errorResponseConverter: Converter<ResponseBody, ResponseError>
 ) : CoronaCheckRepository {
 
-    override suspend fun testProviders(): RemoteTestProviders {
+    override suspend fun configProviders(): RemoteConfigProviders {
         return api.getConfigCtp()
     }
 
-    @Suppress("BlockingMethodInNonBlockingContext")
-    override suspend fun getTestIsm(
-        test: String,
-        sToken: String,
-        icm: String
-    ): TestIsmResult {
-        val response = api.getTestIsm(
-            GetTestIsmPostData(
-                test = test,
-                sToken = sToken,
-                icm = JSONObject(icm).toString()
-            )
-        )
-
-        return if (response.isSuccessful) {
-            val body =
-                response.body()?.string()
-                    ?: throw IllegalStateException("Body should not be null")
-            TestIsmResult.Success(body)
-        } else {
-            val errorBody = response.errorBody() ?: throw HttpException(response)
-            withContext(Dispatchers.IO) {
-                val responseError =
-                    errorResponseConverter.convert(errorBody) ?: throw HttpException(response)
-                TestIsmResult.Error(response.code(), responseError)
-            }
-        }
+    override suspend fun accessTokens(jwt: String): RemoteAccessTokens {
+        return api.getAccessTokens(authorization = "Bearer $jwt")
     }
 
     override suspend fun remoteNonce(): RemoteNonce {
         return api.getNonce()
+    }
+
+    override suspend fun getCredentials(
+        stoken: String,
+        events: List<String>,
+        issueCommitmentMessage: String
+    ): RemoteCredentials {
+        return api.getCredentials(
+            data = GetCredentialsPostData(
+                stoken = stoken,
+                events = events,
+                issueCommitmentMessage = Base64.encodeToString(
+                    issueCommitmentMessage.toByteArray(),
+                    Base64.NO_WRAP
+                )
+            )
+        )
+    }
+
+    override suspend fun getPrepareIssue(): RemotePrepareIssue {
+        return api.getPrepareIssue()
     }
 }

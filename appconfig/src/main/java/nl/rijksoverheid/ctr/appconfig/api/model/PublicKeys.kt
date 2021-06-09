@@ -13,7 +13,7 @@ import nl.rijksoverheid.ctr.shared.models.JSON
  */
 @JsonClass(generateAdapter = true)
 data class PublicKeys(
-    @Json(name = "cl_keys") val clKeys: List<ClKey>
+    @Json(name = "cl_keys") val clKeys: List<ClKey>,
 ) : JSON() {
     @JsonClass(generateAdapter = true)
     data class ClKey(

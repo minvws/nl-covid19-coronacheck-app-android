@@ -1,14 +1,17 @@
 package nl.rijksoverheid.ctr.verifier
 
+import mobilecore.Result
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
-import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
-import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.introduction.ui.new_terms.models.NewTerms
+import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
+import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.livedata.Event
+import nl.rijksoverheid.ctr.shared.models.DomesticCredential
+import nl.rijksoverheid.ctr.shared.models.ReadDomesticCredential
 import nl.rijksoverheid.ctr.shared.models.TestResultAttributes
 import nl.rijksoverheid.ctr.shared.utils.TestResultUtil
 import nl.rijksoverheid.ctr.verifier.ui.scanner.ScannerViewModel
@@ -18,6 +21,10 @@ import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.TestResultValidUseCase
 import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.VerifyQrUseCase
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.QrCodeUtil
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrViewModel
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.ResponseBody.Companion.toResponseBody
+import okio.BufferedSource
+import org.json.JSONObject
 import java.time.OffsetDateTime
 
 /*
@@ -30,7 +37,7 @@ import java.time.OffsetDateTime
 
 fun fakeAppConfigViewModel(appStatus: AppStatus = AppStatus.NoActionRequired) =
     object : AppConfigViewModel() {
-        override fun refresh() {
+        override fun refresh(mobileCoreWrapper: MobileCoreWrapper) {
             appStatusLiveData.value = appStatus
         }
     }
@@ -93,30 +100,36 @@ fun fakeVerifiedQr(
 ) = VerifiedQr(
     creationDateSeconds = 0,
     testResultAttributes = TestResultAttributes(
-        sampleTime = 0,
-        testType = "dummy",
         birthDay = birthDay,
         birthMonth = birthMonth,
         firstNameInitial = firstNameInitial,
         lastNameInitial = lastNameInitial,
-        isPaperProof = isPaperProof,
-        isSpecimen = isSpecimen
+        isSpecimen = isSpecimen,
+        isNLDCC = "1",
+        credentialVersion = "1",
+        stripType = "0",
+        validForHours = "24",
+        validFrom = "1622633766",
     )
 )
 
 fun fakeVerifyQrUseCase(
+    isNLDCC: String = "0",
+    isSpecimen: String = "0",
     result: VerifyQrUseCase.VerifyQrResult = VerifyQrUseCase.VerifyQrResult.Success(
         verifiedQr = VerifiedQr(
             creationDateSeconds = 0,
             testResultAttributes = TestResultAttributes(
-                sampleTime = 0,
-                testType = "dummy",
                 birthDay = "dummy",
                 birthMonth = "dummy",
                 firstNameInitial = "dummy",
                 lastNameInitial = "dummy",
-                isPaperProof = "0",
-                isSpecimen = "0"
+                isSpecimen = isSpecimen,
+                isNLDCC = isNLDCC,
+                credentialVersion = "1",
+                stripType = "0",
+                validForHours = "24",
+                validFrom = "1622633766",
             )
         )
     )
@@ -140,11 +153,16 @@ fun fakeCachedAppConfigUseCase(
         appDeactivated = false,
         informationURL = "dummy",
         configTtlSeconds = 0,
-        maxValidityHours = 0
+        maxValidityHours = 0,
+        euLaunchDate = "",
+        credentialRenewalDays = 0,
+        domesticCredentialValidity = 0,
+        testEventValidity = 0,
+        recoveryEventValidity = 0,
+        temporarilyDisabled = false,
+        requireUpdateBefore = 0
     ),
-    publicKeys: PublicKeys = PublicKeys(
-        clKeys = listOf()
-    )
+    publicKeys: BufferedSource = "{\"cl_keys\":[]}".toResponseBody("application/json".toMediaType()).source()
 ): CachedAppConfigUseCase = object : CachedAppConfigUseCase {
     override fun persistAppConfig(appConfig: AppConfig) {
 
@@ -158,14 +176,71 @@ fun fakeCachedAppConfigUseCase(
         return appConfig.maxValidityHours
     }
 
-    override fun persistPublicKeys(publicKeys: PublicKeys) {
-
+    override fun getCachedAppConfigVaccinationEventValidity(): Int {
+        return appConfig.vaccinationEventValidity
     }
 
-    override fun getCachedPublicKeys(): PublicKeys? {
+    override fun getCachedPublicKeys(): BufferedSource {
         return publicKeys
+    }
+
+    override fun getProviderName(providerIdentifier: String?): String {
+        return ""
     }
 }
 
+fun fakeMobileCoreWrapper(): MobileCoreWrapper {
+    return object : MobileCoreWrapper {
+        override fun loadDomesticIssuerPks(bytes: ByteArray) {
+        }
 
+        override fun createCredentials(body: ByteArray): String {
+            return ""
+        }
+
+        override fun readCredential(credentials: ByteArray): ByteArray {
+            return ByteArray(0)
+        }
+
+        override fun createCommitmentMessage(secretKey: ByteArray, nonce: ByteArray): String {
+            return ""
+        }
+
+        override fun disclose(secretKey: ByteArray, credential: ByteArray): String {
+            return ""
+        }
+
+        override fun generateHolderSk(): String {
+            return ""
+        }
+
+        override fun createDomesticCredentials(createCredentials: ByteArray): List<DomesticCredential> {
+            return listOf()
+        }
+
+        override fun readEuropeanCredential(credential: ByteArray): JSONObject {
+            return JSONObject()
+        }
+
+        override fun initializeVerifier(configFilesPath: String) = Unit
+
+        override fun verify(credential: ByteArray): Result {
+            TODO("Not yet implemented")
+        }
+
+        override fun readDomesticCredential(credential: ByteArray): ReadDomesticCredential {
+            return ReadDomesticCredential(
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+            )
+        }
+    }
+}
 

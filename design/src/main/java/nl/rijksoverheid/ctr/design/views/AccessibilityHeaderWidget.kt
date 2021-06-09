@@ -12,7 +12,7 @@ import android.content.Context
 import android.util.AttributeSet
 import com.google.android.material.textview.MaterialTextView
 import nl.rijksoverheid.ctr.design.R
-import nl.rijksoverheid.ctr.shared.ext.accessibilityHeading
+import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAsAccessibilityHeading
 
 class AccessibilityHeaderWidget @JvmOverloads constructor(
     context: Context,
@@ -30,7 +30,7 @@ class AccessibilityHeaderWidget @JvmOverloads constructor(
             try {
                 val isHeader =
                     getBoolean(R.styleable.AccessibilityHeaderWidget_isAccessibilityHeader, true)
-                accessibilityHeading(isHeader)
+                setAsAccessibilityHeading(isHeader)
             } finally {
                 recycle()
             }

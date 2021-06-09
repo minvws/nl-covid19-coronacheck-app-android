@@ -22,6 +22,7 @@ import androidx.camera.view.PreviewView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
+import androidx.core.view.MenuItemCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.doOnLayout
 import androidx.core.view.updateMargins
@@ -172,7 +173,34 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
                 viewLifecycleOwner,
                 cameraSelector,
                 cameraPreview
-            )
+            ).also { camera ->
+                // If device supports flash, enable flash functionality
+                if (camera.cameraInfo.hasFlashUnit()) {
+                    binding.toolbar.menu.findItem(R.id.flash).isVisible = true
+                    binding.toolbar.setOnMenuItemClickListener { item ->
+                        when (item.itemId) {
+                            R.id.flash -> {
+                                if (camera.cameraInfo.torchState.value != TorchState.ON) {
+                                    camera.cameraControl.enableTorch(true)
+                                    MenuItemCompat.setContentDescription(
+                                        item,
+                                        resources.getString(R.string.accessibility_flash_on)
+                                    )
+                                    item.setIcon(R.drawable.ic_flash_off)
+                                } else {
+                                    camera.cameraControl.enableTorch(false)
+                                    MenuItemCompat.setContentDescription(
+                                        item,
+                                        resources.getString(R.string.accessibility_flash_off)
+                                    )
+                                    item.setIcon(R.drawable.ic_flash_on)
+                                }
+                            }
+                        }
+                        true
+                    }
+                }
+            }
         } catch (illegalStateException: IllegalStateException) {
             Timber.e("Camera is currently in an illegal state, either closed or in use by another app: ${illegalStateException.message}")
             throw illegalStateException

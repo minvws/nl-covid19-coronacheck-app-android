@@ -23,9 +23,6 @@ class TestResultValidUseCaseImplTest {
         runBlocking {
             val usecase = TestResultValidUseCaseImpl(
                 verifyQrUseCase = fakeVerifyQrUseCase(),
-                testResultUtil = fakeTestResultUtil(),
-                qrCodeUtil = fakeQrCodeUtil(),
-                cachedAppConfigUseCase = fakeCachedAppConfigUseCase()
             )
             assertTrue(usecase.validate("") is VerifiedQrResultState.Valid)
         }
@@ -39,35 +36,26 @@ class TestResultValidUseCaseImplTest {
                         verifiedQr = fakeVerifiedQr(isSpecimen = "1")
                     )
                 ),
-                testResultUtil = fakeTestResultUtil(),
-                qrCodeUtil = fakeQrCodeUtil(),
-                cachedAppConfigUseCase = fakeCachedAppConfigUseCase()
             )
             assertTrue(usecase.validate("") is VerifiedQrResultState.Demo)
         }
 
     @Test
-    fun `Validate returns Invalid if code can be validated with invalid test result and valid qr code`() =
+    fun `Validate returns Invalid if code has isNLDCC 1`() =
         runBlocking {
             val usecase = TestResultValidUseCaseImpl(
-                verifyQrUseCase = fakeVerifyQrUseCase(),
-                testResultUtil = fakeTestResultUtil(isValid = false),
-                qrCodeUtil = fakeQrCodeUtil(),
-                cachedAppConfigUseCase = fakeCachedAppConfigUseCase()
+                verifyQrUseCase = fakeVerifyQrUseCase(isNLDCC = "1"),
             )
             assertTrue(usecase.validate("") is VerifiedQrResultState.Invalid)
         }
 
     @Test
-    fun `Validate returns Invalid if code can be validated with valid test result and invalid qr code`() =
+    fun `Validate returns Demo if code has Specimen 1`() =
         runBlocking {
             val usecase = TestResultValidUseCaseImpl(
-                verifyQrUseCase = fakeVerifyQrUseCase(),
-                testResultUtil = fakeTestResultUtil(),
-                qrCodeUtil = fakeQrCodeUtil(isValid = false),
-                cachedAppConfigUseCase = fakeCachedAppConfigUseCase()
+                verifyQrUseCase = fakeVerifyQrUseCase(isSpecimen = "1"),
             )
-            assertTrue(usecase.validate("") is VerifiedQrResultState.Invalid)
+            assertTrue(usecase.validate("") is VerifiedQrResultState.Demo)
         }
 
     @Test
@@ -78,9 +66,6 @@ class TestResultValidUseCaseImplTest {
 
         val usecase = TestResultValidUseCaseImpl(
             verifyQrUseCase = fakeVerifyQrUseCase,
-            testResultUtil = fakeTestResultUtil(),
-            qrCodeUtil = fakeQrCodeUtil(isValid = false),
-            cachedAppConfigUseCase = fakeCachedAppConfigUseCase()
         )
         assertTrue(usecase.validate("") is VerifiedQrResultState.Error)
     }
