@@ -49,9 +49,7 @@ class DigiDViewModel(private val authenticationRepository: AuthenticationReposit
                 val authError = AuthorizationException.fromIntent(intent)
                 when {
                     authError != null -> {
-                        if (authError != AuthorizationException.GeneralErrors.USER_CANCELED_AUTH_FLOW) {
-                            digidResultLiveData.postValue(Event(DigidResult.Failed("$authError.error ${authError.errorDescription}")))
-                        }
+                        digidResultLiveData.postValue(Event(DigidResult.Failed("$authError.error ${authError.errorDescription}")))
                     }
                     authResponse != null -> {
                         try {
@@ -59,11 +57,7 @@ class DigiDViewModel(private val authenticationRepository: AuthenticationReposit
                                 authenticationRepository.jwt(authService, authResponse)
                             digidResultLiveData.postValue(Event(DigidResult.Success(jwt)))
                         } catch (e: Exception) {
-                            if (e is AuthorizationException && e.error == "saml_authn_failed") {
-                                // User cancelled flow on DigiD website, so no real error
-                            } else {
-                                digidResultLiveData.postValue(Event(DigidResult.Failed(e.toString())))
-                            }
+                            digidResultLiveData.postValue(Event(DigidResult.Failed(e.toString())))
                         }
                     }
                     else -> {

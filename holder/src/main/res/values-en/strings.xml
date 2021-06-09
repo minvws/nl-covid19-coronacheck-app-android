@@ -25,7 +25,8 @@
     <string name="dialog_error_title">Sorry, something went wrong</string>
     <string name="dialog_error_message">Because of a technical error.</string>
     <string name="dialog_error_message_with_error_code">Because of a technical error (%1$s).</string>
-    <string name="digid_login_failed">Couldn\'t log in with DigiD</string>
+    <string name="digid_login_failed_title">Couldn\'t log in with DigiD</string>
+    <string name="digid_login_failed_description">You can log in again to retrieve your %1$s.</string>
     <string name="ok">OK</string>
     <string name="settings">Settings</string>
     <string name="about_this_app">About this app</string>
