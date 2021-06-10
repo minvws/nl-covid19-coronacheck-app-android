@@ -339,6 +339,14 @@ fun fakePersistenceManager(
         override fun setHasDismissedRootedDeviceDialog() {
 
         }
+
+        override fun getSelectedGreenCardType(): GreenCardType {
+            return GreenCardType.Domestic
+        }
+
+        override fun setSelectedGreenCardType(greenCardType: GreenCardType) {
+
+        }
     }
 }
 
