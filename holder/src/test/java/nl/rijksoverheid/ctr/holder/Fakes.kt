@@ -252,10 +252,6 @@ fun fakeCoronaCheckRepository(
             return accessTokens
         }
 
-        override suspend fun remoteNonce(): RemoteNonce {
-            return remoteNonce
-        }
-
         override suspend fun getCredentials(
             stoken: String,
             events: List<String>,
