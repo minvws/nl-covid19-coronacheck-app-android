@@ -17,7 +17,6 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginUtil
 import java.time.OffsetDateTime
-import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 
 /*
@@ -138,10 +137,11 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
                 // Check the states of our origins
                 val originStates = originUtil.getOriginState(
                     origins = greenCard.origins
-                )
+                ).sortedBy { it.origin.type.order }
 
-                // Filter out origins that are expired
-                val filteredOriginStates = originStates.filter { it !is OriginState.Expired }
+                // Check if we have any valid origins
+                val hasValidOriginStates = originStates.any { it is OriginState.Valid }
+                val nonExpiredOriginStates = originStates.filterNot { it is OriginState.Expired }
 
                 val euLaunchDate = OffsetDateTime.parse(cachedAppConfigUseCase.getCachedAppConfig()!!.euLaunchDate, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
 
@@ -150,7 +150,7 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
                 // More our credential to a more readable state
                 val credentialState = when {
                     activeCredential == null -> CredentialState.NoCredential
-                    filteredOriginStates.isEmpty() -> CredentialState.NoCredential
+                    !hasValidOriginStates -> CredentialState.NoCredential
                     launchDate.isAfter(OffsetDateTime.now()) -> CredentialState.NoCredential
                     else -> CredentialState.HasCredential(activeCredential)
                 }
@@ -158,7 +158,7 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
                 // Show green card
                 GreenCardItem(
                     greenCard = greenCard,
-                    originStates = filteredOriginStates,
+                    originStates = nonExpiredOriginStates,
                     credentialState = credentialState,
                     launchDate = launchDate,
                 )
@@ -179,6 +179,21 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
                         originType = originForUnselectedType.type
                     )
                 )
+            }
+        }
+
+        // Always order by origin type
+        items.sortBy {
+            when (it) {
+                is GreenCardItem -> {
+                    it.originStates.first().origin.type.order
+                }
+                is OriginInfoItem -> {
+                    it.originType.order
+                }
+                else -> {
+                    0
+                }
             }
         }
 
@@ -212,7 +227,8 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
                     buttonText = R.string.travel_toggle_change_domestic)
             }
             is GreenCardType.Domestic -> {
-                if (greenCards.isNotEmpty()) {
+                val hasGreenCards = greenCards.map { greenCardUtil.isExpired(it) }.any { !it }
+                if (hasGreenCards) {
                     TravelModeItem(
                         text = R.string.travel_toggle_domestic,
                         buttonText = R.string.travel_toggle_change_eu)

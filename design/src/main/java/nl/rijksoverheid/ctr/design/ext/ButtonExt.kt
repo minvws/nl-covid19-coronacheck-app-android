@@ -2,18 +2,28 @@
 
 package nl.rijksoverheid.ctr.design.ext
 
-import android.graphics.BlendMode
-import android.graphics.BlendModeColorFilter
-import android.graphics.PorterDuff
-import android.os.Build
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.widget.Button
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
+import nl.rijksoverheid.ctr.design.R
 
-fun Button.setButtonColor(@ColorRes color: Int) {
-    val color = ContextCompat.getColor(this.context, color)
-    if (Build.VERSION.SDK_INT >= 29)
-        this.background.colorFilter = BlendModeColorFilter(color, BlendMode.MULTIPLY)
-    else
-        this.background.setColorFilter(color, PorterDuff.Mode.MULTIPLY)
+/**
+ * Sets only enabled state background color of the button
+ */
+fun Button.setEnabledButtonColor(@ColorRes color: Int) {
+    this.backgroundTintList?.let { colorStateList ->
+        val states = arrayOf(
+            intArrayOf(android.R.attr.state_enabled),
+            intArrayOf(-android.R.attr.state_enabled)
+        )
+
+        val colors = intArrayOf(
+            ContextCompat.getColor(this.context, color),
+            colorStateList.getColorForState(intArrayOf(-android.R.attr.state_enabled), Color.BLACK)
+        )
+
+        this.backgroundTintList = ColorStateList(states, colors)
+    }
 }

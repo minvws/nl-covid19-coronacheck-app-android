@@ -183,6 +183,10 @@ fun fakeCachedAppConfigUseCase(
     override fun getCachedPublicKeys(): BufferedSource {
         return publicKeys
     }
+
+    override fun getProviderName(providerIdentifier: String?): String {
+        return ""
+    }
 }
 
 fun fakeMobileCoreWrapper(): MobileCoreWrapper {
@@ -218,7 +222,7 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
             return JSONObject()
         }
 
-        override fun initializeVerifier(configFilesPath: String) = Unit
+        override fun initializeVerifier(configFilesPath: String) = ""
 
         override fun verify(credential: ByteArray): Result {
             TODO("Not yet implemented")

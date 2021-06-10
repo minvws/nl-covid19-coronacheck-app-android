@@ -9,13 +9,13 @@
     <string name="onboarding_screen_2_title">Scan QR-code voor toegang</string>
     <string name="onboarding_screen_2_description">Bezoekers maken eerst een QR-code van hun vaccinatie of testuitslag. Daarna check je met deze app de QR-codes en zie je wie toegang mag krijgen.</string>
     <string name="onboarding_screen_3_title">Controle van identiteitsbewijs</string>
-    <string name="onboarding_screen_3_description">Groen scherm? Vraag de bezoeker een identiteitsbewijs te laten zien. Controleer of de gegevens op jouw scherm hetzelfde zijn als op het identiteitsbewijs. Dit geldt voor bezoekers uit Nederland en bezoekers uit andere landen binnen de Europese Unie.</string>
+    <string name="onboarding_screen_3_description">Groen scherm? Vraag de bezoeker een identiteitsbewijs te laten zien. Controleer of de gegevens op jouw scherm hetzelfde zijn als op het identiteitsbewijs. Dit geldt voor bezoekers uit Nederland en bezoekers uit andere landen.</string>
     <string name="onboarding_screen_4_title">Voor wie is de scanner?</string>
     <string name="onboarding_screen_4_description"><![CDATA[Met behulp van deze app kun je weer bezoekers ontvangen. Maar alleen als jouw locatie of activiteit onder de aangewezen locaties valt.]]></string>
     <string name="onboarding_next">Volgende</string>
     <string name="privacy_policy_title">Voorwaarden voor gebruik</string>
     <string name="privacy_policy_description"><![CDATA[In de <a href="https://coronacheck.nl/nl/gebruikersvoorwaarden-in-app">gebruiksvoorwaarden</a> staat hoe CoronaCheck Scanner werkt en wat je rechten zijn.]]></string>
-    <string name="privacy_policy_1"><![CDATA[GPS- of locatiegegevens worden <b>niet gebruikt of bewaard</b>]]></string>
+    <string name="privacy_policy_1"><![CDATA[Er worden geen locatiegegevens <b>gebruikt of bewaard</b>]]></string>
     <string name="privacy_policy_2"><![CDATA[Je mag gegevens van de bezoeker alleen gebruiken voor <b>controle van het bewijs</b>]]></string>
     <string name="privacy_policy_3"><![CDATA[Gegevens van de bezoeker worden <b>nergens centraal opgeslagen</b> ]]></string>
     <string name="privacy_policy_checkbox_text">Ik heb de gebruikersvoorwaarden gelezen en ga hiermee akkoord</string>
@@ -36,7 +36,7 @@
     <string name="scan_result_valid_birth_day">Geboortedag</string>
     <string name="scan_result_valid_birth_month">Geboortemaand</string>
     <string name="scan_result_valid_personal_details_title">Controleer nu de gegevens</string>
-    <string name="scan_result_european_nl_invalid_title">Dit is een Europese QR-code</string>
+    <string name="scan_result_european_nl_invalid_title">Dit is een internationale QR-code</string>
     <string name="scan_result_european_nl_invalid_subtitle">Dit is geen geldig bewijs in Nederland. Vraag de bezoeker een Nederlandse QR-code te laten zien.</string>
     <string name="scan_result_invalid_title">Ongeldige QR-code</string>
     <string name="scan_result_invalid_subtitle"><![CDATA[De bezoeker heeft geen geldig bewijs van een vaccinatie of een negatieve testuitslag. <a href="#"><b>Lees mogelijke oorzaken</b></a>]]></string>
@@ -53,10 +53,10 @@
     <string name="scan_instructions_2_description">Richt de camera van je telefoon op het test- of vaccinatiebewijs van de bezoeker en scan de QR-code.</string>
     <string name="scan_instructions_3_image">Persoon houdt een telefoon vast met een groen scherm en een zwart vinkje.</string>
     <string name="scan_instructions_3_title">3. Groen scherm</string>
-    <string name="scan_instructions_3_description">Groen scherm? De bezoeker heeft een geldig bewijs. Controleer nu of de gegevens op het groene scherm hetzelfde zijn als de gegevens op het identiteitsbewijs. Check? Dan mag de bezoeker naar binnen. Het kan zijn dat er ook een toegangskaartje nodig is.</string>
+    <string name="scan_instructions_3_description">Groen scherm? De bezoeker heeft een geldig bewijs. Controleer nu of de gegevens op het groene scherm hetzelfde zijn als de gegevens op het identiteitsbewijs. Om privacy te beschermen zie je soms niet alle gegevens op jouw scherm. Dan staat er een streepje (-) in het vak. Controle van de gegevens die je wel ziet is dan voldoende.&lt;br\&gt;&lt;br\&gt;Check? Dan mag de bezoeker naar binnen. Het kan zijn dat er ook een toegangskaartje nodig is.</string>
     <string name="scan_instructions_4_image">Persoon houdt een telefoon vast met een rood scherm en een zwart kruis.</string>
     <string name="scan_instructions_4_title">4. Rood scherm</string>
-    <string name="scan_instructions_4_description"><![CDATA[Rood scherm? Dat betekent niet dat de bezoeker corona heeft. Het betekent alleen dat de QR-code ongeldig is. Er is dus geen bewijs van een vaccinatie of een negatieve testuitslag. Dit kun je doen:<br\><br\><ul><li>Controleer of de bezoeker de QR-code vanuit de CoronaCheck-app laat zien. Een schermafbeelding of kopie van een QR-code uit de app geeft altijd een rood scherm.</li><li>Controleer of de bezoeker een Nederlandse QR-code laat zien. Een Europese QR-code geeft een rood scherm.</li><li>Vraag de bezoeker de app volledig af te sluiten en opnieuw op te starten. Scan daarna opnieuw de QR-code.</li><li>Blijft er een rood scherm komen, terwijl de bezoeker wel een vaccinatie of negatieve testuitslag heeft? Stuur de bezoeker naar onze helpdesk, telefoonnummer: 0800-1421.</li></ul> <br\>Er is altijd een groen scherm nodig voor toegang.</a> Heeft de bezoeker geen (geldige) QR-code? Dan kun je de bezoeker niet binnenlaten. Kijk <a href="https://www.coronacheck.nl/nl/scanner">hier</a> voor meer informatie.
+    <string name="scan_instructions_4_description"><![CDATA[Rood scherm? Dat betekent niet dat de bezoeker corona heeft. Het betekent alleen dat de QR-code ongeldig is. Er is dus geen bewijs van een vaccinatie of een negatieve testuitslag. Dit kun je doen:<br\><br\><ul><li>Controleer of de bezoeker de QR-code vanuit de CoronaCheck-app laat zien. Een schermafbeelding of kopie van een QR-code uit de app geeft altijd een rood scherm.</li><li>Controleer of de bezoeker een Nederlandse QR-code laat zien. Een internationale QR-code geeft in Nederland een rood scherm.</li><li>Vraag de bezoeker de app volledig af te sluiten en opnieuw op te starten. Scan daarna opnieuw de QR-code.</li><li>Blijft er een rood scherm komen, terwijl de bezoeker wel een vaccinatie of negatieve testuitslag heeft? Stuur de bezoeker naar onze helpdesk, telefoonnummer: 0800-1421.</li></ul> <br\>Er is altijd een groen scherm nodig voor toegang.</a> Heeft de bezoeker geen (geldige) QR-code? Dan kun je de bezoeker niet binnenlaten. Kijk <a href="https://www.coronacheck.nl/nl/scanner">hier</a> voor meer informatie.
 ]]></string>
     <string name="privacy_statement">Gebruikersvoorwaarden</string>
     <string name="scanner_custom_title">Scan QR-Code</string>

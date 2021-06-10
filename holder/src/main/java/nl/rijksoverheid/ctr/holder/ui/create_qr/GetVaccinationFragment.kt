@@ -11,6 +11,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigiDFragment
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigidResult
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsVaccinations
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.EventsResult
+import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -109,13 +110,10 @@ class GetVaccinationFragment : DigiDFragment(R.layout.fragment_get_vaccination) 
                 is DigidResult.Failed -> {
                     dialogUtil.presentDialog(
                         context = requireContext(),
-                        title = R.string.dialog_error_title,
-                        message = it.error ?: getString(R.string.dialog_error_message),
-                        positiveButtonText = R.string.dialog_retry,
-                        positiveButtonCallback = {
-                            loginWithDigiD()
-                        },
-                        negativeButtonText = R.string.dialog_close
+                        title = R.string.digid_login_failed_title,
+                        message = getString(R.string.digid_login_failed_description, getString(R.string.type_vaccination)),
+                        positiveButtonText = R.string.dialog_close,
+                        positiveButtonCallback = {}
                     )
                 }
             }
@@ -123,6 +121,10 @@ class GetVaccinationFragment : DigiDFragment(R.layout.fragment_get_vaccination) 
 
         binding.button.setOnClickListener {
             loginWithDigiD()
+        }
+
+        binding.noDigidButton.setOnClickListener {
+            getString(R.string.no_digid_url).launchUrl(requireContext())
         }
     }
 }

@@ -67,14 +67,16 @@ class MyOverviewGreenCardAdapterItem(
                     text = context.getString(R.string.validity_type_european_title)
                     setTextColor(ContextCompat.getColor(context, R.color.darkened_blue))
                 }
-                viewBinding.button.setButtonColor(R.color.darkened_blue)
+                viewBinding.button.setEnabledButtonColor(R.color.darkened_blue)
+                viewBinding.imageView.setImageResource(R.drawable.illustration_hand_qr_eu)
             }
             is GreenCardType.Domestic -> {
                 viewBinding.typeTitle.apply {
                     text = context.getString(R.string.validity_type_dutch_title)
                     setTextColor(ContextCompat.getColor(context, R.color.primary_blue))
                 }
-                viewBinding.button.setButtonColor(R.color.primary_blue)
+                viewBinding.button.setEnabledButtonColor(R.color.primary_blue)
+                viewBinding.imageView.setImageResource(R.drawable.illustration_hand_qr_nl)
             }
         }
 
@@ -129,6 +131,7 @@ class MyOverviewGreenCardAdapterItem(
                             subtitle = origin.eventTime.toLocalDate().formatDayMonthYear(),
                         )
                     }
+
                     is OriginType.Recovery -> {
                         setOriginTitle(
                             textView = viewBinding.proof1Title,
@@ -156,13 +159,13 @@ class MyOverviewGreenCardAdapterItem(
                     when (origin.type) {
                         is OriginType.Test -> {
                             setOriginTitle(
-                                textView = viewBinding.proof1Title,
+                                textView = viewBinding.proof3Title,
                                 originState = originState,
                                 title = context.getString(R.string.qr_card_test_domestic)
                             )
 
                             setOriginSubtitle(
-                                textView = viewBinding.proof1Subtitle,
+                                textView = viewBinding.proof3Subtitle,
                                 originState = originState,
                                 subtitle = context.getString(
                                     R.string.qr_card_validity_valid,
@@ -172,13 +175,13 @@ class MyOverviewGreenCardAdapterItem(
                         }
                         is OriginType.Vaccination -> {
                             setOriginTitle(
-                                textView = viewBinding.proof2Title,
+                                textView = viewBinding.proof1Title,
                                 originState = originState,
                                 title = context.getString(R.string.qr_card_vaccination_title_domestic)
                             )
 
                             setOriginSubtitle(
-                                textView = viewBinding.proof2Subtitle,
+                                textView = viewBinding.proof1Subtitle,
                                 originState = originState,
                                 subtitle = context.getString(
                                     R.string.qr_card_validity_valid,
@@ -188,13 +191,13 @@ class MyOverviewGreenCardAdapterItem(
                         }
                         is OriginType.Recovery -> {
                             setOriginTitle(
-                                textView = viewBinding.proof3Title,
+                                textView = viewBinding.proof2Title,
                                 originState = originState,
                                 title = context.getString(R.string.qr_card_recovery_title_domestic)
                             )
 
                             setOriginSubtitle(
-                                textView = viewBinding.proof3Subtitle,
+                                textView = viewBinding.proof2Subtitle,
                                 originState = originState,
                                 subtitle = context.getString(
                                     R.string.qr_card_validity_valid,
@@ -254,7 +257,7 @@ class MyOverviewGreenCardAdapterItem(
                 originState = originState) -> {
                     textView.text = ""
             }
-            greenCard.greenCardEntity.type == GreenCardType.Eu && originState is OriginState.Future || this.launchDate.isAfter(OffsetDateTime.now()) -> {
+            originState is OriginState.Future || (greenCard.greenCardEntity.type == GreenCardType.Eu&& this.launchDate.isAfter(OffsetDateTime.now())) -> {
                 val realValidFrom = if (this.launchDate.isAfter(OffsetDateTime.now())) this.launchDate else originState.origin.validFrom
                 textView.setTextColor(ContextCompat.getColor(context, R.color.link))
 
@@ -262,8 +265,12 @@ class MyOverviewGreenCardAdapterItem(
                     ChronoUnit.HOURS.between(OffsetDateTime.now(), realValidFrom)
 
                 if (hoursBetweenExpiration >= 24) {
-                    textView.text = context.getString(R.string.qr_card_validity_future_days,
-                        ChronoUnit.DAYS.between(OffsetDateTime.now(), realValidFrom).coerceAtLeast(1).toString())
+                    val daysBetween = ChronoUnit.DAYS.between(OffsetDateTime.now(), realValidFrom).coerceAtLeast(1)
+                    if (daysBetween == 1L) {
+                        textView.text = context.getString(R.string.qr_card_validity_future_day, daysBetween.toString())
+                    } else {
+                        textView.text = context.getString(R.string.qr_card_validity_future_days, daysBetween.toString())
+                    }
                 } else {
                     textView.text = context.getString(R.string.qr_card_validity_future_hours,
                         hoursBetweenExpiration.coerceAtLeast(1).toString())

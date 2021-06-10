@@ -40,7 +40,8 @@ data class AppConfig(
     @Json(name = "euManufacturers") val euManufacturers: List<Code> = listOf(),
     @Json(name = "euTestTypes") val euTestTypes: List<Code> = listOf(),
     @Json(name = "euTestManufacturers") val euTestManufacturers: List<Code> = listOf(),
-    @Json(name = "nlTestTypes") val nlTestTypes: List<Code> = listOf()
+    @Json(name = "nlTestTypes") val nlTestTypes: List<Code> = listOf(),
+    @Json(name = "providerIdentifiers") val providerIdentifiers: List<Code> = listOf()
 ) : JSON() {
 
     @JsonClass(generateAdapter = true)

@@ -124,13 +124,10 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
                 is DigidResult.Failed -> {
                     dialogUtil.presentDialog(
                         context = requireContext(),
-                        title = R.string.dialog_error_title,
-                        message = it.error ?: getString(R.string.dialog_error_message),
-                        positiveButtonText = R.string.dialog_retry,
-                        positiveButtonCallback = {
-                            loginWithDigiD()
-                        },
-                        negativeButtonText = R.string.dialog_close
+                        title = R.string.digid_login_failed_title,
+                        message = getString(R.string.digid_login_failed_description, getString(R.string.type_test)),
+                        positiveButtonText = R.string.dialog_close,
+                        positiveButtonCallback = {}
                     )
                 }
             }
