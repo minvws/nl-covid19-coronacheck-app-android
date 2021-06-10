@@ -16,13 +16,11 @@ import java.util.*
  */
 
 // Change to Locale.getDefault() to support multiple languages
-private val locale = Locale("nl")
-
 fun OffsetDateTime.formatDateTime(context: Context): String =
     DateTimeFormatter.ofPattern(
         DateFormat.getBestDateTimePattern(
-            locale,
+            Locale.getDefault(),
             if (DateFormat.is24HourFormat(context)) "EEEE d MMMM HH:mm" else "EEEE d MMMM hh:mm"
         )
-    ).withLocale(locale).withZone(ZoneId.of("CET")).format(this)
+    ).withLocale(Locale.getDefault()).withZone(ZoneId.of("CET")).format(this)
 
