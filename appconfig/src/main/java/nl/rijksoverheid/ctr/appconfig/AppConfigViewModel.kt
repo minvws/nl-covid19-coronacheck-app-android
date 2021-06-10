@@ -20,9 +20,7 @@ import nl.rijksoverheid.ctr.appconfig.usecases.AppStatusUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.LoadPublicKeysUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.PersistConfigUseCase
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
-import okio.buffer
-import okio.source
-import java.io.File
+import nl.rijksoverheid.ctr.shared.ext.ClmobileVerifyException
 
 abstract class AppConfigViewModel : ViewModel() {
     val appStatusLiveData = MutableLiveData<AppStatus>()
@@ -61,7 +59,10 @@ class AppConfigViewModelImpl(
                     return@launch appStatusLiveData.postValue(AppStatus.InternetRequired)
                 }
 
-                mobileCoreWrapper.initializeVerifier(cacheDirPath)
+                val initializationError = mobileCoreWrapper.initializeVerifier(cacheDirPath)
+                if (initializationError != null) {
+                    throw ClmobileVerifyException(initializationError)
+                }
             }
 
             appStatusLiveData.postValue(appStatus)
