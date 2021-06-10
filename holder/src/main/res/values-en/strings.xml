@@ -11,7 +11,7 @@
     <string name="onboarding_screen_4_title">QR code = your proof</string>
     <string name="onboarding_screen_4_description">This app generates a QR code with your test result or vaccination. That is your certificate. This QR code will be checked at the entrance of locations or activities or at the border. If your declaration expires, the QR code disappears from the app.</string>
     <string name="onboarding_screen_3_title">QR codes for the Netherlands and international</string>
-    <string name="onboarding_screen_3_description">This app generates a QR code for the Netherlands and an international QR code. You can find both QR codes in the app. Travelling outside of the Netherlands? Then use your international QR code. You can use it from the first of July.</string>
+    <string name="onboarding_screen_3_description">"This app generates a QR code for the Netherlands and one for other countries. You can find both QR codes in the app. Travelling outside of the Netherlands? Then use your international QR code. You can use it from %1$s. "</string>
     <string name="onboarding_next">Next</string>
     <string name="privacy_policy_title">This is how the app uses your data</string>
     <string name="privacy_policy_description"><![CDATA[The <a href="https://coronacheck.nl/en/privacy-in-app">privacy statement</a> details how CoronaCheck handles your data. These are the most important points:]]></string>
@@ -184,7 +184,7 @@
     <string name="create_qr_explanation_menu_title">Make QR code</string>
     <string name="create_qr_explanation_menu_title_alternative">Add a QR code</string>
     <string name="create_qr_explanation_title">Make a QR code</string>
-    <string name="create_qr_explanation_description"><![CDATA[The app makes a QR code in three steps. This QR code is your personal certificate.<br/><br/><b>1. Vaccination or test certificate?</b><br/>Choose to create a QR code of a vaccination or of a negative test result.<br/><br/><b>2. Automatically retrieve data </b><br/>The app directly retrieves the data of your vaccination or rest result.<br/><br/><b>  3. Check data </b><br/>Check if the data of your vaccination and/or test result is correct.<br/><br/><b>  Going abroad?</b><br/> The app makes two QR codes: one for the Netherlands and an international one. Travelling outside the Netherlands? Then use your international QR code. In <a href="https://www.nederlandwereldwijd.nl/reizen-naar-het-buitenland"> this overview</a>, you\'ll find whether a QR code is valid in the country you\'re visiting.]]></string>
+    <string name="create_qr_explanation_description"><![CDATA[The app makes a QR code in three steps. This QR code is your personal certificate.<br/><br/><b>1. Vaccination or test certificate?</b><br/>Choose to create a QR code of a vaccination or of a negative test result.<br/><br/><b>2. Automatically retrieve data </b><br/>The app directly retrieves the data of your vaccination or rest result.<br/><br/><b>  3. Check data </b><br/>Check if the data of your vaccination and/or test result is correct.<br/><br/><b>  Going abroad?</b><br/> The app creates two QR codes: one for the Netherlands, one for other countries. When travelling outside the Netherlands, please use your international QR code. In <a href="https://www.nederlandwereldwijd.nl/reizen-naar-het-buitenland"> this overview</a>, you\'ll find if the QR code is valid in the country you’re planning to visit.]]></string>
     <string name="qr_code_type_title">What are you making a QR code from?</string>
     <string name="qr_code_type_description">You can make a QR code of a negative test result or of a vaccination.</string>
     <string name="qr_code_type_negative_test_title">A negative test result</string>
@@ -244,7 +244,7 @@
     <string name="your_vaccination_explanation_covid_19">COVID-19</string>
     <string name="your_vaccination_explanation_doses">%1$s from %2$s</string>
     <string name="my_overview_not_valid_domestic_but_is_in_eu">Your %1$s isn\'t valid in the Netherlands. You\'ve only got an international QR code.</string>
-    <string name="my_overview_not_valid_eu_but_is_in_domestic">Your %1$s isn\'t valid in Europe. You\'ve only got a Dutch QR code.</string>
+    <string name="my_overview_not_valid_eu_but_is_in_domestic">Your %1$s isn\'t valid in other countries. You\'ve only got a Dutch QR code.</string>
     <string name="type_recovery">recovery statement</string>
     <string name="type_test">test certificate</string>
     <string name="type_vaccination">vaccination certificate</string>

@@ -39,6 +39,7 @@ val holderIntroductionModule = module {
                     R.drawable.illustration_onboarding_4,
                     R.string.onboarding_screen_3_title,
                     R.string.onboarding_screen_3_description,
+                    descriptionHasEuLaunchDate = true
                 )
             ),
             privacyPolicyItems = listOf(
