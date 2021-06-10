@@ -28,7 +28,11 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
 
         val binding = FragmentScanQrBinding.bind(view)
         binding.description.enableCustomLinks {
-            findNavController().navigate(ScanQrFragmentDirections.actionScanInstructions())
+            try {
+                findNavController().navigate(ScanQrFragmentDirections.actionScanInstructions())
+            } catch (_: IllegalArgumentException) {
+                // navigation bug exception
+            }
         }
 
         binding.bottom.setButtonClick {
