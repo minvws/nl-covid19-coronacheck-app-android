@@ -92,7 +92,7 @@ class MobileCoreWrapperImpl(private val moshi: Moshi) : MobileCoreWrapper {
     override fun initializeVerifier(configFilesPath: String): String? {
         return try {
             val initResult = Mobilecore.initializeVerifier(configFilesPath)
-            initResult.error
+            initResult.error.takeIf { it.isNotEmpty() }
         } catch (exception: Exception) {
             exception.message ?: "unknown initializeVerifier library error"
         }
