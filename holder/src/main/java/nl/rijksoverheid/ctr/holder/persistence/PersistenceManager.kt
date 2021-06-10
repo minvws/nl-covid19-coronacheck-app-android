@@ -91,10 +91,11 @@ class SharedPreferencesPersistenceManager(
     }
 
     override fun getSelectedGreenCardType(): GreenCardType {
-        return when (sharedPreferences.getString(SELECTED_GREEN_CARD_TYPE, GreenCardType.TYPE_DOMESTIC)) {
-            GreenCardType.TYPE_DOMESTIC -> GreenCardType.Domestic
-            GreenCardType.TYPE_EU -> GreenCardType.Eu
-            else -> error("Cannot map to GreenCardType")
+        val type = sharedPreferences.getString(SELECTED_GREEN_CARD_TYPE, GreenCardType.TYPE_DOMESTIC)
+        return if (type == GreenCardType.TYPE_DOMESTIC) {
+            GreenCardType.Domestic
+        } else {
+            GreenCardType.Eu
         }
     }
 
