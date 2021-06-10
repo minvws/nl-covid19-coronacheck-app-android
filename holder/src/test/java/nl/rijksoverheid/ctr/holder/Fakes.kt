@@ -375,7 +375,7 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
             return JSONObject()
         }
 
-        override fun initializeVerifier(configFilesPath: String) = Unit
+        override fun initializeVerifier(configFilesPath: String) = ""
 
         override fun verify(credential: ByteArray): Result {
             TODO("Not yet implemented")
