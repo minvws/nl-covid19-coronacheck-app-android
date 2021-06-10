@@ -29,10 +29,11 @@ class TestResultsMigrationManagerImpl(
                     )
                 )
 
-                val legacyCredentials =
-                    mobileCoreWrapper.readCredentialLegacy(existingCredentials.toByteArray())
+                val legacyCredentials = mobileCoreWrapper.createDomesticCredentials(existingCredentials.toByteArray())
 
-                val validFrom = OffsetDateTime.ofInstant(Instant.ofEpochSecond(legacyCredentials.attributes.validFrom), ZoneOffset.UTC)
+                val attributes = legacyCredentials.first().attributes
+
+                val validFrom = OffsetDateTime.ofInstant(Instant.ofEpochSecond(attributes.validFrom), ZoneOffset.UTC)
 
                 val originType = OriginType.Test
                 holderDatabase.originDao().insert(
@@ -40,14 +41,12 @@ class TestResultsMigrationManagerImpl(
                         greenCardId = localDomesticGreenCardId,
                         type = originType,
                         eventTime = validFrom,
-                        expirationTime = validFrom.plusHours(legacyCredentials.attributes.validForHours),
+                        expirationTime = validFrom.plusHours(attributes.validForHours),
                         validFrom = validFrom,
                     )
                 )
 
-                val domesticCredentials = listOf(legacyCredentials)
-
-                val entities = domesticCredentials.map { domesticCredential ->
+                val entities = legacyCredentials.map { domesticCredential ->
                     CredentialEntity(
                         greenCardId = localDomesticGreenCardId,
                         data = domesticCredential.credential.toString().replace("\\/", "/")
