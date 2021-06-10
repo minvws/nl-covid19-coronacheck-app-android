@@ -5,6 +5,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.design.ext.enableCustomLinks
+import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanQrBinding
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
@@ -28,11 +29,7 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
 
         val binding = FragmentScanQrBinding.bind(view)
         binding.description.enableCustomLinks {
-            try {
-                findNavController().navigate(ScanQrFragmentDirections.actionScanInstructions())
-            } catch (_: IllegalArgumentException) {
-                // navigation bug exception
-            }
+            findNavControllerSafety(R.id.nav_scan_qr)?.navigate(ScanQrFragmentDirections.actionScanInstructions())
         }
 
         binding.bottom.setButtonClick {
