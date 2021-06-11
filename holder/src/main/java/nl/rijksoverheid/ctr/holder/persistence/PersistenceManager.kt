@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.holder.persistence
 
 import android.content.SharedPreferences
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -19,6 +20,8 @@ interface PersistenceManager {
     fun setHasSeenCameraRationale(hasSeen: Boolean)
     fun hasDismissedRootedDeviceDialog(): Boolean
     fun setHasDismissedRootedDeviceDialog()
+    fun getSelectedGreenCardType(): GreenCardType
+    fun setSelectedGreenCardType(greenCardType: GreenCardType)
 }
 
 class SharedPreferencesPersistenceManager(
@@ -31,6 +34,7 @@ class SharedPreferencesPersistenceManager(
         const val CREDENTIALS = "CREDENTIALS"
         const val HAS_SEEN_CAMERA_RATIONALE = "HAS_SEEN_CAMERA_RATIONALE"
         const val HAS_SEEN_ROOTED_DEVICE_DIALOG = "HAS_SEEN_ROOTED_DEVICE_DIALOG"
+        const val SELECTED_GREEN_CARD_TYPE = "SELECTED_GREEN_CARD_TYPE"
     }
 
     override fun saveSecretKeyJson(json: String) {
@@ -83,6 +87,26 @@ class SharedPreferencesPersistenceManager(
             sharedPreferences.edit().putBoolean(HAS_SEEN_ROOTED_DEVICE_DIALOG, true).commit()
         if (!result) {
             throw IllegalStateException("Failed to set rooted device dialog has been seen in shared preference")
+        }
+    }
+
+    override fun getSelectedGreenCardType(): GreenCardType {
+        val type = sharedPreferences.getString(SELECTED_GREEN_CARD_TYPE, GreenCardType.TYPE_DOMESTIC)
+        return if (type == GreenCardType.TYPE_DOMESTIC) {
+            GreenCardType.Domestic
+        } else {
+            GreenCardType.Eu
+        }
+    }
+
+    override fun setSelectedGreenCardType(greenCardType: GreenCardType) {
+        val typeString = when (greenCardType) {
+            is GreenCardType.Domestic -> GreenCardType.TYPE_DOMESTIC
+            is GreenCardType.Eu -> GreenCardType.TYPE_EU
+        }
+        val result = sharedPreferences.edit().putString(SELECTED_GREEN_CARD_TYPE, typeString).commit()
+        if (!result) {
+            throw IllegalStateException("Failed to set selected green card type in shared preference")
         }
     }
 }

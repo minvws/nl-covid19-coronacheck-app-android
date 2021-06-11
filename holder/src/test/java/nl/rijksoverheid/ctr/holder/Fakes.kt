@@ -249,10 +249,6 @@ fun fakeCoronaCheckRepository(
             return accessTokens
         }
 
-        override suspend fun remoteNonce(): RemoteNonce {
-            return remoteNonce
-        }
-
         override suspend fun getCredentials(
             stoken: String,
             events: List<String>,
@@ -334,6 +330,14 @@ fun fakePersistenceManager(
         }
 
         override fun setHasDismissedRootedDeviceDialog() {
+
+        }
+
+        override fun getSelectedGreenCardType(): GreenCardType {
+            return GreenCardType.Domestic
+        }
+
+        override fun setSelectedGreenCardType(greenCardType: GreenCardType) {
 
         }
     }
