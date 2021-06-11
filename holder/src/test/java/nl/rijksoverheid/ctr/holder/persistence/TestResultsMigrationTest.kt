@@ -6,6 +6,7 @@ import androidx.test.core.app.ApplicationProvider
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.holder.fakeMobileCoreWrapper
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.WalletEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.migration.TestResultsMigrationManagerImpl
 import org.junit.After
@@ -78,6 +79,14 @@ class TestResultsMigrationTest: AutoCloseKoinTest() {
         override fun hasDismissedRootedDeviceDialog() = true
 
         override fun setHasDismissedRootedDeviceDialog() = Unit
+
+        override fun getSelectedGreenCardType(): GreenCardType {
+            TODO("Not yet implemented")
+        }
+
+        override fun setSelectedGreenCardType(greenCardType: GreenCardType) {
+            TODO("Not yet implemented")
+        }
     }
 }
 

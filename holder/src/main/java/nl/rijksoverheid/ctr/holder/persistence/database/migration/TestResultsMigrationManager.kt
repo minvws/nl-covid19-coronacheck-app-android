@@ -29,11 +29,11 @@ class TestResultsMigrationManagerImpl(
                     )
                 )
 
-                val legacyCredentials = mobileCoreWrapper.createDomesticCredentials(existingCredentials.toByteArray())
+                val existingCredentialBytes = existingCredentials.toByteArray()
 
-                val attributes = legacyCredentials.first().attributes
+                val legacyCredentials = mobileCoreWrapper.readDomesticCredential(existingCredentialBytes)
 
-                val validFrom = OffsetDateTime.ofInstant(Instant.ofEpochSecond(attributes.validFrom), ZoneOffset.UTC)
+                val validFrom = OffsetDateTime.ofInstant(Instant.ofEpochSecond(legacyCredentials.validFrom.toLong()), ZoneOffset.UTC)
 
                 val originType = OriginType.Test
                 holderDatabase.originDao().insert(
@@ -41,25 +41,26 @@ class TestResultsMigrationManagerImpl(
                         greenCardId = localDomesticGreenCardId,
                         type = originType,
                         eventTime = validFrom,
-                        expirationTime = validFrom.plusHours(attributes.validForHours),
+                        expirationTime = validFrom.plusHours(legacyCredentials.validForHours.toLong()),
                         validFrom = validFrom,
                     )
                 )
 
-                val entities = legacyCredentials.map { domesticCredential ->
+                val legacyCredentialsList = listOf(legacyCredentials)
+
+                val entities = legacyCredentialsList.map { domesticCredential ->
                     CredentialEntity(
                         greenCardId = localDomesticGreenCardId,
-                        data = domesticCredential.credential.toString().replace("\\/", "/")
-                            .toByteArray(),
-                        credentialVersion = domesticCredential.attributes.credentialVersion,
+                        data = existingCredentialBytes,
+                        credentialVersion = domesticCredential.credentialVersion.toInt(),
                         validFrom = OffsetDateTime.ofInstant(
-                            Instant.ofEpochSecond(domesticCredential.attributes.validFrom),
+                            Instant.ofEpochSecond(domesticCredential.validFrom.toLong()),
                             ZoneOffset.UTC
                         ),
                         expirationTime = OffsetDateTime.ofInstant(
-                            Instant.ofEpochSecond(domesticCredential.attributes.validFrom),
+                            Instant.ofEpochSecond(domesticCredential.validFrom.toLong()),
                             ZoneOffset.UTC
-                        ).plusHours(domesticCredential.attributes.validForHours)
+                        ).plusHours(domesticCredential.validForHours.toLong())
                     )
                 }
 

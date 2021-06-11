@@ -401,13 +401,13 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
             return ReadDomesticCredential(
                 "",
                 "",
+                "1",
                 "",
                 "",
                 "",
                 "",
-                "",
-                "",
-                ""
+                "24",
+                "1622731645"
             )
         }
     }
