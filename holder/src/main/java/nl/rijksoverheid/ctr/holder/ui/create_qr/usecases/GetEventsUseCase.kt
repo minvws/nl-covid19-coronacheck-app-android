@@ -63,7 +63,8 @@ class GetEventsUseCaseImpl(
                         try {
                             val unomi = eventProviderRepository.unomiTestEvents(
                                 url = eventProvider.unomiUrl,
-                                token = accessToken.unomi
+                                token = accessToken.unomi,
+                                signingCertificateBytes = eventProvider.cms
                             )
                             unomi.informationAvailable
                         } catch (e: HttpException) {
@@ -79,7 +80,8 @@ class GetEventsUseCaseImpl(
                         try {
                             val unomi = eventProviderRepository.unomiVaccinationEvents(
                                 url = eventProvider.unomiUrl,
-                                token = accessToken.unomi
+                                token = accessToken.unomi,
+                                signingCertificateBytes = eventProvider.cms
                             )
                             unomi.informationAvailable
                         } catch (e: HttpException) {

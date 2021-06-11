@@ -31,8 +31,9 @@ interface TestProviderApiClient {
         @Url url: String,
         @Header("Authorization") authorization: String,
         @Header("CoronaCheck-Protocol-Version") protocolVersion: String = "3.0",
-        @Body params: Map<String, String> = mapOf("filter" to "vaccination")
-    ): RemoteUnomi
+        @Body params: Map<String, String> = mapOf("filter" to "vaccination"),
+        @Tag certificate: SigningCertificate,
+    ): SignedResponseWithModel<RemoteUnomi>
 
     @POST
     @SignedRequest
@@ -40,8 +41,9 @@ interface TestProviderApiClient {
         @Url url: String,
         @Header("Authorization") authorization: String,
         @Header("CoronaCheck-Protocol-Version") protocolVersion: String = "3.0",
-        @Body params: Map<String, String> = mapOf("filter" to "negativetest")
-    ): RemoteUnomi
+        @Body params: Map<String, String> = mapOf("filter" to "negativetest"),
+        @Tag certificate: SigningCertificate,
+    ): SignedResponseWithModel<RemoteUnomi>
 
     @POST
     @SignedRequest
@@ -49,9 +51,9 @@ interface TestProviderApiClient {
         @Url url: String,
         @Header("Authorization") authorization: String,
         @Header("CoronaCheck-Protocol-Version") protocolVersion: String = "3.0",
-        @Tag certificate: SigningCertificate,
         @Body params: Map<String, String> = mapOf("filter" to "vaccination"),
-    ): SignedResponseWithModel<RemoteEventsVaccinations>
+        @Tag certificate: SigningCertificate,
+        ): SignedResponseWithModel<RemoteEventsVaccinations>
 
     @POST
     @SignedRequest
@@ -59,7 +61,7 @@ interface TestProviderApiClient {
         @Url url: String,
         @Header("Authorization") authorization: String,
         @Header("CoronaCheck-Protocol-Version") protocolVersion: String = "3.0",
-        @Tag certificate: SigningCertificate,
         @Body params: Map<String, String> = mapOf("filter" to "negativetest"),
-    ): SignedResponseWithModel<RemoteEventsNegativeTests>
+        @Tag certificate: SigningCertificate,
+        ): SignedResponseWithModel<RemoteEventsNegativeTests>
 }

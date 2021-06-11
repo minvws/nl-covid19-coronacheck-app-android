@@ -39,7 +39,6 @@ private val responseAdapter by lazy {
 
 class SignedResponseInterceptor(
     signatureCertificateCnMatch: String,
-    private val isTestEnv: Boolean,
     private val testProviderApiChecks: Boolean
 ) : Interceptor {
     private val defaultValidator = SignatureValidator.Builder()
@@ -76,10 +75,6 @@ class SignedResponseInterceptor(
                 .addTrustedCertificate(ROOT_CA_G3)
                 .addTrustedCertificate(PRIVATE_ROOT_CA)
                 .signingCertificate(expectedSigningCertificate.certificateBytes)
-
-            if (isTestEnv) {
-                builder.addTrustedCertificate(ROOT_UZI)
-            }
             builder.build()
         } else {
             defaultValidator
