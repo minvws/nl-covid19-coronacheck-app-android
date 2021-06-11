@@ -17,12 +17,14 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
 interface EventProviderRepository {
     suspend fun unomiVaccinationEvents(
         url: String,
-        token: String
+        token: String,
+        signingCertificateBytes: ByteArray
     ): RemoteUnomi
 
     suspend fun unomiTestEvents(
         url: String,
-        token: String
+        token: String,
+        signingCertificateBytes: ByteArray
     ): RemoteUnomi
 
     suspend fun vaccinationEvents(
@@ -42,20 +44,22 @@ class EventProviderRepositoryImpl(
     private val testProviderApiClient: TestProviderApiClient
 ) : EventProviderRepository {
 
-    override suspend fun unomiTestEvents(url: String, token: String): RemoteUnomi {
+    override suspend fun unomiTestEvents(url: String, token: String, signingCertificateBytes: ByteArray): RemoteUnomi {
         return testProviderApiClient
             .unomiTestEvents(
                 url = url,
                 authorization = "Bearer $token",
-            )
+                certificate = SigningCertificate(signingCertificateBytes)
+            ).model
     }
 
-    override suspend fun unomiVaccinationEvents(url: String, token: String): RemoteUnomi {
+    override suspend fun unomiVaccinationEvents(url: String, token: String, signingCertificateBytes: ByteArray): RemoteUnomi {
         return testProviderApiClient
             .unomiVaccinationEvents(
                 url = url,
                 authorization = "Bearer $token",
-            )
+                certificate = SigningCertificate(signingCertificateBytes)
+            ).model
     }
 
     override suspend fun vaccinationEvents(
