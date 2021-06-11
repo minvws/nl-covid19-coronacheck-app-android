@@ -15,6 +15,7 @@ import mobilecore.Mobilecore
 import mobilecore.Result
 import nl.rijksoverheid.ctr.shared.ext.*
 import nl.rijksoverheid.ctr.shared.models.DomesticCredential
+import nl.rijksoverheid.ctr.shared.models.DomesticCredentialAttributes
 import nl.rijksoverheid.ctr.shared.models.ReadDomesticCredential
 import org.json.JSONObject
 import java.lang.reflect.Type

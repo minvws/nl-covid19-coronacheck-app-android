@@ -19,10 +19,7 @@ import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.ui.new_terms.models.NewTerms
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
-import nl.rijksoverheid.ctr.shared.models.DomesticCredential
-import nl.rijksoverheid.ctr.shared.models.PersonalDetails
-import nl.rijksoverheid.ctr.shared.models.ReadDomesticCredential
-import nl.rijksoverheid.ctr.shared.models.TestResultAttributes
+import nl.rijksoverheid.ctr.shared.models.*
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import nl.rijksoverheid.ctr.shared.utils.TestResultUtil
 import okhttp3.MediaType.Companion.toMediaType
@@ -372,7 +369,22 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
         }
 
         override fun createDomesticCredentials(createCredentials: ByteArray): List<DomesticCredential> {
-            return listOf()
+            return listOf(
+                DomesticCredential(
+                    credential = JSONObject(),
+                    attributes = DomesticCredentialAttributes(
+                        birthDay = "",
+                        birthMonth = "6",
+                        credentialVersion = 2,
+                        firstNameInitial = "B",
+                        isSpecimen = "0",
+                        lastNameInitial = "",
+                        stripType = "0",
+                        validForHours = 24,
+                        validFrom = 1622731645L,
+                    ),
+                )
+            )
         }
 
         override fun readEuropeanCredential(credential: ByteArray): JSONObject {
@@ -389,13 +401,13 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
             return ReadDomesticCredential(
                 "",
                 "",
+                "1",
                 "",
                 "",
                 "",
                 "",
-                "",
-                "",
-                ""
+                "24",
+                "1622731645"
             )
         }
     }
