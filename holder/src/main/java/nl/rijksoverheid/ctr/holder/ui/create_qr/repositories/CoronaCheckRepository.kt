@@ -18,7 +18,6 @@ import retrofit2.Converter
 interface CoronaCheckRepository {
     suspend fun configProviders(): RemoteConfigProviders
     suspend fun accessTokens(jwt: String): RemoteAccessTokens
-    suspend fun remoteNonce(): RemoteNonce
     suspend fun getCredentials(
         stoken: String,
         events: List<String>,
@@ -39,10 +38,6 @@ open class CoronaCheckRepositoryImpl(
 
     override suspend fun accessTokens(jwt: String): RemoteAccessTokens {
         return api.getAccessTokens(authorization = "Bearer $jwt")
-    }
-
-    override suspend fun remoteNonce(): RemoteNonce {
-        return api.getNonce()
     }
 
     override suspend fun getCredentials(

@@ -31,14 +31,15 @@ val holderIntroductionModule = module {
                 ),
                 OnboardingItem(
                     R.drawable.illustration_onboarding_3,
-                    R.string.onboarding_screen_3_title,
-                    R.string.onboarding_screen_3_description,
+                    R.string.onboarding_screen_4_title,
+                    R.string.onboarding_screen_4_description,
                     true
                 ),
                 OnboardingItem(
                     R.drawable.illustration_onboarding_4,
-                    R.string.onboarding_screen_4_title,
-                    R.string.onboarding_screen_4_description
+                    R.string.onboarding_screen_3_title,
+                    R.string.onboarding_screen_3_description,
+                    descriptionHasEuLaunchDate = true
                 )
             ),
             privacyPolicyItems = listOf(

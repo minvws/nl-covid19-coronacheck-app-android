@@ -12,6 +12,7 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
 import com.xwray.groupie.viewbinding.BindableItem
+import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMyOverviewBinding
@@ -24,6 +25,7 @@ import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeFragmentData
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.sharedViewModelWithOwner
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ViewModelOwner
 import java.util.concurrent.TimeUnit
 
@@ -47,6 +49,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
     private val getQrCardsHandler = Handler(Looper.getMainLooper())
     private val getQrCardsRunnable = Runnable { getQrCards(syncDatabase = false) }
 
+    private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
     private val myOverviewViewModel: MyOverviewViewModel by sharedViewModelWithOwner(
         owner = {
             ViewModelOwner.from(
@@ -181,7 +184,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                                         is OriginType.Test -> {
                                             findNavController().navigate(MyOverviewFragmentDirections.actionShowQrExplanation(
                                                 title = getString(R.string.my_overview_green_card_not_valid_title_test),
-                                                description = getString(R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_test)
+                                                description = getString(R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_test, cachedAppConfigUseCase.getCachedAppConfigMaxValidityHours().toString())
                                             ))
                                         }
                                         is OriginType.Vaccination -> {
