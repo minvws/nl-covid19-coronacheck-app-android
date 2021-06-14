@@ -79,7 +79,7 @@ class TestResultUseCaseTest {
             ),
             testResultAttributesUseCase = fakeTestResultAttributesUseCase()
         )
-        val result = usecase.testResult(uniqueCode = "provider-code-t1")
+        val result = usecase.testResult(uniqueCode = "provider-B-t1")
         assertTrue(result is TestResult.InvalidToken)
     }
 
@@ -98,7 +98,7 @@ class TestResultUseCaseTest {
             tokenValidatorUtil = fakeTokenValidatorUtil(),
             testResultAttributesUseCase = fakeTestResultAttributesUseCase()
         )
-        val result = usecase.testResult(uniqueCode = "provider-code-t1")
+        val result = usecase.testResult(uniqueCode = "provider-B-t1")
         assertTrue(result is TestResult.InvalidToken)
     }
 
@@ -126,7 +126,7 @@ class TestResultUseCaseTest {
                 tokenValidatorUtil = fakeTokenValidatorUtil(),
                 testResultAttributesUseCase = fakeTestResultAttributesUseCase()
             )
-            val result = usecase.testResult(uniqueCode = "$providerIdentifier-code-t1")
+            val result = usecase.testResult(uniqueCode = "$providerIdentifier-B-t1")
             assertTrue(result is TestResult.NegativeTestResult)
         }
 
@@ -154,7 +154,7 @@ class TestResultUseCaseTest {
                 tokenValidatorUtil = fakeTokenValidatorUtil(),
                 testResultAttributesUseCase = fakeTestResultAttributesUseCase()
             )
-            val result = usecase.testResult(uniqueCode = "$providerIdentifier-code-t1")
+            val result = usecase.testResult(uniqueCode = "$providerIdentifier-B-t1")
             assertTrue(result is TestResult.NoNegativeTestResult)
         }
 
@@ -185,7 +185,7 @@ class TestResultUseCaseTest {
                 tokenValidatorUtil = fakeTokenValidatorUtil(),
                 testResultAttributesUseCase = fakeTestResultAttributesUseCase()
             )
-            val result = usecase.testResult(uniqueCode = "$providerIdentifier-code-t1")
+            val result = usecase.testResult(uniqueCode = "$providerIdentifier-B-t1")
             assertTrue(result is TestResult.NoNegativeTestResult)
         }
 
@@ -213,7 +213,7 @@ class TestResultUseCaseTest {
                 tokenValidatorUtil = fakeTokenValidatorUtil(),
                 testResultAttributesUseCase = fakeTestResultAttributesUseCase()
             )
-            val result = usecase.testResult(uniqueCode = "$providerIdentifier-code-t1")
+            val result = usecase.testResult(uniqueCode = "$providerIdentifier-B-t1")
             assertTrue(result is TestResult.VerificationRequired)
         }
 
@@ -241,7 +241,7 @@ class TestResultUseCaseTest {
                 tokenValidatorUtil = fakeTokenValidatorUtil(),
                 testResultAttributesUseCase = fakeTestResultAttributesUseCase()
             )
-            val result = usecase.testResult(uniqueCode = "$providerIdentifier-code-t1")
+            val result = usecase.testResult(uniqueCode = "$providerIdentifier-B-t1")
             assertTrue(result is TestResult.InvalidToken)
         }
 
@@ -273,7 +273,7 @@ class TestResultUseCaseTest {
                 tokenValidatorUtil = fakeTokenValidatorUtil(),
                 testResultAttributesUseCase = fakeTestResultAttributesUseCase()
             )
-            val result = usecase.testResult(uniqueCode = "$providerIdentifier-code-t1")
+            val result = usecase.testResult(uniqueCode = "$providerIdentifier-B-t1")
             assertTrue(result is TestResult.ServerError)
         }
 
@@ -307,7 +307,7 @@ class TestResultUseCaseTest {
                 tokenValidatorUtil = fakeTokenValidatorUtil(),
                 testResultAttributesUseCase = fakeTestResultAttributesUseCase()
             )
-            val result = usecase.testResult(uniqueCode = "$providerIdentifier-code-t1")
+            val result = usecase.testResult(uniqueCode = "$providerIdentifier-B-t1")
             assertTrue(result is TestResult.NetworkError)
         }
 
@@ -335,7 +335,7 @@ class TestResultUseCaseTest {
                 tokenValidatorUtil = fakeTokenValidatorUtil(),
                 testResultAttributesUseCase = fakeTestResultAttributesUseCase()
             )
-            val result = usecase.testResult(uniqueCode = "$providerIdentifier-code-t1")
+            val result = usecase.testResult(uniqueCode = "$providerIdentifier-B-t1")
             assertTrue(result is TestResult.Pending)
         }
 
