@@ -147,8 +147,9 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
         binding.description.setHtmlText(getString(R.string.your_negative_test_results_description))
 
         remoteEvents.keys.forEach { negativeTests ->
-            val fullName =
-                "${negativeTests.holder?.infix} ${negativeTests.holder?.lastName}, ${negativeTests.holder?.firstName}"
+            val infix = negativeTests.holder?.infix
+            val fullName = if (infix == null) "${negativeTests.holder?.lastName}, ${negativeTests.holder?.firstName}"
+                           else "$infix ${negativeTests.holder.lastName}, ${negativeTests.holder.firstName}"
 
             negativeTests.events?.forEach { event ->
 
