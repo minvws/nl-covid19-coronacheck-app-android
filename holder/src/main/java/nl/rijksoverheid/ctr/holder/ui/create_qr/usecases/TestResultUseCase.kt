@@ -7,6 +7,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckReposito
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.TestProviderRepository
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TokenValidatorUtil
+import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TokenValidatorUtilImpl
 import nl.rijksoverheid.ctr.shared.ext.removeWhitespace
 import nl.rijksoverheid.ctr.shared.models.PersonalDetails
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
@@ -51,6 +52,14 @@ class TestResultUseCase(
         val providerIdentifier = uniqueCodeAttributes[0]
         val token = uniqueCodeAttributes[1]
         val checksum = uniqueCodeAttributes[2]
+
+        // Disable the luhn check for now since providers do not yet support it
+        // We need to check for valid chars
+        token.toCharArray().forEach {
+            if (!TokenValidatorUtilImpl.CODE_POINTS.contains(it)) {
+                return TestResult.InvalidToken
+            }
+        }
 
 //        if (!tokenValidatorUtil.validate(
 //                token = token,
