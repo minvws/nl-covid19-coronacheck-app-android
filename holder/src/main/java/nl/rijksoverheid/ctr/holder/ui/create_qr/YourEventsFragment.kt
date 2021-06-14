@@ -147,9 +147,11 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
         binding.description.setHtmlText(getString(R.string.your_negative_test_results_description))
 
         remoteEvents.keys.forEach { negativeTests ->
-            val infix = negativeTests.holder?.infix
-            val fullName = if (infix == null) "${negativeTests.holder?.lastName}, ${negativeTests.holder?.firstName}"
-                           else "$infix ${negativeTests.holder.lastName}, ${negativeTests.holder.firstName}"
+            val fullName = getFullName(
+                infix = negativeTests.holder?.infix,
+                firstName = negativeTests.holder?.firstName,
+                lastName = negativeTests.holder?.lastName
+            )
 
             negativeTests.events?.forEach { event ->
 
@@ -321,8 +323,11 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
             getString(R.string.your_retrieved_vaccinations_description)
 
         remoteEvents.keys.forEach { vaccinationEvents ->
-            val fullName =
-                "${vaccinationEvents.holder?.infix} ${vaccinationEvents.holder?.lastName}, ${vaccinationEvents.holder?.firstName}"
+            val fullName = getFullName(
+                infix = vaccinationEvents.holder?.infix,
+                firstName = vaccinationEvents.holder?.firstName,
+                lastName = vaccinationEvents.holder?.lastName
+            )
 
             val birthDate = vaccinationEvents.holder?.birthDate?.let { birthDate ->
                 try {
@@ -396,5 +401,9 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
 
         // Hide something wrong button
         binding.somethingWrongButton.visibility = View.GONE
+    }
+
+    private fun getFullName(infix: String?, firstName: String?, lastName: String?): String {
+        return if (infix.isNullOrEmpty()) "${lastName}, $firstName" else "$infix ${lastName}, $firstName"
     }
 }
