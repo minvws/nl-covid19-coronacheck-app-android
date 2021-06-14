@@ -57,6 +57,10 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
             (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
         })
 
+        chooseProviderViewModel.loading.observe(viewLifecycleOwner, EventObserver {
+            (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
+        })
+
         chooseProviderViewModel.eventsResult.observe(viewLifecycleOwner, EventObserver {
             when (it) {
                 is EventsResult.Success<RemoteEventsNegativeTests> -> {
