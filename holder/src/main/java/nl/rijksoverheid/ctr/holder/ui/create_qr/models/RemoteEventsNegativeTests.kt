@@ -22,7 +22,7 @@ class RemoteEventsNegativeTests(
     val providerIdentifier: String?,
     val status: Status?,
     val holder: Holder?
-) : Parcelable {
+) : RemoteEvent(), Parcelable {
 
     enum class Status(val apiStatus: String) {
         unknown(""),
@@ -63,5 +63,9 @@ class RemoteEventsNegativeTests(
             val name: String?,
             val manufacturer: String?
         ) : Parcelable
+    }
+
+    override fun hasEvents(): Boolean {
+        return events?.isNotEmpty() ?: false
     }
 }

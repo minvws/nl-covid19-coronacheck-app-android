@@ -272,4 +272,10 @@
     <string name="too_busy_description">There are currently many visitors on the affiliated partner\'s website. We can\'t fetch your details now. Please try again later.</string>
     <string name="no_digid_url">https://www.digid.nl/en/apply-or-activate-digid</string>
     <string name="digid_login_failed">Couldn\'t log in with DigiD</string>
+    <string name="event_provider_error_title">Sorry, er gaat iets mis</string>
+    <string name="event_provider_error_description">Er gaat iets mis met de server van je testlocatie of priklocatie. Probeer het later nog eens.</string>
+    <string name="coronacheck_error_title">Sorry, er gaat iets mis</string>
+    <string name="coronacheck_error_description">Neem contact op met de helpdesk van CoronaCheck en geef de foutcode (%1$s) door. Of probeer het later opnieuw.</string>
+    <string name="missing_events_title">Gegevens mogelijk niet compleet</string>
+    <string name="missing_events_description">Door drukte of een storing bij een van de partijen kunnen er gegevens ontbreken. Probeer het eventueel later nog een keer.</string>
 </resources>

@@ -20,7 +20,7 @@ data class RemoteEventsVaccinations(
     val providerIdentifier: String?,
     val status: Status?,
     val holder: Holder?
-) : Parcelable {
+) : RemoteEvent(), Parcelable {
 
     enum class Status(val apiStatus: String) {
         UNKNOWN(""),
@@ -65,6 +65,10 @@ data class RemoteEventsVaccinations(
             val manufacturer: String?
         ) : Parcelable
 
+    }
+
+    override fun hasEvents(): Boolean {
+        return events?.isNotEmpty() ?: false
     }
 }
 

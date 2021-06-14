@@ -10,6 +10,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.CommercialTestCodeViewModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
+import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.EventProviderRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.TestProviderRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewViewModel
@@ -210,11 +211,12 @@ fun fakeTestProviderRepository(
 }
 
 fun fakeConfigProviderUseCase(
+    eventProviders: List<RemoteConfigProviders.EventProvider> = listOf(),
     provider: RemoteConfigProviders.TestProvider? = null
 ): ConfigProvidersUseCase {
     return object : ConfigProvidersUseCase {
         override suspend fun eventProviders(): List<RemoteConfigProviders.EventProvider> {
-            return listOf()
+            return eventProviders
         }
 
         override suspend fun testProvider(id: String): RemoteConfigProviders.TestProvider? {
@@ -410,6 +412,47 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
                 "1622731645"
             )
         }
+    }
+}
+
+fun fakeEventProviderRepository(
+    unomiVaccinationEvents: ((url: String) -> RemoteUnomi) = { RemoteUnomi("", "", false) },
+    unomiTestEvents: ((url: String) -> RemoteUnomi) = { RemoteUnomi("", "", false) },
+    vaccinationEvents: ((url: String) -> SignedResponseWithModel<RemoteEventsVaccinations>) = { SignedResponseWithModel("".toByteArray(), RemoteEventsVaccinations(
+        listOf(), null, null, null, null),) },
+    negativeTestEvents: ((url: String) -> SignedResponseWithModel<RemoteEventsNegativeTests>) = { SignedResponseWithModel("".toByteArray(), RemoteEventsNegativeTests(
+        listOf(), null, null, null, null)) }
+) = object: EventProviderRepository {
+    override suspend fun unomiVaccinationEvents(
+        url: String,
+        token: String,
+        signingCertificateBytes: ByteArray
+    ): RemoteUnomi {
+        return unomiVaccinationEvents.invoke(url)
+    }
+
+    override suspend fun unomiTestEvents(
+        url: String,
+        token: String,
+        signingCertificateBytes: ByteArray
+    ): RemoteUnomi {
+        return unomiTestEvents.invoke(url)
+    }
+
+    override suspend fun vaccinationEvents(
+        url: String,
+        token: String,
+        signingCertificateBytes: ByteArray
+    ): SignedResponseWithModel<RemoteEventsVaccinations> {
+        return vaccinationEvents.invoke(url)
+    }
+
+    override suspend fun negativeTestEvent(
+        url: String,
+        token: String,
+        signingCertificateBytes: ByteArray
+    ): SignedResponseWithModel<RemoteEventsNegativeTests> {
+        return negativeTestEvents.invoke(url)
     }
 }
 

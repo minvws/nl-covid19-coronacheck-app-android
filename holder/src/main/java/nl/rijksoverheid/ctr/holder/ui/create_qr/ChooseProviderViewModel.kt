@@ -33,7 +33,7 @@ class ChooseProviderViewModelImpl(
         viewModelScope.launch {
             try {
                 (eventsResult as MutableLiveData).value =
-                    Event(eventUseCase.getTestResult3Events(digidToken))
+                    Event(eventUseCase.getNegativeTestEvents(digidToken))
             } finally {
                 loading.value = Event(false)
             }
