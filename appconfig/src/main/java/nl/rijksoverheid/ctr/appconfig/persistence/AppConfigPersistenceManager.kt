@@ -14,7 +14,6 @@ import android.content.SharedPreferences
 interface AppConfigPersistenceManager {
     fun saveAppConfigJson(json: String)
     fun getAppConfigJson(): String?
-    fun removeConfigJson()
     fun getAppConfigLastFetchedSeconds(): Long
     fun saveAppConfigLastFetchedSeconds(seconds: Long)
 }
@@ -33,10 +32,6 @@ class AppConfigPersistenceManagerImpl(private val sharedPreferences: SharedPrefe
 
     override fun getAppConfigJson(): String? {
         return sharedPreferences.getString(APP_CONFIG_JSON, null)
-    }
-
-    override fun removeConfigJson() {
-        sharedPreferences.edit().remove(APP_CONFIG_JSON).apply()
     }
 
     override fun getAppConfigLastFetchedSeconds(): Long {
