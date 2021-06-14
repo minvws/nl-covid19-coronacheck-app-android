@@ -65,7 +65,7 @@ class GetEventsUseCaseImpl(
             val eventProviderWithTokensResults = getEventProvidersWithTokensUseCase.get(
                 eventProviders = eventProviders,
                 tokens = tokens.tokens,
-                originType = OriginType.Test)
+                originType = originType)
 
             val eventProvidersWithTokensSuccessResults = eventProviderWithTokensResults.filterIsInstance<EventProviderWithTokenResult.Success>()
             val eventProvidersWithTokensErrorResults = eventProviderWithTokensResults.filterIsInstance<EventProviderWithTokenResult.Error>()
@@ -76,13 +76,13 @@ class GetEventsUseCaseImpl(
                 val eventResults = eventProvidersWithTokensSuccessResults.map {
                     when (originType) {
                         is OriginType.Test -> {
-                            getRemoteEventsUseCase.getVaccinations(
+                            getRemoteEventsUseCase.getTestResults(
                                 eventProvider = it.eventProvider,
                                 token = it.token
                             )
                         }
                         is OriginType.Vaccination -> {
-                            getRemoteEventsUseCase.getTestResults(
+                            getRemoteEventsUseCase.getVaccinations(
                                 eventProvider = it.eventProvider,
                                 token = it.token
                             )
