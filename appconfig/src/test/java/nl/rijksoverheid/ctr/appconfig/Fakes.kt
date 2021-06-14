@@ -28,10 +28,6 @@ fun fakeAppConfigPersistenceManager(
         return appConfigJson
     }
 
-    override fun removeConfigJson() {
-        TODO("Not yet implemented")
-    }
-
     override fun getAppConfigLastFetchedSeconds(): Long {
         return lastFetchedSeconds
     }
@@ -54,10 +50,6 @@ fun fakeCachedAppConfigUseCase(
 
     override fun getCachedAppConfig(): AppConfig? {
         return appConfig
-    }
-
-    override fun removeCachedAppConfig() {
-        TODO("Not yet implemented")
     }
 
     override fun getCachedAppConfigMaxValidityHours(): Int {
