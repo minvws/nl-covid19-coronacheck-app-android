@@ -127,7 +127,8 @@ class AppConfigViewModelTest {
             appDeactivated = false,
             informationURL = "dummy",
             configTtlSeconds = 0,
-            maxValidityHours = 0
+            maxValidityHours = 0,
+            euLaunchDate = "2021-06-10T13:05:00Z",
         )
 
         val publicKeys = mockk<BufferedSource>()
@@ -155,7 +156,8 @@ class AppConfigViewModelTest {
             appDeactivated = false,
             informationURL = "dummy",
             configTtlSeconds = 0,
-            maxValidityHours = 0
+            maxValidityHours = 0,
+            euLaunchDate = "2021-06-10T13:05:00Z",
         )
 
         val publicKeys = mockk<BufferedSource>()
