@@ -50,6 +50,7 @@
             android:duplicateParentState="true"
             android:text="@string/choose_provider_commercial_subtitle"
             android:textAppearance="?attr/textAppearanceBody1"
+            android:lineHeight="22dp"
             android:focusable="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -10,6 +10,7 @@ import nl.rijksoverheid.ctr.holder.modules.*
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.dao.OriginDao
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
+import nl.rijksoverheid.ctr.holder.persistence.database.migration.TestResultsMigrationManager
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SecretKeyUseCase
 import nl.rijksoverheid.ctr.introduction.introductionModule
@@ -35,6 +36,7 @@ open class HolderApplication : SharedApplication() {
     private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
     private val secretKeyUseCase: SecretKeyUseCase by inject()
     private val holderDatabase: HolderDatabase by inject()
+    private val testResultsMigrationManager: TestResultsMigrationManager by inject()
 
     override fun onCreate() {
         super.onCreate()
@@ -47,7 +49,6 @@ open class HolderApplication : SharedApplication() {
                 holderIntroductionModule,
                 apiModule(
                     BuildConfig.BASE_API_URL,
-                    BuildConfig.FLAVOR == "tst",
                     BuildConfig.SIGNATURE_CERTIFICATE_CN_MATCH,
                     BuildConfig.FEATURE_CORONA_CHECK_API_CHECKS,
                     BuildConfig.FEATURE_TEST_PROVIDER_API_CHECKS
@@ -78,6 +79,8 @@ open class HolderApplication : SharedApplication() {
                     )
                 )
             }
+
+            testResultsMigrationManager.migrateTestResults()
         }
     }
 

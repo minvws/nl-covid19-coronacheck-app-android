@@ -30,7 +30,6 @@ open class VerifierApplication : SharedApplication() {
             modules(
                 apiModule(
                     BuildConfig.BASE_API_URL,
-                    BuildConfig.FLAVOR == "tst",
                     BuildConfig.SIGNATURE_CERTIFICATE_CN_MATCH,
                     BuildConfig.FEATURE_CORONA_CHECK_API_CHECKS,
                     BuildConfig.FEATURE_TEST_PROVIDER_API_CHECKS

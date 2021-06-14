@@ -32,7 +32,6 @@ import java.util.concurrent.TimeUnit
  */
 fun apiModule(
     baseUrl: String,
-    isTestEnv: Boolean,
     signatureCertificateCnMatch: String,
     coronaCheckApiChecks: Boolean,
     testProviderApiChecks: Boolean
@@ -58,7 +57,6 @@ fun apiModule(
             .addInterceptor(
                 SignedResponseInterceptor(
                     signatureCertificateCnMatch = signatureCertificateCnMatch,
-                    isTestEnv = isTestEnv,
                     testProviderApiChecks = testProviderApiChecks
                 )
             ).build()
