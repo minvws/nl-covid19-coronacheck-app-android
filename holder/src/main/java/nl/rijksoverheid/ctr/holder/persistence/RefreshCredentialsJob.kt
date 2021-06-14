@@ -7,6 +7,13 @@ import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.GreenCardsUseCase
 import java.util.concurrent.TimeUnit
 
+/*
+ *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+ *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+ *
+ *   SPDX-License-Identifier: EUPL-1.2
+ *
+ */
 class RefreshCredentialsJob(
     context: Context,
     params: WorkerParameters,
@@ -27,8 +34,8 @@ class RefreshCredentialsJob(
     }
 
     companion object {
-        fun schedule(context: Context) {
-            val request = PeriodicWorkRequestBuilder<RefreshCredentialsJob>(7L, TimeUnit.DAYS)
+        fun schedule(context: Context, credentialRenewalDays: Long) {
+            val request = PeriodicWorkRequestBuilder<RefreshCredentialsJob>(credentialRenewalDays, TimeUnit.DAYS)
                 .setConstraints(
                     Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
                 ).build()

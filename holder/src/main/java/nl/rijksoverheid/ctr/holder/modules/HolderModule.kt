@@ -9,6 +9,7 @@ import nl.rijksoverheid.ctr.api.signing.certificates.ROOT_CA_G3
 import nl.rijksoverheid.ctr.appconfig.usecases.DeviceRootedUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.DeviceRootedUseCaseImpl
 import nl.rijksoverheid.ctr.holder.BuildConfig
+import nl.rijksoverheid.ctr.holder.persistence.HolderWorkerFactory
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.SharedPreferencesPersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
@@ -170,6 +171,10 @@ fun holderModule(baseUrl: String) = module {
 
     factory<GreenCardsUseCase> {
         GreenCardsUseCaseImpl(get(), get())
+    }
+
+    factory< HolderWorkerFactory> {
+        HolderWorkerFactory(get(), get())
     }
 
     single {
