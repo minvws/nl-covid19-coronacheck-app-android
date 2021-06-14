@@ -57,7 +57,6 @@ class RemoteEventsNegativeTests(
         @JsonClass(generateAdapter = true)
         data class NegativeTest(
             val sampleDate: OffsetDateTime?,
-            val resultDate: OffsetDateTime?,
             val negativeResult: Boolean?,
             val facility: String?,
             val type: String?,
