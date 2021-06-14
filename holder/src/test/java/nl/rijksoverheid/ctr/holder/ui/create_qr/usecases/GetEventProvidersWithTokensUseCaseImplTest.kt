@@ -174,5 +174,4 @@ class GetEventProvidersWithTokensUseCaseImplTest {
                 originType = OriginType.Vaccination)
         )
     }
-
 }
