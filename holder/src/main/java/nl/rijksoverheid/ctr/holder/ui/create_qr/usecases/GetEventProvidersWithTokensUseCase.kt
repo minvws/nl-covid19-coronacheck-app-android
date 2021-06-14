@@ -8,9 +8,12 @@ import nl.rijksoverheid.ctr.shared.ext.filterNotNullValues
 import retrofit2.HttpException
 import java.io.IOException
 
+/**
+ * Get all event providers that have events for the [OriginType]
+ */
 interface GetEventProvidersWithTokensUseCase {
+
     /**
-     * Get all event providers that have events for us together with their token to fetch the events
      * @param eventProviders A list of all the event providers
      * @param tokens A list of all tokens
      * @param originType The type of events you want to fetch

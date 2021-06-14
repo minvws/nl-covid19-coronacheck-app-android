@@ -15,6 +15,15 @@ import java.io.IOException
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
+
+/**
+ * Get events for a specific [OriginType]
+ * This is the entry point class for getting Events and will take care of:
+ * - getting all event providers
+ * - getting tokens based on JWT
+ * - getting events at event providers
+ * - map result to success or error states
+ */
 interface GetEventsUseCase {
     suspend fun getVaccinationEvents(jwt: String): EventsResult<RemoteEventsVaccinations>
     suspend fun getNegativeTestEvents(jwt: String): EventsResult<RemoteEventsNegativeTests>

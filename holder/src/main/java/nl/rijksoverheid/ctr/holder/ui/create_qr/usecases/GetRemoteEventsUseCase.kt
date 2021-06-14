@@ -1,11 +1,13 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.EventProviderRepository
 import retrofit2.HttpException
 import java.io.IOException
 
+/**
+ * Get events for a event provider
+ */
 interface GetRemoteEventsUseCase {
     suspend fun getVaccinations(eventProvider: RemoteConfigProviders.EventProvider,
                 token: RemoteAccessTokens.Token): RemoteEventsResult<RemoteEventsVaccinations>
