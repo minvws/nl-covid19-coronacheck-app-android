@@ -97,7 +97,10 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
 
     override fun onResume() {
         super.onResume()
-        getQrCards(syncDatabase = true)
+
+        if (cachedAppConfigUseCase.getCachedAppConfig() != null) {
+            getQrCards(syncDatabase = true)
+        }
 
         (parentFragment?.parentFragment as HolderMainFragment?)?.getToolbar().let { toolbar ->
             if (toolbar?.menu?.size() == 0) {

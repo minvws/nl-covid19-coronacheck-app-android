@@ -19,6 +19,7 @@ import java.io.File
 interface CachedAppConfigUseCase {
     fun persistAppConfig(appConfig: AppConfig)
     fun getCachedAppConfig(): AppConfig?
+    fun removeCachedAppConfig()
     fun getCachedAppConfigMaxValidityHours(): Int
     fun getCachedAppConfigVaccinationEventValidity(): Int
     fun getCachedPublicKeys(): BufferedSource?
@@ -39,6 +40,10 @@ class CachedAppConfigUseCaseImpl constructor(
 
     override fun getCachedAppConfig(): AppConfig? {
         return persistenceManager.getAppConfigJson()?.toObject(moshi)
+    }
+
+    override fun removeCachedAppConfig() {
+        persistenceManager.removeConfigJson()
     }
 
     override fun getCachedAppConfigMaxValidityHours(): Int {
