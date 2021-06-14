@@ -33,7 +33,7 @@ data class AppConfig(
     @Json(name = "configTTL") val configTtlSeconds: Int,
     @Json(name = "maxValidityHours") val maxValidityHours: Int,
     @Json(name = "vaccinationEventValidity") val vaccinationEventValidity: Int = 14600,
-    @Json(name = "euLaunchDate") val euLaunchDate: String = "2021-07-01",
+    @Json(name = "euLaunchDate") val euLaunchDate: String = "2021-06-03T14:00:00+00:00",
     @Json(name = "hpkCodes") val hpkCodes: List<Code> = listOf(),
     @Json(name = "euBrands") val euBrands: List<Code> = listOf(),
     @Json(name = "euVaccinations") val euVaccinations: List<Code> = listOf(),
