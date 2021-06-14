@@ -64,7 +64,7 @@ class SaveEventsUseCaseImpl(private val holderDatabase: HolderDatabase) : SaveEv
                 walletId = 1,
                 providerIdentifier = it.key.providerIdentifier ?: error("providerIdentifier is required"),
                 type = EventType.Test,
-                maxIssuedAt = it.key.events?.map { event -> event.negativeTest?.resultDate }
+                maxIssuedAt = it.key.events?.map { event -> event.negativeTest?.sampleDate }
                     ?.maxByOrNull { date -> date?.toEpochSecond() ?: error("Date should not be null") }
                     ?: error("At least one event must be present with a date"),
                 jsonData = it.value
