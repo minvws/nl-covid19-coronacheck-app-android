@@ -12,13 +12,13 @@ import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.isExpiring
 
 interface GreenCardsUseCase {
-    suspend fun needsRefresh(): String?
+    suspend fun expiringCardOriginType(): String?
 }
 
 class GreenCardsUseCaseImpl(
     private val holderDatabase: HolderDatabase,
 ): GreenCardsUseCase {
-    override suspend fun needsRefresh() =
+    override suspend fun expiringCardOriginType() =
         holderDatabase.greenCardDao().getAll().first { greenCard ->
             // TODO before merging
             // according to https://github.com/minvws/nl-covid19-coronacheck-app-coordination/blob/main/architecture/Privacy%20Preserving%20Green%20Card.md#mass-revocation

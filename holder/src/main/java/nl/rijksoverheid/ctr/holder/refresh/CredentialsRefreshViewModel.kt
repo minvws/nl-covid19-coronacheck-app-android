@@ -24,8 +24,11 @@ class CredentialsRefreshViewModelImpl(
 ): CredentialsRefreshViewModel() {
     override fun refresh() {
         viewModelScope.launch {
-            val expectedOriginTypeForRefresh = greenCardsUseCase.needsRefresh()
-            holderDatabaseSyncer.sync(expectedOriginTypeForRefresh, true)
+            val expiringCardOriginType = greenCardsUseCase.expiringCardOriginType()
+            val needsRefresh = expiringCardOriginType != null
+            if (needsRefresh) {
+                holderDatabaseSyncer.sync(expiringCardOriginType, true)
+            }
         }
     }
 }
