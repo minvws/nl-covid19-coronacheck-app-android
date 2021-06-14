@@ -64,24 +64,55 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
         chooseProviderViewModel.eventsResult.observe(viewLifecycleOwner, EventObserver {
             when (it) {
                 is EventsResult.Success<RemoteEventsNegativeTests> -> {
-                    findNavController().navigate(
-                        ChooseProviderFragmentDirections.actionYourEvents(
-                            type = YourEventsFragmentType.TestResult3(
-                                remoteEvents = it.signedModels.map { signedModel -> signedModel.model to signedModel.rawResponse }
-                                    .toMap()
-                            ),
-                            toolbarTitle = getString(R.string.commercial_test_type_title)
+                    if (it.missingEvents) {
+                        dialogUtil.presentDialog(
+                            context = requireContext(),
+                            title = R.string.missing_events_title,
+                            message = getString(R.string.missing_events_description),
+                            positiveButtonText = R.string.ok,
+                            positiveButtonCallback = {},
+                            onDismissCallback = {
+                                findNavController().navigate(
+                                    ChooseProviderFragmentDirections.actionYourEvents(
+                                        type = YourEventsFragmentType.TestResult3(
+                                            remoteEvents = it.signedModels.map { signedModel -> signedModel.model to signedModel.rawResponse }
+                                                .toMap()
+                                        ),
+                                        toolbarTitle = getString(R.string.commercial_test_type_title)
+                                    )
+                                )
+                            }
                         )
-                    )
+                    } else {
+                        findNavController().navigate(
+                            ChooseProviderFragmentDirections.actionYourEvents(
+                                type = YourEventsFragmentType.TestResult3(
+                                    remoteEvents = it.signedModels.map { signedModel -> signedModel.model to signedModel.rawResponse }
+                                        .toMap()
+                                ),
+                                toolbarTitle = getString(R.string.commercial_test_type_title)
+                            )
+                        )
+                    }
                 }
                 is EventsResult.HasNoEvents -> {
-                    findNavController().navigate(
-                        ChooseProviderFragmentDirections.actionCouldNotCreateQr(
-                            toolbarTitle = getString(R.string.commercial_test_type_title),
-                            title = getString(R.string.no_test_results_title),
-                            description = getString(R.string.no_test_results_description)
+                    if (it.missingEvents) {
+                        findNavController().navigate(
+                            GetVaccinationFragmentDirections.actionCouldNotCreateQr(
+                                toolbarTitle = getString(R.string.your_vaccination_result_toolbar_title),
+                                title = getString(R.string.missing_events_title),
+                                description = getString(R.string.missing_events_description)
+                            )
                         )
-                    )
+                    } else {
+                        findNavController().navigate(
+                            ChooseProviderFragmentDirections.actionCouldNotCreateQr(
+                                toolbarTitle = getString(R.string.commercial_test_type_title),
+                                title = getString(R.string.no_test_results_title),
+                                description = getString(R.string.no_test_results_description)
+                            )
+                        )
+                    }
                 }
                 is EventsResult.Error.NetworkError -> {
                     dialogUtil.presentDialog(
@@ -95,18 +126,22 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
                         negativeButtonText = R.string.dialog_close
                     )
                 }
+                is EventsResult.Error.EventProviderError.ServerError -> {
+                    findNavController().navigate(
+                        GetVaccinationFragmentDirections.actionCouldNotCreateQr(
+                            toolbarTitle = getString(R.string.commercial_test_type_title),
+                            title = getString(R.string.event_provider_error_title),
+                            description = getString(R.string.event_provider_error_description)
+                        )
+                    )
+                }
                 is EventsResult.Error.CoronaCheckError.ServerError -> {
-                    dialogUtil.presentDialog(
-                        context = requireContext(),
-                        title = R.string.dialog_error_title,
-                        message = getString(
-                            R.string.dialog_error_message
-                        ),
-                        positiveButtonText = R.string.dialog_retry,
-                        positiveButtonCallback = {
-                            loginWithDigiD()
-                        },
-                        negativeButtonText = R.string.dialog_close
+                    findNavController().navigate(
+                        GetVaccinationFragmentDirections.actionCouldNotCreateQr(
+                            toolbarTitle = getString(R.string.commercial_test_type_title),
+                            title = getString(R.string.coronacheck_error_title),
+                            description = getString(R.string.coronacheck_error_description, it.httpCode.toString())
+                        )
                     )
                 }
             }

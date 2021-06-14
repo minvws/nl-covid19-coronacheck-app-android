@@ -4,8 +4,8 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.EventProviderRepository
-import nl.rijksoverheid.ctr.shared.ext.filterNotNullValues
 import retrofit2.HttpException
+import timber.log.Timber
 import java.io.IOException
 
 /*
@@ -17,17 +17,34 @@ import java.io.IOException
  */
 interface GetEventsUseCase {
     suspend fun getVaccinationEvents(jwt: String): EventsResult<RemoteEventsVaccinations>
+    suspend fun getNegativeTestEvents(jwt: String): EventsResult<RemoteEventsNegativeTests>
 }
 
 class GetEventsUseCaseImpl(
     private val configProvidersUseCase: ConfigProvidersUseCase,
     private val coronaCheckRepository: CoronaCheckRepository,
     private val getEventProvidersWithTokensUseCase: GetEventProvidersWithTokensUseCase,
-    private val getVaccinationEventsUseCase: GetVaccinationEventsUseCase,
-    private val getNegativeTestsEventsUseCase: GetNegativeTestsEventsUseCase
+    private val getRemoteEventsUseCase: GetRemoteEventsUseCase
 ) : GetEventsUseCase {
 
     override suspend fun getVaccinationEvents(jwt: String): EventsResult<RemoteEventsVaccinations> {
+        return getRemoteEvents(
+            jwt = jwt,
+            originType = OriginType.Vaccination
+        )
+    }
+
+    override suspend fun getNegativeTestEvents(jwt: String): EventsResult<RemoteEventsNegativeTests> {
+        return getRemoteEvents(
+            jwt = jwt,
+            originType = OriginType.Test
+        )
+    }
+
+    private suspend fun <T: RemoteEvent> getRemoteEvents(
+        jwt: String,
+        originType: OriginType
+    ): EventsResult<T> {
         return try {
             // Fetch event providers
             val eventProviders = configProvidersUseCase.eventProviders()
@@ -39,7 +56,7 @@ class GetEventsUseCaseImpl(
             val eventProviderWithTokensResults = getEventProvidersWithTokensUseCase.get(
                 eventProviders = eventProviders,
                 tokens = tokens.tokens,
-                originType = OriginType.Vaccination)
+                originType = OriginType.Test)
 
             val eventProvidersWithTokensSuccessResults = eventProviderWithTokensResults.filterIsInstance<EventProviderWithTokenResult.Success>()
             val eventProvidersWithTokensErrorResults = eventProviderWithTokensResults.filterIsInstance<EventProviderWithTokenResult.Error>()
@@ -48,26 +65,39 @@ class GetEventsUseCaseImpl(
 
                 // We have received providers that claim to have events for us so we get those events for each provider
                 val eventResults = eventProvidersWithTokensSuccessResults.map {
-                    getVaccinationEventsUseCase.get(
-                        eventProvider = it.eventProvider,
-                        token = it.token
-                    )
+                    when (originType) {
+                        is OriginType.Test -> {
+                            getRemoteEventsUseCase.getVaccinations(
+                                eventProvider = it.eventProvider,
+                                token = it.token
+                            )
+                        }
+                        is OriginType.Vaccination -> {
+                            getRemoteEventsUseCase.getTestResults(
+                                eventProvider = it.eventProvider,
+                                token = it.token
+                            )
+                        }
+                        is OriginType.Recovery -> {
+                            error("Not yet supported")
+                        }
+                    }
                 }
 
                 // All successful responses
                 val eventSuccessResults =
-                    eventResults.filterIsInstance<GetVaccinationEventsResult.Success>()
+                    eventResults.filterIsInstance<RemoteEventsResult.Success<T>>()
 
                 // All failed responses
                 val eventFailureResults =
-                    eventResults.filterIsInstance<GetVaccinationEventsResult.Error>()
+                    eventResults.filterIsInstance<RemoteEventsResult.Error>()
 
-                if (eventSuccessResults.isNotEmpty()) {
+                return if (eventSuccessResults.isNotEmpty()) {
                     // If we have success responses
                     val signedModels = eventSuccessResults.map { it.signedModel }
-                    val events = signedModels.map { it.model.events ?: listOf() }.flatten()
+                    val hasEvents = signedModels.map { it.model }.any { it.hasEvents() }
 
-                    if (events.isEmpty()) {
+                    if (!hasEvents) {
                         // But we do not have any events
                         EventsResult.HasNoEvents(
                             missingEvents = eventProvidersWithTokensErrorResults.isNotEmpty() || eventFailureResults.isNotEmpty()
@@ -81,13 +111,14 @@ class GetEventsUseCaseImpl(
                     }
                 } else {
                     // We don't have any successful responses from retrieving events for providers
-                    val isNetworkError = eventFailureResults.any { it is GetVaccinationEventsResult.Error.NetworkError }
+                    val isNetworkError = eventFailureResults.any { it is RemoteEventsResult.Error.NetworkError }
                     if (isNetworkError) {
                         EventsResult.Error.NetworkError
                     } else {
                         EventsResult.Error.EventProviderError.ServerError
                     }
                 }
+
             } else {
                 // We don't have any successful responses from retrieving providers
                 val isNetworkError = eventProvidersWithTokensErrorResults.any { it is EventProviderWithTokenResult.Error.NetworkError }
@@ -97,7 +128,6 @@ class GetEventsUseCaseImpl(
                     EventsResult.Error.EventProviderError.ServerError
                 }
             }
-
         } catch (e: HttpException) {
             EventsResult.Error.CoronaCheckError.ServerError(e.code())
         } catch (e: IOException) {

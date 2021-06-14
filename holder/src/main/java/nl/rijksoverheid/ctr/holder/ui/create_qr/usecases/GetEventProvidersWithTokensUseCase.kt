@@ -11,7 +11,8 @@ import java.io.IOException
 interface GetEventProvidersWithTokensUseCase {
     /**
      * Get all event providers that have events for us together with their token to fetch the events
-     * @param jwt The jwt to get the token
+     * @param eventProviders A list of all the event providers
+     * @param tokens A list of all tokens
      * @param originType The type of events you want to fetch
      */
     suspend fun get(
@@ -29,6 +30,7 @@ class GetEventProvidersWithTokensUseCaseImpl(
         tokens: List<RemoteAccessTokens.Token>,
         originType: OriginType
     ): List<EventProviderWithTokenResult> {
+
         // Map event providers to tokens
         val allEventProvidersWithTokens =
             eventProviders
