@@ -83,14 +83,7 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
                         )
                     )
                 }
-                is EventsResult.TooBusy -> {
-                    findNavController().navigate(ChooseProviderFragmentDirections.actionCouldNotCreateQr(
-                        toolbarTitle = getString(R.string.commercial_test_type_title),
-                        title = getString(R.string.too_busy_title),
-                        description = getString(R.string.too_busy_description)
-                    ))
-                }
-                is EventsResult.NetworkError -> {
+                is EventsResult.Error.NetworkError -> {
                     dialogUtil.presentDialog(
                         context = requireContext(),
                         title = R.string.dialog_no_internet_connection_title,
@@ -102,13 +95,12 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
                         negativeButtonText = R.string.dialog_close
                     )
                 }
-                is EventsResult.ServerError -> {
+                is EventsResult.Error.CoronaCheckError.ServerError -> {
                     dialogUtil.presentDialog(
                         context = requireContext(),
                         title = R.string.dialog_error_title,
                         message = getString(
-                            R.string.dialog_error_message_with_error_code,
-                            it.httpCode.toString()
+                            R.string.dialog_error_message
                         ),
                         positiveButtonText = R.string.dialog_retry,
                         positiveButtonCallback = {

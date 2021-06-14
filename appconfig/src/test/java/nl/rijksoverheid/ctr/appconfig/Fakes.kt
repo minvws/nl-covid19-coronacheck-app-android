@@ -13,7 +13,6 @@ import okio.BufferedSource
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-
 fun fakeAppConfigPersistenceManager(
     publicKeysJson: String? = null,
     appConfigJson: String? = null,

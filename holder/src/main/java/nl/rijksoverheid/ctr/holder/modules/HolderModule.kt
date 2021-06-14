@@ -72,6 +72,15 @@ fun holderModule(baseUrl: String) = module {
     }
 
     // Use cases
+    factory<GetEventProvidersWithTokensUseCase> {
+        GetEventProvidersWithTokensUseCaseImpl(get())
+    }
+    factory<GetVaccinationEventsUseCase> {
+        GetVaccinationEventsUseCaseImpl(get())
+    }
+    factory<GetNegativeTestsEventsUseCase> {
+        GetNegativeTestsEventsUseCaseImpl(get())
+    }
     factory<QrCodeUseCase> {
         QrCodeUseCaseImpl(
             get(),
@@ -113,7 +122,7 @@ fun holderModule(baseUrl: String) = module {
         TokenQrUseCase(get())
     }
     factory<DeviceRootedUseCase> { DeviceRootedUseCaseImpl(androidContext()) }
-    factory<GetEventsUseCase> { GetEventsUseCaseImpl(get(), get(), get()) }
+    factory<GetEventsUseCase> { GetEventsUseCaseImpl(get(), get(), get(), get(), get()) }
     factory<SaveEventsUseCase> { SaveEventsUseCaseImpl(get()) }
 
     factory<TestResultsMigrationManager> { TestResultsMigrationManagerImpl(get(), get(), get()) }
