@@ -89,7 +89,7 @@
     <string name="your_negative_test_results_row_personal_details">Identificatiegegevens: %1$s</string>
     <string name="your_negative_test_results_row_button">QR-code maken</string>
     <string name="your_negative_test_results_backbutton_title">Weet je zeker dat je wilt stoppen?</string>
-    <string name="your_negative_test_results_backbutton_message">Je moet dan later opnieuw met de code je testuitslag ophalen.</string>
+    <string name="your_negative_test_results_backbutton_message">Je moet dan later opnieuw je testuitslag ophalen.</string>
     <string name="your_negative_test_results_backbutton_ok">Ja, stop</string>
     <string name="your_negative_test_results_backbutton_cancel">Nee, terug</string>
     <string name="your_negative_test_results_explanation_title">Meer over testuitslagen</string>
@@ -184,7 +184,7 @@
     <string name="create_qr_explanation_menu_title">QR-code maken</string>
     <string name="create_qr_explanation_menu_title_alternative">Voeg een QR-code toe</string>
     <string name="create_qr_explanation_title">Een QR-code maken</string>
-    <string name="create_qr_explanation_description"><![CDATA[De app maakt in 3 stappen een QR-code. De QR-code is jouw persoonlijke bewijs.<br/><br/><b>1. Vaccinatie- of testbewijs?</b><br/>Je kunt een QR-code laten maken van een vaccinatie of van een negatieve testuitslag.<br/><br/><b>2. Automatisch gegevens ophalen </b><br/>De app haalt direct de gegevens van je vaccinatie of je testuitslag op.<br/><br/><b>  3. Gegevens controleren</b><br/>Check of de gegevens van je vaccinatie en/of testuitslag kloppen.<br/><br/><b>  Ga je naar het buitenland?</b><br/> De app maakt twee QR-codes: één voor Nederland en één internationale. Reis je buiten Nederland? Gebruik dan je internationale QR-code.  In <a href="https://www.nederlandwereldwijd.nl/reizen-naar-het-buitenland"> dit overzicht</a> lees je of een QR-code geldig is in het land dat je bezoekt.]]></string>
+    <string name="create_qr_explanation_description"><![CDATA[De app maakt in 3 stappen een QR-code. De QR-code is jouw persoonlijke bewijs.<br/><br/><b>1. Vaccinatie- of testbewijs?</b><br/>Je kunt een QR-code laten maken van een vaccinatie of van een negatieve testuitslag.<br/><br/><b>2. Automatisch gegevens ophalen </b><br/>De app haalt direct de gegevens van je vaccinatie of je testuitslag op.<br/><br/><b>  3. Gegevens controleren</b><br/>Check of de gegevens van je vaccinatie en/of testuitslag kloppen.<br/><br/><b>  ]]></string>
     <string name="qr_code_type_title">Waar wil je een QR-code van maken?</string>
     <string name="qr_code_type_description">Je kunt een QR-code maken van een negatieve testuitslag of van een vaccinatie.</string>
     <string name="qr_code_type_negative_test_title">Een negatieve testuitslag</string>
@@ -273,9 +273,9 @@
     <string name="no_digid_url">https://www.digid.nl/digid-aanvragen-activeren#hoe-vraag-ik-digid-aan</string>
     <string name="digid_login_failed">Inloggen met DigiD niet gelukt</string>
     <string name="event_provider_error_title">Sorry, er gaat iets mis</string>
-    <string name="event_provider_error_description">Er gaat iets mis met de server van je testlocatie of priklocatie. Probeer het later nog eens.</string>
+    <string name="event_provider_error_description">Er gaat iets mis op de server van je testlocatie of priklocatie. Probeer het later nog eens.</string>
     <string name="coronacheck_error_title">Sorry, er gaat iets mis</string>
-    <string name="coronacheck_error_description">Neem contact op met de helpdesk van CoronaCheck en geef de foutcode (%1$s) door. Of probeer het later opnieuw.</string>
+    <string name="coronacheck_error_description">Neem contact op met onze helpdesk en geef de foutcode (%1$s) door. Of probeer het later opnieuw.</string>
     <string name="missing_events_title">Gegevens mogelijk niet compleet</string>
-    <string name="missing_events_description">Door drukte of een storing bij een van de partijen kunnen er gegevens ontbreken. Probeer het eventueel later nog een keer.</string>
+    <string name="missing_events_description">Door drukte of een storing bij een van de partijen kunnen er gegevens missen. Probeer het eventueel later nog een keer.</string>
 </resources>

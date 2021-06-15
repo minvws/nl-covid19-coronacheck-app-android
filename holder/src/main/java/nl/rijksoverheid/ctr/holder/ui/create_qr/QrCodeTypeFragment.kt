@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentQrCodeTypeBinding
+import org.koin.android.ext.android.inject
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -16,6 +18,8 @@ import nl.rijksoverheid.ctr.holder.databinding.FragmentQrCodeTypeBinding
  */
 class QrCodeTypeFragment : Fragment(R.layout.fragment_qr_code_type) {
 
+    private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -25,7 +29,11 @@ class QrCodeTypeFragment : Fragment(R.layout.fragment_qr_code_type) {
             R.string.qr_code_type_negative_test_title,
             getString(R.string.qr_code_type_negative_test_description)
         ) {
-            findNavController().navigate(QrCodeTypeFragmentDirections.actionChooseProvider())
+            if (cachedAppConfigUseCase.getCachedAppConfig()?.ggdEnabled == false) {
+                findNavController().navigate(QrCodeTypeFragmentDirections.actionChooseProvider())
+            } else {
+                findNavController().navigate(QrCodeTypeFragmentDirections.actionCommercialTestCode())
+            }
         }
 
         binding.vaccinationButton.bind(
