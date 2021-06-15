@@ -20,7 +20,7 @@
     <string name="privacy_policy_checkbox_text">Ik heb de privacyverklaring gelezen en begrijp hoe de app met mijn gegevens omgaat.</string>
     <string name="my_overview">Mijn overzicht</string>
     <string name="my_overview_description">Laat je QR code scannen voor de ingang van een uitgaansgelegenheid, om naar binnen te mogen.</string>
-    <string name="my_overview_description_eu">Reis je buiten Nederland? Gebruik dan je internationale QR-code. Check <a href="https://www.nederlandwereldwijd.nl/reizen-naar-het-buitenland">dit overzicht</a> voor vertrek. Daar staat of jouw QR-code geldig is in het land dat je bezoekt.</string>
+    <string name="my_overview_description_eu"><![CDATA[Reis je buiten Nederland? Gebruik dan je internationale QR-code. Check <a href="https://www.nederlandwereldwijd.nl/reizen-naar-het-buitenland">dit overzicht</a> voor vertrek. Daar staat of jouw QR-code geldig is in het land dat je bezoekt.]]></string>
     <string name="my_overview_no_qr_description"><![CDATA[Je kunt een QR-code maken als je gevaccineerd bent. Of door eerst een test te doen bij een <a href="https://coronacheck.nl/nl/testafspraak-in-app">aangesloten testlocatie</a>.]]></string>
     <string name="dialog_error_title">Sorry, er ging iets mis</string>
     <string name="dialog_error_message">Dat komt door een technische fout.</string>

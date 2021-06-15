@@ -20,7 +20,7 @@
     <string name="privacy_policy_checkbox_text">I have read the privacy statement and understand how CoronaCheck processes my data.</string>
     <string name="my_overview">My overview</string>
     <string name="my_overview_description">To get access, have your QR code scanned at the entrance of an entertainment venue.</string>
-    <string name="my_overview_description_eu">Travelling outside the Netherlands? Then use your international QR code. In <a href="https://www.netherlandsworldwide.nl/travelling-outside-the-netherlands">this overview</a>, you\'ll find if the QR code is valid in the country you’re planning to visit.</string>
+    <string name="my_overview_description_eu"><![CDATA[Travelling outside the Netherlands? Then use your international QR code. In <a href="https://www.netherlandsworldwide.nl/travelling-outside-the-netherlands">this overview</a>, you\'ll find if the QR code is valid in the country you’re planning to visit.]]></string>
     <string name="my_overview_no_qr_description"><![CDATA[You can get a certificate if you\'re vaccinated or by taking a test at an <a href="https://coronacheck.nl/nl/testafspraak-in-app">affiliated test location</a>.]]></string>
     <string name="dialog_error_title">Sorry, something went wrong</string>
     <string name="dialog_error_message">Because of a technical error.</string>
