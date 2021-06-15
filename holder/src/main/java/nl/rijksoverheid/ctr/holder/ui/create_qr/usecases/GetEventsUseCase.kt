@@ -128,7 +128,7 @@ class GetEventsUseCaseImpl(
                     }
                 }
             } else {
-                if (eventProviderWithTokensResults.isEmpty()) {
+                if (eventProvidersWithTokensErrorResults.isEmpty()) {
                     // There are no successful responses and no error responses so no events
                     return EventsResult.HasNoEvents(missingEvents = false)
                 } else {
