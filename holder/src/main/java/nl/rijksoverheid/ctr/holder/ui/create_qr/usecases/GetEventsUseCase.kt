@@ -127,14 +127,18 @@ class GetEventsUseCaseImpl(
                         EventsResult.Error.EventProviderError.ServerError
                     }
                 }
-
             } else {
-                // We don't have any successful responses from retrieving providers
-                val isNetworkError = eventProvidersWithTokensErrorResults.any { it is EventProviderWithTokenResult.Error.NetworkError }
-                if (isNetworkError) {
-                    EventsResult.Error.NetworkError
+                if (eventProvidersWithTokensErrorResults.isEmpty()) {
+                    // There are no successful responses and no error responses so no events
+                    return EventsResult.HasNoEvents(missingEvents = false)
                 } else {
-                    EventsResult.Error.EventProviderError.ServerError
+                    // We don't have any successful responses but do have error responses
+                    val isNetworkError = eventProvidersWithTokensErrorResults.any { it is EventProviderWithTokenResult.Error.NetworkError }
+                    if (isNetworkError) {
+                        EventsResult.Error.NetworkError
+                    } else {
+                        EventsResult.Error.EventProviderError.ServerError
+                    }
                 }
             }
         } catch (e: HttpException) {
