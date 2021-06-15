@@ -128,34 +128,6 @@ class TestResultUseCaseTest {
         }
 
     @Test
-    fun `testResult returns NoNegativeTestResult if RemoteTestResult status is Complete and test result is not valid`() =
-        runBlocking {
-            val providerIdentifier = "provider"
-            val usecase = TestResultUseCase(
-                configProviderUseCase = fakeConfigProviderUseCase(
-                    provider = getRemoteTestProvider(
-                        identifier = providerIdentifier
-                    )
-                ),
-                testProviderRepository = fakeTestProviderRepository(
-                    model =
-                    getRemoteTestResult(status = RemoteProtocol.Status.COMPLETE)
-                ),
-                coronaCheckRepository = fakeCoronaCheckRepository(),
-                commitmentMessageUseCase = fakeCommitmentMessageUsecase(),
-                secretKeyUseCase = fakeSecretKeyUseCase(),
-                createCredentialUseCase = fakeCreateCredentialUseCase(),
-                personalDetailsUtil = fakePersonalDetailsUtil(),
-                cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
-                testResultUtil = fakeTestResultUtil(isValid = false),
-                tokenValidatorUtil = fakeTokenValidatorUtil(),
-                testResultAttributesUseCase = fakeTestResultAttributesUseCase()
-            )
-            val result = usecase.testResult(uniqueCode = "$providerIdentifier-B-t1")
-            assertTrue(result is TestResult.NoNegativeTestResult)
-        }
-
-    @Test
     fun `testResult returns NoNegativeTestResult if RemoteTestResult status is Complete and test result is positive`() =
         runBlocking {
             val providerIdentifier = "provider"

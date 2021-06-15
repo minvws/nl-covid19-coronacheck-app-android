@@ -84,18 +84,18 @@ class TestResultUseCase(
 
             val remoteTestResult = signedResponseWithTestResult.model
 
-            if (remoteTestResult is RemoteTestResult2) {
-                if (remoteTestResult.result?.negativeResult == true) {
-                    return TestResult.NoNegativeTestResult
-                }
-            }
-
             when (remoteTestResult.status) {
                 RemoteProtocol.Status.VERIFICATION_REQUIRED -> return TestResult.VerificationRequired
                 RemoteProtocol.Status.INVALID_TOKEN -> return TestResult.InvalidToken
                 RemoteProtocol.Status.PENDING -> return TestResult.Pending
                 RemoteProtocol.Status.COMPLETE -> {
-                    TestResult.NegativeTestResult(
+                    if (remoteTestResult is RemoteTestResult2) {
+                        if (remoteTestResult.result?.negativeResult == false) {
+                            return TestResult.NoNegativeTestResult
+                        }
+                    }
+
+                    return TestResult.NegativeTestResult(
                         remoteTestResult,
                         signedResponseWithTestResult
                     )
