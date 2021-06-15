@@ -2,10 +2,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.holder.*
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.Holder
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteConfigProviders
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.TestProviderRepository
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert.assertTrue
@@ -114,7 +111,7 @@ class TestResultUseCaseTest {
                 ),
                 testProviderRepository = fakeTestProviderRepository(
                     model =
-                    getRemoteTestResult(status = RemoteTestResult2.Status.COMPLETE)
+                    getRemoteTestResult(status = RemoteProtocol.Status.COMPLETE)
                 ),
                 coronaCheckRepository = fakeCoronaCheckRepository(),
                 commitmentMessageUseCase = fakeCommitmentMessageUsecase(),
@@ -142,7 +139,7 @@ class TestResultUseCaseTest {
                 ),
                 testProviderRepository = fakeTestProviderRepository(
                     model =
-                    getRemoteTestResult(status = RemoteTestResult2.Status.COMPLETE)
+                    getRemoteTestResult(status = RemoteProtocol.Status.COMPLETE)
                 ),
                 coronaCheckRepository = fakeCoronaCheckRepository(),
                 commitmentMessageUseCase = fakeCommitmentMessageUsecase(),
@@ -169,9 +166,8 @@ class TestResultUseCaseTest {
                     )
                 ),
                 testProviderRepository = fakeTestProviderRepository(
-                    model =
-                    getRemoteTestResult(
-                        status = RemoteTestResult2.Status.COMPLETE,
+                    model = getRemoteTestResult(
+                        status = RemoteProtocol.Status.COMPLETE,
                         negativeResult = false
                     )
                 ),
@@ -201,7 +197,7 @@ class TestResultUseCaseTest {
                 ),
                 testProviderRepository = fakeTestProviderRepository(
                     model =
-                    getRemoteTestResult(status = RemoteTestResult2.Status.VERIFICATION_REQUIRED)
+                    getRemoteTestResult(status = RemoteProtocol.Status.VERIFICATION_REQUIRED)
                 ),
                 coronaCheckRepository = fakeCoronaCheckRepository(),
                 commitmentMessageUseCase = fakeCommitmentMessageUsecase(),
@@ -229,7 +225,7 @@ class TestResultUseCaseTest {
                 ),
                 testProviderRepository = fakeTestProviderRepository(
                     model =
-                    getRemoteTestResult(status = RemoteTestResult2.Status.INVALID_TOKEN)
+                    getRemoteTestResult(status = RemoteProtocol.Status.INVALID_TOKEN)
                 ),
                 coronaCheckRepository = fakeCoronaCheckRepository(),
                 commitmentMessageUseCase = fakeCommitmentMessageUsecase(),
@@ -293,7 +289,7 @@ class TestResultUseCaseTest {
                         token: String,
                         verifierCode: String?,
                         signingCertificateBytes: ByteArray
-                    ): SignedResponseWithModel<RemoteTestResult2> {
+                    ): SignedResponseWithModel<RemoteProtocol> {
                         throw IOException()
                     }
                 },
@@ -323,7 +319,7 @@ class TestResultUseCaseTest {
                 ),
                 testProviderRepository = fakeTestProviderRepository(
                     model =
-                    getRemoteTestResult(status = RemoteTestResult2.Status.PENDING)
+                    getRemoteTestResult(status = RemoteProtocol.Status.PENDING)
                 ),
                 coronaCheckRepository = fakeCoronaCheckRepository(),
                 commitmentMessageUseCase = fakeCommitmentMessageUsecase(),
@@ -349,9 +345,9 @@ class TestResultUseCaseTest {
     }
 
     private fun getRemoteTestResult(
-        status: RemoteTestResult2.Status = RemoteTestResult2.Status.COMPLETE,
+        status: RemoteProtocol.Status = RemoteProtocol.Status.COMPLETE,
         negativeResult: Boolean = true
-    ): SignedResponseWithModel<RemoteTestResult2> {
+    ): SignedResponseWithModel<RemoteProtocol> {
         return SignedResponseWithModel(
             rawResponse = "dummy".toByteArray(), model = RemoteTestResult2(
                 result = RemoteTestResult2.Result(

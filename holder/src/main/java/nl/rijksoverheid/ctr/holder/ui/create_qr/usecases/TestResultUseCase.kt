@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.TestProviderRepository
@@ -82,6 +83,12 @@ class TestResultUseCase(
             )
 
             val remoteTestResult = signedResponseWithTestResult.model
+
+            if (remoteTestResult is RemoteTestResult2) {
+                if (remoteTestResult.result?.negativeResult == true) {
+                    return TestResult.NoNegativeTestResult
+                }
+            }
 
             when (remoteTestResult.status) {
                 RemoteProtocol.Status.VERIFICATION_REQUIRED -> return TestResult.VerificationRequired

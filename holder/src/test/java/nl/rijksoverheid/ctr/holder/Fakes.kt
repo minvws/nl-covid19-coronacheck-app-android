@@ -185,13 +185,13 @@ fun fakeCommitmentMessageUsecase(
 }
 
 fun fakeTestProviderRepository(
-    model: SignedResponseWithModel<RemoteTestResult2> = SignedResponseWithModel(
+    model: SignedResponseWithModel<RemoteProtocol> = SignedResponseWithModel(
         rawResponse = "dummy".toByteArray(),
         model = RemoteTestResult2(
             result = null,
             protocolVersion = "1",
             providerIdentifier = "1",
-            status = RemoteTestResult2.Status.COMPLETE
+            status = RemoteProtocol.Status.COMPLETE
         ),
     ),
     remoteTestResultExceptionCallback: (() -> Unit)? = null,
@@ -202,7 +202,7 @@ fun fakeTestProviderRepository(
             token: String,
             verifierCode: String?,
             signingCertificateBytes: ByteArray
-        ): SignedResponseWithModel<RemoteTestResult2> {
+        ): SignedResponseWithModel<RemoteProtocol> {
             remoteTestResultExceptionCallback?.invoke()
             return model
         }
@@ -418,9 +418,9 @@ fun fakeEventProviderRepository(
     unomiVaccinationEvents: ((url: String) -> RemoteUnomi) = { RemoteUnomi("", "", false) },
     unomiTestEvents: ((url: String) -> RemoteUnomi) = { RemoteUnomi("", "", false) },
     vaccinationEvents: ((url: String) -> SignedResponseWithModel<RemoteEventsVaccinations>) = { SignedResponseWithModel("".toByteArray(), RemoteEventsVaccinations(
-        listOf(), null, null, null, null),) },
+        listOf(), "", "", RemoteProtocol.Status.COMPLETE, null),) },
     negativeTestEvents: ((url: String) -> SignedResponseWithModel<RemoteTestResult3>) = { SignedResponseWithModel("".toByteArray(), RemoteTestResult3(
-        listOf(), null, null, null, null)) }
+        listOf(), "", "", RemoteProtocol.Status.COMPLETE, null)) }
 ) = object: EventProviderRepository {
     override suspend fun unomiVaccinationEvents(
         url: String,
