@@ -23,7 +23,7 @@ interface TestProviderApiClient {
         @Header("CoronaCheck-Protocol-Version") protocolVersion: String = "3.0",
         @Body data: GetTestResultPostData?,
         @Tag certificate: SigningCertificate
-    ): SignedResponseWithModel<RemoteTestResult2>
+    ): SignedResponseWithModel<RemoteProtocol>
 
     @POST
     @SignedRequest

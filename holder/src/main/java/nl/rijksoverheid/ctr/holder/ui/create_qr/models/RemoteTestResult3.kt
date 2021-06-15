@@ -4,7 +4,6 @@ import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import kotlinx.parcelize.Parcelize
-import java.time.LocalDate
 import java.time.OffsetDateTime
 
 /*
@@ -18,23 +17,11 @@ import java.time.OffsetDateTime
 @JsonClass(generateAdapter = true)
 class RemoteTestResult3(
     val events: List<Event>?,
-    val protocolVersion: String?,
-    val providerIdentifier: String?,
-    val status: Status?,
+    override val protocolVersion: String,
+    override val providerIdentifier: String,
+    override val status: Status,
     val holder: Holder?
-) : RemoteEvent(), Parcelable {
-
-    enum class Status(val apiStatus: String) {
-        unknown(""),
-        pending("pending"),
-        complete("complete");
-
-        companion object {
-            fun fromValue(value: String?): Status {
-                return values().firstOrNull { it.apiStatus == value } ?: unknown
-            }
-        }
-    }
+) : RemoteProtocol(providerIdentifier, protocolVersion, status), Parcelable {
 
     @Parcelize
     @JsonClass(generateAdapter = true)

@@ -132,6 +132,7 @@ dependencies {
     implementation "androidx.room:room-ktx:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
     implementation "net.zetetic:android-database-sqlcipher:$sqlcypher_version"
+    implementation("com.squareup.moshi:moshi-adapters:1.8.0")
 
     testImplementation "junit:junit:$junit_version"
     testImplementation "io.mockk:mockk:$mock_version"

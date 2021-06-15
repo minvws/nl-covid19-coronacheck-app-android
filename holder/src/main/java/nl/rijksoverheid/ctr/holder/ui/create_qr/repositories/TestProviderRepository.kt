@@ -4,7 +4,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.api.interceptors.SigningCertificate
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.TestProviderApiClient
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.post.GetTestResultPostData
 import okhttp3.ResponseBody
@@ -24,12 +24,12 @@ interface TestProviderRepository {
         token: String,
         verifierCode: String?,
         signingCertificateBytes: ByteArray
-    ): SignedResponseWithModel<RemoteTestResult2>
+    ): SignedResponseWithModel<RemoteProtocol>
 }
 
 class TestProviderRepositoryImpl(
     private val testProviderApiClient: TestProviderApiClient,
-    private val responseConverter: Converter<ResponseBody, SignedResponseWithModel<RemoteTestResult2>>,
+    private val responseConverter: Converter<ResponseBody, SignedResponseWithModel<RemoteProtocol>>,
 ) : TestProviderRepository {
     @Suppress("BlockingMethodInNonBlockingContext")
     override suspend fun remoteTestResult(
@@ -37,7 +37,7 @@ class TestProviderRepositoryImpl(
         token: String,
         verifierCode: String?,
         signingCertificateBytes: ByteArray
-    ): SignedResponseWithModel<RemoteTestResult2> {
+    ): SignedResponseWithModel<RemoteProtocol> {
         try {
             return testProviderApiClient.getTestResult(
                 url = url,

@@ -14,6 +14,8 @@ import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentCommercialTestCodeBinding
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.TestResult
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.hideKeyboard
@@ -118,15 +120,30 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
                     )
                 }
                 is TestResult.NegativeTestResult -> {
-                    findNavController().navigate(
-                        CommercialTestCodeFragmentDirections.actionYourEvents(
-                            type = YourEventsFragmentType.TestResult2(
-                                remoteTestResult = it.remoteTestResult,
-                                rawResponse = it.signedResponseWithTestResult.rawResponse
-                            ),
-                            toolbarTitle = getString(R.string.commercial_test_type_title)
-                        )
-                    )
+
+                    when (it.remoteTestResult) {
+                        is RemoteTestResult2 -> {
+                            findNavController().navigate(
+                                CommercialTestCodeFragmentDirections.actionYourEvents(
+                                    type = YourEventsFragmentType.TestResult2(
+                                        remoteTestResult = it.remoteTestResult,
+                                        rawResponse = it.signedResponseWithTestResult.rawResponse
+                                    ),
+                                    toolbarTitle = getString(R.string.commercial_test_type_title)
+                                )
+                            )
+                        }
+                        is RemoteTestResult3 -> {
+                            findNavController().navigate(
+                                CommercialTestCodeFragmentDirections.actionYourEvents(
+                                    type = YourEventsFragmentType.TestResult3(
+                                        mapOf(it.remoteTestResult to it.signedResponseWithTestResult.rawResponse)
+                                    ),
+                                    toolbarTitle = getString(R.string.commercial_test_type_title)
+                                )
+                            )
+                        }
+                    }
                 }
                 is TestResult.NoNegativeTestResult -> {
                     findNavController().navigate(

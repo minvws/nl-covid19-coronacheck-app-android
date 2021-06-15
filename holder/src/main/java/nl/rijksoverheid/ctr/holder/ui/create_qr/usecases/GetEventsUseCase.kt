@@ -48,7 +48,7 @@ class GetEventsUseCaseImpl(
         )
     }
 
-    private suspend fun <T: RemoteEvent> getRemoteEvents(
+    private suspend fun <T: RemoteProtocol> getRemoteEvents(
         jwt: String,
         originType: OriginType
     ): EventsResult<T> {
