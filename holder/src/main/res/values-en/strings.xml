@@ -20,7 +20,7 @@
     <string name="privacy_policy_checkbox_text">I have read the privacy statement and understand how CoronaCheck processes my data.</string>
     <string name="my_overview">My overview</string>
     <string name="my_overview_description">To get access, have your QR code scanned at the entrance of an entertainment venue.</string>
-    <string name="my_overview_description_eu">You can generate a certificate if you have been vaccinated or if you have a negative test result that confirms you don’t have corona. From the beginning of July, you can also make a certificate if you\'ve had coronavirus (certificate of recovery).</string>
+    <string name="my_overview_description_eu">Travelling outside the Netherlands? Then use your international QR code. In <a href="https://www.netherlandsworldwide.nl/travelling-outside-the-netherlands">this overview</a>, you\'ll find if the QR code is valid in the country you’re planning to visit.</string>
     <string name="my_overview_no_qr_description"><![CDATA[You can get a certificate if you\'re vaccinated or by taking a test at an <a href="https://coronacheck.nl/nl/testafspraak-in-app">affiliated test location</a>.]]></string>
     <string name="dialog_error_title">Sorry, something went wrong</string>
     <string name="dialog_error_message">Because of a technical error.</string>
@@ -56,7 +56,7 @@
     <string name="choose_provider_commercial_title">Other test location</string>
     <string name="choose_provider_commercial_subtitle">Retrieve test result</string>
     <string name="choose_provider_ggd_title">GGD</string>
-    <string name="choose_provider_ggd_subtitle">Log in with your DigiD</string>
+    <string name="choose_provider_ggd_subtitle">You’ll be redirected to DigiD</string>
     <string name="choose_provider_not_yet_tested">I haven\'t been tested yet</string>
     <string name="commercial_test_type_title">Retrieve test result</string>
     <string name="commercial_test_type_description">You need a retrieval code to retrieve your test result.</string>
@@ -184,7 +184,7 @@
     <string name="create_qr_explanation_menu_title">Make QR code</string>
     <string name="create_qr_explanation_menu_title_alternative">Add a QR code</string>
     <string name="create_qr_explanation_title">Make a QR code</string>
-    <string name="create_qr_explanation_description"><![CDATA[The app makes a QR code in three steps. This QR code is your personal certificate.<br/><br/><b>1. Vaccination or test certificate?</b><br/>Choose to create a QR code of a vaccination or of a negative test result.<br/><br/><b>2. Automatically retrieve data </b><br/>The app directly retrieves the data of your vaccination or rest result.<br/><br/><b>  3. Check data </b><br/>Check if the data of your vaccination and/or test result is correct.<br/><br/><b>]]></string>
+    <string name="create_qr_explanation_description"><![CDATA[The app makes a QR code in three steps. This QR code is your personal certificate.<br/><br/><b>1. Vaccination or test certificate?</b><br/>Choose to create a QR code of a vaccination or of a negative test result.<br/><br/><b>2. Automatically retrieve data </b><br/>The app directly retrieves the data of your vaccination or rest result.<br/><br/><b>  3. QR codes are ready </b><br/>The app generates a QR code for the Netherlands and one for other countries. <br/><br/>]]></string>
     <string name="qr_code_type_title">What are you making a QR code from?</string>
     <string name="qr_code_type_description">You can make a QR code of a negative test result or of a vaccination.</string>
     <string name="qr_code_type_negative_test_title">A negative test result</string>
