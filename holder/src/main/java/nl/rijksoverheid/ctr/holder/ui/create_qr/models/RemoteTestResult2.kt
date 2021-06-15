@@ -14,7 +14,7 @@ import java.time.OffsetDateTime
  */
 @Parcelize
 @JsonClass(generateAdapter = true)
-data class RemoteTestResult(
+data class RemoteTestResult2(
     val result: Result?,
     val protocolVersion: String,
     val providerIdentifier: String,

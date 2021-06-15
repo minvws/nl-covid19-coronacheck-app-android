@@ -8,12 +8,12 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.api
 
 import com.squareup.moshi.FromJson
 import com.squareup.moshi.ToJson
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
 
 class RemoteTestStatusJsonAdapter {
     @FromJson
-    fun fromJson(value: String?): RemoteTestResult.Status = RemoteTestResult.Status.fromValue(value)
+    fun fromJson(value: String?): RemoteTestResult2.Status = RemoteTestResult2.Status.fromValue(value)
 
     @ToJson
-    fun toJson(value: RemoteTestResult.Status): String = value.apiStatus
+    fun toJson(value: RemoteTestResult2.Status): String = value.apiStatus
 }

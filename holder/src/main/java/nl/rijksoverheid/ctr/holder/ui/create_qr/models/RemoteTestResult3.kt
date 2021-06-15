@@ -16,7 +16,7 @@ import java.time.OffsetDateTime
  */
 @Parcelize
 @JsonClass(generateAdapter = true)
-class RemoteEventsNegativeTests(
+class RemoteTestResult3(
     val events: List<Event>?,
     val protocolVersion: String?,
     val providerIdentifier: String?,

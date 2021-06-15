@@ -1,7 +1,7 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
 import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.TestProviderRepository
@@ -83,10 +83,10 @@ class TestResultUseCase(
             val remoteTestResult = signedResponseWithTestResult.model
 
             when (remoteTestResult.status) {
-                RemoteTestResult.Status.VERIFICATION_REQUIRED -> return TestResult.VerificationRequired
-                RemoteTestResult.Status.INVALID_TOKEN -> return TestResult.InvalidToken
-                RemoteTestResult.Status.PENDING -> return TestResult.Pending
-                RemoteTestResult.Status.COMPLETE -> {
+                RemoteTestResult2.Status.VERIFICATION_REQUIRED -> return TestResult.VerificationRequired
+                RemoteTestResult2.Status.INVALID_TOKEN -> return TestResult.InvalidToken
+                RemoteTestResult2.Status.PENDING -> return TestResult.Pending
+                RemoteTestResult2.Status.COMPLETE -> {
                     // nothing
                 }
                 else -> throw IllegalStateException("Unsupported status ${remoteTestResult.status}")
@@ -129,9 +129,9 @@ class TestResultUseCase(
 sealed class TestResult {
     object NoNegativeTestResult : TestResult()
     data class NegativeTestResult(
-        val remoteTestResult: RemoteTestResult,
+        val remoteTestResult: RemoteTestResult2,
         val personalDetails: PersonalDetails,
-        val signedResponseWithTestResult: SignedResponseWithModel<RemoteTestResult>
+        val signedResponseWithTestResult: SignedResponseWithModel<RemoteTestResult2>
     ) : TestResult()
 
     object Pending : TestResult()

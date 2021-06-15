@@ -22,7 +22,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.api.RemoteEventsStatusJsonAdapte
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.RemoteTestStatusJsonAdapter
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.TestProviderApiClient
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigiDViewModel
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.ResponseError
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.*
@@ -204,11 +204,11 @@ fun holderModule(baseUrl: String) = module {
         get<Retrofit>(Retrofit::class).create(HolderApiClient::class.java)
     }
 
-    single<Converter<ResponseBody, SignedResponseWithModel<RemoteTestResult>>>(named("SignedResponseWithModel")) {
+    single<Converter<ResponseBody, SignedResponseWithModel<RemoteTestResult2>>>(named("SignedResponseWithModel")) {
         get<Retrofit>(Retrofit::class).responseBodyConverter(
             Types.newParameterizedType(
                 SignedResponseWithModel::class.java,
-                RemoteTestResult::class.java
+                RemoteTestResult2::class.java
             ), emptyArray()
         )
     }
