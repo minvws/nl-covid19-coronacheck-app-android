@@ -95,15 +95,13 @@ class TestResultUseCase(
                 RemoteProtocol.Status.INVALID_TOKEN -> return TestResult.InvalidToken
                 RemoteProtocol.Status.PENDING -> return TestResult.Pending
                 RemoteProtocol.Status.COMPLETE -> {
-                    // nothing
+                    TestResult.NegativeTestResult(
+                        remoteTestResult,
+                        signedResponseWithTestResult
+                    )
                 }
                 else -> throw IllegalStateException("Unsupported status ${remoteTestResult.status}")
             }
-
-            TestResult.NegativeTestResult(
-                remoteTestResult,
-                signedResponseWithTestResult
-            )
         } catch (ex: HttpException) {
             Timber.e(ex, "Server error while getting test result")
             TestResult.ServerError(ex.code())
