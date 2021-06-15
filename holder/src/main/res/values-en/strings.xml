@@ -89,7 +89,7 @@
     <string name="your_negative_test_results_row_personal_details">Identification details: %1$s</string>
     <string name="your_negative_test_results_row_button">Make QR code</string>
     <string name="your_negative_test_results_backbutton_title">Are you sure you want to stop?</string>
-    <string name="your_negative_test_results_backbutton_message">If you stop, you will have to retype your code to get your test result later.</string>
+    <string name="your_negative_test_results_backbutton_message">You can try to retrieve your test result again later</string>
     <string name="your_negative_test_results_backbutton_ok">Yes, stop</string>
     <string name="your_negative_test_results_backbutton_cancel">No, back</string>
     <string name="your_negative_test_results_explanation_title">More about test results</string>

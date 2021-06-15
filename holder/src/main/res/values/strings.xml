@@ -89,7 +89,7 @@
     <string name="your_negative_test_results_row_personal_details">Identificatiegegevens: %1$s</string>
     <string name="your_negative_test_results_row_button">QR-code maken</string>
     <string name="your_negative_test_results_backbutton_title">Weet je zeker dat je wilt stoppen?</string>
-    <string name="your_negative_test_results_backbutton_message">Je moet dan later opnieuw met de code je testuitslag ophalen.</string>
+    <string name="your_negative_test_results_backbutton_message">Je moet dan later opnieuw je testuitslag ophalen.</string>
     <string name="your_negative_test_results_backbutton_ok">Ja, stop</string>
     <string name="your_negative_test_results_backbutton_cancel">Nee, terug</string>
     <string name="your_negative_test_results_explanation_title">Meer over testuitslagen</string>
