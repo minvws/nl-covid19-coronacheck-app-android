@@ -26,8 +26,8 @@ import nl.rijksoverheid.ctr.holder.databinding.FragmentYourEventsBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.ui.create_qr.items.YourEventWidget
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsVaccinations
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsNegativeTests
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult3
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.InfoScreenUtil
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
@@ -141,7 +141,7 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
 
     private fun presentTestResult3(
         binding: FragmentYourEventsBinding,
-        remoteEvents: Map<RemoteEventsNegativeTests, ByteArray>
+        remoteEvents: Map<RemoteTestResult3, ByteArray>
     ) {
         binding.title.setText(R.string.your_negative_test_results_title)
         binding.description.setHtmlText(getString(R.string.your_negative_test_results_description))
@@ -236,7 +236,7 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
 
     private fun presentTestResult2(
         binding: FragmentYourEventsBinding,
-        remoteTestResult: RemoteTestResult,
+        remoteTestResult: RemoteTestResult2,
         remoteTestResultRawResponse: ByteArray,
     ) {
         binding.title.setText(R.string.your_negative_test_results_title)

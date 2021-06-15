@@ -14,26 +14,12 @@ import java.time.OffsetDateTime
  */
 @Parcelize
 @JsonClass(generateAdapter = true)
-data class RemoteTestResult(
+data class RemoteTestResult2(
+    override val providerIdentifier: String,
+    override val protocolVersion: String,
+    override val status: Status,
     val result: Result?,
-    val protocolVersion: String,
-    val providerIdentifier: String,
-    val status: Status
-) : Parcelable {
-
-    enum class Status(val apiStatus: String) {
-        UNKNOWN(""),
-        PENDING("pending"),
-        INVALID_TOKEN("invalid_token"),
-        VERIFICATION_REQUIRED("verification_required"),
-        COMPLETE("complete");
-
-        companion object {
-            fun fromValue(value: String?): Status {
-                return values().firstOrNull { it.apiStatus == value } ?: UNKNOWN
-            }
-        }
-    }
+) : RemoteProtocol(providerIdentifier, protocolVersion, status), Parcelable {
 
     @Parcelize
     @JsonClass(generateAdapter = true)
@@ -44,4 +30,8 @@ data class RemoteTestResult(
         val negativeResult: Boolean,
         val holder: Holder
     ) : Parcelable
+
+    override fun hasEvents(): Boolean {
+        return true
+    }
 }

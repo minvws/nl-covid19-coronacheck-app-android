@@ -3,8 +3,8 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsVaccinations
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsNegativeTests
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult3
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -16,7 +16,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult
 
 sealed class YourEventsFragmentType : Parcelable {
     @Parcelize
-    data class TestResult2(val remoteTestResult: RemoteTestResult, val rawResponse: ByteArray) :
+    data class TestResult2(val remoteTestResult: RemoteTestResult2, val rawResponse: ByteArray) :
         YourEventsFragmentType(), Parcelable {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
@@ -42,6 +42,6 @@ sealed class YourEventsFragmentType : Parcelable {
         YourEventsFragmentType(), Parcelable
 
     @Parcelize
-    data class TestResult3(val remoteEvents: Map<RemoteEventsNegativeTests, ByteArray>) :
+    data class TestResult3(val remoteEvents: Map<RemoteTestResult3, ByteArray>) :
         YourEventsFragmentType(), Parcelable
 }

@@ -9,11 +9,10 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentChooseProviderBinding
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigiDFragment
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigidResult
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsNegativeTests
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.EventsResult
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAsAccessibilityButton
-import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -63,7 +62,7 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
 
         chooseProviderViewModel.eventsResult.observe(viewLifecycleOwner, EventObserver {
             when (it) {
-                is EventsResult.Success<RemoteEventsNegativeTests> -> {
+                is EventsResult.Success<RemoteTestResult3> -> {
                     if (it.missingEvents) {
                         dialogUtil.presentDialog(
                             context = requireContext(),

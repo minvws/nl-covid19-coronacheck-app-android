@@ -3,7 +3,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.repositories
 import nl.rijksoverheid.ctr.api.interceptors.SigningCertificate
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.TestProviderApiClient
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsVaccinations
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsNegativeTests
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteUnomi
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
 
@@ -37,7 +37,7 @@ interface EventProviderRepository {
         url: String,
         token: String,
         signingCertificateBytes: ByteArray
-    ): SignedResponseWithModel<RemoteEventsNegativeTests>
+    ): SignedResponseWithModel<RemoteTestResult3>
 }
 
 class EventProviderRepositoryImpl(
@@ -78,7 +78,7 @@ class EventProviderRepositoryImpl(
         url: String,
         token: String,
         signingCertificateBytes: ByteArray
-    ): SignedResponseWithModel<RemoteEventsNegativeTests> {
+    ): SignedResponseWithModel<RemoteTestResult3> {
         return testProviderApiClient.negativeTestEvents(
             url = url,
             authorization = "Bearer $token",
