@@ -184,7 +184,7 @@
     <string name="create_qr_explanation_menu_title">Make QR code</string>
     <string name="create_qr_explanation_menu_title_alternative">Add a QR code</string>
     <string name="create_qr_explanation_title">Make a QR code</string>
-    <string name="create_qr_explanation_description"><![CDATA[The app makes a QR code in three steps. This QR code is your personal certificate.<br/><br/><b>1. Vaccination or test certificate?</b><br/>Choose to create a QR code of a vaccination or of a negative test result.<br/><br/><b>2. Automatically retrieve data </b><br/>The app directly retrieves the data of your vaccination or rest result.<br/><br/><b>  3. Check data </b><br/>Check if the data of your vaccination and/or test result is correct.<br/><br/><b>  Going abroad?</b><br/> The app creates two QR codes: one for the Netherlands, one for other countries. When travelling outside the Netherlands, please use your international QR code. In <a href="https://www.nederlandwereldwijd.nl/reizen-naar-het-buitenland"> this overview</a>, you\'ll find if the QR code is valid in the country you’re planning to visit.]]></string>
+    <string name="create_qr_explanation_description"><![CDATA[The app makes a QR code in three steps. This QR code is your personal certificate.<br/><br/><b>1. Vaccination or test certificate?</b><br/>Choose to create a QR code of a vaccination or of a negative test result.<br/><br/><b>2. Automatically retrieve data </b><br/>The app directly retrieves the data of your vaccination or rest result.<br/><br/><b>  3. Check data </b><br/>Check if the data of your vaccination and/or test result is correct.<br/><br/><b>]]></string>
     <string name="qr_code_type_title">What are you making a QR code from?</string>
     <string name="qr_code_type_description">You can make a QR code of a negative test result or of a vaccination.</string>
     <string name="qr_code_type_negative_test_title">A negative test result</string>
@@ -250,7 +250,7 @@
     <string name="type_vaccination">vaccination certificate</string>
     <string name="my_overview_green_card_not_valid_title_vaccination">About your vaccination certificate</string>
     <string name="my_overview_green_card_not_valid_title_test">About your test certificate</string>
-    <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_test"><![CDATA[Your test certificate isn\'t valid in the Netherlands. That\'s why only an international QR code was made.<br/><br/>It\'s possible the validity period in the Netherlands (%1$s uur) is shorter than the validity period in other countries. Get tested again.]]></string>
+    <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_test"><![CDATA[Your test certificate isn\'t valid in the Netherlands. That\'s why only an international QR code was made.<br/><br/>It\'s possible the validity period in the Netherlands (%1$s hours is shorter than the validity period in other countries. Get tested again.]]></string>
     <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_vaccination"><![CDATA[Your vaccination certificate isn\'t valid in the Netherlands. That\'s why only an international QR code was made.<br/><br/>It\'s possible you\'ve only had one injection. Add your second injection to get a valid Dutch certificate.]]></string>
     <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_test"><![CDATA[Your test certificate isn\'t valid internationally. That\'s why only a Dutch QR code was made.<br/><br/>It\'s possible your type of test isn\'t accepted abroad. Get tested again.]]></string>
     <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_vaccination"><![CDATA[Your vaccination certificate isn\'t valid internationally. That\'s why only a Dutch QR code was made.<br/><br/>It\'s possible your type of vaccination isn\'t accepted abroad.]]></string>
@@ -272,10 +272,10 @@
     <string name="too_busy_description">There are currently many visitors on the affiliated partner\'s website. We can\'t fetch your details now. Please try again later.</string>
     <string name="no_digid_url">https://www.digid.nl/en/apply-or-activate-digid</string>
     <string name="digid_login_failed">Couldn\'t log in with DigiD</string>
-    <string name="event_provider_error_title">Sorry, er gaat iets mis</string>
-    <string name="event_provider_error_description">Er gaat iets mis met de server van je testlocatie of priklocatie. Probeer het later nog eens.</string>
-    <string name="coronacheck_error_title">Sorry, er gaat iets mis</string>
-    <string name="coronacheck_error_description">Neem contact op met de helpdesk van CoronaCheck en geef de foutcode (%1$s) door. Of probeer het later opnieuw.</string>
-    <string name="missing_events_title">Gegevens mogelijk niet compleet</string>
-    <string name="missing_events_description">Door drukte of een storing bij een van de partijen kunnen er gegevens ontbreken. Probeer het eventueel later nog een keer.</string>
+    <string name="event_provider_error_title">Sorry, something went wrong</string>
+    <string name="event_provider_error_description">Something went wrong with the server of your test or injection location. Please try again later.</string>
+    <string name="coronacheck_error_title">Sorry, something went wrong</string>
+    <string name="coronacheck_error_description">Contact our helpdesk and give them error code (%1$s) or try again later.</string>
+    <string name="missing_events_title">Details possibly incomplete</string>
+    <string name="missing_events_description">Due to increased traffic or an outage at one of the parties, some details may be missing. Please try again later.</string>
 </resources>
