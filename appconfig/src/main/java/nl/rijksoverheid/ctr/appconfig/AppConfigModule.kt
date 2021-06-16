@@ -31,11 +31,11 @@ import retrofit2.Retrofit
 fun appConfigModule(path: String, versionCode: Int) = module {
     factory<ConfigRepository> { ConfigRepositoryImpl(get()) }
     factory<AppConfigUseCase> { AppConfigUseCaseImpl(get(), get(), get()) }
-    factory<AppStatusUseCase> { AppStatusUseCaseImpl(get(), get(), get()) }
+    factory<AppStatusUseCase> { AppStatusUseCaseImpl(get(), get(), get(), get()) }
     factory<AppConfigPersistenceManager> { AppConfigPersistenceManagerImpl(get()) }
     factory<AppConfigStorageManager> { AppConfigStorageManagerImpl(androidContext().cacheDir.path) }
     factory<CachedAppConfigUseCase> { CachedAppConfigUseCaseImpl(get(), get(), androidContext().cacheDir.path, get()) }
-    factory<PersistConfigUseCase> { PersistConfigUseCaseImpl(get(), get(), androidContext().packageName.contains("verifier"),androidContext().cacheDir.path, get()) }
+    factory<PersistConfigUseCase> { PersistConfigUseCaseImpl(get(), get(), androidContext().packageName.contains("verifier"),androidContext().cacheDir.path) }
     factory<LoadPublicKeysUseCase> { LoadPublicKeysUseCaseImpl(get(), get()) }
     factory<AppConfigUtil> { AppConfigUtilImpl(androidContext(), get()) }
 

@@ -46,8 +46,8 @@ class AppConfigViewModelImpl(
             val appStatus = appStatusUseCase.get(configResult, versionCode)
             if (configResult is ConfigResult.Success) {
                 persistConfigUseCase.persist(
-                    appConfig = configResult.appConfig,
-                    publicKeys = configResult.publicKeys
+                    appConfigContents = configResult.appConfig,
+                    publicKeyContents = configResult.publicKeys
                 )
                 cachedAppConfigUseCase.getCachedPublicKeys()?.let {
                     loadPublicKeysUseCase.load(it)

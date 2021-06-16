@@ -4,14 +4,9 @@ import com.squareup.moshi.Moshi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
-import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
-import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
 import nl.rijksoverheid.ctr.appconfig.persistence.StorageResult
-import okhttp3.ResponseBody
-import okio.BufferedSource
 import java.io.File
-import java.io.InputStream
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -22,7 +17,7 @@ import java.io.InputStream
  */
 
 interface PersistConfigUseCase {
-    suspend fun persist(appConfig: AppConfig, publicKeys: BufferedSource): StorageResult
+    suspend fun persist(appConfigContents: String, publicKeyContents: String): StorageResult
 }
 
 class PersistConfigUseCaseImpl(
@@ -30,26 +25,23 @@ class PersistConfigUseCaseImpl(
     private val appConfigStorageManager: AppConfigStorageManager,
     private val isVerifierApp: Boolean,
     private val cacheDir: String,
-    private val moshi: Moshi
 ) : PersistConfigUseCase {
 
-    override suspend fun persist(appConfig: AppConfig, publicKeys: BufferedSource) =
+    override suspend fun persist(appConfigContents: String, publicKeyContents: String) =
         withContext(Dispatchers.IO) {
-            val configContents = appConfig.toJson(moshi)
             appConfigPersistenceManager.saveAppConfigJson(
-                json = configContents
+                json = appConfigContents
             )
 
             val publicKeysFile = File(cacheDir, "public_keys.json")
-            val contents = publicKeys.readUtf8()
-            val publicKeysStorageResult = appConfigStorageManager.storageFile(publicKeysFile, contents)
+            val publicKeysStorageResult = appConfigStorageManager.storageFile(publicKeysFile, publicKeyContents)
             if (publicKeysStorageResult is StorageResult.Error) {
                 return@withContext publicKeysStorageResult
             }
 
             if (isVerifierApp) {
                 val configFile = File(cacheDir, "config.json")
-                val configStorageResult = appConfigStorageManager.storageFile(configFile, configContents)
+                val configStorageResult = appConfigStorageManager.storageFile(configFile, appConfigContents)
                 if (configStorageResult is StorageResult.Error) {
                     return@withContext configStorageResult
                 }
