@@ -81,6 +81,11 @@ class GetEventProvidersWithTokensUseCaseImpl(
                 EventProviderWithTokenResult.Error.ServerError(e.code())
             } catch (e: IOException) {
                 EventProviderWithTokenResult.Error.NetworkError
+            } catch (e: Exception) {
+                // In case the event provider gives us back a 200 with json we are not expecting
+                EventProviderWithTokenResult.Error.ServerError(
+                    httpCode = 200
+                )
             }
         }.filterNotNull()
     }
