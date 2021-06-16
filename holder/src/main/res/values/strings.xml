@@ -11,7 +11,7 @@
     <string name="onboarding_screen_4_title">QR-code = jouw bewijs</string>
     <string name="onboarding_screen_4_description">Deze app maakt van jouw testuitslag of vaccinatie een QR-code. Dat is jouw bewijs. De QR-code wordt gecheckt bij de ingang van locaties en activiteiten. Of aan de grens. Verloopt je bewijs? Dan verdwijnt de QR-code.</string>
     <string name="onboarding_screen_3_title">QR-codes voor Nederland en internationaal</string>
-    <string name="onboarding_screen_3_description">"De app maakt twee QR-codes: één voor Nederland en één internationale. Beide QR-codes vind je in de app. Reis je buiten Nederland? Gebruik dan je internationale QR-code. Je kunt de internationale QR-code gebruiken vanaf %1$s. "</string>
+    <string name="onboarding_screen_3_description">"De app maakt twee QR-codes: een QR-code voor Nederland en een internationale. Beide QR-codes vind je in de app. Reis je buiten Nederland? Gebruik dan je internationale QR-code. Je kunt de internationale QR-code gebruiken vanaf %1$s. "</string>
     <string name="onboarding_next">Volgende</string>
     <string name="privacy_policy_title">Zo gebruikt de app jouw gegevens</string>
     <string name="privacy_policy_description"><![CDATA[In de <a href="https://coronacheck.nl/nl/privacy-in-app">privacyverklaring</a> staat hoe de app omgaat met jouw gegevens. Dit zijn de belangrijkste punten:]]></string>
