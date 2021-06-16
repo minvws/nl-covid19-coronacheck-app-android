@@ -21,21 +21,28 @@ class RefreshCredentialsJob(
     private val greenCardsUseCase: GreenCardsUseCase,
 ): CoroutineWorker(context, params) {
     override suspend fun doWork(): Result {
+        println("GIO work work")
         val expiringCardOriginType = greenCardsUseCase.expiringCardOriginType()
         val syncWithRemote = expiringCardOriginType != null
-        if (syncWithRemote) {
-            return when (holderDatabaseSyncer.sync(expiringCardOriginType, true)) {
+        return if (syncWithRemote) {
+             when (holderDatabaseSyncer.sync(expiringCardOriginType, true)) {
                 DatabaseSyncerResult.Success -> Result.success()
                 else -> Result.retry()
             }
+        } else {
+            holderDatabaseSyncer.sync(
+                syncWithRemote = false
+            )
+            Result.success()
         }
 
-        return Result.success()
+
     }
 
     companion object {
         fun schedule(context: Context, credentialRenewalDays: Long) {
-            val request = PeriodicWorkRequestBuilder<RefreshCredentialsJob>(credentialRenewalDays, TimeUnit.DAYS)
+            println("GIO scheduling")
+            val request = PeriodicWorkRequestBuilder<RefreshCredentialsJob>(15, TimeUnit.MINUTES)
                 .setConstraints(
                     Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
                 ).build()
