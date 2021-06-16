@@ -16,23 +16,11 @@ import java.time.LocalDate
 @JsonClass(generateAdapter = true)
 data class RemoteEventsVaccinations(
     val events: List<Event>?,
-    val protocolVersion: String?,
-    val providerIdentifier: String?,
-    val status: Status?,
+    override val protocolVersion: String,
+    override val providerIdentifier: String,
+    override val status: Status,
     val holder: Holder?
-) : Parcelable {
-
-    enum class Status(val apiStatus: String) {
-        UNKNOWN(""),
-        PENDING("pending"),
-        COMPLETE("complete");
-
-        companion object {
-            fun fromValue(value: String?): Status {
-                return values().firstOrNull { it.apiStatus == value } ?: UNKNOWN
-            }
-        }
-    }
+) : RemoteProtocol(providerIdentifier, protocolVersion, status), Parcelable {
 
     @Parcelize
     @JsonClass(generateAdapter = true)
@@ -65,6 +53,10 @@ data class RemoteEventsVaccinations(
             val manufacturer: String?
         ) : Parcelable
 
+    }
+
+    override fun hasEvents(): Boolean {
+        return events?.isNotEmpty() ?: false
     }
 }
 

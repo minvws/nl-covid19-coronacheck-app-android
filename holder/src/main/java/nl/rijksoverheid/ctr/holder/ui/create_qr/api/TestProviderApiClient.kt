@@ -20,10 +20,10 @@ interface TestProviderApiClient {
     suspend fun getTestResult(
         @Url url: String,
         @Header("Authorization") authorization: String,
-        @Header("CoronaCheck-Protocol-Version") protocolVersion: String = "2.0",
+        @Header("CoronaCheck-Protocol-Version") protocolVersion: String = "3.0",
         @Body data: GetTestResultPostData?,
         @Tag certificate: SigningCertificate
-    ): SignedResponseWithModel<RemoteTestResult>
+    ): SignedResponseWithModel<RemoteProtocol>
 
     @POST
     @SignedRequest
@@ -63,5 +63,5 @@ interface TestProviderApiClient {
         @Header("CoronaCheck-Protocol-Version") protocolVersion: String = "3.0",
         @Body params: Map<String, String> = mapOf("filter" to "negativetest"),
         @Tag certificate: SigningCertificate,
-        ): SignedResponseWithModel<RemoteEventsNegativeTests>
+        ): SignedResponseWithModel<RemoteTestResult3>
 }

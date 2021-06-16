@@ -10,9 +10,9 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.CommercialTestCodeViewModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
+import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.EventProviderRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.TestProviderRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
-import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TokenValidatorUtil
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
@@ -185,13 +185,13 @@ fun fakeCommitmentMessageUsecase(
 }
 
 fun fakeTestProviderRepository(
-    model: SignedResponseWithModel<RemoteTestResult> = SignedResponseWithModel(
+    model: SignedResponseWithModel<RemoteProtocol> = SignedResponseWithModel(
         rawResponse = "dummy".toByteArray(),
-        model = RemoteTestResult(
+        model = RemoteTestResult2(
             result = null,
             protocolVersion = "1",
             providerIdentifier = "1",
-            status = RemoteTestResult.Status.COMPLETE
+            status = RemoteProtocol.Status.COMPLETE
         ),
     ),
     remoteTestResultExceptionCallback: (() -> Unit)? = null,
@@ -202,7 +202,7 @@ fun fakeTestProviderRepository(
             token: String,
             verifierCode: String?,
             signingCertificateBytes: ByteArray
-        ): SignedResponseWithModel<RemoteTestResult> {
+        ): SignedResponseWithModel<RemoteProtocol> {
             remoteTestResultExceptionCallback?.invoke()
             return model
         }
@@ -210,11 +210,12 @@ fun fakeTestProviderRepository(
 }
 
 fun fakeConfigProviderUseCase(
+    eventProviders: List<RemoteConfigProviders.EventProvider> = listOf(),
     provider: RemoteConfigProviders.TestProvider? = null
 ): ConfigProvidersUseCase {
     return object : ConfigProvidersUseCase {
         override suspend fun eventProviders(): List<RemoteConfigProviders.EventProvider> {
-            return listOf()
+            return eventProviders
         }
 
         override suspend fun testProvider(id: String): RemoteConfigProviders.TestProvider? {
@@ -410,6 +411,47 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
                 "1622731645"
             )
         }
+    }
+}
+
+fun fakeEventProviderRepository(
+    unomiVaccinationEvents: ((url: String) -> RemoteUnomi) = { RemoteUnomi("", "", false) },
+    unomiTestEvents: ((url: String) -> RemoteUnomi) = { RemoteUnomi("", "", false) },
+    vaccinationEvents: ((url: String) -> SignedResponseWithModel<RemoteEventsVaccinations>) = { SignedResponseWithModel("".toByteArray(), RemoteEventsVaccinations(
+        listOf(), "", "", RemoteProtocol.Status.COMPLETE, null),) },
+    negativeTestEvents: ((url: String) -> SignedResponseWithModel<RemoteTestResult3>) = { SignedResponseWithModel("".toByteArray(), RemoteTestResult3(
+        listOf(), "", "", RemoteProtocol.Status.COMPLETE, null)) }
+) = object: EventProviderRepository {
+    override suspend fun unomiVaccinationEvents(
+        url: String,
+        token: String,
+        signingCertificateBytes: ByteArray
+    ): RemoteUnomi {
+        return unomiVaccinationEvents.invoke(url)
+    }
+
+    override suspend fun unomiTestEvents(
+        url: String,
+        token: String,
+        signingCertificateBytes: ByteArray
+    ): RemoteUnomi {
+        return unomiTestEvents.invoke(url)
+    }
+
+    override suspend fun vaccinationEvents(
+        url: String,
+        token: String,
+        signingCertificateBytes: ByteArray
+    ): SignedResponseWithModel<RemoteEventsVaccinations> {
+        return vaccinationEvents.invoke(url)
+    }
+
+    override suspend fun negativeTestEvent(
+        url: String,
+        token: String,
+        signingCertificateBytes: ByteArray
+    ): SignedResponseWithModel<RemoteTestResult3> {
+        return negativeTestEvents.invoke(url)
     }
 }
 

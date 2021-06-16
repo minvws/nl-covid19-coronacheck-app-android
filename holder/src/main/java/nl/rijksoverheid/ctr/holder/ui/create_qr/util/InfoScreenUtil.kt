@@ -5,9 +5,9 @@ import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.design.ext.formatDateTime
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsNegativeTests
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsVaccinations
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
 import nl.rijksoverheid.ctr.shared.ext.getStringOrNull
 import nl.rijksoverheid.ctr.shared.models.PersonalDetails
 import org.json.JSONObject
@@ -16,10 +16,10 @@ import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 
 interface InfoScreenUtil {
-    fun getForRemoteTestResult2(result: RemoteTestResult.Result,
+    fun getForRemoteTestResult2(result: RemoteTestResult2.Result,
                                 personalDetails: PersonalDetails,
                                 testDate: String): InfoScreen
-    fun getForRemoteTestResult3(event: RemoteEventsNegativeTests.Event,
+    fun getForRemoteTestResult3(event: RemoteTestResult3.Event,
                                 fullName: String,
                                 testDate: String,
                                 validUntil: String,
@@ -35,7 +35,7 @@ interface InfoScreenUtil {
 class InfoScreenUtilImpl(private val application: Application,
                          private val cachedAppConfigUseCase: CachedAppConfigUseCase): InfoScreenUtil {
     override fun getForRemoteTestResult2(
-        result: RemoteTestResult.Result,
+        result: RemoteTestResult2.Result,
         personalDetails: PersonalDetails,
         testDate: String): InfoScreen {
         val testType = cachedAppConfigUseCase.getCachedAppConfig()?.nlTestTypes?.firstOrNull {
@@ -58,7 +58,7 @@ class InfoScreenUtilImpl(private val application: Application,
     }
 
     override fun getForRemoteTestResult3(
-        event: RemoteEventsNegativeTests.Event,
+        event: RemoteTestResult3.Event,
         fullName: String,
         testDate: String,
         validUntil: String,

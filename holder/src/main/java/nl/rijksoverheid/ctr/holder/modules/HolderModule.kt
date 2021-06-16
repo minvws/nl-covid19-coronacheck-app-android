@@ -2,6 +2,8 @@ package nl.rijksoverheid.ctr.holder.modules
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
+import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import nl.rijksoverheid.ctr.api.signing.certificates.DIGICERT_BTC_ROOT_CA
 import nl.rijksoverheid.ctr.api.signing.certificates.EV_ROOT_CA
 import nl.rijksoverheid.ctr.api.signing.certificates.PRIVATE_ROOT_CA
@@ -21,13 +23,10 @@ import nl.rijksoverheid.ctr.holder.persistence.database.usecases.GreenCardsUseCa
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.GreenCardsUseCaseImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.HolderApiClient
-import nl.rijksoverheid.ctr.holder.ui.create_qr.api.RemoteEventsStatusJsonAdapter
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.RemoteTestStatusJsonAdapter
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.TestProviderApiClient
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigiDViewModel
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.ResponseError
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
@@ -75,6 +74,12 @@ fun holderModule(baseUrl: String) = module {
     }
 
     // Use cases
+    factory<GetEventProvidersWithTokensUseCase> {
+        GetEventProvidersWithTokensUseCaseImpl(get())
+    }
+    factory<GetRemoteEventsUseCase> {
+        GetRemoteEventsUseCaseImpl(get())
+    }
     factory<QrCodeUseCase> {
         QrCodeUseCaseImpl(
             get(),
@@ -116,7 +121,7 @@ fun holderModule(baseUrl: String) = module {
         TokenQrUseCase(get())
     }
     factory<DeviceRootedUseCase> { DeviceRootedUseCaseImpl(androidContext()) }
-    factory<GetEventsUseCase> { GetEventsUseCaseImpl(get(), get(), get()) }
+    factory<GetEventsUseCase> { GetEventsUseCaseImpl(get(), get(), get(), get()) }
     factory<SaveEventsUseCase> { SaveEventsUseCaseImpl(get()) }
 
     factory<TestResultsMigrationManager> { TestResultsMigrationManagerImpl(get(), get(), get()) }
@@ -209,11 +214,11 @@ fun holderModule(baseUrl: String) = module {
         get<Retrofit>(Retrofit::class).create(HolderApiClient::class.java)
     }
 
-    single<Converter<ResponseBody, SignedResponseWithModel<RemoteTestResult>>>(named("SignedResponseWithModel")) {
+    single<Converter<ResponseBody, SignedResponseWithModel<RemoteProtocol>>>(named("SignedResponseWithModel")) {
         get<Retrofit>(Retrofit::class).responseBodyConverter(
             Types.newParameterizedType(
                 SignedResponseWithModel::class.java,
-                RemoteTestResult::class.java
+                RemoteProtocol::class.java
             ), emptyArray()
         )
     }
@@ -227,7 +232,11 @@ fun holderModule(baseUrl: String) = module {
     single {
         get<Moshi.Builder>(Moshi.Builder::class)
             .add(RemoteTestStatusJsonAdapter())
-            .add(RemoteEventsStatusJsonAdapter())
+            .add(PolymorphicJsonAdapterFactory.of(
+                RemoteProtocol::class.java, "protocolVersion")
+                .withSubtype(RemoteTestResult2::class.java, "2.0")
+                .withSubtype(RemoteTestResult3::class.java, "3.0"))
+            .add(KotlinJsonAdapterFactory())
             .build()
     }
 }

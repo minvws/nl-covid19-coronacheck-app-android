@@ -75,7 +75,7 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
             )
 
             getCreateQrCardItem(
-                hasGreenCards = items.any { it is GreenCardItem },
+                greenCards = allGreenCards,
                 selectedType = selectedType,
             )?.let {
                 items.add(it)
@@ -201,10 +201,10 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
     }
 
     private fun getCreateQrCardItem(
-        hasGreenCards: Boolean,
+        greenCards: List<GreenCard>,
         selectedType: GreenCardType
     ): MyOverviewItem? {
-        return if (hasGreenCards) {
+        return if (greenCards.isNotEmpty()) {
             null
         } else {
             // Only return create qr card if there are not green cards on the screen and we have domestic type selected

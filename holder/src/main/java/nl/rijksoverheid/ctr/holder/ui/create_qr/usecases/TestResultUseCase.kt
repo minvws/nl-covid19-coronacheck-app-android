@@ -1,12 +1,15 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
 import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.TestProviderRepository
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TokenValidatorUtil
+import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TokenValidatorUtilImpl
 import nl.rijksoverheid.ctr.shared.ext.removeWhitespace
 import nl.rijksoverheid.ctr.shared.models.PersonalDetails
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
@@ -52,6 +55,14 @@ class TestResultUseCase(
         val token = uniqueCodeAttributes[1]
         val checksum = uniqueCodeAttributes[2]
 
+        // Disable the luhn check for now since providers do not yet support it
+        // We need to check for valid chars
+        token.toCharArray().forEach {
+            if (!TokenValidatorUtilImpl.CODE_POINTS.contains(it)) {
+                return TestResult.InvalidToken
+            }
+        }
+
 //        if (!tokenValidatorUtil.validate(
 //                token = token,
 //                checksum = checksum
@@ -74,38 +85,22 @@ class TestResultUseCase(
             val remoteTestResult = signedResponseWithTestResult.model
 
             when (remoteTestResult.status) {
-                RemoteTestResult.Status.VERIFICATION_REQUIRED -> return TestResult.VerificationRequired
-                RemoteTestResult.Status.INVALID_TOKEN -> return TestResult.InvalidToken
-                RemoteTestResult.Status.PENDING -> return TestResult.Pending
-                RemoteTestResult.Status.COMPLETE -> {
-                    // nothing
+                RemoteProtocol.Status.VERIFICATION_REQUIRED -> return TestResult.VerificationRequired
+                RemoteProtocol.Status.INVALID_TOKEN -> return TestResult.InvalidToken
+                RemoteProtocol.Status.PENDING -> return TestResult.Pending
+                RemoteProtocol.Status.COMPLETE -> {
+                    if (remoteTestResult is RemoteTestResult2) {
+                        if (remoteTestResult.result?.negativeResult == false) {
+                            return TestResult.NoNegativeTestResult
+                        }
+                    }
+
+                    return TestResult.NegativeTestResult(
+                        remoteTestResult,
+                        signedResponseWithTestResult
+                    )
                 }
                 else -> throw IllegalStateException("Unsupported status ${remoteTestResult.status}")
-            }
-
-            val result = remoteTestResult.result ?: error("Expected result")
-            val personalDetails = personalDetailsUtil.getPersonalDetails(
-                firstNameInitial = result.holder.firstNameInitial,
-                lastNameInitial = result.holder.lastNameInitial,
-                birthDay = result.holder.birthDay,
-                birthMonth = result.holder.birthMonth,
-                includeBirthMonthNumber = false
-            )
-
-            if (remoteTestResult.result.negativeResult && testResultUtil.isValid(
-                    sampleDate = remoteTestResult.result.sampleDate,
-                    validitySeconds = TimeUnit.HOURS.toSeconds(
-                        cachedAppConfigUseCase.getCachedAppConfigMaxValidityHours().toLong()
-                    )
-                )
-            ) {
-                TestResult.NegativeTestResult(
-                    remoteTestResult,
-                    personalDetails,
-                    signedResponseWithTestResult
-                )
-            } else {
-                TestResult.NoNegativeTestResult
             }
         } catch (ex: HttpException) {
             Timber.e(ex, "Server error while getting test result")
@@ -120,9 +115,8 @@ class TestResultUseCase(
 sealed class TestResult {
     object NoNegativeTestResult : TestResult()
     data class NegativeTestResult(
-        val remoteTestResult: RemoteTestResult,
-        val personalDetails: PersonalDetails,
-        val signedResponseWithTestResult: SignedResponseWithModel<RemoteTestResult>
+        val remoteTestResult: RemoteProtocol,
+        val signedResponseWithTestResult: SignedResponseWithModel<RemoteProtocol>
     ) : TestResult()
 
     object Pending : TestResult()

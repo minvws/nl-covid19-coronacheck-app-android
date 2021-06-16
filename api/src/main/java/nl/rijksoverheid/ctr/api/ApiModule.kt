@@ -90,7 +90,6 @@ fun apiModule(
 
     single {
         Moshi.Builder()
-            .add(KotlinJsonAdapterFactory())
             .add(Base64JsonAdapter())
             .add(JsonObjectJsonAdapter())
             .add(OffsetDateTimeJsonAdapter())

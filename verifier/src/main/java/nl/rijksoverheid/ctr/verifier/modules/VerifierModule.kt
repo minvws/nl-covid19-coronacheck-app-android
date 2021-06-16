@@ -9,6 +9,7 @@
 package nl.rijksoverheid.ctr.verifier.modules
 
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import nl.rijksoverheid.ctr.introduction.ui.new_terms.models.NewTerms
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 import nl.rijksoverheid.ctr.verifier.persistance.SharedPreferencesPersistenceManager
@@ -64,6 +65,7 @@ fun verifierModule(path: String) = module {
     viewModel<ScannerViewModel> { ScannerViewModelImpl(get()) }
 
     single {
-        get<Moshi.Builder>(Moshi.Builder::class).build()
+        get<Moshi.Builder>(Moshi.Builder::class)
+            .add(KotlinJsonAdapterFactory()).build()
     }
 }

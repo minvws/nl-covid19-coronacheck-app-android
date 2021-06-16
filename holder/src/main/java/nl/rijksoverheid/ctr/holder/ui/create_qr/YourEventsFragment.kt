@@ -26,8 +26,8 @@ import nl.rijksoverheid.ctr.holder.databinding.FragmentYourEventsBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.ui.create_qr.items.YourEventWidget
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsVaccinations
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsNegativeTests
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult3
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.InfoScreenUtil
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
@@ -141,14 +141,17 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
 
     private fun presentTestResult3(
         binding: FragmentYourEventsBinding,
-        remoteEvents: Map<RemoteEventsNegativeTests, ByteArray>
+        remoteEvents: Map<RemoteTestResult3, ByteArray>
     ) {
         binding.title.setText(R.string.your_negative_test_results_title)
         binding.description.setHtmlText(getString(R.string.your_negative_test_results_description))
 
         remoteEvents.keys.forEach { negativeTests ->
-            val fullName =
-                "${negativeTests.holder?.infix} ${negativeTests.holder?.lastName}, ${negativeTests.holder?.firstName}"
+            val fullName = getFullName(
+                infix = negativeTests.holder?.infix,
+                firstName = negativeTests.holder?.firstName,
+                lastName = negativeTests.holder?.lastName
+            )
 
             negativeTests.events?.forEach { event ->
 
@@ -233,7 +236,7 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
 
     private fun presentTestResult2(
         binding: FragmentYourEventsBinding,
-        remoteTestResult: RemoteTestResult,
+        remoteTestResult: RemoteTestResult2,
         remoteTestResultRawResponse: ByteArray,
     ) {
         binding.title.setText(R.string.your_negative_test_results_title)
@@ -320,8 +323,11 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
             getString(R.string.your_retrieved_vaccinations_description)
 
         remoteEvents.keys.forEach { vaccinationEvents ->
-            val fullName =
-                "${vaccinationEvents.holder?.infix} ${vaccinationEvents.holder?.lastName}, ${vaccinationEvents.holder?.firstName}"
+            val fullName = getFullName(
+                infix = vaccinationEvents.holder?.infix,
+                firstName = vaccinationEvents.holder?.firstName,
+                lastName = vaccinationEvents.holder?.lastName
+            )
 
             val birthDate = vaccinationEvents.holder?.birthDate?.let { birthDate ->
                 try {
@@ -395,5 +401,9 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
 
         // Hide something wrong button
         binding.somethingWrongButton.visibility = View.GONE
+    }
+
+    private fun getFullName(infix: String?, firstName: String?, lastName: String?): String {
+        return if (infix.isNullOrEmpty()) "${lastName}, $firstName" else "$infix ${lastName}, $firstName"
     }
 }

@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsNegativeTests
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.EventsResult
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetEventsUseCase
 import nl.rijksoverheid.ctr.shared.livedata.Event
@@ -19,7 +19,7 @@ import nl.rijksoverheid.ctr.shared.livedata.Event
  */
 abstract class ChooseProviderViewModel : ViewModel() {
     val loading: LiveData<Event<Boolean>> = MutableLiveData()
-    val eventsResult: LiveData<Event<EventsResult<RemoteEventsNegativeTests>>> = MutableLiveData()
+    val eventsResult: LiveData<Event<EventsResult<RemoteTestResult3>>> = MutableLiveData()
 
     abstract fun getEvents(digidToken: String)
 }
@@ -33,7 +33,7 @@ class ChooseProviderViewModelImpl(
         viewModelScope.launch {
             try {
                 (eventsResult as MutableLiveData).value =
-                    Event(eventUseCase.getTestResult3Events(digidToken))
+                    Event(eventUseCase.getNegativeTestEvents(digidToken))
             } finally {
                 loading.value = Event(false)
             }
