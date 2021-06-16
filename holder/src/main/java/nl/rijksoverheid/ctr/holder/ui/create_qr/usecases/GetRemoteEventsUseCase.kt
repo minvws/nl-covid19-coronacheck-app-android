@@ -13,7 +13,7 @@ interface GetRemoteEventsUseCase {
                 token: RemoteAccessTokens.Token): RemoteEventsResult<RemoteEventsVaccinations>
 
     suspend fun getTestResults(eventProvider: RemoteConfigProviders.EventProvider,
-                                token: RemoteAccessTokens.Token): RemoteEventsResult<RemoteEventsNegativeTests>
+                                token: RemoteAccessTokens.Token): RemoteEventsResult<RemoteTestResult3>
 }
 
 class GetRemoteEventsUseCaseImpl(private val eventProviderRepository: EventProviderRepository): GetRemoteEventsUseCase {
@@ -42,7 +42,7 @@ class GetRemoteEventsUseCaseImpl(private val eventProviderRepository: EventProvi
     override suspend fun getTestResults(
         eventProvider: RemoteConfigProviders.EventProvider,
         token: RemoteAccessTokens.Token
-    ): RemoteEventsResult<RemoteEventsNegativeTests> {
+    ): RemoteEventsResult<RemoteTestResult3> {
 
         return try {
             val events = eventProviderRepository
@@ -64,7 +64,7 @@ class GetRemoteEventsUseCaseImpl(private val eventProviderRepository: EventProvi
 }
 
 sealed class RemoteEventsResult<out T> {
-    data class Success<T: RemoteEvent>(val signedModel: SignedResponseWithModel<T>): RemoteEventsResult<T>()
+    data class Success<T: RemoteProtocol>(val signedModel: SignedResponseWithModel<T>): RemoteEventsResult<T>()
     sealed class Error: RemoteEventsResult<Nothing>() {
         data class ServerError(val httpCode: Int): Error()
         object NetworkError : Error()

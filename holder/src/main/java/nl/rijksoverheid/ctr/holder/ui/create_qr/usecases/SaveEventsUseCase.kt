@@ -4,8 +4,8 @@ import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsVaccinations
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsNegativeTests
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult3
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
 import java.time.ZoneOffset
 
 /*
@@ -16,8 +16,8 @@ import java.time.ZoneOffset
  *
  */
 interface SaveEventsUseCase {
-    suspend fun saveNegativeTest2(negativeTest2: RemoteTestResult, rawResponse: ByteArray)
-    suspend fun saveNegativeTests3(negativeTests3: Map<RemoteEventsNegativeTests, ByteArray>)
+    suspend fun saveNegativeTest2(negativeTest2: RemoteTestResult2, rawResponse: ByteArray)
+    suspend fun saveNegativeTests3(negativeTests3: Map<RemoteTestResult3, ByteArray>)
     suspend fun saveVaccinations(vaccinations: Map<RemoteEventsVaccinations, ByteArray>)
 }
 
@@ -43,7 +43,7 @@ class SaveEventsUseCaseImpl(private val holderDatabase: HolderDatabase) : SaveEv
         holderDatabase.eventGroupDao().insertAll(entities)
     }
 
-    override suspend fun saveNegativeTest2(negativeTest2: RemoteTestResult, rawResponse: ByteArray) {
+    override suspend fun saveNegativeTest2(negativeTest2: RemoteTestResult2, rawResponse: ByteArray) {
         // Make remote test results to event group entities to save in the database
         val entity = EventGroupEntity(
             walletId = 1,
@@ -57,7 +57,7 @@ class SaveEventsUseCaseImpl(private val holderDatabase: HolderDatabase) : SaveEv
         holderDatabase.eventGroupDao().insertAll(listOf(entity))
     }
 
-    override suspend fun saveNegativeTests3(negativeTests3: Map<RemoteEventsNegativeTests, ByteArray>) {
+    override suspend fun saveNegativeTests3(negativeTests3: Map<RemoteTestResult3, ByteArray>) {
         // Map remote events to EventGroupEntity to save in the database
         val entities = negativeTests3.map {
             EventGroupEntity(

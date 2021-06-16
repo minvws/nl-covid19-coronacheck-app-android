@@ -41,7 +41,8 @@ data class AppConfig(
     @Json(name = "euTestTypes") val euTestTypes: List<Code> = listOf(),
     @Json(name = "euTestManufacturers") val euTestManufacturers: List<Code> = listOf(),
     @Json(name = "nlTestTypes") val nlTestTypes: List<Code> = listOf(),
-    @Json(name = "providerIdentifiers") val providerIdentifiers: List<Code> = listOf()
+    @Json(name = "providerIdentifiers") val providerIdentifiers: List<Code> = listOf(),
+    @Json(name = "ggdEnabled") val ggdEnabled: Boolean = false
 ) : JSON() {
 
     @JsonClass(generateAdapter = true)

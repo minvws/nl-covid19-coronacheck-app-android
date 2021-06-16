@@ -3,9 +3,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
-import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.EventProviderRepository
 import retrofit2.HttpException
-import timber.log.Timber
 import java.io.IOException
 
 /*
@@ -26,7 +24,7 @@ import java.io.IOException
  */
 interface GetEventsUseCase {
     suspend fun getVaccinationEvents(jwt: String): EventsResult<RemoteEventsVaccinations>
-    suspend fun getNegativeTestEvents(jwt: String): EventsResult<RemoteEventsNegativeTests>
+    suspend fun getNegativeTestEvents(jwt: String): EventsResult<RemoteTestResult3>
 }
 
 class GetEventsUseCaseImpl(
@@ -43,14 +41,14 @@ class GetEventsUseCaseImpl(
         )
     }
 
-    override suspend fun getNegativeTestEvents(jwt: String): EventsResult<RemoteEventsNegativeTests> {
+    override suspend fun getNegativeTestEvents(jwt: String): EventsResult<RemoteTestResult3> {
         return getRemoteEvents(
             jwt = jwt,
             originType = OriginType.Test
         )
     }
 
-    private suspend fun <T: RemoteEvent> getRemoteEvents(
+    private suspend fun <T: RemoteProtocol> getRemoteEvents(
         jwt: String,
         originType: OriginType
     ): EventsResult<T> {
@@ -127,14 +125,18 @@ class GetEventsUseCaseImpl(
                         EventsResult.Error.EventProviderError.ServerError
                     }
                 }
-
             } else {
-                // We don't have any successful responses from retrieving providers
-                val isNetworkError = eventProvidersWithTokensErrorResults.any { it is EventProviderWithTokenResult.Error.NetworkError }
-                if (isNetworkError) {
-                    EventsResult.Error.NetworkError
+                if (eventProvidersWithTokensErrorResults.isEmpty()) {
+                    // There are no successful responses and no error responses so no events
+                    return EventsResult.HasNoEvents(missingEvents = false)
                 } else {
-                    EventsResult.Error.EventProviderError.ServerError
+                    // We don't have any successful responses but do have error responses
+                    val isNetworkError = eventProvidersWithTokensErrorResults.any { it is EventProviderWithTokenResult.Error.NetworkError }
+                    if (isNetworkError) {
+                        EventsResult.Error.NetworkError
+                    } else {
+                        EventsResult.Error.EventProviderError.ServerError
+                    }
                 }
             }
         } catch (e: HttpException) {
