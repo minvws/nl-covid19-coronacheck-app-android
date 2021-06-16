@@ -28,7 +28,6 @@ class GetRemoteEventsUseCaseImpl(private val eventProviderRepository: EventProvi
                     token = token.event,
                     signingCertificateBytes = eventProvider.cms
                 )
-
             RemoteEventsResult.Success(events)
         } catch (e: HttpException) {
             RemoteEventsResult.Error.ServerError(
@@ -36,6 +35,11 @@ class GetRemoteEventsUseCaseImpl(private val eventProviderRepository: EventProvi
             )
         } catch (e: IOException) {
             RemoteEventsResult.Error.NetworkError
+        } catch (e: Exception) {
+            // In case the event provider gives us back a 200 with json we are not expecting
+            RemoteEventsResult.Error.ServerError(
+                httpCode = 200
+            )
         }
     }
 
@@ -59,6 +63,11 @@ class GetRemoteEventsUseCaseImpl(private val eventProviderRepository: EventProvi
             )
         } catch (e: IOException) {
             RemoteEventsResult.Error.NetworkError
+        } catch (e: Exception) {
+            // In case the event provider gives us back a 200 with json we are not expecting
+            RemoteEventsResult.Error.ServerError(
+                httpCode = 200
+            )
         }
     }
 }
