@@ -15,6 +15,7 @@ interface ConfigRepository {
     suspend fun getPublicKeys(): String
 }
 
+@Suppress("BlockingMethodInNonBlockingContext")
 class ConfigRepositoryImpl(private val api: AppConfigApi) : ConfigRepository {
     override suspend fun getConfig(): String {
         return api.getConfig().source().readUtf8()

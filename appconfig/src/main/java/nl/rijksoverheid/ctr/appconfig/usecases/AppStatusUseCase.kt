@@ -37,7 +37,7 @@ class AppStatusUseCaseImpl(
                 is ConfigResult.Success -> {
                     checkIfActionRequired(
                         currentVersionCode = currentVersionCode,
-                        appConfig = config.appConfig.toObject(moshi) as AppConfig
+                        appConfig = config.appConfig.toObject(moshi)
                     )
                 }
                 is ConfigResult.Error -> {
