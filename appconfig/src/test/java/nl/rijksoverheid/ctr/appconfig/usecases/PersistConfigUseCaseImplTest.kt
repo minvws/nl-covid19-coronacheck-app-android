@@ -1,6 +1,5 @@
 package nl.rijksoverheid.ctr.appconfig.usecases
 
-import com.squareup.moshi.Moshi
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -25,20 +24,7 @@ class PersistConfigUseCaseImplTest {
 
     @Test
     fun `Usecase persists configs locally`() = runBlocking {
-        val appConfig = AppConfig(
-            minimumVersion = 0,
-            appDeactivated = true,
-            informationURL = "dummy",
-            configTtlSeconds = 0,
-            maxValidityHours = 0,
-            euLaunchDate = "",
-            credentialRenewalDays = 0,
-            domesticCredentialValidity = 0,
-            testEventValidity = 0,
-            recoveryEventValidity = 0,
-            temporarilyDisabled = false,
-            requireUpdateBefore = 0
-        )
+        val appConfig = "{}"
 
         val publicKeys = mockk<BufferedSource>()
         coEvery { publicKeys.readUtf8() } returns "file contents"
@@ -48,12 +34,11 @@ class PersistConfigUseCaseImplTest {
             appConfigStorageManager = appConfigStorageManager,
             cacheDir = "",
             isVerifierApp = false,
-            moshi = Moshi.Builder().build()
         )
 
         usecase.persist(
-            appConfig = appConfig,
-            publicKeys = publicKeys
+            appConfigContents = appConfig,
+            publicKeyContents = publicKeys.readUtf8()
         )
 
         coVerify { appConfigPersistenceManager.saveAppConfigJson(any()) }

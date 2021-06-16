@@ -76,14 +76,16 @@ class AppConfigViewModelTest {
             temporarilyDisabled = false,
             requireUpdateBefore = 0
         )
+        val appConfigContents = "app config contents"
 
         val publicKeys = mockk<BufferedSource>()
-        coEvery { publicKeys.readUtf8() } returns "file contents"
+        val publicKeysContents = "file contents"
+        coEvery { publicKeys.readUtf8() } returns publicKeysContents
 
         coEvery { appConfigUseCase.get() } answers {
             ConfigResult.Success(
-                appConfig = appConfig,
-                publicKeys = publicKeys
+                appConfig = appConfigContents,
+                publicKeys = publicKeysContents
             )
         }
 
@@ -92,7 +94,7 @@ class AppConfigViewModelTest {
 
         appConfigViewModel.refresh(mobileCoreWrapper)
 
-        coVerify { persistConfigUseCase.persist(appConfig, publicKeys) }
+        coVerify { persistConfigUseCase.persist(appConfigContents, publicKeysContents) }
         coVerify { loadPublicKeyUseCase.load(publicKeys) }
     }
 
@@ -129,14 +131,16 @@ class AppConfigViewModelTest {
             configTtlSeconds = 0,
             maxValidityHours = 0
         )
+        val appConfigContents = "app config contents"
 
         val publicKeys = mockk<BufferedSource>()
-        coEvery { publicKeys.readUtf8() } returns "file contents"
+        val publicKeysContents = "file contents"
+        coEvery { publicKeys.readUtf8() } returns publicKeysContents
 
         coEvery { appConfigUseCase.get() } answers {
             ConfigResult.Success(
-                appConfig = appConfig,
-                publicKeys = publicKeys
+                appConfig = appConfigContents,
+                publicKeys = publicKeysContents
             )
         }
 
@@ -157,14 +161,16 @@ class AppConfigViewModelTest {
             configTtlSeconds = 0,
             maxValidityHours = 0
         )
+        val appConfigContents = "app config contents"
 
         val publicKeys = mockk<BufferedSource>()
-        coEvery { publicKeys.readUtf8() } returns "file contents"
+        val publicKeysContents = "file contents"
+        coEvery { publicKeys.readUtf8() } returns publicKeysContents
 
         coEvery { appConfigUseCase.get() } answers {
             ConfigResult.Success(
-                appConfig = appConfig,
-                publicKeys = publicKeys
+                appConfig = appConfigContents,
+                publicKeys = publicKeysContents
             )
         }
 
