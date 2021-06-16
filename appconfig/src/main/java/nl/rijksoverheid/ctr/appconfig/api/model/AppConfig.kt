@@ -30,6 +30,7 @@ data class AppConfig(
     @Json(name = "testEventValidity") val testEventValidity: Int = 7300,
     @Json(name = "domesticCredentialValidity") val domesticCredentialValidity: Int = 40,
     @Json(name = "credentialRenewalDays") val credentialRenewalDays: Int = 24,
+    @Json(name = "minimumCredentialVersion") val minimumCredentialVersion: Int = 2,
     @Json(name = "configTTL") val configTtlSeconds: Int,
     @Json(name = "maxValidityHours") val maxValidityHours: Int,
     @Json(name = "vaccinationEventValidity") val vaccinationEventValidity: Int = 14600,

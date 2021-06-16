@@ -22,9 +22,9 @@ class GreenCardsUseCaseImpl(
 ): GreenCardsUseCase {
     override suspend fun expiringCardOriginType() =
         holderDatabase.greenCardDao().getAll().firstOrNull { greenCard ->
-            // TODO before merging
-            // according to https://github.com/minvws/nl-covid19-coronacheck-app-coordination/blob/main/architecture/Privacy%20Preserving%20Green%20Card.md#mass-revocation
-            // we should also check minimumCredentialVersion from config which is missing now
-            greenCard.credentialEntities.maxByOrNull { it.expirationTime }?.isExpiring(cachedAppConfigUseCase.getCachedAppConfig()!!.credentialRenewalDays.toLong()) ?: true
+            val config = cachedAppConfigUseCase.getCachedAppConfig()!!
+            val minimumCredentialVersionIncreased = greenCard.credentialEntities.minByOrNull { it.credentialVersion }?.credentialVersion ?: 0 < config.minimumCredentialVersion
+            val credentialExpiring = greenCard.credentialEntities.maxByOrNull { it.expirationTime }?.isExpiring(config.credentialRenewalDays.toLong()) ?: true
+            minimumCredentialVersionIncreased || credentialExpiring
         }?.origins?.firstOrNull()?.type.toString()
 }
