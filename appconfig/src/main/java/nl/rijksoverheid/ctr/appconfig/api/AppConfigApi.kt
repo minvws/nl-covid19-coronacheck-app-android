@@ -18,7 +18,8 @@ import retrofit2.http.Streaming
 interface AppConfigApi {
     @GET("config")
     @SignedRequest
-    suspend fun getConfig(): AppConfig
+    @Streaming
+    suspend fun getConfig(): ResponseBody
 
     @GET("public_keys")
     @SignedRequest
