@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/selected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/shape_view_pager_indicator_selected" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/unselected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/selected"
+        app:layout_constraintEnd_toEndOf="@id/selected"
+        app:layout_constraintStart_toStartOf="@id/selected"
+        app:layout_constraintTop_toTopOf="@id/selected"
+        app:srcCompat="@drawable/shape_view_pager_indicator" />
+</merge>
