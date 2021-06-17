@@ -29,9 +29,6 @@ class PersistConfigUseCaseImpl(
 
     override suspend fun persist(appConfigContents: String, publicKeyContents: String) =
         withContext(Dispatchers.IO) {
-            appConfigPersistenceManager.saveAppConfigJson(
-                json = appConfigContents
-            )
 
             val publicKeysFile = File(cacheDir, "public_keys.json")
             val publicKeysStorageResult = appConfigStorageManager.storageFile(publicKeysFile, publicKeyContents)
@@ -39,12 +36,10 @@ class PersistConfigUseCaseImpl(
                 return@withContext publicKeysStorageResult
             }
 
-            if (isVerifierApp) {
-                val configFile = File(cacheDir, "config.json")
-                val configStorageResult = appConfigStorageManager.storageFile(configFile, appConfigContents)
-                if (configStorageResult is StorageResult.Error) {
-                    return@withContext configStorageResult
-                }
+            val configFile = File(cacheDir, "config.json")
+            val configStorageResult = appConfigStorageManager.storageFile(configFile, appConfigContents)
+            if (configStorageResult is StorageResult.Error) {
+                return@withContext configStorageResult
             }
 
             return@withContext StorageResult.Success
