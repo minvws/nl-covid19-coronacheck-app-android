@@ -127,8 +127,8 @@
     <string name="app_status_update_required_title">Time for an update</string>
     <string name="app_status_update_required_message">To continue, install the latest version of the app.</string>
     <string name="app_status_update_required_action">Install update</string>
-    <string name="app_status_internet_required_title">You\'re not connected to the internet</string>
-    <string name="app_status_internet_required_message">To start the app, you need to be connected to the internet.</string>
+    <string name="app_status_internet_required_title">We can’t reach the server</string>
+    <string name="app_status_internet_required_message">This may be because your internet connection is failing or because the server cannot be reached.</string>
     <string name="app_status_internet_required_action">Try again</string>
     <string name="personal_details_month_january">JAN</string>
     <string name="personal_details_month_february">FEB</string>
@@ -155,8 +155,8 @@
     <string name="accessibility_label_your_qr">This is where you can find an image of your QR code.</string>
     <string name="accessibility_testresult_icon_description">Information about your negative test result</string>
     <string name="menu_close">Close</string>
-    <string name="dialog_no_internet_connection_title">No internet connection</string>
-    <string name="dialog_no_internet_connection_description">You\'re not connected to the internet right now.</string>
+    <string name="dialog_no_internet_connection_title">No connection to the server</string>
+    <string name="dialog_no_internet_connection_description">The server isn’t responding. This may be because your internet connection is failing or because the server cannot be reached.</string>
     <string name="dialog_close">Close</string>
     <string name="dialog_retry">Try again</string>
     <string name="new_terms_title">New in the app</string>
@@ -232,7 +232,7 @@
     <string name="qr_card_validity_future_days">automatically becomes valid in %1$s days</string>
     <string name="qr_card_validity_future_day">automatically becomes valid in %1$s day</string>
     <string name="qr_card_validity_future_hours">automatically becomes valid in %1$s hours</string>
-    <string name="qr_card_validity_eu">Your international QR code will automatically become valid when the legislation goes into effect (from %1$s)</string>
+    <string name="qr_card_validity_eu">Your international QR code will automatically become valid when the European legislation goes into effect (from %1$s)</string>
     <string name="your_test_result_explanation_toolbar_title">What was retrieved?</string>
     <string name="your_test_result_explanation_description"><![CDATA[The following details were retrieved at the test location:<br\><br\>Your details:  <b>%1$s<b/><br/>Test type: <b>%2$s</b><br/>Test date: <b>%3$s</b><br/>Test result: <b>%4$s</b><br/>Identification code: <b>%5$s</b>]]></string>
     <string name="your_test_result_explanation_negative_test_result">negative (no coronavirus)</string>
