@@ -26,7 +26,7 @@
     <string name="dialog_error_message">Dat komt door een technische fout.</string>
     <string name="dialog_error_message_with_error_code">Dat komt door een technische fout (%1$s).</string>
     <string name="digid_login_failed_title">Inloggen bij DigiD is niet gelukt</string>
-    <string name="digid_login_failed_description">Je kunt opnieuw inloggen om je %1$s op te halen.</string>
+    <string name="digid_login_failed_description">Je kunt later opnieuw inloggen om je %1$s op te halen.</string>
     <string name="ok">Oke</string>
     <string name="settings">Instellingen</string>
     <string name="about_this_app">Over deze app</string>
