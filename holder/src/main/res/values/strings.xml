@@ -127,8 +127,8 @@
     <string name="app_status_update_required_title">Tijd voor een update</string>
     <string name="app_status_update_required_message">Je hebt de laatste versie van de app nodig om verder te gaan.</string>
     <string name="app_status_update_required_action">Installeer update</string>
-    <string name="app_status_internet_required_title">Je hebt geen internetverbinding</string>
-    <string name="app_status_internet_required_message">Om de app op te starten heb je internet nodig.</string>
+    <string name="app_status_internet_required_title">We kunnen de server niet bereiken</string>
+    <string name="app_status_internet_required_message">Dit kan bijvoorbeeld komen doordat je geen internet hebt of omdat de server onbereikbaar is.</string>
     <string name="app_status_internet_required_action">Probeer opnieuw</string>
     <string name="personal_details_month_january">JAN</string>
     <string name="personal_details_month_february">FEB</string>
@@ -155,8 +155,8 @@
     <string name="accessibility_label_your_qr">Hier wordt een afbeelding getoond van jouw QR-code.</string>
     <string name="accessibility_testresult_icon_description">Informatie over je negatieve testuitslag</string>
     <string name="menu_close">Sluiten</string>
-    <string name="dialog_no_internet_connection_title">Geen internetverbinding</string>
-    <string name="dialog_no_internet_connection_description">Je bent nu niet verbonden met het internet.</string>
+    <string name="dialog_no_internet_connection_title">Geen verbinding met de server</string>
+    <string name="dialog_no_internet_connection_description">De server reageert niet. Dit kan bijvoorbeeld komen doordat je geen internet hebt of omdat de server onbereikbaar is.</string>
     <string name="dialog_close">Sluiten</string>
     <string name="dialog_retry">Probeer opnieuw</string>
     <string name="new_terms_title">Nieuw in de app</string>
