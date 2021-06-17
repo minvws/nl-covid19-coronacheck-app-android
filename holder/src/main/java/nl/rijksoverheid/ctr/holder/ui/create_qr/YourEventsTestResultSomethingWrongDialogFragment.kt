@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.view.AccessibilityDelegateCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
+import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.design.ExpandedBottomSheetDialogFragment
 import nl.rijksoverheid.ctr.holder.databinding.DialogYourEventsResultSomethingWrongBinding
 
@@ -18,6 +19,8 @@ import nl.rijksoverheid.ctr.holder.databinding.DialogYourEventsResultSomethingWr
  *
  */
 class YourEventsTestResultSomethingWrongDialogFragment : ExpandedBottomSheetDialogFragment() {
+
+    private val args: YourEventsTestResultSomethingWrongDialogFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,6 +34,11 @@ class YourEventsTestResultSomethingWrongDialogFragment : ExpandedBottomSheetDial
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = DialogYourEventsResultSomethingWrongBinding.bind(view)
+
+        binding.description.setHtmlText(
+            htmlText = args.description,
+            htmlLinksEnabled = true
+        )
 
         binding.close.setOnClickListener {
             dismiss()

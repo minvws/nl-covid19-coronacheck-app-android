@@ -230,7 +230,9 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
         }
 
         binding.somethingWrongButton.setOnClickListener {
-            findNavController().navigate(YourEventsFragmentDirections.actionShowSomethingWrong())
+            findNavController().navigate(YourEventsFragmentDirections.actionShowSomethingWrong(
+                description = getString(R.string.dialog_negative_test_result_something_wrong_description)
+            ))
         }
     }
 
@@ -310,7 +312,7 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
         }
 
         binding.somethingWrongButton.setOnClickListener {
-            findNavController().navigate(YourEventsFragmentDirections.actionShowSomethingWrong())
+            findNavController().navigate(YourEventsFragmentDirections.actionShowSomethingWrong(description = getString(R.string.dialog_negative_test_result_something_wrong_description)))
         }
     }
 
@@ -399,8 +401,9 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
             )
         }
 
-        // Hide something wrong button
-        binding.somethingWrongButton.visibility = View.GONE
+        binding.somethingWrongButton.setOnClickListener {
+            findNavController().navigate(YourEventsFragmentDirections.actionShowSomethingWrong(description = getString(R.string.dialog_vaccination_something_wrong_description)))
+        }
     }
 
     private fun getFullName(infix: String?, firstName: String?, lastName: String?): String {
