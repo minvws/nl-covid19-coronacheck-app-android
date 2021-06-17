@@ -70,6 +70,7 @@
     <string name="commercial_test_code_description">Enter your code. The test location sent it to you.</string>
     <string name="commercial_test_unique_code_header">Retrieval code</string>
     <string name="commercial_test_unique_code_hint">E.g.: BRB-YYYYYYYYYY-Z2</string>
+    <string name="commercial_test_unique_code_hint_screenreader">Enter your code here</string>
     <string name="commercial_test_verification_code_header">Verification code</string>
     <string name="commercial_test_verification_code_hint">E.g. 123456</string>
     <string name="commercial_test_verification_code_helper_text">You get a code via text or email</string>
