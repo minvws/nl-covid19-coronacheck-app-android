@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.introduction.ui.status.models
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import nl.rijksoverheid.ctr.introduction.IntroductionData
+import nl.rijksoverheid.ctr.introduction.ui.new_features.models.NewFeatureItem
 import nl.rijksoverheid.ctr.introduction.ui.new_terms.models.NewTerms
 
 /*
@@ -20,6 +21,8 @@ sealed class IntroductionStatus : Parcelable {
         @Parcelize
         object NoActionRequired : IntroductionFinished(), Parcelable
 
+        @Parcelize
+        data class NewFeatures(val newFeatures: List<NewFeatureItem>) : IntroductionFinished(), Parcelable
     }
 
     @Parcelize

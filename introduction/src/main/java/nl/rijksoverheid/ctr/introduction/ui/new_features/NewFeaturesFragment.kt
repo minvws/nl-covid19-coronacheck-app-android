@@ -1,0 +1,79 @@
+package nl.rijksoverheid.ctr.introduction.ui.new_features
+
+import android.annotation.SuppressLint
+import android.os.Bundle
+import android.view.View
+import android.widget.ScrollView
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
+import androidx.viewpager2.widget.ViewPager2
+import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
+import nl.rijksoverheid.ctr.introduction.R
+import nl.rijksoverheid.ctr.introduction.databinding.FragmentNewFeaturesBinding
+import nl.rijksoverheid.ctr.introduction.ui.onboarding.OnboardingPagerAdapter
+import org.koin.androidx.viewmodel.ext.android.viewModel
+
+/*
+ *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+ *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+ *
+ *   SPDX-License-Identifier: EUPL-1.2
+ *
+ */
+class NewFeaturesFragment : Fragment(R.layout.fragment_new_features) {
+
+    private val args: NewFeaturesFragmentArgs by navArgs()
+    private val introductionViewModel: IntroductionViewModel by viewModel()
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val binding = FragmentNewFeaturesBinding.bind(view)
+
+        val adapter =
+            NewFeaturesPagerAdapter(
+                childFragmentManager,
+                lifecycle,
+                args.features.toList()
+            )
+
+        if (args.features.isNotEmpty()) {
+            binding.indicators.initIndicator(adapter.itemCount)
+            initViewPager(binding, adapter)
+        }
+    }
+
+    private fun initViewPager(
+        binding: FragmentNewFeaturesBinding,
+        adapter: NewFeaturesPagerAdapter
+    ) {
+        binding.viewPager.offscreenPageLimit = args.features.size
+        binding.viewPager.adapter = adapter
+        binding.viewPager.registerOnPageChangeCallback(object :
+            ViewPager2.OnPageChangeCallback() {
+            @SuppressLint("StringFormatInvalid")
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                binding.toolbar.visibility = if (position == 0) View.GONE else View.VISIBLE
+                binding.indicators.updateSelected(position)
+
+                binding.indicators.contentDescription = getString(
+                    R.string.onboarding_page_indicator_label,
+                    (position + 1).toString(),
+                    adapter.itemCount.toString()
+                )
+
+                // Apply bottom elevation if the view inside the viewpager is scrollable
+                val scrollView =
+                    childFragmentManager.fragments[position]?.view?.findViewById<ScrollView>(R.id.scroll)
+                if (scrollView?.canScrollVertically(1) == true) {
+                    binding.bottom.cardElevation =
+                        resources.getDimensionPixelSize(R.dimen.scroll_view_button_elevation)
+                            .toFloat()
+                } else {
+                    binding.bottom.cardElevation = 0f
+                }
+            }
+        })
+    }
+}

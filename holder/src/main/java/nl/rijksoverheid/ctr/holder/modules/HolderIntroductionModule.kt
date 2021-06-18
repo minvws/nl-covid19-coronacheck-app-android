@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.holder.modules
 
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.introduction.IntroductionData
+import nl.rijksoverheid.ctr.introduction.ui.new_features.models.NewFeatureItem
 import nl.rijksoverheid.ctr.introduction.ui.new_terms.models.NewTerms
 import nl.rijksoverheid.ctr.introduction.ui.onboarding.models.OnboardingItem
 import nl.rijksoverheid.ctr.introduction.ui.privacy_consent.models.PrivacyPolicyItem
@@ -52,10 +53,23 @@ val holderIntroductionModule = module {
                     R.string.privacy_policy_2
                 )
             ),
+            newFeatures = listOf(
+                NewFeatureItem(
+                    R.drawable.illustration_onboarding_3,
+                    R.string.new_terms_title,
+                    R.string.new_terms_highlights,
+                ),
+                NewFeatureItem(
+                    R.drawable.illustration_onboarding_2,
+                    R.string.new_terms_title,
+                    R.string.new_terms_highlights,
+                )
+            ),
             newTerms = NewTerms(
-                version = 2,
+                version = 3,
                 needsConsent = false
-            )
+            ),
+            newFeatureVersion = 2
         )
     }
 }

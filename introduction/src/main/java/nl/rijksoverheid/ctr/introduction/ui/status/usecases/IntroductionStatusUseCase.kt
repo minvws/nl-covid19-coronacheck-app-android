@@ -1,8 +1,8 @@
 package nl.rijksoverheid.ctr.introduction.ui.status.usecases
 
 import nl.rijksoverheid.ctr.introduction.IntroductionData
-import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
+import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -23,6 +23,12 @@ class IntroductionStatusUseCaseImpl(
         val introductionFinished: Boolean = introductionPersistenceManager.getIntroductionFinished()
 
         return if (introductionFinished) {
+            if (introductionData.newFeatureVersion > 0 &&
+                !introductionPersistenceManager.getNewFeaturesSeen(introductionData.newFeatureVersion)
+            ) {
+                return IntroductionStatus.IntroductionFinished.NewFeatures(introductionData.newFeatures)
+            }
+
             if (introductionData.newTerms != null && !introductionPersistenceManager.getNewTermsSeen(
                     introductionData.newTerms.version
                 )

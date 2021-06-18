@@ -48,6 +48,13 @@ class IntroductionStatusFragment : Fragment() {
                     )
                 )
             }
+            is IntroductionStatus.IntroductionFinished.NewFeatures -> {
+                findNavController().navigate(
+                    IntroductionStatusFragmentDirections.actionNavNewFeatures(
+                        introductionStatus.newFeatures.toTypedArray()
+                    )
+                )
+            }
             is IntroductionStatus.IntroductionFinished.NoActionRequired -> {
 
             }

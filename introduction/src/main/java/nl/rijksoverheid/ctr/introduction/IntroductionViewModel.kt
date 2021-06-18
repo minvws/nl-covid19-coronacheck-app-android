@@ -17,6 +17,7 @@ import nl.rijksoverheid.ctr.introduction.ui.status.usecases.IntroductionStatusUs
 abstract class IntroductionViewModel : ViewModel() {
     abstract fun getIntroductionStatus(): IntroductionStatus
     abstract fun saveIntroductionFinished(newTerms: NewTerms? = null)
+    abstract fun saveIntroductionFinished(newFeaturesVersion: Int)
 }
 
 class IntroductionViewModelImpl(
@@ -32,5 +33,10 @@ class IntroductionViewModelImpl(
         newTerms?.let {
             introductionPersistenceManager.saveNewTermsSeen(it.version)
         }
+    }
+
+    override fun saveIntroductionFinished(newFeaturesVersion: Int) {
+        introductionPersistenceManager.saveIntroductionFinished()
+        introductionPersistenceManager.saveNewFeaturesSeen(newFeaturesVersion)
     }
 }

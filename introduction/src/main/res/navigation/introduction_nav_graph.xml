@@ -21,6 +21,12 @@
             app:popUpTo="@id/nav_introduction"
             app:popUpToInclusive="true" />
 
+        <action
+            android:id="@+id/action_nav_new_features"
+            app:destination="@id/nav_new_features"
+            app:popUpTo="@id/nav_introduction"
+            app:popUpToInclusive="true" />
+
     </fragment>
 
     <fragment
@@ -97,6 +103,21 @@
         <argument
             android:name="new_terms"
             app:argType="nl.rijksoverheid.ctr.introduction.ui.new_terms.models.NewTerms" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_new_features"
+        android:name="nl.rijksoverheid.ctr.introduction.ui.new_features.NewFeaturesFragment"
+        android:label="NewFeaturesFragment">
+
+        <argument
+            android:name="features"
+            app:argType="nl.rijksoverheid.ctr.introduction.ui.new_features.models.NewFeatureItem[]" />
+
+        <action
+            android:id="@+id/action_nav_new_features_to_nav_new_terms"
+            app:destination="@id/nav_new_terms" />
 
     </fragment>
 
