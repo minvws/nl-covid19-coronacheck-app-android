@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.work.*
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.GreenCardsUseCase
 import java.util.concurrent.TimeUnit
 
@@ -24,7 +25,7 @@ class RefreshCredentialsJob(
         val expiringCardOriginType = greenCardsUseCase.expiringCardOriginType()
         val syncWithRemote = expiringCardOriginType != null
         return if (syncWithRemote) {
-             when (holderDatabaseSyncer.sync(expiringCardOriginType, true)) {
+             when (holderDatabaseSyncer.sync(OriginType.getAsString(expiringCardOriginType!!), true)) {
                 DatabaseSyncerResult.Success -> Result.success()
                 else -> Result.retry()
             }

@@ -49,10 +49,10 @@ class RefreshCredentialsJobTest {
     }
 
     private fun testWorkerFactory(
-        expiringCardOriginType: String? = OriginType.TYPE_TEST,
+        expiringCardOriginType: OriginType? = OriginType.Test,
         databaseSyncerResult: DatabaseSyncerResult = DatabaseSyncerResult.Success) = HolderWorkerFactory(
         greenCardsUseCase = object: GreenCardsUseCase {
-            override suspend fun expiringCardOriginType(): String? = expiringCardOriginType
+            override suspend fun expiringCardOriginType(): OriginType? = expiringCardOriginType
         },
         holderDatabaseSyncer = object: HolderDatabaseSyncer {
             override suspend fun sync(

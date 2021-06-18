@@ -61,5 +61,6 @@ data class CredentialEntity(
 
 fun CredentialEntity.isExpiring(credentialRenewalDays: Long = 5, clock: Clock = Clock.systemUTC()): Boolean {
     val now = OffsetDateTime.now(clock)
+    println("GIO debug expirationTime $expirationTime")
     return expirationTime.minusDays(credentialRenewalDays).isBefore(now)
 }
