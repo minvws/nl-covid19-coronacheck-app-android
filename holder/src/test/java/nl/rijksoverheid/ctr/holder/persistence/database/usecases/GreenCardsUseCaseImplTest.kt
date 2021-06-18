@@ -106,7 +106,7 @@ class GreenCardsUseCaseImplTest {
     }
 
     @Test
-    fun `given a green card with some credentials, when a credential version is not supported anymore, then return an origin type to refresh`() = runBlocking {
+    fun `given two green cards with some credentials, when a credential version is not supported anymore, then return an origin type to refresh`() = runBlocking {
         coEvery { appConfig.minimumCredentialVersion } returns 2
         coEvery { greenCardDao.getAll() } returns listOf(validGreenCard(), unsupportedGreenCard())
 
@@ -122,7 +122,7 @@ class GreenCardsUseCaseImplTest {
     @Test
     fun `given a green card with some credentials, when all credential versions are still supported, then return null (no refresh)`() = runBlocking {
         coEvery { appConfig.minimumCredentialVersion } returns 2
-        coEvery { greenCardDao.getAll() } returns listOf(validGreenCard(), validGreenCard())
+        coEvery { greenCardDao.getAll() } returns listOf(validGreenCard())
 
         val expiringCardOriginType = greenCardUseCase.expiringCardOriginType()
 
@@ -132,7 +132,7 @@ class GreenCardsUseCaseImplTest {
     @Test
     fun `given a green card with some credentials, when the green card has no origin, then return null (no refresh)`() = runBlocking {
         coEvery { appConfig.minimumCredentialVersion } returns 2
-        coEvery { greenCardDao.getAll() } returns listOf(greenCard(originEntities = emptyList()), greenCard(originEntities = emptyList()))
+        coEvery { greenCardDao.getAll() } returns listOf(greenCard(originEntities = emptyList()))
         
         val expiringCardOriginType = greenCardUseCase.expiringCardOriginType()
 

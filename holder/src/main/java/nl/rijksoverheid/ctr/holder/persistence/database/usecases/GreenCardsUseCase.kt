@@ -30,8 +30,6 @@ class GreenCardsUseCaseImpl(
         return holderDatabase.greenCardDao().getAll().firstOrNull { greenCard ->
             val minimumCredentialVersionIncreased = greenCard.credentialEntities.minByOrNull { it.credentialVersion }?.credentialVersion ?: 0 < config.minimumCredentialVersion
             val credentialExpiring = greenCard.credentialEntities.maxByOrNull { it.expirationTime }?.isExpiring(config.credentialRenewalDays.toLong(), clock) ?: true
-            println("GIO minimumCredentialVersionIncreased $minimumCredentialVersionIncreased")
-            println("GIO credentialExpiring $credentialExpiring")
             minimumCredentialVersionIncreased || credentialExpiring
         }?.origins?.firstOrNull()?.type
     }
