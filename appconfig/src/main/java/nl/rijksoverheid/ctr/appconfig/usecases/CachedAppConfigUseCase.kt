@@ -2,7 +2,6 @@ package nl.rijksoverheid.ctr.appconfig
 
 import com.squareup.moshi.Moshi
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
-import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
 import nl.rijksoverheid.ctr.shared.ext.toObject
 import okio.BufferedSource
@@ -17,7 +16,6 @@ import java.io.File
  */
 
 interface CachedAppConfigUseCase {
-    fun persistAppConfig(appConfig: AppConfig)
     fun getCachedAppConfig(): AppConfig?
     fun getCachedAppConfigMaxValidityHours(): Int
     fun getCachedAppConfigVaccinationEventValidity(): Int
@@ -26,19 +24,14 @@ interface CachedAppConfigUseCase {
 }
 
 class CachedAppConfigUseCaseImpl constructor(
-    private val persistenceManager: AppConfigPersistenceManager,
     private val appConfigStorageManager: AppConfigStorageManager,
     private val cacheDir: String,
     private val moshi: Moshi
 ) : CachedAppConfigUseCase {
 
-    override fun persistAppConfig(appConfig: AppConfig) {
-        val json = appConfig.toJson(moshi)
-        persistenceManager.saveAppConfigJson(json)
-    }
-
     override fun getCachedAppConfig(): AppConfig? {
-        return persistenceManager.getAppConfigJson()?.toObject(moshi)
+        val configFile = File(cacheDir, "config.json")
+        return appConfigStorageManager.getFileAsBufferedSource(configFile)?.readUtf8()?.toObject(moshi)
     }
 
     override fun getCachedAppConfigMaxValidityHours(): Int {

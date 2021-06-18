@@ -143,6 +143,8 @@ class GetEventsUseCaseImpl(
             EventsResult.Error.CoronaCheckError.ServerError(e.code())
         } catch (e: IOException) {
             EventsResult.Error.NetworkError
+        } catch (e: Exception) {
+            EventsResult.Error.CoronaCheckError.ServerError(200)
         }
     }
 }

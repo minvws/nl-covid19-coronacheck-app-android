@@ -95,10 +95,6 @@ fun fakeCachedAppConfigUseCase(
     ),
     publicKeys: BufferedSource = "{\"cl_keys\":[]}".toResponseBody("application/json".toMediaType()).source()
 ): CachedAppConfigUseCase = object : CachedAppConfigUseCase {
-    override fun persistAppConfig(appConfig: AppConfig) {
-
-    }
-
     override fun getCachedAppConfig(): AppConfig {
         return appConfig
     }

@@ -31,9 +31,5 @@ fun LocalDate.formatDayMonth(): String =
     ).withLocale(Locale.getDefault()).withZone(ZoneId.of("CET")).format(this)
 
 fun LocalDate.formatMonth(): String =
-    DateTimeFormatter.ofPattern(
-        DateFormat.getBestDateTimePattern(
-            Locale.getDefault(),
-            "MMMM"
-        )
-    ).withLocale(Locale.getDefault()).withZone(ZoneId.of("CET")).format(this)
+    DateTimeFormatter.ofPattern("MMMM")
+        .withLocale(Locale.getDefault()).withZone(ZoneId.of("CET")).format(this)

@@ -11,6 +11,6 @@ import okio.BufferedSource
  *
  */
 sealed class ConfigResult {
-    data class Success(val appConfig: AppConfig, val publicKeys: BufferedSource) : ConfigResult()
+    data class Success(val appConfig: String, val publicKeys: String) : ConfigResult()
     object Error : ConfigResult()
 }

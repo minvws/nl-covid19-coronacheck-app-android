@@ -34,8 +34,8 @@ android {
         buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "true"
         buildConfigField "boolean", "FEATURE_TEST_PROVIDER_API_CHECKS", "true"
         buildConfigField "String", "BASE_API_URL", "\"https://holder-api.coronacheck.nl/v4/\""
-        buildConfigField "String", "DIGI_D_BASE_URL", "\"https://login.ggdghor.nl/coronitacc\""
-        buildConfigField "String", "DIGI_D_CLIENT_ID", "\"6456237456911667336\""
+        buildConfigField "String", "DIGI_D_BASE_URL", "\"https://tvs.coronacheck.nl\""
+        buildConfigField "String", "DIGI_D_CLIENT_ID", "\"cc_app\""
         manifestPlaceholders = [appLabel: "@string/app_name", deepLinkHost: "coronacheck.nl"]
 
         javaCompileOptions {
@@ -66,7 +66,7 @@ android {
     flavorDimensions "environment"
     productFlavors {
         tst {
-            buildConfigField "String", "BASE_API_URL", "\"https://qrdaar.scriptbase.org/v3/\""
+            buildConfigField "String", "BASE_API_URL", "\"https://api-ct.bananenhalen.nl/v4/\""
             buildConfigField "String", "DIGI_D_BASE_URL", "\"https://tvs.acc.coronacheck.nl\""
             buildConfigField "String", "DIGI_D_CLIENT_ID", "\"test_client\""
             buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "false"
@@ -80,7 +80,7 @@ android {
         }
         acc {
             buildConfigField "String", "BASE_API_URL", "\"https://holder-api.acc.coronacheck.nl/v4/\""
-            buildConfigField "String", "DIGI_D_BASE_URL", "\"https://tvs-connect.acc.coronacheck.nl\""
+            buildConfigField "String", "DIGI_D_BASE_URL", "\"https://tvs.acc.coronacheck.nl\""
             buildConfigField "String", "DIGI_D_CLIENT_ID", "\"test_client\""
             dimension "environment"
             versionNameSuffix "-acc"

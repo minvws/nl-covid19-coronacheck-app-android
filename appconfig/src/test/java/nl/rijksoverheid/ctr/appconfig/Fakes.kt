@@ -19,14 +19,6 @@ fun fakeAppConfigPersistenceManager(
     lastFetchedSeconds: Long = 0L
 ) = object : AppConfigPersistenceManager {
 
-    override fun saveAppConfigJson(json: String) {
-
-    }
-
-    override fun getAppConfigJson(): String? {
-        return appConfigJson
-    }
-
     override fun getAppConfigLastFetchedSeconds(): Long {
         return lastFetchedSeconds
     }
@@ -43,9 +35,6 @@ fun fakeCachedAppConfigUseCase(
     cachedAppConfigMaxValidityHours: Int = 0,
     cachedAppConfigVaccinationEventValidity: Int = 0
 ) = object : CachedAppConfigUseCase {
-    override fun persistAppConfig(appConfig: AppConfig) {
-
-    }
 
     override fun getCachedAppConfig(): AppConfig? {
         return appConfig
