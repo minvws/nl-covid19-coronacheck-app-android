@@ -101,8 +101,8 @@
         tools:layout="@layout/fragment_app_status">
 
         <argument
-            android:name="new_terms"
-            app:argType="nl.rijksoverheid.ctr.introduction.ui.new_terms.models.NewTerms" />
+            android:name="introduction_data"
+            app:argType="nl.rijksoverheid.ctr.introduction.IntroductionData" />
 
     </fragment>
 
@@ -112,12 +112,14 @@
         android:label="NewFeaturesFragment">
 
         <argument
-            android:name="features"
-            app:argType="nl.rijksoverheid.ctr.introduction.ui.new_features.models.NewFeatureItem[]" />
+            android:name="introduction_data"
+            app:argType="nl.rijksoverheid.ctr.introduction.IntroductionData" />
 
         <action
-            android:id="@+id/action_nav_new_features_to_nav_new_terms"
-            app:destination="@id/nav_new_terms" />
+            android:id="@+id/action_new_terms"
+            app:destination="@id/nav_new_terms">
+
+        </action>
 
     </fragment>
 

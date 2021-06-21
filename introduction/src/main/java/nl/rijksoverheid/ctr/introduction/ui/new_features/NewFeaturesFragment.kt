@@ -5,12 +5,16 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ScrollView
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.R
 import nl.rijksoverheid.ctr.introduction.databinding.FragmentNewFeaturesBinding
-import nl.rijksoverheid.ctr.introduction.ui.onboarding.OnboardingPagerAdapter
+import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
+import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
+import nl.rijksoverheid.ctr.shared.ext.getNavigationIconView
+import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAccessibilityFocus
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /*
@@ -34,20 +38,54 @@ class NewFeaturesFragment : Fragment(R.layout.fragment_new_features) {
             NewFeaturesPagerAdapter(
                 childFragmentManager,
                 lifecycle,
-                args.features.toList()
+                args.introductionData.newFeatures
             )
 
-        if (args.features.isNotEmpty()) {
+        if (args.introductionData.newFeatures.isNotEmpty()) {
             binding.indicators.initIndicator(adapter.itemCount)
             initViewPager(binding, adapter)
         }
+
+        binding.run {
+            toolbar.setNavigationOnClickListener {
+                viewPager.currentItem = viewPager.currentItem - 1
+            }
+            button.setOnClickListener {
+                val currentItem = viewPager.currentItem
+                if (currentItem == adapter.itemCount - 1) finishFlow() else showNextPage(currentItem)
+            }
+        }
+    }
+
+    private fun FragmentNewFeaturesBinding.showNextPage(currentItem: Int) {
+        viewPager.currentItem = currentItem + 1
+        toolbar.getNavigationIconView()?.setAccessibilityFocus()
+    }
+
+    private fun finishFlow() {
+        introductionViewModel.saveNewFeaturesFinished(args.introductionData.newFeatureVersion)
+        when (introductionViewModel.getIntroductionStatus()) {
+            is IntroductionStatus.IntroductionFinished.ConsentNeeded -> navigateToTerms()
+            else -> navigateToMain()
+        }
+    }
+
+    private fun navigateToTerms() {
+        findNavControllerSafety(R.id.nav_onboarding)?.navigate(
+            NewFeaturesFragmentDirections.actionNewTerms(args.introductionData)
+        )
+    }
+
+    private fun navigateToMain() {
+        requireActivity().findNavController(R.id.main_nav_host_fragment)
+            .navigate(R.id.action_main)
     }
 
     private fun initViewPager(
         binding: FragmentNewFeaturesBinding,
         adapter: NewFeaturesPagerAdapter
     ) {
-        binding.viewPager.offscreenPageLimit = args.features.size
+        binding.viewPager.offscreenPageLimit = args.introductionData.newFeatures.size
         binding.viewPager.adapter = adapter
         binding.viewPager.registerOnPageChangeCallback(object :
             ViewPager2.OnPageChangeCallback() {

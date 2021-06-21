@@ -63,7 +63,7 @@ class PrivacyConsentFragment : Fragment(R.layout.fragment_privacy_consent) {
         }
 
         binding.bottom.setButtonClick {
-            introductionViewModel.saveIntroductionFinished(args.introductionData.newTerms)
+            introductionViewModel.saveIntroductionFinished(args.introductionData)
             requireActivity().findNavControllerSafety(R.id.main_nav_host_fragment)
                 ?.navigate(R.id.action_main)
         }

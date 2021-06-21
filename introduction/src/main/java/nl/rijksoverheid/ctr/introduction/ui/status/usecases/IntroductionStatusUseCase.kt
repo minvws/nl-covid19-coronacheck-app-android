@@ -23,26 +23,22 @@ class IntroductionStatusUseCaseImpl(
         val introductionFinished: Boolean = introductionPersistenceManager.getIntroductionFinished()
 
         return if (introductionFinished) {
-            if (introductionData.newFeatureVersion > 0 &&
+            if (introductionData.newFeatures.isNotEmpty() &&
                 !introductionPersistenceManager.getNewFeaturesSeen(introductionData.newFeatureVersion)
             ) {
-                return IntroductionStatus.IntroductionFinished.NewFeatures(introductionData.newFeatures)
+                return IntroductionStatus.IntroductionFinished.NewFeatures(introductionData)
             }
 
             if (introductionData.newTerms != null && !introductionPersistenceManager.getNewTermsSeen(
                     introductionData.newTerms.version
                 )
             ) {
-                IntroductionStatus.IntroductionFinished.ConsentNeeded(
-                    introductionData.newTerms
-                )
+                IntroductionStatus.IntroductionFinished.ConsentNeeded(introductionData)
             } else {
                 IntroductionStatus.IntroductionFinished.NoActionRequired
             }
         } else {
-            IntroductionStatus.IntroductionNotFinished(
-                introductionData
-            )
+            IntroductionStatus.IntroductionNotFinished(introductionData)
         }
     }
 

@@ -66,10 +66,10 @@ val holderIntroductionModule = module {
                 )
             ),
             newTerms = NewTerms(
-                version = 3,
+                version = 7,
                 needsConsent = false
             ),
-            newFeatureVersion = 2
+            newFeatureVersion = 3
         )
     }
 }

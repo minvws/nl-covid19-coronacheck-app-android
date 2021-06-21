@@ -16,13 +16,13 @@ import nl.rijksoverheid.ctr.introduction.ui.new_terms.models.NewTerms
 sealed class IntroductionStatus : Parcelable {
     sealed class IntroductionFinished : IntroductionStatus() {
         @Parcelize
-        data class ConsentNeeded(val newTerms: NewTerms) : IntroductionFinished(), Parcelable
+        data class ConsentNeeded(val introductionData: IntroductionData) : IntroductionFinished(), Parcelable
 
         @Parcelize
         object NoActionRequired : IntroductionFinished(), Parcelable
 
         @Parcelize
-        data class NewFeatures(val newFeatures: List<NewFeatureItem>) : IntroductionFinished(), Parcelable
+        data class NewFeatures(val introductionData: IntroductionData) : IntroductionFinished(), Parcelable
     }
 
     @Parcelize
