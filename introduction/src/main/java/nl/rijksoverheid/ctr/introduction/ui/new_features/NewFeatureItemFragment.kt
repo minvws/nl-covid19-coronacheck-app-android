@@ -22,7 +22,7 @@ import java.time.format.DateTimeFormatter
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class NewFeatureItemFragment : Fragment(R.layout.fragment_onboarding_item) {
+class NewFeatureItemFragment : Fragment(R.layout.fragment_new_feature_item) {
 
     companion object {
         private const val EXTRA_NEW_FEATURE_ITEM = "EXTRA_NEW_FEATURE_ITEM"

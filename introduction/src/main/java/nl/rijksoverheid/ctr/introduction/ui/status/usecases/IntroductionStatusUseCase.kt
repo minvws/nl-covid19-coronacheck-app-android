@@ -19,10 +19,9 @@ class IntroductionStatusUseCaseImpl(
     private val introductionPersistenceManager: IntroductionPersistenceManager,
     private val introductionData: IntroductionData
 ) : IntroductionStatusUseCase {
-    override fun get(): IntroductionStatus {
-        val introductionFinished: Boolean = introductionPersistenceManager.getIntroductionFinished()
 
-        return if (introductionFinished) {
+    override fun get(): IntroductionStatus {
+        return if (introductionPersistenceManager.getIntroductionFinished()) {
             if (introductionData.newFeatures.isNotEmpty() &&
                 !introductionPersistenceManager.getNewFeaturesSeen(introductionData.newFeatureVersion)
             ) {

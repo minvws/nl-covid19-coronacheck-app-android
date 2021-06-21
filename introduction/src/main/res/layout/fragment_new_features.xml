@@ -30,11 +30,10 @@
             android:id="@+id/viewPager"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="90dp"
             app:layout_constraintBottom_toTopOf="@+id/bottom"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
             tools:listitem="@layout/fragment_onboarding_item" />
 
         <androidx.cardview.widget.CardView

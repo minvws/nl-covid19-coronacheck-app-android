@@ -71,7 +71,7 @@ class NewFeaturesFragment : Fragment(R.layout.fragment_new_features) {
     }
 
     private fun navigateToTerms() {
-        findNavControllerSafety(R.id.nav_onboarding)?.navigate(
+        findNavControllerSafety(R.id.nav_new_features)?.navigate(
             NewFeaturesFragmentDirections.actionNewTerms(args.introductionData)
         )
     }

@@ -56,20 +56,15 @@ val holderIntroductionModule = module {
             newFeatures = listOf(
                 NewFeatureItem(
                     R.drawable.illustration_onboarding_3,
-                    R.string.new_terms_title,
-                    R.string.new_terms_highlights,
-                ),
-                NewFeatureItem(
-                    R.drawable.illustration_onboarding_2,
-                    R.string.new_terms_title,
-                    R.string.new_terms_highlights,
+                    R.string.type_recovery,
+                    R.string.dialog_verification_code_message,
                 )
             ),
             newTerms = NewTerms(
-                version = 7,
+                version = 12,
                 needsConsent = false
             ),
-            newFeatureVersion = 3
+            newFeatureVersion = 14
         )
     }
 }
