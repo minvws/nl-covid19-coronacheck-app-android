@@ -27,6 +27,7 @@ import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TestResultAdapterItemUtil
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.time.OffsetDateTime
+import java.time.ZoneOffset
 import java.time.temporal.ChronoUnit
 
 class MyOverviewGreenCardAdapterItem(
@@ -148,8 +149,8 @@ class MyOverviewGreenCardAdapterItem(
 
                 }
 
-                if (launchDate.isAfter(OffsetDateTime.now())) {
-                    viewBinding.launchText.text = context.getString(R.string.qr_card_validity_eu, launchDate.toLocalDate().formatDayMonth())
+                if (launchDate.isAfter(OffsetDateTime.now(ZoneOffset.UTC))) {
+                    viewBinding.launchText.text = context.getString(R.string.qr_card_validity_eu, launchDate.formatDayMonth())
                     viewBinding.launchText.visibility = View.VISIBLE
                 }
             }
@@ -201,7 +202,7 @@ class MyOverviewGreenCardAdapterItem(
                                 originState = originState,
                                 subtitle = context.getString(
                                     R.string.qr_card_validity_valid,
-                                    origin.expirationTime.toLocalDate().formatDayMonth()
+                                    origin.expirationTime.formatDayMonth()
                                 )
                             )
                         }
