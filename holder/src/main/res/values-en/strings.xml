@@ -5,7 +5,7 @@
     <string name="app_name">CoronaCheck</string>
     <string name="onboarding_title">Onboarding</string>
     <string name="onboarding_screen_1_title">Only access with a certificate</string>
-    <string name="onboarding_screen_1_description">"Your and other people’s health matters. That is why some countries and places ask for a corona certificate. You’re only allowed to enter carrying this certificate."</string>
+    <string name="onboarding_screen_1_description">"Your and other people’s health matters. That is why some countries and places ask for a coronavirus pass. You’re only allowed to enter carrying this pass."</string>
     <string name="onboarding_screen_2_title">Certificate of test or vaccination</string>
     <string name="onboarding_screen_2_description">You can generate a certificate if you have been vaccinated or if you have a negative test result that confirms you don’t have corona. From the beginning of July, you can also make a certificate if you\'ve had coronavirus (certificate of recovery).</string>
     <string name="onboarding_screen_4_title">QR code = your proof</string>
@@ -279,5 +279,5 @@
     <string name="missing_events_title">Details possibly incomplete</string>
     <string name="missing_events_description">Due to increased traffic or an outage at one of the parties, some details may be missing. Please try again later.</string>
     <string name="dialog_vaccination_something_wrong_description"><![CDATA[Is your name or date of birth wrong? Or are your vaccination details incorrect? Look <a href="https://coronacheck.nl/en/guidepost">here</a> for more information.]]></string>
-    <string name="commercial_test_unique_code_hint_screenreader">Enter your code here</string>
+    <string name="commercial_test_unique_code_hint_screenreader">Enter your retrieval code here</string>
 </resources>
