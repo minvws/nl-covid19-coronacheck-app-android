@@ -14,7 +14,7 @@ data class DomesticCredentialAttributes(
     val firstNameInitial: String,
     val isSpecimen: String,
     val lastNameInitial: String,
-    val stripType: String,
+    val isPaperProof: String,
     val validForHours: Long,
     val validFrom: Long
 )
