@@ -30,7 +30,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:text="@string/new_terms_title"
+            android:text="@string/new_in_app_subtitle"
             android:textAppearance="?attr/textAppearanceBody1"
             android:textColor="@color/primary_blue"
             android:textStyle="bold"
