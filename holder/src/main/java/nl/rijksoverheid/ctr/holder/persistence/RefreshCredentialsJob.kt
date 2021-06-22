@@ -41,16 +41,6 @@ class RefreshCredentialsJob(
 
     companion object {
         private const val uniqueWorkName = "refresh_credentials"
-        fun schedule(context: Context, credentialRenewalDays: Long) {
-            val request = OneTimeWorkRequestBuilder<RefreshCredentialsJob>()
-                .setInitialDelay(credentialRenewalDays, TimeUnit.DAYS)
-                .setConstraints(
-                    Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
-                ).build()
-
-            WorkManager.getInstance(context)
-                .enqueueUniqueWork(uniqueWorkName, ExistingWorkPolicy.REPLACE, request)
-        }
     }
 }
 

@@ -117,16 +117,9 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
         getQrCardsHandler.postDelayed(getQrCardsRunnable, TimeUnit.SECONDS.toMillis(10))
     }
 
-    private fun scheduleRefreshInCaseOfInactiveApp() {
-        myOverviewViewModel.scheduleBackgroundRefresh {
-            RefreshCredentialsJob.schedule(requireContext(), it)
-        }
-    }
-
     override fun onResume() {
         super.onResume()
         getQrCards(syncDatabase = true)
-        scheduleRefreshInCaseOfInactiveApp()
 
         (parentFragment?.parentFragment as HolderMainFragment?)?.getToolbar().let { toolbar ->
             if (toolbar?.menu?.size() == 0) {

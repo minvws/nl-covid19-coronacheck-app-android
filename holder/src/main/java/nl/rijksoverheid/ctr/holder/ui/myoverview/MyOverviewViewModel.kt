@@ -34,21 +34,6 @@ abstract class MyOverviewViewModel : ViewModel() {
      * @param syncDatabase If you want to sync the database before showing the items
      */
     abstract fun refreshOverviewItems(selectType: GreenCardType = getSelectedType(), syncDatabase: Boolean = false)
-
-    abstract fun scheduleBackgroundRefresh(refresh: (Long) -> Unit)
-}
-
-sealed class MyOverviewError {
-    object Inactive: MyOverviewError()
-    object Refresh: MyOverviewError()
-
-    companion object {
-        fun get(expired: Boolean) = if (expired) {
-            Inactive
-        } else {
-            Refresh
-        }
-    }
 }
 
 class MyOverviewViewModelImpl(
@@ -69,7 +54,7 @@ class MyOverviewViewModelImpl(
 
         viewModelScope.launch {
             if (syncDatabase) {
-                val expiringOriginType = greenCardsUseCase.expiringCardOriginType()
+                val expiringOriginType = OriginType.Test//greenCardsUseCase.expiringCardOriginType()
 
                 if (expiringOriginType != null) {
                     val currentCardItems = getMyOverviewItemsUseCase.get(
@@ -109,11 +94,17 @@ class MyOverviewViewModelImpl(
             )
         }
     }
+}
 
-    override fun scheduleBackgroundRefresh(refresh: (Long) -> Unit) {
-        viewModelScope.launch {
-            val daysToRefresh = greenCardsUseCase.lastExpiringCardTimeInDays() ?: return@launch
-            refresh(daysToRefresh)
+sealed class MyOverviewError {
+    object Inactive: MyOverviewError()
+    object Refresh: MyOverviewError()
+
+    companion object {
+        fun get(expired: Boolean) = if (expired) {
+            Inactive
+        } else {
+            Refresh
         }
     }
 }

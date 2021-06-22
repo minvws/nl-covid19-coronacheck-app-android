@@ -11,9 +11,7 @@ import nl.rijksoverheid.ctr.api.signing.certificates.ROOT_CA_G3
 import nl.rijksoverheid.ctr.appconfig.usecases.DeviceRootedUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.DeviceRootedUseCaseImpl
 import nl.rijksoverheid.ctr.holder.BuildConfig
-import nl.rijksoverheid.ctr.holder.persistence.HolderWorkerFactory
-import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
-import nl.rijksoverheid.ctr.holder.persistence.SharedPreferencesPersistenceManager
+import nl.rijksoverheid.ctr.holder.persistence.*
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncerImpl
@@ -65,7 +63,7 @@ fun holderModule(baseUrl: String) = module {
         HolderDatabase.createInstance(androidContext(), get())
     }
 
-    factory<HolderDatabaseSyncer> { HolderDatabaseSyncerImpl(get(), get(), get(), get(), get()) }
+    factory<HolderDatabaseSyncer> { HolderDatabaseSyncerImpl(get(), get(), get(), get(), get(), get()) }
 
     single<PersistenceManager> {
         SharedPreferencesPersistenceManager(
@@ -125,6 +123,8 @@ fun holderModule(baseUrl: String) = module {
     factory<SaveEventsUseCase> { SaveEventsUseCaseImpl(get()) }
 
     factory<TestResultsMigrationManager> { TestResultsMigrationManagerImpl(get(), get(), get()) }
+
+    factory<WorkerManagerWrapper> { WorkerManagerWrapperImpl(androidContext(), get()) }
 
     // ViewModels
     viewModel<QrCodeViewModel> { QrCodeViewModelImpl(get()) }
