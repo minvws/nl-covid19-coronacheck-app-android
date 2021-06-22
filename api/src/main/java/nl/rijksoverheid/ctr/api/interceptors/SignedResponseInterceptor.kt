@@ -104,7 +104,7 @@ class SignedResponseInterceptor(
                     .code(500)
                     .message("Failed to handle signed response").build().also { response.close() }
             } else {
-                // When something is wrong in parsing a unsuccesful request, cascade down the
+                // When something is wrong in parsing a unsuccessful request, cascade down the
                 // request as usual (so that HttpExceptions get picked up for example)
                 response.newBuilder().body(body.toResponseBody())
                     .code(response.code).build().also { response.close() }
