@@ -44,13 +44,15 @@ class GetEventsUseCaseImpl(
     override suspend fun getNegativeTestEvents(jwt: String): EventsResult<RemoteTestResult3> {
         return getRemoteEvents(
             jwt = jwt,
-            originType = OriginType.Test
+            originType = OriginType.Test,
+            targetProviderIds = listOf("ggd")
         )
     }
 
     private suspend fun <T: RemoteProtocol> getRemoteEvents(
         jwt: String,
-        originType: OriginType
+        originType: OriginType,
+        targetProviderIds: List<String> = listOf()
     ): EventsResult<T> {
         return try {
             // Fetch event providers
@@ -63,7 +65,8 @@ class GetEventsUseCaseImpl(
             val eventProviderWithTokensResults = getEventProvidersWithTokensUseCase.get(
                 eventProviders = eventProviders,
                 tokens = tokens.tokens,
-                originType = originType)
+                originType = originType,
+                targetProviderIds = targetProviderIds)
 
             val eventProvidersWithTokensSuccessResults = eventProviderWithTokensResults.filterIsInstance<EventProviderWithTokenResult.Success>()
             val eventProvidersWithTokensErrorResults = eventProviderWithTokensResults.filterIsInstance<EventProviderWithTokenResult.Error>()

@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
+import android.annotation.SuppressLint
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteAccessTokens
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteConfigProviders
@@ -21,17 +22,20 @@ interface GetEventProvidersWithTokensUseCase {
     suspend fun get(
         eventProviders: List<RemoteConfigProviders.EventProvider>,
         tokens: List<RemoteAccessTokens.Token>,
-        originType: OriginType): List<EventProviderWithTokenResult>
+        originType: OriginType,
+        targetProviderIds: List<String> = listOf()): List<EventProviderWithTokenResult>
 }
 
 class GetEventProvidersWithTokensUseCaseImpl(
     private val eventProviderRepository: EventProviderRepository
 ): GetEventProvidersWithTokensUseCase {
 
+    @SuppressLint("DefaultLocale")
     override suspend fun get(
         eventProviders: List<RemoteConfigProviders.EventProvider>,
         tokens: List<RemoteAccessTokens.Token>,
-        originType: OriginType
+        originType: OriginType,
+        targetProviderIds: List<String>
     ): List<EventProviderWithTokenResult> {
 
         // Map event providers to tokens
@@ -43,8 +47,13 @@ class GetEventProvidersWithTokensUseCaseImpl(
                 }
                 .filterNotNullValues()
 
+        // If we want to only target specific providers ids we filter others out
+        val targetEventProvidersWithTokens = allEventProvidersWithTokens.filter {
+            if (targetProviderIds.isEmpty()) true else targetProviderIds.contains(it.key.providerIdentifier.toLowerCase())
+        }
+
         // Return a list of event providers that have events
-        return allEventProvidersWithTokens.map {
+        return targetEventProvidersWithTokens.map {
             val eventProvider = it.key
             val token = it.value
 
