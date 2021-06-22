@@ -23,7 +23,7 @@ interface GetEventProvidersWithTokensUseCase {
         eventProviders: List<RemoteConfigProviders.EventProvider>,
         tokens: List<RemoteAccessTokens.Token>,
         originType: OriginType,
-        targetProviderIds: List<String> = listOf()): List<EventProviderWithTokenResult>
+        targetProviderIds: List<String>? = null): List<EventProviderWithTokenResult>
 }
 
 class GetEventProvidersWithTokensUseCaseImpl(
@@ -35,7 +35,7 @@ class GetEventProvidersWithTokensUseCaseImpl(
         eventProviders: List<RemoteConfigProviders.EventProvider>,
         tokens: List<RemoteAccessTokens.Token>,
         originType: OriginType,
-        targetProviderIds: List<String>
+        targetProviderIds: List<String>?
     ): List<EventProviderWithTokenResult> {
 
         // Map event providers to tokens
@@ -49,7 +49,7 @@ class GetEventProvidersWithTokensUseCaseImpl(
 
         // If we want to only target specific providers ids we filter others out
         val targetEventProvidersWithTokens = allEventProvidersWithTokens.filter {
-            if (targetProviderIds.isEmpty()) true else targetProviderIds.contains(it.key.providerIdentifier.toLowerCase())
+            targetProviderIds?.contains(it.key.providerIdentifier.toLowerCase()) ?: true
         }
 
         // Return a list of event providers that have events

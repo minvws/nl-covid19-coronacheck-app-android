@@ -34,6 +34,10 @@ class GetEventsUseCaseImpl(
     private val getRemoteEventsUseCase: GetRemoteEventsUseCase
 ) : GetEventsUseCase {
 
+    companion object {
+        private const val PROVIDER_IDENTIFIER_GGD = "ggd"
+    }
+
     override suspend fun getVaccinationEvents(jwt: String): EventsResult<RemoteEventsVaccinations> {
         return getRemoteEvents(
             jwt = jwt,
@@ -45,14 +49,14 @@ class GetEventsUseCaseImpl(
         return getRemoteEvents(
             jwt = jwt,
             originType = OriginType.Test,
-            targetProviderIds = listOf("ggd")
+            targetProviderIds = listOf(PROVIDER_IDENTIFIER_GGD)
         )
     }
 
     private suspend fun <T: RemoteProtocol> getRemoteEvents(
         jwt: String,
         originType: OriginType,
-        targetProviderIds: List<String> = listOf()
+        targetProviderIds: List<String>? = null
     ): EventsResult<T> {
         return try {
             // Fetch event providers
