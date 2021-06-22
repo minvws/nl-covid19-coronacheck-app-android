@@ -95,10 +95,6 @@ fun fakeCachedAppConfigUseCase(
     ),
     publicKeys: BufferedSource = "{\"cl_keys\":[]}".toResponseBody("application/json".toMediaType()).source()
 ): CachedAppConfigUseCase = object : CachedAppConfigUseCase {
-    override fun persistAppConfig(appConfig: AppConfig) {
-
-    }
-
     override fun getCachedAppConfig(): AppConfig {
         return appConfig
     }
@@ -284,7 +280,7 @@ fun fakeTestResultAttributesUseCase(
                 isSpecimen = isSpecimen,
                 isNLDCC = "1",
                 credentialVersion = "1",
-                stripType = "0",
+                isPaperProof = "0",
                 validForHours = "24",
                 validFrom = "1622633766",
             )
@@ -380,7 +376,7 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
                         firstNameInitial = "B",
                         isSpecimen = "0",
                         lastNameInitial = "",
-                        stripType = "0",
+                        isPaperProof = "0",
                         validForHours = 24,
                         validFrom = 1622731645L,
                     ),

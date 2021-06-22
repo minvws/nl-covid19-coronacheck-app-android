@@ -53,7 +53,7 @@ class OnboardingItemFragment : Fragment(R.layout.fragment_onboarding_item) {
         binding.title.text = getString(item.titleResource)
         if (item.descriptionHasEuLaunchDate) {
             val euLaunchDate = OffsetDateTime.parse(cachedAppConfigUseCase.getCachedAppConfig()!!.euLaunchDate, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
-            binding.description.setHtmlText(getString(item.description, euLaunchDate.toLocalDate().formatDayMonth()), false)
+            binding.description.setHtmlText(getString(item.description, euLaunchDate.formatDayMonth()), false)
         } else if (item.descriptionHasTestValidity) {
             binding.description.setHtmlText(appConfigUtil.getStringWithTestValidity(item.description), false)
         } else {

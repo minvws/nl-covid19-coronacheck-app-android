@@ -26,11 +26,11 @@
             app:popEnterAnim="@anim/fragment_close_enter"
             app:popExitAnim="@anim/fragment_close_exit" />
 
-        <action
-            android:id="@+id/action_about_this_app"
-            app:destination="@id/nav_about_this_app" />
-
     </fragment>
+
+    <action
+        android:id="@+id/action_about_this_app"
+        app:destination="@id/nav_about_this_app" />
 
     <fragment
         android:id="@+id/nav_scan_instructions"

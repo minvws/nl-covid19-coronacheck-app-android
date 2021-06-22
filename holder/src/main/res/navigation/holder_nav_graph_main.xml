@@ -259,7 +259,13 @@
     <dialog
         android:id="@+id/nav_your_events_test_result_something_wrong"
         android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.YourEventsTestResultSomethingWrongDialogFragment"
-        tools:layout="@layout/dialog_your_events_result_something_wrong" />
+        tools:layout="@layout/dialog_your_events_result_something_wrong">
+
+        <argument
+            android:name="description"
+            app:argType="string" />
+
+    </dialog>
 
     <fragment
         android:id="@+id/nav_your_events"

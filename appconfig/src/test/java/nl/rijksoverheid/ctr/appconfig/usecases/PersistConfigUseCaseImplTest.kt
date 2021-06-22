@@ -41,7 +41,6 @@ class PersistConfigUseCaseImplTest {
             publicKeyContents = publicKeys.readUtf8()
         )
 
-        coVerify { appConfigPersistenceManager.saveAppConfigJson(any()) }
         coVerify { appConfigStorageManager.storageFile(any(), any()) }
     }
 

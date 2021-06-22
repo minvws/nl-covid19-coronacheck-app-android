@@ -20,6 +20,7 @@ import nl.rijksoverheid.ctr.design.databinding.MenuHeaderBinding
 import nl.rijksoverheid.ctr.design.ext.isScreenReaderOn
 import nl.rijksoverheid.ctr.shared.AccessibilityConstants
 import nl.rijksoverheid.ctr.shared.ext.getNavigationIconView
+import nl.rijksoverheid.ctr.shared.utils.Accessibility
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAccessibilityFocus
 
 
@@ -59,19 +60,19 @@ abstract class BaseMainFragment(
                 } else {
                     drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
                 }
-                if (requireActivity().isScreenReaderOn()) {
-                    requireView().findViewById<Toolbar>(R.id.toolbar).getNavigationIconView()?.let {
-                        it.postDelayed(
-                            { it.setAccessibilityFocus() },
-                            AccessibilityConstants.ACCESSIBILITY_FOCUS_DELAY
-                        )
-                    }
+
+                // Update focus for accessibility
+                requireView().findViewById<Toolbar>(R.id.toolbar).getNavigationIconView()?.let {
+                    it.postDelayed(
+                        { it.setAccessibilityFocus() },
+                        AccessibilityConstants.ACCESSIBILITY_FOCUS_DELAY
+                    )
                 }
             }
 
             // Only add header if none has been added before
             if (navView.headerCount == 0) {
-                // Add close button to menu if user has screenreader enabled
+                // Add close button to menu for accessibility
                 val menuHeader = MenuHeaderBinding.inflate(layoutInflater)
                 menuHeader.menuCloseButton.setOnClickListener {
                     drawer.closeDrawer(GravityCompat.START)
@@ -86,25 +87,22 @@ abstract class BaseMainFragment(
                 navView.addHeaderView(menuHeader.root)
             }
 
-            // Track menu opening to shift focus for screenreaders accordingly
-            if (requireActivity().isScreenReaderOn()) {
-                drawer.addDrawerListener(object : DrawerLayout.SimpleDrawerListener() {
-                    override fun onDrawerStateChanged(newState: Int) {
-                        if (newState == DrawerLayout.STATE_SETTLING && !drawer.isDrawerOpen(
-                                GravityCompat.START
+            // Track menu opening to move focus for accessibility
+            drawer.addDrawerListener(object : DrawerLayout.SimpleDrawerListener() {
+                override fun onDrawerStateChanged(newState: Int) {
+                    if (newState == DrawerLayout.STATE_IDLE) {
+                        drawer.postDelayed({
+                            Accessibility.focus(
+                                if (drawer.isDrawerOpen(GravityCompat.START)) {
+                                    requireView().findViewById<ImageView>(R.id.menu_close_button)
+                                } else {
+                                    drawer
+                                }
                             )
-                        ) {
-                            // Shift focus to close button in menu after menu has opened, needs delay
-                            navView.postDelayed({
-                                requireView().findViewById<ImageView>(R.id.menu_close_button)
-                                    .setAccessibilityFocus()
-                            }, AccessibilityConstants.ACCESSIBILITY_FOCUS_DELAY)
-                        }
+                        }, AccessibilityConstants.ACCESSIBILITY_FOCUS_DELAY)
                     }
-                })
-            }
+                }
+            })
         }
-
     }
 }
-
