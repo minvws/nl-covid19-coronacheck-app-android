@@ -53,18 +53,18 @@ val holderIntroductionModule = module {
                     R.string.privacy_policy_2
                 )
             ),
+            newTerms = NewTerms(
+                version = 1,
+                needsConsent = false
+            ),
             newFeatures = listOf(
                 NewFeatureItem(
                     R.drawable.illustration_onboarding_3,
-                    R.string.type_recovery,
-                    R.string.dialog_verification_code_message,
+                    R.string.new_in_app_screen_1_title,
+                    R.string.new_in_app_screen_1_description,
                 )
             ),
-            newTerms = NewTerms(
-                version = 12,
-                needsConsent = false
-            ),
-            newFeatureVersion = 14
+            newFeatureVersion = 1
         )
     }
 }

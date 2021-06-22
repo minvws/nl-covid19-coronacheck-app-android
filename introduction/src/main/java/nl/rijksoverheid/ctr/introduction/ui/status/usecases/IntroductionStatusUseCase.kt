@@ -3,6 +3,8 @@ package nl.rijksoverheid.ctr.introduction.ui.status.usecases
 import nl.rijksoverheid.ctr.introduction.IntroductionData
 import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
+import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus.IntroductionFinished
+import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus.IntroductionNotFinished
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -21,24 +23,23 @@ class IntroductionStatusUseCaseImpl(
 ) : IntroductionStatusUseCase {
 
     override fun get(): IntroductionStatus {
-        return if (introductionPersistenceManager.getIntroductionFinished()) {
-            if (introductionData.newFeatures.isNotEmpty() &&
-                !introductionPersistenceManager.getNewFeaturesSeen(introductionData.newFeatureVersion)
-            ) {
-                return IntroductionStatus.IntroductionFinished.NewFeatures(introductionData)
-            }
+        return when {
+            introductionIsNotFinished() -> IntroductionNotFinished(introductionData)
+            newFeaturesAvailable() -> IntroductionFinished.NewFeatures(introductionData)
+            newTermsAvailable() -> IntroductionFinished.ConsentNeeded(introductionData)
+            else -> IntroductionFinished.NoActionRequired
 
-            if (introductionData.newTerms != null && !introductionPersistenceManager.getNewTermsSeen(
-                    introductionData.newTerms.version
-                )
-            ) {
-                IntroductionStatus.IntroductionFinished.ConsentNeeded(introductionData)
-            } else {
-                IntroductionStatus.IntroductionFinished.NoActionRequired
-            }
-        } else {
-            IntroductionStatus.IntroductionNotFinished(introductionData)
         }
     }
+
+    private fun newTermsAvailable() =
+        introductionData.newTerms != null &&
+                !introductionPersistenceManager.getNewTermsSeen(introductionData.newTerms.version)
+
+    private fun newFeaturesAvailable() = introductionData.newFeatures.isNotEmpty() &&
+            !introductionPersistenceManager.getNewFeaturesSeen(introductionData.newFeatureVersion)
+
+    private fun introductionIsNotFinished() =
+        !introductionPersistenceManager.getIntroductionFinished()
 
 }
