@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
+import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
@@ -23,6 +24,7 @@ import nl.rijksoverheid.ctr.shared.livedata.Event
  */
 abstract class MyOverviewViewModel : ViewModel() {
     open val myOverviewItemsLiveData: LiveData<Event<MyOverviewItems>> = MutableLiveData()
+    val myOverviewRefreshErrorEvent: LiveData<Event<MyOverviewError>> = MutableLiveData()
 
     abstract fun getSelectedType(): GreenCardType
 
@@ -32,6 +34,19 @@ abstract class MyOverviewViewModel : ViewModel() {
      * @param syncDatabase If you want to sync the database before showing the items
      */
     abstract fun refreshOverviewItems(selectType: GreenCardType = getSelectedType(), syncDatabase: Boolean = false)
+}
+
+sealed class MyOverviewError {
+    object Inactive: MyOverviewError()
+    object Refresh: MyOverviewError()
+
+    companion object {
+        fun get(expired: Boolean) = if (expired) {
+            Inactive
+        } else {
+            Refresh
+        }
+    }
 }
 
 class MyOverviewViewModelImpl(
@@ -60,10 +75,19 @@ class MyOverviewViewModelImpl(
                         walletId = 1
                     ).copy(loading = true)
                     (myOverviewItemsLiveData as MutableLiveData).postValue(Event(currentCardItems))
-                    holderDatabaseSyncer.sync(
+
+                    val syncResult = holderDatabaseSyncer.sync(
                         expectedOriginType = OriginType.getAsString(expiringOriginType),
                         syncWithRemote = true,
                     )
+
+                    if (syncResult == DatabaseSyncerResult.NetworkError) {
+                        val expired = greenCardsUseCase.expiredCard(selectType)
+                        (myOverviewRefreshErrorEvent as MutableLiveData).postValue(
+                            Event(MyOverviewError.get(expired))
+                        )
+                    }
+
                 } else {
                     holderDatabaseSyncer.sync(
                         syncWithRemote = false

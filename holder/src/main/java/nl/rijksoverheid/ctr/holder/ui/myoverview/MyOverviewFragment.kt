@@ -13,6 +13,7 @@ import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
 import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMyOverviewBinding
@@ -59,6 +60,8 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
             )
         })
 
+    private val dialogUtil: DialogUtil by inject()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -89,6 +92,24 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                     myOverviewItems = myOverviewItems
                 )
             })
+
+        myOverviewViewModel.myOverviewRefreshErrorEvent.observe(viewLifecycleOwner, EventObserver {
+            val message = getString(if (it is MyOverviewError.Inactive) {
+                R.string.app_status_internet_required_message
+            } else {
+                R.string.app_status_internet_required_message
+            })
+            dialogUtil.presentDialog(
+                context = requireContext(),
+                title = R.string.app_status_internet_required_title,
+                message = message,
+                positiveButtonText = R.string.app_status_internet_required_action,
+                positiveButtonCallback = {
+                    getQrCards(syncDatabase = true)
+                },
+                negativeButtonText = R.string.dialog_close,
+            )
+        })
 
         RefreshCredentialsJob.schedule(requireContext(), cachedAppConfigUseCase.getCachedAppConfig()?.credentialRenewalDays?.toLong() ?: 5L)
     }

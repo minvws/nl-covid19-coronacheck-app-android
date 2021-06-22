@@ -10,17 +10,22 @@ package nl.rijksoverheid.ctr.holder.persistence.database.usecases
 
 import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.isExpiring
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CredentialUtil
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import java.time.Clock
 
 interface GreenCardsUseCase {
     suspend fun expiringCardOriginType(): OriginType?
+    suspend fun expiredCard(selectedType: GreenCardType): Boolean
 }
 
 class GreenCardsUseCaseImpl(
     private val holderDatabase: HolderDatabase,
     private val cachedAppConfigUseCase: CachedAppConfigUseCase,
+    private val greenCardUtil: GreenCardUtil,
     private val clock: Clock,
 ): GreenCardsUseCase {
     override suspend fun expiringCardOriginType(): OriginType? {
@@ -34,4 +39,10 @@ class GreenCardsUseCaseImpl(
         }?.origins?.firstOrNull()?.type
     }
 
+    override suspend fun expiredCard(selectedType: GreenCardType): Boolean {
+        val allGreenCards = holderDatabase.greenCardDao().getAll()
+        return allGreenCards.filter {
+            it.greenCardEntity.type == selectedType
+        }.any(greenCardUtil::isExpired)
+    }
 }
