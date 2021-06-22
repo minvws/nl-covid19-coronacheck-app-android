@@ -5,8 +5,8 @@ import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
+import nl.rijksoverheid.ctr.introduction.IntroductionData
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
-import nl.rijksoverheid.ctr.introduction.ui.new_terms.models.NewTerms
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.livedata.Event
@@ -50,7 +50,11 @@ fun fakeIntroductionViewModel(
             return introductionStatus
         }
 
-        override fun saveIntroductionFinished(newTerms: NewTerms?) {
+        override fun saveNewFeaturesFinished(newFeaturesVersion: Int) {
+
+        }
+
+        override fun saveIntroductionFinished(introductionData: IntroductionData) {
 
         }
     }
@@ -162,7 +166,8 @@ fun fakeCachedAppConfigUseCase(
         temporarilyDisabled = false,
         requireUpdateBefore = 0
     ),
-    publicKeys: BufferedSource = "{\"cl_keys\":[]}".toResponseBody("application/json".toMediaType()).source()
+    publicKeys: BufferedSource = "{\"cl_keys\":[]}".toResponseBody("application/json".toMediaType())
+        .source()
 ): CachedAppConfigUseCase = object : CachedAppConfigUseCase {
 
     override fun getCachedAppConfig(): AppConfig {
