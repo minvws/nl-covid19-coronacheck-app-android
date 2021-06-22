@@ -279,9 +279,6 @@
     <string name="missing_events_title">Gegevens mogelijk niet compleet</string>
     <string name="missing_events_description">Door drukte of een storing bij een van de partijen kunnen er gegevens missen. Probeer het eventueel later nog een keer.</string>
     <string name="dialog_vaccination_something_wrong_description"><![CDATA[Kloppen je naam en/of geboortedatum niet? Of staat er onjuiste informatie over je vaccinatie? Kijk hier voor meer informatie.]]></string>
-    <string name="dialog_title_no_internet">Maak verbinding met het internet</string>
-    <string name="dialog_update_credentials_no_internet">De app ververst je QR-code op de achtergrond. Zo blijft je QR-code geldig. Je hebt internet nodig zodat de app dit regelmatig kan doen.</string>
-    <string name="dialog_credentials_expired_no_internet">Jouw QR-code is inactief. Maak verbinding met het internet zodat je QR-code weer geldig is.</string>
     <string name="commercial_test_unique_code_hint_screenreader">Vul hier je ophaalcode in</string>
     <string name="new_in_app_subtitle">Nieuw in de app</string>
     <string name="new_in_app_screen_1_title">Bewijs van herstel</string>
