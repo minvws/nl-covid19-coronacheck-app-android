@@ -24,24 +24,13 @@
             android:padding="24dp"
             android:clipToPadding="false">
 
-            <com.google.android.material.progressindicator.LinearProgressIndicator
-                android:id="@+id/loading"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:paddingBottom="8dp"
-                android:indeterminate="true"
-                android:visibility="visible"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:src="@drawable/illustration_hand_qr_nl"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/loading" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/type_title"
@@ -54,7 +43,7 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@+id/imageView"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/loading" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/title"
@@ -133,17 +122,31 @@
                 tools:text="Verloopt in 5 uur 59 min"
                 tools:visibility="visible" />
 
-            <Button
-                android:id="@+id/button"
-                style="@style/Widget.App.Button.Small"
+            <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:text="@string/my_overview_test_result_button"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/expires_in" />
+                app:layout_constraintTop_toBottomOf="@id/expires_in">
+
+                <Button
+                    android:id="@+id/button"
+                    style="@style/Widget.App.Button.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/my_overview_test_result_button" />
+
+                <com.google.android.material.progressindicator.CircularProgressIndicator
+                    android:id="@+id/loading"
+                    android:indeterminate="true"
+                    android:visibility="visible"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </FrameLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -165,4 +168,3 @@
         tools:text="Je Europese Qr-code wordt automatisch geldig als de Europese regelgeving ingaat (over 5 dagen)" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
