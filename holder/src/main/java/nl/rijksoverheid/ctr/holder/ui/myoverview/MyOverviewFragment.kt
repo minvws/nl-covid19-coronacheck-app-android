@@ -95,13 +95,13 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
 
         myOverviewViewModel.myOverviewRefreshErrorEvent.observe(viewLifecycleOwner, EventObserver {
             val message = getString(if (it is MyOverviewError.Inactive) {
-                R.string.app_status_internet_required_message
+                R.string.dialog_credentials_expired_no_internet
             } else {
-                R.string.app_status_internet_required_message
+                R.string.dialog_update_credentials_no_internet
             })
             dialogUtil.presentDialog(
                 context = requireContext(),
-                title = R.string.app_status_internet_required_title,
+                title = R.string.dialog_title_no_internet,
                 message = message,
                 positiveButtonText = R.string.app_status_internet_required_action,
                 positiveButtonCallback = {
