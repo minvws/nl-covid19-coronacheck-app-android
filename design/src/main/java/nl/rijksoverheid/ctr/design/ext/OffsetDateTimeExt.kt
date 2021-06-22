@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.design.ext
 
 import android.content.Context
 import android.text.format.DateFormat
+import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -21,6 +22,14 @@ fun OffsetDateTime.formatDateTime(context: Context): String =
         DateFormat.getBestDateTimePattern(
             Locale.getDefault(),
             if (DateFormat.is24HourFormat(context)) "EEEE d MMMM HH:mm" else "EEEE d MMMM hh:mm"
+        )
+    ).withLocale(Locale.getDefault()).withZone(ZoneId.of("CET")).format(this)
+
+fun OffsetDateTime.formatDayMonth(): String =
+    DateTimeFormatter.ofPattern(
+        DateFormat.getBestDateTimePattern(
+            Locale.getDefault(),
+            "d MMMM"
         )
     ).withLocale(Locale.getDefault()).withZone(ZoneId.of("CET")).format(this)
 
