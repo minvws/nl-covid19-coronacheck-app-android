@@ -11,6 +11,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.CredentialEntit
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
@@ -30,8 +31,10 @@ class GreenCardsUseCaseImplTest {
         coEvery { getCachedAppConfig() } returns appConfig
     }
 
+    private val greenCardUtil: GreenCardUtil = mockk(relaxed = true)
+
     private val firstJanuaryClock = Clock.fixed(Instant.parse("2021-01-05T00:00:00.00Z"), ZoneId.of("UTC"))
-    private val greenCardUseCase = GreenCardsUseCaseImpl(holderDatabase, cachedAppConfigUseCase, firstJanuaryClock)
+    private val greenCardUseCase = GreenCardsUseCaseImpl(holderDatabase, cachedAppConfigUseCase, greenCardUtil, firstJanuaryClock)
     
     private fun greenCard(
         originEntities: List<OriginEntity>? = null,

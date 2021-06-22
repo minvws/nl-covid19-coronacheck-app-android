@@ -20,6 +20,7 @@ import java.time.Clock
 interface GreenCardsUseCase {
     suspend fun expiringCardOriginType(): OriginType?
     suspend fun expiredCard(selectedType: GreenCardType): Boolean
+    suspend fun lastExpiringCardTimeInDays(): Long?
 }
 
 class GreenCardsUseCaseImpl(
@@ -44,5 +45,15 @@ class GreenCardsUseCaseImpl(
         return allGreenCards.filter {
             it.greenCardEntity.type == selectedType
         }.any(greenCardUtil::isExpired)
+    }
+
+    override suspend fun lastExpiringCardTimeInDays(): Long? {
+        val configCredentialRenewalDays = cachedAppConfigUseCase.getCachedAppConfig()?.credentialRenewalDays?.toLong() ?: 5L
+
+        val lastExpiringGreenCard = holderDatabase.greenCardDao().getAll().mapNotNull { greenCard ->
+            greenCard.credentialEntities.maxByOrNull { it.expirationTime }?.expirationTime
+        }.sortedByDescending { it.toEpochSecond() }.firstOrNull()
+
+        return lastExpiringGreenCard?.minusDays(configCredentialRenewalDays)?.dayOfYear?.toLong()
     }
 }

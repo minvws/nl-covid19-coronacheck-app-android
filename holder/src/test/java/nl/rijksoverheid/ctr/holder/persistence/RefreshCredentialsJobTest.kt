@@ -9,9 +9,11 @@ import org.junit.Assert.*
 import androidx.work.testing.TestListenableWorkerBuilder
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.GreenCardsUseCase
 import org.junit.runner.RunWith
+import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
 
 /*
@@ -22,7 +24,7 @@ import org.robolectric.RobolectricTestRunner
  *
  */
 @RunWith(RobolectricTestRunner::class)
-class RefreshCredentialsJobTest {
+class RefreshCredentialsJobTest: AutoCloseKoinTest() {
 
     @Test
     fun `given a successful database sync, when worker does work, then it returns success`() {
@@ -53,6 +55,13 @@ class RefreshCredentialsJobTest {
         databaseSyncerResult: DatabaseSyncerResult = DatabaseSyncerResult.Success) = HolderWorkerFactory(
         greenCardsUseCase = object: GreenCardsUseCase {
             override suspend fun expiringCardOriginType(): OriginType? = expiringCardOriginType
+            override suspend fun expiredCard(selectedType: GreenCardType): Boolean {
+                TODO("Not yet implemented")
+            }
+
+            override suspend fun lastExpiringCardTimeInDays(): Long? {
+                return 4L
+            }
         },
         holderDatabaseSyncer = object: HolderDatabaseSyncer {
             override suspend fun sync(

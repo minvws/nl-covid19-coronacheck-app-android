@@ -26,7 +26,9 @@ class RefreshCredentialsJob(
         val syncWithRemote = expiringCardOriginType != null
         return if (syncWithRemote) {
              when (holderDatabaseSyncer.sync(OriginType.getAsString(expiringCardOriginType!!), true)) {
-                DatabaseSyncerResult.Success -> Result.success()
+                DatabaseSyncerResult.Success -> {
+                    Result.success()
+                }
                 else -> Result.retry()
             }
         } else {
@@ -35,19 +37,19 @@ class RefreshCredentialsJob(
             )
             Result.success()
         }
-
-
     }
 
     companion object {
+        private const val uniqueWorkName = "refresh_credentials"
         fun schedule(context: Context, credentialRenewalDays: Long) {
-            val request = PeriodicWorkRequestBuilder<RefreshCredentialsJob>(credentialRenewalDays, TimeUnit.DAYS)
+            val request = OneTimeWorkRequestBuilder<RefreshCredentialsJob>()
+                .setInitialDelay(credentialRenewalDays, TimeUnit.DAYS)
                 .setConstraints(
                     Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
                 ).build()
 
             WorkManager.getInstance(context)
-                .enqueueUniquePeriodicWork("refresh_credentials", ExistingPeriodicWorkPolicy.REPLACE, request)
+                .enqueueUniqueWork(uniqueWorkName, ExistingWorkPolicy.REPLACE, request)
         }
     }
 }
