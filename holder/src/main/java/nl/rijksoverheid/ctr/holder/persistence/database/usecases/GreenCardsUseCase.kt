@@ -16,6 +16,8 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.isExpiring
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CredentialUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import java.time.Clock
+import java.time.OffsetDateTime
+import java.time.temporal.ChronoUnit.DAYS
 
 interface GreenCardsUseCase {
     suspend fun expiringCardOriginType(): OriginType?
@@ -50,10 +52,16 @@ class GreenCardsUseCaseImpl(
     override suspend fun lastExpiringCardTimeInDays(): Long? {
         val configCredentialRenewalDays = cachedAppConfigUseCase.getCachedAppConfig()?.credentialRenewalDays?.toLong() ?: 5L
 
-        val lastExpiringGreenCard = holderDatabase.greenCardDao().getAll().mapNotNull { greenCard ->
+        val lastExpiringGreenCardRenewal = holderDatabase.greenCardDao().getAll().mapNotNull { greenCard ->
             greenCard.credentialEntities.maxByOrNull { it.expirationTime }?.expirationTime
-        }.sortedByDescending { it.toEpochSecond() }.firstOrNull()
+        }.sortedByDescending { it.toEpochSecond() }.firstOrNull()?.minusDays(configCredentialRenewalDays)
 
-        return lastExpiringGreenCard?.minusDays(configCredentialRenewalDays)?.dayOfYear?.toLong()
+       val now = OffsetDateTime.now(clock)
+
+        return if (lastExpiringGreenCardRenewal != null && lastExpiringGreenCardRenewal.isAfter(now)) {
+            DAYS.between(now, lastExpiringGreenCardRenewal)
+        } else {
+            null
+        }
     }
 }
