@@ -25,9 +25,11 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.Response
 import okhttp3.ResponseBody.Companion.toResponseBody
 import okio.Buffer
+import org.json.JSONObject
 import retrofit2.Invocation
 import timber.log.Timber
 import java.io.ByteArrayInputStream
+import java.lang.Exception
 
 private val responseAdapter by lazy {
     Moshi.Builder()
@@ -60,39 +62,53 @@ class SignedResponseInterceptor(
 
         val body = response.body?.bytes() ?: return response
 
-        val signedResponse = responseAdapter.fromJson(Buffer().apply { write(body) })
-            ?: error("Expected signed response payload")
+        try {
+            val signedResponse = responseAdapter.fromJson(Buffer().apply { write(body) })
 
-        if (signedResponse.payload == null || signedResponse.signature == null) {
-            return response.newBuilder().body("Empty signature".toResponseBody())
-                .code(500)
-                .message("Expected response signature").build().also { response.close() }
-        }
+            if (signedResponse?.payload == null || signedResponse.signature == null) {
+                return response.newBuilder().body("Empty signature".toResponseBody())
+                    .code(500)
+                    .message("Expected response signature").build().also { response.close() }
+            }
 
-        val validator = if (expectedSigningCertificate != null) {
-            val builder = SignatureValidator.Builder()
-                .addTrustedCertificate(EV_ROOT_CA)
-                .addTrustedCertificate(ROOT_CA_G3)
-                .addTrustedCertificate(PRIVATE_ROOT_CA)
-                .signingCertificate(expectedSigningCertificate.certificateBytes)
-            builder.build()
-        } else {
-            defaultValidator
-        }
+            val validator = if (expectedSigningCertificate != null) {
+                val builder = SignatureValidator.Builder()
+                    .addTrustedCertificate(EV_ROOT_CA)
+                    .addTrustedCertificate(ROOT_CA_G3)
+                    .addTrustedCertificate(PRIVATE_ROOT_CA)
+                    .signingCertificate(expectedSigningCertificate.certificateBytes)
+                builder.build()
+            } else {
+                defaultValidator
+            }
 
-        return if (!validateSignature(validator, signedResponse)) {
-            response.newBuilder().body("Signature failed to validate".toResponseBody())
-                .code(500)
-                .message("Signature failed to validate").build().also { response.close() }
-        } else {
-            response.newBuilder()
-                .body(
-                    (if (wrapResponse) wrapResponse(
-                        body,
-                        signedResponse.payload
-                    ) else signedResponse.payload).toResponseBody("application/json".toMediaType())
-                )
-                .build().also { response.close() }
+            return if (!validateSignature(validator, signedResponse)) {
+                response.newBuilder().body("Signature failed to validate".toResponseBody())
+                    .code(500)
+                    .message("Signature failed to validate").build().also { response.close() }
+            } else {
+                response.newBuilder()
+                    .body(
+                        (if (wrapResponse) wrapResponse(
+                            body,
+                            signedResponse.payload
+                        ) else signedResponse.payload).toResponseBody("application/json".toMediaType())
+                    )
+                    .build().also { response.close() }
+            }
+        } catch (e: Exception) {
+            return if (response.isSuccessful) {
+                // When something is wrong in parsing a successful request, handle it like a 500
+                // in the UI (this should never happen)
+                response.newBuilder().body("Failed to handle signed response".toResponseBody())
+                    .code(500)
+                    .message("Failed to handle signed response").build().also { response.close() }
+            } else {
+                // When something is wrong in parsing a unsuccesful request, cascade down the
+                // request as usual (so that HttpExceptions get picked up for example)
+                response.newBuilder().body(body.toResponseBody())
+                    .code(response.code).build().also { response.close() }
+            }
         }
     }
 
