@@ -122,31 +122,16 @@
                 tools:text="Verloopt in 5 uur 59 min"
                 tools:visibility="visible" />
 
-            <FrameLayout
+            <nl.rijksoverheid.ctr.design.views.ButtonWithIndicatorLayout
+                android:id="@+id/buttonWithIndicatorContainer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/expires_in">
-
-                <Button
-                    android:id="@+id/button"
-                    style="@style/Widget.App.Button.Small"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/my_overview_test_result_button" />
-
-                <com.google.android.material.progressindicator.CircularProgressIndicator
-                    android:id="@+id/loading"
-                    android:indeterminate="true"
-                    android:visibility="visible"
-                    android:layout_gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </FrameLayout>
+                app:layout_constraintTop_toBottomOf="@id/expires_in"
+                app:text="@string/my_overview_test_result_button" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

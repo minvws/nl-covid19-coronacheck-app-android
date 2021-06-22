@@ -53,7 +53,7 @@ class MyOverviewGreenCardAdapterItem(
             viewBinding = viewBinding
         )
 
-        viewBinding.button.setOnClickListener {
+        viewBinding.buttonWithIndicatorContainer.setButtonOnClickListener {
             if (credentialState is MyOverviewItem.GreenCardItem.CredentialState.HasCredential) {
                 onButtonClick.invoke(greenCard, credentialState.credential)
             }
@@ -68,7 +68,7 @@ class MyOverviewGreenCardAdapterItem(
                     text = context.getString(R.string.validity_type_european_title)
                     setTextColor(ContextCompat.getColor(context, R.color.darkened_blue))
                 }
-                viewBinding.button.setEnabledButtonColor(R.color.darkened_blue)
+                viewBinding.buttonWithIndicatorContainer.setEnabledButtonColor(R.color.darkened_blue)
                 viewBinding.imageView.setImageResource(R.drawable.illustration_hand_qr_eu)
             }
             is GreenCardType.Domestic -> {
@@ -76,19 +76,19 @@ class MyOverviewGreenCardAdapterItem(
                     text = context.getString(R.string.validity_type_dutch_title)
                     setTextColor(ContextCompat.getColor(context, R.color.primary_blue))
                 }
-                viewBinding.button.setEnabledButtonColor(R.color.primary_blue)
+                viewBinding.buttonWithIndicatorContainer.setEnabledButtonColor(R.color.primary_blue)
                 viewBinding.imageView.setImageResource(R.drawable.illustration_hand_qr_nl)
             }
         }
 
-        viewBinding.loading.visibility = if (loading) {
-            View.VISIBLE
-        }  else {
-            View.GONE
+        viewBinding.buttonWithIndicatorContainer.isButtonEnabled(credentialState is MyOverviewItem.GreenCardItem.CredentialState.HasCredential)
+
+        if (loading) {
+            viewBinding.buttonWithIndicatorContainer.loading()
+        } else {
+            viewBinding.buttonWithIndicatorContainer.idle()
         }
 
-        // Check enabling button
-        viewBinding.button.isEnabled = credentialState is MyOverviewItem.GreenCardItem.CredentialState.HasCredential && loading == false
     }
 
     private fun setContent(viewBinding: ItemMyOverviewGreenCardBinding) {
