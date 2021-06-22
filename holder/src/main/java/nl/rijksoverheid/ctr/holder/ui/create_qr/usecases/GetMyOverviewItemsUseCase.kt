@@ -242,7 +242,8 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
 
 data class MyOverviewItems(
     val items: List<MyOverviewItem>,
-    val selectedType: GreenCardType
+    val selectedType: GreenCardType,
+    val loading: Boolean = false,
 )
 
 sealed class MyOverviewItem {

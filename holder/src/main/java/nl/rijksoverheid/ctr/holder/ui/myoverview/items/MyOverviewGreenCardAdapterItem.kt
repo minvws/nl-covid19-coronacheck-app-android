@@ -34,6 +34,7 @@ class MyOverviewGreenCardAdapterItem(
     private val originStates: List<OriginState>,
     private val credentialState: MyOverviewItem.GreenCardItem.CredentialState,
     private val launchDate: OffsetDateTime,
+    private val loading: Boolean = false,
     private val onButtonClick: (greenCard: GreenCard, credential: CredentialEntity) -> Unit,
 ) :
     BindableItem<ItemMyOverviewGreenCardBinding>(R.layout.item_my_overview_green_card.toLong()),
@@ -80,8 +81,14 @@ class MyOverviewGreenCardAdapterItem(
             }
         }
 
+        viewBinding.loading.visibility = if (loading) {
+            View.VISIBLE
+        }  else {
+            View.GONE
+        }
+
         // Check enabling button
-        viewBinding.button.isEnabled = credentialState is MyOverviewItem.GreenCardItem.CredentialState.HasCredential
+        viewBinding.button.isEnabled = credentialState is MyOverviewItem.GreenCardItem.CredentialState.HasCredential && loading == false
     }
 
     private fun setContent(viewBinding: ItemMyOverviewGreenCardBinding) {

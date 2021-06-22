@@ -135,7 +135,7 @@ fun holderModule(baseUrl: String) = module {
     viewModel<YourEventsViewModel> { YourEventsViewModelImpl(get(), get()) }
     viewModel<GetVaccinationViewModel> { GetVaccinationViewModelImpl(get()) }
     viewModel<ChooseProviderViewModel> { ChooseProviderViewModelImpl(get()) }
-    viewModel<MyOverviewViewModel> { MyOverviewViewModelImpl(get(), get(), get()) }
+    viewModel<MyOverviewViewModel> { MyOverviewViewModelImpl(get(), get(), get(), get()) }
 
     // Repositories
     single { AuthenticationRepository() }

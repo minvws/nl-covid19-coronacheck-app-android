@@ -25,7 +25,7 @@ class GreenCardsUseCaseImpl(
 ): GreenCardsUseCase {
     override suspend fun expiringCardOriginType(): OriginType? {
 
-        val config = cachedAppConfigUseCase.getCachedAppConfig()!!
+        val config = cachedAppConfigUseCase.getCachedAppConfig() ?: return null
 
         return holderDatabase.greenCardDao().getAll().firstOrNull { greenCard ->
             val minimumCredentialVersionIncreased = greenCard.credentialEntities.minByOrNull { it.credentialVersion }?.credentialVersion ?: 0 < config.minimumCredentialVersion
