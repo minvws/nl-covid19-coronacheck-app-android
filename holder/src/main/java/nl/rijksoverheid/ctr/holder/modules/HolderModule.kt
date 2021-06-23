@@ -131,6 +131,7 @@ fun holderModule(baseUrl: String) = module {
     viewModel<DeviceRootedViewModel> { DeviceRootedViewModelImpl(get(), get()) }
     viewModel<YourEventsViewModel> { YourEventsViewModelImpl(get(), get()) }
     viewModel<GetVaccinationViewModel> { GetVaccinationViewModelImpl(get()) }
+    viewModel<GetRecoveryViewModel> { GetRecoveryViewModelImpl(get()) }
     viewModel<ChooseProviderViewModel> { ChooseProviderViewModelImpl(get()) }
     viewModel<MyOverviewViewModel> { MyOverviewViewModelImpl(get(), get(), get()) }
 
@@ -225,6 +226,10 @@ fun holderModule(baseUrl: String) = module {
                 RemoteProtocol::class.java, "protocolVersion")
                 .withSubtype(RemoteTestResult2::class.java, "2.0")
                 .withSubtype(RemoteTestResult3::class.java, "3.0"))
+            .add(PolymorphicJsonAdapterFactory.of(
+                RemoteEvent::class.java, "type")
+                .withSubtype(RemoteEventsPositiveTest::class.java, "positivetest")
+                .withSubtype(RemoteEventsPositiveTest::class.java, "recovery"))
             .add(KotlinJsonAdapterFactory())
             .build()
     }

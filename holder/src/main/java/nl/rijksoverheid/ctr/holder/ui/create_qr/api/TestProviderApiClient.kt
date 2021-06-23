@@ -47,6 +47,16 @@ interface TestProviderApiClient {
 
     @POST
     @SignedRequest
+    suspend fun unomiPositiveTestEvents(
+        @Url url: String,
+        @Header("Authorization") authorization: String,
+        @Header("CoronaCheck-Protocol-Version") protocolVersion: String = "3.0",
+        @Body params: Map<String, String> = mapOf("filter" to "positivetest,recovery"),
+        @Tag certificate: SigningCertificate,
+    ): SignedResponseWithModel<RemoteUnomi>
+
+    @POST
+    @SignedRequest
     suspend fun vaccinationEvents(
         @Url url: String,
         @Header("Authorization") authorization: String,
@@ -64,4 +74,14 @@ interface TestProviderApiClient {
         @Body params: Map<String, String> = mapOf("filter" to "negativetest"),
         @Tag certificate: SigningCertificate,
         ): SignedResponseWithModel<RemoteTestResult3>
+
+    @POST
+    @SignedRequest
+    suspend fun positiveTestEvents(
+        @Url url: String,
+        @Header("Authorization") authorization: String,
+        @Header("CoronaCheck-Protocol-Version") protocolVersion: String = "3.0",
+        @Body params: Map<String, String> = mapOf("filter" to "positivetest,recovery"),
+        @Tag certificate: SigningCertificate,
+    ): SignedResponseWithModel<RemotePositiveTests>
 }

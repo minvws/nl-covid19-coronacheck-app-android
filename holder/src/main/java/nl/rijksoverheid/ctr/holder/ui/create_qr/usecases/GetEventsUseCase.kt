@@ -4,6 +4,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
 import retrofit2.HttpException
+import timber.log.Timber
 import java.io.IOException
 
 /*
@@ -25,6 +26,7 @@ import java.io.IOException
 interface GetEventsUseCase {
     suspend fun getVaccinationEvents(jwt: String): EventsResult<RemoteEventsVaccinations>
     suspend fun getNegativeTestEvents(jwt: String): EventsResult<RemoteTestResult3>
+    suspend fun getPositiveTestEvents(jwt: String): EventsResult<RemotePositiveTests>
 }
 
 class GetEventsUseCaseImpl(
@@ -49,6 +51,14 @@ class GetEventsUseCaseImpl(
         return getRemoteEvents(
             jwt = jwt,
             originType = OriginType.Test,
+            targetProviderIds = listOf(PROVIDER_IDENTIFIER_GGD)
+        )
+    }
+
+    override suspend fun getPositiveTestEvents(jwt: String): EventsResult<RemotePositiveTests> {
+        return getRemoteEvents(
+            jwt = jwt,
+            originType = OriginType.Recovery,
             targetProviderIds = listOf(PROVIDER_IDENTIFIER_GGD)
         )
     }
@@ -93,7 +103,10 @@ class GetEventsUseCaseImpl(
                             )
                         }
                         is OriginType.Recovery -> {
-                            error("Not yet supported")
+                            getRemoteEventsUseCase.getPositiveTestResults(
+                                eventProvider = it.eventProvider,
+                                token = it.token
+                            )
                         }
                     }
                 }

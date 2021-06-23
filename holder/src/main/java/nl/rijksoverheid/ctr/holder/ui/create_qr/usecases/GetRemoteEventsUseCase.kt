@@ -14,6 +14,9 @@ interface GetRemoteEventsUseCase {
 
     suspend fun getTestResults(eventProvider: RemoteConfigProviders.EventProvider,
                                 token: RemoteAccessTokens.Token): RemoteEventsResult<RemoteTestResult3>
+
+    suspend fun getPositiveTestResults(eventProvider: RemoteConfigProviders.EventProvider,
+                               token: RemoteAccessTokens.Token): RemoteEventsResult<RemotePositiveTests>
 }
 
 class GetRemoteEventsUseCaseImpl(private val eventProviderRepository: EventProviderRepository): GetRemoteEventsUseCase {
@@ -64,6 +67,35 @@ class GetRemoteEventsUseCaseImpl(private val eventProviderRepository: EventProvi
         } catch (e: IOException) {
             RemoteEventsResult.Error.NetworkError
         } catch (e: Exception) {
+            // In case the event provider gives us back a 200 with json we are not expecting
+            RemoteEventsResult.Error.ServerError(
+                httpCode = 200
+            )
+        }
+    }
+
+    override suspend fun getPositiveTestResults(
+        eventProvider: RemoteConfigProviders.EventProvider,
+        token: RemoteAccessTokens.Token
+    ): RemoteEventsResult<RemotePositiveTests> {
+
+        return try {
+            val events = eventProviderRepository
+                .positiveTestEvent(
+                    url = eventProvider.eventUrl,
+                    token = token.event,
+                    signingCertificateBytes = eventProvider.cms
+                )
+
+            RemoteEventsResult.Success(events)
+        } catch (e: HttpException) {
+            RemoteEventsResult.Error.ServerError(
+                httpCode = e.code()
+            )
+        } catch (e: IOException) {
+            RemoteEventsResult.Error.NetworkError
+        } catch (e: Exception) {
+            Timber.v("ERROR: " + e.toString())
             // In case the event provider gives us back a 200 with json we are not expecting
             RemoteEventsResult.Error.ServerError(
                 httpCode = 200

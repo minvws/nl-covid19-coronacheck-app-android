@@ -74,7 +74,11 @@ class GetEventProvidersWithTokensUseCaseImpl(
                         )
                     }
                     is OriginType.Recovery -> {
-                        error("Not yet supported")
+                        eventProviderRepository.unomiPositiveTestEvents(
+                            url = eventProvider.unomiUrl,
+                            token = token.unomi,
+                            signingCertificateBytes = eventProvider.cms
+                        )
                     }
                 }
 

@@ -40,7 +40,7 @@ class QrCodeTypeFragment : Fragment(R.layout.fragment_qr_code_type) {
             R.string.qr_code_type_recovery_title,
             getString(R.string.qr_code_type_recovery_description)
         ) {
-
+            findNavController().navigate(QrCodeTypeFragmentDirections.actionRecovery())
         }
 
         binding.vaccinationButton.bind(
