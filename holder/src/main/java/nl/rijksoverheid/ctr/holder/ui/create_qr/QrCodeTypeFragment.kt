@@ -36,6 +36,13 @@ class QrCodeTypeFragment : Fragment(R.layout.fragment_qr_code_type) {
             }
         }
 
+        binding.recoveryButton.bind(
+            R.string.qr_code_type_recovery_title,
+            getString(R.string.qr_code_type_recovery_description)
+        ) {
+
+        }
+
         binding.vaccinationButton.bind(
             R.string.qr_code_type_vaccination_title,
             getString(R.string.qr_code_type_vaccination_description)

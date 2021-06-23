@@ -47,7 +47,7 @@
             app:layout_constraintVertical_bias="0" />
 
         <include
-            android:id="@+id/vaccination_button"
+            android:id="@+id/recovery_button"
             layout="@layout/include_content_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -56,6 +56,18 @@
             app:layout_constraintEnd_toEndOf="@+id/title"
             app:layout_constraintStart_toStartOf="@+id/title"
             app:layout_constraintTop_toBottomOf="@id/negative_test_button"
+            app:layout_constraintVertical_bias="0" />
+
+        <include
+            android:id="@+id/vaccination_button"
+            layout="@layout/include_content_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/title"
+            app:layout_constraintStart_toStartOf="@+id/title"
+            app:layout_constraintTop_toBottomOf="@id/recovery_button"
             app:layout_constraintVertical_bias="0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
