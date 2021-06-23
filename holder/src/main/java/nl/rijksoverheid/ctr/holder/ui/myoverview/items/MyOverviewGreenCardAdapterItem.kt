@@ -29,6 +29,7 @@ import org.koin.core.component.inject
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 import java.time.temporal.ChronoUnit
+import kotlin.math.ceil
 
 class MyOverviewGreenCardAdapterItem(
     private val greenCard: GreenCard,
@@ -266,15 +267,12 @@ class MyOverviewGreenCardAdapterItem(
                     ChronoUnit.HOURS.between(OffsetDateTime.now(), realValidFrom)
 
                 if (hoursBetweenExpiration >= 24) {
-                    val daysBetween = ChronoUnit.DAYS.between(OffsetDateTime.now(), realValidFrom).coerceAtLeast(1)
-                    if (daysBetween == 1L) {
+                    val daysBetween = ceil(ChronoUnit.HOURS.between(OffsetDateTime.now(), realValidFrom) / 24.0).toInt()
+                    if (daysBetween == 1) {
                         textView.text = context.getString(R.string.qr_card_validity_future_day, daysBetween.toString())
                     } else {
                         textView.text = context.getString(R.string.qr_card_validity_future_days, daysBetween.toString())
                     }
-                } else {
-                    textView.text = context.getString(R.string.qr_card_validity_future_hours,
-                        hoursBetweenExpiration.coerceAtLeast(1).toString())
                 }
 
                 textView.visibility = View.VISIBLE

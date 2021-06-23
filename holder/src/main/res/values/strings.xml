@@ -231,7 +231,7 @@
     <string name="qr_card_recovery_title_eu">Hersteldatum:</string>
     <string name="qr_card_validity_valid">geldig t/m %1$s</string>
     <string name="qr_card_validity_future_days">wordt automatisch geldig over %1$s dagen</string>
-    <string name="qr_card_validity_future_day">wordt automatisch geldig over %1$s dag</string>
+    <string name="qr_card_validity_future_day">wordt automatisch geldig in %1$s dag</string>
     <string name="qr_card_validity_future_hours">wordt automatisch geldig over %1$s uur</string>
     <string name="qr_card_validity_eu">Je internationale QR-code wordt automatisch geldig als de Europese regelgeving ingaat (vanaf %1$s)</string>
     <string name="your_test_result_explanation_toolbar_title">Wat is er opgehaald?</string>
