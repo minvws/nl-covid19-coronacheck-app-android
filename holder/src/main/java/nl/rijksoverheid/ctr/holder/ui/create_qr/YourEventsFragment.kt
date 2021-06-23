@@ -159,15 +159,6 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                     sampleDate.formatDateTime(requireContext())
                 } ?: ""
 
-                val validUntil = event.negativeTest?.sampleDate?.let { sampleDate ->
-                    OffsetDateTime.ofInstant(
-                        Instant.ofEpochSecond(sampleDate.toEpochSecond()),
-                        ZoneOffset.UTC
-                    ).plusHours(
-                        cachedAppConfigUseCase.getCachedAppConfigMaxValidityHours().toLong()
-                    ).formatDateTime(requireContext())
-                } ?: ""
-
                 val birthDate = negativeTests.holder?.birthDate?.let { birthDate ->
                     try {
                         LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).formatDayMonthYear()
@@ -180,7 +171,6 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                     event = event,
                     fullName = fullName,
                     testDate = testDate,
-                    validUntil = validUntil,
                     birthDate = birthDate
                 )
 
@@ -191,7 +181,6 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                         subtitle = getString(
                             R.string.your_negative_test_3_0_results_row_subtitle,
                             testDate,
-                            validUntil,
                             fullName,
                             birthDate
                         ),

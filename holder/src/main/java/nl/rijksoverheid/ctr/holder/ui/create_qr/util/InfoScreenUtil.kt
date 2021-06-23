@@ -22,7 +22,6 @@ interface InfoScreenUtil {
     fun getForRemoteTestResult3(event: RemoteTestResult3.Event,
                                 fullName: String,
                                 testDate: String,
-                                validUntil: String,
                                 birthDate: String): InfoScreen
     fun getForRemoteVaccination(event: RemoteEventsVaccinations.Event,
                                 fullName: String,
@@ -61,7 +60,6 @@ class InfoScreenUtilImpl(private val application: Application,
         event: RemoteTestResult3.Event,
         fullName: String,
         testDate: String,
-        validUntil: String,
         birthDate: String
     ): InfoScreen {
 
