@@ -36,7 +36,6 @@ fun appConfigModule(path: String, versionCode: Int) = module {
     factory<AppConfigStorageManager> { AppConfigStorageManagerImpl(androidContext().cacheDir.path) }
     factory<CachedAppConfigUseCase> { CachedAppConfigUseCaseImpl(get(), androidContext().cacheDir.path, get()) }
     factory<PersistConfigUseCase> { PersistConfigUseCaseImpl(get(), get(), androidContext().packageName.contains("verifier"),androidContext().cacheDir.path) }
-    factory<LoadPublicKeysUseCase> { LoadPublicKeysUseCaseImpl(get(), get()) }
     factory<AppConfigUtil> { AppConfigUtilImpl(androidContext(), get()) }
 
     single {
@@ -48,6 +47,6 @@ fun appConfigModule(path: String, versionCode: Int) = module {
     }
 
     viewModel<AppConfigViewModel> {
-        AppConfigViewModelImpl(get(), get(), get(), get(), get(), get(), androidContext().cacheDir.path, androidContext().packageName.contains("verifier"),versionCode)
+        AppConfigViewModelImpl(get(), get(), get(), get(), androidContext().cacheDir.path, androidContext().packageName.contains("verifier"),versionCode)
     }
 }
