@@ -67,6 +67,12 @@
         <item name="lineHeight">20sp</item>
     </style>
 
+    <style name="App.TextAppearance.MaterialComponents.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
+        <item name="android:letterSpacing">0.03</item>
+        <item name="android:textColor">?android:colorSecondary</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="App.TextAppearance.MaterialComponents.Body2.Secondary" parent="TextAppearance.MaterialComponents.Body2">
         <item name="lineHeight">20sp</item>
         <item name="android:textColor">?android:textColorSecondary</item>

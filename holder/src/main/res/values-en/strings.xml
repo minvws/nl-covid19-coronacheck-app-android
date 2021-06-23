@@ -281,4 +281,7 @@
     <string name="missing_events_description">Due to increased traffic or an outage at one of the parties, some details may be missing. Please try again later.</string>
     <string name="dialog_vaccination_something_wrong_description"><![CDATA[Is your name or date of birth wrong? Or are your vaccination details incorrect? Look <a href="https://coronacheck.nl/en/guidepost">here</a> for more information.]]></string>
     <string name="commercial_test_unique_code_hint_screenreader">Enter your retrieval code here</string>
+    <string name="new_in_app_subtitle">Nieuw in de app</string>
+    <string name="new_in_app_screen_1_title">Bewijs van herstel</string>
+    <string name="new_in_app_screen_1_description">Ben je eerder besmet geraakt met corona? En ben je inmiddels hersteld van het virus? Dan kun je een persoonlijke QR-code maken. Met dit bewijs krijg je toegang tot bepaalde locaties en activiteiten. Ook kun je er internationaal mee reizen.</string>
 </resources>

@@ -4,8 +4,10 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import android.widget.ScrollView
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
@@ -34,18 +36,24 @@ class NewFeaturesFragment : Fragment(R.layout.fragment_new_features) {
 
         val binding = FragmentNewFeaturesBinding.bind(view)
 
-        val adapter =
-            NewFeaturesPagerAdapter(
-                childFragmentManager,
-                lifecycle,
-                args.introductionData.newFeatures
-            )
+        val adapter = NewFeaturesPagerAdapter(
+            childFragmentManager,
+            lifecycle,
+            args.introductionData.newFeatures
+        )
 
         if (args.introductionData.newFeatures.isNotEmpty()) {
             binding.indicators.initIndicator(adapter.itemCount)
             initViewPager(binding, adapter)
         }
 
+        bindViews(binding, adapter)
+    }
+
+    private fun bindViews(
+        binding: FragmentNewFeaturesBinding,
+        adapter: NewFeaturesPagerAdapter
+    ) {
         binding.run {
             toolbar.setNavigationOnClickListener {
                 viewPager.currentItem = viewPager.currentItem - 1
@@ -54,6 +62,20 @@ class NewFeaturesFragment : Fragment(R.layout.fragment_new_features) {
                 val currentItem = viewPager.currentItem
                 if (currentItem == adapter.itemCount - 1) finishFlow() else showNextPage(currentItem)
             }
+            requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object :
+                OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    val currentItem = viewPager.currentItem
+                    if (currentItem == 0) {
+                        val canPop = findNavController().popBackStack()
+                        if (!canPop) {
+                            requireActivity().finish()
+                        }
+                    } else {
+                        viewPager.currentItem = viewPager.currentItem - 1
+                    }
+                }
+            })
         }
     }
 
@@ -92,7 +114,7 @@ class NewFeaturesFragment : Fragment(R.layout.fragment_new_features) {
             @SuppressLint("StringFormatInvalid")
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                binding.toolbar.visibility = if (position == 0) View.GONE else View.VISIBLE
+                binding.toolbar.visibility = if (position == 0) View.INVISIBLE else View.VISIBLE
                 binding.indicators.updateSelected(position)
 
                 binding.indicators.contentDescription = getString(
