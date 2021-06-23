@@ -152,15 +152,25 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                             credentialState = myOverviewItem.credentialState,
                             launchDate = myOverviewItem.launchDate,
                             onButtonClick = { greenCard, credential ->
-                                findNavController().navigate(MyOverviewFragmentDirections.actionQrCode(
-                                    QrCodeFragmentData(
-                                        shouldDisclose = greenCard.greenCardEntity.type == GreenCardType.Domestic,
-                                        credential = credential.data,
-                                        credentialExpirationTimeSeconds = credential.expirationTime.toEpochSecond(),
-                                        type = greenCard.greenCardEntity.type,
-                                        originType = greenCard.origins.first().type
+                                findNavController().navigate(
+                                    MyOverviewFragmentDirections.actionQrCode(
+                                        toolbarTitle = when (greenCard.greenCardEntity.type) {
+                                            is GreenCardType.Domestic -> {
+                                                getString(R.string.my_overview_test_result_title)
+                                            }
+                                            is GreenCardType.Eu -> {
+                                                getString(R.string.my_overview_test_result_international_title)
+                                            }
+                                        },
+                                        data = QrCodeFragmentData(
+                                            shouldDisclose = greenCard.greenCardEntity.type == GreenCardType.Domestic,
+                                            credential = credential.data,
+                                            credentialExpirationTimeSeconds = credential.expirationTime.toEpochSecond(),
+                                            type = greenCard.greenCardEntity.type,
+                                            originType = greenCard.origins.first().type
+                                        )
                                     )
-                                ))
+                                )
                             }
                         )
                     )
