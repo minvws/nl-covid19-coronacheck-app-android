@@ -34,6 +34,7 @@
     <string name="privacy_statement">Privacy statement</string>
     <string name="terms_of_use">Acceptable use policy</string>
     <string name="my_overview_test_result_title">My QR code</string>
+    <string name="my_overview_test_result_international_title">International QR-code</string>
     <string name="my_overview_test_result_validity">Valid until %1$s</string>
     <string name="accessibility_label_my_overview_test_result_personal_data">Your personal data: %1$s %2$s %3$s %4$s</string>
     <string name="accessibility_label_selected">Selected</string>
