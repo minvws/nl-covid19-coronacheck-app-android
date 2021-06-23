@@ -188,9 +188,6 @@ fun fakeCachedAppConfigUseCase(
 
 fun fakeMobileCoreWrapper(): MobileCoreWrapper {
     return object : MobileCoreWrapper {
-        override fun loadDomesticIssuerPks(bytes: ByteArray) {
-        }
-
         override fun createCredentials(body: ByteArray): String {
             return ""
         }
@@ -218,6 +215,8 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
         override fun readEuropeanCredential(credential: ByteArray): JSONObject {
             return JSONObject()
         }
+
+        override fun initializeHolder(configFilesPath: String): String? = null
 
         override fun initializeVerifier(configFilesPath: String) = ""
 
