@@ -35,6 +35,11 @@ class CachedAppConfigUseCaseImpl constructor(
         if (!configFile.exists()) {
             configFile = File(cacheDir, "config.json")
         }
+
+        if (!configFile.exists()) {
+            return AppConfig()
+        }
+
         return appConfigStorageManager.getFileAsBufferedSource(configFile)?.readUtf8()?.toObject(moshi)
     }
 
