@@ -34,7 +34,6 @@ class AppConfigViewModelTest {
     val rule = InstantTaskExecutorRule()
 
     private val filesDirPath = "/files"
-    private val cacheDirPath = "/cache"
 
     private val appConfigUseCase: AppConfigUseCase = mockk(relaxed = true)
     private val appStatusUseCase: AppStatusUseCase = mockk(relaxed = true)
@@ -47,7 +46,6 @@ class AppConfigViewModelTest {
         persistConfigUseCase = persistConfigUseCase,
         appConfigStorageManager = appConfigStorageManager,
         filesDirPath = filesDirPath,
-        cacheDirPath = cacheDirPath,
         isVerifierApp = isVerifier,
         versionCode = 0
     )
@@ -80,7 +78,7 @@ class AppConfigViewModelTest {
 
         coVerify { persistConfigUseCase.persist(appConfigContents, publicKeysContents) }
         coVerify { mobileCoreWrapper.initializeHolder(filesDirPath) }
-        coVerify(exactly = 0) { mobileCoreWrapper.initializeVerifier(cacheDirPath) }
+        coVerify(exactly = 0) { mobileCoreWrapper.initializeVerifier(filesDirPath) }
     }
 
     @Test
@@ -139,7 +137,6 @@ class AppConfigViewModelTest {
 
         coEvery { appStatusUseCase.get(any(), any()) } answers { AppStatus.NoActionRequired }
         coEvery { appConfigStorageManager.areConfigFilesPresentInFilesFolder() } returns false
-        coEvery { appConfigStorageManager.areConfigFilesPresentInCacheFolder() } returns false
 
         val viewModel = appConfigViewModel(true)
         viewModel.refresh(mobileCoreWrapper)

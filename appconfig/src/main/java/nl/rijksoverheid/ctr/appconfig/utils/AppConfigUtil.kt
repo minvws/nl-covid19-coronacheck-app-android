@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.appconfig
 
 import android.content.Context
 import androidx.annotation.StringRes
+import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

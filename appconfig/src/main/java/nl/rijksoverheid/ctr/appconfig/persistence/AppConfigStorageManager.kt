@@ -16,13 +16,11 @@ import java.io.IOException
 
 interface AppConfigStorageManager {
     fun storageFile(file: File, fileContents: String): StorageResult
-    fun areConfigFilesPresentInCacheFolder(): Boolean
     fun areConfigFilesPresentInFilesFolder(): Boolean
     fun getFileAsBufferedSource(file: File): BufferedSource?
 }
 
-class AppConfigStorageManagerImpl(private val cacheDir: String,
-                                  private val filesDirPath: String,): AppConfigStorageManager {
+class AppConfigStorageManagerImpl(private val filesDirPath: String,): AppConfigStorageManager {
     override fun storageFile(file: File, fileContents: String): StorageResult {
         return try {
             file.parentFile?.mkdirs()
@@ -33,13 +31,6 @@ class AppConfigStorageManagerImpl(private val cacheDir: String,
         } catch (exception: IOException) {
             StorageResult.Error(exception.message ?: "error storing: $file")
         }
-    }
-
-    override fun areConfigFilesPresentInCacheFolder(): Boolean {
-        val configFileInCacheFolder = File(cacheDir, "config.json")
-        val publicKeysFileInCacheFolder = File(cacheDir, "public_keys.json")
-
-        return configFileInCacheFolder.exists() && publicKeysFileInCacheFolder.exists()
     }
 
     override fun areConfigFilesPresentInFilesFolder(): Boolean {

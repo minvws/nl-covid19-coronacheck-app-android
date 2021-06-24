@@ -3,7 +3,7 @@ package nl.rijksoverheid.ctr.holder.persistence.database
 import androidx.room.Transaction
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteCredentials
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
