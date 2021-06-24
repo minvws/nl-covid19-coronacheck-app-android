@@ -281,4 +281,7 @@
     <string name="missing_events_description">Door drukte of een storing bij een van de partijen kunnen er gegevens missen. Probeer het eventueel later nog een keer.</string>
     <string name="dialog_vaccination_something_wrong_description"><![CDATA[Kloppen je naam en/of geboortedatum niet? Of staat er onjuiste informatie over je vaccinatie? Kijk hier voor meer informatie.]]></string>
     <string name="commercial_test_unique_code_hint_screenreader">Vul hier je ophaalcode in</string>
+    <string name="new_in_app_subtitle">Nieuw in de app</string>
+    <string name="new_in_app_screen_1_title">Bewijs van herstel</string>
+    <string name="new_in_app_screen_1_description">Ben je eerder besmet geraakt met corona? En ben je inmiddels hersteld van het virus? Dan kun je een persoonlijke QR-code maken. Met dit bewijs krijg je toegang tot bepaalde locaties en activiteiten. Ook kun je er internationaal mee reizen.</string>
 </resources>
