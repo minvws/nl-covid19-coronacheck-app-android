@@ -43,7 +43,7 @@ class AppStatusUseCaseImpl(
                 is ConfigResult.Error -> {
                     val cachedAppConfig = cachedAppConfigUseCase.getCachedAppConfig()
                     if (cachedAppConfig == null) {
-                        AppStatus.InternetRequired
+                        AppStatus.Error
                     } else {
                         if (appConfigPersistenceManager.getAppConfigLastFetchedSeconds() + cachedAppConfig.configTtlSeconds >= OffsetDateTime.now(
                                 clock
@@ -55,7 +55,7 @@ class AppStatusUseCaseImpl(
                                 appConfig = cachedAppConfig
                             )
                         } else {
-                            AppStatus.InternetRequired
+                            AppStatus.Error
                         }
                     }
                 }

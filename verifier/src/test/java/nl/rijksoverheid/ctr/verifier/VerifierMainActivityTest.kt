@@ -62,7 +62,7 @@ class VerifierMainActivityTest : AutoCloseKoinTest() {
     @Test
     fun `If app status is not NoActionRequired navigate to app status`() {
         val scenario = launchVerifierMainActivity(
-            appStatus = AppStatus.InternetRequired
+            appStatus = AppStatus.Error
         )
         scenario.onActivity {
             assertEquals(
