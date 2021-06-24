@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
@@ -34,10 +35,12 @@ class GetVaccinationFragment : DigiDFragment(R.layout.fragment_get_vaccination) 
         val binding = FragmentGetVaccinationBinding.bind(view)
 
         digidViewModel.loading.observe(viewLifecycleOwner, EventObserver {
+            binding.button.isEnabled = !it
             (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
         })
 
         getVaccinationViewModel.loading.observe(viewLifecycleOwner, EventObserver {
+            binding.button.isEnabled = !it
             (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
         })
 
@@ -151,5 +154,10 @@ class GetVaccinationFragment : DigiDFragment(R.layout.fragment_get_vaccination) 
         binding.noDigidButton.setOnClickListener {
             getString(R.string.no_digid_url).launchUrl(requireContext())
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        (parentFragment?.parentFragment as HolderMainFragment).presentLoading(false)
     }
 }
