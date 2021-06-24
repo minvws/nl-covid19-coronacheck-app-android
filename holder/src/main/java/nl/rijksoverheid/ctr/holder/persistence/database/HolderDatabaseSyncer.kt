@@ -86,7 +86,7 @@ class HolderDatabaseSyncerImpl(
                     events = events
                 )
 
-                if (!remoteCredentials.getAllOrigins().contains(expectedOriginType)) {
+                if (expectedOriginType != null && !remoteCredentials.getAllOrigins().contains(expectedOriginType)) {
                     return DatabaseSyncerResult.MissingOrigin
                 }
 

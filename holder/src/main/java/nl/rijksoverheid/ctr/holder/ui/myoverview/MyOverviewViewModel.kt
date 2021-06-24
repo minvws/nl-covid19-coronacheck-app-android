@@ -54,7 +54,7 @@ class MyOverviewViewModelImpl(
 
         viewModelScope.launch {
             if (syncDatabase) {
-                val expiringOriginType = OriginType.Test//greenCardsUseCase.expiringCardOriginType()
+                val expiringOriginType = greenCardsUseCase.expiringCardOriginType()
 
                 if (expiringOriginType != null) {
                     val currentCardItems = getMyOverviewItemsUseCase.get(
@@ -64,7 +64,7 @@ class MyOverviewViewModelImpl(
                     (myOverviewItemsLiveData as MutableLiveData).postValue(Event(currentCardItems))
 
                     val syncResult = holderDatabaseSyncer.sync(
-                        expectedOriginType = OriginType.getAsString(expiringOriginType),
+                        expectedOriginType = null,
                         syncWithRemote = true,
                     )
 
