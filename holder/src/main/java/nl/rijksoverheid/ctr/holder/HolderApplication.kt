@@ -8,10 +8,8 @@ import nl.rijksoverheid.ctr.appconfig.usecases.LoadPublicKeysUseCase
 import nl.rijksoverheid.ctr.design.designModule
 import nl.rijksoverheid.ctr.holder.modules.*
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
-import nl.rijksoverheid.ctr.holder.persistence.database.dao.OriginDao
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
 import nl.rijksoverheid.ctr.holder.persistence.database.migration.TestResultsMigrationManager
-import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SecretKeyUseCase
 import nl.rijksoverheid.ctr.introduction.introductionModule
 import nl.rijksoverheid.ctr.shared.SharedApplication
@@ -20,7 +18,6 @@ import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
-import java.time.OffsetDateTime
 
 
 /*
@@ -65,9 +62,11 @@ open class HolderApplication : SharedApplication() {
         secretKeyUseCase.persist()
 
         // If we have public keys stored, load them so they can be used by CTCL
-        cachedAppConfigUseCase.getCachedPublicKeys()?.let {
-            loadPublicKeysUseCase.load(it)
-        }
+        try {
+            cachedAppConfigUseCase.getCachedPublicKeys()?.let {
+                loadPublicKeysUseCase.load(it)
+            }
+        } catch (e: Exception) {}
 
         // Create default wallet in database if empty
         GlobalScope.launch {
