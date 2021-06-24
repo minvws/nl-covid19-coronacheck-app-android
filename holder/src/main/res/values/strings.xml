@@ -25,8 +25,8 @@
     <string name="dialog_error_title">Sorry, er ging iets mis</string>
     <string name="dialog_error_message">Dat komt door een technische fout.</string>
     <string name="dialog_error_message_with_error_code">Dat komt door een technische fout (%1$s).</string>
-    <string name="digid_login_failed_title">Inloggen bij DigiD is niet gelukt</string>
-    <string name="digid_login_failed_description">Je kunt later opnieuw inloggen om je %1$s op te halen.</string>
+    <string name="digid_login_failed_title">Het ophalen is afgebroken</string>
+    <string name="digid_login_failed_description">Mogelijk is het te druk. Probeer het later opnieuw.</string>
     <string name="ok">Oke</string>
     <string name="settings">Instellingen</string>
     <string name="about_this_app">Over deze app</string>
@@ -272,7 +272,6 @@
     <string name="too_busy_title">Sorry, het is erg druk</string>
     <string name="too_busy_description">Het is druk bij een aangesloten partij. Daardoor kunnen je gegevens nu niet worden opgehaald. Probeer het later nog eens.</string>
     <string name="no_digid_url">https://www.digid.nl/digid-aanvragen-activeren#hoe-vraag-ik-digid-aan</string>
-    <string name="digid_login_failed">Inloggen met DigiD niet gelukt</string>
     <string name="event_provider_error_title">Sorry, er gaat iets mis</string>
     <string name="event_provider_error_description">Er gaat iets mis op de server van je testlocatie of priklocatie. Probeer het later nog eens.</string>
     <string name="coronacheck_error_title">Sorry, er gaat iets mis</string>
