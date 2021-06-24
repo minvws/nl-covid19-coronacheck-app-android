@@ -172,7 +172,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                             originStates = myOverviewItem.originStates,
                             credentialState = myOverviewItem.credentialState,
                             launchDate = myOverviewItem.launchDate,
-                            loading = myOverviewItems.loading,
+                            loading = myOverviewItem.loading,
                             onButtonClick = { greenCard, credential ->
                                 findNavController().navigate(MyOverviewFragmentDirections.actionQrCode(
                                     QrCodeFragmentData(

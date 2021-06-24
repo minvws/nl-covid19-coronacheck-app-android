@@ -243,8 +243,18 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
 data class MyOverviewItems(
     val items: List<MyOverviewItem>,
     val selectedType: GreenCardType,
-    val loading: Boolean = false,
-)
+) {
+    fun setGreenCardItemsLoading(): MyOverviewItems {
+        val itemsWithGreenItemsLoading = items.map {
+            if (it is GreenCardItem) {
+                it.copy(loading = true)
+            } else {
+                it
+            }
+        }
+        return this.copy(items = itemsWithGreenItemsLoading)
+    }
+}
 
 sealed class MyOverviewItem {
 
@@ -256,7 +266,8 @@ sealed class MyOverviewItem {
         val greenCard: GreenCard,
         val originStates: List<OriginState>,
         val credentialState: CredentialState,
-        val launchDate: OffsetDateTime
+        val launchDate: OffsetDateTime,
+        val loading: Boolean = false,
     ) : MyOverviewItem() {
 
         sealed class CredentialState {

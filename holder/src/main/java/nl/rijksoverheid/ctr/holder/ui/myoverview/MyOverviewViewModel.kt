@@ -11,6 +11,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.GreenCardsUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetMyOverviewItemsUseCase
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItems
 import nl.rijksoverheid.ctr.shared.livedata.Event
 
@@ -59,7 +60,8 @@ class MyOverviewViewModelImpl(
                     val currentCardItems = getMyOverviewItemsUseCase.get(
                         selectedType = selectType,
                         walletId = 1
-                    ).copy(loading = true)
+                    ).setGreenCardItemsLoading()
+
                     (myOverviewItemsLiveData as MutableLiveData).postValue(Event(currentCardItems))
 
                     val syncResult = holderDatabaseSyncer.sync(
