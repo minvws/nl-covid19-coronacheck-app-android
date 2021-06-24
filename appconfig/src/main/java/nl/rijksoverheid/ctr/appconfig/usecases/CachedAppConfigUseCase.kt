@@ -26,11 +26,15 @@ interface CachedAppConfigUseCase {
 class CachedAppConfigUseCaseImpl constructor(
     private val appConfigStorageManager: AppConfigStorageManager,
     private val cacheDir: String,
+    private val filesDirPath: String,
     private val moshi: Moshi
 ) : CachedAppConfigUseCase {
 
     override fun getCachedAppConfig(): AppConfig? {
-        val configFile = File(cacheDir, "config.json")
+        var configFile = File(filesDirPath, "config.json")
+        if (!configFile.exists()) {
+            configFile = File(cacheDir, "config.json")
+        }
         return appConfigStorageManager.getFileAsBufferedSource(configFile)?.readUtf8()?.toObject(moshi)
     }
 
@@ -45,7 +49,10 @@ class CachedAppConfigUseCaseImpl constructor(
     }
 
     override fun getCachedPublicKeys(): BufferedSource? {
-        val publicKeysFile = File(cacheDir, "public_keys.json")
+        var publicKeysFile = File(filesDirPath, "public_keys.json")
+        if (!publicKeysFile.exists()) {
+            publicKeysFile = File(cacheDir, "public_keys.json")
+        }
         return appConfigStorageManager.getFileAsBufferedSource(publicKeysFile)
     }
 

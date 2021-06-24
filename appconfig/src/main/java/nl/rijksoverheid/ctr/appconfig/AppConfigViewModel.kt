@@ -36,6 +36,7 @@ class AppConfigViewModelImpl(
     private val appConfigStorageManager: AppConfigStorageManager,
     private val cachedAppConfigUseCase: CachedAppConfigUseCase,
     private val cacheDirPath: String,
+    private val filesDirPath: String,
     private val isVerifierApp: Boolean,
     private val versionCode: Int
 ) : AppConfigViewModel() {
@@ -55,11 +56,17 @@ class AppConfigViewModelImpl(
             }
 
             if (isVerifierApp) {
-                if (!appConfigStorageManager.areConfigFilesPresent()) {
+                val configFilesArePresentInCacheFolder = appConfigStorageManager.areConfigFilesPresentInCacheFolder()
+                val configFilesArePresentInFilesFolder = appConfigStorageManager.areConfigFilesPresentInFilesFolder()
+                if (!configFilesArePresentInCacheFolder && !configFilesArePresentInFilesFolder) {
                     return@launch appStatusLiveData.postValue(AppStatus.InternetRequired)
                 }
 
-                val initializationError = mobileCoreWrapper.initializeVerifier(cacheDirPath)
+                val initializationError = mobileCoreWrapper.initializeVerifier(if (configFilesArePresentInFilesFolder){
+                    filesDirPath
+                } else {
+                    cacheDirPath
+                })
                 if (initializationError != null) {
                     throw ClmobileVerifyException(initializationError)
                 }
