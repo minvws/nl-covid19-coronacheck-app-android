@@ -89,11 +89,11 @@ class AppConfigViewModelTest {
             ConfigResult.Error
         }
 
-        coEvery { appStatusUseCase.get(any(), any()) } answers { AppStatus.InternetRequired }
+        coEvery { appStatusUseCase.get(any(), any()) } answers { AppStatus.Error }
 
         appConfigViewModel.refresh(mobileCoreWrapper)
 
-        Assert.assertEquals(appConfigViewModel.appStatusLiveData.value, AppStatus.InternetRequired)
+        Assert.assertEquals(appConfigViewModel.appStatusLiveData.value, AppStatus.Error)
     }
 
     @Test
@@ -129,7 +129,7 @@ class AppConfigViewModelTest {
 
         appConfigViewModel.refresh(mobileCoreWrapper)
 
-        Assert.assertEquals(appConfigViewModel.appStatusLiveData.value, AppStatus.InternetRequired)
+        Assert.assertEquals(appConfigViewModel.appStatusLiveData.value, AppStatus.Error)
     }
 
     @Test

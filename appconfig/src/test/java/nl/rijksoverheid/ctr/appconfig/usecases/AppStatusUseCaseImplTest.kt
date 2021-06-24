@@ -104,7 +104,7 @@ class AppStatusUseCaseImplTest {
                 config = ConfigResult.Error,
                 currentVersionCode = 1
             )
-            Assert.assertEquals(AppStatus.InternetRequired, appStatus)
+            Assert.assertEquals(AppStatus.Error, appStatus)
         }
 
     @Test
@@ -131,7 +131,7 @@ class AppStatusUseCaseImplTest {
                 config = ConfigResult.Error,
                 currentVersionCode = 1
             )
-            Assert.assertEquals(AppStatus.InternetRequired, appStatus)
+            Assert.assertEquals(AppStatus.Error, appStatus)
         }
 
     @Test
