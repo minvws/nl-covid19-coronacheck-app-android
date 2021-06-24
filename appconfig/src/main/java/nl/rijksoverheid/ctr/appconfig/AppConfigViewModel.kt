@@ -21,6 +21,7 @@ import nl.rijksoverheid.ctr.appconfig.usecases.LoadPublicKeysUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.PersistConfigUseCase
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.ext.ClmobileVerifyException
+import java.io.EOFException
 
 abstract class AppConfigViewModel : ViewModel() {
     val appStatusLiveData = MutableLiveData<AppStatus>()
@@ -50,8 +51,12 @@ class AppConfigViewModelImpl(
                     appConfigContents = configResult.appConfig,
                     publicKeyContents = configResult.publicKeys
                 )
-                cachedAppConfigUseCase.getCachedPublicKeys()?.let {
-                    loadPublicKeysUseCase.load(it)
+                try {
+                    cachedAppConfigUseCase.getCachedPublicKeys()?.let {
+                        loadPublicKeysUseCase.load(it)
+                    }
+                } catch (exception: EOFException) {
+                    return@launch appStatusLiveData.postValue(AppStatus.InternetRequired)
                 }
             }
 
