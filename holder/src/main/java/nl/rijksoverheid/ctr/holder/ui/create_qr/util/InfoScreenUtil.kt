@@ -1,7 +1,7 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
 import android.app.Application
-import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.design.ext.formatDateTime
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
 import nl.rijksoverheid.ctr.holder.R
@@ -33,7 +33,8 @@ interface InfoScreenUtil {
 }
 
 class InfoScreenUtilImpl(private val application: Application,
-                         private val cachedAppConfigUseCase: CachedAppConfigUseCase): InfoScreenUtil {
+                         private val cachedAppConfigUseCase: CachedAppConfigUseCase
+): InfoScreenUtil {
     override fun getForRemoteTestResult2(
         result: RemoteTestResult2.Result,
         personalDetails: PersonalDetails,

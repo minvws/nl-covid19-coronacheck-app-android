@@ -32,7 +32,6 @@ class AppConfigViewModelImpl(
     private val appStatusUseCase: AppStatusUseCase,
     private val persistConfigUseCase: PersistConfigUseCase,
     private val appConfigStorageManager: AppConfigStorageManager,
-    private val cacheDirPath: String,
     private val filesDirPath: String,
     private val isVerifierApp: Boolean,
     private val versionCode: Int
@@ -49,21 +48,15 @@ class AppConfigViewModelImpl(
                 )
             }
 
-            val configFilesArePresentInCacheFolder = appConfigStorageManager.areConfigFilesPresentInCacheFolder()
             val configFilesArePresentInFilesFolder = appConfigStorageManager.areConfigFilesPresentInFilesFolder()
-            if (!configFilesArePresentInCacheFolder && !configFilesArePresentInFilesFolder) {
+            if (!configFilesArePresentInFilesFolder) {
                 return@launch appStatusLiveData.postValue(AppStatus.Error)
             }
 
-            val configFilesPath = if (configFilesArePresentInFilesFolder) {
-                filesDirPath
-            } else {
-                cacheDirPath
-            }
             val initializationError = if (isVerifierApp) {
-                mobileCoreWrapper.initializeVerifier(configFilesPath)
+                mobileCoreWrapper.initializeVerifier(filesDirPath)
             } else {
-                mobileCoreWrapper.initializeHolder(configFilesPath)
+                mobileCoreWrapper.initializeHolder(filesDirPath)
             }
 
             if (initializationError != null) {

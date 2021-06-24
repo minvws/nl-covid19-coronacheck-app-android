@@ -3,17 +3,11 @@ package nl.rijksoverheid.ctr.introduction.ui.new_features
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import nl.rijksoverheid.ctr.appconfig.AppConfigUtil
-import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
-import nl.rijksoverheid.ctr.design.ext.formatDayMonth
 import nl.rijksoverheid.ctr.introduction.R
 import nl.rijksoverheid.ctr.introduction.databinding.FragmentOnboardingItemBinding
 import nl.rijksoverheid.ctr.introduction.ui.new_features.models.NewFeatureItem
-import nl.rijksoverheid.ctr.introduction.ui.onboarding.models.OnboardingItem
 import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 import org.koin.android.ext.android.inject
-import java.time.OffsetDateTime
-import java.time.format.DateTimeFormatter
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.appconfig
+package nl.rijksoverheid.ctr.appconfig.usecases
 
 import com.squareup.moshi.Moshi
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
@@ -25,16 +25,12 @@ interface CachedAppConfigUseCase {
 
 class CachedAppConfigUseCaseImpl constructor(
     private val appConfigStorageManager: AppConfigStorageManager,
-    private val cacheDir: String,
     private val filesDirPath: String,
     private val moshi: Moshi
 ) : CachedAppConfigUseCase {
 
     override fun getCachedAppConfig(): AppConfig? {
-        var configFile = File(filesDirPath, "config.json")
-        if (!configFile.exists()) {
-            configFile = File(cacheDir, "config.json")
-        }
+        val configFile = File(filesDirPath, "config.json")
 
         if (!configFile.exists()) {
             return AppConfig()
@@ -54,10 +50,8 @@ class CachedAppConfigUseCaseImpl constructor(
     }
 
     override fun getCachedPublicKeys(): BufferedSource? {
-        var publicKeysFile = File(filesDirPath, "public_keys.json")
-        if (!publicKeysFile.exists()) {
-            publicKeysFile = File(cacheDir, "public_keys.json")
-        }
+        val publicKeysFile = File(filesDirPath, "public_keys.json")
+
         return appConfigStorageManager.getFileAsBufferedSource(publicKeysFile)
     }
 
