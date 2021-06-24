@@ -83,8 +83,8 @@ class OriginUtilImplTest {
                 greenCardId = 0,
                 type = OriginType.Test,
                 eventTime = OffsetDateTime.now(clock),
-                expirationTime = OffsetDateTime.now(clock),
-                validFrom = OffsetDateTime.now(clock).plusYears(3)
+                expirationTime = OffsetDateTime.now(clock).plusYears(3),
+                validFrom = OffsetDateTime.now(clock)
             ))
 
         assertFalse(originUtil.presentSubtitle(
