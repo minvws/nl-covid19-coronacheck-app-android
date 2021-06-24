@@ -21,7 +21,7 @@ class WorkerManagerWrapperImpl(
 
             if (lastExpiringCard is GreenCard.Expiring) {
                 val request = OneTimeWorkRequestBuilder<RefreshCredentialsJob>()
-                    .setInitialDelay(lastExpiringCard.inDays, TimeUnit.DAYS)
+                    .setInitialDelay(lastExpiringCard.refreshInDays, TimeUnit.DAYS)
                     .setConstraints(
                         Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
                     ).build()
