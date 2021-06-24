@@ -163,4 +163,9 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
             }
         })
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        (parentFragment?.parentFragment as HolderMainFragment).presentLoading(false)
+    }
 }
