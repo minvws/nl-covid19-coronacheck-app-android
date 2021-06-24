@@ -50,6 +50,10 @@ class YourEventsViewModelImpl(
                 (yourEventsResult as MutableLiveData).value = Event(
                     databaseSyncerResult
                 )
+            } catch (e: Exception) {
+                (yourEventsResult as MutableLiveData).value = Event(
+                    DatabaseSyncerResult.ServerError(999)
+                )
             } finally {
                 loading.value = Event(false)
             }
@@ -71,6 +75,10 @@ class YourEventsViewModelImpl(
                 (yourEventsResult as MutableLiveData).value = Event(
                     databaseSyncerResult
                 )
+            } catch(e: Exception) {
+                (yourEventsResult as MutableLiveData).value = Event(
+                    DatabaseSyncerResult.ServerError(999)
+                )
             } finally {
                 loading.value = Event(false)
             }
@@ -91,6 +99,10 @@ class YourEventsViewModelImpl(
 
                 (yourEventsResult as MutableLiveData).value = Event(
                     databaseSyncerResult
+                )
+            } catch (e: Exception) {
+                (yourEventsResult as MutableLiveData).value = Event(
+                    DatabaseSyncerResult.ServerError(999)
                 )
             } finally {
                 loading.value = Event(false)
