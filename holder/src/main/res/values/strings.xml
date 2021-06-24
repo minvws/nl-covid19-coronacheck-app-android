@@ -71,7 +71,6 @@
     <string name="commercial_test_code_description">Vul jouw ophaalcode in. Deze heb je van je testlocatie gekregen.</string>
     <string name="commercial_test_unique_code_header">Ophaalcode</string>
     <string name="commercial_test_unique_code_hint">Bijv. BRB-YYYYYYYYY1-Z2</string>
-    <string name="commercial_test_unique_code_hint_screenreader">Vul hier je ophaalcode in</string>
     <string name="commercial_test_verification_code_header">Verificatiecode</string>
     <string name="commercial_test_verification_code_hint">Bijv. 123456</string>
     <string name="commercial_test_verification_code_helper_text">Je krijgt een code via sms of e-mail</string>
