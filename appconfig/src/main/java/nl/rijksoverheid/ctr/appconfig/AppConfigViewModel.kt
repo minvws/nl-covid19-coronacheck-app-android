@@ -56,7 +56,7 @@ class AppConfigViewModelImpl(
                         loadPublicKeysUseCase.load(it)
                     }
                 } catch (exception: EOFException) {
-                    return@launch appStatusLiveData.postValue(AppStatus.InternetRequired)
+                    return@launch appStatusLiveData.postValue(AppStatus.Error)
                 }
             }
 
@@ -64,7 +64,7 @@ class AppConfigViewModelImpl(
                 val configFilesArePresentInCacheFolder = appConfigStorageManager.areConfigFilesPresentInCacheFolder()
                 val configFilesArePresentInFilesFolder = appConfigStorageManager.areConfigFilesPresentInFilesFolder()
                 if (!configFilesArePresentInCacheFolder && !configFilesArePresentInFilesFolder) {
-                    return@launch appStatusLiveData.postValue(AppStatus.InternetRequired)
+                    return@launch appStatusLiveData.postValue(AppStatus.Error)
                 }
 
                 val initializationError = mobileCoreWrapper.initializeVerifier(if (configFilesArePresentInFilesFolder){

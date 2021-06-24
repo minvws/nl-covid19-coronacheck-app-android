@@ -19,7 +19,7 @@ sealed class AppStatus : Parcelable {
     data class Deactivated(val informationUrl: String) : AppStatus(), Parcelable
 
     @Parcelize
-    object InternetRequired : AppStatus(), Parcelable
+    object Error : AppStatus(), Parcelable
 
     @Parcelize
     object NoActionRequired : AppStatus(), Parcelable
