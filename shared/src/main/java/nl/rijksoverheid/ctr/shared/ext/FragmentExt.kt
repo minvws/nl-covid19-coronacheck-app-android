@@ -6,6 +6,7 @@ import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -31,6 +32,14 @@ fun Fragment.findNavControllerSafety(currentId: Int): NavController? {
         return controller
     } catch (e: Exception) {
         return null
+    }
+}
+
+fun Fragment.findNavControllerSafety(): NavController? {
+    return try {
+        findNavController()
+    } catch(e: Exception) {
+        null
     }
 }
 
