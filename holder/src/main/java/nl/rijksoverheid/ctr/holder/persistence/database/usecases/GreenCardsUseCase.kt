@@ -55,9 +55,10 @@ class GreenCardsUseCaseImpl(
     override suspend fun lastExpiringCard(): GreenCard {
         val configCredentialRenewalDays = cachedAppConfigUseCase.getCachedAppConfig()?.credentialRenewalDays?.toLong() ?: throw IllegalStateException("Invalid config file")
 
-        val lastExpiringGreenCardRenewal = holderDatabase.greenCardDao().getAll().mapNotNull { greenCard ->
-            greenCard.credentialEntities.maxByOrNull { it.expirationTime }?.expirationTime
-        }.sortedByDescending { it.toEpochSecond() }.firstOrNull()?.minusDays(configCredentialRenewalDays)
+        val lastExpiringGreenCardRenewal = holderDatabase.greenCardDao().getAll()
+            .mapNotNull { greenCard ->
+                greenCard.credentialEntities.maxByOrNull { it.expirationTime }?.expirationTime
+            }.maxByOrNull { it.toEpochSecond() }?.minusDays(configCredentialRenewalDays)
 
        val now = OffsetDateTime.now(clock)
 
