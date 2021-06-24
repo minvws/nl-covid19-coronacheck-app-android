@@ -1,12 +1,11 @@
 package nl.rijksoverheid.ctr.holder.persistence
 
 import android.content.Context
-import androidx.work.*
+import androidx.work.CoroutineWorker
+import androidx.work.WorkerParameters
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.GreenCardsUseCase
-import java.util.concurrent.TimeUnit
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -22,10 +21,9 @@ class RefreshCredentialsJob(
     private val greenCardsUseCase: GreenCardsUseCase,
 ): CoroutineWorker(context, params) {
     override suspend fun doWork(): Result {
-        val expiringCardOriginType = greenCardsUseCase.expiringCardOriginType()
-        val syncWithRemote = expiringCardOriginType != null
+        val syncWithRemote = greenCardsUseCase.expiring()
         return if (syncWithRemote) {
-             when (holderDatabaseSyncer.sync(OriginType.getAsString(expiringCardOriginType!!), true)) {
+             when (holderDatabaseSyncer.sync(null, true)) {
                 DatabaseSyncerResult.Success -> {
                     Result.success()
                 }

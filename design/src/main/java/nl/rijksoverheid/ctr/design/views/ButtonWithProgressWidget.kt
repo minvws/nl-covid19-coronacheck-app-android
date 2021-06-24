@@ -17,9 +17,9 @@ import nl.rijksoverheid.ctr.design.ext.setEnabledButtonColor
  *
  */
 /**
- * A button that automatically adds a top elevation if given scrollview is scrollable
+ * A widget with a button and progress indicator, for loading state support
  */
-class ButtonWithIndicatorLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0):
+class ButtonWithProgressWidget @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0):
     FrameLayout(context, attrs, defStyleAttr) {
 
     private var buttonText = ""
@@ -33,7 +33,7 @@ class ButtonWithIndicatorLayout @JvmOverloads constructor(context: Context, attr
             0, 0
         ).apply {
             try {
-                getText(R.styleable.ButtonWithIndicatorLayout_text)?.toString()?.let(this@ButtonWithIndicatorLayout::setButtonText)
+                getText(R.styleable.ButtonWithIndicatorLayout_text)?.toString()?.let(this@ButtonWithProgressWidget::setButtonText)
             } finally {
                 recycle()
             }

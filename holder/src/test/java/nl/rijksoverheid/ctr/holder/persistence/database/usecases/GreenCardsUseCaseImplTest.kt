@@ -12,8 +12,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNull
+import org.junit.Assert.*
 import org.junit.Test
 import java.time.Clock
 import java.time.Instant
@@ -75,9 +74,9 @@ class GreenCardsUseCaseImplTest {
         coEvery { appConfig.minimumCredentialVersion } returns 2
         coEvery { greenCardDao.getAll() } returns listOf(validGreenCard(), validGreenCard())
 
-        val expiringCardOriginType = greenCardUseCase.expiringCardOriginType()
+        val expiring = greenCardUseCase.expiring()
 
-        assertNull(expiringCardOriginType)
+        assertFalse(expiring)
     }
 
     @Test
@@ -85,9 +84,9 @@ class GreenCardsUseCaseImplTest {
         coEvery { appConfig.minimumCredentialVersion } returns 2
         coEvery { greenCardDao.getAll() } returns listOf(validGreenCard(), expiringGreenCard())
 
-        val expiringCardOriginType = greenCardUseCase.expiringCardOriginType()
+        val expiring = greenCardUseCase.expiring()
 
-        assertEquals(OriginType.Test, expiringCardOriginType)
+        assertTrue(expiring)
     }
 
     @Test
@@ -95,9 +94,9 @@ class GreenCardsUseCaseImplTest {
         coEvery { appConfig.minimumCredentialVersion } returns 2
         coEvery { greenCardDao.getAll() } returns listOf(expiringGreenCard(), expiringGreenCard())
 
-        val expiringCardOriginType = greenCardUseCase.expiringCardOriginType()
+        val expiring = greenCardUseCase.expiring()
 
-        assertEquals(OriginType.Test, expiringCardOriginType)
+        assertTrue(expiring)
     }
 
     fun `given a green card with some credentials, when the last credential does not expire, then return null (no refresh)`() = runBlocking {
@@ -113,9 +112,9 @@ class GreenCardsUseCaseImplTest {
         coEvery { appConfig.minimumCredentialVersion } returns 2
         coEvery { greenCardDao.getAll() } returns listOf(validGreenCard(), unsupportedGreenCard())
 
-        val expiringCardOriginType = greenCardUseCase.expiringCardOriginType()
+        val expiring = greenCardUseCase.expiring()
 
-        assertEquals(OriginType.Test, expiringCardOriginType)
+        assertTrue(expiring)
     }
 
     fun `given a green card with some credentials, when all credential versions are invalid, then return an origin type to refresh`() = runBlocking {
@@ -127,18 +126,8 @@ class GreenCardsUseCaseImplTest {
         coEvery { appConfig.minimumCredentialVersion } returns 2
         coEvery { greenCardDao.getAll() } returns listOf(validGreenCard())
 
-        val expiringCardOriginType = greenCardUseCase.expiringCardOriginType()
+        val expiring = greenCardUseCase.expiring()
 
-        assertNull(expiringCardOriginType)
-    }
-
-    @Test
-    fun `given a green card with some credentials, when the green card has no origin, then return null (no refresh)`() = runBlocking {
-        coEvery { appConfig.minimumCredentialVersion } returns 2
-        coEvery { greenCardDao.getAll() } returns listOf(greenCard(originEntities = emptyList()))
-        
-        val expiringCardOriginType = greenCardUseCase.expiringCardOriginType()
-
-        assertNull(expiringCardOriginType)
+        assertFalse(expiring)
     }
 }

@@ -11,18 +11,21 @@ package nl.rijksoverheid.ctr.holder.persistence.database.usecases
 import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.isExpiring
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CredentialUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import java.time.Clock
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit.DAYS
 
 interface GreenCardsUseCase {
-    suspend fun expiringCardOriginType(): OriginType?
+    suspend fun expiring(): Boolean
     suspend fun expiredCard(selectedType: GreenCardType): Boolean
-    suspend fun lastExpiringCardTimeInDays(): Long?
+    suspend fun lastExpiringCard(): GreenCard
+}
+
+sealed class GreenCard {
+    class Expiring(val inDays: Long): GreenCard()
+    object Valid: GreenCard()
 }
 
 class GreenCardsUseCaseImpl(
@@ -31,15 +34,15 @@ class GreenCardsUseCaseImpl(
     private val greenCardUtil: GreenCardUtil,
     private val clock: Clock,
 ): GreenCardsUseCase {
-    override suspend fun expiringCardOriginType(): OriginType? {
+    override suspend fun expiring(): Boolean {
 
-        val config = cachedAppConfigUseCase.getCachedAppConfig() ?: return null
+        val config = cachedAppConfigUseCase.getCachedAppConfig() ?: return false
 
         return holderDatabase.greenCardDao().getAll().firstOrNull { greenCard ->
             val minimumCredentialVersionIncreased = greenCard.credentialEntities.minByOrNull { it.credentialVersion }?.credentialVersion ?: 0 < config.minimumCredentialVersion
             val credentialExpiring = greenCard.credentialEntities.maxByOrNull { it.expirationTime }?.isExpiring(config.credentialRenewalDays.toLong(), clock) ?: true
             minimumCredentialVersionIncreased || credentialExpiring
-        }?.origins?.firstOrNull()?.type
+        } != null
     }
 
     override suspend fun expiredCard(selectedType: GreenCardType): Boolean {
@@ -49,8 +52,8 @@ class GreenCardsUseCaseImpl(
         }.any(greenCardUtil::isExpired)
     }
 
-    override suspend fun lastExpiringCardTimeInDays(): Long? {
-        val configCredentialRenewalDays = cachedAppConfigUseCase.getCachedAppConfig()?.credentialRenewalDays?.toLong() ?: 5L
+    override suspend fun lastExpiringCard(): GreenCard {
+        val configCredentialRenewalDays = cachedAppConfigUseCase.getCachedAppConfig()?.credentialRenewalDays?.toLong() ?: throw IllegalStateException("Invalid config file")
 
         val lastExpiringGreenCardRenewal = holderDatabase.greenCardDao().getAll().mapNotNull { greenCard ->
             greenCard.credentialEntities.maxByOrNull { it.expirationTime }?.expirationTime
@@ -59,9 +62,9 @@ class GreenCardsUseCaseImpl(
        val now = OffsetDateTime.now(clock)
 
         return if (lastExpiringGreenCardRenewal != null && lastExpiringGreenCardRenewal.isAfter(now)) {
-            DAYS.between(now, lastExpiringGreenCardRenewal)
+            GreenCard.Expiring(DAYS.between(now, lastExpiringGreenCardRenewal))
         } else {
-            null
+            GreenCard.Valid
         }
     }
 }

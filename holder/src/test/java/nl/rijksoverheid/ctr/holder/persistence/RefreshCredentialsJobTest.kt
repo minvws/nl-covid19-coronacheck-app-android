@@ -3,15 +3,13 @@ package nl.rijksoverheid.ctr.holder.persistence
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import androidx.work.ListenableWorker
-import org.junit.Test
-
-import org.junit.Assert.*
 import androidx.work.testing.TestListenableWorkerBuilder
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.GreenCardsUseCase
+import org.junit.Assert.assertEquals
+import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
@@ -51,15 +49,14 @@ class RefreshCredentialsJobTest: AutoCloseKoinTest() {
     }
 
     private fun testWorkerFactory(
-        expiringCardOriginType: OriginType? = OriginType.Test,
         databaseSyncerResult: DatabaseSyncerResult = DatabaseSyncerResult.Success) = HolderWorkerFactory(
         greenCardsUseCase = object: GreenCardsUseCase {
-            override suspend fun expiringCardOriginType(): OriginType? = expiringCardOriginType
+            override suspend fun expiring(): Boolean = true
             override suspend fun expiredCard(selectedType: GreenCardType): Boolean {
                 TODO("Not yet implemented")
             }
 
-            override suspend fun lastExpiringCardTimeInDays(): Long? {
+            override suspend fun lastExpiringCard(): Long? {
                 return 4L
             }
         },

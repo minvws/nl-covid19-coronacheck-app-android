@@ -122,8 +122,8 @@
                 tools:text="Verloopt in 5 uur 59 min"
                 tools:visibility="visible" />
 
-            <nl.rijksoverheid.ctr.design.views.ButtonWithIndicatorLayout
-                android:id="@+id/buttonWithIndicatorContainer"
+            <nl.rijksoverheid.ctr.design.views.ButtonWithProgressWidget
+                android:id="@+id/buttonWithProgressWidgetContainer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"

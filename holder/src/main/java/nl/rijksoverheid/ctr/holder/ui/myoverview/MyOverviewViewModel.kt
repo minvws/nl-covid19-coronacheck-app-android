@@ -9,7 +9,6 @@ import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.GreenCardsUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetMyOverviewItemsUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItems
@@ -54,9 +53,9 @@ class MyOverviewViewModelImpl(
 
         viewModelScope.launch {
             if (syncDatabase) {
-                val expiringOriginType = greenCardsUseCase.expiringCardOriginType()
+                val expiring = greenCardsUseCase.expiring()
 
-                if (expiringOriginType != null) {
+                if (expiring) {
                     val currentCardItems = getMyOverviewItemsUseCase.get(
                         selectedType = selectType,
                         walletId = 1

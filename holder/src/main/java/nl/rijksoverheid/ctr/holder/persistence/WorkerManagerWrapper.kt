@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.work.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import nl.rijksoverheid.ctr.holder.persistence.database.usecases.GreenCard
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.GreenCardsUseCase
 import java.util.concurrent.TimeUnit
 
@@ -16,16 +17,18 @@ class WorkerManagerWrapperImpl(
     private val greenCardsUseCase: GreenCardsUseCase,): WorkerManagerWrapper {
     override fun scheduleNextCredentialsRefreshIfAny() {
         GlobalScope.launch {
-            val credentialRenewalDays = greenCardsUseCase.lastExpiringCardTimeInDays() ?: return@launch
+            val lastExpiringCard = greenCardsUseCase.lastExpiringCard()
 
-            val request = OneTimeWorkRequestBuilder<RefreshCredentialsJob>()
-                .setInitialDelay(credentialRenewalDays, TimeUnit.DAYS)
-                .setConstraints(
-                    Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
-                ).build()
+            if (lastExpiringCard is GreenCard.Expiring) {
+                val request = OneTimeWorkRequestBuilder<RefreshCredentialsJob>()
+                    .setInitialDelay(lastExpiringCard.inDays, TimeUnit.DAYS)
+                    .setConstraints(
+                        Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
+                    ).build()
 
-            WorkManager.getInstance(context)
-                .enqueueUniqueWork("refresh_credentials", ExistingWorkPolicy.REPLACE, request)
+                WorkManager.getInstance(context)
+                    .enqueueUniqueWork("refresh_credentials", ExistingWorkPolicy.REPLACE, request)
+            }
         }
     }
 }
