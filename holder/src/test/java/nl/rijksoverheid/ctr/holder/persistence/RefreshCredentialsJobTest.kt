@@ -7,6 +7,7 @@ import androidx.work.testing.TestListenableWorkerBuilder
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.holder.persistence.database.usecases.GreenCard
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.GreenCardsUseCase
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -56,9 +57,7 @@ class RefreshCredentialsJobTest: AutoCloseKoinTest() {
                 TODO("Not yet implemented")
             }
 
-            override suspend fun lastExpiringCard(): Long? {
-                return 4L
-            }
+            override suspend fun lastExpiringCard() = GreenCard.Expiring(4L)
         },
         holderDatabaseSyncer = object: HolderDatabaseSyncer {
             override suspend fun sync(
