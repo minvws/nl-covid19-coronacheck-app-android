@@ -136,7 +136,7 @@ class GetVaccinationFragment : DigiDFragment(R.layout.fragment_get_vaccination) 
                     dialogUtil.presentDialog(
                         context = requireContext(),
                         title = R.string.digid_login_failed_title,
-                        message = getString(R.string.digid_login_failed_description, getString(R.string.type_vaccination)),
+                        message = getString(R.string.digid_login_failed_description),
                         positiveButtonText = R.string.dialog_close,
                         positiveButtonCallback = {}
                     )
