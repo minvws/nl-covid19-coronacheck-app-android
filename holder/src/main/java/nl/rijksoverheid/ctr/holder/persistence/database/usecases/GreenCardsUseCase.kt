@@ -25,7 +25,7 @@ interface GreenCardsUseCase {
 
 sealed class GreenCard {
     class Expiring(val refreshInDays: Long): GreenCard()
-    object Valid: GreenCard()
+    object None: GreenCard()
 }
 
 class GreenCardsUseCaseImpl(
@@ -61,8 +61,6 @@ class GreenCardsUseCaseImpl(
 
        val now = OffsetDateTime.now(clock)
 
-        println(lastExpiringGreenCardRenewal)
-        println(now)
         return if (lastExpiringGreenCardRenewal != null) {
             val days = DAYS.between(now, lastExpiringGreenCardRenewal)
             GreenCard.Expiring(refreshInDays = if (days < 1) {
@@ -71,7 +69,7 @@ class GreenCardsUseCaseImpl(
                 days
             })
         } else {
-            GreenCard.Valid
+            GreenCard.None
         }
     }
 }
