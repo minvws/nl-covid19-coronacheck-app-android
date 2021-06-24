@@ -10,18 +10,19 @@ package nl.rijksoverheid.ctr.appconfig.persistence
 
 import okio.BufferedSource
 import okio.buffer
-import okio.sink
 import okio.source
 import java.io.File
 import java.io.IOException
 
 interface AppConfigStorageManager {
     fun storageFile(file: File, fileContents: String): StorageResult
-    fun areConfigFilesPresent(): Boolean
+    fun areConfigFilesPresentInCacheFolder(): Boolean
+    fun areConfigFilesPresentInFilesFolder(): Boolean
     fun getFileAsBufferedSource(file: File): BufferedSource?
 }
 
-class AppConfigStorageManagerImpl(private val cacheDir: String): AppConfigStorageManager {
+class AppConfigStorageManagerImpl(private val cacheDir: String,
+                                  private val filesDirPath: String,): AppConfigStorageManager {
     override fun storageFile(file: File, fileContents: String): StorageResult {
         return try {
             file.parentFile?.mkdirs()
@@ -34,11 +35,18 @@ class AppConfigStorageManagerImpl(private val cacheDir: String): AppConfigStorag
         }
     }
 
-    override fun areConfigFilesPresent(): Boolean {
-        val configFile = File(cacheDir, "config.json")
-        val publicKeysFile = File(cacheDir, "public_keys.json")
+    override fun areConfigFilesPresentInCacheFolder(): Boolean {
+        val configFileInCacheFolder = File(cacheDir, "config.json")
+        val publicKeysFileInCacheFolder = File(cacheDir, "public_keys.json")
 
-        return configFile.exists() && publicKeysFile.exists()
+        return configFileInCacheFolder.exists() && publicKeysFileInCacheFolder.exists()
+    }
+
+    override fun areConfigFilesPresentInFilesFolder(): Boolean {
+        val configFileInFilesFolder = File(filesDirPath, "config.json")
+        val publicKeysInFilesFolder = File(filesDirPath, "public_keys.json")
+
+        return configFileInFilesFolder.exists() && publicKeysInFilesFolder.exists()
     }
 
     override fun getFileAsBufferedSource(file: File): BufferedSource? {

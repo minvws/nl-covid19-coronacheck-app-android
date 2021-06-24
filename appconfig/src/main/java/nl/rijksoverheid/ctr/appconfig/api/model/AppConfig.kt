@@ -21,19 +21,19 @@ import nl.rijksoverheid.ctr.shared.models.JSON
  */
 @JsonClass(generateAdapter = true)
 data class AppConfig(
-    @Json(name = "androidMinimumVersion") val minimumVersion: Int,
-    @Json(name = "appDeactivated") val appDeactivated: Boolean,
-    @Json(name = "informationURL") val informationURL: String,
+    @Json(name = "androidMinimumVersion") val minimumVersion: Int = 1025,
+    @Json(name = "appDeactivated") val appDeactivated: Boolean = false,
+    @Json(name = "informationURL") val informationURL: String = "https://coronacheck.nl",
     @Json(name = "requireUpdateBefore") val requireUpdateBefore: Int = 1620781181,
     @Json(name = "temporarilyDisabled") val temporarilyDisabled: Boolean = false,
-    @Json(name = "recoveryEventValidity") val recoveryEventValidity: Int = 14600,
-    @Json(name = "testEventValidity") val testEventValidity: Int = 7300,
-    @Json(name = "domesticCredentialValidity") val domesticCredentialValidity: Int = 40,
-    @Json(name = "credentialRenewalDays") val credentialRenewalDays: Int = 24,
-    @Json(name = "configTTL") val configTtlSeconds: Int,
-    @Json(name = "maxValidityHours") val maxValidityHours: Int,
+    @Json(name = "recoveryEventValidity") val recoveryEventValidity: Int = 7300,
+    @Json(name = "testEventValidity") val testEventValidity: Int = 40,
+    @Json(name = "domesticCredentialValidity") val domesticCredentialValidity: Int = 24,
+    @Json(name = "credentialRenewalDays") val credentialRenewalDays: Int = 5,
+    @Json(name = "configTTL") val configTtlSeconds: Int = 259200,
+    @Json(name = "maxValidityHours") val maxValidityHours: Int = 40,
     @Json(name = "vaccinationEventValidity") val vaccinationEventValidity: Int = 14600,
-    @Json(name = "euLaunchDate") val euLaunchDate: String = "2021-06-03T14:00:00+00:00",
+    @Json(name = "euLaunchDate") val euLaunchDate: String = "2021-07-01T00:00:00Z",
     @Json(name = "hpkCodes") val hpkCodes: List<Code> = listOf(),
     @Json(name = "euBrands") val euBrands: List<Code> = listOf(),
     @Json(name = "euVaccinations") val euVaccinations: List<Code> = listOf(),
@@ -42,7 +42,7 @@ data class AppConfig(
     @Json(name = "euTestManufacturers") val euTestManufacturers: List<Code> = listOf(),
     @Json(name = "nlTestTypes") val nlTestTypes: List<Code> = listOf(),
     @Json(name = "providerIdentifiers") val providerIdentifiers: List<Code> = listOf(),
-    @Json(name = "ggdEnabled") val ggdEnabled: Boolean = false
+    @Json(name = "ggdEnabled") val ggdEnabled: Boolean = true
 ) : JSON() {
 
     @JsonClass(generateAdapter = true)
