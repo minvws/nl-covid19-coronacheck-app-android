@@ -36,7 +36,11 @@ class CachedAppConfigUseCaseImpl constructor(
             return AppConfig()
         }
 
-        return appConfigStorageManager.getFileAsBufferedSource(configFile)?.readUtf8()?.toObject(moshi)
+        return try {
+            appConfigStorageManager.getFileAsBufferedSource(configFile)?.readUtf8()?.toObject(moshi)
+        } catch (exc: Exception) {
+            AppConfig()
+        }
     }
 
     override fun getCachedAppConfigMaxValidityHours(): Int {

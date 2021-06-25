@@ -45,7 +45,7 @@ class AuthenticationRepository {
             serviceConfiguration,
             BuildConfig.DIGI_D_CLIENT_ID,
             ResponseTypeValues.CODE,
-            Uri.parse("coronacheck://auth/login")
+            Uri.parse(BuildConfig.DIGI_D_REDIRECT_URI)
         ).setScope("openid email profile").build()
     }
 

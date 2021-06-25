@@ -21,6 +21,7 @@ import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.hideKeyboard
 import nl.rijksoverheid.ctr.shared.ext.showKeyboard
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
+import nl.rijksoverheid.ctr.shared.utils.Accessibility
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
 import org.koin.androidx.viewmodel.scope.emptyState
@@ -74,6 +75,14 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
                 binding.noTokenReceivedBtn.isVisible = false
                 binding.description.setText(R.string.commercial_test_verification_code_description_deeplink)
             }
+
+            binding.uniqueCodeText.setHint(
+                if (Accessibility.screenReader(context)) {
+                    R.string.commercial_test_unique_code_hint_screenreader
+                } else {
+                    R.string.commercial_test_unique_code_hint
+                }
+            )
         }
 
         binding.uniqueCodeText.setOnEditorActionListener { _, actionId, _ ->
