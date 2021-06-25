@@ -1,11 +1,12 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
+import androidx.room.withTransaction
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsVaccinations
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult3
 import java.time.ZoneOffset
 
 /*
@@ -39,8 +40,13 @@ class SaveEventsUseCaseImpl(private val holderDatabase: HolderDatabase) : SaveEv
             )
         }
 
-        // Save entities in database
-        holderDatabase.eventGroupDao().insertAll(entities)
+        // Save entities in database and delete of same type
+        holderDatabase.run {
+            withTransaction {
+                eventGroupDao().deleteAllOfType(EventType.Vaccination)
+                eventGroupDao().insertAll(entities)
+            }
+        }
     }
 
     override suspend fun saveNegativeTest2(negativeTest2: RemoteTestResult2, rawResponse: ByteArray) {
