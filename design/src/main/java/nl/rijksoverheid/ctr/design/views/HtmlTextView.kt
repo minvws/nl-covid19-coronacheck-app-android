@@ -16,6 +16,7 @@ import com.google.android.material.textview.MaterialTextView
 import nl.rijksoverheid.ctr.design.R
 import nl.rijksoverheid.ctr.design.ext.enableHtmlLinks
 import nl.rijksoverheid.ctr.design.spans.BulletPointSpan
+import nl.rijksoverheid.ctr.shared.utils.Accessibility
 
 class HtmlTextViewWidget @JvmOverloads constructor(
     context: Context,
@@ -153,18 +154,27 @@ class HtmlTextViewWidget @JvmOverloads constructor(
         return spannableBuilder
     }
 
-    // Add support for activating links with assistive technologies
+    // Add support for activating links when using touch exploration
     override fun dispatchPopulateAccessibilityEvent(event: AccessibilityEvent?): Boolean {
-        if (event != null && event.eventType == AccessibilityEvent.TYPE_VIEW_CLICKED) {
-            // Try to get text as Spanned object
-            (text as? Spanned)?.let { spanned ->
-                // Extract all ClickableSpan instances
-                val clickableSpans = spanned.getSpans(0, spanned.length, ClickableSpan::class.java)
-
-                // Activate the first clickable span, if it exists
-                clickableSpans.firstOrNull()?.onClick(this)
-            }
+        // Check if eventType is TYPE_VIEW_CLICKED
+        if (event == null || event.eventType != AccessibilityEvent.TYPE_VIEW_CLICKED) {
+            return super.dispatchPopulateAccessibilityEvent(event)
         }
+
+        // Check if touch exploration is enabled (e.g. TalkBack)
+        if (!Accessibility.touchExploration(context)) {
+            return super.dispatchPopulateAccessibilityEvent(event)
+        }
+
+        // Try to get text as Spanned object
+        (text as? Spanned)?.let { spanned ->
+            // Extract all ClickableSpan instances
+            val clickableSpans = spanned.getSpans(0, spanned.length, ClickableSpan::class.java)
+
+            // Activate the first clickable span, if it exists
+            clickableSpans.firstOrNull()?.onClick(this)
+        }
+
         return super.dispatchPopulateAccessibilityEvent(event)
     }
 }
