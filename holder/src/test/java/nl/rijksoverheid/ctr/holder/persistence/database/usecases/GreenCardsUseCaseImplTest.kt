@@ -3,7 +3,7 @@ package nl.rijksoverheid.ctr.holder.persistence.database.usecases
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.dao.GreenCardDao
@@ -86,7 +86,7 @@ class GreenCardsUseCaseImplTest {
 
     @Test
     fun `given two green cards with some credentials, when both green cards do not expire, then return false (no refresh)`() = runBlocking {
-        coEvery { appConfig.minimumCredentialVersion } returns 2
+        
         coEvery { greenCardDao.getAll() } returns listOf(validGreenCard(), validGreenCard())
 
         val expiring = greenCardUseCase.expiring()
@@ -96,7 +96,7 @@ class GreenCardsUseCaseImplTest {
 
     @Test
     fun `given two green cards with some credentials, when a green card expires and the other green card does not expire, then return true to refresh`() = runBlocking {
-        coEvery { appConfig.minimumCredentialVersion } returns 2
+        
         coEvery { greenCardDao.getAll() } returns listOf(validGreenCard(), expiringGreenCard())
 
         val expiring = greenCardUseCase.expiring()
@@ -106,7 +106,7 @@ class GreenCardsUseCaseImplTest {
 
     @Test
     fun `given a green card with some credentials, when all credentials expire, then return true to refresh`() = runBlocking {
-        coEvery { appConfig.minimumCredentialVersion } returns 2
+        
         coEvery { greenCardDao.getAll() } returns listOf(expiringGreenCard(), expiringGreenCard())
 
         val expiring = greenCardUseCase.expiring()
@@ -114,31 +114,9 @@ class GreenCardsUseCaseImplTest {
         assertTrue(expiring)
     }
 
-    fun `given a green card with some credentials, when the last credential does not expire, then return null (no refresh)`() = runBlocking {
-
-    }
-
-    fun `given a green card with no credentials, then return an origin type to refresh`() = runBlocking {
-        
-    }
-
-    @Test
-    fun `given two green cards with some credentials, when a credential version is not supported anymore, then return true to refresh`() = runBlocking {
-        coEvery { appConfig.minimumCredentialVersion } returns 2
-        coEvery { greenCardDao.getAll() } returns listOf(validGreenCard(), unsupportedGreenCard())
-
-        val expiring = greenCardUseCase.expiring()
-
-        assertTrue(expiring)
-    }
-
-    fun `given a green card with some credentials, when all credential versions are invalid, then return an origin type to refresh`() = runBlocking {
-
-    }
-
     @Test
     fun `given a green card with some credentials, when all credential versions are still supported, then return false (no refresh)`() = runBlocking {
-        coEvery { appConfig.minimumCredentialVersion } returns 2
+        
         coEvery { greenCardDao.getAll() } returns listOf(validGreenCard())
 
         val expiring = greenCardUseCase.expiring()

@@ -39,9 +39,8 @@ class GreenCardsUseCaseImpl(
         val config = cachedAppConfigUseCase.getCachedAppConfig() ?: return false
 
         return holderDatabase.greenCardDao().getAll().firstOrNull { greenCard ->
-            val minimumCredentialVersionIncreased = greenCard.credentialEntities.minByOrNull { it.credentialVersion }?.credentialVersion ?: 0 < config.minimumCredentialVersion
             val credentialExpiring = greenCard.credentialEntities.maxByOrNull { it.expirationTime }?.isExpiring(config.credentialRenewalDays.toLong(), clock) ?: true
-            minimumCredentialVersionIncreased || credentialExpiring
+            credentialExpiring
         } != null
     }
 
