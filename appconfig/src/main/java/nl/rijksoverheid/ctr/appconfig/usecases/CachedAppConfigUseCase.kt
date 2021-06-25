@@ -17,6 +17,7 @@ import java.io.File
 
 interface CachedAppConfigUseCase {
     fun getCachedAppConfig(): AppConfig?
+    fun getCachedAppConfigRecoveryEventValidity(): Int
     fun getCachedAppConfigMaxValidityHours(): Int
     fun getCachedAppConfigVaccinationEventValidity(): Int
     fun getCachedPublicKeys(): BufferedSource?
@@ -41,6 +42,11 @@ class CachedAppConfigUseCaseImpl constructor(
         } catch (exc: Exception) {
             AppConfig()
         }
+    }
+
+    override fun getCachedAppConfigRecoveryEventValidity(): Int {
+        return getCachedAppConfig()?.recoveryEventValidity
+            ?: throw IllegalStateException("AppConfig should be cached")
     }
 
     override fun getCachedAppConfigMaxValidityHours(): Int {

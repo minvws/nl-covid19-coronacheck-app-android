@@ -37,6 +37,7 @@ interface InfoScreenUtil {
     fun getForDomesticQr(personalDetails: PersonalDetails): InfoScreen
     fun getForEuropeanTestQr(readEuropeanCredential: JSONObject): InfoScreen
     fun getForEuropeanVaccinationQr(readEuropeanCredential: JSONObject): InfoScreen
+    fun getForEuropeanRecoveryQr(readEuropeanCredential: JSONObject): InfoScreen
 }
 
 class InfoScreenUtilImpl(private val application: Application,
@@ -353,6 +354,71 @@ class InfoScreenUtilImpl(private val application: Application,
                 doses,
                 vaccinationDate,
                 vaccinationCountry,
+                uniqueCode
+            )
+        )
+    }
+
+    override fun getForEuropeanRecoveryQr(readEuropeanCredential: JSONObject): InfoScreen {
+        val dcc = readEuropeanCredential.optJSONObject("dcc")
+        val recovery = dcc.getJSONArray("r").optJSONObject(0)
+
+        val title = application.getString(R.string.qr_explanation_title_eu)
+
+        val fullName = "${dcc.optJSONObject("nam").getStringOrNull("fn")}, ${dcc.optJSONObject("nam").getStringOrNull("gn")}"
+
+        val birthDate = dcc.getStringOrNull("dob")?.let { birthDate ->
+            try {
+                LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).formatDayMonthYear()
+            } catch (e: Exception) {
+                ""
+            }
+        } ?: ""
+
+        val desease = application.getString(R.string.your_vaccination_explanation_covid_19)
+
+        val testDate = recovery.getStringOrNull("fr")?.let { testDate ->
+            try {
+                LocalDate.parse(testDate, DateTimeFormatter.ISO_DATE).formatDayMonthYear()
+            } catch (e: Exception) {
+                ""
+            }
+        } ?: ""
+
+        val country = recovery.getStringOrNull("co")
+
+        val producer = recovery.getStringOrNull("is")
+
+        val validFromDate = recovery.getStringOrNull("df")?.let { testDate ->
+            try {
+                LocalDate.parse(testDate, DateTimeFormatter.ISO_DATE).formatDayMonthYear()
+            } catch (e: Exception) {
+                ""
+            }
+        } ?: ""
+
+        val validUntilDate = recovery.getStringOrNull("du")?.let { testDate ->
+            try {
+                LocalDate.parse(testDate, DateTimeFormatter.ISO_DATE).formatDayMonthYear()
+            } catch (e: Exception) {
+                ""
+            }
+        } ?: ""
+
+        val uniqueCode = recovery.getStringOrNull("ci")
+
+        return InfoScreen(
+            title = title,
+            description = application.getString(
+                R.string.qr_explanation_description_eu_recovery,
+                fullName,
+                birthDate,
+                desease,
+                testDate,
+                country,
+                producer,
+                validFromDate,
+                validUntilDate,
                 uniqueCode
             )
         )
