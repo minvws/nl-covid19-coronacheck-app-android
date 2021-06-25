@@ -4,12 +4,13 @@ import android.os.Parcelable
 import com.squareup.moshi.JsonClass
 import kotlinx.parcelize.Parcelize
 
-abstract class RemoteProtocol3<E: RemoteEvent>(
-    providerIdentifier: String,
-    protocolVersion: String,
-    status: Status,
-    holder: Holder?,
-    events: List<E>?) : RemoteProtocol(providerIdentifier, protocolVersion, status) {
+@Parcelize
+data class RemoteProtocol3(
+    override val providerIdentifier: String,
+    override val protocolVersion: String,
+    override val status: Status,
+    val holder: Holder?,
+    val events: List<RemoteEvent>?): RemoteProtocol(providerIdentifier, protocolVersion, status), Parcelable {
 
     @Parcelize
     @JsonClass(generateAdapter = true)
@@ -19,4 +20,8 @@ abstract class RemoteProtocol3<E: RemoteEvent>(
         val lastName: String?,
         val birthDate: String?
     ) : Parcelable
+
+    override fun hasEvents(): Boolean {
+        return events?.isNotEmpty() ?: false
+    }
 }

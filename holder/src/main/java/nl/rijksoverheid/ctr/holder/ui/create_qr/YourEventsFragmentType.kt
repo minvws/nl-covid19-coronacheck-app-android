@@ -3,10 +3,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr
 import android.os.Parcel
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsVaccinations
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemotePositiveTests
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult3
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -39,15 +36,19 @@ sealed class YourEventsFragmentType : Parcelable {
         }
     }
 
-    @Parcelize
-    data class Vaccination(val remoteEvents: Map<RemoteEventsVaccinations, ByteArray>) :
-        YourEventsFragmentType(), Parcelable
+    sealed class RemoteProtocol3Type(open val remoteEvents: Map<RemoteProtocol3, ByteArray>):
+        YourEventsFragmentType(), Parcelable {
+        @Parcelize
+        data class Vaccinations(override val remoteEvents: Map<RemoteProtocol3, ByteArray>) :
+            RemoteProtocol3Type(remoteEvents), Parcelable
 
-    @Parcelize
-    data class TestResult3(val remoteEvents: Map<RemoteTestResult3, ByteArray>) :
-        YourEventsFragmentType(), Parcelable
+        @Parcelize
+        data class NegativeTests(override val remoteEvents: Map<RemoteProtocol3, ByteArray>) :
+            RemoteProtocol3Type(remoteEvents), Parcelable
 
-    @Parcelize
-    data class PositiveTests(val remoteEvents: Map<RemotePositiveTests, ByteArray>) :
-        YourEventsFragmentType(), Parcelable
+        @Parcelize
+        data class PositiveTestsAndRecoveries(override val remoteEvents: Map<RemoteProtocol3, ByteArray>) :
+            RemoteProtocol3Type(remoteEvents), Parcelable
+    }
+
 }

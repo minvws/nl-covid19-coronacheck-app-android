@@ -9,7 +9,6 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentChooseProviderBinding
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigiDFragment
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigidResult
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.EventsResult
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAsAccessibilityButton
@@ -62,7 +61,7 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
 
         chooseProviderViewModel.eventsResult.observe(viewLifecycleOwner, EventObserver {
             when (it) {
-                is EventsResult.Success<RemoteTestResult3> -> {
+                is EventsResult.Success -> {
                     if (it.missingEvents) {
                         dialogUtil.presentDialog(
                             context = requireContext(),
@@ -73,7 +72,7 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
                             onDismissCallback = {
                                 findNavController().navigate(
                                     ChooseProviderFragmentDirections.actionYourEvents(
-                                        type = YourEventsFragmentType.TestResult3(
+                                        type = YourEventsFragmentType.RemoteProtocol3Type.NegativeTests(
                                             remoteEvents = it.signedModels.map { signedModel -> signedModel.model to signedModel.rawResponse }
                                                 .toMap()
                                         ),
@@ -85,7 +84,7 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
                     } else {
                         findNavController().navigate(
                             ChooseProviderFragmentDirections.actionYourEvents(
-                                type = YourEventsFragmentType.TestResult3(
+                                type = YourEventsFragmentType.RemoteProtocol3Type.NegativeTests(
                                     remoteEvents = it.signedModels.map { signedModel -> signedModel.model to signedModel.rawResponse }
                                         .toMap()
                                 ),

@@ -7,9 +7,9 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsVaccinations
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult3
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SaveEventsUseCase
 import nl.rijksoverheid.ctr.shared.livedata.Event
@@ -26,8 +26,7 @@ abstract class YourEventsViewModel : ViewModel() {
     val yourEventsResult: LiveData<Event<DatabaseSyncerResult>> = MutableLiveData()
 
     abstract fun saveNegativeTest2(remoteTestResult: RemoteTestResult2, rawResponse: ByteArray)
-    abstract fun saveVaccinations(remoteEvents: Map<RemoteEventsVaccinations, ByteArray>)
-    abstract fun saveNegativeTests3(remoteEvents: Map<RemoteTestResult3, ByteArray>)
+    abstract fun saveRemoteProtocol3Events(remoteProtocols3: Map<RemoteProtocol3, ByteArray>, originType: OriginType, eventType: EventType)
 }
 
 class YourEventsViewModelImpl(
@@ -60,12 +59,12 @@ class YourEventsViewModelImpl(
         }
     }
 
-    override fun saveNegativeTests3(remoteEvents: Map<RemoteTestResult3, ByteArray>) {
+    override fun saveRemoteProtocol3Events(remoteProtocols3: Map<RemoteProtocol3, ByteArray>, originType: OriginType, eventType: EventType) {
         (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {
             try {
                 // Save the events in the database
-                saveEventsUseCase.saveNegativeTests3(remoteEvents)
+                saveEventsUseCase.saveRemoteProtocols3(remoteProtocols3, eventType)
 
                 // Send all events to database and create green cards, origins and credentials
                 val databaseSyncerResult = holderDatabaseSyncer.sync(
@@ -76,31 +75,6 @@ class YourEventsViewModelImpl(
                     databaseSyncerResult
                 )
             } catch(e: Exception) {
-                (yourEventsResult as MutableLiveData).value = Event(
-                    DatabaseSyncerResult.ServerError(999)
-                )
-            } finally {
-                loading.value = Event(false)
-            }
-        }
-    }
-
-    override fun saveVaccinations(vaccinations: Map<RemoteEventsVaccinations, ByteArray>) {
-        (loading as MutableLiveData).value = Event(true)
-        viewModelScope.launch {
-            try {
-                // Save the events in the database
-                saveEventsUseCase.saveVaccinations(vaccinations)
-
-                // Send all events to database and create green cards, origins and credentials
-                val databaseSyncerResult = holderDatabaseSyncer.sync(
-                    expectedOriginType = OriginType.TYPE_VACCINATION
-                )
-
-                (yourEventsResult as MutableLiveData).value = Event(
-                    databaseSyncerResult
-                )
-            } catch (e: Exception) {
                 (yourEventsResult as MutableLiveData).value = Event(
                     DatabaseSyncerResult.ServerError(999)
                 )

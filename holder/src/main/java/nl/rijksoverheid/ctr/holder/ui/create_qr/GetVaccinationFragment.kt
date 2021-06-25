@@ -2,7 +2,6 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
@@ -10,7 +9,6 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentGetVaccinationBinding
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigiDFragment
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigidResult
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsVaccinations
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.EventsResult
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
@@ -46,7 +44,7 @@ class GetVaccinationFragment : DigiDFragment(R.layout.fragment_get_vaccination) 
 
         getVaccinationViewModel.eventsResult.observe(viewLifecycleOwner, EventObserver {
             when (it) {
-                is EventsResult.Success<RemoteEventsVaccinations> -> {
+                is EventsResult.Success -> {
                     if (it.missingEvents) {
                         dialogUtil.presentDialog(
                             context = requireContext(),
@@ -57,7 +55,7 @@ class GetVaccinationFragment : DigiDFragment(R.layout.fragment_get_vaccination) 
                             onDismissCallback = {
                                 findNavController().navigate(
                                     GetVaccinationFragmentDirections.actionYourEvents(
-                                        type = YourEventsFragmentType.Vaccination(
+                                        type = YourEventsFragmentType.RemoteProtocol3Type.Vaccinations(
                                             remoteEvents = it.signedModels.map { signedModel -> signedModel.model to signedModel.rawResponse }
                                                 .toMap()
                                         ),
@@ -69,7 +67,7 @@ class GetVaccinationFragment : DigiDFragment(R.layout.fragment_get_vaccination) 
                     } else {
                         findNavController().navigate(
                             GetVaccinationFragmentDirections.actionYourEvents(
-                                type = YourEventsFragmentType.Vaccination(
+                                type = YourEventsFragmentType.RemoteProtocol3Type.Vaccinations(
                                     remoteEvents = it.signedModels.map { signedModel -> signedModel.model to signedModel.rawResponse }
                                         .toMap()
                                 ),

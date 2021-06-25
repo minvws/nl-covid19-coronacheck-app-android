@@ -24,7 +24,7 @@ interface EventProviderRepository {
         signingCertificateBytes: ByteArray
     ): RemoteUnomi
 
-    suspend fun unomiPositiveTestEvents(
+    suspend fun unomiPositiveAndRecoveryEvents(
         url: String,
         token: String,
         signingCertificateBytes: ByteArray
@@ -34,19 +34,19 @@ interface EventProviderRepository {
         url: String,
         token: String,
         signingCertificateBytes: ByteArray
-    ): SignedResponseWithModel<RemoteEventsVaccinations>
+    ): SignedResponseWithModel<RemoteProtocol3>
 
-    suspend fun positiveTestEvent(
+    suspend fun positiveAndRecoveryTestEvents(
         url: String,
         token: String,
         signingCertificateBytes: ByteArray
-    ): SignedResponseWithModel<RemotePositiveTests>
+    ): SignedResponseWithModel<RemoteProtocol3>
 
-    suspend fun negativeTestEvent(
+    suspend fun negativeTestEvents(
         url: String,
         token: String,
         signingCertificateBytes: ByteArray
-    ): SignedResponseWithModel<RemoteTestResult3>
+    ): SignedResponseWithModel<RemoteProtocol3>
 }
 
 class EventProviderRepositoryImpl(
@@ -62,13 +62,13 @@ class EventProviderRepositoryImpl(
             ).model
     }
 
-    override suspend fun unomiPositiveTestEvents(
+    override suspend fun unomiPositiveAndRecoveryEvents(
         url: String,
         token: String,
         signingCertificateBytes: ByteArray
     ): RemoteUnomi {
         return testProviderApiClient
-            .unomiPositiveTestEvents(
+            .unomiPositiveAndRecoveryTestEvents(
                 url = url,
                 authorization = "Bearer $token",
                 certificate = SigningCertificate(signingCertificateBytes)
@@ -88,7 +88,7 @@ class EventProviderRepositoryImpl(
         url: String,
         token: String,
         signingCertificateBytes: ByteArray
-    ): SignedResponseWithModel<RemoteEventsVaccinations> {
+    ): SignedResponseWithModel<RemoteProtocol3> {
         return testProviderApiClient.vaccinationEvents(
             url = url,
             authorization = "Bearer $token",
@@ -96,23 +96,23 @@ class EventProviderRepositoryImpl(
         )
     }
 
-    override suspend fun positiveTestEvent(
+    override suspend fun positiveAndRecoveryTestEvents(
         url: String,
         token: String,
         signingCertificateBytes: ByteArray
-    ): SignedResponseWithModel<RemotePositiveTests> {
-        return testProviderApiClient.positiveTestEvents(
+    ): SignedResponseWithModel<RemoteProtocol3> {
+        return testProviderApiClient.positiveAndRecoveryEvents(
             url = url,
             authorization = "Bearer $token",
             certificate = SigningCertificate(signingCertificateBytes)
         )
     }
 
-    override suspend fun negativeTestEvent(
+    override suspend fun negativeTestEvents(
         url: String,
         token: String,
         signingCertificateBytes: ByteArray
-    ): SignedResponseWithModel<RemoteTestResult3> {
+    ): SignedResponseWithModel<RemoteProtocol3> {
         return testProviderApiClient.negativeTestEvents(
             url = url,
             authorization = "Bearer $token",

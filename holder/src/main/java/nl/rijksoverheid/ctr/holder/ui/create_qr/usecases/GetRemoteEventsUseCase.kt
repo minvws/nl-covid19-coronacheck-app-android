@@ -10,19 +10,19 @@ import java.io.IOException
  */
 interface GetRemoteEventsUseCase {
     suspend fun getVaccinations(eventProvider: RemoteConfigProviders.EventProvider,
-                token: RemoteAccessTokens.Token): RemoteEventsResult<RemoteEventsVaccinations>
+                token: RemoteAccessTokens.Token): RemoteEventsResult
 
     suspend fun getTestResults(eventProvider: RemoteConfigProviders.EventProvider,
-                                token: RemoteAccessTokens.Token): RemoteEventsResult<RemoteTestResult3>
+                                token: RemoteAccessTokens.Token): RemoteEventsResult
 
-    suspend fun getPositiveTestResults(eventProvider: RemoteConfigProviders.EventProvider,
-                               token: RemoteAccessTokens.Token): RemoteEventsResult<RemotePositiveTests>
+    suspend fun getPositiveAndRecoveryTestResults(eventProvider: RemoteConfigProviders.EventProvider,
+                               token: RemoteAccessTokens.Token): RemoteEventsResult
 }
 
 class GetRemoteEventsUseCaseImpl(private val eventProviderRepository: EventProviderRepository): GetRemoteEventsUseCase {
     override suspend fun getVaccinations(
         eventProvider: RemoteConfigProviders.EventProvider,
-        token: RemoteAccessTokens.Token): RemoteEventsResult<RemoteEventsVaccinations> {
+        token: RemoteAccessTokens.Token): RemoteEventsResult {
 
         return try {
             val events = eventProviderRepository
@@ -49,11 +49,11 @@ class GetRemoteEventsUseCaseImpl(private val eventProviderRepository: EventProvi
     override suspend fun getTestResults(
         eventProvider: RemoteConfigProviders.EventProvider,
         token: RemoteAccessTokens.Token
-    ): RemoteEventsResult<RemoteTestResult3> {
+    ): RemoteEventsResult {
 
         return try {
             val events = eventProviderRepository
-                .negativeTestEvent(
+                .negativeTestEvents(
                     url = eventProvider.eventUrl,
                     token = token.event,
                     signingCertificateBytes = eventProvider.cms
@@ -74,14 +74,14 @@ class GetRemoteEventsUseCaseImpl(private val eventProviderRepository: EventProvi
         }
     }
 
-    override suspend fun getPositiveTestResults(
+    override suspend fun getPositiveAndRecoveryTestResults(
         eventProvider: RemoteConfigProviders.EventProvider,
         token: RemoteAccessTokens.Token
-    ): RemoteEventsResult<RemotePositiveTests> {
+    ): RemoteEventsResult {
 
         return try {
             val events = eventProviderRepository
-                .positiveTestEvent(
+                .positiveAndRecoveryTestEvents(
                     url = eventProvider.eventUrl,
                     token = token.event,
                     signingCertificateBytes = eventProvider.cms
@@ -103,9 +103,9 @@ class GetRemoteEventsUseCaseImpl(private val eventProviderRepository: EventProvi
     }
 }
 
-sealed class RemoteEventsResult<out T> {
-    data class Success<T: RemoteProtocol>(val signedModel: SignedResponseWithModel<T>): RemoteEventsResult<T>()
-    sealed class Error: RemoteEventsResult<Nothing>() {
+sealed class RemoteEventsResult {
+    data class Success(val signedModel: SignedResponseWithModel<RemoteProtocol3>): RemoteEventsResult()
+    sealed class Error: RemoteEventsResult() {
         data class ServerError(val httpCode: Int): Error()
         object NetworkError : Error()
     }

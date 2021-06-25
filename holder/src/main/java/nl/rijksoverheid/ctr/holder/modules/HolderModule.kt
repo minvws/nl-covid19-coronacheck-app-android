@@ -225,11 +225,13 @@ fun holderModule(baseUrl: String) = module {
             .add(PolymorphicJsonAdapterFactory.of(
                 RemoteProtocol::class.java, "protocolVersion")
                 .withSubtype(RemoteTestResult2::class.java, "2.0")
-                .withSubtype(RemoteTestResult3::class.java, "3.0"))
+                .withSubtype(RemoteProtocol3::class.java, "3.0"))
             .add(PolymorphicJsonAdapterFactory.of(
                 RemoteEvent::class.java, "type")
-                .withSubtype(RemoteEventsPositiveTest::class.java, "positivetest")
-                .withSubtype(RemoteEventsPositiveTest::class.java, "recovery"))
+                .withSubtype(RemoteEventPositiveTest::class.java, "positivetest")
+                .withSubtype(RemoteEventRecovery::class.java, "recovery")
+                .withSubtype(RemoteEventNegativeTest::class.java, "negativetest")
+                .withSubtype(RemoteEventVaccination::class.java, "vaccination"))
             .add(KotlinJsonAdapterFactory())
             .build()
     }

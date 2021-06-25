@@ -9,15 +9,10 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentGetRecoveryBinding
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigiDFragment
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigidResult
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsPositiveTest
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsVaccinations
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemotePositiveTests
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.EventsResult
-import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import timber.log.Timber
 
 class GetRecoveryFragment : DigiDFragment(R.layout.fragment_get_recovery) {
 
@@ -39,7 +34,7 @@ class GetRecoveryFragment : DigiDFragment(R.layout.fragment_get_recovery) {
 
         getRecoveryViewModel.eventsResult.observe(viewLifecycleOwner, EventObserver {
             when (it) {
-                is EventsResult.Success<RemotePositiveTests> -> {
+                is EventsResult.Success -> {
                     if (it.missingEvents) {
                         dialogUtil.presentDialog(
                             context = requireContext(),
@@ -50,7 +45,7 @@ class GetRecoveryFragment : DigiDFragment(R.layout.fragment_get_recovery) {
                             onDismissCallback = {
                                 findNavController().navigate(
                                     GetVaccinationFragmentDirections.actionYourEvents(
-                                        type = YourEventsFragmentType.PositiveTests(
+                                        type = YourEventsFragmentType.RemoteProtocol3Type.PositiveTestsAndRecoveries(
                                             remoteEvents = it.signedModels.map { signedModel -> signedModel.model to signedModel.rawResponse }
                                                 .toMap()
                                         ),
@@ -62,7 +57,7 @@ class GetRecoveryFragment : DigiDFragment(R.layout.fragment_get_recovery) {
                     } else {
                         findNavController().navigate(
                             GetVaccinationFragmentDirections.actionYourEvents(
-                                type = YourEventsFragmentType.PositiveTests(
+                                type = YourEventsFragmentType.RemoteProtocol3Type.PositiveTestsAndRecoveries(
                                     remoteEvents = it.signedModels.map { signedModel -> signedModel.model to signedModel.rawResponse }
                                         .toMap()
                                 ),
@@ -132,7 +127,7 @@ class GetRecoveryFragment : DigiDFragment(R.layout.fragment_get_recovery) {
                     dialogUtil.presentDialog(
                         context = requireContext(),
                         title = R.string.digid_login_failed_title,
-                        message = getString(R.string.digid_login_failed_description, getString(R.string.type_vaccination)),
+                        message = getString(R.string.digid_login_failed_description),
                         positiveButtonText = R.string.dialog_close,
                         positiveButtonCallback = {}
                     )

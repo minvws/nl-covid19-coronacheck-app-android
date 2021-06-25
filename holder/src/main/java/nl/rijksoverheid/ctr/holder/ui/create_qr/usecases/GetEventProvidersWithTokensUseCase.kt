@@ -74,7 +74,7 @@ class GetEventProvidersWithTokensUseCaseImpl(
                         )
                     }
                     is OriginType.Recovery -> {
-                        eventProviderRepository.unomiPositiveTestEvents(
+                        eventProviderRepository.unomiPositiveAndRecoveryEvents(
                             url = eventProvider.unomiUrl,
                             token = token.unomi,
                             signingCertificateBytes = eventProvider.cms
