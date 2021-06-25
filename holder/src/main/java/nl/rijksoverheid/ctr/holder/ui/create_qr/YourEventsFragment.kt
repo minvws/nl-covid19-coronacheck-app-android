@@ -362,9 +362,9 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                         is YourEventsFragmentType.RemoteProtocol3Type.PositiveTestsAndRecoveries -> EventType.Recovery
                     }
                     val originType = when (type) {
-                        is YourEventsFragmentType.RemoteProtocol3Type.Vaccinations -> OriginType.Vaccination
-                        is YourEventsFragmentType.RemoteProtocol3Type.NegativeTests -> OriginType.Test
-                        is YourEventsFragmentType.RemoteProtocol3Type.PositiveTestsAndRecoveries -> OriginType.Recovery
+                        is YourEventsFragmentType.RemoteProtocol3Type.Vaccinations -> OriginType.TYPE_VACCINATION
+                        is YourEventsFragmentType.RemoteProtocol3Type.NegativeTests -> OriginType.TYPE_TEST
+                        is YourEventsFragmentType.RemoteProtocol3Type.PositiveTestsAndRecoveries -> OriginType.TYPE_RECOVERY
                     }
                     yourEventsViewModel.saveRemoteProtocol3Events(
                         remoteProtocols3 = type.remoteEvents,

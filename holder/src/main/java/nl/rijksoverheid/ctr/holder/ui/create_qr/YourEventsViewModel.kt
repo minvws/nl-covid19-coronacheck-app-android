@@ -26,7 +26,7 @@ abstract class YourEventsViewModel : ViewModel() {
     val yourEventsResult: LiveData<Event<DatabaseSyncerResult>> = MutableLiveData()
 
     abstract fun saveNegativeTest2(remoteTestResult: RemoteTestResult2, rawResponse: ByteArray)
-    abstract fun saveRemoteProtocol3Events(remoteProtocols3: Map<RemoteProtocol3, ByteArray>, originType: OriginType, eventType: EventType)
+    abstract fun saveRemoteProtocol3Events(remoteProtocols3: Map<RemoteProtocol3, ByteArray>, originType: String, eventType: EventType)
 }
 
 class YourEventsViewModelImpl(
@@ -59,7 +59,7 @@ class YourEventsViewModelImpl(
         }
     }
 
-    override fun saveRemoteProtocol3Events(remoteProtocols3: Map<RemoteProtocol3, ByteArray>, originType: OriginType, eventType: EventType) {
+    override fun saveRemoteProtocol3Events(remoteProtocols3: Map<RemoteProtocol3, ByteArray>, originType: String, eventType: EventType) {
         (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {
             try {
@@ -68,7 +68,7 @@ class YourEventsViewModelImpl(
 
                 // Send all events to database and create green cards, origins and credentials
                 val databaseSyncerResult = holderDatabaseSyncer.sync(
-                    expectedOriginType = OriginType.TYPE_TEST
+                    expectedOriginType = originType
                 )
 
                 (yourEventsResult as MutableLiveData).value = Event(

@@ -38,17 +38,15 @@ class SaveEventsUseCaseImpl(private val holderDatabase: HolderDatabase) : SaveEv
 
     override suspend fun saveRemoteProtocols3(remoteProtocols3: Map<RemoteProtocol3, ByteArray>, eventType: EventType) {
         val entities = remoteProtocols3.map { remoteProtocol3 ->
-            val remoteEvents = remoteProtocol3.key.events
-            remoteEvents?.map {
-                EventGroupEntity(
-                    walletId = 1,
-                    providerIdentifier = remoteProtocol3.key.providerIdentifier,
-                    type = EventType.Test,
-                    maxIssuedAt = getMaxIssuedAt(remoteEvents),
-                    jsonData = remoteProtocol3.value
-                )
-            } ?: listOf()
-        }.flatten()
+            val remoteEvents = remoteProtocol3.key.events ?: listOf()
+            EventGroupEntity(
+                walletId = 1,
+                providerIdentifier = remoteProtocol3.key.providerIdentifier,
+                type = eventType,
+                maxIssuedAt = getMaxIssuedAt(remoteEvents),
+                jsonData = remoteProtocol3.value
+            )
+        }
 
         // Save entity in database
         holderDatabase.eventGroupDao().insertAll(entities)
