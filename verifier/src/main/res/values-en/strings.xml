@@ -107,7 +107,5 @@
     <string name="url_accessibility">https://coronacheck.nl/en/accessibility-in-app</string>
     <string name="accessibility_flash_on">Turn the flashlight on.</string>
     <string name="accessibility_flash_off">Turn the flashlight off.</string>
-    <string name="new_in_app_subtitle">Nieuw in de app</string>
-    <string name="new_in_app_screen_1_title">Bewijs van herstel</string>
-    <string name="new_in_app_screen_1_description">Ben je eerder besmet geraakt met corona? En ben je inmiddels hersteld van het virus? Dan kun je een persoonlijke QR-code maken. Met dit bewijs krijg je toegang tot bepaalde locaties en activiteiten. Ook kun je er internationaal mee reizen.</string>
+    <string name="new_in_app_subtitle">New in the app</string>
 </resources>
