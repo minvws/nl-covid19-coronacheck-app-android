@@ -49,7 +49,7 @@ class GetRecoveryFragment : DigiDFragment(R.layout.fragment_get_recovery) {
                                             remoteEvents = it.signedModels.map { signedModel -> signedModel.model to signedModel.rawResponse }
                                                 .toMap()
                                         ),
-                                        toolbarTitle = getString(R.string.your_vaccination_result_toolbar_title)
+                                        toolbarTitle = getString(R.string.your_positive_test_toolbar_title)
                                     )
                                 )
                             }
@@ -61,7 +61,7 @@ class GetRecoveryFragment : DigiDFragment(R.layout.fragment_get_recovery) {
                                     remoteEvents = it.signedModels.map { signedModel -> signedModel.model to signedModel.rawResponse }
                                         .toMap()
                                 ),
-                                toolbarTitle = getString(R.string.your_vaccination_result_toolbar_title)
+                                toolbarTitle = getString(R.string.your_positive_test_toolbar_title)
                             )
                         )
                     }
@@ -78,7 +78,7 @@ class GetRecoveryFragment : DigiDFragment(R.layout.fragment_get_recovery) {
                     } else {
                         findNavController().navigate(
                             GetVaccinationFragmentDirections.actionCouldNotCreateQr(
-                                toolbarTitle = getString(R.string.your_vaccination_result_toolbar_title),
+                                toolbarTitle = getString(R.string.your_positive_test_toolbar_title),
                                 title = getString(R.string.no_positive_test_result_title),
                                 description = getString(R.string.no_positive_test_result_description)
                             )

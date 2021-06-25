@@ -6,6 +6,7 @@ import com.squareup.moshi.JsonClass
 import kotlinx.parcelize.Parcelize
 import java.time.LocalDate
 import java.time.OffsetDateTime
+import java.time.ZoneOffset
 
 @Parcelize
 @JsonClass(generateAdapter = true)
@@ -19,12 +20,12 @@ data class RemoteEventRecovery(
     @Parcelize
     @JsonClass(generateAdapter = true)
     data class Recovery(
-        val sampleDate: OffsetDateTime?,
+        val sampleDate: LocalDate?,
         val validFrom: LocalDate?,
         val validUntil: LocalDate?
     ): Parcelable
 
     override fun getDate(): OffsetDateTime? {
-        return recovery?.sampleDate
+        return recovery?.sampleDate?.atStartOfDay()?.atOffset(ZoneOffset.UTC)
     }
 }

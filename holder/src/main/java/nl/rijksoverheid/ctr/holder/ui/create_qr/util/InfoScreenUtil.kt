@@ -9,21 +9,31 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.shared.ext.getStringOrNull
 import nl.rijksoverheid.ctr.shared.models.PersonalDetails
 import org.json.JSONObject
+import java.time.Instant
 import java.time.LocalDate
 import java.time.OffsetDateTime
+import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 
 interface InfoScreenUtil {
     fun getForRemoteTestResult2(result: RemoteTestResult2.Result,
                                 personalDetails: PersonalDetails,
                                 testDate: String): InfoScreen
-    fun getForRemoteTestResult3(event: RemoteEventNegativeTest,
+    fun getForNegativeTest(event: RemoteEventNegativeTest,
                                 fullName: String,
                                 testDate: String,
                                 birthDate: String): InfoScreen
-    fun getForRemoteVaccination(event: RemoteEventVaccination,
+    fun getForVaccination(event: RemoteEventVaccination,
                                 fullName: String,
                                 birthDate: String): InfoScreen
+    fun getForPositiveTest(event: RemoteEventPositiveTest,
+                           testDate: String,
+                          fullName: String,
+                          birthDate: String): InfoScreen
+    fun getForRecovery(event: RemoteEventRecovery,
+                           testDate: String,
+                           fullName: String,
+                           birthDate: String): InfoScreen
     fun getForDomesticQr(personalDetails: PersonalDetails): InfoScreen
     fun getForEuropeanTestQr(readEuropeanCredential: JSONObject): InfoScreen
     fun getForEuropeanVaccinationQr(readEuropeanCredential: JSONObject): InfoScreen
@@ -55,7 +65,7 @@ class InfoScreenUtilImpl(private val application: Application,
         )
     }
 
-    override fun getForRemoteTestResult3(
+    override fun getForNegativeTest(
         event: RemoteEventNegativeTest,
         fullName: String,
         testDate: String,
@@ -96,7 +106,74 @@ class InfoScreenUtilImpl(private val application: Application,
         )
     }
 
-    override fun getForRemoteVaccination(
+    override fun getForPositiveTest(
+        event: RemoteEventPositiveTest,
+        fullName: String,
+        testDate: String,
+        birthDate: String
+    ): InfoScreen {
+
+        val testType = cachedAppConfigUseCase.getCachedAppConfig()?.euTestTypes?.firstOrNull {
+            it.code == event.positiveTest?.type
+        }?.name ?: event.positiveTest?.type ?: ""
+
+        val testName = event.positiveTest?.name ?: ""
+
+        val testLocation = event.positiveTest?.facility ?: ""
+
+        val testManifacturer = cachedAppConfigUseCase.getCachedAppConfig()?.euTestManufacturers?.firstOrNull {
+            it.code == event.positiveTest?.manufacturer
+        }?.name ?: event.positiveTest?.manufacturer ?: ""
+
+        val unique = event.unique ?: ""
+
+        val title = application.getString(R.string.your_test_result_explanation_toolbar_title)
+        val description = application.getString(
+            R.string.your_test_result_3_0_explanation_description,
+            fullName,
+            birthDate,
+            testType,
+            testName,
+            testDate,
+            application.getString(R.string.your_test_result_explanation_positive_test_result),
+            testLocation,
+            testManifacturer,
+            unique
+        )
+
+        return InfoScreen(
+            title = title,
+            description = description
+        )
+    }
+
+    override fun getForRecovery(
+        event: RemoteEventRecovery,
+        testDate: String,
+        fullName: String,
+        birthDate: String
+    ): InfoScreen {
+
+        val validFromDate = event.recovery?.validFrom?.formatDayMonthYear() ?: ""
+        val validUntilDate = event.recovery?.validUntil?.formatDayMonthYear() ?: ""
+
+        val title = application.getString(R.string.your_test_result_explanation_toolbar_title)
+        val description = application.getString(
+            R.string.recovery_explanation_description,
+            fullName,
+            birthDate,
+            testDate,
+            validFromDate,
+            validUntilDate,
+            event.unique
+        )
+
+        return InfoScreen(
+            title = title,
+            description = description)
+    }
+
+    override fun getForVaccination(
         event: RemoteEventVaccination,
         fullName: String,
         birthDate: String
@@ -147,7 +224,6 @@ class InfoScreenUtilImpl(private val application: Application,
                 uniqueCode
             )
         )
-
     }
 
     override fun getForDomesticQr(personalDetails: PersonalDetails): InfoScreen {

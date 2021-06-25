@@ -295,4 +295,7 @@
     <string name="new_in_app_subtitle">Nieuw in de app</string>
     <string name="new_in_app_screen_1_title">Bewijs van herstel</string>
     <string name="new_in_app_screen_1_description">Ben je eerder besmet geraakt met corona? En ben je inmiddels hersteld van het virus? Dan kun je een persoonlijke QR-code maken. Met dit bewijs krijg je toegang tot bepaalde locaties en activiteiten. Ook kun je er internationaal mee reizen.</string>
+    <string name="your_test_result_explanation_positive_test_result">positief (corona)</string>
+    <string name="recovery_explanation_description"><![CDATA[De volgende gegevens zijn opgehaald bij de testlocatie:<br\><br\>Naam:  <b>%1$s</b><br/>Geboortedatum: <b>%2$s</b><br/><br/>Test datum: <b>%3$s</b><br/>Geldig vanaf: <b>%4$s</b><br/>Geldig tot: <b>%5$s</b><br/>Identificatiecode: <b>%6$s</b>]]></string>
+    <string name="rule_engine_no_positive_test_origin_description"><![CDATA[Op dit moment kunnen we geen bewijs maken van jouw positieve testuitslag. Dit kan verschillende oorzaken hebben. <a href="https://www.coronacheck.nl/wegwijzer">Lees hier meer.</a>]]></string>
 </resources>
