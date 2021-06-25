@@ -23,7 +23,7 @@ data class RemoteEventRecovery(
         val sampleDate: LocalDate?,
         val validFrom: LocalDate?,
         val validUntil: LocalDate?
-    ): Parcelable
+    ) : Parcelable
 
     override fun getDate(): OffsetDateTime? {
         return recovery?.sampleDate?.atStartOfDay()?.atOffset(ZoneOffset.UTC)
