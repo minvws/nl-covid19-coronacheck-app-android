@@ -60,14 +60,6 @@ abstract class BaseMainFragment(
                 } else {
                     drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
                 }
-
-                // Update focus for accessibility
-                requireView().findViewById<Toolbar>(R.id.toolbar).getNavigationIconView()?.let {
-                    it.postDelayed(
-                        { it.setAccessibilityFocus() },
-                        AccessibilityConstants.ACCESSIBILITY_FOCUS_DELAY
-                    )
-                }
             }
 
             // Only add header if none has been added before

@@ -6,7 +6,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.api.apiModule
 import nl.rijksoverheid.ctr.appconfig.*
-import nl.rijksoverheid.ctr.appconfig.usecases.LoadPublicKeysUseCase
 import nl.rijksoverheid.ctr.design.designModule
 import nl.rijksoverheid.ctr.holder.modules.*
 import nl.rijksoverheid.ctr.holder.persistence.HolderWorkerFactory
@@ -32,8 +31,6 @@ import org.koin.core.module.Module
  */
 open class HolderApplication : SharedApplication(), Configuration.Provider {
 
-    private val loadPublicKeysUseCase: LoadPublicKeysUseCase by inject()
-    private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
     private val secretKeyUseCase: SecretKeyUseCase by inject()
     private val holderDatabase: HolderDatabase by inject()
     private val testResultsMigrationManager: TestResultsMigrationManager by inject()
@@ -64,11 +61,6 @@ open class HolderApplication : SharedApplication(), Configuration.Provider {
 
         // Generate and store secret key to be used by rest of the app
         secretKeyUseCase.persist()
-
-        // If we have public keys stored, load them so they can be used by CTCL
-        cachedAppConfigUseCase.getCachedPublicKeys()?.let {
-            loadPublicKeysUseCase.load(it)
-        }
 
         // Create default wallet in database if empty
         GlobalScope.launch {

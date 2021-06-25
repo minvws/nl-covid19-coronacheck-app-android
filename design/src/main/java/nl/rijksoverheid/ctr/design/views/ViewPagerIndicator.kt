@@ -18,8 +18,10 @@ class ViewPagerIndicator @JvmOverloads constructor(
     }
 
     fun initIndicator(amount: Int) {
-        repeat(amount) {
-            addView(ViewPagerIndicatorBubble(context))
+        if (amount > 1) {
+            repeat(amount) {
+                addView(ViewPagerIndicatorBubble(context))
+            }
         }
     }
 

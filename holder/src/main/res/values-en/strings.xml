@@ -25,8 +25,8 @@
     <string name="dialog_error_title">Sorry, something went wrong</string>
     <string name="dialog_error_message">Because of a technical error.</string>
     <string name="dialog_error_message_with_error_code">Because of a technical error (%1$s).</string>
-    <string name="digid_login_failed_title">Couldn\'t log in with DigiD</string>
-    <string name="digid_login_failed_description">You can log in again later to retrieve your %1$s.</string>
+    <string name="digid_login_failed_title">Retrieval is cancelled</string>
+    <string name="digid_login_failed_description">It might be too busy. Please try again later.</string>
     <string name="ok">OK</string>
     <string name="settings">Settings</string>
     <string name="about_this_app">About this app</string>
@@ -34,6 +34,7 @@
     <string name="privacy_statement">Privacy statement</string>
     <string name="terms_of_use">Acceptable use policy</string>
     <string name="my_overview_test_result_title">My QR code</string>
+    <string name="my_overview_test_result_international_title">International QR-code</string>
     <string name="my_overview_test_result_validity">Valid until %1$s</string>
     <string name="accessibility_label_my_overview_test_result_personal_data">Your personal data: %1$s %2$s %3$s %4$s</string>
     <string name="accessibility_label_selected">Selected</string>
@@ -271,7 +272,6 @@
     <string name="too_busy_title">Sorry, it is really busy</string>
     <string name="too_busy_description">There are currently many visitors on the affiliated partner\'s website. We can\'t fetch your details now. Please try again later.</string>
     <string name="no_digid_url">https://www.digid.nl/en/apply-or-activate-digid</string>
-    <string name="digid_login_failed">Couldn\'t log in with DigiD</string>
     <string name="event_provider_error_title">Sorry, something went wrong</string>
     <string name="event_provider_error_description">Something went wrong with the server of your test or injection location. Please try again later.</string>
     <string name="coronacheck_error_title">Sorry, something went wrong</string>
@@ -280,6 +280,9 @@
     <string name="missing_events_description">Due to increased traffic or an outage at one of the parties, some details may be missing. Please try again later.</string>
     <string name="dialog_vaccination_something_wrong_description"><![CDATA[Is your name or date of birth wrong? Or are your vaccination details incorrect? Look <a href="https://coronacheck.nl/en/guidepost">here</a> for more information.]]></string>
     <string name="commercial_test_unique_code_hint_screenreader">Enter your retrieval code here</string>
+    <string name="new_in_app_subtitle">Nieuw in de app</string>
+    <string name="new_in_app_screen_1_title">Bewijs van herstel</string>
+    <string name="new_in_app_screen_1_description">Ben je eerder besmet geraakt met corona? En ben je inmiddels hersteld van het virus? Dan kun je een persoonlijke QR-code maken. Met dit bewijs krijg je toegang tot bepaalde locaties en activiteiten. Ook kun je er internationaal mee reizen.</string>
     <string name="dialog_title_no_internet">Maak verbinding met het internet</string>
     <string name="dialog_update_credentials_no_internet">De app ververst je QR-code op de achtergrond. Zo blijft je QR-code geldig. Je hebt internet nodig zodat de app dit regelmatig kan doen.</string>
     <string name="dialog_credentials_expired_no_internet">Jouw QR-code is inactief. Maak verbinding met het internet zodat je QR-code weer geldig is.</string>

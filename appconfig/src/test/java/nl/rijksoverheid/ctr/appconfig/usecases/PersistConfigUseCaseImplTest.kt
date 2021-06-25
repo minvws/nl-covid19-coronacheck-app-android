@@ -4,7 +4,6 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
 import okio.BufferedSource
@@ -30,10 +29,8 @@ class PersistConfigUseCaseImplTest {
         coEvery { publicKeys.readUtf8() } returns "file contents"
 
         val usecase = PersistConfigUseCaseImpl(
-            appConfigPersistenceManager = appConfigPersistenceManager,
             appConfigStorageManager = appConfigStorageManager,
-            cacheDir = "",
-            isVerifierApp = false,
+            filesDirPath = "",
         )
 
         usecase.persist(

@@ -3,8 +3,8 @@ import time
 import hashlib 
 import os
 
-if os.getenv('CORONACHECK_ONESKY_SECRET') is not None:
-	publickey = "dyCXIZ0qBOqSaGiyqHJkcXdiDO7LPAJS"
+if os.getenv('CORONACHECK_ONESKY_SECRET') is not None and os.getenv('CORONACHECK_ONESKY_PUBLIC') is not None:
+	publickey = os.getenv('CORONACHECK_ONESKY_PUBLIC')
 	secretkey = os.getenv('CORONACHECK_ONESKY_SECRET')
 	timestamp = time.time()
 	devhash = hashlib.md5((str(timestamp) + secretkey).encode('utf-8')).hexdigest()
@@ -27,4 +27,4 @@ if os.getenv('CORONACHECK_ONESKY_SECRET') is not None:
 
 	print("Finished downloading copy")
 else:
-	print("Please set CORONACHECK_ONESKY_SECRET environment variable")
+	print("Please set CORONACHECK_ONESKY_SECRET and CORONACHECK_ONESKY_PUBLIC environment variable")

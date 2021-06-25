@@ -156,11 +156,13 @@ class HtmlTextViewWidget @JvmOverloads constructor(
     // Add support for activating links with assistive technologies
     override fun dispatchPopulateAccessibilityEvent(event: AccessibilityEvent?): Boolean {
         if (event != null && event.eventType == AccessibilityEvent.TYPE_VIEW_CLICKED) {
+            // Try to get text as Spanned object
             (text as? Spanned)?.let { spanned ->
+                // Extract all ClickableSpan instances
                 val clickableSpans = spanned.getSpans(0, spanned.length, ClickableSpan::class.java)
 
-                // Activate the first clickable span
-                clickableSpans.first()?.onClick(this)
+                // Activate the first clickable span, if it exists
+                clickableSpans.firstOrNull()?.onClick(this)
             }
         }
         return super.dispatchPopulateAccessibilityEvent(event)

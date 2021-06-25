@@ -1,8 +1,10 @@
 package nl.rijksoverheid.ctr.introduction.ui.status.usecases
 
 import nl.rijksoverheid.ctr.introduction.IntroductionData
-import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
+import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
+import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus.IntroductionFinished
+import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus.IntroductionNotFinished
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -19,25 +21,25 @@ class IntroductionStatusUseCaseImpl(
     private val introductionPersistenceManager: IntroductionPersistenceManager,
     private val introductionData: IntroductionData
 ) : IntroductionStatusUseCase {
-    override fun get(): IntroductionStatus {
-        val introductionFinished: Boolean = introductionPersistenceManager.getIntroductionFinished()
 
-        return if (introductionFinished) {
-            if (introductionData.newTerms != null && !introductionPersistenceManager.getNewTermsSeen(
-                    introductionData.newTerms.version
-                )
-            ) {
-                IntroductionStatus.IntroductionFinished.ConsentNeeded(
-                    introductionData.newTerms
-                )
-            } else {
-                IntroductionStatus.IntroductionFinished.NoActionRequired
-            }
-        } else {
-            IntroductionStatus.IntroductionNotFinished(
-                introductionData
-            )
+    override fun get(): IntroductionStatus {
+        return when {
+            introductionIsNotFinished() -> IntroductionNotFinished(introductionData)
+            newFeaturesAvailable() -> IntroductionFinished.NewFeatures(introductionData)
+            newTermsAvailable() -> IntroductionFinished.ConsentNeeded(introductionData)
+            else -> IntroductionFinished.NoActionRequired
+
         }
     }
+
+    private fun newTermsAvailable() =
+        introductionData.newTerms != null &&
+                !introductionPersistenceManager.getNewTermsSeen(introductionData.newTerms.version)
+
+    private fun newFeaturesAvailable() = introductionData.newFeatures.isNotEmpty() &&
+            !introductionPersistenceManager.getNewFeaturesSeen(introductionData.newFeatureVersion)
+
+    private fun introductionIsNotFinished() =
+        !introductionPersistenceManager.getIntroductionFinished()
 
 }

@@ -44,7 +44,14 @@ class IntroductionStatusFragment : Fragment() {
             is IntroductionStatus.IntroductionFinished.ConsentNeeded -> {
                 findNavController().navigate(
                     IntroductionStatusFragmentDirections.actionNewTerms(
-                        introductionStatus.newTerms
+                        introductionStatus.introductionData
+                    )
+                )
+            }
+            is IntroductionStatus.IntroductionFinished.NewFeatures -> {
+                findNavController().navigate(
+                    IntroductionStatusFragmentDirections.actionNavNewFeatures(
+                        introductionStatus.introductionData
                     )
                 )
             }
