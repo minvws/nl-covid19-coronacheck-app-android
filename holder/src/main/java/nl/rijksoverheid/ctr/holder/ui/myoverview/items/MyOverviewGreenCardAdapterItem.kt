@@ -36,6 +36,7 @@ class MyOverviewGreenCardAdapterItem(
     private val originStates: List<OriginState>,
     private val credentialState: MyOverviewItem.GreenCardItem.CredentialState,
     private val launchDate: OffsetDateTime,
+    private val loading: Boolean = false,
     private val onButtonClick: (greenCard: GreenCard, credential: CredentialEntity) -> Unit,
 ) :
     BindableItem<ItemMyOverviewGreenCardBinding>(R.layout.item_my_overview_green_card.toLong()),
@@ -54,7 +55,7 @@ class MyOverviewGreenCardAdapterItem(
             viewBinding = viewBinding
         )
 
-        viewBinding.button.setOnClickListener {
+        viewBinding.buttonWithProgressWidgetContainer.setButtonOnClickListener {
             if (credentialState is MyOverviewItem.GreenCardItem.CredentialState.HasCredential) {
                 onButtonClick.invoke(greenCard, credentialState.credential)
             }
@@ -69,7 +70,7 @@ class MyOverviewGreenCardAdapterItem(
                     text = context.getString(R.string.validity_type_european_title)
                     setTextColor(ContextCompat.getColor(context, R.color.darkened_blue))
                 }
-                viewBinding.button.setEnabledButtonColor(R.color.darkened_blue)
+                viewBinding.buttonWithProgressWidgetContainer.setEnabledButtonColor(R.color.darkened_blue)
                 viewBinding.imageView.setImageResource(R.drawable.illustration_hand_qr_eu)
             }
             is GreenCardType.Domestic -> {
@@ -77,13 +78,19 @@ class MyOverviewGreenCardAdapterItem(
                     text = context.getString(R.string.validity_type_dutch_title)
                     setTextColor(ContextCompat.getColor(context, R.color.primary_blue))
                 }
-                viewBinding.button.setEnabledButtonColor(R.color.primary_blue)
+                viewBinding.buttonWithProgressWidgetContainer.setEnabledButtonColor(R.color.primary_blue)
                 viewBinding.imageView.setImageResource(R.drawable.illustration_hand_qr_nl)
             }
         }
 
-        // Check enabling button
-        viewBinding.button.isEnabled = credentialState is MyOverviewItem.GreenCardItem.CredentialState.HasCredential
+        viewBinding.buttonWithProgressWidgetContainer.isButtonEnabled(credentialState is MyOverviewItem.GreenCardItem.CredentialState.HasCredential)
+
+        if (loading) {
+            viewBinding.buttonWithProgressWidgetContainer.loading()
+        } else {
+            viewBinding.buttonWithProgressWidgetContainer.idle()
+        }
+
     }
 
     private fun setContent(viewBinding: ItemMyOverviewGreenCardBinding) {

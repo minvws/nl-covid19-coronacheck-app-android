@@ -283,4 +283,7 @@
     <string name="new_in_app_subtitle">Nieuw in de app</string>
     <string name="new_in_app_screen_1_title">Bewijs van herstel</string>
     <string name="new_in_app_screen_1_description">Ben je eerder besmet geraakt met corona? En ben je inmiddels hersteld van het virus? Dan kun je een persoonlijke QR-code maken. Met dit bewijs krijg je toegang tot bepaalde locaties en activiteiten. Ook kun je er internationaal mee reizen.</string>
+    <string name="dialog_title_no_internet">Maak verbinding met het internet</string>
+    <string name="dialog_update_credentials_no_internet">De app ververst je QR-code op de achtergrond. Zo blijft je QR-code geldig. Je hebt internet nodig zodat de app dit regelmatig kan doen.</string>
+    <string name="dialog_credentials_expired_no_internet">Jouw QR-code is inactief. Maak verbinding met het internet zodat je QR-code weer geldig is.</string>
 </resources>
