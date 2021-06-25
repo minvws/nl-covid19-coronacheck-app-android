@@ -1,3 +1,5 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.models
 
-abstract class RemoteEvent(open val type: String?)
+import android.os.Parcelable
+
+abstract class RemoteEvent(open val type: String?): Parcelable

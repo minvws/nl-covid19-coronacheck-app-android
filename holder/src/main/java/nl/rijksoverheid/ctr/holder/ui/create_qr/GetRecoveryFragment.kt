@@ -40,7 +40,36 @@ class GetRecoveryFragment : DigiDFragment(R.layout.fragment_get_recovery) {
         getRecoveryViewModel.eventsResult.observe(viewLifecycleOwner, EventObserver {
             when (it) {
                 is EventsResult.Success<RemotePositiveTests> -> {
-                    // TODO Navigate to show your events
+                    if (it.missingEvents) {
+                        dialogUtil.presentDialog(
+                            context = requireContext(),
+                            title = R.string.missing_events_title,
+                            message = getString(R.string.missing_events_description),
+                            positiveButtonText = R.string.ok,
+                            positiveButtonCallback = {},
+                            onDismissCallback = {
+                                findNavController().navigate(
+                                    GetVaccinationFragmentDirections.actionYourEvents(
+                                        type = YourEventsFragmentType.PositiveTests(
+                                            remoteEvents = it.signedModels.map { signedModel -> signedModel.model to signedModel.rawResponse }
+                                                .toMap()
+                                        ),
+                                        toolbarTitle = getString(R.string.your_vaccination_result_toolbar_title)
+                                    )
+                                )
+                            }
+                        )
+                    } else {
+                        findNavController().navigate(
+                            GetVaccinationFragmentDirections.actionYourEvents(
+                                type = YourEventsFragmentType.PositiveTests(
+                                    remoteEvents = it.signedModels.map { signedModel -> signedModel.model to signedModel.rawResponse }
+                                        .toMap()
+                                ),
+                                toolbarTitle = getString(R.string.your_vaccination_result_toolbar_title)
+                            )
+                        )
+                    }
                 }
                 is EventsResult.HasNoEvents -> {
                     if (it.missingEvents) {

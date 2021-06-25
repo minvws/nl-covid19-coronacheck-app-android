@@ -1,8 +1,10 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr
 
+import android.os.Parcel
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsVaccinations
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemotePositiveTests
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
 
@@ -43,5 +45,9 @@ sealed class YourEventsFragmentType : Parcelable {
 
     @Parcelize
     data class TestResult3(val remoteEvents: Map<RemoteTestResult3, ByteArray>) :
+        YourEventsFragmentType(), Parcelable
+
+    @Parcelize
+    data class PositiveTests(val remoteEvents: Map<RemotePositiveTests, ByteArray>) :
         YourEventsFragmentType(), Parcelable
 }
