@@ -11,13 +11,14 @@ import nl.rijksoverheid.ctr.api.signing.certificates.ROOT_CA_G3
 import nl.rijksoverheid.ctr.appconfig.usecases.DeviceRootedUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.DeviceRootedUseCaseImpl
 import nl.rijksoverheid.ctr.holder.BuildConfig
-import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
-import nl.rijksoverheid.ctr.holder.persistence.SharedPreferencesPersistenceManager
+import nl.rijksoverheid.ctr.holder.persistence.*
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncerImpl
 import nl.rijksoverheid.ctr.holder.persistence.database.migration.TestResultsMigrationManager
 import nl.rijksoverheid.ctr.holder.persistence.database.migration.TestResultsMigrationManagerImpl
+import nl.rijksoverheid.ctr.holder.persistence.database.usecases.GreenCardsUseCase
+import nl.rijksoverheid.ctr.holder.persistence.database.usecases.GreenCardsUseCaseImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.HolderApiClient
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.RemoteTestStatusJsonAdapter
@@ -62,7 +63,7 @@ fun holderModule(baseUrl: String) = module {
         HolderDatabase.createInstance(androidContext(), get())
     }
 
-    factory<HolderDatabaseSyncer> { HolderDatabaseSyncerImpl(get(), get(), get(), get(), get()) }
+    factory<HolderDatabaseSyncer> { HolderDatabaseSyncerImpl(get(), get(), get(), get(), get(), get()) }
 
     single<PersistenceManager> {
         SharedPreferencesPersistenceManager(
@@ -123,6 +124,8 @@ fun holderModule(baseUrl: String) = module {
 
     factory<TestResultsMigrationManager> { TestResultsMigrationManagerImpl(get(), get(), get()) }
 
+    factory<WorkerManagerWrapper> { WorkerManagerWrapperImpl(androidContext(), get()) }
+
     // ViewModels
     viewModel<QrCodeViewModel> { QrCodeViewModelImpl(get()) }
     viewModel<CommercialTestCodeViewModel> { CommercialTestCodeViewModelImpl(get(), get()) }
@@ -132,7 +135,7 @@ fun holderModule(baseUrl: String) = module {
     viewModel<YourEventsViewModel> { YourEventsViewModelImpl(get(), get()) }
     viewModel<GetVaccinationViewModel> { GetVaccinationViewModelImpl(get()) }
     viewModel<ChooseProviderViewModel> { ChooseProviderViewModelImpl(get()) }
-    viewModel<MyOverviewViewModel> { MyOverviewViewModelImpl(get(), get(), get()) }
+    viewModel<MyOverviewViewModel> { MyOverviewViewModelImpl(get(), get(), get(), get()) }
 
     // Repositories
     single { AuthenticationRepository() }
@@ -169,6 +172,14 @@ fun holderModule(baseUrl: String) = module {
 
     factory<TestResultAttributesUseCase> {
         TestResultAttributesUseCaseImpl(get(), get())
+    }
+
+    factory<GreenCardsUseCase> {
+        GreenCardsUseCaseImpl(get(), get(), get(), get())
+    }
+
+    factory< HolderWorkerFactory> {
+        HolderWorkerFactory(get(), get())
     }
 
     single {

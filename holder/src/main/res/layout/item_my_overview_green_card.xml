@@ -122,17 +122,16 @@
                 tools:text="Verloopt in 5 uur 59 min"
                 tools:visibility="visible" />
 
-            <Button
-                android:id="@+id/button"
-                style="@style/Widget.App.Button.Small"
+            <nl.rijksoverheid.ctr.design.views.ButtonWithProgressWidget
+                android:id="@+id/buttonWithProgressWidgetContainer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:text="@string/my_overview_test_result_button"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/expires_in" />
+                app:layout_constraintTop_toBottomOf="@id/expires_in"
+                app:text="@string/my_overview_test_result_button" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -154,4 +153,3 @@
         tools:text="Je Europese Qr-code wordt automatisch geldig als de Europese regelgeving ingaat (over 5 dagen)" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-

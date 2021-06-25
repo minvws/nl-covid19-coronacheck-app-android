@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.holder.persistence.database
 import androidx.room.Transaction
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import nl.rijksoverheid.ctr.holder.persistence.WorkerManagerWrapper
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteCredentials
@@ -38,6 +39,7 @@ class HolderDatabaseSyncerImpl(
     private val coronaCheckRepository: CoronaCheckRepository,
     private val mobileCoreWrapper: MobileCoreWrapper,
     private val secretKeyUseCase: SecretKeyUseCase,
+    private val workerManagerWrapper: WorkerManagerWrapper,
 ) : HolderDatabaseSyncer {
 
     override suspend fun sync(expectedOriginType: String?, syncWithRemote: Boolean): DatabaseSyncerResult {
@@ -84,10 +86,9 @@ class HolderDatabaseSyncerImpl(
                     events = events
                 )
 
-                if (!remoteCredentials.getAllOrigins().contains(expectedOriginType)) {
+                if (expectedOriginType != null && !remoteCredentials.getAllOrigins().contains(expectedOriginType)) {
                     return DatabaseSyncerResult.MissingOrigin
                 }
-
 
                 // Remove all green cards from database
                 removeAllGreenCards()
@@ -113,6 +114,8 @@ class HolderDatabaseSyncerImpl(
                 DatabaseSyncerResult.NetworkError
             } catch (e: Exception) {
                 DatabaseSyncerResult.ServerError(200)
+            } finally {
+                workerManagerWrapper.scheduleNextCredentialsRefreshIfAny()
             }
         } else {
             return DatabaseSyncerResult.Success
