@@ -69,7 +69,7 @@ android {
         tst {
             buildConfigField "String", "BASE_API_URL", "\"https://api-ct.bananenhalen.nl/v4/\""
             buildConfigField "String", "DIGI_D_BASE_URL", "\"https://tvs.acc.coronacheck.nl\""
-            buildConfigField "String", "DIGI_D_CLIENT_ID", "\"test_client\""
+            buildConfigField "String", "DIGI_D_CLIENT_ID", "\"cc_app\""
             buildConfigField "String", "DIGI_D_REDIRECT_URI", "\"coronacheck-dev://auth/login\""
             buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "false"
             buildConfigField "boolean", "FEATURE_TEST_PROVIDER_API_CHECKS", "false"
@@ -83,7 +83,7 @@ android {
         acc {
             buildConfigField "String", "BASE_API_URL", "\"https://holder-api.acc.coronacheck.nl/v4/\""
             buildConfigField "String", "DIGI_D_BASE_URL", "\"https://tvs.acc.coronacheck.nl\""
-            buildConfigField "String", "DIGI_D_CLIENT_ID", "\"test_client\""
+            buildConfigField "String", "DIGI_D_CLIENT_ID", "\"cc_app\""
             buildConfigField "String", "DIGI_D_REDIRECT_URI", "\"coronacheck-acc://auth/login\""
             dimension "environment"
             versionNameSuffix "-acc"
