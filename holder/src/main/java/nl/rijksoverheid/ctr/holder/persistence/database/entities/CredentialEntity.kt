@@ -4,7 +4,9 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import java.time.Clock
 import java.time.OffsetDateTime
+import kotlin.math.exp
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -55,4 +57,9 @@ data class CredentialEntity(
         result = 31 * result + expirationTime.hashCode()
         return result
     }
+}
+
+fun CredentialEntity.isExpiring(credentialRenewalDays: Long, clock: Clock): Boolean {
+    val now = OffsetDateTime.now(clock)
+    return expirationTime.minusDays(credentialRenewalDays).isBefore(now)
 }

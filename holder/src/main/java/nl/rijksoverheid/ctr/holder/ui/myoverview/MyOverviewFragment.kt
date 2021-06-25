@@ -12,6 +12,7 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
 import com.xwray.groupie.viewbinding.BindableItem
+import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
@@ -58,6 +59,8 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
             )
         })
 
+    private val dialogUtil: DialogUtil by inject()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -88,6 +91,24 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                     myOverviewItems = myOverviewItems
                 )
             })
+
+        myOverviewViewModel.myOverviewRefreshErrorEvent.observe(viewLifecycleOwner, EventObserver {
+            val message = getString(if (it is MyOverviewError.Inactive) {
+                R.string.dialog_credentials_expired_no_internet
+            } else {
+                R.string.dialog_update_credentials_no_internet
+            })
+            dialogUtil.presentDialog(
+                context = requireContext(),
+                title = R.string.dialog_title_no_internet,
+                message = message,
+                positiveButtonText = R.string.app_status_internet_required_action,
+                positiveButtonCallback = {
+                    getQrCards(syncDatabase = true)
+                },
+                negativeButtonText = R.string.dialog_close,
+            )
+        })
     }
 
     private fun getQrCards(syncDatabase: Boolean) {
@@ -151,6 +172,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                             originStates = myOverviewItem.originStates,
                             credentialState = myOverviewItem.credentialState,
                             launchDate = myOverviewItem.launchDate,
+                            loading = myOverviewItem.loading,
                             onButtonClick = { greenCard, credential ->
                                 findNavControllerSafety()?.navigate(
                                     MyOverviewFragmentDirections.actionQrCode(

@@ -16,6 +16,13 @@ sealed class OriginType(val order: Int) : Parcelable {
         const val TYPE_VACCINATION = "vaccination"
         const val TYPE_RECOVERY = "recovery"
         const val TYPE_TEST = "test"
+
+        fun getAsString(originType: OriginType) =
+            when(originType) {
+                Recovery -> TYPE_RECOVERY
+                Test -> TYPE_TEST
+                Vaccination -> TYPE_VACCINATION
+            }
     }
 
     @Parcelize
