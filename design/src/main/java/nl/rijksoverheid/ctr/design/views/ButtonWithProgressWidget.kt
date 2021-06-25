@@ -24,9 +24,10 @@ class ButtonWithProgressWidget @JvmOverloads constructor(context: Context, attrs
 
     private var buttonText = ""
 
-    init {
+    private val binding: ButtonWithIndicatorBinding =
         ButtonWithIndicatorBinding.bind(View.inflate(context, R.layout.button_with_indicator, this))
 
+    init {
         context.theme.obtainStyledAttributes(
             attrs,
             R.styleable.ButtonWithIndicatorLayout,
@@ -41,37 +42,31 @@ class ButtonWithProgressWidget @JvmOverloads constructor(context: Context, attrs
     }
 
     private fun setButtonText(text: String) {
-        val binding = ButtonWithIndicatorBinding.bind(this)
         binding.button.text = text
         buttonText = text
     }
 
     fun loading() {
-        val binding = ButtonWithIndicatorBinding.bind(this)
         binding.button.isEnabled = false
         binding.button.text = ""
         binding.loading.visibility = VISIBLE
     }
 
     fun idle() {
-        val binding = ButtonWithIndicatorBinding.bind(this)
         binding.loading.visibility = GONE
         binding.button.text = buttonText
         binding.button.isEnabled = true
     }
 
     fun setEnabledButtonColor(@ColorRes color: Int) {
-        val binding = ButtonWithIndicatorBinding.bind(this)
         binding.button.setEnabledButtonColor(color)
     }
 
     fun setButtonOnClickListener(listener: OnClickListener) {
-        val binding = ButtonWithIndicatorBinding.bind(this)
         binding.button.setOnClickListener(listener)
     }
 
     fun isButtonEnabled(isEnabled: Boolean) {
-        val binding = ButtonWithIndicatorBinding.bind(this)
         binding.button.isEnabled = isEnabled
     }
 }
