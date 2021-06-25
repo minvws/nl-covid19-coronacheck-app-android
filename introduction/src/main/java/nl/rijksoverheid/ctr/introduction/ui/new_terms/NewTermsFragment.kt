@@ -39,7 +39,7 @@ class NewTermsFragment : Fragment(R.layout.fragment_new_terms) {
             }
         }
 
-        if (args.newTerms.needsConsent) {
+        if (args.introductionData.newTerms?.needsConsent == true) {
             binding.positiveButton.visibility = View.VISIBLE
             binding.positiveButton.text =
                 getString(R.string.new_terms_consent_needed_positive_button)
@@ -56,9 +56,7 @@ class NewTermsFragment : Fragment(R.layout.fragment_new_terms) {
         }
 
         binding.positiveButton.setOnClickListener {
-            introductionViewModel.saveIntroductionFinished(
-                newTerms = args.newTerms
-            )
+            introductionViewModel.saveIntroductionFinished(args.introductionData)
             requireActivity().findNavController(R.id.main_nav_host_fragment)
                 .navigate(R.id.action_main)
         }

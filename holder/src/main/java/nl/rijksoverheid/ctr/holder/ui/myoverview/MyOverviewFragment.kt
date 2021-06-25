@@ -12,7 +12,7 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
 import com.xwray.groupie.viewbinding.BindableItem
-import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMyOverviewBinding
@@ -152,7 +152,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                             credentialState = myOverviewItem.credentialState,
                             launchDate = myOverviewItem.launchDate,
                             onButtonClick = { greenCard, credential ->
-                                findNavController().navigate(
+                                findNavControllerSafety()?.navigate(
                                     MyOverviewFragmentDirections.actionQrCode(
                                         toolbarTitle = when (greenCard.greenCardEntity.type) {
                                             is GreenCardType.Domestic -> {
@@ -192,13 +192,13 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                                 is GreenCardType.Domestic -> {
                                     when (originType) {
                                         is OriginType.Test -> {
-                                            findNavController().navigate(MyOverviewFragmentDirections.actionShowQrExplanation(
+                                            findNavControllerSafety()?.navigate(MyOverviewFragmentDirections.actionShowQrExplanation(
                                                 title = getString(R.string.my_overview_green_card_not_valid_title_test),
                                                 description = getString(R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_test, cachedAppConfigUseCase.getCachedAppConfigMaxValidityHours().toString())
                                             ))
                                         }
                                         is OriginType.Vaccination -> {
-                                            findNavController().navigate(MyOverviewFragmentDirections.actionShowQrExplanation(
+                                            findNavControllerSafety()?.navigate(MyOverviewFragmentDirections.actionShowQrExplanation(
                                                 title = getString(R.string.my_overview_green_card_not_valid_title_vaccination),
                                                 description = getString(R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_vaccination)
                                             ))
@@ -211,13 +211,13 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                                 is GreenCardType.Eu -> {
                                     when (originType) {
                                         is OriginType.Test -> {
-                                            findNavController().navigate(MyOverviewFragmentDirections.actionShowQrExplanation(
+                                            findNavControllerSafety()?.navigate(MyOverviewFragmentDirections.actionShowQrExplanation(
                                                 title = getString(R.string.my_overview_green_card_not_valid_title_test),
                                                 description = getString(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_test)
                                             ))
                                         }
                                         is OriginType.Vaccination -> {
-                                            findNavController().navigate(MyOverviewFragmentDirections.actionShowQrExplanation(
+                                            findNavControllerSafety()?.navigate(MyOverviewFragmentDirections.actionShowQrExplanation(
                                                 title = getString(R.string.my_overview_green_card_not_valid_title_vaccination),
                                                 description = getString(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_vaccination)
                                             ))
@@ -238,7 +238,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                     binding.typeToggle.button.setText(myOverviewItem.buttonText)
 
                     binding.typeToggle.button.setOnClickListener {
-                        findNavController().navigate(MyOverviewFragmentDirections.actionShowTravelMode())
+                        findNavControllerSafety()?.navigate(MyOverviewFragmentDirections.actionShowTravelMode())
                     }
                 }
             }

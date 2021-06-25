@@ -67,7 +67,7 @@ class AppStatusFragment : Fragment(R.layout.fragment_app_status) {
                     openPlayStore()
                 }
             }
-            is AppStatus.InternetRequired -> {
+            is AppStatus.Error -> {
                 binding.bind(
                     R.string.app_status_internet_required_title,
                     R.string.app_status_internet_required_message,

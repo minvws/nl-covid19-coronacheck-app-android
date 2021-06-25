@@ -2,7 +2,7 @@ package nl.rijksoverheid.ctr.holder
 
 import mobilecore.Result
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
-import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
@@ -12,11 +12,14 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.EventProviderRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.TestProviderRepository
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.CommitmentMessageUseCase
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.ConfigProvidersUseCase
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.CreateCredentialUseCase
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SecretKeyUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TokenValidatorUtil
+import nl.rijksoverheid.ctr.introduction.IntroductionData
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
-import nl.rijksoverheid.ctr.introduction.ui.new_terms.models.NewTerms
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.models.*
@@ -93,7 +96,8 @@ fun fakeCachedAppConfigUseCase(
         temporarilyDisabled = false,
         requireUpdateBefore = 0
     ),
-    publicKeys: BufferedSource = "{\"cl_keys\":[]}".toResponseBody("application/json".toMediaType()).source()
+    publicKeys: BufferedSource = "{\"cl_keys\":[]}".toResponseBody("application/json".toMediaType())
+        .source()
 ): CachedAppConfigUseCase = object : CachedAppConfigUseCase {
     override fun getCachedAppConfig(): AppConfig {
         return appConfig
@@ -122,7 +126,11 @@ fun fakeIntroductionViewModel(
             return introductionStatus
         }
 
-        override fun saveIntroductionFinished(newTerms: NewTerms?) {
+        override fun saveIntroductionFinished(introductionData: IntroductionData) {
+
+        }
+
+        override fun saveNewFeaturesFinished(newFeaturesVersion: Int) {
 
         }
 
@@ -412,11 +420,22 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
 fun fakeEventProviderRepository(
     unomiVaccinationEvents: ((url: String) -> RemoteUnomi) = { RemoteUnomi("", "", false) },
     unomiTestEvents: ((url: String) -> RemoteUnomi) = { RemoteUnomi("", "", false) },
-    vaccinationEvents: ((url: String) -> SignedResponseWithModel<RemoteEventsVaccinations>) = { SignedResponseWithModel("".toByteArray(), RemoteEventsVaccinations(
-        listOf(), "", "", RemoteProtocol.Status.COMPLETE, null),) },
-    negativeTestEvents: ((url: String) -> SignedResponseWithModel<RemoteTestResult3>) = { SignedResponseWithModel("".toByteArray(), RemoteTestResult3(
-        listOf(), "", "", RemoteProtocol.Status.COMPLETE, null)) }
-) = object: EventProviderRepository {
+    vaccinationEvents: ((url: String) -> SignedResponseWithModel<RemoteEventsVaccinations>) = {
+        SignedResponseWithModel(
+            "".toByteArray(),
+            RemoteEventsVaccinations(
+                listOf(), "", "", RemoteProtocol.Status.COMPLETE, null
+            ),
+        )
+    },
+    negativeTestEvents: ((url: String) -> SignedResponseWithModel<RemoteTestResult3>) = {
+        SignedResponseWithModel(
+            "".toByteArray(), RemoteTestResult3(
+                listOf(), "", "", RemoteProtocol.Status.COMPLETE, null
+            )
+        )
+    }
+) = object : EventProviderRepository {
     override suspend fun unomiVaccinationEvents(
         url: String,
         token: String,

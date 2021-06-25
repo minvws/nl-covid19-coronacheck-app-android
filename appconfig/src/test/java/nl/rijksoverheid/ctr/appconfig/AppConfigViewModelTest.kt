@@ -33,7 +33,7 @@ class AppConfigViewModelTest {
     @get:Rule
     val rule = InstantTaskExecutorRule()
 
-    private val cacheDirPath = "/cache"
+    private val filesDirPath = "/files"
 
     private val appConfigUseCase: AppConfigUseCase = mockk(relaxed = true)
     private val appStatusUseCase: AppStatusUseCase = mockk(relaxed = true)
@@ -45,7 +45,7 @@ class AppConfigViewModelTest {
         appStatusUseCase = appStatusUseCase,
         persistConfigUseCase = persistConfigUseCase,
         appConfigStorageManager = appConfigStorageManager,
-        cacheDirPath = cacheDirPath,
+        filesDirPath = filesDirPath,
         isVerifierApp = isVerifier,
         versionCode = 0
     )
@@ -70,15 +70,15 @@ class AppConfigViewModelTest {
                 publicKeys = publicKeysContents
             )
         }
-        coEvery { appConfigStorageManager.areConfigFilesPresent() } returns true
+        coEvery { appConfigStorageManager.areConfigFilesPresentInFilesFolder() } returns true
         coEvery { appStatusUseCase.get(any(), any()) } answers { AppStatus.NoActionRequired }
-        coEvery { mobileCoreWrapper.initializeHolder(cacheDirPath) } returns null
+        coEvery { mobileCoreWrapper.initializeHolder(filesDirPath) } returns null
 
         appConfigViewModel().refresh(mobileCoreWrapper)
 
         coVerify { persistConfigUseCase.persist(appConfigContents, publicKeysContents) }
-        coVerify { mobileCoreWrapper.initializeHolder(cacheDirPath) }
-        coVerify(exactly = 0) { mobileCoreWrapper.initializeVerifier(cacheDirPath) }
+        coVerify { mobileCoreWrapper.initializeHolder(filesDirPath) }
+        coVerify(exactly = 0) { mobileCoreWrapper.initializeVerifier(filesDirPath) }
     }
 
     @Test
@@ -95,15 +95,15 @@ class AppConfigViewModelTest {
                 publicKeys = publicKeysContents
             )
         }
-        coEvery { appConfigStorageManager.areConfigFilesPresent() } returns true
+        coEvery { appConfigStorageManager.areConfigFilesPresentInFilesFolder() } returns true
         coEvery { appStatusUseCase.get(any(), any()) } answers { AppStatus.NoActionRequired }
-        coEvery { mobileCoreWrapper.initializeVerifier(cacheDirPath) } returns null
+        coEvery { mobileCoreWrapper.initializeVerifier(filesDirPath) } returns null
 
         appConfigViewModel(true).refresh(mobileCoreWrapper)
 
         coVerify { persistConfigUseCase.persist(appConfigContents, publicKeysContents) }
-        coVerify(exactly = 0) { mobileCoreWrapper.initializeHolder(cacheDirPath) }
-        coVerify { mobileCoreWrapper.initializeVerifier(cacheDirPath) }
+        coVerify(exactly = 0) { mobileCoreWrapper.initializeHolder(any()) }
+        coVerify { mobileCoreWrapper.initializeVerifier(filesDirPath) }
     }
 
     @Test
@@ -112,12 +112,12 @@ class AppConfigViewModelTest {
             ConfigResult.Error
         }
 
-        coEvery { appStatusUseCase.get(any(), any()) } answers { AppStatus.InternetRequired }
+        coEvery { appStatusUseCase.get(any(), any()) } answers { AppStatus.Error }
 
         val viewModel = appConfigViewModel()
         viewModel.refresh(mobileCoreWrapper)
 
-        Assert.assertEquals(viewModel.appStatusLiveData.value, AppStatus.InternetRequired)
+        Assert.assertEquals(viewModel.appStatusLiveData.value, AppStatus.Error)
     }
 
     @Test
@@ -136,11 +136,11 @@ class AppConfigViewModelTest {
         }
 
         coEvery { appStatusUseCase.get(any(), any()) } answers { AppStatus.NoActionRequired }
-        coEvery { appConfigStorageManager.areConfigFilesPresent() } returns false
+        coEvery { appConfigStorageManager.areConfigFilesPresentInFilesFolder() } returns false
 
         val viewModel = appConfigViewModel(true)
         viewModel.refresh(mobileCoreWrapper)
 
-        Assert.assertEquals(viewModel.appStatusLiveData.value, AppStatus.InternetRequired)
+        Assert.assertEquals(viewModel.appStatusLiveData.value, AppStatus.Error)
     }
 }

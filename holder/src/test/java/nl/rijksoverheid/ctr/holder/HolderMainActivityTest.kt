@@ -44,6 +44,7 @@ class HolderMainActivityTest : AutoCloseKoinTest() {
                 IntroductionData(
                     onboardingItems = listOf(),
                     privacyPolicyItems = listOf(),
+                    newFeatures = listOf(),
                     null
                 )
             )
@@ -71,7 +72,7 @@ class HolderMainActivityTest : AutoCloseKoinTest() {
     @Test
     fun `If app status is not NoActionRequired navigate to app status`() {
         val scenario = launchHolderMainActivity(
-            appStatus = AppStatus.InternetRequired
+            appStatus = AppStatus.Error
         )
         scenario.onActivity {
             assertEquals(
@@ -103,7 +104,7 @@ class HolderMainActivityTest : AutoCloseKoinTest() {
                 factory {
                     fakeCachedAppConfigUseCase()
                 }
-                single{
+                single {
                     val context = ApplicationProvider.getApplicationContext<Context>()
                     Room.inMemoryDatabaseBuilder(context, HolderDatabase::class.java).build()
                 }

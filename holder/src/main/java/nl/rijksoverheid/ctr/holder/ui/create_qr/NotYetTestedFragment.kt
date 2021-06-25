@@ -7,10 +7,9 @@ import android.view.ViewGroup
 import androidx.core.view.AccessibilityDelegateCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
-import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.design.ExpandedBottomSheetDialogFragment
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.databinding.DialogNoCodeExplanationBinding
 import nl.rijksoverheid.ctr.holder.databinding.DialogNotYetTestedBinding
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import org.koin.android.ext.android.inject

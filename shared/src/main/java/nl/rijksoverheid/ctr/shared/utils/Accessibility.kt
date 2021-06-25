@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.shared.utils
 
+import android.accessibilityservice.AccessibilityServiceInfo
 import android.content.Context
 import android.view.View
 import android.view.accessibility.AccessibilityEvent
@@ -59,6 +60,17 @@ object Accessibility {
 
             accessibilityManager.sendAccessibilityEvent(event)
         }
+    }
+
+    /**
+     * Checks whether any kind of screen reader is active
+     *
+     * @param context Context reference
+     */
+    fun screenReader(context: Context?): Boolean {
+        return accessibilityManager(context)?.getEnabledAccessibilityServiceList(
+            AccessibilityServiceInfo.FEEDBACK_SPOKEN
+        )?.isNotEmpty() ?: false
     }
 
     /**

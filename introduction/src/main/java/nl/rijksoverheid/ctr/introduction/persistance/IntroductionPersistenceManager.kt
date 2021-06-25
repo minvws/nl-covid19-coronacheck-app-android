@@ -16,6 +16,7 @@ class IntroductionPersistenceManager(
     companion object {
         const val INTRODUCTION_FINISHED = "INTRODUCTION_FINISHED"
         const val NEW_TERMS_SEEN = "NEW_TERMS_SEEN_[VERSION]"
+        const val NEW_FEATURES_SEEN = "NEW_FEATURES_SEEN_[VERSION]"
     }
 
     fun saveIntroductionFinished() {
@@ -27,16 +28,32 @@ class IntroductionPersistenceManager(
     }
 
     fun getNewTermsSeen(version: Int): Boolean {
+        return getNewSeen(NEW_TERMS_SEEN, version)
+    }
+
+    fun saveNewTermsSeen(version: Int) {
+        saveNewSeen(NEW_TERMS_SEEN, version)
+    }
+
+    fun getNewFeaturesSeen(version: Int): Boolean {
+        return getNewSeen(NEW_FEATURES_SEEN, version)
+    }
+
+    fun saveNewFeaturesSeen(version: Int) {
+        saveNewSeen(NEW_FEATURES_SEEN, version)
+    }
+
+    private fun getNewSeen(type: String, version: Int): Boolean {
         return sharedPreferences.getBoolean(
-            NEW_TERMS_SEEN.replace("[VERSION]", version.toString()),
+            type.replace("[VERSION]", version.toString()),
             false
         )
     }
 
-    fun saveNewTermsSeen(version: Int) {
+    private fun saveNewSeen(type: String, version: Int) {
         sharedPreferences.edit()
             .putBoolean(
-                NEW_TERMS_SEEN.replace(
+                type.replace(
                     "[VERSION]",
                     version.toString(),
                 ), true

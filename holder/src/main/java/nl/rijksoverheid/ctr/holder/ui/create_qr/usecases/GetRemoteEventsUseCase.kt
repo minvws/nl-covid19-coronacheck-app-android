@@ -95,7 +95,6 @@ class GetRemoteEventsUseCaseImpl(private val eventProviderRepository: EventProvi
         } catch (e: IOException) {
             RemoteEventsResult.Error.NetworkError
         } catch (e: Exception) {
-            Timber.v("ERROR: " + e.toString())
             // In case the event provider gives us back a 200 with json we are not expecting
             RemoteEventsResult.Error.ServerError(
                 httpCode = 200

@@ -19,6 +19,9 @@
         <item name="android:textColorSecondary">@color/secondary_text</item>
         <item name="textAppearanceBody1">@style/App.TextAppearance.MaterialComponents.Body1</item>
         <item name="textAppearanceBody2">@style/App.TextAppearance.MaterialComponents.Body2</item>
+        <item name="textAppearanceSubtitle1">
+            @style/App.TextAppearance.MaterialComponents.Subtitle1.Secondary
+        </item>
         <item name="textAppearanceHeadline5">
             @style/App.TextAppearance.MaterialComponents.Headline5.Montserrat
         </item>

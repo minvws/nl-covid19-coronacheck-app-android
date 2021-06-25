@@ -25,8 +25,8 @@
     <string name="dialog_error_title">Sorry, something went wrong</string>
     <string name="dialog_error_message">Because of a technical error.</string>
     <string name="dialog_error_message_with_error_code">Because of a technical error (%1$s).</string>
-    <string name="digid_login_failed_title">Couldn\'t log in with DigiD</string>
-    <string name="digid_login_failed_description">You can log in again later to retrieve your %1$s.</string>
+    <string name="digid_login_failed_title">Retrieval is cancelled</string>
+    <string name="digid_login_failed_description">It might be too busy. Please try again later.</string>
     <string name="ok">OK</string>
     <string name="settings">Settings</string>
     <string name="about_this_app">About this app</string>
@@ -272,7 +272,6 @@
     <string name="too_busy_title">Sorry, it is really busy</string>
     <string name="too_busy_description">There are currently many visitors on the affiliated partner\'s website. We can\'t fetch your details now. Please try again later.</string>
     <string name="no_digid_url">https://www.digid.nl/en/apply-or-activate-digid</string>
-    <string name="digid_login_failed">Couldn\'t log in with DigiD</string>
     <string name="event_provider_error_title">Sorry, something went wrong</string>
     <string name="event_provider_error_description">Something went wrong with the server of your test or injection location. Please try again later.</string>
     <string name="coronacheck_error_title">Sorry, something went wrong</string>
@@ -293,4 +292,7 @@
     <string name="positive_test_not_valid_description">Ben je langer dan 180 dagen geleden getest? Dan is je testuitslag niet meer geldig, en kan je geen herstelverklaring maken.</string>
     <string name="qr_code_type_recovery_title">Herstelbewijs</string>
     <string name="qr_code_type_recovery_description">Uit de test blijkt dat ik corona heb gehad</string>
+    <string name="new_in_app_subtitle">Nieuw in de app</string>
+    <string name="new_in_app_screen_1_title">Bewijs van herstel</string>
+    <string name="new_in_app_screen_1_description">Ben je eerder besmet geraakt met corona? En ben je inmiddels hersteld van het virus? Dan kun je een persoonlijke QR-code maken. Met dit bewijs krijg je toegang tot bepaalde locaties en activiteiten. Ook kun je er internationaal mee reizen.</string>
 </resources>

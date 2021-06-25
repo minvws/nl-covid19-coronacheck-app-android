@@ -38,12 +38,8 @@ fun apiModule(
 ) = module(override = true) {
 
     single {
-        val context = get<Context>(Context::class)
-        val cache = Cache(File(context.cacheDir, "http"), 10 * 1024 * 1024)
-
         OkHttpClient.Builder()
             .addNetworkInterceptor(CacheOverrideInterceptor())
-            .cache(cache)
             .connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
             .followRedirects(false)
