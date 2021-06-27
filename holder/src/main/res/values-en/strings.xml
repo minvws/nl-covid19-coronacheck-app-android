@@ -213,7 +213,7 @@
     <string name="travel_fragment_footer">The Dutch QR code only contains your initials, your birth month, and your day of birth.</string>
     <string name="travel_fragment_footer_eu">The international QR code contains the following details: your name, date of birth, and information about the vaccine.</string>
     <string name="dialog_negative_test_result_something_wrong_title">Something is wrong</string>
-    <string name="dialog_negative_test_result_something_wrong_description">Is your name or date of birth wrong? Look <a href="https://coronacheck.nl/en/guidepost">here</a> for more information.</string>
+    <string name="dialog_negative_test_result_something_wrong_description"><![CDATA[Is your name or date of birth wrong? Look <a href="https://coronacheck.nl/en/guidepost">here</a> for more information.]]></string>
     <string name="validity_type_european_title">International</string>
     <string name="validity_type_dutch_title">the Netherlands</string>
     <string name="qr_explanation_title_domestic">About my Dutch QR code</string>
