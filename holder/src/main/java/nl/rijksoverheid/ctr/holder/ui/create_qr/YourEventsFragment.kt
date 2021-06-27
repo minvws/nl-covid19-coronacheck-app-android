@@ -34,7 +34,6 @@ import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.lang.Exception
 import java.time.Instant
 import java.time.LocalDate
 import java.time.OffsetDateTime
@@ -80,76 +79,53 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
             binding.bottom.setButtonEnabled(!it)
         })
 
-        yourEventsViewModel.yourEventsResult.observe(viewLifecycleOwner, EventObserver { databaseSyncerResult ->
-            when (databaseSyncerResult) {
-                is DatabaseSyncerResult.Success -> {
-                    // We have a origin in the database that we expect, so success
-                    findNavController().navigate(
-                        YourEventsFragmentDirections.actionMyOverview()
-                    )
-                }
-                is DatabaseSyncerResult.MissingOrigin -> {
-                    when (args.type) {
-                        is YourEventsFragmentType.TestResult2, is YourEventsFragmentType.RemoteProtocol3Type.NegativeTests -> {
-                            findNavController().navigate(
-                                YourEventsFragmentDirections.actionCouldNotCreateQr(
-                                    toolbarTitle = args.toolbarTitle,
-                                    title = getString(R.string.rule_engine_no_origin_title),
-                                    description = getString(R.string.rule_engine_no_test_origin_description)
-                                )
+        yourEventsViewModel.yourEventsResult.observe(
+            viewLifecycleOwner,
+            EventObserver { databaseSyncerResult ->
+                when (databaseSyncerResult) {
+                    is DatabaseSyncerResult.Success -> {
+                        // We have a origin in the database that we expect, so success
+                        findNavController().navigate(
+                            YourEventsFragmentDirections.actionMyOverview()
+                        )
+                    }
+                    is DatabaseSyncerResult.MissingOrigin -> {
+                        findNavController().navigate(
+                            YourEventsFragmentDirections.actionCouldNotCreateQr(
+                                toolbarTitle = args.toolbarTitle,
+                                title = getString(R.string.rule_engine_no_origin_title),
+                                description = getString(R.string.rule_engine_no_test_origin_description)
                             )
-                        }
-                        is YourEventsFragmentType.RemoteProtocol3Type.Vaccinations -> {
-                            findNavController().navigate(
-                                YourEventsFragmentDirections.actionCouldNotCreateQr(
-                                    toolbarTitle = args.toolbarTitle,
-                                    title = getString(R.string.rule_engine_no_origin_title),
-                                    description = getString(R.string.rule_engine_no_vaccination_origin_description)
-                                )
-                            )
-                        }
-                        is YourEventsFragmentType.RemoteProtocol3Type.PositiveTestsAndRecoveries -> {
-                            findNavController().navigate(
-                                YourEventsFragmentDirections.actionCouldNotCreateQr(
-                                    toolbarTitle = args.toolbarTitle,
-                                    title = getString(R.string.rule_engine_no_origin_title),
-                                    description = getString(R.string.rule_engine_no_positive_test_origin_description)
-                                )
-                            )
-                        }
+                        )
+                    }
+                    is DatabaseSyncerResult.NetworkError -> {
+                        dialogUtil.presentDialog(
+                            context = requireContext(),
+                            title = R.string.dialog_no_internet_connection_title,
+                            message = getString(R.string.dialog_no_internet_connection_description),
+                            positiveButtonText = R.string.dialog_close,
+                            positiveButtonCallback = {}
+                        )
+                    }
+                    is DatabaseSyncerResult.ServerError -> {
+                        dialogUtil.presentDialog(
+                            context = requireContext(),
+                            title = R.string.dialog_error_title,
+                            message = getString(
+                                R.string.dialog_error_message_with_error_code,
+                                databaseSyncerResult.httpCode.toString()
+                            ),
+                            positiveButtonText = R.string.dialog_close,
+                            positiveButtonCallback = {}
+                        )
                     }
                 }
-                is DatabaseSyncerResult.NetworkError -> {
-                    dialogUtil.presentDialog(
-                        context = requireContext(),
-                        title = R.string.dialog_no_internet_connection_title,
-                        message = getString(R.string.dialog_no_internet_connection_description),
-                        positiveButtonText = R.string.dialog_close,
-                        positiveButtonCallback = {}
-                    )
-                }
-                is DatabaseSyncerResult.ServerError -> {
-                    dialogUtil.presentDialog(
-                        context = requireContext(),
-                        title = R.string.dialog_error_title,
-                        message = getString(
-                            R.string.dialog_error_message_with_error_code,
-                            databaseSyncerResult.httpCode.toString()
-                        ),
-                        positiveButtonText = R.string.dialog_close,
-                        positiveButtonCallback = {}
-                    )
-                }
-            }
-        })
+            })
     }
 
     private fun presentHeader(binding: FragmentYourEventsBinding) {
         when (args.type) {
-            is YourEventsFragmentType.TestResult2 -> {
-                binding.title.setText(R.string.your_negative_test_results_title)
-                binding.description.setHtmlText(getString(R.string.your_negative_test_results_description))
-            }
+            is YourEventsFragmentType.TestResult2,
             is YourEventsFragmentType.RemoteProtocol3Type.NegativeTests -> {
                 binding.title.setText(R.string.your_negative_test_results_title)
                 binding.description.setHtmlText(getString(R.string.your_negative_test_results_description))
@@ -183,28 +159,32 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                                 presentVaccinationEvent(
                                     binding = binding,
                                     providerIdentifier = remoteProtocol3.providerIdentifier,
-                                    holder = remoteProtocol3.holder,
+                                    fullName = getFullName(remoteProtocol3.holder),
+                                    birthDate = getBirtDate(remoteProtocol3.holder),
                                     event = remoteEvent
                                 )
                             }
                             is RemoteEventNegativeTest -> {
                                 presentNegativeTestEvent(
                                     binding = binding,
-                                    holder = remoteProtocol3.holder,
+                                    fullName = getFullName(remoteProtocol3.holder),
+                                    birthDate = getBirtDate(remoteProtocol3.holder),
                                     event = remoteEvent
                                 )
                             }
                             is RemoteEventPositiveTest -> {
                                 presentPositiveTestEvent(
                                     binding = binding,
-                                    holder = remoteProtocol3.holder,
+                                    fullName = getFullName(remoteProtocol3.holder),
+                                    birthDate = getBirtDate(remoteProtocol3.holder),
                                     event = remoteEvent
                                 )
                             }
                             is RemoteEventRecovery -> {
                                 presentRecoveryEvent(
                                     binding = binding,
-                                    holder = remoteProtocol3.holder,
+                                    fullName = getFullName(remoteProtocol3.holder),
+                                    birthDate = getBirtDate(remoteProtocol3.holder),
                                     event = remoteEvent
                                 )
                             }
@@ -215,7 +195,10 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
         }
     }
 
-    private fun presentTestResult2(binding: FragmentYourEventsBinding, remoteProtocol2: RemoteTestResult2) {
+    private fun presentTestResult2(
+        binding: FragmentYourEventsBinding,
+        remoteProtocol2: RemoteTestResult2
+    ) {
         remoteProtocol2.result?.let { result ->
             val personalDetails = personalDetailsUtil.getPersonalDetails(
                 firstNameInitial = result.holder.firstNameInitial,
@@ -236,8 +219,8 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                 testDate = testDate
             )
 
-            val eventWidget = YourEventWidget(requireContext()).also {
-                it.setContent(
+            val eventWidget = YourEventWidget(requireContext()).apply {
+                setContent(
                     title = getString(R.string.your_negative_test_results_row_title),
                     subtitle = getString(
                         R.string.your_negative_test_results_row_subtitle,
@@ -261,21 +244,13 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
         }
     }
 
-    private fun presentVaccinationEvent(binding: FragmentYourEventsBinding, providerIdentifier: String, holder: RemoteProtocol3.Holder?, event: RemoteEventVaccination) {
-        val fullName = getFullName(
-            infix = holder?.infix,
-            firstName = holder?.firstName,
-            lastName = holder?.lastName
-        )
-
-        val birthDate = holder?.birthDate?.let { birthDate ->
-            try {
-                LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).formatDayMonthYear()
-            } catch (e: Exception) {
-                ""
-            }
-        } ?: ""
-
+    private fun presentVaccinationEvent(
+        binding: FragmentYourEventsBinding,
+        providerIdentifier: String,
+        fullName: String,
+        birthDate: String,
+        event: RemoteEventVaccination
+    ) {
         val infoScreen = infoScreenUtil.getForVaccination(
             event = event,
             fullName = fullName,
@@ -307,24 +282,13 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
         binding.eventsGroup.addView(eventWidget)
     }
 
-    private fun presentNegativeTestEvent(binding: FragmentYourEventsBinding, holder: RemoteProtocol3.Holder?, event: RemoteEventNegativeTest) {
-        val fullName = getFullName(
-            infix = holder?.infix,
-            firstName = holder?.firstName,
-            lastName = holder?.lastName
-        )
-
-        val testDate = event.negativeTest?.sampleDate?.let { sampleDate ->
-            sampleDate.formatDateTime(requireContext())
-        } ?: ""
-
-        val birthDate = holder?.birthDate?.let { birthDate ->
-            try {
-                LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).formatDayMonthYear()
-            } catch (e: Exception) {
-                ""
-            }
-        } ?: ""
+    private fun presentNegativeTestEvent(
+        binding: FragmentYourEventsBinding,
+        fullName: String,
+        birthDate: String,
+        event: RemoteEventNegativeTest
+    ) {
+        val testDate = event.negativeTest?.sampleDate?.formatDateTime(requireContext()) ?: ""
 
         val infoScreen = infoScreenUtil.getForNegativeTest(
             event = event,
@@ -356,24 +320,13 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
         binding.eventsGroup.addView(eventWidget)
     }
 
-    private fun presentPositiveTestEvent(binding: FragmentYourEventsBinding, holder: RemoteProtocol3.Holder?, event: RemoteEventPositiveTest) {
-        val fullName = getFullName(
-            infix = holder?.infix,
-            firstName = holder?.firstName,
-            lastName = holder?.lastName
-        )
-
-        val testDate = event.positiveTest?.sampleDate?.let { sampleDate ->
-            sampleDate.formatDateTime(requireContext())
-        } ?: ""
-
-        val birthDate = holder?.birthDate?.let { birthDate ->
-            try {
-                LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).formatDayMonthYear()
-            } catch (e: Exception) {
-                ""
-            }
-        } ?: ""
+    private fun presentPositiveTestEvent(
+        binding: FragmentYourEventsBinding,
+        fullName: String,
+        birthDate: String,
+        event: RemoteEventPositiveTest
+    ) {
+        val testDate = event.positiveTest?.sampleDate?.formatDateTime(requireContext()) ?: ""
 
         val infoScreen = infoScreenUtil.getForPositiveTest(
             event = event,
@@ -405,24 +358,13 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
         binding.eventsGroup.addView(eventWidget)
     }
 
-    private fun presentRecoveryEvent(binding: FragmentYourEventsBinding, holder: RemoteProtocol3.Holder?, event: RemoteEventRecovery) {
-        val fullName = getFullName(
-            infix = holder?.infix,
-            firstName = holder?.firstName,
-            lastName = holder?.lastName
-        )
-
-        val testDate = event.recovery?.sampleDate?.let { sampleDate ->
-            sampleDate.formatDayMonthYear()
-        } ?: ""
-
-        val birthDate = holder?.birthDate?.let { birthDate ->
-            try {
-                LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).formatDayMonthYear()
-            } catch (e: Exception) {
-                ""
-            }
-        } ?: ""
+    private fun presentRecoveryEvent(
+        binding: FragmentYourEventsBinding,
+        fullName: String,
+        birthDate: String,
+        event: RemoteEventRecovery
+    ) {
+        val testDate = event.recovery?.sampleDate?.formatDayMonthYear() ?: ""
 
         val infoScreen = infoScreenUtil.getForRecovery(
             event = event,
@@ -477,21 +419,24 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                     yourEventsViewModel.saveRemoteProtocol3Events(
                         remoteProtocols3 = type.remoteEvents,
                         originType = originType,
-                        eventType = eventType)
+                        eventType = eventType
+                    )
                 }
             }
         }
     }
 
     private fun presentFooter(binding: FragmentYourEventsBinding) {
-        if (args.type is YourEventsFragmentType.RemoteProtocol3Type.Vaccinations) {
-            binding.somethingWrongButton.setOnClickListener {
-                findNavController().navigate(YourEventsFragmentDirections.actionShowSomethingWrong(description = getString(R.string.dialog_vaccination_something_wrong_description)))
-            }
-        } else {
-            binding.somethingWrongButton.setOnClickListener {
-                findNavController().navigate(YourEventsFragmentDirections.actionShowSomethingWrong(description = getString(R.string.dialog_negative_test_result_something_wrong_description)))
-            }
+        binding.somethingWrongButton.setOnClickListener {
+            findNavController().navigate(
+                YourEventsFragmentDirections.actionShowSomethingWrong(
+                    description = if (args.type is YourEventsFragmentType.RemoteProtocol3Type.Vaccinations) {
+                        getString(R.string.dialog_vaccination_something_wrong_description)
+                    } else {
+                        getString(R.string.dialog_negative_test_result_something_wrong_description)
+                    }
+                )
+            )
         }
     }
 
@@ -528,7 +473,21 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
         })
     }
 
-    private fun getFullName(infix: String?, firstName: String?, lastName: String?): String {
-        return if (infix.isNullOrEmpty()) "${lastName}, $firstName" else "$infix ${lastName}, $firstName"
-    }
+    private fun getFullName(holder: RemoteProtocol3.Holder?): String = holder?.let {
+        return if (it.infix.isNullOrEmpty()) {
+            "${it.lastName}, ${it.firstName}"
+        } else {
+            "${it.infix} ${it.lastName}, ${it.firstName}"
+        }
+    } ?: ""
+
+    private fun getBirtDate(holder: RemoteProtocol3.Holder?): String =
+        holder?.birthDate?.let { birthDate ->
+            try {
+                LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).formatDayMonthYear()
+            } catch (e: Exception) {
+                ""
+            }
+        } ?: ""
 }
+
