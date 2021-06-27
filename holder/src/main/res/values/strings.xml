@@ -278,6 +278,6 @@
     <string name="coronacheck_error_description">Neem contact op met onze helpdesk en geef de foutcode (%1$s) door. Of probeer het later opnieuw.</string>
     <string name="missing_events_title">Gegevens mogelijk niet compleet</string>
     <string name="missing_events_description">Door drukte of een storing bij een van de partijen kunnen er gegevens missen. Probeer het eventueel later nog een keer.</string>
-    <string name="dialog_vaccination_something_wrong_description"><![CDATA[Kloppen je naam en/of geboortedatum niet? Of staat er onjuiste informatie over je vaccinatie? Kijk hier voor meer informatie.]]></string>
+    <string name="dialog_vaccination_something_wrong_description"><![CDATA[Kloppen je naam en/of geboortedatum niet? Of staat er onjuiste informatie over je vaccinatie? Kijk <a href="https://coronacheck.nl/wegwijzer">hier</a> voor meer informatie.]]></string>
     <string name="commercial_test_unique_code_hint_screenreader">Vul hier je ophaalcode in</string>
 </resources>
