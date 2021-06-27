@@ -9,8 +9,8 @@ import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsVaccinations
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsNegativeTests
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult3
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SaveEventsUseCase
 import nl.rijksoverheid.ctr.shared.livedata.Event
 
@@ -25,9 +25,9 @@ abstract class YourEventsViewModel : ViewModel() {
     val loading: LiveData<Event<Boolean>> = MutableLiveData()
     val yourEventsResult: LiveData<Event<DatabaseSyncerResult>> = MutableLiveData()
 
-    abstract fun saveNegativeTest2(remoteTestResult: RemoteTestResult, rawResponse: ByteArray)
+    abstract fun saveNegativeTest2(remoteTestResult: RemoteTestResult2, rawResponse: ByteArray)
     abstract fun saveVaccinations(remoteEvents: Map<RemoteEventsVaccinations, ByteArray>)
-    abstract fun saveNegativeTests3(remoteEvents: Map<RemoteEventsNegativeTests, ByteArray>)
+    abstract fun saveNegativeTests3(remoteEvents: Map<RemoteTestResult3, ByteArray>)
 }
 
 class YourEventsViewModelImpl(
@@ -35,7 +35,7 @@ class YourEventsViewModelImpl(
     private val holderDatabaseSyncer: HolderDatabaseSyncer
 ) : YourEventsViewModel() {
 
-    override fun saveNegativeTest2(negativeTest2: RemoteTestResult, rawResponse: ByteArray) {
+    override fun saveNegativeTest2(negativeTest2: RemoteTestResult2, rawResponse: ByteArray) {
         (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {
             try {
@@ -50,13 +50,17 @@ class YourEventsViewModelImpl(
                 (yourEventsResult as MutableLiveData).value = Event(
                     databaseSyncerResult
                 )
+            } catch (e: Exception) {
+                (yourEventsResult as MutableLiveData).value = Event(
+                    DatabaseSyncerResult.ServerError(999)
+                )
             } finally {
                 loading.value = Event(false)
             }
         }
     }
 
-    override fun saveNegativeTests3(remoteEvents: Map<RemoteEventsNegativeTests, ByteArray>) {
+    override fun saveNegativeTests3(remoteEvents: Map<RemoteTestResult3, ByteArray>) {
         (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {
             try {
@@ -70,6 +74,10 @@ class YourEventsViewModelImpl(
 
                 (yourEventsResult as MutableLiveData).value = Event(
                     databaseSyncerResult
+                )
+            } catch(e: Exception) {
+                (yourEventsResult as MutableLiveData).value = Event(
+                    DatabaseSyncerResult.ServerError(999)
                 )
             } finally {
                 loading.value = Event(false)
@@ -91,6 +99,10 @@ class YourEventsViewModelImpl(
 
                 (yourEventsResult as MutableLiveData).value = Event(
                     databaseSyncerResult
+                )
+            } catch (e: Exception) {
+                (yourEventsResult as MutableLiveData).value = Event(
+                    DatabaseSyncerResult.ServerError(999)
                 )
             } finally {
                 loading.value = Event(false)

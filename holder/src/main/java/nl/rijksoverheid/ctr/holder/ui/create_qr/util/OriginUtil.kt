@@ -40,7 +40,7 @@ class OriginUtilImpl(private val clock: Clock): OriginUtil {
     }
 
     override fun presentSubtitle(greenCardType: GreenCardType, originState: OriginState): Boolean {
-        return (greenCardType == GreenCardType.Domestic && ChronoUnit.YEARS.between(OffsetDateTime.now(clock), originState.origin.validFrom) < PRESENT_SUBTITLE_WHEN_LESS_THEN_YEARS) || greenCardType == GreenCardType.Eu
+        return (greenCardType == GreenCardType.Domestic && ChronoUnit.YEARS.between(OffsetDateTime.now(clock), originState.origin.expirationTime) < PRESENT_SUBTITLE_WHEN_LESS_THEN_YEARS) || greenCardType == GreenCardType.Eu
     }
 }
 

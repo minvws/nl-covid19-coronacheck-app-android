@@ -75,7 +75,7 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
             )
 
             getCreateQrCardItem(
-                hasGreenCards = items.any { it is GreenCardItem },
+                greenCards = allGreenCards,
                 selectedType = selectedType,
             )?.let {
                 items.add(it)
@@ -137,7 +137,7 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
                 // Check the states of our origins
                 val originStates = originUtil.getOriginState(
                     origins = greenCard.origins
-                )
+                ).sortedBy { it.origin.type.order }
 
                 // Check if we have any valid origins
                 val hasValidOriginStates = originStates.any { it is OriginState.Valid }
@@ -168,8 +168,8 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
         // If we have valid origins that exists in the other selected type but not in the current one, we show a banner
         val allOriginsForSelectedType = greenCardsForSelectedType.map { it.origins }.flatten()
         val allOriginsForUnselectedType = greenCardsForUnselectedType.map { it.origins }.flatten()
-        val allValidOriginsForSelectedType = originUtil.getOriginState(allOriginsForSelectedType).filterIsInstance<OriginState.Valid>().map { it.origin }
-        val allValidOriginsForUnselectedType = originUtil.getOriginState(allOriginsForUnselectedType).filterIsInstance<OriginState.Valid>().map { it.origin }
+        val allValidOriginsForSelectedType = originUtil.getOriginState(allOriginsForSelectedType).filter { it is OriginState.Valid || it is OriginState.Future }.map { it.origin }
+        val allValidOriginsForUnselectedType = originUtil.getOriginState(allOriginsForUnselectedType).filter { it is OriginState.Valid || it is OriginState.Future }.map { it.origin }
 
         allValidOriginsForUnselectedType.forEach { originForUnselectedType ->
             if (!allValidOriginsForSelectedType.map { it.type }.contains(originForUnselectedType.type)) {
@@ -182,14 +182,29 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
             }
         }
 
+        // Always order by origin type
+        items.sortBy {
+            when (it) {
+                is GreenCardItem -> {
+                    it.originStates.first().origin.type.order
+                }
+                is OriginInfoItem -> {
+                    it.originType.order
+                }
+                else -> {
+                    0
+                }
+            }
+        }
+
         return items
     }
 
     private fun getCreateQrCardItem(
-        hasGreenCards: Boolean,
+        greenCards: List<GreenCard>,
         selectedType: GreenCardType
     ): MyOverviewItem? {
-        return if (hasGreenCards) {
+        return if (greenCards.isNotEmpty()) {
             null
         } else {
             // Only return create qr card if there are not green cards on the screen and we have domestic type selected

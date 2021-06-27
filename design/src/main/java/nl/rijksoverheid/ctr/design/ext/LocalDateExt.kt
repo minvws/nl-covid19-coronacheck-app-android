@@ -14,28 +14,14 @@ import java.util.*
  *
  */
 // Change to Locale.getDefault() to support multiple languages
-private val locale = Locale("nl")
-
 fun LocalDate.formatDayMonthYear(): String =
     DateTimeFormatter.ofPattern(
         DateFormat.getBestDateTimePattern(
-            locale,
+            Locale.getDefault(),
             "d MMMM yyyy"
         )
-    ).withLocale(locale).withZone(ZoneId.of("CET")).format(this)
-
-fun LocalDate.formatDayMonth(): String =
-    DateTimeFormatter.ofPattern(
-        DateFormat.getBestDateTimePattern(
-            locale,
-            "d MMMM"
-        )
-    ).withLocale(locale).withZone(ZoneId.of("CET")).format(this)
+    ).withLocale(Locale.getDefault()).withZone(ZoneId.of("CET")).format(this)
 
 fun LocalDate.formatMonth(): String =
-    DateTimeFormatter.ofPattern(
-        DateFormat.getBestDateTimePattern(
-            locale,
-            "MMMM"
-        )
-    ).withLocale(locale).withZone(ZoneId.of("CET")).format(this)
+    DateTimeFormatter.ofPattern("MMMM")
+        .withLocale(Locale.getDefault()).withZone(ZoneId.of("CET")).format(this)

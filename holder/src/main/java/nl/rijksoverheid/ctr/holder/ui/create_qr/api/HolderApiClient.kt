@@ -19,10 +19,6 @@ import retrofit2.http.POST
  *
  */
 interface HolderApiClient {
-    @GET("holder/nonce")
-    @SignedRequest
-    suspend fun getNonce(): RemoteNonce
-
     @GET("holder/prepare_issue")
     @SignedRequest
     suspend fun getPrepareIssue(): RemotePrepareIssue

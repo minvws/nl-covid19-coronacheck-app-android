@@ -107,7 +107,7 @@ fun fakeVerifiedQr(
         isSpecimen = isSpecimen,
         isNLDCC = "1",
         credentialVersion = "1",
-        stripType = "0",
+        isPaperProof = "0",
         validForHours = "24",
         validFrom = "1622633766",
     )
@@ -127,7 +127,7 @@ fun fakeVerifyQrUseCase(
                 isSpecimen = isSpecimen,
                 isNLDCC = isNLDCC,
                 credentialVersion = "1",
-                stripType = "0",
+                isPaperProof = "0",
                 validForHours = "24",
                 validFrom = "1622633766",
             )
@@ -164,9 +164,6 @@ fun fakeCachedAppConfigUseCase(
     ),
     publicKeys: BufferedSource = "{\"cl_keys\":[]}".toResponseBody("application/json".toMediaType()).source()
 ): CachedAppConfigUseCase = object : CachedAppConfigUseCase {
-    override fun persistAppConfig(appConfig: AppConfig) {
-
-    }
 
     override fun getCachedAppConfig(): AppConfig {
         return appConfig
@@ -222,7 +219,7 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
             return JSONObject()
         }
 
-        override fun initializeVerifier(configFilesPath: String) = Unit
+        override fun initializeVerifier(configFilesPath: String) = ""
 
         override fun verify(credential: ByteArray): Result {
             TODO("Not yet implemented")

@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
@@ -34,45 +35,69 @@ class GetVaccinationFragment : DigiDFragment(R.layout.fragment_get_vaccination) 
         val binding = FragmentGetVaccinationBinding.bind(view)
 
         digidViewModel.loading.observe(viewLifecycleOwner, EventObserver {
+            binding.button.isEnabled = !it
             (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
         })
 
         getVaccinationViewModel.loading.observe(viewLifecycleOwner, EventObserver {
+            binding.button.isEnabled = !it
             (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
         })
 
         getVaccinationViewModel.eventsResult.observe(viewLifecycleOwner, EventObserver {
             when (it) {
                 is EventsResult.Success<RemoteEventsVaccinations> -> {
-                    findNavController().navigate(
-                        GetVaccinationFragmentDirections.actionYourEvents(
-                            type = YourEventsFragmentType.Vaccination(
-                                remoteEvents = it.signedModels.map { signedModel -> signedModel.model to signedModel.rawResponse }
-                                    .toMap()
-                            ),
-                            toolbarTitle = getString(R.string.your_vaccination_result_toolbar_title)
+                    if (it.missingEvents) {
+                        dialogUtil.presentDialog(
+                            context = requireContext(),
+                            title = R.string.missing_events_title,
+                            message = getString(R.string.missing_events_description),
+                            positiveButtonText = R.string.ok,
+                            positiveButtonCallback = {},
+                            onDismissCallback = {
+                                findNavController().navigate(
+                                    GetVaccinationFragmentDirections.actionYourEvents(
+                                        type = YourEventsFragmentType.Vaccination(
+                                            remoteEvents = it.signedModels.map { signedModel -> signedModel.model to signedModel.rawResponse }
+                                                .toMap()
+                                        ),
+                                        toolbarTitle = getString(R.string.your_vaccination_result_toolbar_title)
+                                    )
+                                )
+                            }
                         )
-                    )
+                    } else {
+                        findNavController().navigate(
+                            GetVaccinationFragmentDirections.actionYourEvents(
+                                type = YourEventsFragmentType.Vaccination(
+                                    remoteEvents = it.signedModels.map { signedModel -> signedModel.model to signedModel.rawResponse }
+                                        .toMap()
+                                ),
+                                toolbarTitle = getString(R.string.your_vaccination_result_toolbar_title)
+                            )
+                        )
+                    }
                 }
                 is EventsResult.HasNoEvents -> {
-                    findNavController().navigate(
-                        GetVaccinationFragmentDirections.actionCouldNotCreateQr(
-                            toolbarTitle = getString(R.string.your_vaccination_result_toolbar_title),
-                            title = getString(R.string.no_vaccinations_title),
-                            description = getString(R.string.no_vaccinations_description)
+                    if (it.missingEvents) {
+                        findNavController().navigate(
+                            GetVaccinationFragmentDirections.actionCouldNotCreateQr(
+                                toolbarTitle = getString(R.string.your_vaccination_result_toolbar_title),
+                                title = getString(R.string.missing_events_title),
+                                description = getString(R.string.missing_events_description)
+                            )
                         )
-                    )
-                }
-                is EventsResult.TooBusy -> {
-                    findNavController().navigate(
-                        GetVaccinationFragmentDirections.actionCouldNotCreateQr(
-                            toolbarTitle = getString(R.string.your_vaccination_result_toolbar_title),
-                            title = getString(R.string.too_busy_title),
-                            description = getString(R.string.too_busy_description)
+                    } else {
+                        findNavController().navigate(
+                            GetVaccinationFragmentDirections.actionCouldNotCreateQr(
+                                toolbarTitle = getString(R.string.your_vaccination_result_toolbar_title),
+                                title = getString(R.string.no_vaccinations_title),
+                                description = getString(R.string.no_vaccinations_description)
+                            )
                         )
-                    )
+                    }
                 }
-                is EventsResult.NetworkError -> {
+                is EventsResult.Error.NetworkError -> {
                     dialogUtil.presentDialog(
                         context = requireContext(),
                         title = R.string.dialog_no_internet_connection_title,
@@ -84,19 +109,22 @@ class GetVaccinationFragment : DigiDFragment(R.layout.fragment_get_vaccination) 
                         negativeButtonText = R.string.dialog_close
                     )
                 }
-                is EventsResult.ServerError -> {
-                    dialogUtil.presentDialog(
-                        context = requireContext(),
-                        title = R.string.dialog_error_title,
-                        message = getString(
-                            R.string.dialog_error_message_with_error_code,
-                            it.httpCode.toString()
-                        ),
-                        positiveButtonText = R.string.dialog_retry,
-                        positiveButtonCallback = {
-                            loginWithDigiD()
-                        },
-                        negativeButtonText = R.string.dialog_close
+                is EventsResult.Error.EventProviderError.ServerError -> {
+                    findNavController().navigate(
+                        GetVaccinationFragmentDirections.actionCouldNotCreateQr(
+                            toolbarTitle = getString(R.string.your_vaccination_result_toolbar_title),
+                            title = getString(R.string.event_provider_error_title),
+                            description = getString(R.string.event_provider_error_description)
+                        )
+                    )
+                }
+                is EventsResult.Error.CoronaCheckError.ServerError -> {
+                    findNavController().navigate(
+                        GetVaccinationFragmentDirections.actionCouldNotCreateQr(
+                            toolbarTitle = getString(R.string.your_vaccination_result_toolbar_title),
+                            title = getString(R.string.coronacheck_error_title),
+                            description = getString(R.string.coronacheck_error_description, it.httpCode.toString())
+                        )
                     )
                 }
             }
@@ -110,13 +138,10 @@ class GetVaccinationFragment : DigiDFragment(R.layout.fragment_get_vaccination) 
                 is DigidResult.Failed -> {
                     dialogUtil.presentDialog(
                         context = requireContext(),
-                        title = R.string.dialog_error_title,
-                        message = it.error ?: getString(R.string.dialog_error_message),
-                        positiveButtonText = R.string.dialog_retry,
-                        positiveButtonCallback = {
-                            loginWithDigiD()
-                        },
-                        negativeButtonText = R.string.dialog_close
+                        title = R.string.digid_login_failed_title,
+                        message = getString(R.string.digid_login_failed_description),
+                        positiveButtonText = R.string.dialog_close,
+                        positiveButtonCallback = {}
                     )
                 }
             }
@@ -129,5 +154,10 @@ class GetVaccinationFragment : DigiDFragment(R.layout.fragment_get_vaccination) 
         binding.noDigidButton.setOnClickListener {
             getString(R.string.no_digid_url).launchUrl(requireContext())
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        (parentFragment?.parentFragment as HolderMainFragment).presentLoading(false)
     }
 }

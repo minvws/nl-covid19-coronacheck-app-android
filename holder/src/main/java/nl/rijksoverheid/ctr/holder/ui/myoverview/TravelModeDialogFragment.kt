@@ -54,12 +54,14 @@ class TravelModeDialogFragment : ExpandedBottomSheetDialogFragment() {
             myOverviewViewModel.refreshOverviewItems(GreenCardType.Domestic)
             binding.buttonDomestic.setToggled(true)
             binding.buttonForeign.setToggled(false)
+            setFooter(binding, GreenCardType.Domestic)
         }
 
         binding.buttonForeign.setOnClickListener {
             myOverviewViewModel.refreshOverviewItems(GreenCardType.Eu)
             binding.buttonDomestic.setToggled(false)
             binding.buttonForeign.setToggled(true)
+            setFooter(binding, GreenCardType.Eu)
         }
 
         ViewCompat.setAccessibilityDelegate(binding.close, object : AccessibilityDelegateCompat() {
@@ -72,13 +74,24 @@ class TravelModeDialogFragment : ExpandedBottomSheetDialogFragment() {
             }
         })
 
-
+        setFooter(binding, myOverviewViewModel.getSelectedType())
         when (myOverviewViewModel.getSelectedType()) {
             is GreenCardType.Domestic -> {
                 binding.buttonDomestic.setToggled(true)
             }
             is GreenCardType.Eu -> {
                 binding.buttonForeign.setToggled(true)
+            }
+        }
+    }
+
+    private fun setFooter(binding: FragmentTravelModeBinding, greenCardType: GreenCardType) {
+        when (greenCardType) {
+            is GreenCardType.Domestic -> {
+                binding.footer.setText(R.string.travel_fragment_footer)
+            }
+            is GreenCardType.Eu -> {
+                binding.footer.setText(R.string.travel_fragment_footer_eu)
             }
         }
     }

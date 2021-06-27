@@ -8,9 +8,9 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:contentDescription="@string/accessibility_logo_label_ministry"
         android:src="@drawable/illustration_logo_ministerie"
         app:layout_constraintEnd_toEndOf="parent"
-        android:contentDescription="@string/accessibility_logo_label_ministry"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -28,11 +28,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            app:navigationContentDescription="@string/back"
             android:touchscreenBlocksFocus="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:navigationContentDescription="@string/back"
             app:navigationIcon="@drawable/ic_back" />
 
         <androidx.viewpager2.widget.ViewPager2
@@ -61,14 +61,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <LinearLayout
+                <nl.rijksoverheid.ctr.design.views.ViewPagerIndicator
                     android:id="@+id/indicators"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:focusable="true"
                     android:gravity="center"
-                    android:orientation="horizontal"
                     app:layout_constraintBottom_toTopOf="@+id/button"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

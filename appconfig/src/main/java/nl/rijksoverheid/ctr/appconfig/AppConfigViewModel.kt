@@ -20,9 +20,8 @@ import nl.rijksoverheid.ctr.appconfig.usecases.AppStatusUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.LoadPublicKeysUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.PersistConfigUseCase
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
-import okio.buffer
-import okio.source
-import java.io.File
+import nl.rijksoverheid.ctr.shared.ext.ClmobileVerifyException
+import java.io.EOFException
 
 abstract class AppConfigViewModel : ViewModel() {
     val appStatusLiveData = MutableLiveData<AppStatus>()
@@ -38,6 +37,7 @@ class AppConfigViewModelImpl(
     private val appConfigStorageManager: AppConfigStorageManager,
     private val cachedAppConfigUseCase: CachedAppConfigUseCase,
     private val cacheDirPath: String,
+    private val filesDirPath: String,
     private val isVerifierApp: Boolean,
     private val versionCode: Int
 ) : AppConfigViewModel() {
@@ -48,20 +48,33 @@ class AppConfigViewModelImpl(
             val appStatus = appStatusUseCase.get(configResult, versionCode)
             if (configResult is ConfigResult.Success) {
                 persistConfigUseCase.persist(
-                    appConfig = configResult.appConfig,
-                    publicKeys = configResult.publicKeys
+                    appConfigContents = configResult.appConfig,
+                    publicKeyContents = configResult.publicKeys
                 )
-                cachedAppConfigUseCase.getCachedPublicKeys()?.let {
-                    loadPublicKeysUseCase.load(it)
+                try {
+                    cachedAppConfigUseCase.getCachedPublicKeys()?.let {
+                        loadPublicKeysUseCase.load(it)
+                    }
+                } catch (exception: EOFException) {
+                    return@launch appStatusLiveData.postValue(AppStatus.Error)
                 }
             }
 
             if (isVerifierApp) {
-                if (!appConfigStorageManager.areConfigFilesPresent()) {
-                    return@launch appStatusLiveData.postValue(AppStatus.InternetRequired)
+                val configFilesArePresentInCacheFolder = appConfigStorageManager.areConfigFilesPresentInCacheFolder()
+                val configFilesArePresentInFilesFolder = appConfigStorageManager.areConfigFilesPresentInFilesFolder()
+                if (!configFilesArePresentInCacheFolder && !configFilesArePresentInFilesFolder) {
+                    return@launch appStatusLiveData.postValue(AppStatus.Error)
                 }
 
-                mobileCoreWrapper.initializeVerifier(cacheDirPath)
+                val initializationError = mobileCoreWrapper.initializeVerifier(if (configFilesArePresentInFilesFolder){
+                    filesDirPath
+                } else {
+                    cacheDirPath
+                })
+                if (initializationError != null) {
+                    throw ClmobileVerifyException(initializationError)
+                }
             }
 
             appStatusLiveData.postValue(appStatus)

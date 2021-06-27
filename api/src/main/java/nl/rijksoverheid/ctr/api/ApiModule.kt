@@ -32,19 +32,14 @@ import java.util.concurrent.TimeUnit
  */
 fun apiModule(
     baseUrl: String,
-    isTestEnv: Boolean,
     signatureCertificateCnMatch: String,
     coronaCheckApiChecks: Boolean,
     testProviderApiChecks: Boolean
 ) = module(override = true) {
 
     single {
-        val context = get<Context>(Context::class)
-        val cache = Cache(File(context.cacheDir, "http"), 10 * 1024 * 1024)
-
         OkHttpClient.Builder()
             .addNetworkInterceptor(CacheOverrideInterceptor())
-            .cache(cache)
             .connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
             .followRedirects(false)
@@ -58,7 +53,6 @@ fun apiModule(
             .addInterceptor(
                 SignedResponseInterceptor(
                     signatureCertificateCnMatch = signatureCertificateCnMatch,
-                    isTestEnv = isTestEnv,
                     testProviderApiChecks = testProviderApiChecks
                 )
             ).build()
@@ -92,7 +86,6 @@ fun apiModule(
 
     single {
         Moshi.Builder()
-            .add(KotlinJsonAdapterFactory())
             .add(Base64JsonAdapter())
             .add(JsonObjectJsonAdapter())
             .add(OffsetDateTimeJsonAdapter())

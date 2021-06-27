@@ -8,8 +8,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.setMain
-import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
-import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.appconfig.models.ConfigResult
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
@@ -50,6 +48,7 @@ class AppConfigViewModelTest {
         appConfigStorageManager = appConfigStorageManager,
         cachedAppConfigUseCase = cachedAppConfigUseCase,
         cacheDirPath = "",
+        filesDirPath = "",
         isVerifierApp = false,
         versionCode = 0
     )
@@ -62,28 +61,16 @@ class AppConfigViewModelTest {
 
     @Test
     fun `refresh calls correct usecases when success`() = runBlocking {
-        val appConfig = AppConfig(
-            minimumVersion = 0,
-            appDeactivated = false,
-            informationURL = "dummy",
-            configTtlSeconds = 0,
-            maxValidityHours = 0,
-            euLaunchDate = "",
-            credentialRenewalDays = 0,
-            domesticCredentialValidity = 0,
-            testEventValidity = 0,
-            recoveryEventValidity = 0,
-            temporarilyDisabled = false,
-            requireUpdateBefore = 0
-        )
+        val appConfigContents = "app config contents"
 
         val publicKeys = mockk<BufferedSource>()
-        coEvery { publicKeys.readUtf8() } returns "file contents"
+        val publicKeysContents = "file contents"
+        coEvery { publicKeys.readUtf8() } returns publicKeysContents
 
         coEvery { appConfigUseCase.get() } answers {
             ConfigResult.Success(
-                appConfig = appConfig,
-                publicKeys = publicKeys
+                appConfig = appConfigContents,
+                publicKeys = publicKeysContents
             )
         }
 
@@ -92,7 +79,7 @@ class AppConfigViewModelTest {
 
         appConfigViewModel.refresh(mobileCoreWrapper)
 
-        coVerify { persistConfigUseCase.persist(appConfig, publicKeys) }
+        coVerify { persistConfigUseCase.persist(appConfigContents, publicKeysContents) }
         coVerify { loadPublicKeyUseCase.load(publicKeys) }
     }
 
@@ -102,11 +89,11 @@ class AppConfigViewModelTest {
             ConfigResult.Error
         }
 
-        coEvery { appStatusUseCase.get(any(), any()) } answers { AppStatus.InternetRequired }
+        coEvery { appStatusUseCase.get(any(), any()) } answers { AppStatus.Error }
 
         appConfigViewModel.refresh(mobileCoreWrapper)
 
-        Assert.assertEquals(appConfigViewModel.appStatusLiveData.value, AppStatus.InternetRequired)
+        Assert.assertEquals(appConfigViewModel.appStatusLiveData.value, AppStatus.Error)
     }
 
     @Test
@@ -119,52 +106,44 @@ class AppConfigViewModelTest {
             appConfigStorageManager = appConfigStorageManager,
             cachedAppConfigUseCase = cachedAppConfigUseCase,
             cacheDirPath = "",
+            filesDirPath = "",
             isVerifierApp = true,
             versionCode = 0
         )
-        val appConfig = AppConfig(
-            minimumVersion = 0,
-            appDeactivated = false,
-            informationURL = "dummy",
-            configTtlSeconds = 0,
-            maxValidityHours = 0
-        )
+        val appConfigContents = "app config contents"
 
         val publicKeys = mockk<BufferedSource>()
-        coEvery { publicKeys.readUtf8() } returns "file contents"
+        val publicKeysContents = "file contents"
+        coEvery { publicKeys.readUtf8() } returns publicKeysContents
 
         coEvery { appConfigUseCase.get() } answers {
             ConfigResult.Success(
-                appConfig = appConfig,
-                publicKeys = publicKeys
+                appConfig = appConfigContents,
+                publicKeys = publicKeysContents
             )
         }
 
         coEvery { appStatusUseCase.get(any(), any()) } answers { AppStatus.NoActionRequired }
-        coEvery { appConfigStorageManager.areConfigFilesPresent() } returns false
+        coEvery { appConfigStorageManager.areConfigFilesPresentInCacheFolder() } returns false
+        coEvery { appConfigStorageManager.areConfigFilesPresentInFilesFolder() } returns false
 
         appConfigViewModel.refresh(mobileCoreWrapper)
 
-        Assert.assertEquals(appConfigViewModel.appStatusLiveData.value, AppStatus.InternetRequired)
+        Assert.assertEquals(appConfigViewModel.appStatusLiveData.value, AppStatus.Error)
     }
 
     @Test
     fun `refresh in the holder app has no interaction with config files and initialise the verifier`() {
-        val appConfig = AppConfig(
-            minimumVersion = 0,
-            appDeactivated = false,
-            informationURL = "dummy",
-            configTtlSeconds = 0,
-            maxValidityHours = 0
-        )
+        val appConfigContents = "app config contents"
 
         val publicKeys = mockk<BufferedSource>()
-        coEvery { publicKeys.readUtf8() } returns "file contents"
+        val publicKeysContents = "file contents"
+        coEvery { publicKeys.readUtf8() } returns publicKeysContents
 
         coEvery { appConfigUseCase.get() } answers {
             ConfigResult.Success(
-                appConfig = appConfig,
-                publicKeys = publicKeys
+                appConfig = appConfigContents,
+                publicKeys = publicKeysContents
             )
         }
 
@@ -173,6 +152,7 @@ class AppConfigViewModelTest {
         appConfigViewModel.refresh(mobileCoreWrapper)
 
         coVerify(exactly = 0) { mobileCoreWrapper.initializeVerifier(any()) }
-        coVerify(exactly = 0) { appConfigStorageManager.areConfigFilesPresent() }
+        coVerify(exactly = 0) { appConfigStorageManager.areConfigFilesPresentInCacheFolder() }
+        coVerify(exactly = 0) { appConfigStorageManager.areConfigFilesPresentInFilesFolder() }
     }
 }

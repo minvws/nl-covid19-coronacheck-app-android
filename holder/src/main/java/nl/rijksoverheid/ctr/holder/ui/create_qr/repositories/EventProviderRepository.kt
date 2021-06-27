@@ -3,7 +3,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.repositories
 import nl.rijksoverheid.ctr.api.interceptors.SigningCertificate
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.TestProviderApiClient
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsVaccinations
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsNegativeTests
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteUnomi
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
 
@@ -17,12 +17,14 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
 interface EventProviderRepository {
     suspend fun unomiVaccinationEvents(
         url: String,
-        token: String
+        token: String,
+        signingCertificateBytes: ByteArray
     ): RemoteUnomi
 
     suspend fun unomiTestEvents(
         url: String,
-        token: String
+        token: String,
+        signingCertificateBytes: ByteArray
     ): RemoteUnomi
 
     suspend fun vaccinationEvents(
@@ -35,27 +37,29 @@ interface EventProviderRepository {
         url: String,
         token: String,
         signingCertificateBytes: ByteArray
-    ): SignedResponseWithModel<RemoteEventsNegativeTests>
+    ): SignedResponseWithModel<RemoteTestResult3>
 }
 
 class EventProviderRepositoryImpl(
     private val testProviderApiClient: TestProviderApiClient
 ) : EventProviderRepository {
 
-    override suspend fun unomiTestEvents(url: String, token: String): RemoteUnomi {
+    override suspend fun unomiTestEvents(url: String, token: String, signingCertificateBytes: ByteArray): RemoteUnomi {
         return testProviderApiClient
             .unomiTestEvents(
                 url = url,
                 authorization = "Bearer $token",
-            )
+                certificate = SigningCertificate(signingCertificateBytes)
+            ).model
     }
 
-    override suspend fun unomiVaccinationEvents(url: String, token: String): RemoteUnomi {
+    override suspend fun unomiVaccinationEvents(url: String, token: String, signingCertificateBytes: ByteArray): RemoteUnomi {
         return testProviderApiClient
             .unomiVaccinationEvents(
                 url = url,
                 authorization = "Bearer $token",
-            )
+                certificate = SigningCertificate(signingCertificateBytes)
+            ).model
     }
 
     override suspend fun vaccinationEvents(
@@ -74,7 +78,7 @@ class EventProviderRepositoryImpl(
         url: String,
         token: String,
         signingCertificateBytes: ByteArray
-    ): SignedResponseWithModel<RemoteEventsNegativeTests> {
+    ): SignedResponseWithModel<RemoteTestResult3> {
         return testProviderApiClient.negativeTestEvents(
             url = url,
             authorization = "Bearer $token",

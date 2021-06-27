@@ -13,11 +13,9 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import mobilecore.Mobilecore
 import mobilecore.Result
-import nl.rijksoverheid.ctr.shared.ext.successJsonObject
-import nl.rijksoverheid.ctr.shared.ext.successString
-import nl.rijksoverheid.ctr.shared.ext.toObject
-import nl.rijksoverheid.ctr.shared.ext.verify
+import nl.rijksoverheid.ctr.shared.ext.*
 import nl.rijksoverheid.ctr.shared.models.DomesticCredential
+import nl.rijksoverheid.ctr.shared.models.DomesticCredentialAttributes
 import nl.rijksoverheid.ctr.shared.models.ReadDomesticCredential
 import org.json.JSONObject
 import java.lang.reflect.Type
@@ -32,7 +30,8 @@ interface MobileCoreWrapper {
     fun generateHolderSk(): String
     fun createDomesticCredentials(createCredentials: ByteArray): List<DomesticCredential>
     fun readEuropeanCredential(credential: ByteArray): JSONObject
-    fun initializeVerifier(configFilesPath: String)
+    // returns error message, if initializing failed
+    fun initializeVerifier(configFilesPath: String): String?
     fun verify(credential: ByteArray): Result
 }
 
@@ -91,7 +90,14 @@ class MobileCoreWrapperImpl(private val moshi: Moshi) : MobileCoreWrapper {
         return Mobilecore.readEuropeanCredential(credential).successJsonObject()
     }
 
-    override fun initializeVerifier(configFilesPath: String) = Mobilecore.initializeVerifier(configFilesPath)
+    override fun initializeVerifier(configFilesPath: String): String? {
+        return try {
+            val initResult = Mobilecore.initializeVerifier(configFilesPath)
+            initResult.error.takeIf { it.isNotEmpty() }
+        } catch (exception: Exception) {
+            exception.message ?: "unknown initializeVerifier library error"
+        }
+    }
 
     override fun verify(credential: ByteArray): Result = Mobilecore.verify(credential)
 }

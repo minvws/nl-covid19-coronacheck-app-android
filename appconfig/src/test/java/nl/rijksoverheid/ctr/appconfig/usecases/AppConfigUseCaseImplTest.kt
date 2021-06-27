@@ -22,6 +22,7 @@ import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody
 import okhttp3.ResponseBody.Companion.toResponseBody
+import okio.BufferedSource
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import retrofit2.Response
@@ -32,22 +33,9 @@ import java.time.ZoneId
 
 class AppConfigUseCaseImplTest {
 
-    private val appConfig = AppConfig(
-        minimumVersion = 0,
-        appDeactivated = false,
-        informationURL = "dummy",
-        configTtlSeconds = 0,
-        maxValidityHours = 0,
-        euLaunchDate = "",
-        credentialRenewalDays = 0,
-        domesticCredentialValidity = 0,
-        testEventValidity = 0,
-        recoveryEventValidity = 0,
-        temporarilyDisabled = false,
-        requireUpdateBefore = 0
-    )
+    private val appConfig = "".toResponseBody("application/json".toMediaType())
 
-    private val publicKeys = "{\"cl_keys\":[]}".toResponseBody("application/json".toMediaType())
+    private val publicKeys = "".toResponseBody("application/json".toMediaType())
 
     private val clock = Clock.fixed(Instant.ofEpochSecond(0), ZoneId.of("UTC"))
     private val appConfigPersistenceManager = mockk<AppConfigPersistenceManager>(relaxed = true)
@@ -55,7 +43,7 @@ class AppConfigUseCaseImplTest {
     @Test
     fun `config returns Success when both calls succeed`() = runBlocking {
         val fakeApi = object : AppConfigApi {
-            override suspend fun getConfig(): AppConfig = appConfig
+            override suspend fun getConfig(): ResponseBody = appConfig
             override suspend fun getPublicKeys(): ResponseBody = publicKeys
         }
         val configRepository = ConfigRepositoryImpl(api = fakeApi)
@@ -63,8 +51,8 @@ class AppConfigUseCaseImplTest {
             AppConfigUseCaseImpl(clock, appConfigPersistenceManager, configRepository)
         assertEquals(
             appConfigUseCase.get(), ConfigResult.Success(
-                appConfig = appConfig,
-                publicKeys = publicKeys.source()
+                appConfig = appConfig.source().readUtf8(),
+                publicKeys = publicKeys.source().readUtf8()
             )
         )
         coVerify { appConfigPersistenceManager.saveAppConfigLastFetchedSeconds(0) }
@@ -73,7 +61,7 @@ class AppConfigUseCaseImplTest {
     @Test
     fun `config returns Error when config call fails`() = runBlocking {
         val fakeApi = object : AppConfigApi {
-            override suspend fun getConfig(): AppConfig {
+            override suspend fun getConfig(): ResponseBody {
                 throw IOException()
             }
 
@@ -91,7 +79,7 @@ class AppConfigUseCaseImplTest {
     @Test
     fun `config returns Error when public keys call fails`() = runBlocking {
         val fakeApi = object : AppConfigApi {
-            override suspend fun getConfig(): AppConfig = appConfig
+            override suspend fun getConfig(): ResponseBody = appConfig
             override suspend fun getPublicKeys(): ResponseBody {
                 throw IOException()
             }

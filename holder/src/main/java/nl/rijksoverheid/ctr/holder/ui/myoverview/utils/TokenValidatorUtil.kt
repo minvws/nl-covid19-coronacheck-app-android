@@ -13,7 +13,9 @@ interface TokenValidatorUtil {
 
 class TokenValidatorUtilImpl : TokenValidatorUtil {
 
-    private val codePoints = "BCFGJLQRSTUVXYZ23456789"
+    companion object {
+        const val CODE_POINTS = "BCFGJLQRSTUVXYZ23456789"
+    }
 
     /**
      * Validate a CoronaCheck token based on the Luhn algorithm (https://en.wikipedia.org/wiki/Luhn_mod_N_algorithm)
@@ -63,7 +65,7 @@ class TokenValidatorUtilImpl : TokenValidatorUtil {
         return remainder == 0
     }
 
-    private fun numberOfValidInputCharacters() = codePoints.length
-    private fun codePointFromCharacter(char: Char) = codePoints.indexOf(char)
-    private fun characterFromCodePoint(codePoint: Int) = codePoints[codePoint]
+    private fun numberOfValidInputCharacters() = CODE_POINTS.length
+    private fun codePointFromCharacter(char: Char) = CODE_POINTS.indexOf(char)
+    private fun characterFromCodePoint(codePoint: Int) = CODE_POINTS[codePoint]
 }

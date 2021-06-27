@@ -111,6 +111,8 @@ class HolderDatabaseSyncerImpl(
                 DatabaseSyncerResult.ServerError(e.code())
             } catch (e: IOException) {
                 DatabaseSyncerResult.NetworkError
+            } catch (e: Exception) {
+                DatabaseSyncerResult.ServerError(200)
             }
         } else {
             return DatabaseSyncerResult.Success

@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.holder.ui.myoverview
 
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
+import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
@@ -33,20 +34,24 @@ abstract class MyOverviewViewModel : ViewModel() {
      * @param selectType The type of green cards you want to show, null if refresh the current selected one
      * @param syncDatabase If you want to sync the database before showing the items
      */
-    abstract fun refreshOverviewItems(selectType: GreenCardType? = null, syncDatabase: Boolean = false)
+    abstract fun refreshOverviewItems(selectType: GreenCardType = getSelectedType(), syncDatabase: Boolean = false)
 }
 
 class MyOverviewViewModelImpl(
     private val getMyOverviewItemsUseCase: GetMyOverviewItemsUseCase,
-    private val holderDatabaseSyncer: HolderDatabaseSyncer
+    private val holderDatabaseSyncer: HolderDatabaseSyncer,
+    private val persistenceManager: PersistenceManager
 ) : MyOverviewViewModel() {
 
     override fun getSelectedType(): GreenCardType {
         return (myOverviewItemsLiveData.value?.peekContent()?.selectedType
-            ?: GreenCardType.Domestic)
+            ?: persistenceManager.getSelectedGreenCardType())
     }
 
-    override fun refreshOverviewItems(selectType: GreenCardType?, syncDatabase: Boolean) {
+    override fun refreshOverviewItems(selectType: GreenCardType, syncDatabase: Boolean) {
+        // When the app is opened we need to remember the tab that was selected
+        persistenceManager.setSelectedGreenCardType(selectType)
+
         viewModelScope.launch {
             if (syncDatabase) {
                 holderDatabaseSyncer.sync(
@@ -57,7 +62,7 @@ class MyOverviewViewModelImpl(
             (myOverviewItemsLiveData as MutableLiveData).postValue(
                 Event(
                     getMyOverviewItemsUseCase.get(
-                        selectedType = selectType ?: getSelectedType(),
+                        selectedType = selectType,
                         walletId = 1
                     )
                 )

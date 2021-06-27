@@ -10,19 +10,16 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.CommercialTestCodeViewModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
+import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.EventProviderRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.TestProviderRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
-import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TokenValidatorUtil
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.ui.new_terms.models.NewTerms
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
-import nl.rijksoverheid.ctr.shared.models.DomesticCredential
-import nl.rijksoverheid.ctr.shared.models.PersonalDetails
-import nl.rijksoverheid.ctr.shared.models.ReadDomesticCredential
-import nl.rijksoverheid.ctr.shared.models.TestResultAttributes
+import nl.rijksoverheid.ctr.shared.models.*
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import nl.rijksoverheid.ctr.shared.utils.TestResultUtil
 import okhttp3.MediaType.Companion.toMediaType
@@ -98,10 +95,6 @@ fun fakeCachedAppConfigUseCase(
     ),
     publicKeys: BufferedSource = "{\"cl_keys\":[]}".toResponseBody("application/json".toMediaType()).source()
 ): CachedAppConfigUseCase = object : CachedAppConfigUseCase {
-    override fun persistAppConfig(appConfig: AppConfig) {
-
-    }
-
     override fun getCachedAppConfig(): AppConfig {
         return appConfig
     }
@@ -188,13 +181,13 @@ fun fakeCommitmentMessageUsecase(
 }
 
 fun fakeTestProviderRepository(
-    model: SignedResponseWithModel<RemoteTestResult> = SignedResponseWithModel(
+    model: SignedResponseWithModel<RemoteProtocol> = SignedResponseWithModel(
         rawResponse = "dummy".toByteArray(),
-        model = RemoteTestResult(
+        model = RemoteTestResult2(
             result = null,
             protocolVersion = "1",
             providerIdentifier = "1",
-            status = RemoteTestResult.Status.COMPLETE
+            status = RemoteProtocol.Status.COMPLETE
         ),
     ),
     remoteTestResultExceptionCallback: (() -> Unit)? = null,
@@ -205,7 +198,7 @@ fun fakeTestProviderRepository(
             token: String,
             verifierCode: String?,
             signingCertificateBytes: ByteArray
-        ): SignedResponseWithModel<RemoteTestResult> {
+        ): SignedResponseWithModel<RemoteProtocol> {
             remoteTestResultExceptionCallback?.invoke()
             return model
         }
@@ -213,11 +206,12 @@ fun fakeTestProviderRepository(
 }
 
 fun fakeConfigProviderUseCase(
+    eventProviders: List<RemoteConfigProviders.EventProvider> = listOf(),
     provider: RemoteConfigProviders.TestProvider? = null
 ): ConfigProvidersUseCase {
     return object : ConfigProvidersUseCase {
         override suspend fun eventProviders(): List<RemoteConfigProviders.EventProvider> {
-            return listOf()
+            return eventProviders
         }
 
         override suspend fun testProvider(id: String): RemoteConfigProviders.TestProvider? {
@@ -250,10 +244,6 @@ fun fakeCoronaCheckRepository(
 
         override suspend fun accessTokens(tvsToken: String): RemoteAccessTokens {
             return accessTokens
-        }
-
-        override suspend fun remoteNonce(): RemoteNonce {
-            return remoteNonce
         }
 
         override suspend fun getCredentials(
@@ -290,7 +280,7 @@ fun fakeTestResultAttributesUseCase(
                 isSpecimen = isSpecimen,
                 isNLDCC = "1",
                 credentialVersion = "1",
-                stripType = "0",
+                isPaperProof = "0",
                 validForHours = "24",
                 validFrom = "1622633766",
             )
@@ -339,6 +329,14 @@ fun fakePersistenceManager(
         override fun setHasDismissedRootedDeviceDialog() {
 
         }
+
+        override fun getSelectedGreenCardType(): GreenCardType {
+            return GreenCardType.Domestic
+        }
+
+        override fun setSelectedGreenCardType(greenCardType: GreenCardType) {
+
+        }
     }
 }
 
@@ -368,14 +366,29 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
         }
 
         override fun createDomesticCredentials(createCredentials: ByteArray): List<DomesticCredential> {
-            return listOf()
+            return listOf(
+                DomesticCredential(
+                    credential = JSONObject(),
+                    attributes = DomesticCredentialAttributes(
+                        birthDay = "",
+                        birthMonth = "6",
+                        credentialVersion = 2,
+                        firstNameInitial = "B",
+                        isSpecimen = "0",
+                        lastNameInitial = "",
+                        isPaperProof = "0",
+                        validForHours = 24,
+                        validFrom = 1622731645L,
+                    ),
+                )
+            )
         }
 
         override fun readEuropeanCredential(credential: ByteArray): JSONObject {
             return JSONObject()
         }
 
-        override fun initializeVerifier(configFilesPath: String) = Unit
+        override fun initializeVerifier(configFilesPath: String) = ""
 
         override fun verify(credential: ByteArray): Result {
             TODO("Not yet implemented")
@@ -385,15 +398,56 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
             return ReadDomesticCredential(
                 "",
                 "",
+                "1",
                 "",
                 "",
                 "",
                 "",
-                "",
-                "",
-                ""
+                "24",
+                "1622731645"
             )
         }
+    }
+}
+
+fun fakeEventProviderRepository(
+    unomiVaccinationEvents: ((url: String) -> RemoteUnomi) = { RemoteUnomi("", "", false) },
+    unomiTestEvents: ((url: String) -> RemoteUnomi) = { RemoteUnomi("", "", false) },
+    vaccinationEvents: ((url: String) -> SignedResponseWithModel<RemoteEventsVaccinations>) = { SignedResponseWithModel("".toByteArray(), RemoteEventsVaccinations(
+        listOf(), "", "", RemoteProtocol.Status.COMPLETE, null),) },
+    negativeTestEvents: ((url: String) -> SignedResponseWithModel<RemoteTestResult3>) = { SignedResponseWithModel("".toByteArray(), RemoteTestResult3(
+        listOf(), "", "", RemoteProtocol.Status.COMPLETE, null)) }
+) = object: EventProviderRepository {
+    override suspend fun unomiVaccinationEvents(
+        url: String,
+        token: String,
+        signingCertificateBytes: ByteArray
+    ): RemoteUnomi {
+        return unomiVaccinationEvents.invoke(url)
+    }
+
+    override suspend fun unomiTestEvents(
+        url: String,
+        token: String,
+        signingCertificateBytes: ByteArray
+    ): RemoteUnomi {
+        return unomiTestEvents.invoke(url)
+    }
+
+    override suspend fun vaccinationEvents(
+        url: String,
+        token: String,
+        signingCertificateBytes: ByteArray
+    ): SignedResponseWithModel<RemoteEventsVaccinations> {
+        return vaccinationEvents.invoke(url)
+    }
+
+    override suspend fun negativeTestEvent(
+        url: String,
+        token: String,
+        signingCertificateBytes: ByteArray
+    ): SignedResponseWithModel<RemoteTestResult3> {
+        return negativeTestEvents.invoke(url)
     }
 }
 

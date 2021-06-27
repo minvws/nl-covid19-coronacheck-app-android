@@ -2,7 +2,6 @@ package nl.rijksoverheid.ctr.appconfig
 
 import com.squareup.moshi.Moshi
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
-import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
 import nl.rijksoverheid.ctr.shared.ext.toObject
 import okio.BufferedSource
@@ -17,7 +16,6 @@ import java.io.File
  */
 
 interface CachedAppConfigUseCase {
-    fun persistAppConfig(appConfig: AppConfig)
     fun getCachedAppConfig(): AppConfig?
     fun getCachedAppConfigMaxValidityHours(): Int
     fun getCachedAppConfigVaccinationEventValidity(): Int
@@ -26,19 +24,27 @@ interface CachedAppConfigUseCase {
 }
 
 class CachedAppConfigUseCaseImpl constructor(
-    private val persistenceManager: AppConfigPersistenceManager,
     private val appConfigStorageManager: AppConfigStorageManager,
     private val cacheDir: String,
+    private val filesDirPath: String,
     private val moshi: Moshi
 ) : CachedAppConfigUseCase {
 
-    override fun persistAppConfig(appConfig: AppConfig) {
-        val json = appConfig.toJson(moshi)
-        persistenceManager.saveAppConfigJson(json)
-    }
-
     override fun getCachedAppConfig(): AppConfig? {
-        return persistenceManager.getAppConfigJson()?.toObject(moshi)
+        var configFile = File(filesDirPath, "config.json")
+        if (!configFile.exists()) {
+            configFile = File(cacheDir, "config.json")
+        }
+
+        if (!configFile.exists()) {
+            return AppConfig()
+        }
+
+        return try {
+            appConfigStorageManager.getFileAsBufferedSource(configFile)?.readUtf8()?.toObject(moshi)
+        } catch (exc: Exception) {
+            AppConfig()
+        }
     }
 
     override fun getCachedAppConfigMaxValidityHours(): Int {
@@ -52,7 +58,10 @@ class CachedAppConfigUseCaseImpl constructor(
     }
 
     override fun getCachedPublicKeys(): BufferedSource? {
-        val publicKeysFile = File(cacheDir, "public_keys.json")
+        var publicKeysFile = File(filesDirPath, "public_keys.json")
+        if (!publicKeysFile.exists()) {
+            publicKeysFile = File(cacheDir, "public_keys.json")
+        }
         return appConfigStorageManager.getFileAsBufferedSource(publicKeysFile)
     }
 

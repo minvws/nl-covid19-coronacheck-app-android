@@ -9,21 +9,19 @@
 package nl.rijksoverheid.ctr.appconfig.repositories
 
 import nl.rijksoverheid.ctr.appconfig.api.AppConfigApi
-import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
-import okio.BufferedSource
-import java.io.InputStream
 
 interface ConfigRepository {
-    suspend fun getConfig(): AppConfig
-    suspend fun getPublicKeys(): BufferedSource
+    suspend fun getConfig(): String
+    suspend fun getPublicKeys(): String
 }
 
+@Suppress("BlockingMethodInNonBlockingContext")
 class ConfigRepositoryImpl(private val api: AppConfigApi) : ConfigRepository {
-    override suspend fun getConfig(): AppConfig {
-        return api.getConfig()
+    override suspend fun getConfig(): String {
+        return api.getConfig().source().readUtf8()
     }
 
-    override suspend fun getPublicKeys(): BufferedSource {
-        return api.getPublicKeys().source()
+    override suspend fun getPublicKeys(): String {
+        return api.getPublicKeys().source().readUtf8()
     }
 }
