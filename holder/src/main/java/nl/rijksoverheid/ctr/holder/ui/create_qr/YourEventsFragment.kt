@@ -30,6 +30,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.items.YourEventWidget
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.InfoScreenUtil
+import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import org.koin.android.ext.android.inject
@@ -151,8 +152,11 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                 )
             }
             is YourEventsFragmentType.RemoteProtocol3Type -> {
-                type.remoteEvents.map { it.key }.forEach { remoteProtocol3 ->
+                val remoteEvents = type.remoteEvents.map { it.key }
 
+                if (hasShownExpiredEvent(remoteEvents)) return
+
+                remoteEvents.forEach { remoteProtocol3 ->
                     remoteProtocol3.events?.forEach { remoteEvent ->
                         when (remoteEvent) {
                             is RemoteEventVaccination -> {
@@ -160,7 +164,7 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                                     binding = binding,
                                     providerIdentifier = remoteProtocol3.providerIdentifier,
                                     fullName = getFullName(remoteProtocol3.holder),
-                                    birthDate = getBirtDate(remoteProtocol3.holder),
+                                    birthDate = getBirthDate(remoteProtocol3.holder),
                                     event = remoteEvent
                                 )
                             }
@@ -168,7 +172,7 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                                 presentNegativeTestEvent(
                                     binding = binding,
                                     fullName = getFullName(remoteProtocol3.holder),
-                                    birthDate = getBirtDate(remoteProtocol3.holder),
+                                    birthDate = getBirthDate(remoteProtocol3.holder),
                                     event = remoteEvent
                                 )
                             }
@@ -176,7 +180,7 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                                 presentPositiveTestEvent(
                                     binding = binding,
                                     fullName = getFullName(remoteProtocol3.holder),
-                                    birthDate = getBirtDate(remoteProtocol3.holder),
+                                    birthDate = getBirthDate(remoteProtocol3.holder),
                                     event = remoteEvent
                                 )
                             }
@@ -184,7 +188,7 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                                 presentRecoveryEvent(
                                     binding = binding,
                                     fullName = getFullName(remoteProtocol3.holder),
-                                    birthDate = getBirtDate(remoteProtocol3.holder),
+                                    birthDate = getBirthDate(remoteProtocol3.holder),
                                     event = remoteEvent
                                 )
                             }
@@ -193,6 +197,23 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                 }
             }
         }
+    }
+
+    private fun hasShownExpiredEvent(remoteEvents: List<RemoteProtocol3>): Boolean {
+        return remoteEvents.flatMap { it.events ?: emptyList() }
+            .filter { it is RemoteEventPositiveTest || it is RemoteEventRecovery }
+            .takeIf { it.size == 1 }
+            ?.map {
+                val date = (it as? RemoteEventPositiveTest)?.getDate()
+                    ?: (it as? RemoteEventRecovery)?.getDate()
+
+                if (OffsetDateTime.now().minusDays(180) > date) {
+                    findNavControllerSafety(R.id.nav_your_events)?.navigate(
+                        YourEventsFragmentDirections.actionExpiredTestResult()
+                    )
+                    true
+                } else false
+            }?.firstOrNull() ?: false
     }
 
     private fun presentTestResult2(
@@ -481,7 +502,7 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
         }
     } ?: ""
 
-    private fun getBirtDate(holder: RemoteProtocol3.Holder?): String =
+    private fun getBirthDate(holder: RemoteProtocol3.Holder?): String =
         holder?.birthDate?.let { birthDate ->
             try {
                 LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).formatDayMonthYear()

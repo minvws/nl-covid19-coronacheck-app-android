@@ -84,11 +84,11 @@
 
         <argument
             android:name="toolbarTitle"
-            app:argType="string"/>
+            app:argType="string" />
 
         <argument
             android:name="data"
-            app:argType="nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeFragmentData"/>
+            app:argType="nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeFragmentData" />
 
         <action
             android:id="@+id/action_show_qr_explanation"
@@ -104,11 +104,11 @@
 
         <argument
             android:name="title"
-            app:argType="string"/>
+            app:argType="string" />
 
         <argument
             android:name="description"
-            app:argType="string"/>
+            app:argType="string" />
 
     </dialog>
 
@@ -224,7 +224,7 @@
 
         <action
             android:id="@+id/action_not_yet_tested"
-            app:destination="@id/nav_not_yet_tested"/>
+            app:destination="@id/nav_not_yet_tested" />
 
     </fragment>
 
@@ -284,11 +284,11 @@
 
         <argument
             android:name="toolbarTitle"
-            app:argType="string"/>
+            app:argType="string" />
 
         <argument
             android:name="description"
-            app:argType="string"/>
+            app:argType="string" />
 
     </fragment>
 
@@ -347,6 +347,14 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
 
+        <action
+            android:id="@+id/action_expired_test_result"
+            app:destination="@id/action_expired_test_result"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
     </fragment>
 
     <fragment
@@ -398,7 +406,7 @@
 
         <argument
             android:name="toolbarTitle"
-            app:argType="string"/>
+            app:argType="string" />
 
         <argument
             android:name="title"
@@ -435,6 +443,23 @@
     <dialog
         android:id="@+id/nav_not_yet_tested"
         android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.NotYetTestedFragment"
-        tools:layout="@layout/dialog_not_yet_tested"/>
+        tools:layout="@layout/dialog_not_yet_tested" />
+
+    <fragment
+        android:id="@+id/nav_expired_test_result"
+        android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.ExpiredTestResultFragment"
+        android:label="ExpiredTestResultFragment"
+        tools:layout="@layout/fragment_expired_test_result">
+
+        <action
+            android:id="@+id/action_my_overview"
+            app:destination="@id/nav_graph_overview"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit"
+            app:popUpTo="@id/nav_graph_overview"
+            app:popUpToInclusive="true" />
+    </fragment>
 
 </navigation>
