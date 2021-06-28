@@ -19,7 +19,7 @@ import java.time.OffsetDateTime
 import java.time.ZoneId
 
 interface GreenCardsUseCase {
-    suspend fun faultyVaccinations(): Boolean
+    suspend fun faultyVaccinationsJune28(): Boolean
 }
 
 class GreenCardsUseCaseImpl(
@@ -34,7 +34,7 @@ class GreenCardsUseCaseImpl(
         ZoneId.of("UTC")
     )
 
-    override suspend fun faultyVaccinations(): Boolean {
+    override suspend fun faultyVaccinationsJune28(): Boolean {
         return holderDatabase.greenCardDao().getAll().filter { it.greenCardEntity.type == GreenCardType.Domestic }
             .any { greenCard ->
                 val hasVaccinationAndTestOrigins = greenCard.origins.map { it.type }.containsAll(setOf(
