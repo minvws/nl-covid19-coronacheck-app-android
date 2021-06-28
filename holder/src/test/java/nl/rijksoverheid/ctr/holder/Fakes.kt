@@ -103,6 +103,10 @@ fun fakeCachedAppConfigUseCase(
         return appConfig
     }
 
+    override fun getCachedAppConfigRecoveryEventValidity(): Int {
+        return appConfig.recoveryEventValidity
+    }
+
     override fun getCachedAppConfigMaxValidityHours(): Int {
         return appConfig.maxValidityHours
     }
@@ -420,23 +424,32 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
 fun fakeEventProviderRepository(
     unomiVaccinationEvents: ((url: String) -> RemoteUnomi) = { RemoteUnomi("", "", false) },
     unomiTestEvents: ((url: String) -> RemoteUnomi) = { RemoteUnomi("", "", false) },
-    vaccinationEvents: ((url: String) -> SignedResponseWithModel<RemoteEventsVaccinations>) = {
+    vaccinationEvents: ((url: String) -> SignedResponseWithModel<RemoteProtocol3>) = {
         SignedResponseWithModel(
             "".toByteArray(),
-            RemoteEventsVaccinations(
-                listOf(), "", "", RemoteProtocol.Status.COMPLETE, null
+            RemoteProtocol3(
+                "", "", RemoteProtocol.Status.COMPLETE, null, listOf()
             ),
         )
     },
-    negativeTestEvents: ((url: String) -> SignedResponseWithModel<RemoteTestResult3>) = {
+    negativeTestEvents: ((url: String) -> SignedResponseWithModel<RemoteProtocol3>) = {
         SignedResponseWithModel(
-            "".toByteArray(), RemoteTestResult3(
-                listOf(), "", "", RemoteProtocol.Status.COMPLETE, null
+            "".toByteArray(), RemoteProtocol3(
+                "", "", RemoteProtocol.Status.COMPLETE, null, listOf()
             )
         )
     }
 ) = object : EventProviderRepository {
+
     override suspend fun unomiVaccinationEvents(
+        url: String,
+        token: String,
+        signingCertificateBytes: ByteArray
+    ): RemoteUnomi {
+        return unomiVaccinationEvents.invoke(url)
+    }
+
+    override suspend fun unomiPositiveAndRecoveryEvents(
         url: String,
         token: String,
         signingCertificateBytes: ByteArray
@@ -452,19 +465,27 @@ fun fakeEventProviderRepository(
         return unomiTestEvents.invoke(url)
     }
 
+    override suspend fun positiveAndRecoveryTestEvents(
+        url: String,
+        token: String,
+        signingCertificateBytes: ByteArray
+    ): SignedResponseWithModel<RemoteProtocol3> {
+        return negativeTestEvents.invoke(url)
+    }
+
     override suspend fun vaccinationEvents(
         url: String,
         token: String,
         signingCertificateBytes: ByteArray
-    ): SignedResponseWithModel<RemoteEventsVaccinations> {
+    ): SignedResponseWithModel<RemoteProtocol3> {
         return vaccinationEvents.invoke(url)
     }
 
-    override suspend fun negativeTestEvent(
+    override suspend fun negativeTestEvents(
         url: String,
         token: String,
         signingCertificateBytes: ByteArray
-    ): SignedResponseWithModel<RemoteTestResult3> {
+    ): SignedResponseWithModel<RemoteProtocol3> {
         return negativeTestEvents.invoke(url)
     }
 }

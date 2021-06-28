@@ -110,6 +110,4 @@
     <string name="accessibility_flash_on">Zet de zaklamp aan.</string>
     <string name="accessibility_flash_off">Zet de zaklamp uit.</string>
     <string name="new_in_app_subtitle">Nieuw in de app</string>
-    <string name="new_in_app_screen_1_title">Bewijs van herstel</string>
-    <string name="new_in_app_screen_1_description">Ben je eerder besmet geraakt met corona? En ben je inmiddels hersteld van het virus? Dan kun je een persoonlijke QR-code maken. Met dit bewijs krijg je toegang tot bepaalde locaties en activiteiten. Ook kun je er internationaal mee reizen.</string>
 </resources>

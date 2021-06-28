@@ -51,13 +51,17 @@ class OnboardingItemFragment : Fragment(R.layout.fragment_onboarding_item) {
         val binding = FragmentOnboardingItemBinding.bind(view)
 
         binding.title.text = getString(item.titleResource)
-        if (item.descriptionHasEuLaunchDate) {
-            val euLaunchDate = OffsetDateTime.parse(cachedAppConfigUseCase.getCachedAppConfig()!!.euLaunchDate, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
-            binding.description.setHtmlText(getString(item.description, euLaunchDate.formatDayMonth()), false)
-        } else if (item.descriptionHasTestValidity) {
-            binding.description.setHtmlText(appConfigUtil.getStringWithTestValidity(item.description), false)
-        } else {
-            binding.description.setHtmlText(getString(item.description), false)
+        when {
+            item.descriptionHasEuLaunchDate -> {
+                val euLaunchDate = OffsetDateTime.parse(cachedAppConfigUseCase.getCachedAppConfig()!!.euLaunchDate, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+                binding.description.setHtmlTextWithBullets(getString(item.description, euLaunchDate.formatDayMonth()), false)
+            }
+            item.descriptionHasTestValidity -> {
+                binding.description.setHtmlTextWithBullets(appConfigUtil.getStringWithTestValidity(item.description), false)
+            }
+            else -> {
+                binding.description.setHtmlTextWithBullets(getString(item.description), false)
+            }
         }
 
         if (androidUtil.isSmallScreen()) {

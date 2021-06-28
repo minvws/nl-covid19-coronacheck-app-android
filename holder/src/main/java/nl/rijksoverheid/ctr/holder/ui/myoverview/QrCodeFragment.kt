@@ -133,7 +133,14 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
                                                 ))
                                             }
                                             is OriginType.Recovery -> {
-                                                // TODO
+                                                val infoScreen = infoScreenUtil.getForEuropeanRecoveryQr(
+                                                    qrCodeData.readEuropeanCredential
+                                                )
+
+                                                findNavController().navigate(QrCodeFragmentDirections.actionShowQrExplanation(
+                                                    title = infoScreen.title,
+                                                    description = infoScreen.description
+                                                ))
                                             }
                                         }
                                     }
@@ -144,7 +151,6 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
                     }
                 }
             }
-
         }
     }
 

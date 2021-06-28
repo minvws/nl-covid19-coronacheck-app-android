@@ -41,6 +41,10 @@ fun fakeCachedAppConfigUseCase(
         return appConfig
     }
 
+    override fun getCachedAppConfigRecoveryEventValidity(): Int {
+        return appConfig?.recoveryEventValidity ?: 0
+    }
+
     override fun getCachedAppConfigMaxValidityHours(): Int {
         return cachedAppConfigMaxValidityHours
     }

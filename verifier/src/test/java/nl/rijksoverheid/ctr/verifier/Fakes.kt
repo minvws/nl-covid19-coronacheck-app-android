@@ -2,9 +2,9 @@ package nl.rijksoverheid.ctr.verifier
 
 import mobilecore.Result
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
-import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
+import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.introduction.IntroductionData
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
@@ -172,6 +172,10 @@ fun fakeCachedAppConfigUseCase(
 
     override fun getCachedAppConfig(): AppConfig {
         return appConfig
+    }
+
+    override fun getCachedAppConfigRecoveryEventValidity(): Int {
+        return appConfig.recoveryEventValidity
     }
 
     override fun getCachedAppConfigMaxValidityHours(): Int {
