@@ -9,50 +9,66 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.shared.ext.getStringOrNull
 import nl.rijksoverheid.ctr.shared.models.PersonalDetails
 import org.json.JSONObject
-import java.time.Instant
 import java.time.LocalDate
 import java.time.OffsetDateTime
-import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 
 interface InfoScreenUtil {
-    fun getForRemoteTestResult2(result: RemoteTestResult2.Result,
-                                personalDetails: PersonalDetails,
-                                testDate: String): InfoScreen
-    fun getForNegativeTest(event: RemoteEventNegativeTest,
-                                fullName: String,
-                                testDate: String,
-                                birthDate: String): InfoScreen
-    fun getForVaccination(event: RemoteEventVaccination,
-                                fullName: String,
-                                birthDate: String): InfoScreen
-    fun getForPositiveTest(event: RemoteEventPositiveTest,
-                           testDate: String,
-                          fullName: String,
-                          birthDate: String): InfoScreen
-    fun getForRecovery(event: RemoteEventRecovery,
-                           testDate: String,
-                           fullName: String,
-                           birthDate: String): InfoScreen
+    fun getForRemoteTestResult2(
+        result: RemoteTestResult2.Result,
+        personalDetails: PersonalDetails,
+        testDate: String
+    ): InfoScreen
+
+    fun getForNegativeTest(
+        event: RemoteEventNegativeTest,
+        fullName: String,
+        testDate: String,
+        birthDate: String
+    ): InfoScreen
+
+    fun getForVaccination(
+        event: RemoteEventVaccination,
+        fullName: String,
+        birthDate: String
+    ): InfoScreen
+
+    fun getForPositiveTest(
+        event: RemoteEventPositiveTest,
+        testDate: String,
+        fullName: String,
+        birthDate: String
+    ): InfoScreen
+
+    fun getForRecovery(
+        event: RemoteEventRecovery,
+        testDate: String,
+        fullName: String,
+        birthDate: String
+    ): InfoScreen
+
     fun getForDomesticQr(personalDetails: PersonalDetails): InfoScreen
     fun getForEuropeanTestQr(readEuropeanCredential: JSONObject): InfoScreen
     fun getForEuropeanVaccinationQr(readEuropeanCredential: JSONObject): InfoScreen
     fun getForEuropeanRecoveryQr(readEuropeanCredential: JSONObject): InfoScreen
 }
 
-class InfoScreenUtilImpl(private val application: Application,
-                         private val cachedAppConfigUseCase: CachedAppConfigUseCase
-): InfoScreenUtil {
+class InfoScreenUtilImpl(
+    private val application: Application,
+    private val cachedAppConfigUseCase: CachedAppConfigUseCase
+) : InfoScreenUtil {
     override fun getForRemoteTestResult2(
         result: RemoteTestResult2.Result,
         personalDetails: PersonalDetails,
-        testDate: String): InfoScreen {
+        testDate: String
+    ): InfoScreen {
         val testType = cachedAppConfigUseCase.getCachedAppConfig()?.nlTestTypes?.firstOrNull {
             it.code == result.testType
         }?.name ?: result.testType
 
         val title = application.getString(R.string.your_test_result_explanation_toolbar_title)
-        val description = application.getString(R.string.your_test_result_explanation_description,
+        val description = application.getString(
+            R.string.your_test_result_explanation_description,
             "${personalDetails.firstNameInitial} ${personalDetails.lastNameInitial} ${personalDetails.birthDay} ${personalDetails.birthMonth}",
             result.testType,
             testDate,
@@ -81,9 +97,10 @@ class InfoScreenUtilImpl(private val application: Application,
 
         val testLocation = event.negativeTest?.facility ?: ""
 
-        val testManifacturer = cachedAppConfigUseCase.getCachedAppConfig()?.euTestManufacturers?.firstOrNull {
-            it.code == event.negativeTest?.manufacturer
-        }?.name ?: event.negativeTest?.manufacturer ?: ""
+        val testManifacturer =
+            cachedAppConfigUseCase.getCachedAppConfig()?.euTestManufacturers?.firstOrNull {
+                it.code == event.negativeTest?.manufacturer
+            }?.name ?: event.negativeTest?.manufacturer ?: ""
 
         val unique = event.unique ?: ""
 
@@ -122,9 +139,10 @@ class InfoScreenUtilImpl(private val application: Application,
 
         val testLocation = event.positiveTest?.facility ?: ""
 
-        val testManifacturer = cachedAppConfigUseCase.getCachedAppConfig()?.euTestManufacturers?.firstOrNull {
-            it.code == event.positiveTest?.manufacturer
-        }?.name ?: event.positiveTest?.manufacturer ?: ""
+        val testManifacturer =
+            cachedAppConfigUseCase.getCachedAppConfig()?.euTestManufacturers?.firstOrNull {
+                it.code == event.positiveTest?.manufacturer
+            }?.name ?: event.positiveTest?.manufacturer ?: ""
 
         val unique = event.unique ?: ""
 
@@ -171,7 +189,8 @@ class InfoScreenUtilImpl(private val application: Application,
 
         return InfoScreen(
             title = title,
-            description = description)
+            description = description
+        )
     }
 
     override fun getForVaccination(
@@ -181,13 +200,15 @@ class InfoScreenUtilImpl(private val application: Application,
     ): InfoScreen {
         val title = application.getString(R.string.your_vaccination_explanation_toolbar_title)
 
-        val desease = application.getString(R.string.your_vaccination_explanation_covid_19)
+        val disease = application.getString(R.string.your_vaccination_explanation_covid_19)
 
         val hpkCode = cachedAppConfigUseCase.getCachedAppConfig()?.hpkCodes?.firstOrNull {
-            it.code == event.vaccination?.hpkCode }?.name ?: event.vaccination?.hpkCode ?: ""
+            it.code == event.vaccination?.hpkCode
+        }?.name ?: event.vaccination?.hpkCode ?: ""
 
         val brand = cachedAppConfigUseCase.getCachedAppConfig()?.euBrands?.firstOrNull {
-            it.code == event.vaccination?.brand }?.name ?: event.vaccination?.brand ?: ""
+            it.code == event.vaccination?.brand
+        }?.name ?: event.vaccination?.brand ?: ""
 
         val vaccin = when {
             hpkCode.isNotEmpty() -> hpkCode
@@ -196,14 +217,21 @@ class InfoScreenUtilImpl(private val application: Application,
         }
 
         val vaccinType = cachedAppConfigUseCase.getCachedAppConfig()?.euVaccinations?.firstOrNull {
-            it.code == event.vaccination?.type }?.name ?: event.vaccination?.type ?: ""
+            it.code == event.vaccination?.type
+        }?.name ?: event.vaccination?.type ?: ""
 
         val producer = cachedAppConfigUseCase.getCachedAppConfig()?.euManufacturers?.firstOrNull {
-            it.code == event.vaccination?.manufacturer }?.name ?: event.vaccination?.manufacturer ?: ""
+            it.code == event.vaccination?.manufacturer
+        }?.name ?: event.vaccination?.manufacturer ?: ""
 
-        val doses = if (event.vaccination?.doseNumber != null && event.vaccination?.totalDoses != null) {
-            application.getString(R.string.your_vaccination_explanation_doses, event.vaccination?.doseNumber, event.vaccination?.totalDoses)
-        } else ""
+        val doses =
+            if (event.vaccination?.doseNumber != null && event.vaccination?.totalDoses != null) {
+                application.getString(
+                    R.string.your_vaccination_explanation_doses,
+                    event.vaccination?.doseNumber,
+                    event.vaccination?.totalDoses
+                )
+            } else ""
 
         val vaccinationDate = event.vaccination?.date?.let { it.formatDayMonthYear() } ?: ""
         val vaccinationCountry = event.vaccination?.country ?: ""
@@ -215,7 +243,7 @@ class InfoScreenUtilImpl(private val application: Application,
                 R.string.your_vaccination_explanation_description,
                 fullName,
                 birthDate,
-                desease,
+                disease,
                 vaccin,
                 vaccinType,
                 producer,
@@ -229,8 +257,10 @@ class InfoScreenUtilImpl(private val application: Application,
 
     override fun getForDomesticQr(personalDetails: PersonalDetails): InfoScreen {
         val title = application.getString(R.string.qr_explanation_title_domestic)
-        val description = application.getString(R.string.qr_explanation_description_domestic,
-            "${personalDetails.firstNameInitial} ${personalDetails.lastNameInitial} ${personalDetails.birthDay} ${personalDetails.birthMonth}")
+        val description = application.getString(
+            R.string.qr_explanation_description_domestic,
+            "${personalDetails.firstNameInitial} ${personalDetails.lastNameInitial} ${personalDetails.birthDay} ${personalDetails.birthMonth}"
+        )
 
         return InfoScreen(
             title = title,
@@ -244,7 +274,9 @@ class InfoScreenUtilImpl(private val application: Application,
 
         val title = application.getString(R.string.qr_explanation_title_eu)
 
-        val fullName = "${dcc.optJSONObject("nam").getStringOrNull("fn")}, ${dcc.optJSONObject("nam").getStringOrNull("gn")}"
+        val fullName = "${dcc.optJSONObject("nam").getStringOrNull("fn")}, ${
+            dcc.optJSONObject("nam").getStringOrNull("gn")
+        }"
 
         val birthDate = dcc.getStringOrNull("dob")?.let { birthDate ->
             try {
@@ -254,27 +286,32 @@ class InfoScreenUtilImpl(private val application: Application,
             }
         } ?: ""
 
-        val desease = application.getString(R.string.your_vaccination_explanation_covid_19)
+        val disease = application.getString(R.string.your_vaccination_explanation_covid_19)
 
         val testType = cachedAppConfigUseCase.getCachedAppConfig()?.euTestTypes?.firstOrNull {
-            it.code == test.getStringOrNull("tt") }?.name ?: test.getStringOrNull("tt") ?: ""
+            it.code == test.getStringOrNull("tt")
+        }?.name ?: test.getStringOrNull("tt") ?: ""
 
         val testName = test.getStringOrNull("nm") ?: ""
 
         val testDate = test.getStringOrNull("sc")?.let {
             try {
-                OffsetDateTime.parse(it, DateTimeFormatter.ISO_OFFSET_DATE_TIME).formatDateTime(application)
+                OffsetDateTime.parse(it, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+                    .formatDateTime(application)
             } catch (e: Exception) {
                 ""
             }
         } ?: ""
 
-        val testResult = application.getString(R.string.your_test_result_explanation_negative_test_result)
+        val testResult =
+            application.getString(R.string.your_test_result_explanation_negative_test_result)
 
         val testLocation = test.getStringOrNull("tc") ?: ""
 
-        val manufacturer = cachedAppConfigUseCase.getCachedAppConfig()?.euManufacturers?.firstOrNull {
-            it.code == test.getStringOrNull("ma") }?.name ?: test.getStringOrNull("ma") ?: ""
+        val manufacturer =
+            cachedAppConfigUseCase.getCachedAppConfig()?.euManufacturers?.firstOrNull {
+                it.code == test.getStringOrNull("ma")
+            }?.name ?: test.getStringOrNull("ma") ?: ""
 
         val vaccinationCountry = test.getStringOrNull("co")
         val uniqueCode = test.getStringOrNull("ci")
@@ -283,7 +320,7 @@ class InfoScreenUtilImpl(private val application: Application,
             R.string.qr_explanation_description_eu_test,
             fullName,
             birthDate,
-            desease,
+            disease,
             testType,
             testName,
             testDate,
@@ -291,7 +328,8 @@ class InfoScreenUtilImpl(private val application: Application,
             testLocation,
             manufacturer,
             vaccinationCountry,
-            uniqueCode)
+            uniqueCode
+        )
 
         return InfoScreen(
             title = title,
@@ -305,7 +343,9 @@ class InfoScreenUtilImpl(private val application: Application,
 
         val title = application.getString(R.string.qr_explanation_title_eu)
 
-        val fullName = "${dcc.optJSONObject("nam").getStringOrNull("fn")}, ${dcc.optJSONObject("nam").getStringOrNull("gn")}"
+        val fullName = "${dcc.optJSONObject("nam").getStringOrNull("fn")}, ${
+            dcc.optJSONObject("nam").getStringOrNull("gn")
+        }"
 
         val birthDate = dcc.getStringOrNull("dob")?.let { birthDate ->
             try {
@@ -315,20 +355,29 @@ class InfoScreenUtilImpl(private val application: Application,
             }
         } ?: ""
 
-        val desease = application.getString(R.string.your_vaccination_explanation_covid_19)
+        val disease = application.getString(R.string.your_vaccination_explanation_covid_19)
 
         val vaccin = cachedAppConfigUseCase.getCachedAppConfig()?.euBrands?.firstOrNull {
-            it.code == vaccination.getStringOrNull("mp") }?.name ?: vaccination.getStringOrNull("mp") ?: ""
+            it.code == vaccination.getStringOrNull("mp")
+        }?.name ?: vaccination.getStringOrNull("mp") ?: ""
 
         val vaccinType = cachedAppConfigUseCase.getCachedAppConfig()?.euVaccinations?.firstOrNull {
-            it.code == vaccination.getStringOrNull("vp") }?.name ?: vaccination.getStringOrNull("vp") ?: ""
+            it.code == vaccination.getStringOrNull("vp")
+        }?.name ?: vaccination.getStringOrNull("vp") ?: ""
 
-        val manufacturer = cachedAppConfigUseCase.getCachedAppConfig()?.euManufacturers?.firstOrNull {
-            it.code == vaccination.getStringOrNull("ma") }?.name ?: vaccination.getStringOrNull("ma") ?: ""
+        val manufacturer =
+            cachedAppConfigUseCase.getCachedAppConfig()?.euManufacturers?.firstOrNull {
+                it.code == vaccination.getStringOrNull("ma")
+            }?.name ?: vaccination.getStringOrNull("ma") ?: ""
 
-        val doses = if (vaccination.getStringOrNull("dn") != null && vaccination.getStringOrNull("sd") != null) {
-            application.getString(R.string.your_vaccination_explanation_doses, vaccination.getStringOrNull("dn"), vaccination.getStringOrNull("sd"))
-        } else ""
+        val doses =
+            if (vaccination.getStringOrNull("dn") != null && vaccination.getStringOrNull("sd") != null) {
+                application.getString(
+                    R.string.your_vaccination_explanation_doses,
+                    vaccination.getStringOrNull("dn"),
+                    vaccination.getStringOrNull("sd")
+                )
+            } else ""
 
         val vaccinationDate = vaccination.getStringOrNull("dt")?.let { vaccinationDate ->
             try {
@@ -347,7 +396,7 @@ class InfoScreenUtilImpl(private val application: Application,
                 R.string.qr_explanation_description_eu_vaccination,
                 fullName,
                 birthDate,
-                desease,
+                disease,
                 vaccin,
                 vaccinType,
                 manufacturer,
@@ -365,7 +414,9 @@ class InfoScreenUtilImpl(private val application: Application,
 
         val title = application.getString(R.string.qr_explanation_title_eu)
 
-        val fullName = "${dcc.optJSONObject("nam").getStringOrNull("fn")}, ${dcc.optJSONObject("nam").getStringOrNull("gn")}"
+        val fullName = "${dcc.optJSONObject("nam").getStringOrNull("fn")}, ${
+            dcc.optJSONObject("nam").getStringOrNull("gn")
+        }"
 
         val birthDate = dcc.getStringOrNull("dob")?.let { birthDate ->
             try {
@@ -375,7 +426,7 @@ class InfoScreenUtilImpl(private val application: Application,
             }
         } ?: ""
 
-        val desease = application.getString(R.string.your_vaccination_explanation_covid_19)
+        val disease = application.getString(R.string.your_vaccination_explanation_covid_19)
 
         val testDate = recovery.getStringOrNull("fr")?.let { testDate ->
             try {
@@ -413,7 +464,7 @@ class InfoScreenUtilImpl(private val application: Application,
                 R.string.qr_explanation_description_eu_recovery,
                 fullName,
                 birthDate,
-                desease,
+                disease,
                 testDate,
                 country,
                 producer,
