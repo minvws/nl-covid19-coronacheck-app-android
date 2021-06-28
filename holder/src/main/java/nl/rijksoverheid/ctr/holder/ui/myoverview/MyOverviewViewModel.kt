@@ -6,12 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
-import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.GreenCardsUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetMyOverviewItemsUseCase
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItems
 import nl.rijksoverheid.ctr.shared.livedata.Event
 
@@ -54,35 +52,9 @@ class MyOverviewViewModelImpl(
 
         viewModelScope.launch {
             if (syncDatabase) {
-                val expiring = greenCardsUseCase.expiring()
-
-                if (expiring) {
-                    val currentCardItems = getMyOverviewItemsUseCase.get(
-                        selectedType = selectType,
-                        walletId = 1
-                    ).setGreenCardItemsLoading()
-
-                    (myOverviewItemsLiveData as MutableLiveData).postValue(Event(currentCardItems))
-
-                    val syncResult = holderDatabaseSyncer.sync(
-                        expectedOriginType = null,
-                        syncWithRemote = true,
-                    )
-
-                    if (syncResult == DatabaseSyncerResult.NetworkError) {
-                        val expired = greenCardsUseCase.expiredCard(selectType)
-                        (myOverviewRefreshErrorEvent as MutableLiveData).postValue(
-                            Event(MyOverviewError.get(expired))
-                        )
-                    }
-
-                } else {
-                    holderDatabaseSyncer.sync(
-                        syncWithRemote = false
-                    )
-                }
-
-
+                holderDatabaseSyncer.sync(
+                    syncWithRemote = false
+                )
             }
 
             (myOverviewItemsLiveData as MutableLiveData).postValue(
