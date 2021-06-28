@@ -18,6 +18,8 @@ import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncerImpl
 import nl.rijksoverheid.ctr.holder.persistence.database.migration.TestResultsMigrationManager
 import nl.rijksoverheid.ctr.holder.persistence.database.migration.TestResultsMigrationManagerImpl
+import nl.rijksoverheid.ctr.holder.persistence.database.usecases.GreenCardsUseCase
+import nl.rijksoverheid.ctr.holder.persistence.database.usecases.GreenCardsUseCaseImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.HolderApiClient
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.RemoteTestStatusJsonAdapter
@@ -132,7 +134,7 @@ fun holderModule(baseUrl: String) = module {
     viewModel<YourEventsViewModel> { YourEventsViewModelImpl(get(), get()) }
     viewModel<GetVaccinationViewModel> { GetVaccinationViewModelImpl(get()) }
     viewModel<ChooseProviderViewModel> { ChooseProviderViewModelImpl(get()) }
-    viewModel<MyOverviewViewModel> { MyOverviewViewModelImpl(get(), get(), get()) }
+    viewModel<MyOverviewViewModel> { MyOverviewViewModelImpl(get(), get(), get(), get()) }
 
     // Repositories
     single { AuthenticationRepository() }
@@ -169,6 +171,10 @@ fun holderModule(baseUrl: String) = module {
 
     factory<TestResultAttributesUseCase> {
         TestResultAttributesUseCaseImpl(get(), get())
+    }
+
+    factory<GreenCardsUseCase> {
+        GreenCardsUseCaseImpl(get(), get(), get(), get())
     }
 
     single {

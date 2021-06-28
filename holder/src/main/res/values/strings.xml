@@ -280,4 +280,8 @@
     <string name="missing_events_description">Door drukte of een storing bij een van de partijen kunnen er gegevens missen. Probeer het eventueel later nog een keer.</string>
     <string name="dialog_vaccination_something_wrong_description"><![CDATA[Kloppen je naam en/of geboortedatum niet? Of staat er onjuiste informatie over je vaccinatie? Kijk hier voor meer informatie.]]></string>
     <string name="commercial_test_unique_code_hint_screenreader">Vul hier je ophaalcode in</string>
+    <string name="dialog_faultyvaccination28June_title">Door een technische fout had u ten onrechte een Nederlands vaccinatiebewijs ontvangen</string>
+    <string name="dialog_faultyvaccination28June_message">Dit is gecorrigeerd.</string>
+    <string name="dialog_faultyvaccination28June_refresh_error_title">Er is iets mis gegaan bij het verversen van uw gegevens</string>
+    <string name="dialog_faultyvaccination28June_refresh_error_message">Haal via de app uw gegevens opnieuw op.</string>
 </resources>
