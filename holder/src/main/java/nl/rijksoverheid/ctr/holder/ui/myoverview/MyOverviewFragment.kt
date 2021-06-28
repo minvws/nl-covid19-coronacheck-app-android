@@ -13,6 +13,7 @@ import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
 import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMyOverviewBinding
@@ -58,6 +59,8 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
             )
         })
 
+    private val dialogUtil: DialogUtil by inject()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -88,6 +91,23 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                     myOverviewItems = myOverviewItems
                 )
             })
+
+        myOverviewViewModel.myOverviewRefreshErrorEvent.observe(viewLifecycleOwner, EventObserver {
+            val message = when(it) {
+                MyOverviewError.Forced -> getString(R.string.dialog_faulty_vaccinations_warning)
+                else -> return@EventObserver
+            }
+            dialogUtil.presentDialog(
+                context = requireContext(),
+                title = R.string.my_overview_no_qr_replace_qr_title,
+                message = message,
+                positiveButtonText = R.string.app_status_internet_required_action,
+                positiveButtonCallback = {
+                    getQrCards(syncDatabase = true)
+                },
+                negativeButtonText = R.string.dialog_close,
+            )
+        })
     }
 
     private fun getQrCards(syncDatabase: Boolean) {

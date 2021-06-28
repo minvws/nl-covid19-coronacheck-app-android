@@ -280,4 +280,5 @@
     <string name="missing_events_description">Door drukte of een storing bij een van de partijen kunnen er gegevens missen. Probeer het eventueel later nog een keer.</string>
     <string name="dialog_vaccination_something_wrong_description"><![CDATA[Kloppen je naam en/of geboortedatum niet? Of staat er onjuiste informatie over je vaccinatie? Kijk hier voor meer informatie.]]></string>
     <string name="commercial_test_unique_code_hint_screenreader">Vul hier je ophaalcode in</string>
+    <string name="dialog_faulty_vaccinations_warning">In verband met een mogelijk foutieve QR code zijn de QR codes opnieuw gegenereerd</string>
 </resources>

@@ -11,11 +11,14 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
+import nl.rijksoverheid.ctr.holder.persistence.database.usecases.GreenCardsUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetMyOverviewItemsUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItems
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import timber.log.Timber
+import java.time.Instant
 import java.time.OffsetDateTime
+import java.time.ZoneId
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -26,6 +29,7 @@ import java.time.OffsetDateTime
  */
 abstract class MyOverviewViewModel : ViewModel() {
     open val myOverviewItemsLiveData: LiveData<Event<MyOverviewItems>> = MutableLiveData()
+    val myOverviewRefreshErrorEvent: LiveData<Event<MyOverviewError>> = MutableLiveData()
 
     abstract fun getSelectedType(): GreenCardType
 
@@ -40,7 +44,8 @@ abstract class MyOverviewViewModel : ViewModel() {
 class MyOverviewViewModelImpl(
     private val getMyOverviewItemsUseCase: GetMyOverviewItemsUseCase,
     private val holderDatabaseSyncer: HolderDatabaseSyncer,
-    private val persistenceManager: PersistenceManager
+    private val persistenceManager: PersistenceManager,
+    private val greenCardsUseCase: GreenCardsUseCase,
 ) : MyOverviewViewModel() {
 
     override fun getSelectedType(): GreenCardType {
@@ -54,9 +59,21 @@ class MyOverviewViewModelImpl(
 
         viewModelScope.launch {
             if (syncDatabase) {
-                holderDatabaseSyncer.sync(
-                    syncWithRemote = false
+
+                val mustSync = greenCardsUseCase.faultyVaccinations()
+
+                if (mustSync) {
+                    (myOverviewRefreshErrorEvent as MutableLiveData).postValue(Event(MyOverviewError.Forced))
+                }
+
+                val syncResult = holderDatabaseSyncer.sync(
+                    syncWithRemote = mustSync
                 )
+
+                if (mustSync && syncResult != DatabaseSyncerResult.Success) {
+                    (myOverviewRefreshErrorEvent as MutableLiveData).postValue(Event(MyOverviewError.Refresh))
+                }
+
             }
 
             (myOverviewItemsLiveData as MutableLiveData).postValue(
@@ -67,6 +84,20 @@ class MyOverviewViewModelImpl(
                     )
                 )
             )
+        }
+    }
+}
+
+sealed class MyOverviewError {
+    object Inactive: MyOverviewError()
+    object Refresh: MyOverviewError()
+    object Forced: MyOverviewError()
+
+    companion object {
+        fun get(expired: Boolean) = if (expired) {
+            Inactive
+        } else {
+            Refresh
         }
     }
 }
