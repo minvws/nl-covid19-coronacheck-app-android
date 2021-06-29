@@ -126,8 +126,8 @@ class InfoScreenUtilImpl(
 
     override fun getForPositiveTest(
         event: RemoteEventPositiveTest,
-        fullName: String,
         testDate: String,
+        fullName: String,
         birthDate: String
     ): InfoScreen {
 
