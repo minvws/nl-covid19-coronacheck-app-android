@@ -10,6 +10,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.usecases.GreenCardsUseCa
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetMyOverviewItemsUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItems
 import nl.rijksoverheid.ctr.shared.livedata.Event
+import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -37,6 +38,7 @@ class MyOverviewViewModelImpl(
     private val holderDatabaseSyncer: HolderDatabaseSyncer,
     private val persistenceManager: PersistenceManager,
     private val greenCardsUseCase: GreenCardsUseCase,
+    private val androidUtil: AndroidUtil,
 ) : MyOverviewViewModel() {
 
     override fun getSelectedType(): GreenCardType {
@@ -51,7 +53,7 @@ class MyOverviewViewModelImpl(
         viewModelScope.launch {
             if (syncDatabase) {
 
-                if (!persistenceManager.hasAppliedJune28Fix() && greenCardsUseCase.faultyVaccinationsJune28()) {
+                if (!androidUtil.isFirstInstall() && !persistenceManager.hasAppliedJune28Fix() && greenCardsUseCase.faultyVaccinationsJune28()) {
                     (myOverviewRefreshErrorEvent as MutableLiveData).postValue(Event(MyOverviewError.Forced))
 
                     val syncResult = holderDatabaseSyncer.sync(
