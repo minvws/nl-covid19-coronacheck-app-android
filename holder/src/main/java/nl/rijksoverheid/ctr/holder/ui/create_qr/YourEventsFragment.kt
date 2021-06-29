@@ -278,8 +278,8 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
             birthDate = birthDate
         )
 
-        val eventWidget = YourEventWidget(requireContext()).also {
-            it.setContent(
+        val eventWidget = YourEventWidget(requireContext()).apply {
+            setContent(
                 title = resources.getString(
                     R.string.retrieved_vaccination_title,
                     event.vaccination?.date?.formatMonth(),
@@ -318,9 +318,8 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
             birthDate = birthDate
         )
 
-        val eventWidget = YourEventWidget(requireContext()).also {
-
-            it.setContent(
+        val eventWidget = YourEventWidget(requireContext()).apply {
+            setContent(
                 title = getString(R.string.your_negative_test_results_row_title),
                 subtitle = getString(
                     R.string.your_negative_test_3_0_results_row_subtitle,
@@ -351,14 +350,13 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
 
         val infoScreen = infoScreenUtil.getForPositiveTest(
             event = event,
-            fullName = fullName,
             testDate = testDate,
+            fullName = fullName,
             birthDate = birthDate
         )
 
-        val eventWidget = YourEventWidget(requireContext()).also {
-
-            it.setContent(
+        val eventWidget = YourEventWidget(requireContext()).apply {
+            setContent(
                 title = getString(R.string.positive_test_title),
                 subtitle = getString(
                     R.string.your_negative_test_3_0_results_row_subtitle,
@@ -394,9 +392,8 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
             birthDate = birthDate
         )
 
-        val eventWidget = YourEventWidget(requireContext()).also {
-
-            it.setContent(
+        val eventWidget = YourEventWidget(requireContext()).apply {
+            setContent(
                 title = getString(R.string.positive_test_title),
                 subtitle = getString(
                     R.string.your_negative_test_3_0_results_row_subtitle,
