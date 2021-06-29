@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.shared.utils
 
 import android.content.Context
+import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
@@ -17,6 +18,7 @@ import androidx.security.crypto.MasterKeys
 interface AndroidUtil {
     fun isSmallScreen(): Boolean
     fun getMasterKeyAlias(): String
+    fun isFirstInstall(): Boolean
 }
 
 class AndroidUtilImpl(private val context: Context) : AndroidUtil {
@@ -43,4 +45,15 @@ class AndroidUtilImpl(private val context: Context) : AndroidUtil {
         } else {
             MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
         }
+
+    override fun isFirstInstall(): Boolean {
+        return try {
+            val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
+            val firstInstallTime = packageInfo.firstInstallTime
+            val lastUpdateTime = packageInfo.lastUpdateTime
+            firstInstallTime == lastUpdateTime
+        } catch (exc: PackageManager.NameNotFoundException) {
+            true
+        }
+    }
 }
