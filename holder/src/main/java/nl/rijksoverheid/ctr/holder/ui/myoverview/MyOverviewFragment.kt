@@ -93,21 +93,35 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
             })
 
         myOverviewViewModel.myOverviewRefreshErrorEvent.observe(viewLifecycleOwner, EventObserver {
-            val message = getString(if (it is MyOverviewError.Inactive) {
-                R.string.dialog_credentials_expired_no_internet
-            } else {
-                R.string.dialog_update_credentials_no_internet
-            })
-            dialogUtil.presentDialog(
-                context = requireContext(),
-                title = R.string.dialog_title_no_internet,
-                message = message,
-                positiveButtonText = R.string.app_status_internet_required_action,
-                positiveButtonCallback = {
-                    getQrCards(syncDatabase = true)
-                },
-                negativeButtonText = R.string.dialog_close,
-            )
+            when(it) {
+                MyOverviewError.Forced -> dialogUtil.presentDialog(
+                    context = requireContext(),
+                    title = R.string.dialog_faultyvaccination28June_title,
+                    message = getString(R.string.dialog_faultyvaccination28June_message),
+                    positiveButtonText = R.string.dialog_close,
+                    positiveButtonCallback = {},
+                )
+                MyOverviewError.Inactive -> dialogUtil.presentDialog(
+                    context = requireContext(),
+                    title = R.string.dialog_title_no_internet,
+                    message = getString(R.string.dialog_credentials_expired_no_internet),
+                    positiveButtonText = R.string.app_status_internet_required_action,
+                    positiveButtonCallback = {
+                        getQrCards(syncDatabase = true)
+                    },
+                    negativeButtonText = R.string.dialog_close,
+                )
+                MyOverviewError.Refresh -> dialogUtil.presentDialog(
+                    context = requireContext(),
+                    title = R.string.dialog_title_no_internet,
+                    message = getString(R.string.dialog_update_credentials_no_internet),
+                    positiveButtonText = R.string.app_status_internet_required_action,
+                    positiveButtonCallback = {
+                        getQrCards(syncDatabase = true)
+                    },
+                    negativeButtonText = R.string.dialog_close,
+                )
+            }
         })
     }
 

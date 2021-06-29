@@ -87,6 +87,14 @@ class TestResultsMigrationTest: AutoCloseKoinTest() {
         override fun setSelectedGreenCardType(greenCardType: GreenCardType) {
             TODO("Not yet implemented")
         }
+
+        override fun hasAppliedJune28Fix(): Boolean {
+            TODO("Not yet implemented")
+        }
+
+        override fun setJune28FixApplied(applied: Boolean) {
+            TODO("Not yet implemented")
+        }
     }
 }
 
