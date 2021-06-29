@@ -246,9 +246,6 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                     subtitle = getString(
                         R.string.your_negative_test_results_row_subtitle,
                         testDate,
-                        result.sampleDate.plusHours(
-                            cachedAppConfigUseCase.getCachedAppConfigMaxValidityHours().toLong()
-                        ).formatDateTime(requireContext()),
                         "${personalDetails.firstNameInitial} ${personalDetails.lastNameInitial} ${personalDetails.birthDay} ${personalDetails.birthMonth}"
                     ),
                     infoClickListener = {
