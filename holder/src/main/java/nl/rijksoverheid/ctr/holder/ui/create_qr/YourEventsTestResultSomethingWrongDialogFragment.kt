@@ -9,6 +9,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.design.ExpandedBottomSheetDialogFragment
+import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.DialogYourEventsResultSomethingWrongBinding
 
 /*
@@ -35,8 +36,15 @@ class YourEventsTestResultSomethingWrongDialogFragment : ExpandedBottomSheetDial
         super.onViewCreated(view, savedInstanceState)
         val binding = DialogYourEventsResultSomethingWrongBinding.bind(view)
 
+        val description =
+            if (args.protocolType is YourEventsFragmentType.RemoteProtocol3Type.Vaccinations) {
+                getString(R.string.dialog_vaccination_something_wrong_description)
+            } else {
+                getString(R.string.dialog_negative_test_result_something_wrong_description)
+            }
+
         binding.description.setHtmlText(
-            htmlText = args.description,
+            htmlText = description,
             htmlLinksEnabled = true
         )
 

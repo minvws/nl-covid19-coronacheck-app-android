@@ -451,11 +451,7 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
         binding.somethingWrongButton.setOnClickListener {
             findNavController().navigate(
                 YourEventsFragmentDirections.actionShowSomethingWrong(
-                    description = if (args.type is YourEventsFragmentType.RemoteProtocol3Type.Vaccinations) {
-                        getString(R.string.dialog_vaccination_something_wrong_description)
-                    } else {
-                        getString(R.string.dialog_negative_test_result_something_wrong_description)
-                    }
+                    protocolType = args.type
                 )
             )
         }
