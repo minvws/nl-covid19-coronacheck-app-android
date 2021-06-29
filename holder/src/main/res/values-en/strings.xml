@@ -86,7 +86,7 @@
     <string name="your_negative_test_results_description">This test result is retrieved from the test location.&lt;br\&gt;&lt;br\&gt;Is the below correct? Then you can convert the negative test result into a QR code. This is your test certificate.</string>
     <string name="your_negative_test_results_header">Retrieved test result</string>
     <string name="your_negative_test_results_row_title">Negative test result</string>
-    <string name="your_negative_test_results_row_subtitle"><![CDATA[Test date: %1$s<br/>Valid until: %2$s<br/>Your details:  %3$s]]></string>
+    <string name="your_negative_test_results_row_subtitle"><![CDATA[Test date: %1$s<br/>Your details: %2$s]]></string>
     <string name="your_negative_test_results_something_wrong_button">Is something wrong?</string>
     <string name="your_negative_test_results_row_personal_details">Identification details: %1$s</string>
     <string name="your_negative_test_results_row_button">Make QR code</string>
@@ -216,7 +216,7 @@
     <string name="dialog_negative_test_result_something_wrong_title">Something is wrong</string>
     <string name="dialog_negative_test_result_something_wrong_description"><![CDATA[Is your name or date of birth wrong? Look <a href="https://coronacheck.nl/en/guidepost">here</a> for more information.]]></string>
     <string name="validity_type_european_title">International</string>
-    <string name="validity_type_dutch_title">the Netherlands</string>
+    <string name="validity_type_dutch_title">The Netherlands</string>
     <string name="qr_explanation_title_domestic">About my Dutch QR code</string>
     <string name="qr_explanation_description_domestic"><![CDATA[Your Dutch QR code contains minimal data. The QR code doesn\'t say whether or not you have a test certificate or vaccination. It does say whether or not the QR code is valid. The QR code also contains several of your details. This is for verification purposes, to make sure this QR code belongs to you. The details consist of the first letter of your first name, the first letter of your last name, your birth month, and your day of birth. For security reasons, some details may disappear.<br/><br/>Your details: <b>%1$s</b><br/><br/>Always use the Dutch QR code within the Netherlands. The international QR code isn\'t valid in the Netherlands.]]></string>
     <string name="qr_explanation_title_eu">About my international QR code</string>
@@ -302,10 +302,4 @@
     <string name="my_overview_green_card_not_valid_title_recovery">About your recovery certificate</string>
     <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_recovery"><![CDATA[Your recovery certificate isn\'t valid in the Netherlands. You\'ve only got an international QR code.]]></string>
     <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_recovery"><![CDATA[Your recovery certificate isn\'t valid internationally. You\'ve only got a Dutch QR code.]]></string>
-    <string name="dialog_title_no_internet">Maak verbinding met het internet</string>
-    <string name="dialog_update_credentials_no_internet">De app ververst je QR-code op de achtergrond. Zo blijft je QR-code geldig. Je hebt internet nodig zodat de app dit regelmatig kan doen.</string>
-    <string name="dialog_credentials_expired_no_internet">Jouw QR-code is inactief. Maak verbinding met het internet zodat je QR-code weer geldig is.</string>
-    <string name="your_positive_test_description">Kloppen je gegevens? Dan kun je van je positieve testuitslag een QR-code maken. Dat is jouw bewijs.</string>
-    <string name="recovery_explanation_description"><![CDATA[De volgende gegevens zijn opgehaald bij de testlocatie:<br\><br\>Naam: <b>%1$s</b><br/>Geboortedatum: <b>%2$s</b><br/><br/>Testdatum: <b>%3$s</b><br/>Geldig vanaf: <b>%4$s</b><br/>Geldig tot: <b>%5$s</b><br/>Uniek certificaatnummer: <b>%6$s</b>]]></string>
-    <string name="rule_engine_no_positive_test_origin_description"><![CDATA[Op dit moment kunnen we geen bewijs maken van jouw positieve testuitslag. Dit kan verschillende oorzaken hebben. <a href="https://www.coronacheck.nl/wegwijzer">Lees hier meer.</a>]]></string>
 </resources>
