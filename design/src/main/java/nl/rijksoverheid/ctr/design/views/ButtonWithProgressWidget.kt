@@ -52,10 +52,10 @@ class ButtonWithProgressWidget @JvmOverloads constructor(context: Context, attrs
         binding.loading.visibility = VISIBLE
     }
 
-    fun idle() {
+    fun idle(isEnabled: Boolean) {
         binding.loading.visibility = GONE
         binding.button.text = buttonText
-        binding.button.isEnabled = true
+        binding.button.isEnabled = isEnabled
     }
 
     fun setEnabledButtonColor(@ColorRes color: Int) {
