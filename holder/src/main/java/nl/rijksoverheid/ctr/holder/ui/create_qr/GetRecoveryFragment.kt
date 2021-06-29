@@ -6,11 +6,10 @@ import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.databinding.FragmentGetVaccinationBinding
+import nl.rijksoverheid.ctr.holder.databinding.FragmentGetRecoveryBinding
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigiDFragment
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigidResult
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.EventsResult
-import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -22,27 +21,25 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class GetVaccinationFragment : DigiDFragment(R.layout.fragment_get_vaccination) {
+class GetRecoveryFragment : DigiDFragment(R.layout.fragment_get_recovery) {
 
     private val dialogUtil: DialogUtil by inject()
-    private val getVaccinationViewModel: GetVaccinationViewModel by viewModel()
+    private val getRecoveryViewModel: GetRecoveryViewModel by viewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val binding = FragmentGetVaccinationBinding.bind(view)
+        val binding = FragmentGetRecoveryBinding.bind(view)
 
         digidViewModel.loading.observe(viewLifecycleOwner, EventObserver {
-            binding.button.isEnabled = !it
             (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
         })
 
-        getVaccinationViewModel.loading.observe(viewLifecycleOwner, EventObserver {
-            binding.button.isEnabled = !it
+        getRecoveryViewModel.loading.observe(viewLifecycleOwner, EventObserver {
             (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
         })
 
-        getVaccinationViewModel.eventsResult.observe(viewLifecycleOwner, EventObserver {
+        getRecoveryViewModel.eventsResult.observe(viewLifecycleOwner, EventObserver {
             when (it) {
                 is EventsResult.Success -> {
                     if (it.missingEvents) {
@@ -55,11 +52,11 @@ class GetVaccinationFragment : DigiDFragment(R.layout.fragment_get_vaccination) 
                             onDismissCallback = {
                                 findNavController().navigate(
                                     GetVaccinationFragmentDirections.actionYourEvents(
-                                        type = YourEventsFragmentType.RemoteProtocol3Type.Vaccinations(
+                                        type = YourEventsFragmentType.RemoteProtocol3Type.PositiveTestsAndRecoveries(
                                             remoteEvents = it.signedModels.map { signedModel -> signedModel.model to signedModel.rawResponse }
                                                 .toMap()
                                         ),
-                                        toolbarTitle = getString(R.string.your_vaccination_result_toolbar_title)
+                                        toolbarTitle = getString(R.string.your_positive_test_toolbar_title)
                                     )
                                 )
                             }
@@ -67,11 +64,11 @@ class GetVaccinationFragment : DigiDFragment(R.layout.fragment_get_vaccination) 
                     } else {
                         findNavController().navigate(
                             GetVaccinationFragmentDirections.actionYourEvents(
-                                type = YourEventsFragmentType.RemoteProtocol3Type.Vaccinations(
+                                type = YourEventsFragmentType.RemoteProtocol3Type.PositiveTestsAndRecoveries(
                                     remoteEvents = it.signedModels.map { signedModel -> signedModel.model to signedModel.rawResponse }
                                         .toMap()
                                 ),
-                                toolbarTitle = getString(R.string.your_vaccination_result_toolbar_title)
+                                toolbarTitle = getString(R.string.your_positive_test_toolbar_title)
                             )
                         )
                     }
@@ -80,7 +77,7 @@ class GetVaccinationFragment : DigiDFragment(R.layout.fragment_get_vaccination) 
                     if (it.missingEvents) {
                         findNavController().navigate(
                             GetVaccinationFragmentDirections.actionCouldNotCreateQr(
-                                toolbarTitle = getString(R.string.your_vaccination_result_toolbar_title),
+                                toolbarTitle = getString(R.string.your_positive_test_toolbar_title),
                                 title = getString(R.string.missing_events_title),
                                 description = getString(R.string.missing_events_description)
                             )
@@ -88,14 +85,32 @@ class GetVaccinationFragment : DigiDFragment(R.layout.fragment_get_vaccination) 
                     } else {
                         findNavController().navigate(
                             GetVaccinationFragmentDirections.actionCouldNotCreateQr(
-                                toolbarTitle = getString(R.string.your_vaccination_result_toolbar_title),
-                                title = getString(R.string.no_vaccinations_title),
-                                description = getString(R.string.no_vaccinations_description)
+                                toolbarTitle = getString(R.string.your_positive_test_toolbar_title),
+                                title = getString(R.string.no_positive_test_result_title),
+                                description = getString(R.string.no_positive_test_result_description)
                             )
                         )
                     }
                 }
-                is EventsResult.Error.NetworkError -> {
+                is EventsResult.Error.CoronaCheckError.ServerError -> {
+                    findNavController().navigate(
+                        GetVaccinationFragmentDirections.actionCouldNotCreateQr(
+                            toolbarTitle = getString(R.string.your_positive_test_toolbar_title),
+                            title = getString(R.string.coronacheck_error_title),
+                            description = getString(R.string.coronacheck_error_description, it.httpCode.toString())
+                        )
+                    )
+                }
+                EventsResult.Error.EventProviderError.ServerError -> {
+                    findNavController().navigate(
+                        GetVaccinationFragmentDirections.actionCouldNotCreateQr(
+                            toolbarTitle = getString(R.string.your_positive_test_toolbar_title),
+                            title = getString(R.string.event_provider_error_title),
+                            description = getString(R.string.event_provider_error_description)
+                        )
+                    )
+                }
+                EventsResult.Error.NetworkError -> {
                     dialogUtil.presentDialog(
                         context = requireContext(),
                         title = R.string.dialog_no_internet_connection_title,
@@ -107,31 +122,13 @@ class GetVaccinationFragment : DigiDFragment(R.layout.fragment_get_vaccination) 
                         negativeButtonText = R.string.dialog_close
                     )
                 }
-                is EventsResult.Error.EventProviderError.ServerError -> {
-                    findNavController().navigate(
-                        GetVaccinationFragmentDirections.actionCouldNotCreateQr(
-                            toolbarTitle = getString(R.string.your_vaccination_result_toolbar_title),
-                            title = getString(R.string.event_provider_error_title),
-                            description = getString(R.string.event_provider_error_description)
-                        )
-                    )
-                }
-                is EventsResult.Error.CoronaCheckError.ServerError -> {
-                    findNavController().navigate(
-                        GetVaccinationFragmentDirections.actionCouldNotCreateQr(
-                            toolbarTitle = getString(R.string.your_vaccination_result_toolbar_title),
-                            title = getString(R.string.coronacheck_error_title),
-                            description = getString(R.string.coronacheck_error_description, it.httpCode.toString())
-                        )
-                    )
-                }
             }
         })
 
         digidViewModel.digidResultLiveData.observe(viewLifecycleOwner, EventObserver {
             when (it) {
                 is DigidResult.Success -> {
-                    getVaccinationViewModel.getEvents(it.jwt)
+                    getRecoveryViewModel.getEvents(it.jwt)
                 }
                 is DigidResult.Failed -> {
                     dialogUtil.presentDialog(
@@ -148,14 +145,5 @@ class GetVaccinationFragment : DigiDFragment(R.layout.fragment_get_vaccination) 
         binding.button.setOnClickListener {
             loginWithDigiD()
         }
-
-        binding.noDigidButton.setOnClickListener {
-            getString(R.string.no_digid_url).launchUrl(requireContext())
-        }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        (parentFragment?.parentFragment as HolderMainFragment).presentLoading(false)
     }
 }

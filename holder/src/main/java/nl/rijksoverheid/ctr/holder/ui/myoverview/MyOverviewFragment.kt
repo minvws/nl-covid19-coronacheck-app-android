@@ -226,7 +226,10 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                                             ))
                                         }
                                         is OriginType.Recovery -> {
-                                            // TODO
+                                            findNavControllerSafety()?.navigate(MyOverviewFragmentDirections.actionShowQrExplanation(
+                                                title = getString(R.string.my_overview_green_card_not_valid_title_recovery),
+                                                description = getString(R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_recovery)
+                                            ))
                                         }
                                     }
                                 }
@@ -245,7 +248,10 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                                             ))
                                         }
                                         is OriginType.Recovery -> {
-                                            // TODO
+                                            findNavControllerSafety()?.navigate(MyOverviewFragmentDirections.actionShowQrExplanation(
+                                                title = getString(R.string.my_overview_green_card_not_valid_title_recovery),
+                                                description = getString(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_recovery)
+                                            ))
                                         }
                                     }
                                 }

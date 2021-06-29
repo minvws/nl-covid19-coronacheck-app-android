@@ -68,9 +68,17 @@ class HolderDatabaseSyncerImpl(
      */
     private suspend fun removeExpiredEventGroups(events: List<EventGroupEntity>) {
         events.forEach {
-            val expireDate =
-                if (it.type == EventType.Vaccination) cachedAppConfigUseCase.getCachedAppConfigVaccinationEventValidity()
-                    .toLong() else cachedAppConfigUseCase.getCachedAppConfigMaxValidityHours()
+            val expireDate = when (it.type) {
+                is EventType.Vaccination -> {
+                    cachedAppConfigUseCase.getCachedAppConfigVaccinationEventValidity()
+                }
+                is EventType.Test -> {
+                    cachedAppConfigUseCase.getCachedAppConfigMaxValidityHours()
+                }
+                is EventType.Recovery -> {
+                    cachedAppConfigUseCase.getCachedAppConfigRecoveryEventValidity()
+                }
+            }
 
             if (it.maxIssuedAt.plusHours(expireDate.toLong()) <= OffsetDateTime.now()) {
                 holderDatabase.eventGroupDao().delete(it)
@@ -114,8 +122,6 @@ class HolderDatabaseSyncerImpl(
                 DatabaseSyncerResult.NetworkError
             } catch (e: Exception) {
                 DatabaseSyncerResult.ServerError(200)
-            } finally {
-                workerManagerWrapper.scheduleNextCredentialsRefreshIfAny()
             }
         } else {
             return DatabaseSyncerResult.Success

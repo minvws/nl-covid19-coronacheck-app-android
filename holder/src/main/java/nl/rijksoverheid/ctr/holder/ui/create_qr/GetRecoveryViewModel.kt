@@ -9,6 +9,13 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.EventsResult
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetEventsUseCase
 import nl.rijksoverheid.ctr.shared.livedata.Event
 
+abstract class GetRecoveryViewModel : ViewModel() {
+    val loading: LiveData<Event<Boolean>> = MutableLiveData()
+    val eventsResult: LiveData<Event<EventsResult>> = MutableLiveData()
+
+    abstract fun getEvents(jwt: String)
+}
+
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
  *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
@@ -16,23 +23,16 @@ import nl.rijksoverheid.ctr.shared.livedata.Event
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-abstract class ChooseProviderViewModel : ViewModel() {
-    val loading: LiveData<Event<Boolean>> = MutableLiveData()
-    val eventsResult: LiveData<Event<EventsResult>> = MutableLiveData()
-
-    abstract fun getEvents(digidToken: String)
-}
-
-class ChooseProviderViewModelImpl(
+class GetRecoveryViewModelImpl(
     private val eventUseCase: GetEventsUseCase
-) : ChooseProviderViewModel() {
+) : GetRecoveryViewModel() {
 
-    override fun getEvents(digidToken: String) {
+    override fun getEvents(jwt: String) {
         (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {
             try {
                 (eventsResult as MutableLiveData).value =
-                    Event(eventUseCase.getNegativeTestEvents(digidToken))
+                    Event(eventUseCase.getPositiveAndRecoveryEvents(jwt))
             } finally {
                 loading.value = Event(false)
             }

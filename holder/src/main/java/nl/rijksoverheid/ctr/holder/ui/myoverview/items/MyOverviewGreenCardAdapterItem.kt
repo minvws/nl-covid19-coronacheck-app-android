@@ -83,12 +83,12 @@ class MyOverviewGreenCardAdapterItem(
             }
         }
 
-        viewBinding.buttonWithProgressWidgetContainer.isButtonEnabled(credentialState is MyOverviewItem.GreenCardItem.CredentialState.HasCredential)
-
         if (loading) {
             viewBinding.buttonWithProgressWidgetContainer.loading()
         } else {
-            viewBinding.buttonWithProgressWidgetContainer.idle()
+            viewBinding.buttonWithProgressWidgetContainer.idle(
+                isEnabled = credentialState is MyOverviewItem.GreenCardItem.CredentialState.HasCredential
+            )
         }
 
     }
