@@ -51,18 +51,22 @@ class MyOverviewViewModelImpl(
         viewModelScope.launch {
             if (syncDatabase) {
 
-                val mustSync = greenCardsUseCase.faultyVaccinationsJune28()
-
-                if (mustSync) {
+                if (!persistenceManager.hasAppliedJune28Fix() && greenCardsUseCase.faultyVaccinationsJune28()) {
                     (myOverviewRefreshErrorEvent as MutableLiveData).postValue(Event(MyOverviewError.Forced))
-                }
 
-                val syncResult = holderDatabaseSyncer.sync(
-                    syncWithRemote = mustSync
-                )
+                    val syncResult = holderDatabaseSyncer.sync(
+                        syncWithRemote = true
+                    )
 
-                if (mustSync && syncResult != DatabaseSyncerResult.Success) {
-                    (myOverviewRefreshErrorEvent as MutableLiveData).postValue(Event(MyOverviewError.Refresh))
+                    if (syncResult != DatabaseSyncerResult.Success) {
+                        myOverviewRefreshErrorEvent.postValue(Event(MyOverviewError.Refresh))
+                    } else {
+                        persistenceManager.setJune28FixApplied(true)
+                    }
+                } else {
+                    holderDatabaseSyncer.sync(
+                        syncWithRemote = false
+                    )
                 }
 
             }
