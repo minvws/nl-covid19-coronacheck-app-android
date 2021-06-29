@@ -7,12 +7,10 @@ import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.dao.EventGroupDao
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventType
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsVaccinations
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import org.junit.Before
 import org.junit.Test
 import java.time.LocalDate
-import java.time.ZoneOffset.UTC
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -46,57 +44,102 @@ class SaveEventsUseCaseImplTest {
 
     @Test
     fun `when saving vaccinations it should be inserted into the database with old one deleted`() {
-        val remoteEvents = createRemoteEvents()
+        val remoteProtocol3 = createRemoteProtocol3(createVaccination())
         val byteArray = ByteArray(1)
-        val vaccinations = mapOf(remoteEvents to byteArray)
+        val remoteProtocols3 = mapOf(remoteProtocol3 to byteArray)
 
         runBlocking {
-            saveEventsUseCaseImpl.saveVaccinations(vaccinations)
+            saveEventsUseCaseImpl.saveRemoteProtocols3(
+                remoteProtocols3,
+                EventType.Vaccination
+            )
 
             coVerify { eventGroupDao.deleteAllOfType(EventType.Vaccination) }
             coVerify {
                 eventGroupDao.insertAll(
-                    listOf(
-                        mapEventsToEntity(remoteEvents, byteArray)
-                    )
+                    remoteProtocols3.map {
+                        mapEventsToEntity(
+                            it.key,
+                            it.value,
+                            EventType.Vaccination
+                        )
+                    }
+                )
+            }
+        }
+    }
+
+    @Test
+    fun `when saving recoveries it should be inserted into the database with old one deleted`() {
+        val remoteProtocol3 = createRemoteProtocol3(createRecovery())
+        val byteArray = ByteArray(1)
+        val remoteProtocols3 = mapOf(remoteProtocol3 to byteArray)
+
+        runBlocking {
+            saveEventsUseCaseImpl.saveRemoteProtocols3(
+                remoteProtocols3,
+                EventType.Recovery
+            )
+
+            coVerify { eventGroupDao.deleteAllOfType(EventType.Recovery) }
+            coVerify {
+                eventGroupDao.insertAll(
+                    remoteProtocols3.map {
+                        mapEventsToEntity(
+                            it.key,
+                            it.value,
+                            EventType.Recovery
+                        )
+                    }
                 )
             }
         }
     }
 
     private fun mapEventsToEntity(
-        remoteEvents: RemoteEventsVaccinations,
-        byteArray: ByteArray
+        remoteEvents: RemoteProtocol3,
+        byteArray: ByteArray,
+        eventType: EventType
     ) = EventGroupEntity(
         walletId = 1,
         providerIdentifier = remoteEvents.providerIdentifier,
-        type = EventType.Vaccination,
-        maxIssuedAt = remoteEvents.events!!.first().vaccination!!.date!!.atStartOfDay()
-            .atOffset(UTC)!!,
+        type = eventType,
+        maxIssuedAt = remoteEvents.events!!.first().getDate()!!,
         jsonData = byteArray
     )
 
-    private fun createRemoteEvents() = RemoteEventsVaccinations(
-        events = listOf(
-            RemoteEventsVaccinations.Event(
-                type = null,
-                unique = null,
-                vaccination = RemoteEventsVaccinations.Event.Vaccination(
-                    date = LocalDate.of(2000, 1, 1),
-                    hpkCode = null,
-                    type = null,
-                    brand = null,
-                    completedByMedicalStatement = null,
-                    doseNumber = null,
-                    totalDoses = null,
-                    country = null,
-                    manufacturer = null,
-                )
-            )
-        ),
+    private fun createRemoteProtocol3(remoteEvent: RemoteEvent) = RemoteProtocol3(
+        events = listOf(remoteEvent),
         protocolVersion = "pro",
         providerIdentifier = "ide",
         status = RemoteProtocol.Status.COMPLETE,
         holder = null
+    )
+
+    private fun createVaccination() = RemoteEventVaccination(
+        type = null,
+        unique = null,
+        vaccination = RemoteEventVaccination.Vaccination(
+            date = LocalDate.of(2000, 1, 1),
+            hpkCode = null,
+            type = null,
+            brand = null,
+            completedByMedicalStatement = null,
+            doseNumber = null,
+            totalDoses = null,
+            country = null,
+            manufacturer = null,
+        )
+    )
+
+    private fun createRecovery() = RemoteEventRecovery(
+        type = null,
+        unique = "uni",
+        isSpecimen = true,
+        recovery = RemoteEventRecovery.Recovery(
+            sampleDate = LocalDate.of(2000, 1, 1),
+            validFrom = LocalDate.of(2000, 2, 1),
+            validUntil = LocalDate.of(2000, 7, 1)
+        )
     )
 }
