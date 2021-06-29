@@ -280,8 +280,8 @@
     <string name="missing_events_description">Due to increased traffic or an outage at one of the parties, some details may be missing. Please try again later.</string>
     <string name="dialog_vaccination_something_wrong_description"><![CDATA[Is your name or date of birth wrong? Or are your vaccination details incorrect? Look <a href="https://coronacheck.nl/en/guidepost">here</a> for more information.]]></string>
     <string name="commercial_test_unique_code_hint_screenreader">Enter your retrieval code here</string>
-    <string name="dialog_faultyvaccination28June_title">Due to a technical error you’ve wrongly received a Dutch vaccination certificate.</string>
-    <string name="dialog_faultyvaccination28June_message">This was corrected.</string>
+    <string name="dialog_faultyvaccination28June_title">Vaccination certificate corrected</string>
+    <string name="dialog_faultyvaccination28June_message">Due to a technical error you’ve wrongly received a Dutch vaccination certificate. This was corrected.</string>
     <string name="dialog_faultyvaccination28June_refresh_error_title">Something went wrong while refreshing your details</string>
     <string name="dialog_faultyvaccination28June_refresh_error_message">Please retrieve your details again via the app.</string>
 </resources>
