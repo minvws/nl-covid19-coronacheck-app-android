@@ -4,18 +4,12 @@ import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
-import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
+import nl.rijksoverheid.ctr.holder.persistence.database.usecases.GreenCardsUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetMyOverviewItemsUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItems
 import nl.rijksoverheid.ctr.shared.livedata.Event
-import timber.log.Timber
-import java.time.OffsetDateTime
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -26,6 +20,7 @@ import java.time.OffsetDateTime
  */
 abstract class MyOverviewViewModel : ViewModel() {
     open val myOverviewItemsLiveData: LiveData<Event<MyOverviewItems>> = MutableLiveData()
+    val myOverviewRefreshErrorEvent: LiveData<Event<MyOverviewError>> = MutableLiveData()
 
     abstract fun getSelectedType(): GreenCardType
 
@@ -40,7 +35,8 @@ abstract class MyOverviewViewModel : ViewModel() {
 class MyOverviewViewModelImpl(
     private val getMyOverviewItemsUseCase: GetMyOverviewItemsUseCase,
     private val holderDatabaseSyncer: HolderDatabaseSyncer,
-    private val persistenceManager: PersistenceManager
+    private val persistenceManager: PersistenceManager,
+    private val greenCardsUseCase: GreenCardsUseCase,
 ) : MyOverviewViewModel() {
 
     override fun getSelectedType(): GreenCardType {
@@ -54,9 +50,25 @@ class MyOverviewViewModelImpl(
 
         viewModelScope.launch {
             if (syncDatabase) {
-                holderDatabaseSyncer.sync(
-                    syncWithRemote = false
-                )
+
+                if (!persistenceManager.hasAppliedJune28Fix() && greenCardsUseCase.faultyVaccinationsJune28()) {
+                    (myOverviewRefreshErrorEvent as MutableLiveData).postValue(Event(MyOverviewError.Forced))
+
+                    val syncResult = holderDatabaseSyncer.sync(
+                        syncWithRemote = true
+                    )
+
+                    if (syncResult != DatabaseSyncerResult.Success) {
+                        myOverviewRefreshErrorEvent.postValue(Event(MyOverviewError.Refresh))
+                    } else {
+                        persistenceManager.setJune28FixApplied(true)
+                    }
+                } else {
+                    holderDatabaseSyncer.sync(
+                        syncWithRemote = false
+                    )
+                }
+
             }
 
             (myOverviewItemsLiveData as MutableLiveData).postValue(
@@ -67,6 +79,20 @@ class MyOverviewViewModelImpl(
                     )
                 )
             )
+        }
+    }
+}
+
+sealed class MyOverviewError {
+    object Inactive: MyOverviewError()
+    object Refresh: MyOverviewError()
+    object Forced: MyOverviewError()
+
+    companion object {
+        fun get(expired: Boolean) = if (expired) {
+            Inactive
+        } else {
+            Refresh
         }
     }
 }

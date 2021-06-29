@@ -337,6 +337,14 @@ fun fakePersistenceManager(
         override fun setSelectedGreenCardType(greenCardType: GreenCardType) {
 
         }
+
+        override fun hasAppliedJune28Fix(): Boolean {
+            TODO("Not yet implemented")
+        }
+
+        override fun setJune28FixApplied(applied: Boolean) {
+            TODO("Not yet implemented")
+        }
     }
 }
 
