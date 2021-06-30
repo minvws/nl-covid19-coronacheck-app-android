@@ -1,11 +1,13 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
+import androidx.room.withTransaction
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventType
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEvent
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
 import java.time.OffsetDateTime
-import java.time.ZoneOffset
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -16,12 +18,18 @@ import java.time.ZoneOffset
  */
 interface SaveEventsUseCase {
     suspend fun saveNegativeTest2(negativeTest2: RemoteTestResult2, rawResponse: ByteArray)
-    suspend fun saveRemoteProtocols3(remoteProtocols3: Map<RemoteProtocol3, ByteArray>, eventType: EventType)
+    suspend fun saveRemoteProtocols3(
+        remoteProtocols3: Map<RemoteProtocol3, ByteArray>,
+        eventType: EventType
+    )
 }
 
 class SaveEventsUseCaseImpl(private val holderDatabase: HolderDatabase) : SaveEventsUseCase {
 
-    override suspend fun saveNegativeTest2(negativeTest2: RemoteTestResult2, rawResponse: ByteArray) {
+    override suspend fun saveNegativeTest2(
+        negativeTest2: RemoteTestResult2,
+        rawResponse: ByteArray
+    ) {
         // Make remote test results to event group entities to save in the database
         val entity = EventGroupEntity(
             walletId = 1,
@@ -36,7 +44,10 @@ class SaveEventsUseCaseImpl(private val holderDatabase: HolderDatabase) : SaveEv
     }
 
 
-    override suspend fun saveRemoteProtocols3(remoteProtocols3: Map<RemoteProtocol3, ByteArray>, eventType: EventType) {
+    override suspend fun saveRemoteProtocols3(
+        remoteProtocols3: Map<RemoteProtocol3, ByteArray>,
+        eventType: EventType
+    ) {
         val entities = remoteProtocols3.map { remoteProtocol3 ->
             val remoteEvents = remoteProtocol3.key.events ?: listOf()
             EventGroupEntity(
@@ -49,10 +60,23 @@ class SaveEventsUseCaseImpl(private val holderDatabase: HolderDatabase) : SaveEv
         }
 
         // Save entity in database
-        holderDatabase.eventGroupDao().insertAll(entities)
+        holderDatabase.run {
+            withTransaction {
+                // Delete all previous events of type Vaccination or Recovery so that if
+                // for example person a has vaccination events saved, person b vaccination
+                // gets overwritten. This is just a temporary quick fix until we support
+                // multiple wallets in the app
+                if (eventType == EventType.Vaccination || eventType == EventType.Recovery) {
+                    eventGroupDao().deleteAllOfType(eventType)
+                }
+                eventGroupDao().insertAll(entities)
+            }
+        }
     }
 
     private fun getMaxIssuedAt(remoteEvents: List<RemoteEvent>): OffsetDateTime {
-        return remoteEvents.map { event -> event.getDate() }.maxByOrNull { date -> date?.toEpochSecond() ?: error("Date should not be null") } ?: error("At least one event must be present with a date")
+        return remoteEvents.map { event -> event.getDate() }
+            .maxByOrNull { date -> date?.toEpochSecond() ?: error("Date should not be null") }
+            ?: error("At least one event must be present with a date")
     }
 }
