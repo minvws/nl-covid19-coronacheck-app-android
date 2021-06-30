@@ -62,6 +62,10 @@ class SaveEventsUseCaseImpl(private val holderDatabase: HolderDatabase) : SaveEv
         // Save entity in database
         holderDatabase.run {
             withTransaction {
+                // Delete all previous events of type Vaccination or Recovery so that if
+                // for example person a has vaccination events saved, person b vaccination
+                // gets overwritten. This is just a temporary quick fix until we support
+                // multiple wallets in the app
                 if (eventType == EventType.Vaccination || eventType == EventType.Recovery) {
                     eventGroupDao().deleteAllOfType(eventType)
                 }
