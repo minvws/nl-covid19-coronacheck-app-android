@@ -74,9 +74,9 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
 
         _binding = FragmentQrCodeBinding.bind(view)
 
-        qrCodeViewModel.qrCodeDataLiveData.observe(viewLifecycleOwner) { viewData ->
-            binding.image.setImageBitmap(viewData.qrCodeData.bitmap)
-            binding.animation.setWidget(viewData.animationResource, viewData.backgroundResource)
+        qrCodeViewModel.qrCodeDataLiveData.observe(viewLifecycleOwner) { qrCodeData ->
+            binding.image.setImageBitmap(qrCodeData.bitmap)
+            binding.animation.setWidget(qrCodeData.animationResource, qrCodeData.backgroundResource)
             presentQrLoading(false)
 
             // Nullable so tests don't trip over parentFragment
@@ -88,14 +88,14 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
                         setOnMenuItemClickListener {
                             if (it.itemId == R.id.action_show_qr_explanation) {
 
-                                when (viewData.qrCodeData) {
+                                when (qrCodeData) {
                                     is QrCodeData.Domestic -> {
                                         val personalDetails =
                                             personalDetailsUtil.getPersonalDetails(
-                                                firstNameInitial = viewData.qrCodeData.readDomesticCredential.firstNameInitial,
-                                                lastNameInitial = viewData.qrCodeData.readDomesticCredential.lastNameInitial,
-                                                birthDay = viewData.qrCodeData.readDomesticCredential.birthDay,
-                                                birthMonth = viewData.qrCodeData.readDomesticCredential.birthMonth
+                                                firstNameInitial = qrCodeData.readDomesticCredential.firstNameInitial,
+                                                lastNameInitial = qrCodeData.readDomesticCredential.lastNameInitial,
+                                                birthDay = qrCodeData.readDomesticCredential.birthDay,
+                                                birthMonth = qrCodeData.readDomesticCredential.birthMonth
                                             )
 
                                         val infoScreen = infoScreenUtil.getForDomesticQr(
@@ -111,7 +111,7 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
                                         when (args.data.originType) {
                                             is OriginType.Test -> {
                                                 val infoScreen = infoScreenUtil.getForEuropeanTestQr(
-                                                    viewData.qrCodeData.readEuropeanCredential
+                                                    qrCodeData.readEuropeanCredential
                                                 )
 
                                                 findNavController().navigate(QrCodeFragmentDirections.actionShowQrExplanation(
@@ -121,7 +121,7 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
                                             }
                                             is OriginType.Vaccination -> {
                                                 val infoScreen = infoScreenUtil.getForEuropeanVaccinationQr(
-                                                    viewData.qrCodeData.readEuropeanCredential
+                                                    qrCodeData.readEuropeanCredential
                                                 )
 
                                                 findNavController().navigate(QrCodeFragmentDirections.actionShowQrExplanation(
@@ -131,7 +131,7 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
                                             }
                                             is OriginType.Recovery -> {
                                                 val infoScreen = infoScreenUtil.getForEuropeanRecoveryQr(
-                                                    viewData.qrCodeData.readEuropeanCredential
+                                                    qrCodeData.readEuropeanCredential
                                                 )
 
                                                 findNavController().navigate(QrCodeFragmentDirections.actionShowQrExplanation(
