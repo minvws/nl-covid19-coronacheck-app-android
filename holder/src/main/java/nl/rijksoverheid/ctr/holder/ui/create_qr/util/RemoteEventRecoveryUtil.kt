@@ -12,6 +12,6 @@ interface RemoteEventRecoveryUtil {
 class RemoteEventRecoveryUtilImpl(private val clock: Clock): RemoteEventRecoveryUtil {
 
     override fun isExpired(remoteEventRecovery: RemoteEvent): Boolean {
-        return OffsetDateTime.now(clock).minusDays(180) > remoteEventRecovery.getDate()
+        return OffsetDateTime.now(clock).minusDays(180) >= remoteEventRecovery.getDate()
     }
 }
