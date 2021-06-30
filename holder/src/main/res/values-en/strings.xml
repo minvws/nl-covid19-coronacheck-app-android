@@ -189,9 +189,9 @@
     <string name="create_qr_explanation_description"><![CDATA[The app makes a QR code in three steps. This QR code is your personal certificate.<br/><br/><b>1. Choose the type of certificate</b><br/>Choose to create a vaccination certificate, a test certificate or a recovery certificate.<br/><br/><b>2. Automatically retrieve data </b><br/>The app directly retrieves the data of your vaccination, test result or recovery.<br/><br/><b>  3. QR codes are ready </b><br/>The app generates a QR code for the Netherlands and one for other countries. <br/><br/>]]></string>
     <string name="qr_code_type_title">What kind of certificate would you like to add?</string>
     <string name="qr_code_type_description">Indicate what kind of certificate you would like to add. You can have multiple certificates.</string>
-    <string name="qr_code_type_negative_test_title">A negative test result</string>
+    <string name="qr_code_type_negative_test_title">A test certificate</string>
     <string name="qr_code_type_negative_test_description">The test proves I do not have coronavirus</string>
-    <string name="qr_code_type_vaccination_title">A vaccination</string>
+    <string name="qr_code_type_vaccination_title">A vaccination certificate</string>
     <string name="qr_code_type_vaccination_description">I\'ve had my injection or injections</string>
     <string name="get_vaccination_title">Retrieve vaccination details</string>
     <string name="get_vaccination_description"><![CDATA[Got vaccinated? Log in with DigiD. Details regarding your vaccination will be retrieved automatically. You only need one injection to make an international QR-code. For a Dutch QR code you need to be fully vaccinated. <br/><br/>Didn\'t get an injection yet? Get vaccinated first.]]></string>
@@ -297,7 +297,7 @@
     <string name="no_positive_test_result_description"><![CDATA[<p>There is no positive test result available.<p><p>Got tested recently? It can take a few hours until your details are available. Try again later.</p>]]></string>
     <string name="positive_test_not_valid_title">Positive test result is not valid</string>
     <string name="positive_test_not_valid_description">Have you been tested more than 180 days ago? Then your test result is no longer valid. In this case, you cannot create a recovery certificate.</string>
-    <string name="qr_code_type_recovery_title">Recovery certificate</string>
+    <string name="qr_code_type_recovery_title">A recovery certificate</string>
     <string name="qr_code_type_recovery_description">The test proves I have coronavirus</string>
     <string name="your_test_result_explanation_positive_test_result">positive (corona)</string>
     <string name="recovery_explanation_description"><![CDATA[The following details were retrieved at the test location:<br\><br\>Name: <b>%1$s</b><br/>Date of birth: <b>%2$s</b><br/><br/>Test date: <b>%3$s</b><br/>Valid from: <b>%4$s</b><br/>Valid until: <b>%5$s</b><br/>Unique certificate identifier: <b>%6$s</b>]]></string>
