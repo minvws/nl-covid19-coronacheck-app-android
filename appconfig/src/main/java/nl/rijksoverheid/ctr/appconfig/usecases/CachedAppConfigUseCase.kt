@@ -40,6 +40,7 @@ class CachedAppConfigUseCaseImpl constructor(
         return try {
             appConfigStorageManager.getFileAsBufferedSource(configFile)?.readUtf8()?.toObject(moshi)
         } catch (exc: Exception) {
+            configFile.delete()
             AppConfig()
         }
     }
