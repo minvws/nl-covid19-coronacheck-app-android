@@ -70,8 +70,7 @@ class GetRecoveryFragment : DigiDFragment(R.layout.fragment_get_recovery) {
                                     findNavController().navigate(
                                         GetRecoveryFragmentDirections.actionYourEvents(
                                             type = YourEventsFragmentType.RemoteProtocol3Type.PositiveTestsAndRecoveries(
-                                                remoteEvents = it.signedModels.map { signedModel -> signedModel.model to signedModel.rawResponse }
-                                                    .toMap()
+                                                remoteEvents = signedModelsWithRawResponse
                                             ),
                                             toolbarTitle = getString(R.string.your_positive_test_toolbar_title)
                                         )
