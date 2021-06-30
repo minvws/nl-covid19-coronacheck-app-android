@@ -11,8 +11,7 @@ import nl.rijksoverheid.ctr.api.signing.certificates.ROOT_CA_G3
 import nl.rijksoverheid.ctr.appconfig.usecases.DeviceRootedUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.DeviceRootedUseCaseImpl
 import nl.rijksoverheid.ctr.holder.BuildConfig
-import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
-import nl.rijksoverheid.ctr.holder.persistence.SharedPreferencesPersistenceManager
+import nl.rijksoverheid.ctr.holder.persistence.*
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncerImpl
@@ -64,7 +63,7 @@ fun holderModule(baseUrl: String) = module {
         HolderDatabase.createInstance(androidContext(), get())
     }
 
-    factory<HolderDatabaseSyncer> { HolderDatabaseSyncerImpl(get(), get(), get(), get(), get()) }
+    factory<HolderDatabaseSyncer> { HolderDatabaseSyncerImpl(get(), get(), get(), get(), get(), get()) }
 
     single<PersistenceManager> {
         SharedPreferencesPersistenceManager(
@@ -125,6 +124,8 @@ fun holderModule(baseUrl: String) = module {
 
     factory<TestResultsMigrationManager> { TestResultsMigrationManagerImpl(get(), get(), get()) }
 
+    factory<WorkerManagerWrapper> { WorkerManagerWrapperImpl(androidContext(), get()) }
+
     // ViewModels
     viewModel<QrCodeViewModel> { QrCodeViewModelImpl(get()) }
     viewModel<CommercialTestCodeViewModel> { CommercialTestCodeViewModelImpl(get(), get()) }
@@ -133,6 +134,7 @@ fun holderModule(baseUrl: String) = module {
     viewModel<DeviceRootedViewModel> { DeviceRootedViewModelImpl(get(), get()) }
     viewModel<YourEventsViewModel> { YourEventsViewModelImpl(get(), get()) }
     viewModel<GetVaccinationViewModel> { GetVaccinationViewModelImpl(get()) }
+    viewModel<GetRecoveryViewModel> { GetRecoveryViewModelImpl(get()) }
     viewModel<ChooseProviderViewModel> { ChooseProviderViewModelImpl(get()) }
     viewModel<MyOverviewViewModel> { MyOverviewViewModelImpl(get(), get(), get(), get(), get()) }
 
@@ -175,6 +177,10 @@ fun holderModule(baseUrl: String) = module {
 
     factory<GreenCardsUseCase> {
         GreenCardsUseCaseImpl(get(), get(), get(), get())
+    }
+
+    factory<HolderWorkerFactory> {
+        HolderWorkerFactory(get(), get())
     }
 
     single {
@@ -230,7 +236,13 @@ fun holderModule(baseUrl: String) = module {
             .add(PolymorphicJsonAdapterFactory.of(
                 RemoteProtocol::class.java, "protocolVersion")
                 .withSubtype(RemoteTestResult2::class.java, "2.0")
-                .withSubtype(RemoteTestResult3::class.java, "3.0"))
+                .withSubtype(RemoteProtocol3::class.java, "3.0"))
+            .add(PolymorphicJsonAdapterFactory.of(
+                RemoteEvent::class.java, "type")
+                .withSubtype(RemoteEventPositiveTest::class.java, "positivetest")
+                .withSubtype(RemoteEventRecovery::class.java, "recovery")
+                .withSubtype(RemoteEventNegativeTest::class.java, "negativetest")
+                .withSubtype(RemoteEventVaccination::class.java, "vaccination"))
             .add(KotlinJsonAdapterFactory())
             .build()
     }

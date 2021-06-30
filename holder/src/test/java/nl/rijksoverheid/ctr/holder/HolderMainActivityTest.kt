@@ -44,6 +44,7 @@ class HolderMainActivityTest : AutoCloseKoinTest() {
                 IntroductionData(
                     onboardingItems = listOf(),
                     privacyPolicyItems = listOf(),
+                    newFeatures = listOf(),
                     null
                 )
             )
@@ -103,7 +104,7 @@ class HolderMainActivityTest : AutoCloseKoinTest() {
                 factory {
                     fakeCachedAppConfigUseCase()
                 }
-                single{
+                single {
                     val context = ApplicationProvider.getApplicationContext<Context>()
                     Room.inMemoryDatabaseBuilder(context, HolderDatabase::class.java).build()
                 }

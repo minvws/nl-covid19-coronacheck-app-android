@@ -12,8 +12,8 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
 import com.xwray.groupie.viewbinding.BindableItem
-import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
+import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMyOverviewBinding
@@ -101,19 +101,27 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                     positiveButtonText = R.string.dialog_close,
                     positiveButtonCallback = {},
                 )
-                MyOverviewError.Refresh -> dialogUtil.presentDialog(
+                MyOverviewError.Inactive -> dialogUtil.presentDialog(
                     context = requireContext(),
-                    title = R.string.dialog_faultyvaccination28June_refresh_error_title,
-                    message = getString(R.string.dialog_faultyvaccination28June_refresh_error_message),
+                    title = R.string.dialog_title_no_internet,
+                    message = getString(R.string.dialog_credentials_expired_no_internet),
                     positiveButtonText = R.string.app_status_internet_required_action,
                     positiveButtonCallback = {
                         getQrCards(syncDatabase = true)
                     },
                     negativeButtonText = R.string.dialog_close,
                 )
-                else -> return@EventObserver
+                MyOverviewError.Refresh -> dialogUtil.presentDialog(
+                    context = requireContext(),
+                    title = R.string.dialog_title_no_internet,
+                    message = getString(R.string.dialog_update_credentials_no_internet),
+                    positiveButtonText = R.string.app_status_internet_required_action,
+                    positiveButtonCallback = {
+                        getQrCards(syncDatabase = true)
+                    },
+                    negativeButtonText = R.string.dialog_close,
+                )
             }
-
         })
     }
 
@@ -178,6 +186,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                             originStates = myOverviewItem.originStates,
                             credentialState = myOverviewItem.credentialState,
                             launchDate = myOverviewItem.launchDate,
+                            loading = myOverviewItem.loading,
                             onButtonClick = { greenCard, credential ->
                                 findNavControllerSafety()?.navigate(
                                     MyOverviewFragmentDirections.actionQrCode(
@@ -231,7 +240,10 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                                             ))
                                         }
                                         is OriginType.Recovery -> {
-                                            // TODO
+                                            findNavControllerSafety()?.navigate(MyOverviewFragmentDirections.actionShowQrExplanation(
+                                                title = getString(R.string.my_overview_green_card_not_valid_title_recovery),
+                                                description = getString(R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_recovery)
+                                            ))
                                         }
                                     }
                                 }
@@ -250,7 +262,10 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                                             ))
                                         }
                                         is OriginType.Recovery -> {
-                                            // TODO
+                                            findNavControllerSafety()?.navigate(MyOverviewFragmentDirections.actionShowQrExplanation(
+                                                title = getString(R.string.my_overview_green_card_not_valid_title_recovery),
+                                                description = getString(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_recovery)
+                                            ))
                                         }
                                     }
                                 }

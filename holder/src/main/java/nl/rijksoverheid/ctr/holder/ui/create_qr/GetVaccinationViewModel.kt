@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventsVaccinations
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.EventsResult
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetEventsUseCase
 import nl.rijksoverheid.ctr.shared.livedata.Event
@@ -19,7 +18,7 @@ import nl.rijksoverheid.ctr.shared.livedata.Event
  */
 abstract class GetVaccinationViewModel : ViewModel() {
     val loading: LiveData<Event<Boolean>> = MutableLiveData()
-    val eventsResult: LiveData<Event<EventsResult<RemoteEventsVaccinations>>> = MutableLiveData()
+    val eventsResult: LiveData<Event<EventsResult>> = MutableLiveData()
 
     abstract fun getEvents(jwt: String)
 }

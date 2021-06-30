@@ -3,7 +3,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 import androidx.annotation.StringRes
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.CredentialEntity
@@ -242,8 +242,19 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
 
 data class MyOverviewItems(
     val items: List<MyOverviewItem>,
-    val selectedType: GreenCardType
-)
+    val selectedType: GreenCardType,
+) {
+    fun setGreenCardItemsLoading(): MyOverviewItems {
+        val itemsWithGreenItemsLoading = items.map {
+            if (it is GreenCardItem) {
+                it.copy(loading = true)
+            } else {
+                it
+            }
+        }
+        return this.copy(items = itemsWithGreenItemsLoading)
+    }
+}
 
 sealed class MyOverviewItem {
 
@@ -255,7 +266,8 @@ sealed class MyOverviewItem {
         val greenCard: GreenCard,
         val originStates: List<OriginState>,
         val credentialState: CredentialState,
-        val launchDate: OffsetDateTime
+        val launchDate: OffsetDateTime,
+        val loading: Boolean = false,
     ) : MyOverviewItem() {
 
         sealed class CredentialState {

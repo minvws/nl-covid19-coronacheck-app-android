@@ -1,16 +1,11 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.repositories
 
 import android.util.Base64
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.HolderApiClient
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.post.GetCredentialsPostData
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.post.GetTestIsmPostData
 import okhttp3.ResponseBody
-import org.json.JSONObject
 import retrofit2.Converter
-import retrofit2.HttpException
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
