@@ -6,6 +6,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.api.apiModule
 import nl.rijksoverheid.ctr.appconfig.*
+import nl.rijksoverheid.ctr.appconfig.models.AppStatus
+import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
 import nl.rijksoverheid.ctr.design.designModule
 import nl.rijksoverheid.ctr.holder.modules.*
 import nl.rijksoverheid.ctr.holder.persistence.HolderWorkerFactory
@@ -14,6 +16,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
 import nl.rijksoverheid.ctr.holder.persistence.database.migration.TestResultsMigrationManager
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SecretKeyUseCase
 import nl.rijksoverheid.ctr.introduction.introductionModule
+import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.SharedApplication
 import nl.rijksoverheid.ctr.shared.sharedModule
 import org.koin.android.ext.android.inject
@@ -35,6 +38,8 @@ open class HolderApplication : SharedApplication(), Configuration.Provider {
     private val holderDatabase: HolderDatabase by inject()
     private val testResultsMigrationManager: TestResultsMigrationManager by inject()
     private val holderWorkerFactory: HolderWorkerFactory by inject()
+    private val appConfigStorageManager: AppConfigStorageManager by inject()
+    private val mobileCoreWrapper: MobileCoreWrapper by inject()
 
     override fun onCreate() {
         super.onCreate()
@@ -74,6 +79,10 @@ open class HolderApplication : SharedApplication(), Configuration.Provider {
             }
 
             testResultsMigrationManager.migrateTestResults()
+        }
+
+        if (appConfigStorageManager.areConfigFilesPresentInFilesFolder()) {
+            mobileCoreWrapper.initializeHolder(applicationContext.filesDir.path)
         }
     }
 
