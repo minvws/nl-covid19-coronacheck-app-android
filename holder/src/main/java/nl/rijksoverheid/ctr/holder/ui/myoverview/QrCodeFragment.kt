@@ -95,7 +95,7 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
                                             lastNameInitial = qrCodeData.readDomesticCredential.lastNameInitial,
                                             birthDay = qrCodeData.readDomesticCredential.birthDay,
                                             birthMonth = qrCodeData.readDomesticCredential.birthMonth
-                                            )
+                                        )
 
                                         val infoScreen = infoScreenUtil.getForDomesticQr(
                                             personalDetails = personalDetails
