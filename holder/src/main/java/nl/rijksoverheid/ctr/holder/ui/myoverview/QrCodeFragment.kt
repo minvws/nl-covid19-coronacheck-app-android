@@ -90,8 +90,7 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
 
                                 when (qrCodeData) {
                                     is QrCodeData.Domestic -> {
-                                        val personalDetails =
-                                            personalDetailsUtil.getPersonalDetails(
+                                        val personalDetails = personalDetailsUtil.getPersonalDetails(
                                                 firstNameInitial = qrCodeData.readDomesticCredential.firstNameInitial,
                                                 lastNameInitial = qrCodeData.readDomesticCredential.lastNameInitial,
                                                 birthDay = qrCodeData.readDomesticCredential.birthDay,
