@@ -115,6 +115,7 @@ fun holderModule(baseUrl: String) = module {
     factory<TokenValidatorUtil> { TokenValidatorUtilImpl() }
     factory<CredentialUtil> { CredentialUtilImpl(Clock.systemUTC()) }
     factory<OriginUtil> { OriginUtilImpl(Clock.systemUTC()) }
+    factory<RemoteEventRecoveryUtil> { RemoteEventRecoveryUtilImpl(get()) }
     factory {
         TokenQrUseCase(get())
     }
@@ -136,7 +137,7 @@ fun holderModule(baseUrl: String) = module {
     viewModel<GetVaccinationViewModel> { GetVaccinationViewModelImpl(get()) }
     viewModel<GetRecoveryViewModel> { GetRecoveryViewModelImpl(get()) }
     viewModel<ChooseProviderViewModel> { ChooseProviderViewModelImpl(get()) }
-    viewModel<MyOverviewViewModel> { MyOverviewViewModelImpl(get(), get(), get(), get()) }
+    viewModel<MyOverviewViewModel> { MyOverviewViewModelImpl(get(), get(), get(), get(), get()) }
 
     // Repositories
     single { AuthenticationRepository() }
@@ -179,7 +180,7 @@ fun holderModule(baseUrl: String) = module {
         GreenCardsUseCaseImpl(get(), get(), get(), get())
     }
 
-    factory< HolderWorkerFactory> {
+    factory<HolderWorkerFactory> {
         HolderWorkerFactory(get(), get())
     }
 

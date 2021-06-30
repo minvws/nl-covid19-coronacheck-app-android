@@ -52,6 +52,10 @@ class RefreshCredentialsJobTest: AutoCloseKoinTest() {
     private fun testWorkerFactory(
         databaseSyncerResult: DatabaseSyncerResult = DatabaseSyncerResult.Success) = HolderWorkerFactory(
         greenCardsUseCase = object: GreenCardsUseCase {
+            override suspend fun faultyVaccinationsJune28(): Boolean {
+                return false
+            }
+
             override suspend fun expiring(): Boolean = true
             override suspend fun expiredCard(selectedType: GreenCardType): Boolean {
                 TODO("Not yet implemented")

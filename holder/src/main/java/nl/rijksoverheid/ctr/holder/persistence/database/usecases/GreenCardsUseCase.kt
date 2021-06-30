@@ -11,13 +11,17 @@ package nl.rijksoverheid.ctr.holder.persistence.database.usecases
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.isExpiring
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import java.time.Clock
+import java.time.Instant
 import java.time.OffsetDateTime
+import java.time.ZoneId
 import java.time.temporal.ChronoUnit.DAYS
 
 interface GreenCardsUseCase {
+    suspend fun faultyVaccinationsJune28(): Boolean
     suspend fun expiring(): Boolean
     suspend fun expiredCard(selectedType: GreenCardType): Boolean
     suspend fun lastExpiringCard(): GreenCard
@@ -34,6 +38,22 @@ class GreenCardsUseCaseImpl(
     private val greenCardUtil: GreenCardUtil,
     private val clock: Clock,
 ): GreenCardsUseCase {
+    private val bugDate = OffsetDateTime.ofInstant(
+        Instant.parse("2021-06-28T09:00:00.00Z"),
+        ZoneId.of("UTC")
+    )
+
+    override suspend fun faultyVaccinationsJune28(): Boolean {
+        return holderDatabase.greenCardDao().getAll().filter { it.greenCardEntity.type == GreenCardType.Domestic }
+            .any { greenCard ->
+                val hasVaccinationAndTestOrigins = greenCard.origins.map { it.type }.containsAll(setOf(
+                    OriginType.Test, OriginType.Vaccination))
+                val originsOlderThanBugDate = greenCard.origins.any { it.eventTime.isBefore(bugDate) }
+
+                hasVaccinationAndTestOrigins && originsOlderThanBugDate
+            }
+    }
+
     override suspend fun expiring(): Boolean {
 
         val config = cachedAppConfigUseCase.getCachedAppConfig() ?: return false

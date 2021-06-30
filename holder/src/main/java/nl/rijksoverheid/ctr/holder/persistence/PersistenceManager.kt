@@ -22,6 +22,8 @@ interface PersistenceManager {
     fun setHasDismissedRootedDeviceDialog()
     fun getSelectedGreenCardType(): GreenCardType
     fun setSelectedGreenCardType(greenCardType: GreenCardType)
+    fun hasAppliedJune28Fix(): Boolean
+    fun setJune28FixApplied(applied: Boolean)
 }
 
 class SharedPreferencesPersistenceManager(
@@ -35,6 +37,7 @@ class SharedPreferencesPersistenceManager(
         const val HAS_SEEN_CAMERA_RATIONALE = "HAS_SEEN_CAMERA_RATIONALE"
         const val HAS_SEEN_ROOTED_DEVICE_DIALOG = "HAS_SEEN_ROOTED_DEVICE_DIALOG"
         const val SELECTED_GREEN_CARD_TYPE = "SELECTED_GREEN_CARD_TYPE"
+        const val FIX28JUNE_APPLIED = "FIX_28_JUNE_APPLIED"
     }
 
     override fun saveSecretKeyJson(json: String) {
@@ -107,6 +110,18 @@ class SharedPreferencesPersistenceManager(
         val result = sharedPreferences.edit().putString(SELECTED_GREEN_CARD_TYPE, typeString).commit()
         if (!result) {
             throw IllegalStateException("Failed to set selected green card type in shared preference")
+        }
+    }
+
+    override fun hasAppliedJune28Fix(): Boolean {
+        return sharedPreferences.getBoolean(FIX28JUNE_APPLIED, false)
+    }
+
+    override fun setJune28FixApplied(applied: Boolean) {
+        val result =
+            sharedPreferences.edit().putBoolean(FIX28JUNE_APPLIED, applied).commit()
+        if (!result) {
+            throw IllegalStateException("Failed to set that the june 28 fix has been applied in shared preferences")
         }
     }
 }
