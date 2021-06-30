@@ -11,6 +11,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigiDFragment
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigidResult
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.EventsResult
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.RemoteEventRecoveryUtil
+import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -162,6 +163,10 @@ class GetRecoveryFragment : DigiDFragment(R.layout.fragment_get_recovery) {
 
         binding.button.setOnClickListener {
             loginWithDigiD()
+        }
+
+        binding.noDigidButton.setOnClickListener {
+            getString(R.string.no_digid_url).launchUrl(requireContext())
         }
     }
 }
