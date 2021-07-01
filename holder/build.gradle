@@ -153,6 +153,8 @@ dependencies {
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
     testImplementation "androidx.room:room-testing:$room_version"
     testImplementation "androidx.work:work-testing:$work_manager_version"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
+    testImplementation "androidx.arch.core:core-testing:$androidx_arch_core_version"
 
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$desugar_jdk_version"
 
