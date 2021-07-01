@@ -1,6 +1,6 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
-import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
+import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeData
@@ -36,14 +36,18 @@ class QrCodeDataUseCaseImpl(private val qrCodeUseCase: QrCodeUseCase,
             is GreenCardType.Domestic -> {
                 QrCodeData.Domestic(
                     bitmap = qrCodeBitmap,
-                    readDomesticCredential = mobileCoreWrapper.readDomesticCredential(credential)
+                    readDomesticCredential = mobileCoreWrapper.readDomesticCredential(credential),
+                    animationResource = R.raw.bike_lr,
+                    backgroundResource = R.drawable.illustration_houses
                 )
             }
 
             is GreenCardType.Eu -> {
                 QrCodeData.European(
                     bitmap = qrCodeBitmap,
-                    readEuropeanCredential = mobileCoreWrapper.readEuropeanCredential(credential)
+                    readEuropeanCredential = mobileCoreWrapper.readEuropeanCredential(credential),
+                    animationResource = R.raw.moving_walkway,
+                    backgroundResource = null
                 )
             }
         }

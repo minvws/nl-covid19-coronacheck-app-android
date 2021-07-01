@@ -19,7 +19,8 @@ class QrCodeViewModelImpl(private val qrCodeDataUseCase: QrCodeDataUseCase) : Qr
         type: GreenCardType,
         size: Int,
         credential: ByteArray,
-        shouldDisclose: Boolean) {
+        shouldDisclose: Boolean
+    ) {
 
         viewModelScope.launch {
             val qrCodeData = qrCodeDataUseCase.getQrCodeData(

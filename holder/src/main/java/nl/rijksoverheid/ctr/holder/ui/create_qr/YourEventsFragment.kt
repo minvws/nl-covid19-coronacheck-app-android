@@ -154,8 +154,6 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
             is YourEventsFragmentType.RemoteProtocol3Type -> {
                 val remoteEvents = type.remoteEvents.map { it.key }
 
-                if (hasShownExpiredEvent(remoteEvents)) return
-
                 remoteEvents.forEach { remoteProtocol3 ->
                     remoteProtocol3.events?.forEach { remoteEvent ->
                         when (remoteEvent) {
@@ -197,23 +195,6 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                 }
             }
         }
-    }
-
-    private fun hasShownExpiredEvent(remoteEvents: List<RemoteProtocol3>): Boolean {
-        return remoteEvents.flatMap { it.events ?: emptyList() }
-            .filter { it is RemoteEventPositiveTest || it is RemoteEventRecovery }
-            .takeIf { it.size == 1 }
-            ?.map {
-                val date = (it as? RemoteEventPositiveTest)?.getDate()
-                    ?: (it as? RemoteEventRecovery)?.getDate()
-
-                if (OffsetDateTime.now().minusDays(180) > date) {
-                    findNavControllerSafety(R.id.nav_your_events)?.navigate(
-                        YourEventsFragmentDirections.actionExpiredTestResult()
-                    )
-                    true
-                } else false
-            }?.firstOrNull() ?: false
     }
 
     private fun presentTestResult2(
