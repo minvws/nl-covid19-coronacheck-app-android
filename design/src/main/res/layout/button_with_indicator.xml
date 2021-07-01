@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:parentTag="android.widget.FrameLayout">
 
     <Button
@@ -14,6 +15,7 @@
         android:id="@+id/loading"
         android:indeterminate="true"
         android:visibility="visible"
+        app:indicatorSize="20dp"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

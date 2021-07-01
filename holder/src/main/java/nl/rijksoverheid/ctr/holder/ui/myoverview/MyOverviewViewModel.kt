@@ -120,7 +120,7 @@ class MyOverviewViewModelImpl(
                     getMyOverviewItemsUseCase.get(
                         selectedType = selectType,
                         walletId = 1
-                    ).setRefreshStatus(DatabaseSyncerResult.NetworkError)
+                    )
                 )
             )
         }
