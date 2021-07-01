@@ -185,7 +185,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                             greenCard = myOverviewItem.greenCard,
                             originStates = myOverviewItem.originStates,
                             credentialState = myOverviewItem.credentialState,
-                            launchDate = myOverviewItem.launchDate,
+                            refreshStatus = myOverviewItem.refreshStatus,
                             loading = myOverviewItem.loading,
                             onButtonClick = { greenCard, credential ->
                                 findNavControllerSafety()?.navigate(

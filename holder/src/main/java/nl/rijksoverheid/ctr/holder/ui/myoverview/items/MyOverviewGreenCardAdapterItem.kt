@@ -15,6 +15,7 @@ import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.design.ext.*
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.ItemMyOverviewGreenCardBinding
+import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.CredentialEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
@@ -35,7 +36,7 @@ class MyOverviewGreenCardAdapterItem(
     private val greenCard: GreenCard,
     private val originStates: List<OriginState>,
     private val credentialState: MyOverviewItem.GreenCardItem.CredentialState,
-    private val launchDate: OffsetDateTime,
+    private val refreshStatus: DatabaseSyncerResult,
     private val loading: Boolean = false,
     private val onButtonClick: (greenCard: GreenCard, credential: CredentialEntity) -> Unit,
 ) :
@@ -105,8 +106,11 @@ class MyOverviewGreenCardAdapterItem(
         viewBinding.proof1Subtitle.setTextColor(context.getThemeColor(android.R.attr.textColorPrimary))
         viewBinding.proof2Subtitle.setTextColor(context.getThemeColor(android.R.attr.textColorPrimary))
         viewBinding.proof3Subtitle.setTextColor(context.getThemeColor(android.R.attr.textColorPrimary))
-        viewBinding.launchText.text = ""
-        viewBinding.launchText.visibility = View.GONE
+        viewBinding.errorText.text = ""
+        viewBinding.errorTextRetry.text = ""
+        viewBinding.errorIcon.visibility = View.GONE
+        viewBinding.errorText.visibility = View.GONE
+        viewBinding.errorTextRetry.visibility = View.GONE
 
         when (greenCard.greenCardEntity.type) {
             is GreenCardType.Eu -> {
@@ -155,11 +159,6 @@ class MyOverviewGreenCardAdapterItem(
                         )
                     }
 
-                }
-
-                if (launchDate.isAfter(OffsetDateTime.now(ZoneOffset.UTC))) {
-                    viewBinding.launchText.text = context.getString(R.string.qr_card_validity_eu, launchDate.formatDayMonth())
-                    viewBinding.launchText.visibility = View.VISIBLE
                 }
             }
             is GreenCardType.Domestic -> {
@@ -241,6 +240,43 @@ class MyOverviewGreenCardAdapterItem(
                 }
             }
         }
+
+        setRefreshState(viewBinding)
+    }
+
+    private var serverErrorHappenedAlready = false
+
+    private fun setRefreshState(viewBinding: ItemMyOverviewGreenCardBinding) {
+        val context = viewBinding.errorText.context
+        when (refreshStatus) {
+            DatabaseSyncerResult.NetworkError -> {
+                viewBinding.errorText.text = context.getString(R.string.my_overview_green_card_internet_error)
+                viewBinding.errorTextRetry.text = ""
+                viewBinding.errorIcon.visibility = View.VISIBLE
+                viewBinding.errorText.visibility = View.VISIBLE
+                viewBinding.errorTextRetry.visibility = View.GONE
+                serverErrorHappenedAlready = false
+            }
+            is DatabaseSyncerResult.ServerError -> {
+                viewBinding.errorText.text = context.getString(R.string.my_overview_green_card_server_error)
+                viewBinding.errorTextRetry.text = if (serverErrorHappenedAlready) {
+                    context.getString(R.string.my_overview_green_card_server_error_after_retry)
+                } else {
+                    ""
+                }
+                viewBinding.errorIcon.visibility = View.VISIBLE
+                viewBinding.errorText.visibility = View.VISIBLE
+                viewBinding.errorTextRetry.visibility = if (serverErrorHappenedAlready) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
+                serverErrorHappenedAlready = true
+            }
+            else -> {
+                serverErrorHappenedAlready = false
+            }
+        }
     }
 
     private fun setOriginTitle(
@@ -266,11 +302,10 @@ class MyOverviewGreenCardAdapterItem(
                 originState = originState) -> {
                     textView.text = ""
             }
-            originState is OriginState.Future || (greenCard.greenCardEntity.type == GreenCardType.Eu&& this.launchDate.isAfter(OffsetDateTime.now(ZoneOffset.UTC))) -> {
-                val realValidFrom = if (this.launchDate.isAfter(OffsetDateTime.now(ZoneOffset.UTC))) this.launchDate else originState.origin.validFrom
+            originState is OriginState.Future || greenCard.greenCardEntity.type == GreenCardType.Eu -> {
                 textView.setTextColor(ContextCompat.getColor(context, R.color.link))
 
-                val daysBetween = ceil(ChronoUnit.HOURS.between(OffsetDateTime.now(ZoneOffset.UTC), realValidFrom) / 24.0).toInt()
+                val daysBetween = ceil(ChronoUnit.HOURS.between(OffsetDateTime.now(ZoneOffset.UTC), originState.origin.validFrom) / 24.0).toInt()
                 if (daysBetween == 1) {
                     textView.text = context.getString(R.string.qr_card_validity_future_day, daysBetween.toString())
                 } else {

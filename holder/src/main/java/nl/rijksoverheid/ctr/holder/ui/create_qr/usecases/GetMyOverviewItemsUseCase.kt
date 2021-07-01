@@ -3,8 +3,8 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 import androidx.annotation.StringRes
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.CredentialEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
@@ -16,8 +16,8 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CredentialUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginUtil
+import java.time.Clock
 import java.time.OffsetDateTime
-import java.time.format.DateTimeFormatter
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -39,7 +39,7 @@ interface GetMyOverviewItemsUseCase {
 
 class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
                                     private val credentialUtil: CredentialUtil,
-                                    private val cachedAppConfigUseCase: CachedAppConfigUseCase,
+                                    private val clock: Clock,
                                     private val greenCardUtil: GreenCardUtil,
                                     private val originUtil: OriginUtil) :
     GetMyOverviewItemsUseCase {
@@ -143,9 +143,7 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
                 val hasValidOriginStates = originStates.any { it is OriginState.Valid }
                 val nonExpiredOriginStates = originStates.filterNot { it is OriginState.Expired }
 
-                val euLaunchDate = OffsetDateTime.parse(cachedAppConfigUseCase.getCachedAppConfig()!!.euLaunchDate, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
-
-                val launchDate = if (greenCard.greenCardEntity.type == GreenCardType.Eu) euLaunchDate else OffsetDateTime.now()
+                val launchDate = OffsetDateTime.now(clock)
 
                 // More our credential to a more readable state
                 val credentialState = when {
@@ -161,6 +159,7 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
                     originStates = nonExpiredOriginStates,
                     credentialState = credentialState,
                     launchDate = launchDate,
+                    refreshStatus = DatabaseSyncerResult.Success
                 )
             }
         }.toMutableList()
@@ -254,6 +253,17 @@ data class MyOverviewItems(
         }
         return this.copy(items = itemsWithGreenItemsLoading)
     }
+
+    fun setRefreshStatus(status: DatabaseSyncerResult): MyOverviewItems {
+        val itemsWithGreenItemsLoading = items.map {
+            if (it is GreenCardItem) {
+                it.copy(refreshStatus = status)
+            } else {
+                it
+            }
+        }
+        return this.copy(items = itemsWithGreenItemsLoading)
+    }
 }
 
 sealed class MyOverviewItem {
@@ -268,6 +278,7 @@ sealed class MyOverviewItem {
         val credentialState: CredentialState,
         val launchDate: OffsetDateTime,
         val loading: Boolean = false,
+        val refreshStatus: DatabaseSyncerResult,
     ) : MyOverviewItem() {
 
         sealed class CredentialState {
