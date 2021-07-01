@@ -44,6 +44,7 @@
     <string name="my_overview_test_result_expires_in_minutes">Verloopt over %1$s min</string>
     <string name="my_overview_test_result_footer">Laat QR-code zien bij ingang</string>
     <string name="my_overview_test_result_button">Bekijk QR</string>
+    <string name="my_overview_test_result_button_indicator_accessibility_description">Loading, please wait</string>
     <string name="my_overview_no_qr_make_appointment_title">Testafspraak maken</string>
     <string name="my_overview_no_qr_make_appointment_description">Wil je een QR-code maken? Laat je dan eerst testen op corona.</string>
     <string name="my_overview_no_qr_make_appointment_button">Maak afspraak</string>

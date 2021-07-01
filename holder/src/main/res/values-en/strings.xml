@@ -44,6 +44,7 @@
     <string name="my_overview_test_result_expires_in_minutes">Expires in %1$s min</string>
     <string name="my_overview_test_result_footer">Show QR code at the entrance</string>
     <string name="my_overview_test_result_button">View QR</string>
+    <string name="my_overview_test_result_button_indicator_accessibility_description">Loading, please wait</string>
     <string name="my_overview_no_qr_make_appointment_title">Book test appointment</string>
     <string name="my_overview_no_qr_make_appointment_description">Want to make a QR code? Get tested for coronavirus first.</string>
     <string name="my_overview_no_qr_make_appointment_button">Make appointment</string>

@@ -86,6 +86,7 @@ class MyOverviewGreenCardAdapterItem(
         }
 
         if (loading) {
+            viewBinding.buttonWithProgressWidgetContainer.setAccessibilityText(context.getString(R.string.my_overview_test_result_button_indicator_accessibility_description))
             viewBinding.buttonWithProgressWidgetContainer.loading()
         } else {
             viewBinding.buttonWithProgressWidgetContainer.idle(
