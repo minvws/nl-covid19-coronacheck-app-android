@@ -234,7 +234,6 @@
     <string name="qr_card_validity_future_days">wordt automatisch geldig over %1$s dagen</string>
     <string name="qr_card_validity_future_day">wordt automatisch geldig in %1$s dag</string>
     <string name="qr_card_validity_future_hours">wordt automatisch geldig over %1$s uur</string>
-    <string name="qr_card_validity_eu">Je internationale QR-code wordt automatisch geldig als de Europese regelgeving ingaat (vanaf %1$s)</string>
     <string name="your_test_result_explanation_toolbar_title">Wat is er opgehaald?</string>
     <string name="your_test_result_explanation_description"><![CDATA[De volgende gegevens zijn opgehaald bij de testlocatie:<br\><br\>Jouw gegevens:  <b>%1$s</b><br/><br/>Type test: <b>%2$s</b><br/>Testdatum: <b>%3$s</b><br/>Testuitslag: <b>%4$s</b><br/>Uniek certificaatnummer: <b>%5$s</b>]]></string>
     <string name="your_test_result_explanation_negative_test_result">negatief (geen corona)</string>
@@ -308,9 +307,9 @@
     <string name="my_overview_green_card_not_valid_title_recovery">Over je herstelbewijs</string>
     <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_recovery"><![CDATA[Jouw herstelbewijs is niet geldig in Nederland. Je hebt wel een internationale QR-code.]]></string>
     <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_recovery"><![CDATA[Jouw herstelbewijs is niet internationaal geldig. Je hebt wel een Nederlandse QR-code.]]></string>
-    <string name="my_overview_green_card_server_error"><![CDATA[Door een fout op de server werkt je <br\>QR-code niet. Probeer opnieuw]]></string>
+    <string name="my_overview_green_card_server_error"><![CDATA[Door een fout op de server werkt je <br\>QR-code niet. <a href="#">Probeer opnieuw</a>]]></string>
     <string name="my_overview_green_card_server_error_after_retry"><![CDATA[of bel de helpdesk op 0800–1421 (gratis)]]></string>
-    <string name="my_overview_green_card_internet_error"><![CDATA[Maak verbinding met het internet om te <br\>zorgen dat je QR-code weer werkt. Probeer opnieuw]]></string>
+    <string name="my_overview_green_card_internet_error"><![CDATA[Maak verbinding met het internet om te <br\>zorgen dat je QR-code weer werkt. <a href="#">Probeer opnieuw</a>]]></string>
     <string name="dialog_faultyvaccination28June_title">Vaccinatiebewijs gecorrigeerd</string>
     <string name="dialog_faultyvaccination28June_message">Door een technische fout had u ten onrechte een Nederlands vaccinatiebewijs ontvangen. Dit is nu gecorrigeerd.</string>
     <string name="dialog_faultyvaccination28June_refresh_error_title">Er is iets mis gegaan bij het verversen van uw gegevens</string>

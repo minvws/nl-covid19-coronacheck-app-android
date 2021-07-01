@@ -39,6 +39,7 @@ class MyOverviewGreenCardAdapterItem(
     private val refreshStatus: DatabaseSyncerResult,
     private val loading: Boolean = false,
     private val onButtonClick: (greenCard: GreenCard, credential: CredentialEntity) -> Unit,
+    private val onRetryClick: () -> Unit = {},
 ) :
     BindableItem<ItemMyOverviewGreenCardBinding>(R.layout.item_my_overview_green_card.toLong()),
     KoinComponent {
@@ -111,6 +112,7 @@ class MyOverviewGreenCardAdapterItem(
         viewBinding.errorIcon.visibility = View.GONE
         viewBinding.errorText.visibility = View.GONE
         viewBinding.errorTextRetry.visibility = View.GONE
+        viewBinding.errorText.enableCustomLinks(onRetryClick)
 
         when (greenCard.greenCardEntity.type) {
             is GreenCardType.Eu -> {

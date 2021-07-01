@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.airbnb.lottie.model.content.GradientType
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
@@ -44,6 +45,8 @@ class MyOverviewViewModelImpl(
     private val androidUtil: AndroidUtil,
 ) : MyOverviewViewModel() {
 
+    private var showDialogIfNetworkError = true
+
     override fun getSelectedType(): GreenCardType {
         return (myOverviewItemsLiveData.value?.peekContent()?.selectedType
             ?: persistenceManager.getSelectedGreenCardType())
@@ -69,9 +72,46 @@ class MyOverviewViewModelImpl(
                         persistenceManager.setJune28FixApplied(true)
                     }
                 } else {
-                    holderDatabaseSyncer.sync(
-                        syncWithRemote = false
-                    )
+                    val expiring = greenCardsUseCase.expiring()
+
+                    if (expiring) {
+                        val currentCardItems = getMyOverviewItemsUseCase.get(
+                            selectedType = selectType,
+                            walletId = 1
+                        ).setGreenCardItemsLoading()
+
+                        (myOverviewItemsLiveData as MutableLiveData).postValue(Event(currentCardItems))
+
+                        val syncResult = holderDatabaseSyncer.sync(
+                            expectedOriginType = null,
+                            syncWithRemote = true,
+                        )
+
+                        when (syncResult) {
+                            DatabaseSyncerResult.NetworkError -> {
+                                if (showDialogIfNetworkError) {
+                                    val expired = greenCardsUseCase.expiredCard(selectType)
+                                    (myOverviewRefreshErrorEvent as MutableLiveData).postValue(
+                                        Event(MyOverviewError.get(expired))
+                                    )
+                                    showDialogIfNetworkError = false
+                                } else {
+                                    return@launch postItemsWithStatus(selectType, syncResult)
+                                }
+                            }
+                            is DatabaseSyncerResult.ServerError -> {
+                                return@launch postItemsWithStatus(selectType, syncResult)
+                            }
+                            DatabaseSyncerResult.MissingOrigin -> {}
+                            DatabaseSyncerResult.Success -> {}
+                        }
+                        showDialogIfNetworkError = true
+
+                    } else {
+                        holderDatabaseSyncer.sync(
+                            syncWithRemote = false
+                        )
+                    }
                 }
 
             }
@@ -85,6 +125,17 @@ class MyOverviewViewModelImpl(
                 )
             )
         }
+    }
+
+    private suspend fun postItemsWithStatus(selectType: GreenCardType, status: DatabaseSyncerResult) {
+        (myOverviewItemsLiveData as MutableLiveData).postValue(
+            Event(
+                getMyOverviewItemsUseCase.get(
+                    selectedType = selectType,
+                    walletId = 1
+                ).setRefreshStatus(status)
+            )
+        )
     }
 }
 
