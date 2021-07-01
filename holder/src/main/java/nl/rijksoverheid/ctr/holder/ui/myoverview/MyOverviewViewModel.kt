@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.airbnb.lottie.model.content.GradientType
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
@@ -121,7 +120,7 @@ class MyOverviewViewModelImpl(
                     getMyOverviewItemsUseCase.get(
                         selectedType = selectType,
                         walletId = 1
-                    )
+                    ).setRefreshStatus(DatabaseSyncerResult.NetworkError)
                 )
             )
         }

@@ -107,12 +107,11 @@ class MyOverviewGreenCardAdapterItem(
         viewBinding.proof1Subtitle.setTextColor(context.getThemeColor(android.R.attr.textColorPrimary))
         viewBinding.proof2Subtitle.setTextColor(context.getThemeColor(android.R.attr.textColorPrimary))
         viewBinding.proof3Subtitle.setTextColor(context.getThemeColor(android.R.attr.textColorPrimary))
-        viewBinding.errorText.text = ""
-        viewBinding.errorTextRetry.text = ""
+        viewBinding.errorText.setHtmlText("")
+        viewBinding.errorTextRetry.setHtmlText("")
         viewBinding.errorIcon.visibility = View.GONE
         viewBinding.errorText.visibility = View.GONE
         viewBinding.errorTextRetry.visibility = View.GONE
-        viewBinding.errorText.enableCustomLinks(onRetryClick)
 
         when (greenCard.greenCardEntity.type) {
             is GreenCardType.Eu -> {
@@ -252,20 +251,22 @@ class MyOverviewGreenCardAdapterItem(
         val context = viewBinding.errorText.context
         when (refreshStatus) {
             DatabaseSyncerResult.NetworkError -> {
-                viewBinding.errorText.text = context.getString(R.string.my_overview_green_card_internet_error)
-                viewBinding.errorTextRetry.text = ""
+                viewBinding.errorText.setHtmlText(context.getString(R.string.my_overview_green_card_internet_error))
+                viewBinding.errorText.enableCustomLinks(onRetryClick)
+                viewBinding.errorTextRetry.setHtmlText("")
                 viewBinding.errorIcon.visibility = View.VISIBLE
                 viewBinding.errorText.visibility = View.VISIBLE
                 viewBinding.errorTextRetry.visibility = View.GONE
                 serverErrorHappenedAlready = false
             }
             is DatabaseSyncerResult.ServerError -> {
-                viewBinding.errorText.text = context.getString(R.string.my_overview_green_card_server_error)
-                viewBinding.errorTextRetry.text = if (serverErrorHappenedAlready) {
+                viewBinding.errorText.setHtmlText(context.getString(R.string.my_overview_green_card_server_error))
+                viewBinding.errorText.enableCustomLinks(onRetryClick)
+                viewBinding.errorTextRetry.setHtmlText(if (serverErrorHappenedAlready) {
                     context.getString(R.string.my_overview_green_card_server_error_after_retry)
                 } else {
                     ""
-                }
+                })
                 viewBinding.errorIcon.visibility = View.VISIBLE
                 viewBinding.errorText.visibility = View.VISIBLE
                 viewBinding.errorTextRetry.visibility = if (serverErrorHappenedAlready) {
