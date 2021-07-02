@@ -257,7 +257,7 @@
     <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_test"><![CDATA[Your test certificate isn\'t valid internationally. That\'s why only a Dutch QR code was made.<br/><br/>It\'s possible your type of test isn\'t accepted abroad. Get tested again.]]></string>
     <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_vaccination"><![CDATA[Your vaccination certificate isn\'t valid internationally. That\'s why only a Dutch QR code was made.<br/><br/>It\'s possible your type of vaccination isn\'t accepted abroad.]]></string>
     <string name="rule_engine_no_origin_title">We can\'t make a certificate</string>
-    <string name="rule_engine_no_test_origin_description"><![CDATA[At this moment, we can\'t make a certificate from negative test certificate. This can have various causes.  <a href="https://www.coronacheck.nl//en/guidepost">Read more here.</a>]]></string>
+    <string name="rule_engine_no_test_origin_description"><![CDATA[At this moment, we can\'t make a certificate from your negative test certificate. This can have various causes.  <a href="https://www.coronacheck.nl//en/guidepost">Read more here.</a>]]></string>
     <string name="rule_engine_no_vaccination_origin_description"><![CDATA[At this moment, we can\'t make a certificate from your vaccination. This can have various causes.  <a href="https://www.coronacheck.nl/en/guidepost">Read more here.</a>]]></string>
     <string name="back_to_overview">To My overview</string>
     <string name="no_vaccinations_title">Vaccinations not available</string>
@@ -286,7 +286,7 @@
     <string name="commercial_test_unique_code_hint_screenreader">Enter your retrieval code here</string>
     <string name="new_in_app_subtitle">New in the app</string>
     <string name="new_in_app_screen_1_title">Recovery certificate</string>
-    <string name="new_in_app_screen_1_description">From now on, you can create a certificate of recovery using this app. This is proof you had a positive test result. This way, you show you’ve had coronavirus. This way you gain access to certain locations and activities. You may also use it to travel internationally.</string>
+    <string name="new_in_app_screen_1_description">From now on, you can create a certificate of recovery using this app. This is proof you have had a positive test result. You can use it to show you’ve had coronavirus. This way you gain access to certain locations and activities. You may also use it to travel internationally.</string>
     <string name="your_positive_test_toolbar_title">Your positive test result</string>
     <string name="your_positive_test_description">Are your details correct? Then you can turn your positive test result into a QR code. This is your certificate.</string>
     <string name="positive_test_title">Positive test result</string>
