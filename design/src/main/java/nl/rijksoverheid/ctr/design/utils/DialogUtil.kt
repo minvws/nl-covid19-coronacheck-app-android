@@ -1,7 +1,9 @@
 package nl.rijksoverheid.ctr.design.utils
 
 import android.content.Context
+import android.os.Build
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AlertDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 /*
@@ -36,7 +38,12 @@ class DialogUtilImpl : DialogUtil {
         negativeButtonCallback: (() -> Unit)?,
         onDismissCallback: (() -> Unit)?
     ) {
-        val builder = MaterialAlertDialogBuilder(context)
+        // MaterialAlertDialogBuilder is crashing on API 23, so use this builder instead
+        val builder = if (Build.VERSION.SDK_INT == Build.VERSION_CODES.M) {
+            AlertDialog.Builder(context)
+        } else {
+            MaterialAlertDialogBuilder(context)
+        }
             .setTitle(title)
             .setMessage(message)
             .setPositiveButton(
