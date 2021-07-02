@@ -69,7 +69,6 @@
 
     <style name="App.TextAppearance.MaterialComponents.Subtitle1.Secondary" parent="TextAppearance.MaterialComponents.Subtitle1">
         <item name="android:letterSpacing">0.03</item>
-        <item name="android:textColor">?android:colorSecondary</item>
         <item name="android:textStyle">bold</item>
     </style>
 
