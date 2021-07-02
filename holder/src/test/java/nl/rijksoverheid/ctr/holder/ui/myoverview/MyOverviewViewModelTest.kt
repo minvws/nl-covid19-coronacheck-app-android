@@ -132,7 +132,6 @@ class MyOverviewViewModelTest {
 
         myOverviewViewModel.refreshOverviewItems(GreenCardType.Domestic, true)
 
-        assertTrue((myOverviewViewModel.myOverviewItemsLiveData.value?.peekContent()?.items?.first() as MyOverviewItem.GreenCardItem).refreshStatus is DatabaseSyncerResult.NetworkError)
         assertEquals(MyOverviewError.Inactive, myOverviewViewModel.myOverviewRefreshErrorEvent.value?.peekContent())
     }
 
@@ -162,35 +161,6 @@ class MyOverviewViewModelTest {
 
         assertTrue((myOverviewViewModel.myOverviewItemsLiveData.value?.peekContent()?.items?.first() as MyOverviewItem.GreenCardItem).refreshStatus is DatabaseSyncerResult.ServerError)
         assertNull(myOverviewViewModel.myOverviewRefreshErrorEvent.value?.peekContent())
-    }
-
-    @Test
-    fun `trigger server retry error if sync fails due to server error twice`() = runBlockingTest {
-        coEvery { androidUtil.isFirstInstall() } returns false
-        coEvery { persistenceManager.hasAppliedJune28Fix() } returns false
-        coEvery { greenCardsUseCase.faultyVaccinationsJune28() } returns false
-        coEvery { holderDatabaseSyncer.sync(syncWithRemote = true) } returns DatabaseSyncerResult.NetworkError
-        coEvery { greenCardsUseCase.expiring() } returns true
-        val greenCardItems = MyOverviewItems(
-            selectedType = GreenCardType.Domestic,
-            items = listOf(MyOverviewItem.GreenCardItem(
-                credentialState = mockk(),
-                greenCard = mockk(),
-                launchDate = mockk(),
-                originStates = listOf(mockk()),
-                loading = false,
-                refreshStatus = DatabaseSyncerResult.Success,
-            ))
-        )
-        coEvery { getMyOverviewItemsUseCase.get(1, GreenCardType.Domestic) } returns greenCardItems
-        coEvery { greenCardsUseCase.expiredCard(GreenCardType.Domestic) } returns true
-        val myOverviewViewModel = MyOverviewViewModelImpl(getMyOverviewItemsUseCase, holderDatabaseSyncer, persistenceManager, greenCardsUseCase, androidUtil)
-
-        myOverviewViewModel.refreshOverviewItems(GreenCardType.Domestic, true)
-        myOverviewViewModel.refreshOverviewItems(GreenCardType.Domestic, true)
-
-        assertTrue((myOverviewViewModel.myOverviewItemsLiveData.value?.peekContent()?.items?.first() as MyOverviewItem.GreenCardItem).refreshStatus is DatabaseSyncerResult.NetworkError)
-        assertEquals(MyOverviewError.Inactive, myOverviewViewModel.myOverviewRefreshErrorEvent.value?.peekContent())
     }
 
     @Test
