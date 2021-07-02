@@ -243,7 +243,7 @@
     <string name="your_vaccination_explanation_toolbar_title">About your vaccination</string>
     <string name="your_vaccination_explanation_description"><![CDATA[<p>The following details of your vaccination were retrieved:<br/><br/>Name: <b>%1$s</b><br/>Date of birth: <b>%2$s</b><br/><br/>Pathogen:  <b>%3$s</b><br/>Vaccine: <b>%4$s</b><br/>Vaccine type: <b>%5$s</b><br/>Manufacturer: <b>%6$s</b><br/>Doses: <b>%7$s</b><br/>Injection date: <b>%8$s</b><br/>Vaccinated in: <b>%9$s</b><br/>Identification code: <b>%10$s</b>]]></string>
     <string name="your_vaccination_explanation_covid_19">COVID-19</string>
-    <string name="your_vaccination_explanation_doses">%1$s from %2$s</string>
+    <string name="your_vaccination_explanation_doses">%1$s of %2$s</string>
     <string name="my_overview_not_valid_domestic_but_is_in_eu">Your %1$s isn\'t valid in the Netherlands. You\'ve only got an international QR code.</string>
     <string name="my_overview_not_valid_eu_but_is_in_domestic">Your %1$s isn\'t valid internationally. You\'ve only got a Dutch QR code.</string>
     <string name="type_recovery">recovery statement</string>
