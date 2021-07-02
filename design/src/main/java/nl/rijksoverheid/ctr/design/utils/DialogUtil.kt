@@ -38,6 +38,7 @@ class DialogUtilImpl : DialogUtil {
         negativeButtonCallback: (() -> Unit)?,
         onDismissCallback: (() -> Unit)?
     ) {
+        // MaterialAlertDialogBuilder is crashing on API 23, so use this builder instead
         val builder = if (Build.VERSION.SDK_INT == Build.VERSION_CODES.M) {
             AlertDialog.Builder(context)
         } else {
