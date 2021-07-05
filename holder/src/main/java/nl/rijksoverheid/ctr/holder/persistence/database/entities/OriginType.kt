@@ -16,23 +16,6 @@ sealed class OriginType(val order: Int) : Parcelable {
         const val TYPE_VACCINATION = "vaccination"
         const val TYPE_RECOVERY = "recovery"
         const val TYPE_TEST = "test"
-
-        /**
-         * Get filter for backend endpoints
-         */
-        fun getFilter(originType: OriginType): String {
-            return when (originType) {
-                is Vaccination -> {
-                    "vaccination"
-                }
-                is Recovery -> {
-                    "negativetest"
-                }
-                is Test -> {
-                    "positivetest,recovery"
-                }
-            }
-        }
     }
 
     @Parcelize
@@ -43,4 +26,12 @@ sealed class OriginType(val order: Int) : Parcelable {
 
     @Parcelize
     object Test : OriginType(3), Parcelable
+
+    fun getTypeString(): String {
+        return when (this) {
+            is Vaccination -> TYPE_VACCINATION
+            is Recovery -> TYPE_RECOVERY
+            is Test -> TYPE_TEST
+        }
+    }
 }

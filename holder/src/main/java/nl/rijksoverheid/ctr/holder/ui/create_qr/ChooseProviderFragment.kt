@@ -73,9 +73,10 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
                             onDismissCallback = {
                                 findNavController().navigate(
                                     ChooseProviderFragmentDirections.actionYourEvents(
-                                        type = YourEventsFragmentType.RemoteProtocol3Type.NegativeTests(
+                                        type = YourEventsFragmentType.RemoteProtocol3Type(
                                             remoteEvents = it.signedModels.map { signedModel -> signedModel.model to signedModel.rawResponse }
-                                                .toMap()
+                                                .toMap(),
+                                            originType = OriginType.Test
                                         ),
                                         toolbarTitle = getString(R.string.commercial_test_type_title)
                                     )

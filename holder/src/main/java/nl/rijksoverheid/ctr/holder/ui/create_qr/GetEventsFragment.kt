@@ -11,6 +11,9 @@ import nl.rijksoverheid.ctr.holder.databinding.FragmentGetEventsBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigiDFragment
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigidResult
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEvent
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.EventsResult
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
@@ -56,26 +59,14 @@ class GetEventsFragment: DigiDFragment(R.layout.fragment_get_events) {
                             positiveButtonText = R.string.ok,
                             positiveButtonCallback = {},
                             onDismissCallback = {
-                                findNavController().navigate(
-                                    GetVaccinationFragmentDirections.actionYourEvents(
-                                        type = YourEventsFragmentType.RemoteProtocol3Type.Vaccinations(
-                                            remoteEvents = it.signedModels.map { signedModel -> signedModel.model to signedModel.rawResponse }
-                                                .toMap()
-                                        ),
-                                        toolbarTitle = getString(R.string.your_vaccination_result_toolbar_title)
-                                    )
+                                navigateToYourEvents(
+                                    signedEvents = it.signedModels
                                 )
                             }
                         )
                     } else {
-                        findNavController().navigate(
-                            GetVaccinationFragmentDirections.actionYourEvents(
-                                type = YourEventsFragmentType.RemoteProtocol3Type.Vaccinations(
-                                    remoteEvents = it.signedModels.map { signedModel -> signedModel.model to signedModel.rawResponse }
-                                        .toMap()
-                                ),
-                                toolbarTitle = copy.toolbarTitle
-                            )
+                        navigateToYourEvents(
+                            signedEvents = it.signedModels
                         )
                     }
                 }
@@ -184,6 +175,19 @@ class GetEventsFragment: DigiDFragment(R.layout.fragment_get_events) {
                 )
             }
         }
+    }
+
+    private fun navigateToYourEvents(signedEvents: List<SignedResponseWithModel<RemoteProtocol3>>) {
+        findNavController().navigate(
+            GetVaccinationFragmentDirections.actionYourEvents(
+                type = YourEventsFragmentType.RemoteProtocol3Type(
+                    remoteEvents = signedEvents.map { signedModel -> signedModel.model to signedModel.rawResponse }
+                        .toMap(),
+                    originType = args.originType
+                ),
+                toolbarTitle = getString(R.string.your_vaccination_result_toolbar_title)
+            )
+        )
     }
 }
 

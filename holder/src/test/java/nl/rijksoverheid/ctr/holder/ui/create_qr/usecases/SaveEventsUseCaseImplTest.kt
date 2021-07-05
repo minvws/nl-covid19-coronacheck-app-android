@@ -6,7 +6,6 @@ import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.dao.EventGroupDao
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import org.junit.Before
 import org.junit.Test

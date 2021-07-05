@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.repositories
 
 import nl.rijksoverheid.ctr.api.interceptors.SigningCertificate
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.TestProviderApiClient
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 
@@ -12,6 +13,25 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
  *
  */
 interface EventProviderRepository {
+    companion object {
+        /**
+         * Get filter for backend endpoints
+         */
+        fun getFilter(originType: OriginType): String {
+            return when (originType) {
+                is OriginType.Vaccination -> {
+                    "vaccination"
+                }
+                is OriginType.Recovery -> {
+                    "negativetest"
+                }
+                is OriginType.Test -> {
+                    "positivetest,recovery"
+                }
+            }
+        }
+    }
+
     suspend fun getUnomi(
         url: String,
         token: String,

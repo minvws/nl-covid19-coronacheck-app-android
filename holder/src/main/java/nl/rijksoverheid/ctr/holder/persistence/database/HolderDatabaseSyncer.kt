@@ -30,7 +30,7 @@ interface HolderDatabaseSyncer {
      * @param expectedOriginType If not null checks if the remote credentials contain this origin. Will return [DatabaseSyncerResult.MissingOrigin] if it's not present.
      * @param syncWithRemote If true and the data call to resync succeeds, clear all green cards in the database and re-add them
      */
-    suspend fun sync(expectedOriginType: String? = null, syncWithRemote: Boolean = true): DatabaseSyncerResult
+    suspend fun sync(expectedOriginType: OriginType? = null, syncWithRemote: Boolean = true): DatabaseSyncerResult
 }
 
 class HolderDatabaseSyncerImpl(
@@ -42,7 +42,7 @@ class HolderDatabaseSyncerImpl(
     private val workerManagerWrapper: WorkerManagerWrapper,
 ) : HolderDatabaseSyncer {
 
-    override suspend fun sync(expectedOriginType: String?, syncWithRemote: Boolean): DatabaseSyncerResult {
+    override suspend fun sync(expectedOriginType: OriginType?, syncWithRemote: Boolean): DatabaseSyncerResult {
         return withContext(Dispatchers.IO) {
             val events = holderDatabase.eventGroupDao().getAll()
 
@@ -69,13 +69,13 @@ class HolderDatabaseSyncerImpl(
     private suspend fun removeExpiredEventGroups(events: List<EventGroupEntity>) {
         events.forEach {
             val expireDate = when (it.type) {
-                is EventType.Vaccination -> {
+                is OriginType.Vaccination -> {
                     cachedAppConfigUseCase.getCachedAppConfigVaccinationEventValidity()
                 }
-                is EventType.Test -> {
+                is OriginType.Test -> {
                     cachedAppConfigUseCase.getCachedAppConfigMaxValidityHours()
                 }
-                is EventType.Recovery -> {
+                is OriginType.Recovery -> {
                     cachedAppConfigUseCase.getCachedAppConfigRecoveryEventValidity()
                 }
             }
@@ -87,14 +87,14 @@ class HolderDatabaseSyncerImpl(
     }
 
     @Transaction
-    private suspend fun syncGreenCards(events: List<EventGroupEntity>, expectedOriginType: String?): DatabaseSyncerResult {
+    private suspend fun syncGreenCards(events: List<EventGroupEntity>, expectedOriginType: OriginType?): DatabaseSyncerResult {
         if (events.isNotEmpty()) {
             return try {
                 val remoteCredentials = getRemoteCredentials(
                     events = events
                 )
 
-                if (expectedOriginType != null && !remoteCredentials.getAllOrigins().contains(expectedOriginType)) {
+                if (expectedOriginType != null && !remoteCredentials.getAllOrigins().contains(expectedOriginType.getTypeString())) {
                     return DatabaseSyncerResult.MissingOrigin
                 }
 
