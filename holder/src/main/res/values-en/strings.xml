@@ -19,7 +19,7 @@
     <string name="privacy_policy_1"><![CDATA[Your data is <b>not centrally stored anywhere</b>]]></string>
     <string name="privacy_policy_2"><![CDATA[No location data is <b>used or saved</b>]]></string>
     <string name="privacy_policy_checkbox_text">I have read the privacy statement and understand how CoronaCheck processes my data.</string>
-    <string name="my_overview">My overview</string>
+    <string name="my_overview">My Green Cards</string>
     <string name="my_overview_description">Show both your QR code and your proof of identity at the entrance of the location you\'re visiting.</string>
     <string name="my_overview_description_eu"><![CDATA[Travelling outside the Netherlands? Then use your international QR code. In <a href="https://www.netherlandsworldwide.nl/travelling-outside-the-netherlands">this overview</a>, you\'ll find if the QR code is valid in the country you’re planning to visit.]]></string>
     <string name="my_overview_no_qr_description"><![CDATA[You can create a QR-code if you\'re vaccinated, if you\'ve had corona or by taking a test at an <a href="https://coronacheck.nl/nl/testafspraak-in-app">affiliated test location</a>.]]></string>
@@ -52,7 +52,7 @@
     <string name="my_overview_no_qr_make_qr_description">Turn your vaccination, negative test result or recovery into a QR code.</string>
     <string name="my_overview_no_qr_make_qr_button">Make QR code</string>
     <string name="my_overview_no_qr_replace_qr_button">Replace QR code</string>
-    <string name="choose_provider_toolbar">Make QR code</string>
+    <string name="choose_provider_toolbar">Add green card</string>
     <string name="choose_provider_title">Where were you tested?</string>
     <string name="choose_provider_description">Does the test prove you don\'t have coronavirus? Then you can make a QR code out of the test result. Indicate where you were tested.</string>
     <string name="choose_provider_commercial_title">Other test location</string>
@@ -226,7 +226,7 @@
     <string name="qr_card_expired">Your QR code has expired.</string>
     <string name="qr_card_vaccination_title_domestic">Vaccination certificate:</string>
     <string name="qr_card_test_domestic">Test certificate:</string>
-    <string name="qr_card_recovery_title_domestic">Recovery statement:</string>
+    <string name="qr_card_recovery_title_domestic">Recovery certificate:</string>
     <string name="qr_card_vaccination_title_eu">Vaccination date:</string>
     <string name="qr_card_test_title_eu">Test date:</string>
     <string name="qr_card_recovery_title_eu">Recovery date:</string>
@@ -247,7 +247,7 @@
     <string name="your_vaccination_explanation_doses">%1$s from %2$s</string>
     <string name="my_overview_not_valid_domestic_but_is_in_eu">Your %1$s isn\'t valid in the Netherlands. You\'ve only got an international QR code.</string>
     <string name="my_overview_not_valid_eu_but_is_in_domestic">Your %1$s isn\'t valid internationally. You\'ve only got a Dutch QR code.</string>
-    <string name="type_recovery">recovery statement</string>
+    <string name="type_recovery">recovery certificate</string>
     <string name="type_test">test certificate</string>
     <string name="type_vaccination">vaccination certificate</string>
     <string name="my_overview_green_card_not_valid_title_vaccination">About your vaccination certificate</string>

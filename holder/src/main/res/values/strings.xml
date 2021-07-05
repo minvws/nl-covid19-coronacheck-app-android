@@ -19,7 +19,7 @@
     <string name="privacy_policy_1"><![CDATA[Jouw gegevens worden <b>nergens centraal opgeslagen</b>]]></string>
     <string name="privacy_policy_2"><![CDATA[Er worden <b>geen locatiegegevens</b> gebruikt of bewaard]]></string>
     <string name="privacy_policy_checkbox_text">Ik heb de privacyverklaring gelezen en begrijp hoe de app met mijn gegevens omgaat.</string>
-    <string name="my_overview">Mijn overzicht</string>
+    <string name="my_overview">Mijn bewijzen</string>
     <string name="my_overview_description">Laat de QR-code en je identiteitsbewijs zien bij de ingang van de locatie die je bezoekt.</string>
     <string name="my_overview_description_eu"><![CDATA[Reis je buiten Nederland? Gebruik dan je internationale QR-code. Check <a href="https://www.nederlandwereldwijd.nl/reizen-naar-het-buitenland">dit overzicht</a> voor vertrek. Daar staat of jouw QR-code geldig is in het land dat je bezoekt.]]></string>
     <string name="my_overview_no_qr_description"><![CDATA[Je kan een QR-code maken als je bent gevaccineerd, als je corona hebt gehad of als je bent getest bij een <a href="https://coronacheck.nl/nl/testafspraak-in-app">aangesloten testlocatie</a>.]]></string>
@@ -44,6 +44,7 @@
     <string name="my_overview_test_result_expires_in_minutes">Verloopt over %1$s min</string>
     <string name="my_overview_test_result_footer">Laat QR-code zien bij ingang</string>
     <string name="my_overview_test_result_button">Bekijk QR</string>
+    <string name="my_overview_test_result_button_indicator_accessibility_description">Loading, please wait</string>
     <string name="my_overview_no_qr_make_appointment_title">Testafspraak maken</string>
     <string name="my_overview_no_qr_make_appointment_description">Wil je een QR-code maken? Laat je dan eerst testen op corona.</string>
     <string name="my_overview_no_qr_make_appointment_button">Maak afspraak</string>
@@ -52,7 +53,7 @@
     <string name="my_overview_no_qr_make_qr_description">Zet jouw vaccinatie, testuitslag of herstel om in een QR-code.</string>
     <string name="my_overview_no_qr_make_qr_button">Maak QR-code</string>
     <string name="my_overview_no_qr_replace_qr_button">Vervang QR-code</string>
-    <string name="choose_provider_toolbar">QR-code maken</string>
+    <string name="choose_provider_toolbar">Bewijs toevoegen</string>
     <string name="choose_provider_title">Waar ben je getest?</string>
     <string name="choose_provider_description">Blijkt uit de test dat je geen corona hebt? Dan kan je van de testuitslag een QR-code maken. Geef aan waar je getest bent.</string>
     <string name="choose_provider_commercial_title">Andere testlocatie</string>
@@ -308,8 +309,14 @@
     <string name="my_overview_green_card_not_valid_title_recovery">Over je herstelbewijs</string>
     <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_recovery"><![CDATA[Jouw herstelbewijs is niet geldig in Nederland. Je hebt wel een internationale QR-code.]]></string>
     <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_recovery"><![CDATA[Jouw herstelbewijs is niet internationaal geldig. Je hebt wel een Nederlandse QR-code.]]></string>
+    <string name="my_overview_green_card_server_error"><![CDATA[Door een fout op de server werkt je <br\>QR-code niet. <a href="#">Probeer opnieuw</a>]]></string>
+    <string name="my_overview_green_card_server_error_after_retry"><![CDATA[of bel de helpdesk op 0800–1421 (gratis)]]></string>
+    <string name="my_overview_green_card_internet_error"><![CDATA[Maak verbinding met het internet om te <br\>zorgen dat je QR-code weer werkt. <a href="#">Probeer opnieuw</a>]]></string>
     <string name="dialog_faultyvaccination28June_title">Vaccinatiebewijs gecorrigeerd</string>
     <string name="dialog_faultyvaccination28June_message">Door een technische fout had u ten onrechte een Nederlands vaccinatiebewijs ontvangen. Dit is nu gecorrigeerd.</string>
     <string name="dialog_faultyvaccination28June_refresh_error_title">Er is iets mis gegaan bij het verversen van uw gegevens</string>
     <string name="dialog_faultyvaccination28June_refresh_error_message">Haal via de app uw gegevens opnieuw op.</string>
+    <string name="my_overview_qr_placeholder_header">Hier komt jouw bewijs</string>
+    <string name="my_overview_qr_placeholder_description"><![CDATA[Je kan een bewijs toevoegen als je bent gevaccineerd of getest. De app maakt dan een Nederlands en internationaal bewijs.<br\><br\><b>Reis je buiten Nederland?</b><br\>Check dit overzicht voor vertrek. Daar staat of jouw internationale bewijs geldig is in het land dat je bezoekt.]]></string>
+
 </resources>

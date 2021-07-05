@@ -158,26 +158,8 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
         val adapterItems = mutableListOf<BindableItem<*>>()
         myOverviewItems.items.forEach { myOverviewItem ->
             when (myOverviewItem) {
-                is MyOverviewItem.HeaderItem -> {
-                    adapterItems.add(
-                        MyOverviewHeaderAdapterItem(
-                            text = myOverviewItem.text
-                        )
-                    )
-                }
-                is MyOverviewItem.CreateQrCardItem -> {
-                    adapterItems.add(MyOverviewNavigationCardAdapterItem(
-                        title = R.string.my_overview_no_qr_make_qr_title,
-                        description = R.string.my_overview_no_qr_make_qr_description,
-                        backgroundColor = R.color.secondary_green,
-                        backgroundDrawable = R.drawable.illustration_create_qr,
-                        buttonText = R.string.my_overview_no_qr_make_qr_button,
-                        onButtonClick = {
-                            findNavControllerSafety(R.id.nav_my_overview)?.navigate(
-                                MyOverviewFragmentDirections.actionCreateQr()
-                            )
-                        }
-                    ))
+                is MyOverviewItem.PlaceholderCardItem -> {
+                    adapterItems.add(MyOverviewGreenCardPlaceholderItem())
                 }
                 is MyOverviewItem.GreenCardItem -> {
                     adapterItems.add(
