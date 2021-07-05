@@ -7,6 +7,7 @@ import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentChooseProviderBinding
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigiDFragment
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigidResult
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.EventsResult
@@ -25,7 +26,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) {
 
     private val dialogUtil: DialogUtil by inject()
-    private val chooseProviderViewModel: ChooseProviderViewModel by viewModel()
+    private val getEventsViewModel: GetEventsViewModel by viewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -55,11 +56,11 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
             (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
         })
 
-        chooseProviderViewModel.loading.observe(viewLifecycleOwner, EventObserver {
+        getEventsViewModel.loading.observe(viewLifecycleOwner, EventObserver {
             (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
         })
 
-        chooseProviderViewModel.eventsResult.observe(viewLifecycleOwner, EventObserver {
+        getEventsViewModel.eventsResult.observe(viewLifecycleOwner, EventObserver {
             when (it) {
                 is EventsResult.Success -> {
                     if (it.missingEvents) {
@@ -148,7 +149,9 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
         digidViewModel.digidResultLiveData.observe(viewLifecycleOwner, EventObserver {
             when (it) {
                 is DigidResult.Success -> {
-                    chooseProviderViewModel.getEvents(it.jwt)
+                    getEventsViewModel.getEvents(
+                        jwt = it.jwt,
+                        originType = OriginType.Test)
                 }
                 is DigidResult.Failed -> {
                     dialogUtil.presentDialog(

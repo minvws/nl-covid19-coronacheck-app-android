@@ -134,10 +134,8 @@ fun holderModule(baseUrl: String) = module {
     viewModel { TokenQrViewModel(get()) }
     viewModel<DeviceRootedViewModel> { DeviceRootedViewModelImpl(get(), get()) }
     viewModel<YourEventsViewModel> { YourEventsViewModelImpl(get(), get()) }
-    viewModel<GetVaccinationViewModel> { GetVaccinationViewModelImpl(get()) }
-    viewModel<GetRecoveryViewModel> { GetRecoveryViewModelImpl(get()) }
-    viewModel<ChooseProviderViewModel> { ChooseProviderViewModelImpl(get()) }
     viewModel<MyOverviewViewModel> { MyOverviewViewModelImpl(get(), get(), get(), get(), get()) }
+    viewModel<GetEventsViewModel> { GetEventsViewModelImpl(get()) }
 
     // Repositories
     single { AuthenticationRepository() }
