@@ -15,6 +15,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.usecases.GreenCardsUseCa
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetMyOverviewItemsUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItems
+import nl.rijksoverheid.ctr.holder.ui.myoverview.items.GreenCardErrorState
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 import org.junit.Assert.assertNull
@@ -100,6 +101,7 @@ class MyOverviewViewModelTest {
             selectedType = GreenCardType.Domestic,
             items = emptyList()
         )
+        coEvery { getMyOverviewItemsUseCase.get(1, GreenCardType.Domestic, loading = true) } returns loadingGreenCardItems()
         coEvery { getMyOverviewItemsUseCase.get(1, GreenCardType.Domestic) } returns greenCardItems
         val myOverviewViewModel = MyOverviewViewModelImpl(getMyOverviewItemsUseCase, holderDatabaseSyncer, persistenceManager, greenCardsUseCase, androidUtil)
 
@@ -123,10 +125,11 @@ class MyOverviewViewModelTest {
                 launchDate = mockk(),
                 originStates = listOf(mockk()),
                 loading = false,
-                refreshStatus = DatabaseSyncerResult.Success,
+                errorState = GreenCardErrorState.NetworkError,
             ))
         )
-        coEvery { getMyOverviewItemsUseCase.get(1, GreenCardType.Domestic) } returns greenCardItems
+        coEvery { getMyOverviewItemsUseCase.get(1, GreenCardType.Domestic, loading = true) } returns loadingGreenCardItems()
+        coEvery { getMyOverviewItemsUseCase.get(1, GreenCardType.Domestic, errorState = GreenCardErrorState.NetworkError) } returns greenCardItems
         coEvery { greenCardsUseCase.expiredCard(GreenCardType.Domestic) } returns true
         val myOverviewViewModel = MyOverviewViewModelImpl(getMyOverviewItemsUseCase, holderDatabaseSyncer, persistenceManager, greenCardsUseCase, androidUtil)
 
@@ -150,18 +153,31 @@ class MyOverviewViewModelTest {
                 launchDate = mockk(),
                 originStates = listOf(mockk()),
                 loading = false,
-                refreshStatus = DatabaseSyncerResult.Success,
+                errorState = GreenCardErrorState.ServerError,
             ))
         )
-        coEvery { getMyOverviewItemsUseCase.get(1, GreenCardType.Domestic) } returns greenCardItems
+        coEvery { getMyOverviewItemsUseCase.get(walletId = 1, selectedType = GreenCardType.Domestic, loading = true) } returns loadingGreenCardItems()
+        coEvery { getMyOverviewItemsUseCase.get(walletId = 1, selectedType = GreenCardType.Domestic, errorState = GreenCardErrorState.ServerError) } returns greenCardItems
         coEvery { greenCardsUseCase.expiredCard(GreenCardType.Domestic) } returns true
         val myOverviewViewModel = MyOverviewViewModelImpl(getMyOverviewItemsUseCase, holderDatabaseSyncer, persistenceManager, greenCardsUseCase, androidUtil)
 
         myOverviewViewModel.refreshOverviewItems(GreenCardType.Domestic, true)
 
-        assertTrue((myOverviewViewModel.myOverviewItemsLiveData.value?.peekContent()?.items?.first() as MyOverviewItem.GreenCardItem).refreshStatus is DatabaseSyncerResult.ServerError)
+        assertTrue((myOverviewViewModel.myOverviewItemsLiveData.value?.peekContent()?.items?.first() as MyOverviewItem.GreenCardItem).errorState is GreenCardErrorState.ServerError)
         assertNull(myOverviewViewModel.myOverviewRefreshErrorEvent.value?.peekContent())
     }
+
+    private fun loadingGreenCardItems() = MyOverviewItems(
+        selectedType = GreenCardType.Domestic,
+        items = listOf(MyOverviewItem.GreenCardItem(
+            credentialState = mockk(),
+            greenCard = mockk(),
+            launchDate = mockk(),
+            originStates = listOf(mockk()),
+            loading = true,
+            errorState = GreenCardErrorState.None,
+        ))
+    )
 
     @Test
     fun `don't sync if cards are not expiring`() {
