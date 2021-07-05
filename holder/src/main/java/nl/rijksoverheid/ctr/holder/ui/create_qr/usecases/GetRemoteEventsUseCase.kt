@@ -28,7 +28,7 @@ class GetRemoteEventsUseCaseImpl(private val eventProviderRepository: EventProvi
                 .getEvents(
                     url = eventProvider.eventUrl,
                     token = token.event,
-                    filter = OriginType.getFilter(originType),
+                    filter = EventProviderRepository.getFilter(originType),
                     signingCertificateBytes = eventProvider.cms
                 )
 

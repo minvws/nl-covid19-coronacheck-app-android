@@ -23,10 +23,10 @@ interface EventProviderRepository {
                     "vaccination"
                 }
                 is OriginType.Recovery -> {
-                    "negativetest"
+                    "positivetest,recovery"
                 }
                 is OriginType.Test -> {
-                    "positivetest,recovery"
+                    "negativetest"
                 }
             }
         }

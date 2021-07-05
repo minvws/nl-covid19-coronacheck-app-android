@@ -10,6 +10,8 @@ import nl.rijksoverheid.ctr.holder.databinding.FragmentChooseProviderBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigiDFragment
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigidResult
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.EventsResult
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAsAccessibilityButton
@@ -71,28 +73,11 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
                             positiveButtonText = R.string.ok,
                             positiveButtonCallback = {},
                             onDismissCallback = {
-                                findNavController().navigate(
-                                    ChooseProviderFragmentDirections.actionYourEvents(
-                                        type = YourEventsFragmentType.RemoteProtocol3Type(
-                                            remoteEvents = it.signedModels.map { signedModel -> signedModel.model to signedModel.rawResponse }
-                                                .toMap(),
-                                            originType = OriginType.Test
-                                        ),
-                                        toolbarTitle = getString(R.string.commercial_test_type_title)
-                                    )
-                                )
+                                navigateToYourEvents(it.signedModels)
                             }
                         )
                     } else {
-                        findNavController().navigate(
-                            ChooseProviderFragmentDirections.actionYourEvents(
-                                type = YourEventsFragmentType.RemoteProtocol3Type.NegativeTests(
-                                    remoteEvents = it.signedModels.map { signedModel -> signedModel.model to signedModel.rawResponse }
-                                        .toMap()
-                                ),
-                                toolbarTitle = getString(R.string.commercial_test_type_title)
-                            )
-                        )
+                        navigateToYourEvents(it.signedModels)
                     }
                 }
                 is EventsResult.HasNoEvents -> {
@@ -165,6 +150,19 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
                 }
             }
         })
+    }
+
+    private fun navigateToYourEvents(signedEvents: List<SignedResponseWithModel<RemoteProtocol3>>) {
+        findNavController().navigate(
+            GetVaccinationFragmentDirections.actionYourEvents(
+                type = YourEventsFragmentType.RemoteProtocol3Type(
+                    remoteEvents = signedEvents.map { signedModel -> signedModel.model to signedModel.rawResponse }
+                        .toMap(),
+                    originType = OriginType.Test
+                ),
+                toolbarTitle = getString(R.string.your_vaccination_result_toolbar_title)
+            )
+        )
     }
 
     override fun onDestroyView() {

@@ -61,7 +61,7 @@ class GetEventProvidersWithTokensUseCaseImpl(
                 val unomiResult = eventProviderRepository.getUnomi(
                     url = eventProvider.unomiUrl,
                     token = token.unomi,
-                    filter = OriginType.getFilter(originType),
+                    filter = EventProviderRepository.getFilter(originType),
                     signingCertificateBytes = eventProvider.cms
                 )
 
