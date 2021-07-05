@@ -143,15 +143,10 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
                 val hasValidOriginStates = originStates.any { it is OriginState.Valid }
                 val nonExpiredOriginStates = originStates.filterNot { it is OriginState.Expired }
 
-                val euLaunchDate = OffsetDateTime.parse(cachedAppConfigUseCase.getCachedAppConfig()!!.euLaunchDate, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
-
-                val launchDate = if (greenCard.greenCardEntity.type == GreenCardType.Eu) euLaunchDate else OffsetDateTime.now()
-
                 // More our credential to a more readable state
                 val credentialState = when {
                     activeCredential == null -> CredentialState.NoCredential
                     !hasValidOriginStates -> CredentialState.NoCredential
-                    launchDate.isAfter(OffsetDateTime.now()) -> CredentialState.NoCredential
                     else -> CredentialState.HasCredential(activeCredential)
                 }
 
@@ -159,8 +154,7 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
                 GreenCardItem(
                     greenCard = greenCard,
                     originStates = nonExpiredOriginStates,
-                    credentialState = credentialState,
-                    launchDate = launchDate,
+                    credentialState = credentialState
                 )
             }
         }.toMutableList()
@@ -266,7 +260,6 @@ sealed class MyOverviewItem {
         val greenCard: GreenCard,
         val originStates: List<OriginState>,
         val credentialState: CredentialState,
-        val launchDate: OffsetDateTime,
         val loading: Boolean = false,
     ) : MyOverviewItem() {
 
