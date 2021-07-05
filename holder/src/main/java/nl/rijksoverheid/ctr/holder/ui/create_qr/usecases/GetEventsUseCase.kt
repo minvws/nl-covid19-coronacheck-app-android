@@ -62,26 +62,11 @@ class GetEventsUseCaseImpl(
 
                 // We have received providers that claim to have events for us so we get those events for each provider
                 val eventResults = eventProvidersWithTokensSuccessResults.map {
-                    when (originType) {
-                        is OriginType.Test -> {
-                            getRemoteEventsUseCase.getTestResults(
-                                eventProvider = it.eventProvider,
-                                token = it.token
-                            )
-                        }
-                        is OriginType.Vaccination -> {
-                            getRemoteEventsUseCase.getVaccinations(
-                                eventProvider = it.eventProvider,
-                                token = it.token
-                            )
-                        }
-                        is OriginType.Recovery -> {
-                            getRemoteEventsUseCase.getPositiveAndRecoveryTestResults(
-                                eventProvider = it.eventProvider,
-                                token = it.token
-                            )
-                        }
-                    }
+                    getRemoteEventsUseCase.getRemoteEvents(
+                        eventProvider = it.eventProvider,
+                        token = it.token,
+                        originType = originType
+                    )
                 }
 
                 // All successful responses

@@ -12,40 +12,18 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
  *
  */
 interface EventProviderRepository {
-    suspend fun unomiVaccinationEvents(
+    suspend fun getUnomi(
         url: String,
         token: String,
+        filter: String,
         signingCertificateBytes: ByteArray
     ): RemoteUnomi
 
-    suspend fun unomiTestEvents(
+    suspend fun getEvents(
         url: String,
         token: String,
-        signingCertificateBytes: ByteArray
-    ): RemoteUnomi
-
-    suspend fun unomiPositiveAndRecoveryEvents(
-        url: String,
-        token: String,
-        signingCertificateBytes: ByteArray
-    ): RemoteUnomi
-
-    suspend fun vaccinationEvents(
-        url: String,
-        token: String,
-        signingCertificateBytes: ByteArray
-    ): SignedResponseWithModel<RemoteProtocol3>
-
-    suspend fun positiveAndRecoveryTestEvents(
-        url: String,
-        token: String,
-        signingCertificateBytes: ByteArray
-    ): SignedResponseWithModel<RemoteProtocol3>
-
-    suspend fun negativeTestEvents(
-        url: String,
-        token: String,
-        signingCertificateBytes: ByteArray
+        signingCertificateBytes: ByteArray,
+        filter: String,
     ): SignedResponseWithModel<RemoteProtocol3>
 }
 
@@ -53,69 +31,30 @@ class EventProviderRepositoryImpl(
     private val testProviderApiClient: TestProviderApiClient
 ) : EventProviderRepository {
 
-    override suspend fun unomiTestEvents(url: String, token: String, signingCertificateBytes: ByteArray): RemoteUnomi {
-        return testProviderApiClient
-            .unomiTestEvents(
-                url = url,
-                authorization = "Bearer $token",
-                certificate = SigningCertificate(signingCertificateBytes)
-            ).model
-    }
-
-    override suspend fun unomiPositiveAndRecoveryEvents(
+    override suspend fun getUnomi(
         url: String,
         token: String,
+        filter: String,
         signingCertificateBytes: ByteArray
     ): RemoteUnomi {
-        return testProviderApiClient
-            .unomiPositiveAndRecoveryTestEvents(
-                url = url,
-                authorization = "Bearer $token",
-                certificate = SigningCertificate(signingCertificateBytes)
-            ).model
-    }
-
-    override suspend fun unomiVaccinationEvents(url: String, token: String, signingCertificateBytes: ByteArray): RemoteUnomi {
-        return testProviderApiClient
-            .unomiVaccinationEvents(
-                url = url,
-                authorization = "Bearer $token",
-                certificate = SigningCertificate(signingCertificateBytes)
-            ).model
-    }
-
-    override suspend fun vaccinationEvents(
-        url: String,
-        token: String,
-        signingCertificateBytes: ByteArray
-    ): SignedResponseWithModel<RemoteProtocol3> {
-        return testProviderApiClient.vaccinationEvents(
+        return testProviderApiClient.getUnomi(
             url = url,
             authorization = "Bearer $token",
+            params = mapOf("filter" to filter),
             certificate = SigningCertificate(signingCertificateBytes)
-        )
+        ).model
     }
 
-    override suspend fun positiveAndRecoveryTestEvents(
+    override suspend fun getEvents(
         url: String,
         token: String,
-        signingCertificateBytes: ByteArray
+        signingCertificateBytes: ByteArray,
+        filter: String
     ): SignedResponseWithModel<RemoteProtocol3> {
-        return testProviderApiClient.positiveAndRecoveryEvents(
+        return testProviderApiClient.getEvents(
             url = url,
             authorization = "Bearer $token",
-            certificate = SigningCertificate(signingCertificateBytes)
-        )
-    }
-
-    override suspend fun negativeTestEvents(
-        url: String,
-        token: String,
-        signingCertificateBytes: ByteArray
-    ): SignedResponseWithModel<RemoteProtocol3> {
-        return testProviderApiClient.negativeTestEvents(
-            url = url,
-            authorization = "Bearer $token",
+            params = mapOf("filter" to filter),
             certificate = SigningCertificate(signingCertificateBytes)
         )
     }
