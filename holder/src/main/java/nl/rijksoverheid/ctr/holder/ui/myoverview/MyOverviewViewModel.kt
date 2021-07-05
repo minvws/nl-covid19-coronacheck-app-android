@@ -44,8 +44,6 @@ class MyOverviewViewModelImpl(
     private val androidUtil: AndroidUtil,
 ) : MyOverviewViewModel() {
 
-    private var showDialogIfNetworkError = true
-
     override fun getSelectedType(): GreenCardType {
         return (myOverviewItemsLiveData.value?.peekContent()?.selectedType
             ?: persistenceManager.getSelectedGreenCardType())
@@ -88,15 +86,15 @@ class MyOverviewViewModelImpl(
 
                         when (syncResult) {
                             DatabaseSyncerResult.NetworkError -> {
-                                if (showDialogIfNetworkError) {
-                                    val expired = greenCardsUseCase.expiredCard(selectType)
-                                    (myOverviewRefreshErrorEvent as MutableLiveData).postValue(
-                                        Event(MyOverviewError.get(expired))
-                                    )
-                                    showDialogIfNetworkError = false
-                                } else {
+                                val shownDialogAlready = myOverviewRefreshErrorEvent.value?.peekContent() is MyOverviewError.Inactive
+                                if (shownDialogAlready) {
                                     return@launch postItemsWithStatus(selectType, syncResult)
                                 }
+
+                                val expired = greenCardsUseCase.expiredCard(selectType)
+                                (myOverviewRefreshErrorEvent as MutableLiveData).postValue(
+                                    Event(MyOverviewError.get(expired))
+                                )
                             }
                             is DatabaseSyncerResult.ServerError -> {
                                 return@launch postItemsWithStatus(selectType, syncResult)
@@ -104,7 +102,6 @@ class MyOverviewViewModelImpl(
                             DatabaseSyncerResult.MissingOrigin -> {}
                             DatabaseSyncerResult.Success -> {}
                         }
-                        showDialogIfNetworkError = true
 
                     } else {
                         holderDatabaseSyncer.sync(
