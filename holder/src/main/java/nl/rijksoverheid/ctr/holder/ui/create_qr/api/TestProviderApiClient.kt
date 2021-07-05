@@ -35,6 +35,8 @@ interface TestProviderApiClient {
         @Tag certificate: SigningCertificate,
     ): SignedResponseWithModel<RemoteUnomi>
 
+    @POST
+    @SignedRequest
     suspend fun getEvents(
         @Url url: String,
         @Header("Authorization") authorization: String,
