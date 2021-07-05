@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr
 import android.os.Parcel
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 
 /*
@@ -15,7 +16,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 
 sealed class YourEventsFragmentType : Parcelable {
     @Parcelize
-    data class TestResult2(val remoteTestResult: RemoteTestResult2, val rawResponse: ByteArray) :
+    data class TestResult2(val remoteTestResult: RemoteTestResult2, val rawResponse: ByteArray):
         YourEventsFragmentType(), Parcelable {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
@@ -36,19 +37,9 @@ sealed class YourEventsFragmentType : Parcelable {
         }
     }
 
-    sealed class RemoteProtocol3Type(open val remoteEvents: Map<RemoteProtocol3, ByteArray>):
-        YourEventsFragmentType(), Parcelable {
-        @Parcelize
-        data class Vaccinations(override val remoteEvents: Map<RemoteProtocol3, ByteArray>) :
-            RemoteProtocol3Type(remoteEvents), Parcelable
-
-        @Parcelize
-        data class NegativeTests(override val remoteEvents: Map<RemoteProtocol3, ByteArray>) :
-            RemoteProtocol3Type(remoteEvents), Parcelable
-
-        @Parcelize
-        data class PositiveTestsAndRecoveries(override val remoteEvents: Map<RemoteProtocol3, ByteArray>) :
-            RemoteProtocol3Type(remoteEvents), Parcelable
-    }
+    @Parcelize
+    data class RemoteProtocol3Type(val remoteEvents: Map<RemoteProtocol3, ByteArray>,
+                                   val originType: OriginType):
+        YourEventsFragmentType(), Parcelable
 
 }

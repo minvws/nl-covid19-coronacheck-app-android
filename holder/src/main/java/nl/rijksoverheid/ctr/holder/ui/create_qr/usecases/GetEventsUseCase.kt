@@ -24,9 +24,9 @@ import java.io.IOException
  * - map result to success or error states
  */
 interface GetEventsUseCase {
-    suspend fun getVaccinationEvents(jwt: String): EventsResult
-    suspend fun getNegativeTestEvents(jwt: String): EventsResult
-    suspend fun getPositiveAndRecoveryEvents(jwt: String): EventsResult
+    suspend fun getEvents(jwt: String,
+                          originType: OriginType,
+                          targetProviderIds: List<String>? = null): EventsResult
 }
 
 class GetEventsUseCaseImpl(
@@ -36,37 +36,10 @@ class GetEventsUseCaseImpl(
     private val getRemoteEventsUseCase: GetRemoteEventsUseCase
 ) : GetEventsUseCase {
 
-    companion object {
-        private const val PROVIDER_IDENTIFIER_GGD = "ggd"
-    }
-
-    override suspend fun getVaccinationEvents(jwt: String): EventsResult {
-        return getRemoteEvents(
-            jwt = jwt,
-            originType = OriginType.Vaccination
-        )
-    }
-
-    override suspend fun getNegativeTestEvents(jwt: String): EventsResult {
-        return getRemoteEvents(
-            jwt = jwt,
-            originType = OriginType.Test,
-            targetProviderIds = listOf(PROVIDER_IDENTIFIER_GGD)
-        )
-    }
-
-    override suspend fun getPositiveAndRecoveryEvents(jwt: String): EventsResult {
-        return getRemoteEvents(
-            jwt = jwt,
-            originType = OriginType.Recovery,
-            targetProviderIds = listOf(PROVIDER_IDENTIFIER_GGD)
-        )
-    }
-
-    private suspend fun getRemoteEvents(
+    override suspend fun getEvents(
         jwt: String,
         originType: OriginType,
-        targetProviderIds: List<String>? = null
+        targetProviderIds: List<String>?
     ): EventsResult {
         return try {
             // Fetch event providers
@@ -89,26 +62,11 @@ class GetEventsUseCaseImpl(
 
                 // We have received providers that claim to have events for us so we get those events for each provider
                 val eventResults = eventProvidersWithTokensSuccessResults.map {
-                    when (originType) {
-                        is OriginType.Test -> {
-                            getRemoteEventsUseCase.getTestResults(
-                                eventProvider = it.eventProvider,
-                                token = it.token
-                            )
-                        }
-                        is OriginType.Vaccination -> {
-                            getRemoteEventsUseCase.getVaccinations(
-                                eventProvider = it.eventProvider,
-                                token = it.token
-                            )
-                        }
-                        is OriginType.Recovery -> {
-                            getRemoteEventsUseCase.getPositiveAndRecoveryTestResults(
-                                eventProvider = it.eventProvider,
-                                token = it.token
-                            )
-                        }
-                    }
+                    getRemoteEventsUseCase.getRemoteEvents(
+                        eventProvider = it.eventProvider,
+                        token = it.token,
+                        originType = originType
+                    )
                 }
 
                 // All successful responses

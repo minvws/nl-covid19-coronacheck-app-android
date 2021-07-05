@@ -166,7 +166,6 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
                     greenCard = greenCard,
                     originStates = nonExpiredOriginStates,
                     credentialState = credentialState,
-                    launchDate = launchDate,
                     errorState = errorState,
                     loading = loading,
                 )
@@ -263,7 +262,6 @@ sealed class MyOverviewItem {
         val greenCard: GreenCard,
         val originStates: List<OriginState>,
         val credentialState: CredentialState,
-        val launchDate: OffsetDateTime,
         val loading: Boolean = false,
         val errorState: GreenCardErrorState,
     ) : MyOverviewItem() {

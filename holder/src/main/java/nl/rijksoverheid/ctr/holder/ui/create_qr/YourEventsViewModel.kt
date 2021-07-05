@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
@@ -26,7 +25,7 @@ abstract class YourEventsViewModel : ViewModel() {
     val yourEventsResult: LiveData<Event<DatabaseSyncerResult>> = MutableLiveData()
 
     abstract fun saveNegativeTest2(remoteTestResult: RemoteTestResult2, rawResponse: ByteArray)
-    abstract fun saveRemoteProtocol3Events(remoteProtocols3: Map<RemoteProtocol3, ByteArray>, originType: String, eventType: EventType)
+    abstract fun saveRemoteProtocol3Events(remoteProtocols3: Map<RemoteProtocol3, ByteArray>, originType: OriginType)
 }
 
 class YourEventsViewModelImpl(
@@ -43,7 +42,7 @@ class YourEventsViewModelImpl(
 
                 // Send all events to database and create green cards, origins and credentials
                 val databaseSyncerResult = holderDatabaseSyncer.sync(
-                    expectedOriginType = OriginType.TYPE_TEST
+                    expectedOriginType = OriginType.Test
                 )
 
                 (yourEventsResult as MutableLiveData).value = Event(
@@ -59,12 +58,14 @@ class YourEventsViewModelImpl(
         }
     }
 
-    override fun saveRemoteProtocol3Events(remoteProtocols3: Map<RemoteProtocol3, ByteArray>, originType: String, eventType: EventType) {
+    override fun saveRemoteProtocol3Events(remoteProtocols3: Map<RemoteProtocol3, ByteArray>, originType: OriginType) {
         (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {
             try {
                 // Save the events in the database
-                saveEventsUseCase.saveRemoteProtocols3(remoteProtocols3, eventType)
+                saveEventsUseCase.saveRemoteProtocols3(
+                    remoteProtocols3 = remoteProtocols3,
+                    originType = originType)
 
                 // Send all events to database and create green cards, origins and credentials
                 val databaseSyncerResult = holderDatabaseSyncer.sync(

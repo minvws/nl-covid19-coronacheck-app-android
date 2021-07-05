@@ -26,10 +26,9 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TestResultAdapterItemUtil
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import java.time.OffsetDateTime
+import java.time.LocalDate
 import java.time.ZoneOffset
 import java.time.temporal.ChronoUnit
-import kotlin.math.ceil
 
 class MyOverviewGreenCardAdapterItem(
     private val greenCard: GreenCard,
@@ -283,7 +282,7 @@ class MyOverviewGreenCardAdapterItem(
         title: String
     ) {
         // Small hack, but if the subtitle is not present we remove the ":" from the title copy since that doesn't make sense
-        textView.text = if (!originUtil.presentSubtitle(greenCard.greenCardEntity.type, originState)) title.replace(":", "") else title
+        textView.text = if (originUtil.hideSubtitle(greenCard.greenCardEntity.type, originState)) title.replace(":", "") else title
         textView.visibility = View.VISIBLE
     }
 
@@ -295,16 +294,16 @@ class MyOverviewGreenCardAdapterItem(
         val context = textView.context
 
         when {
-            !originUtil.presentSubtitle(
+            originUtil.hideSubtitle(
                 greenCardType = greenCard.greenCardEntity.type,
                 originState = originState) -> {
                     textView.text = ""
             }
-            originState is OriginState.Future || greenCard.greenCardEntity.type == GreenCardType.Eu -> {
+            originState is OriginState.Future -> {
                 textView.setTextColor(ContextCompat.getColor(context, R.color.link))
 
-                val daysBetween = ceil(ChronoUnit.HOURS.between(OffsetDateTime.now(ZoneOffset.UTC), originState.origin.validFrom) / 24.0).toInt()
-                if (daysBetween == 1) {
+                val daysBetween = ChronoUnit.DAYS.between(LocalDate.now(ZoneOffset.UTC), originState.origin.validFrom.toLocalDate())
+                if (daysBetween == 1L) {
                     textView.text = context.getString(R.string.qr_card_validity_future_day, daysBetween.toString())
                 } else {
                     textView.text = context.getString(R.string.qr_card_validity_future_days, daysBetween.toString())
