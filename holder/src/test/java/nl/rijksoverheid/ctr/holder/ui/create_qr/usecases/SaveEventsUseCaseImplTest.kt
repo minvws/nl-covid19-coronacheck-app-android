@@ -6,7 +6,7 @@ import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.dao.EventGroupDao
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventType
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import org.junit.Before
 import org.junit.Test
@@ -51,17 +51,17 @@ class SaveEventsUseCaseImplTest {
         runBlocking {
             saveEventsUseCaseImpl.saveRemoteProtocols3(
                 remoteProtocols3,
-                EventType.Vaccination
+                OriginType.Vaccination
             )
 
-            coVerify { eventGroupDao.deleteAllOfType(EventType.Vaccination) }
+            coVerify { eventGroupDao.deleteAllOfType(OriginType.Vaccination) }
             coVerify {
                 eventGroupDao.insertAll(
                     remoteProtocols3.map {
                         mapEventsToEntity(
                             it.key,
                             it.value,
-                            EventType.Vaccination
+                            OriginType.Vaccination
                         )
                     }
                 )
@@ -78,17 +78,17 @@ class SaveEventsUseCaseImplTest {
         runBlocking {
             saveEventsUseCaseImpl.saveRemoteProtocols3(
                 remoteProtocols3,
-                EventType.Recovery
+                OriginType.Recovery
             )
 
-            coVerify { eventGroupDao.deleteAllOfType(EventType.Recovery) }
+            coVerify { eventGroupDao.deleteAllOfType(OriginType.Recovery) }
             coVerify {
                 eventGroupDao.insertAll(
                     remoteProtocols3.map {
                         mapEventsToEntity(
                             it.key,
                             it.value,
-                            EventType.Recovery
+                            OriginType.Recovery
                         )
                     }
                 )
@@ -99,7 +99,7 @@ class SaveEventsUseCaseImplTest {
     private fun mapEventsToEntity(
         remoteEvents: RemoteProtocol3,
         byteArray: ByteArray,
-        eventType: EventType
+        eventType: OriginType
     ) = EventGroupEntity(
         walletId = 1,
         providerIdentifier = remoteEvents.providerIdentifier,

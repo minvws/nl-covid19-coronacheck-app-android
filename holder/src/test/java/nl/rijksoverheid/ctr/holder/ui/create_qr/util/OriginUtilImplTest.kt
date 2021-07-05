@@ -52,7 +52,7 @@ class OriginUtilImplTest {
     }
 
     @Test
-    fun `presentSubtitle returns true if green card type is Domestic and origin will expire in less than 3 years`() {
+    fun `hideSubtitle returns false if green card type is Domestic and origin will expire in less than 3 years`() {
         val clock = Clock.fixed(Instant.ofEpochSecond(0), ZoneId.of("UTC"))
         val originUtil = OriginUtilImpl(clock)
 
@@ -66,14 +66,14 @@ class OriginUtilImplTest {
                 validFrom = OffsetDateTime.now(clock).plusYears(2)
             ))
 
-        assertTrue(originUtil.presentSubtitle(
+        assertFalse(originUtil.hideSubtitle(
             greenCardType = GreenCardType.Domestic,
             originState = originState
         ))
     }
 
     @Test
-    fun `presentSubtitle returns false if green card type is Domestic and origin will expire in 3 years`() {
+    fun `hideSubtitle returns true if green card type is Domestic and origin will expire in 3 years`() {
         val clock = Clock.fixed(Instant.ofEpochSecond(0), ZoneId.of("UTC"))
         val originUtil = OriginUtilImpl(clock)
 
@@ -87,14 +87,14 @@ class OriginUtilImplTest {
                 validFrom = OffsetDateTime.now(clock)
             ))
 
-        assertFalse(originUtil.presentSubtitle(
+        assertTrue(originUtil.hideSubtitle(
             greenCardType = GreenCardType.Domestic,
             originState = originState
         ))
     }
 
     @Test
-    fun `presentSubtitle returns true if green card type is Eu and origin will expire in 3 years`() {
+    fun `hideSubtitle returns false if green card type is Eu and origin will expire in 3 years`() {
         val clock = Clock.fixed(Instant.ofEpochSecond(0), ZoneId.of("UTC"))
         val originUtil = OriginUtilImpl(clock)
 
@@ -108,7 +108,7 @@ class OriginUtilImplTest {
                 validFrom = OffsetDateTime.now(clock).plusYears(3)
             ))
 
-        assertTrue(originUtil.presentSubtitle(
+        assertFalse(originUtil.hideSubtitle(
             greenCardType = GreenCardType.Eu,
             originState = originState
         ))

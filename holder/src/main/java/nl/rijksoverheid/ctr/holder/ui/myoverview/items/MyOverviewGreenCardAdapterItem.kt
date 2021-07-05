@@ -244,7 +244,7 @@ class MyOverviewGreenCardAdapterItem(
         title: String
     ) {
         // Small hack, but if the subtitle is not present we remove the ":" from the title copy since that doesn't make sense
-        textView.text = if (!originUtil.presentSubtitle(greenCard.greenCardEntity.type, originState)) title.replace(":", "") else title
+        textView.text = if (originUtil.hideSubtitle(greenCard.greenCardEntity.type, originState)) title.replace(":", "") else title
         textView.visibility = View.VISIBLE
     }
 
@@ -256,12 +256,12 @@ class MyOverviewGreenCardAdapterItem(
         val context = textView.context
 
         when {
-            !originUtil.presentSubtitle(
+            originUtil.hideSubtitle(
                 greenCardType = greenCard.greenCardEntity.type,
                 originState = originState) -> {
                     textView.text = ""
             }
-            originState is OriginState.Future || (greenCard.greenCardEntity.type == GreenCardType.Eu) -> {
+            originState is OriginState.Future -> {
                 textView.setTextColor(ContextCompat.getColor(context, R.color.link))
 
                 val daysBetween = ChronoUnit.DAYS.between(LocalDate.now(ZoneOffset.UTC), originState.origin.validFrom.toLocalDate())

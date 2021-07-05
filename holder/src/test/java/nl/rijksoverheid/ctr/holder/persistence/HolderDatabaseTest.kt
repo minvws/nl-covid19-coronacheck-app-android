@@ -85,7 +85,7 @@ class HolderDatabaseTest : AutoCloseKoinTest() {
             EventGroupEntity(
                 id = 1,
                 walletId = 1,
-                type = EventType.Vaccination,
+                type = OriginType.Vaccination,
                 maxIssuedAt = LocalDate.of(2020, Month.JANUARY, 1).atStartOfDay().atOffset(
                     ZoneOffset.UTC
                 ),
@@ -95,7 +95,7 @@ class HolderDatabaseTest : AutoCloseKoinTest() {
             EventGroupEntity(
                 id = 2,
                 walletId = 1,
-                type = EventType.Vaccination,
+                type = OriginType.Vaccination,
                 maxIssuedAt = LocalDate.of(2020, Month.JANUARY, 1).atStartOfDay().atOffset(
                     ZoneOffset.UTC
                 ),

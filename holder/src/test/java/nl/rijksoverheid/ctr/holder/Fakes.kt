@@ -430,9 +430,8 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
 }
 
 fun fakeEventProviderRepository(
-    unomiVaccinationEvents: ((url: String) -> RemoteUnomi) = { RemoteUnomi("", "", false) },
-    unomiTestEvents: ((url: String) -> RemoteUnomi) = { RemoteUnomi("", "", false) },
-    vaccinationEvents: ((url: String) -> SignedResponseWithModel<RemoteProtocol3>) = {
+    unomi: ((url: String) -> RemoteUnomi) = { RemoteUnomi("", "", false) },
+    events: ((url: String) -> SignedResponseWithModel<RemoteProtocol3>) = {
         SignedResponseWithModel(
             "".toByteArray(),
             RemoteProtocol3(
@@ -440,62 +439,25 @@ fun fakeEventProviderRepository(
             ),
         )
     },
-    negativeTestEvents: ((url: String) -> SignedResponseWithModel<RemoteProtocol3>) = {
-        SignedResponseWithModel(
-            "".toByteArray(), RemoteProtocol3(
-                "", "", RemoteProtocol.Status.COMPLETE, null, listOf()
-            )
-        )
-    }
 ) = object : EventProviderRepository {
-
-    override suspend fun unomiVaccinationEvents(
+    override suspend fun getUnomi(
         url: String,
         token: String,
+        filter: String,
         signingCertificateBytes: ByteArray
     ): RemoteUnomi {
-        return unomiVaccinationEvents.invoke(url)
+        return unomi.invoke(url)
     }
 
-    override suspend fun unomiPositiveAndRecoveryEvents(
+    override suspend fun getEvents(
         url: String,
         token: String,
-        signingCertificateBytes: ByteArray
-    ): RemoteUnomi {
-        return unomiVaccinationEvents.invoke(url)
-    }
-
-    override suspend fun unomiTestEvents(
-        url: String,
-        token: String,
-        signingCertificateBytes: ByteArray
-    ): RemoteUnomi {
-        return unomiTestEvents.invoke(url)
-    }
-
-    override suspend fun positiveAndRecoveryTestEvents(
-        url: String,
-        token: String,
-        signingCertificateBytes: ByteArray
+        signingCertificateBytes: ByteArray,
+        filter: String
     ): SignedResponseWithModel<RemoteProtocol3> {
-        return negativeTestEvents.invoke(url)
+        return events.invoke(url)
     }
 
-    override suspend fun vaccinationEvents(
-        url: String,
-        token: String,
-        signingCertificateBytes: ByteArray
-    ): SignedResponseWithModel<RemoteProtocol3> {
-        return vaccinationEvents.invoke(url)
-    }
-
-    override suspend fun negativeTestEvents(
-        url: String,
-        token: String,
-        signingCertificateBytes: ByteArray
-    ): SignedResponseWithModel<RemoteProtocol3> {
-        return negativeTestEvents.invoke(url)
-    }
 }
 
 

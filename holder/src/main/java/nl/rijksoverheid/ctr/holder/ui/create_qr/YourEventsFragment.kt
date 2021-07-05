@@ -25,12 +25,10 @@ import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentYourEventsBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.items.YourEventWidget
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.InfoScreenUtil
-import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import org.koin.android.ext.android.inject
@@ -125,20 +123,27 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
     }
 
     private fun presentHeader(binding: FragmentYourEventsBinding) {
-        when (args.type) {
-            is YourEventsFragmentType.TestResult2,
-            is YourEventsFragmentType.RemoteProtocol3Type.NegativeTests -> {
+        when (val type = args.type) {
+            is YourEventsFragmentType.TestResult2 -> {
                 binding.title.setText(R.string.your_negative_test_results_title)
                 binding.description.setHtmlText(getString(R.string.your_negative_test_results_description))
             }
-            is YourEventsFragmentType.RemoteProtocol3Type.Vaccinations -> {
-                binding.title.visibility = View.GONE
-                binding.description.text =
-                    getString(R.string.your_retrieved_vaccinations_description)
-            }
-            is YourEventsFragmentType.RemoteProtocol3Type.PositiveTestsAndRecoveries -> {
-                binding.title.visibility = View.GONE
-                binding.description.text = getString(R.string.your_positive_test_description)
+            is YourEventsFragmentType.RemoteProtocol3Type -> {
+                when (type.originType) {
+                    is OriginType.Test -> {
+                        binding.title.setText(R.string.your_negative_test_results_title)
+                        binding.description.setHtmlText(getString(R.string.your_negative_test_results_description))
+                    }
+                    is OriginType.Vaccination -> {
+                        binding.title.visibility = View.GONE
+                        binding.description.text =
+                            getString(R.string.your_retrieved_vaccinations_description)
+                    }
+                    is OriginType.Recovery -> {
+                        binding.title.visibility = View.GONE
+                        binding.description.text = getString(R.string.your_positive_test_description)
+                    }
+                }
             }
         }
     }
@@ -402,20 +407,9 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                     )
                 }
                 is YourEventsFragmentType.RemoteProtocol3Type -> {
-                    val eventType = when (type) {
-                        is YourEventsFragmentType.RemoteProtocol3Type.Vaccinations -> EventType.Vaccination
-                        is YourEventsFragmentType.RemoteProtocol3Type.NegativeTests -> EventType.Test
-                        is YourEventsFragmentType.RemoteProtocol3Type.PositiveTestsAndRecoveries -> EventType.Recovery
-                    }
-                    val originType = when (type) {
-                        is YourEventsFragmentType.RemoteProtocol3Type.Vaccinations -> OriginType.TYPE_VACCINATION
-                        is YourEventsFragmentType.RemoteProtocol3Type.NegativeTests -> OriginType.TYPE_TEST
-                        is YourEventsFragmentType.RemoteProtocol3Type.PositiveTestsAndRecoveries -> OriginType.TYPE_RECOVERY
-                    }
                     yourEventsViewModel.saveRemoteProtocol3Events(
                         remoteProtocols3 = type.remoteEvents,
-                        originType = originType,
-                        eventType = eventType
+                        originType = type.originType
                     )
                 }
             }
@@ -433,7 +427,8 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
     }
 
     private fun handleBackButton() {
-        if (args.type is YourEventsFragmentType.RemoteProtocol3Type.Vaccinations) {
+        val type = args.type
+        if ((type is YourEventsFragmentType.RemoteProtocol3Type) && type.originType == OriginType.Vaccination) {
             blockBackButton(
                 title = R.string.retrieved_vaccinations_backbutton_title,
                 message = R.string.retrieved_vaccinations_backbutton_message
