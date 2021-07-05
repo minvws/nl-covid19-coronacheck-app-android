@@ -4,7 +4,6 @@ import androidx.annotation.StringRes
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.CredentialEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
@@ -16,6 +15,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CredentialUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginUtil
+import nl.rijksoverheid.ctr.holder.ui.myoverview.items.GreenCardErrorState
 import java.time.Clock
 import java.time.OffsetDateTime
 
@@ -33,7 +33,9 @@ import java.time.OffsetDateTime
 interface GetMyOverviewItemsUseCase {
     suspend fun get(
         walletId: Int,
-        selectedType: GreenCardType
+        selectedType: GreenCardType,
+        loading: Boolean = false,
+        errorState: GreenCardErrorState = GreenCardErrorState.None,
     ): MyOverviewItems
 }
 
@@ -46,7 +48,9 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
 
     override suspend fun get(
         walletId: Int,
-        selectedType: GreenCardType
+        selectedType: GreenCardType,
+        loading: Boolean,
+        errorState: GreenCardErrorState,
     ): MyOverviewItems {
         return withContext(Dispatchers.IO) {
             val unselectedType = when (selectedType) {
@@ -70,7 +74,9 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
                 getGreenCardItems(
                     selectedType = selectedType,
                     greenCardsForSelectedType = greenCardsForSelectedType,
-                    greenCardsForUnselectedType = greenCardsForUnselectedType
+                    greenCardsForUnselectedType = greenCardsForUnselectedType,
+                    loading = loading,
+                    errorState = errorState,
                 )
             )
 
@@ -117,7 +123,9 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
 
     private suspend fun getGreenCardItems(selectedType: GreenCardType,
                                           greenCardsForSelectedType: List<GreenCard>,
-                                          greenCardsForUnselectedType: List<GreenCard>): List<MyOverviewItem> {
+                                          greenCardsForUnselectedType: List<GreenCard>,
+                                          loading: Boolean,
+                                          errorState: GreenCardErrorState): List<MyOverviewItem> {
 
         // Loop through all green cards that exists in the database and map them to UI models
         val items = greenCardsForSelectedType.map { greenCard ->
@@ -159,7 +167,8 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
                     originStates = nonExpiredOriginStates,
                     credentialState = credentialState,
                     launchDate = launchDate,
-                    refreshStatus = DatabaseSyncerResult.Success
+                    errorState = errorState,
+                    loading = loading,
                 )
             }
         }.toMutableList()
@@ -242,29 +251,7 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
 data class MyOverviewItems(
     val items: List<MyOverviewItem>,
     val selectedType: GreenCardType,
-) {
-    fun setGreenCardItemsLoading(): MyOverviewItems {
-        val itemsWithGreenItemsLoading = items.map {
-            if (it is GreenCardItem) {
-                it.copy(loading = true)
-            } else {
-                it
-            }
-        }
-        return this.copy(items = itemsWithGreenItemsLoading)
-    }
-
-    fun setRefreshStatus(status: DatabaseSyncerResult): MyOverviewItems {
-        val itemsWithGreenItemsLoading = items.map {
-            if (it is GreenCardItem) {
-                it.copy(refreshStatus = status)
-            } else {
-                it
-            }
-        }
-        return this.copy(items = itemsWithGreenItemsLoading)
-    }
-}
+)
 
 sealed class MyOverviewItem {
 
@@ -278,7 +265,7 @@ sealed class MyOverviewItem {
         val credentialState: CredentialState,
         val launchDate: OffsetDateTime,
         val loading: Boolean = false,
-        val refreshStatus: DatabaseSyncerResult,
+        val errorState: GreenCardErrorState,
     ) : MyOverviewItem() {
 
         sealed class CredentialState {

@@ -15,7 +15,6 @@ import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.design.ext.*
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.ItemMyOverviewGreenCardBinding
-import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.CredentialEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
@@ -36,7 +35,7 @@ class MyOverviewGreenCardAdapterItem(
     private val greenCard: GreenCard,
     private val originStates: List<OriginState>,
     private val credentialState: MyOverviewItem.GreenCardItem.CredentialState,
-    private val refreshStatus: DatabaseSyncerResult,
+    private val errorState: GreenCardErrorState,
     private val loading: Boolean = false,
     private val onButtonClick: (greenCard: GreenCard, credential: CredentialEntity) -> Unit,
     private val onRetryClick: () -> Unit = {},
@@ -110,6 +109,7 @@ class MyOverviewGreenCardAdapterItem(
         viewBinding.proof3Subtitle.setTextColor(context.getThemeColor(android.R.attr.textColorPrimary))
         viewBinding.errorText.setHtmlText("")
         viewBinding.errorTextRetry.setHtmlText("")
+        val showErrorRetry = viewBinding.errorTextRetry.visibility != View.VISIBLE && viewBinding.errorText.visibility == View.VISIBLE
         viewBinding.errorIcon.visibility = View.GONE
         viewBinding.errorText.visibility = View.GONE
         viewBinding.errorTextRetry.visibility = View.GONE
@@ -243,43 +243,37 @@ class MyOverviewGreenCardAdapterItem(
             }
         }
 
-        setRefreshState(viewBinding)
+        setRefreshState(viewBinding, showErrorRetry)
     }
 
-    private var serverErrorHappenedAlready = false
-
-    private fun setRefreshState(viewBinding: ItemMyOverviewGreenCardBinding) {
+    private fun setRefreshState(viewBinding: ItemMyOverviewGreenCardBinding, showErrorRetry: Boolean) {
         val context = viewBinding.errorText.context
-        when (refreshStatus) {
-            DatabaseSyncerResult.NetworkError -> {
+        when (errorState) {
+            GreenCardErrorState.NetworkError -> {
                 viewBinding.errorText.setHtmlText(context.getString(R.string.my_overview_green_card_internet_error))
                 viewBinding.errorText.enableCustomLinks(onRetryClick)
                 viewBinding.errorTextRetry.setHtmlText("")
                 viewBinding.errorIcon.visibility = View.VISIBLE
                 viewBinding.errorText.visibility = View.VISIBLE
                 viewBinding.errorTextRetry.visibility = View.GONE
-                serverErrorHappenedAlready = false
             }
-            is DatabaseSyncerResult.ServerError -> {
+            is GreenCardErrorState.ServerError -> {
                 viewBinding.errorText.setHtmlText(context.getString(R.string.my_overview_green_card_server_error))
                 viewBinding.errorText.enableCustomLinks(onRetryClick)
-                viewBinding.errorTextRetry.setHtmlText(if (serverErrorHappenedAlready) {
+                viewBinding.errorTextRetry.setHtmlText(if (showErrorRetry) {
                     context.getString(R.string.my_overview_green_card_server_error_after_retry)
                 } else {
                     ""
                 })
                 viewBinding.errorIcon.visibility = View.VISIBLE
                 viewBinding.errorText.visibility = View.VISIBLE
-                viewBinding.errorTextRetry.visibility = if (serverErrorHappenedAlready) {
+                viewBinding.errorTextRetry.visibility = if (showErrorRetry) {
                     View.VISIBLE
                 } else {
                     View.GONE
                 }
-                serverErrorHappenedAlready = true
             }
-            else -> {
-                serverErrorHappenedAlready = false
-            }
+            else -> {}
         }
     }
 
@@ -335,4 +329,10 @@ class MyOverviewGreenCardAdapterItem(
     override fun initializeViewBinding(view: View): ItemMyOverviewGreenCardBinding {
         return ItemMyOverviewGreenCardBinding.bind(view)
     }
+}
+
+sealed class GreenCardErrorState {
+    object None: GreenCardErrorState()
+    object NetworkError: GreenCardErrorState()
+    object ServerError: GreenCardErrorState()
 }
