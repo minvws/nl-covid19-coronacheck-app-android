@@ -16,6 +16,8 @@
         android:indeterminate="true"
         android:visibility="visible"
         app:indicatorSize="20dp"
+        app:trackThickness="2dp"
+        app:indicatorColor="@color/white"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
