@@ -7,6 +7,7 @@ import androidx.work.testing.TestListenableWorkerBuilder
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.GreenCard
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.GreenCardsUseCase
 import org.junit.Assert.assertEquals
@@ -65,7 +66,7 @@ class RefreshCredentialsJobTest: AutoCloseKoinTest() {
         },
         holderDatabaseSyncer = object: HolderDatabaseSyncer {
             override suspend fun sync(
-                expectedOriginType: String?,
+                expectedOriginType: OriginType?,
                 syncWithRemote: Boolean
             ): DatabaseSyncerResult = databaseSyncerResult
         }

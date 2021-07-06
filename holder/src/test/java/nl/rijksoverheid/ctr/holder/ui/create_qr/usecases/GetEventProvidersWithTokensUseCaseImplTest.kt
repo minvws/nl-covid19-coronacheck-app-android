@@ -47,20 +47,10 @@ class GetEventProvidersWithTokensUseCaseImplTest {
         event = "event_provider_2_event_token"
     )
 
-    private val configProviderUseCase = fakeConfigProviderUseCase(
-        eventProviders = listOf(eventProvider1, eventProvider2)
-    )
-
-    private val coronaCheckRepository = fakeCoronaCheckRepository(
-        accessTokens = RemoteAccessTokens(
-            tokens = listOf(tokenProvider1, tokenProvider2)
-        )
-    )
-
     @Test
     fun `get() returns Success with event provider that return informationAvailable = true`() = runBlocking {
         val eventProviderRepository = fakeEventProviderRepository(
-            unomiVaccinationEvents = {
+            unomi = {
                  when (it) {
                     "event_provider_1_url" -> {
                         RemoteUnomi(
@@ -100,7 +90,7 @@ class GetEventProvidersWithTokensUseCaseImplTest {
     @Test
     fun `get() returns ServerError for event provider that returns 400`() = runBlocking {
         val eventProviderRepository = fakeEventProviderRepository(
-            unomiVaccinationEvents = {
+            unomi = {
                 when (it) {
                     "event_provider_1_url" -> {
                         RemoteUnomi(
@@ -141,7 +131,7 @@ class GetEventProvidersWithTokensUseCaseImplTest {
     @Test
     fun `get() returns Network for event provider that throws SocketTimeOutException`() = runBlocking {
         val eventProviderRepository = fakeEventProviderRepository(
-            unomiVaccinationEvents = {
+            unomi = {
                 when (it) {
                     "event_provider_1_url" -> {
                         RemoteUnomi(

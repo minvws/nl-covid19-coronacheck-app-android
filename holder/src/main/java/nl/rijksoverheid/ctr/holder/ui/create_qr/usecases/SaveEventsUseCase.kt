@@ -3,7 +3,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 import androidx.room.withTransaction
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventType
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEvent
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
@@ -20,7 +20,7 @@ interface SaveEventsUseCase {
     suspend fun saveNegativeTest2(negativeTest2: RemoteTestResult2, rawResponse: ByteArray)
     suspend fun saveRemoteProtocols3(
         remoteProtocols3: Map<RemoteProtocol3, ByteArray>,
-        eventType: EventType
+        originType: OriginType
     )
 }
 
@@ -34,7 +34,7 @@ class SaveEventsUseCaseImpl(private val holderDatabase: HolderDatabase) : SaveEv
         val entity = EventGroupEntity(
             walletId = 1,
             providerIdentifier = negativeTest2.providerIdentifier,
-            type = EventType.Test,
+            type = OriginType.Test,
             maxIssuedAt = negativeTest2.result?.sampleDate!!,
             jsonData = rawResponse
         )
@@ -46,14 +46,14 @@ class SaveEventsUseCaseImpl(private val holderDatabase: HolderDatabase) : SaveEv
 
     override suspend fun saveRemoteProtocols3(
         remoteProtocols3: Map<RemoteProtocol3, ByteArray>,
-        eventType: EventType
+        originType: OriginType
     ) {
         val entities = remoteProtocols3.map { remoteProtocol3 ->
             val remoteEvents = remoteProtocol3.key.events ?: listOf()
             EventGroupEntity(
                 walletId = 1,
                 providerIdentifier = remoteProtocol3.key.providerIdentifier,
-                type = eventType,
+                type = originType,
                 maxIssuedAt = getMaxIssuedAt(remoteEvents),
                 jsonData = remoteProtocol3.value
             )
@@ -66,8 +66,8 @@ class SaveEventsUseCaseImpl(private val holderDatabase: HolderDatabase) : SaveEv
                 // for example person a has vaccination events saved, person b vaccination
                 // gets overwritten. This is just a temporary quick fix until we support
                 // multiple wallets in the app
-                if (eventType == EventType.Vaccination || eventType == EventType.Recovery) {
-                    eventGroupDao().deleteAllOfType(eventType)
+                if (originType == OriginType.Vaccination || originType == OriginType.Recovery) {
+                    eventGroupDao().deleteAllOfType(originType)
                 }
                 eventGroupDao().insertAll(entities)
             }

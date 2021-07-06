@@ -14,6 +14,7 @@ import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentCommercialTestCodeBinding
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.TestResult
@@ -145,9 +146,8 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
                         is RemoteProtocol3 -> {
                             findNavController().navigate(
                                 CommercialTestCodeFragmentDirections.actionYourEvents(
-                                    type = YourEventsFragmentType.RemoteProtocol3Type.NegativeTests(
-                                        mapOf(it.remoteTestResult to it.signedResponseWithTestResult.rawResponse)
-                                    ),
+                                    type = YourEventsFragmentType.RemoteProtocol3Type(mapOf(it.remoteTestResult to it.signedResponseWithTestResult.rawResponse),
+                                    originType = OriginType.Test),
                                     toolbarTitle = getString(R.string.commercial_test_type_title)
                                 )
                             )

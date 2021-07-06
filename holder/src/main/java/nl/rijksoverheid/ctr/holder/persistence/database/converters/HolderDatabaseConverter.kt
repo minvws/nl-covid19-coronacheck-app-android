@@ -1,7 +1,6 @@
 package nl.rijksoverheid.ctr.holder.persistence.database.converters
 
 import androidx.room.TypeConverter
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import java.time.Instant
@@ -24,26 +23,6 @@ class HolderDatabaseConverter {
     @TypeConverter
     fun offsetDateTimeToTimestamp(date: OffsetDateTime?): Long? {
         return date?.toEpochSecond()
-    }
-
-    @TypeConverter
-    fun fromEventType(value: String?): EventType? {
-        return when (value) {
-            EventType.TYPE_RECOVERY -> EventType.Recovery
-            EventType.TYPE_TEST -> EventType.Test
-            EventType.TYPE_VACCINATION -> EventType.Vaccination
-            else -> null
-        }
-    }
-
-    @TypeConverter
-    fun eventTypeToString(type: EventType?): String? {
-        return when (type) {
-            EventType.Recovery -> EventType.TYPE_RECOVERY
-            EventType.Test -> EventType.TYPE_TEST
-            EventType.Vaccination -> EventType.TYPE_VACCINATION
-            else -> null
-        }
     }
 
     @TypeConverter

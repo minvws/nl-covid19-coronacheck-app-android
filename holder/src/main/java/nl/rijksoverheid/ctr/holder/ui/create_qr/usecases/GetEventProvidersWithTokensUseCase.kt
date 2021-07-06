@@ -58,29 +58,12 @@ class GetEventProvidersWithTokensUseCaseImpl(
             val token = it.value
 
             try {
-                val unomiResult = when (originType) {
-                    is OriginType.Vaccination -> {
-                        eventProviderRepository.unomiVaccinationEvents(
-                            url = eventProvider.unomiUrl,
-                            token = token.unomi,
-                            signingCertificateBytes = eventProvider.cms
-                        )
-                    }
-                    is OriginType.Test -> {
-                        eventProviderRepository.unomiTestEvents(
-                            url = eventProvider.unomiUrl,
-                            token = token.unomi,
-                            signingCertificateBytes = eventProvider.cms
-                        )
-                    }
-                    is OriginType.Recovery -> {
-                        eventProviderRepository.unomiPositiveAndRecoveryEvents(
-                            url = eventProvider.unomiUrl,
-                            token = token.unomi,
-                            signingCertificateBytes = eventProvider.cms
-                        )
-                    }
-                }
+                val unomiResult = eventProviderRepository.getUnomi(
+                    url = eventProvider.unomiUrl,
+                    token = token.unomi,
+                    filter = EventProviderRepository.getFilter(originType),
+                    signingCertificateBytes = eventProvider.cms
+                )
 
                 if (unomiResult.informationAvailable) {
                     EventProviderWithTokenResult.Success(
