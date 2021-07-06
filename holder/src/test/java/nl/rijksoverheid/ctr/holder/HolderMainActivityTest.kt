@@ -29,7 +29,6 @@ import org.robolectric.RobolectricTestRunner
  *
  */
 @RunWith(RobolectricTestRunner::class)
-@Ignore("They fail for a weird reason, will fix in a later commit")
 class HolderMainActivityTest : AutoCloseKoinTest() {
 
     private lateinit var scenario: ActivityScenario<HolderMainActivity>
@@ -99,6 +98,9 @@ class HolderMainActivityTest : AutoCloseKoinTest() {
                     fakeAppConfigViewModel(
                         appStatus = appStatus
                     )
+                }
+                viewModel {
+                    fakeMyOverViewModel()
                 }
                 factory {
                     fakeSecretKeyUseCase()

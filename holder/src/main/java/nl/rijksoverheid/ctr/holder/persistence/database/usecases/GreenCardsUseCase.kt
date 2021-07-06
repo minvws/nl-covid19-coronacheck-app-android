@@ -35,7 +35,8 @@ interface GreenCardsUseCase {
     suspend fun refresh(handleErrorOnExpiringCard: suspend (DatabaseSyncerResult) -> GreenCardErrorState,
                         showForcedError: CardUiLogic,
                         showRefreshError: CardUiLogic,
-                        showCardLoading: CardUiLogic,): GreenCardErrorState
+                        showCardLoading: CardUiLogic,
+                        holderDatabaseSyncer: HolderDatabaseSyncer): GreenCardErrorState
 }
 
 sealed class GreenCard {
@@ -48,7 +49,6 @@ class GreenCardsUseCaseImpl(
     private val cachedAppConfigUseCase: CachedAppConfigUseCase,
     private val greenCardUtil: GreenCardUtil,
     private val clock: Clock,
-    private val holderDatabaseSyncer: HolderDatabaseSyncer,
     private val persistenceManager: PersistenceManager,
     private val androidUtil: AndroidUtil,
 ) : GreenCardsUseCase {
@@ -128,6 +128,7 @@ class GreenCardsUseCaseImpl(
         showForcedError: CardUiLogic,
         showRefreshError: CardUiLogic,
         showCardLoading: CardUiLogic,
+        holderDatabaseSyncer: HolderDatabaseSyncer,
     ): GreenCardErrorState {
         return if (!androidUtil.isFirstInstall() && !persistenceManager.hasAppliedJune28Fix() && faultyVaccinationsJune28()) {
             showForcedError()

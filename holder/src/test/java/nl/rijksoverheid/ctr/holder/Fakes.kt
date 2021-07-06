@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.holder
 
+import androidx.lifecycle.LiveData
 import mobilecore.Result
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
@@ -12,16 +13,16 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.EventProviderRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.TestProviderRepository
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.CommitmentMessageUseCase
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.ConfigProvidersUseCase
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.CreateCredentialUseCase
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SecretKeyUseCase
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
+import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewError
+import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TokenValidatorUtil
 import nl.rijksoverheid.ctr.introduction.IntroductionData
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
+import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.*
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import nl.rijksoverheid.ctr.shared.utils.TestResultUtil
@@ -43,6 +44,18 @@ fun fakeAppConfigViewModel(appStatus: AppStatus = AppStatus.NoActionRequired) =
     object : AppConfigViewModel() {
         override fun refresh(mobileCoreWrapper: MobileCoreWrapper) {
             appStatusLiveData.value = appStatus
+        }
+    }
+
+fun fakeMyOverViewModel() =
+    object : MyOverviewViewModel() {
+
+        override fun getSelectedType(): GreenCardType {
+            return GreenCardType.Domestic
+        }
+
+        override fun refreshOverviewItems(selectType: GreenCardType, syncDatabase: Boolean) {
+
         }
     }
 
