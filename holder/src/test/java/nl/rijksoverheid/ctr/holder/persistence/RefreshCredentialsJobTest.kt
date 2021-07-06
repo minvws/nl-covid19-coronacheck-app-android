@@ -70,7 +70,8 @@ class RefreshCredentialsJobTest: AutoCloseKoinTest() {
                 handleErrorOnExpiringCard: suspend (DatabaseSyncerResult) -> GreenCardErrorState,
                 showForcedError: CardUiLogic,
                 showRefreshError: CardUiLogic,
-                showCardLoading: CardUiLogic
+                showCardLoading: CardUiLogic,
+                holderDatabaseSyncer: HolderDatabaseSyncer
             ): GreenCardErrorState {
                 TODO("Not yet implemented")
             }

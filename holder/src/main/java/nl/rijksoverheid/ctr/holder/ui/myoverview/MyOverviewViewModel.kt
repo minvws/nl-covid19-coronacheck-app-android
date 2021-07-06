@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
+import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.GreenCardsUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetMyOverviewItemsUseCase
@@ -42,6 +43,7 @@ class MyOverviewViewModelImpl(
     private val getMyOverviewItemsUseCase: GetMyOverviewItemsUseCase,
     private val persistenceManager: PersistenceManager,
     private val greenCardsUseCase: GreenCardsUseCase,
+    private val holderDatabaseSyncer: HolderDatabaseSyncer,
 ) : MyOverviewViewModel() {
 
     override fun getSelectedType(): GreenCardType {
@@ -79,6 +81,7 @@ class MyOverviewViewModelImpl(
                     handleErrorOnExpiringCard = {
                         handleOverviewItemsError(selectType, it)
                     },
+                    holderDatabaseSyncer = holderDatabaseSyncer,
                 )
 
             } else {
