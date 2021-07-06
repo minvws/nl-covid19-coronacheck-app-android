@@ -73,14 +73,14 @@ class MyOverviewViewModelImpl(
                     GreenCardErrorState.None
                 } else {
                     if (greenCardsUseCase.expiring()) {
-                        postCurrentItemsLoading(selectType)
+                        presentOverviewItemsLoading(selectType)
 
                         val syncResult = holderDatabaseSyncer.sync(
                             expectedOriginType = null,
                             syncWithRemote = true,
                         )
 
-                        displayErrorInCard(selectType, syncResult)
+                        handleOverviewItemsError(selectType, syncResult)
                     } else {
                         holderDatabaseSyncer.sync(
                             syncWithRemote = false
@@ -104,7 +104,7 @@ class MyOverviewViewModelImpl(
         }
     }
 
-    private suspend fun displayErrorInCard(selectType: GreenCardType, syncResult: DatabaseSyncerResult): GreenCardErrorState {
+    private suspend fun handleOverviewItemsError(selectType: GreenCardType, syncResult: DatabaseSyncerResult): GreenCardErrorState {
         return when (syncResult) {
             DatabaseSyncerResult.NetworkError -> {
                 val showNetworkErrorDialog = myOverviewRefreshErrorEvent.value?.peekContent() !is MyOverviewError.Inactive
@@ -124,7 +124,7 @@ class MyOverviewViewModelImpl(
         }
     }
 
-    private suspend fun postCurrentItemsLoading(selectType: GreenCardType) {
+    private suspend fun presentOverviewItemsLoading(selectType: GreenCardType) {
         val currentCardItems = getMyOverviewItemsUseCase.get(
             selectedType = selectType,
             walletId = 1,
