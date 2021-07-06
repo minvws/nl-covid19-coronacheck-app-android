@@ -7,14 +7,12 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
-import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.GreenCardsUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetMyOverviewItemsUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItems
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.GreenCardErrorState
 import nl.rijksoverheid.ctr.shared.livedata.Event
-import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -34,15 +32,16 @@ abstract class MyOverviewViewModel : ViewModel() {
      * @param selectType The type of green cards you want to show, null if refresh the current selected one
      * @param syncDatabase If you want to sync the database before showing the items
      */
-    abstract fun refreshOverviewItems(selectType: GreenCardType = getSelectedType(), syncDatabase: Boolean = false)
+    abstract fun refreshOverviewItems(
+        selectType: GreenCardType = getSelectedType(),
+        syncDatabase: Boolean = false
+    )
 }
 
 class MyOverviewViewModelImpl(
     private val getMyOverviewItemsUseCase: GetMyOverviewItemsUseCase,
-    private val holderDatabaseSyncer: HolderDatabaseSyncer,
     private val persistenceManager: PersistenceManager,
     private val greenCardsUseCase: GreenCardsUseCase,
-    private val androidUtil: AndroidUtil,
 ) : MyOverviewViewModel() {
 
     override fun getSelectedType(): GreenCardType {
@@ -57,37 +56,29 @@ class MyOverviewViewModelImpl(
         viewModelScope.launch {
             val greenCardErrorState: GreenCardErrorState = if (syncDatabase) {
 
-                if (!androidUtil.isFirstInstall() && !persistenceManager.hasAppliedJune28Fix() && greenCardsUseCase.faultyVaccinationsJune28()) {
-                    (myOverviewRefreshErrorEvent as MutableLiveData).postValue(Event(MyOverviewError.Forced))
-
-                    val syncResult = holderDatabaseSyncer.sync(
-                        syncWithRemote = true
-                    )
-
-                    if (syncResult != DatabaseSyncerResult.Success) {
-                        myOverviewRefreshErrorEvent.postValue(Event(MyOverviewError.Refresh))
-                    } else {
-                        persistenceManager.setJune28FixApplied(true)
-                    }
-
-                    GreenCardErrorState.None
-                } else {
-                    if (greenCardsUseCase.expiring()) {
+                greenCardsUseCase.refresh(
+                    showForcedError = {
+                        (myOverviewRefreshErrorEvent as MutableLiveData).postValue(
+                            Event(
+                                MyOverviewError.Forced
+                            )
+                        )
+                    },
+                    showRefreshError = {
+                        (myOverviewRefreshErrorEvent as MutableLiveData).postValue(
+                            Event(
+                                MyOverviewError.Refresh
+                            )
+                        )
+                    },
+                    showCardLoading = {
                         presentOverviewItemsLoading(selectType)
+                    },
+                    handleErrorOnExpiringCard = {
+                        handleOverviewItemsError(selectType, it)
+                    },
+                )
 
-                        val syncResult = holderDatabaseSyncer.sync(
-                            expectedOriginType = null,
-                            syncWithRemote = true,
-                        )
-
-                        handleOverviewItemsError(selectType, syncResult)
-                    } else {
-                        holderDatabaseSyncer.sync(
-                            syncWithRemote = false
-                        )
-                        GreenCardErrorState.None
-                    }
-                }
             } else {
                 GreenCardErrorState.None
             }
@@ -104,10 +95,14 @@ class MyOverviewViewModelImpl(
         }
     }
 
-    private suspend fun handleOverviewItemsError(selectType: GreenCardType, syncResult: DatabaseSyncerResult): GreenCardErrorState {
+    private suspend fun handleOverviewItemsError(
+        selectType: GreenCardType,
+        syncResult: DatabaseSyncerResult
+    ): GreenCardErrorState {
         return when (syncResult) {
             DatabaseSyncerResult.NetworkError -> {
-                val showNetworkErrorDialog = myOverviewRefreshErrorEvent.value?.peekContent() !is MyOverviewError.Inactive
+                val showNetworkErrorDialog =
+                    myOverviewRefreshErrorEvent.value?.peekContent() !is MyOverviewError.Inactive
 
                 if (showNetworkErrorDialog) {
                     val expired = greenCardsUseCase.expiredCard(selectType)
@@ -136,9 +131,9 @@ class MyOverviewViewModelImpl(
 }
 
 sealed class MyOverviewError {
-    object Inactive: MyOverviewError()
-    object Refresh: MyOverviewError()
-    object Forced: MyOverviewError()
+    object Inactive : MyOverviewError()
+    object Refresh : MyOverviewError()
+    object Forced : MyOverviewError()
 
     companion object {
         fun get(expired: Boolean) = if (expired) {
