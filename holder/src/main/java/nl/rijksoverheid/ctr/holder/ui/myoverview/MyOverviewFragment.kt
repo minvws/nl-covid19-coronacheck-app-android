@@ -21,10 +21,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItems
-import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewGreenCardAdapterItem
-import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewGreenCardExpiredAdapterItem
-import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewGreenCardPlaceholderItem
-import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewOriginInfoAdapterItem
+import nl.rijksoverheid.ctr.holder.ui.myoverview.items.*
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeFragmentData
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.sharedViewModelWithOwner
@@ -180,9 +177,15 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
         val adapterItems = mutableListOf<BindableItem<*>>()
         myOverviewItems.items.forEach { myOverviewItem ->
             when (myOverviewItem) {
+                is MyOverviewItem.HeaderItem -> {
+                    adapterItems.add(
+                        MyOverviewHeaderAdapterItem(
+                            text = myOverviewItem.text
+                        )
+                    )
+                }
                 is MyOverviewItem.PlaceholderCardItem -> {
                     adapterItems.add(MyOverviewGreenCardPlaceholderItem())
-                    binding.bottom.visibility = View.VISIBLE
                 }
                 is MyOverviewItem.GreenCardItem -> {
                     adapterItems.add(
@@ -247,6 +250,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                         findNavControllerSafety()?.navigate(MyOverviewFragmentDirections.actionShowTravelMode())
                     }
                 }
+                MyOverviewItem.AddCertificateItem -> binding.bottom.visibility = View.VISIBLE
             }
         }
 

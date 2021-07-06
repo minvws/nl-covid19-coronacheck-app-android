@@ -37,10 +37,12 @@ interface GetMyOverviewItemsUseCase {
     ): MyOverviewItems
 }
 
-class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
-                                    private val credentialUtil: CredentialUtil,
-                                    private val greenCardUtil: GreenCardUtil,
-                                    private val originUtil: OriginUtil) :
+class GetMyOverviewItemsUseCaseImpl(
+    private val holderDatabase: HolderDatabase,
+    private val credentialUtil: CredentialUtil,
+    private val greenCardUtil: GreenCardUtil,
+    private val originUtil: OriginUtil
+) :
     GetMyOverviewItemsUseCase {
 
     override suspend fun get(
@@ -56,10 +58,18 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
             }
 
             val allGreenCards = holderDatabase.greenCardDao().getAll()
-            val greenCardsForSelectedType = allGreenCards.filter { it.greenCardEntity.type == selectedType }
-            val greenCardsForUnselectedType = allGreenCards.filter { it.greenCardEntity.type == unselectedType }
+            val greenCardsForSelectedType =
+                allGreenCards.filter { it.greenCardEntity.type == selectedType }
+            val greenCardsForUnselectedType =
+                allGreenCards.filter { it.greenCardEntity.type == unselectedType }
 
             val items = mutableListOf<MyOverviewItem>()
+
+            getHeaderItem(greenCardsForSelectedType.isNotEmpty(), selectedType)?.let {
+                items.add(
+                    it
+                )
+            }
 
             items.addAll(
                 getGreenCardItems(
@@ -71,7 +81,11 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
                 )
             )
 
-            getCreatePlaceholderCardItem(items)?.let {
+            getCreatePlaceholderCardItem(allGreenCards, selectedType)?.let {
+                items.add(it)
+            }
+
+            getAddCertificateItem(allGreenCards)?.let {
                 items.add(it)
             }
 
@@ -89,12 +103,26 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
         }
     }
 
+    private fun getHeaderItem(hasGreenCards: Boolean, type: GreenCardType): MyOverviewItem? {
+        if (!hasGreenCards) return null
+
+        val text = when (type) {
+            is GreenCardType.Domestic -> R.string.my_overview_description
+            is GreenCardType.Eu -> R.string.my_overview_description_eu
+        }
+
+        return HeaderItem(
+            text = text
+        )
+    }
+
     private suspend fun getGreenCardItems(
         selectedType: GreenCardType,
         greenCardsForSelectedType: List<GreenCard>,
         greenCardsForUnselectedType: List<GreenCard>,
         loading: Boolean,
-        errorState: GreenCardErrorState): List<MyOverviewItem> {
+        errorState: GreenCardErrorState
+    ): List<MyOverviewItem> {
 
         // Loop through all green cards that exists in the database and map them to UI models
         val items = greenCardsForSelectedType.map { greenCard ->
@@ -143,11 +171,13 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
         val allOriginsForUnselectedType = greenCardsForUnselectedType.map { it.origins }.flatten()
         val allValidOriginsForSelectedType = originUtil.getOriginState(allOriginsForSelectedType)
             .filter { it is OriginState.Valid || it is OriginState.Future }.map { it.origin }
-        val allValidOriginsForUnselectedType = originUtil.getOriginState(allOriginsForUnselectedType)
-            .filter { it is OriginState.Valid || it is OriginState.Future }.map { it.origin }
+        val allValidOriginsForUnselectedType =
+            originUtil.getOriginState(allOriginsForUnselectedType)
+                .filter { it is OriginState.Valid || it is OriginState.Future }.map { it.origin }
 
         allValidOriginsForUnselectedType.forEach { originForUnselectedType ->
-            if (!allValidOriginsForSelectedType.map { it.type }.contains(originForUnselectedType.type)) {
+            if (!allValidOriginsForSelectedType.map { it.type }
+                    .contains(originForUnselectedType.type)) {
                 items.add(
                     OriginInfoItem(
                         greenCardType = selectedType,
@@ -176,10 +206,23 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
     }
 
     private fun getCreatePlaceholderCardItem(
-        greenCards: List<MyOverviewItem>
+        greenCards: List<GreenCard>,
+        selectedType: GreenCardType
     ): MyOverviewItem? {
-        return if (greenCards.any { it is GreenCardItem }) null else PlaceholderCardItem
+        return if (greenCards.isNotEmpty()) {
+            null
+        } else {
+            // Only return create qr card if there are not green cards on the screen and we have domestic type selected
+            if (selectedType == GreenCardType.Domestic) {
+                PlaceholderCardItem
+            } else {
+                null
+            }
+        }
     }
+
+    private fun getAddCertificateItem(greenCards: List<GreenCard>): AddCertificateItem? =
+        if (greenCards.isEmpty()) AddCertificateItem else null
 
     private fun getTravelModeItem(
         greenCards: List<GreenCard>,
@@ -212,6 +255,8 @@ data class MyOverviewItems(
 
 sealed class MyOverviewItem {
 
+    data class HeaderItem(@StringRes val text: Int) : MyOverviewItem()
+
     object PlaceholderCardItem : MyOverviewItem()
 
     data class GreenCardItem(
@@ -223,7 +268,7 @@ sealed class MyOverviewItem {
     ) : MyOverviewItem() {
 
         sealed class CredentialState {
-            data class HasCredential(val credential: CredentialEntity): CredentialState()
+            data class HasCredential(val credential: CredentialEntity) : CredentialState()
             object NoCredential : CredentialState()
         }
     }
@@ -232,6 +277,11 @@ sealed class MyOverviewItem {
         val greenCardType: GreenCardType
     ) : MyOverviewItem()
 
-    data class TravelModeItem(@StringRes val text: Int, @StringRes val buttonText: Int) : MyOverviewItem()
-    data class OriginInfoItem(val greenCardType: GreenCardType, val originType: OriginType): MyOverviewItem()
+    data class TravelModeItem(@StringRes val text: Int, @StringRes val buttonText: Int) :
+        MyOverviewItem()
+
+    data class OriginInfoItem(val greenCardType: GreenCardType, val originType: OriginType) :
+        MyOverviewItem()
+
+    object AddCertificateItem : MyOverviewItem()
 }
