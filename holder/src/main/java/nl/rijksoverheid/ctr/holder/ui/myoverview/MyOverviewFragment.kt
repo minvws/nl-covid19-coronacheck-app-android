@@ -186,7 +186,6 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                 }
                 is MyOverviewItem.PlaceholderCardItem -> {
                     adapterItems.add(MyOverviewGreenCardPlaceholderItem())
-                    binding.bottom.visibility = View.VISIBLE
                 }
                 is MyOverviewItem.GreenCardItem -> {
                     adapterItems.add(
@@ -251,6 +250,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                         findNavControllerSafety()?.navigate(MyOverviewFragmentDirections.actionShowTravelMode())
                     }
                 }
+                MyOverviewItem.AddCertificateItem -> binding.bottom.visibility = View.VISIBLE
             }
         }
 
