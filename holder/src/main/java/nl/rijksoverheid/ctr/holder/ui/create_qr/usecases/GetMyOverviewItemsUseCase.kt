@@ -16,8 +16,6 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.GreenCardErrorState
-import java.time.Clock
-import java.time.OffsetDateTime
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -41,7 +39,6 @@ interface GetMyOverviewItemsUseCase {
 
 class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
                                     private val credentialUtil: CredentialUtil,
-                                    private val clock: Clock,
                                     private val greenCardUtil: GreenCardUtil,
                                     private val originUtil: OriginUtil) :
     GetMyOverviewItemsUseCase {
@@ -151,13 +148,10 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
                 val hasValidOriginStates = originStates.any { it is OriginState.Valid }
                 val nonExpiredOriginStates = originStates.filterNot { it is OriginState.Expired }
 
-                val launchDate = OffsetDateTime.now(clock)
-
                 // More our credential to a more readable state
                 val credentialState = when {
                     activeCredential == null -> CredentialState.NoCredential
                     !hasValidOriginStates -> CredentialState.NoCredential
-                    launchDate.isAfter(OffsetDateTime.now()) -> CredentialState.NoCredential
                     else -> CredentialState.HasCredential(activeCredential)
                 }
 

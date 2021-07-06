@@ -122,7 +122,6 @@ class MyOverviewViewModelTest {
             items = listOf(MyOverviewItem.GreenCardItem(
                 credentialState = mockk(),
                 greenCard = mockk(),
-                launchDate = mockk(),
                 originStates = listOf(mockk()),
                 loading = false,
                 errorState = GreenCardErrorState.NetworkError,
@@ -150,7 +149,6 @@ class MyOverviewViewModelTest {
             items = listOf(MyOverviewItem.GreenCardItem(
                 credentialState = mockk(),
                 greenCard = mockk(),
-                launchDate = mockk(),
                 originStates = listOf(mockk()),
                 loading = false,
                 errorState = GreenCardErrorState.ServerError,
@@ -172,7 +170,6 @@ class MyOverviewViewModelTest {
         items = listOf(MyOverviewItem.GreenCardItem(
             credentialState = mockk(),
             greenCard = mockk(),
-            launchDate = mockk(),
             originStates = listOf(mockk()),
             loading = true,
             errorState = GreenCardErrorState.None,
