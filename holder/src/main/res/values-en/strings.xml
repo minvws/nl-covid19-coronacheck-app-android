@@ -44,6 +44,7 @@
     <string name="my_overview_test_result_expires_in_minutes">Expires in %1$s min</string>
     <string name="my_overview_test_result_footer">Show QR code at the entrance</string>
     <string name="my_overview_test_result_button">View QR</string>
+    <string name="my_overview_test_result_button_indicator_accessibility_description">Loading, please wait</string>
     <string name="my_overview_no_qr_make_appointment_title">Book test appointment</string>
     <string name="my_overview_no_qr_make_appointment_description">Want to make a QR code? Get tested for coronavirus first.</string>
     <string name="my_overview_no_qr_make_appointment_button">Make appointment</string>
@@ -234,7 +235,6 @@
     <string name="qr_card_validity_future_days">automatically becomes valid in %1$s days</string>
     <string name="qr_card_validity_future_day">automatically becomes valid in %1$s day</string>
     <string name="qr_card_validity_future_hours">automatically becomes valid in %1$s hours</string>
-    <string name="qr_card_validity_eu">Your international QR code will automatically become valid when the European legislation goes into effect (from %1$s)</string>
     <string name="your_test_result_explanation_toolbar_title">What was retrieved?</string>
     <string name="your_test_result_explanation_description"><![CDATA[The following details were retrieved at the test location:<br\><br\>Your details: <b>%1$s<b/><br/>Test type: <b>%2$s</b><br/>Test date: <b>%3$s</b><br/>Test result: <b>%4$s</b><br/>Unique certificate identifier: <b>%5$s</b>]]></string>
     <string name="your_test_result_explanation_negative_test_result">negative (no coronavirus)</string>
@@ -308,6 +308,9 @@
     <string name="my_overview_green_card_not_valid_title_recovery">About your recovery certificate</string>
     <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_recovery"><![CDATA[Your recovery certificate isn\'t valid in the Netherlands. You\'ve only got an international QR code.]]></string>
     <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_recovery"><![CDATA[Your recovery certificate isn\'t valid internationally. You\'ve only got a Dutch QR code.]]></string>
+    <string name="my_overview_green_card_server_error"><![CDATA[Door een fout op de server werkt je QR-code niet. <a href="#">Probeer opnieuw</a>]]></string>
+    <string name="my_overview_green_card_server_error_after_retry"><![CDATA[of bel de helpdesk op 0800–1421 (gratis)]]></string>
+    <string name="my_overview_green_card_internet_error"><![CDATA[Maak verbinding met het internet om te zorgen dat je QR-code weer werkt. <a href="#">Probeer opnieuw</a>]]></string>
     <string name="dialog_faultyvaccination28June_title">Vaccination certificate corrected</string>
     <string name="dialog_faultyvaccination28June_message">Due to a technical error you’ve wrongly received a Dutch vaccination certificate. This was corrected.</string>
     <string name="dialog_faultyvaccination28June_refresh_error_title">Something went wrong while refreshing your details</string>

@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.design.views
 
 import android.content.Context
+import android.os.Build
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
@@ -30,11 +31,11 @@ class ButtonWithProgressWidget @JvmOverloads constructor(context: Context, attrs
     init {
         context.theme.obtainStyledAttributes(
             attrs,
-            R.styleable.ButtonWithIndicatorLayout,
+            R.styleable.ButtonWithProgressWidget,
             0, 0
         ).apply {
             try {
-                getText(R.styleable.ButtonWithIndicatorLayout_text)?.toString()?.let(this@ButtonWithProgressWidget::setButtonText)
+                getText(R.styleable.ButtonWithProgressWidget_text)?.toString()?.let(this@ButtonWithProgressWidget::setButtonText)
             } finally {
                 recycle()
             }
@@ -68,6 +69,13 @@ class ButtonWithProgressWidget @JvmOverloads constructor(context: Context, attrs
 
     fun isButtonEnabled(isEnabled: Boolean) {
         binding.button.isEnabled = isEnabled
+    }
+
+    fun setAccessibilityText(text: String) {
+        binding.loading.contentDescription = text
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            binding.loading.stateDescription = text
+        }
     }
 }
 
