@@ -31,7 +31,7 @@ interface GreenCardsUseCase {
     suspend fun faultyVaccinationsJune28(): Boolean
     suspend fun expiring(): Boolean
     suspend fun expiredCard(selectedType: GreenCardType): Boolean
-    suspend fun lastExpiringCard(): GreenCard
+    suspend fun firstExpiringCard(): GreenCard
     suspend fun refresh(handleErrorOnExpiringCard: suspend (DatabaseSyncerResult) -> GreenCardErrorState,
                         showForcedError: CardUiLogic,
                         showRefreshError: CardUiLogic,
@@ -91,20 +91,20 @@ class GreenCardsUseCaseImpl(
         }.any(greenCardUtil::isExpired)
     }
 
-    override suspend fun lastExpiringCard(): GreenCard {
+    override suspend fun firstExpiringCard(): GreenCard {
         val configCredentialRenewalDays =
             cachedAppConfigUseCase.getCachedAppConfig()?.credentialRenewalDays?.toLong()
                 ?: throw IllegalStateException("Invalid config file")
 
-        val lastExpiringGreenCardRenewal = holderDatabase.greenCardDao().getAll()
+        val firstExpiringGreenCardRenewal = holderDatabase.greenCardDao().getAll()
             .mapNotNull { greenCard ->
                 greenCard.credentialEntities.maxByOrNull { it.expirationTime }?.expirationTime
-            }.maxByOrNull { it.toEpochSecond() }?.minusDays(configCredentialRenewalDays)
+            }.minByOrNull { it.toEpochSecond() }?.minusDays(configCredentialRenewalDays)
 
         val now = OffsetDateTime.now(clock)
 
-        return if (lastExpiringGreenCardRenewal != null) {
-            val days = DAYS.between(now, lastExpiringGreenCardRenewal)
+        return if (firstExpiringGreenCardRenewal != null) {
+            val days = DAYS.between(now, firstExpiringGreenCardRenewal)
             GreenCard.Expiring(
                 refreshInDays = if (days < 1) {
                     1

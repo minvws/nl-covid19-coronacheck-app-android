@@ -8,8 +8,10 @@ import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.holder.persistence.database.usecases.CardUiLogic
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.GreenCard
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.GreenCardsUseCase
+import nl.rijksoverheid.ctr.holder.ui.myoverview.items.GreenCardErrorState
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -62,7 +64,16 @@ class RefreshCredentialsJobTest: AutoCloseKoinTest() {
                 TODO("Not yet implemented")
             }
 
-            override suspend fun lastExpiringCard() = GreenCard.Expiring(4L)
+            override suspend fun firstExpiringCard() = GreenCard.Expiring(4L)
+
+            override suspend fun refresh(
+                handleErrorOnExpiringCard: suspend (DatabaseSyncerResult) -> GreenCardErrorState,
+                showForcedError: CardUiLogic,
+                showRefreshError: CardUiLogic,
+                showCardLoading: CardUiLogic
+            ): GreenCardErrorState {
+                TODO("Not yet implemented")
+            }
         },
         holderDatabaseSyncer = object: HolderDatabaseSyncer {
             override suspend fun sync(

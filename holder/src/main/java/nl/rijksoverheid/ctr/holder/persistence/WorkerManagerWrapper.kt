@@ -17,11 +17,11 @@ class WorkerManagerWrapperImpl(
     private val greenCardsUseCase: GreenCardsUseCase,): WorkerManagerWrapper {
     override fun scheduleNextCredentialsRefreshIfAny() {
         GlobalScope.launch {
-            val lastExpiringCard = greenCardsUseCase.lastExpiringCard()
+            val firstExpiringCard = greenCardsUseCase.firstExpiringCard()
 
-            if (lastExpiringCard is GreenCard.Expiring) {
+            if (firstExpiringCard is GreenCard.Expiring) {
                 val request = OneTimeWorkRequestBuilder<RefreshCredentialsJob>()
-                    .setInitialDelay(lastExpiringCard.refreshInDays, TimeUnit.DAYS)
+                    .setInitialDelay(firstExpiringCard.refreshInDays, TimeUnit.DAYS)
                     .setConstraints(
                         Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
                     ).build()
