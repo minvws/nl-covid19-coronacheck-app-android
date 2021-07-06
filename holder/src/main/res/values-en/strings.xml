@@ -316,5 +316,6 @@
     <string name="my_overview_add_qr_button">Bewijs toevoegen</string>
     <string name="my_overview_green_card_server_error"><![CDATA[Door een fout op de server werkt je <br\>QR-code niet. <a href="#">Probeer opnieuw</a>]]></string>
     <string name="my_overview_green_card_server_error_after_retry"><![CDATA[of bel de helpdesk op 0800–1421 (gratis)]]></string>
+    <string name="my_overview_test_result_button_indicator_accessibility_description">Loading, please wait</string>
     <string name="my_overview_green_card_internet_error"><![CDATA[Maak verbinding met het internet om te <br\>zorgen dat je QR-code weer werkt. <a href="#">Probeer opnieuw</a>]]></string>
 </resources>
