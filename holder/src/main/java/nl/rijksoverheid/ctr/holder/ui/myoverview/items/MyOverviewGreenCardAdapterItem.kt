@@ -105,8 +105,6 @@ class MyOverviewGreenCardAdapterItem(
         viewBinding.proof1Subtitle.setTextColor(context.getThemeColor(android.R.attr.textColorPrimary))
         viewBinding.proof2Subtitle.setTextColor(context.getThemeColor(android.R.attr.textColorPrimary))
         viewBinding.proof3Subtitle.setTextColor(context.getThemeColor(android.R.attr.textColorPrimary))
-        viewBinding.launchText.text = ""
-        viewBinding.launchText.visibility = View.GONE
 
         when (greenCard.greenCardEntity.type) {
             is GreenCardType.Eu -> {
