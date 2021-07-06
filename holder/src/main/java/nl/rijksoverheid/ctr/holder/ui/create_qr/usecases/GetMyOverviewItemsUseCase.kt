@@ -66,7 +66,7 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
                 )
             )
 
-            getCreatePlaceholderCardItem(greenCards = allGreenCards)?.let {
+            getCreatePlaceholderCardItem(items)?.let {
                 items.add(it)
             }
 
@@ -168,9 +168,9 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
     }
 
     private fun getCreatePlaceholderCardItem(
-        greenCards: List<GreenCard>
+        greenCards: List<MyOverviewItem>
     ): MyOverviewItem? {
-        return if (greenCards.isEmpty()) PlaceholderCardItem else null
+        return if (greenCards.any { it is GreenCardItem }) null else PlaceholderCardItem
     }
 
     private fun getTravelModeItem(

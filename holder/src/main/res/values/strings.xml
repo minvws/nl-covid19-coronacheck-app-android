@@ -318,5 +318,6 @@
     <string name="dialog_faultyvaccination28June_refresh_error_message">Haal via de app uw gegevens opnieuw op.</string>
     <string name="my_overview_qr_placeholder_header">Hier komt jouw bewijs</string>
     <string name="my_overview_qr_placeholder_description"><![CDATA[Je kan een bewijs toevoegen als je bent gevaccineerd of getest. De app maakt dan een Nederlands en internationaal bewijs.<br\><br\><b>Reis je buiten Nederland?</b><br\>Check dit overzicht voor vertrek. Daar staat of jouw internationale bewijs geldig is in het land dat je bezoekt.]]></string>
+    <string name="my_overview_add_qr_button">Bewijs toevoegen</string>
 
 </resources>
