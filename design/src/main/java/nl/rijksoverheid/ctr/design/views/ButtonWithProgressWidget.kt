@@ -7,7 +7,7 @@ import android.view.View
 import android.widget.FrameLayout
 import androidx.annotation.ColorRes
 import nl.rijksoverheid.ctr.design.R
-import nl.rijksoverheid.ctr.design.databinding.ButtonWithIndicatorBinding
+import nl.rijksoverheid.ctr.design.databinding.ButtonWithProgressWidgetBinding
 import nl.rijksoverheid.ctr.design.ext.setEnabledButtonColor
 
 /*
@@ -25,8 +25,8 @@ class ButtonWithProgressWidget @JvmOverloads constructor(context: Context, attrs
 
     private var buttonText = ""
 
-    private val binding: ButtonWithIndicatorBinding =
-        ButtonWithIndicatorBinding.bind(View.inflate(context, R.layout.button_with_indicator, this))
+    private val binding: ButtonWithProgressWidgetBinding =
+        ButtonWithProgressWidgetBinding.bind(View.inflate(context, R.layout.button_with_progress_widget, this))
 
     init {
         context.theme.obtainStyledAttributes(
