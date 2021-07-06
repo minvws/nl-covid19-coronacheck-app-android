@@ -61,6 +61,12 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
 
             val items = mutableListOf<MyOverviewItem>()
 
+            getHeaderItem(greenCardsForSelectedType.isNotEmpty(), selectedType)?.let {
+                items.add(
+                    it
+                )
+            }
+
             items.addAll(
                 getGreenCardItems(
                     selectedType = selectedType,
@@ -87,6 +93,19 @@ class GetMyOverviewItemsUseCaseImpl(private val holderDatabase: HolderDatabase,
                 selectedType = selectedType
             )
         }
+    }
+
+    private fun getHeaderItem(hasGreenCards: Boolean, type: GreenCardType): MyOverviewItem? {
+        if (!hasGreenCards) return null
+
+        val text = when (type) {
+            is GreenCardType.Domestic -> R.string.my_overview_description
+            is GreenCardType.Eu -> R.string.my_overview_description_eu
+        }
+
+        return HeaderItem(
+            text = text
+        )
     }
 
     private suspend fun getGreenCardItems(
@@ -211,6 +230,8 @@ data class MyOverviewItems(
 )
 
 sealed class MyOverviewItem {
+
+    data class HeaderItem(@StringRes val text: Int) : MyOverviewItem()
 
     object PlaceholderCardItem : MyOverviewItem()
 
