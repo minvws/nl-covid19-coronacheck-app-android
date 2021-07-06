@@ -122,6 +122,8 @@ class HolderDatabaseSyncerImpl(
                 DatabaseSyncerResult.NetworkError
             } catch (e: Exception) {
                 DatabaseSyncerResult.ServerError(200)
+            } finally {
+                workerManagerWrapper.scheduleNextCredentialsRefreshIfAny()
             }
         } else {
             return DatabaseSyncerResult.Success
