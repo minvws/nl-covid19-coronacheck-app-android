@@ -117,6 +117,12 @@ class GreenCardsUseCaseImpl(
         }
     }
 
+    /**
+     * Sync the database with remote
+     * We need to communicate to the user some updates:
+     * - On June 28 there was a bug in the backend cause of which we need to sync and let the user know
+     * - If one of the green cards is expiring, we need to update them and the user has to wait for their new state
+     */
     override suspend fun refresh(
         handleErrorOnExpiringCard: suspend (DatabaseSyncerResult) -> GreenCardErrorState,
         showForcedError: CardUiLogic,
@@ -142,7 +148,6 @@ class GreenCardsUseCaseImpl(
                 showCardLoading()
 
                 val syncResult = holderDatabaseSyncer.sync(
-                    expectedOriginType = null,
                     syncWithRemote = true,
                 )
 

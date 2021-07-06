@@ -56,6 +56,8 @@ class MyOverviewViewModelImpl(
         viewModelScope.launch {
             val greenCardErrorState: GreenCardErrorState = if (syncDatabase) {
 
+                // refresh the green cards and sync the database
+                // the usecase will decide when we need to communicate something to the user
                 greenCardsUseCase.refresh(
                     showForcedError = {
                         (myOverviewRefreshErrorEvent as MutableLiveData).postValue(
@@ -95,6 +97,11 @@ class MyOverviewViewModelImpl(
         }
     }
 
+    /**
+     * Communicate to the user potential errors and trigger them in the UI
+     * Can be either an alert dialog via [myOverviewRefreshErrorEvent] or
+     * an error text in the green card via the card item state in [myOverviewItemsLiveData]
+     */
     private suspend fun handleOverviewItemsError(
         selectType: GreenCardType,
         syncResult: DatabaseSyncerResult
