@@ -59,7 +59,7 @@ class RefreshCredentialsJobTest: AutoCloseKoinTest() {
                 return false
             }
 
-            override suspend fun expiring(): Boolean = true
+            override suspend fun shouldRefresh(): Boolean = true
             override suspend fun expiredCard(selectedType: GreenCardType): Boolean {
                 TODO("Not yet implemented")
             }

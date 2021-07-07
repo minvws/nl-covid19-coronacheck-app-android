@@ -29,7 +29,7 @@ typealias CardUiLogic = suspend () -> Unit
 
 interface GreenCardsUseCase {
     suspend fun faultyVaccinationsJune28(): Boolean
-    suspend fun expiring(): Boolean
+    suspend fun shouldRefresh(): Boolean
     suspend fun expiredCard(selectedType: GreenCardType): Boolean
     suspend fun firstExpiringCard(): GreenCard
     suspend fun refresh(handleErrorOnExpiringCard: suspend (DatabaseSyncerResult) -> GreenCardErrorState,
@@ -73,13 +73,15 @@ class GreenCardsUseCaseImpl(
             }
     }
 
-    override suspend fun expiring(): Boolean {
+    override suspend fun shouldRefresh(): Boolean {
 
-        val config = cachedAppConfigUseCase.getCachedAppConfig() ?: return false
+        val credentialRenewalDays = cachedAppConfigUseCase.getCachedAppConfig()!!.credentialRenewalDays.toLong()
 
-        return holderDatabase.greenCardDao().getAll().firstOrNull { greenCard ->
+        return holderDatabase.greenCardDao().getAll().filterNot {
+            greenCardUtil.isExpiring(credentialRenewalDays, it)
+        }.firstOrNull { greenCard ->
             val credentialExpiring = greenCard.credentialEntities.maxByOrNull { it.expirationTime }
-                ?.isExpiring(config.credentialRenewalDays.toLong(), clock) ?: true
+                ?.isExpiring(credentialRenewalDays, clock) ?: true
             credentialExpiring
         } != null
     }
@@ -145,7 +147,7 @@ class GreenCardsUseCaseImpl(
 
             GreenCardErrorState.None
         } else {
-            if (expiring()) {
+            if (shouldRefresh()) {
                 showCardLoading()
 
                 val syncResult = holderDatabaseSyncer.sync(

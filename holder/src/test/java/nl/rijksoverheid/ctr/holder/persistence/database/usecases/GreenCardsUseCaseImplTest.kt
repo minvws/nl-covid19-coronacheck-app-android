@@ -7,7 +7,6 @@ import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
-import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.holder.persistence.database.dao.GreenCardDao
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.CredentialEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
@@ -91,7 +90,7 @@ class GreenCardsUseCaseImplTest {
         
         coEvery { greenCardDao.getAll() } returns listOf(validGreenCard(), validGreenCard())
 
-        val expiring = greenCardUseCase.expiring()
+        val expiring = greenCardUseCase.shouldRefresh()
 
         assertFalse(expiring)
     }
@@ -101,7 +100,7 @@ class GreenCardsUseCaseImplTest {
         
         coEvery { greenCardDao.getAll() } returns listOf(validGreenCard(), expiringGreenCard())
 
-        val expiring = greenCardUseCase.expiring()
+        val expiring = greenCardUseCase.shouldRefresh()
 
         assertTrue(expiring)
     }
@@ -111,7 +110,7 @@ class GreenCardsUseCaseImplTest {
         
         coEvery { greenCardDao.getAll() } returns listOf(expiringGreenCard(), expiringGreenCard())
 
-        val expiring = greenCardUseCase.expiring()
+        val expiring = greenCardUseCase.shouldRefresh()
 
         assertTrue(expiring)
     }
@@ -121,7 +120,7 @@ class GreenCardsUseCaseImplTest {
         
         coEvery { greenCardDao.getAll() } returns listOf(validGreenCard())
 
-        val expiring = greenCardUseCase.expiring()
+        val expiring = greenCardUseCase.shouldRefresh()
 
         assertFalse(expiring)
     }
