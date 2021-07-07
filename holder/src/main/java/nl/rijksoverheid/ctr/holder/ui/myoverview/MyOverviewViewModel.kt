@@ -115,9 +115,9 @@ class MyOverviewViewModelImpl(
                     myOverviewRefreshErrorEvent.value?.peekContent() !is MyOverviewError.Inactive
 
                 if (showNetworkErrorDialog) {
-                    val expired = greenCardsUseCase.expiredCard(selectType)
+                    val allCredentialsExpired = greenCardsUseCase.allCredentialsExpired(selectType)
                     (myOverviewRefreshErrorEvent as MutableLiveData).postValue(
-                        Event(MyOverviewError.get(expired))
+                        Event(MyOverviewError.get(allCredentialsExpired))
                     )
                     GreenCardErrorState.None
                 } else {

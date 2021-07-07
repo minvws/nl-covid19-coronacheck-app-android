@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.work.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import nl.rijksoverheid.ctr.holder.persistence.database.usecases.GreenCard
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.GreenCardsUseCase
 import java.util.concurrent.TimeUnit
 
@@ -17,11 +16,11 @@ class WorkerManagerWrapperImpl(
     private val greenCardsUseCase: GreenCardsUseCase,): WorkerManagerWrapper {
     override fun scheduleNextCredentialsRefreshIfAny() {
         GlobalScope.launch {
-            val firstExpiringCard = greenCardsUseCase.firstExpiringCard()
+            val credentialsExpireInDays = greenCardsUseCase.credentialsExpireInDays()
 
-            if (firstExpiringCard is GreenCard.Expiring) {
+            if (credentialsExpireInDays > 0) {
                 val request = OneTimeWorkRequestBuilder<RefreshCredentialsJob>()
-                    .setInitialDelay(firstExpiringCard.refreshInDays, TimeUnit.DAYS)
+                    .setInitialDelay(credentialsExpireInDays, TimeUnit.DAYS)
                     .setConstraints(
                         Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
                     ).build()

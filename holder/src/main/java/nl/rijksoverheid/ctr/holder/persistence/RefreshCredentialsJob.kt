@@ -21,7 +21,7 @@ class RefreshCredentialsJob(
     private val greenCardsUseCase: GreenCardsUseCase,
 ): CoroutineWorker(context, params) {
     override suspend fun doWork(): Result {
-        val syncWithRemote = greenCardsUseCase.expiring()
+        val syncWithRemote = greenCardsUseCase.shouldRefresh()
         return if (syncWithRemote) {
              when (holderDatabaseSyncer.sync(null, true)) {
                 DatabaseSyncerResult.Success -> {
