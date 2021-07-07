@@ -65,7 +65,7 @@ class MyOverviewViewModelImpl(
             )
 
             // Check if we need to refresh our data
-            val hasDoneRefreshCall = databaseSyncerResultLiveData.value != null
+            val hasDoneRefreshCall = databaseSyncerResultLiveData.value != null && selectType == getSelectedType()
             val shouldRefresh = (forceSync) || (greenCardsUseCase.shouldRefresh() && !hasDoneRefreshCall)
 
             // Refresh the database
