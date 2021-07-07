@@ -63,7 +63,7 @@ fun holderModule(baseUrl: String) = module {
         HolderDatabase.createInstance(androidContext(), get())
     }
 
-    factory<HolderDatabaseSyncer> { HolderDatabaseSyncerImpl(get(), get(), get(), get(), get(), get()) }
+    factory<HolderDatabaseSyncer> { HolderDatabaseSyncerImpl(get(), get(), get(), get(), get(), get(), get()) }
 
     single<PersistenceManager> {
         SharedPreferencesPersistenceManager(
@@ -110,7 +110,7 @@ fun holderModule(baseUrl: String) = module {
         )
     }
     factory<GetMyOverviewItemsUseCase> {
-        GetMyOverviewItemsUseCaseImpl(get(), get(), get(), get())
+        GetMyOverviewItemsUseCaseImpl(get(), get(), get(), get(), get())
     }
     factory<TokenValidatorUtil> { TokenValidatorUtilImpl() }
     factory<CredentialUtil> { CredentialUtilImpl(Clock.systemUTC()) }
@@ -161,7 +161,7 @@ fun holderModule(baseUrl: String) = module {
     factory<QrCodeUtil> { QrCodeUtilImpl() }
     factory<TestResultAdapterItemUtil> { TestResultAdapterItemUtilImpl(get()) }
     factory<InfoScreenUtil> { InfoScreenUtilImpl(get(), get()) }
-    factory<GreenCardUtil> { GreenCardUtilImpl(Clock.systemUTC()) }
+    factory<GreenCardUtil> { GreenCardUtilImpl(Clock.systemUTC(), get()) }
 
     // Usecases
     factory<CreateCredentialUseCase> {
@@ -175,7 +175,7 @@ fun holderModule(baseUrl: String) = module {
     }
 
     factory<GreenCardsUseCase> {
-        GreenCardsUseCaseImpl(get(), get(), get(), get(), get(), get(), get())
+        GreenCardsUseCaseImpl(get(), get(), get(), get(), get())
     }
 
     factory<HolderWorkerFactory> {
