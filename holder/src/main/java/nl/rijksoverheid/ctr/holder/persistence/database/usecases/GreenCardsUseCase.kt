@@ -42,7 +42,6 @@ class GreenCardsUseCaseImpl(
             // there won't be any credentials to fetch for them
             greenCardUtil.isExpiring(credentialRenewalDays, it)
         }.firstOrNull { greenCard ->
-            // If the last credential
             val credentialExpiring = greenCard.credentialEntities.maxByOrNull { it.expirationTime }
                 ?.isExpiring(credentialRenewalDays, clock) ?: true
             credentialExpiring
