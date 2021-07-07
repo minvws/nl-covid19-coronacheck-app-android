@@ -16,6 +16,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.isExpiring
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CredentialUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.GreenCardErrorState
 import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
@@ -30,7 +31,7 @@ typealias CardUiLogic = suspend () -> Unit
 interface GreenCardsUseCase {
     suspend fun faultyVaccinationsJune28(): Boolean
     suspend fun shouldRefresh(): Boolean
-    suspend fun expiredCard(selectedType: GreenCardType): Boolean
+    suspend fun allCredentialsExpired(selectedType: GreenCardType): Boolean
     suspend fun firstExpiringCard(): GreenCard
     suspend fun refresh(handleErrorOnExpiringCard: suspend (DatabaseSyncerResult) -> GreenCardErrorState,
                         showForcedError: CardUiLogic,
@@ -51,6 +52,7 @@ class GreenCardsUseCaseImpl(
     private val clock: Clock,
     private val persistenceManager: PersistenceManager,
     private val androidUtil: AndroidUtil,
+    private val credentialUtil: CredentialUtil,
 ) : GreenCardsUseCase {
     private val bugDate = OffsetDateTime.ofInstant(
         Instant.parse("2021-06-28T09:00:00.00Z"),
@@ -86,11 +88,13 @@ class GreenCardsUseCaseImpl(
         } != null
     }
 
-    override suspend fun expiredCard(selectedType: GreenCardType): Boolean {
+    override suspend fun allCredentialsExpired(selectedType: GreenCardType): Boolean {
         val allGreenCards = holderDatabase.greenCardDao().getAll()
         return allGreenCards.filter {
             it.greenCardEntity.type == selectedType
-        }.any(greenCardUtil::isExpired)
+        }.all {
+            credentialUtil.getActiveCredential(it.credentialEntities) == null
+        }
     }
 
     override suspend fun firstExpiringCard(): GreenCard {

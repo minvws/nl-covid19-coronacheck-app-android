@@ -175,7 +175,7 @@ fun holderModule(baseUrl: String) = module {
     }
 
     factory<GreenCardsUseCase> {
-        GreenCardsUseCaseImpl(get(), get(), get(), get(), get(), get())
+        GreenCardsUseCaseImpl(get(), get(), get(), get(), get(), get(), get())
     }
 
     factory<HolderWorkerFactory> {

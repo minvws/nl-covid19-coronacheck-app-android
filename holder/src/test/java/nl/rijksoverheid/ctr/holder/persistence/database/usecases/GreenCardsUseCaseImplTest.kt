@@ -12,6 +12,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.CredentialEntit
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CredentialUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.GreenCard.Expiring as ExpiringGreenCard
@@ -49,8 +50,9 @@ class GreenCardsUseCaseImplTest {
 
     private val persistenceManager = mockk<PersistenceManager>(relaxed = true)
     private val androidUtil = mockk<AndroidUtil>(relaxed = true)
+    private val credentialUtil = mockk<CredentialUtil>(relaxed = true)
 
-    private val greenCardUseCase = GreenCardsUseCaseImpl(holderDatabase, cachedAppConfigUseCase, greenCardUtil, firstJanuaryClock, persistenceManager, androidUtil)
+    private val greenCardUseCase = GreenCardsUseCaseImpl(holderDatabase, cachedAppConfigUseCase, greenCardUtil, firstJanuaryClock, persistenceManager, androidUtil, credentialUtil)
     
     private fun greenCard(
         originEntities: List<OriginEntity>? = null,
