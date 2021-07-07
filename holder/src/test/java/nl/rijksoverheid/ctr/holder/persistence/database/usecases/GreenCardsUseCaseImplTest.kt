@@ -46,11 +46,9 @@ class GreenCardsUseCaseImplTest {
 
     private val firstJanuaryClock = Clock.fixed(Instant.parse("2021-01-01T00:00:00.00Z"), ZoneId.of("UTC"))
 
-    private val persistenceManager = mockk<PersistenceManager>(relaxed = true)
-    private val androidUtil = mockk<AndroidUtil>(relaxed = true)
     private val credentialUtil = mockk<CredentialUtil>(relaxed = true)
 
-    private val greenCardUseCase = GreenCardsUseCaseImpl(holderDatabase, cachedAppConfigUseCase, greenCardUtil, firstJanuaryClock, persistenceManager, androidUtil, credentialUtil)
+    private val greenCardUseCase = GreenCardsUseCaseImpl(holderDatabase, cachedAppConfigUseCase, greenCardUtil, firstJanuaryClock, credentialUtil)
     
     private fun greenCard(
         originEntities: List<OriginEntity>? = null,
