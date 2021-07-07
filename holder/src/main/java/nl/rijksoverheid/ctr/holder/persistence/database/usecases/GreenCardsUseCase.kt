@@ -32,17 +32,12 @@ interface GreenCardsUseCase {
     suspend fun faultyVaccinationsJune28(): Boolean
     suspend fun shouldRefresh(): Boolean
     suspend fun allCredentialsExpired(selectedType: GreenCardType): Boolean
-    suspend fun firstExpiringCard(): GreenCard
+    suspend fun credentialsExpireInDays(): Long
     suspend fun refresh(handleErrorOnExpiringCard: suspend (DatabaseSyncerResult) -> GreenCardErrorState,
                         showForcedError: CardUiLogic,
                         showRefreshError: CardUiLogic,
                         showCardLoading: CardUiLogic,
                         holderDatabaseSyncer: HolderDatabaseSyncer): GreenCardErrorState
-}
-
-sealed class GreenCard {
-    class Expiring(val refreshInDays: Long) : GreenCard()
-    object None : GreenCard()
 }
 
 class GreenCardsUseCaseImpl(
@@ -97,12 +92,15 @@ class GreenCardsUseCaseImpl(
         }
     }
 
-    override suspend fun firstExpiringCard(): GreenCard {
+    override suspend fun credentialsExpireInDays(): Long {
         val configCredentialRenewalDays =
             cachedAppConfigUseCase.getCachedAppConfig()?.credentialRenewalDays?.toLong()
                 ?: throw IllegalStateException("Invalid config file")
 
         val firstExpiringGreenCardRenewal = holderDatabase.greenCardDao().getAll()
+            .filterNot {
+                greenCardUtil.isExpiring(configCredentialRenewalDays, it)
+            }
             .mapNotNull { greenCard ->
                 greenCard.credentialEntities.maxByOrNull { it.expirationTime }?.expirationTime
             }.minByOrNull { it.toEpochSecond() }?.minusDays(configCredentialRenewalDays)
@@ -111,15 +109,13 @@ class GreenCardsUseCaseImpl(
 
         return if (firstExpiringGreenCardRenewal != null) {
             val days = DAYS.between(now, firstExpiringGreenCardRenewal)
-            GreenCard.Expiring(
-                refreshInDays = if (days < 1) {
-                    1
-                } else {
-                    days
-                }
-            )
+            if (days < 1) {
+                1
+            } else {
+                days
+            }
         } else {
-            GreenCard.None
+            0
         }
     }
 

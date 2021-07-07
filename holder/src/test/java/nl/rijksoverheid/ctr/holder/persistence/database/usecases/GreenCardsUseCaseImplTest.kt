@@ -15,8 +15,8 @@ import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CredentialUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
-import nl.rijksoverheid.ctr.holder.persistence.database.usecases.GreenCard.Expiring as ExpiringGreenCard
-import nl.rijksoverheid.ctr.holder.persistence.database.usecases.GreenCard.None as NoGreenCard
+import nl.rijksoverheid.ctr.holder.persistence.database.usecases.ExpiringGreenCard.Expiring as ExpiringGreenCard
+import nl.rijksoverheid.ctr.holder.persistence.database.usecases.ExpiringGreenCard.None as NoGreenCard
 import org.junit.Assert.*
 import org.junit.Test
 import java.time.Clock
