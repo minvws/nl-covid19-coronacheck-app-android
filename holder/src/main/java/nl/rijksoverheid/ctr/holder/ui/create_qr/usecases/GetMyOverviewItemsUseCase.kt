@@ -4,18 +4,19 @@ import androidx.annotation.StringRes
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.CredentialEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
+import nl.rijksoverheid.ctr.holder.persistence.database.usecases.GreenCardsUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItem.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItem.GreenCardItem.CredentialState
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CredentialUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginUtil
-import nl.rijksoverheid.ctr.holder.ui.myoverview.items.GreenCardErrorState
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -32,8 +33,7 @@ interface GetMyOverviewItemsUseCase {
     suspend fun get(
         walletId: Int,
         selectedType: GreenCardType,
-        loading: Boolean = false,
-        errorState: GreenCardErrorState = GreenCardErrorState.None,
+        databaseSyncerResult: DatabaseSyncerResult = DatabaseSyncerResult.Success
     ): MyOverviewItems
 }
 
@@ -41,15 +41,15 @@ class GetMyOverviewItemsUseCaseImpl(
     private val holderDatabase: HolderDatabase,
     private val credentialUtil: CredentialUtil,
     private val greenCardUtil: GreenCardUtil,
-    private val originUtil: OriginUtil
+    private val originUtil: OriginUtil,
+    private val greenCardUseCase: GreenCardsUseCase,
 ) :
     GetMyOverviewItemsUseCase {
 
     override suspend fun get(
         walletId: Int,
         selectedType: GreenCardType,
-        loading: Boolean,
-        errorState: GreenCardErrorState,
+        databaseSyncerResult: DatabaseSyncerResult
     ): MyOverviewItems {
         return withContext(Dispatchers.IO) {
             val unselectedType = when (selectedType) {
@@ -76,8 +76,7 @@ class GetMyOverviewItemsUseCaseImpl(
                     selectedType = selectedType,
                     greenCardsForSelectedType = greenCardsForSelectedType,
                     greenCardsForUnselectedType = greenCardsForUnselectedType,
-                    loading = loading,
-                    errorState = errorState,
+                    databaseSyncerResult = databaseSyncerResult
                 )
             )
 
@@ -120,8 +119,7 @@ class GetMyOverviewItemsUseCaseImpl(
         selectedType: GreenCardType,
         greenCardsForSelectedType: List<GreenCard>,
         greenCardsForUnselectedType: List<GreenCard>,
-        loading: Boolean,
-        errorState: GreenCardErrorState
+        databaseSyncerResult: DatabaseSyncerResult
     ): List<MyOverviewItem> {
 
         // Loop through all green cards that exists in the database and map them to UI models
@@ -150,6 +148,8 @@ class GetMyOverviewItemsUseCaseImpl(
 
                 // More our credential to a more readable state
                 val credentialState = when {
+                    databaseSyncerResult !is DatabaseSyncerResult.Success -> CredentialState.NoCredential
+                    greenCardUseCase.shouldRefresh() -> CredentialState.LoadingCredential
                     activeCredential == null -> CredentialState.NoCredential
                     !hasValidOriginStates -> CredentialState.NoCredential
                     else -> CredentialState.HasCredential(activeCredential)
@@ -160,8 +160,7 @@ class GetMyOverviewItemsUseCaseImpl(
                     greenCard = greenCard,
                     originStates = nonExpiredOriginStates,
                     credentialState = credentialState,
-                    errorState = errorState,
-                    loading = loading,
+                    databaseSyncerResult = databaseSyncerResult
                 )
             }
         }.toMutableList()
@@ -263,12 +262,12 @@ sealed class MyOverviewItem {
         val greenCard: GreenCard,
         val originStates: List<OriginState>,
         val credentialState: CredentialState,
-        val loading: Boolean = false,
-        val errorState: GreenCardErrorState,
+        val databaseSyncerResult: DatabaseSyncerResult
     ) : MyOverviewItem() {
 
         sealed class CredentialState {
             data class HasCredential(val credential: CredentialEntity) : CredentialState()
+            object LoadingCredential: CredentialState()
             object NoCredential : CredentialState()
         }
     }

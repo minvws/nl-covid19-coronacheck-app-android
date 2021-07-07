@@ -9,6 +9,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteCredentials
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SecretKeyUseCase
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import retrofit2.HttpException
 import java.io.IOException
@@ -40,6 +41,7 @@ class HolderDatabaseSyncerImpl(
     private val mobileCoreWrapper: MobileCoreWrapper,
     private val secretKeyUseCase: SecretKeyUseCase,
     private val workerManagerWrapper: WorkerManagerWrapper,
+    private val greenCardUtil: GreenCardUtil
 ) : HolderDatabaseSyncer {
 
     override suspend fun sync(expectedOriginType: OriginType?, syncWithRemote: Boolean): DatabaseSyncerResult {
@@ -114,12 +116,15 @@ class HolderDatabaseSyncerImpl(
                         remoteEuropeanGreenCard = remoteEuropeanGreenCard
                     )
                 }
-
                 DatabaseSyncerResult.Success
             } catch (e: HttpException) {
                 DatabaseSyncerResult.ServerError(e.code())
             } catch (e: IOException) {
-                DatabaseSyncerResult.NetworkError
+                val greenCards = holderDatabase.greenCardDao().getAll()
+                DatabaseSyncerResult.NetworkError(
+                    hasGreenCardsWithoutCredentials = greenCards
+                        .any { greenCardUtil.hasNoActiveCredentials(it) }
+                )
             } catch (e: Exception) {
                 DatabaseSyncerResult.ServerError(200)
             } finally {
@@ -258,5 +263,5 @@ sealed class DatabaseSyncerResult {
     object Success : DatabaseSyncerResult()
     object MissingOrigin : DatabaseSyncerResult()
     data class ServerError(val httpCode: Int, val errorCode: Int? = null) : DatabaseSyncerResult()
-    object NetworkError : DatabaseSyncerResult()
+    data class NetworkError(val hasGreenCardsWithoutCredentials: Boolean) : DatabaseSyncerResult()
 }

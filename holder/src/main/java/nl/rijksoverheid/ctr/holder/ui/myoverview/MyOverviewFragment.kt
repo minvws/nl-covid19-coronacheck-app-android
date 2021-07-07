@@ -17,6 +17,7 @@ import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMyOverviewBinding
+import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItem
@@ -47,8 +48,8 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
 
     private val section = Section()
 
-    private val getQrCardsHandler = Handler(Looper.getMainLooper())
-    private val getQrCardsRunnable = Runnable { getQrCards(syncDatabase = false) }
+    private val refreshOverviewItemsHandler = Handler(Looper.getMainLooper())
+    private val refreshOverviewItemsRunnable = Runnable { refreshOverviewItems() }
 
     private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
     private val myOverviewViewModel: MyOverviewViewModel by sharedViewModelWithOwner(
@@ -81,8 +82,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
             }
         }
 
-        myOverviewViewModel.myOverviewItemsLiveData.observe(
-            viewLifecycleOwner,
+        myOverviewViewModel.myOverviewItemsLiveData.observe(viewLifecycleOwner,
             EventObserver { myOverviewItems ->
                 setItems(
                     binding = binding,
@@ -90,37 +90,39 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                 )
             })
 
-        myOverviewViewModel.myOverviewRefreshErrorEvent.observe(viewLifecycleOwner, EventObserver {
-            when (it) {
-                MyOverviewError.Forced -> dialogUtil.presentDialog(
-                    context = requireContext(),
-                    title = R.string.dialog_faultyvaccination28June_title,
-                    message = getString(R.string.dialog_faultyvaccination28June_message),
-                    positiveButtonText = R.string.dialog_close,
-                    positiveButtonCallback = {},
-                )
-                MyOverviewError.Inactive -> dialogUtil.presentDialog(
-                    context = requireContext(),
-                    title = R.string.dialog_title_no_internet,
-                    message = getString(R.string.dialog_credentials_expired_no_internet),
-                    positiveButtonText = R.string.app_status_internet_required_action,
-                    positiveButtonCallback = {
-                        getQrCards(syncDatabase = true)
-                    },
-                    negativeButtonText = R.string.dialog_close,
-                )
-                MyOverviewError.Refresh -> dialogUtil.presentDialog(
-                    context = requireContext(),
-                    title = R.string.dialog_title_no_internet,
-                    message = getString(R.string.dialog_update_credentials_no_internet),
-                    positiveButtonText = R.string.app_status_internet_required_action,
-                    positiveButtonCallback = {
-                        getQrCards(syncDatabase = true)
-                    },
-                    negativeButtonText = R.string.dialog_close,
-                )
+        myOverviewViewModel.databaseSyncerResultLiveData.observe(viewLifecycleOwner,
+            EventObserver {
+                if (it is DatabaseSyncerResult.NetworkError) {
+                    if (it.hasGreenCardsWithoutCredentials) {
+                        dialogUtil.presentDialog(
+                            context = requireContext(),
+                            title = R.string.dialog_title_no_internet,
+                            message = getString(R.string.dialog_credentials_expired_no_internet),
+                            positiveButtonText = R.string.app_status_internet_required_action,
+                            positiveButtonCallback = {
+                                refreshOverviewItems(
+                                    forceSync = true
+                                )
+                            },
+                            negativeButtonText = R.string.dialog_close,
+                        )
+                    } else {
+                        dialogUtil.presentDialog(
+                            context = requireContext(),
+                            title = R.string.dialog_title_no_internet,
+                            message = getString(R.string.dialog_update_credentials_no_internet),
+                            positiveButtonText = R.string.app_status_internet_required_action,
+                            positiveButtonCallback = {
+                                refreshOverviewItems(
+                                    forceSync = true
+                                )
+                            },
+                            negativeButtonText = R.string.dialog_close,
+                        )
+                    }
+                }
             }
-        })
+        )
     }
 
     private fun initRecyclerView(binding: FragmentMyOverviewBinding) {
@@ -143,14 +145,16 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
         }
     }
 
-    private fun getQrCards(syncDatabase: Boolean) {
-        myOverviewViewModel.refreshOverviewItems(syncDatabase = syncDatabase)
-        getQrCardsHandler.postDelayed(getQrCardsRunnable, TimeUnit.SECONDS.toMillis(10))
+    private fun refreshOverviewItems(forceSync: Boolean = false) {
+        myOverviewViewModel.refreshOverviewItems(
+            forceSync = forceSync
+        )
+        refreshOverviewItemsHandler.postDelayed(refreshOverviewItemsRunnable, TimeUnit.SECONDS.toMillis(10))
     }
 
     override fun onResume() {
         super.onResume()
-        getQrCards(syncDatabase = true)
+        refreshOverviewItems()
 
         (parentFragment?.parentFragment as HolderMainFragment?)?.getToolbar().let { toolbar ->
             if (toolbar?.menu?.size() == 0) {
@@ -163,7 +167,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
 
     override fun onPause() {
         super.onPause()
-        getQrCardsHandler.removeCallbacks(getQrCardsRunnable)
+        refreshOverviewItemsHandler.removeCallbacks(refreshOverviewItemsRunnable)
         (parentFragment?.parentFragment as HolderMainFragment).getToolbar().menu.clear()
     }
 
@@ -193,8 +197,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                             greenCard = myOverviewItem.greenCard,
                             originStates = myOverviewItem.originStates,
                             credentialState = myOverviewItem.credentialState,
-                            errorState = myOverviewItem.errorState,
-                            loading = myOverviewItem.loading,
+                            databaseSyncerResult = myOverviewItem.databaseSyncerResult,
                             onButtonClick = { greenCard, credential ->
                                 findNavControllerSafety()?.navigate(
                                     MyOverviewFragmentDirections.actionQrCode(
@@ -216,7 +219,9 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                                     )
                                 )
                             },
-                            onRetryClick = { getQrCards(syncDatabase = true) },
+                            onRetryClick = { refreshOverviewItems(
+                                forceSync = true
+                            ) },
                         )
                     )
                 }

@@ -9,35 +9,21 @@
 package nl.rijksoverheid.ctr.holder.persistence.database.usecases
 
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
-import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
-import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
-import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.isExpiring
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CredentialUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
-import nl.rijksoverheid.ctr.holder.ui.myoverview.items.GreenCardErrorState
-import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 import java.time.Clock
-import java.time.Instant
 import java.time.OffsetDateTime
-import java.time.ZoneId
 import java.time.temporal.ChronoUnit.DAYS
 
 typealias CardUiLogic = suspend () -> Unit
 
 interface GreenCardsUseCase {
-    suspend fun faultyVaccinationsJune28(): Boolean
     suspend fun shouldRefresh(): Boolean
     suspend fun allCredentialsExpired(selectedType: GreenCardType): Boolean
     suspend fun credentialsExpireInDays(): Long
-    suspend fun refresh(handleErrorOnExpiringCard: suspend (DatabaseSyncerResult) -> GreenCardErrorState,
-                        showForcedError: CardUiLogic,
-                        showRefreshError: CardUiLogic,
-                        showCardLoading: CardUiLogic,
-                        holderDatabaseSyncer: HolderDatabaseSyncer): GreenCardErrorState
 }
 
 class GreenCardsUseCaseImpl(
@@ -45,38 +31,18 @@ class GreenCardsUseCaseImpl(
     private val cachedAppConfigUseCase: CachedAppConfigUseCase,
     private val greenCardUtil: GreenCardUtil,
     private val clock: Clock,
-    private val persistenceManager: PersistenceManager,
-    private val androidUtil: AndroidUtil,
     private val credentialUtil: CredentialUtil,
 ) : GreenCardsUseCase {
-    private val bugDate = OffsetDateTime.ofInstant(
-        Instant.parse("2021-06-28T09:00:00.00Z"),
-        ZoneId.of("UTC")
-    )
-
-    override suspend fun faultyVaccinationsJune28(): Boolean {
-        return holderDatabase.greenCardDao().getAll()
-            .filter { it.greenCardEntity.type == GreenCardType.Domestic }
-            .any { greenCard ->
-                val hasVaccinationAndTestOrigins = greenCard.origins.map { it.type }.containsAll(
-                    setOf(
-                        OriginType.Test, OriginType.Vaccination
-                    )
-                )
-                val originsOlderThanBugDate =
-                    greenCard.origins.any { it.eventTime.isBefore(bugDate) }
-
-                hasVaccinationAndTestOrigins && originsOlderThanBugDate
-            }
-    }
 
     override suspend fun shouldRefresh(): Boolean {
-
         val credentialRenewalDays = cachedAppConfigUseCase.getCachedAppConfig()!!.credentialRenewalDays.toLong()
 
         return holderDatabase.greenCardDao().getAll().filterNot {
+            // We don't need to refresh green cards that are about to expire since
+            // there won't be any credentials to fetch for them
             greenCardUtil.isExpiring(credentialRenewalDays, it)
         }.firstOrNull { greenCard ->
+            // If the last credential
             val credentialExpiring = greenCard.credentialEntities.maxByOrNull { it.expirationTime }
                 ?.isExpiring(credentialRenewalDays, clock) ?: true
             credentialExpiring
@@ -116,51 +82,6 @@ class GreenCardsUseCaseImpl(
             }
         } else {
             0
-        }
-    }
-
-    /**
-     * Sync the database with remote
-     * We need to communicate to the user some updates:
-     * - On June 28 there was a bug in the backend cause of which we need to sync and let the user know
-     * - If one of the green cards is expiring, we need to update them and the user has to wait for their new state
-     */
-    override suspend fun refresh(
-        handleErrorOnExpiringCard: suspend (DatabaseSyncerResult) -> GreenCardErrorState,
-        showForcedError: CardUiLogic,
-        showRefreshError: CardUiLogic,
-        showCardLoading: CardUiLogic,
-        holderDatabaseSyncer: HolderDatabaseSyncer,
-    ): GreenCardErrorState {
-        return if (!androidUtil.isFirstInstall() && !persistenceManager.hasAppliedJune28Fix() && faultyVaccinationsJune28()) {
-            showForcedError()
-
-            val syncResult = holderDatabaseSyncer.sync(
-                syncWithRemote = true
-            )
-
-            if (syncResult != DatabaseSyncerResult.Success) {
-                showRefreshError()
-            } else {
-                persistenceManager.setJune28FixApplied(true)
-            }
-
-            GreenCardErrorState.None
-        } else {
-            if (shouldRefresh()) {
-                showCardLoading()
-
-                val syncResult = holderDatabaseSyncer.sync(
-                    syncWithRemote = true,
-                )
-
-                handleErrorOnExpiringCard(syncResult)
-            } else {
-                holderDatabaseSyncer.sync(
-                    syncWithRemote = false
-                )
-                GreenCardErrorState.None
-            }
         }
     }
 }
