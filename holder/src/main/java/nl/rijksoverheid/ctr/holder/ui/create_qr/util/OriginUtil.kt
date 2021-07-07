@@ -2,7 +2,6 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
-import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import java.time.Clock
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
@@ -12,9 +11,9 @@ interface OriginUtil {
     fun getOriginState(origins: List<OriginEntity>): List<OriginState>
 
     /**
-     * If the origin subtitle should be shown in the [MyOverviewGreenCardAdapterItem]
+     * If the origin subtitle should be hidden in the [MyOverviewGreenCardAdapterItem]
      */
-    fun presentSubtitle(greenCardType: GreenCardType, originState: OriginState): Boolean
+    fun hideSubtitle(greenCardType: GreenCardType, originState: OriginState): Boolean
 }
 
 class OriginUtilImpl(private val clock: Clock): OriginUtil {
@@ -39,8 +38,10 @@ class OriginUtilImpl(private val clock: Clock): OriginUtil {
         }
     }
 
-    override fun presentSubtitle(greenCardType: GreenCardType, originState: OriginState): Boolean {
-        return (greenCardType == GreenCardType.Domestic && ChronoUnit.YEARS.between(OffsetDateTime.now(clock), originState.origin.expirationTime) < PRESENT_SUBTITLE_WHEN_LESS_THEN_YEARS) || greenCardType == GreenCardType.Eu
+    override fun hideSubtitle(greenCardType: GreenCardType, originState: OriginState): Boolean {
+        // Hack to hide the subtitle if expirationTime is very far in the future
+        // We still want to show the subtitle when the origin state is in the future to show valid from time
+        return (greenCardType == GreenCardType.Domestic && ChronoUnit.YEARS.between(OffsetDateTime.now(clock), originState.origin.expirationTime) >= PRESENT_SUBTITLE_WHEN_LESS_THEN_YEARS) && originState !is OriginState.Future
     }
 }
 
