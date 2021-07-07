@@ -15,8 +15,6 @@ import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CredentialUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
-import nl.rijksoverheid.ctr.holder.persistence.database.usecases.ExpiringGreenCard.Expiring as ExpiringGreenCard
-import nl.rijksoverheid.ctr.holder.persistence.database.usecases.ExpiringGreenCard.None as NoGreenCard
 import org.junit.Assert.*
 import org.junit.Test
 import java.time.Clock
@@ -131,9 +129,9 @@ class GreenCardsUseCaseImplTest {
     fun `given a green with credential expiring in 7 days after now, when checking the last expiring one, then it returns it with refreshInDays set to 2`() = runBlocking {
         coEvery { greenCardDao.getAll() } returns listOf(validGreenCard("2021-01-08T07:00:00.00Z"))
 
-        val firstExpiringCard = greenCardUseCase.firstExpiringCard()
+        val credentialsExpireInDays = greenCardUseCase.credentialsExpireInDays()
 
-        assertEquals(2, (firstExpiringCard as ExpiringGreenCard).refreshInDays)
+        assertEquals(2, credentialsExpireInDays)
     }
 
     @Test
@@ -141,26 +139,26 @@ class GreenCardsUseCaseImplTest {
 
         coEvery { greenCardDao.getAll() } returns listOf(validGreenCard())
 
-        val firstExpiringCard = greenCardUseCase.firstExpiringCard()
+        val credentialsExpireInDays = greenCardUseCase.credentialsExpireInDays()
 
-        assertEquals(1, (firstExpiringCard as ExpiringGreenCard).refreshInDays)
+        assertEquals(1, credentialsExpireInDays)
     }
 
     @Test
     fun `given a green with credential expiring today, when checking the last expiring one, then it returns it with refreshInDays set to 1`() = runBlocking {
         coEvery { greenCardDao.getAll() } returns listOf(expiringGreenCard())
 
-        val firstExpiringCard = greenCardUseCase.firstExpiringCard()
+        val credentialsExpireInDays = greenCardUseCase.credentialsExpireInDays()
 
-        assertEquals(1, (firstExpiringCard as ExpiringGreenCard).refreshInDays)
+        assertEquals(1, credentialsExpireInDays)
     }
 
     @Test
     fun `given no green cards, when checking the last expiring one, then it returns None (so no refresh is scheduled)`() = runBlocking {
         coEvery { greenCardDao.getAll() } returns listOf()
 
-        val firstExpiringCard = greenCardUseCase.firstExpiringCard()
+        val credentialsExpireInDays = greenCardUseCase.credentialsExpireInDays()
 
-        assertTrue(firstExpiringCard is NoGreenCard)
+        assertEquals(0, credentialsExpireInDays)
     }
 }
