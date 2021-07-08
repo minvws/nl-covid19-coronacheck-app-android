@@ -74,6 +74,15 @@ object Accessibility {
     }
 
     /**
+     * Checks whether touch exploration is active
+     *
+     * @param context Context reference
+     */
+    fun touchExploration(context: Context?): Boolean {
+        return accessibilityManager(context)?.isTouchExplorationEnabled ?: false
+    }
+
+    /**
      * Moves the accessibility focus to the given view
      *
      * @param view View to move accessibility focus to

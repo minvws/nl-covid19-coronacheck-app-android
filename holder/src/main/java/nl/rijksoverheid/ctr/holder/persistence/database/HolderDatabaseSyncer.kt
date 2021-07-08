@@ -3,11 +3,13 @@ package nl.rijksoverheid.ctr.holder.persistence.database
 import androidx.room.Transaction
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.holder.persistence.WorkerManagerWrapper
+import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteCredentials
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SecretKeyUseCase
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import retrofit2.HttpException
 import java.io.IOException
@@ -29,7 +31,7 @@ interface HolderDatabaseSyncer {
      * @param expectedOriginType If not null checks if the remote credentials contain this origin. Will return [DatabaseSyncerResult.MissingOrigin] if it's not present.
      * @param syncWithRemote If true and the data call to resync succeeds, clear all green cards in the database and re-add them
      */
-    suspend fun sync(expectedOriginType: String? = null, syncWithRemote: Boolean = true): DatabaseSyncerResult
+    suspend fun sync(expectedOriginType: OriginType? = null, syncWithRemote: Boolean = true): DatabaseSyncerResult
 }
 
 class HolderDatabaseSyncerImpl(
@@ -38,9 +40,11 @@ class HolderDatabaseSyncerImpl(
     private val coronaCheckRepository: CoronaCheckRepository,
     private val mobileCoreWrapper: MobileCoreWrapper,
     private val secretKeyUseCase: SecretKeyUseCase,
+    private val workerManagerWrapper: WorkerManagerWrapper,
+    private val greenCardUtil: GreenCardUtil
 ) : HolderDatabaseSyncer {
 
-    override suspend fun sync(expectedOriginType: String?, syncWithRemote: Boolean): DatabaseSyncerResult {
+    override suspend fun sync(expectedOriginType: OriginType?, syncWithRemote: Boolean): DatabaseSyncerResult {
         return withContext(Dispatchers.IO) {
             val events = holderDatabase.eventGroupDao().getAll()
 
@@ -66,9 +70,17 @@ class HolderDatabaseSyncerImpl(
      */
     private suspend fun removeExpiredEventGroups(events: List<EventGroupEntity>) {
         events.forEach {
-            val expireDate =
-                if (it.type == EventType.Vaccination) cachedAppConfigUseCase.getCachedAppConfigVaccinationEventValidity()
-                    .toLong() else cachedAppConfigUseCase.getCachedAppConfigMaxValidityHours()
+            val expireDate = when (it.type) {
+                is OriginType.Vaccination -> {
+                    cachedAppConfigUseCase.getCachedAppConfigVaccinationEventValidity()
+                }
+                is OriginType.Test -> {
+                    cachedAppConfigUseCase.getCachedAppConfigMaxValidityHours()
+                }
+                is OriginType.Recovery -> {
+                    cachedAppConfigUseCase.getCachedAppConfigRecoveryEventValidity()
+                }
+            }
 
             if (it.maxIssuedAt.plusHours(expireDate.toLong()) <= OffsetDateTime.now()) {
                 holderDatabase.eventGroupDao().delete(it)
@@ -77,17 +89,16 @@ class HolderDatabaseSyncerImpl(
     }
 
     @Transaction
-    private suspend fun syncGreenCards(events: List<EventGroupEntity>, expectedOriginType: String?): DatabaseSyncerResult {
+    private suspend fun syncGreenCards(events: List<EventGroupEntity>, expectedOriginType: OriginType?): DatabaseSyncerResult {
         if (events.isNotEmpty()) {
             return try {
                 val remoteCredentials = getRemoteCredentials(
                     events = events
                 )
 
-                if (!remoteCredentials.getAllOrigins().contains(expectedOriginType)) {
+                if (expectedOriginType != null && !remoteCredentials.getAllOrigins().contains(expectedOriginType.getTypeString())) {
                     return DatabaseSyncerResult.MissingOrigin
                 }
-
 
                 // Remove all green cards from database
                 removeAllGreenCards()
@@ -105,14 +116,19 @@ class HolderDatabaseSyncerImpl(
                         remoteEuropeanGreenCard = remoteEuropeanGreenCard
                     )
                 }
-
                 DatabaseSyncerResult.Success
             } catch (e: HttpException) {
                 DatabaseSyncerResult.ServerError(e.code())
             } catch (e: IOException) {
-                DatabaseSyncerResult.NetworkError
+                val greenCards = holderDatabase.greenCardDao().getAll()
+                DatabaseSyncerResult.NetworkError(
+                    hasGreenCardsWithoutCredentials = greenCards
+                        .any { greenCardUtil.hasNoActiveCredentials(it) }
+                )
             } catch (e: Exception) {
                 DatabaseSyncerResult.ServerError(200)
+            } finally {
+                workerManagerWrapper.scheduleNextCredentialsRefreshIfAny()
             }
         } else {
             return DatabaseSyncerResult.Success
@@ -247,5 +263,5 @@ sealed class DatabaseSyncerResult {
     object Success : DatabaseSyncerResult()
     object MissingOrigin : DatabaseSyncerResult()
     data class ServerError(val httpCode: Int, val errorCode: Int? = null) : DatabaseSyncerResult()
-    object NetworkError : DatabaseSyncerResult()
+    data class NetworkError(val hasGreenCardsWithoutCredentials: Boolean) : DatabaseSyncerResult()
 }

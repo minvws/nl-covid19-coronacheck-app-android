@@ -2,9 +2,10 @@ package nl.rijksoverheid.ctr.verifier
 
 import nl.rijksoverheid.ctr.api.apiModule
 import nl.rijksoverheid.ctr.appconfig.*
-import nl.rijksoverheid.ctr.appconfig.usecases.LoadPublicKeysUseCase
+import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
 import nl.rijksoverheid.ctr.design.designModule
 import nl.rijksoverheid.ctr.introduction.introductionModule
+import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.SharedApplication
 import nl.rijksoverheid.ctr.shared.sharedModule
 import nl.rijksoverheid.ctr.verifier.modules.*
@@ -21,6 +22,9 @@ import org.koin.core.module.Module
  *
  */
 open class VerifierApplication : SharedApplication() {
+
+    private val appConfigStorageManager: AppConfigStorageManager by inject()
+    private val mobileCoreWrapper: MobileCoreWrapper by inject()
 
     override fun onCreate() {
         super.onCreate()
@@ -42,6 +46,10 @@ open class VerifierApplication : SharedApplication() {
                 *getAdditionalModules().toTypedArray(),
                 designModule
             )
+        }
+
+        if (appConfigStorageManager.areConfigFilesPresentInFilesFolder()) {
+            mobileCoreWrapper.initializeVerifier(applicationContext.filesDir.path)
         }
     }
 

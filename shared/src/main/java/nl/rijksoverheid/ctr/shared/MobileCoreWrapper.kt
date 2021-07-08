@@ -15,13 +15,11 @@ import mobilecore.Mobilecore
 import mobilecore.Result
 import nl.rijksoverheid.ctr.shared.ext.*
 import nl.rijksoverheid.ctr.shared.models.DomesticCredential
-import nl.rijksoverheid.ctr.shared.models.DomesticCredentialAttributes
 import nl.rijksoverheid.ctr.shared.models.ReadDomesticCredential
 import org.json.JSONObject
 import java.lang.reflect.Type
 
 interface MobileCoreWrapper {
-    fun loadDomesticIssuerPks(bytes: ByteArray)
     fun createCredentials(body: ByteArray): String
     fun readDomesticCredential(credential: ByteArray): ReadDomesticCredential
     fun readCredential(credentials: ByteArray): ByteArray
@@ -31,14 +29,13 @@ interface MobileCoreWrapper {
     fun createDomesticCredentials(createCredentials: ByteArray): List<DomesticCredential>
     fun readEuropeanCredential(credential: ByteArray): JSONObject
     // returns error message, if initializing failed
+    fun initializeHolder(configFilesPath: String): String?
+    // returns error message, if initializing failed
     fun initializeVerifier(configFilesPath: String): String?
     fun verify(credential: ByteArray): Result
 }
 
 class MobileCoreWrapperImpl(private val moshi: Moshi) : MobileCoreWrapper {
-    override fun loadDomesticIssuerPks(bytes: ByteArray) {
-        Mobilecore.loadDomesticIssuerPks(bytes)
-    }
 
     override fun createCredentials(body: ByteArray): String {
         return Mobilecore.createCredentials(
@@ -88,6 +85,15 @@ class MobileCoreWrapperImpl(private val moshi: Moshi) : MobileCoreWrapper {
 
     override fun readEuropeanCredential(credential: ByteArray): JSONObject {
         return Mobilecore.readEuropeanCredential(credential).successJsonObject()
+    }
+
+    override fun initializeHolder(configFilesPath: String): String? {
+        return try {
+            val initResult = Mobilecore.initializeHolder(configFilesPath)
+            initResult.error.takeIf { it.isNotEmpty() }
+        } catch (exception: Exception) {
+            exception.message ?: "unknown initializeHolder library error"
+        }
     }
 
     override fun initializeVerifier(configFilesPath: String): String? {

@@ -8,6 +8,11 @@
             android:checkable="false"
             android:title="@string/my_overview" />
 
+        <item
+            android:id="@+id/nav_qr_explanation_root"
+            android:checkable="false"
+            android:title="@string/choose_provider_toolbar" />
+
         <!-- TODO: Implement settings -->
         <item
             android:id="@+id/nav_settings"
@@ -18,11 +23,6 @@
     <group
         android:id="@+id/info"
         android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_qr_explanation_root"
-            android:checkable="false"
-            android:title="@string/choose_provider_toolbar" />
-
         <item
             android:id="@+id/nav_frequently_asked_questions"
             android:checkable="false"

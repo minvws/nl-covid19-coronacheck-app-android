@@ -25,7 +25,7 @@ data class EventGroupEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     @ColumnInfo(name = "wallet_id", index = true) val walletId: Int,
     @ColumnInfo(name = "provider_identifier") val providerIdentifier: String,
-    val type: EventType,
+    val type: OriginType,
     val maxIssuedAt: OffsetDateTime,
     @ColumnInfo(typeAffinity = ColumnInfo.BLOB) val jsonData: ByteArray
 ) {

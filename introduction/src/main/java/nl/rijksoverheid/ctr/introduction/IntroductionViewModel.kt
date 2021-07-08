@@ -1,9 +1,9 @@
 package nl.rijksoverheid.ctr.introduction
 
 import androidx.lifecycle.ViewModel
-import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
-import nl.rijksoverheid.ctr.introduction.ui.new_terms.models.NewTerms
 import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
+import nl.rijksoverheid.ctr.introduction.ui.new_terms.models.NewTerms
+import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.introduction.ui.status.usecases.IntroductionStatusUseCase
 
 /*
@@ -16,7 +16,8 @@ import nl.rijksoverheid.ctr.introduction.ui.status.usecases.IntroductionStatusUs
 
 abstract class IntroductionViewModel : ViewModel() {
     abstract fun getIntroductionStatus(): IntroductionStatus
-    abstract fun saveIntroductionFinished(newTerms: NewTerms? = null)
+    abstract fun saveIntroductionFinished(introductionData: IntroductionData)
+    abstract fun saveNewFeaturesFinished(newFeaturesVersion: Int)
 }
 
 class IntroductionViewModelImpl(
@@ -27,10 +28,15 @@ class IntroductionViewModelImpl(
 
     override fun getIntroductionStatus() = introductionStatusUseCase.get()
 
-    override fun saveIntroductionFinished(newTerms: NewTerms?) {
+    override fun saveIntroductionFinished(introductionData: IntroductionData) {
         introductionPersistenceManager.saveIntroductionFinished()
-        newTerms?.let {
+        introductionData.newTerms?.let {
             introductionPersistenceManager.saveNewTermsSeen(it.version)
         }
+        introductionPersistenceManager.saveNewFeaturesSeen(introductionData.newFeatureVersion)
+    }
+
+    override fun saveNewFeaturesFinished(newFeaturesVersion: Int) {
+        introductionPersistenceManager.saveNewFeaturesSeen(newFeaturesVersion)
     }
 }

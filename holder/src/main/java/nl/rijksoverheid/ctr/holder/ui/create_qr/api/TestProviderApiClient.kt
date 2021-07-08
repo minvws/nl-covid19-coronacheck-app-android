@@ -27,41 +27,22 @@ interface TestProviderApiClient {
 
     @POST
     @SignedRequest
-    suspend fun unomiVaccinationEvents(
+    suspend fun getUnomi(
         @Url url: String,
         @Header("Authorization") authorization: String,
         @Header("CoronaCheck-Protocol-Version") protocolVersion: String = "3.0",
-        @Body params: Map<String, String> = mapOf("filter" to "vaccination"),
+        @Body params: Map<String, String>,
         @Tag certificate: SigningCertificate,
     ): SignedResponseWithModel<RemoteUnomi>
 
     @POST
     @SignedRequest
-    suspend fun unomiTestEvents(
+    suspend fun getEvents(
         @Url url: String,
         @Header("Authorization") authorization: String,
         @Header("CoronaCheck-Protocol-Version") protocolVersion: String = "3.0",
-        @Body params: Map<String, String> = mapOf("filter" to "negativetest"),
+        @Body params: Map<String, String>,
         @Tag certificate: SigningCertificate,
-    ): SignedResponseWithModel<RemoteUnomi>
+    ): SignedResponseWithModel<RemoteProtocol3>
 
-    @POST
-    @SignedRequest
-    suspend fun vaccinationEvents(
-        @Url url: String,
-        @Header("Authorization") authorization: String,
-        @Header("CoronaCheck-Protocol-Version") protocolVersion: String = "3.0",
-        @Body params: Map<String, String> = mapOf("filter" to "vaccination"),
-        @Tag certificate: SigningCertificate,
-        ): SignedResponseWithModel<RemoteEventsVaccinations>
-
-    @POST
-    @SignedRequest
-    suspend fun negativeTestEvents(
-        @Url url: String,
-        @Header("Authorization") authorization: String,
-        @Header("CoronaCheck-Protocol-Version") protocolVersion: String = "3.0",
-        @Body params: Map<String, String> = mapOf("filter" to "negativetest"),
-        @Tag certificate: SigningCertificate,
-        ): SignedResponseWithModel<RemoteTestResult3>
 }

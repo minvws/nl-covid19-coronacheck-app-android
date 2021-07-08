@@ -7,21 +7,22 @@
     <string name="onboarding_screen_1_title">Only access with a certificate</string>
     <string name="onboarding_screen_1_description">"Your and other people’s health matters. That is why some countries and places ask for a coronavirus pass. You’re only allowed to enter carrying this pass."</string>
     <string name="onboarding_screen_2_title">Certificate of test or vaccination</string>
-    <string name="onboarding_screen_2_description">You can generate a certificate if you have been vaccinated or if you have a negative test result that confirms you don’t have corona. From the beginning of July, you can also make a certificate if you\'ve had coronavirus (certificate of recovery).</string>
+    <string name="onboarding_screen_2_description">You can generate a coronavirus pass if:&lt;br/&gt;
+&lt;ul&gt;&lt;li&gt;You have been vaccinated&lt;/li&gt;&lt;li&gt;A test result confirms you don’t have corona.&lt;/li&gt;&lt;li&gt;A test result confirms you\'ve had coronavirus and are recovered.&lt;/li&gt;&lt;/ul&gt;</string>
     <string name="onboarding_screen_4_title">QR code = your proof</string>
-    <string name="onboarding_screen_4_description">This app generates a QR code with your test result or vaccination. That is your certificate. This QR code will be checked at the entrance of locations or activities or at the border. If your declaration expires, the QR code disappears from the app.</string>
+    <string name="onboarding_screen_4_description">This app generates a QR code with your vaccination, test result or recovery. That is your certificate. This QR code will be checked at the entrance of places or activities or at the border. If your certificate expires, the QR code disappears from the app.</string>
     <string name="onboarding_screen_3_title">QR codes for the Netherlands and international</string>
-    <string name="onboarding_screen_3_description">"This app generates a QR code for the Netherlands and one for other countries. You can find both QR codes in the app. Travelling outside of the Netherlands? Then use your international QR code. You can use it from %1$s. "</string>
+    <string name="onboarding_screen_3_description">"This app generates a QR code for the Netherlands and one for other countries. You can find both QR codes in the app. Travelling outside of the Netherlands? Then use your international QR code."</string>
     <string name="onboarding_next">Next</string>
     <string name="privacy_policy_title">This is how the app uses your data</string>
     <string name="privacy_policy_description"><![CDATA[The <a href="https://coronacheck.nl/en/privacy-in-app">privacy statement</a> details how CoronaCheck handles your data. These are the most important points:]]></string>
     <string name="privacy_policy_1"><![CDATA[Your data is <b>not centrally stored anywhere</b>]]></string>
     <string name="privacy_policy_2"><![CDATA[No location data is <b>used or saved</b>]]></string>
     <string name="privacy_policy_checkbox_text">I have read the privacy statement and understand how CoronaCheck processes my data.</string>
-    <string name="my_overview">My overview</string>
-    <string name="my_overview_description">To get access, have your QR code scanned at the entrance of an entertainment venue.</string>
+    <string name="my_overview">My certificates</string>
+    <string name="my_overview_description">Show both your QR code and your proof of identity at the entrance of the location you\'re visiting.</string>
     <string name="my_overview_description_eu"><![CDATA[Travelling outside the Netherlands? Then use your international QR code. In <a href="https://www.netherlandsworldwide.nl/travelling-outside-the-netherlands">this overview</a>, you\'ll find if the QR code is valid in the country you’re planning to visit.]]></string>
-    <string name="my_overview_no_qr_description"><![CDATA[You can get a certificate if you\'re vaccinated or by taking a test at an <a href="https://coronacheck.nl/nl/testafspraak-in-app">affiliated test location</a>.]]></string>
+    <string name="my_overview_no_qr_description"><![CDATA[You can create a QR-code if you\'re vaccinated, if you\'ve had corona or by taking a test at an <a href="https://coronacheck.nl/nl/testafspraak-in-app">affiliated test location</a>.]]></string>
     <string name="dialog_error_title">Sorry, something went wrong</string>
     <string name="dialog_error_message">Because of a technical error.</string>
     <string name="dialog_error_message_with_error_code">Because of a technical error (%1$s).</string>
@@ -42,16 +43,17 @@
     <string name="my_overview_test_result_expires_in_hours_minutes">Expires in %1$s hour(s) %2$s min</string>
     <string name="my_overview_test_result_expires_in_minutes">Expires in %1$s min</string>
     <string name="my_overview_test_result_footer">Show QR code at the entrance</string>
-    <string name="my_overview_test_result_button">See QR</string>
+    <string name="my_overview_test_result_button">View QR</string>
+    <string name="my_overview_test_result_button_indicator_accessibility_description">Loading, please wait</string>
     <string name="my_overview_no_qr_make_appointment_title">Book test appointment</string>
     <string name="my_overview_no_qr_make_appointment_description">Want to make a QR code? Get tested for coronavirus first.</string>
     <string name="my_overview_no_qr_make_appointment_button">Make appointment</string>
     <string name="my_overview_no_qr_make_qr_title">Make QR code</string>
     <string name="my_overview_no_qr_replace_qr_title">Update QR code</string>
-    <string name="my_overview_no_qr_make_qr_description">Turn your negative test result or vaccination into a personal QR code.</string>
-    <string name="my_overview_no_qr_make_qr_button">Make QR code</string>
-    <string name="my_overview_no_qr_replace_qr_button">Replace QR code</string>
-    <string name="choose_provider_toolbar">Make QR code</string>
+    <string name="my_overview_no_qr_make_qr_description">Turn your vaccination, negative test result or recovery into a QR code.</string>
+    <string name="my_overview_no_qr_make_qr_button">Make certificate</string>
+    <string name="my_overview_no_qr_replace_qr_button">Replace certificate</string>
+    <string name="choose_provider_toolbar">Add certificate</string>
     <string name="choose_provider_title">Where were you tested?</string>
     <string name="choose_provider_description">Does the test prove you don\'t have coronavirus? Then you can make a QR code out of the test result. Indicate where you were tested.</string>
     <string name="choose_provider_commercial_title">Other test location</string>
@@ -85,10 +87,10 @@
     <string name="your_negative_test_results_description">This test result is retrieved from the test location.&lt;br\&gt;&lt;br\&gt;Is the below correct? Then you can convert the negative test result into a QR code. This is your test certificate.</string>
     <string name="your_negative_test_results_header">Retrieved test result</string>
     <string name="your_negative_test_results_row_title">Negative test result</string>
-    <string name="your_negative_test_results_row_subtitle"><![CDATA[Test date: %1$s<br/>Valid until: %2$s<br/>Your details:  %3$s]]></string>
+    <string name="your_negative_test_results_row_subtitle"><![CDATA[Test date: %1$s<br/>Your details: %2$s]]></string>
     <string name="your_negative_test_results_something_wrong_button">Is something wrong?</string>
     <string name="your_negative_test_results_row_personal_details">Identification details: %1$s</string>
-    <string name="your_negative_test_results_row_button">Make QR code</string>
+    <string name="your_negative_test_results_row_button">Make certificate</string>
     <string name="your_negative_test_results_backbutton_title">Are you sure you want to stop?</string>
     <string name="your_negative_test_results_backbutton_message">You can try to retrieve your test result again later</string>
     <string name="your_negative_test_results_backbutton_ok">Yes, stop</string>
@@ -108,7 +110,7 @@
     <string name="no_negative_test_result_description"><![CDATA[No negative test result available.]]></string>
     <string name="test_result_not_known_title">Test result not yet known</string>
     <string name="test_result_not_known_description"><![CDATA[Please try again later.<br/><br/>If you have any questions, contact your test location.]]></string>
-    <string name="about_this_app_description">CoronaCheck is created to reopen society step by step. With this app, visitors are able to prove they\'re vaccinated or they’ve recently tested negative for corona. This way, the Netherlands can head out more often and travel abroad.</string>
+    <string name="about_this_app_description"><![CDATA[CoronaCheck is created to reopen society step by step. This way, the Netherlands can head out more often and travel abroad.<br/><br/>CoronaCheck creates a coronavirus pass from your vaccination, your negative test result or if you\'ve had corona and are recovered. A coronavirus pass consists of two QR-codes: one for the Netherlands and one for other countries (the EU Digital COVID Certificate).]]></string>
     <string name="test_result_already_signed_title">Test result already retrieved</string>
     <string name="test_result_already_signed_description"><![CDATA[Your test result has already been retrieved. And it\'s already been made into a QR code.<br\><br\> Is this not correct? Contact the test location.]]></string>
     <string name="item_test_result_expired"><![CDATA[Your QR code has expired.<br\>Get tested again.]]></string>
@@ -185,19 +187,19 @@
     <string name="create_qr_explanation_menu_title">Make QR code</string>
     <string name="create_qr_explanation_menu_title_alternative">Add a QR code</string>
     <string name="create_qr_explanation_title">Make a QR code</string>
-    <string name="create_qr_explanation_description"><![CDATA[The app makes a QR code in three steps. This QR code is your personal certificate.<br/><br/><b>1. Vaccination or test certificate?</b><br/>Choose to create a QR code of a vaccination or of a negative test result.<br/><br/><b>2. Automatically retrieve data </b><br/>The app directly retrieves the data of your vaccination or rest result.<br/><br/><b>  3. QR codes are ready </b><br/>The app generates a QR code for the Netherlands and one for other countries. <br/><br/>]]></string>
-    <string name="qr_code_type_title">What are you making a QR code from?</string>
-    <string name="qr_code_type_description">You can make a QR code of a negative test result or of a vaccination.</string>
-    <string name="qr_code_type_negative_test_title">A negative test result</string>
+    <string name="create_qr_explanation_description"><![CDATA[The app makes a QR code in three steps. This QR code is your personal certificate.<br/><br/><b>1. Choose the type of certificate</b><br/>Choose to create a vaccination certificate, a test certificate or a recovery certificate.<br/><br/><b>2. Automatically retrieve data </b><br/>The app directly retrieves the data of your vaccination, test result or recovery.<br/><br/><b>  3. QR codes are ready </b><br/>The app generates a QR code for the Netherlands and one for other countries. <br/><br/>]]></string>
+    <string name="qr_code_type_title">What kind of certificate would you like to add?</string>
+    <string name="qr_code_type_description">Indicate what kind of certificate you would like to add. You can have multiple certificates.</string>
+    <string name="qr_code_type_negative_test_title">A test certificate</string>
     <string name="qr_code_type_negative_test_description">The test proves I do not have coronavirus</string>
-    <string name="qr_code_type_vaccination_title">A vaccination</string>
+    <string name="qr_code_type_vaccination_title">A vaccination certificate</string>
     <string name="qr_code_type_vaccination_description">I\'ve had my injection or injections</string>
     <string name="get_vaccination_title">Retrieve vaccination details</string>
     <string name="get_vaccination_description"><![CDATA[Got vaccinated? Log in with DigiD. Details regarding your vaccination will be retrieved automatically. You only need one injection to make an international QR-code. For a Dutch QR code you need to be fully vaccinated. <br/><br/>Didn\'t get an injection yet? Get vaccinated first.]]></string>
     <string name="get_vaccination_button">Log in with your DigiD</string>
     <string name="get_vaccination_no_digid_button">I don\'t have DigiD</string>
     <string name="your_retrieved_vaccinations_title">Your retrieved vaccinations</string>
-    <string name="your_retrieved_vaccinations_description">You can make a QR code of a negative test result or of a vaccination.</string>
+    <string name="your_retrieved_vaccinations_description">You can make a QR code of your vaccination. That is your certificate.</string>
     <string name="your_vaccination_result_toolbar_title">Your retrieved vaccinations</string>
     <string name="your_retrieved_vaccinations_toolbar">Retrieve details of your vaccination</string>
     <string name="retrieved_vaccination_title">Vaccination %1$s (%2$s)</string>
@@ -213,19 +215,19 @@
     <string name="travel_fragment_footer">The Dutch QR code only contains your initials, your birth month, and your day of birth.</string>
     <string name="travel_fragment_footer_eu">The international QR code contains the following details: your name, date of birth, and information about the vaccine.</string>
     <string name="dialog_negative_test_result_something_wrong_title">Something is wrong</string>
-    <string name="dialog_negative_test_result_something_wrong_description">Is your name or date of birth wrong? Look <a href="https://coronacheck.nl/en/guidepost">here</a> for more information.</string>
+    <string name="dialog_negative_test_result_something_wrong_description"><![CDATA[Is your name or date of birth wrong? Look <a href="https://coronacheck.nl/en/guidepost">here</a> for more information.]]></string>
     <string name="validity_type_european_title">International</string>
-    <string name="validity_type_dutch_title">the Netherlands</string>
+    <string name="validity_type_dutch_title">The Netherlands</string>
     <string name="qr_explanation_title_domestic">About my Dutch QR code</string>
     <string name="qr_explanation_description_domestic"><![CDATA[Your Dutch QR code contains minimal data. The QR code doesn\'t say whether or not you have a test certificate or vaccination. It does say whether or not the QR code is valid. The QR code also contains several of your details. This is for verification purposes, to make sure this QR code belongs to you. The details consist of the first letter of your first name, the first letter of your last name, your birth month, and your day of birth. For security reasons, some details may disappear.<br/><br/>Your details: <b>%1$s</b><br/><br/>Always use the Dutch QR code within the Netherlands. The international QR code isn\'t valid in the Netherlands.]]></string>
     <string name="qr_explanation_title_eu">About my international QR code</string>
-    <string name="qr_explanation_description_eu_vaccination"><![CDATA[Travelling outside of the Netherlands? Then more data is required. That\'s why the international QR code contains the following details:<br/><br/> Name: <b>%1$s</b><br/>Date of birth: <b>%2$s</b><br/><br/>Pathogen: <b>%3$s</b><br/> Vaccine: <b>%4$s</b><br/> Vaccine type: <b>%5$s</b><br/> Manufacturer: <b>%6$s</b><br/>Doses: <b>%7$s</b><br/> Date of injection: <b>%8$s</b><br/> Vaccinated in: <b>%9$s</b><br/> Identification code: <b>%10$s</b><br/><br/> Always use the international QR code in other countries. The Dutch QR code is not valid outside of the Netherlands.]]></string>
-    <string name="qr_explanation_description_eu_test"><![CDATA[<p>Travelling outside the Netherlands? This requires more data. That\'s why the international QR code contains the following details:<br/><br/> Name: <b>%1$s</b><br/>Date of birth: <b>%2$s</b><br/><br/>Pathogen: <b>%3$s</b><br/> Test: <b>%4$s</b><br/> Test type: <b>%5$s</b><br/> Test date: <b>%6$s</b><br/> Test result: <b>%7$s</b><br/> Test location: <b>%8$s</b><br/>Manufacturer: <b>%9$s</b><br/> Tested in: <b>%10$s</b><br/> Identification code: <b>%11$s</b><br/><br/> Always use the international QR code in other countries. The Dutch QR code is not valid outside the Netherlands.]]></string>
+    <string name="qr_explanation_description_eu_vaccination"><![CDATA[Travelling outside of the Netherlands? Then more data is required. That\'s why the international QR code contains the following details:<br/><br/> Name: <b>%1$s</b><br/>Date of birth: <b>%2$s</b><br/><br/>Pathogen: <b>%3$s</b><br/> Vaccine: <b>%4$s</b><br/> Vaccine type: <b>%5$s</b><br/> Manufacturer: <b>%6$s</b><br/>Doses: <b>%7$s</b><br/> Date of injection: <b>%8$s</b><br/> Vaccinated in: <b>%9$s</b><br/>Unique certificate identifier: <b>%10$s</b><br/><br/> Always use the international QR code in other countries. The Dutch QR code is not valid outside of the Netherlands.]]></string>
+    <string name="qr_explanation_description_eu_test"><![CDATA[<p>Travelling outside the Netherlands? This requires more data. That\'s why the international QR code contains the following details:<br/><br/> Name: <b>%1$s</b><br/>Date of birth: <b>%2$s</b><br/><br/>Pathogen: <b>%3$s</b><br/> Test: <b>%4$s</b><br/> Test type: <b>%5$s</b><br/> Test date: <b>%6$s</b><br/> Test result: <b>%7$s</b><br/> Test location: <b>%8$s</b><br/>Manufacturer: <b>%9$s</b><br/> Tested in: <b>%10$s</b><br/>Unique certificate identifier: <b>%11$s</b><br/><br/> Always use the international QR code in other countries. The Dutch QR code is not valid outside the Netherlands.]]></string>
     <string name="qr_explanation_icon_label">About your QR code</string>
     <string name="qr_card_expired">Your QR code has expired.</string>
     <string name="qr_card_vaccination_title_domestic">Vaccination certificate:</string>
     <string name="qr_card_test_domestic">Test certificate:</string>
-    <string name="qr_card_recovery_title_domestic">Recovery statement:</string>
+    <string name="qr_card_recovery_title_domestic">Recovery certificate:</string>
     <string name="qr_card_vaccination_title_eu">Vaccination date:</string>
     <string name="qr_card_test_title_eu">Test date:</string>
     <string name="qr_card_recovery_title_eu">Recovery date:</string>
@@ -233,32 +235,31 @@
     <string name="qr_card_validity_future_days">automatically becomes valid in %1$s days</string>
     <string name="qr_card_validity_future_day">automatically becomes valid in %1$s day</string>
     <string name="qr_card_validity_future_hours">automatically becomes valid in %1$s hours</string>
-    <string name="qr_card_validity_eu">Your international QR code will automatically become valid when the European legislation goes into effect (from %1$s)</string>
     <string name="your_test_result_explanation_toolbar_title">What was retrieved?</string>
-    <string name="your_test_result_explanation_description"><![CDATA[The following details were retrieved at the test location:<br\><br\>Your details:  <b>%1$s<b/><br/>Test type: <b>%2$s</b><br/>Test date: <b>%3$s</b><br/>Test result: <b>%4$s</b><br/>Identification code: <b>%5$s</b>]]></string>
+    <string name="your_test_result_explanation_description"><![CDATA[The following details were retrieved at the test location:<br\><br\>Your details: <b>%1$s<b/><br/>Test type: <b>%2$s</b><br/>Test date: <b>%3$s</b><br/>Test result: <b>%4$s</b><br/>Unique certificate identifier: <b>%5$s</b>]]></string>
     <string name="your_test_result_explanation_negative_test_result">negative (no coronavirus)</string>
-    <string name="your_test_result_3.0_explanation_description"><![CDATA[The following details were retrieved at the test location:<br\><br\>Name: <b>%1$s</b><br/>Date of birth: <b>%2$s</b><br/><br/>Test type: <b>%3$s</b><br/>Test name: <b>%4$s</b><br/>Test date: <b>%5$s</b><br/>Test result: <b>%6$s</b><br/>Test location: <b>%7$s</b><br/>Test manufacturer: <b>%8$s</b><br/>Identification code: <b>%9$s</b>]]></string>
-    <string name="your_negative_test_3.0_results_row_subtitle"><![CDATA[Test date: %1$s<br/>Valid until: %2$s<br/>Name: %3$s<br/>Date of birth: %4$s]]></string>
+    <string name="your_test_result_3.0_explanation_description"><![CDATA[The following details were retrieved at the test location:<br\><br\>Name: <b>%1$s</b><br/>Date of birth: <b>%2$s</b><br/><br/>Test type: <b>%3$s</b><br/>Test name: <b>%4$s</b><br/>Test date: <b>%5$s</b><br/>Test result: <b>%6$s</b><br/>Test location: <b>%7$s</b><br/>Test manufacturer: <b>%8$s</b><br/>Unique certificate identifier: <b>%9$s</b>]]></string>
+    <string name="your_negative_test_3.0_results_row_subtitle"><![CDATA[Test date: %1$s<br/>Name: %2$s<br/>Date of birth: %3$s]]></string>
     <string name="your_vaccination_row_subtitle"><![CDATA[Name: %1$s<br/>Date of birth: %2$s]]></string>
     <string name="your_vaccination_explanation_toolbar_title">About your vaccination</string>
-    <string name="your_vaccination_explanation_description"><![CDATA[<p>The following details of your vaccination were retrieved:<br/><br/>Name: <b>%1$s</b><br/>Date of birth: <b>%2$s</b><br/><br/>Pathogen:  <b>%3$s</b><br/>Vaccine: <b>%4$s</b><br/>Vaccine type: <b>%5$s</b><br/>Manufacturer: <b>%6$s</b><br/>Doses: <b>%7$s</b><br/>Injection date: <b>%8$s</b><br/>Vaccinated in: <b>%9$s</b><br/>Identification code: <b>%10$s</b>]]></string>
+    <string name="your_vaccination_explanation_description"><![CDATA[<p>The following details of your vaccination were retrieved:<br/><br/>Name: <b>%1$s</b><br/>Date of birth: <b>%2$s</b><br/><br/>Pathogen:  <b>%3$s</b><br/>Vaccine: <b>%4$s</b><br/>Vaccine type: <b>%5$s</b><br/>Manufacturer: <b>%6$s</b><br/>Doses: <b>%7$s</b><br/>Vaccination date: <b>%8$s</b><br/>Vaccinated in: <b>%9$s</b><br/>Unique certificate identifier: <b>%10$s</b>]]></string>
     <string name="your_vaccination_explanation_covid_19">COVID-19</string>
     <string name="your_vaccination_explanation_doses">%1$s from %2$s</string>
-    <string name="my_overview_not_valid_domestic_but_is_in_eu">Your %1$s isn\'t valid in the Netherlands. You\'ve only got an international QR code.</string>
-    <string name="my_overview_not_valid_eu_but_is_in_domestic">Your %1$s isn\'t valid internationally. You\'ve only got a Dutch QR code.</string>
-    <string name="type_recovery">recovery statement</string>
+    <string name="my_overview_not_valid_domestic_but_is_in_eu">Your %1$s isn\'t valid in the Netherlands. You\'ve only got an international certificate.</string>
+    <string name="my_overview_not_valid_eu_but_is_in_domestic">Your %1$s isn\'t valid internationally. You\'ve only got a Dutch certificate.</string>
+    <string name="type_recovery">recovery certificate</string>
     <string name="type_test">test certificate</string>
     <string name="type_vaccination">vaccination certificate</string>
     <string name="my_overview_green_card_not_valid_title_vaccination">About your vaccination certificate</string>
     <string name="my_overview_green_card_not_valid_title_test">About your test certificate</string>
-    <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_test"><![CDATA[Your test certificate isn\'t valid in the Netherlands. That\'s why only an international QR code was made.<br/><br/>It\'s possible the validity period in the Netherlands (%1$s hours is shorter than the validity period in other countries. Get tested again.]]></string>
-    <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_vaccination"><![CDATA[Your vaccination certificate isn\'t valid in the Netherlands. That\'s why only an international QR code was made.<br/><br/>It\'s possible you\'ve only had one injection. Add your second injection to get a valid Dutch certificate.]]></string>
-    <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_test"><![CDATA[Your test certificate isn\'t valid internationally. That\'s why only a Dutch QR code was made.<br/><br/>It\'s possible your type of test isn\'t accepted abroad. Get tested again.]]></string>
-    <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_vaccination"><![CDATA[Your vaccination certificate isn\'t valid internationally. That\'s why only a Dutch QR code was made.<br/><br/>It\'s possible your type of vaccination isn\'t accepted abroad.]]></string>
+    <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_test"><![CDATA[Your test certificate isn\'t valid in the Netherlands. That\'s why only an international certificate was made.<br/><br/>It\'s possible the validity period in the Netherlands (%1$s hours is shorter than the validity period in other countries. Get tested again.]]></string>
+    <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_vaccination"><![CDATA[Your vaccination certificate isn\'t valid in the Netherlands. That\'s why only an international certificate was made.<br/><br/>It\'s possible you\'ve only had one injection. Add your second vaccination to get a valid Dutch certificate.]]></string>
+    <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_test"><![CDATA[Your test certificate isn\'t valid internationally. That\'s why only a Dutch certificate was made.<br/><br/>It\'s possible your type of test isn\'t accepted abroad. Get tested again.]]></string>
+    <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_vaccination"><![CDATA[Your vaccination certificate isn\'t valid internationally. That\'s why only a Dutch certificate was made.<br/><br/>It\'s possible your type of vaccination isn\'t accepted abroad.]]></string>
     <string name="rule_engine_no_origin_title">We can\'t make a certificate</string>
-    <string name="rule_engine_no_test_origin_description"><![CDATA[At this moment, we can\'t make a certificate from negative test certificate. This can have various causes.  <a href="https://www.coronacheck.nl//en/guidepost">Read more here.</a>]]></string>
+    <string name="rule_engine_no_test_origin_description"><![CDATA[At this moment, we can\'t make a certificate from your negative test certificate. This can have various causes.  <a href="https://www.coronacheck.nl//en/guidepost">Read more here.</a>]]></string>
     <string name="rule_engine_no_vaccination_origin_description"><![CDATA[At this moment, we can\'t make a certificate from your vaccination. This can have various causes.  <a href="https://www.coronacheck.nl/en/guidepost">Read more here.</a>]]></string>
-    <string name="back_to_overview">To My overview</string>
+    <string name="back_to_overview">To My certificates</string>
     <string name="no_vaccinations_title">Vaccinations not available</string>
     <string name="no_vaccinations_description"><![CDATA[There is no available vaccination data. This can have various causes. Look <a href="https://www.coronacheck.nl/en/guidepost">here</a> for more information<br/><br/>Got vaccinated recently? It can take a few hours until your details are available. Try again later.]]></string>
     <string name="no_test_results_title">No test result available</string>
@@ -279,5 +280,42 @@
     <string name="missing_events_title">Details possibly incomplete</string>
     <string name="missing_events_description">Due to increased traffic or an outage at one of the parties, some details may be missing. Please try again later.</string>
     <string name="dialog_vaccination_something_wrong_description"><![CDATA[Is your name or date of birth wrong? Or are your vaccination details incorrect? Look <a href="https://coronacheck.nl/en/guidepost">here</a> for more information.]]></string>
+    <string name="dialog_title_no_internet">Connect to the internet</string>
+    <string name="dialog_update_credentials_no_internet">The app refreshes your QR code in the background, so your QR code remains valid. You need internet so the app can do this regularly.</string>
+    <string name="dialog_credentials_expired_no_internet">Your QR code is not active. Connect to the internet so your QR code will be valid again.</string>
     <string name="commercial_test_unique_code_hint_screenreader">Enter your retrieval code here</string>
+    <string name="new_in_app_subtitle">New in the app</string>
+    <string name="new_in_app_screen_1_title">Recovery certificate</string>
+    <string name="new_in_app_screen_1_description">From now on, you can create a certificate of recovery using this app. This is proof you have had a positive test result. You can use it to show you’ve had coronavirus. This way you gain access to certain locations and activities. You may also use it to travel internationally.</string>
+    <string name="your_positive_test_toolbar_title">Your positive test result</string>
+    <string name="your_positive_test_description">Are your details correct? Then you can turn your positive test result into a QR code. This is your certificate.</string>
+    <string name="positive_test_title">Positive test result</string>
+    <string name="get_recovery_title">Retrieve recovery details</string>
+    <string name="get_recovery_description"><![CDATA[Have you had coronavirus? Then you can make a recovery certificate of the positive test result from the GGD. Log in with DigiD to retrieve your test result.<br/><br/> Your recovery certificate will be valid 11 days after the positive test result.]]></string>
+    <string name="rule_engine_no_recovery_origin_description"><![CDATA[At this moment, we can\'t make a certificate from your positive test result. This can have various causes.  <a href="https://coronacheck.nl/en/guidepost">Read more here.</a>]]></string>
+    <string name="no_positive_test_result_title">No positive test result available</string>
+    <string name="no_positive_test_result_description"><![CDATA[<p>There is no positive test result available.<p><p>Got tested recently? It can take a few hours until your details are available. Try again later.</p>]]></string>
+    <string name="positive_test_not_valid_title">Positive test result is not valid</string>
+    <string name="positive_test_not_valid_description">Have you been tested more than 180 days ago? Then your test result is no longer valid. In this case, you cannot create a recovery certificate.</string>
+    <string name="qr_code_type_recovery_title">A recovery certificate</string>
+    <string name="qr_code_type_recovery_description">The test proves I have coronavirus</string>
+    <string name="your_test_result_explanation_positive_test_result">positive (corona)</string>
+    <string name="recovery_explanation_description"><![CDATA[The following details were retrieved at the test location:<br\><br\>Name: <b>%1$s</b><br/>Date of birth: <b>%2$s</b><br/><br/>Test date: <b>%3$s</b><br/>Valid from: <b>%4$s</b><br/>Valid until: <b>%5$s</b><br/>Unique certificate identifier: <b>%6$s</b>]]></string>
+    <string name="rule_engine_no_positive_test_origin_description"><![CDATA[At this moment, we can\'t make a certificate from your positive test result. This can have various causes. <a href="https://www.coronacheck.nl/en/guidepost">Read more here.</a>]]></string>
+    <string name="positive_test_no_longer_valid_title">Positive test result is not valid</string>
+    <string name="positive_test_no_longer_valid_description"><![CDATA[Have you been tested more than 180 days ago? Then your test result is no longer valid. In this case, you cannot create a recovery certificate.]]></string>
+    <string name="qr_explanation_description_eu_recovery"><![CDATA[Travelling outside of the Netherlands? Then more data is required. That\'s why the international QR code contains the following details:<br/><br/> Name: <b>%1$s</b><br/>Date of birth: <b>%2$s</b><br/><br/>Illness from which recovered: <b>%3$s</b><br/> Test date: <b>%4$s</b><br/> Tested in: <b>%5$s</b><br/> Certificate issuer: <b>%6$s</b><br/>Valid from: <b>%7$s</b><br/> Valid until: <b>%8$s</b><br/> Unique certificate identifier: <b>%9$s</b><br/> Always use the international QR code in other countries. The Dutch QR code is not valid outside of the Netherlands.]]></string>
+    <string name="my_overview_green_card_not_valid_title_recovery">About your recovery certificate</string>
+    <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_recovery"><![CDATA[Your recovery certificate isn\'t valid in the Netherlands, because the type of test is not accepted.<br/><br/>You’ve only got an international QR-code.]]></string>
+    <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_recovery"><![CDATA[Your recovery certificate isn\'t valid internationally. You\'ve only got a Dutch certificate. <br/><br/>The reason is that the type of test is not accepted. An international recovery certificate can only be made with a PCR-test.]]></string>
+    <string name="my_overview_green_card_server_error"><![CDATA[Your QR code does not work because of a server error. <a href="#">Try again</a>]]></string>
+    <string name="my_overview_green_card_server_error_after_retry"><![CDATA[or call the help desk at 0800-1421 (free)]]></string>
+    <string name="my_overview_green_card_internet_error"><![CDATA[Connect to the internet to make sure <br\> your QR code works again. <a href="#">Try again</a>]]></string>
+    <string name="dialog_faultyvaccination28June_title">Vaccination certificate corrected</string>
+    <string name="dialog_faultyvaccination28June_message">Due to a technical error you’ve wrongly received a Dutch vaccination certificate. This was corrected.</string>
+    <string name="dialog_faultyvaccination28June_refresh_error_title">Something went wrong while refreshing your details</string>
+    <string name="dialog_faultyvaccination28June_refresh_error_message">Please retrieve your details again via the app.</string>
+    <string name="my_overview_qr_placeholder_header">Find your certificate here later</string>
+    <string name="my_overview_qr_placeholder_description"><![CDATA[You can add a certificate if you\'re vaccinated, if you\'ve had corona or by taking a test at an <a href="https://coronacheck.nl/en/testafspraak-in-app">affiliated test location</a>. The app generates a certificate for the Netherlands and one for other countries.<br /></p><p><b>Travelling outside the Netherlands?</b><br />Check <a href="www.nederlandwereldwijd.nl/reizen/reisadviezen">wijsopreis.nl</a> before you leave. There you will find which certificate is valid in the country you’re planning to visit.]]></string>
+    <string name="my_overview_add_qr_button">Add certificate</string>
 </resources>

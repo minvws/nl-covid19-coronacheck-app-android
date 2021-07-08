@@ -1,8 +1,9 @@
 package nl.rijksoverheid.ctr.holder
 
+import androidx.lifecycle.LiveData
 import mobilecore.Result
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
-import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
@@ -13,10 +14,11 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckReposito
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.EventProviderRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.TestProviderRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
+import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TokenValidatorUtil
+import nl.rijksoverheid.ctr.introduction.IntroductionData
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
-import nl.rijksoverheid.ctr.introduction.ui.new_terms.models.NewTerms
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.models.*
@@ -40,6 +42,18 @@ fun fakeAppConfigViewModel(appStatus: AppStatus = AppStatus.NoActionRequired) =
     object : AppConfigViewModel() {
         override fun refresh(mobileCoreWrapper: MobileCoreWrapper) {
             appStatusLiveData.value = appStatus
+        }
+    }
+
+fun fakeMyOverViewModel() =
+    object : MyOverviewViewModel() {
+
+        override fun getSelectedType(): GreenCardType {
+            return GreenCardType.Domestic
+        }
+
+        override fun refreshOverviewItems(selectType: GreenCardType, syncDatabase: Boolean) {
+
         }
     }
 
@@ -93,10 +107,15 @@ fun fakeCachedAppConfigUseCase(
         temporarilyDisabled = false,
         requireUpdateBefore = 0
     ),
-    publicKeys: BufferedSource = "{\"cl_keys\":[]}".toResponseBody("application/json".toMediaType()).source()
+    publicKeys: BufferedSource = "{\"cl_keys\":[]}".toResponseBody("application/json".toMediaType())
+        .source()
 ): CachedAppConfigUseCase = object : CachedAppConfigUseCase {
     override fun getCachedAppConfig(): AppConfig {
         return appConfig
+    }
+
+    override fun getCachedAppConfigRecoveryEventValidity(): Int {
+        return appConfig.recoveryEventValidity
     }
 
     override fun getCachedAppConfigMaxValidityHours(): Int {
@@ -122,7 +141,11 @@ fun fakeIntroductionViewModel(
             return introductionStatus
         }
 
-        override fun saveIntroductionFinished(newTerms: NewTerms?) {
+        override fun saveIntroductionFinished(introductionData: IntroductionData) {
+
+        }
+
+        override fun saveNewFeaturesFinished(newFeaturesVersion: Int) {
 
         }
 
@@ -337,14 +360,19 @@ fun fakePersistenceManager(
         override fun setSelectedGreenCardType(greenCardType: GreenCardType) {
 
         }
+
+        override fun hasAppliedJune28Fix(): Boolean {
+            TODO("Not yet implemented")
+        }
+
+        override fun setJune28FixApplied(applied: Boolean) {
+            TODO("Not yet implemented")
+        }
     }
 }
 
 fun fakeMobileCoreWrapper(): MobileCoreWrapper {
     return object : MobileCoreWrapper {
-        override fun loadDomesticIssuerPks(bytes: ByteArray) {
-        }
-
         override fun createCredentials(body: ByteArray): String {
             return ""
         }
@@ -388,6 +416,8 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
             return JSONObject()
         }
 
+        override fun initializeHolder(configFilesPath: String): String? = null
+
         override fun initializeVerifier(configFilesPath: String) = ""
 
         override fun verify(credential: ByteArray): Result {
@@ -411,44 +441,34 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
 }
 
 fun fakeEventProviderRepository(
-    unomiVaccinationEvents: ((url: String) -> RemoteUnomi) = { RemoteUnomi("", "", false) },
-    unomiTestEvents: ((url: String) -> RemoteUnomi) = { RemoteUnomi("", "", false) },
-    vaccinationEvents: ((url: String) -> SignedResponseWithModel<RemoteEventsVaccinations>) = { SignedResponseWithModel("".toByteArray(), RemoteEventsVaccinations(
-        listOf(), "", "", RemoteProtocol.Status.COMPLETE, null),) },
-    negativeTestEvents: ((url: String) -> SignedResponseWithModel<RemoteTestResult3>) = { SignedResponseWithModel("".toByteArray(), RemoteTestResult3(
-        listOf(), "", "", RemoteProtocol.Status.COMPLETE, null)) }
-) = object: EventProviderRepository {
-    override suspend fun unomiVaccinationEvents(
+    unomi: ((url: String) -> RemoteUnomi) = { RemoteUnomi("", "", false) },
+    events: ((url: String) -> SignedResponseWithModel<RemoteProtocol3>) = {
+        SignedResponseWithModel(
+            "".toByteArray(),
+            RemoteProtocol3(
+                "", "", RemoteProtocol.Status.COMPLETE, null, listOf()
+            ),
+        )
+    },
+) = object : EventProviderRepository {
+    override suspend fun getUnomi(
         url: String,
         token: String,
+        filter: String,
         signingCertificateBytes: ByteArray
     ): RemoteUnomi {
-        return unomiVaccinationEvents.invoke(url)
+        return unomi.invoke(url)
     }
 
-    override suspend fun unomiTestEvents(
+    override suspend fun getEvents(
         url: String,
         token: String,
-        signingCertificateBytes: ByteArray
-    ): RemoteUnomi {
-        return unomiTestEvents.invoke(url)
+        signingCertificateBytes: ByteArray,
+        filter: String
+    ): SignedResponseWithModel<RemoteProtocol3> {
+        return events.invoke(url)
     }
 
-    override suspend fun vaccinationEvents(
-        url: String,
-        token: String,
-        signingCertificateBytes: ByteArray
-    ): SignedResponseWithModel<RemoteEventsVaccinations> {
-        return vaccinationEvents.invoke(url)
-    }
-
-    override suspend fun negativeTestEvent(
-        url: String,
-        token: String,
-        signingCertificateBytes: ByteArray
-    ): SignedResponseWithModel<RemoteTestResult3> {
-        return negativeTestEvents.invoke(url)
-    }
 }
 
 

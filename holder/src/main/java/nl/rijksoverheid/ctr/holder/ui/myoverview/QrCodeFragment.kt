@@ -1,10 +1,10 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview
 
+import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.os.Parcelable
 import android.view.View
 import android.view.WindowManager
 import androidx.core.os.bundleOf
@@ -12,24 +12,18 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import kotlinx.parcelize.Parcelize
 import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentQrCodeBinding
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.InfoScreenUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeData
 import nl.rijksoverheid.ctr.shared.QrCodeConstants
-import nl.rijksoverheid.ctr.shared.ext.sharedViewModelWithOwner
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAccessibilityFocus
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ViewModelOwner
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.androidx.viewmodel.scope.emptyState
-import timber.log.Timber
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -72,6 +66,7 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
         requireActivity().window.attributes = params
     }
 
+    @SuppressLint("SourceLockedOrientationActivity")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -81,6 +76,7 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
 
         qrCodeViewModel.qrCodeDataLiveData.observe(viewLifecycleOwner) { qrCodeData ->
             binding.image.setImageBitmap(qrCodeData.bitmap)
+            binding.animation.setWidget(qrCodeData.animationResource, qrCodeData.backgroundResource)
             presentQrLoading(false)
 
             // Nullable so tests don't trip over parentFragment
@@ -133,7 +129,14 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
                                                 ))
                                             }
                                             is OriginType.Recovery -> {
-                                                // TODO
+                                                val infoScreen = infoScreenUtil.getForEuropeanRecoveryQr(
+                                                    qrCodeData.readEuropeanCredential
+                                                )
+
+                                                findNavController().navigate(QrCodeFragmentDirections.actionShowQrExplanation(
+                                                    title = infoScreen.title,
+                                                    description = infoScreen.description
+                                                ))
                                             }
                                         }
                                     }
@@ -144,7 +147,6 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
                     }
                 }
             }
-
         }
     }
 
@@ -174,7 +176,10 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
      * The [MyOverviewFragment] should correctly handle new or expired credentials
      */
     private fun checkIfCredentialExpired() {
-        val expirationTime = OffsetDateTime.ofInstant(Instant.ofEpochSecond(args.data.credentialExpirationTimeSeconds), ZoneOffset.UTC)
+        val expirationTime = OffsetDateTime.ofInstant(
+            Instant.ofEpochSecond(args.data.credentialExpirationTimeSeconds),
+            ZoneOffset.UTC
+        )
         if (OffsetDateTime.now(ZoneOffset.UTC).isAfter(expirationTime)) {
             findNavController().popBackStack()
         }
@@ -189,7 +194,7 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
     override fun onPause() {
         super.onPause()
         qrCodeHandler.removeCallbacks(qrCodeRunnable)
-        (parentFragment?.parentFragment as HolderMainFragment).let{
+        (parentFragment?.parentFragment as HolderMainFragment).let {
             it.getToolbar().menu.clear()
             // Reset menu item listener to default
             it.resetMenuItemListener()

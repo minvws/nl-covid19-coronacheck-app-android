@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.introduction
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
+import nl.rijksoverheid.ctr.introduction.ui.new_features.models.NewFeatureItem
 import nl.rijksoverheid.ctr.introduction.ui.new_terms.models.NewTerms
 import nl.rijksoverheid.ctr.introduction.ui.onboarding.models.OnboardingItem
 import nl.rijksoverheid.ctr.introduction.ui.privacy_consent.models.PrivacyPolicyItem
@@ -17,5 +18,8 @@ import nl.rijksoverheid.ctr.introduction.ui.privacy_consent.models.PrivacyPolicy
 data class IntroductionData(
     val onboardingItems: List<OnboardingItem> = listOf(),
     val privacyPolicyItems: List<PrivacyPolicyItem> = listOf(),
-    val newTerms: NewTerms? = null
+    val newFeatures: List<NewFeatureItem> = listOf(),
+    val newTerms: NewTerms? = null,
+    val newFeatureVersion: Int = 0,
+    val hideConsent: Boolean = false
 ) : Parcelable

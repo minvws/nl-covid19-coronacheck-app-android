@@ -6,6 +6,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CredentialUtilImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtilImpl
 import org.junit.Assert
 import org.junit.Test
@@ -17,10 +18,12 @@ import kotlin.test.assertEquals
 
 class GreenCardUtilImplTest {
 
+    val credentialUtil = CredentialUtilImpl(Clock.systemUTC())
+
     @Test
     fun `getExpireDate returns expired date of origin furthest away`() {
         val clock = Clock.fixed(Instant.ofEpochSecond(50), ZoneId.of("UTC"))
-        val greenCardUtil = GreenCardUtilImpl(clock)
+        val greenCardUtil = GreenCardUtilImpl(clock, credentialUtil)
 
         val greenCard = GreenCard(
             greenCardEntity = GreenCardEntity(
@@ -55,7 +58,7 @@ class GreenCardUtilImplTest {
     @Test
     fun `isExpired returns true if expire date in past`() {
         val clock = Clock.fixed(Instant.ofEpochSecond(50), ZoneId.of("UTC"))
-        val greenCardUtil = GreenCardUtilImpl(clock)
+        val greenCardUtil = GreenCardUtilImpl(clock, credentialUtil)
 
         val greenCard = GreenCard(
             greenCardEntity = GreenCardEntity(
@@ -90,7 +93,7 @@ class GreenCardUtilImplTest {
     @Test
     fun `isExpired returns false if expire date in future`() {
         val clock = Clock.fixed(Instant.ofEpochSecond(50), ZoneId.of("UTC"))
-        val greenCardUtil = GreenCardUtilImpl(clock)
+        val greenCardUtil = GreenCardUtilImpl(clock, credentialUtil)
 
         val greenCard = GreenCard(
             greenCardEntity = GreenCardEntity(
@@ -125,7 +128,7 @@ class GreenCardUtilImplTest {
     @Test
     fun `getErrorCorrectionLevel returns correct levels for domestic green card type`() {
         val clock = Clock.fixed(Instant.ofEpochSecond(50), ZoneId.of("UTC"))
-        val greenCardUtil = GreenCardUtilImpl(clock)
+        val greenCardUtil = GreenCardUtilImpl(clock, credentialUtil)
 
         assertEquals(ErrorCorrectionLevel.M, greenCardUtil.getErrorCorrectionLevel(GreenCardType.Domestic))
     }
@@ -133,7 +136,7 @@ class GreenCardUtilImplTest {
     @Test
     fun `getErrorCorrectionLevel returns correct levels for eu green card type`() {
         val clock = Clock.fixed(Instant.ofEpochSecond(50), ZoneId.of("UTC"))
-        val greenCardUtil = GreenCardUtilImpl(clock)
+        val greenCardUtil = GreenCardUtilImpl(clock, credentialUtil)
 
         assertEquals(ErrorCorrectionLevel.Q, greenCardUtil.getErrorCorrectionLevel(GreenCardType.Eu))
     }

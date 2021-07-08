@@ -34,6 +34,7 @@ class VerifierMainActivityTest : AutoCloseKoinTest() {
                 introductionData = IntroductionData(
                     onboardingItems = listOf(),
                     privacyPolicyItems = listOf(),
+                    newFeatures = listOf(),
                     null
                 )
             )

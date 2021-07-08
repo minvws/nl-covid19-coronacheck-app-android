@@ -15,6 +15,7 @@ import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.design.ext.*
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.ItemMyOverviewGreenCardBinding
+import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.CredentialEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
@@ -26,17 +27,17 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TestResultAdapterItemUtil
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import java.time.OffsetDateTime
+import java.time.LocalDate
 import java.time.ZoneOffset
 import java.time.temporal.ChronoUnit
-import kotlin.math.ceil
 
 class MyOverviewGreenCardAdapterItem(
     private val greenCard: GreenCard,
     private val originStates: List<OriginState>,
     private val credentialState: MyOverviewItem.GreenCardItem.CredentialState,
-    private val launchDate: OffsetDateTime,
+    private val databaseSyncerResult: DatabaseSyncerResult = DatabaseSyncerResult.Success,
     private val onButtonClick: (greenCard: GreenCard, credential: CredentialEntity) -> Unit,
+    private val onRetryClick: () -> Unit = {},
 ) :
     BindableItem<ItemMyOverviewGreenCardBinding>(R.layout.item_my_overview_green_card.toLong()),
     KoinComponent {
@@ -54,7 +55,7 @@ class MyOverviewGreenCardAdapterItem(
             viewBinding = viewBinding
         )
 
-        viewBinding.button.setOnClickListener {
+        viewBinding.buttonWithProgressWidgetContainer.setButtonOnClickListener {
             if (credentialState is MyOverviewItem.GreenCardItem.CredentialState.HasCredential) {
                 onButtonClick.invoke(greenCard, credentialState.credential)
             }
@@ -69,7 +70,7 @@ class MyOverviewGreenCardAdapterItem(
                     text = context.getString(R.string.validity_type_european_title)
                     setTextColor(ContextCompat.getColor(context, R.color.darkened_blue))
                 }
-                viewBinding.button.setEnabledButtonColor(R.color.darkened_blue)
+                viewBinding.buttonWithProgressWidgetContainer.setEnabledButtonColor(R.color.darkened_blue)
                 viewBinding.imageView.setImageResource(R.drawable.illustration_hand_qr_eu)
             }
             is GreenCardType.Domestic -> {
@@ -77,13 +78,20 @@ class MyOverviewGreenCardAdapterItem(
                     text = context.getString(R.string.validity_type_dutch_title)
                     setTextColor(ContextCompat.getColor(context, R.color.primary_blue))
                 }
-                viewBinding.button.setEnabledButtonColor(R.color.primary_blue)
+                viewBinding.buttonWithProgressWidgetContainer.setEnabledButtonColor(R.color.primary_blue)
                 viewBinding.imageView.setImageResource(R.drawable.illustration_hand_qr_nl)
             }
         }
 
-        // Check enabling button
-        viewBinding.button.isEnabled = credentialState is MyOverviewItem.GreenCardItem.CredentialState.HasCredential
+        if (credentialState is MyOverviewItem.GreenCardItem.CredentialState.LoadingCredential) {
+            viewBinding.buttonWithProgressWidgetContainer.setAccessibilityText(context.getString(R.string.my_overview_test_result_button_indicator_accessibility_description))
+            viewBinding.buttonWithProgressWidgetContainer.loading()
+        } else {
+            viewBinding.buttonWithProgressWidgetContainer.idle(
+                isEnabled = credentialState is MyOverviewItem.GreenCardItem.CredentialState.HasCredential
+            )
+        }
+
     }
 
     private fun setContent(viewBinding: ItemMyOverviewGreenCardBinding) {
@@ -98,8 +106,11 @@ class MyOverviewGreenCardAdapterItem(
         viewBinding.proof1Subtitle.setTextColor(context.getThemeColor(android.R.attr.textColorPrimary))
         viewBinding.proof2Subtitle.setTextColor(context.getThemeColor(android.R.attr.textColorPrimary))
         viewBinding.proof3Subtitle.setTextColor(context.getThemeColor(android.R.attr.textColorPrimary))
-        viewBinding.launchText.text = ""
-        viewBinding.launchText.visibility = View.GONE
+        viewBinding.errorText.setHtmlText("")
+        viewBinding.errorTextRetry.setHtmlText("")
+        viewBinding.errorIcon.visibility = View.GONE
+        viewBinding.errorText.visibility = View.GONE
+        viewBinding.errorTextRetry.visibility = View.GONE
 
         when (greenCard.greenCardEntity.type) {
             is GreenCardType.Eu -> {
@@ -148,11 +159,6 @@ class MyOverviewGreenCardAdapterItem(
                         )
                     }
 
-                }
-
-                if (launchDate.isAfter(OffsetDateTime.now(ZoneOffset.UTC))) {
-                    viewBinding.launchText.text = context.getString(R.string.qr_card_validity_eu, launchDate.formatDayMonth())
-                    viewBinding.launchText.visibility = View.VISIBLE
                 }
             }
             is GreenCardType.Domestic -> {
@@ -234,6 +240,30 @@ class MyOverviewGreenCardAdapterItem(
                 }
             }
         }
+
+        setRefreshState(viewBinding)
+    }
+
+    private fun setRefreshState(viewBinding: ItemMyOverviewGreenCardBinding) {
+        val context = viewBinding.errorText.context
+        when (databaseSyncerResult) {
+            is DatabaseSyncerResult.NetworkError -> {
+                viewBinding.errorText.setHtmlText(context.getString(R.string.my_overview_green_card_internet_error))
+                viewBinding.errorText.enableCustomLinks(onRetryClick)
+                viewBinding.errorTextRetry.setHtmlText("")
+                viewBinding.errorIcon.visibility = View.VISIBLE
+                viewBinding.errorText.visibility = View.VISIBLE
+                viewBinding.errorTextRetry.visibility = View.GONE
+            }
+            is DatabaseSyncerResult.ServerError -> {
+                viewBinding.errorText.setHtmlText(context.getString(R.string.my_overview_green_card_server_error))
+                viewBinding.errorText.enableCustomLinks(onRetryClick)
+                viewBinding.errorIcon.visibility = View.VISIBLE
+                viewBinding.errorText.visibility = View.VISIBLE
+                viewBinding.errorTextRetry.visibility = View.GONE
+            }
+            else -> {}
+        }
     }
 
     private fun setOriginTitle(
@@ -242,7 +272,7 @@ class MyOverviewGreenCardAdapterItem(
         title: String
     ) {
         // Small hack, but if the subtitle is not present we remove the ":" from the title copy since that doesn't make sense
-        textView.text = if (!originUtil.presentSubtitle(greenCard.greenCardEntity.type, originState)) title.replace(":", "") else title
+        textView.text = if (originUtil.hideSubtitle(greenCard.greenCardEntity.type, originState)) title.replace(":", "") else title
         textView.visibility = View.VISIBLE
     }
 
@@ -254,17 +284,16 @@ class MyOverviewGreenCardAdapterItem(
         val context = textView.context
 
         when {
-            !originUtil.presentSubtitle(
+            originUtil.hideSubtitle(
                 greenCardType = greenCard.greenCardEntity.type,
                 originState = originState) -> {
                     textView.text = ""
             }
-            originState is OriginState.Future || (greenCard.greenCardEntity.type == GreenCardType.Eu&& this.launchDate.isAfter(OffsetDateTime.now(ZoneOffset.UTC))) -> {
-                val realValidFrom = if (this.launchDate.isAfter(OffsetDateTime.now(ZoneOffset.UTC))) this.launchDate else originState.origin.validFrom
+            originState is OriginState.Future -> {
                 textView.setTextColor(ContextCompat.getColor(context, R.color.link))
 
-                val daysBetween = ceil(ChronoUnit.HOURS.between(OffsetDateTime.now(ZoneOffset.UTC), realValidFrom) / 24.0).toInt()
-                if (daysBetween == 1) {
+                val daysBetween = ChronoUnit.DAYS.between(LocalDate.now(ZoneOffset.UTC), originState.origin.validFrom.toLocalDate())
+                if (daysBetween == 1L) {
                     textView.text = context.getString(R.string.qr_card_validity_future_day, daysBetween.toString())
                 } else {
                     textView.text = context.getString(R.string.qr_card_validity_future_days, daysBetween.toString())

@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.appconfig
 
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
+import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody
 import okio.BufferedSource
@@ -38,6 +39,10 @@ fun fakeCachedAppConfigUseCase(
 
     override fun getCachedAppConfig(): AppConfig? {
         return appConfig
+    }
+
+    override fun getCachedAppConfigRecoveryEventValidity(): Int {
+        return appConfig?.recoveryEventValidity ?: 0
     }
 
     override fun getCachedAppConfigMaxValidityHours(): Int {

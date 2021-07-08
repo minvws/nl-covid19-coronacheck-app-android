@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.holder.persistence.database.dao
 
 import androidx.room.*
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -24,4 +25,7 @@ interface EventGroupDao {
 
     @Query("DELETE FROM event_group")
     suspend fun deleteAll()
+
+    @Query("DELETE FROM event_group WHERE type = :originType")
+    suspend fun deleteAllOfType(originType: OriginType)
 }

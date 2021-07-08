@@ -55,6 +55,14 @@
                 app:popExitAnim="@anim/fragment_close_exit" />
 
             <action
+                android:id="@+id/action_qr_type"
+                app:destination="@id/nav_qr_code_type"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right" />
+
+            <action
                 android:id="@+id/action_about_this_app"
                 app:destination="@id/nav_about_this_app" />
 
@@ -84,11 +92,11 @@
 
         <argument
             android:name="toolbarTitle"
-            app:argType="string"/>
+            app:argType="string" />
 
         <argument
             android:name="data"
-            app:argType="nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeFragmentData"/>
+            app:argType="nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeFragmentData" />
 
         <action
             android:id="@+id/action_show_qr_explanation"
@@ -104,11 +112,11 @@
 
         <argument
             android:name="title"
-            app:argType="string"/>
+            app:argType="string" />
 
         <argument
             android:name="description"
-            app:argType="string"/>
+            app:argType="string" />
 
     </dialog>
 
@@ -174,6 +182,22 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
 
+        <action
+            android:id="@+id/action_recovery"
+            app:destination="@id/nav_get_recovery"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/action_get_events"
+            app:destination="@id/nav_get_events"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
     </fragment>
 
     <fragment
@@ -216,7 +240,7 @@
 
         <action
             android:id="@+id/action_not_yet_tested"
-            app:destination="@id/nav_not_yet_tested"/>
+            app:destination="@id/nav_not_yet_tested" />
 
     </fragment>
 
@@ -245,6 +269,58 @@
     </fragment>
 
     <fragment
+        android:id="@+id/nav_get_recovery"
+        android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.GetRecoveryFragment"
+        android:label="@string/choose_provider_toolbar"
+        tools:layout="@layout/fragment_get_vaccination">
+
+        <action
+            android:id="@+id/action_your_events"
+            app:destination="@id/nav_your_events"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/action_could_not_create_qr"
+            app:destination="@id/nav_could_not_create_qr"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_get_events"
+        android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.GetEventsFragment"
+        android:label="@string/choose_provider_toolbar"
+        tools:layout="@layout/fragment_get_vaccination">
+
+        <argument
+            android:name="originType"
+            app:argType="nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType"/>
+
+        <action
+            android:id="@+id/action_your_events"
+            app:destination="@id/nav_your_events"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/action_could_not_create_qr"
+            app:destination="@id/nav_could_not_create_qr"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
+
+    <fragment
         android:id="@+id/nav_your_event_explanation"
         android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.YourEventExplanationFragment"
         android:label="{toolbarTitle}"
@@ -252,11 +328,11 @@
 
         <argument
             android:name="toolbarTitle"
-            app:argType="string"/>
+            app:argType="string" />
 
         <argument
             android:name="description"
-            app:argType="string"/>
+            app:argType="string" />
 
     </fragment>
 
@@ -266,8 +342,8 @@
         tools:layout="@layout/dialog_your_events_result_something_wrong">
 
         <argument
-            android:name="description"
-            app:argType="string" />
+            android:name="protocolType"
+            app:argType="nl.rijksoverheid.ctr.holder.ui.create_qr.YourEventsFragmentType" />
 
     </dialog>
 
@@ -366,7 +442,7 @@
 
         <argument
             android:name="toolbarTitle"
-            app:argType="string"/>
+            app:argType="string" />
 
         <argument
             android:name="title"
@@ -403,6 +479,6 @@
     <dialog
         android:id="@+id/nav_not_yet_tested"
         android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.NotYetTestedFragment"
-        tools:layout="@layout/dialog_not_yet_tested"/>
+        tools:layout="@layout/dialog_not_yet_tested" />
 
 </navigation>

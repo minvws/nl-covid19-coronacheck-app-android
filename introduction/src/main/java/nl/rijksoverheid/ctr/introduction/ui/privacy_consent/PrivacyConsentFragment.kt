@@ -58,12 +58,17 @@ class PrivacyConsentFragment : Fragment(R.layout.fragment_privacy_consent) {
             )
         }
 
+        if (args.introductionData.hideConsent) {
+            binding.checkboxContainer.visibility = View.GONE
+            binding.bottom.setButtonEnabled(true)
+        }
+
         binding.checkbox.setOnCheckedChangeListener { _, isChecked ->
             binding.bottom.setButtonEnabled(isChecked)
         }
 
         binding.bottom.setButtonClick {
-            introductionViewModel.saveIntroductionFinished(args.introductionData.newTerms)
+            introductionViewModel.saveIntroductionFinished(args.introductionData)
             requireActivity().findNavControllerSafety(R.id.main_nav_host_fragment)
                 ?.navigate(R.id.action_main)
         }

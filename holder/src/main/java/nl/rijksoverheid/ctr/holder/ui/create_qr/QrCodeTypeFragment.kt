@@ -4,9 +4,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import nl.rijksoverheid.ctr.appconfig.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentQrCodeTypeBinding
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import org.koin.android.ext.android.inject
 
 /*
@@ -36,11 +37,22 @@ class QrCodeTypeFragment : Fragment(R.layout.fragment_qr_code_type) {
             }
         }
 
+        binding.recoveryButton.bind(
+            R.string.qr_code_type_recovery_title,
+            getString(R.string.qr_code_type_recovery_description)
+        ) {
+            findNavController().navigate(QrCodeTypeFragmentDirections.actionGetEvents(
+                originType = OriginType.Recovery
+            ))
+        }
+
         binding.vaccinationButton.bind(
             R.string.qr_code_type_vaccination_title,
             getString(R.string.qr_code_type_vaccination_description)
         ) {
-            findNavController().navigate(QrCodeTypeFragmentDirections.actionVaccination())
+            findNavController().navigate(QrCodeTypeFragmentDirections.actionGetEvents(
+                originType = OriginType.Vaccination
+            ))
         }
     }
 }

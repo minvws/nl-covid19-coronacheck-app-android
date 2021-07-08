@@ -17,14 +17,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
+        <nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
             android:id="@+id/description"
             style="@style/App.TextAppearance.MaterialComponents.Body1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="16dp"
-            android:text="@string/about_this_app_description"
+            app:htmlText="@string/about_this_app_description"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

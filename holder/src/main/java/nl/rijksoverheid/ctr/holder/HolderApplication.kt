@@ -1,17 +1,22 @@
 package nl.rijksoverheid.ctr.holder
 
+import android.util.Log
+import androidx.work.Configuration
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.api.apiModule
 import nl.rijksoverheid.ctr.appconfig.*
-import nl.rijksoverheid.ctr.appconfig.usecases.LoadPublicKeysUseCase
+import nl.rijksoverheid.ctr.appconfig.models.AppStatus
+import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
 import nl.rijksoverheid.ctr.design.designModule
 import nl.rijksoverheid.ctr.holder.modules.*
+import nl.rijksoverheid.ctr.holder.persistence.HolderWorkerFactory
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
 import nl.rijksoverheid.ctr.holder.persistence.database.migration.TestResultsMigrationManager
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SecretKeyUseCase
 import nl.rijksoverheid.ctr.introduction.introductionModule
+import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.SharedApplication
 import nl.rijksoverheid.ctr.shared.sharedModule
 import org.koin.android.ext.android.inject
@@ -27,13 +32,14 @@ import org.koin.core.module.Module
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-open class HolderApplication : SharedApplication() {
+open class HolderApplication : SharedApplication(), Configuration.Provider {
 
-    private val loadPublicKeysUseCase: LoadPublicKeysUseCase by inject()
-    private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
     private val secretKeyUseCase: SecretKeyUseCase by inject()
     private val holderDatabase: HolderDatabase by inject()
     private val testResultsMigrationManager: TestResultsMigrationManager by inject()
+    private val holderWorkerFactory: HolderWorkerFactory by inject()
+    private val appConfigStorageManager: AppConfigStorageManager by inject()
+    private val mobileCoreWrapper: MobileCoreWrapper by inject()
 
     override fun onCreate() {
         super.onCreate()
@@ -61,13 +67,6 @@ open class HolderApplication : SharedApplication() {
         // Generate and store secret key to be used by rest of the app
         secretKeyUseCase.persist()
 
-        // If we have public keys stored, load them so they can be used by CTCL
-        try {
-            cachedAppConfigUseCase.getCachedPublicKeys()?.let {
-                loadPublicKeysUseCase.load(it)
-            }
-        } catch (e: Exception) {}
-
         // Create default wallet in database if empty
         GlobalScope.launch {
             if (holderDatabase.walletDao().getAll().isEmpty()) {
@@ -81,9 +80,24 @@ open class HolderApplication : SharedApplication() {
 
             testResultsMigrationManager.migrateTestResults()
         }
+
+        if (appConfigStorageManager.areConfigFilesPresentInFilesFolder()) {
+            mobileCoreWrapper.initializeHolder(applicationContext.filesDir.path)
+        }
     }
 
     override fun getAdditionalModules(): List<Module> {
         return listOf(holderPreferenceModule, holderMobileCoreModule)
+    }
+
+    override fun getWorkManagerConfiguration(): Configuration {
+        return Configuration.Builder().apply {
+            setMinimumLoggingLevel(if (BuildConfig.DEBUG) {
+                Log.DEBUG
+            } else {
+                Log.ERROR
+            })
+            setWorkerFactory(holderWorkerFactory)
+        }.build()
     }
 }

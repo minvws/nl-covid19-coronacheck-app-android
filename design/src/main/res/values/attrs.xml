@@ -20,4 +20,7 @@
         <attr name="buttonEnabled" format="boolean" />
         <attr name="attachToScrollView" format="reference" />
     </declare-styleable>
+    <declare-styleable name="ButtonWithProgressWidget">
+        <attr name="text" format="string" />
+    </declare-styleable>
 </resources>

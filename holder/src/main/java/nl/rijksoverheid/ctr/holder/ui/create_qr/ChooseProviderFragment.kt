@@ -7,9 +7,11 @@ import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentChooseProviderBinding
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigiDFragment
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigidResult
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult3
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.EventsResult
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAsAccessibilityButton
@@ -26,7 +28,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) {
 
     private val dialogUtil: DialogUtil by inject()
-    private val chooseProviderViewModel: ChooseProviderViewModel by viewModel()
+    private val getEventsViewModel: GetEventsViewModel by viewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -56,13 +58,13 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
             (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
         })
 
-        chooseProviderViewModel.loading.observe(viewLifecycleOwner, EventObserver {
+        getEventsViewModel.loading.observe(viewLifecycleOwner, EventObserver {
             (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
         })
 
-        chooseProviderViewModel.eventsResult.observe(viewLifecycleOwner, EventObserver {
+        getEventsViewModel.eventsResult.observe(viewLifecycleOwner, EventObserver {
             when (it) {
-                is EventsResult.Success<RemoteTestResult3> -> {
+                is EventsResult.Success -> {
                     if (it.missingEvents) {
                         dialogUtil.presentDialog(
                             context = requireContext(),
@@ -71,27 +73,11 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
                             positiveButtonText = R.string.ok,
                             positiveButtonCallback = {},
                             onDismissCallback = {
-                                findNavController().navigate(
-                                    ChooseProviderFragmentDirections.actionYourEvents(
-                                        type = YourEventsFragmentType.TestResult3(
-                                            remoteEvents = it.signedModels.map { signedModel -> signedModel.model to signedModel.rawResponse }
-                                                .toMap()
-                                        ),
-                                        toolbarTitle = getString(R.string.commercial_test_type_title)
-                                    )
-                                )
+                                navigateToYourEvents(it.signedModels)
                             }
                         )
                     } else {
-                        findNavController().navigate(
-                            ChooseProviderFragmentDirections.actionYourEvents(
-                                type = YourEventsFragmentType.TestResult3(
-                                    remoteEvents = it.signedModels.map { signedModel -> signedModel.model to signedModel.rawResponse }
-                                        .toMap()
-                                ),
-                                toolbarTitle = getString(R.string.commercial_test_type_title)
-                            )
-                        )
+                        navigateToYourEvents(it.signedModels)
                     }
                 }
                 is EventsResult.HasNoEvents -> {
@@ -149,7 +135,9 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
         digidViewModel.digidResultLiveData.observe(viewLifecycleOwner, EventObserver {
             when (it) {
                 is DigidResult.Success -> {
-                    chooseProviderViewModel.getEvents(it.jwt)
+                    getEventsViewModel.getEvents(
+                        jwt = it.jwt,
+                        originType = OriginType.Test)
                 }
                 is DigidResult.Failed -> {
                     dialogUtil.presentDialog(
@@ -162,6 +150,19 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
                 }
             }
         })
+    }
+
+    private fun navigateToYourEvents(signedEvents: List<SignedResponseWithModel<RemoteProtocol3>>) {
+        findNavController().navigate(
+            GetVaccinationFragmentDirections.actionYourEvents(
+                type = YourEventsFragmentType.RemoteProtocol3Type(
+                    remoteEvents = signedEvents.map { signedModel -> signedModel.model to signedModel.rawResponse }
+                        .toMap(),
+                    originType = OriginType.Test
+                ),
+                toolbarTitle = getString(R.string.your_vaccination_result_toolbar_title)
+            )
+        )
     }
 
     override fun onDestroyView() {

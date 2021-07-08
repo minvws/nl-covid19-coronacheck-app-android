@@ -184,14 +184,14 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
                                     camera.cameraControl.enableTorch(true)
                                     MenuItemCompat.setContentDescription(
                                         item,
-                                        resources.getString(R.string.accessibility_flash_on)
+                                        resources.getString(R.string.accessibility_flash_off)
                                     )
                                     item.setIcon(R.drawable.ic_flash_off)
                                 } else {
                                     camera.cameraControl.enableTorch(false)
                                     MenuItemCompat.setContentDescription(
                                         item,
-                                        resources.getString(R.string.accessibility_flash_off)
+                                        resources.getString(R.string.accessibility_flash_on)
                                     )
                                     item.setIcon(R.drawable.ic_flash_on)
                                 }

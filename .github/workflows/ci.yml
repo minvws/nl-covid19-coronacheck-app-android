@@ -120,14 +120,14 @@ jobs:
           --token $FIREBASE_TOKEN \
           --groups testers
 
-      - name: Distribute holder acc variant
+      - name: Distribute verifier acc variant
         run: |
           firebase appdistribution:distribute `ls apks/verifier/build/outputs/apk/acc/release/verifier-*.apk` \
           --app 1:168257592968:android:e9d445c4115a5c9d26493d \
           --token $FIREBASE_TOKEN \
           --groups testers
 
-      - name: Distribute holder prod variant
+      - name: Distribute verifier prod variant
         run: |
           firebase appdistribution:distribute `ls apks/verifier/build/outputs/apk/prod/release/verifier-*.apk` \
           --app 1:168257592968:android:79363a1282863aac26493d \

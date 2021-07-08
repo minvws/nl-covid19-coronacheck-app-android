@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:keepScreenOn="true">
+    android:keepScreenOn="true"
+    android:orientation="vertical">
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/content"
@@ -16,30 +17,26 @@
 
     <ImageView
         android:id="@+id/image"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:adjustViewBounds="false"
         android:contentDescription="@string/accessibility_label_your_qr"
         android:focusable="true"
         android:paddingHorizontal="16dp"
-        android:scaleType="fitStart"
-        app:layout_constraintBottom_toTopOf="@+id/animation"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:scaleType="fitCenter"
         tools:layout_height="400dp" />
 
     <nl.rijksoverheid.ctr.holder.ui.myoverview.QrCodeAnimationWidget
         android:id="@+id/animation"
-        android:layout_width="0dp"
-        android:layout_height="128dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="bottom"
+        android:layout_marginTop="8dp"
+        android:layout_weight="1"
         android:contentDescription="@null"
         android:focusable="false"
         android:importantForAccessibility="no"
-        android:screenReaderFocusable="false"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:screenReaderFocusable="false" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

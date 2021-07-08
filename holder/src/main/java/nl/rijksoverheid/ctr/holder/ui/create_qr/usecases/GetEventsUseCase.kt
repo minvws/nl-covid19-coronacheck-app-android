@@ -4,6 +4,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
 import retrofit2.HttpException
+import timber.log.Timber
 import java.io.IOException
 
 /*
@@ -23,8 +24,9 @@ import java.io.IOException
  * - map result to success or error states
  */
 interface GetEventsUseCase {
-    suspend fun getVaccinationEvents(jwt: String): EventsResult<RemoteEventsVaccinations>
-    suspend fun getNegativeTestEvents(jwt: String): EventsResult<RemoteTestResult3>
+    suspend fun getEvents(jwt: String,
+                          originType: OriginType,
+                          targetProviderIds: List<String>? = null): EventsResult
 }
 
 class GetEventsUseCaseImpl(
@@ -34,30 +36,11 @@ class GetEventsUseCaseImpl(
     private val getRemoteEventsUseCase: GetRemoteEventsUseCase
 ) : GetEventsUseCase {
 
-    companion object {
-        private const val PROVIDER_IDENTIFIER_GGD = "ggd"
-    }
-
-    override suspend fun getVaccinationEvents(jwt: String): EventsResult<RemoteEventsVaccinations> {
-        return getRemoteEvents(
-            jwt = jwt,
-            originType = OriginType.Vaccination
-        )
-    }
-
-    override suspend fun getNegativeTestEvents(jwt: String): EventsResult<RemoteTestResult3> {
-        return getRemoteEvents(
-            jwt = jwt,
-            originType = OriginType.Test,
-            targetProviderIds = listOf(PROVIDER_IDENTIFIER_GGD)
-        )
-    }
-
-    private suspend fun <T: RemoteProtocol> getRemoteEvents(
+    override suspend fun getEvents(
         jwt: String,
         originType: OriginType,
-        targetProviderIds: List<String>? = null
-    ): EventsResult<T> {
+        targetProviderIds: List<String>?
+    ): EventsResult {
         return try {
             // Fetch event providers
             val eventProviders = configProvidersUseCase.eventProviders()
@@ -79,28 +62,16 @@ class GetEventsUseCaseImpl(
 
                 // We have received providers that claim to have events for us so we get those events for each provider
                 val eventResults = eventProvidersWithTokensSuccessResults.map {
-                    when (originType) {
-                        is OriginType.Test -> {
-                            getRemoteEventsUseCase.getTestResults(
-                                eventProvider = it.eventProvider,
-                                token = it.token
-                            )
-                        }
-                        is OriginType.Vaccination -> {
-                            getRemoteEventsUseCase.getVaccinations(
-                                eventProvider = it.eventProvider,
-                                token = it.token
-                            )
-                        }
-                        is OriginType.Recovery -> {
-                            error("Not yet supported")
-                        }
-                    }
+                    getRemoteEventsUseCase.getRemoteEvents(
+                        eventProvider = it.eventProvider,
+                        token = it.token,
+                        originType = originType
+                    )
                 }
 
                 // All successful responses
                 val eventSuccessResults =
-                    eventResults.filterIsInstance<RemoteEventsResult.Success<T>>()
+                    eventResults.filterIsInstance<RemoteEventsResult.Success>()
 
                 // All failed responses
                 val eventFailureResults =
@@ -109,7 +80,7 @@ class GetEventsUseCaseImpl(
                 return if (eventSuccessResults.isNotEmpty()) {
                     // If we have success responses
                     val signedModels = eventSuccessResults.map { it.signedModel }
-                    val hasEvents = signedModels.map { it.model }.any { it.hasEvents() }
+                    val hasEvents = signedModels.map { it.model }.any { it.events?.isNotEmpty() ?: false }
 
                     if (!hasEvents) {
                         // But we do not have any events
@@ -156,15 +127,15 @@ class GetEventsUseCaseImpl(
     }
 }
 
-sealed class EventsResult<out T> {
-    data class Success<T> (
-        val signedModels: List<SignedResponseWithModel<T>>,
+sealed class EventsResult {
+    data class Success (
+        val signedModels: List<SignedResponseWithModel<RemoteProtocol3>>,
         val missingEvents: Boolean
     ) :
-        EventsResult<T>()
-    data class HasNoEvents(val missingEvents: Boolean) : EventsResult<Nothing>()
+        EventsResult()
+    data class HasNoEvents(val missingEvents: Boolean) : EventsResult()
 
-    sealed class Error: EventsResult<Nothing>() {
+    sealed class Error: EventsResult() {
         object NetworkError : Error()
 
         sealed class CoronaCheckError: Error() {

@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.appconfig
+package nl.rijksoverheid.ctr.appconfig.usecases
 
 import com.squareup.moshi.Moshi
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
@@ -17,6 +17,7 @@ import java.io.File
 
 interface CachedAppConfigUseCase {
     fun getCachedAppConfig(): AppConfig?
+    fun getCachedAppConfigRecoveryEventValidity(): Int
     fun getCachedAppConfigMaxValidityHours(): Int
     fun getCachedAppConfigVaccinationEventValidity(): Int
     fun getCachedPublicKeys(): BufferedSource?
@@ -25,16 +26,12 @@ interface CachedAppConfigUseCase {
 
 class CachedAppConfigUseCaseImpl constructor(
     private val appConfigStorageManager: AppConfigStorageManager,
-    private val cacheDir: String,
     private val filesDirPath: String,
     private val moshi: Moshi
 ) : CachedAppConfigUseCase {
 
     override fun getCachedAppConfig(): AppConfig? {
-        var configFile = File(filesDirPath, "config.json")
-        if (!configFile.exists()) {
-            configFile = File(cacheDir, "config.json")
-        }
+        val configFile = File(filesDirPath, "config.json")
 
         if (!configFile.exists()) {
             return AppConfig()
@@ -43,8 +40,14 @@ class CachedAppConfigUseCaseImpl constructor(
         return try {
             appConfigStorageManager.getFileAsBufferedSource(configFile)?.readUtf8()?.toObject(moshi)
         } catch (exc: Exception) {
+            configFile.delete()
             AppConfig()
         }
+    }
+
+    override fun getCachedAppConfigRecoveryEventValidity(): Int {
+        return getCachedAppConfig()?.recoveryEventValidity
+            ?: throw IllegalStateException("AppConfig should be cached")
     }
 
     override fun getCachedAppConfigMaxValidityHours(): Int {
@@ -58,10 +61,8 @@ class CachedAppConfigUseCaseImpl constructor(
     }
 
     override fun getCachedPublicKeys(): BufferedSource? {
-        var publicKeysFile = File(filesDirPath, "public_keys.json")
-        if (!publicKeysFile.exists()) {
-            publicKeysFile = File(cacheDir, "public_keys.json")
-        }
+        val publicKeysFile = File(filesDirPath, "public_keys.json")
+
         return appConfigStorageManager.getFileAsBufferedSource(publicKeysFile)
     }
 

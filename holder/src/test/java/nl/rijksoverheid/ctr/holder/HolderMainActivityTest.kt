@@ -12,6 +12,7 @@ import nl.rijksoverheid.ctr.introduction.IntroductionData
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -44,6 +45,7 @@ class HolderMainActivityTest : AutoCloseKoinTest() {
                 IntroductionData(
                     onboardingItems = listOf(),
                     privacyPolicyItems = listOf(),
+                    newFeatures = listOf(),
                     null
                 )
             )
@@ -97,13 +99,16 @@ class HolderMainActivityTest : AutoCloseKoinTest() {
                         appStatus = appStatus
                     )
                 }
+                viewModel {
+                    fakeMyOverViewModel()
+                }
                 factory {
                     fakeSecretKeyUseCase()
                 }
                 factory {
                     fakeCachedAppConfigUseCase()
                 }
-                single{
+                single {
                     val context = ApplicationProvider.getApplicationContext<Context>()
                     Room.inMemoryDatabaseBuilder(context, HolderDatabase::class.java).build()
                 }
