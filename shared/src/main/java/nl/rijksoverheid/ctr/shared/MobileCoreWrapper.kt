@@ -114,12 +114,12 @@ class MobileCoreWrapperImpl(private val moshi: Moshi) : MobileCoreWrapper {
         return VerificationResult(
             status = result.status,
             details = VerificationResultDetails(
-                birthDay = result.details.birthDay,
-                birthMonth = result.details.birthMonth,
-                firstNameInitial = result.details.firstNameInitial,
-                lastNameInitial = result.details.lastNameInitial,
-                isSpecimen = result.details.isSpecimen,
-                credentialVersion = result.details.credentialVersion,
+                birthDay = result.details?.birthDay ?: "",
+                birthMonth = result.details?.birthMonth ?: "",
+                firstNameInitial = result.details?.firstNameInitial ?: "",
+                lastNameInitial = result.details?.lastNameInitial ?: "",
+                isSpecimen = result.details?.isSpecimen ?: "",
+                credentialVersion = result.details?.credentialVersion ?: "",
             ),
             error = result.error
         )
