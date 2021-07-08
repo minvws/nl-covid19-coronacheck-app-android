@@ -237,7 +237,7 @@ fun fakeCoronaCheckRepository(
     testIsmExceptionCallback: (() -> Unit)? = null,
     remoteNonce: RemoteNonce = RemoteNonce("", ""),
     accessTokens: RemoteAccessTokens = RemoteAccessTokens(tokens = listOf()),
-    remoteCredentials: RemoteCredentials = RemoteCredentials(
+    remoteCredentials: RemoteGreenCards = RemoteGreenCards(
         domesticGreencard = null,
         euGreencards = null
     ),
@@ -257,11 +257,11 @@ fun fakeCoronaCheckRepository(
             return accessTokens
         }
 
-        override suspend fun getCredentials(
+        override suspend fun getGreenCards(
             stoken: String,
             events: List<String>,
             issueCommitmentMessage: String
-        ): RemoteCredentials {
+        ): RemoteGreenCards {
             return remoteCredentials
         }
 
