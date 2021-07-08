@@ -58,10 +58,10 @@ class PrivacyConsentFragment : Fragment(R.layout.fragment_privacy_consent) {
             )
         }
 
-        // Disable the checkbox feature for now
-        // we can remove it when we are sure we don't need it anymore
-        binding.checkboxContainer.visibility = View.GONE
-        binding.bottom.setButtonEnabled(true)
+        if (args.introductionData.hideConsent) {
+            binding.checkboxContainer.visibility = View.GONE
+            binding.bottom.setButtonEnabled(true)
+        }
 
         binding.checkbox.setOnCheckedChangeListener { _, isChecked ->
             binding.bottom.setButtonEnabled(isChecked)

@@ -64,7 +64,8 @@ val holderIntroductionModule = module {
                     R.string.new_in_app_screen_1_description,
                 )
             ),
-            newFeatureVersion = 1
+            newFeatureVersion = 1,
+            hideConsent = true
         )
     }
 }
