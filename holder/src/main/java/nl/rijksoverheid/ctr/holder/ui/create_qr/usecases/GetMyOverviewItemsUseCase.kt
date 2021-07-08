@@ -104,15 +104,15 @@ class GetMyOverviewItemsUseCaseImpl(
 
     private fun getHeaderItem(greenCards: List<GreenCard>,
                               type: GreenCardType): MyOverviewItem? {
-        if (greenCards.isEmpty()) {
-            return null
+        return if (greenCards.isEmpty() || greenCards.all { greenCardUtil.isExpired(it) }) {
+            null
         } else {
             val text = when (type) {
                 is GreenCardType.Domestic -> R.string.my_overview_description
                 is GreenCardType.Eu -> R.string.my_overview_description_eu
             }
 
-            return HeaderItem(
+            HeaderItem(
                 text = text
             )
         }
@@ -211,15 +211,14 @@ class GetMyOverviewItemsUseCaseImpl(
         greenCards: List<GreenCard>,
         selectedType: GreenCardType
     ): MyOverviewItem? {
-        return if (greenCards.isNotEmpty()) {
-            null
-        } else {
-            // Only return create qr card if there are not green cards on the screen and we have domestic type selected
+        return if (greenCards.isEmpty() || greenCards.all { greenCardUtil.isExpired(it) }) {
             if (selectedType == GreenCardType.Domestic) {
                 PlaceholderCardItem
             } else {
                 null
             }
+        } else {
+            null
         }
     }
 
