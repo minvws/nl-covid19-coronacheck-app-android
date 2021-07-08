@@ -10,13 +10,9 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.CredentialEntit
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
-import nl.rijksoverheid.ctr.holder.persistence.database.usecases.GreenCardsUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItem.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItem.GreenCardItem.CredentialState
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CredentialUtil
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginUtil
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -42,7 +38,7 @@ class GetMyOverviewItemsUseCaseImpl(
     private val credentialUtil: CredentialUtil,
     private val greenCardUtil: GreenCardUtil,
     private val originUtil: OriginUtil,
-    private val greenCardUseCase: GreenCardsUseCase,
+    private val greenCardRefreshUtil: GreenCardRefreshUtil,
 ) :
     GetMyOverviewItemsUseCase {
 
@@ -65,7 +61,7 @@ class GetMyOverviewItemsUseCaseImpl(
 
             val items = mutableListOf<MyOverviewItem>()
 
-            getHeaderItem(greenCardsForSelectedType.isNotEmpty(), selectedType)?.let {
+            getHeaderItem(allGreenCards, selectedType)?.let {
                 items.add(
                     it
                 )
@@ -102,17 +98,20 @@ class GetMyOverviewItemsUseCaseImpl(
         }
     }
 
-    private fun getHeaderItem(hasGreenCards: Boolean, type: GreenCardType): MyOverviewItem? {
-        if (!hasGreenCards) return null
+    private fun getHeaderItem(greenCards: List<GreenCard>,
+                              type: GreenCardType): MyOverviewItem? {
+        return if (greenCards.isEmpty() || greenCards.all { greenCardUtil.isExpired(it) }) {
+            null
+        } else {
+            val text = when (type) {
+                is GreenCardType.Domestic -> R.string.my_overview_description
+                is GreenCardType.Eu -> R.string.my_overview_description_eu
+            }
 
-        val text = when (type) {
-            is GreenCardType.Domestic -> R.string.my_overview_description
-            is GreenCardType.Eu -> R.string.my_overview_description_eu
+            HeaderItem(
+                text = text
+            )
         }
-
-        return HeaderItem(
-            text = text
-        )
     }
 
     private suspend fun getGreenCardItems(
@@ -149,7 +148,7 @@ class GetMyOverviewItemsUseCaseImpl(
                 // More our credential to a more readable state
                 val credentialState = when {
                     databaseSyncerResult !is DatabaseSyncerResult.Success -> CredentialState.NoCredential
-                    greenCardUseCase.shouldRefresh() -> CredentialState.LoadingCredential
+                    greenCardRefreshUtil.shouldRefresh() -> CredentialState.LoadingCredential
                     activeCredential == null -> CredentialState.NoCredential
                     !hasValidOriginStates -> CredentialState.NoCredential
                     else -> CredentialState.HasCredential(activeCredential)
@@ -208,15 +207,14 @@ class GetMyOverviewItemsUseCaseImpl(
         greenCards: List<GreenCard>,
         selectedType: GreenCardType
     ): MyOverviewItem? {
-        return if (greenCards.isNotEmpty()) {
-            null
-        } else {
-            // Only return create qr card if there are not green cards on the screen and we have domestic type selected
+        return if (greenCards.isEmpty() || greenCards.all { greenCardUtil.isExpired(it) }) {
             if (selectedType == GreenCardType.Domestic) {
                 PlaceholderCardItem
             } else {
                 null
             }
+        } else {
+            null
         }
     }
 

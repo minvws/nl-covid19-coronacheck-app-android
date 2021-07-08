@@ -17,8 +17,6 @@ import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncerImpl
 import nl.rijksoverheid.ctr.holder.persistence.database.migration.TestResultsMigrationManager
 import nl.rijksoverheid.ctr.holder.persistence.database.migration.TestResultsMigrationManagerImpl
-import nl.rijksoverheid.ctr.holder.persistence.database.usecases.GreenCardsUseCase
-import nl.rijksoverheid.ctr.holder.persistence.database.usecases.GreenCardsUseCaseImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.HolderApiClient
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.RemoteTestStatusJsonAdapter
@@ -174,8 +172,8 @@ fun holderModule(baseUrl: String) = module {
         TestResultAttributesUseCaseImpl(get(), get())
     }
 
-    factory<GreenCardsUseCase> {
-        GreenCardsUseCaseImpl(get(), get(), get(), get(), get())
+    factory<GreenCardRefreshUtil> {
+        GreenCardRefreshUtilImpl(get(), get(), get(), get(), get())
     }
 
     factory<HolderWorkerFactory> {
