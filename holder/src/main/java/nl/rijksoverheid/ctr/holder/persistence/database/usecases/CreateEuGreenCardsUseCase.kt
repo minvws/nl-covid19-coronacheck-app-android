@@ -8,14 +8,14 @@ import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 
-interface CreateEuGreenCardsUseCase {
+interface CreateEuGreenCardUseCase {
     suspend fun create(greenCard: RemoteGreenCards.EuGreenCard)
 }
 
 class CreateEuGreenCardUseCaseImpl(
     private val holderDatabase: HolderDatabase,
     private val mobileCoreWrapper: MobileCoreWrapper
-): CreateEuGreenCardsUseCase {
+): CreateEuGreenCardUseCase {
     override suspend fun create(greenCard: RemoteGreenCards.EuGreenCard) {
         // Create green card
         val localEuropeanGreenCardId = holderDatabase.greenCardDao().insert(
@@ -26,7 +26,7 @@ class CreateEuGreenCardUseCaseImpl(
         )
 
         // Create origins for european green card
-        greenCard.origins.forEach { remoteOrigin ->
+        greenCard.origins.map { remoteOrigin ->
             val type = when (remoteOrigin.type) {
                 OriginType.TYPE_VACCINATION -> OriginType.Vaccination
                 OriginType.TYPE_RECOVERY -> OriginType.Recovery

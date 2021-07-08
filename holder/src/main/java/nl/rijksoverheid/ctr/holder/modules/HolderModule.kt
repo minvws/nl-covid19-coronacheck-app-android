@@ -80,7 +80,7 @@ fun holderModule(baseUrl: String) = module {
     factory<CreateDomesticGreenCardUseCase> {
         CreateDomesticGreenCardUseCaseImpl(get(), get())
     }
-    factory<CreateEuGreenCardsUseCase> {
+    factory<CreateEuGreenCardUseCase> {
         CreateEuGreenCardUseCaseImpl(get(), get())
     }
     factory<GetEventProvidersWithTokensUseCase> {

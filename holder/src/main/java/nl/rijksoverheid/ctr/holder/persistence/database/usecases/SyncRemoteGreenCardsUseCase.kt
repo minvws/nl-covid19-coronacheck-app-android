@@ -13,7 +13,7 @@ interface SyncRemoteGreenCardsUseCase {
 class SyncRemoteGreenCardsUseCaseImpl(
     private val holderDatabase: HolderDatabase,
     private val createDomesticGreenCardUseCase: CreateDomesticGreenCardUseCase,
-    private val createEuGreenCardsUseCase: CreateEuGreenCardsUseCase
+    private val createEuGreenCardsUseCase: CreateEuGreenCardUseCase
     ): SyncRemoteGreenCardsUseCase {
 
     override suspend fun execute(remoteGreenCards: RemoteGreenCards) {
