@@ -18,8 +18,6 @@ import java.time.Clock
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit.DAYS
 
-typealias CardUiLogic = suspend () -> Unit
-
 interface GreenCardsUseCase {
     suspend fun shouldRefresh(): Boolean
     suspend fun allCredentialsExpired(selectedType: GreenCardType): Boolean
