@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import mobilecore.VerificationResult
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import nl.rijksoverheid.ctr.verifier.BuildConfig
@@ -97,7 +98,7 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
         } else {
             binding.toolbar.setTitle(R.string.scan_result_valid_title)
         }
-        val testResultAttributes = args.validData.verifiedQr.testResultAttributes
+        val testResultAttributes = args.validData.verifiedQr.details
         val personalDetails = personalDetailsUtil.getPersonalDetails(
             testResultAttributes.firstNameInitial,
             testResultAttributes.lastNameInitial,

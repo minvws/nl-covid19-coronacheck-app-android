@@ -100,7 +100,7 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
         requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
     }
 
-    private fun setupCamera() {
+    protected fun setupCamera() {
         // Set up preview view
         val previewView = binding.previewView
 

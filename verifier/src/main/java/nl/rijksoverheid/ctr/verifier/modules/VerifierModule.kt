@@ -15,8 +15,6 @@ import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 import nl.rijksoverheid.ctr.verifier.persistance.SharedPreferencesPersistenceManager
 import nl.rijksoverheid.ctr.verifier.ui.scanner.ScannerViewModel
 import nl.rijksoverheid.ctr.verifier.ui.scanner.ScannerViewModelImpl
-import nl.rijksoverheid.ctr.verifier.ui.scanner.datamappers.VerifiedQrDataMapper
-import nl.rijksoverheid.ctr.verifier.ui.scanner.datamappers.VerifiedQrDataMapperImpl
 import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.TestResultValidUseCase
 import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.TestResultValidUseCaseImpl
 import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.VerifyQrUseCase
@@ -54,7 +52,6 @@ fun verifierModule(path: String) = module {
     factory<TestResultValidUseCase> {
         TestResultValidUseCaseImpl(get())
     }
-    factory<VerifiedQrDataMapper> { VerifiedQrDataMapperImpl(get(), get()) }
 
     // Utils
     factory<QrCodeUtil> { QrCodeUtilImpl(get()) }

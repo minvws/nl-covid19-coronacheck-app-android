@@ -8,11 +8,12 @@
 
 package nl.rijksoverheid.ctr.shared
 
+import android.os.Parcelable
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
+import kotlinx.parcelize.Parcelize
 import mobilecore.Mobilecore
-import mobilecore.Result
 import nl.rijksoverheid.ctr.shared.ext.*
 import nl.rijksoverheid.ctr.shared.models.DomesticCredential
 import nl.rijksoverheid.ctr.shared.models.ReadDomesticCredential
@@ -32,8 +33,11 @@ interface MobileCoreWrapper {
     fun initializeHolder(configFilesPath: String): String?
     // returns error message, if initializing failed
     fun initializeVerifier(configFilesPath: String): String?
-    fun verify(credential: ByteArray): Result
+    fun verify(credential: ByteArray): VerificationResult
 }
+
+@Parcelize data class VerificationResultDetails(val birthDay: String, val birthMonth: String, val firstNameInitial: String, val lastNameInitial: String, val isSpecimen: String, val credentialVersion: String): Parcelable
+@Parcelize data class VerificationResult(val status: Long, val details: VerificationResultDetails, val error: String): Parcelable
 
 class MobileCoreWrapperImpl(private val moshi: Moshi) : MobileCoreWrapper {
 
@@ -105,5 +109,19 @@ class MobileCoreWrapperImpl(private val moshi: Moshi) : MobileCoreWrapper {
         }
     }
 
-    override fun verify(credential: ByteArray): Result = Mobilecore.verify(credential)
+    override fun verify(credential: ByteArray): VerificationResult {
+        val result = Mobilecore.verify(credential)
+        return VerificationResult(
+            status = result.status,
+            details = VerificationResultDetails(
+                birthDay = result.details.birthDay,
+                birthMonth = result.details.birthMonth,
+                firstNameInitial = result.details.firstNameInitial,
+                lastNameInitial = result.details.lastNameInitial,
+                isSpecimen = result.details.isSpecimen,
+                credentialVersion = result.details.credentialVersion,
+            ),
+            error = result.error
+        )
+    }
 }
