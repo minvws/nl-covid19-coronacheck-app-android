@@ -27,13 +27,11 @@ val verifierIntroductionModule = module {
                     R.drawable.illustration_onboarding_2,
                     R.string.onboarding_screen_2_title,
                     R.string.onboarding_screen_2_description,
-                    true
                 ),
                 OnboardingItem(
                     R.drawable.illustration_onboarding_3,
                     R.string.onboarding_screen_3_title,
                     R.string.onboarding_screen_3_description,
-                    true
                 ),
                 OnboardingItem(
                     R.drawable.illustration_onboarding_4,

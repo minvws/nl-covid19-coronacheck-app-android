@@ -105,25 +105,13 @@ fun fakeCachedAppConfigUseCase(
         testEventValidity = 0,
         recoveryEventValidity = 0,
         temporarilyDisabled = false,
-        requireUpdateBefore = 0
+        requireUpdateBefore = 0,
     ),
     publicKeys: BufferedSource = "{\"cl_keys\":[]}".toResponseBody("application/json".toMediaType())
         .source()
 ): CachedAppConfigUseCase = object : CachedAppConfigUseCase {
     override fun getCachedAppConfig(): AppConfig {
         return appConfig
-    }
-
-    override fun getCachedAppConfigRecoveryEventValidity(): Int {
-        return appConfig.recoveryEventValidity
-    }
-
-    override fun getCachedAppConfigMaxValidityHours(): Int {
-        return appConfig.maxValidityHours
-    }
-
-    override fun getCachedAppConfigVaccinationEventValidity(): Int {
-        return appConfig.vaccinationEventValidity
     }
 
     override fun getCachedPublicKeys() = publicKeys

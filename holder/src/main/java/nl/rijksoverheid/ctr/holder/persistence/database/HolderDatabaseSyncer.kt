@@ -6,6 +6,7 @@ import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.holder.persistence.WorkerManagerWrapper
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
+import nl.rijksoverheid.ctr.holder.persistence.database.usecases.RemoveExpiredEventsUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteCredentials
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SecretKeyUseCase
@@ -41,7 +42,8 @@ class HolderDatabaseSyncerImpl(
     private val mobileCoreWrapper: MobileCoreWrapper,
     private val secretKeyUseCase: SecretKeyUseCase,
     private val workerManagerWrapper: WorkerManagerWrapper,
-    private val greenCardUtil: GreenCardUtil
+    private val greenCardUtil: GreenCardUtil,
+    private val removeExpiredEventsUseCase: RemoveExpiredEventsUseCase
 ) : HolderDatabaseSyncer {
 
     override suspend fun sync(expectedOriginType: OriginType?, syncWithRemote: Boolean): DatabaseSyncerResult {
@@ -49,7 +51,7 @@ class HolderDatabaseSyncerImpl(
             val events = holderDatabase.eventGroupDao().getAll()
 
             // Check if we need to remove any events
-            removeExpiredEventGroups(
+            removeExpiredEventsUseCase.execute(
                 events = events
             )
 
@@ -61,29 +63,6 @@ class HolderDatabaseSyncerImpl(
                 )
             } else {
                 DatabaseSyncerResult.Success
-            }
-        }
-    }
-
-    /**
-     * Check if we need to remove events from the database
-     */
-    private suspend fun removeExpiredEventGroups(events: List<EventGroupEntity>) {
-        events.forEach {
-            val expireDate = when (it.type) {
-                is OriginType.Vaccination -> {
-                    cachedAppConfigUseCase.getCachedAppConfigVaccinationEventValidity()
-                }
-                is OriginType.Test -> {
-                    cachedAppConfigUseCase.getCachedAppConfigMaxValidityHours()
-                }
-                is OriginType.Recovery -> {
-                    cachedAppConfigUseCase.getCachedAppConfigRecoveryEventValidity()
-                }
-            }
-
-            if (it.maxIssuedAt.plusHours(expireDate.toLong()) <= OffsetDateTime.now()) {
-                holderDatabase.eventGroupDao().delete(it)
             }
         }
     }

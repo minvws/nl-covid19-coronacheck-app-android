@@ -17,6 +17,8 @@ import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncerImpl
 import nl.rijksoverheid.ctr.holder.persistence.database.migration.TestResultsMigrationManager
 import nl.rijksoverheid.ctr.holder.persistence.database.migration.TestResultsMigrationManagerImpl
+import nl.rijksoverheid.ctr.holder.persistence.database.usecases.RemoveExpiredEventsUseCase
+import nl.rijksoverheid.ctr.holder.persistence.database.usecases.RemoveExpiredEventsUseCaseImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.HolderApiClient
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.RemoteTestStatusJsonAdapter
@@ -61,7 +63,7 @@ fun holderModule(baseUrl: String) = module {
         HolderDatabase.createInstance(androidContext(), get())
     }
 
-    factory<HolderDatabaseSyncer> { HolderDatabaseSyncerImpl(get(), get(), get(), get(), get(), get(), get()) }
+    factory<HolderDatabaseSyncer> { HolderDatabaseSyncerImpl(get(), get(), get(), get(), get(), get(), get(), get()) }
 
     single<PersistenceManager> {
         SharedPreferencesPersistenceManager(
@@ -170,6 +172,10 @@ fun holderModule(baseUrl: String) = module {
 
     factory<TestResultAttributesUseCase> {
         TestResultAttributesUseCaseImpl(get(), get())
+    }
+
+    factory<RemoveExpiredEventsUseCase> {
+        RemoveExpiredEventsUseCaseImpl(Clock.systemUTC(), get(), get())
     }
 
     factory<GreenCardRefreshUtil> {
