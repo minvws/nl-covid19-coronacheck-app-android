@@ -9,9 +9,9 @@ import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
-import nl.rijksoverheid.ctr.holder.persistence.database.usecases.GreenCardsUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetMyOverviewItemsUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItems
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardRefreshUtil
 import nl.rijksoverheid.ctr.shared.livedata.Event
 
 /*
@@ -40,7 +40,7 @@ abstract class MyOverviewViewModel : ViewModel() {
 class MyOverviewViewModelImpl(
     private val getMyOverviewItemsUseCase: GetMyOverviewItemsUseCase,
     private val persistenceManager: PersistenceManager,
-    private val greenCardsUseCase: GreenCardsUseCase,
+    private val greenCardRefreshUtil: GreenCardRefreshUtil,
     private val holderDatabaseSyncer: HolderDatabaseSyncer,
 ) : MyOverviewViewModel() {
 
@@ -66,7 +66,7 @@ class MyOverviewViewModelImpl(
 
             // Check if we need to refresh our data
             val hasDoneRefreshCall = databaseSyncerResultLiveData.value != null && selectType == getSelectedType()
-            val shouldRefresh = (forceSync) || (greenCardsUseCase.shouldRefresh() && !hasDoneRefreshCall)
+            val shouldRefresh = (forceSync) || (greenCardRefreshUtil.shouldRefresh() && !hasDoneRefreshCall)
 
             // Refresh the database
             // This checks if we need to remove expired EventGroupEntity's

@@ -10,13 +10,9 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.CredentialEntit
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
-import nl.rijksoverheid.ctr.holder.persistence.database.usecases.GreenCardsUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItem.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItem.GreenCardItem.CredentialState
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CredentialUtil
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginUtil
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -42,7 +38,7 @@ class GetMyOverviewItemsUseCaseImpl(
     private val credentialUtil: CredentialUtil,
     private val greenCardUtil: GreenCardUtil,
     private val originUtil: OriginUtil,
-    private val greenCardUseCase: GreenCardsUseCase,
+    private val greenCardRefreshUtil: GreenCardRefreshUtil,
 ) :
     GetMyOverviewItemsUseCase {
 
@@ -152,7 +148,7 @@ class GetMyOverviewItemsUseCaseImpl(
                 // More our credential to a more readable state
                 val credentialState = when {
                     databaseSyncerResult !is DatabaseSyncerResult.Success -> CredentialState.NoCredential
-                    greenCardUseCase.shouldRefresh() -> CredentialState.LoadingCredential
+                    greenCardRefreshUtil.shouldRefresh() -> CredentialState.LoadingCredential
                     activeCredential == null -> CredentialState.NoCredential
                     !hasValidOriginStates -> CredentialState.NoCredential
                     else -> CredentialState.HasCredential(activeCredential)
