@@ -11,7 +11,7 @@ import java.time.OffsetDateTime
  *
  */
 @JsonClass(generateAdapter = true)
-data class RemoteCredentials(
+data class RemoteGreenCards(
     val domesticGreencard: DomesticGreenCard?,
     val euGreencards: List<EuGreenCard>?
 ) {

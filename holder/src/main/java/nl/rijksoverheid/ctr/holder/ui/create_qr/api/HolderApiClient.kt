@@ -27,7 +27,7 @@ interface HolderApiClient {
     @SignedRequest
     suspend fun getCredentials(
         @Body data: GetCredentialsPostData
-    ): RemoteCredentials
+    ): RemoteGreenCards
 
     @GET("holder/config_providers")
     @SignedRequest
