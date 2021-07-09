@@ -52,12 +52,14 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
 
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) {
-            if (isCameraPermissionGranted()) {
-                setupCamera()
-            } else {
-                val rationaleDialog = getCopy().rationaleDialog
-                if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) && rationaleDialog != null) {
-                    showRationaleDialog(rationaleDialog)
+            if (isAdded) {
+                if (isCameraPermissionGranted()) {
+                    setupCamera()
+                } else {
+                    val rationaleDialog = getCopy().rationaleDialog
+                    if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) && rationaleDialog != null) {
+                        showRationaleDialog(rationaleDialog)
+                    }
                 }
             }
         }
