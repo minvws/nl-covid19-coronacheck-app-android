@@ -107,6 +107,9 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
             positiveButtonCallback = {
                 setupCamera()
             },
+            onDismissCallback = {
+                setupCamera()
+            }
         )
     }
 }
