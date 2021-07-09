@@ -51,7 +51,7 @@ class AppConfigViewModelImpl(
             }
 
             val configFilesArePresentInFilesFolder = appConfigStorageManager.areConfigFilesPresentInFilesFolder()
-            if (!configFilesArePresentInFilesFolder || cachedAppConfigUseCase.isCachedAppConfigValid()) {
+            if (!configFilesArePresentInFilesFolder || !cachedAppConfigUseCase.isCachedAppConfigValid()) {
                 return@launch appStatusLiveData.postValue(AppStatus.Error)
             }
 

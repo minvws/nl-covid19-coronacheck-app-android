@@ -37,6 +37,10 @@ fun fakeCachedAppConfigUseCase(
     cachedAppConfigVaccinationEventValidity: Int = 0
 ) = object : CachedAppConfigUseCase {
 
+    override fun isCachedAppConfigValid(): Boolean {
+        TODO("Not yet implemented")
+    }
+
     override fun getCachedAppConfig(): AppConfig {
         return appConfig
     }
