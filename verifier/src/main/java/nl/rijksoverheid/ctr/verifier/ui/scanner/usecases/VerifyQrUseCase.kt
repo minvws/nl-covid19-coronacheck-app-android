@@ -2,8 +2,8 @@ package nl.rijksoverheid.ctr.verifier.ui.scanner.usecases
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import nl.rijksoverheid.ctr.verifier.ui.scanner.datamappers.VerifiedQrDataMapper
-import nl.rijksoverheid.ctr.verifier.ui.scanner.models.VerifiedQr
+import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
+import nl.rijksoverheid.ctr.shared.VerificationResult
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -18,13 +18,13 @@ interface VerifyQrUseCase {
     ): VerifyQrResult
 
     sealed class VerifyQrResult {
-        data class Success(val verifiedQr: VerifiedQr) : VerifyQrResult()
+        data class Success(val verifiedQr: VerificationResult) : VerifyQrResult()
         data class Failed(val error: String) : VerifyQrResult()
     }
 }
 
 class VerifyQrUseCaseImpl(
-    private val verifiedQrDataMapper: VerifiedQrDataMapper
+    private val mobileCoreWrapper: MobileCoreWrapper
 ) : VerifyQrUseCase {
 
     override suspend fun get(
@@ -32,9 +32,7 @@ class VerifyQrUseCaseImpl(
     ): VerifyQrUseCase.VerifyQrResult = withContext(Dispatchers.IO) {
         try {
             VerifyQrUseCase.VerifyQrResult.Success(
-                verifiedQrDataMapper.transform(
-                    qrContent = content
-                )
+                mobileCoreWrapper.verify(content.toByteArray())
             )
         } catch (e: Exception) {
             VerifyQrUseCase.VerifyQrResult.Failed(e.toString())

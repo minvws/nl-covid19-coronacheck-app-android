@@ -5,7 +5,7 @@ import androidx.work.ListenableWorker
 import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
-import nl.rijksoverheid.ctr.holder.persistence.database.usecases.GreenCardsUseCase
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardRefreshUtil
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -15,7 +15,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.usecases.GreenCardsUseCa
  *
  */
 class HolderWorkerFactory(
-    private val greenCardsUseCase: GreenCardsUseCase,
+    private val greenCardRefreshUtil: GreenCardRefreshUtil,
     private val holderDatabaseSyncer: HolderDatabaseSyncer,
 ): WorkerFactory() {
     override fun createWorker(
@@ -24,7 +24,7 @@ class HolderWorkerFactory(
         workerParameters: WorkerParameters
     ): ListenableWorker? {
         return when (workerClassName) {
-            RefreshCredentialsJob::class.java.name -> RefreshCredentialsJob(appContext, workerParameters, holderDatabaseSyncer, greenCardsUseCase)
+            RefreshCredentialsJob::class.java.name -> RefreshCredentialsJob(appContext, workerParameters, holderDatabaseSyncer, greenCardRefreshUtil)
             else -> null
         }
     }

@@ -17,10 +17,10 @@ import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncerImpl
 import nl.rijksoverheid.ctr.holder.persistence.database.migration.TestResultsMigrationManager
 import nl.rijksoverheid.ctr.holder.persistence.database.migration.TestResultsMigrationManagerImpl
-import nl.rijksoverheid.ctr.holder.persistence.database.usecases.GreenCardsUseCase
-import nl.rijksoverheid.ctr.holder.persistence.database.usecases.GreenCardsUseCaseImpl
+import nl.rijksoverheid.ctr.holder.persistence.database.usecases.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.HolderApiClient
+import nl.rijksoverheid.ctr.holder.ui.create_qr.api.OriginTypeJsonAdapter
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.RemoteTestStatusJsonAdapter
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.TestProviderApiClient
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigiDViewModel
@@ -74,6 +74,18 @@ fun holderModule(baseUrl: String) = module {
     }
 
     // Use cases
+    factory<GetRemoteGreenCardsUseCase> {
+        GetRemoteGreenCardsUseCaseImpl(get(), get(), get())
+    }
+    factory<SyncRemoteGreenCardsUseCase> {
+        SyncRemoteGreenCardsUseCaseImpl(get(), get(), get())
+    }
+    factory<CreateDomesticGreenCardUseCase> {
+        CreateDomesticGreenCardUseCaseImpl(get(), get())
+    }
+    factory<CreateEuGreenCardUseCase> {
+        CreateEuGreenCardUseCaseImpl(get(), get())
+    }
     factory<GetEventProvidersWithTokensUseCase> {
         GetEventProvidersWithTokensUseCaseImpl(get())
     }
@@ -112,7 +124,7 @@ fun holderModule(baseUrl: String) = module {
         )
     }
     factory<GetMyOverviewItemsUseCase> {
-        GetMyOverviewItemsUseCaseImpl(get(), get(), get(), get())
+        GetMyOverviewItemsUseCaseImpl(get(), get(), get(), get(), get())
     }
     factory<TokenValidatorUtil> { TokenValidatorUtilImpl() }
     factory<CredentialUtil> { CredentialUtilImpl(Clock.systemUTC()) }
@@ -163,7 +175,7 @@ fun holderModule(baseUrl: String) = module {
     factory<QrCodeUtil> { QrCodeUtilImpl() }
     factory<TestResultAdapterItemUtil> { TestResultAdapterItemUtilImpl(get()) }
     factory<InfoScreenUtil> { InfoScreenUtilImpl(get(), get()) }
-    factory<GreenCardUtil> { GreenCardUtilImpl(Clock.systemUTC()) }
+    factory<GreenCardUtil> { GreenCardUtilImpl(Clock.systemUTC(), get()) }
 
     // Usecases
     factory<CreateCredentialUseCase> {
@@ -180,8 +192,12 @@ fun holderModule(baseUrl: String) = module {
         ReturnToAppUseCaseImpl()
     }
 
-    factory<GreenCardsUseCase> {
-        GreenCardsUseCaseImpl(get(), get(), get(), get(), get(), get())
+    factory<RemoveExpiredEventsUseCase> {
+        RemoveExpiredEventsUseCaseImpl(Clock.systemUTC(), get(), get())
+    }
+
+    factory<GreenCardRefreshUtil> {
+        GreenCardRefreshUtilImpl(get(), get(), get(), get(), get())
     }
 
     factory<HolderWorkerFactory> {
@@ -238,6 +254,7 @@ fun holderModule(baseUrl: String) = module {
     single {
         get<Moshi.Builder>(Moshi.Builder::class)
             .add(RemoteTestStatusJsonAdapter())
+            .add(OriginTypeJsonAdapter())
             .add(PolymorphicJsonAdapterFactory.of(
                 RemoteProtocol::class.java, "protocolVersion")
                 .withSubtype(RemoteTestResult2::class.java, "2.0")

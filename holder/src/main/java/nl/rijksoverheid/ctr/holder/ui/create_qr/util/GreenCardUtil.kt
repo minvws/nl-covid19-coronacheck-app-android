@@ -10,9 +10,13 @@ interface GreenCardUtil {
     fun isExpired(greenCard: GreenCard): Boolean
     fun getExpireDate(greenCard: GreenCard): OffsetDateTime
     fun getErrorCorrectionLevel(greenCardType: GreenCardType): ErrorCorrectionLevel
+    fun isExpiring(renewalDays: Long, greenCard: GreenCard): Boolean
+    fun hasNoActiveCredentials(greenCard: GreenCard): Boolean
 }
 
-class GreenCardUtilImpl(private val clock: Clock): GreenCardUtil {
+class GreenCardUtilImpl(
+    private val clock: Clock,
+    private val credentialUtil: CredentialUtil): GreenCardUtil {
 
     override fun getExpireDate(greenCard: GreenCard): OffsetDateTime {
         return greenCard.origins.maxByOrNull { it.expirationTime }?.expirationTime ?: OffsetDateTime.now(clock)
@@ -27,5 +31,15 @@ class GreenCardUtilImpl(private val clock: Clock): GreenCardUtil {
 
     override fun isExpired(greenCard: GreenCard): Boolean {
         return OffsetDateTime.now(clock) >= getExpireDate(greenCard)
+    }
+
+    override fun isExpiring(renewalDays: Long, greenCard: GreenCard): Boolean {
+        val now = OffsetDateTime.now(clock)
+        val expirationTime = getExpireDate(greenCard)
+        return expirationTime.minusDays(renewalDays).isBefore(now)
+    }
+
+    override fun hasNoActiveCredentials(greenCard: GreenCard): Boolean {
+        return credentialUtil.getActiveCredential(greenCard.credentialEntities) == null
     }
 }

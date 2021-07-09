@@ -31,26 +31,14 @@ fun fakeAppConfigPersistenceManager(
 }
 
 fun fakeCachedAppConfigUseCase(
-    appConfig: AppConfig? = fakeAppConfig(),
+    appConfig: AppConfig = fakeAppConfig(),
     publicKeys: BufferedSource = "{\"cl_keys\":[]}".toResponseBody("application/json".toMediaType()).source(),
     cachedAppConfigMaxValidityHours: Int = 0,
     cachedAppConfigVaccinationEventValidity: Int = 0
 ) = object : CachedAppConfigUseCase {
 
-    override fun getCachedAppConfig(): AppConfig? {
+    override fun getCachedAppConfig(): AppConfig {
         return appConfig
-    }
-
-    override fun getCachedAppConfigRecoveryEventValidity(): Int {
-        return appConfig?.recoveryEventValidity ?: 0
-    }
-
-    override fun getCachedAppConfigMaxValidityHours(): Int {
-        return cachedAppConfigMaxValidityHours
-    }
-
-    override fun getCachedAppConfigVaccinationEventValidity(): Int {
-        return cachedAppConfigVaccinationEventValidity
     }
 
     override fun getCachedPublicKeys(): BufferedSource {

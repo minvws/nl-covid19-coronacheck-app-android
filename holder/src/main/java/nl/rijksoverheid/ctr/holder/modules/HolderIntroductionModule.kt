@@ -28,19 +28,16 @@ val holderIntroductionModule = module {
                     R.drawable.illustration_onboarding_2,
                     R.string.onboarding_screen_2_title,
                     R.string.onboarding_screen_2_description,
-                    true
                 ),
                 OnboardingItem(
                     R.drawable.illustration_onboarding_3,
                     R.string.onboarding_screen_4_title,
                     R.string.onboarding_screen_4_description,
-                    true
                 ),
                 OnboardingItem(
                     R.drawable.illustration_onboarding_4,
                     R.string.onboarding_screen_3_title,
                     R.string.onboarding_screen_3_description,
-                    descriptionHasEuLaunchDate = true
                 )
             ),
             privacyPolicyItems = listOf(
@@ -64,7 +61,8 @@ val holderIntroductionModule = module {
                     R.string.new_in_app_screen_1_description,
                 )
             ),
-            newFeatureVersion = 1
+            newFeatureVersion = 1,
+            hideConsent = true
         )
     }
 }

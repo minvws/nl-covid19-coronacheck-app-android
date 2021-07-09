@@ -8,10 +8,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.holder.persistence.database.usecases.CardUiLogic
-import nl.rijksoverheid.ctr.holder.persistence.database.usecases.GreenCard
-import nl.rijksoverheid.ctr.holder.persistence.database.usecases.GreenCardsUseCase
-import nl.rijksoverheid.ctr.holder.ui.myoverview.items.GreenCardErrorState
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardRefreshUtil
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -54,27 +51,14 @@ class RefreshCredentialsJobTest: AutoCloseKoinTest() {
 
     private fun testWorkerFactory(
         databaseSyncerResult: DatabaseSyncerResult = DatabaseSyncerResult.Success) = HolderWorkerFactory(
-        greenCardsUseCase = object: GreenCardsUseCase {
-            override suspend fun faultyVaccinationsJune28(): Boolean {
-                return false
-            }
-
-            override suspend fun expiring(): Boolean = true
-            override suspend fun expiredCard(selectedType: GreenCardType): Boolean {
+        greenCardRefreshUtil = object: GreenCardRefreshUtil {
+            override suspend fun shouldRefresh(): Boolean = true
+            override suspend fun allCredentialsExpired(selectedType: GreenCardType): Boolean {
                 TODO("Not yet implemented")
             }
 
-            override suspend fun firstExpiringCard() = GreenCard.Expiring(4L)
+            override suspend fun credentialsExpireInDays() = 4L
 
-            override suspend fun refresh(
-                handleErrorOnExpiringCard: suspend (DatabaseSyncerResult) -> GreenCardErrorState,
-                showForcedError: CardUiLogic,
-                showRefreshError: CardUiLogic,
-                showCardLoading: CardUiLogic,
-                holderDatabaseSyncer: HolderDatabaseSyncer
-            ): GreenCardErrorState {
-                TODO("Not yet implemented")
-            }
         },
         holderDatabaseSyncer = object: HolderDatabaseSyncer {
             override suspend fun sync(

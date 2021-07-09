@@ -1,7 +1,5 @@
 package nl.rijksoverheid.ctr.holder
 
-import androidx.lifecycle.LiveData
-import mobilecore.Result
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
@@ -14,7 +12,6 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckReposito
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.EventProviderRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.TestProviderRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
-import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewError
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TokenValidatorUtil
@@ -22,7 +19,7 @@ import nl.rijksoverheid.ctr.introduction.IntroductionData
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
-import nl.rijksoverheid.ctr.shared.livedata.Event
+import nl.rijksoverheid.ctr.shared.VerificationResult
 import nl.rijksoverheid.ctr.shared.models.*
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import nl.rijksoverheid.ctr.shared.utils.TestResultUtil
@@ -107,25 +104,13 @@ fun fakeCachedAppConfigUseCase(
         testEventValidity = 0,
         recoveryEventValidity = 0,
         temporarilyDisabled = false,
-        requireUpdateBefore = 0
+        requireUpdateBefore = 0,
     ),
     publicKeys: BufferedSource = "{\"cl_keys\":[]}".toResponseBody("application/json".toMediaType())
         .source()
 ): CachedAppConfigUseCase = object : CachedAppConfigUseCase {
     override fun getCachedAppConfig(): AppConfig {
         return appConfig
-    }
-
-    override fun getCachedAppConfigRecoveryEventValidity(): Int {
-        return appConfig.recoveryEventValidity
-    }
-
-    override fun getCachedAppConfigMaxValidityHours(): Int {
-        return appConfig.maxValidityHours
-    }
-
-    override fun getCachedAppConfigVaccinationEventValidity(): Int {
-        return appConfig.vaccinationEventValidity
     }
 
     override fun getCachedPublicKeys() = publicKeys
@@ -251,7 +236,7 @@ fun fakeCoronaCheckRepository(
     testIsmExceptionCallback: (() -> Unit)? = null,
     remoteNonce: RemoteNonce = RemoteNonce("", ""),
     accessTokens: RemoteAccessTokens = RemoteAccessTokens(tokens = listOf()),
-    remoteCredentials: RemoteCredentials = RemoteCredentials(
+    remoteCredentials: RemoteGreenCards = RemoteGreenCards(
         domesticGreencard = null,
         euGreencards = null
     ),
@@ -271,11 +256,11 @@ fun fakeCoronaCheckRepository(
             return accessTokens
         }
 
-        override suspend fun getCredentials(
+        override suspend fun getGreenCards(
             stoken: String,
             events: List<String>,
             issueCommitmentMessage: String
-        ): RemoteCredentials {
+        ): RemoteGreenCards {
             return remoteCredentials
         }
 
@@ -422,7 +407,7 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
 
         override fun initializeVerifier(configFilesPath: String) = ""
 
-        override fun verify(credential: ByteArray): Result {
+        override fun verify(credential: ByteArray): VerificationResult {
             TODO("Not yet implemented")
         }
 

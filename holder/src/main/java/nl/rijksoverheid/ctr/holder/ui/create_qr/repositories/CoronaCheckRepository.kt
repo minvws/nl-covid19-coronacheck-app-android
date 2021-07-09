@@ -18,11 +18,11 @@ import retrofit2.Converter
 interface CoronaCheckRepository {
     suspend fun configProviders(): RemoteConfigProviders
     suspend fun accessTokens(jwt: String): RemoteAccessTokens
-    suspend fun getCredentials(
+    suspend fun getGreenCards(
         stoken: String,
         events: List<String>,
         issueCommitmentMessage: String
-    ): RemoteCredentials
+    ): RemoteGreenCards
 
     suspend fun getPrepareIssue(): RemotePrepareIssue
 }
@@ -40,11 +40,11 @@ open class CoronaCheckRepositoryImpl(
         return api.getAccessTokens(authorization = "Bearer $jwt")
     }
 
-    override suspend fun getCredentials(
+    override suspend fun getGreenCards(
         stoken: String,
         events: List<String>,
         issueCommitmentMessage: String
-    ): RemoteCredentials {
+    ): RemoteGreenCards {
         return api.getCredentials(
             data = GetCredentialsPostData(
                 stoken = stoken,

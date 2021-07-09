@@ -5,7 +5,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
-import nl.rijksoverheid.ctr.holder.persistence.database.usecases.GreenCardsUseCase
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardRefreshUtil
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -18,10 +18,10 @@ class RefreshCredentialsJob(
     context: Context,
     params: WorkerParameters,
     private val holderDatabaseSyncer: HolderDatabaseSyncer,
-    private val greenCardsUseCase: GreenCardsUseCase,
+    private val greenCardRefreshUtil: GreenCardRefreshUtil,
 ): CoroutineWorker(context, params) {
     override suspend fun doWork(): Result {
-        val syncWithRemote = greenCardsUseCase.expiring()
+        val syncWithRemote = greenCardRefreshUtil.shouldRefresh()
         return if (syncWithRemote) {
              when (holderDatabaseSyncer.sync(null, true)) {
                 DatabaseSyncerResult.Success -> {

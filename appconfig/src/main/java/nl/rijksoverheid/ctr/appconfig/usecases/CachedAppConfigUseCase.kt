@@ -16,10 +16,7 @@ import java.io.File
  */
 
 interface CachedAppConfigUseCase {
-    fun getCachedAppConfig(): AppConfig?
-    fun getCachedAppConfigRecoveryEventValidity(): Int
-    fun getCachedAppConfigMaxValidityHours(): Int
-    fun getCachedAppConfigVaccinationEventValidity(): Int
+    fun getCachedAppConfig(): AppConfig
     fun getCachedPublicKeys(): BufferedSource?
     fun getProviderName(providerIdentifier: String?): String
 }
@@ -30,7 +27,7 @@ class CachedAppConfigUseCaseImpl constructor(
     private val moshi: Moshi
 ) : CachedAppConfigUseCase {
 
-    override fun getCachedAppConfig(): AppConfig? {
+    override fun getCachedAppConfig(): AppConfig {
         val configFile = File(filesDirPath, "config.json")
 
         if (!configFile.exists()) {
@@ -38,26 +35,11 @@ class CachedAppConfigUseCaseImpl constructor(
         }
 
         return try {
-            appConfigStorageManager.getFileAsBufferedSource(configFile)?.readUtf8()?.toObject(moshi)
+            appConfigStorageManager.getFileAsBufferedSource(configFile)?.readUtf8()?.toObject(moshi) ?: AppConfig()
         } catch (exc: Exception) {
             configFile.delete()
             AppConfig()
         }
-    }
-
-    override fun getCachedAppConfigRecoveryEventValidity(): Int {
-        return getCachedAppConfig()?.recoveryEventValidity
-            ?: throw IllegalStateException("AppConfig should be cached")
-    }
-
-    override fun getCachedAppConfigMaxValidityHours(): Int {
-        return getCachedAppConfig()?.maxValidityHours
-            ?: throw IllegalStateException("AppConfig should be cached")
-    }
-
-    override fun getCachedAppConfigVaccinationEventValidity(): Int {
-        return getCachedAppConfig()?.vaccinationEventValidity
-            ?: throw IllegalStateException("AppConfig should be cached")
     }
 
     override fun getCachedPublicKeys(): BufferedSource? {

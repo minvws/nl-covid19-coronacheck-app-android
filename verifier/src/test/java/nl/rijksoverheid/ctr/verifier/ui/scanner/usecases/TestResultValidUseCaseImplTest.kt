@@ -1,10 +1,7 @@
 package nl.rijksoverheid.ctr.verifier.ui.scanner.usecases
 
-import io.mockk.coEvery
-import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.verifier.*
-import nl.rijksoverheid.ctr.verifier.ui.scanner.datamappers.VerifiedQrDataMapper
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.VerifiedQrResultState
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -44,9 +41,9 @@ class TestResultValidUseCaseImplTest {
     fun `Validate returns Invalid if code has isNLDCC 1`() =
         runBlocking {
             val usecase = TestResultValidUseCaseImpl(
-                verifyQrUseCase = fakeVerifyQrUseCase(isNLDCC = "1"),
+                verifyQrUseCase = fakeVerifyQrUseCase(isNLDCC = true),
             )
-            assertTrue(usecase.validate("") is VerifiedQrResultState.Invalid)
+            assertTrue(usecase.validate("") is VerifiedQrResultState.InvalidInNL)
         }
 
     @Test
@@ -60,12 +57,9 @@ class TestResultValidUseCaseImplTest {
 
     @Test
     fun `Validate returns Error if code cannot be validated`() = runBlocking {
-        val fakeVerifiedQrDataMapper: VerifiedQrDataMapper = mockk()
-        coEvery { fakeVerifiedQrDataMapper.transform(any()) } throws Exception("Crash")
-        val fakeVerifyQrUseCase = VerifyQrUseCaseImpl(fakeVerifiedQrDataMapper)
 
         val usecase = TestResultValidUseCaseImpl(
-            verifyQrUseCase = fakeVerifyQrUseCase,
+            verifyQrUseCase = fakeVerifyQrUseCase(error = true),
         )
         assertTrue(usecase.validate("") is VerifiedQrResultState.Error)
     }

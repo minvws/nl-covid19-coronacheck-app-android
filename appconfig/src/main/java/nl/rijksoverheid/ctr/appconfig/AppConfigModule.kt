@@ -36,7 +36,6 @@ fun appConfigModule(path: String, versionCode: Int) = module {
     factory<AppConfigStorageManager> { AppConfigStorageManagerImpl(androidContext().filesDir.path) }
     factory<CachedAppConfigUseCase> { CachedAppConfigUseCaseImpl(get(), androidContext().filesDir.path, get()) }
     factory<PersistConfigUseCase> { PersistConfigUseCaseImpl(get(), androidContext().filesDir.path) }
-    factory<AppConfigUtil> { AppConfigUtilImpl(androidContext(), get()) }
 
     single {
         val okHttpClient = get<OkHttpClient>(OkHttpClient::class).newBuilder().build()

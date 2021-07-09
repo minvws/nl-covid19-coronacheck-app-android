@@ -1,6 +1,6 @@
 package nl.rijksoverheid.ctr.verifier
 
-import mobilecore.Result
+import mobilecore.Mobilecore
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
@@ -9,13 +9,13 @@ import nl.rijksoverheid.ctr.introduction.IntroductionData
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
+import nl.rijksoverheid.ctr.shared.VerificationResult
+import nl.rijksoverheid.ctr.shared.VerificationResultDetails
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.DomesticCredential
 import nl.rijksoverheid.ctr.shared.models.ReadDomesticCredential
-import nl.rijksoverheid.ctr.shared.models.TestResultAttributes
 import nl.rijksoverheid.ctr.shared.utils.TestResultUtil
 import nl.rijksoverheid.ctr.verifier.ui.scanner.ScannerViewModel
-import nl.rijksoverheid.ctr.verifier.ui.scanner.models.VerifiedQr
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.VerifiedQrResultState
 import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.TestResultValidUseCase
 import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.VerifyQrUseCase
@@ -95,47 +95,33 @@ fun fakeQrCodeUtil(
 }
 
 fun fakeVerifiedQr(
+    error: Boolean = false,
+    isNLDCC: Boolean = false,
     isSpecimen: String = "0",
     birthDay: String = "dummy",
     birthMonth: String = "dummy",
     firstNameInitial: String = "dummy",
     lastNameInitial: String = "dummy",
-    isPaperProof: String = "0"
-) = VerifiedQr(
-    creationDateSeconds = 0,
-    testResultAttributes = TestResultAttributes(
-        birthDay = birthDay,
-        birthMonth = birthMonth,
-        firstNameInitial = firstNameInitial,
-        lastNameInitial = lastNameInitial,
-        isSpecimen = isSpecimen,
-        isNLDCC = "1",
-        credentialVersion = "1",
-        isPaperProof = "0",
-        validForHours = "24",
-        validFrom = "1622633766",
-    )
+) = VerificationResult(
+    status = when {
+        error -> Mobilecore.VERIFICATION_FAILED_ERROR
+        isNLDCC -> Mobilecore.VERIFICATION_FAILED_IS_NL_DCC
+        else -> Mobilecore.VERIFICATION_SUCCESS
+    },
+    details = VerificationResultDetails(birthDay, birthMonth, firstNameInitial, lastNameInitial, isSpecimen, "2"),
+    error = if (error) {
+        "error"
+    } else {
+        ""
+    }
 )
 
 fun fakeVerifyQrUseCase(
-    isNLDCC: String = "0",
+    isNLDCC: Boolean = false,
     isSpecimen: String = "0",
+    error: Boolean = false,
     result: VerifyQrUseCase.VerifyQrResult = VerifyQrUseCase.VerifyQrResult.Success(
-        verifiedQr = VerifiedQr(
-            creationDateSeconds = 0,
-            testResultAttributes = TestResultAttributes(
-                birthDay = "dummy",
-                birthMonth = "dummy",
-                firstNameInitial = "dummy",
-                lastNameInitial = "dummy",
-                isSpecimen = isSpecimen,
-                isNLDCC = isNLDCC,
-                credentialVersion = "1",
-                isPaperProof = "0",
-                validForHours = "24",
-                validFrom = "1622633766",
-            )
-        )
+        fakeVerifiedQr(isSpecimen = isSpecimen, isNLDCC = isNLDCC, error = error)
     )
 ) = object : VerifyQrUseCase {
     override suspend fun get(content: String): VerifyQrUseCase.VerifyQrResult {
@@ -172,18 +158,6 @@ fun fakeCachedAppConfigUseCase(
 
     override fun getCachedAppConfig(): AppConfig {
         return appConfig
-    }
-
-    override fun getCachedAppConfigRecoveryEventValidity(): Int {
-        return appConfig.recoveryEventValidity
-    }
-
-    override fun getCachedAppConfigMaxValidityHours(): Int {
-        return appConfig.maxValidityHours
-    }
-
-    override fun getCachedAppConfigVaccinationEventValidity(): Int {
-        return appConfig.vaccinationEventValidity
     }
 
     override fun getCachedPublicKeys(): BufferedSource {
@@ -229,7 +203,7 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
 
         override fun initializeVerifier(configFilesPath: String) = ""
 
-        override fun verify(credential: ByteArray): Result {
+        override fun verify(credential: ByteArray): VerificationResult {
             TODO("Not yet implemented")
         }
 
