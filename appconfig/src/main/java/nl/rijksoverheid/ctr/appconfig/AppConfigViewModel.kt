@@ -17,6 +17,7 @@ import nl.rijksoverheid.ctr.appconfig.models.ConfigResult
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
 import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.AppStatusUseCase
+import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.PersistConfigUseCase
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.ext.ClmobileVerifyException
@@ -32,6 +33,7 @@ class AppConfigViewModelImpl(
     private val appStatusUseCase: AppStatusUseCase,
     private val persistConfigUseCase: PersistConfigUseCase,
     private val appConfigStorageManager: AppConfigStorageManager,
+    private val cachedAppConfigUseCase: CachedAppConfigUseCase,
     private val filesDirPath: String,
     private val isVerifierApp: Boolean,
     private val versionCode: Int
@@ -49,7 +51,7 @@ class AppConfigViewModelImpl(
             }
 
             val configFilesArePresentInFilesFolder = appConfigStorageManager.areConfigFilesPresentInFilesFolder()
-            if (!configFilesArePresentInFilesFolder) {
+            if (!configFilesArePresentInFilesFolder || cachedAppConfigUseCase.isCachedAppConfigValid()) {
                 return@launch appStatusLiveData.postValue(AppStatus.Error)
             }
 
