@@ -42,7 +42,7 @@ class CreateEuGreenCardUseCaseImplTest: AutoCloseKoinTest() {
     }
 
     @Test
-    fun Test() = runBlocking {
+    fun `Remote eu green card creates correct database models`() = runBlocking {
         val usecase = CreateEuGreenCardUseCaseImpl(
             holderDatabase = db,
             mobileCoreWrapper = mobileCoreWrapper
@@ -56,7 +56,7 @@ class CreateEuGreenCardUseCaseImplTest: AutoCloseKoinTest() {
         val remoteGreenCard = RemoteGreenCards.EuGreenCard(
             origins = listOf(
                 RemoteGreenCards.Origin(
-                    type = OriginType.TYPE_VACCINATION,
+                    type = OriginType.Vaccination,
                     eventTime = firstJanuaryDate,
                     expirationTime = firstJanuaryDate,
                     validFrom = firstJanuaryDate

@@ -42,7 +42,7 @@ class CreateDomesticGreenCardUseCaseImplTest: AutoCloseKoinTest() {
     }
 
     @Test
-    fun Test() = runBlocking {
+    fun `Remote domestic green card creates correct database models`() = runBlocking {
         val usecase = CreateDomesticGreenCardUseCaseImpl(
             holderDatabase = db,
             mobileCoreWrapper = mobileCoreWrapper
@@ -51,19 +51,19 @@ class CreateDomesticGreenCardUseCaseImplTest: AutoCloseKoinTest() {
         val remoteGreenCard = RemoteGreenCards.DomesticGreenCard(
             origins = listOf(
                 RemoteGreenCards.Origin(
-                    type = OriginType.TYPE_VACCINATION,
+                    type = OriginType.Vaccination,
                     eventTime = firstJanuaryDate,
                     expirationTime = firstJanuaryDate,
                     validFrom = firstJanuaryDate
                 ),
                 RemoteGreenCards.Origin(
-                    type = OriginType.TYPE_TEST,
+                    type = OriginType.Test,
                     eventTime = firstJanuaryDate,
                     expirationTime = firstJanuaryDate,
                     validFrom = firstJanuaryDate
                 ),
                 RemoteGreenCards.Origin(
-                    type = OriginType.TYPE_RECOVERY,
+                    type = OriginType.Recovery,
                     eventTime = firstJanuaryDate,
                     expirationTime = firstJanuaryDate,
                     validFrom = firstJanuaryDate

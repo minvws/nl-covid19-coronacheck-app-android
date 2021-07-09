@@ -57,7 +57,7 @@ class HolderDatabaseSyncerImpl(
 
                         // If we expect the remote green cards to have a certain origin
                         if (expectedOriginType != null && !remoteGreenCards.getAllOrigins()
-                                .contains(expectedOriginType.getTypeString())
+                                .contains(expectedOriginType)
                         ) {
                             DatabaseSyncerResult.MissingOrigin
                         }

@@ -20,6 +20,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.migration.TestResultsMig
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.HolderApiClient
+import nl.rijksoverheid.ctr.holder.ui.create_qr.api.OriginTypeJsonAdapter
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.RemoteTestStatusJsonAdapter
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.TestProviderApiClient
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigiDViewModel
@@ -247,6 +248,7 @@ fun holderModule(baseUrl: String) = module {
     single {
         get<Moshi.Builder>(Moshi.Builder::class)
             .add(RemoteTestStatusJsonAdapter())
+            .add(OriginTypeJsonAdapter())
             .add(PolymorphicJsonAdapterFactory.of(
                 RemoteProtocol::class.java, "protocolVersion")
                 .withSubtype(RemoteTestResult2::class.java, "2.0")

@@ -9,7 +9,7 @@ import retrofit2.HttpException
 import java.io.IOException
 
 /**
- * Get green cards from
+ * Get green cards from remote
  */
 interface GetRemoteGreenCardsUseCase {
     suspend fun get(events: List<EventGroupEntity>): RemoteGreenCardsResult

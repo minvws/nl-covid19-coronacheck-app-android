@@ -27,16 +27,10 @@ class CreateEuGreenCardUseCaseImpl(
 
         // Create origins for european green card
         greenCard.origins.map { remoteOrigin ->
-            val type = when (remoteOrigin.type) {
-                OriginType.TYPE_VACCINATION -> OriginType.Vaccination
-                OriginType.TYPE_RECOVERY -> OriginType.Recovery
-                OriginType.TYPE_TEST -> OriginType.Test
-                else -> throw IllegalStateException("Type not known")
-            }
             holderDatabase.originDao().insert(
                 OriginEntity(
                     greenCardId = localEuropeanGreenCardId,
-                    type = type,
+                    type = remoteOrigin.type,
                     eventTime = remoteOrigin.eventTime,
                     expirationTime = remoteOrigin.expirationTime,
                     validFrom = remoteOrigin.validFrom
