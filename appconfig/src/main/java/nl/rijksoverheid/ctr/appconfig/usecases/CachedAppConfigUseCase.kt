@@ -40,13 +40,13 @@ class CachedAppConfigUseCaseImpl constructor(
     override fun getCachedAppConfig(): AppConfig {
 
         if (!configFile.exists()) {
-            return AppConfig()
+            return AppConfig.default()
         }
 
         return try {
-            appConfigStorageManager.getFileAsBufferedSource(configFile)?.readUtf8()?.toObject(moshi) ?: AppConfig()
+            appConfigStorageManager.getFileAsBufferedSource(configFile)?.readUtf8()?.toObject(moshi) ?: AppConfig.default()
         } catch (exc: Exception) {
-            AppConfig()
+            AppConfig.default()
         }
     }
 

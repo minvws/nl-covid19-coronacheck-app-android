@@ -60,7 +60,7 @@ fun fakeAppConfig(
     informationURL: String = "",
     configTtlSeconds: Int = 0,
     maxValidityHours: Int = 0
-) = AppConfig(
+) = AppConfig.default(
     minimumVersion = minimumVersion,
     appDeactivated = appDeactivated,
     informationURL = informationURL,
@@ -72,5 +72,6 @@ fun fakeAppConfig(
     testEventValidity = 0,
     recoveryEventValidity = 0,
     temporarilyDisabled = false,
-    requireUpdateBefore = 0
+    requireUpdateBefore = 0,
+    ggdEnabled = true
 )
