@@ -301,7 +301,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                         title = getString(R.string.my_overview_green_card_not_valid_title_test),
                         description = getString(
                             R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_test,
-                            cachedAppConfigUseCase.getCachedAppConfigMaxValidityHours()
+                            cachedAppConfigUseCase.getCachedAppConfig().maxValidityHours
                                 .toString()
                         )
                     )

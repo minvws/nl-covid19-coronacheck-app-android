@@ -104,25 +104,13 @@ fun fakeCachedAppConfigUseCase(
         testEventValidity = 0,
         recoveryEventValidity = 0,
         temporarilyDisabled = false,
-        requireUpdateBefore = 0
+        requireUpdateBefore = 0,
     ),
     publicKeys: BufferedSource = "{\"cl_keys\":[]}".toResponseBody("application/json".toMediaType())
         .source()
 ): CachedAppConfigUseCase = object : CachedAppConfigUseCase {
     override fun getCachedAppConfig(): AppConfig {
         return appConfig
-    }
-
-    override fun getCachedAppConfigRecoveryEventValidity(): Int {
-        return appConfig.recoveryEventValidity
-    }
-
-    override fun getCachedAppConfigMaxValidityHours(): Int {
-        return appConfig.maxValidityHours
-    }
-
-    override fun getCachedAppConfigVaccinationEventValidity(): Int {
-        return appConfig.vaccinationEventValidity
     }
 
     override fun getCachedPublicKeys() = publicKeys
@@ -248,7 +236,7 @@ fun fakeCoronaCheckRepository(
     testIsmExceptionCallback: (() -> Unit)? = null,
     remoteNonce: RemoteNonce = RemoteNonce("", ""),
     accessTokens: RemoteAccessTokens = RemoteAccessTokens(tokens = listOf()),
-    remoteCredentials: RemoteCredentials = RemoteCredentials(
+    remoteCredentials: RemoteGreenCards = RemoteGreenCards(
         domesticGreencard = null,
         euGreencards = null
     ),
@@ -268,11 +256,11 @@ fun fakeCoronaCheckRepository(
             return accessTokens
         }
 
-        override suspend fun getCredentials(
+        override suspend fun getGreenCards(
             stoken: String,
             events: List<String>,
             issueCommitmentMessage: String
-        ): RemoteCredentials {
+        ): RemoteGreenCards {
             return remoteCredentials
         }
 

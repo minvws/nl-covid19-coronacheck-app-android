@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.models
 
 import com.squareup.moshi.JsonClass
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import java.time.OffsetDateTime
 
 /*
@@ -11,7 +12,7 @@ import java.time.OffsetDateTime
  *
  */
 @JsonClass(generateAdapter = true)
-data class RemoteCredentials(
+data class RemoteGreenCards(
     val domesticGreencard: DomesticGreenCard?,
     val euGreencards: List<EuGreenCard>?
 ) {
@@ -44,14 +45,14 @@ data class RemoteCredentials(
     )
 
     data class Origin(
-        val type: String,
+        val type: OriginType,
         val eventTime: OffsetDateTime,
         val expirationTime: OffsetDateTime,
         val validFrom: OffsetDateTime
     )
 
-    fun getAllOrigins(): List<String> {
-        val origins = mutableListOf<String>()
+    fun getAllOrigins(): List<OriginType> {
+        val origins = mutableListOf<OriginType>()
         origins.addAll(domesticGreencard?.origins?.map { it.type } ?: listOf())
         origins.addAll(euGreencards?.map { it.origins.map { it.type } }?.flatten() ?: listOf())
         return origins

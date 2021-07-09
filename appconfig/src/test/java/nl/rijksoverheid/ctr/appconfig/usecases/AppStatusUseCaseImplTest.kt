@@ -89,25 +89,6 @@ class AppStatusUseCaseImplTest {
         }
 
     @Test
-    fun `status returns InternetRequired when config is Error and cached app config does not exist`() =
-        runBlocking {
-            val appStatusUseCase = AppStatusUseCaseImpl(
-                clock = Clock.fixed(Instant.ofEpochSecond(0), ZoneId.of("UTC")),
-                cachedAppConfigUseCase = fakeCachedAppConfigUseCase(
-                    appConfig = null
-                ),
-                appConfigPersistenceManager = fakeAppConfigPersistenceManager(),
-                moshi = Moshi.Builder().build()
-            )
-
-            val appStatus = appStatusUseCase.get(
-                config = ConfigResult.Error,
-                currentVersionCode = 1
-            )
-            Assert.assertEquals(AppStatus.Error, appStatus)
-        }
-
-    @Test
     fun `status returns InternetRequired when config is Error and cached app config is no longer valid`() =
         runBlocking {
 

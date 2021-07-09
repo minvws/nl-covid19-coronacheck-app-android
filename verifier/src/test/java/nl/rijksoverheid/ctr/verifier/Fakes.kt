@@ -160,18 +160,6 @@ fun fakeCachedAppConfigUseCase(
         return appConfig
     }
 
-    override fun getCachedAppConfigRecoveryEventValidity(): Int {
-        return appConfig.recoveryEventValidity
-    }
-
-    override fun getCachedAppConfigMaxValidityHours(): Int {
-        return appConfig.maxValidityHours
-    }
-
-    override fun getCachedAppConfigVaccinationEventValidity(): Int {
-        return appConfig.vaccinationEventValidity
-    }
-
     override fun getCachedPublicKeys(): BufferedSource {
         return publicKeys
     }

@@ -16,6 +16,15 @@ sealed class OriginType(val order: Int) : Parcelable {
         const val TYPE_VACCINATION = "vaccination"
         const val TYPE_RECOVERY = "recovery"
         const val TYPE_TEST = "test"
+
+        fun fromTypeString(typeString: String): OriginType {
+            return when (typeString) {
+                TYPE_VACCINATION -> Vaccination
+                TYPE_RECOVERY -> Recovery
+                TYPE_TEST -> Test
+                else -> throw IllegalStateException("Type not known")
+            }
+        }
     }
 
     @Parcelize

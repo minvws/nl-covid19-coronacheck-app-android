@@ -9,7 +9,6 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import nl.rijksoverheid.ctr.appconfig.AppConfigUtil
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
@@ -42,7 +41,6 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
         state = emptyState(),
     )
 
-    private val appConfigUtil: AppConfigUtil by inject()
     private val dialogUtil: DialogUtil by inject()
     private val navArgs: CommercialTestCodeFragmentArgs by navArgs()
 
@@ -159,7 +157,7 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
                         CommercialTestCodeFragmentDirections.actionCouldNotCreateQr(
                             toolbarTitle = getString(R.string.commercial_test_type_title),
                             title = getString(R.string.no_negative_test_result_title),
-                            description = appConfigUtil.getStringWithTestValidity(R.string.no_negative_test_result_description)
+                            description = getString(R.string.no_negative_test_result_description)
                         )
                     )
                 }

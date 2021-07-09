@@ -140,6 +140,7 @@ dependencies {
 
     testImplementation "junit:junit:$junit_version"
     testImplementation "io.mockk:mockk:$mock_version"
+    androidTestImplementation "io.mockk:mockk-android:$mock_version"
     testImplementation "io.insert-koin:koin-test-junit4:$koin_version"
     testImplementation("org.robolectric:robolectric:$robolectric_version") {
         exclude group: 'org.bouncycastle'
@@ -165,4 +166,6 @@ dependencies {
 
     // Needed in order for room to work with Apple Sillicon M1
     kapt "org.xerial:sqlite-jdbc:$sqlite_jdbc"
+
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
 }

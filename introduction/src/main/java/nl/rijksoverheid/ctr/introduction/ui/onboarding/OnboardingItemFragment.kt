@@ -3,7 +3,6 @@ package nl.rijksoverheid.ctr.introduction.ui.onboarding
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import nl.rijksoverheid.ctr.appconfig.AppConfigUtil
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.design.ext.formatDayMonth
 import nl.rijksoverheid.ctr.introduction.R
@@ -36,7 +35,6 @@ class OnboardingItemFragment : Fragment(R.layout.fragment_onboarding_item) {
         }
     }
 
-    private val appConfigUtil: AppConfigUtil by inject()
     private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
     private val androidUtil: AndroidUtil by inject()
 
@@ -51,18 +49,7 @@ class OnboardingItemFragment : Fragment(R.layout.fragment_onboarding_item) {
         val binding = FragmentOnboardingItemBinding.bind(view)
 
         binding.title.text = getString(item.titleResource)
-        when {
-            item.descriptionHasEuLaunchDate -> {
-                val euLaunchDate = OffsetDateTime.parse(cachedAppConfigUseCase.getCachedAppConfig()!!.euLaunchDate, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
-                binding.description.setHtmlTextWithBullets(getString(item.description, euLaunchDate.formatDayMonth()), false)
-            }
-            item.descriptionHasTestValidity -> {
-                binding.description.setHtmlTextWithBullets(appConfigUtil.getStringWithTestValidity(item.description), false)
-            }
-            else -> {
-                binding.description.setHtmlTextWithBullets(getString(item.description), false)
-            }
-        }
+        binding.description.setHtmlTextWithBullets(getString(item.description), false)
 
         if (androidUtil.isSmallScreen()) {
             binding.image.visibility = View.GONE
