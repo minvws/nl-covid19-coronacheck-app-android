@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.appconfig.usecases
 
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.runBlocking
+import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.fakeAppConfig
 import nl.rijksoverheid.ctr.appconfig.fakeAppConfigPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.fakeCachedAppConfigUseCase
@@ -26,7 +27,11 @@ class AppStatusUseCaseImplTest {
 
     private val publicKeys = "{\"cl_keys\":[]}".toResponseBody("application/json".toMediaType()).source().readUtf8()
     private fun getAppConfig(minimumVersion: Int = 1, appDeactivated: Boolean = false): String =
-        "{\"androidMinimumVersion\":$minimumVersion, \"informationURL\":\"dummy\",\"configTTL\":60, \"maxValidityHours\":60, \"appDeactivated\":$appDeactivated}".toResponseBody("application/json".toMediaType()).source().readUtf8()
+        AppConfig.default(
+            minimumVersion = minimumVersion,
+            appDeactivated = appDeactivated,
+            informationURL = "dummy",
+        ).toJson(Moshi.Builder().build()).toResponseBody("application/json".toMediaType()).source().readUtf8()
 
     @Test
     fun `status returns Deactivated when app is deactivated remotely`() =

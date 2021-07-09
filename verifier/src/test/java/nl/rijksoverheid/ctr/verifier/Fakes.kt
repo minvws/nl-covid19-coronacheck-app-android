@@ -138,7 +138,7 @@ fun fakeTestResultUtil(
 }
 
 fun fakeCachedAppConfigUseCase(
-    appConfig: AppConfig = AppConfig(
+    appConfig: AppConfig = AppConfig.default(
         minimumVersion = 0,
         appDeactivated = false,
         informationURL = "dummy",
