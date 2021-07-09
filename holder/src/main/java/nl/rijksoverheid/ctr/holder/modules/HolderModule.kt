@@ -34,6 +34,8 @@ import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.QrCodeViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.QrCodeViewModelImpl
+import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.ReturnToAppUseCase
+import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.ReturnToAppUseCaseImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCaseImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.*
@@ -128,7 +130,7 @@ fun holderModule(baseUrl: String) = module {
     factory<WorkerManagerWrapper> { WorkerManagerWrapperImpl(androidContext(), get()) }
 
     // ViewModels
-    viewModel<QrCodeViewModel> { QrCodeViewModelImpl(get()) }
+    viewModel<QrCodeViewModel> { QrCodeViewModelImpl(get(), get()) }
     viewModel<CommercialTestCodeViewModel> { CommercialTestCodeViewModelImpl(get(), get()) }
     viewModel { DigiDViewModel(get()) }
     viewModel { TokenQrViewModel(get()) }
@@ -172,6 +174,10 @@ fun holderModule(baseUrl: String) = module {
 
     factory<TestResultAttributesUseCase> {
         TestResultAttributesUseCaseImpl(get(), get())
+    }
+
+    factory<ReturnToAppUseCase> {
+        ReturnToAppUseCaseImpl()
     }
 
     factory<GreenCardsUseCase> {
