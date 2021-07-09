@@ -115,9 +115,6 @@
     <string name="test_result_already_signed_description"><![CDATA[Your test result has already been retrieved. And it\'s already been made into a QR code.<br\><br\> Is this not correct? Contact the test location.]]></string>
     <string name="item_test_result_expired"><![CDATA[Your QR code has expired.<br\>Get tested again.]]></string>
     <string name="test_appointment_info_toolbar_title">Make test appointment</string>
-    <string name="test_appointment_info_title">Book test appointment</string>
-    <string name="test_appointment_info_description"><![CDATA[You must get tested before you make a QR code. You can only turn a negative test result into a QR code.<br\><br\>A negative test certificate is valid until %1$s hour(s) after the moment you\'ve been tested. So schedule your test on time. And make sure your QR code is scanned at the entrance within %1$s hour(s).]]></string>
-    <string name="test_appointment_info_button">Make an appointment</string>
     <string name="camera_rationale_dialog_title">CoronaCheck wants to access your camera</string>
     <string name="camera_rationale_dialog_description">This is the only way the app can scan your QR code.</string>
     <string name="camera_rationale_dialog_accept">OK</string>
@@ -244,7 +241,7 @@
     <string name="your_vaccination_explanation_toolbar_title">About your vaccination</string>
     <string name="your_vaccination_explanation_description"><![CDATA[<p>The following details of your vaccination were retrieved:<br/><br/>Name: <b>%1$s</b><br/>Date of birth: <b>%2$s</b><br/><br/>Pathogen:  <b>%3$s</b><br/>Vaccine: <b>%4$s</b><br/>Vaccine type: <b>%5$s</b><br/>Manufacturer: <b>%6$s</b><br/>Doses: <b>%7$s</b><br/>Vaccination date: <b>%8$s</b><br/>Vaccinated in: <b>%9$s</b><br/>Unique certificate identifier: <b>%10$s</b>]]></string>
     <string name="your_vaccination_explanation_covid_19">COVID-19</string>
-    <string name="your_vaccination_explanation_doses">%1$s from %2$s</string>
+    <string name="your_vaccination_explanation_doses">%1$s of %2$s</string>
     <string name="my_overview_not_valid_domestic_but_is_in_eu">Your %1$s isn\'t valid in the Netherlands. You\'ve only got an international certificate.</string>
     <string name="my_overview_not_valid_eu_but_is_in_domestic">Your %1$s isn\'t valid internationally. You\'ve only got a Dutch certificate.</string>
     <string name="type_recovery">recovery certificate</string>

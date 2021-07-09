@@ -115,9 +115,6 @@
     <string name="test_result_already_signed_description"><![CDATA[Je testuitslag is al opgehaald. Ook is er al een QR-code van gemaakt.<br\><br\> Klopt dit niet? Neem dan contact op met de testlocatie.]]></string>
     <string name="item_test_result_expired"><![CDATA[Je QR-code is verlopen.<br\>Laat je opnieuw testen.]]></string>
     <string name="test_appointment_info_toolbar_title">Testafspraak maken</string>
-    <string name="test_appointment_info_title">Testafspraak maken</string>
-    <string name="test_appointment_info_description"><![CDATA[Je moet je eerst laten testen voordat je een QR-code maakt. Alleen van een negatieve testuitslag kan je een QR-code maken.<br\><br\>Een testbewijs is geldig tot %1$s uur na het moment van testen. Plan je test dus op tijd. En zorg dat jouw QR-code binnen %1$s uur gescand is bij de ingang.]]></string>
-    <string name="test_appointment_info_button">Maak een afspraak</string>
     <string name="camera_rationale_dialog_title">CoronaCheck wil toegang tot je camera</string>
     <string name="camera_rationale_dialog_description">Alleen zo kan de app jouw QR-code scannen.</string>
     <string name="camera_rationale_dialog_accept">Oke</string>
@@ -196,7 +193,7 @@
     <string name="qr_code_type_vaccination_description">Ik heb mijn prik of prikken gehad</string>
     <string name="get_vaccination_title">Gegevens van je vaccinatie ophalen</string>
     <string name="get_vaccination_description"><![CDATA[Ben je al gevaccineerd? Log in met DigiD. De gegevens van je vaccinatie worden dan automatisch opgehaald. Om een internationale QR-code te maken heb je aan één vaccinatie voldoende. Voor een Nederlandse QR-code moet je volledig gevaccineerd zijn.<br/><br/>Nog geen prik gehad? Laat je dan eerst vaccineren.]]></string>
-    <string name="get_vaccination_button">Login met DigiD</string>
+    <string name="get_vaccination_button">Log in met DigiD</string>
     <string name="get_vaccination_no_digid_button">Ik heb geen DigiD</string>
     <string name="your_retrieved_vaccinations_title">Jouw opgehaalde vaccinaties</string>
     <string name="your_retrieved_vaccinations_description">Je kunt een QR-code maken van je vaccinatie. Dat is jouw bewijs.</string>
