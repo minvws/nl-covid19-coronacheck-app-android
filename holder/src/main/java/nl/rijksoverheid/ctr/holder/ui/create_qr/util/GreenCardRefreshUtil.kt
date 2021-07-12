@@ -11,8 +11,6 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.isExpiring
-import timber.log.Timber
 import java.time.Clock
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit.DAYS
@@ -36,9 +34,9 @@ class GreenCardRefreshUtilImpl(
 
         return holderDatabase.greenCardDao().getAll().any { greenCard ->
             val hasNewCredentials = !greenCardUtil.getExpireDate(greenCard).isEqual(greenCard.credentialEntities.lastOrNull()?.expirationTime)
-            val credentialExpiring = greenCard.credentialEntities.maxByOrNull { it.expirationTime }
-                ?.isExpiring(credentialRenewalDays, clock) ?: true
-            return hasNewCredentials && credentialExpiring
+            val latestCredential = greenCard.credentialEntities.maxByOrNull { it.expirationTime }
+            val latestCredentialExpiring = latestCredential?.let { credentialUtil.isExpiring(credentialRenewalDays, latestCredential) } ?: false
+            return hasNewCredentials && latestCredentialExpiring
         }
     }
 
