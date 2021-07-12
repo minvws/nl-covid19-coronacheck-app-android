@@ -41,21 +41,17 @@ class AppStatusUseCaseImpl(
                 }
                 is ConfigResult.Error -> {
                     val cachedAppConfig = cachedAppConfigUseCase.getCachedAppConfig()
-                    if (cachedAppConfig == null) {
-                        AppStatus.Error
+                    if (appConfigPersistenceManager.getAppConfigLastFetchedSeconds() + cachedAppConfig.configTtlSeconds >= OffsetDateTime.now(
+                            clock
+                        )
+                            .toEpochSecond()
+                    ) {
+                        checkIfActionRequired(
+                            currentVersionCode = currentVersionCode,
+                            appConfig = cachedAppConfig
+                        )
                     } else {
-                        if (appConfigPersistenceManager.getAppConfigLastFetchedSeconds() + cachedAppConfig.configTtlSeconds >= OffsetDateTime.now(
-                                clock
-                            )
-                                .toEpochSecond()
-                        ) {
-                            checkIfActionRequired(
-                                currentVersionCode = currentVersionCode,
-                                appConfig = cachedAppConfig
-                            )
-                        } else {
-                            AppStatus.Error
-                        }
+                        AppStatus.Error
                     }
                 }
             }

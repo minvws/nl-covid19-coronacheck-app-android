@@ -13,6 +13,7 @@ import nl.rijksoverheid.ctr.appconfig.models.ConfigResult
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
 import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.AppStatusUseCase
+import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.PersistConfigUseCase
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import okio.BufferedSource
@@ -39,12 +40,14 @@ class AppConfigViewModelTest {
     private val appStatusUseCase: AppStatusUseCase = mockk(relaxed = true)
     private val persistConfigUseCase: PersistConfigUseCase = mockk(relaxed = true)
     private val appConfigStorageManager: AppConfigStorageManager = mockk(relaxed = true)
+    private val cachedAppConfigUseCase: CachedAppConfigUseCase = mockk(relaxed = true)
 
     private fun appConfigViewModel(isVerifier: Boolean = false) = AppConfigViewModelImpl(
         appConfigUseCase = appConfigUseCase,
         appStatusUseCase = appStatusUseCase,
         persistConfigUseCase = persistConfigUseCase,
         appConfigStorageManager = appConfigStorageManager,
+        cachedAppConfigUseCase = cachedAppConfigUseCase,
         filesDirPath = filesDirPath,
         isVerifierApp = isVerifier,
         versionCode = 0
@@ -73,6 +76,7 @@ class AppConfigViewModelTest {
         coEvery { appConfigStorageManager.areConfigFilesPresentInFilesFolder() } returns true
         coEvery { appStatusUseCase.get(any(), any()) } answers { AppStatus.NoActionRequired }
         coEvery { mobileCoreWrapper.initializeHolder(filesDirPath) } returns null
+        coEvery { cachedAppConfigUseCase.isCachedAppConfigValid() } returns true
 
         appConfigViewModel().refresh(mobileCoreWrapper)
 
@@ -98,6 +102,7 @@ class AppConfigViewModelTest {
         coEvery { appConfigStorageManager.areConfigFilesPresentInFilesFolder() } returns true
         coEvery { appStatusUseCase.get(any(), any()) } answers { AppStatus.NoActionRequired }
         coEvery { mobileCoreWrapper.initializeVerifier(filesDirPath) } returns null
+        coEvery { cachedAppConfigUseCase.isCachedAppConfigValid() } returns true
 
         appConfigViewModel(true).refresh(mobileCoreWrapper)
 

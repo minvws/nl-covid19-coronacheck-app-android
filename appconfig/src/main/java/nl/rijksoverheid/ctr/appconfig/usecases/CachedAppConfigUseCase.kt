@@ -16,6 +16,7 @@ import java.io.File
  */
 
 interface CachedAppConfigUseCase {
+    fun isCachedAppConfigValid(): Boolean
     fun getCachedAppConfig(): AppConfig
     fun getCachedPublicKeys(): BufferedSource?
     fun getProviderName(providerIdentifier: String?): String
@@ -26,19 +27,26 @@ class CachedAppConfigUseCaseImpl constructor(
     private val filesDirPath: String,
     private val moshi: Moshi
 ) : CachedAppConfigUseCase {
+    private val configFile = File(filesDirPath, "config.json")
+
+    override fun isCachedAppConfigValid(): Boolean {
+        return try {
+            appConfigStorageManager.getFileAsBufferedSource(configFile)?.readUtf8()?.toObject<AppConfig>(moshi) is AppConfig
+        } catch (exc: Exception) {
+            false
+        }
+    }
 
     override fun getCachedAppConfig(): AppConfig {
-        val configFile = File(filesDirPath, "config.json")
 
         if (!configFile.exists()) {
-            return AppConfig()
+            return AppConfig.default()
         }
 
         return try {
-            appConfigStorageManager.getFileAsBufferedSource(configFile)?.readUtf8()?.toObject(moshi) ?: AppConfig()
+            appConfigStorageManager.getFileAsBufferedSource(configFile)?.readUtf8()?.toObject(moshi) ?: AppConfig.default()
         } catch (exc: Exception) {
-            configFile.delete()
-            AppConfig()
+            AppConfig.default()
         }
     }
 
@@ -49,6 +57,6 @@ class CachedAppConfigUseCaseImpl constructor(
     }
 
     override fun getProviderName(providerIdentifier: String?): String {
-        return getCachedAppConfig()?.providerIdentifiers?.firstOrNull { provider -> provider.code == providerIdentifier }?.name ?: ""
+        return getCachedAppConfig().providerIdentifiers.firstOrNull { provider -> provider.code == providerIdentifier }?.name ?: ""
     }
 }

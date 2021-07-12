@@ -46,6 +46,6 @@ fun appConfigModule(path: String, versionCode: Int) = module {
     }
 
     viewModel<AppConfigViewModel> {
-        AppConfigViewModelImpl(get(), get(), get(), get(), androidContext().filesDir.path, androidContext().packageName.contains("verifier"),versionCode)
+        AppConfigViewModelImpl(get(), get(), get(), get(), get(), androidContext().filesDir.path, androidContext().packageName.contains("verifier"),versionCode)
     }
 }

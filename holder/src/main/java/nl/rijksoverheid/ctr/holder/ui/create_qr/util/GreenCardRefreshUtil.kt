@@ -31,7 +31,7 @@ class GreenCardRefreshUtilImpl(
 ) : GreenCardRefreshUtil {
 
     override suspend fun shouldRefresh(): Boolean {
-        val credentialRenewalDays = cachedAppConfigUseCase.getCachedAppConfig()!!.credentialRenewalDays.toLong()
+        val credentialRenewalDays = cachedAppConfigUseCase.getCachedAppConfig().credentialRenewalDays.toLong()
 
         return holderDatabase.greenCardDao().getAll().filterNot {
             // We don't need to refresh green cards that are about to expire since
@@ -55,8 +55,7 @@ class GreenCardRefreshUtilImpl(
 
     override suspend fun credentialsExpireInDays(): Long {
         val configCredentialRenewalDays =
-            cachedAppConfigUseCase.getCachedAppConfig()?.credentialRenewalDays?.toLong()
-                ?: throw IllegalStateException("Invalid config file")
+            cachedAppConfigUseCase.getCachedAppConfig().credentialRenewalDays.toLong()
 
         val firstExpiringGreenCardRenewal = holderDatabase.greenCardDao().getAll()
             .filterNot {
