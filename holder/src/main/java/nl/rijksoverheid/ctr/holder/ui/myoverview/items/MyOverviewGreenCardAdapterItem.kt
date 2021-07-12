@@ -21,9 +21,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItem
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginUtil
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TestResultAdapterItemUtil
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -131,6 +129,7 @@ class MyOverviewGreenCardAdapterItem(
                             subtitle = origin.eventTime.formatDateTime(context),
                         )
                     }
+
                     is OriginType.Vaccination -> {
                         setOriginTitle(
                             textView = viewBinding.proof1Title,
@@ -241,28 +240,31 @@ class MyOverviewGreenCardAdapterItem(
             }
         }
 
-        setRefreshState(viewBinding)
+        showError(viewBinding)
     }
 
-    private fun setRefreshState(viewBinding: ItemMyOverviewGreenCardBinding) {
-        val context = viewBinding.errorText.context
-        when (databaseSyncerResult) {
-            is DatabaseSyncerResult.NetworkError -> {
-                viewBinding.errorText.setHtmlText(context.getString(R.string.my_overview_green_card_internet_error))
-                viewBinding.errorText.enableCustomLinks(onRetryClick)
-                viewBinding.errorTextRetry.setHtmlText("")
-                viewBinding.errorIcon.visibility = View.VISIBLE
-                viewBinding.errorText.visibility = View.VISIBLE
-                viewBinding.errorTextRetry.visibility = View.GONE
+    private fun showError(viewBinding: ItemMyOverviewGreenCardBinding) {
+        if (credentialState is MyOverviewItem.GreenCardItem.CredentialState.NoCredential) {
+            val context = viewBinding.errorText.context
+            when (databaseSyncerResult) {
+                is DatabaseSyncerResult.NetworkError -> {
+                    viewBinding.errorText.setHtmlText(context.getString(R.string.my_overview_green_card_internet_error))
+                    viewBinding.errorText.enableCustomLinks(onRetryClick)
+                    viewBinding.errorTextRetry.setHtmlText("")
+                    viewBinding.errorIcon.visibility = View.VISIBLE
+                    viewBinding.errorText.visibility = View.VISIBLE
+                    viewBinding.errorTextRetry.visibility = View.GONE
+                }
+                is DatabaseSyncerResult.ServerError -> {
+                    viewBinding.errorText.setHtmlText(context.getString(R.string.my_overview_green_card_server_error))
+                    viewBinding.errorText.enableCustomLinks(onRetryClick)
+                    viewBinding.errorIcon.visibility = View.VISIBLE
+                    viewBinding.errorText.visibility = View.VISIBLE
+                    viewBinding.errorTextRetry.visibility = View.GONE
+                }
+                else -> {
+                }
             }
-            is DatabaseSyncerResult.ServerError -> {
-                viewBinding.errorText.setHtmlText(context.getString(R.string.my_overview_green_card_server_error))
-                viewBinding.errorText.enableCustomLinks(onRetryClick)
-                viewBinding.errorIcon.visibility = View.VISIBLE
-                viewBinding.errorText.visibility = View.VISIBLE
-                viewBinding.errorTextRetry.visibility = View.GONE
-            }
-            else -> {}
         }
     }
 

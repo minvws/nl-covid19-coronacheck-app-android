@@ -249,7 +249,7 @@
     <string name="type_vaccination">vaccination certificate</string>
     <string name="my_overview_green_card_not_valid_title_vaccination">About your vaccination certificate</string>
     <string name="my_overview_green_card_not_valid_title_test">About your test certificate</string>
-    <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_test"><![CDATA[Your test certificate isn\'t valid in the Netherlands. That\'s why only an international certificate was made.<br/><br/>It\'s possible the validity period in the Netherlands (%1$s hours is shorter than the validity period in other countries. Get tested again.]]></string>
+    <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_test"><![CDATA[Your test certificate isn\'t valid in the Netherlands. That\'s why only an international certificate was made.<br/><br/>It\'s possible the validity period in the Netherlands is shorter than the validity period in other countries. Get tested again.]]></string>
     <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_vaccination"><![CDATA[Your vaccination certificate isn\'t valid in the Netherlands. That\'s why only an international certificate was made.<br/><br/>It\'s possible you\'ve only had one injection. Add your second vaccination to get a valid Dutch certificate.]]></string>
     <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_test"><![CDATA[Your test certificate isn\'t valid internationally. That\'s why only a Dutch certificate was made.<br/><br/>It\'s possible your type of test isn\'t accepted abroad. Get tested again.]]></string>
     <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_vaccination"><![CDATA[Your vaccination certificate isn\'t valid internationally. That\'s why only a Dutch certificate was made.<br/><br/>It\'s possible your type of vaccination isn\'t accepted abroad.]]></string>
@@ -278,8 +278,8 @@
     <string name="missing_events_description">Due to increased traffic or an outage at one of the parties, some details may be missing. Please try again later.</string>
     <string name="dialog_vaccination_something_wrong_description"><![CDATA[Is your name or date of birth wrong? Or are your vaccination details incorrect? Look <a href="https://coronacheck.nl/en/guidepost">here</a> for more information.]]></string>
     <string name="dialog_title_no_internet">Connect to the internet</string>
-    <string name="dialog_update_credentials_no_internet">The app refreshes your QR code in the background, so your QR code remains valid. You need internet so the app can do this regularly.</string>
-    <string name="dialog_credentials_expired_no_internet">Your QR code is not active. Connect to the internet so your QR code will be valid again.</string>
+    <string name="dialog_update_credentials_no_internet">The QR code sometimes needs an internet connection. Without an internet connection, your QR code cannot be used for much longer. When you’re connected, you’ll be able to use the QR code again for a longer period of time.</string>
+    <string name="dialog_credentials_expired_no_internet">You need an internet connection to regain access to your QR code.</string>
     <string name="commercial_test_unique_code_hint_screenreader">Enter your retrieval code here</string>
     <string name="new_in_app_subtitle">New in the app</string>
     <string name="new_in_app_screen_1_title">Recovery certificate</string>
@@ -291,7 +291,7 @@
     <string name="get_recovery_description"><![CDATA[Have you had coronavirus? Then you can make a recovery certificate of the positive test result from the GGD. Log in with DigiD to retrieve your test result.<br/><br/> Your recovery certificate will be valid 11 days after the positive test result.]]></string>
     <string name="rule_engine_no_recovery_origin_description"><![CDATA[At this moment, we can\'t make a certificate from your positive test result. This can have various causes.  <a href="https://coronacheck.nl/en/guidepost">Read more here.</a>]]></string>
     <string name="no_positive_test_result_title">No positive test result available</string>
-    <string name="no_positive_test_result_description"><![CDATA[<p>There is no positive test result available.<p><p>Got tested recently? It can take a few hours until your details are available. Try again later.</p>]]></string>
+    <string name="no_positive_test_result_description"><![CDATA[There is no positive test result available.<br/><br/>Got tested recently? It can take a few hours until your details are available. Try again later.<br/><br/>Have you been tested more than 180 days ago? Then your test result is no longer valid.]]></string>
     <string name="positive_test_not_valid_title">Positive test result is not valid</string>
     <string name="positive_test_not_valid_description">Have you been tested more than 180 days ago? Then your test result is no longer valid. In this case, you cannot create a recovery certificate.</string>
     <string name="qr_code_type_recovery_title">A recovery certificate</string>
@@ -305,7 +305,7 @@
     <string name="my_overview_green_card_not_valid_title_recovery">About your recovery certificate</string>
     <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_recovery"><![CDATA[Your recovery certificate isn\'t valid in the Netherlands, because the type of test is not accepted.<br/><br/>You’ve only got an international QR-code.]]></string>
     <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_recovery"><![CDATA[Your recovery certificate isn\'t valid internationally. You\'ve only got a Dutch certificate. <br/><br/>The reason is that the type of test is not accepted. An international recovery certificate can only be made with a PCR-test.]]></string>
-    <string name="my_overview_green_card_server_error"><![CDATA[Your QR code does not work because of a server error. <a href="#">Try again</a>]]></string>
+    <string name="my_overview_green_card_server_error"><![CDATA[You can\'t use the QR code because of a <br\>server error. <a href="#">Try again</a>]]></string>
     <string name="my_overview_green_card_server_error_after_retry"><![CDATA[or call the help desk at 0800-1421 (free)]]></string>
     <string name="my_overview_green_card_internet_error"><![CDATA[Connect to the internet to make sure <br\> your QR code works again. <a href="#">Try again</a>]]></string>
     <string name="dialog_faultyvaccination28June_title">Vaccination certificate corrected</string>
