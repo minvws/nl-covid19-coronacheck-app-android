@@ -29,7 +29,8 @@ interface GetMyOverviewItemsUseCase {
     suspend fun get(
         walletId: Int,
         selectedType: GreenCardType,
-        databaseSyncerResult: DatabaseSyncerResult = DatabaseSyncerResult.Success
+        databaseSyncerResult: DatabaseSyncerResult = DatabaseSyncerResult.Success,
+        shouldRefresh: Boolean
     ): MyOverviewItems
 }
 
@@ -37,15 +38,15 @@ class GetMyOverviewItemsUseCaseImpl(
     private val holderDatabase: HolderDatabase,
     private val credentialUtil: CredentialUtil,
     private val greenCardUtil: GreenCardUtil,
-    private val originUtil: OriginUtil,
-    private val greenCardRefreshUtil: GreenCardRefreshUtil,
+    private val originUtil: OriginUtil
 ) :
     GetMyOverviewItemsUseCase {
 
     override suspend fun get(
         walletId: Int,
         selectedType: GreenCardType,
-        databaseSyncerResult: DatabaseSyncerResult
+        databaseSyncerResult: DatabaseSyncerResult,
+        shouldRefresh: Boolean
     ): MyOverviewItems {
         return withContext(Dispatchers.IO) {
             val unselectedType = when (selectedType) {
@@ -72,7 +73,8 @@ class GetMyOverviewItemsUseCaseImpl(
                     selectedType = selectedType,
                     greenCardsForSelectedType = greenCardsForSelectedType,
                     greenCardsForUnselectedType = greenCardsForUnselectedType,
-                    databaseSyncerResult = databaseSyncerResult
+                    databaseSyncerResult = databaseSyncerResult,
+                    shouldRefresh = shouldRefresh
                 )
             )
 
@@ -118,7 +120,8 @@ class GetMyOverviewItemsUseCaseImpl(
         selectedType: GreenCardType,
         greenCardsForSelectedType: List<GreenCard>,
         greenCardsForUnselectedType: List<GreenCard>,
-        databaseSyncerResult: DatabaseSyncerResult
+        databaseSyncerResult: DatabaseSyncerResult,
+        shouldRefresh: Boolean
     ): List<MyOverviewItem> {
 
         // Loop through all green cards that exists in the database and map them to UI models
@@ -147,8 +150,7 @@ class GetMyOverviewItemsUseCaseImpl(
 
                 // More our credential to a more readable state
                 val credentialState = when {
-                    databaseSyncerResult !is DatabaseSyncerResult.Success -> CredentialState.NoCredential
-                    greenCardRefreshUtil.shouldRefresh() -> CredentialState.LoadingCredential
+                    shouldRefresh -> CredentialState.LoadingCredential
                     activeCredential == null -> CredentialState.NoCredential
                     !hasValidOriginStates -> CredentialState.NoCredential
                     else -> CredentialState.HasCredential(activeCredential)
