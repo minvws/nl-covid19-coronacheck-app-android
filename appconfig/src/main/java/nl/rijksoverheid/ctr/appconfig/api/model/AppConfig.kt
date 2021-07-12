@@ -43,6 +43,7 @@ data class AppConfig(
     @Json(name = "nlTestTypes") val nlTestTypes: List<Code>,
     @Json(name = "providerIdentifiers") val providerIdentifiers: List<Code>,
     @Json(name = "ggdEnabled") val ggdEnabled: Boolean,
+    @Json(name = "returnApps") val returnApps: List<Code>,
 ) : JSON() {
 
     @JsonClass(generateAdapter = true)
@@ -72,6 +73,7 @@ data class AppConfig(
             nlTestTypes: List<Code> = listOf(),
             providerIdentifiers: List<Code> = listOf(),
             ggdEnabled: Boolean = true,
+            returnApps: List<Code> = emptyList()
         ) = AppConfig(
             minimumVersion = minimumVersion,
             appDeactivated = appDeactivated,
@@ -95,6 +97,7 @@ data class AppConfig(
             nlTestTypes = nlTestTypes,
             providerIdentifiers = providerIdentifiers,
             ggdEnabled = ggdEnabled,
+            returnApps = returnApps
         )
     }
 }
