@@ -2,7 +2,6 @@ package nl.rijksoverheid.ctr.holder.ui.myoverview
 
 import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
-import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.os.Handler
@@ -22,6 +21,7 @@ import nl.rijksoverheid.ctr.holder.databinding.FragmentQrCodeBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.InfoScreenUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeData
+import nl.rijksoverheid.ctr.holder.ui.myoverview.models.ReturnAppData
 import nl.rijksoverheid.ctr.shared.QrCodeConstants
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAccessibilityFocus
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
@@ -83,18 +83,28 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
         args.returnUri?.let { qrCodeViewModel.onReturnUriGiven(it) }
     }
 
-    private fun returnToApp(intent: Intent?) {
-        intent?.let {
-            binding.button.visibility = View.VISIBLE
-            binding.button.setOnClickListener {
-                try {
-                    startActivity(intent)
-                } catch (exception: ActivityNotFoundException) {
-                    Toast.makeText(requireContext(), "failed to return to app", Toast.LENGTH_SHORT)
-                        .show()
-                }
-            }
-        } ?: run { binding.button.visibility = View.GONE }
+    private fun returnToApp(returnAppData: ReturnAppData?) {
+        binding.button.run {
+            returnAppData?.let {
+                visibility = View.VISIBLE
+                text = getString(R.string.qr_code_return_app_button, it.appName)
+                setOnClickListener { startIntent(returnAppData) }
+            } ?: run { visibility = View.GONE }
+        }
+    }
+
+    private fun startIntent(returnAppData: ReturnAppData) {
+        try {
+            startActivity(returnAppData.intent)
+        } catch (exception: ActivityNotFoundException) {
+            // TODO: improve error handling
+            Toast.makeText(
+                requireContext(),
+                "failed to return to app",
+                Toast.LENGTH_SHORT
+            )
+                .show()
+        }
     }
 
     private fun bindQrCodeData(qrCodeData: QrCodeData) {

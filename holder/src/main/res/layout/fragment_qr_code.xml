@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginVertical="8dp"
-        android:text="Return to app"
+        tools:text="Return to app"
         android:visibility="gone" />
 
     <ImageView
