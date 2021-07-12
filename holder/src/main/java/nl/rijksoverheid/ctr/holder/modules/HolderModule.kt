@@ -189,7 +189,7 @@ fun holderModule(baseUrl: String) = module {
     }
 
     factory<ReturnToAppUseCase> {
-        ReturnToAppUseCaseImpl()
+        ReturnToAppUseCaseImpl(get())
     }
 
     factory<RemoveExpiredEventsUseCase> {

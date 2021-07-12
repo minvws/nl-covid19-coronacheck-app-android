@@ -43,8 +43,9 @@ data class AppConfig(
     @Json(name = "nlTestTypes") val nlTestTypes: List<Code> = listOf(),
     @Json(name = "providerIdentifiers") val providerIdentifiers: List<Code> = listOf(),
     @Json(name = "ggdEnabled") val ggdEnabled: Boolean = true,
+    @Json(name = "returnApp") val returnApps: List<Code> = listOf()
 ) : JSON() {
 
     @JsonClass(generateAdapter = true)
-    data class Code(val code: String, val name: String): JSON()
+    data class Code(val code: String, val name: String) : JSON()
 }
