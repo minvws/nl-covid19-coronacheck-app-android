@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit
 class RemoveExpiredEventsUseCaseImplTest {
 
     private val cachedAppConfigUseCase = fakeCachedAppConfigUseCase(
-        appConfig = AppConfig(
+        appConfig = AppConfig.default(
             vaccinationEventValidity = TimeUnit.DAYS.toHours(10).toInt(),
             testEventValidity = TimeUnit.DAYS.toHours(20).toInt(),
             recoveryEventValidity = TimeUnit.DAYS.toHours(30).toInt()

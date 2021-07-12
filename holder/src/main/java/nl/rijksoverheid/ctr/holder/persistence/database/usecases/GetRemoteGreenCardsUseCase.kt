@@ -22,14 +22,14 @@ class GetRemoteGreenCardsUseCaseImpl(
 ) : GetRemoteGreenCardsUseCase {
 
     override suspend fun get(events: List<EventGroupEntity>): RemoteGreenCardsResult {
-        val prepareIssue = coronaCheckRepository.getPrepareIssue()
-
-        val commitmentMessage = mobileCoreWrapper.createCommitmentMessage(
-            secretKey = secretKeyUseCase.json().toByteArray(),
-            prepareIssueMessage = prepareIssue.prepareIssueMessage
-        )
-
         return try {
+            val prepareIssue = coronaCheckRepository.getPrepareIssue()
+
+            val commitmentMessage = mobileCoreWrapper.createCommitmentMessage(
+                secretKey = secretKeyUseCase.json().toByteArray(),
+                prepareIssueMessage = prepareIssue.prepareIssueMessage
+            )
+
             val remoteGreenCards =  coronaCheckRepository.getGreenCards(
                 stoken = prepareIssue.stoken,
                 events = events.map { String(it.jsonData) },

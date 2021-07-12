@@ -54,40 +54,43 @@ class MyOverviewViewModelImpl(
         persistenceManager.setSelectedGreenCardType(selectType)
 
         viewModelScope.launch {
+            // Check if we need to refresh our data
+            val hasDoneRefreshCall = databaseSyncerResultLiveData.value?.peekContent() != null && selectType == getSelectedType()
+            val shouldRefresh = (forceSync) || (greenCardRefreshUtil.shouldRefresh() && !hasDoneRefreshCall)
+
             // Get items we need to show on the overview
             (myOverviewItemsLiveData as MutableLiveData).postValue(
                 Event(
                     getMyOverviewItemsUseCase.get(
                         selectedType = selectType,
-                        walletId = 1
+                        walletId = 1,
+                        databaseSyncerResult = databaseSyncerResultLiveData.value?.peekContent() ?: DatabaseSyncerResult.Success,
+                        shouldRefresh = shouldRefresh
                     )
                 )
             )
 
-            // Check if we need to refresh our data
-            val hasDoneRefreshCall = databaseSyncerResultLiveData.value != null && selectType == getSelectedType()
-            val shouldRefresh = (forceSync) || (greenCardRefreshUtil.shouldRefresh() && !hasDoneRefreshCall)
-
-            // Refresh the database
-            // This checks if we need to remove expired EventGroupEntity's
-            // Also syncs the database with remote if needed
-            val databaseSyncerResult = holderDatabaseSyncer.sync(
-                syncWithRemote = shouldRefresh
-            )
-
-            // Communicate refresh to the UI
-            (databaseSyncerResultLiveData as MutableLiveData).postValue(
-                Event(databaseSyncerResult)
-            )
-
-            // If we needed to refresh out data we want to refresh the items on the overview again
             if (shouldRefresh) {
+                // Refresh the database
+                // This checks if we need to remove expired EventGroupEntity's
+                // Also syncs the database with remote if needed
+                val databaseSyncerResult = holderDatabaseSyncer.sync(
+                    syncWithRemote = shouldRefresh
+                )
+
+                // Communicate refresh to the UI (only once)
+                (databaseSyncerResultLiveData as MutableLiveData).postValue(
+                    Event(databaseSyncerResult)
+                )
+
+                // If we needed to refresh out data we want to refresh the items on the overview again
                 myOverviewItemsLiveData.postValue(
                     Event(
                         getMyOverviewItemsUseCase.get(
                             selectedType = selectType,
                             walletId = 1,
-                            databaseSyncerResult = databaseSyncerResult
+                            databaseSyncerResult = databaseSyncerResult,
+                            shouldRefresh = false
                         )
                     )
                 )

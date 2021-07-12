@@ -138,7 +138,7 @@ fun fakeTestResultUtil(
 }
 
 fun fakeCachedAppConfigUseCase(
-    appConfig: AppConfig = AppConfig(
+    appConfig: AppConfig = AppConfig.default(
         minimumVersion = 0,
         appDeactivated = false,
         informationURL = "dummy",
@@ -155,6 +155,9 @@ fun fakeCachedAppConfigUseCase(
     publicKeys: BufferedSource = "{\"cl_keys\":[]}".toResponseBody("application/json".toMediaType())
         .source()
 ): CachedAppConfigUseCase = object : CachedAppConfigUseCase {
+    override fun isCachedAppConfigValid(): Boolean {
+        TODO("Not yet implemented")
+    }
 
     override fun getCachedAppConfig(): AppConfig {
         return appConfig

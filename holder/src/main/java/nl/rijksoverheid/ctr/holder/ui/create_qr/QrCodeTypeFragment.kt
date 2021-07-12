@@ -30,7 +30,7 @@ class QrCodeTypeFragment : Fragment(R.layout.fragment_qr_code_type) {
             R.string.qr_code_type_negative_test_title,
             getString(R.string.qr_code_type_negative_test_description)
         ) {
-            if (cachedAppConfigUseCase.getCachedAppConfig()?.ggdEnabled == true) {
+            if (cachedAppConfigUseCase.getCachedAppConfig().ggdEnabled) {
                 findNavController().navigate(QrCodeTypeFragmentDirections.actionChooseProvider())
             } else {
                 findNavController().navigate(QrCodeTypeFragmentDirections.actionCommercialTestCode())
