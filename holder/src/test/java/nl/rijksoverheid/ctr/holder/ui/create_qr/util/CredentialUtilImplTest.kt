@@ -9,6 +9,15 @@ import java.time.*
 
 class CredentialUtilImplTest {
 
+    private fun credentialIdentity(expirationTime: OffsetDateTime) = CredentialEntity(
+        id = 1,
+        greenCardId = 1L,
+        data = "".toByteArray(),
+        credentialVersion = 2,
+        validFrom = OffsetDateTime.now(),
+        expirationTime = expirationTime,
+    )
+
     @Test
     fun `getActiveCredential returns active credential with highest expiration time`() {
         val clock = Clock.fixed(Instant.ofEpochSecond(50), ZoneId.of("UTC"))
@@ -67,5 +76,47 @@ class CredentialUtilImplTest {
         )
 
         assertNull(null, activeCredential)
+    }
+
+    @Test
+    fun `given a credential expiring before the renewal date, when isExpiring, then it returns true`() {
+        val clock = Clock.fixed(Instant.parse("2021-01-01T00:00:00.00Z"), ZoneId.of("UTC"))
+        val credentialEntity = credentialIdentity(
+            expirationTime = OffsetDateTime.ofInstant(
+                Instant.parse("2021-01-03T00:00:00.00Z"),
+                ZoneId.of("UTC")
+            )
+        )
+
+        val credentialUtil = CredentialUtilImpl(clock)
+        assertTrue(credentialUtil.isExpiring(5L, credentialEntity))
+    }
+
+    @Test
+    fun `given a credential expiring after the renewal date, when isExpiring, then it returns false`() {
+        val clock = Clock.fixed(Instant.parse("2021-01-01T00:00:00.00Z"), ZoneId.of("UTC"))
+        val credentialEntity = credentialIdentity(
+            expirationTime = OffsetDateTime.ofInstant(
+                Instant.parse("2021-01-06T00:00:00.00Z"),
+                ZoneId.of("UTC")
+            )
+        )
+
+        val credentialUtil = CredentialUtilImpl(clock)
+        assertFalse(credentialUtil.isExpiring(5L, credentialEntity))
+    }
+
+    @Test
+    fun `given a credential expiring exactly on the renewal date, when isExpiring, then it returns true`() {
+        val clock = Clock.fixed(Instant.parse("2021-01-01T00:00:00.00Z"), ZoneId.of("UTC"))
+        val credentialEntity = credentialIdentity(
+            expirationTime = OffsetDateTime.ofInstant(
+                Instant.parse("2021-01-01T00:00:00.00Z"),
+                ZoneId.of("UTC")
+            )
+        )
+
+        val credentialUtil = CredentialUtilImpl(clock)
+        assertTrue(credentialUtil.isExpiring(5L, credentialEntity))
     }
 }
