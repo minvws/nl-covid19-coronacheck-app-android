@@ -12,6 +12,7 @@ import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.isExpiring
+import timber.log.Timber
 import java.time.Clock
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit.DAYS
@@ -33,15 +34,12 @@ class GreenCardRefreshUtilImpl(
     override suspend fun shouldRefresh(): Boolean {
         val credentialRenewalDays = cachedAppConfigUseCase.getCachedAppConfig().credentialRenewalDays.toLong()
 
-        return holderDatabase.greenCardDao().getAll().filterNot {
-            // We don't need to refresh green cards that are about to expire since
-            // there won't be any credentials to fetch for them
-            greenCardUtil.isExpiring(credentialRenewalDays, it)
-        }.firstOrNull { greenCard ->
+        return holderDatabase.greenCardDao().getAll().any { greenCard ->
+            val hasNewCredentials = !greenCardUtil.getExpireDate(greenCard).isEqual(greenCard.credentialEntities.lastOrNull()?.expirationTime)
             val credentialExpiring = greenCard.credentialEntities.maxByOrNull { it.expirationTime }
                 ?.isExpiring(credentialRenewalDays, clock) ?: true
-            credentialExpiring
-        } != null
+            return hasNewCredentials && credentialExpiring
+        }
     }
 
     override suspend fun allCredentialsExpired(selectedType: GreenCardType): Boolean {
