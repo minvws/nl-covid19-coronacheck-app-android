@@ -114,6 +114,11 @@
             android:label="@string/choose_provider_toolbar"
             tools:layout="@layout/fragment_paper_proof_code"/>
 
+        <fragment
+            android:id="@+id/nav_scan_paper_proof"
+            android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.ScanPaperProofFragment"
+            tools:layout="@layout/fragment_paper_proof_code"/>
+
     </navigation>
 
     <fragment

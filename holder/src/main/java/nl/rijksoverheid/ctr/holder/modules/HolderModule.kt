@@ -24,10 +24,10 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.api.OriginTypeJsonAdapter
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.RemoteTestStatusJsonAdapter
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.TestProviderApiClient
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigiDViewModel
-import nl.rijksoverheid.ctr.holder.ui.create_qr.hkvi.GetEventFromQrUseCase
-import nl.rijksoverheid.ctr.holder.ui.create_qr.hkvi.GetEventFromQrUseCaseImpl
-import nl.rijksoverheid.ctr.holder.ui.create_qr.hkvi.ScanPaperQrViewModel
-import nl.rijksoverheid.ctr.holder.ui.create_qr.hkvi.ScanPaperQrViewModelImpl
+import nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.GetEventFromQrUseCase
+import nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.GetEventFromQrUseCaseImpl
+import nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.ScanPaperQrViewModel
+import nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.ScanPaperQrViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*

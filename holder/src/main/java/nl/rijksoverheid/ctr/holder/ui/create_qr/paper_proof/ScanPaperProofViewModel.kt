@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.holder.ui.create_qr.hkvi
+package nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
