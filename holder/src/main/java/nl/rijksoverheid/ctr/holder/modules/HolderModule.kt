@@ -24,6 +24,10 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.api.OriginTypeJsonAdapter
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.RemoteTestStatusJsonAdapter
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.TestProviderApiClient
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigiDViewModel
+import nl.rijksoverheid.ctr.holder.ui.create_qr.hkvi.GetEventFromQrUseCase
+import nl.rijksoverheid.ctr.holder.ui.create_qr.hkvi.GetEventFromQrUseCaseImpl
+import nl.rijksoverheid.ctr.holder.ui.create_qr.hkvi.ScanPaperQrViewModel
+import nl.rijksoverheid.ctr.holder.ui.create_qr.hkvi.ScanPaperQrViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
@@ -139,6 +143,8 @@ fun holderModule(baseUrl: String) = module {
 
     factory<WorkerManagerWrapper> { WorkerManagerWrapperImpl(androidContext(), get()) }
 
+    factory<GetEventFromQrUseCase> { GetEventFromQrUseCaseImpl(get()) }
+
     // ViewModels
     viewModel<QrCodeViewModel> { QrCodeViewModelImpl(get()) }
     viewModel<CommercialTestCodeViewModel> { CommercialTestCodeViewModelImpl(get(), get()) }
@@ -148,6 +154,7 @@ fun holderModule(baseUrl: String) = module {
     viewModel<YourEventsViewModel> { YourEventsViewModelImpl(get(), get()) }
     viewModel<MyOverviewViewModel> { MyOverviewViewModelImpl(get(), get(), get(), get()) }
     viewModel<GetEventsViewModel> { GetEventsViewModelImpl(get()) }
+    viewModel<ScanPaperQrViewModel> { ScanPaperQrViewModelImpl(get()) }
 
     // Repositories
     single { AuthenticationRepository() }
