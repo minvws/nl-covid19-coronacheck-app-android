@@ -32,12 +32,14 @@ class GreenCardRefreshUtilImpl(
     override suspend fun shouldRefresh(): Boolean {
         val credentialRenewalDays = cachedAppConfigUseCase.getCachedAppConfig().credentialRenewalDays.toLong()
 
-        return holderDatabase.greenCardDao().getAll().any { greenCard ->
+        val greenCardExpiring = holderDatabase.greenCardDao().getAll().firstOrNull { greenCard ->
             val hasNewCredentials = !greenCardUtil.getExpireDate(greenCard).isEqual(greenCard.credentialEntities.lastOrNull()?.expirationTime)
             val latestCredential = greenCard.credentialEntities.maxByOrNull { it.expirationTime }
             val latestCredentialExpiring = latestCredential?.let { credentialUtil.isExpiring(credentialRenewalDays, latestCredential) } ?: false
-            return hasNewCredentials && latestCredentialExpiring
+            hasNewCredentials && latestCredentialExpiring
         }
+
+        return greenCardExpiring != null
     }
 
     override suspend fun allCredentialsExpired(selectedType: GreenCardType): Boolean {
