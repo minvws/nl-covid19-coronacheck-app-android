@@ -42,7 +42,7 @@ class GreenCardRefreshUtilImplTest {
 
     private val firstJanuaryClock = Clock.fixed(Instant.parse("2021-01-01T00:00:00.00Z"), ZoneId.of("UTC"))
 
-    private val credentialUtil = mockk<CredentialUtil>(relaxed = true)
+    private val credentialUtil = CredentialUtilImpl(firstJanuaryClock)
 
     private val greenCardRefreshUtil = GreenCardRefreshUtilImpl(holderDatabase, cachedAppConfigUseCase, greenCardUtil, firstJanuaryClock, credentialUtil)
     
@@ -65,8 +65,8 @@ class GreenCardRefreshUtilImplTest {
 
     private fun validOriginEntity() = OriginEntity(1, 1L, OriginType.Test, OffsetDateTime.now(), OffsetDateTime.now(), OffsetDateTime.now())
 
-    private fun validGreenCard(expireDateTime1: String = "2021-01-07T07:00:00.00Z",
-                               expireDateTime2: String = "2021-01-07T07:00:00.00Z") = greenCard(
+    private fun validGreenCard(expireDateTime1: String = "2021-01-06T07:00:00.00Z",
+                               expireDateTime2: String = "2021-01-06T07:00:00.00Z") = greenCard(
         originEntities = listOf(validOriginEntity()),
         credentials = listOf(credentialEntity(expireDateTime = expireDateTime1),
             credentialEntity(expireDateTime = expireDateTime2))
