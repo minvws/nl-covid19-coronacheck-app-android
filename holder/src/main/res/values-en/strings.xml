@@ -183,8 +183,6 @@
     <string name="url_accessibility">https://coronacheck.nl/en/accessibility-in-app</string>
     <string name="create_qr_explanation_menu_title">Make QR code</string>
     <string name="create_qr_explanation_menu_title_alternative">Add a QR code</string>
-    <string name="create_qr_explanation_title">Make a QR code</string>
-    <string name="create_qr_explanation_description"><![CDATA[The app makes a QR code in three steps. This QR code is your personal certificate.<br/><br/><b>1. Choose the type of certificate</b><br/>Choose to create a vaccination certificate, a test certificate or a recovery certificate.<br/><br/><b>2. Automatically retrieve data </b><br/>The app directly retrieves the data of your vaccination, test result or recovery.<br/><br/><b>  3. QR codes are ready </b><br/>The app generates a QR code for the Netherlands and one for other countries. <br/><br/>]]></string>
     <string name="qr_code_type_title">What kind of certificate would you like to add?</string>
     <string name="qr_code_type_description">Indicate what kind of certificate you would like to add. You can have multiple certificates.</string>
     <string name="qr_code_type_negative_test_title">A test certificate</string>

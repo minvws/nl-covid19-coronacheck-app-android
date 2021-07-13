@@ -183,8 +183,6 @@
     <string name="url_accessibility">https://coronacheck.nl/nl/accessibility-in-app</string>
     <string name="create_qr_explanation_menu_title">QR-code maken</string>
     <string name="create_qr_explanation_menu_title_alternative">Voeg een QR-code toe</string>
-    <string name="create_qr_explanation_title">Een QR-code maken</string>
-    <string name="create_qr_explanation_description"><![CDATA[De app maakt in 3 stappen een QR-code. De QR-code is jouw bewijs.<br/><br/><b>1. Kies het soort bewijs</b><br/>Je kan een vaccinatiebewijs, een testbewijs of een herstelbewijs maken.<br/><br/><b>2. Automatisch gegevens ophalen</b><br/>De app haalt direct de gegevens van je vaccinatie, testuitslag of herstel op.<br/><br/><b>3. QR-codes staan klaar</b><br/>De app maakt twee QR-codes: een QR-code voor Nederland en een internationale.]]></string>
     <string name="qr_code_type_title">Welk bewijs wil je toevoegen?</string>
     <string name="qr_code_type_description">Geef aan wat voor bewijs je wil toevoegen. Je kunt meerdere bewijzen tegelijk hebben.</string>
     <string name="qr_code_type_negative_test_title">Een testbewijs</string>
