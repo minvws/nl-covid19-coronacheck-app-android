@@ -33,7 +33,7 @@ class GreenCardRefreshUtilImpl(
         val credentialRenewalDays = cachedAppConfigUseCase.getCachedAppConfig().credentialRenewalDays.toLong()
 
         val greenCardExpiring = holderDatabase.greenCardDao().getAll().firstOrNull { greenCard ->
-            val hasNewCredentials = !greenCardUtil.getExpireDate(greenCard).isEqual(greenCard.credentialEntities.lastOrNull()?.expirationTime)
+            val hasNewCredentials = !greenCardUtil.getExpireDate(greenCard).isEqual(greenCard.credentialEntities.lastOrNull()?.expirationTime ?: OffsetDateTime.now(clock))
             val latestCredential = greenCard.credentialEntities.maxByOrNull { it.expirationTime }
             val latestCredentialExpiring = latestCredential?.let { credentialUtil.isExpiring(credentialRenewalDays, latestCredential) } ?: false
             hasNewCredentials && latestCredentialExpiring
