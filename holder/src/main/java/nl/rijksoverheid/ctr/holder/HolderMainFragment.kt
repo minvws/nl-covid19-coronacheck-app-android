@@ -168,6 +168,8 @@ class HolderMainFragment : BaseMainFragment(
             .styleTitle(context, R.attr.textAppearanceBody1)
         binding.navView.menu.findItem(R.id.nav_terms_of_use)
             .styleTitle(context, R.attr.textAppearanceBody1)
+        binding.navView.menu.findItem(R.id.nav_paper_proof)
+            .styleTitle(context, R.attr.textAppearanceBody1)
     }
 
 }

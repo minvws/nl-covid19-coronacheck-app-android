@@ -24,6 +24,11 @@
         android:id="@+id/info"
         android:checkableBehavior="single">
         <item
+            android:id="@+id/nav_paper_proof"
+            android:checkable="false"
+            android:title="@string/add_paper_proof" />
+
+        <item
             android:id="@+id/nav_frequently_asked_questions"
             android:checkable="false"
             android:title="@string/frequently_asked_questions" />

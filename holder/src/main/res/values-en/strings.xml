@@ -315,4 +315,7 @@
     <string name="my_overview_qr_placeholder_header">Find your certificate here later</string>
     <string name="my_overview_qr_placeholder_description"><![CDATA[You can add a certificate if you\'re vaccinated, if you\'ve had corona or by taking a test at an <a href="https://coronacheck.nl/en/testafspraak-in-app">affiliated test location</a>. The app generates a certificate for the Netherlands and one for other countries.<br /></p><p><b>Travelling outside the Netherlands?</b><br />Check <a href="www.nederlandwereldwijd.nl/reizen/reisadviezen">wijsopreis.nl</a> before you leave. There you will find which certificate is valid in the country you’re planning to visit.]]></string>
     <string name="my_overview_add_qr_button">Add certificate</string>
+    <string name="add_paper_proof">Papieren bewijs toevoegen</string>
+    <string name="add_paper_proof_title">Controle Cvooraf</string>
+    <string name="add_paper_proof_description">Vul de lettercombinatie in die je van de zorgverlener bij je papieren bewijs hebt gekregen.</string>
 </resources>
