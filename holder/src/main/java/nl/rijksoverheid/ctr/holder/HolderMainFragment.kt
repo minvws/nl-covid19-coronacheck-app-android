@@ -32,8 +32,7 @@ import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAccessibilityFocus
 class HolderMainFragment : BaseMainFragment(
     R.layout.fragment_main, setOf(
         R.id.nav_my_overview,
-        R.id.nav_about_this_app,
-        R.id.nav_qr_explanation_root
+        R.id.nav_about_this_app
     )
 ) {
 
@@ -160,7 +159,7 @@ class HolderMainFragment : BaseMainFragment(
             .styleTitle(context, R.attr.textAppearanceHeadline6)
         binding.navView.menu.findItem(R.id.nav_settings)
             .styleTitle(context, R.attr.textAppearanceHeadline6)
-        binding.navView.menu.findItem(R.id.nav_qr_explanation_root)
+        binding.navView.menu.findItem(R.id.action_qr_type)
             .styleTitle(context, R.attr.textAppearanceHeadline6)
         binding.navView.menu.findItem(R.id.nav_about_this_app)
             .styleTitle(context, R.attr.textAppearanceBody1)
@@ -171,5 +170,4 @@ class HolderMainFragment : BaseMainFragment(
         binding.navView.menu.findItem(R.id.nav_paper_proof)
             .styleTitle(context, R.attr.textAppearanceBody1)
     }
-
 }
