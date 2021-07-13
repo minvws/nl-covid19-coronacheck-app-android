@@ -139,8 +139,15 @@ class SignatureValidator private constructor(
                 throw SignatureValidationException("Signing certificate does not match expected certificate")
             }
 
+            println("GIO request")
             if (cnMatchingRegex != null) {
+                println("GIO request cnMatchingRegex")
                 if (!JcaX509CertificateHolder(signingCertificate).subject.getRDNs(BCStyle.CN).any {
+                        it.typesAndValues.forEach {  ta ->
+                            println("GIO type ${ta.type}")
+                            println("GIO value ${ta.value}")
+                            println("GIO value ${IETFUtils.valueToString(ta.value)}")
+                        }
                         val cn = IETFUtils.valueToString(it.first.value)
                         cnMatchingRegex.containsMatchIn(cn)
                     }) {
