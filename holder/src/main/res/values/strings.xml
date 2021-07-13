@@ -313,6 +313,6 @@
     <string name="dialog_faultyvaccination28June_refresh_error_title">Er is iets misgegaan bij het vernieuwen van je gegevens</string>
     <string name="dialog_faultyvaccination28June_refresh_error_message">Haal je gegevens opnieuw op via de app.</string>
     <string name="my_overview_qr_placeholder_header">Hier komt jouw bewijs</string>
-    <string name="my_overview_qr_placeholder_description"><![CDATA[Je kunt een bewijs toevoegen als je bent gevaccineerd of hersteld. Of als je bent getest bij een <a href="https://coronacheck.nl/nl/testafspraak-in-app">aangesloten testlocatie</a>. De app maakt een Nederlands en een internationaal bewijs.<br /></p><p><b>Reis je buiten Nederland?</b><br />Check <a href="www.nederlandwereldwijd.nl/reizen/reisadviezen">wijsopreis.nl</a> voor vertrek. Daar staat welk bewijs geldig is in het land dat je bezoekt.]]></string>
+    <string name="my_overview_qr_placeholder_description"><![CDATA[Je kunt een bewijs toevoegen als je bent gevaccineerd of hersteld. Of als je bent getest bij een <a href="https://coronacheck.nl/nl/testafspraak-in-app">aangesloten testlocatie</a>. De app maakt een Nederlands en een internationaal bewijs.<br /></p><p><b>Reis je buiten Nederland?</b><br />Check <a href="https://www.nederlandwereldwijd.nl/reizen/reisadviezen">wijsopreis.nl</a> voor vertrek. Daar staat welk bewijs geldig is in het land dat je bezoekt.]]></string>
     <string name="my_overview_add_qr_button">Bewijs toevoegen</string>
 </resources>
