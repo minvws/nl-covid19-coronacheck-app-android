@@ -143,7 +143,7 @@ fun holderModule(baseUrl: String) = module {
 
     factory<WorkerManagerWrapper> { WorkerManagerWrapperImpl(androidContext(), get()) }
 
-    factory<GetEventFromQrUseCase> { GetEventFromQrUseCaseImpl(get()) }
+    factory<GetEventFromQrUseCase> { GetEventFromQrUseCaseImpl(get(), get(), get()) }
 
     // ViewModels
     viewModel<QrCodeViewModel> { QrCodeViewModelImpl(get()) }
