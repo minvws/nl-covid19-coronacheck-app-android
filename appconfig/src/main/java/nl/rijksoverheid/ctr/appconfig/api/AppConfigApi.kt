@@ -9,8 +9,6 @@
 package nl.rijksoverheid.ctr.appconfig.api
 
 import nl.rijksoverheid.ctr.api.signing.http.SignedRequest
-import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
-import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
 import okhttp3.ResponseBody
 import retrofit2.http.GET
 import retrofit2.http.Streaming

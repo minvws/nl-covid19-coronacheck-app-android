@@ -1,9 +1,9 @@
 package nl.rijksoverheid.ctr.holder
 
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
-import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
-import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
+import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
+import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.CommercialTestCodeViewModel
@@ -11,7 +11,10 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.EventProviderRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.TestProviderRepository
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.CommitmentMessageUseCase
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.ConfigProvidersUseCase
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.CreateCredentialUseCase
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SecretKeyUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TokenValidatorUtil
@@ -92,32 +95,11 @@ fun fakePersonalDetailsUtil(
 }
 
 fun fakeCachedAppConfigUseCase(
-    appConfig: AppConfig = AppConfig.default(
-        minimumVersion = 0,
-        appDeactivated = false,
-        informationURL = "dummy",
-        configTtlSeconds = 0,
-        maxValidityHours = 0,
-        euLaunchDate = "",
-        credentialRenewalDays = 0,
-        domesticCredentialValidity = 0,
-        testEventValidity = 0,
-        recoveryEventValidity = 0,
-        temporarilyDisabled = false,
-        requireUpdateBefore = 0,
-    ),
-    publicKeys: BufferedSource = "{\"cl_keys\":[]}".toResponseBody("application/json".toMediaType())
-        .source()
+    appConfig: HolderConfig = HolderConfig.default(),
 ): CachedAppConfigUseCase = object : CachedAppConfigUseCase {
-    override fun isCachedAppConfigValid(): Boolean {
-        TODO("Not yet implemented")
-    }
-
-    override fun getCachedAppConfig(): AppConfig {
+    override fun getCachedAppConfig(): HolderConfig {
         return appConfig
     }
-
-    override fun getCachedPublicKeys() = publicKeys
 
     override fun getProviderName(providerIdentifier: String?): String {
         return ""

@@ -3,8 +3,8 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
-import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
+import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
+import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.dao.GreenCardDao
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.CredentialEntity
@@ -31,10 +31,10 @@ class GreenCardRefreshUtilImplTest {
     private val holderDatabase = mockk< HolderDatabase>(relaxed = true).apply { 
         coEvery { greenCardDao() } returns greenCardDao
     }
-    private val appConfig = mockk<AppConfig>(relaxed = true).apply {
+    private val appConfig = mockk<HolderConfig>(relaxed = true).apply {
         coEvery { credentialRenewalDays } returns 5
     }
-    private val cachedAppConfigUseCase = mockk<CachedAppConfigUseCase>(relaxed = true).apply { 
+    private val cachedAppConfigUseCase = mockk<CachedAppConfigUseCase>(relaxed = true).apply {
         coEvery { getCachedAppConfig() } returns appConfig
     }
 

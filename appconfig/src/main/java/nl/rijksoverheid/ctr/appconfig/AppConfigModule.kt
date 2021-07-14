@@ -8,6 +8,7 @@
 
 package nl.rijksoverheid.ctr.appconfig
 
+import android.content.Context
 import nl.rijksoverheid.ctr.appconfig.api.AppConfigApi
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManagerImpl
@@ -31,10 +32,10 @@ import retrofit2.Retrofit
 fun appConfigModule(path: String, versionCode: Int) = module {
     factory<ConfigRepository> { ConfigRepositoryImpl(get()) }
     factory<AppConfigUseCase> { AppConfigUseCaseImpl(get(), get(), get()) }
-    factory<AppStatusUseCase> { AppStatusUseCaseImpl(get(), get(), get(), get()) }
+    factory<AppStatusUseCase> { AppStatusUseCaseImpl(get(), get(), get(), get(), isVerifierApp(androidContext())) }
     factory<AppConfigPersistenceManager> { AppConfigPersistenceManagerImpl(get()) }
     factory<AppConfigStorageManager> { AppConfigStorageManagerImpl(androidContext().filesDir.path) }
-    factory<CachedAppConfigUseCase> { CachedAppConfigUseCaseImpl(get(), androidContext().filesDir.path, get()) }
+    factory<CachedAppConfigUseCase> { CachedAppConfigUseCaseImpl(get(), androidContext().filesDir.path, get(), isVerifierApp(androidContext())) }
     factory<PersistConfigUseCase> { PersistConfigUseCaseImpl(get(), androidContext().filesDir.path) }
 
     single {
@@ -46,6 +47,8 @@ fun appConfigModule(path: String, versionCode: Int) = module {
     }
 
     viewModel<AppConfigViewModel> {
-        AppConfigViewModelImpl(get(), get(), get(), get(), get(), androidContext().filesDir.path, androidContext().packageName.contains("verifier"),versionCode)
+        AppConfigViewModelImpl(get(), get(), get(), get(), get(), androidContext().filesDir.path, isVerifierApp(androidContext()),versionCode)
     }
 }
+
+fun isVerifierApp(applicationContext: Context): Boolean = applicationContext.packageName.contains("verifier")

@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.verifier
 import mobilecore.Mobilecore
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
+import nl.rijksoverheid.ctr.appconfig.api.model.VerifierConfig
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.introduction.IntroductionData
@@ -138,20 +139,7 @@ fun fakeTestResultUtil(
 }
 
 fun fakeCachedAppConfigUseCase(
-    appConfig: AppConfig = AppConfig.default(
-        minimumVersion = 0,
-        appDeactivated = false,
-        informationURL = "dummy",
-        configTtlSeconds = 0,
-        maxValidityHours = 0,
-        euLaunchDate = "",
-        credentialRenewalDays = 0,
-        domesticCredentialValidity = 0,
-        testEventValidity = 0,
-        recoveryEventValidity = 0,
-        temporarilyDisabled = false,
-        requireUpdateBefore = 0
-    ),
+    appConfig: AppConfig = VerifierConfig.default(),
     publicKeys: BufferedSource = "{\"cl_keys\":[]}".toResponseBody("application/json".toMediaType())
         .source()
 ): CachedAppConfigUseCase = object : CachedAppConfigUseCase {
@@ -161,14 +149,6 @@ fun fakeCachedAppConfigUseCase(
 
     override fun getCachedAppConfig(): AppConfig {
         return appConfig
-    }
-
-    override fun getCachedPublicKeys(): BufferedSource {
-        return publicKeys
-    }
-
-    override fun getProviderName(providerIdentifier: String?): String {
-        return ""
     }
 }
 

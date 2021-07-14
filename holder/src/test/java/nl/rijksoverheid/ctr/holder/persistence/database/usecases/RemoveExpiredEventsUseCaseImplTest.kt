@@ -4,7 +4,7 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
+import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.holder.fakeCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.dao.EventGroupDao
@@ -17,10 +17,17 @@ import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.util.concurrent.TimeUnit
 
+/*
+ *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+ *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+ *
+ *   SPDX-License-Identifier: EUPL-1.2
+ *
+ */
 class RemoveExpiredEventsUseCaseImplTest {
 
     private val cachedAppConfigUseCase = fakeCachedAppConfigUseCase(
-        appConfig = AppConfig.default(
+        appConfig = HolderConfig.default(
             vaccinationEventValidity = TimeUnit.DAYS.toHours(10).toInt(),
             testEventValidity = TimeUnit.DAYS.toHours(20).toInt(),
             recoveryEventValidity = TimeUnit.DAYS.toHours(30).toInt()
