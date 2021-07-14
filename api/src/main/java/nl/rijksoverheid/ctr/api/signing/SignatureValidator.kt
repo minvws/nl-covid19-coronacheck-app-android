@@ -149,7 +149,6 @@ class SignatureValidator private constructor(
                 throw SignatureValidationException("The signature does not match")
             }
         } catch (ex: CertPathBuilderException) {
-            ex.printStackTrace()
             throw SignatureValidationException("The cert path cannot be validated")
         } catch (ex: SignatureValidationException) {
             throw ex
