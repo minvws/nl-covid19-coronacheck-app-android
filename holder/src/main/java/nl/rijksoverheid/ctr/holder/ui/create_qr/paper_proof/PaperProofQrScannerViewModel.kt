@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.TestResult
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.ValidatePaperProofResult
@@ -28,7 +29,7 @@ class PaperProofQrScannerViewModelImpl(
                 couplingCode = couplingCode
             )
             validatePaperProofResultLiveData.postValue(Event(result))
+            loadingLiveData.value = Event(false)
         }
-        loadingLiveData.value = Event(false)
     }
 }
