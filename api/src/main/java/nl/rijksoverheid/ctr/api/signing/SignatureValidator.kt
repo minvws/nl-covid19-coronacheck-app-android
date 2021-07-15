@@ -6,9 +6,6 @@
  */
 package nl.rijksoverheid.ctr.signing
 
-import org.bouncycastle.asn1.ASN1InputStream
-import org.bouncycastle.asn1.DERTaggedObject
-import org.bouncycastle.asn1.DERUTF8String
 import org.bouncycastle.asn1.x500.style.BCStyle
 import org.bouncycastle.asn1.x500.style.IETFUtils
 import org.bouncycastle.cert.jcajce.JcaCertStoreBuilder
@@ -132,9 +129,7 @@ class SignatureValidator private constructor(
 
             if (matchingString != null) {
                 val subjectRDNs = JcaX509CertificateHolder(signingCertificate).subject.getRDNs(BCStyle.CN).map { IETFUtils.valueToString(it.first.value) }
-                val alternativeNames = getSubjectAlternativeNames(signingCertificate)
-                val acceptableNames = subjectRDNs + alternativeNames
-                if (!acceptableNames.any {
+                if (!subjectRDNs.any {
                         it.endsWith(matchingString)
                     }) {
                     throw SignatureValidationException("Signing certificate does not match expected CN")
@@ -179,37 +174,6 @@ class SignatureValidator private constructor(
         params.addCertStore(certs)
         params.isRevocationEnabled = false
         return pathBuilder.build(params) as PKIXCertPathBuilderResult
-    }
-
-    companion object {
-        fun getSubjectAlternativeNames(certificate: X509Certificate): List<String> {
-            val identities: MutableList<String> = ArrayList()
-            try {
-                val altNames = certificate.subjectAlternativeNames ?: return emptyList()
-                for (item in altNames) {
-                    val type = item[0] as Int
-                    if (type == 0 || type == 2) {
-                        try {
-                            var decoder: ASN1InputStream? = null
-                            if (item.toTypedArray()[1] is ByteArray) decoder =
-                                ASN1InputStream(item.toTypedArray()[1] as ByteArray?) else if (item.toTypedArray()[1] is String) identities.add(
-                                item.toTypedArray()[1] as String
-                            )
-                            if (decoder == null) continue
-                            var encoded = decoder.readObject()
-                            encoded = (encoded as DERTaggedObject).getObject()
-                            val identity = (encoded as DERUTF8String).string
-                            identities.add(identity)
-                        } catch (exception: Exception) {
-                            exception.printStackTrace()
-                        }
-                    }
-                }
-            } catch (exception: CertificateParsingException) {
-                exception.printStackTrace()
-            }
-            return identities
-        }
     }
 }
 
