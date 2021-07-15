@@ -24,7 +24,7 @@ class PaperProofCodeViewModelImpl(private val savedStateHandle: SavedStateHandle
     override var code: String = savedStateHandle["code"] ?: ""
         set(value) {
             field = value
-            savedStateHandle["verification_code"] = value
+            savedStateHandle["code"] = value
             updateViewState()
         }
 
