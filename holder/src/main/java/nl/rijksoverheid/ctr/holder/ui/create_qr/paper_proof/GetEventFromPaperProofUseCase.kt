@@ -1,5 +1,7 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof
 
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.holder.ui.create_qr.YourEventsFragmentType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.ext.getStringOrNull
@@ -16,28 +18,43 @@ import java.time.LocalDate
  */
 interface GetEventFromQrUseCase {
 
-    fun get(qrCode: String)
+    fun get(qrCode: String): PaperProofEventResult
 }
 
 class GetEventFromQrUseCaseImpl(
     private val mobileCoreWrapper: MobileCoreWrapper
 ) : GetEventFromQrUseCase {
 
-    override fun get(qrCode: String) {
-        val credentials = mobileCoreWrapper.readEuropeanCredential(qrCode.toByteArray())
-        val dcc = credentials.optJSONObject("dcc")
+    override fun get(qrCode: String): PaperProofEventResult {
+        return try {
+            val credential = qrCode.toByteArray()
+            val credentials = mobileCoreWrapper.readEuropeanCredential(credential)
+            val dcc = credentials.optJSONObject("dcc")
+            val holder = getHolder(dcc!!)
+            val event = getRemoteEvent(dcc)
 
-        val protocol = RemoteProtocol3(
-            providerIdentifier = "DCC",
-            protocolVersion = "3.0",
-            status = RemoteProtocol.Status.COMPLETE,
-            holder = getHolder(dcc!!),
-            events = listOf(getRemoteEvent(dcc))
-        )
+            val protocol = RemoteProtocol3(
+                providerIdentifier = "DCC",
+                protocolVersion = "3.0",
+                status = RemoteProtocol.Status.COMPLETE,
+                holder = holder,
+                events = listOf(event)
+            )
+
+            PaperProofEventResult.Success(
+                YourEventsFragmentType.RemoteProtocol3Type(
+                    mapOf(protocol to credential),
+                    OriginType.fromTypeString(event.type!!)
+                )
+            )
+        } catch (exception: Exception) {
+            PaperProofEventResult.Error(exception)
+        }
     }
 
+    @Throws(NullPointerException::class)
     private fun getHolder(dcc: JSONObject): RemoteProtocol3.Holder {
-        val fullName = dcc.optJSONObject("nam")
+        val fullName = dcc.optJSONObject("nam") ?: throw NullPointerException("can't parse name")
         return RemoteProtocol3.Holder(
             infix = "",
             firstName = fullName.getStringOrNull("gn"),
@@ -87,4 +104,12 @@ class GetEventFromQrUseCaseImpl(
     } catch (exception: JSONException) {
         null
     }
+}
+
+sealed class PaperProofEventResult {
+
+    data class Success(val event: YourEventsFragmentType.RemoteProtocol3Type) :
+        PaperProofEventResult()
+
+    data class Error(val exception: Exception) : PaperProofEventResult()
 }

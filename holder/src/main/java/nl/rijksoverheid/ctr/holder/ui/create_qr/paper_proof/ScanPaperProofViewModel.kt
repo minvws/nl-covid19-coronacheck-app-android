@@ -1,6 +1,5 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import nl.rijksoverheid.ctr.shared.livedata.Event
@@ -13,16 +12,17 @@ import nl.rijksoverheid.ctr.shared.livedata.Event
  *
  */
 abstract class ScanPaperQrViewModel : ViewModel() {
-    val loading: LiveData<Event<Boolean>> = MutableLiveData()
+    val loading: MutableLiveData<Event<Boolean>> = MutableLiveData()
+    val event: MutableLiveData<PaperProofEventResult> = MutableLiveData()
 
     abstract fun onQrScanned(qrCode: String)
 }
 
 class ScanPaperQrViewModelImpl(
     private val getEventFromQrUseCase: GetEventFromQrUseCase
-): ScanPaperQrViewModel() {
+) : ScanPaperQrViewModel() {
 
     override fun onQrScanned(qrCode: String) {
-        getEventFromQrUseCase.get(qrCode)
+        event.postValue(getEventFromQrUseCase.get(qrCode))
     }
 }
