@@ -142,8 +142,6 @@
                 app:popEnterAnim="@anim/slide_in_left"
                 app:popExitAnim="@anim/slide_out_right" />
 
-            </action>
-
         </fragment>
 
         <fragment
@@ -179,7 +177,6 @@
                 app:argType="string"/>
 
         </fragment>
-            tools:layout="@layout/fragment_paper_proof_consent" />
 
     </navigation>
 
