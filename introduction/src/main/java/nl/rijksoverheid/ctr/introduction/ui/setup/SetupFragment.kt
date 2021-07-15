@@ -34,7 +34,6 @@ class SetupFragment : Fragment(R.layout.fragment_setup) {
 
         Accessibility.announce(requireContext(), getString(R.string.app_setup_text))
 
-        println("GIO observe here")
         appStatusViewModel.appStatusLiveData.observe(viewLifecycleOwner, EventObserver {
             if (it is AppStatus.NoActionRequired) {
                 findNavController().navigate(SetupFragmentDirections.actionOnboarding(args.introductionData))

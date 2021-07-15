@@ -31,8 +31,6 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        println("GIO onViewCreated")
-
         binding = FragmentOnboardingBinding.bind(view)
 
         val adapter =
@@ -43,7 +41,6 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
             )
 
         if (args.introductionData.onboardingItems.isNotEmpty()) {
-            println("GIO introductionData.onboardingItems.isNotEmpty")
             binding.indicators.initIndicator(adapter.itemCount)
             initViewPager(binding, adapter, savedInstanceState?.getInt(indicatorPositionKey))
         }
@@ -94,7 +91,6 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        println("GIO saveCurrent: ${binding.viewPager.currentItem}")
         outState.putInt(indicatorPositionKey, binding.viewPager.currentItem)
     }
 
@@ -103,7 +99,6 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
         adapter: OnboardingPagerAdapter,
         startingItem: Int? = null,
     ) {
-        println("GIO initViewPager: $startingItem")
         binding.viewPager.offscreenPageLimit = args.introductionData.onboardingItems.size
         binding.viewPager.adapter = adapter
         binding.viewPager.registerOnPageChangeCallback(object :
