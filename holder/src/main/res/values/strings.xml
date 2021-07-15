@@ -338,4 +338,5 @@
     <string name="add_paper_proof_limit_reached_paper_proof_description"><![CDATA[Je kan per dag maximaal 5 keer een papierenbewijs inscannen.<br/><br/>Probeer het eventueel na 24 uur nog een keer.]]></string>
     <string name="add_paper_proof_invalid_combination_title">Geen geldige combinatie</string>
     <string name="add_paper_proof_invalid_combination_">De lettercombinatie en de QR-code komen niet overeen.</string>
+    <string name="add_paper_proof_qr_scanner_title">Scan QR-code</string>
 </resources>

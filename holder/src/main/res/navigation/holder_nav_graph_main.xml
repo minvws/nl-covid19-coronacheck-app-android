@@ -148,7 +148,25 @@
             android:id="@+id/nav_paper_proof_consent"
             android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.PaperProofConsentFragment"
             android:label="@string/add_paper_proof"
-            tools:layout="@layout/fragment_paper_proof_consent"/>
+            tools:layout="@layout/fragment_paper_proof_consent">
+
+            <action
+                android:id="@+id/action_paper_proof_qr_scanner"
+                app:destination="@id/nav_paper_proof_qr_scanner"
+                app:enterAnim="@anim/fragment_open_enter"
+                app:exitAnim="@anim/fragment_open_exit"
+                app:popEnterAnim="@anim/fragment_close_enter"
+                app:popExitAnim="@anim/fragment_close_exit" />
+
+            <action
+                android:id="@+id/action_your_events"
+                app:destination="@id/nav_your_events"
+                app:enterAnim="@anim/fragment_open_enter"
+                app:exitAnim="@anim/fragment_open_exit"
+                app:popEnterAnim="@anim/fragment_close_enter"
+                app:popExitAnim="@anim/fragment_close_exit" />
+
+        </fragment>
 
     </navigation>
 

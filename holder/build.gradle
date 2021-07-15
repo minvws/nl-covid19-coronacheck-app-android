@@ -137,6 +137,7 @@ dependencies {
     implementation "net.zetetic:android-database-sqlcipher:$sqlcypher_version"
     implementation "androidx.work:work-runtime-ktx:$work_manager_version"
     implementation "com.squareup.moshi:moshi-adapters:$moshi_version"
+    implementation "com.google.mlkit:barcode-scanning:${mlkit_barcode_version}"
 
     testImplementation "junit:junit:$junit_version"
     testImplementation "io.mockk:mockk:$mock_version"

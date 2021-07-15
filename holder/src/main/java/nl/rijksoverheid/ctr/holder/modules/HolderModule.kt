@@ -11,6 +11,8 @@ import nl.rijksoverheid.ctr.api.signing.certificates.ROOT_CA_G3
 import nl.rijksoverheid.ctr.appconfig.usecases.DeviceRootedUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.DeviceRootedUseCaseImpl
 import nl.rijksoverheid.ctr.holder.BuildConfig
+import nl.rijksoverheid.ctr.holder.HolderMainActivityViewModel
+import nl.rijksoverheid.ctr.holder.HolderMainActivityViewModelImpl
 import nl.rijksoverheid.ctr.holder.persistence.*
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
@@ -145,6 +147,7 @@ fun holderModule(baseUrl: String) = module {
     factory<WorkerManagerWrapper> { WorkerManagerWrapperImpl(androidContext(), get()) }
 
     // ViewModels
+    viewModel<HolderMainActivityViewModel> { HolderMainActivityViewModelImpl() }
     viewModel<QrCodeViewModel> { QrCodeViewModelImpl(get()) }
     viewModel<CommercialTestCodeViewModel> { CommercialTestCodeViewModelImpl(get(), get()) }
     viewModel { DigiDViewModel(get()) }

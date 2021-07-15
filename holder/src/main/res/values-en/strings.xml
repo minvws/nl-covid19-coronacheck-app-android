@@ -338,4 +338,5 @@
     <string name="add_paper_proof_invalid_combination_">De lettercombinatie en de QR-code komen niet overeen.</string>
     <string name="add_paper_proof_title">Jouw lettercombinatie</string>
     <string name="add_paper_proof_description">Vul de lettercombinatie in die je van de zorgverlener bij je papieren bewijs hebt gekregen.</string>
+    <string name="add_paper_proof_qr_scanner_title">Scan QR-code</string>
 </resources>
