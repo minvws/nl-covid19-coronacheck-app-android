@@ -21,7 +21,7 @@ class PaperProofCodeUseCaseImpl: PaperProofCodeUseCase {
         }
 
         return if (code.length == PaperProofCodeUseCase.CHARS_COUNT) {
-            PaperProofCodeResult.Valid(code)
+            PaperProofCodeResult.Valid
         } else {
             PaperProofCodeResult.NotSixCharacters
         }

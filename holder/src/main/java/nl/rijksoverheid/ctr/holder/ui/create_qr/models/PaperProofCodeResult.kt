@@ -8,7 +8,7 @@ sealed class PaperProofCodeResult: Parcelable {
     object None: PaperProofCodeResult(), Parcelable
 
     @Parcelize
-    class Valid(val code: String): PaperProofCodeResult(), Parcelable
+    object Valid: PaperProofCodeResult(), Parcelable
 
     @Parcelize
     object Invalid: PaperProofCodeResult(), Parcelable
