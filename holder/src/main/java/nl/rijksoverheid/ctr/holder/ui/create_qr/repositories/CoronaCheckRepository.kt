@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.repositories
 import android.util.Base64
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.HolderApiClient
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.post.GetCouplingData
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.post.GetCredentialsPostData
 import okhttp3.ResponseBody
 import retrofit2.Converter
@@ -25,6 +26,7 @@ interface CoronaCheckRepository {
     ): RemoteGreenCards
 
     suspend fun getPrepareIssue(): RemotePrepareIssue
+    suspend fun getCoupling(credential: String, couplingCode: String): RemoteCouplingResponse
 }
 
 open class CoronaCheckRepositoryImpl(
@@ -59,5 +61,14 @@ open class CoronaCheckRepositoryImpl(
 
     override suspend fun getPrepareIssue(): RemotePrepareIssue {
         return api.getPrepareIssue()
+    }
+
+    override suspend fun getCoupling(credential: String, couplingCode: String): RemoteCouplingResponse {
+        return api.getCoupling(
+            data = GetCouplingData(
+                credential = credential,
+                couplingCode = couplingCode
+            )
+        )
     }
 }
