@@ -29,6 +29,8 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.GetEventFromQrUseCas
 import nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.ScanPaperQrViewModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.ScanPaperQrViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
+import nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.PaperProofCodeViewModel
+import nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.PaperProofCodeViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
@@ -76,6 +78,9 @@ fun holderModule(baseUrl: String) = module {
     }
 
     // Use cases
+    factory<PaperProofCodeUseCase> {
+        PaperProofCodeUseCaseImpl()
+    }
     factory<GetRemoteGreenCardsUseCase> {
         GetRemoteGreenCardsUseCaseImpl(get(), get(), get())
     }
@@ -143,8 +148,6 @@ fun holderModule(baseUrl: String) = module {
 
     factory<WorkerManagerWrapper> { WorkerManagerWrapperImpl(androidContext(), get()) }
 
-    factory<GetEventFromQrUseCase> { GetEventFromQrUseCaseImpl(get()) }
-
     // ViewModels
     viewModel<QrCodeViewModel> { QrCodeViewModelImpl(get()) }
     viewModel<CommercialTestCodeViewModel> { CommercialTestCodeViewModelImpl(get(), get()) }
@@ -155,6 +158,7 @@ fun holderModule(baseUrl: String) = module {
     viewModel<MyOverviewViewModel> { MyOverviewViewModelImpl(get(), get(), get(), get()) }
     viewModel<GetEventsViewModel> { GetEventsViewModelImpl(get()) }
     viewModel<ScanPaperQrViewModel> { ScanPaperQrViewModelImpl(get()) }
+    viewModel<PaperProofCodeViewModel> { PaperProofCodeViewModelImpl(get(), get()) }
 
     // Repositories
     single { AuthenticationRepository() }
