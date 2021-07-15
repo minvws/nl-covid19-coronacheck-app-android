@@ -316,4 +316,11 @@
     <string name="add_paper_proof">Papieren bewijs toevoegen</string>
     <string name="add_paper_proof_title">Controle vooraf</string>
     <string name="add_paper_proof_description">Vul de lettercombinatie in die je van de zorgverlener bij je papieren bewijs hebt gekregen.</string>
+    <string name="add_paper_proof_input_header">Lettercombinatie</string>
+    <string name="add_paper_proof_input_hint">Bijv. FLBRXQ</string>
+    <string name="add_paper_proof_input_invalid">Deze lettercombinatie bestaat niet</string>
+    <string name="add_paper_proof_input_not_6_chars">Vul de 6-letterige lettercombinatie in</string>
+    <string name="add_paper_proof_no_letter_combination_button">Geen lettercombinatie?</string>
+    <string name="no_letter_combination_dialog_title">Geen lettercombinatie?</string>
+    <string name="no_letter_combination_dialog_description"><![CDATA[Geen lettercombinatie gekregen? Of ben je ‘m kwijtgeraakt? Neem contact op met de zorgverlener waar je gevaccineerd of getest bent.<br/><br/><b>Let op</b>:<br/>Heb je jouw bewijs zelf geprint via <a href="https://www.coronacheck.nl/print">www.coronacheck.nl/print</a> dan heb je geen lettercombinatie gekregen. Je kunt jouw bewijs dan gewoon ophalen in de app door in te loggen met DigiD.]]></string>
 </resources>

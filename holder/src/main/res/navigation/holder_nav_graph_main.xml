@@ -114,23 +114,11 @@
             android:label="@string/choose_provider_toolbar"
             tools:layout="@layout/fragment_paper_proof_code"/>
 
+       <action
+           android:id="@+id/action_title_description_bottom_sheet"
+           app:destination="@id/nav_title_description_bottom_sheet"/>
+
     </navigation>
-
-    <fragment
-        android:id="@+id/nav_qr_explanation"
-        android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.QrExplanationFragment"
-        android:label="@string/choose_provider_toolbar"
-        tools:layout="@layout/fragment_qr_explanation">
-
-        <action
-            android:id="@+id/action_qr_type"
-            app:destination="@id/nav_qr_code_type"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
-
-    </fragment>
 
     <fragment
         android:id="@+id/nav_qr_code_type"
@@ -390,5 +378,20 @@
         android:id="@+id/nav_not_yet_tested"
         android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.NotYetTestedFragment"
         tools:layout="@layout/dialog_not_yet_tested" />
+
+    <dialog
+        android:id="@+id/nav_title_description_bottom_sheet"
+        android:name="nl.rijksoverheid.ctr.design.fragments.TitleDescriptionBottomSheetFragment"
+        tools:layout="@layout/fragment_title_description_bottom_sheet">
+
+        <argument
+            android:name="title"
+            app:argType="string"/>
+
+        <argument
+            android:name="description"
+            app:argType="string"/>
+
+    </dialog>
 
 </navigation>
