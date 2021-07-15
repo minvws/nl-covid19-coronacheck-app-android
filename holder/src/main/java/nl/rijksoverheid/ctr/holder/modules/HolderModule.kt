@@ -21,14 +21,13 @@ import nl.rijksoverheid.ctr.holder.persistence.database.migration.TestResultsMig
 import nl.rijksoverheid.ctr.holder.persistence.database.migration.TestResultsMigrationManagerImpl
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.*
-import nl.rijksoverheid.ctr.holder.ui.create_qr.api.HolderApiClient
-import nl.rijksoverheid.ctr.holder.ui.create_qr.api.OriginTypeJsonAdapter
-import nl.rijksoverheid.ctr.holder.ui.create_qr.api.RemoteTestStatusJsonAdapter
-import nl.rijksoverheid.ctr.holder.ui.create_qr.api.TestProviderApiClient
+import nl.rijksoverheid.ctr.holder.ui.create_qr.api.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigiDViewModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.PaperProofCodeViewModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.PaperProofCodeViewModelImpl
+import nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.PaperProofQrScannerViewModel
+import nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.PaperProofQrScannerViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
@@ -157,6 +156,7 @@ fun holderModule(baseUrl: String) = module {
     viewModel<MyOverviewViewModel> { MyOverviewViewModelImpl(get(), get(), get(), get()) }
     viewModel<GetEventsViewModel> { GetEventsViewModelImpl(get()) }
     viewModel<PaperProofCodeViewModel> { PaperProofCodeViewModelImpl(get(), get()) }
+    viewModel<PaperProofQrScannerViewModel> { PaperProofQrScannerViewModelImpl(get()) }
 
     // Repositories
     single { AuthenticationRepository() }
@@ -185,6 +185,9 @@ fun holderModule(baseUrl: String) = module {
     factory<GreenCardUtil> { GreenCardUtilImpl(Clock.systemUTC(), get()) }
 
     // Usecases
+    factory<ValidatePaperProofUseCase> {
+        ValidatePaperProofUseCaseImpl(get(), get())
+    }
     factory<CreateCredentialUseCase> {
         CreateCredentialUseCaseImpl(get())
     }
@@ -203,7 +206,7 @@ fun holderModule(baseUrl: String) = module {
         GreenCardRefreshUtilImpl(get(), get(), get(), get(), get())
     }
 
-    factory<HolderWorkerFactory> {
+    factory {
         HolderWorkerFactory(get(), get())
     }
 
@@ -258,6 +261,7 @@ fun holderModule(baseUrl: String) = module {
         get<Moshi.Builder>(Moshi.Builder::class)
             .add(RemoteTestStatusJsonAdapter())
             .add(OriginTypeJsonAdapter())
+            .add(RemoteCouplingStatusJsonAdapter())
             .add(PolymorphicJsonAdapterFactory.of(
                 RemoteProtocol::class.java, "protocolVersion")
                 .withSubtype(RemoteTestResult2::class.java, "2.0")

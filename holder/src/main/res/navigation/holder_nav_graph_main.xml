@@ -140,7 +140,9 @@
                 app:enterAnim="@anim/slide_in_right"
                 app:exitAnim="@anim/slide_out_left"
                 app:popEnterAnim="@anim/slide_in_left"
-                app:popExitAnim="@anim/slide_out_right"/>
+                app:popExitAnim="@anim/slide_out_right">
+
+            </action>
 
         </fragment>
 
@@ -165,6 +167,10 @@
                 app:exitAnim="@anim/fragment_open_exit"
                 app:popEnterAnim="@anim/fragment_close_enter"
                 app:popExitAnim="@anim/fragment_close_exit" />
+
+            <argument
+                android:name="couplingCode"
+                app:argType="string"/>
 
         </fragment>
 

@@ -10,14 +10,14 @@ abstract class HolderMainActivityViewModel: ViewModel() {
     /**
      * For when we need to communicate events between different navigations (holder_nav_graph_root and holder_nav_graph_main)
      */
-    val eventsLiveData: LiveData<Event<List<RemoteProtocol3>>> = MutableLiveData()
+    val eventsLiveData: LiveData<Event<Map<RemoteProtocol3, ByteArray>>> = MutableLiveData()
 
-    abstract fun sendEvents(events: List<RemoteProtocol3>)
+    abstract fun sendEvents(events: Map<RemoteProtocol3, ByteArray>)
 }
 
 class HolderMainActivityViewModelImpl: HolderMainActivityViewModel() {
 
-    override fun sendEvents(events: List<RemoteProtocol3>) {
+    override fun sendEvents(events: Map<RemoteProtocol3, ByteArray>) {
         (eventsLiveData as MutableLiveData).postValue(Event(events))
     }
 }

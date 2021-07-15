@@ -35,7 +35,9 @@ class PaperProofCodeFragment : Fragment(R.layout.fragment_paper_proof_code) {
 
                 }
                 is PaperProofCodeResult.Valid -> {
-                    findNavControllerSafety(R.id.nav_paper_proof_code)?.navigate(PaperProofCodeFragmentDirections.actionPaperProofConsent())
+                    findNavControllerSafety(R.id.nav_paper_proof_code)?.navigate(PaperProofCodeFragmentDirections.actionPaperProofConsent(
+                        binding.codeInputText.text.toString()
+                    ))
                 }
                 is PaperProofCodeResult.NotSixCharacters -> {
                     binding.codeInput.error =
