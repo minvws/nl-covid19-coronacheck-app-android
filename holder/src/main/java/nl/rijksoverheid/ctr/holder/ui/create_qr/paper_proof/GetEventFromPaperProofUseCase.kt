@@ -1,14 +1,11 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof
 
-import android.app.Application
-import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
-import nl.rijksoverheid.ctr.design.ext.formatDateTime
-import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.ext.getStringOrNull
+import org.json.JSONException
+import org.json.JSONObject
 import java.time.LocalDate
-import java.time.OffsetDateTime
-import java.time.format.DateTimeFormatter
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -23,53 +20,71 @@ interface GetEventFromQrUseCase {
 }
 
 class GetEventFromQrUseCaseImpl(
-    private val mobileCoreWrapper: MobileCoreWrapper,
-    private val application: Application,
-    private val cachedAppConfigUseCase: CachedAppConfigUseCase
+    private val mobileCoreWrapper: MobileCoreWrapper
 ) : GetEventFromQrUseCase {
 
     override fun get(qrCode: String) {
         val credentials = mobileCoreWrapper.readEuropeanCredential(qrCode.toByteArray())
         val dcc = credentials.optJSONObject("dcc")
-        val test = dcc.getJSONArray("t").optJSONObject(0)
 
+        val protocol = RemoteProtocol3(
+            providerIdentifier = "DCC",
+            protocolVersion = "3.0",
+            status = RemoteProtocol.Status.COMPLETE,
+            holder = getHolder(dcc!!),
+            events = listOf(getRemoteEvent(dcc))
+        )
+    }
 
-        val fullName = "${dcc.optJSONObject("nam").getStringOrNull("fn")}, ${
-            dcc.optJSONObject("nam").getStringOrNull("gn")
-        }"
+    private fun getHolder(dcc: JSONObject): RemoteProtocol3.Holder {
+        val fullName = dcc.optJSONObject("nam")
+        return RemoteProtocol3.Holder(
+            infix = "",
+            firstName = fullName.getStringOrNull("gn"),
+            lastName = fullName.getStringOrNull("fn"),
+            birthDate = dcc.getStringOrNull("dob")
+        )
+    }
 
-        val birthDate = dcc.getStringOrNull("dob")?.let { birthDate ->
-            try {
-                LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).formatDayMonthYear()
-            } catch (e: Exception) {
-                ""
-            }
-        } ?: ""
+    @Throws(JSONException::class)
+    private fun getRemoteEvent(dcc: JSONObject): RemoteEvent {
+        return getRemoteVaccination(dcc) ?: getRemoteRecovery(dcc) ?: getRemoteTest(dcc)
+        ?: throw JSONException("can't parse event type")
+    }
 
+    private fun getRemoteVaccination(dcc: JSONObject): RemoteEventVaccination? {
+        return getEventByType(dcc, "v")?.let {
+            RemoteEventVaccination(
+                type = "vaccination",
+                unique = it.getStringOrNull("ci"),
+                vaccination = RemoteEventVaccination.Vaccination(
+                    doseNumber = it.getStringOrNull("dn"),
+                    totalDoses = it.getStringOrNull("sd"),
+                    date = LocalDate.parse(it.getStringOrNull("dt")),
+                    country = it.getStringOrNull("co"),
+                    type = it.getStringOrNull("vp"),
+                    brand = it.getStringOrNull("mp"),
+                    manufacturer = it.getStringOrNull("ma"),
+                    completedByMedicalStatement = null,
+                    hpkCode = null
+                )
+            )
+        }
+    }
 
-        val testType = cachedAppConfigUseCase.getCachedAppConfig().euTestTypes.firstOrNull {
-            it.code == test.getStringOrNull("tt")
-        }?.name ?: test.getStringOrNull("tt") ?: ""
+    private fun getRemoteRecovery(dcc: JSONObject): RemoteEventRecovery? {
+        getEventByType(dcc, "r")
+        return null
+    }
 
-        val testName = test.getStringOrNull("nm") ?: ""
+    private fun getRemoteTest(dcc: JSONObject): RemoteEventNegativeTest? {
+        getEventByType(dcc, "t")
+        return null
+    }
 
-        val testDate = test.getStringOrNull("sc")?.let {
-            try {
-                OffsetDateTime.parse(it, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
-                    .formatDateTime(application)
-            } catch (e: Exception) {
-                ""
-            }
-        } ?: ""
-
-        val testLocation = test.getStringOrNull("tc") ?: ""
-
-        val manufacturer =
-            cachedAppConfigUseCase.getCachedAppConfig().euManufacturers.firstOrNull {
-                it.code == test.getStringOrNull("ma")
-            }?.name ?: test.getStringOrNull("ma") ?: ""
-
-        val vaccinationCountry = test.getStringOrNull("co")
-        val uniqueCode = test.getStringOrNull("ci")
+    private fun getEventByType(dcc: JSONObject, key: String) = try {
+        dcc.getJSONArray(key).optJSONObject(0)
+    } catch (exception: JSONException) {
+        null
     }
 }
