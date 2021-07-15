@@ -8,6 +8,7 @@ import nl.rijksoverheid.ctr.shared.ext.getStringOrNull
 import org.json.JSONException
 import org.json.JSONObject
 import java.time.LocalDate
+import java.time.OffsetDateTime
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -90,13 +91,36 @@ class GetEventFromQrUseCaseImpl(
     }
 
     private fun getRemoteRecovery(dcc: JSONObject): RemoteEventRecovery? {
-        getEventByType(dcc, "r")
-        return null
+        return getEventByType(dcc, "r")?.let {
+            RemoteEventRecovery(
+                type = "recovery",
+                unique = it.getStringOrNull("ci") ?: "",
+                isSpecimen = false,
+                recovery = RemoteEventRecovery.Recovery(
+                    sampleDate = LocalDate.parse(it.getStringOrNull("fr")),
+                    validFrom =LocalDate.parse(it.getStringOrNull("df")),
+                    validUntil =LocalDate.parse(it.getStringOrNull("du")),
+                )
+            )
+        }
     }
 
     private fun getRemoteTest(dcc: JSONObject): RemoteEventNegativeTest? {
-        getEventByType(dcc, "t")
-        return null
+        return getEventByType(dcc, "t")?.let {
+            RemoteEventNegativeTest(
+                type = "test",
+                unique = it.getStringOrNull("ci"),
+                isSpecimen = false,
+                negativeTest = RemoteEventNegativeTest.NegativeTest(
+                    sampleDate = OffsetDateTime.parse(it.getStringOrNull("sc")),
+                    negativeResult = it.getStringOrNull("tr") == "260415000",
+                    facility = it.getStringOrNull("tc"),
+                    type = it.getStringOrNull("tt"),
+                    name = it.getStringOrNull("nm"),
+                    manufacturer = it.getStringOrNull("ma")
+                )
+            )
+        }
     }
 
     private fun getEventByType(dcc: JSONObject, key: String) = try {
