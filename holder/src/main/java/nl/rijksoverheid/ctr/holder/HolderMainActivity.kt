@@ -66,7 +66,7 @@ class HolderMainActivity : AppCompatActivity() {
             )
         }
 
-        appStatusViewModel.appStatusLiveData.observe(this, {
+        appStatusViewModel.appStatusLiveData.observe(this, EventObserver {
             if (it !is AppStatus.NoActionRequired) {
                 navController.navigate(R.id.action_app_status, AppStatusFragment.getBundle(it))
             }

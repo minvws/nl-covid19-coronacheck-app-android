@@ -26,10 +26,14 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
 
     private val args: OnboardingFragmentArgs by navArgs()
 
+    private lateinit var binding: FragmentOnboardingBinding
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val binding = FragmentOnboardingBinding.bind(view)
+        println("GIO onViewCreated")
+
+        binding = FragmentOnboardingBinding.bind(view)
 
         val adapter =
             OnboardingPagerAdapter(
@@ -39,8 +43,9 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
             )
 
         if (args.introductionData.onboardingItems.isNotEmpty()) {
+            println("GIO introductionData.onboardingItems.isNotEmpty")
             binding.indicators.initIndicator(adapter.itemCount)
-            initViewPager(binding, adapter)
+            initViewPager(binding, adapter, savedInstanceState?.getInt(indicatorPositionKey))
         }
 
         setBackPressListener(binding)
@@ -87,10 +92,18 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
         })
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        println("GIO saveCurrent: ${binding.viewPager.currentItem}")
+        outState.putInt(indicatorPositionKey, binding.viewPager.currentItem)
+    }
+
     private fun initViewPager(
         binding: FragmentOnboardingBinding,
-        adapter: OnboardingPagerAdapter
+        adapter: OnboardingPagerAdapter,
+        startingItem: Int? = null,
     ) {
+        println("GIO initViewPager: $startingItem")
         binding.viewPager.offscreenPageLimit = args.introductionData.onboardingItems.size
         binding.viewPager.adapter = adapter
         binding.viewPager.registerOnPageChangeCallback(object :
@@ -119,5 +132,10 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
                 }
             }
         })
+        startingItem?.let { binding.viewPager.currentItem = it }
+    }
+
+    companion object {
+        private const val indicatorPositionKey = "indicator_position_key"
     }
 }

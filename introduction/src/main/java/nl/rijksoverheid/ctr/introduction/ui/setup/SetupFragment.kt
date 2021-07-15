@@ -11,6 +11,7 @@ import nl.rijksoverheid.ctr.appconfig.AppStatusFragment
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.introduction.R
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
+import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.utils.Accessibility
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -33,7 +34,8 @@ class SetupFragment : Fragment(R.layout.fragment_setup) {
 
         Accessibility.announce(requireContext(), getString(R.string.app_setup_text))
 
-        appStatusViewModel.appStatusLiveData.observe(viewLifecycleOwner, {
+        println("GIO observe here")
+        appStatusViewModel.appStatusLiveData.observe(viewLifecycleOwner, EventObserver {
             if (it is AppStatus.NoActionRequired) {
                 findNavController().navigate(SetupFragmentDirections.actionOnboarding(args.introductionData))
             } else {
