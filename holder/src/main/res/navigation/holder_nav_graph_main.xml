@@ -134,7 +134,21 @@
                 android:id="@+id/action_title_description_bottom_sheet"
                 app:destination="@id/nav_title_description_bottom_sheet"/>
 
+            <action
+                android:id="@+id/action_paper_proof_consent"
+                app:destination="@id/nav_paper_proof_consent"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right"/>
+
         </fragment>
+
+        <fragment
+            android:id="@+id/nav_paper_proof_consent"
+            android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.PaperProofConsentFragment"
+            android:label="@string/add_paper_proof"
+            tools:layout="@layout/fragment_paper_proof_consent"/>
 
     </navigation>
 
