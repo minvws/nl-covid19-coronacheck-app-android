@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.verifier
 
+import androidx.lifecycle.MutableLiveData
 import mobilecore.Mobilecore
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
@@ -39,16 +40,24 @@ import java.time.OffsetDateTime
 fun fakeAppConfigViewModel(appStatus: AppStatus = AppStatus.NoActionRequired) =
     object : AppConfigViewModel() {
         override fun refresh(mobileCoreWrapper: MobileCoreWrapper) {
-            appStatusLiveData.value = appStatus
+            appStatusLiveData.value = Event(appStatus)
         }
     }
 
 fun fakeIntroductionViewModel(
-    introductionStatus: IntroductionStatus = IntroductionStatus.IntroductionFinished.NoActionRequired,
+    introductionStatus: IntroductionStatus? = null,
 ): IntroductionViewModel {
+
     return object : IntroductionViewModel() {
+
+        init {
+            if (introductionStatus != null) {
+                (introductionStatusLiveData as MutableLiveData).postValue(Event(introductionStatus))
+            }
+        }
+
         override fun getIntroductionStatus(): IntroductionStatus {
-            return introductionStatus
+            return introductionStatus ?: IntroductionStatus.IntroductionFinished.NoActionRequired
         }
 
         override fun saveNewFeaturesFinished(newFeaturesVersion: Int) {
