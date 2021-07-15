@@ -17,14 +17,14 @@ import java.time.OffsetDateTime
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-interface GetEventFromQrUseCase {
+interface GetEventFromPaperProofUseCase {
 
     fun get(qrCode: String): PaperProofEventResult
 }
 
-class GetEventFromQrUseCaseImpl(
+class GetEventFromPaperProofUseCaseImpl(
     private val mobileCoreWrapper: MobileCoreWrapper
-) : GetEventFromQrUseCase {
+) : GetEventFromPaperProofUseCase {
 
     override fun get(qrCode: String): PaperProofEventResult {
         return try {

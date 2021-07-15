@@ -16,7 +16,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  */
 class ScanPaperProofFragment : Fragment(R.layout.fragment_scan_paper_proof) {
 
-    private val viewModel: ScanPaperQrViewModel by viewModel()
+    private val viewModel: ScanPaperProofViewModel by viewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

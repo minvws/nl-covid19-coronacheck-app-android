@@ -11,18 +11,18 @@ import nl.rijksoverheid.ctr.shared.livedata.Event
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-abstract class ScanPaperQrViewModel : ViewModel() {
+abstract class ScanPaperProofViewModel : ViewModel() {
     val loading: MutableLiveData<Event<Boolean>> = MutableLiveData()
     val event: MutableLiveData<PaperProofEventResult> = MutableLiveData()
 
     abstract fun onQrScanned(qrCode: String)
 }
 
-class ScanPaperQrViewModelImpl(
-    private val getEventFromQrUseCase: GetEventFromQrUseCase
-) : ScanPaperQrViewModel() {
+class ScanPaperProofViewModelImpl(
+    private val getEventFromPaperProofUseCase: GetEventFromPaperProofUseCase
+) : ScanPaperProofViewModel() {
 
     override fun onQrScanned(qrCode: String) {
-        event.postValue(getEventFromQrUseCase.get(qrCode))
+        event.postValue(getEventFromPaperProofUseCase.get(qrCode))
     }
 }
