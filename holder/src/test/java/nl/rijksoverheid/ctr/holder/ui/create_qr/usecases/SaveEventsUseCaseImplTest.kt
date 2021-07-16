@@ -8,6 +8,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.dao.EventGroupDao
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.RemoteEventHolderUtil
 import org.junit.Before
 import org.junit.Test
 import java.time.LocalDate
@@ -26,7 +27,9 @@ class SaveEventsUseCaseImplTest {
         every { eventGroupDao() } returns eventGroupDao
     }
 
-    private val saveEventsUseCaseImpl = SaveEventsUseCaseImpl(holderDatabase)
+    private val remoteEventHolderUtil: RemoteEventHolderUtil = mockk(relaxed = true)
+
+    private val saveEventsUseCaseImpl = SaveEventsUseCaseImpl(holderDatabase, remoteEventHolderUtil)
 
     @Before
     fun setUp() {

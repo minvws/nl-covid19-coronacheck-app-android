@@ -7,6 +7,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEvent
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.RemoteEventHolderUtil
 import java.time.OffsetDateTime
 
 /*
@@ -22,9 +23,10 @@ interface SaveEventsUseCase {
         remoteProtocols3: Map<RemoteProtocol3, ByteArray>,
         originType: OriginType
     )
+    suspend fun remoteProtocols3AreConflicting(remoteProtocols3: Map<RemoteProtocol3, ByteArray>): Boolean
 }
 
-class SaveEventsUseCaseImpl(private val holderDatabase: HolderDatabase) : SaveEventsUseCase {
+class SaveEventsUseCaseImpl(private val holderDatabase: HolderDatabase, private val remoteEventHolderUtil: RemoteEventHolderUtil) : SaveEventsUseCase {
 
     override suspend fun saveNegativeTest2(
         negativeTest2: RemoteTestResult2,
@@ -43,6 +45,13 @@ class SaveEventsUseCaseImpl(private val holderDatabase: HolderDatabase) : SaveEv
         holderDatabase.eventGroupDao().insertAll(listOf(entity))
     }
 
+    override suspend fun remoteProtocols3AreConflicting(remoteProtocols3: Map<RemoteProtocol3, ByteArray>): Boolean {
+        val storedEventHolders = holderDatabase.eventGroupDao().getAll().map { remoteEventHolderUtil.toRemoveEvent(it.jsonData) }.distinct()
+        val incomingEventHolders = remoteProtocols3.map { it.key.holder!! }.distinct()
+        // Controleer of geboortedag EN geboortemaand EN (de eerste letter van de voornaam OF de eerste letter van de achternaam)
+
+        return remoteEventHolderUtil.conflicting(storedEventHolders, incomingEventHolders)
+    }
 
     override suspend fun saveRemoteProtocols3(
         remoteProtocols3: Map<RemoteProtocol3, ByteArray>,
@@ -58,6 +67,9 @@ class SaveEventsUseCaseImpl(private val holderDatabase: HolderDatabase) : SaveEv
                 jsonData = remoteProtocol3.value
             )
         }
+
+        val remoteEvents = remoteProtocols3.map { remoteEventHolderUtil.toRemoveEvent(it.value) }
+        remoteEvents.forEach { println("GIO ${it.javaClass}") }
 
         // Save entity in database
         holderDatabase.run {

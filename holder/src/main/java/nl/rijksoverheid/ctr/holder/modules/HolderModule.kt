@@ -134,12 +134,13 @@ fun holderModule(baseUrl: String) = module {
     factory<CredentialUtil> { CredentialUtilImpl(Clock.systemUTC()) }
     factory<OriginUtil> { OriginUtilImpl(Clock.systemUTC()) }
     factory<RemoteEventRecoveryUtil> { RemoteEventRecoveryUtilImpl(get()) }
+    factory<RemoteEventHolderUtil> { RemoteEventHolderUtilImpl(get()) }
     factory {
         TokenQrUseCase(get())
     }
     factory<DeviceRootedUseCase> { DeviceRootedUseCaseImpl(androidContext()) }
     factory<GetEventsUseCase> { GetEventsUseCaseImpl(get(), get(), get(), get()) }
-    factory<SaveEventsUseCase> { SaveEventsUseCaseImpl(get()) }
+    factory<SaveEventsUseCase> { SaveEventsUseCaseImpl(get(), get()) }
     factory<CachedAppConfigUseCase> { CachedAppConfigUseCaseImpl(get(), androidContext().filesDir.path, get()) }
 
     factory<TestResultsMigrationManager> { TestResultsMigrationManagerImpl(get(), get(), get()) }
