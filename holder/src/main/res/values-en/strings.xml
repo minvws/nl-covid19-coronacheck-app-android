@@ -183,8 +183,6 @@
     <string name="url_accessibility">https://coronacheck.nl/en/accessibility-in-app</string>
     <string name="create_qr_explanation_menu_title">Make QR code</string>
     <string name="create_qr_explanation_menu_title_alternative">Add a QR code</string>
-    <string name="create_qr_explanation_title">Make a QR code</string>
-    <string name="create_qr_explanation_description"><![CDATA[The app makes a QR code in three steps. This QR code is your personal certificate.<br/><br/><b>1. Choose the type of certificate</b><br/>Choose to create a vaccination certificate, a test certificate or a recovery certificate.<br/><br/><b>2. Automatically retrieve data </b><br/>The app directly retrieves the data of your vaccination, test result or recovery.<br/><br/><b>  3. QR codes are ready </b><br/>The app generates a QR code for the Netherlands and one for other countries. <br/><br/>]]></string>
     <string name="qr_code_type_title">What kind of certificate would you like to add?</string>
     <string name="qr_code_type_description">Indicate what kind of certificate you would like to add. You can have multiple certificates.</string>
     <string name="qr_code_type_negative_test_title">A test certificate</string>
@@ -309,10 +307,10 @@
     <string name="my_overview_green_card_server_error_after_retry"><![CDATA[or call the help desk at 0800-1421 (free)]]></string>
     <string name="my_overview_green_card_internet_error"><![CDATA[Connect to the internet to make sure <br\> your QR code works again. <a href="#">Try again</a>]]></string>
     <string name="dialog_faultyvaccination28June_title">Vaccination certificate corrected</string>
-    <string name="dialog_faultyvaccination28June_message">Due to a technical error you’ve wrongly received a Dutch vaccination certificate. This was corrected.</string>
+    <string name="dialog_faultyvaccination28June_message">You’ve wrongly received a Dutch vaccination certificate due to a technical error. This was corrected.</string>
     <string name="dialog_faultyvaccination28June_refresh_error_title">Something went wrong while refreshing your details</string>
     <string name="dialog_faultyvaccination28June_refresh_error_message">Please retrieve your details again via the app.</string>
     <string name="my_overview_qr_placeholder_header">Find your certificate here later</string>
-    <string name="my_overview_qr_placeholder_description"><![CDATA[You can add a certificate if you\'re vaccinated, if you\'ve had corona or by taking a test at an <a href="https://coronacheck.nl/en/testafspraak-in-app">affiliated test location</a>. The app generates a certificate for the Netherlands and one for other countries.<br /></p><p><b>Travelling outside the Netherlands?</b><br />Check <a href="www.nederlandwereldwijd.nl/reizen/reisadviezen">wijsopreis.nl</a> before you leave. There you will find which certificate is valid in the country you’re planning to visit.]]></string>
+    <string name="my_overview_qr_placeholder_description"><![CDATA[You can add a certificate if you\'re vaccinated, if you\'ve had corona or by taking a test at an <a href="https://coronacheck.nl/en/testafspraak-in-app">affiliated test location</a>. The app generates a certificate for the Netherlands and one for other countries.<br /></p><p><b>Travelling outside the Netherlands?</b><br />Check <a href="https://www.nederlandwereldwijd.nl/reizen/reisadviezen">wijsopreis.nl</a> before you leave. There you will find which certificate is valid in the country you’re planning to visit.]]></string>
     <string name="my_overview_add_qr_button">Add certificate</string>
 </resources>

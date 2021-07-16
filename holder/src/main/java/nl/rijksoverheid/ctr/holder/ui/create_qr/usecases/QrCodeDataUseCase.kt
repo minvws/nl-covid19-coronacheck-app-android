@@ -37,8 +37,8 @@ class QrCodeDataUseCaseImpl(private val qrCodeUseCase: QrCodeUseCase,
                 QrCodeData.Domestic(
                     bitmap = qrCodeBitmap,
                     readDomesticCredential = mobileCoreWrapper.readDomesticCredential(credential),
-                    animationResource = R.raw.bike_lr,
-                    backgroundResource = R.drawable.illustration_houses
+                    animationResource = R.raw.skatefiets2,
+                    backgroundResource = null
                 )
             }
 

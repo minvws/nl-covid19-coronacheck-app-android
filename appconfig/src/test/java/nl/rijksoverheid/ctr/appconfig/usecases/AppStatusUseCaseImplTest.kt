@@ -2,7 +2,7 @@ package nl.rijksoverheid.ctr.appconfig.usecases
 
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.runBlocking
-import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
+import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.appconfig.fakeAppConfig
 import nl.rijksoverheid.ctr.appconfig.fakeAppConfigPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.fakeCachedAppConfigUseCase
@@ -27,10 +27,10 @@ class AppStatusUseCaseImplTest {
 
     private val publicKeys = "{\"cl_keys\":[]}".toResponseBody("application/json".toMediaType()).source().readUtf8()
     private fun getAppConfig(minimumVersion: Int = 1, appDeactivated: Boolean = false): String =
-        AppConfig.default(
-            minimumVersion = minimumVersion,
-            appDeactivated = appDeactivated,
-            informationURL = "dummy",
+        HolderConfig.default(
+            holderMinimumVersion = minimumVersion,
+            holderAppDeactivated = appDeactivated,
+            holderInformationURL = "dummy",
         ).toJson(Moshi.Builder().build()).toResponseBody("application/json".toMediaType()).source().readUtf8()
 
     @Test
@@ -40,7 +40,8 @@ class AppStatusUseCaseImplTest {
                 clock = Clock.fixed(Instant.ofEpochSecond(0), ZoneId.of("UTC")),
                 cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
                 appConfigPersistenceManager = fakeAppConfigPersistenceManager(),
-                moshi = Moshi.Builder().build()
+                moshi = Moshi.Builder().build(),
+                isVerifierApp = false,
             )
 
             val appStatus = appStatusUseCase.get(
@@ -60,7 +61,8 @@ class AppStatusUseCaseImplTest {
                 clock = Clock.fixed(Instant.ofEpochSecond(0), ZoneId.of("UTC")),
                 cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
                 appConfigPersistenceManager = fakeAppConfigPersistenceManager(),
-                moshi = Moshi.Builder().build()
+                moshi = Moshi.Builder().build(),
+                isVerifierApp = false,
             )
 
             val appStatus = appStatusUseCase.get(
@@ -80,7 +82,8 @@ class AppStatusUseCaseImplTest {
                 clock = Clock.fixed(Instant.ofEpochSecond(0), ZoneId.of("UTC")),
                 cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
                 appConfigPersistenceManager = fakeAppConfigPersistenceManager(),
-                moshi = Moshi.Builder().build()
+                moshi = Moshi.Builder().build(),
+                isVerifierApp = false,
             )
 
             val appStatus = appStatusUseCase.get(
@@ -110,7 +113,8 @@ class AppStatusUseCaseImplTest {
                 appConfigPersistenceManager = fakeAppConfigPersistenceManager(
                     lastFetchedSeconds = 20
                 ),
-                moshi = Moshi.Builder().build()
+                moshi = Moshi.Builder().build(),
+                isVerifierApp = false,
             )
 
             val appStatus = appStatusUseCase.get(
@@ -137,7 +141,8 @@ class AppStatusUseCaseImplTest {
                 appConfigPersistenceManager = fakeAppConfigPersistenceManager(
                     lastFetchedSeconds = 70
                 ),
-                moshi = Moshi.Builder().build()
+                moshi = Moshi.Builder().build(),
+                isVerifierApp = false,
             )
 
             val appStatus = appStatusUseCase.get(

@@ -2,6 +2,8 @@ package nl.rijksoverheid.ctr.appconfig.usecases
 
 import com.squareup.moshi.Moshi
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
+import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
+import nl.rijksoverheid.ctr.appconfig.api.model.VerifierConfig
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
 import nl.rijksoverheid.ctr.shared.ext.toObject
 import okio.BufferedSource
@@ -18,20 +20,29 @@ import java.io.File
 interface CachedAppConfigUseCase {
     fun isCachedAppConfigValid(): Boolean
     fun getCachedAppConfig(): AppConfig
-    fun getCachedPublicKeys(): BufferedSource?
-    fun getProviderName(providerIdentifier: String?): String
 }
 
 class CachedAppConfigUseCaseImpl constructor(
     private val appConfigStorageManager: AppConfigStorageManager,
     private val filesDirPath: String,
-    private val moshi: Moshi
+    private val moshi: Moshi,
+    private val isVerifierApp: Boolean,
 ) : CachedAppConfigUseCase {
     private val configFile = File(filesDirPath, "config.json")
+    
+    private val defaultConfig = if (isVerifierApp) {
+        VerifierConfig.default()
+    } else {
+        HolderConfig.default()
+    }
 
     override fun isCachedAppConfigValid(): Boolean {
         return try {
-            appConfigStorageManager.getFileAsBufferedSource(configFile)?.readUtf8()?.toObject<AppConfig>(moshi) is AppConfig
+            if (isVerifierApp) {
+                appConfigStorageManager.getFileAsBufferedSource(configFile)?.readUtf8()?.toObject<VerifierConfig>(moshi) is VerifierConfig
+            } else {
+                appConfigStorageManager.getFileAsBufferedSource(configFile)?.readUtf8()?.toObject<HolderConfig>(moshi) is HolderConfig
+            }
         } catch (exc: Exception) {
             false
         }
@@ -40,23 +51,13 @@ class CachedAppConfigUseCaseImpl constructor(
     override fun getCachedAppConfig(): AppConfig {
 
         if (!configFile.exists()) {
-            return AppConfig.default()
+            return defaultConfig
         }
 
         return try {
-            appConfigStorageManager.getFileAsBufferedSource(configFile)?.readUtf8()?.toObject(moshi) ?: AppConfig.default()
+            appConfigStorageManager.getFileAsBufferedSource(configFile)?.readUtf8()?.toObject(moshi) ?: defaultConfig
         } catch (exc: Exception) {
-            AppConfig.default()
+            defaultConfig
         }
-    }
-
-    override fun getCachedPublicKeys(): BufferedSource? {
-        val publicKeysFile = File(filesDirPath, "public_keys.json")
-
-        return appConfigStorageManager.getFileAsBufferedSource(publicKeysFile)
-    }
-
-    override fun getProviderName(providerIdentifier: String?): String {
-        return getCachedAppConfig().providerIdentifiers.firstOrNull { provider -> provider.code == providerIdentifier }?.name ?: ""
     }
 }
