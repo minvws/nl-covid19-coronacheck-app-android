@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.verifier.ui.scanner.usecases
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import mobilecore.Mobilecore.*
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.VerifiedQrResultState
 
 /*
@@ -24,11 +25,17 @@ class TestResultValidUseCaseImpl(
             when (val verifyQrResult = verifyQrUseCase.get(qrContent)) {
                 is VerifyQrUseCase.VerifyQrResult.Success -> {
                     val verifiedQr = verifyQrResult.verifiedQr
-                    val europeanQrCodeInNL = verifiedQr.testResultAttributes.isNLDCC == "1"
-                    when {
-                        verifiedQr.testResultAttributes.isSpecimen == "1" -> VerifiedQrResultState.Demo(verifiedQr)
-                        europeanQrCodeInNL -> VerifiedQrResultState.Invalid(verifiedQr)
-                        else -> VerifiedQrResultState.Valid(verifiedQr)
+                    when (verifiedQr.status) {
+                        VERIFICATION_SUCCESS -> {
+                            if (verifiedQr.details.isSpecimen == "1") {
+                                VerifiedQrResultState.Demo(verifiedQr)
+                            } else {
+                                VerifiedQrResultState.Valid(verifiedQr)
+                            }
+                        }
+                        VERIFICATION_FAILED_UNRECOGNIZED_PREFIX -> VerifiedQrResultState.UnknownQR(verifiedQr)
+                        VERIFICATION_FAILED_IS_NL_DCC -> VerifiedQrResultState.InvalidInNL(verifiedQr)
+                        else -> VerifiedQrResultState.Error(verifiedQr.error)
                     }
                 }
                 is VerifyQrUseCase.VerifyQrResult.Failed -> {

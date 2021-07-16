@@ -10,13 +10,9 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.CredentialEntit
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
-import nl.rijksoverheid.ctr.holder.persistence.database.usecases.GreenCardsUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItem.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItem.GreenCardItem.CredentialState
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CredentialUtil
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginUtil
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -33,7 +29,8 @@ interface GetMyOverviewItemsUseCase {
     suspend fun get(
         walletId: Int,
         selectedType: GreenCardType,
-        databaseSyncerResult: DatabaseSyncerResult = DatabaseSyncerResult.Success
+        databaseSyncerResult: DatabaseSyncerResult = DatabaseSyncerResult.Success,
+        shouldRefresh: Boolean
     ): MyOverviewItems
 }
 
@@ -41,15 +38,15 @@ class GetMyOverviewItemsUseCaseImpl(
     private val holderDatabase: HolderDatabase,
     private val credentialUtil: CredentialUtil,
     private val greenCardUtil: GreenCardUtil,
-    private val originUtil: OriginUtil,
-    private val greenCardUseCase: GreenCardsUseCase,
+    private val originUtil: OriginUtil
 ) :
     GetMyOverviewItemsUseCase {
 
     override suspend fun get(
         walletId: Int,
         selectedType: GreenCardType,
-        databaseSyncerResult: DatabaseSyncerResult
+        databaseSyncerResult: DatabaseSyncerResult,
+        shouldRefresh: Boolean
     ): MyOverviewItems {
         return withContext(Dispatchers.IO) {
             val unselectedType = when (selectedType) {
@@ -65,7 +62,7 @@ class GetMyOverviewItemsUseCaseImpl(
 
             val items = mutableListOf<MyOverviewItem>()
 
-            getHeaderItem(greenCardsForSelectedType.isNotEmpty(), selectedType)?.let {
+            getHeaderItem(allGreenCards, selectedType)?.let {
                 items.add(
                     it
                 )
@@ -76,7 +73,8 @@ class GetMyOverviewItemsUseCaseImpl(
                     selectedType = selectedType,
                     greenCardsForSelectedType = greenCardsForSelectedType,
                     greenCardsForUnselectedType = greenCardsForUnselectedType,
-                    databaseSyncerResult = databaseSyncerResult
+                    databaseSyncerResult = databaseSyncerResult,
+                    shouldRefresh = shouldRefresh
                 )
             )
 
@@ -102,24 +100,28 @@ class GetMyOverviewItemsUseCaseImpl(
         }
     }
 
-    private fun getHeaderItem(hasGreenCards: Boolean, type: GreenCardType): MyOverviewItem? {
-        if (!hasGreenCards) return null
+    private fun getHeaderItem(greenCards: List<GreenCard>,
+                              type: GreenCardType): MyOverviewItem? {
+        return if (greenCards.isEmpty() || greenCards.all { greenCardUtil.isExpired(it) }) {
+            null
+        } else {
+            val text = when (type) {
+                is GreenCardType.Domestic -> R.string.my_overview_description
+                is GreenCardType.Eu -> R.string.my_overview_description_eu
+            }
 
-        val text = when (type) {
-            is GreenCardType.Domestic -> R.string.my_overview_description
-            is GreenCardType.Eu -> R.string.my_overview_description_eu
+            HeaderItem(
+                text = text
+            )
         }
-
-        return HeaderItem(
-            text = text
-        )
     }
 
     private suspend fun getGreenCardItems(
         selectedType: GreenCardType,
         greenCardsForSelectedType: List<GreenCard>,
         greenCardsForUnselectedType: List<GreenCard>,
-        databaseSyncerResult: DatabaseSyncerResult
+        databaseSyncerResult: DatabaseSyncerResult,
+        shouldRefresh: Boolean
     ): List<MyOverviewItem> {
 
         // Loop through all green cards that exists in the database and map them to UI models
@@ -148,8 +150,7 @@ class GetMyOverviewItemsUseCaseImpl(
 
                 // More our credential to a more readable state
                 val credentialState = when {
-                    databaseSyncerResult !is DatabaseSyncerResult.Success -> CredentialState.NoCredential
-                    greenCardUseCase.shouldRefresh() -> CredentialState.LoadingCredential
+                    shouldRefresh -> CredentialState.LoadingCredential
                     activeCredential == null -> CredentialState.NoCredential
                     !hasValidOriginStates -> CredentialState.NoCredential
                     else -> CredentialState.HasCredential(activeCredential)
@@ -208,15 +209,14 @@ class GetMyOverviewItemsUseCaseImpl(
         greenCards: List<GreenCard>,
         selectedType: GreenCardType
     ): MyOverviewItem? {
-        return if (greenCards.isNotEmpty()) {
-            null
-        } else {
-            // Only return create qr card if there are not green cards on the screen and we have domestic type selected
+        return if (greenCards.isEmpty() || greenCards.all { greenCardUtil.isExpired(it) }) {
             if (selectedType == GreenCardType.Domestic) {
                 PlaceholderCardItem
             } else {
                 null
             }
+        } else {
+            null
         }
     }
 

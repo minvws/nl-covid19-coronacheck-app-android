@@ -5,7 +5,6 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
-import nl.rijksoverheid.ctr.appconfig.AppConfigUtil
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanInstructionsBinding
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
@@ -20,7 +19,6 @@ import org.koin.android.ext.android.inject
  */
 class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
 
-    private val appConfigUtil: AppConfigUtil by inject()
     private val scannerUtil: ScannerUtil by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -53,7 +51,7 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
                             image = R.drawable.illustration_scan_instruction_4,
                             imageDescription = getString(R.string.scan_instructions_4_image),
                             title = R.string.scan_instructions_4_title,
-                            description = appConfigUtil.getStringWithTestValidity(R.string.scan_instructions_4_description)
+                            description = getString(R.string.scan_instructions_4_description)
                         )
                     )
                 )

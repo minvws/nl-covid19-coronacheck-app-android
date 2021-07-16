@@ -17,6 +17,4 @@ data class OnboardingItem(
     @DrawableRes val imageResource: Int,
     @StringRes val titleResource: Int,
     @StringRes val description: Int,
-    val descriptionHasTestValidity: Boolean = false,
-    val descriptionHasEuLaunchDate: Boolean = false
 ) : Parcelable

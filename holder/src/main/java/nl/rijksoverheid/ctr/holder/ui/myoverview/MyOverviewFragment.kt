@@ -12,11 +12,12 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
 import com.xwray.groupie.viewbinding.BindableItem
-import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMyOverviewBinding
+import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
@@ -301,7 +302,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                         title = getString(R.string.my_overview_green_card_not_valid_title_test),
                         description = getString(
                             R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_test,
-                            cachedAppConfigUseCase.getCachedAppConfigMaxValidityHours()
+                            (cachedAppConfigUseCase.getCachedAppConfig()).maxValidityHours
                                 .toString()
                         )
                     )

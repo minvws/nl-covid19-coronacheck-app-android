@@ -4,9 +4,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentQrCodeTypeBinding
+import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import org.koin.android.ext.android.inject
 
@@ -30,7 +31,7 @@ class QrCodeTypeFragment : Fragment(R.layout.fragment_qr_code_type) {
             R.string.qr_code_type_negative_test_title,
             getString(R.string.qr_code_type_negative_test_description)
         ) {
-            if (cachedAppConfigUseCase.getCachedAppConfig()?.ggdEnabled == true) {
+            if (cachedAppConfigUseCase.getCachedAppConfig().ggdEnabled) {
                 findNavController().navigate(QrCodeTypeFragmentDirections.actionChooseProvider())
             } else {
                 findNavController().navigate(QrCodeTypeFragmentDirections.actionCommercialTestCode())

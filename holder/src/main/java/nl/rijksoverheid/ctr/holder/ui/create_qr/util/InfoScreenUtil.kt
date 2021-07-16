@@ -1,7 +1,8 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
 import android.app.Application
-import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
+import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.design.ext.formatDateTime
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
 import nl.rijksoverheid.ctr.holder.R
@@ -57,15 +58,14 @@ class InfoScreenUtilImpl(
     private val application: Application,
     private val cachedAppConfigUseCase: CachedAppConfigUseCase
 ) : InfoScreenUtil {
+
+    private val holderConfig = cachedAppConfigUseCase.getCachedAppConfig()
+
     override fun getForRemoteTestResult2(
         result: RemoteTestResult2.Result,
         personalDetails: PersonalDetails,
         testDate: String
     ): InfoScreen {
-        val testType = cachedAppConfigUseCase.getCachedAppConfig()?.nlTestTypes?.firstOrNull {
-            it.code == result.testType
-        }?.name ?: result.testType
-
         val title = application.getString(R.string.your_test_result_explanation_toolbar_title)
         val description = application.getString(
             R.string.your_test_result_explanation_description,
@@ -89,7 +89,7 @@ class InfoScreenUtilImpl(
         birthDate: String
     ): InfoScreen {
 
-        val testType = cachedAppConfigUseCase.getCachedAppConfig()?.euTestTypes?.firstOrNull {
+        val testType = holderConfig.euTestTypes.firstOrNull {
             it.code == event.negativeTest?.type
         }?.name ?: event.negativeTest?.type ?: ""
 
@@ -98,7 +98,7 @@ class InfoScreenUtilImpl(
         val testLocation = event.negativeTest?.facility ?: ""
 
         val testManifacturer =
-            cachedAppConfigUseCase.getCachedAppConfig()?.euTestManufacturers?.firstOrNull {
+            holderConfig.euTestManufacturers.firstOrNull {
                 it.code == event.negativeTest?.manufacturer
             }?.name ?: event.negativeTest?.manufacturer ?: ""
 
@@ -131,7 +131,7 @@ class InfoScreenUtilImpl(
         birthDate: String
     ): InfoScreen {
 
-        val testType = cachedAppConfigUseCase.getCachedAppConfig()?.euTestTypes?.firstOrNull {
+        val testType = holderConfig.euTestTypes.firstOrNull {
             it.code == event.positiveTest?.type
         }?.name ?: event.positiveTest?.type ?: ""
 
@@ -140,7 +140,7 @@ class InfoScreenUtilImpl(
         val testLocation = event.positiveTest?.facility ?: ""
 
         val testManifacturer =
-            cachedAppConfigUseCase.getCachedAppConfig()?.euTestManufacturers?.firstOrNull {
+            holderConfig.euTestManufacturers.firstOrNull {
                 it.code == event.positiveTest?.manufacturer
             }?.name ?: event.positiveTest?.manufacturer ?: ""
 
@@ -202,11 +202,11 @@ class InfoScreenUtilImpl(
 
         val disease = application.getString(R.string.your_vaccination_explanation_covid_19)
 
-        val hpkCode = cachedAppConfigUseCase.getCachedAppConfig()?.hpkCodes?.firstOrNull {
+        val hpkCode = holderConfig.hpkCodes.firstOrNull {
             it.code == event.vaccination?.hpkCode
         }?.name ?: event.vaccination?.hpkCode ?: ""
 
-        val brand = cachedAppConfigUseCase.getCachedAppConfig()?.euBrands?.firstOrNull {
+        val brand = holderConfig.euBrands.firstOrNull {
             it.code == event.vaccination?.brand
         }?.name ?: event.vaccination?.brand ?: ""
 
@@ -216,24 +216,24 @@ class InfoScreenUtilImpl(
             else -> ""
         }
 
-        val vaccinType = cachedAppConfigUseCase.getCachedAppConfig()?.euVaccinations?.firstOrNull {
+        val vaccinType = holderConfig.euVaccinations.firstOrNull {
             it.code == event.vaccination?.type
         }?.name ?: event.vaccination?.type ?: ""
 
-        val producer = cachedAppConfigUseCase.getCachedAppConfig()?.euManufacturers?.firstOrNull {
+        val producer = holderConfig.euManufacturers.firstOrNull {
             it.code == event.vaccination?.manufacturer
         }?.name ?: event.vaccination?.manufacturer ?: ""
 
         val doses =
-            if (event.vaccination?.doseNumber != null && event.vaccination?.totalDoses != null) {
+            if (event.vaccination?.doseNumber != null && event.vaccination.totalDoses != null) {
                 application.getString(
                     R.string.your_vaccination_explanation_doses,
-                    event.vaccination?.doseNumber,
-                    event.vaccination?.totalDoses
+                    event.vaccination.doseNumber,
+                    event.vaccination.totalDoses
                 )
             } else ""
 
-        val vaccinationDate = event.vaccination?.date?.let { it.formatDayMonthYear() } ?: ""
+        val vaccinationDate = event.vaccination?.date?.formatDayMonthYear() ?: ""
         val vaccinationCountry = event.vaccination?.country ?: ""
         val uniqueCode = event.unique ?: ""
 
@@ -288,7 +288,7 @@ class InfoScreenUtilImpl(
 
         val disease = application.getString(R.string.your_vaccination_explanation_covid_19)
 
-        val testType = cachedAppConfigUseCase.getCachedAppConfig()?.euTestTypes?.firstOrNull {
+        val testType = holderConfig.euTestTypes.firstOrNull {
             it.code == test.getStringOrNull("tt")
         }?.name ?: test.getStringOrNull("tt") ?: ""
 
@@ -309,7 +309,7 @@ class InfoScreenUtilImpl(
         val testLocation = test.getStringOrNull("tc") ?: ""
 
         val manufacturer =
-            cachedAppConfigUseCase.getCachedAppConfig()?.euManufacturers?.firstOrNull {
+            holderConfig.euManufacturers.firstOrNull {
                 it.code == test.getStringOrNull("ma")
             }?.name ?: test.getStringOrNull("ma") ?: ""
 
@@ -357,16 +357,16 @@ class InfoScreenUtilImpl(
 
         val disease = application.getString(R.string.your_vaccination_explanation_covid_19)
 
-        val vaccin = cachedAppConfigUseCase.getCachedAppConfig()?.euBrands?.firstOrNull {
+        val vaccin = holderConfig.euBrands.firstOrNull {
             it.code == vaccination.getStringOrNull("mp")
         }?.name ?: vaccination.getStringOrNull("mp") ?: ""
 
-        val vaccinType = cachedAppConfigUseCase.getCachedAppConfig()?.euVaccinations?.firstOrNull {
+        val vaccinType = holderConfig.euVaccinations.firstOrNull {
             it.code == vaccination.getStringOrNull("vp")
         }?.name ?: vaccination.getStringOrNull("vp") ?: ""
 
         val manufacturer =
-            cachedAppConfigUseCase.getCachedAppConfig()?.euManufacturers?.firstOrNull {
+            holderConfig.euManufacturers.firstOrNull {
                 it.code == vaccination.getStringOrNull("ma")
             }?.name ?: vaccination.getStringOrNull("ma") ?: ""
 

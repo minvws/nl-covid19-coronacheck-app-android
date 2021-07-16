@@ -1,11 +1,9 @@
 package nl.rijksoverheid.ctr.holder
 
-import androidx.lifecycle.LiveData
-import mobilecore.Result
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
-import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
-import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
+import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
+import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.CommercialTestCodeViewModel
@@ -13,7 +11,10 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.EventProviderRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.TestProviderRepository
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.CommitmentMessageUseCase
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.ConfigProvidersUseCase
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.CreateCredentialUseCase
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SecretKeyUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TokenValidatorUtil
@@ -21,6 +22,7 @@ import nl.rijksoverheid.ctr.introduction.IntroductionData
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
+import nl.rijksoverheid.ctr.shared.VerificationResult
 import nl.rijksoverheid.ctr.shared.models.*
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import nl.rijksoverheid.ctr.shared.utils.TestResultUtil
@@ -93,40 +95,11 @@ fun fakePersonalDetailsUtil(
 }
 
 fun fakeCachedAppConfigUseCase(
-    appConfig: AppConfig = AppConfig(
-        minimumVersion = 0,
-        appDeactivated = false,
-        informationURL = "dummy",
-        configTtlSeconds = 0,
-        maxValidityHours = 0,
-        euLaunchDate = "",
-        credentialRenewalDays = 0,
-        domesticCredentialValidity = 0,
-        testEventValidity = 0,
-        recoveryEventValidity = 0,
-        temporarilyDisabled = false,
-        requireUpdateBefore = 0
-    ),
-    publicKeys: BufferedSource = "{\"cl_keys\":[]}".toResponseBody("application/json".toMediaType())
-        .source()
+    appConfig: HolderConfig = HolderConfig.default(),
 ): CachedAppConfigUseCase = object : CachedAppConfigUseCase {
-    override fun getCachedAppConfig(): AppConfig {
+    override fun getCachedAppConfig(): HolderConfig {
         return appConfig
     }
-
-    override fun getCachedAppConfigRecoveryEventValidity(): Int {
-        return appConfig.recoveryEventValidity
-    }
-
-    override fun getCachedAppConfigMaxValidityHours(): Int {
-        return appConfig.maxValidityHours
-    }
-
-    override fun getCachedAppConfigVaccinationEventValidity(): Int {
-        return appConfig.vaccinationEventValidity
-    }
-
-    override fun getCachedPublicKeys() = publicKeys
 
     override fun getProviderName(providerIdentifier: String?): String {
         return ""
@@ -249,7 +222,7 @@ fun fakeCoronaCheckRepository(
     testIsmExceptionCallback: (() -> Unit)? = null,
     remoteNonce: RemoteNonce = RemoteNonce("", ""),
     accessTokens: RemoteAccessTokens = RemoteAccessTokens(tokens = listOf()),
-    remoteCredentials: RemoteCredentials = RemoteCredentials(
+    remoteCredentials: RemoteGreenCards = RemoteGreenCards(
         domesticGreencard = null,
         euGreencards = null
     ),
@@ -269,11 +242,11 @@ fun fakeCoronaCheckRepository(
             return accessTokens
         }
 
-        override suspend fun getCredentials(
+        override suspend fun getGreenCards(
             stoken: String,
             events: List<String>,
             issueCommitmentMessage: String
-        ): RemoteCredentials {
+        ): RemoteGreenCards {
             return remoteCredentials
         }
 
@@ -420,7 +393,7 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
 
         override fun initializeVerifier(configFilesPath: String) = ""
 
-        override fun verify(credential: ByteArray): Result {
+        override fun verify(credential: ByteArray): VerificationResult {
             TODO("Not yet implemented")
         }
 

@@ -1,11 +1,9 @@
 package nl.rijksoverheid.ctr.appconfig
 
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
+import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.ResponseBody.Companion.toResponseBody
-import okio.BufferedSource
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -31,34 +29,15 @@ fun fakeAppConfigPersistenceManager(
 }
 
 fun fakeCachedAppConfigUseCase(
-    appConfig: AppConfig? = fakeAppConfig(),
-    publicKeys: BufferedSource = "{\"cl_keys\":[]}".toResponseBody("application/json".toMediaType()).source(),
-    cachedAppConfigMaxValidityHours: Int = 0,
-    cachedAppConfigVaccinationEventValidity: Int = 0
+    appConfig: AppConfig = fakeAppConfig(),
 ) = object : CachedAppConfigUseCase {
 
-    override fun getCachedAppConfig(): AppConfig? {
+    override fun isCachedAppConfigValid(): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override fun getCachedAppConfig(): AppConfig {
         return appConfig
-    }
-
-    override fun getCachedAppConfigRecoveryEventValidity(): Int {
-        return appConfig?.recoveryEventValidity ?: 0
-    }
-
-    override fun getCachedAppConfigMaxValidityHours(): Int {
-        return cachedAppConfigMaxValidityHours
-    }
-
-    override fun getCachedAppConfigVaccinationEventValidity(): Int {
-        return cachedAppConfigVaccinationEventValidity
-    }
-
-    override fun getCachedPublicKeys(): BufferedSource {
-        return publicKeys
-    }
-
-    override fun getProviderName(providerIdentifier: String?): String {
-        return ""
     }
 }
 
@@ -68,11 +47,11 @@ fun fakeAppConfig(
     informationURL: String = "",
     configTtlSeconds: Int = 0,
     maxValidityHours: Int = 0
-) = AppConfig(
-    minimumVersion = minimumVersion,
-    appDeactivated = appDeactivated,
-    informationURL = informationURL,
-    configTtlSeconds = configTtlSeconds,
+) = HolderConfig.default(
+    holderMinimumVersion = minimumVersion,
+    holderAppDeactivated = appDeactivated,
+    holderInformationURL = informationURL,
+    configTTL = configTtlSeconds,
     maxValidityHours = maxValidityHours,
     euLaunchDate = "",
     credentialRenewalDays = 0,
@@ -80,5 +59,6 @@ fun fakeAppConfig(
     testEventValidity = 0,
     recoveryEventValidity = 0,
     temporarilyDisabled = false,
-    requireUpdateBefore = 0
+    requireUpdateBefore = 0,
+    ggdEnabled = true
 )

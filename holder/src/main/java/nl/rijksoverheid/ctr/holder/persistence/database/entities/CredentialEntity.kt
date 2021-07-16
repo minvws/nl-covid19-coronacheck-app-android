@@ -58,8 +58,3 @@ data class CredentialEntity(
         return result
     }
 }
-
-fun CredentialEntity.isExpiring(credentialRenewalDays: Long, clock: Clock): Boolean {
-    val now = OffsetDateTime.now(clock)
-    return expirationTime.minusDays(credentialRenewalDays).isBefore(now)
-}

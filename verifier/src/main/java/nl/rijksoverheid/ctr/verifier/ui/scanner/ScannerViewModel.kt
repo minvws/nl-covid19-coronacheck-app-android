@@ -39,5 +39,3 @@ class ScannerViewModelImpl(private val testResultValidUseCase: TestResultValidUs
     }
 
 }
-
-

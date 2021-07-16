@@ -9,9 +9,9 @@ import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
-import nl.rijksoverheid.ctr.holder.persistence.database.usecases.GreenCardsUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetMyOverviewItemsUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItems
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardRefreshUtil
 import nl.rijksoverheid.ctr.shared.livedata.Event
 
 /*
@@ -40,7 +40,7 @@ abstract class MyOverviewViewModel : ViewModel() {
 class MyOverviewViewModelImpl(
     private val getMyOverviewItemsUseCase: GetMyOverviewItemsUseCase,
     private val persistenceManager: PersistenceManager,
-    private val greenCardsUseCase: GreenCardsUseCase,
+    private val greenCardRefreshUtil: GreenCardRefreshUtil,
     private val holderDatabaseSyncer: HolderDatabaseSyncer,
 ) : MyOverviewViewModel() {
 
@@ -54,40 +54,43 @@ class MyOverviewViewModelImpl(
         persistenceManager.setSelectedGreenCardType(selectType)
 
         viewModelScope.launch {
+            // Check if we need to refresh our data
+            val hasDoneRefreshCall = databaseSyncerResultLiveData.value?.peekContent() != null && selectType == getSelectedType()
+            val shouldRefresh = (forceSync) || (greenCardRefreshUtil.shouldRefresh() && !hasDoneRefreshCall)
+
             // Get items we need to show on the overview
             (myOverviewItemsLiveData as MutableLiveData).postValue(
                 Event(
                     getMyOverviewItemsUseCase.get(
                         selectedType = selectType,
-                        walletId = 1
+                        walletId = 1,
+                        databaseSyncerResult = databaseSyncerResultLiveData.value?.peekContent() ?: DatabaseSyncerResult.Success,
+                        shouldRefresh = shouldRefresh
                     )
                 )
             )
 
-            // Check if we need to refresh our data
-            val hasDoneRefreshCall = databaseSyncerResultLiveData.value != null && selectType == getSelectedType()
-            val shouldRefresh = (forceSync) || (greenCardsUseCase.shouldRefresh() && !hasDoneRefreshCall)
-
-            // Refresh the database
-            // This checks if we need to remove expired EventGroupEntity's
-            // Also syncs the database with remote if needed
-            val databaseSyncerResult = holderDatabaseSyncer.sync(
-                syncWithRemote = shouldRefresh
-            )
-
-            // Communicate refresh to the UI
-            (databaseSyncerResultLiveData as MutableLiveData).postValue(
-                Event(databaseSyncerResult)
-            )
-
-            // If we needed to refresh out data we want to refresh the items on the overview again
             if (shouldRefresh) {
+                // Refresh the database
+                // This checks if we need to remove expired EventGroupEntity's
+                // Also syncs the database with remote if needed
+                val databaseSyncerResult = holderDatabaseSyncer.sync(
+                    syncWithRemote = shouldRefresh
+                )
+
+                // Communicate refresh to the UI (only once)
+                (databaseSyncerResultLiveData as MutableLiveData).postValue(
+                    Event(databaseSyncerResult)
+                )
+
+                // If we needed to refresh out data we want to refresh the items on the overview again
                 myOverviewItemsLiveData.postValue(
                     Event(
                         getMyOverviewItemsUseCase.get(
                             selectedType = selectType,
                             walletId = 1,
-                            databaseSyncerResult = databaseSyncerResult
+                            databaseSyncerResult = databaseSyncerResult,
+                            shouldRefresh = false
                         )
                     )
                 )

@@ -9,6 +9,7 @@ import java.time.ZoneOffset
 
 interface CredentialUtil {
     fun getActiveCredential(entities: List<CredentialEntity>): CredentialEntity?
+    fun isExpiring(credentialRenewalDays: Long, credential: CredentialEntity): Boolean
 }
 
 class CredentialUtilImpl(private val clock: Clock): CredentialUtil {
@@ -30,5 +31,10 @@ class CredentialUtilImpl(private val clock: Clock): CredentialUtil {
             it.expirationTime.toEpochSecond() - OffsetDateTime.now(clock)
                 .toEpochSecond()
         }
+    }
+
+    override fun isExpiring(credentialRenewalDays: Long, credential: CredentialEntity): Boolean {
+        val now = OffsetDateTime.now(clock)
+        return credential.expirationTime.minusDays(credentialRenewalDays).isBefore(now)
     }
 }

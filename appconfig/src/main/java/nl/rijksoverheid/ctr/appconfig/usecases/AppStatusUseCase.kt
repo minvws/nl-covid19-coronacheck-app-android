@@ -5,6 +5,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
+import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
+import nl.rijksoverheid.ctr.appconfig.api.model.VerifierConfig
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.appconfig.models.ConfigResult
 import nl.rijksoverheid.ctr.shared.ext.toObject
@@ -27,6 +29,7 @@ class AppStatusUseCaseImpl(
     private val cachedAppConfigUseCase: CachedAppConfigUseCase,
     private val appConfigPersistenceManager: AppConfigPersistenceManager,
     private val moshi: Moshi,
+    private val isVerifierApp: Boolean,
 ) :
     AppStatusUseCase {
 
@@ -36,26 +39,26 @@ class AppStatusUseCaseImpl(
                 is ConfigResult.Success -> {
                     checkIfActionRequired(
                         currentVersionCode = currentVersionCode,
-                        appConfig = config.appConfig.toObject(moshi)
+                        appConfig = if (isVerifierApp) {
+                            config.appConfig.toObject<VerifierConfig>(moshi)
+                        } else {
+                            config.appConfig.toObject<HolderConfig>(moshi)
+                        }
                     )
                 }
                 is ConfigResult.Error -> {
                     val cachedAppConfig = cachedAppConfigUseCase.getCachedAppConfig()
-                    if (cachedAppConfig == null) {
-                        AppStatus.Error
+                    if (appConfigPersistenceManager.getAppConfigLastFetchedSeconds() + cachedAppConfig.configTtlSeconds >= OffsetDateTime.now(
+                            clock
+                        )
+                            .toEpochSecond()
+                    ) {
+                        checkIfActionRequired(
+                            currentVersionCode = currentVersionCode,
+                            appConfig = cachedAppConfig
+                        )
                     } else {
-                        if (appConfigPersistenceManager.getAppConfigLastFetchedSeconds() + cachedAppConfig.configTtlSeconds >= OffsetDateTime.now(
-                                clock
-                            )
-                                .toEpochSecond()
-                        ) {
-                            checkIfActionRequired(
-                                currentVersionCode = currentVersionCode,
-                                appConfig = cachedAppConfig
-                            )
-                        } else {
-                            AppStatus.Error
-                        }
+                        AppStatus.Error
                     }
                 }
             }

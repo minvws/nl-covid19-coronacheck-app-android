@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.appconfig.usecases
 
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.runBlocking
+import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.appconfig.fakeAppConfig
 import nl.rijksoverheid.ctr.appconfig.fakeAppConfigPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.fakeCachedAppConfigUseCase
@@ -26,7 +27,11 @@ class AppStatusUseCaseImplTest {
 
     private val publicKeys = "{\"cl_keys\":[]}".toResponseBody("application/json".toMediaType()).source().readUtf8()
     private fun getAppConfig(minimumVersion: Int = 1, appDeactivated: Boolean = false): String =
-        "{\"androidMinimumVersion\":$minimumVersion, \"informationURL\":\"dummy\",\"configTTL\":60, \"maxValidityHours\":60, \"appDeactivated\":$appDeactivated}".toResponseBody("application/json".toMediaType()).source().readUtf8()
+        HolderConfig.default(
+            holderMinimumVersion = minimumVersion,
+            holderAppDeactivated = appDeactivated,
+            holderInformationURL = "dummy",
+        ).toJson(Moshi.Builder().build()).toResponseBody("application/json".toMediaType()).source().readUtf8()
 
     @Test
     fun `status returns Deactivated when app is deactivated remotely`() =
@@ -35,7 +40,8 @@ class AppStatusUseCaseImplTest {
                 clock = Clock.fixed(Instant.ofEpochSecond(0), ZoneId.of("UTC")),
                 cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
                 appConfigPersistenceManager = fakeAppConfigPersistenceManager(),
-                moshi = Moshi.Builder().build()
+                moshi = Moshi.Builder().build(),
+                isVerifierApp = false,
             )
 
             val appStatus = appStatusUseCase.get(
@@ -55,7 +61,8 @@ class AppStatusUseCaseImplTest {
                 clock = Clock.fixed(Instant.ofEpochSecond(0), ZoneId.of("UTC")),
                 cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
                 appConfigPersistenceManager = fakeAppConfigPersistenceManager(),
-                moshi = Moshi.Builder().build()
+                moshi = Moshi.Builder().build(),
+                isVerifierApp = false,
             )
 
             val appStatus = appStatusUseCase.get(
@@ -75,7 +82,8 @@ class AppStatusUseCaseImplTest {
                 clock = Clock.fixed(Instant.ofEpochSecond(0), ZoneId.of("UTC")),
                 cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
                 appConfigPersistenceManager = fakeAppConfigPersistenceManager(),
-                moshi = Moshi.Builder().build()
+                moshi = Moshi.Builder().build(),
+                isVerifierApp = false,
             )
 
             val appStatus = appStatusUseCase.get(
@@ -86,25 +94,6 @@ class AppStatusUseCaseImplTest {
                 currentVersionCode = 1
             )
             Assert.assertEquals(AppStatus.NoActionRequired, appStatus)
-        }
-
-    @Test
-    fun `status returns InternetRequired when config is Error and cached app config does not exist`() =
-        runBlocking {
-            val appStatusUseCase = AppStatusUseCaseImpl(
-                clock = Clock.fixed(Instant.ofEpochSecond(0), ZoneId.of("UTC")),
-                cachedAppConfigUseCase = fakeCachedAppConfigUseCase(
-                    appConfig = null
-                ),
-                appConfigPersistenceManager = fakeAppConfigPersistenceManager(),
-                moshi = Moshi.Builder().build()
-            )
-
-            val appStatus = appStatusUseCase.get(
-                config = ConfigResult.Error,
-                currentVersionCode = 1
-            )
-            Assert.assertEquals(AppStatus.Error, appStatus)
         }
 
     @Test
@@ -124,7 +113,8 @@ class AppStatusUseCaseImplTest {
                 appConfigPersistenceManager = fakeAppConfigPersistenceManager(
                     lastFetchedSeconds = 20
                 ),
-                moshi = Moshi.Builder().build()
+                moshi = Moshi.Builder().build(),
+                isVerifierApp = false,
             )
 
             val appStatus = appStatusUseCase.get(
@@ -151,7 +141,8 @@ class AppStatusUseCaseImplTest {
                 appConfigPersistenceManager = fakeAppConfigPersistenceManager(
                     lastFetchedSeconds = 70
                 ),
-                moshi = Moshi.Builder().build()
+                moshi = Moshi.Builder().build(),
+                isVerifierApp = false,
             )
 
             val appStatus = appStatusUseCase.get(
