@@ -12,6 +12,7 @@ import nl.rijksoverheid.ctr.introduction.IntroductionFragment
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
+import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.verifier.databinding.ActivityMainBinding
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -46,15 +47,13 @@ class VerifierMainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
 
-        val introductionStatus = introductionViewModel.getIntroductionStatus()
-
-        if (introductionStatus !is IntroductionStatus.IntroductionFinished.NoActionRequired) {
+        introductionViewModel.introductionStatusLiveData.observe(this, EventObserver {
             navController.navigate(
-                R.id.action_introduction, IntroductionFragment.getBundle(introductionStatus)
+                R.id.action_introduction, IntroductionFragment.getBundle(it)
             )
-        }
+        })
 
-        appStatusViewModel.appStatusLiveData.observe(this, {
+        appStatusViewModel.appStatusLiveData.observe(this, EventObserver {
             if (it !is AppStatus.NoActionRequired) {
                 val bundle = bundleOf(AppStatusFragment.EXTRA_APP_STATUS to it)
                 navController.navigate(R.id.action_app_status, bundle)

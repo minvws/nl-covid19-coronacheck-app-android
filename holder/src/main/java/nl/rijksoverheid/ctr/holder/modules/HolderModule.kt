@@ -140,6 +140,7 @@ fun holderModule(baseUrl: String) = module {
     factory<DeviceRootedUseCase> { DeviceRootedUseCaseImpl(androidContext()) }
     factory<GetEventsUseCase> { GetEventsUseCaseImpl(get(), get(), get(), get()) }
     factory<SaveEventsUseCase> { SaveEventsUseCaseImpl(get()) }
+    factory<CachedAppConfigUseCase> { CachedAppConfigUseCaseImpl(get(), androidContext().filesDir.path, get()) }
 
     factory<TestResultsMigrationManager> { TestResultsMigrationManagerImpl(get(), get(), get()) }
 

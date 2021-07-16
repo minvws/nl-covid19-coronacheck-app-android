@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.holder.persistence.database.usecases
 
-import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
+import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
@@ -17,16 +18,17 @@ class RemoveExpiredEventsUseCaseImpl(
     private val holderDatabase: HolderDatabase
 ): RemoveExpiredEventsUseCase {
     override suspend fun execute(events: List<EventGroupEntity>) {
+        val cachedAppConfig = cachedAppConfigUseCase.getCachedAppConfig()
         events.forEach {
             val expireDate = when (it.type) {
                 is OriginType.Vaccination -> {
-                    cachedAppConfigUseCase.getCachedAppConfig().vaccinationEventValidity
+                    cachedAppConfig.vaccinationEventValidity
                 }
                 is OriginType.Test -> {
-                    cachedAppConfigUseCase.getCachedAppConfig().testEventValidity
+                    cachedAppConfig.testEventValidity
                 }
                 is OriginType.Recovery -> {
-                    cachedAppConfigUseCase.getCachedAppConfig().recoveryEventValidity
+                    cachedAppConfig.recoveryEventValidity
                 }
             }
 

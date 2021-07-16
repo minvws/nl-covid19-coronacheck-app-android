@@ -10,6 +10,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.PaperProofCodeResult
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.hideKeyboard
 import nl.rijksoverheid.ctr.shared.ext.showKeyboard
+import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
 import org.koin.androidx.viewmodel.scope.emptyState
 
@@ -29,8 +30,8 @@ class PaperProofCodeFragment : Fragment(R.layout.fragment_paper_proof_code) {
             viewModel.code = it?.toString() ?: ""
         }
 
-        viewModel.viewState.observe(viewLifecycleOwner) {
-            when (it.codeResult) {
+        viewModel.codeResultLiveData.observe(viewLifecycleOwner, EventObserver {
+            when (it) {
                 is PaperProofCodeResult.None -> {
 
                 }
@@ -48,7 +49,9 @@ class PaperProofCodeFragment : Fragment(R.layout.fragment_paper_proof_code) {
                         getString(R.string.add_paper_proof_input_invalid)
                 }
             }
+        })
 
+        viewModel.viewState.observe(viewLifecycleOwner) {
             binding.bottom.setButtonEnabled(it.buttonEnabled)
         }
 
