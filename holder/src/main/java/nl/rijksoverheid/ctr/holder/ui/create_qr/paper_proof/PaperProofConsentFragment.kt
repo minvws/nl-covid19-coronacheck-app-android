@@ -34,9 +34,9 @@ class PaperProofConsentFragment: Fragment(R.layout.fragment_paper_proof_consent)
         holderMainActivityViewModel.eventsLiveData.observe(viewLifecycleOwner, EventObserver {
             findNavController().navigate(PaperProofConsentFragmentDirections.actionYourEvents(
                 toolbarTitle = getString(R.string.your_dcc_event_toolbar_title),
-                type = YourEventsFragmentType.RemoteProtocol3Type(
+                type = YourEventsFragmentType.DCC(
                     remoteEvents = it,
-                    originType = OriginType.Vaccination
+                    originType = OriginType.fromTypeString(it.keys.first().events!!.first().type!!)
                 )
             ))
         })
