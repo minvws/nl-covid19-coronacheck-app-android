@@ -141,13 +141,14 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                     }
                     is OriginType.Recovery -> {
                         binding.title.visibility = View.GONE
-                        binding.description.text = getString(R.string.your_positive_test_description)
-                    }
-                    OriginType.DCC -> {
-                        binding.title.visibility = View.GONE
-                        binding.description.text = getString(R.string.your_dcc_event_description)
+                        binding.description.text =
+                            getString(R.string.your_positive_test_description)
                     }
                 }
+            }
+            is YourEventsFragmentType.DCC -> {
+                binding.title.visibility = View.GONE
+                binding.description.text = getString(R.string.your_dcc_event_description)
             }
         }
     }
@@ -160,46 +161,52 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                     remoteProtocol2 = type.remoteTestResult
                 )
             }
-            is YourEventsFragmentType.RemoteProtocol3Type -> {
-                val remoteEvents = type.remoteEvents.map { it.key }
+            is YourEventsFragmentType.RemoteProtocol3Type, -> presentEvents(type.remoteEvents, binding)
+            is YourEventsFragmentType.DCC -> presentEvents(type.remoteEvents, binding)
+        }
+    }
 
-                remoteEvents.forEach { remoteProtocol3 ->
-                    remoteProtocol3.events?.forEach { remoteEvent ->
-                        when (remoteEvent) {
-                            is RemoteEventVaccination -> {
-                                presentVaccinationEvent(
-                                    binding = binding,
-                                    providerIdentifier = remoteProtocol3.providerIdentifier,
-                                    fullName = getFullName(remoteProtocol3.holder),
-                                    birthDate = getBirthDate(remoteProtocol3.holder),
-                                    event = remoteEvent
-                                )
-                            }
-                            is RemoteEventNegativeTest -> {
-                                presentNegativeTestEvent(
-                                    binding = binding,
-                                    fullName = getFullName(remoteProtocol3.holder),
-                                    birthDate = getBirthDate(remoteProtocol3.holder),
-                                    event = remoteEvent
-                                )
-                            }
-                            is RemoteEventPositiveTest -> {
-                                presentPositiveTestEvent(
-                                    binding = binding,
-                                    fullName = getFullName(remoteProtocol3.holder),
-                                    birthDate = getBirthDate(remoteProtocol3.holder),
-                                    event = remoteEvent
-                                )
-                            }
-                            is RemoteEventRecovery -> {
-                                presentRecoveryEvent(
-                                    binding = binding,
-                                    fullName = getFullName(remoteProtocol3.holder),
-                                    birthDate = getBirthDate(remoteProtocol3.holder),
-                                    event = remoteEvent
-                                )
-                            }
-                        }
+    private fun presentEvents(
+        remoteEvents: Map<RemoteProtocol3, ByteArray>,
+        binding: FragmentYourEventsBinding
+    ) {
+        val protocols = remoteEvents.map { it.key }
+
+        protocols.forEach { remoteProtocol3 ->
+            remoteProtocol3.events?.forEach { remoteEvent ->
+                when (remoteEvent) {
+                    is RemoteEventVaccination -> {
+                        presentVaccinationEvent(
+                            binding = binding,
+                            providerIdentifier = remoteProtocol3.providerIdentifier,
+                            fullName = getFullName(remoteProtocol3.holder),
+                            birthDate = getBirthDate(remoteProtocol3.holder),
+                            event = remoteEvent
+                        )
+                    }
+                    is RemoteEventNegativeTest -> {
+                        presentNegativeTestEvent(
+                            binding = binding,
+                            fullName = getFullName(remoteProtocol3.holder),
+                            birthDate = getBirthDate(remoteProtocol3.holder),
+                            event = remoteEvent
+                        )
+                    }
+                    is RemoteEventPositiveTest -> {
+                        presentPositiveTestEvent(
+                            binding = binding,
+                            fullName = getFullName(remoteProtocol3.holder),
+                            birthDate = getBirthDate(remoteProtocol3.holder),
+                            event = remoteEvent
+                        )
+                    }
+                    is RemoteEventRecovery -> {
+                        presentRecoveryEvent(
+                            binding = binding,
+                            fullName = getFullName(remoteProtocol3.holder),
+                            birthDate = getBirthDate(remoteProtocol3.holder),
+                            event = remoteEvent
+                        )
                     }
                 }
             }
@@ -411,6 +418,12 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                     )
                 }
                 is YourEventsFragmentType.RemoteProtocol3Type -> {
+                    yourEventsViewModel.saveRemoteProtocol3Events(
+                        remoteProtocols3 = type.remoteEvents,
+                        originType = type.originType
+                    )
+                }
+                is YourEventsFragmentType.DCC -> {
                     yourEventsViewModel.saveRemoteProtocol3Events(
                         remoteProtocols3 = type.remoteEvents,
                         originType = type.originType

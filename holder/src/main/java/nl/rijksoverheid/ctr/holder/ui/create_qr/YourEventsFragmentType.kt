@@ -1,10 +1,10 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr
 
-import android.os.Parcel
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -16,7 +16,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 
 sealed class YourEventsFragmentType : Parcelable {
     @Parcelize
-    data class TestResult2(val remoteTestResult: RemoteTestResult2, val rawResponse: ByteArray):
+    data class TestResult2(val remoteTestResult: RemoteTestResult2, val rawResponse: ByteArray) :
         YourEventsFragmentType(), Parcelable {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
@@ -38,8 +38,14 @@ sealed class YourEventsFragmentType : Parcelable {
     }
 
     @Parcelize
-    data class RemoteProtocol3Type(val remoteEvents: Map<RemoteProtocol3, ByteArray>,
-                                   val originType: OriginType):
-        YourEventsFragmentType(), Parcelable
+    data class RemoteProtocol3Type(
+        val remoteEvents: Map<RemoteProtocol3, ByteArray>,
+        val originType: OriginType
+    ) : YourEventsFragmentType(), Parcelable
 
+    @Parcelize
+    data class DCC(
+        val remoteEvents: Map<RemoteProtocol3, ByteArray>,
+        val originType: OriginType
+    ) : YourEventsFragmentType(), Parcelable
 }

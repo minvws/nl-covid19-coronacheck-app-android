@@ -16,7 +16,6 @@ sealed class OriginType(val order: Int) : Parcelable {
         const val TYPE_VACCINATION = "vaccination"
         const val TYPE_RECOVERY = "recovery"
         const val TYPE_TEST = "test"
-        const val TYPE_DCC = "dcc"
 
         fun fromTypeString(typeString: String): OriginType {
             return when (typeString) {
@@ -37,15 +36,11 @@ sealed class OriginType(val order: Int) : Parcelable {
     @Parcelize
     object Test : OriginType(3), Parcelable
 
-    @Parcelize
-    object DCC : OriginType(4), Parcelable
-
     fun getTypeString(): String {
         return when (this) {
             is Vaccination -> TYPE_VACCINATION
             is Recovery -> TYPE_RECOVERY
             is Test -> TYPE_TEST
-            is DCC -> TYPE_DCC
         }
     }
 }

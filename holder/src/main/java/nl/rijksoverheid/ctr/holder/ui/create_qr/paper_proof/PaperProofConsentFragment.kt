@@ -36,7 +36,7 @@ class PaperProofConsentFragment: Fragment(R.layout.fragment_paper_proof_consent)
                 toolbarTitle = getString(R.string.your_dcc_event_toolbar_title),
                 type = YourEventsFragmentType.RemoteProtocol3Type(
                     remoteEvents = it,
-                    originType = OriginType.DCC
+                    originType = OriginType.Vaccination
                 )
             ))
         })
