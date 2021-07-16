@@ -68,34 +68,33 @@ class PaperProofQrScannerFragment : QrCodeScannerFragment() {
         })
 
         paperProofScannerViewModel.validatePaperProofResultLiveData.observe(viewLifecycleOwner, EventObserver {
-                when (it) {
-                    is ValidatePaperProofResult.Success -> {
-                        holderMainActivityViewModel.sendEvents(it.events)
-                        findNavControllerSafety()?.popBackStack()
-                    }
-                    is ValidatePaperProofResult.Error.NetworkError -> {
-
-                    }
-                    is ValidatePaperProofResult.Error.ServerError -> {
-
-                    }
-                    is ValidatePaperProofResult.Error.ExpiredQr -> {
-
-                    }
-                    is ValidatePaperProofResult.Error.BlockedQr -> {
-
-                    }
-                    is ValidatePaperProofResult.Error.RejectedQr -> {
-
-                    }
-                    is ValidatePaperProofResult.Error.InvalidQr -> {
-
-                    }
-                    is ValidatePaperProofResult.Error.DutchQr -> {
-
-                    }
+            when (it) {
+                is ValidatePaperProofResult.Success -> {
+                    holderMainActivityViewModel.sendEvents(it.events)
+                    findNavControllerSafety()?.popBackStack()
                 }
-            })
+                is ValidatePaperProofResult.Error.NetworkError -> {
 
+                }
+                is ValidatePaperProofResult.Error.ServerError -> {
+
+                }
+                is ValidatePaperProofResult.Error.ExpiredQr -> {
+
+                }
+                is ValidatePaperProofResult.Error.BlockedQr -> {
+
+                }
+                is ValidatePaperProofResult.Error.RejectedQr -> {
+
+                }
+                is ValidatePaperProofResult.Error.InvalidQr -> {
+
+                }
+                is ValidatePaperProofResult.Error.DutchQr -> {
+
+                }
+            }
+        })
     }
 }
