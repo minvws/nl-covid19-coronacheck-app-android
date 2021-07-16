@@ -58,7 +58,7 @@ class ValidatePaperProofUseCaseImpl(
             val event = getRemoteEvent(dcc)
 
             val protocol = RemoteProtocol3(
-                providerIdentifier = "DCC",
+                providerIdentifier = RemoteConfigProviders.EventProvider.PROVIDER_IDENTIFIER_DCC,
                 protocolVersion = "3.0",
                 status = RemoteProtocol.Status.COMPLETE,
                 holder = holder,
