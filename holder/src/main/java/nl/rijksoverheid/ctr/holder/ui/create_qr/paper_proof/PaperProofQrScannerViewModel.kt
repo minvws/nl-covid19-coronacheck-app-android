@@ -4,14 +4,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.TestResult
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.ValidatePaperProofResult
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.ValidatePaperProofUseCase
 import nl.rijksoverheid.ctr.shared.livedata.Event
 
-abstract class PaperProofQrScannerViewModel: ViewModel() {
+abstract class PaperProofQrScannerViewModel : ViewModel() {
     val loadingLiveData = MutableLiveData<Event<Boolean>>()
     val validatePaperProofResultLiveData = MutableLiveData<Event<ValidatePaperProofResult>>()
 
@@ -19,7 +17,8 @@ abstract class PaperProofQrScannerViewModel: ViewModel() {
 }
 
 class PaperProofQrScannerViewModelImpl(
-    private val validatePaperProofUseCase: ValidatePaperProofUseCase): PaperProofQrScannerViewModel() {
+    private val validatePaperProofUseCase: ValidatePaperProofUseCase
+) : PaperProofQrScannerViewModel() {
 
     override fun validatePaperProof(qrContent: String, couplingCode: String) {
         viewModelScope.launch(Dispatchers.IO) {
