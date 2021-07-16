@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.holder
 
 import android.content.Context
 import android.content.Intent
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.navigation.findNavController
 import androidx.room.Room
 import androidx.test.core.app.ActivityScenario
@@ -12,7 +13,7 @@ import nl.rijksoverheid.ctr.introduction.IntroductionData
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 import org.junit.After
 import org.junit.Assert.assertEquals
-import org.junit.Ignore
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -30,6 +31,9 @@ import org.robolectric.RobolectricTestRunner
  */
 @RunWith(RobolectricTestRunner::class)
 class HolderMainActivityTest : AutoCloseKoinTest() {
+
+    @get:Rule
+    val rule = InstantTaskExecutorRule()
 
     private lateinit var scenario: ActivityScenario<HolderMainActivity>
 
@@ -84,7 +88,7 @@ class HolderMainActivityTest : AutoCloseKoinTest() {
     }
 
     private fun launchHolderMainActivity(
-        introductionStatus: IntroductionStatus = IntroductionStatus.IntroductionFinished.NoActionRequired,
+        introductionStatus: IntroductionStatus? = null,
         appStatus: AppStatus = AppStatus.NoActionRequired
     ): ActivityScenario<HolderMainActivity> {
         loadKoinModules(

@@ -21,9 +21,10 @@ import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.PersistConfigUseCase
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.ext.ClmobileVerifyException
+import nl.rijksoverheid.ctr.shared.livedata.Event
 
 abstract class AppConfigViewModel : ViewModel() {
-    val appStatusLiveData = MutableLiveData<AppStatus>()
+    val appStatusLiveData = MutableLiveData<Event<AppStatus>>()
 
     abstract fun refresh(mobileCoreWrapper: MobileCoreWrapper)
 }
@@ -52,7 +53,7 @@ class AppConfigViewModelImpl(
 
             val configFilesArePresentInFilesFolder = appConfigStorageManager.areConfigFilesPresentInFilesFolder()
             if (!configFilesArePresentInFilesFolder || !cachedAppConfigUseCase.isCachedAppConfigValid()) {
-                return@launch appStatusLiveData.postValue(AppStatus.Error)
+                return@launch appStatusLiveData.postValue(Event(AppStatus.Error))
             }
 
             val initializationError = if (isVerifierApp) {
@@ -65,7 +66,7 @@ class AppConfigViewModelImpl(
                 throw ClmobileVerifyException(initializationError)
             }
 
-            appStatusLiveData.postValue(appStatus)
+            appStatusLiveData.postValue(Event(appStatus))
         }
     }
 }
