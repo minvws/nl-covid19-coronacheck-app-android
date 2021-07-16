@@ -3,16 +3,21 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
+import androidx.annotation.StringRes
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.mlkit.vision.barcode.Barcode
+import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderMainActivityViewModel
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.ui.create_qr.YourEventsFragmentDirections
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.ValidatePaperProofResult
 import nl.rijksoverheid.ctr.qrscanner.QrCodeScannerFragment
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -22,6 +27,7 @@ class PaperProofQrScannerFragment : QrCodeScannerFragment() {
         const val EXTRA_COUPLING_CODE = "EXTRA_COUPLING_CODE"
     }
 
+    private val dialogUtil: DialogUtil by inject()
     private val holderMainActivityViewModel: HolderMainActivityViewModel by sharedViewModel()
     private val paperProofScannerViewModel: PaperProofQrScannerViewModel by viewModel()
 
@@ -69,28 +75,57 @@ class PaperProofQrScannerFragment : QrCodeScannerFragment() {
                     findNavControllerSafety()?.popBackStack()
                 }
                 is ValidatePaperProofResult.Error.NetworkError -> {
-
+                    dialogUtil.presentDialog(
+                        context = requireContext(),
+                        title = R.string.dialog_no_internet_connection_title,
+                        message = getString(R.string.dialog_no_internet_connection_description),
+                        positiveButtonText = R.string.ok,
+                        positiveButtonCallback = {}
+                    )
                 }
                 is ValidatePaperProofResult.Error.ServerError -> {
-
+                    dialogUtil.presentDialog(
+                        context = requireContext(),
+                        title = R.string.dialog_error_title,
+                        message = getString(
+                            R.string.dialog_error_message_with_error_code,
+                            it.httpCode.toString()
+                        ),
+                        positiveButtonText = R.string.ok,
+                        positiveButtonCallback = {}
+                    )
                 }
                 is ValidatePaperProofResult.Error.ExpiredQr -> {
-
+                    holderMainActivityViewModel.sendValidatePaperProofError(it)
+                    findNavControllerSafety()?.popBackStack()
                 }
                 is ValidatePaperProofResult.Error.BlockedQr -> {
-
+                    holderMainActivityViewModel.sendValidatePaperProofError(it)
+                    findNavControllerSafety()?.popBackStack()
                 }
                 is ValidatePaperProofResult.Error.RejectedQr -> {
-
+                    holderMainActivityViewModel.sendValidatePaperProofError(it)
+                    findNavControllerSafety()?.popBackStack()
                 }
                 is ValidatePaperProofResult.Error.InvalidQr -> {
-
+                    dialogUtil.presentDialog(
+                        context = requireContext(),
+                        title = R.string.add_paper_proof_qr_error_dutch_qr_code_dialog_title,
+                        message = getString(R.string.add_paper_proof_qr_error_invalid_qr_dialog_description),
+                        positiveButtonText = R.string.ok,
+                        positiveButtonCallback = {}
+                    )
                 }
                 is ValidatePaperProofResult.Error.DutchQr -> {
-
+                    dialogUtil.presentDialog(
+                        context = requireContext(),
+                        title = R.string.add_paper_proof_qr_error_dutch_qr_code_dialog_title,
+                        message = getString(R.string.add_paper_proof_qr_error_invalid_qr_dialog_description),
+                        positiveButtonText = R.string.ok,
+                        positiveButtonCallback = {}
+                    )
                 }
             }
         })
-
     }
 }

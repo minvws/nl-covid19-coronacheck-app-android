@@ -22,14 +22,14 @@ class PaperProofQrScannerViewModelImpl(
     private val validatePaperProofUseCase: ValidatePaperProofUseCase): PaperProofQrScannerViewModel() {
 
     override fun validatePaperProof(qrContent: String, couplingCode: String) {
-        loadingLiveData.value = Event(true)
         viewModelScope.launch(Dispatchers.IO) {
+            loadingLiveData.postValue(Event(true))
             val result = validatePaperProofUseCase.validate(
                 qrContent = qrContent,
                 couplingCode = couplingCode
             )
             validatePaperProofResultLiveData.postValue(Event(result))
-            loadingLiveData.value = Event(false)
+            loadingLiveData.postValue(Event(false))
         }
     }
 }

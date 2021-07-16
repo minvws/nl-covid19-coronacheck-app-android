@@ -56,12 +56,12 @@ sealed class ValidatePaperProofResult {
     data class Success(val events: Map<RemoteProtocol3, ByteArray>): ValidatePaperProofResult()
 
     sealed class Error: ValidatePaperProofResult() {
-        object DutchQr: ValidatePaperProofResult()
-        object InvalidQr: ValidatePaperProofResult()
-        object ExpiredQr: ValidatePaperProofResult()
-        object RejectedQr: ValidatePaperProofResult()
-        object BlockedQr: ValidatePaperProofResult()
-        data class ServerError(val httpCode: Int) : ValidatePaperProofResult()
-        object NetworkError : ValidatePaperProofResult()
+        object DutchQr: Error()
+        object InvalidQr: Error()
+        object ExpiredQr: Error()
+        object RejectedQr: Error()
+        object BlockedQr: Error()
+        data class ServerError(val httpCode: Int) : Error()
+        object NetworkError : Error()
     }
 }
