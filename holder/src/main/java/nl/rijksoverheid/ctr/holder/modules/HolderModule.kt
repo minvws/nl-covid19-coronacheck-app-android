@@ -23,8 +23,6 @@ import nl.rijksoverheid.ctr.holder.persistence.database.usecases.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigiDViewModel
-import nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.ScanPaperProofViewModel
-import nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.ScanPaperProofViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.PaperProofCodeViewModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.PaperProofCodeViewModelImpl
@@ -157,7 +155,6 @@ fun holderModule(baseUrl: String) = module {
     viewModel<YourEventsViewModel> { YourEventsViewModelImpl(get(), get()) }
     viewModel<MyOverviewViewModel> { MyOverviewViewModelImpl(get(), get(), get(), get()) }
     viewModel<GetEventsViewModel> { GetEventsViewModelImpl(get()) }
-    viewModel<ScanPaperProofViewModel> { ScanPaperProofViewModelImpl(get()) }
     viewModel<PaperProofCodeViewModel> { PaperProofCodeViewModelImpl(get(), get()) }
     viewModel<PaperProofQrScannerViewModel> { PaperProofQrScannerViewModelImpl(get()) }
 
