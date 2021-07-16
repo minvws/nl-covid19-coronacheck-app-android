@@ -145,12 +145,6 @@
         </fragment>
 
         <fragment
-            android:id="@+id/nav_scan_paper_proof"
-            android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.ScanPaperProofFragment"
-            android:label="@string/add_paper_proof"
-            tools:layout="@layout/fragment_paper_proof_code" />
-
-        <fragment
             android:id="@+id/nav_paper_proof_consent"
             android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.PaperProofConsentFragment"
             android:label="@string/add_paper_proof"
@@ -171,6 +165,14 @@
                 app:exitAnim="@anim/fragment_open_exit"
                 app:popEnterAnim="@anim/fragment_close_enter"
                 app:popExitAnim="@anim/fragment_close_exit" />
+
+            <action
+                android:id="@+id/action_could_not_create_qr"
+                app:destination="@id/nav_could_not_create_qr"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right" />
 
             <argument
                 android:name="couplingCode"

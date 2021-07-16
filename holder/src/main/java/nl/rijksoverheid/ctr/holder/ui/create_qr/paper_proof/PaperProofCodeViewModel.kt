@@ -10,8 +10,8 @@ import nl.rijksoverheid.ctr.shared.livedata.Event
 
 abstract class PaperProofCodeViewModel : ViewModel() {
     open var code: String = ""
-    open var codeResult: PaperProofCodeResult = PaperProofCodeResult.None
 
+    val codeResultLiveData: LiveData<Event<PaperProofCodeResult>> = MutableLiveData()
     val viewState: LiveData<ViewState> = MutableLiveData(ViewState())
 
     abstract fun validateCode()
@@ -28,34 +28,21 @@ class PaperProofCodeViewModelImpl(private val savedStateHandle: SavedStateHandle
             updateViewState()
         }
 
-    override var codeResult: PaperProofCodeResult = savedStateHandle["paper_proof_code_result"] ?: PaperProofCodeResult.None
-        set(value) {
-            field = value
-            savedStateHandle["paper_proof_code_result"] = value
-            updateViewState()
-        }
-
     private val currentViewState: ViewState
         get() = viewState.value!!
 
-    init {
-        updateViewState()
-    }
-
     override fun validateCode() {
-        codeResult = paperProofCodeUseCase.validate(code)
+        (codeResultLiveData as MutableLiveData).postValue(Event(paperProofCodeUseCase.validate(code)))
         updateViewState()
     }
 
     override fun updateViewState() {
         (viewState as MutableLiveData).value = currentViewState.copy(
-            buttonEnabled = code.isNotEmpty(),
-            codeResult = codeResult
+            buttonEnabled = code.isNotEmpty()
         )
     }
 }
 
 data class ViewState(
-    val codeResult: PaperProofCodeResult = PaperProofCodeResult.None,
     val buttonEnabled: Boolean = false,
 )
