@@ -33,8 +33,8 @@ class PaperProofConsentFragment: Fragment(R.layout.fragment_paper_proof_consent)
             findNavController().navigate(PaperProofConsentFragmentDirections.actionYourEvents(
                 toolbarTitle = "",
                 type = YourEventsFragmentType.RemoteProtocol3Type(
-                    remoteEvents = mapOf(),
-                    originType = OriginType.Vaccination
+                    remoteEvents = it,
+                    originType = OriginType.fromTypeString(it.keys.first().events!!.first().type!!) // TODO: DCC origin type
                 )
             ))
         })
