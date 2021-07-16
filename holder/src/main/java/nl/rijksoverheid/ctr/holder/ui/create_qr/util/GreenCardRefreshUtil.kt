@@ -8,7 +8,8 @@
 
 package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
-import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
+import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import java.time.Clock
@@ -29,8 +30,10 @@ class GreenCardRefreshUtilImpl(
     private val credentialUtil: CredentialUtil,
 ) : GreenCardRefreshUtil {
 
+    private val holderConfig = cachedAppConfigUseCase.getCachedAppConfig()
+
     override suspend fun shouldRefresh(): Boolean {
-        val credentialRenewalDays = cachedAppConfigUseCase.getCachedAppConfig().credentialRenewalDays.toLong()
+        val credentialRenewalDays = holderConfig.credentialRenewalDays.toLong()
 
         val greenCardExpiring = holderDatabase.greenCardDao().getAll().firstOrNull { greenCard ->
             val hasNewCredentials = !greenCardUtil.getExpireDate(greenCard).isEqual(greenCard.credentialEntities.lastOrNull()?.expirationTime ?: OffsetDateTime.now(clock))
@@ -53,7 +56,7 @@ class GreenCardRefreshUtilImpl(
 
     override suspend fun credentialsExpireInDays(): Long {
         val configCredentialRenewalDays =
-            cachedAppConfigUseCase.getCachedAppConfig().credentialRenewalDays.toLong()
+            holderConfig.credentialRenewalDays.toLong()
 
         val firstExpiringGreenCardRenewal = holderDatabase.greenCardDao().getAll()
             .filterNot {
