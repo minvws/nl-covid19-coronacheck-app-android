@@ -143,6 +143,10 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                         binding.title.visibility = View.GONE
                         binding.description.text = getString(R.string.your_positive_test_description)
                     }
+                    OriginType.DCC -> {
+                        binding.title.visibility = View.GONE
+                        binding.description.text = getString(R.string.your_dcc_event_description)
+                    }
                 }
             }
         }
