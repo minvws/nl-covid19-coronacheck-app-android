@@ -67,9 +67,7 @@ class PaperProofQrScannerFragment : QrCodeScannerFragment() {
             binding.progress.visibility = if (it) View.VISIBLE else View.GONE
         })
 
-        paperProofScannerViewModel.validatePaperProofResultLiveData.observe(
-            viewLifecycleOwner,
-            EventObserver {
+        paperProofScannerViewModel.validatePaperProofResultLiveData.observe(viewLifecycleOwner, EventObserver {
                 when (it) {
                     is ValidatePaperProofResult.Success -> {
                         holderMainActivityViewModel.sendEvents(it.events)
