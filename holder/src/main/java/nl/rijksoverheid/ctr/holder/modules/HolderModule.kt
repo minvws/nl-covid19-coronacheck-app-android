@@ -190,6 +190,11 @@ fun holderModule(baseUrl: String) = module {
     factory<ValidatePaperProofUseCase> {
         ValidatePaperProofUseCaseImpl(get(), get())
     }
+
+    factory<GetEventsFromPaperProofQrUseCase> {
+        GetEventsFromPaperProofQrUseCaseImpl(get())
+    }
+
     factory<CreateCredentialUseCase> {
         CreateCredentialUseCaseImpl(get())
     }
