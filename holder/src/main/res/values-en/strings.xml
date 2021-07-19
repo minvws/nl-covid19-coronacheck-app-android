@@ -91,10 +91,6 @@
     <string name="your_negative_test_results_something_wrong_button">Is something wrong?</string>
     <string name="your_negative_test_results_row_personal_details">Identification details: %1$s</string>
     <string name="your_negative_test_results_row_button">Make certificate</string>
-    <string name="your_negative_test_results_backbutton_title">Are you sure you want to stop?</string>
-    <string name="your_negative_test_results_backbutton_message">You can try to retrieve your test result again later</string>
-    <string name="your_negative_test_results_backbutton_ok">Yes, stop</string>
-    <string name="your_negative_test_results_backbutton_cancel">No, back</string>
     <string name="your_negative_test_results_explanation_title">More about test results</string>
     <string name="your_negative_test_results_explanation_paragraph_1"><![CDATA[Your test result states your test result, the time of testing, and a minimum amount of personal data.<br\><br\>Your details consist of: (1) the first letter of your first name, (2) the first letter of your last name, (3) your day of birth and (4) your month of birth.]]></string>
     <string name="your_negative_test_results_explanation_paragraph_2"><![CDATA[Are these details different than the details on your identification card? Contact your test location. They can edit your details.]]></string>
@@ -198,8 +194,6 @@
     <string name="your_vaccination_result_toolbar_title">Your retrieved vaccinations</string>
     <string name="your_retrieved_vaccinations_toolbar">Retrieve details of your vaccination</string>
     <string name="retrieved_vaccination_title">Vaccination %1$s (%2$s)</string>
-    <string name="retrieved_vaccinations_backbutton_title">Are you sure you want to stop?</string>
-    <string name="retrieved_vaccinations_backbutton_message">You can try to retrieve your vaccination certificate again later</string>
     <string name="travel_toggle_europe">I\'m travelling internationally</string>
     <string name="travel_toggle_domestic">I\'m in the Netherlands</string>
     <string name="travel_toggle_change_domestic">Change to NL</string>
@@ -343,6 +337,10 @@
     <string name="add_paper_proof_invalid_combination_title">No valid combination</string>
     <string name="add_paper_proof_invalid_combination_">This letter combination and QR code don\'t belong together.</string>
     <string name="add_paper_proof_qr_scanner_title">Scan QR code</string>
+    <string name="your_events_block_back_dialog_title">Are you sure you want to stop?</string>
+    <string name="your_events_block_back_dialog_positive_button">Yes, stop</string>
+    <string name="your_events_block_back_dialog_negative_button">No, back</string>
     <string name="your_dcc_event_description">Met de gegevens die zijn opgehaald kun je een QR-code maken. Dat is jouw bewijs.</string>
     <string name="your_dcc_event_toolbar_title">Opgehaalde gegevens</string>
+    <string name="your_events_block_back_dialog_description">Je kunt later opnieuw proberen deze QR-code in de app te zetten.</string>
 </resources>

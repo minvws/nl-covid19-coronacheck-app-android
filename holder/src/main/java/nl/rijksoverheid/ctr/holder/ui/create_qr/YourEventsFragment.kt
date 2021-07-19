@@ -71,7 +71,7 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
             binding = binding
         )
 
-        handleBackButton()
+        blockBackButton()
 
         yourEventsViewModel.loading.observe(viewLifecycleOwner, EventObserver {
             (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
@@ -443,35 +443,20 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
         }
     }
 
-    private fun handleBackButton() {
-        val type = args.type
-        if ((type is YourEventsFragmentType.RemoteProtocol3Type) && type.originType == OriginType.Vaccination) {
-            blockBackButton(
-                title = R.string.retrieved_vaccinations_backbutton_title,
-                message = R.string.retrieved_vaccinations_backbutton_message
-            )
-        } else {
-            blockBackButton(
-                title = R.string.your_negative_test_results_backbutton_title,
-                message = R.string.your_negative_test_results_backbutton_message
-            )
-        }
-    }
-
-    private fun blockBackButton(@StringRes title: Int, @StringRes message: Int) {
+    private fun blockBackButton() {
         // Catch back button to show modal instead
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object :
             OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 MaterialAlertDialogBuilder(requireContext())
-                    .setTitle(getString(title))
-                    .setMessage(getString(message))
-                    .setPositiveButton(R.string.your_negative_test_results_backbutton_ok) { _, _ ->
+                    .setTitle(R.string.your_events_block_back_dialog_title)
+                    .setMessage(R.string.your_events_block_back_dialog_description)
+                    .setPositiveButton(R.string.your_events_block_back_dialog_positive_button) { _, _ ->
                         findNavController().navigate(
                             YourEventsFragmentDirections.actionMyOverview()
                         )
                     }
-                    .setNegativeButton(R.string.your_negative_test_results_backbutton_cancel) { _, _ -> }
+                    .setNegativeButton(R.string.your_events_block_back_dialog_negative_button) { _, _ -> }
                     .show()
             }
         })
