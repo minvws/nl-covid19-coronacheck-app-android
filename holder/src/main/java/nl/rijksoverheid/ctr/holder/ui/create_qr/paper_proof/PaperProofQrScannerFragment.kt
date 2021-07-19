@@ -1,7 +1,6 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.View
 import com.google.mlkit.vision.barcode.Barcode
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
@@ -71,7 +70,8 @@ class PaperProofQrScannerFragment : QrCodeScannerFragment() {
                         title = R.string.dialog_no_internet_connection_title,
                         message = getString(R.string.dialog_no_internet_connection_description),
                         positiveButtonText = R.string.ok,
-                        positiveButtonCallback = {}
+                        positiveButtonCallback = { setupCamera() },
+                        onDismissCallback = { setupCamera() }
                     )
                 }
                 is ValidatePaperProofResult.Error.ServerError -> {
@@ -83,7 +83,8 @@ class PaperProofQrScannerFragment : QrCodeScannerFragment() {
                             it.httpCode.toString()
                         ),
                         positiveButtonText = R.string.ok,
-                        positiveButtonCallback = {}
+                        positiveButtonCallback = { setupCamera() },
+                        onDismissCallback = { setupCamera() }
                     )
                 }
                 is ValidatePaperProofResult.Error.ExpiredQr -> {
@@ -104,7 +105,8 @@ class PaperProofQrScannerFragment : QrCodeScannerFragment() {
                         title = R.string.add_paper_proof_qr_error_dutch_qr_code_dialog_title,
                         message = getString(R.string.add_paper_proof_qr_error_invalid_qr_dialog_description),
                         positiveButtonText = R.string.ok,
-                        positiveButtonCallback = {}
+                        positiveButtonCallback = { setupCamera() },
+                        onDismissCallback = { setupCamera() }
                     )
                 }
                 is ValidatePaperProofResult.Error.DutchQr -> {
@@ -113,7 +115,8 @@ class PaperProofQrScannerFragment : QrCodeScannerFragment() {
                         title = R.string.add_paper_proof_qr_error_dutch_qr_code_dialog_title,
                         message = getString(R.string.add_paper_proof_qr_error_invalid_qr_dialog_description),
                         positiveButtonText = R.string.ok,
-                        positiveButtonCallback = {}
+                        positiveButtonCallback = { setupCamera() },
+                        onDismissCallback = { setupCamera() }
                     )
                 }
             }
