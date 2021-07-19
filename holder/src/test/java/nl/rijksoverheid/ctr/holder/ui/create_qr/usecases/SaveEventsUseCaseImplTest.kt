@@ -8,6 +8,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.dao.EventGroupDao
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.RemoteEventHolderUtil
 import org.junit.Before
 import org.junit.Test
 import java.time.LocalDate
@@ -26,7 +27,9 @@ class SaveEventsUseCaseImplTest {
         every { eventGroupDao() } returns eventGroupDao
     }
 
-    private val saveEventsUseCaseImpl = SaveEventsUseCaseImpl(holderDatabase)
+    private val remoteEventHolderUtil: RemoteEventHolderUtil = mockk(relaxed = true)
+
+    private val saveEventsUseCaseImpl = SaveEventsUseCaseImpl(holderDatabase, remoteEventHolderUtil)
 
     @Before
     fun setUp() {
@@ -51,10 +54,11 @@ class SaveEventsUseCaseImplTest {
         runBlocking {
             saveEventsUseCaseImpl.saveRemoteProtocols3(
                 remoteProtocols3,
-                OriginType.Vaccination
+                OriginType.Vaccination,
+                true
             )
 
-            coVerify { eventGroupDao.deleteAllOfType(OriginType.Vaccination) }
+            coVerify { eventGroupDao.deleteAll() }
             coVerify {
                 eventGroupDao.insertAll(
                     remoteProtocols3.map {
@@ -78,10 +82,11 @@ class SaveEventsUseCaseImplTest {
         runBlocking {
             saveEventsUseCaseImpl.saveRemoteProtocols3(
                 remoteProtocols3,
-                OriginType.Recovery
+                OriginType.Recovery,
+                true
             )
 
-            coVerify { eventGroupDao.deleteAllOfType(OriginType.Recovery) }
+            coVerify { eventGroupDao.deleteAll() }
             coVerify {
                 eventGroupDao.insertAll(
                     remoteProtocols3.map {
