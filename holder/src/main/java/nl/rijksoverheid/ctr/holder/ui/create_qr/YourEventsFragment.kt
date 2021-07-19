@@ -457,7 +457,7 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                     )
                 }
                 is YourEventsFragmentType.DCC -> {
-                    yourEventsViewModel.saveRemoteProtocol3Events(
+                    yourEventsViewModel.compareWithExistingEvents(
                         remoteProtocols3 = type.remoteEvents,
                         originType = type.originType
                     )

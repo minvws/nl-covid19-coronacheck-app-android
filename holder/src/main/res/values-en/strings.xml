@@ -345,4 +345,8 @@
     <string name="add_paper_proof_qr_scanner_title">Scan QR code</string>
     <string name="your_dcc_event_description">Met de gegevens die zijn opgehaald kun je een QR-code maken. Dat is jouw bewijs.</string>
     <string name="your_dcc_event_toolbar_title">Opgehaalde gegevens</string>
+    <string name="your_events_replace_dialog_title">Wil je je bewijs vervangen?</string>
+    <string name="your_events_replace_dialog_message">Je hebt eerder een bewijs gemaakt. De gegevens daarvan zijn anders dan de gegevens die net zijn opgehaald. Daarom kan je het bewijs alleen vervangen.</string>
+    <string name="your_events_replace_dialog_negative_button">Nee, stop</string>
+    <string name="your_events_replace_dialog_positive_button">Ja, vervang</string>
 </resources>
