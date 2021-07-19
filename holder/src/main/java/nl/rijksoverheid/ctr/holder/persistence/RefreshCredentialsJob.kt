@@ -22,22 +22,18 @@ class RefreshCredentialsJob(
 ): CoroutineWorker(context, params) {
     override suspend fun doWork(): Result {
         val syncWithRemote = greenCardRefreshUtil.shouldRefresh()
-        return try {
-            if (syncWithRemote) {
-                when (holderDatabaseSyncer.sync(null, true)) {
-                    DatabaseSyncerResult.Success -> {
-                        Result.success()
-                    }
-                    else -> Result.retry()
+        return if (syncWithRemote) {
+            when (holderDatabaseSyncer.sync(null, true)) {
+                DatabaseSyncerResult.Success -> {
+                    Result.success()
                 }
-            } else {
-                holderDatabaseSyncer.sync(
-                    syncWithRemote = false
-                )
-                Result.success()
+                else -> Result.retry()
             }
-        } catch (exception: Exception) {
-            Result.retry()
+        } else {
+            holderDatabaseSyncer.sync(
+                syncWithRemote = false
+            )
+            Result.success()
         }
     }
 
