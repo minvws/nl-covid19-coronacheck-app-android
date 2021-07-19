@@ -231,7 +231,7 @@
     <string name="your_negative_test_3.0_results_row_subtitle"><![CDATA[Test date: %1$s<br/>Name: %2$s<br/>Date of birth: %3$s]]></string>
     <string name="your_vaccination_row_subtitle"><![CDATA[Name: %1$s<br/>Date of birth: %2$s]]></string>
     <string name="your_vaccination_explanation_toolbar_title">About your vaccination</string>
-    <string name="your_vaccination_explanation_description"><![CDATA[<p>The following details of your vaccination were retrieved:<br/><br/>Name: <b>%1$s</b><br/>Date of birth: <b>%2$s</b><br/><br/>Pathogen:  <b>%3$s</b><br/>Vaccine: <b>%4$s</b><br/>Vaccine type: <b>%5$s</b><br/>Manufacturer: <b>%6$s</b><br/>Doses: <b>%7$s</b><br/>Is this the last dose of your vaccination?: <b>%8$s</b><br/>Vaccination date: <b>%9$s</b><br/>Vaccinated in: <b>%10$s</b><br/>Unique certificate identifier: <b>%11$s</b>]]></string>
+    <string name="your_vaccination_explanation_description"><![CDATA[<p>The following details of your vaccination were retrieved:<br/><br/>Name: <b>%1$s</b><br/>Date of birth: <b>%2$s</b><br/><br/>Pathogen:  <b>%3$s</b><br/>Vaccine: <b>%4$s</b><br/>Vaccine type: <b>%5$s</b><br/>Manufacturer: <b>%6$s</b><br/>Doses: <b>%7$s</b><br/>Is this the last dose of your vaccination? <b>%8$s</b><br/>Vaccination date: <b>%9$s</b><br/>Vaccinated in: <b>%10$s</b><br/>Unique certificate identifier: <b>%11$s</b>]]></string>
     <string name="your_vaccination_explanation_last_dose_yes">Yes</string>
     <string name="your_vaccination_explanation_last_dose_yes_recovery">Yes (I\'ve had coronavirus earlier)</string>
     <string name="your_vaccination_explanation_last_dose_yes_prior_event">Yes (I have been vaccinated elsewhere)</string>
