@@ -91,10 +91,6 @@
     <string name="your_negative_test_results_something_wrong_button">Klopt er iets niet?</string>
     <string name="your_negative_test_results_row_personal_details">Identificatiegegevens: %1$s</string>
     <string name="your_negative_test_results_row_button">Bewijs maken</string>
-    <string name="your_negative_test_results_backbutton_title">Weet je zeker dat je wilt stoppen?</string>
-    <string name="your_negative_test_results_backbutton_message">Je moet dan later opnieuw je testuitslag ophalen.</string>
-    <string name="your_negative_test_results_backbutton_ok">Ja, stop</string>
-    <string name="your_negative_test_results_backbutton_cancel">Nee, terug</string>
     <string name="your_negative_test_results_explanation_title">Meer over testuitslagen</string>
     <string name="your_negative_test_results_explanation_paragraph_1"><![CDATA[In een testuitslag staan de uitslag, het tijdstip van de test en minimale gegevens van jou.<br\><br\>Je gegevens bestaan uit: (1) de eerste letter van je voornaam, (2) de eerste letter van je achternaam, (3) je geboortedag en (4) geboortemaand.]]></string>
     <string name="your_negative_test_results_explanation_paragraph_2"><![CDATA[<b>Zijn deze gegevens anders dan op je identiteitsbewijs?</b><br\>Neem contact op met je testlocatie. Zij kunnen je gegevens aanpassen.]]></string>
@@ -198,8 +194,6 @@
     <string name="your_vaccination_result_toolbar_title">Jouw vaccinaties</string>
     <string name="your_retrieved_vaccinations_toolbar">Gegevens van je vaccinatie ophalen</string>
     <string name="retrieved_vaccination_title">Vaccinatie %1$s (%2$s)</string>
-    <string name="retrieved_vaccinations_backbutton_title">Weet je zeker dat je wilt stoppen?</string>
-    <string name="retrieved_vaccinations_backbutton_message">Je kunt later opnieuw proberen je vaccinatie op te halen.</string>
     <string name="travel_toggle_europe">Ik reis internationaal</string>
     <string name="travel_toggle_domestic">Ik ben in Nederland</string>
     <string name="travel_toggle_change_domestic">Aanpassen naar NL</string>
@@ -343,6 +337,11 @@ Scan daarom met de camera van je telefoon<b>alleen je internationale QR-code</b>
     <string name="add_paper_proof_invalid_combination_title">Geen geldige combinatie</string>
     <string name="add_paper_proof_invalid_combination_">Deze lettercombinatie en QR-code horen niet bij elkaar.</string>
     <string name="add_paper_proof_qr_scanner_title">Scan QR-code</string>
+    <string name="add_paper_proof_consent_button">Scan QR-code</string>
     <string name="your_dcc_event_description">Met de gegevens die zijn opgehaald kun je een QR-code maken. Dat is jouw bewijs.</string>
     <string name="your_dcc_event_toolbar_title">Opgehaalde gegevens</string>
+    <string name="your_events_block_back_dialog_title">Weet je zeker dat je wilt stoppen?</string>
+    <string name="your_events_block_back_dialog_description">Je kunt later opnieuw proberen deze QR-code in de app te zetten.</string>
+    <string name="your_events_block_back_dialog_positive_button">Ja, stop</string>
+    <string name="your_events_block_back_dialog_negative_button">Nee, terug</string>
 </resources>
