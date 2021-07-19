@@ -9,6 +9,8 @@ import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.holder.persistence.database.usecases.RemoveExpiredEventsUseCase
+import nl.rijksoverheid.ctr.holder.persistence.database.usecases.RemoveExpiredEventsUseCaseImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetMyOverviewItemsUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItems
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardRefreshUtil
@@ -42,6 +44,7 @@ class MyOverviewViewModelImpl(
     private val persistenceManager: PersistenceManager,
     private val greenCardRefreshUtil: GreenCardRefreshUtil,
     private val holderDatabaseSyncer: HolderDatabaseSyncer,
+    private val removeExpiredEventsUseCase: RemoveExpiredEventsUseCase
 ) : MyOverviewViewModel() {
 
     override fun getSelectedType(): GreenCardType {
@@ -54,6 +57,8 @@ class MyOverviewViewModelImpl(
         persistenceManager.setSelectedGreenCardType(selectType)
 
         viewModelScope.launch {
+            removeExpiredEventsUseCase.execute()
+
             // Check if we need to refresh our data
             val hasDoneRefreshCall = databaseSyncerResultLiveData.value?.peekContent() != null && selectType == getSelectedType()
             val shouldRefresh = (forceSync) || (greenCardRefreshUtil.shouldRefresh() && !hasDoneRefreshCall)
