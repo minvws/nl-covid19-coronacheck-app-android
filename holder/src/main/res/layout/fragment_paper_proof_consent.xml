@@ -58,7 +58,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:attachToScrollView="@id/scroll"
-        app:buttonText="@string/onboarding_next"
+        app:buttonText="@string/add_paper_proof_consent_button"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
