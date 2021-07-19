@@ -10,6 +10,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.dao.EventGroupDao
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteConfigProviders
 import org.junit.Test
 import java.time.Clock
 import java.time.Instant
@@ -148,6 +149,23 @@ class RemoveExpiredEventsUseCaseImplTest {
         )
 
         coVerify(exactly = 0) { eventGroupDao.delete(eventGroup) }
+    }
+
+    @Test
+    fun `Vaccination event with provider DCC does not have remote config expiration date`() = runBlocking {
+        val eventGroup = EventGroupEntity(
+            walletId = 1,
+            providerIdentifier = RemoteConfigProviders.EventProvider.PROVIDER_IDENTIFIER_DCC,
+            type = OriginType.Vaccination,
+            maxIssuedAt = firstJanuaryDate.minusDays(9), // For a non dcc 10 days are added from remote config. For dcc nothing is added so this is still valid
+            jsonData = "".toByteArray()
+        )
+
+        usecase.execute(
+            listOf(eventGroup)
+        )
+
+        coVerify { eventGroupDao.delete(eventGroup) }
     }
 
 }
