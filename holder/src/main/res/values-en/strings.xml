@@ -343,4 +343,6 @@
     <string name="add_paper_proof_invalid_combination_title">No valid combination</string>
     <string name="add_paper_proof_invalid_combination_">This letter combination and QR code don\'t belong together.</string>
     <string name="add_paper_proof_qr_scanner_title">Scan QR code</string>
+    <string name="your_dcc_event_description">Met de gegevens die zijn opgehaald kun je een QR-code maken. Dat is jouw bewijs.</string>
+    <string name="your_dcc_event_toolbar_title">Opgehaalde gegevens</string>
 </resources>
