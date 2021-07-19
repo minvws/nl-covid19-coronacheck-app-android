@@ -60,7 +60,7 @@ import java.time.Clock
 fun holderModule(baseUrl: String) = module {
 
     single {
-        HolderDatabase.createInstance(androidContext(), get())
+        HolderDatabase.createInstance(androidContext(), get(), androidContext().packageName == "nl.rijksoverheid.ctr.holder")
     }
 
     factory<HolderDatabaseSyncer> { HolderDatabaseSyncerImpl(get(), get(), get(), get(), get(), get()) }

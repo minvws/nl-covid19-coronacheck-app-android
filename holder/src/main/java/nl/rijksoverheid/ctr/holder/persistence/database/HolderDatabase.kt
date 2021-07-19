@@ -7,6 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import net.sqlcipher.database.SQLiteDatabase
 import net.sqlcipher.database.SupportFactory
+import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.persistence.database.converters.HolderDatabaseConverter
 import nl.rijksoverheid.ctr.holder.persistence.database.dao.*
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
@@ -32,13 +33,16 @@ abstract class HolderDatabase : RoomDatabase() {
     abstract fun originDao(): OriginDao
 
     companion object {
-        fun createInstance(context: Context, secretKeyUseCase: SecretKeyUseCase): HolderDatabase {
+        fun createInstance(context: Context, secretKeyUseCase: SecretKeyUseCase, isProd: Boolean = true): HolderDatabase {
             val supportFactory =
                 SupportFactory(SQLiteDatabase.getBytes(secretKeyUseCase.json().toCharArray()))
             return Room
                 .databaseBuilder(context, HolderDatabase::class.java, "holder-database")
-                .openHelperFactory(supportFactory)
-                .build()
+                .apply {
+                    if (isProd) {
+                        openHelperFactory(supportFactory)
+                    }
+                }.build()
         }
     }
 }
