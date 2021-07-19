@@ -21,7 +21,8 @@ interface SaveEventsUseCase {
     suspend fun saveNegativeTest2(negativeTest2: RemoteTestResult2, rawResponse: ByteArray)
     suspend fun saveRemoteProtocols3(
         remoteProtocols3: Map<RemoteProtocol3, ByteArray>,
-        originType: OriginType
+        originType: OriginType,
+        removePreviousEvents: Boolean
     )
     suspend fun remoteProtocols3AreConflicting(remoteProtocols3: Map<RemoteProtocol3, ByteArray>): Boolean
 }
@@ -46,16 +47,16 @@ class SaveEventsUseCaseImpl(private val holderDatabase: HolderDatabase, private 
     }
 
     override suspend fun remoteProtocols3AreConflicting(remoteProtocols3: Map<RemoteProtocol3, ByteArray>): Boolean {
-        val storedEventHolders = holderDatabase.eventGroupDao().getAll().map { remoteEventHolderUtil.toRemoveEvent(it.jsonData) }.distinct()
+        val storedEventHolders = holderDatabase.eventGroupDao().getAll().map { remoteEventHolderUtil.holders(it.jsonData) }.distinct()
         val incomingEventHolders = remoteProtocols3.map { it.key.holder!! }.distinct()
-        // Controleer of geboortedag EN geboortemaand EN (de eerste letter van de voornaam OF de eerste letter van de achternaam)
 
         return remoteEventHolderUtil.conflicting(storedEventHolders, incomingEventHolders)
     }
 
     override suspend fun saveRemoteProtocols3(
         remoteProtocols3: Map<RemoteProtocol3, ByteArray>,
-        originType: OriginType
+        originType: OriginType,
+        removePreviousEvents: Boolean,
     ) {
         val entities = remoteProtocols3.map { remoteProtocol3 ->
             val remoteEvents = remoteProtocol3.key.events ?: listOf()
@@ -68,18 +69,11 @@ class SaveEventsUseCaseImpl(private val holderDatabase: HolderDatabase, private 
             )
         }
 
-        val remoteEvents = remoteProtocols3.map { remoteEventHolderUtil.toRemoveEvent(it.value) }
-        remoteEvents.forEach { println("GIO ${it.javaClass}") }
-
         // Save entity in database
         holderDatabase.run {
             withTransaction {
-                // Delete all previous events of type Vaccination or Recovery so that if
-                // for example person a has vaccination events saved, person b vaccination
-                // gets overwritten. This is just a temporary quick fix until we support
-                // multiple wallets in the app
-                if (originType == OriginType.Vaccination || originType == OriginType.Recovery) {
-                    eventGroupDao().deleteAllOfType(originType)
+                if (removePreviousEvents) {
+                    eventGroupDao().deleteAll()
                 }
                 eventGroupDao().insertAll(entities)
             }

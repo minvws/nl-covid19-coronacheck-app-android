@@ -339,4 +339,8 @@
     <string name="add_paper_proof_title">Jouw lettercombinatie</string>
     <string name="add_paper_proof_description">Vul de lettercombinatie in die je van de zorgverlener bij je papieren bewijs hebt gekregen.</string>
     <string name="add_paper_proof_qr_scanner_title">Scan QR-code</string>
+    <string name="your_events_replace_dialog_title">Wil je je bewijs vervangen?</string>
+    <string name="your_events_replace_dialog_message">Je hebt eerder een bewijs gemaakt. De gegevens daarvan zijn anders dan de gegevens die net zijn opgehaald. Daarom kan je het bewijs alleen vervangen.</string>
+    <string name="your_events_replace_dialog_negative_button">Nee, stop</string>
+    <string name="your_events_replace_dialog_positive_button">Ja, vervang</string>
 </resources>

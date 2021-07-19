@@ -8,7 +8,6 @@ import nl.rijksoverheid.ctr.shared.models.JSON
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
  *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
@@ -17,7 +16,7 @@ import java.time.format.DateTimeFormatter
  *
  */
 interface RemoteEventHolderUtil {
-    fun toRemoveEvent(data: ByteArray): RemoteProtocol3.Holder
+    fun holders(data: ByteArray): RemoteProtocol3.Holder
     fun conflicting(
         storedEventHolders: List<RemoteProtocol3.Holder>,
         incomingEventHolders: List<RemoteProtocol3.Holder>
@@ -27,7 +26,7 @@ interface RemoteEventHolderUtil {
 class RemoteEventHolderUtilImpl(
     private val moshi: Moshi,
 ) : RemoteEventHolderUtil {
-    override fun toRemoveEvent(data: ByteArray): RemoteProtocol3.Holder {
+    override fun holders(data: ByteArray): RemoteProtocol3.Holder {
         val payload = moshi.adapter(SignedResponse::class.java).fromJson(String(data))!!.payload
         val decodedPayload = String(Base64.decode(payload, Base64.DEFAULT))
         val remoteEvent = moshi.adapter(RemoteProtocol3::class.java).fromJson(decodedPayload)

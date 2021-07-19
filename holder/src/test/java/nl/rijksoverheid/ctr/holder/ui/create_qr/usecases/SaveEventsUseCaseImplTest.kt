@@ -54,10 +54,11 @@ class SaveEventsUseCaseImplTest {
         runBlocking {
             saveEventsUseCaseImpl.saveRemoteProtocols3(
                 remoteProtocols3,
-                OriginType.Vaccination
+                OriginType.Vaccination,
+                true
             )
 
-            coVerify { eventGroupDao.deleteAllOfType(OriginType.Vaccination) }
+            coVerify { eventGroupDao.deleteAll() }
             coVerify {
                 eventGroupDao.insertAll(
                     remoteProtocols3.map {
@@ -81,10 +82,11 @@ class SaveEventsUseCaseImplTest {
         runBlocking {
             saveEventsUseCaseImpl.saveRemoteProtocols3(
                 remoteProtocols3,
-                OriginType.Recovery
+                OriginType.Recovery,
+                true
             )
 
-            coVerify { eventGroupDao.deleteAllOfType(OriginType.Recovery) }
+            coVerify { eventGroupDao.deleteAll() }
             coVerify {
                 eventGroupDao.insertAll(
                     remoteProtocols3.map {

@@ -120,6 +120,39 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                     }
                 }
             })
+
+        yourEventsViewModel.conflictingEventsResult.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                if (it) {
+                    replaceCertificateDialog()
+                }
+            }
+        )
+    }
+
+    private fun replaceCertificateDialog() {
+        (args.type as? YourEventsFragmentType.RemoteProtocol3Type)?.let { type ->
+            dialogUtil.presentDialog(
+                context = requireContext(),
+                title = R.string.your_events_replace_dialog_title,
+                message = getString(R.string.your_events_replace_dialog_message),
+                positiveButtonText = R.string.your_events_replace_dialog_positive_button,
+                positiveButtonCallback = {
+                    yourEventsViewModel.saveRemoteProtocol3Events(
+                        remoteProtocols3 = type.remoteEvents,
+                        originType = type.originType,
+                        removePreviousEvents = true
+                    )
+                },
+                negativeButtonText = R.string.your_events_replace_dialog_negative_button,
+                negativeButtonCallback = {
+                    findNavController().navigate(
+                        YourEventsFragmentDirections.actionMyOverview()
+                    )
+                }
+            )
+        }
     }
 
     private fun presentHeader(binding: FragmentYourEventsBinding) {
@@ -402,12 +435,12 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
             when (val type = args.type) {
                 is YourEventsFragmentType.TestResult2 -> {
                     yourEventsViewModel.saveNegativeTest2(
-                        remoteTestResult = type.remoteTestResult,
+                        negativeTest2 = type.remoteTestResult,
                         rawResponse = type.rawResponse
                     )
                 }
                 is YourEventsFragmentType.RemoteProtocol3Type -> {
-                    yourEventsViewModel.saveRemoteProtocol3Events(
+                    yourEventsViewModel.compareWithExistingEvents(
                         remoteProtocols3 = type.remoteEvents,
                         originType = type.originType
                     )
