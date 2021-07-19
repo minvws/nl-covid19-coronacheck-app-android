@@ -7,7 +7,6 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import net.sqlcipher.database.SQLiteDatabase
 import net.sqlcipher.database.SupportFactory
-import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.persistence.database.converters.HolderDatabaseConverter
 import nl.rijksoverheid.ctr.holder.persistence.database.dao.*
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*

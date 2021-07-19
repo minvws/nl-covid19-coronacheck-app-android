@@ -74,9 +74,13 @@ class MyOverviewViewModelImpl(
                 // Refresh the database
                 // This checks if we need to remove expired EventGroupEntity's
                 // Also syncs the database with remote if needed
-                val databaseSyncerResult = holderDatabaseSyncer.sync(
-                    syncWithRemote = shouldRefresh
-                )
+                val databaseSyncerResult = try {
+                    holderDatabaseSyncer.sync(
+                        syncWithRemote = shouldRefresh
+                    )
+                } catch (exception: Exception) {
+                    DatabaseSyncerResult.ServerError(200)
+                }
 
                 // Communicate refresh to the UI (only once)
                 (databaseSyncerResultLiveData as MutableLiveData).postValue(
