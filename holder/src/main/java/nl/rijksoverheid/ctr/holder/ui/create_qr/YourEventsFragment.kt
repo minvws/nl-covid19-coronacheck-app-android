@@ -125,34 +125,38 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
             viewLifecycleOwner,
             EventObserver {
                 if (it) {
-                    replaceCertificateDialog()
+                    when (val type = args.type) {
+                        is YourEventsFragmentType.RemoteProtocol3Type -> replaceCertificateDialog(type.remoteEvents, type.originType)
+                        is YourEventsFragmentType.DCC -> replaceCertificateDialog(type.remoteEvents, type.originType)
+                    }
                 }
             }
         )
     }
 
-    private fun replaceCertificateDialog() {
-        (args.type as? YourEventsFragmentType.RemoteProtocol3Type)?.let { type ->
-            dialogUtil.presentDialog(
-                context = requireContext(),
-                title = R.string.your_events_replace_dialog_title,
-                message = getString(R.string.your_events_replace_dialog_message),
-                positiveButtonText = R.string.your_events_replace_dialog_positive_button,
-                positiveButtonCallback = {
-                    yourEventsViewModel.saveRemoteProtocol3Events(
-                        remoteProtocols3 = type.remoteEvents,
-                        originType = type.originType,
-                        removePreviousEvents = true
-                    )
-                },
-                negativeButtonText = R.string.your_events_replace_dialog_negative_button,
-                negativeButtonCallback = {
-                    findNavController().navigate(
-                        YourEventsFragmentDirections.actionMyOverview()
-                    )
-                }
-            )
-        }
+    private fun replaceCertificateDialog(
+        remoteEvents: Map<RemoteProtocol3, ByteArray>,
+        originType: OriginType
+    ) {
+        dialogUtil.presentDialog(
+            context = requireContext(),
+            title = R.string.your_events_replace_dialog_title,
+            message = getString(R.string.your_events_replace_dialog_message),
+            positiveButtonText = R.string.your_events_replace_dialog_positive_button,
+            positiveButtonCallback = {
+                yourEventsViewModel.saveRemoteProtocol3Events(
+                    remoteProtocols3 = remoteEvents,
+                    originType = originType,
+                    removePreviousEvents = true
+                )
+            },
+            negativeButtonText = R.string.your_events_replace_dialog_negative_button,
+            negativeButtonCallback = {
+                findNavController().navigate(
+                    YourEventsFragmentDirections.actionMyOverview()
+                )
+            }
+        )
     }
 
     private fun presentHeader(binding: FragmentYourEventsBinding) {
