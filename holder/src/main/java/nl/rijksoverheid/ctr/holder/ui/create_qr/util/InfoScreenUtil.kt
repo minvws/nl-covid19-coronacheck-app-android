@@ -232,7 +232,7 @@ class InfoScreenUtilImpl(
                 )
             } else ""
 
-        val isThisLastDose = getIsLastDoseAnswer(event)
+        val lastDose = getIsLastDoseAnswer(event)
 
         val vaccinationDate = event.vaccination?.date?.formatDayMonthYear() ?: ""
         val vaccinationCountry = event.vaccination?.country ?: ""
@@ -249,7 +249,7 @@ class InfoScreenUtilImpl(
                 vaccinType,
                 producer,
                 doses,
-                isThisLastDose,
+                lastDose,
                 vaccinationDate,
                 vaccinationCountry,
                 uniqueCode
