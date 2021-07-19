@@ -68,7 +68,7 @@ class HolderDatabaseSyncerImpl(
                         )
 
                         // Schedule refreshing of green cards in background
-                        workerManagerWrapper.scheduleNextCredentialsRefreshIfAny()
+//                        workerManagerWrapper.scheduleNextCredentialsRefreshIfAny()
 
                         DatabaseSyncerResult.Success
                     }

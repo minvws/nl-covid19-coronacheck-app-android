@@ -11,6 +11,7 @@ import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
 import nl.rijksoverheid.ctr.design.designModule
 import nl.rijksoverheid.ctr.holder.modules.*
 import nl.rijksoverheid.ctr.holder.persistence.HolderWorkerFactory
+import nl.rijksoverheid.ctr.holder.persistence.WorkerManagerWrapper
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
 import nl.rijksoverheid.ctr.holder.persistence.database.migration.TestResultsMigrationManager
@@ -40,6 +41,7 @@ open class HolderApplication : SharedApplication(), Configuration.Provider {
     private val holderWorkerFactory: HolderWorkerFactory by inject()
     private val appConfigStorageManager: AppConfigStorageManager by inject()
     private val mobileCoreWrapper: MobileCoreWrapper by inject()
+    private val workerManagerWrapper: WorkerManagerWrapper by inject()
 
     override fun onCreate() {
         super.onCreate()
@@ -66,6 +68,9 @@ open class HolderApplication : SharedApplication(), Configuration.Provider {
 
         // Generate and store secret key to be used by rest of the app
         secretKeyUseCase.persist()
+
+        // cancel pending refresh credentials jobs scheduled from app version 2.1.7
+        workerManagerWrapper.cancel(this)
 
         // Create default wallet in database if empty
         GlobalScope.launch {

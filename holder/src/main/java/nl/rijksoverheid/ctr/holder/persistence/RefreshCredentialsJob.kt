@@ -23,7 +23,7 @@ class RefreshCredentialsJob(
     override suspend fun doWork(): Result {
         val syncWithRemote = greenCardRefreshUtil.shouldRefresh()
         return if (syncWithRemote) {
-             when (holderDatabaseSyncer.sync(null, true)) {
+            when (holderDatabaseSyncer.sync(null, true)) {
                 DatabaseSyncerResult.Success -> {
                     Result.success()
                 }
