@@ -344,4 +344,10 @@
     <string name="your_dcc_event_description">Met de gegevens die zijn opgehaald kun je een QR-code maken. Dat is jouw bewijs.</string>
     <string name="your_dcc_event_toolbar_title">Opgehaalde gegevens</string>
     <string name="your_events_block_back_dialog_description">Je kunt later opnieuw proberen deze QR-code in de app te zetten.</string>
+    <string name="your_negative_test_results_backbutton_title">Weet je zeker dat je wilt stoppen?</string>
+    <string name="your_negative_test_results_backbutton_message">Je moet dan later opnieuw je testuitslag ophalen.</string>
+    <string name="your_negative_test_results_backbutton_cancel">Nee, terug</string>
+    <string name="your_negative_test_results_backbutton_ok">Ja, stop</string>
+    <string name="retrieved_vaccinations_backbutton_title">Weet je zeker dat je wilt stoppen?</string>
+    <string name="retrieved_vaccinations_backbutton_message">Je kunt later opnieuw proberen je vaccinatie op te halen.</string>
 </resources>
