@@ -134,6 +134,8 @@ class SaveEventsUseCaseImplTest {
             totalDoses = null,
             country = null,
             manufacturer = null,
+            completedByPersonalStatement = null,
+            completionReason = null
         )
     )
 
