@@ -78,7 +78,7 @@ open class HolderApplication : SharedApplication(), Configuration.Provider {
                 )
             }
 
-            testResultsMigrationManager.migrateTestResults()
+            testResultsMigrationManager.removeOldCredential()
         }
 
         if (appConfigStorageManager.areConfigFilesPresentInFilesFolder()) {
