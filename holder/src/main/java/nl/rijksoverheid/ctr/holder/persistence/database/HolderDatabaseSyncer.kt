@@ -40,11 +40,6 @@ class HolderDatabaseSyncerImpl(
         return withContext(Dispatchers.IO) {
             val events = holderDatabase.eventGroupDao().getAll()
 
-            // Check if we need to remove any events
-            removeExpiredEventsUseCase.execute(
-                events = events
-            )
-
             // Sync with remote
             if (syncWithRemote) {
                 val remoteGreenCardsResult = getRemoteGreenCardsUseCase.get(
