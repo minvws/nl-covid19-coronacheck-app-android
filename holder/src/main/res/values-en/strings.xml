@@ -337,15 +337,15 @@
     <string name="add_paper_proof_invalid_combination_title">No valid combination</string>
     <string name="add_paper_proof_invalid_combination_">This letter combination and QR code don\'t belong together.</string>
     <string name="add_paper_proof_qr_scanner_title">Scan QR code</string>
+    <string name="add_paper_proof_consent_button">Scan QR code</string>
+    <string name="your_dcc_event_description">You can create a QR code with the retrieved details. This is your certificate.</string>
+    <string name="your_dcc_event_toolbar_title">Retrieved details</string>
     <string name="your_events_block_back_dialog_title">Are you sure you want to stop?</string>
+    <string name="your_events_block_back_dialog_description">You can try to scan your paper certificate again later</string>
     <string name="your_events_block_back_dialog_positive_button">Yes, stop</string>
     <string name="your_events_block_back_dialog_negative_button">No, back</string>
-    <string name="add_paper_proof_consent_button">Scan QR-code</string>
-    <string name="your_dcc_event_description">Met de gegevens die zijn opgehaald kun je een QR-code maken. Dat is jouw bewijs.</string>
-    <string name="your_dcc_event_toolbar_title">Opgehaalde gegevens</string>
-    <string name="your_events_block_back_dialog_description">Je kunt later opnieuw proberen deze QR-code in de app te zetten.</string>
-    <string name="your_events_replace_dialog_title">Wil je je bewijs vervangen?</string>
-    <string name="your_events_replace_dialog_message">Je hebt eerder een bewijs gemaakt. De gegevens daarvan zijn anders dan de gegevens die net zijn opgehaald. Daarom kan je het bewijs alleen vervangen.</string>
-    <string name="your_events_replace_dialog_negative_button">Nee, stop</string>
-    <string name="your_events_replace_dialog_positive_button">Ja, vervang</string>
+    <string name="your_events_replace_dialog_title">Do you want to replace your certificate?</string>
+    <string name="your_events_replace_dialog_message">You’ve created a certificate before. The information on it differs from the information that has just been retrieved. Therefore you can only replace the certificate.</string>
+    <string name="your_events_replace_dialog_negative_button">No, stop</string>
+    <string name="your_events_replace_dialog_positive_button">Yes, replace</string>
 </resources>
