@@ -1,11 +1,10 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
 import android.app.Application
-import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
-import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.design.ext.formatDateTime
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.shared.ext.getStringOrNull
 import nl.rijksoverheid.ctr.shared.models.PersonalDetails
@@ -233,6 +232,8 @@ class InfoScreenUtilImpl(
                 )
             } else ""
 
+        val isThisLastDose = getIsLastDoseAnswer(event)
+
         val vaccinationDate = event.vaccination?.date?.formatDayMonthYear() ?: ""
         val vaccinationCountry = event.vaccination?.country ?: ""
         val uniqueCode = event.unique ?: ""
@@ -248,12 +249,29 @@ class InfoScreenUtilImpl(
                 vaccinType,
                 producer,
                 doses,
+                isThisLastDose,
                 vaccinationDate,
                 vaccinationCountry,
                 uniqueCode
             )
         )
     }
+
+    private fun getIsLastDoseAnswer(event: RemoteEventVaccination) =
+        application.getString(
+            event.vaccination?.run {
+                when {
+                    completed() && completionReason == "priorevent" -> R.string.your_vaccination_explanation_last_dose_yes_prior_event
+                    completed() && completionReason == "recovery" -> R.string.your_vaccination_explanation_last_dose_yes_recovery
+                    completed() && completionReason.isNullOrEmpty() -> R.string.your_vaccination_explanation_last_dose_yes
+                    !completed() -> R.string.your_vaccination_explanation_last_dose_no
+                    else -> R.string.your_vaccination_explanation_last_dose_unknown
+                }
+            } ?: R.string.your_vaccination_explanation_last_dose_unknown
+        )
+
+    private fun RemoteEventVaccination.Vaccination.completed() =
+        completedByMedicalStatement == true || completedByPersonalStatement == true
 
     override fun getForDomesticQr(personalDetails: PersonalDetails): InfoScreen {
         val title = application.getString(R.string.qr_explanation_title_domestic)

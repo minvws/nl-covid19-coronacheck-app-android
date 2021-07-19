@@ -24,6 +24,8 @@ data class RemoteEventVaccination(
         val type: String?,
         val brand: String?,
         val completedByMedicalStatement: Boolean?,
+        val completedByPersonalStatement: Boolean?,
+        val completionReason: String?,
         val doseNumber: String?,
         val totalDoses: String?,
         val country: String?,

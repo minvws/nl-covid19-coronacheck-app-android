@@ -70,7 +70,9 @@ class GetEventsFromPaperProofQrUseCaseImpl(
                     brand = it.getStringOrNull("mp"),
                     manufacturer = it.getStringOrNull("ma"),
                     completedByMedicalStatement = null,
-                    hpkCode = null
+                    hpkCode = null,
+                    completedByPersonalStatement = null,
+                    completionReason = null
                 )
             )
         }
