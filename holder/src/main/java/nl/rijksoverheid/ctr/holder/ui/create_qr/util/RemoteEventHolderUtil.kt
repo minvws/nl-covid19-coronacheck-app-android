@@ -33,6 +33,11 @@ class RemoteEventHolderUtilImpl(
         return remoteEvent!!.holder!!
     }
 
+    /**
+     * Compare the holder of the currently stored events with the holder of the new importing events
+     * If the birth date and one of the holder's names are different, then the holders are conflicting
+     * we should keep only one of them.
+     */
     override fun conflicting(
         storedEventHolders: List<RemoteProtocol3.Holder>,
         incomingEventHolders: List<RemoteProtocol3.Holder>

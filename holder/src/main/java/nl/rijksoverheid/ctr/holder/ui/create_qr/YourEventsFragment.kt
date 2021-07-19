@@ -124,10 +124,20 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
         yourEventsViewModel.conflictingEventsResult.observe(
             viewLifecycleOwner,
             EventObserver {
-                if (it) {
-                    when (val type = args.type) {
-                        is YourEventsFragmentType.RemoteProtocol3Type -> replaceCertificateDialog(type.remoteEvents, type.originType)
-                        is YourEventsFragmentType.DCC -> replaceCertificateDialog(type.remoteEvents, type.originType)
+                when (val type = args.type) {
+                    is YourEventsFragmentType.RemoteProtocol3Type -> {
+                        if (it) {
+                            replaceCertificateDialog(type.remoteEvents, type.originType)
+                        } else {
+                            yourEventsViewModel.saveRemoteProtocol3Events(type.remoteEvents, type.originType, false)
+                        }
+                    }
+                    is YourEventsFragmentType.DCC -> {
+                        if (it) {
+                            replaceCertificateDialog(type.remoteEvents, type.originType)
+                        } else {
+                            yourEventsViewModel.saveRemoteProtocol3Events(type.remoteEvents, type.originType, false)
+                        }
                     }
                 }
             }
@@ -455,15 +465,13 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                     )
                 }
                 is YourEventsFragmentType.RemoteProtocol3Type -> {
-                    yourEventsViewModel.compareWithExistingEvents(
+                    yourEventsViewModel.checkForConflictingEvents(
                         remoteProtocols3 = type.remoteEvents,
-                        originType = type.originType
                     )
                 }
                 is YourEventsFragmentType.DCC -> {
-                    yourEventsViewModel.compareWithExistingEvents(
+                    yourEventsViewModel.checkForConflictingEvents(
                         remoteProtocols3 = type.remoteEvents,
-                        originType = type.originType
                     )
                 }
             }

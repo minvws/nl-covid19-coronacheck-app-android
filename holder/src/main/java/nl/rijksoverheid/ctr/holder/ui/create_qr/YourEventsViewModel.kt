@@ -27,7 +27,7 @@ abstract class YourEventsViewModel : ViewModel() {
 
     abstract fun saveNegativeTest2(negativeTest2: RemoteTestResult2, rawResponse: ByteArray)
     abstract fun saveRemoteProtocol3Events(remoteProtocols3: Map<RemoteProtocol3, ByteArray>, originType: OriginType, removePreviousEvents: Boolean)
-    abstract fun compareWithExistingEvents(remoteProtocols3: Map<RemoteProtocol3, ByteArray>, originType: OriginType)
+    abstract fun checkForConflictingEvents(remoteProtocols3: Map<RemoteProtocol3, ByteArray>)
 }
 
 class YourEventsViewModelImpl(
@@ -60,17 +60,13 @@ class YourEventsViewModelImpl(
         }
     }
 
-    override fun compareWithExistingEvents(remoteProtocols3: Map<RemoteProtocol3, ByteArray>, originType: OriginType) {
+    override fun checkForConflictingEvents(remoteProtocols3: Map<RemoteProtocol3, ByteArray>) {
         (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {
             try {
                 val conflictingEvents = saveEventsUseCase.remoteProtocols3AreConflicting(remoteProtocols3)
 
-                if (conflictingEvents) {
-                    (conflictingEventsResult as MutableLiveData).postValue(Event(conflictingEvents))
-                } else {
-                    saveRemoteProtocol3Events(remoteProtocols3, originType, false)
-                }
+                (conflictingEventsResult as MutableLiveData).postValue(Event(conflictingEvents))
             } catch (e: Exception) {
                 (yourEventsResult as MutableLiveData).value = Event(
                     DatabaseSyncerResult.ServerError(999)
