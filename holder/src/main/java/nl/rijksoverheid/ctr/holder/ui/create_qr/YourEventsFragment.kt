@@ -71,7 +71,7 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
             binding = binding
         )
 
-        handleBackButton()
+        blockBackButton()
 
         yourEventsViewModel.loading.observe(viewLifecycleOwner, EventObserver {
             (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
@@ -120,6 +120,53 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                     }
                 }
             })
+
+        yourEventsViewModel.conflictingEventsResult.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                when (val type = args.type) {
+                    is YourEventsFragmentType.RemoteProtocol3Type -> {
+                        if (it) {
+                            replaceCertificateDialog(type.remoteEvents, type.originType)
+                        } else {
+                            yourEventsViewModel.saveRemoteProtocol3Events(type.remoteEvents, type.originType, false)
+                        }
+                    }
+                    is YourEventsFragmentType.DCC -> {
+                        if (it) {
+                            replaceCertificateDialog(type.remoteEvents, type.originType)
+                        } else {
+                            yourEventsViewModel.saveRemoteProtocol3Events(type.remoteEvents, type.originType, false)
+                        }
+                    }
+                }
+            }
+        )
+    }
+
+    private fun replaceCertificateDialog(
+        remoteEvents: Map<RemoteProtocol3, ByteArray>,
+        originType: OriginType
+    ) {
+        dialogUtil.presentDialog(
+            context = requireContext(),
+            title = R.string.your_events_replace_dialog_title,
+            message = getString(R.string.your_events_replace_dialog_message),
+            positiveButtonText = R.string.your_events_replace_dialog_positive_button,
+            positiveButtonCallback = {
+                yourEventsViewModel.saveRemoteProtocol3Events(
+                    remoteProtocols3 = remoteEvents,
+                    originType = originType,
+                    removePreviousEvents = true
+                )
+            },
+            negativeButtonText = R.string.your_events_replace_dialog_negative_button,
+            negativeButtonCallback = {
+                findNavController().navigate(
+                    YourEventsFragmentDirections.actionMyOverview()
+                )
+            }
+        )
     }
 
     private fun presentHeader(binding: FragmentYourEventsBinding) {
@@ -413,20 +460,18 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
             when (val type = args.type) {
                 is YourEventsFragmentType.TestResult2 -> {
                     yourEventsViewModel.saveNegativeTest2(
-                        remoteTestResult = type.remoteTestResult,
+                        negativeTest2 = type.remoteTestResult,
                         rawResponse = type.rawResponse
                     )
                 }
                 is YourEventsFragmentType.RemoteProtocol3Type -> {
-                    yourEventsViewModel.saveRemoteProtocol3Events(
+                    yourEventsViewModel.checkForConflictingEvents(
                         remoteProtocols3 = type.remoteEvents,
-                        originType = type.originType
                     )
                 }
                 is YourEventsFragmentType.DCC -> {
-                    yourEventsViewModel.saveRemoteProtocol3Events(
+                    yourEventsViewModel.checkForConflictingEvents(
                         remoteProtocols3 = type.remoteEvents,
-                        originType = type.originType
                     )
                 }
             }
@@ -443,35 +488,20 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
         }
     }
 
-    private fun handleBackButton() {
-        val type = args.type
-        if ((type is YourEventsFragmentType.RemoteProtocol3Type) && type.originType == OriginType.Vaccination) {
-            blockBackButton(
-                title = R.string.retrieved_vaccinations_backbutton_title,
-                message = R.string.retrieved_vaccinations_backbutton_message
-            )
-        } else {
-            blockBackButton(
-                title = R.string.your_negative_test_results_backbutton_title,
-                message = R.string.your_negative_test_results_backbutton_message
-            )
-        }
-    }
-
-    private fun blockBackButton(@StringRes title: Int, @StringRes message: Int) {
+    private fun blockBackButton() {
         // Catch back button to show modal instead
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object :
             OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 MaterialAlertDialogBuilder(requireContext())
-                    .setTitle(getString(title))
-                    .setMessage(getString(message))
-                    .setPositiveButton(R.string.your_negative_test_results_backbutton_ok) { _, _ ->
+                    .setTitle(R.string.your_events_block_back_dialog_title)
+                    .setMessage(R.string.your_events_block_back_dialog_description)
+                    .setPositiveButton(R.string.your_events_block_back_dialog_positive_button) { _, _ ->
                         findNavController().navigate(
                             YourEventsFragmentDirections.actionMyOverview()
                         )
                     }
-                    .setNegativeButton(R.string.your_negative_test_results_backbutton_cancel) { _, _ -> }
+                    .setNegativeButton(R.string.your_events_block_back_dialog_negative_button) { _, _ -> }
                     .show()
             }
         })
