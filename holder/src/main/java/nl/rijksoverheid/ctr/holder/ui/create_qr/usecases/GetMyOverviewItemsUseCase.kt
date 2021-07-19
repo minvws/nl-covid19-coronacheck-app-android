@@ -78,16 +78,19 @@ class GetMyOverviewItemsUseCaseImpl(
                 )
             )
 
-            getCreatePlaceholderCardItem(allGreenCards, selectedType)?.let {
+            // Method [getGreenCardItems] also updates the green cards so we need to load them again from the db
+            val updatedGreenCardItems = holderDatabase.greenCardDao().getAll()
+
+            getCreatePlaceholderCardItem(updatedGreenCardItems)?.let {
                 items.add(it)
             }
 
-            getAddCertificateItem(allGreenCards)?.let {
+            getAddCertificateItem(updatedGreenCardItems)?.let {
                 items.add(it)
             }
 
             getTravelModeItem(
-                greenCards = allGreenCards,
+                greenCards = updatedGreenCardItems,
                 selectedType = selectedType
             )?.let {
                 items.add(it)
@@ -207,14 +210,9 @@ class GetMyOverviewItemsUseCaseImpl(
 
     private fun getCreatePlaceholderCardItem(
         greenCards: List<GreenCard>,
-        selectedType: GreenCardType
     ): MyOverviewItem? {
         return if (greenCards.isEmpty() || greenCards.all { greenCardUtil.isExpired(it) }) {
-            if (selectedType == GreenCardType.Domestic) {
-                PlaceholderCardItem
-            } else {
-                null
-            }
+            PlaceholderCardItem
         } else {
             null
         }
