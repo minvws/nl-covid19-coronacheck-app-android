@@ -150,7 +150,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
         myOverviewViewModel.refreshOverviewItems(
             forceSync = forceSync
         )
-        refreshOverviewItemsHandler.postDelayed(refreshOverviewItemsRunnable, TimeUnit.SECONDS.toMillis(10))
+        refreshOverviewItemsHandler.postDelayed(refreshOverviewItemsRunnable, TimeUnit.MILLISECONDS.toMillis(500))
     }
 
     override fun onResume() {
@@ -247,6 +247,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                     ))
                 }
                 is MyOverviewItem.TravelModeItem -> {
+                    binding.typeToggle.button.isEnabled = myOverviewItem.enabled
                     binding.typeToggle.root.visibility = View.VISIBLE
                     binding.typeToggle.description.setText(myOverviewItem.text)
 

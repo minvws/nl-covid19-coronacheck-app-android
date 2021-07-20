@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.holder.persistence.database
 
+import androidx.room.Database
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.holder.persistence.WorkerManagerWrapper
@@ -86,6 +87,7 @@ class HolderDatabaseSyncerImpl(
 }
 
 sealed class DatabaseSyncerResult {
+    object Loading : DatabaseSyncerResult()
     object Success : DatabaseSyncerResult()
     object MissingOrigin : DatabaseSyncerResult()
     data class ServerError(val httpCode: Int) : DatabaseSyncerResult()
