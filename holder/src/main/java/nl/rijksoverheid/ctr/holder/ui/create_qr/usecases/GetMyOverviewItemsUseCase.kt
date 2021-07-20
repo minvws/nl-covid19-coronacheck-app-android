@@ -90,8 +90,9 @@ class GetMyOverviewItemsUseCaseImpl(
             }
 
             getTravelModeItem(
-                greenCards = updatedGreenCardItems,
-                selectedType = selectedType
+                greenCards = allGreenCards,
+                selectedType = selectedType,
+                shouldRefresh = shouldRefresh
             )?.let {
                 items.add(it)
             }
@@ -223,20 +224,23 @@ class GetMyOverviewItemsUseCaseImpl(
 
     private fun getTravelModeItem(
         greenCards: List<GreenCard>,
-        selectedType: GreenCardType
+        selectedType: GreenCardType,
+        shouldRefresh: Boolean
     ): MyOverviewItem? {
         return when (selectedType) {
             is GreenCardType.Eu -> {
                 TravelModeItem(
                     text = R.string.travel_toggle_europe,
-                    buttonText = R.string.travel_toggle_change_domestic)
+                    buttonText = R.string.travel_toggle_change_domestic,
+                    enabled = !shouldRefresh)
             }
             is GreenCardType.Domestic -> {
                 val hasGreenCards = greenCards.map { greenCardUtil.isExpired(it) }.any { !it }
                 if (hasGreenCards) {
                     TravelModeItem(
                         text = R.string.travel_toggle_domestic,
-                        buttonText = R.string.travel_toggle_change_eu)
+                        buttonText = R.string.travel_toggle_change_eu,
+                        enabled = !shouldRefresh)
                 } else {
                     null
                 }
@@ -274,7 +278,7 @@ sealed class MyOverviewItem {
         val greenCardType: GreenCardType
     ) : MyOverviewItem()
 
-    data class TravelModeItem(@StringRes val text: Int, @StringRes val buttonText: Int) :
+    data class TravelModeItem(@StringRes val text: Int, @StringRes val buttonText: Int, val enabled: Boolean) :
         MyOverviewItem()
 
     data class OriginInfoItem(val greenCardType: GreenCardType, val originType: OriginType) :

@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.holder.persistence.database.usecases
 
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
@@ -59,10 +60,8 @@ class RemoveExpiredEventsUseCaseImplTest {
             jsonData = "".toByteArray()
         )
 
-        usecase.execute(
-            listOf(eventGroup)
-        )
-
+        coEvery { eventGroupDao.getAll() } answers { listOf(eventGroup) }
+        usecase.execute()
         coVerify { eventGroupDao.delete(eventGroup) }
     }
 
@@ -76,10 +75,8 @@ class RemoveExpiredEventsUseCaseImplTest {
             jsonData = "".toByteArray()
         )
 
-        usecase.execute(
-            listOf(eventGroup)
-        )
-
+        coEvery { eventGroupDao.getAll() } answers { listOf(eventGroup) }
+        usecase.execute()
         coVerify(exactly = 0) { eventGroupDao.delete(eventGroup) }
     }
 
@@ -93,10 +90,8 @@ class RemoveExpiredEventsUseCaseImplTest {
             jsonData = "".toByteArray()
         )
 
-        usecase.execute(
-            listOf(eventGroup)
-        )
-
+        coEvery { eventGroupDao.getAll() } answers { listOf(eventGroup) }
+        usecase.execute()
         coVerify { eventGroupDao.delete(eventGroup) }
     }
 
@@ -110,10 +105,8 @@ class RemoveExpiredEventsUseCaseImplTest {
             jsonData = "".toByteArray()
         )
 
-        usecase.execute(
-            listOf(eventGroup)
-        )
-
+        coEvery { eventGroupDao.getAll() } answers { listOf(eventGroup) }
+        usecase.execute()
         coVerify(exactly = 0) { eventGroupDao.delete(eventGroup) }
     }
 
@@ -127,10 +120,8 @@ class RemoveExpiredEventsUseCaseImplTest {
             jsonData = "".toByteArray()
         )
 
-        usecase.execute(
-            listOf(eventGroup)
-        )
-
+        coEvery { eventGroupDao.getAll() } answers { listOf(eventGroup) }
+        usecase.execute()
         coVerify { eventGroupDao.delete(eventGroup) }
     }
 
@@ -144,10 +135,8 @@ class RemoveExpiredEventsUseCaseImplTest {
             jsonData = "".toByteArray()
         )
 
-        usecase.execute(
-            listOf(eventGroup)
-        )
-
+        coEvery { eventGroupDao.getAll() } answers { listOf(eventGroup) }
+        usecase.execute()
         coVerify(exactly = 0) { eventGroupDao.delete(eventGroup) }
     }
 
@@ -160,12 +149,10 @@ class RemoveExpiredEventsUseCaseImplTest {
             maxIssuedAt = firstJanuaryDate.minusDays(9), // For a non dcc 10 days are added from remote config. For dcc nothing is added so this is still valid
             jsonData = "".toByteArray()
         )
+        coEvery { eventGroupDao.getAll() } answers { listOf(eventGroup) }
 
-        usecase.execute(
-            listOf(eventGroup)
-        )
+        usecase.execute()
 
         coVerify { eventGroupDao.delete(eventGroup) }
     }
-
 }
