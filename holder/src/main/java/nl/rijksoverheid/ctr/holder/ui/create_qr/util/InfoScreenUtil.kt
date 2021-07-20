@@ -1,8 +1,8 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
 import android.app.Application
-import nl.rijksoverheid.ctr.design.ext.formatDateTime
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
+import nl.rijksoverheid.ctr.design.ext.formatDayMonthYearNumerical
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
@@ -283,7 +283,7 @@ class InfoScreenUtilImpl(
 
         val birthDate = dcc.getStringOrNull("dob")?.let { birthDate ->
             try {
-                LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).formatDayMonthYear()
+                LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).formatDayMonthYearNumerical()
             } catch (e: Exception) {
                 ""
             }
@@ -300,7 +300,7 @@ class InfoScreenUtilImpl(
         val testDate = test.getStringOrNull("sc")?.let {
             try {
                 OffsetDateTime.parse(it, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
-                    .formatDateTime(application)
+                    .formatDayMonthYearNumerical()
             } catch (e: Exception) {
                 ""
             }
@@ -352,7 +352,7 @@ class InfoScreenUtilImpl(
 
         val birthDate = dcc.getStringOrNull("dob")?.let { birthDate ->
             try {
-                LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).formatDayMonthYear()
+                LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).formatDayMonthYearNumerical()
             } catch (e: Exception) {
                 ""
             }
@@ -384,7 +384,8 @@ class InfoScreenUtilImpl(
 
         val vaccinationDate = vaccination.getStringOrNull("dt")?.let { vaccinationDate ->
             try {
-                LocalDate.parse(vaccinationDate, DateTimeFormatter.ISO_DATE).formatDayMonthYear()
+                LocalDate.parse(vaccinationDate, DateTimeFormatter.ISO_DATE)
+                    .formatDayMonthYearNumerical()
             } catch (e: Exception) {
                 ""
             }
@@ -423,7 +424,7 @@ class InfoScreenUtilImpl(
 
         val birthDate = dcc.getStringOrNull("dob")?.let { birthDate ->
             try {
-                LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).formatDayMonthYear()
+                LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).formatDayMonthYearNumerical()
             } catch (e: Exception) {
                 ""
             }
@@ -433,7 +434,7 @@ class InfoScreenUtilImpl(
 
         val testDate = recovery.getStringOrNull("fr")?.let { testDate ->
             try {
-                LocalDate.parse(testDate, DateTimeFormatter.ISO_DATE).formatDayMonthYear()
+                LocalDate.parse(testDate, DateTimeFormatter.ISO_DATE).formatDayMonthYearNumerical()
             } catch (e: Exception) {
                 ""
             }
@@ -445,7 +446,7 @@ class InfoScreenUtilImpl(
 
         val validFromDate = recovery.getStringOrNull("df")?.let { testDate ->
             try {
-                LocalDate.parse(testDate, DateTimeFormatter.ISO_DATE).formatDayMonthYear()
+                LocalDate.parse(testDate, DateTimeFormatter.ISO_DATE).formatDayMonthYearNumerical()
             } catch (e: Exception) {
                 ""
             }
@@ -453,7 +454,7 @@ class InfoScreenUtilImpl(
 
         val validUntilDate = recovery.getStringOrNull("du")?.let { testDate ->
             try {
-                LocalDate.parse(testDate, DateTimeFormatter.ISO_DATE).formatDayMonthYear()
+                LocalDate.parse(testDate, DateTimeFormatter.ISO_DATE).formatDayMonthYearNumerical()
             } catch (e: Exception) {
                 ""
             }
