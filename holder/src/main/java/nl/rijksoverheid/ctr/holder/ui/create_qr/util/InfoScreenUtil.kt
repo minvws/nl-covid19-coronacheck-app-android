@@ -55,7 +55,8 @@ interface InfoScreenUtil {
 
 class InfoScreenUtilImpl(
     private val application: Application,
-    private val cachedAppConfigUseCase: CachedAppConfigUseCase
+    private val lastVaccinationDoseUtil: LastVaccinationDoseUtil,
+    cachedAppConfigUseCase: CachedAppConfigUseCase
 ) : InfoScreenUtil {
 
     private val holderConfig = cachedAppConfigUseCase.getCachedAppConfig()
@@ -232,7 +233,7 @@ class InfoScreenUtilImpl(
                 )
             } else ""
 
-        val lastDose = getIsLastDoseAnswer(event)
+        val lastDose = lastVaccinationDoseUtil.getIsLastDoseAnswer(event)
 
         val vaccinationDate = event.vaccination?.date?.formatDayMonthYear() ?: ""
         val vaccinationCountry = event.vaccination?.country ?: ""
@@ -256,22 +257,6 @@ class InfoScreenUtilImpl(
             )
         )
     }
-
-    private fun getIsLastDoseAnswer(event: RemoteEventVaccination) =
-        application.getString(
-            event.vaccination?.run {
-                when {
-                    completed() && completionReason == "priorevent" -> R.string.your_vaccination_explanation_last_dose_yes_prior_event
-                    completed() && completionReason == "recovery" -> R.string.your_vaccination_explanation_last_dose_yes_recovery
-                    completed() && completionReason.isNullOrEmpty() -> R.string.your_vaccination_explanation_last_dose_yes
-                    !completed() -> R.string.your_vaccination_explanation_last_dose_no
-                    else -> R.string.your_vaccination_explanation_last_dose_unknown
-                }
-            } ?: R.string.your_vaccination_explanation_last_dose_unknown
-        )
-
-    private fun RemoteEventVaccination.Vaccination.completed() =
-        completedByMedicalStatement == true || completedByPersonalStatement == true
 
     override fun getForDomesticQr(personalDetails: PersonalDetails): InfoScreen {
         val title = application.getString(R.string.qr_explanation_title_domestic)
