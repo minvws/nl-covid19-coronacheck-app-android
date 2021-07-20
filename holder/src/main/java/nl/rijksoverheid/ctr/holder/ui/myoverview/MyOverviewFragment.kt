@@ -150,7 +150,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
         myOverviewViewModel.refreshOverviewItems(
             forceSync = forceSync
         )
-        refreshOverviewItemsHandler.postDelayed(refreshOverviewItemsRunnable, TimeUnit.MILLISECONDS.toMillis(500))
+        refreshOverviewItemsHandler.postDelayed(refreshOverviewItemsRunnable, TimeUnit.SECONDS.toMillis(10))
     }
 
     override fun onResume() {

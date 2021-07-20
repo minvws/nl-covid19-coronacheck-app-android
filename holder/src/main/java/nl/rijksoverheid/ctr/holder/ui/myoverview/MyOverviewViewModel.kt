@@ -76,7 +76,6 @@ class MyOverviewViewModelImpl(
             )
 
             if (shouldRefresh) {
-                    Timber.v("REFRESH")
                 // Communicate refresh to the UI (only once)
                 (databaseSyncerResultLiveData as MutableLiveData).postValue(
                     Event(DatabaseSyncerResult.Loading)
