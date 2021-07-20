@@ -76,6 +76,11 @@ class MyOverviewViewModelImpl(
             )
 
             if (shouldRefresh) {
+                // Communicate refresh to the UI (only once)
+                (databaseSyncerResultLiveData as MutableLiveData).postValue(
+                    Event(DatabaseSyncerResult.Loading)
+                )
+
                 // Refresh the database
                 // This checks if we need to remove expired EventGroupEntity's
                 // Also syncs the database with remote if needed
@@ -84,7 +89,7 @@ class MyOverviewViewModelImpl(
                 )
 
                 // Communicate refresh to the UI (only once)
-                (databaseSyncerResultLiveData as MutableLiveData).postValue(
+                databaseSyncerResultLiveData.postValue(
                     Event(databaseSyncerResult)
                 )
 
