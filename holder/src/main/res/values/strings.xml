@@ -316,7 +316,7 @@
     <string name="add_paper_proof_input_not_6_chars">Vul de 6-letterige combinatie in</string>
     <string name="add_paper_proof_no_letter_combination_button">Geen lettercombinatie?</string>
     <string name="no_letter_combination_dialog_title">Geen lettercombinatie?</string>
-    <string name="no_letter_combination_dialog_description"><![CDATA[Dan is het niet mogelijk om jouw bewijs op deze manier aan de app toe te voegen.<br/><br/>Je hebt alleen een lettercombinatie gekregen als je jouw papieren coronabewijs hebt<a href="http://coronatest.nl">aangevraagd bij de zorgverlener</a> waar je bent gevaccineerd of getest.<br/><br/>
+    <string name="no_letter_combination_dialog_description"><![CDATA[Dan is het niet mogelijk om jouw bewijs op deze manier aan de app toe te voegen.<br/><br/>Je hebt alleen een lettercombinatie gekregen als je jouw papieren coronabewijs hebt <a href="http://coronatest.nl">aangevraagd bij de zorgverlener</a> waar je bent gevaccineerd of getest.<br/><br/>
 <b>Zelf jouw bewijs geprint?</b> Voeg je bewijs dan toe in de app via het menu. Ga naar ‘Bewijs toevoegen’ en log in met DigiD.]]></string>
     <string name="add_paper_proof_explanation_description"><![CDATA[Heb je een papieren coronabewijs <b>aangevraagd bij de zorgverlener</b> waar je bent gevaccineerd of getest? Dan kan je deze hier ook toevoegen in de app.]]></string>
     <string name="add_paper_proof_explanation_highlight"><![CDATA[<b>Zelf je bewijs uitgeprint?</b> Voeg je bewijs dan toe in de app via het menu. Ga naar ‘Bewijs toevoegen’ en log in met DigiD.]]></string>

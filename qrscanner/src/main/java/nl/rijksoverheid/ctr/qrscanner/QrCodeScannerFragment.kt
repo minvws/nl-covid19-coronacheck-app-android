@@ -121,7 +121,7 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
         cameraProviderFuture.addListener({
             // Retrieve the available CameraProvider and check for permissions
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
-            if (isCameraPermissionGranted()) {
+            if (isAdded && isCameraPermissionGranted()) {
                 // Start setting up our Preview feed and analyzing Usecases
                 bindCameraUseCases(cameraProvider, previewView, cameraSelector, screenAspectRatio)
             } else {
@@ -334,13 +334,15 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
     }
 
     private fun showRationaleDialog(rationaleDialog: Copy.RationaleDialog) {
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle(rationaleDialog.title)
-            .setMessage(rationaleDialog.description)
-            .setPositiveButton(rationaleDialog.okayButtonText) { dialog, which ->
-                requestPermission()
-            }
-            .show()
+        if (isAdded) {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(rationaleDialog.title)
+                .setMessage(rationaleDialog.description)
+                .setPositiveButton(rationaleDialog.okayButtonText) { dialog, which ->
+                    requestPermission()
+                }
+                .show()
+        }
     }
 
     data class Copy(
