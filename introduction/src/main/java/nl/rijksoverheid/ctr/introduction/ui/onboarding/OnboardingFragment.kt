@@ -26,12 +26,13 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
 
     private val args: OnboardingFragmentArgs by navArgs()
 
-    private lateinit var binding: FragmentOnboardingBinding
+    private var _binding: FragmentOnboardingBinding? = null
+    private val binding get() = _binding!!
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding = FragmentOnboardingBinding.bind(view)
+        _binding = FragmentOnboardingBinding.bind(view)
 
         val adapter =
             OnboardingPagerAdapter(
@@ -128,6 +129,11 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
             }
         })
         startingItem?.let { binding.viewPager.currentItem = it }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {
