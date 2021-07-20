@@ -55,6 +55,7 @@ class TravelModeDialogFragment : ExpandedBottomSheetDialogFragment() {
             binding.buttonDomestic.setToggled(true)
             binding.buttonForeign.setToggled(false)
             setFooter(binding, GreenCardType.Domestic)
+            dismiss()
         }
 
         binding.buttonForeign.setOnClickListener {
@@ -62,6 +63,7 @@ class TravelModeDialogFragment : ExpandedBottomSheetDialogFragment() {
             binding.buttonDomestic.setToggled(false)
             binding.buttonForeign.setToggled(true)
             setFooter(binding, GreenCardType.Eu)
+            dismiss()
         }
 
         ViewCompat.setAccessibilityDelegate(binding.close, object : AccessibilityDelegateCompat() {

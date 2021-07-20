@@ -63,7 +63,7 @@ import java.time.Clock
 fun holderModule(baseUrl: String) = module {
 
     single {
-        HolderDatabase.createInstance(androidContext(), get())
+        HolderDatabase.createInstance(androidContext(), get(), androidContext().packageName == "nl.rijksoverheid.ctr.holder")
     }
 
     factory<HolderDatabaseSyncer> { HolderDatabaseSyncerImpl(get(), get(), get(), get(), get(), get()) }
@@ -143,7 +143,7 @@ fun holderModule(baseUrl: String) = module {
     factory<SaveEventsUseCase> { SaveEventsUseCaseImpl(get(), get()) }
     factory<CachedAppConfigUseCase> { CachedAppConfigUseCaseImpl(get(), androidContext().filesDir.path, get()) }
 
-    factory<TestResultsMigrationManager> { TestResultsMigrationManagerImpl(get(), get(), get()) }
+    factory<TestResultsMigrationManager> { TestResultsMigrationManagerImpl(get()) }
 
     factory<WorkerManagerWrapper> { WorkerManagerWrapperImpl(androidContext(), get()) }
 
@@ -155,7 +155,7 @@ fun holderModule(baseUrl: String) = module {
     viewModel { TokenQrViewModel(get()) }
     viewModel<DeviceRootedViewModel> { DeviceRootedViewModelImpl(get(), get()) }
     viewModel<YourEventsViewModel> { YourEventsViewModelImpl(get(), get()) }
-    viewModel<MyOverviewViewModel> { MyOverviewViewModelImpl(get(), get(), get(), get()) }
+    viewModel<MyOverviewViewModel> { MyOverviewViewModelImpl(get(), get(), get(), get(), get()) }
     viewModel<GetEventsViewModel> { GetEventsViewModelImpl(get()) }
     viewModel<PaperProofCodeViewModel> { PaperProofCodeViewModelImpl(get(), get()) }
     viewModel<PaperProofQrScannerViewModel> { PaperProofQrScannerViewModelImpl(get()) }

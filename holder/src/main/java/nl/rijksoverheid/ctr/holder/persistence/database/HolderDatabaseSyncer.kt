@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.holder.persistence.database
 
+import androidx.room.Database
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.holder.persistence.WorkerManagerWrapper
@@ -40,11 +41,6 @@ class HolderDatabaseSyncerImpl(
         return withContext(Dispatchers.IO) {
             val events = holderDatabase.eventGroupDao().getAll()
 
-            // Check if we need to remove any events
-            removeExpiredEventsUseCase.execute(
-                events = events
-            )
-
             // Sync with remote
             if (syncWithRemote) {
                 val remoteGreenCardsResult = getRemoteGreenCardsUseCase.get(
@@ -68,7 +64,7 @@ class HolderDatabaseSyncerImpl(
                         )
 
                         // Schedule refreshing of green cards in background
-                        workerManagerWrapper.scheduleNextCredentialsRefreshIfAny()
+//                        workerManagerWrapper.scheduleNextCredentialsRefreshIfAny()
 
                         DatabaseSyncerResult.Success
                     }
@@ -91,6 +87,7 @@ class HolderDatabaseSyncerImpl(
 }
 
 sealed class DatabaseSyncerResult {
+    object Loading : DatabaseSyncerResult()
     object Success : DatabaseSyncerResult()
     object MissingOrigin : DatabaseSyncerResult()
     data class ServerError(val httpCode: Int) : DatabaseSyncerResult()

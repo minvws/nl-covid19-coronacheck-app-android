@@ -247,6 +247,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                     ))
                 }
                 is MyOverviewItem.TravelModeItem -> {
+                    binding.typeToggle.button.isEnabled = myOverviewItem.enabled
                     binding.typeToggle.root.visibility = View.VISIBLE
                     binding.typeToggle.description.setText(myOverviewItem.text)
 
