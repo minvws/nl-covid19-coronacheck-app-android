@@ -231,7 +231,12 @@
     <string name="your_negative_test_3.0_results_row_subtitle"><![CDATA[Testdatum: %1$s<br/>Naam: %2$s<br/>Geboortedatum: %3$s]]></string>
     <string name="your_vaccination_row_subtitle"><![CDATA[Naam: %1$s<br/>Geboortedatum: %2$s]]></string>
     <string name="your_vaccination_explanation_toolbar_title">Over jouw vaccinatie</string>
-    <string name="your_vaccination_explanation_description"><![CDATA[De volgende vaccinatie gegevens zijn opgehaald:<br/><br/>Naam: <b>%1$s</b><br/>Geboortedatum: <b>%2$s</b><br/><br/>Ziekteverwekker: <b>%3$s</b><br/>Vaccin: <b>%4$s</b><br/>Vaccin type: <b>%5$s</b><br/>Producent: <b>%6$s</b><br/>Doses: <b>%7$s</b><br/>Prikdatum: <b>%8$s</b><br/>Land van test: <b>%9$s</b><br/>Identificatiecode: <b>%10$s</b>]]></string>
+    <string name="your_vaccination_explanation_description"><![CDATA[De volgende vaccinatie gegevens zijn opgehaald:<br/><br/>Naam: <b>%1$s</b><br/>Geboortedatum: <b>%2$s</b><br/><br/>Ziekteverwekker: <b>%3$s</b><br/>Vaccin: <b>%4$s</b><br/>Vaccin type: <b>%5$s</b><br/>Producent: <b>%6$s</b><br/>Doses: <b>%7$s</b><br/>Is dit de laatste dosis van je vaccinatie? <b>%8$s</b><br/>Prikdatum: <b>%9$s</b><br/>Land van test: <b>%10$s</b><br/>Identificatiecode: <b>%11$s</b>]]></string>
+    <string name="your_vaccination_explanation_last_dose_yes">ja</string>
+    <string name="your_vaccination_explanation_last_dose_yes_recovery">ja (eerder corona gehad)</string>
+    <string name="your_vaccination_explanation_last_dose_yes_prior_event">ja (ergens anders corona gehad)</string>
+    <string name="your_vaccination_explanation_last_dose_no">nee</string>
+    <string name="your_vaccination_explanation_last_dose_unknown">niet bekend</string>
     <string name="your_vaccination_explanation_covid_19">COVID-19</string>
     <string name="your_vaccination_explanation_doses">%1$s van %2$s</string>
     <string name="my_overview_not_valid_domestic_but_is_in_eu">Je %1$s is niet geldig in Nederland. Je hebt wel een internationaal bewijs.</string>
@@ -316,7 +321,7 @@
     <string name="add_paper_proof_input_not_6_chars">Vul de 6-letterige combinatie in</string>
     <string name="add_paper_proof_no_letter_combination_button">Geen lettercombinatie?</string>
     <string name="no_letter_combination_dialog_title">Geen lettercombinatie?</string>
-    <string name="no_letter_combination_dialog_description"><![CDATA[Dan is het niet mogelijk om jouw bewijs op deze manier aan de app toe te voegen.<br/><br/>Je hebt alleen een lettercombinatie gekregen als je jouw papieren coronabewijs hebt<a href="http://coronatest.nl">aangevraagd bij de zorgverlener</a> waar je bent gevaccineerd of getest.<br/><br/>
+    <string name="no_letter_combination_dialog_description"><![CDATA[Dan is het niet mogelijk om jouw bewijs op deze manier aan de app toe te voegen.<br/><br/>Je hebt alleen een lettercombinatie gekregen als je jouw papieren coronabewijs hebt <a href="http://coronatest.nl">aangevraagd bij de zorgverlener</a> waar je bent gevaccineerd of getest.<br/><br/>
 <b>Zelf jouw bewijs geprint?</b> Voeg je bewijs dan toe in de app via het menu. Ga naar ‘Bewijs toevoegen’ en log in met DigiD.]]></string>
     <string name="add_paper_proof_explanation_description"><![CDATA[Heb je een papieren coronabewijs <b>aangevraagd bij de zorgverlener</b> waar je bent gevaccineerd of getest? Dan kan je deze hier ook toevoegen in de app.]]></string>
     <string name="add_paper_proof_explanation_highlight"><![CDATA[<b>Zelf je bewijs uitgeprint?</b> Voeg je bewijs dan toe in de app via het menu. Ga naar ‘Bewijs toevoegen’ en log in met DigiD.]]></string>
