@@ -417,7 +417,12 @@ class InfoScreenUtilImpl(
         val countryCode = vaccination.getStringOrNull("co")
         val vaccinationCountry = getCountry(countryCode)
 
-        val issuer = application.getString(R.string.qr_explanation_certificate_issuer)
+        val issuerValue = vaccination.getStringOrNull("is")
+        val issuer = if (issuerValue == issuerVWS) {
+            application.getString(R.string.qr_explanation_certificate_issuer)
+        } else {
+            issuerValue
+        }
 
         val uniqueCode = vaccination.getStringOrNull("ci")
 
@@ -505,6 +510,10 @@ class InfoScreenUtilImpl(
                 uniqueCode
             )
         )
+    }
+
+    companion object {
+        private const val issuerVWS = "Ministry of Health Welfare and Sport"
     }
 
 }
