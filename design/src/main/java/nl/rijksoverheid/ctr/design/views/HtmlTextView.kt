@@ -39,16 +39,6 @@ class HtmlTextViewWidget @JvmOverloads constructor(
                         htmlText.toString(),
                         getBoolean(R.styleable.HtmlTextViewWidget_enableHtmlLinks, false)
                     )
-                    text = htmlText.toString().parseAsHtml()
-                }
-
-                val htmlTextWithBullets = getText(R.styleable.HtmlTextViewWidget_htmlTextWithList)
-                if (htmlTextWithBullets?.isNotEmpty() == true) {
-                    setHtmlTextWithBullets(
-                        htmlTextWithBullets.toString(),
-                        getBoolean(R.styleable.HtmlTextViewWidget_enableHtmlLinks, false)
-                    )
-
                 }
             } finally {
                 recycle()
@@ -57,14 +47,9 @@ class HtmlTextViewWidget @JvmOverloads constructor(
     }
 
     fun setHtmlText(htmlText: String, htmlLinksEnabled: Boolean = false) {
-        text = htmlText.parseAsHtml()
-        if (htmlLinksEnabled) {
-            enableHtmlLinks()
-        }
-    }
+        val spannable = getSpannableFromHtml(htmlText)
+        text = spannable
 
-    fun setHtmlTextWithBullets(htmlText: String, htmlLinksEnabled: Boolean = false) {
-        text = getSpannableFromHtml(htmlText)
         if (htmlLinksEnabled) {
             enableHtmlLinks()
         }
@@ -99,7 +84,7 @@ class HtmlTextViewWidget @JvmOverloads constructor(
 
         val htmlSpannable = HtmlCompat.fromHtml(
             html,
-            HtmlCompat.FROM_HTML_MODE_COMPACT,
+            HtmlCompat.FROM_HTML_MODE_LEGACY,
             null,
             { opening, tag, output, _ ->
                 if (tag == "li" && opening) {
