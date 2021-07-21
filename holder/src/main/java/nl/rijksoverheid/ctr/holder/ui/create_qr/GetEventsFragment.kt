@@ -79,7 +79,7 @@ class GetEventsFragment: DigiDFragment(R.layout.fragment_get_events) {
                 is EventsResult.HasNoEvents -> {
                     if (it.missingEvents) {
                         findNavController().navigate(
-                            GetVaccinationFragmentDirections.actionCouldNotCreateQr(
+                            GetEventsFragmentDirections.actionCouldNotCreateQr(
                                 toolbarTitle = copy.toolbarTitle,
                                 title = getString(R.string.missing_events_title),
                                 description = getString(R.string.missing_events_description)
@@ -87,7 +87,7 @@ class GetEventsFragment: DigiDFragment(R.layout.fragment_get_events) {
                         )
                     } else {
                         findNavController().navigate(
-                            GetVaccinationFragmentDirections.actionCouldNotCreateQr(
+                            GetEventsFragmentDirections.actionCouldNotCreateQr(
                                 toolbarTitle = copy.toolbarTitle,
                                 title = copy.hasNoEventsTitle,
                                 description = copy.hasNoEventsDescription
@@ -109,7 +109,7 @@ class GetEventsFragment: DigiDFragment(R.layout.fragment_get_events) {
                 }
                 is EventsResult.Error.EventProviderError.ServerError -> {
                     findNavController().navigate(
-                        GetVaccinationFragmentDirections.actionCouldNotCreateQr(
+                        GetEventsFragmentDirections.actionCouldNotCreateQr(
                             toolbarTitle = copy.toolbarTitle,
                             title = getString(R.string.event_provider_error_title),
                             description = getString(R.string.event_provider_error_description)
@@ -118,7 +118,7 @@ class GetEventsFragment: DigiDFragment(R.layout.fragment_get_events) {
                 }
                 is EventsResult.Error.CoronaCheckError.ServerError -> {
                     findNavController().navigate(
-                        GetVaccinationFragmentDirections.actionCouldNotCreateQr(
+                        GetEventsFragmentDirections.actionCouldNotCreateQr(
                             toolbarTitle = copy.toolbarTitle,
                             title = getString(R.string.coronacheck_error_title),
                             description = getString(R.string.coronacheck_error_description, it.httpCode.toString())
@@ -185,7 +185,7 @@ class GetEventsFragment: DigiDFragment(R.layout.fragment_get_events) {
 
     private fun navigateToYourEvents(signedEvents: List<SignedResponseWithModel<RemoteProtocol3>>) {
         findNavController().navigate(
-            GetVaccinationFragmentDirections.actionYourEvents(
+            GetEventsFragmentDirections.actionYourEvents(
                 type = YourEventsFragmentType.RemoteProtocol3Type(
                     remoteEvents = signedEvents.map { signedModel -> signedModel.model to signedModel.rawResponse }
                         .toMap(),

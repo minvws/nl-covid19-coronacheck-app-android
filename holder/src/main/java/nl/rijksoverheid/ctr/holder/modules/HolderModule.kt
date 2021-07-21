@@ -11,6 +11,8 @@ import nl.rijksoverheid.ctr.api.signing.certificates.ROOT_CA_G3
 import nl.rijksoverheid.ctr.appconfig.usecases.DeviceRootedUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.DeviceRootedUseCaseImpl
 import nl.rijksoverheid.ctr.holder.BuildConfig
+import nl.rijksoverheid.ctr.holder.HolderMainActivityViewModel
+import nl.rijksoverheid.ctr.holder.HolderMainActivityViewModelImpl
 import nl.rijksoverheid.ctr.holder.persistence.*
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
@@ -19,12 +21,13 @@ import nl.rijksoverheid.ctr.holder.persistence.database.migration.TestResultsMig
 import nl.rijksoverheid.ctr.holder.persistence.database.migration.TestResultsMigrationManagerImpl
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.*
-import nl.rijksoverheid.ctr.holder.ui.create_qr.api.HolderApiClient
-import nl.rijksoverheid.ctr.holder.ui.create_qr.api.OriginTypeJsonAdapter
-import nl.rijksoverheid.ctr.holder.ui.create_qr.api.RemoteTestStatusJsonAdapter
-import nl.rijksoverheid.ctr.holder.ui.create_qr.api.TestProviderApiClient
+import nl.rijksoverheid.ctr.holder.ui.create_qr.api.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigiDViewModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
+import nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.PaperProofCodeViewModel
+import nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.PaperProofCodeViewModelImpl
+import nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.PaperProofQrScannerViewModel
+import nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.PaperProofQrScannerViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
@@ -72,6 +75,9 @@ fun holderModule(baseUrl: String) = module {
     }
 
     // Use cases
+    factory<PaperProofCodeUseCase> {
+        PaperProofCodeUseCaseImpl()
+    }
     factory<GetRemoteGreenCardsUseCase> {
         GetRemoteGreenCardsUseCaseImpl(get(), get(), get())
     }
@@ -128,12 +134,13 @@ fun holderModule(baseUrl: String) = module {
     factory<CredentialUtil> { CredentialUtilImpl(Clock.systemUTC()) }
     factory<OriginUtil> { OriginUtilImpl(Clock.systemUTC()) }
     factory<RemoteEventRecoveryUtil> { RemoteEventRecoveryUtilImpl(get()) }
+    factory<RemoteEventHolderUtil> { RemoteEventHolderUtilImpl(get()) }
     factory {
         TokenQrUseCase(get())
     }
     factory<DeviceRootedUseCase> { DeviceRootedUseCaseImpl(androidContext()) }
     factory<GetEventsUseCase> { GetEventsUseCaseImpl(get(), get(), get(), get()) }
-    factory<SaveEventsUseCase> { SaveEventsUseCaseImpl(get()) }
+    factory<SaveEventsUseCase> { SaveEventsUseCaseImpl(get(), get()) }
     factory<CachedAppConfigUseCase> { CachedAppConfigUseCaseImpl(get(), androidContext().filesDir.path, get()) }
 
     factory<TestResultsMigrationManager> { TestResultsMigrationManagerImpl(get()) }
@@ -141,6 +148,7 @@ fun holderModule(baseUrl: String) = module {
     factory<WorkerManagerWrapper> { WorkerManagerWrapperImpl(androidContext(), get()) }
 
     // ViewModels
+    viewModel<HolderMainActivityViewModel> { HolderMainActivityViewModelImpl() }
     viewModel<QrCodeViewModel> { QrCodeViewModelImpl(get()) }
     viewModel<CommercialTestCodeViewModel> { CommercialTestCodeViewModelImpl(get(), get()) }
     viewModel { DigiDViewModel(get()) }
@@ -149,6 +157,8 @@ fun holderModule(baseUrl: String) = module {
     viewModel<YourEventsViewModel> { YourEventsViewModelImpl(get(), get()) }
     viewModel<MyOverviewViewModel> { MyOverviewViewModelImpl(get(), get(), get(), get(), get()) }
     viewModel<GetEventsViewModel> { GetEventsViewModelImpl(get()) }
+    viewModel<PaperProofCodeViewModel> { PaperProofCodeViewModelImpl(get(), get()) }
+    viewModel<PaperProofQrScannerViewModel> { PaperProofQrScannerViewModelImpl(get()) }
 
     // Repositories
     single { AuthenticationRepository() }
@@ -173,10 +183,19 @@ fun holderModule(baseUrl: String) = module {
     // Utils
     factory<QrCodeUtil> { QrCodeUtilImpl() }
     factory<TestResultAdapterItemUtil> { TestResultAdapterItemUtilImpl(get()) }
-    factory<InfoScreenUtil> { InfoScreenUtilImpl(get(), get()) }
+    factory<InfoScreenUtil> { InfoScreenUtilImpl(get(), get(), get()) }
+    factory<LastVaccinationDoseUtil> { LastVaccinationDoseUtilImpl(androidContext().resources) }
     factory<GreenCardUtil> { GreenCardUtilImpl(Clock.systemUTC(), get()) }
 
     // Usecases
+    factory<ValidatePaperProofUseCase> {
+        ValidatePaperProofUseCaseImpl(get(), get())
+    }
+
+    factory<GetEventsFromPaperProofQrUseCase> {
+        GetEventsFromPaperProofQrUseCaseImpl(get())
+    }
+
     factory<CreateCredentialUseCase> {
         CreateCredentialUseCaseImpl(get())
     }
@@ -195,7 +214,7 @@ fun holderModule(baseUrl: String) = module {
         GreenCardRefreshUtilImpl(get(), get(), get(), get(), get())
     }
 
-    factory<HolderWorkerFactory> {
+    factory {
         HolderWorkerFactory(get(), get())
     }
 
@@ -250,6 +269,7 @@ fun holderModule(baseUrl: String) = module {
         get<Moshi.Builder>(Moshi.Builder::class)
             .add(RemoteTestStatusJsonAdapter())
             .add(OriginTypeJsonAdapter())
+            .add(RemoteCouplingStatusJsonAdapter())
             .add(PolymorphicJsonAdapterFactory.of(
                 RemoteProtocol::class.java, "protocolVersion")
                 .withSubtype(RemoteTestResult2::class.java, "2.0")

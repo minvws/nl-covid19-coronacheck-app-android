@@ -23,14 +23,16 @@ import nl.rijksoverheid.ctr.shared.livedata.Event
 abstract class YourEventsViewModel : ViewModel() {
     val loading: LiveData<Event<Boolean>> = MutableLiveData()
     val yourEventsResult: LiveData<Event<DatabaseSyncerResult>> = MutableLiveData()
+    val conflictingEventsResult: LiveData<Event<Boolean>> = MutableLiveData()
 
-    abstract fun saveNegativeTest2(remoteTestResult: RemoteTestResult2, rawResponse: ByteArray)
-    abstract fun saveRemoteProtocol3Events(remoteProtocols3: Map<RemoteProtocol3, ByteArray>, originType: OriginType)
+    abstract fun saveNegativeTest2(negativeTest2: RemoteTestResult2, rawResponse: ByteArray)
+    abstract fun saveRemoteProtocol3Events(remoteProtocols3: Map<RemoteProtocol3, ByteArray>, originType: OriginType, removePreviousEvents: Boolean)
+    abstract fun checkForConflictingEvents(remoteProtocols3: Map<RemoteProtocol3, ByteArray>)
 }
 
 class YourEventsViewModelImpl(
     private val saveEventsUseCase: SaveEventsUseCase,
-    private val holderDatabaseSyncer: HolderDatabaseSyncer
+    private val holderDatabaseSyncer: HolderDatabaseSyncer,
 ) : YourEventsViewModel() {
 
     override fun saveNegativeTest2(negativeTest2: RemoteTestResult2, rawResponse: ByteArray) {
@@ -58,14 +60,32 @@ class YourEventsViewModelImpl(
         }
     }
 
-    override fun saveRemoteProtocol3Events(remoteProtocols3: Map<RemoteProtocol3, ByteArray>, originType: OriginType) {
+    override fun checkForConflictingEvents(remoteProtocols3: Map<RemoteProtocol3, ByteArray>) {
+        (loading as MutableLiveData).value = Event(true)
+        viewModelScope.launch {
+            try {
+                val conflictingEvents = saveEventsUseCase.remoteProtocols3AreConflicting(remoteProtocols3)
+
+                (conflictingEventsResult as MutableLiveData).postValue(Event(conflictingEvents))
+            } catch (e: Exception) {
+                (yourEventsResult as MutableLiveData).value = Event(
+                    DatabaseSyncerResult.ServerError(999)
+                )
+            } finally {
+                loading.value = Event(false)
+            }
+        }
+    }
+
+    override fun saveRemoteProtocol3Events(remoteProtocols3: Map<RemoteProtocol3, ByteArray>, originType: OriginType, removePreviousEvents: Boolean) {
         (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {
             try {
                 // Save the events in the database
                 saveEventsUseCase.saveRemoteProtocols3(
                     remoteProtocols3 = remoteProtocols3,
-                    originType = originType)
+                    originType = originType,
+                    removePreviousEvents = removePreviousEvents)
 
                 // Send all events to database and create green cards, origins and credentials
                 val databaseSyncerResult = holderDatabaseSyncer.sync(
@@ -75,6 +95,7 @@ class YourEventsViewModelImpl(
                 (yourEventsResult as MutableLiveData).value = Event(
                     databaseSyncerResult
                 )
+
             } catch(e: Exception) {
                 (yourEventsResult as MutableLiveData).value = Event(
                     DatabaseSyncerResult.ServerError(999)

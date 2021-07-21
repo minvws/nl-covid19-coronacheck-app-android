@@ -1,11 +1,10 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
 import android.app.Application
-import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
-import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.design.ext.formatDateTime
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.shared.ext.getStringOrNull
 import nl.rijksoverheid.ctr.shared.models.PersonalDetails
@@ -56,7 +55,8 @@ interface InfoScreenUtil {
 
 class InfoScreenUtilImpl(
     private val application: Application,
-    private val cachedAppConfigUseCase: CachedAppConfigUseCase
+    private val lastVaccinationDoseUtil: LastVaccinationDoseUtil,
+    cachedAppConfigUseCase: CachedAppConfigUseCase
 ) : InfoScreenUtil {
 
     private val holderConfig = cachedAppConfigUseCase.getCachedAppConfig()
@@ -233,6 +233,8 @@ class InfoScreenUtilImpl(
                 )
             } else ""
 
+        val lastDose = lastVaccinationDoseUtil.getIsLastDoseAnswer(event)
+
         val vaccinationDate = event.vaccination?.date?.formatDayMonthYear() ?: ""
         val vaccinationCountry = event.vaccination?.country ?: ""
         val uniqueCode = event.unique ?: ""
@@ -248,6 +250,7 @@ class InfoScreenUtilImpl(
                 vaccinType,
                 producer,
                 doses,
+                lastDose,
                 vaccinationDate,
                 vaccinationCountry,
                 uniqueCode
