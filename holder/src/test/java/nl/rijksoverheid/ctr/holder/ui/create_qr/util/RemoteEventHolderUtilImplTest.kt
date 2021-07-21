@@ -76,7 +76,10 @@ class RemoteEventHolderUtilImplTest: AutoCloseKoinTest() {
         )
 
         val incomingHolders = listOf(
-            getHolderExample(),
+            getHolderExample(
+                firstName = "ian",
+                lastName = "pijter"
+            ),
         )
 
         val remoteUtil = RemoteEventHolderUtilImpl(moshi)
@@ -84,5 +87,8 @@ class RemoteEventHolderUtilImplTest: AutoCloseKoinTest() {
         assertFalse(remoteUtil.conflicting(storedHolders, incomingHolders))
     }
 
-    private fun getHolderExample() = RemoteProtocol3.Holder("De", "jan", "rijter", "1982-05-25")
+    private fun getHolderExample(
+        firstName: String = "jan",
+        lastName: String = "rijter"
+    ) = RemoteProtocol3.Holder("De", firstName, lastName, "1982-05-25")
 }
