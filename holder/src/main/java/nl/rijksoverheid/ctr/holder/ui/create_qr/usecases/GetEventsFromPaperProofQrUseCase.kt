@@ -10,14 +10,14 @@ import java.time.OffsetDateTime
 
 interface GetEventsFromPaperProofQrUseCase {
 
-    fun get(qrCode: String): ValidatePaperProofResult
+    fun get(qrCode: String, couplingCode: String): ValidatePaperProofResult
 }
 
 class GetEventsFromPaperProofQrUseCaseImpl(
     private val mobileCoreWrapper: MobileCoreWrapper
 ) : GetEventsFromPaperProofQrUseCase {
 
-    override fun get(qrCode: String): ValidatePaperProofResult {
+    override fun get(qrCode: String, couplingCode: String): ValidatePaperProofResult {
         return try {
             val credential = qrCode.toByteArray()
             val credentials = mobileCoreWrapper.readEuropeanCredential(credential)
@@ -33,11 +33,23 @@ class GetEventsFromPaperProofQrUseCaseImpl(
                 events = listOf(event)
             )
 
-            ValidatePaperProofResult.Success(mapOf(protocol to credential))
+            ValidatePaperProofResult.Success(
+                mapOf(protocol to getSignerCredential(qrCode, couplingCode))
+            )
         } catch (exception: Exception) {
             ValidatePaperProofResult.Error.InvalidQr
         }
     }
+
+    private fun getSignerCredential(
+        qrCode: String,
+        couplingCode: String
+    ): ByteArray = JSONObject(
+        mapOf(
+            "credential" to qrCode,
+            "couplingCode" to couplingCode
+        )
+    ).toString().toByteArray()
 
     @Throws(NullPointerException::class)
     private fun getHolder(dcc: JSONObject): RemoteProtocol3.Holder {

@@ -30,7 +30,7 @@ class ValidatePaperProofUseCaseImpl(
             )
 
             return when (couplingResponse.status) {
-                RemoteCouplingStatus.Accepted -> getEventsFromPaperProofQr.get(qrContent)
+                RemoteCouplingStatus.Accepted -> getEventsFromPaperProofQr.get(qrContent, couplingCode)
                 RemoteCouplingStatus.Rejected -> ValidatePaperProofResult.Error.RejectedQr
                 RemoteCouplingStatus.Blocked -> ValidatePaperProofResult.Error.BlockedQr
                 RemoteCouplingStatus.Expired -> ValidatePaperProofResult.Error.ExpiredQr
