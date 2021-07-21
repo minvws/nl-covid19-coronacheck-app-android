@@ -9,27 +9,37 @@ import android.text.style.BulletSpan
 import android.text.style.ClickableSpan
 import android.util.AttributeSet
 import android.view.accessibility.AccessibilityEvent
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.core.text.HtmlCompat
 import androidx.core.text.getSpans
-import androidx.core.text.parseAsHtml
+import androidx.core.view.ViewCompat
+import androidx.core.view.children
+import androidx.core.widget.TextViewCompat
 import com.google.android.material.textview.MaterialTextView
 import nl.rijksoverheid.ctr.design.R
+import nl.rijksoverheid.ctr.design.ext.enableCustomLinks
 import nl.rijksoverheid.ctr.design.ext.enableHtmlLinks
+import nl.rijksoverheid.ctr.design.ext.isHeading
+import nl.rijksoverheid.ctr.design.ext.separated
 import nl.rijksoverheid.ctr.design.spans.BulletPointSpan
 import nl.rijksoverheid.ctr.shared.utils.Accessibility
 
 class HtmlTextViewWidget @JvmOverloads constructor(
     context: Context,
-    attrs: AttributeSet? = null,
-    defStyle: Int = 0,
-    defStyleRes: Int = 0
-) : MaterialTextView(context, attrs, defStyle, defStyleRes) {
+    private val attrs: AttributeSet? = null,
+    private val defStyle: Int = 0,
+    private val defStyleRes: Int = 0,
+) : LinearLayout(context, attrs, defStyle, defStyleRes) {
+
+    var text: CharSequence? = null
 
     init {
         context.theme.obtainStyledAttributes(
             attrs,
             R.styleable.HtmlTextViewWidget,
-            0, 0
+            defStyle,
+            defStyleRes
         ).apply {
             try {
                 val htmlText =
@@ -44,14 +54,52 @@ class HtmlTextViewWidget @JvmOverloads constructor(
                 recycle()
             }
         }
+        orientation = VERTICAL
     }
 
-    fun setHtmlText(htmlText: String, htmlLinksEnabled: Boolean = false) {
+    fun setHtmlText(htmlText: Int, htmlLinksEnabled: Boolean = false) {
+        val text = context.getString(htmlText)
+        setHtmlText(text, htmlLinksEnabled)
+    }
+
+    fun setHtmlText(htmlText: String?, htmlLinksEnabled: Boolean = false) {
+        if (htmlText == null) {
+            text = ""
+            return
+        }
+
         val spannable = getSpannableFromHtml(htmlText)
         text = spannable
 
+        removeAllViews()
+
+        val parts = spannable.separated("\n")
+        for (part in parts) {
+            val textView = MaterialTextView(context, attrs, defStyle, defStyleRes)
+            TextViewCompat.setTextAppearance(textView, R.style.App_TextAppearance_MaterialComponents_Body1)
+            textView.text = part
+
+            if (part.isHeading) {
+                ViewCompat.setAccessibilityHeading(textView, true)
+            }
+
+            addView(textView)
+        }
+
         if (htmlLinksEnabled) {
             enableHtmlLinks()
+        }
+    }
+
+    fun enableHtmlLinks() {
+        children.filterIsInstance(TextView::class.java).forEach { textView ->
+            textView.enableHtmlLinks()
+        }
+    }
+
+    fun enableCustomLinks(onLinkClick: () -> Unit) {
+        children.filterIsInstance(TextView::class.java).forEach { textView ->
+            textView.enableCustomLinks(onLinkClick)
         }
     }
 

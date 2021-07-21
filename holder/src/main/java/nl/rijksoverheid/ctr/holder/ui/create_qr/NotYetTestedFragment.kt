@@ -30,8 +30,7 @@ class NotYetTestedFragment : ExpandedBottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = DialogNotYetTestedBinding.bind(view)
-        binding.description.setHtmlText(getString(
-            R.string.not_yet_tested_description))
+        binding.description.setHtmlText(R.string.not_yet_tested_description)
 
         binding.button.setOnClickListener {
             getString(R.string.url_make_appointment).launchUrl(requireContext())

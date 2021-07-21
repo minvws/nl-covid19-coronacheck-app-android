@@ -66,6 +66,7 @@
     </com.google.android.material.card.MaterialCardView>
 
     <nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
+        style="@style/App.TextAppearance.MaterialComponents.Body1"
         android:id="@+id/text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -44,7 +44,7 @@ class NewFeatureItemFragment : Fragment(R.layout.fragment_new_feature_item) {
         val binding = FragmentOnboardingItemBinding.bind(view)
 
         binding.title.text = getString(item.titleResource)
-        binding.description.setHtmlText(getString(item.description), false)
+        binding.description.setHtmlText(item.description, false)
 
         if (androidUtil.isSmallScreen()) {
             binding.image.visibility = View.GONE

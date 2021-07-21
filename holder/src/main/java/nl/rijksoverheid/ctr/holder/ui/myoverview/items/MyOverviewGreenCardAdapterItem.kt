@@ -104,8 +104,8 @@ class MyOverviewGreenCardAdapterItem(
         viewBinding.proof1Subtitle.setTextColor(context.getThemeColor(android.R.attr.textColorPrimary))
         viewBinding.proof2Subtitle.setTextColor(context.getThemeColor(android.R.attr.textColorPrimary))
         viewBinding.proof3Subtitle.setTextColor(context.getThemeColor(android.R.attr.textColorPrimary))
-        viewBinding.errorText.setHtmlText("")
-        viewBinding.errorTextRetry.setHtmlText("")
+        viewBinding.errorText.setHtmlText(null)
+        viewBinding.errorTextRetry.setHtmlText(null)
         viewBinding.errorIcon.visibility = View.GONE
         viewBinding.errorText.visibility = View.GONE
         viewBinding.errorTextRetry.visibility = View.GONE
@@ -250,13 +250,13 @@ class MyOverviewGreenCardAdapterItem(
                 is DatabaseSyncerResult.NetworkError -> {
                     viewBinding.errorText.setHtmlText(context.getString(R.string.my_overview_green_card_internet_error))
                     viewBinding.errorText.enableCustomLinks(onRetryClick)
-                    viewBinding.errorTextRetry.setHtmlText("")
+                    viewBinding.errorTextRetry.setHtmlText(null)
                     viewBinding.errorIcon.visibility = View.VISIBLE
                     viewBinding.errorText.visibility = View.VISIBLE
                     viewBinding.errorTextRetry.visibility = View.GONE
                 }
                 is DatabaseSyncerResult.ServerError -> {
-                    viewBinding.errorText.setHtmlText(context.getString(R.string.my_overview_green_card_server_error))
+                    viewBinding.errorText.setHtmlText(R.string.my_overview_green_card_server_error)
                     viewBinding.errorText.enableCustomLinks(onRetryClick)
                     viewBinding.errorIcon.visibility = View.VISIBLE
                     viewBinding.errorText.visibility = View.VISIBLE

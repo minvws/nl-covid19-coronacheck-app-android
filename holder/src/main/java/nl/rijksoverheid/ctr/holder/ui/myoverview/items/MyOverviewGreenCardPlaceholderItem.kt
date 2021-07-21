@@ -24,9 +24,6 @@ class MyOverviewGreenCardPlaceholderItem :
     }
 
     override fun bind(viewBinding: ItemMyOverviewGreenCardPlaceholderBinding, position: Int) {
-        viewBinding.text.setHtmlText(
-            htmlText = viewBinding.root.context.getString(R.string.my_overview_qr_placeholder_description),
-            htmlLinksEnabled = true
-        )
+        viewBinding.text.setHtmlText(R.string.my_overview_qr_placeholder_description,true)
     }
 }
