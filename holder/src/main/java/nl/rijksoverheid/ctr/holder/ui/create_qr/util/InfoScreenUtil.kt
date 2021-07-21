@@ -1,8 +1,9 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
 import android.app.Application
-import nl.rijksoverheid.ctr.design.ext.formatDateTime
+import android.os.Build
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
+import nl.rijksoverheid.ctr.design.ext.formatDayMonthYearNumerical
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
@@ -12,6 +13,7 @@ import org.json.JSONObject
 import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
+import java.util.*
 
 interface InfoScreenUtil {
     fun getForRemoteTestResult2(
@@ -283,7 +285,7 @@ class InfoScreenUtilImpl(
 
         val birthDate = dcc.getStringOrNull("dob")?.let { birthDate ->
             try {
-                LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).formatDayMonthYear()
+                LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).formatDayMonthYearNumerical()
             } catch (e: Exception) {
                 ""
             }
@@ -300,7 +302,7 @@ class InfoScreenUtilImpl(
         val testDate = test.getStringOrNull("sc")?.let {
             try {
                 OffsetDateTime.parse(it, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
-                    .formatDateTime(application)
+                    .toLocalDate().formatDayMonthYearNumerical()
             } catch (e: Exception) {
                 ""
             }
@@ -316,7 +318,7 @@ class InfoScreenUtilImpl(
                 it.code == test.getStringOrNull("ma")
             }?.name ?: test.getStringOrNull("ma") ?: ""
 
-        val vaccinationCountry = test.getStringOrNull("co")
+        val vaccinationCountry = getCountry(test.getStringOrNull("co"))
         val uniqueCode = test.getStringOrNull("ci")
 
         val description = application.getString(
@@ -340,6 +342,27 @@ class InfoScreenUtilImpl(
         )
     }
 
+    private fun getCurrentLocale(): Locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        application.resources.configuration.locales[0]
+    } else {
+        application.resources.configuration.locale
+    }
+
+    private fun getCountry(countryCode: String?): String = if (countryCode != null) {
+        val currentLocale = getCurrentLocale()
+        val isNL = currentLocale.country == "NL"
+        val countryNameInDutch = Locale("", countryCode).getDisplayCountry(Locale("nl"))
+        val countryNameInEnglish = Locale("", countryCode).getDisplayCountry(Locale("en"))
+
+        if (isNL) {
+            "$countryNameInDutch / $countryNameInEnglish"
+        } else {
+            countryNameInEnglish
+        }
+    } else {
+        ""
+    }
+
     override fun getForEuropeanVaccinationQr(readEuropeanCredential: JSONObject): InfoScreen {
         val dcc = readEuropeanCredential.optJSONObject("dcc")
         val vaccination = dcc.getJSONArray("v").optJSONObject(0)
@@ -352,7 +375,7 @@ class InfoScreenUtilImpl(
 
         val birthDate = dcc.getStringOrNull("dob")?.let { birthDate ->
             try {
-                LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).formatDayMonthYear()
+                LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).formatDayMonthYearNumerical()
             } catch (e: Exception) {
                 ""
             }
@@ -384,13 +407,23 @@ class InfoScreenUtilImpl(
 
         val vaccinationDate = vaccination.getStringOrNull("dt")?.let { vaccinationDate ->
             try {
-                LocalDate.parse(vaccinationDate, DateTimeFormatter.ISO_DATE).formatDayMonthYear()
+                LocalDate.parse(vaccinationDate, DateTimeFormatter.ISO_DATE)
+                    .formatDayMonthYearNumerical()
             } catch (e: Exception) {
                 ""
             }
         } ?: ""
 
-        val vaccinationCountry = vaccination.getStringOrNull("co")
+        val countryCode = vaccination.getStringOrNull("co")
+        val vaccinationCountry = getCountry(countryCode)
+
+        val issuerValue = vaccination.getStringOrNull("is")
+        val issuer = if (issuerValue == issuerVWS) {
+            application.getString(R.string.qr_explanation_certificate_issuer)
+        } else {
+            issuerValue
+        }
+
         val uniqueCode = vaccination.getStringOrNull("ci")
 
         return InfoScreen(
@@ -406,6 +439,7 @@ class InfoScreenUtilImpl(
                 doses,
                 vaccinationDate,
                 vaccinationCountry,
+                issuer,
                 uniqueCode
             )
         )
@@ -423,7 +457,7 @@ class InfoScreenUtilImpl(
 
         val birthDate = dcc.getStringOrNull("dob")?.let { birthDate ->
             try {
-                LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).formatDayMonthYear()
+                LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).formatDayMonthYearNumerical()
             } catch (e: Exception) {
                 ""
             }
@@ -433,19 +467,19 @@ class InfoScreenUtilImpl(
 
         val testDate = recovery.getStringOrNull("fr")?.let { testDate ->
             try {
-                LocalDate.parse(testDate, DateTimeFormatter.ISO_DATE).formatDayMonthYear()
+                LocalDate.parse(testDate, DateTimeFormatter.ISO_DATE).formatDayMonthYearNumerical()
             } catch (e: Exception) {
                 ""
             }
         } ?: ""
 
-        val country = recovery.getStringOrNull("co")
+        val country = getCountry(recovery.getStringOrNull("co"))
 
         val producer = recovery.getStringOrNull("is")
 
         val validFromDate = recovery.getStringOrNull("df")?.let { testDate ->
             try {
-                LocalDate.parse(testDate, DateTimeFormatter.ISO_DATE).formatDayMonthYear()
+                LocalDate.parse(testDate, DateTimeFormatter.ISO_DATE).formatDayMonthYearNumerical()
             } catch (e: Exception) {
                 ""
             }
@@ -453,7 +487,7 @@ class InfoScreenUtilImpl(
 
         val validUntilDate = recovery.getStringOrNull("du")?.let { testDate ->
             try {
-                LocalDate.parse(testDate, DateTimeFormatter.ISO_DATE).formatDayMonthYear()
+                LocalDate.parse(testDate, DateTimeFormatter.ISO_DATE).formatDayMonthYearNumerical()
             } catch (e: Exception) {
                 ""
             }
@@ -476,6 +510,10 @@ class InfoScreenUtilImpl(
                 uniqueCode
             )
         )
+    }
+
+    companion object {
+        private const val issuerVWS = "Ministry of Health Welfare and Sport"
     }
 
 }
