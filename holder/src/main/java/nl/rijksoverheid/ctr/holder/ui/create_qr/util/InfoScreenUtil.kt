@@ -12,6 +12,7 @@ import org.json.JSONObject
 import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
+import java.util.*
 
 interface InfoScreenUtil {
     fun getForRemoteTestResult2(
@@ -391,7 +392,15 @@ class InfoScreenUtilImpl(
             }
         } ?: ""
 
-        val vaccinationCountry = vaccination.getStringOrNull("co")
+        val countryCode = vaccination.getStringOrNull("co")
+        val vaccinationCountry = if (countryCode != null) {
+            Locale("", countryCode).getDisplayCountry(Locale("", "EN"))
+        } else {
+            ""
+        }
+
+        val issuer = vaccination.getStringOrNull("is")
+
         val uniqueCode = vaccination.getStringOrNull("ci")
 
         return InfoScreen(
@@ -407,6 +416,7 @@ class InfoScreenUtilImpl(
                 doses,
                 vaccinationDate,
                 vaccinationCountry,
+                issuer,
                 uniqueCode
             )
         )
