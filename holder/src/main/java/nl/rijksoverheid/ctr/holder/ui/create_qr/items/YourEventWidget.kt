@@ -13,6 +13,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
 import nl.rijksoverheid.ctr.holder.databinding.ItemYourEventBinding
+import nl.rijksoverheid.ctr.shared.utils.Accessibility
 
 class YourEventWidget @JvmOverloads constructor(
     context: Context,
@@ -28,8 +29,11 @@ class YourEventWidget @JvmOverloads constructor(
         binding.rowTitle.text = title
         binding.rowSubtitle.setHtmlText(subtitle)
 
-        binding.info.setOnClickListener {
+        binding.testResultsGroup.setOnClickListener {
             infoClickListener.invoke()
         }
+
+        binding.testResultsGroup.contentDescription = String.format("%s. %s", binding.rowTitle.text, binding.rowSubtitle.text)
+        Accessibility.button(binding.testResultsGroup)
     }
 }
