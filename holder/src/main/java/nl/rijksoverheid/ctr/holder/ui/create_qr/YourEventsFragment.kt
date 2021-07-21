@@ -323,7 +323,7 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                 title = resources.getString(
                     R.string.retrieved_vaccination_title,
                     event.vaccination?.date?.formatMonth(),
-                    getProviderName(providerIdentifier)
+                    cachedAppConfigUseCase.getProviderName(providerIdentifier)
                 ),
                 subtitle = resources.getString(
                     R.string.your_vaccination_row_subtitle,
@@ -342,11 +342,6 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
         }
         binding.eventsGroup.addView(eventWidget)
     }
-
-    private fun getProviderName(providerIdentifier: String) =
-        cachedAppConfigUseCase.getProviderName(providerIdentifier)
-            .takeIf { it.isNotEmpty() }
-            ?: providerIdentifier
 
     private fun presentNegativeTestEvent(
         binding: FragmentYourEventsBinding,
