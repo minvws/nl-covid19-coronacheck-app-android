@@ -353,4 +353,5 @@ Scan daarom met de camera van je telefoon <b>alleen je internationale QR-code</b
     <string name="your_events_replace_dialog_message">Je hebt eerder een bewijs gemaakt. De gegevens daarvan zijn anders dan de gegevens die net zijn opgehaald. Daarom kan je het bewijs alleen vervangen.</string>
     <string name="your_events_replace_dialog_negative_button">Nee, stop</string>
     <string name="your_events_replace_dialog_positive_button">Ja, vervang</string>
+    <string name="qr_explanation_certificate_issuer">Ministerie VWS / Ministry of Health Welfare and Sports</string>
 </resources>

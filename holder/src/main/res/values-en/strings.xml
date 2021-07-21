@@ -353,4 +353,5 @@
     <string name="your_events_replace_dialog_message">You’ve created a certificate before. The information on it differs from the information that has just been retrieved. Therefore you can only replace the certificate.</string>
     <string name="your_events_replace_dialog_negative_button">No, stop</string>
     <string name="your_events_replace_dialog_positive_button">Yes, replace</string>
+    <string name="qr_explanation_certificate_issuer">Ministry of Health Welfare and Sports</string>
 </resources>

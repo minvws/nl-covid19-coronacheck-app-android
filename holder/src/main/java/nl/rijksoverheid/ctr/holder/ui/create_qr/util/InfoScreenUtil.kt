@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
 import android.app.Application
+import android.os.Build
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYearNumerical
 import nl.rijksoverheid.ctr.holder.R
@@ -317,7 +318,7 @@ class InfoScreenUtilImpl(
                 it.code == test.getStringOrNull("ma")
             }?.name ?: test.getStringOrNull("ma") ?: ""
 
-        val vaccinationCountry = test.getStringOrNull("co")
+        val vaccinationCountry = getCountry(test.getStringOrNull("co"))
         val uniqueCode = test.getStringOrNull("ci")
 
         val description = application.getString(
@@ -339,6 +340,27 @@ class InfoScreenUtilImpl(
             title = title,
             description = description
         )
+    }
+
+    private fun getCurrentLocale(): Locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        application.resources.configuration.locales[0]
+    } else {
+        application.resources.configuration.locale
+    }
+
+    private fun getCountry(countryCode: String?): String = if (countryCode != null) {
+        val currentLocale = getCurrentLocale()
+        val isNL = currentLocale.country == "NL"
+        val countryNameInDutch = Locale("", countryCode).getDisplayCountry(Locale("nl"))
+        val countryNameInEnglish = Locale("", countryCode).getDisplayCountry(Locale("en"))
+
+        if (isNL) {
+            "$countryNameInDutch / $countryNameInEnglish"
+        } else {
+            countryNameInEnglish
+        }
+    } else {
+        ""
     }
 
     override fun getForEuropeanVaccinationQr(readEuropeanCredential: JSONObject): InfoScreen {
@@ -393,13 +415,9 @@ class InfoScreenUtilImpl(
         } ?: ""
 
         val countryCode = vaccination.getStringOrNull("co")
-        val vaccinationCountry = if (countryCode != null) {
-            Locale("", countryCode).getDisplayCountry(Locale("", "EN"))
-        } else {
-            ""
-        }
+        val vaccinationCountry = getCountry(countryCode)
 
-        val issuer = vaccination.getStringOrNull("is")
+        val issuer = application.getString(R.string.qr_explanation_certificate_issuer)
 
         val uniqueCode = vaccination.getStringOrNull("ci")
 
@@ -450,7 +468,7 @@ class InfoScreenUtilImpl(
             }
         } ?: ""
 
-        val country = recovery.getStringOrNull("co")
+        val country = getCountry(recovery.getStringOrNull("co"))
 
         val producer = recovery.getStringOrNull("is")
 
