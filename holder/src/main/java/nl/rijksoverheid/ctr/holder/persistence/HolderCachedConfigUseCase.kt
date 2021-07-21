@@ -41,8 +41,8 @@ class CachedAppConfigUseCaseImpl constructor(
     }
 
     override fun getProviderName(providerIdentifier: String): String {
-        return getCachedAppConfig()
-            .providers.firstOrNull { provider -> provider.code == providerIdentifier }
+        return getCachedAppConfig().providers
+            .firstOrNull { provider -> provider.code == providerIdentifier }
             ?.name
             ?: providerIdentifier
     }
