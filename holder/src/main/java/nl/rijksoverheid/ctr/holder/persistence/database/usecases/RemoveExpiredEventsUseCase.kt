@@ -3,8 +3,6 @@ package nl.rijksoverheid.ctr.holder.persistence.database.usecases
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteConfigProviders
-import timber.log.Timber
 import java.time.Clock
 import java.time.OffsetDateTime
 
