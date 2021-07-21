@@ -7,6 +7,7 @@ import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.BulletSpan
 import android.text.style.ClickableSpan
+import android.text.style.RelativeSizeSpan
 import android.util.AttributeSet
 import android.view.accessibility.AccessibilityEvent
 import android.widget.LinearLayout
@@ -15,13 +16,11 @@ import androidx.core.text.HtmlCompat
 import androidx.core.text.getSpans
 import androidx.core.view.ViewCompat
 import androidx.core.view.children
+import androidx.core.view.marginBottom
 import androidx.core.widget.TextViewCompat
 import com.google.android.material.textview.MaterialTextView
 import nl.rijksoverheid.ctr.design.R
-import nl.rijksoverheid.ctr.design.ext.enableCustomLinks
-import nl.rijksoverheid.ctr.design.ext.enableHtmlLinks
-import nl.rijksoverheid.ctr.design.ext.isHeading
-import nl.rijksoverheid.ctr.design.ext.separated
+import nl.rijksoverheid.ctr.design.ext.*
 import nl.rijksoverheid.ctr.design.spans.BulletPointSpan
 import nl.rijksoverheid.ctr.shared.utils.Accessibility
 
@@ -74,13 +73,25 @@ class HtmlTextViewWidget @JvmOverloads constructor(
         removeAllViews()
 
         val parts = spannable.separated("\n")
-        for (part in parts) {
+        val iterator = parts.iterator()
+        while (iterator.hasNext()) {
+            val part = iterator.next()
+
             val textView = MaterialTextView(context, attrs, defStyle, defStyleRes)
             TextViewCompat.setTextAppearance(textView, R.style.App_TextAppearance_MaterialComponents_Body1)
             textView.text = part
 
             if (part.isHeading) {
                 ViewCompat.setAccessibilityHeading(textView, true)
+            }
+
+            if (iterator.hasNext()) {
+                val paddingBottom = if (part.isHeading || part.isListItem) {
+                    textView.lineHeight / 4
+                } else {
+                    textView.lineHeight
+                }
+                textView.setPadding(0, 0, 0, paddingBottom)
             }
 
             addView(textView)
@@ -104,26 +115,29 @@ class HtmlTextViewWidget @JvmOverloads constructor(
     }
 
     private fun getSpannableFromHtml(html: String): Spannable {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            val spannableBuilder = getSpannableFromHtmlLegacy(html)
-            val bulletSpans =
-                spannableBuilder.getSpans<BulletSpan>()
-
-            bulletSpans.forEach {
-                val start = spannableBuilder.getSpanStart(it)
-                val end = spannableBuilder.getSpanEnd(it)
-                spannableBuilder.removeSpan(it)
-                spannableBuilder.setSpan(
-                    BulletPointSpan(context.resources.getDimensionPixelSize(R.dimen.bullet_point_span_gap_width)),
-                    start,
-                    end,
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                )
-            }
-            return spannableBuilder
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            getSpannableFromHtmlModern(html)
         } else {
-            return getSpannableFromHtmlLegacy(html)
+            getSpannableFromHtmlLegacy(html)
         }
+    }
+
+    private fun getSpannableFromHtmlModern(html: String): Spannable {
+        val spannableBuilder = getSpannableFromHtmlLegacy(html)
+
+        spannableBuilder.getSpans<BulletSpan>().forEach {
+            val start = spannableBuilder.getSpanStart(it)
+            val end = spannableBuilder.getSpanEnd(it)
+            spannableBuilder.removeSpan(it)
+            spannableBuilder.setSpan(
+                BulletPointSpan(context.resources.getDimensionPixelSize(R.dimen.bullet_point_span_gap_width)),
+                start,
+                end,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+        }
+
+        return spannableBuilder
     }
 
     private fun getSpannableFromHtmlLegacy(html: String): Spannable {
@@ -132,7 +146,7 @@ class HtmlTextViewWidget @JvmOverloads constructor(
 
         val htmlSpannable = HtmlCompat.fromHtml(
             html,
-            HtmlCompat.FROM_HTML_MODE_LEGACY,
+            HtmlCompat.FROM_HTML_MODE_COMPACT,
             null,
             { opening, tag, output, _ ->
                 if (tag == "li" && opening) {
@@ -184,6 +198,7 @@ class HtmlTextViewWidget @JvmOverloads constructor(
                 Spannable.SPAN_INCLUSIVE_EXCLUSIVE
             )
         }
+
         return spannableBuilder
     }
 
