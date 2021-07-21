@@ -100,7 +100,7 @@ fun fakeCachedAppConfigUseCase(
         return appConfig
     }
 
-    override fun getProviderName(providerIdentifier: String?): String {
+    override fun getProviderName(providerIdentifier: String): String {
         return ""
     }
 }
