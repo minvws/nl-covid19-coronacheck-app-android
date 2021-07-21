@@ -45,13 +45,13 @@ class RemoteEventHolderUtilImpl(
         storedEventHolders.forEach { storedEventHolder ->
             val storedBirthDay = birthDay(storedEventHolder.birthDate!!)
             val storedBirthMonth = birthMonth(storedEventHolder.birthDate)
-            val storedFirstName = storedEventHolder.firstName!!.first()
-            val storedLastName = storedEventHolder.lastName!!.first()
+            val storedFirstName = storedEventHolder.firstName!!.first().toUpperCase()
+            val storedLastName = storedEventHolder.lastName!!.first().toUpperCase()
             incomingEventHolders.forEach { incomingEventHolder ->
                 val incomingBirthDay = birthDay(incomingEventHolder.birthDate!!)
                 val incomingBirthMonth = birthMonth(incomingEventHolder.birthDate)
-                val incomingFirstName = incomingEventHolder.firstName!!.first()
-                val incomingLastName = incomingEventHolder.lastName!!.first()
+                val incomingFirstName = incomingEventHolder.firstName!!.first().toUpperCase()
+                val incomingLastName = incomingEventHolder.lastName!!.first().toUpperCase()
                 val birthDateIsNotMatching = storedBirthDay != incomingBirthDay || storedBirthMonth != incomingBirthMonth
                 val nameIsNotMatching = storedFirstName != incomingFirstName && storedLastName != incomingLastName
                 if (birthDateIsNotMatching || nameIsNotMatching) {
