@@ -302,7 +302,7 @@ class InfoScreenUtilImpl(
         val testDate = test.getStringOrNull("sc")?.let {
             try {
                 OffsetDateTime.parse(it, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
-                    .formatDayMonthYearNumerical()
+                    .toLocalDate().formatDayMonthYearNumerical()
             } catch (e: Exception) {
                 ""
             }
