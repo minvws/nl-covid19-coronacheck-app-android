@@ -248,7 +248,7 @@ class MyOverviewGreenCardAdapterItem(
             val context = viewBinding.errorText.context
             when (databaseSyncerResult) {
                 is DatabaseSyncerResult.NetworkError -> {
-                    viewBinding.errorText.setHtmlText(context.getString(R.string.my_overview_green_card_internet_error))
+                    viewBinding.errorText.setHtmlText(R.string.my_overview_green_card_internet_error)
                     viewBinding.errorText.enableCustomLinks(onRetryClick)
                     viewBinding.errorTextRetry.setHtmlText(null)
                     viewBinding.errorIcon.visibility = View.VISIBLE
