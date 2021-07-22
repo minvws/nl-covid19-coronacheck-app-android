@@ -418,6 +418,10 @@
             android:name="description"
             app:argType="string" />
 
+        <argument
+            android:name="buttonTitle"
+            app:argType="string" />
+
         <action
             android:id="@+id/action_my_overview"
             app:destination="@id/nav_graph_overview"

@@ -208,7 +208,7 @@ class MyOverviewGreenCardAdapterItem(
                                 originState = originState,
                                 subtitle = context.getString(
                                     R.string.qr_card_validity_valid,
-                                    origin.expirationTime.formatDayMonth()
+                                    origin.expirationTime.toLocalDate().formatDayMonthYear()
                                 )
                             )
                         }

@@ -86,7 +86,8 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
                             ChooseProviderFragmentDirections.actionCouldNotCreateQr(
                                 toolbarTitle = getString(R.string.your_vaccination_result_toolbar_title),
                                 title = getString(R.string.missing_events_title),
-                                description = getString(R.string.missing_events_description)
+                                description = getString(R.string.missing_events_description),
+                                buttonTitle = getString(R.string.back_to_overview)
                             )
                         )
                     } else {
@@ -94,7 +95,8 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
                             ChooseProviderFragmentDirections.actionCouldNotCreateQr(
                                 toolbarTitle = getString(R.string.commercial_test_type_title),
                                 title = getString(R.string.no_test_results_title),
-                                description = getString(R.string.no_test_results_description)
+                                description = getString(R.string.no_test_results_description),
+                                buttonTitle = getString(R.string.back_to_overview)
                             )
                         )
                     }
@@ -116,7 +118,8 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
                         ChooseProviderFragmentDirections.actionCouldNotCreateQr(
                             toolbarTitle = getString(R.string.commercial_test_type_title),
                             title = getString(R.string.event_provider_error_title),
-                            description = getString(R.string.event_provider_error_description)
+                            description = getString(R.string.event_provider_error_description),
+                            buttonTitle = getString(R.string.back_to_overview)
                         )
                     )
                 }
@@ -125,7 +128,8 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
                         ChooseProviderFragmentDirections.actionCouldNotCreateQr(
                             toolbarTitle = getString(R.string.commercial_test_type_title),
                             title = getString(R.string.coronacheck_error_title),
-                            description = getString(R.string.coronacheck_error_description, it.httpCode.toString())
+                            description = getString(R.string.coronacheck_error_description, it.httpCode.toString()),
+                            buttonTitle = getString(R.string.back_to_overview)
                         )
                     )
                 }

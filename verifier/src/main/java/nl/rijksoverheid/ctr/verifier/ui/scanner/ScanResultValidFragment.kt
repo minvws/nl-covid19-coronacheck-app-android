@@ -9,8 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import mobilecore.VerificationResult
-import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
+import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import nl.rijksoverheid.ctr.verifier.BuildConfig
 import nl.rijksoverheid.ctr.verifier.R
@@ -38,7 +37,7 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
 
     private val autoCloseHandler = Handler(Looper.getMainLooper())
     private val autoCloseRunnable = Runnable {
-        findNavControllerSafety(R.id.nav_scan_result_valid)?.navigate(
+        navigateSafety(R.id.nav_scan_result_valid,
             ScanResultValidFragmentDirections.actionNavMain()
         )
     }

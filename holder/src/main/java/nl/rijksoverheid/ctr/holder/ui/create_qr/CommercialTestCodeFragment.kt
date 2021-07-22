@@ -17,8 +17,8 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.TestResult
-import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.hideKeyboard
+import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.ext.showKeyboard
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.utils.Accessibility
@@ -157,7 +157,8 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
                         CommercialTestCodeFragmentDirections.actionCouldNotCreateQr(
                             toolbarTitle = getString(R.string.commercial_test_type_title),
                             title = getString(R.string.no_negative_test_result_title),
-                            description = getString(R.string.no_negative_test_result_description)
+                            description = getString(R.string.no_negative_test_result_description),
+                            buttonTitle = getString(R.string.back_to_overview)
                         )
                     )
                 }
@@ -166,7 +167,8 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
                         CommercialTestCodeFragmentDirections.actionCouldNotCreateQr(
                             toolbarTitle = getString(R.string.commercial_test_type_title),
                             title = getString(R.string.test_result_not_known_title),
-                            description = getString(R.string.test_result_not_known_description)
+                            description = getString(R.string.test_result_not_known_description),
+                            buttonTitle = getString(R.string.back_to_overview)
                         )
                     )
                 }
@@ -218,7 +220,7 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
         })
 
         binding.noTokenReceivedBtn.setOnClickListener {
-            findNavControllerSafety(R.id.nav_commercial_test_code)?.navigate(
+            navigateSafety(R.id.nav_commercial_test_code,
                 CommercialTestCodeFragmentDirections.actionNoCode()
             )
         }

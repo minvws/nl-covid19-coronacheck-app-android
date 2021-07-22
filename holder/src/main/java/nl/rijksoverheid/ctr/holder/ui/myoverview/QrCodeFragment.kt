@@ -22,6 +22,7 @@ import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeData
 import nl.rijksoverheid.ctr.shared.QrCodeConstants
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAccessibilityFocus
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
+import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.time.Instant
@@ -101,7 +102,7 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
                                             personalDetails = personalDetails
                                         )
 
-                                        findNavController().navigate(QrCodeFragmentDirections.actionShowQrExplanation(
+                                        navigateSafety(QrCodeFragmentDirections.actionShowQrExplanation(
                                             title = infoScreen.title,
                                             description = infoScreen.description
                                         ))
@@ -113,7 +114,7 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
                                                     qrCodeData.readEuropeanCredential
                                                 )
 
-                                                findNavController().navigate(QrCodeFragmentDirections.actionShowQrExplanation(
+                                                navigateSafety(QrCodeFragmentDirections.actionShowQrExplanation(
                                                     title = infoScreen.title,
                                                     description = infoScreen.description
                                                 ))
@@ -123,7 +124,7 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
                                                     qrCodeData.readEuropeanCredential
                                                 )
 
-                                                findNavController().navigate(QrCodeFragmentDirections.actionShowQrExplanation(
+                                                navigateSafety(QrCodeFragmentDirections.actionShowQrExplanation(
                                                     title = infoScreen.title,
                                                     description = infoScreen.description
                                                 ))
@@ -133,7 +134,7 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
                                                     qrCodeData.readEuropeanCredential
                                                 )
 
-                                                findNavController().navigate(QrCodeFragmentDirections.actionShowQrExplanation(
+                                                navigateSafety(QrCodeFragmentDirections.actionShowQrExplanation(
                                                     title = infoScreen.title,
                                                     description = infoScreen.description
                                                 ))

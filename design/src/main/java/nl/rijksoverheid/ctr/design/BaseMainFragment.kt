@@ -85,7 +85,7 @@ abstract class BaseMainFragment(
                     if (newState == DrawerLayout.STATE_IDLE) {
                         drawer.postDelayed({
                             Accessibility.focus(
-                                if (drawer.isDrawerOpen(GravityCompat.START)) {
+                                if (drawer.isDrawerOpen(GravityCompat.START) && isAdded) {
                                     requireView().findViewById<ImageView>(R.id.menu_close_button)
                                 } else {
                                     drawer
