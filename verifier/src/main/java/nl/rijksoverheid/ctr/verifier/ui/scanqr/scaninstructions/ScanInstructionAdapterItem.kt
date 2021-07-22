@@ -22,7 +22,7 @@ class ScanInstructionAdapterItem(
 ) : BindableItem<ItemScanInstructionBinding>() {
     override fun bind(viewBinding: ItemScanInstructionBinding, position: Int) {
         viewBinding.title.setText(title)
-        viewBinding.description.setHtmlTextWithBullets(
+        viewBinding.description.setHtmlText(
             htmlText = description,
             htmlLinksEnabled = true
         )

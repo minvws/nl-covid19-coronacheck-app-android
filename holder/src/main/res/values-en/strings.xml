@@ -108,7 +108,7 @@
     <string name="about_this_app_description"><![CDATA[CoronaCheck is created to reopen society step by step. This way, the Netherlands can head out more often and travel abroad.<br/>CoronaCheck creates a coronavirus pass from your vaccination, your negative test result or if you\'ve had corona and are recovered. A coronavirus pass consists of two QR-codes: one for the Netherlands and one for other countries (the EU Digital COVID Certificate).]]></string>
     <string name="test_result_already_signed_title">Test result already retrieved</string>
     <string name="test_result_already_signed_description"><![CDATA[Your test result has already been retrieved. And it\'s already been made into a QR code.<br/>Is this not correct? Contact the test location.]]></string>
-    <string name="item_test_result_expired"><![CDATA[Your QR code has expired.<br\>Get tested again.]]></string>
+    <string name="item_test_result_expired"><![CDATA[Your QR code has expired.<br/>Get tested again.]]></string>
     <string name="test_appointment_info_toolbar_title">Make test appointment</string>
     <string name="camera_rationale_dialog_title">CoronaCheck wants to access your camera</string>
     <string name="camera_rationale_dialog_description">This is the only way the app can scan your QR code.</string>
@@ -155,7 +155,7 @@
     <string name="dialog_close">Close</string>
     <string name="dialog_retry">Try again</string>
     <string name="new_terms_title">New in the app</string>
-    <string name="new_terms_highlights"><![CDATA[<b>Vaccination certificate</b><br\>Have you been vaccinated? You can now retrieve your vaccination certificate in the app. And make a QR code of it. This gives you access to certain locations or activities. You\'ll also get a QR code to travel internationally.]]></string>
+    <string name="new_terms_highlights"><![CDATA[<b>Vaccination certificate</b><br/>Have you been vaccinated? You can now retrieve your vaccination certificate in the app. And make a QR code of it. This gives you access to certain locations or activities. You\'ll also get a QR code to travel internationally.]]></string>
     <string name="new_terms_consent_button">Next</string>
     <string name="new_terms_consent_needed_positive_button">Agree</string>
     <string name="new_terms_consent_needed_negative_button">Don\'t agree</string>
