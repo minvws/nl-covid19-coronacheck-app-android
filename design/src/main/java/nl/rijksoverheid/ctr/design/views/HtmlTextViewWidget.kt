@@ -55,6 +55,8 @@ class HtmlTextViewWidget @JvmOverloads constructor(
     }
 
     fun setHtmlText(htmlText: String?, htmlLinksEnabled: Boolean = false) {
+        removeAllViews()
+
         if (htmlText == null) {
             text = ""
             return
@@ -62,8 +64,6 @@ class HtmlTextViewWidget @JvmOverloads constructor(
 
         val spannable = getSpannableFromHtml(htmlText)
         text = spannable
-
-        removeAllViews()
 
         val parts = spannable.separated("\n")
         val iterator = parts.iterator()
