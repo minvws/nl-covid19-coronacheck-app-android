@@ -59,9 +59,13 @@ class HolderDatabaseSyncerImpl(
                         }
 
                         // Insert green cards in database
-                        syncRemoteGreenCardsUseCase.execute(
-                            remoteGreenCards = remoteGreenCardsResult.remoteGreenCards
-                        )
+                        try {
+                            syncRemoteGreenCardsUseCase.execute(
+                                remoteGreenCards = remoteGreenCardsResult.remoteGreenCards
+                            )
+                        } catch (exception: Exception) {
+                            // creating new credentials failed but previous cards and credentials not deleted
+                        }
 
                         // Schedule refreshing of green cards in background
 //                        workerManagerWrapper.scheduleNextCredentialsRefreshIfAny()

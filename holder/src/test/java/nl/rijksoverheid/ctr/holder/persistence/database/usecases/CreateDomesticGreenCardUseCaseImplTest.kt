@@ -3,26 +3,20 @@ package nl.rijksoverheid.ctr.holder.persistence.database.usecases
 import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
-import io.mockk.coEvery
-import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteGreenCards
-import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.models.DomesticCredential
 import nl.rijksoverheid.ctr.shared.models.DomesticCredentialAttributes
 import org.json.JSONObject
-import org.junit.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
-import java.time.Clock
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneId
@@ -31,7 +25,6 @@ import java.time.ZoneId
 class CreateDomesticGreenCardUseCaseImplTest: AutoCloseKoinTest() {
 
     private lateinit var db: HolderDatabase
-    private val mobileCoreWrapper = mockk<MobileCoreWrapper>(relaxed = true)
 
     private val firstJanuaryDate = OffsetDateTime.ofInstant(Instant.parse("2021-01-01T00:00:00.00Z"), ZoneId.of("UTC"))
 
@@ -45,7 +38,6 @@ class CreateDomesticGreenCardUseCaseImplTest: AutoCloseKoinTest() {
     fun `Remote domestic green card creates correct database models`() = runBlocking {
         val usecase = CreateDomesticGreenCardUseCaseImpl(
             holderDatabase = db,
-            mobileCoreWrapper = mobileCoreWrapper
         )
 
         val remoteGreenCard = RemoteGreenCards.DomesticGreenCard(
@@ -72,24 +64,22 @@ class CreateDomesticGreenCardUseCaseImplTest: AutoCloseKoinTest() {
             createCredentialMessages = "".toByteArray()
         )
 
-        coEvery { mobileCoreWrapper.createDomesticCredentials(any()) } answers {
-            listOf(
-                DomesticCredential(
-                    credential = JSONObject(),
-                    attributes = DomesticCredentialAttributes(
-                        birthMonth = "1",
-                        birthDay = "1",
-                        credentialVersion = 1,
-                        firstNameInitial = "B",
-                        isSpecimen = "0",
-                        lastNameInitial = "N",
-                        isPaperProof = "0",
-                        validForHours = 100,
-                        validFrom = firstJanuaryDate.toEpochSecond()
-                    )
+        val domesticCredentials = listOf(
+            DomesticCredential(
+                credential = JSONObject(),
+                attributes = DomesticCredentialAttributes(
+                    birthMonth = "1",
+                    birthDay = "1",
+                    credentialVersion = 1,
+                    firstNameInitial = "B",
+                    isSpecimen = "0",
+                    lastNameInitial = "N",
+                    isPaperProof = "0",
+                    validForHours = 100,
+                    validFrom = firstJanuaryDate.toEpochSecond()
                 )
             )
-        }
+        )
 
         db.walletDao().insert(
             WalletEntity(
@@ -98,7 +88,7 @@ class CreateDomesticGreenCardUseCaseImplTest: AutoCloseKoinTest() {
             )
         )
 
-        usecase.create(remoteGreenCard)
+        usecase.create(remoteGreenCard, domesticCredentials)
 
         // We should have 1 green card
         val expectedGreenCard = GreenCard(
