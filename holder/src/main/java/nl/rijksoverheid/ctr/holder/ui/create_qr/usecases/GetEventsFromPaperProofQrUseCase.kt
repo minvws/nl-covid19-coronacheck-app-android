@@ -10,46 +10,29 @@ import java.time.OffsetDateTime
 
 interface GetEventsFromPaperProofQrUseCase {
 
-    fun get(qrCode: String, couplingCode: String): ValidatePaperProofResult
+    fun get(qrCode: String): RemoteProtocol3
 }
 
 class GetEventsFromPaperProofQrUseCaseImpl(
     private val mobileCoreWrapper: MobileCoreWrapper
 ) : GetEventsFromPaperProofQrUseCase {
 
-    override fun get(qrCode: String, couplingCode: String): ValidatePaperProofResult {
-        return try {
-            val credential = qrCode.toByteArray()
-            val credentials = mobileCoreWrapper.readEuropeanCredential(credential)
-            val dcc = credentials.optJSONObject("dcc")
-            val holder = getHolder(dcc!!)
-            val event = getRemoteEvent(dcc)
+    @Throws(NullPointerException::class, JSONException::class)
+    override fun get(qrCode: String): RemoteProtocol3 {
+        val credential = qrCode.toByteArray()
+        val credentials = mobileCoreWrapper.readEuropeanCredential(credential)
+        val dcc = credentials.optJSONObject("dcc")
+        val holder = getHolder(dcc!!)
+        val event = getRemoteEvent(dcc)
 
-            val protocol = RemoteProtocol3(
-                providerIdentifier = RemoteConfigProviders.EventProvider.PROVIDER_IDENTIFIER_DCC,
-                protocolVersion = "3.0",
-                status = RemoteProtocol.Status.COMPLETE,
-                holder = holder,
-                events = listOf(event)
-            )
-
-            ValidatePaperProofResult.Success(
-                mapOf(protocol to getSignerCredential(qrCode, couplingCode))
-            )
-        } catch (exception: Exception) {
-            ValidatePaperProofResult.Error.InvalidQr
-        }
-    }
-
-    private fun getSignerCredential(
-        qrCode: String,
-        couplingCode: String
-    ): ByteArray = JSONObject(
-        mapOf(
-            "credential" to qrCode,
-            "couplingCode" to couplingCode
+        return RemoteProtocol3(
+            providerIdentifier = RemoteConfigProviders.EventProvider.PROVIDER_IDENTIFIER_DCC,
+            protocolVersion = "3.0",
+            status = RemoteProtocol.Status.COMPLETE,
+            holder = holder,
+            events = listOf(event)
         )
-    ).toString().toByteArray()
+    }
 
     @Throws(NullPointerException::class)
     private fun getHolder(dcc: JSONObject): RemoteProtocol3.Holder {

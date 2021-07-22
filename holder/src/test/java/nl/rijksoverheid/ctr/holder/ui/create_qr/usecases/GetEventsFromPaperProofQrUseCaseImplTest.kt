@@ -15,6 +15,7 @@ import org.robolectric.RobolectricTestRunner
 import java.time.LocalDate
 import java.time.OffsetDateTime
 import kotlin.test.assertEquals
+import kotlin.test.assertFails
 
 @RunWith(RobolectricTestRunner::class)
 class GetEventsFromPaperProofQrUseCaseImplTest : AutoCloseKoinTest() {
@@ -34,9 +35,7 @@ class GetEventsFromPaperProofQrUseCaseImplTest : AutoCloseKoinTest() {
             mobileCoreWrapper.readEuropeanCredential(vaccinationQr.toByteArray())
         } returns credential
 
-        val result = useCase.get(vaccinationQr, "")
-
-        with((result as ValidatePaperProofResult.Success).events.keys.first()) {
+        with(useCase.get(vaccinationQr)) {
             assertEquals(providerIdentifier, "dcc")
             assertEquals(protocolVersion, "3.0")
             assertEquals(status, RemoteProtocol.Status.COMPLETE)
@@ -69,9 +68,7 @@ class GetEventsFromPaperProofQrUseCaseImplTest : AutoCloseKoinTest() {
             mobileCoreWrapper.readEuropeanCredential(recoveryQr.toByteArray())
         } returns credential
 
-        val result = useCase.get(recoveryQr, "")
-
-        with((result as ValidatePaperProofResult.Success).events.keys.first()) {
+        with(useCase.get(recoveryQr)) {
             assertEquals(providerIdentifier, "dcc")
             assertEquals(protocolVersion, "3.0")
             assertEquals(status, RemoteProtocol.Status.COMPLETE)
@@ -101,9 +98,7 @@ class GetEventsFromPaperProofQrUseCaseImplTest : AutoCloseKoinTest() {
             mobileCoreWrapper.readEuropeanCredential(testQr.toByteArray())
         } returns credential
 
-        val result = useCase.get(testQr, "")
-
-        with((result as ValidatePaperProofResult.Success).events.keys.first()) {
+        with(useCase.get(testQr)) {
             assertEquals(providerIdentifier, "dcc")
             assertEquals(protocolVersion, "3.0")
             assertEquals(status, RemoteProtocol.Status.COMPLETE)
@@ -142,9 +137,7 @@ class GetEventsFromPaperProofQrUseCaseImplTest : AutoCloseKoinTest() {
             mobileCoreWrapper.readEuropeanCredential(testQr.toByteArray())
         } returns credential
 
-        val result = useCase.get(testQr, "")
-
-        with((result as ValidatePaperProofResult.Success).events.keys.first()) {
+        with(useCase.get(testQr)) {
             with(events!!.first() as RemoteEventNegativeTest) {
                 assertEquals(negativeTest!!.name, null)
                 assertEquals(negativeTest!!.manufacturer, null)
@@ -153,28 +146,7 @@ class GetEventsFromPaperProofQrUseCaseImplTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `credential to send to signer should have coupling code added`() {
-        val testQr =
-            "HC1:NCF%RN%TS3DH0RGPJB/IB-OM7533SR7694RI3XH8/FWP5IJBVGAMAU5PNPF6R:5SVBWVBDKBYLDZ4D74DWZJ\$7K+ CREDRCK*9C%PD8DJI7JSTNB95326HW4*IOQAOGU7\$35+Y5MT4K0P*5PP:7X\$RL353X7IKRE:7SA7G6M/NRO9SQKMHEE5IAXMFU*GSHGRKMXGG6DB-B93:GQBGZHHBIH5C9HFEC+GYHILIIX2MELNJIKCCHWIJNKMQ-ILKLXGGN+IRB84C9Q2LCIJ/HHKGL/BHOUB7IT8DJUIJ6DBSJLI7BI8AZ3CVOJ3BI9IL NILMLSVB*8BEPLA8KC42UIIUHSBKB+GIAZI3DJ/JAJZIR9KICT.XI/VB6TSYIJGDBGIA181:0TLOJJPACGKC2KRTI-8BEPL3DJ/LKQVBE2C*NIKYJIGK:H3J1DKVTQEDK8C+2TDSCNTCNJS6F3W.C\$USE\$2:*TIT3C7D8MS7LCTO3MMSSHT0\$U58PLY3 ZRA5PUF7MDN QKI7B\$WKL 6Q:S14GW4Q:LRERC6FPK1J*IUIH7S3J UQ2VQQ3ONV2CVR/TFFSQJ8KP.BENIQETGK6112U50-BW/IVK5"
-        val credential = getTestJson(emptyName = true, emptyManufacturer = true)
-        val couplingCode = "coupling"
-
-        every {
-            hint(JSONObject::class)
-            mobileCoreWrapper.readEuropeanCredential(testQr.toByteArray())
-        } returns credential
-
-        val result = useCase.get(testQr, couplingCode)
-
-        val jsonString = String((result as ValidatePaperProofResult.Success).events.values.first())
-        with(JSONObject(jsonString)) {
-            assertEquals(get("credential"), testQr)
-            assertEquals(get("couplingCode"), couplingCode)
-        }
-    }
-
-    @Test
-    fun `an invalid qr should parse to invalid qr result`() {
+    fun `an invalid qr should thow error`() {
         val invalidQr = "invalid"
 
         every {
@@ -182,12 +154,9 @@ class GetEventsFromPaperProofQrUseCaseImplTest : AutoCloseKoinTest() {
             mobileCoreWrapper.readEuropeanCredential(invalidQr.toByteArray())
         } returns JSONObject("{}")
 
-        val result = useCase.get(invalidQr, "")
-
-        assertEquals(
-            result as ValidatePaperProofResult.Error.InvalidQr,
-            ValidatePaperProofResult.Error.InvalidQr
-        )
+        assertFails {
+            useCase.get(invalidQr)
+        }
     }
 
     private fun getVaccinationJson() = JSONObject(
