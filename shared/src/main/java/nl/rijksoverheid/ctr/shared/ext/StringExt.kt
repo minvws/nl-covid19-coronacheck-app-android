@@ -1,6 +1,8 @@
 package nl.rijksoverheid.ctr.shared.ext
 
+import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.text.Html
@@ -21,8 +23,13 @@ inline fun <reified O> String.toObject(moshi: Moshi): O {
 }
 
 fun String.launchUrl(context: Context) {
-    CustomTabsIntent.Builder().build().also {
-        it.launchUrl(context, Uri.parse(this))
+    try {
+        CustomTabsIntent.Builder().build().also {
+            it.launchUrl(context, Uri.parse(this))
+        }
+    } catch (exception: ActivityNotFoundException) {
+        // if chrome app is disabled or not there, try an alternative
+        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(this)))
     }
 }
 
