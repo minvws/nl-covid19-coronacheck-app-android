@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.holder.persistence.database.usecases
 
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteGreenCards
+import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 
 /**
  * Inserts the green cards fetched from remote into the database
@@ -13,20 +14,29 @@ interface SyncRemoteGreenCardsUseCase {
 class SyncRemoteGreenCardsUseCaseImpl(
     private val holderDatabase: HolderDatabase,
     private val createDomesticGreenCardUseCase: CreateDomesticGreenCardUseCase,
-    private val createEuGreenCardsUseCase: CreateEuGreenCardUseCase
+    private val createEuGreenCardsUseCase: CreateEuGreenCardUseCase,
+    private val mobileCoreWrapper: MobileCoreWrapper
     ): SyncRemoteGreenCardsUseCase {
 
     override suspend fun execute(remoteGreenCards: RemoteGreenCards) {
 
-        // Clear everything from the database
-        holderDatabase.greenCardDao().deleteAll()
-        holderDatabase.originDao().deleteAll()
-        holderDatabase.credentialDao().deleteAll()
-
-        remoteGreenCards.domesticGreencard?.let {
-            createDomesticGreenCardUseCase.create(
-                greenCard = it
+        // Create credentials
+        remoteGreenCards.domesticGreencard?.let { greenCard ->
+            val domesticCredentials = mobileCoreWrapper.createDomesticCredentials(
+                createCredentials = greenCard.createCredentialMessages
             )
+
+            // Clear everything from the database
+            holderDatabase.greenCardDao().deleteAll()
+            holderDatabase.originDao().deleteAll()
+            holderDatabase.credentialDao().deleteAll()
+
+            remoteGreenCards.domesticGreencard.let {
+                createDomesticGreenCardUseCase.create(
+                    greenCard = it,
+                    domesticCredentials = domesticCredentials,
+                )
+            }
         }
 
         remoteGreenCards.euGreencards?.let {
