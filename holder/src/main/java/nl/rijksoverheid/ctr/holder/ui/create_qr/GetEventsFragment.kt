@@ -82,7 +82,8 @@ class GetEventsFragment: DigiDFragment(R.layout.fragment_get_events) {
                             GetEventsFragmentDirections.actionCouldNotCreateQr(
                                 toolbarTitle = copy.toolbarTitle,
                                 title = getString(R.string.missing_events_title),
-                                description = getString(R.string.missing_events_description)
+                                description = getString(R.string.missing_events_description),
+                                buttonTitle = getString(R.string.back_to_overview)
                             )
                         )
                     } else {
@@ -90,7 +91,8 @@ class GetEventsFragment: DigiDFragment(R.layout.fragment_get_events) {
                             GetEventsFragmentDirections.actionCouldNotCreateQr(
                                 toolbarTitle = copy.toolbarTitle,
                                 title = copy.hasNoEventsTitle,
-                                description = copy.hasNoEventsDescription
+                                description = copy.hasNoEventsDescription,
+                                buttonTitle = getString(R.string.back_to_overview)
                             )
                         )
                     }
@@ -112,7 +114,8 @@ class GetEventsFragment: DigiDFragment(R.layout.fragment_get_events) {
                         GetEventsFragmentDirections.actionCouldNotCreateQr(
                             toolbarTitle = copy.toolbarTitle,
                             title = getString(R.string.event_provider_error_title),
-                            description = getString(R.string.event_provider_error_description)
+                            description = getString(R.string.event_provider_error_description),
+                            buttonTitle = getString(R.string.back_to_overview)
                         )
                     )
                 }
@@ -121,7 +124,8 @@ class GetEventsFragment: DigiDFragment(R.layout.fragment_get_events) {
                         GetEventsFragmentDirections.actionCouldNotCreateQr(
                             toolbarTitle = copy.toolbarTitle,
                             title = getString(R.string.coronacheck_error_title),
-                            description = getString(R.string.coronacheck_error_description, it.httpCode.toString())
+                            description = getString(R.string.coronacheck_error_description, it.httpCode.toString()),
+                            buttonTitle = getString(R.string.back_to_overview)
                         )
                     )
                 }

@@ -92,7 +92,8 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                             YourEventsFragmentDirections.actionCouldNotCreateQr(
                                 toolbarTitle = args.toolbarTitle,
                                 title = getString(R.string.rule_engine_no_origin_title),
-                                description = getString(R.string.rule_engine_no_test_origin_description)
+                                description = getString(R.string.rule_engine_no_test_origin_description),
+                                buttonTitle = getString(R.string.back_to_overview)
                             )
                         )
                     }
