@@ -157,7 +157,8 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
                         CommercialTestCodeFragmentDirections.actionCouldNotCreateQr(
                             toolbarTitle = getString(R.string.commercial_test_type_title),
                             title = getString(R.string.no_negative_test_result_title),
-                            description = getString(R.string.no_negative_test_result_description)
+                            description = getString(R.string.no_negative_test_result_description),
+                            buttonTitle = getString(R.string.back_to_overview)
                         )
                     )
                 }
@@ -166,7 +167,8 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
                         CommercialTestCodeFragmentDirections.actionCouldNotCreateQr(
                             toolbarTitle = getString(R.string.commercial_test_type_title),
                             title = getString(R.string.test_result_not_known_title),
-                            description = getString(R.string.test_result_not_known_description)
+                            description = getString(R.string.test_result_not_known_description),
+                            buttonTitle = getString(R.string.back_to_overview)
                         )
                     )
                 }

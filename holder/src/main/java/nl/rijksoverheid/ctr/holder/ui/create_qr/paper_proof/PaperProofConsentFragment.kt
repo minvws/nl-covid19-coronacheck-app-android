@@ -47,28 +47,32 @@ class PaperProofConsentFragment: Fragment(R.layout.fragment_paper_proof_consent)
                     findNavControllerSafety(R.id.nav_paper_proof_consent)?.navigate(PaperProofConsentFragmentDirections.actionCouldNotCreateQr(
                         toolbarTitle = getString(R.string.add_paper_proof),
                         title = getString(R.string.add_paper_proof_limit_reached_paper_proof_title),
-                        description = getString(R.string.add_paper_proof_limit_reached_paper_proof_description)
+                        description = getString(R.string.add_paper_proof_limit_reached_paper_proof_description),
+                        buttonTitle = getString(R.string.dialog_retry)
                     ))
                 }
                 is ValidatePaperProofResult.Error.ExpiredQr -> {
                     findNavControllerSafety(R.id.nav_paper_proof_consent)?.navigate(PaperProofConsentFragmentDirections.actionCouldNotCreateQr(
                         toolbarTitle = getString(R.string.add_paper_proof),
                         title = getString(R.string.add_paper_proof_expired_paper_proof_title),
-                        description = getString(R.string.add_paper_proof_expired_paper_proof_description)
+                        description = getString(R.string.add_paper_proof_expired_paper_proof_description),
+                        buttonTitle = getString(R.string.dialog_retry)
                     ))
                 }
                 is ValidatePaperProofResult.Error.RejectedQr -> {
                     findNavControllerSafety(R.id.nav_paper_proof_consent)?.navigate(PaperProofConsentFragmentDirections.actionCouldNotCreateQr(
                         toolbarTitle = getString(R.string.add_paper_proof),
                         title = getString(R.string.add_paper_proof_invalid_combination_title),
-                        description = getString(R.string.add_paper_proof_invalid_combination_)
+                        description = getString(R.string.add_paper_proof_invalid_combination_),
+                        buttonTitle = getString(R.string.dialog_retry)
                     ))
                 }
                 else -> {
                     findNavControllerSafety(R.id.nav_paper_proof_consent)?.navigate(PaperProofConsentFragmentDirections.actionCouldNotCreateQr(
                         toolbarTitle = getString(R.string.add_paper_proof),
                         title = getString(R.string.add_paper_proof_invalid_combination_title),
-                        description = getString(R.string.add_paper_proof_invalid_combination_)
+                        description = getString(R.string.add_paper_proof_invalid_combination_),
+                        buttonTitle = getString(R.string.dialog_retry)
                     ))
                 }
             }
