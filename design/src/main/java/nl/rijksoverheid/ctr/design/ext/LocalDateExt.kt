@@ -13,7 +13,6 @@ import java.util.*
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-// Change to Locale.getDefault() to support multiple languages
 fun LocalDate.formatDayMonthYear(): String =
     DateTimeFormatter.ofPattern(
         DateFormat.getBestDateTimePattern(
