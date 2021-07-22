@@ -3,8 +3,10 @@ package nl.rijksoverheid.ctr.shared.ext
 import android.content.Context
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import androidx.annotation.NonNull
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 
@@ -40,6 +42,22 @@ fun Fragment.findNavControllerSafety(): NavController? {
         findNavController()
     } catch(e: Exception) {
         null
+    }
+}
+
+fun Fragment.navigateSafety(directions: NavDirections) {
+    try {
+        findNavController().navigate(directions)
+    } catch(e: Exception) {
+        // no op
+    }
+}
+
+fun Fragment.navigateSafety(currentId: Int, directions: NavDirections) {
+    try {
+        findNavControllerSafety(currentId)?.navigate(directions)
+    } catch(e: Exception) {
+        // no op
     }
 }
 

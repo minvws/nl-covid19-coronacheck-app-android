@@ -13,7 +13,7 @@ import nl.rijksoverheid.ctr.holder.databinding.FragmentPaperProofConsentBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.YourEventsFragmentType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.ValidatePaperProofResult
-import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
+import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
@@ -44,7 +44,7 @@ class PaperProofConsentFragment: Fragment(R.layout.fragment_paper_proof_consent)
         holderMainActivityViewModel.validatePaperProofError.observe(viewLifecycleOwner, EventObserver {
             when (it) {
                 is ValidatePaperProofResult.Error.BlockedQr -> {
-                    findNavControllerSafety(R.id.nav_paper_proof_consent)?.navigate(PaperProofConsentFragmentDirections.actionCouldNotCreateQr(
+                    navigateSafety(R.id.nav_paper_proof_consent, PaperProofConsentFragmentDirections.actionCouldNotCreateQr(
                         toolbarTitle = getString(R.string.add_paper_proof),
                         title = getString(R.string.add_paper_proof_limit_reached_paper_proof_title),
                         description = getString(R.string.add_paper_proof_limit_reached_paper_proof_description),
@@ -52,7 +52,7 @@ class PaperProofConsentFragment: Fragment(R.layout.fragment_paper_proof_consent)
                     ))
                 }
                 is ValidatePaperProofResult.Error.ExpiredQr -> {
-                    findNavControllerSafety(R.id.nav_paper_proof_consent)?.navigate(PaperProofConsentFragmentDirections.actionCouldNotCreateQr(
+                    navigateSafety(R.id.nav_paper_proof_consent, PaperProofConsentFragmentDirections.actionCouldNotCreateQr(
                         toolbarTitle = getString(R.string.add_paper_proof),
                         title = getString(R.string.add_paper_proof_expired_paper_proof_title),
                         description = getString(R.string.add_paper_proof_expired_paper_proof_description),
@@ -60,7 +60,7 @@ class PaperProofConsentFragment: Fragment(R.layout.fragment_paper_proof_consent)
                     ))
                 }
                 is ValidatePaperProofResult.Error.RejectedQr -> {
-                    findNavControllerSafety(R.id.nav_paper_proof_consent)?.navigate(PaperProofConsentFragmentDirections.actionCouldNotCreateQr(
+                    navigateSafety(R.id.nav_paper_proof_consent, PaperProofConsentFragmentDirections.actionCouldNotCreateQr(
                         toolbarTitle = getString(R.string.add_paper_proof),
                         title = getString(R.string.add_paper_proof_invalid_combination_title),
                         description = getString(R.string.add_paper_proof_invalid_combination_),
@@ -68,7 +68,7 @@ class PaperProofConsentFragment: Fragment(R.layout.fragment_paper_proof_consent)
                     ))
                 }
                 else -> {
-                    findNavControllerSafety(R.id.nav_paper_proof_consent)?.navigate(PaperProofConsentFragmentDirections.actionCouldNotCreateQr(
+                    navigateSafety(R.id.nav_paper_proof_consent, PaperProofConsentFragmentDirections.actionCouldNotCreateQr(
                         toolbarTitle = getString(R.string.add_paper_proof),
                         title = getString(R.string.add_paper_proof_invalid_combination_title),
                         description = getString(R.string.add_paper_proof_invalid_combination_),

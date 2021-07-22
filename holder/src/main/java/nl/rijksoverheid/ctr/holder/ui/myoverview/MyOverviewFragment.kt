@@ -12,7 +12,6 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
 import com.xwray.groupie.viewbinding.BindableItem
-import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
@@ -25,7 +24,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItems
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.*
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeFragmentData
-import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
+import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.ext.sharedViewModelWithOwner
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.android.ext.android.inject
@@ -200,7 +199,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                             credentialState = myOverviewItem.credentialState,
                             databaseSyncerResult = myOverviewItem.databaseSyncerResult,
                             onButtonClick = { greenCard, credential ->
-                                findNavControllerSafety()?.navigate(
+                                navigateSafety(
                                     MyOverviewFragmentDirections.actionQrCode(
                                         toolbarTitle = when (greenCard.greenCardEntity.type) {
                                             is GreenCardType.Domestic -> {
@@ -254,7 +253,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                     binding.typeToggle.button.setText(myOverviewItem.buttonText)
 
                     binding.typeToggle.button.setOnClickListener {
-                        findNavControllerSafety()?.navigate(MyOverviewFragmentDirections.actionShowTravelMode())
+                        navigateSafety(MyOverviewFragmentDirections.actionShowTravelMode())
                     }
                 }
                 MyOverviewItem.AddCertificateItem -> binding.bottom.visibility = View.VISIBLE
@@ -269,7 +268,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
     private fun navigateToEuQr(originType: OriginType) {
         when (originType) {
             is OriginType.Test -> {
-                findNavControllerSafety()?.navigate(
+                navigateSafety(
                     MyOverviewFragmentDirections.actionShowQrExplanation(
                         title = getString(R.string.my_overview_green_card_not_valid_title_test),
                         description = getString(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_test)
@@ -277,7 +276,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                 )
             }
             is OriginType.Vaccination -> {
-                findNavControllerSafety()?.navigate(
+                navigateSafety(
                     MyOverviewFragmentDirections.actionShowQrExplanation(
                         title = getString(R.string.my_overview_green_card_not_valid_title_vaccination),
                         description = getString(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_vaccination)
@@ -285,7 +284,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                 )
             }
             is OriginType.Recovery -> {
-                findNavControllerSafety()?.navigate(
+                navigateSafety(
                     MyOverviewFragmentDirections.actionShowQrExplanation(
                         title = getString(R.string.my_overview_green_card_not_valid_title_recovery),
                         description = getString(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_recovery)
@@ -298,7 +297,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
     private fun navigateToDomesticQr(originType: OriginType) {
         when (originType) {
             is OriginType.Test -> {
-                findNavControllerSafety()?.navigate(
+                navigateSafety(
                     MyOverviewFragmentDirections.actionShowQrExplanation(
                         title = getString(R.string.my_overview_green_card_not_valid_title_test),
                         description = getString(
@@ -310,7 +309,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                 )
             }
             is OriginType.Vaccination -> {
-                findNavControllerSafety()?.navigate(
+                navigateSafety(
                     MyOverviewFragmentDirections.actionShowQrExplanation(
                         title = getString(R.string.my_overview_green_card_not_valid_title_vaccination),
                         description = getString(R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_vaccination)
@@ -318,7 +317,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                 )
             }
             is OriginType.Recovery -> {
-                findNavControllerSafety()?.navigate(
+                navigateSafety(
                     MyOverviewFragmentDirections.actionShowQrExplanation(
                         title = getString(R.string.my_overview_green_card_not_valid_title_recovery),
                         description = getString(R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_recovery)
