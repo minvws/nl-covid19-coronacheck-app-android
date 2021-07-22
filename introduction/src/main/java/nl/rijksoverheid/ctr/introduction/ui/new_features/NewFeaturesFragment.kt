@@ -14,8 +14,8 @@ import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.R
 import nl.rijksoverheid.ctr.introduction.databinding.FragmentNewFeaturesBinding
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
-import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.getNavigationIconView
+import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAccessibilityFocus
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -93,7 +93,7 @@ class NewFeaturesFragment : Fragment(R.layout.fragment_new_features) {
     }
 
     private fun navigateToTerms() {
-        findNavControllerSafety(R.id.nav_new_features)?.navigate(
+        navigateSafety(R.id.nav_new_features,
             NewFeaturesFragmentDirections.actionNewTerms(args.introductionData)
         )
     }

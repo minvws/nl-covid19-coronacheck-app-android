@@ -11,7 +11,6 @@ import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.R
 import nl.rijksoverheid.ctr.introduction.databinding.FragmentPrivacyConsentBinding
 import nl.rijksoverheid.ctr.introduction.databinding.ItemPrivacyConsentBinding
-import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /*

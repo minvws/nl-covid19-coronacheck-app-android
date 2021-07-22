@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentPaperProofCodeBinding
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.PaperProofCodeResult
-import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.hideKeyboard
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.ext.showKeyboard
@@ -37,7 +36,7 @@ class PaperProofCodeFragment : Fragment(R.layout.fragment_paper_proof_code) {
 
                 }
                 is PaperProofCodeResult.Valid -> {
-                    findNavControllerSafety(R.id.nav_paper_proof_code)?.navigate(PaperProofCodeFragmentDirections.actionPaperProofConsent(
+                    navigateSafety(R.id.nav_paper_proof_code, PaperProofCodeFragmentDirections.actionPaperProofConsent(
                         binding.codeInputText.text.toString()
                     ))
                 }

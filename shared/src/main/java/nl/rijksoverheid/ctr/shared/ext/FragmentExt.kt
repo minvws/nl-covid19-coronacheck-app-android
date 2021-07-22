@@ -46,8 +46,16 @@ fun Fragment.findNavControllerSafety(): NavController? {
 }
 
 fun Fragment.navigateSafety(directions: NavDirections) {
-    return try {
+    try {
         findNavController().navigate(directions)
+    } catch(e: Exception) {
+        // no op
+    }
+}
+
+fun Fragment.navigateSafety(currentId: Int, directions: NavDirections) {
+    try {
+        findNavControllerSafety(currentId)?.navigate(directions)
     } catch(e: Exception) {
         // no op
     }

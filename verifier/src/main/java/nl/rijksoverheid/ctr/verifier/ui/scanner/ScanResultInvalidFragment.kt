@@ -7,7 +7,6 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.design.ext.enableCustomLinks
-import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.verifier.BuildConfig
 import nl.rijksoverheid.ctr.verifier.R
@@ -30,7 +29,7 @@ class ScanResultInvalidFragment : Fragment(R.layout.fragment_scan_result_invalid
 
     private val autoCloseHandler = Handler(Looper.getMainLooper())
     private val autoCloseRunnable = Runnable {
-        findNavControllerSafety(R.id.nav_scan_result_invalid)?.navigate(
+        navigateSafety(R.id.nav_scan_result_invalid,
             ScanResultInvalidFragmentDirections.actionNavMain()
         )
     }
