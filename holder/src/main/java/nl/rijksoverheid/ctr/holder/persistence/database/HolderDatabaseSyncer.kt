@@ -69,7 +69,6 @@ class HolderDatabaseSyncerImpl(
                                     remoteGreenCards = remoteGreenCardsResult.remoteGreenCards
                                 )
                             } catch (exception: Exception) {
-                                Timber.v("IK KOM HIER: " + exception.toString())
                                 // creating new credentials failed but previous cards and credentials not deleted
                             }
 
