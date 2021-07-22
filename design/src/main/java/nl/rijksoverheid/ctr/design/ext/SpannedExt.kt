@@ -16,6 +16,10 @@ import nl.rijksoverheid.ctr.design.spans.BulletPointSpan
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
+
+/**
+ * Separates a Spanned object using the given separator into a list of Spanned instances
+ */
 fun Spanned.separated(separator: String): List<Spanned> {
     val substrings = arrayListOf<Spanned>()
 
@@ -34,6 +38,10 @@ fun Spanned.separated(separator: String): List<Spanned> {
     return substrings
 }
 
+/**
+ * Extracts a substring of the given Spanned object
+ * The subSequence method should never fail, but if it does, it returns the original Spanned object
+ */
 fun Spanned.substring(start: Int, end: Int): Spanned {
     (subSequence(start, end) as? Spanned)?.let { substring ->
         return substring
@@ -41,6 +49,12 @@ fun Spanned.substring(start: Int, end: Int): Spanned {
     return this
 }
 
+/**
+ * Determines whether a Spanned object is a heading
+ * This is the case in two situations:
+ * (1) If the Spanned object contains a StyleSpan with Typeface.Bold for the whole length
+ * (2) If the Spanned object contains one or more RelativeSizeSpans with a size change (= h1-h6)
+ */
 val Spanned.isHeading: Boolean
     get() {
         return getSpans<StyleSpan>().any { span ->
@@ -52,6 +66,10 @@ val Spanned.isHeading: Boolean
         }
     }
 
+/**
+ * Determines whether a Spanned object is a list item
+ * This is the case if the Spanned object contains a BulletSpan or BulletPointSpan
+ */
 val Spanned.isListItem: Boolean
     get() {
         return getSpans<BulletSpan>().isNotEmpty() ||

@@ -21,7 +21,9 @@ class HtmlTextView @JvmOverloads constructor(
         TextViewCompat.setTextAppearance(this, R.style.App_TextAppearance_MaterialComponents_Body1)
     }
 
-    // Add support for activating links when using touch exploration
+    /**
+     * This method is overriden to add support for activating links when using touch exploration
+     */
     override fun dispatchPopulateAccessibilityEvent(event: AccessibilityEvent?): Boolean {
         // Check if eventType is TYPE_VIEW_CLICKED
         if (event == null || event.eventType != AccessibilityEvent.TYPE_VIEW_CLICKED) {

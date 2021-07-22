@@ -19,13 +19,16 @@ import nl.rijksoverheid.ctr.design.spans.BulletPointSpan
 
 class HtmlTextViewWidget @JvmOverloads constructor(
     context: Context,
-    private val attrs: AttributeSet? = null,
-    private val defStyle: Int = 0,
-    private val defStyleRes: Int = 0,
+    attrs: AttributeSet? = null,
+    defStyle: Int = 0,
+    defStyleRes: Int = 0,
 ) : LinearLayout(context, attrs, defStyle, defStyleRes) {
 
     var text: CharSequence? = null
 
+    /**
+     * Checks if any attributes were passed by XML, and if so, calls the relevant methods.
+     */
     init {
         context.theme.obtainStyledAttributes(
             attrs,
@@ -34,8 +37,7 @@ class HtmlTextViewWidget @JvmOverloads constructor(
             defStyleRes
         ).apply {
             try {
-                val htmlText =
-                    getText(R.styleable.HtmlTextViewWidget_htmlText)
+                val htmlText = getText(R.styleable.HtmlTextViewWidget_htmlText)
                 if (htmlText?.isNotEmpty() == true) {
                     setHtmlText(
                         htmlText.toString(),
@@ -49,11 +51,19 @@ class HtmlTextViewWidget @JvmOverloads constructor(
         orientation = VERTICAL
     }
 
+    /**
+     * Sets the text based on a string resource.
+     * Links are disabled by default, but can be enabled.
+     */
     fun setHtmlText(htmlText: Int, htmlLinksEnabled: Boolean = false) {
         val text = context.getString(htmlText)
         setHtmlText(text, htmlLinksEnabled)
     }
 
+    /**
+     * Sets the text based on a string.
+     * Links are disabled by default, but can be enabled.
+     */
     fun setHtmlText(htmlText: String?, htmlLinksEnabled: Boolean = false) {
         removeAllViews()
 
@@ -62,15 +72,19 @@ class HtmlTextViewWidget @JvmOverloads constructor(
             return
         }
 
+        // Step 1: Parse the given String into a Spannable
         val spannable = getSpannableFromHtml(htmlText)
         text = spannable
 
+        // Step 2: Separate the Spannable on each linebreak
         val parts = spannable.separated("\n")
+
+        // Step 3: Add a HtmlTextView for each part of the Spannable
         val iterator = parts.iterator()
         while (iterator.hasNext()) {
             val part = iterator.next()
 
-            val textView = HtmlTextView(context, attrs, defStyle, defStyleRes)
+            val textView = HtmlTextView(context)
             textView.text = part
 
             if (part.isHeading) {
@@ -80,9 +94,9 @@ class HtmlTextViewWidget @JvmOverloads constructor(
             val params = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
             if (iterator.hasNext()) {
                 val marginBottom = if (part.isHeading || part.isListItem) {
-                    textView.lineHeight / 4
+                    textView.lineHeight / 4 // Headings and list items have a quarter of the default margin
                 } else {
-                    textView.lineHeight
+                    textView.lineHeight // By default, the line height is used as bottom bottom
                 }
                 params.setMargins(0, 0, 0, marginBottom)
             }
@@ -91,23 +105,34 @@ class HtmlTextViewWidget @JvmOverloads constructor(
             addView(textView)
         }
 
+        // Step 4: Enable links, if enabled
         if (htmlLinksEnabled) {
             enableHtmlLinks()
         }
     }
 
+    /**
+     * Enables HTML links for all of it's TextView subviews
+     */
     fun enableHtmlLinks() {
         children.filterIsInstance(TextView::class.java).forEach { textView ->
             textView.enableHtmlLinks()
         }
     }
 
+    /**
+     * Enables custom links for all of it's TextView subviews
+     */
     fun enableCustomLinks(onLinkClick: () -> Unit) {
         children.filterIsInstance(TextView::class.java).forEach { textView ->
             textView.enableCustomLinks(onLinkClick)
         }
     }
 
+    /**
+     * Parses a String into a Spannable object.
+     * It takes both legacy and modern HTML parsing implementations into account.
+     */
     private fun getSpannableFromHtml(html: String): Spannable {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             getSpannableFromHtmlModern(html)
@@ -116,6 +141,10 @@ class HtmlTextViewWidget @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Parses a String into a Spannable object.
+     * It then replaces all BulletSpan's with BulletPointSpans for consistent styling.
+     */
     private fun getSpannableFromHtmlModern(html: String): Spannable {
         val spannableBuilder = getSpannableFromHtmlLegacy(html)
 
@@ -134,6 +163,12 @@ class HtmlTextViewWidget @JvmOverloads constructor(
         return spannableBuilder
     }
 
+    /**
+     * Parses a String into a Spannable object.
+     * During parsing, BulletSpans are replaced with a temporary Bullet marker.
+     * This is done because using BulletSpan directly can cause crashes on Android 6.
+     * After parsing, all Bullets are replaced with BulletSpans.
+     */
     private fun getSpannableFromHtmlLegacy(html: String): Spannable {
         // marker object. We can't directly use BulletSpan as this crashes on Android 6
         class Bullet
