@@ -21,22 +21,22 @@ class SyncRemoteGreenCardsUseCaseImpl(
     override suspend fun execute(remoteGreenCards: RemoteGreenCards) {
 
         // Create credentials
-        remoteGreenCards.domesticGreencard?.let { greenCard ->
-            val domesticCredentials = mobileCoreWrapper.createDomesticCredentials(
-                createCredentials = greenCard.createCredentialMessages
+        val domesticCredentials = if (remoteGreenCards.domesticGreencard != null) {
+            mobileCoreWrapper.createDomesticCredentials(
+                createCredentials = remoteGreenCards.domesticGreencard.createCredentialMessages
             )
+        } else return
 
-            // Clear everything from the database
-            holderDatabase.greenCardDao().deleteAll()
-            holderDatabase.originDao().deleteAll()
-            holderDatabase.credentialDao().deleteAll()
+        // Clear everything from the database
+        holderDatabase.greenCardDao().deleteAll()
+        holderDatabase.originDao().deleteAll()
+        holderDatabase.credentialDao().deleteAll()
 
-            remoteGreenCards.domesticGreencard.let {
-                createDomesticGreenCardUseCase.create(
-                    greenCard = it,
-                    domesticCredentials = domesticCredentials,
-                )
-            }
+        remoteGreenCards.domesticGreencard.let {
+            createDomesticGreenCardUseCase.create(
+                greenCard = it,
+                domesticCredentials = domesticCredentials,
+            )
         }
 
         remoteGreenCards.euGreencards?.let {
