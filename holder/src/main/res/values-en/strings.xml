@@ -253,7 +253,7 @@
     <string name="rule_engine_no_origin_title">We can\'t make a certificate</string>
     <string name="rule_engine_no_test_origin_description"><![CDATA[At this moment, we can\'t make a certificate from your negative test certificate. This can have various causes.  Find more information on <a href="https://www.coronacheck.nl//en/guidepost">the Guidepost.</a>]]></string>
     <string name="rule_engine_no_vaccination_origin_description"><![CDATA[At this moment, we can\'t make a certificate from your vaccination. This can have various causes. Find more information on <a href="https://www.coronacheck.nl/en/guidepost"> the Guidepost.</a>]]></string>
-    <string name="back_to_overview">To My Certificates</string>
+    <string name="back_to_overview">To my certificates</string>
     <string name="no_vaccinations_title">Vaccinations not available</string>
     <string name="no_vaccinations_description"><![CDATA[There is no available vaccination data. This can have various causes. Read <a href="https://www.coronacheck.nl/en/guidepost">the Guidepost</a> for more information.<br/><br/>Got vaccinated recently? It can take a few hours until your details are available. Try again later.]]></string>
     <string name="no_test_results_title">No test result available</string>
@@ -353,5 +353,5 @@
     <string name="your_events_replace_dialog_message">You’ve created a certificate before. The information on it differs from the information that has just been retrieved. Therefore you can only replace the certificate.</string>
     <string name="your_events_replace_dialog_negative_button">No, stop</string>
     <string name="your_events_replace_dialog_positive_button">Yes, replace</string>
-    <string name="qr_explanation_certificate_issuer">Ministry of Health Welfare and Sports</string>
+    <string name="qr_explanation_certificate_issuer">Ministry of Health, Welfare and Sport</string>
 </resources>
