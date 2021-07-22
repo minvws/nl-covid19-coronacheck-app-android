@@ -312,7 +312,7 @@
     <string name="my_overview_qr_placeholder_header">Hier komt jouw bewijs</string>
     <string name="my_overview_qr_placeholder_description"><![CDATA[Je kunt een bewijs toevoegen als je bent gevaccineerd of hersteld. Of als je bent getest bij een <a href="https://coronacheck.nl/nl/testafspraak-in-app">aangesloten testlocatie</a>. De app maakt een Nederlands en een internationaal bewijs.<br /></p><p><b>Reis je buiten Nederland?</b><br />Check <a href="https://www.nederlandwereldwijd.nl/reizen/reisadviezen">wijsopreis.nl</a> voor vertrek. Daar staat welk bewijs geldig is in het land dat je bezoekt.]]></string>
     <string name="my_overview_add_qr_button">Bewijs toevoegen</string>
-    <string name="add_paper_proof">Papieren bewijs</string>
+    <string name="add_paper_proof">Papieren bewijs toevoegen</string>
     <string name="add_paper_proof_title">Jouw lettercombinatie</string>
     <string name="add_paper_proof_description">Vul de lettercombinatie in die je van de zorgverlener bij je papieren bewijs hebt gekregen.</string>
     <string name="add_paper_proof_input_header">Lettercombinatie</string>
