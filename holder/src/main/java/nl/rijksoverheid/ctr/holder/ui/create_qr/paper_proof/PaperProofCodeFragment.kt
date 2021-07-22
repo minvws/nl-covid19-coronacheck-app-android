@@ -9,6 +9,7 @@ import nl.rijksoverheid.ctr.holder.databinding.FragmentPaperProofCodeBinding
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.PaperProofCodeResult
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.hideKeyboard
+import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.ext.showKeyboard
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
@@ -56,7 +57,7 @@ class PaperProofCodeFragment : Fragment(R.layout.fragment_paper_proof_code) {
         }
 
         binding.noLetterCombinationBtn.setOnClickListener {
-            findNavControllerSafety()?.navigate(PaperProofCodeFragmentDirections.actionTitleDescriptionBottomSheet(
+            navigateSafety(PaperProofCodeFragmentDirections.actionTitleDescriptionBottomSheet(
                 title = getString(R.string.no_letter_combination_dialog_title),
                 description = getString(R.string.no_letter_combination_dialog_description)
             ))

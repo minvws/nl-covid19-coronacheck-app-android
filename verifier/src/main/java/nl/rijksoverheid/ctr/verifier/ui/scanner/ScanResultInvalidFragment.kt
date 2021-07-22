@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.design.ext.enableCustomLinks
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
+import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.verifier.BuildConfig
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanResultInvalidBinding
@@ -42,7 +43,7 @@ class ScanResultInvalidFragment : Fragment(R.layout.fragment_scan_result_invalid
         val binding = FragmentScanResultInvalidBinding.bind(view)
 
         binding.toolbar.setNavigationOnClickListener {
-            findNavControllerSafety()?.navigate(ScanResultInvalidFragmentDirections.actionNavMain())
+            navigateSafety(ScanResultInvalidFragmentDirections.actionNavMain())
         }
 
         when (args.invalidData) {
@@ -52,7 +53,7 @@ class ScanResultInvalidFragment : Fragment(R.layout.fragment_scan_result_invalid
             }
             is ScanResultInvalidData.Error -> {
                 binding.subtitle.enableCustomLinks {
-                    findNavControllerSafety()?.navigate(ScanResultInvalidFragmentDirections.actionShowInvalidExplanation())
+                    navigateSafety(ScanResultInvalidFragmentDirections.actionShowInvalidExplanation())
                 }
             }
         }
