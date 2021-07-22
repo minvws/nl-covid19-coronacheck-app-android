@@ -2,6 +2,8 @@ package nl.rijksoverheid.ctr.holder.persistence.database
 
 import androidx.room.Database
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.holder.persistence.WorkerManagerWrapper
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
@@ -34,57 +36,61 @@ class HolderDatabaseSyncerImpl(
     private val syncRemoteGreenCardsUseCase: SyncRemoteGreenCardsUseCase
 ) : HolderDatabaseSyncer {
 
+    private val mutex = Mutex()
+
     override suspend fun sync(
         expectedOriginType: OriginType?,
         syncWithRemote: Boolean
     ): DatabaseSyncerResult {
         return withContext(Dispatchers.IO) {
-            val events = holderDatabase.eventGroupDao().getAll()
+            mutex.withLock {
+                val events = holderDatabase.eventGroupDao().getAll()
 
-            // Sync with remote
-            if (syncWithRemote) {
-                val remoteGreenCardsResult = getRemoteGreenCardsUseCase.get(
-                    events = events
-                )
+                // Sync with remote
+                if (syncWithRemote) {
+                    val remoteGreenCardsResult = getRemoteGreenCardsUseCase.get(
+                        events = events
+                    )
 
-                when (remoteGreenCardsResult) {
-                    is RemoteGreenCardsResult.Success -> {
-                        val remoteGreenCards = remoteGreenCardsResult.remoteGreenCards
+                    when (remoteGreenCardsResult) {
+                        is RemoteGreenCardsResult.Success -> {
+                            val remoteGreenCards = remoteGreenCardsResult.remoteGreenCards
 
-                        // If we expect the remote green cards to have a certain origin
-                        if (expectedOriginType != null && !remoteGreenCards.getAllOrigins()
-                                .contains(expectedOriginType)
-                        ) {
-                            return@withContext DatabaseSyncerResult.MissingOrigin
-                        }
+                            // If we expect the remote green cards to have a certain origin
+                            if (expectedOriginType != null && !remoteGreenCards.getAllOrigins()
+                                    .contains(expectedOriginType)
+                            ) {
+                                return@withContext DatabaseSyncerResult.MissingOrigin
+                            }
 
-                        // Insert green cards in database
-                        try {
-                            syncRemoteGreenCardsUseCase.execute(
-                                remoteGreenCards = remoteGreenCardsResult.remoteGreenCards
-                            )
-                        } catch (exception: Exception) {
-                            // creating new credentials failed but previous cards and credentials not deleted
-                        }
+                            // Insert green cards in database
+                            try {
+                                syncRemoteGreenCardsUseCase.execute(
+                                    remoteGreenCards = remoteGreenCardsResult.remoteGreenCards
+                                )
+                            } catch (exception: Exception) {
+                                // creating new credentials failed but previous cards and credentials not deleted
+                            }
 
-                        // Schedule refreshing of green cards in background
+                            // Schedule refreshing of green cards in background
 //                        workerManagerWrapper.scheduleNextCredentialsRefreshIfAny()
 
-                        DatabaseSyncerResult.Success
+                            DatabaseSyncerResult.Success
+                        }
+                        is RemoteGreenCardsResult.Error.ServerError -> {
+                            DatabaseSyncerResult.ServerError(remoteGreenCardsResult.httpCode)
+                        }
+                        is RemoteGreenCardsResult.Error.NetworkError -> {
+                            val greenCards = holderDatabase.greenCardDao().getAll()
+                            DatabaseSyncerResult.NetworkError(
+                                hasGreenCardsWithoutCredentials = greenCards
+                                    .any { greenCardUtil.hasNoActiveCredentials(it) }
+                            )
+                        }
                     }
-                    is RemoteGreenCardsResult.Error.ServerError -> {
-                        DatabaseSyncerResult.ServerError(remoteGreenCardsResult.httpCode)
-                    }
-                    is RemoteGreenCardsResult.Error.NetworkError -> {
-                        val greenCards = holderDatabase.greenCardDao().getAll()
-                        DatabaseSyncerResult.NetworkError(
-                            hasGreenCardsWithoutCredentials = greenCards
-                                .any { greenCardUtil.hasNoActiveCredentials(it) }
-                        )
-                    }
+                } else {
+                    DatabaseSyncerResult.Success
                 }
-            } else {
-                DatabaseSyncerResult.Success
             }
         }
     }
