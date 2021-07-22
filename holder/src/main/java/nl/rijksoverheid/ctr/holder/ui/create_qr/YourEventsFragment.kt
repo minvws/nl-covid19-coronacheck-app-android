@@ -37,6 +37,7 @@ import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
+import java.util.*
 
 class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
 
@@ -208,7 +209,7 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                     remoteProtocol2 = type.remoteTestResult
                 )
             }
-            is YourEventsFragmentType.RemoteProtocol3Type, -> presentEvents(type.remoteEvents, binding)
+            is YourEventsFragmentType.RemoteProtocol3Type -> presentEvents(type.remoteEvents, binding)
             is YourEventsFragmentType.DCC -> presentEvents(type.remoteEvents, binding)
         }
     }
@@ -321,11 +322,7 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
 
         val eventWidget = YourEventWidget(requireContext()).apply {
             setContent(
-                title = resources.getString(
-                    R.string.retrieved_vaccination_title,
-                    event.vaccination?.date?.formatMonth(),
-                    cachedAppConfigUseCase.getProviderName(providerIdentifier)
-                ),
+                title = getTitle(providerIdentifier, event),
                 subtitle = resources.getString(
                     R.string.your_vaccination_row_subtitle,
                     fullName,
@@ -342,6 +339,23 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
             )
         }
         binding.eventsGroup.addView(eventWidget)
+    }
+
+    private fun getTitle(providerIdentifier: String,
+                         event: RemoteEventVaccination): String {
+        return if (providerIdentifier.toLowerCase(Locale.US) == "dcc") {
+            resources.getString(
+                R.string.retrieved_vaccination_title,
+                event.vaccination?.date?.formatMonth(),
+                ""
+            ).replace(" ()", "")
+        } else {
+            resources.getString(
+                R.string.retrieved_vaccination_title,
+                event.vaccination?.date?.formatMonth(),
+                cachedAppConfigUseCase.getProviderName(providerIdentifier)
+            )
+        }
     }
 
     private fun presentNegativeTestEvent(
