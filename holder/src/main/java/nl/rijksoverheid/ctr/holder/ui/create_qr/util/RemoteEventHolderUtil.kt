@@ -4,7 +4,10 @@ import android.util.Base64
 import com.squareup.moshi.JsonClass
 import com.squareup.moshi.Moshi
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetEventsFromPaperProofQrUseCase
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.ValidatePaperProofResult
 import nl.rijksoverheid.ctr.shared.models.JSON
+import org.json.JSONObject
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -16,7 +19,7 @@ import java.time.format.DateTimeFormatter
  *
  */
 interface RemoteEventHolderUtil {
-    fun holders(data: ByteArray): RemoteProtocol3.Holder
+    fun holders(data: ByteArray, providerIdentifier: String): RemoteProtocol3.Holder
     fun conflicting(
         storedEventHolders: List<RemoteProtocol3.Holder>,
         incomingEventHolders: List<RemoteProtocol3.Holder>
@@ -25,12 +28,19 @@ interface RemoteEventHolderUtil {
 
 class RemoteEventHolderUtilImpl(
     private val moshi: Moshi,
+    private val getEventsFromPaperProofQrUseCase: GetEventsFromPaperProofQrUseCase
 ) : RemoteEventHolderUtil {
-    override fun holders(data: ByteArray): RemoteProtocol3.Holder {
-        val payload = moshi.adapter(SignedResponse::class.java).fromJson(String(data))!!.payload
-        val decodedPayload = String(Base64.decode(payload, Base64.DEFAULT))
-        val remoteEvent = moshi.adapter(RemoteProtocol3::class.java).fromJson(decodedPayload)
-        return remoteEvent!!.holder!!
+    override fun holders(data: ByteArray, providerIdentifier: String): RemoteProtocol3.Holder {
+        val remoteEvent =  if (providerIdentifier != "dcc") {
+            val payload = moshi.adapter(SignedResponse::class.java).fromJson(String(data))!!.payload
+            val decodedPayload = String(Base64.decode(payload, Base64.DEFAULT))
+            moshi.adapter(RemoteProtocol3::class.java).fromJson(decodedPayload)!!
+        } else {
+            val qr = JSONObject(String(data)).optString("credential")
+            (getEventsFromPaperProofQrUseCase.get(qr, "") as ValidatePaperProofResult.Success)
+                .events.keys.first()
+        }
+        return remoteEvent.holder!!
     }
 
     /**
@@ -48,7 +58,8 @@ class RemoteEventHolderUtilImpl(
             incomingEventHolders.forEach { incomingEventHolder ->
                 val incomingBirthDay = birthDay(incomingEventHolder.birthDate!!)
                 val incomingBirthMonth = birthMonth(incomingEventHolder.birthDate)
-                val birthDateIsNotMatching = storedBirthDay != incomingBirthDay || storedBirthMonth != incomingBirthMonth
+                val birthDateIsNotMatching =
+                    storedBirthDay != incomingBirthDay || storedBirthMonth != incomingBirthMonth
                 return birthDateIsNotMatching
             }
         }

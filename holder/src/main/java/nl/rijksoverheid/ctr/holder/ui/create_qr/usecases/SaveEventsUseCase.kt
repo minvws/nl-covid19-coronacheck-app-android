@@ -24,10 +24,14 @@ interface SaveEventsUseCase {
         originType: OriginType,
         removePreviousEvents: Boolean
     )
+
     suspend fun remoteProtocols3AreConflicting(remoteProtocols3: Map<RemoteProtocol3, ByteArray>): Boolean
 }
 
-class SaveEventsUseCaseImpl(private val holderDatabase: HolderDatabase, private val remoteEventHolderUtil: RemoteEventHolderUtil) : SaveEventsUseCase {
+class SaveEventsUseCaseImpl(
+    private val holderDatabase: HolderDatabase,
+    private val remoteEventHolderUtil: RemoteEventHolderUtil
+) : SaveEventsUseCase {
 
     override suspend fun saveNegativeTest2(
         negativeTest2: RemoteTestResult2,
@@ -47,7 +51,8 @@ class SaveEventsUseCaseImpl(private val holderDatabase: HolderDatabase, private 
     }
 
     override suspend fun remoteProtocols3AreConflicting(remoteProtocols3: Map<RemoteProtocol3, ByteArray>): Boolean {
-        val storedEventHolders = holderDatabase.eventGroupDao().getAll().map { remoteEventHolderUtil.holders(it.jsonData) }.distinct()
+        val storedEventHolders = holderDatabase.eventGroupDao().getAll()
+            .map { remoteEventHolderUtil.holders(it.jsonData, it.providerIdentifier) }.distinct()
         val incomingEventHolders = remoteProtocols3.map { it.key.holder!! }.distinct()
 
         return remoteEventHolderUtil.conflicting(storedEventHolders, incomingEventHolders)
