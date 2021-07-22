@@ -92,7 +92,9 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putInt(indicatorPositionKey, binding.viewPager.currentItem)
+        _binding?.let {
+            outState.putInt(indicatorPositionKey, it.viewPager.currentItem)
+        }
     }
 
     private fun initViewPager(
