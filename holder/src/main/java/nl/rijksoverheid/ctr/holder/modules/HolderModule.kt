@@ -82,10 +82,10 @@ fun holderModule(baseUrl: String) = module {
         GetRemoteGreenCardsUseCaseImpl(get(), get(), get())
     }
     factory<SyncRemoteGreenCardsUseCase> {
-        SyncRemoteGreenCardsUseCaseImpl(get(), get(), get())
+        SyncRemoteGreenCardsUseCaseImpl(get(), get(), get(), get())
     }
     factory<CreateDomesticGreenCardUseCase> {
-        CreateDomesticGreenCardUseCaseImpl(get(), get())
+        CreateDomesticGreenCardUseCaseImpl(get())
     }
     factory<CreateEuGreenCardUseCase> {
         CreateEuGreenCardUseCaseImpl(get(), get())
