@@ -7,7 +7,6 @@ import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.BulletSpan
 import android.text.style.ClickableSpan
-import android.text.style.RelativeSizeSpan
 import android.util.AttributeSet
 import android.view.accessibility.AccessibilityEvent
 import android.widget.LinearLayout
@@ -16,7 +15,6 @@ import androidx.core.text.HtmlCompat
 import androidx.core.text.getSpans
 import androidx.core.view.ViewCompat
 import androidx.core.view.children
-import androidx.core.view.marginBottom
 import androidx.core.widget.TextViewCompat
 import com.google.android.material.textview.MaterialTextView
 import nl.rijksoverheid.ctr.design.R
@@ -85,14 +83,16 @@ class HtmlTextViewWidget @JvmOverloads constructor(
                 ViewCompat.setAccessibilityHeading(textView, true)
             }
 
+            val params = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
             if (iterator.hasNext()) {
-                val paddingBottom = if (part.isHeading || part.isListItem) {
+                val marginBottom = if (part.isHeading || part.isListItem) {
                     textView.lineHeight / 4
                 } else {
                     textView.lineHeight
                 }
-                textView.setPadding(0, 0, 0, paddingBottom)
+                params.setMargins(0, 0, 0, marginBottom)
             }
+            textView.layoutParams = params
 
             addView(textView)
         }
