@@ -11,7 +11,7 @@
     <string name="onboarding_screen_4_title">QR-code = jouw bewijs</string>
     <string name="onboarding_screen_4_description">Deze app maakt van jouw vaccinatie, testuitslag of herstel een QR-code. Dat is jouw bewijs. De QR-code wordt gecheckt bij de ingang van plekken en activiteiten. Of aan de grens. Verloopt je bewijs? Dan verdwijnt de QR-code.</string>
     <string name="onboarding_screen_3_title">QR-codes voor Nederland en internationaal</string>
-    <string name="onboarding_screen_3_description">"De app maakt twee QR-codes: een QR-code voor Nederland en een internationale. Beide QR-codes vind je in de app. Reis je buiten Nederland? Gebruik dan je internationale QR-code."</string>
+    <string name="onboarding_screen_3_description">De app maakt twee QR-codes: een QR-code voor Nederland en een internationale. Beide QR-codes vind je in de app. Reis je buiten Nederland? Gebruik dan je internationale QR-code.</string>
     <string name="onboarding_next">Volgende</string>
     <string name="privacy_policy_title">Zo gebruikt de app jouw gegevens</string>
     <string name="privacy_policy_description"><![CDATA[In de <a href="https://coronacheck.nl/nl/privacy-in-app">privacyverklaring</a> staat hoe de app omgaat met jouw gegevens. Dit zijn de belangrijkste punten:]]></string>
@@ -155,7 +155,7 @@
     <string name="dialog_close">Sluiten</string>
     <string name="dialog_retry">Probeer opnieuw</string>
     <string name="new_terms_title">Nieuw in de app</string>
-    <string name="new_terms_highlights"><![CDATA[<b>Vaccinatiebewijs</b><br/>Ben je gevaccineerd? Je kunt nu ook je vaccinatiebewijs ophalen in de app. En daar een QR-code van maken. Hiermee krijg je toegang tot bepaalde locaties of activiteiten. Ook krijg je een QR-code om internationaal te reizen.</b>]]></string>
+    <string name="new_terms_highlights"><![CDATA[<b>Vaccinatiebewijs</b><br/>Ben je gevaccineerd? Je kunt nu ook je vaccinatiebewijs ophalen in de app. En daar een QR-code van maken. Hiermee krijg je toegang tot bepaalde locaties of activiteiten. Ook krijg je een QR-code om internationaal te reizen.]]></string>
     <string name="new_terms_consent_button">Volgende</string>
     <string name="new_terms_consent_needed_positive_button">Akkoord</string>
     <string name="new_terms_consent_needed_negative_button">Niet akkoord</string>
