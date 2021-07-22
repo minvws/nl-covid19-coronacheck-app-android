@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteCouplingStatus
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
+import org.json.JSONObject
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -30,7 +31,7 @@ class ValidatePaperProofUseCaseImpl(
             )
 
             return when (couplingResponse.status) {
-                RemoteCouplingStatus.Accepted -> getEventsFromPaperProofQr.get(qrContent, couplingCode)
+                RemoteCouplingStatus.Accepted -> validateSuccess(qrContent, couplingCode)
                 RemoteCouplingStatus.Rejected -> ValidatePaperProofResult.Error.RejectedQr
                 RemoteCouplingStatus.Blocked -> ValidatePaperProofResult.Error.BlockedQr
                 RemoteCouplingStatus.Expired -> ValidatePaperProofResult.Error.ExpiredQr
@@ -43,6 +44,25 @@ class ValidatePaperProofUseCaseImpl(
             return ValidatePaperProofResult.Error.ServerError(200)
         }
     }
+
+    private fun validateSuccess(
+        qrContent: String,
+        couplingCode: String
+    ) = ValidatePaperProofResult.Success(
+        mapOf(
+            getEventsFromPaperProofQr.get(qrContent) to getSignerCredential(qrContent, couplingCode)
+        )
+    )
+
+    private fun getSignerCredential(
+        qrCode: String,
+        couplingCode: String
+    ): ByteArray = JSONObject(
+        mapOf(
+            "credential" to qrCode,
+            "couplingCode" to couplingCode
+        )
+    ).toString().toByteArray()
 }
 
 sealed class ValidatePaperProofResult {

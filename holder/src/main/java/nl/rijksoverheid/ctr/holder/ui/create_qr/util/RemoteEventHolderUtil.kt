@@ -3,9 +3,9 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 import android.util.Base64
 import com.squareup.moshi.JsonClass
 import com.squareup.moshi.Moshi
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteConfigProviders
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetEventsFromPaperProofQrUseCase
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.ValidatePaperProofResult
 import nl.rijksoverheid.ctr.shared.models.JSON
 import org.json.JSONObject
 import java.time.LocalDate
@@ -31,15 +31,16 @@ class RemoteEventHolderUtilImpl(
     private val getEventsFromPaperProofQrUseCase: GetEventsFromPaperProofQrUseCase
 ) : RemoteEventHolderUtil {
     override fun holders(data: ByteArray, providerIdentifier: String): RemoteProtocol3.Holder {
-        val remoteEvent =  if (providerIdentifier != "dcc") {
-            val payload = moshi.adapter(SignedResponse::class.java).fromJson(String(data))!!.payload
-            val decodedPayload = String(Base64.decode(payload, Base64.DEFAULT))
-            moshi.adapter(RemoteProtocol3::class.java).fromJson(decodedPayload)!!
-        } else {
-            val qr = JSONObject(String(data)).optString("credential")
-            (getEventsFromPaperProofQrUseCase.get(qr, "") as ValidatePaperProofResult.Success)
-                .events.keys.first()
-        }
+        val remoteEvent =
+            if (providerIdentifier == RemoteConfigProviders.EventProvider.PROVIDER_IDENTIFIER_DCC) {
+                val qr = JSONObject(String(data)).optString("credential")
+                getEventsFromPaperProofQrUseCase.get(qr)
+            } else {
+                val payload =
+                    moshi.adapter(SignedResponse::class.java).fromJson(String(data))!!.payload
+                val decodedPayload = String(Base64.decode(payload, Base64.DEFAULT))
+                moshi.adapter(RemoteProtocol3::class.java).fromJson(decodedPayload)!!
+            }
         return remoteEvent.holder!!
     }
 
