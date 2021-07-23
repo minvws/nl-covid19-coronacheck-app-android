@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.holder.ui.myoverview.usecases
 
 import android.content.Intent
 import android.net.Uri
+import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.ReturnAppData
 
@@ -21,7 +22,7 @@ class ReturnToAppUseCaseImpl(
 ) : ReturnToAppUseCase {
 
     override fun get(uri: String): ReturnAppData? {
-        return cachedAppConfigUseCase.getCachedAppConfig().returnApps
+        return (cachedAppConfigUseCase.getCachedAppConfig() as HolderConfig).returnApps
             .firstOrNull { uri.contains(it.code) }
             ?.let {
                 ReturnAppData(

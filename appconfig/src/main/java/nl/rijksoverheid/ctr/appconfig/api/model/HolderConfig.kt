@@ -36,6 +36,7 @@ data class HolderConfig(
     @Json(name = "nlTestTypes") val nlTestTypes: List<Code>,
     @Json(name = "providerIdentifiers") val providerIdentifiers: List<Code>,
     @Json(name = "ggdEnabled") val ggdEnabled: Boolean,
+    @Json(name = "returnApp") val returnApps: List<Code>,
 ): AppConfig(holderAppDeactivated, holderInformationURL, holderMinimumVersion, configTTL, providerIdentifiers) {
 
     companion object {
@@ -62,6 +63,7 @@ data class HolderConfig(
             nlTestTypes: List<Code> = listOf(),
             providerIdentifiers: List<Code> = listOf(),
             ggdEnabled: Boolean = true,
+            returnApps: List<Code> = listOf()
         ) = HolderConfig(
             holderMinimumVersion = holderMinimumVersion,
             holderAppDeactivated = holderAppDeactivated,
@@ -85,6 +87,7 @@ data class HolderConfig(
             nlTestTypes = nlTestTypes,
             providerIdentifiers = providerIdentifiers,
             ggdEnabled = ggdEnabled,
+            returnApps = returnApps
         )
     }
 }
