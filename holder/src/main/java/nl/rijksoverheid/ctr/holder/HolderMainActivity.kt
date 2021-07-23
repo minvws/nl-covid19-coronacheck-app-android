@@ -59,14 +59,13 @@ class HolderMainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
 
-        val introductionStatus = introductionViewModel.getIntroductionStatus()
-        if (introductionStatus !is IntroductionStatus.IntroductionFinished.NoActionRequired) {
+        introductionViewModel.introductionStatusLiveData.observe(this, EventObserver {
             navController.navigate(
-                R.id.action_introduction, IntroductionFragment.getBundle(introductionStatus)
+                R.id.action_introduction, IntroductionFragment.getBundle(it)
             )
-        }
+        })
 
-        appStatusViewModel.appStatusLiveData.observe(this, {
+        appStatusViewModel.appStatusLiveData.observe(this, EventObserver {
             if (it !is AppStatus.NoActionRequired) {
                 navController.navigate(R.id.action_app_status, AppStatusFragment.getBundle(it))
             }

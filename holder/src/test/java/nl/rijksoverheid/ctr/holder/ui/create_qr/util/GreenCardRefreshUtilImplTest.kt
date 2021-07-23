@@ -3,8 +3,8 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
-import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
+import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
+import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.dao.GreenCardDao
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.CredentialEntity
@@ -31,10 +31,10 @@ class GreenCardRefreshUtilImplTest {
     private val holderDatabase = mockk< HolderDatabase>(relaxed = true).apply { 
         coEvery { greenCardDao() } returns greenCardDao
     }
-    private val appConfig = mockk<AppConfig>(relaxed = true).apply {
+    private val appConfig = mockk<HolderConfig>(relaxed = true).apply {
         coEvery { credentialRenewalDays } returns 5
     }
-    private val cachedAppConfigUseCase = mockk<CachedAppConfigUseCase>(relaxed = true).apply { 
+    private val cachedAppConfigUseCase = mockk<CachedAppConfigUseCase>(relaxed = true).apply {
         coEvery { getCachedAppConfig() } returns appConfig
     }
 
@@ -42,7 +42,7 @@ class GreenCardRefreshUtilImplTest {
 
     private val firstJanuaryClock = Clock.fixed(Instant.parse("2021-01-01T00:00:00.00Z"), ZoneId.of("UTC"))
 
-    private val credentialUtil = mockk<CredentialUtil>(relaxed = true)
+    private val credentialUtil = CredentialUtilImpl(firstJanuaryClock)
 
     private val greenCardRefreshUtil = GreenCardRefreshUtilImpl(holderDatabase, cachedAppConfigUseCase, greenCardUtil, firstJanuaryClock, credentialUtil)
     
@@ -65,8 +65,8 @@ class GreenCardRefreshUtilImplTest {
 
     private fun validOriginEntity() = OriginEntity(1, 1L, OriginType.Test, OffsetDateTime.now(), OffsetDateTime.now(), OffsetDateTime.now())
 
-    private fun validGreenCard(expireDateTime1: String = "2021-01-07T07:00:00.00Z",
-                               expireDateTime2: String = "2021-01-07T07:00:00.00Z") = greenCard(
+    private fun validGreenCard(expireDateTime1: String = "2021-01-06T07:00:00.00Z",
+                               expireDateTime2: String = "2021-01-06T07:00:00.00Z") = greenCard(
         originEntities = listOf(validOriginEntity()),
         credentials = listOf(credentialEntity(expireDateTime = expireDateTime1),
             credentialEntity(expireDateTime = expireDateTime2))

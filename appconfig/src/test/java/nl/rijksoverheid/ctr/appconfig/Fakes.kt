@@ -1,11 +1,9 @@
 package nl.rijksoverheid.ctr.appconfig
 
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
+import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.ResponseBody.Companion.toResponseBody
-import okio.BufferedSource
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -32,9 +30,6 @@ fun fakeAppConfigPersistenceManager(
 
 fun fakeCachedAppConfigUseCase(
     appConfig: AppConfig = fakeAppConfig(),
-    publicKeys: BufferedSource = "{\"cl_keys\":[]}".toResponseBody("application/json".toMediaType()).source(),
-    cachedAppConfigMaxValidityHours: Int = 0,
-    cachedAppConfigVaccinationEventValidity: Int = 0
 ) = object : CachedAppConfigUseCase {
 
     override fun isCachedAppConfigValid(): Boolean {
@@ -44,14 +39,6 @@ fun fakeCachedAppConfigUseCase(
     override fun getCachedAppConfig(): AppConfig {
         return appConfig
     }
-
-    override fun getCachedPublicKeys(): BufferedSource {
-        return publicKeys
-    }
-
-    override fun getProviderName(providerIdentifier: String?): String {
-        return ""
-    }
 }
 
 fun fakeAppConfig(
@@ -60,11 +47,11 @@ fun fakeAppConfig(
     informationURL: String = "",
     configTtlSeconds: Int = 0,
     maxValidityHours: Int = 0
-) = AppConfig.default(
-    minimumVersion = minimumVersion,
-    appDeactivated = appDeactivated,
-    informationURL = informationURL,
-    configTtlSeconds = configTtlSeconds,
+) = HolderConfig.default(
+    holderMinimumVersion = minimumVersion,
+    holderAppDeactivated = appDeactivated,
+    holderInformationURL = informationURL,
+    configTTL = configTtlSeconds,
     maxValidityHours = maxValidityHours,
     euLaunchDate = "",
     credentialRenewalDays = 0,

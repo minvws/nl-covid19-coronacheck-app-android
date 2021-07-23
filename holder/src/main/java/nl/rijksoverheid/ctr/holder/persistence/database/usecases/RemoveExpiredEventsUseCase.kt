@@ -1,14 +1,13 @@
 package nl.rijksoverheid.ctr.holder.persistence.database.usecases
 
-import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import java.time.Clock
 import java.time.OffsetDateTime
 
 interface RemoveExpiredEventsUseCase {
-    suspend fun execute(events: List<EventGroupEntity>)
+    suspend fun execute()
 }
 
 class RemoveExpiredEventsUseCaseImpl(
@@ -16,21 +15,24 @@ class RemoveExpiredEventsUseCaseImpl(
     private val cachedAppConfigUseCase: CachedAppConfigUseCase,
     private val holderDatabase: HolderDatabase
 ): RemoveExpiredEventsUseCase {
-    override suspend fun execute(events: List<EventGroupEntity>) {
+
+    override suspend fun execute() {
+        val events = holderDatabase.eventGroupDao().getAll()
         events.forEach {
-            val expireDate = when (it.type) {
+            val cachedAppConfig = cachedAppConfigUseCase.getCachedAppConfig()
+            val expirationTime = when(it.type) {
                 is OriginType.Vaccination -> {
-                    cachedAppConfigUseCase.getCachedAppConfig().vaccinationEventValidity
+                    cachedAppConfig.vaccinationEventValidity
                 }
                 is OriginType.Test -> {
-                    cachedAppConfigUseCase.getCachedAppConfig().testEventValidity
+                    cachedAppConfig.testEventValidity
                 }
                 is OriginType.Recovery -> {
-                    cachedAppConfigUseCase.getCachedAppConfig().recoveryEventValidity
+                    cachedAppConfig.recoveryEventValidity
                 }
             }
 
-            if (it.maxIssuedAt.plusHours(expireDate.toLong()) <= OffsetDateTime.now(clock)) {
+            if (it.maxIssuedAt.plusHours(expirationTime.toLong()) <= OffsetDateTime.now(clock)) {
                 holderDatabase.eventGroupDao().delete(it)
             }
         }

@@ -1,6 +1,6 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
-import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel

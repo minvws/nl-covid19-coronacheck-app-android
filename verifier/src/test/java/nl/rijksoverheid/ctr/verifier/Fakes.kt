@@ -1,8 +1,10 @@
 package nl.rijksoverheid.ctr.verifier
 
+import androidx.lifecycle.MutableLiveData
 import mobilecore.Mobilecore
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
+import nl.rijksoverheid.ctr.appconfig.api.model.VerifierConfig
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.introduction.IntroductionData
@@ -38,16 +40,24 @@ import java.time.OffsetDateTime
 fun fakeAppConfigViewModel(appStatus: AppStatus = AppStatus.NoActionRequired) =
     object : AppConfigViewModel() {
         override fun refresh(mobileCoreWrapper: MobileCoreWrapper) {
-            appStatusLiveData.value = appStatus
+            appStatusLiveData.value = Event(appStatus)
         }
     }
 
 fun fakeIntroductionViewModel(
-    introductionStatus: IntroductionStatus = IntroductionStatus.IntroductionFinished.NoActionRequired,
+    introductionStatus: IntroductionStatus? = null,
 ): IntroductionViewModel {
+
     return object : IntroductionViewModel() {
+
+        init {
+            if (introductionStatus != null) {
+                (introductionStatusLiveData as MutableLiveData).postValue(Event(introductionStatus))
+            }
+        }
+
         override fun getIntroductionStatus(): IntroductionStatus {
-            return introductionStatus
+            return introductionStatus ?: IntroductionStatus.IntroductionFinished.NoActionRequired
         }
 
         override fun saveNewFeaturesFinished(newFeaturesVersion: Int) {
@@ -138,20 +148,7 @@ fun fakeTestResultUtil(
 }
 
 fun fakeCachedAppConfigUseCase(
-    appConfig: AppConfig = AppConfig.default(
-        minimumVersion = 0,
-        appDeactivated = false,
-        informationURL = "dummy",
-        configTtlSeconds = 0,
-        maxValidityHours = 0,
-        euLaunchDate = "",
-        credentialRenewalDays = 0,
-        domesticCredentialValidity = 0,
-        testEventValidity = 0,
-        recoveryEventValidity = 0,
-        temporarilyDisabled = false,
-        requireUpdateBefore = 0
-    ),
+    appConfig: AppConfig = VerifierConfig.default(),
     publicKeys: BufferedSource = "{\"cl_keys\":[]}".toResponseBody("application/json".toMediaType())
         .source()
 ): CachedAppConfigUseCase = object : CachedAppConfigUseCase {
@@ -161,14 +158,6 @@ fun fakeCachedAppConfigUseCase(
 
     override fun getCachedAppConfig(): AppConfig {
         return appConfig
-    }
-
-    override fun getCachedPublicKeys(): BufferedSource {
-        return publicKeys
-    }
-
-    override fun getProviderName(providerIdentifier: String?): String {
-        return ""
     }
 }
 

@@ -1,10 +1,11 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
 import android.app.Application
-import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
-import nl.rijksoverheid.ctr.design.ext.formatDateTime
+import android.os.Build
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
+import nl.rijksoverheid.ctr.design.ext.formatDayMonthYearNumerical
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.shared.ext.getStringOrNull
 import nl.rijksoverheid.ctr.shared.models.PersonalDetails
@@ -12,6 +13,7 @@ import org.json.JSONObject
 import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
+import java.util.*
 
 interface InfoScreenUtil {
     fun getForRemoteTestResult2(
@@ -55,8 +57,12 @@ interface InfoScreenUtil {
 
 class InfoScreenUtilImpl(
     private val application: Application,
-    private val cachedAppConfigUseCase: CachedAppConfigUseCase
+    private val lastVaccinationDoseUtil: LastVaccinationDoseUtil,
+    cachedAppConfigUseCase: CachedAppConfigUseCase
 ) : InfoScreenUtil {
+
+    private val holderConfig = cachedAppConfigUseCase.getCachedAppConfig()
+
     override fun getForRemoteTestResult2(
         result: RemoteTestResult2.Result,
         personalDetails: PersonalDetails,
@@ -85,7 +91,7 @@ class InfoScreenUtilImpl(
         birthDate: String
     ): InfoScreen {
 
-        val testType = cachedAppConfigUseCase.getCachedAppConfig().euTestTypes.firstOrNull {
+        val testType = holderConfig.euTestTypes.firstOrNull {
             it.code == event.negativeTest?.type
         }?.name ?: event.negativeTest?.type ?: ""
 
@@ -94,7 +100,7 @@ class InfoScreenUtilImpl(
         val testLocation = event.negativeTest?.facility ?: ""
 
         val testManifacturer =
-            cachedAppConfigUseCase.getCachedAppConfig().euTestManufacturers.firstOrNull {
+            holderConfig.euTestManufacturers.firstOrNull {
                 it.code == event.negativeTest?.manufacturer
             }?.name ?: event.negativeTest?.manufacturer ?: ""
 
@@ -127,7 +133,7 @@ class InfoScreenUtilImpl(
         birthDate: String
     ): InfoScreen {
 
-        val testType = cachedAppConfigUseCase.getCachedAppConfig().euTestTypes.firstOrNull {
+        val testType = holderConfig.euTestTypes.firstOrNull {
             it.code == event.positiveTest?.type
         }?.name ?: event.positiveTest?.type ?: ""
 
@@ -136,7 +142,7 @@ class InfoScreenUtilImpl(
         val testLocation = event.positiveTest?.facility ?: ""
 
         val testManifacturer =
-            cachedAppConfigUseCase.getCachedAppConfig().euTestManufacturers.firstOrNull {
+            holderConfig.euTestManufacturers.firstOrNull {
                 it.code == event.positiveTest?.manufacturer
             }?.name ?: event.positiveTest?.manufacturer ?: ""
 
@@ -198,11 +204,11 @@ class InfoScreenUtilImpl(
 
         val disease = application.getString(R.string.your_vaccination_explanation_covid_19)
 
-        val hpkCode = cachedAppConfigUseCase.getCachedAppConfig().hpkCodes.firstOrNull {
+        val hpkCode = holderConfig.hpkCodes.firstOrNull {
             it.code == event.vaccination?.hpkCode
         }?.name ?: event.vaccination?.hpkCode ?: ""
 
-        val brand = cachedAppConfigUseCase.getCachedAppConfig().euBrands.firstOrNull {
+        val brand = holderConfig.euBrands.firstOrNull {
             it.code == event.vaccination?.brand
         }?.name ?: event.vaccination?.brand ?: ""
 
@@ -212,11 +218,11 @@ class InfoScreenUtilImpl(
             else -> ""
         }
 
-        val vaccinType = cachedAppConfigUseCase.getCachedAppConfig().euVaccinations.firstOrNull {
+        val vaccinType = holderConfig.euVaccinations.firstOrNull {
             it.code == event.vaccination?.type
         }?.name ?: event.vaccination?.type ?: ""
 
-        val producer = cachedAppConfigUseCase.getCachedAppConfig().euManufacturers.firstOrNull {
+        val producer = holderConfig.euManufacturers.firstOrNull {
             it.code == event.vaccination?.manufacturer
         }?.name ?: event.vaccination?.manufacturer ?: ""
 
@@ -228,6 +234,8 @@ class InfoScreenUtilImpl(
                     event.vaccination.totalDoses
                 )
             } else ""
+
+        val lastDose = lastVaccinationDoseUtil.getIsLastDoseAnswer(event)
 
         val vaccinationDate = event.vaccination?.date?.formatDayMonthYear() ?: ""
         val vaccinationCountry = event.vaccination?.country ?: ""
@@ -244,6 +252,7 @@ class InfoScreenUtilImpl(
                 vaccinType,
                 producer,
                 doses,
+                lastDose,
                 vaccinationDate,
                 vaccinationCountry,
                 uniqueCode
@@ -276,7 +285,7 @@ class InfoScreenUtilImpl(
 
         val birthDate = dcc.getStringOrNull("dob")?.let { birthDate ->
             try {
-                LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).formatDayMonthYear()
+                LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).formatDayMonthYearNumerical()
             } catch (e: Exception) {
                 ""
             }
@@ -284,7 +293,7 @@ class InfoScreenUtilImpl(
 
         val disease = application.getString(R.string.your_vaccination_explanation_covid_19)
 
-        val testType = cachedAppConfigUseCase.getCachedAppConfig().euTestTypes.firstOrNull {
+        val testType = holderConfig.euTestTypes.firstOrNull {
             it.code == test.getStringOrNull("tt")
         }?.name ?: test.getStringOrNull("tt") ?: ""
 
@@ -293,7 +302,7 @@ class InfoScreenUtilImpl(
         val testDate = test.getStringOrNull("sc")?.let {
             try {
                 OffsetDateTime.parse(it, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
-                    .formatDateTime(application)
+                    .toLocalDate().formatDayMonthYearNumerical()
             } catch (e: Exception) {
                 ""
             }
@@ -305,11 +314,11 @@ class InfoScreenUtilImpl(
         val testLocation = test.getStringOrNull("tc") ?: ""
 
         val manufacturer =
-            cachedAppConfigUseCase.getCachedAppConfig().euManufacturers.firstOrNull {
+            holderConfig.euManufacturers.firstOrNull {
                 it.code == test.getStringOrNull("ma")
             }?.name ?: test.getStringOrNull("ma") ?: ""
 
-        val vaccinationCountry = test.getStringOrNull("co")
+        val vaccinationCountry = getCountry(test.getStringOrNull("co"))
         val uniqueCode = test.getStringOrNull("ci")
 
         val description = application.getString(
@@ -333,6 +342,27 @@ class InfoScreenUtilImpl(
         )
     }
 
+    private fun getCurrentLocale(): Locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        application.resources.configuration.locales[0]
+    } else {
+        application.resources.configuration.locale
+    }
+
+    private fun getCountry(countryCode: String?): String = if (countryCode != null) {
+        val currentLocale = getCurrentLocale()
+        val isNL = currentLocale.country == "NL"
+        val countryNameInDutch = Locale("", countryCode).getDisplayCountry(Locale("nl"))
+        val countryNameInEnglish = Locale("", countryCode).getDisplayCountry(Locale("en"))
+
+        if (isNL) {
+            "$countryNameInDutch / $countryNameInEnglish"
+        } else {
+            countryNameInEnglish
+        }
+    } else {
+        ""
+    }
+
     override fun getForEuropeanVaccinationQr(readEuropeanCredential: JSONObject): InfoScreen {
         val dcc = readEuropeanCredential.optJSONObject("dcc")
         val vaccination = dcc.getJSONArray("v").optJSONObject(0)
@@ -345,7 +375,7 @@ class InfoScreenUtilImpl(
 
         val birthDate = dcc.getStringOrNull("dob")?.let { birthDate ->
             try {
-                LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).formatDayMonthYear()
+                LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).formatDayMonthYearNumerical()
             } catch (e: Exception) {
                 ""
             }
@@ -353,16 +383,16 @@ class InfoScreenUtilImpl(
 
         val disease = application.getString(R.string.your_vaccination_explanation_covid_19)
 
-        val vaccin = cachedAppConfigUseCase.getCachedAppConfig().euBrands.firstOrNull {
+        val vaccin = holderConfig.euBrands.firstOrNull {
             it.code == vaccination.getStringOrNull("mp")
         }?.name ?: vaccination.getStringOrNull("mp") ?: ""
 
-        val vaccinType = cachedAppConfigUseCase.getCachedAppConfig().euVaccinations.firstOrNull {
+        val vaccinType = holderConfig.euVaccinations.firstOrNull {
             it.code == vaccination.getStringOrNull("vp")
         }?.name ?: vaccination.getStringOrNull("vp") ?: ""
 
         val manufacturer =
-            cachedAppConfigUseCase.getCachedAppConfig().euManufacturers.firstOrNull {
+            holderConfig.euManufacturers.firstOrNull {
                 it.code == vaccination.getStringOrNull("ma")
             }?.name ?: vaccination.getStringOrNull("ma") ?: ""
 
@@ -377,13 +407,23 @@ class InfoScreenUtilImpl(
 
         val vaccinationDate = vaccination.getStringOrNull("dt")?.let { vaccinationDate ->
             try {
-                LocalDate.parse(vaccinationDate, DateTimeFormatter.ISO_DATE).formatDayMonthYear()
+                LocalDate.parse(vaccinationDate, DateTimeFormatter.ISO_DATE)
+                    .formatDayMonthYearNumerical()
             } catch (e: Exception) {
                 ""
             }
         } ?: ""
 
-        val vaccinationCountry = vaccination.getStringOrNull("co")
+        val countryCode = vaccination.getStringOrNull("co")
+        val vaccinationCountry = getCountry(countryCode)
+
+        val issuerValue = vaccination.getStringOrNull("is")
+        val issuer = if (issuerValue == issuerVWS) {
+            application.getString(R.string.qr_explanation_certificate_issuer)
+        } else {
+            issuerValue
+        }
+
         val uniqueCode = vaccination.getStringOrNull("ci")
 
         return InfoScreen(
@@ -399,6 +439,7 @@ class InfoScreenUtilImpl(
                 doses,
                 vaccinationDate,
                 vaccinationCountry,
+                issuer,
                 uniqueCode
             )
         )
@@ -416,7 +457,7 @@ class InfoScreenUtilImpl(
 
         val birthDate = dcc.getStringOrNull("dob")?.let { birthDate ->
             try {
-                LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).formatDayMonthYear()
+                LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).formatDayMonthYearNumerical()
             } catch (e: Exception) {
                 ""
             }
@@ -426,19 +467,19 @@ class InfoScreenUtilImpl(
 
         val testDate = recovery.getStringOrNull("fr")?.let { testDate ->
             try {
-                LocalDate.parse(testDate, DateTimeFormatter.ISO_DATE).formatDayMonthYear()
+                LocalDate.parse(testDate, DateTimeFormatter.ISO_DATE).formatDayMonthYearNumerical()
             } catch (e: Exception) {
                 ""
             }
         } ?: ""
 
-        val country = recovery.getStringOrNull("co")
+        val country = getCountry(recovery.getStringOrNull("co"))
 
         val producer = recovery.getStringOrNull("is")
 
         val validFromDate = recovery.getStringOrNull("df")?.let { testDate ->
             try {
-                LocalDate.parse(testDate, DateTimeFormatter.ISO_DATE).formatDayMonthYear()
+                LocalDate.parse(testDate, DateTimeFormatter.ISO_DATE).formatDayMonthYearNumerical()
             } catch (e: Exception) {
                 ""
             }
@@ -446,7 +487,7 @@ class InfoScreenUtilImpl(
 
         val validUntilDate = recovery.getStringOrNull("du")?.let { testDate ->
             try {
-                LocalDate.parse(testDate, DateTimeFormatter.ISO_DATE).formatDayMonthYear()
+                LocalDate.parse(testDate, DateTimeFormatter.ISO_DATE).formatDayMonthYearNumerical()
             } catch (e: Exception) {
                 ""
             }
@@ -469,6 +510,10 @@ class InfoScreenUtilImpl(
                 uniqueCode
             )
         )
+    }
+
+    companion object {
+        private const val issuerVWS = "Ministry of Health Welfare and Sport"
     }
 
 }

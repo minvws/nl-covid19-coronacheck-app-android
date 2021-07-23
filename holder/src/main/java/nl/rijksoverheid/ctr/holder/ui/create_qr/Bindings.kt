@@ -4,6 +4,7 @@ import android.view.View
 import androidx.annotation.StringRes
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.IncludeContentButtonBinding
+import nl.rijksoverheid.ctr.shared.utils.Accessibility
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -28,7 +29,12 @@ fun IncludeContentButtonBinding.bind(
             providerTitle.paddingRight,
             providerTitle.context.resources.getDimensionPixelSize(R.dimen.test_provider_title_without_subtitle_padding)
         )
+        root.contentDescription = providerTitle.text
+    } else {
+        root.contentDescription = String.format("%s. %s", providerTitle.text, providerSubtitle.text)
     }
+
+    Accessibility.button(root)
 
     root.setOnClickListener {
         onClick()

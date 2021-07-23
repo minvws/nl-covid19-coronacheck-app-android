@@ -7,6 +7,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEvent
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.RemoteEventHolderUtil
 import java.time.OffsetDateTime
 
 /*
@@ -20,11 +21,17 @@ interface SaveEventsUseCase {
     suspend fun saveNegativeTest2(negativeTest2: RemoteTestResult2, rawResponse: ByteArray)
     suspend fun saveRemoteProtocols3(
         remoteProtocols3: Map<RemoteProtocol3, ByteArray>,
-        originType: OriginType
+        originType: OriginType,
+        removePreviousEvents: Boolean
     )
+
+    suspend fun remoteProtocols3AreConflicting(remoteProtocols3: Map<RemoteProtocol3, ByteArray>): Boolean
 }
 
-class SaveEventsUseCaseImpl(private val holderDatabase: HolderDatabase) : SaveEventsUseCase {
+class SaveEventsUseCaseImpl(
+    private val holderDatabase: HolderDatabase,
+    private val remoteEventHolderUtil: RemoteEventHolderUtil
+) : SaveEventsUseCase {
 
     override suspend fun saveNegativeTest2(
         negativeTest2: RemoteTestResult2,
@@ -43,10 +50,18 @@ class SaveEventsUseCaseImpl(private val holderDatabase: HolderDatabase) : SaveEv
         holderDatabase.eventGroupDao().insertAll(listOf(entity))
     }
 
+    override suspend fun remoteProtocols3AreConflicting(remoteProtocols3: Map<RemoteProtocol3, ByteArray>): Boolean {
+        val storedEventHolders = holderDatabase.eventGroupDao().getAll()
+            .map { remoteEventHolderUtil.holders(it.jsonData, it.providerIdentifier) }.distinct()
+        val incomingEventHolders = remoteProtocols3.map { it.key.holder!! }.distinct()
+
+        return remoteEventHolderUtil.conflicting(storedEventHolders, incomingEventHolders)
+    }
 
     override suspend fun saveRemoteProtocols3(
         remoteProtocols3: Map<RemoteProtocol3, ByteArray>,
-        originType: OriginType
+        originType: OriginType,
+        removePreviousEvents: Boolean,
     ) {
         val entities = remoteProtocols3.map { remoteProtocol3 ->
             val remoteEvents = remoteProtocol3.key.events ?: listOf()
@@ -62,12 +77,8 @@ class SaveEventsUseCaseImpl(private val holderDatabase: HolderDatabase) : SaveEv
         // Save entity in database
         holderDatabase.run {
             withTransaction {
-                // Delete all previous events of type Vaccination or Recovery so that if
-                // for example person a has vaccination events saved, person b vaccination
-                // gets overwritten. This is just a temporary quick fix until we support
-                // multiple wallets in the app
-                if (originType == OriginType.Vaccination || originType == OriginType.Recovery) {
-                    eventGroupDao().deleteAllOfType(originType)
+                if (removePreviousEvents) {
+                    eventGroupDao().deleteAll()
                 }
                 eventGroupDao().insertAll(entities)
             }

@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit
 
 interface WorkerManagerWrapper {
     fun scheduleNextCredentialsRefreshIfAny()
+    fun cancel(context: Context)
 }
 
 class WorkerManagerWrapperImpl(
@@ -29,5 +30,9 @@ class WorkerManagerWrapperImpl(
                     .enqueueUniqueWork("refresh_credentials", ExistingWorkPolicy.REPLACE, request)
             }
         }
+    }
+
+    override fun cancel(context: Context) {
+        WorkManager.getInstance(context).cancelUniqueWork("refresh_credentials")
     }
 }

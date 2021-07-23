@@ -39,24 +39,8 @@
                 app:popExitAnim="@anim/fragment_close_exit" />
 
             <action
-                android:id="@+id/action_make_appointment"
-                app:destination="@id/nav_make_appointment"
-                app:enterAnim="@anim/fragment_open_enter"
-                app:exitAnim="@anim/fragment_open_exit"
-                app:popEnterAnim="@anim/fragment_close_enter"
-                app:popExitAnim="@anim/fragment_close_exit" />
-
-            <action
                 android:id="@+id/action_qr_code"
                 app:destination="@id/nav_qr_code"
-                app:enterAnim="@anim/fragment_open_enter"
-                app:exitAnim="@anim/fragment_open_exit"
-                app:popEnterAnim="@anim/fragment_close_enter"
-                app:popExitAnim="@anim/fragment_close_exit" />
-
-            <action
-                android:id="@+id/action_create_qr"
-                app:destination="@id/nav_qr_explanation"
                 app:enterAnim="@anim/fragment_open_enter"
                 app:exitAnim="@anim/fragment_open_exit"
                 app:popEnterAnim="@anim/fragment_close_enter"
@@ -133,37 +117,83 @@
 
     </dialog>
 
-    <fragment
-        android:id="@+id/nav_qr_explanation_root"
-        android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.QrExplanationFragment"
-        android:label="@string/choose_provider_toolbar"
-        tools:layout="@layout/fragment_qr_explanation">
+    <navigation
+        android:id="@+id/nav_paper_proof"
+        app:startDestination="@+id/nav_paper_proof_explanation">
 
-        <action
-            android:id="@+id/action_qr_type"
-            app:destination="@id/nav_qr_code_type"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+        <fragment
+            android:id="@+id/nav_paper_proof_explanation"
+            android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.PaperProofExplanationFragment"
+            android:label="@string/add_paper_proof"
+            tools:layout="@layout/fragment_paper_proof_explanation_fragment">
 
-    </fragment>
+            <action
+                android:id="@+id/action_paper_proof_code"
+                app:destination="@id/nav_paper_proof_code"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right" />
 
-    <fragment
-        android:id="@+id/nav_qr_explanation"
-        android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.QrExplanationFragment"
-        android:label="@string/choose_provider_toolbar"
-        tools:layout="@layout/fragment_qr_explanation">
+        </fragment>
 
-        <action
-            android:id="@+id/action_qr_type"
-            app:destination="@id/nav_qr_code_type"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+        <fragment
+            android:id="@+id/nav_paper_proof_code"
+            android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.PaperProofCodeFragment"
+            android:label="@string/add_paper_proof"
+            tools:layout="@layout/fragment_paper_proof_code">
 
-    </fragment>
+            <action
+                android:id="@+id/action_title_description_bottom_sheet"
+                app:destination="@id/nav_title_description_bottom_sheet" />
+
+            <action
+                android:id="@+id/action_paper_proof_consent"
+                app:destination="@id/nav_paper_proof_consent"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right" />
+
+        </fragment>
+
+        <fragment
+            android:id="@+id/nav_paper_proof_consent"
+            android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.PaperProofConsentFragment"
+            android:label="@string/add_paper_proof"
+            tools:layout="@layout/fragment_paper_proof_consent">
+
+            <action
+                android:id="@+id/action_paper_proof_qr_scanner"
+                app:destination="@id/nav_paper_proof_qr_scanner"
+                app:enterAnim="@anim/fragment_open_enter"
+                app:exitAnim="@anim/fragment_open_exit"
+                app:popEnterAnim="@anim/fragment_close_enter"
+                app:popExitAnim="@anim/fragment_close_exit" />
+
+            <action
+                android:id="@+id/action_your_events"
+                app:destination="@id/nav_your_events"
+                app:enterAnim="@anim/fragment_open_enter"
+                app:exitAnim="@anim/fragment_open_exit"
+                app:popEnterAnim="@anim/fragment_close_enter"
+                app:popExitAnim="@anim/fragment_close_exit" />
+
+            <action
+                android:id="@+id/action_could_not_create_qr"
+                app:destination="@id/nav_could_not_create_qr"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right" />
+
+            <argument
+                android:name="couplingCode"
+                app:argType="string"/>
+
+        </fragment>
+
+    </navigation>
 
     <fragment
         android:id="@+id/nav_qr_code_type"
@@ -182,22 +212,6 @@
         <action
             android:id="@+id/action_commercial_test_code"
             app:destination="@id/nav_commercial_test_code"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
-
-        <action
-            android:id="@+id/action_vaccination"
-            app:destination="@id/nav_get_vaccination"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
-
-        <action
-            android:id="@+id/action_recovery"
-            app:destination="@id/nav_get_recovery"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
@@ -258,58 +272,10 @@
     </fragment>
 
     <fragment
-        android:id="@+id/nav_get_vaccination"
-        android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.GetVaccinationFragment"
-        android:label="@string/choose_provider_toolbar"
-        tools:layout="@layout/fragment_get_vaccination">
-
-        <action
-            android:id="@+id/action_your_events"
-            app:destination="@id/nav_your_events"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
-
-        <action
-            android:id="@+id/action_could_not_create_qr"
-            app:destination="@id/nav_could_not_create_qr"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
-
-    </fragment>
-
-    <fragment
-        android:id="@+id/nav_get_recovery"
-        android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.GetRecoveryFragment"
-        android:label="@string/choose_provider_toolbar"
-        tools:layout="@layout/fragment_get_vaccination">
-
-        <action
-            android:id="@+id/action_your_events"
-            app:destination="@id/nav_your_events"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
-
-        <action
-            android:id="@+id/action_could_not_create_qr"
-            app:destination="@id/nav_could_not_create_qr"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
-
-    </fragment>
-
-    <fragment
         android:id="@+id/nav_get_events"
         android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.GetEventsFragment"
         android:label="@string/choose_provider_toolbar"
-        tools:layout="@layout/fragment_get_vaccination">
+        tools:layout="@layout/fragment_get_events">
 
         <argument
             android:name="originType"
@@ -465,6 +431,10 @@
             android:name="description"
             app:argType="string" />
 
+        <argument
+            android:name="buttonTitle"
+            app:argType="string" />
+
         <action
             android:id="@+id/action_my_overview"
             app:destination="@id/nav_graph_overview"
@@ -478,12 +448,6 @@
     </fragment>
 
     <fragment
-        android:id="@+id/nav_make_appointment"
-        android:name="nl.rijksoverheid.ctr.holder.ui.make_appointment.MakeAppointmentFragment"
-        android:label="@string/test_appointment_info_toolbar_title"
-        tools:layout="@layout/fragment_make_appointment" />
-
-    <fragment
         android:id="@+id/nav_about_this_app"
         android:name="nl.rijksoverheid.ctr.design.menu.about.AboutThisAppFragment"
         android:label="@string/about_this_app"
@@ -493,5 +457,20 @@
         android:id="@+id/nav_not_yet_tested"
         android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.NotYetTestedFragment"
         tools:layout="@layout/dialog_not_yet_tested" />
+
+    <dialog
+        android:id="@+id/nav_title_description_bottom_sheet"
+        android:name="nl.rijksoverheid.ctr.design.fragments.TitleDescriptionBottomSheetFragment"
+        tools:layout="@layout/fragment_title_description_bottom_sheet">
+
+        <argument
+            android:name="title"
+            app:argType="string" />
+
+        <argument
+            android:name="description"
+            app:argType="string" />
+
+    </dialog>
 
 </navigation>

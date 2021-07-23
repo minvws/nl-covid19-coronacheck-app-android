@@ -11,17 +11,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:scaleType="fitCenter"
-        android:contentDescription="@null" />
+        android:contentDescription="@null"
+        android:scaleType="fitCenter" />
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/animation_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:scaleType="centerCrop"
         android:layout_gravity="bottom"
+        android:layout_marginTop="8dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
         app:lottie_autoPlay="true"
+        app:lottie_ignoreDisabledSystemAnimations="true"
         app:lottie_loop="true" />
 
 </merge>

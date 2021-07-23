@@ -2,14 +2,16 @@ package nl.rijksoverheid.ctr.holder.persistence.database.usecases
 
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
+import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.holder.fakeCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.dao.EventGroupDao
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteConfigProviders
 import org.junit.Test
 import java.time.Clock
 import java.time.Instant
@@ -17,10 +19,17 @@ import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.util.concurrent.TimeUnit
 
+/*
+ *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+ *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+ *
+ *   SPDX-License-Identifier: EUPL-1.2
+ *
+ */
 class RemoveExpiredEventsUseCaseImplTest {
 
     private val cachedAppConfigUseCase = fakeCachedAppConfigUseCase(
-        appConfig = AppConfig.default(
+        appConfig = HolderConfig.default(
             vaccinationEventValidity = TimeUnit.DAYS.toHours(10).toInt(),
             testEventValidity = TimeUnit.DAYS.toHours(20).toInt(),
             recoveryEventValidity = TimeUnit.DAYS.toHours(30).toInt()
@@ -51,10 +60,8 @@ class RemoveExpiredEventsUseCaseImplTest {
             jsonData = "".toByteArray()
         )
 
-        usecase.execute(
-            listOf(eventGroup)
-        )
-
+        coEvery { eventGroupDao.getAll() } answers { listOf(eventGroup) }
+        usecase.execute()
         coVerify { eventGroupDao.delete(eventGroup) }
     }
 
@@ -68,10 +75,8 @@ class RemoveExpiredEventsUseCaseImplTest {
             jsonData = "".toByteArray()
         )
 
-        usecase.execute(
-            listOf(eventGroup)
-        )
-
+        coEvery { eventGroupDao.getAll() } answers { listOf(eventGroup) }
+        usecase.execute()
         coVerify(exactly = 0) { eventGroupDao.delete(eventGroup) }
     }
 
@@ -85,10 +90,8 @@ class RemoveExpiredEventsUseCaseImplTest {
             jsonData = "".toByteArray()
         )
 
-        usecase.execute(
-            listOf(eventGroup)
-        )
-
+        coEvery { eventGroupDao.getAll() } answers { listOf(eventGroup) }
+        usecase.execute()
         coVerify { eventGroupDao.delete(eventGroup) }
     }
 
@@ -102,10 +105,8 @@ class RemoveExpiredEventsUseCaseImplTest {
             jsonData = "".toByteArray()
         )
 
-        usecase.execute(
-            listOf(eventGroup)
-        )
-
+        coEvery { eventGroupDao.getAll() } answers { listOf(eventGroup) }
+        usecase.execute()
         coVerify(exactly = 0) { eventGroupDao.delete(eventGroup) }
     }
 
@@ -119,10 +120,8 @@ class RemoveExpiredEventsUseCaseImplTest {
             jsonData = "".toByteArray()
         )
 
-        usecase.execute(
-            listOf(eventGroup)
-        )
-
+        coEvery { eventGroupDao.getAll() } answers { listOf(eventGroup) }
+        usecase.execute()
         coVerify { eventGroupDao.delete(eventGroup) }
     }
 
@@ -136,11 +135,8 @@ class RemoveExpiredEventsUseCaseImplTest {
             jsonData = "".toByteArray()
         )
 
-        usecase.execute(
-            listOf(eventGroup)
-        )
-
+        coEvery { eventGroupDao.getAll() } answers { listOf(eventGroup) }
+        usecase.execute()
         coVerify(exactly = 0) { eventGroupDao.delete(eventGroup) }
     }
-
 }

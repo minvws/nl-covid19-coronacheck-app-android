@@ -8,7 +8,8 @@
 
 package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
-import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
+import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import java.time.Clock
@@ -29,15 +30,19 @@ class GreenCardRefreshUtilImpl(
     private val credentialUtil: CredentialUtil,
 ) : GreenCardRefreshUtil {
 
-    override suspend fun shouldRefresh(): Boolean {
-        val credentialRenewalDays = cachedAppConfigUseCase.getCachedAppConfig().credentialRenewalDays.toLong()
+    private val holderConfig = cachedAppConfigUseCase.getCachedAppConfig()
 
-        return holderDatabase.greenCardDao().getAll().any { greenCard ->
-            val hasNewCredentials = !greenCardUtil.getExpireDate(greenCard).isEqual(greenCard.credentialEntities.lastOrNull()?.expirationTime)
+    override suspend fun shouldRefresh(): Boolean {
+        val credentialRenewalDays = holderConfig.credentialRenewalDays.toLong()
+
+        val greenCardExpiring = holderDatabase.greenCardDao().getAll().firstOrNull { greenCard ->
+            val hasNewCredentials = !greenCardUtil.getExpireDate(greenCard).isEqual(greenCard.credentialEntities.lastOrNull()?.expirationTime ?: OffsetDateTime.now(clock))
             val latestCredential = greenCard.credentialEntities.maxByOrNull { it.expirationTime }
             val latestCredentialExpiring = latestCredential?.let { credentialUtil.isExpiring(credentialRenewalDays, latestCredential) } ?: false
-            return hasNewCredentials && latestCredentialExpiring
+            hasNewCredentials && latestCredentialExpiring
         }
+
+        return greenCardExpiring != null
     }
 
     override suspend fun allCredentialsExpired(selectedType: GreenCardType): Boolean {
@@ -51,7 +56,7 @@ class GreenCardRefreshUtilImpl(
 
     override suspend fun credentialsExpireInDays(): Long {
         val configCredentialRenewalDays =
-            cachedAppConfigUseCase.getCachedAppConfig().credentialRenewalDays.toLong()
+            holderConfig.credentialRenewalDays.toLong()
 
         val firstExpiringGreenCardRenewal = holderDatabase.greenCardDao().getAll()
             .filterNot {
