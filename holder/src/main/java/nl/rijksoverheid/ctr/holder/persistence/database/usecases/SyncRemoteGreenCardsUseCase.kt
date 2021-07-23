@@ -25,18 +25,20 @@ class SyncRemoteGreenCardsUseCaseImpl(
             mobileCoreWrapper.createDomesticCredentials(
                 createCredentials = remoteGreenCards.domesticGreencard.createCredentialMessages
             )
-        } else return
+        } else null
 
         // Clear everything from the database
         holderDatabase.greenCardDao().deleteAll()
         holderDatabase.originDao().deleteAll()
         holderDatabase.credentialDao().deleteAll()
 
-        remoteGreenCards.domesticGreencard.let {
-            createDomesticGreenCardUseCase.create(
-                greenCard = it,
-                domesticCredentials = domesticCredentials,
-            )
+        domesticCredentials?.let { domesticCredentials ->
+            remoteGreenCards.domesticGreencard?.let { domesticGreenCard ->
+                createDomesticGreenCardUseCase.create(
+                    greenCard = domesticGreenCard,
+                    domesticCredentials = domesticCredentials,
+                )
+            }
         }
 
         remoteGreenCards.euGreencards?.let {
