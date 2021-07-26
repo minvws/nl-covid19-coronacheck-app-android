@@ -152,7 +152,6 @@ fun holderModule(baseUrl: String) = module {
     // ViewModels
     viewModel<QrCodeViewModel> { QrCodeViewModelImpl(get(), get()) }
     viewModel<HolderMainActivityViewModel> { HolderMainActivityViewModelImpl() }
-    viewModel<QrCodeViewModel> { QrCodeViewModelImpl(get(), get()) }
     viewModel<CommercialTestCodeViewModel> { CommercialTestCodeViewModelImpl(get(), get()) }
     viewModel { DigiDViewModel(get()) }
     viewModel { TokenQrViewModel(get()) }
