@@ -131,7 +131,7 @@ fun holderModule(baseUrl: String) = module {
         GetMyOverviewItemsUseCaseImpl(get(), get(), get(), get())
     }
     factory<TokenValidatorUtil> { TokenValidatorUtilImpl() }
-    factory<CredentialUtil> { CredentialUtilImpl(Clock.systemUTC()) }
+    factory<CredentialUtil> { CredentialUtilImpl(Clock.systemUTC(), get()) }
     factory<OriginUtil> { OriginUtilImpl(Clock.systemUTC()) }
     factory<RemoteEventRecoveryUtil> { RemoteEventRecoveryUtilImpl(get()) }
     factory<RemoteEventHolderUtil> { RemoteEventHolderUtilImpl(get(), get()) }

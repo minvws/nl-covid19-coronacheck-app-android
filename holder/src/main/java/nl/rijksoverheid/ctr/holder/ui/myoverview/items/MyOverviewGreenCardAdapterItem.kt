@@ -42,6 +42,7 @@ class MyOverviewGreenCardAdapterItem(
 
     private val testResultAdapterItemUtil: TestResultAdapterItemUtil by inject()
     private val greenCardUtil: GreenCardUtil by inject()
+    private val credentialUtil: CredentialUtil by inject()
     private val originUtil: OriginUtil by inject()
 
     override fun bind(viewBinding: ItemMyOverviewGreenCardBinding, position: Int) {
@@ -95,6 +96,12 @@ class MyOverviewGreenCardAdapterItem(
     private fun setContent(viewBinding: ItemMyOverviewGreenCardBinding) {
         val context = viewBinding.root.context
 
+        println("GIO pame")
+
+        greenCard.credentialEntities.forEach {
+            println("GIO pame ${String(it.data)}")
+        }
+
         viewBinding.proof1Title.visibility = View.GONE
         viewBinding.proof1Subtitle.visibility = View.GONE
         viewBinding.proof2Title.visibility = View.GONE
@@ -120,13 +127,13 @@ class MyOverviewGreenCardAdapterItem(
                         setOriginTitle(
                             textView = viewBinding.proof1Title,
                             originState = originState,
-                            title = context.getString(R.string.qr_card_test_title_eu)
+                            title = "Testbewijs: PCR (${credentialUtil.getTestType(greenCard.credentialEntities)})"
                         )
 
                         setOriginSubtitle(
                             textView = viewBinding.proof1Subtitle,
                             originState = originState,
-                            subtitle = origin.eventTime.formatDateTime(context),
+                            subtitle = "Testdatum: ${origin.eventTime.formatDateTime(context)}",
                         )
                     }
 
