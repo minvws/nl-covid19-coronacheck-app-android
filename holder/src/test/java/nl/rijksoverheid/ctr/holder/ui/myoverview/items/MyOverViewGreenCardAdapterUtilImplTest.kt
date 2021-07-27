@@ -15,6 +15,7 @@ import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TestResultAdapterItemUtil
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
 import java.time.Clock
 import java.time.Instant
@@ -29,7 +30,9 @@ import java.time.ZoneId
  *
  */
 @RunWith(RobolectricTestRunner::class)
-class MyOverViewGreenCardAdapterUtilImplTest {
+class MyOverViewGreenCardAdapterUtilImplTest: AutoCloseKoinTest() {
+        val readEuropeanCredentialVaccination = "{\"credentialVersion\":1,\"issuer\":\"NL\",\"issuedAt\":1627294308,\"expirationTime\":1629717843,\"dcc\":{\"ver\":\"1.3.0\",\"dob\":\"1960-01-01\",\"nam\":{\"fn\":\"Bouwer\",\"fnt\":\"BOUWER\",\"gn\":\"Bob\",\"gnt\":\"BOB\"},\"v\":[{\"tg\":\"840539006\",\"vp\":\"1119349007\",\"mp\":\"EU\\/1\\/20\\/1528\",\"ma\":\"ORG-100030215\",\"dn\":1,\"sd\":1,\"dt\":\"2021-07-18\",\"co\":\"NL\",\"is\":\"Ministry of Health Welfare and Sport\",\"ci\":\"URN:UCI:01:NL:FE6BOX7GLBBZTH6K5OFO42#1\"}],\"t\":null,\"r\":null}}"
+
     private val context: Context by lazy {
         ApplicationProvider.getApplicationContext()
     }
