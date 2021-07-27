@@ -92,7 +92,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
                         setOriginSubtitle(
                             textView = viewBinding.proof1Subtitle,
                             originState = originState,
-                            subtitle = context.getString(R.string.qr_card_validity_valid, origin.eventTime.toLocalDate().formatDayShortMonthYear()),
+                            subtitle = context.getString(R.string.qr_card_validity_valid, origin.expirationTime.toLocalDate().formatDayShortMonthYear()),
                         )
                     }
 
