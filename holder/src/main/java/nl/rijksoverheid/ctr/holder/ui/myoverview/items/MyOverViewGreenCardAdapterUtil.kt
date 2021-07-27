@@ -33,7 +33,6 @@ class MyOverViewGreenCardAdapterUtilImpl(
     private val credentialUtil: CredentialUtil,
     private val testResultAdapterItemUtil: TestResultAdapterItemUtil,
     private val greenCardUtil: GreenCardUtil,
-    private val originUtil: OriginUtil,
 ): MyOverViewGreenCardAdapterUtil {
     override fun setContent(greenCard: GreenCard, originStates: List<OriginState>, viewBinding: ViewBindingWrapper) {
         when (greenCard.greenCardEntity.type) {
@@ -45,9 +44,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
                     is OriginType.Test -> {
                         setOriginTitle(
                             textView = viewBinding.proof1Title,
-                            originState = originState,
                             title = "${context.getString(R.string.qr_card_test_domestic)} PCR (${credentialUtil.getTestType(greenCard.credentialEntities)})",
-                            greenCard = greenCard
                         )
 
                         setOriginSubtitle(
@@ -67,9 +64,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
                         val doses = credentialUtil.getVaccinationDoses(greenCard.credentialEntities, getString)
                         setOriginTitle(
                             textView = viewBinding.proof1Title,
-                            originState = originState,
                             title = "${context.getString(R.string.qr_card_vaccination_title_domestic)} $doses",
-                            greenCard = greenCard
                         )
 
                         setOriginSubtitle(
@@ -84,9 +79,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
                     is OriginType.Recovery -> {
                         setOriginTitle(
                             textView = viewBinding.proof1Title,
-                            originState = originState,
                             title = context.getString(R.string.qr_card_recovery_title_domestic),
-                            greenCard = greenCard
                         )
 
                         setOriginSubtitle(
@@ -105,9 +98,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
                         is OriginType.Test -> {
                             setOriginTitle(
                                 textView = viewBinding.proof3Title,
-                                originState = originState,
                                 title = context.getString(R.string.qr_card_test_domestic),
-                                greenCard = greenCard
                             )
 
                             setOriginSubtitle(
@@ -122,9 +113,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
                         is OriginType.Vaccination -> {
                             setOriginTitle(
                                 textView = viewBinding.proof1Title,
-                                originState = originState,
                                 title = context.getString(R.string.qr_card_vaccination_title_domestic),
-                                greenCard = greenCard
                             )
 
                             setOriginSubtitle(
@@ -136,9 +125,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
                         is OriginType.Recovery -> {
                             setOriginTitle(
                                 textView = viewBinding.proof2Title,
-                                originState = originState,
                                 title = context.getString(R.string.qr_card_recovery_title_domestic),
-                                greenCard = greenCard
                             )
 
                             setOriginSubtitle(
@@ -189,12 +176,9 @@ class MyOverViewGreenCardAdapterUtilImpl(
 
     private fun setOriginTitle(
         textView: TextView,
-        originState: OriginState,
         title: String,
-        greenCard: GreenCard,
     ) {
-        // Small hack, but if the subtitle is not present we remove the ":" from the title copy since that doesn't make sense
-        textView.text = if (originUtil.hideSubtitle(greenCard.greenCardEntity.type, originState)) title.replace(":", "") else title
+        textView.text = title
         textView.visibility = View.VISIBLE
     }
 
@@ -205,22 +189,9 @@ class MyOverViewGreenCardAdapterUtilImpl(
     ) {
         val context = textView.context
 
-        when {
-//            originUtil.hideSubtitle(
-//                greenCardType = greenCard.greenCardEntity.type,
-//                originState = originState) -> {
-//                    textView.text = ""
-//            }
-            originState is OriginState.Future -> {
+        when (originState) {
+            is OriginState.Future -> {
                 val showUntil = originState.origin.type == OriginType.Recovery
-//                textView.setTextColor(ContextCompat.getColor(context, R.color.link))
-
-//                val daysBetween = ChronoUnit.DAYS.between(LocalDate.now(ZoneOffset.UTC), originState.origin.validFrom.toLocalDate())
-//                if (daysBetween == 1L) {
-//                    textView.text = context.getString(R.string.qr_card_validity_future_day, daysBetween.toString())
-//                } else {
-//                    textView.text = context.getString(R.string.qr_card_validity_future_days, daysBetween.toString())
-//                }
 
                 val validFrom = originState.origin.validFrom.toLocalDate().formatDayMonthYear()
                 textView.text = context.getString(R.string.qr_card_validity_future_from, validFrom, if (showUntil) {
@@ -232,11 +203,11 @@ class MyOverViewGreenCardAdapterUtilImpl(
 
                 textView.visibility = View.VISIBLE
             }
-            originState is OriginState.Valid -> {
+            is OriginState.Valid -> {
                 textView.text = subtitle
                 textView.visibility = View.VISIBLE
             }
-            originState is OriginState.Expired -> {
+            is OriginState.Expired -> {
                 // Should be filtered out and never reach here
             }
         }

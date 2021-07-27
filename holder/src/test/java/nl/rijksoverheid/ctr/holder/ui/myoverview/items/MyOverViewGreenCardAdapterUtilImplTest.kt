@@ -11,7 +11,6 @@ import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CredentialUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TestResultAdapterItemUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TestResultAdapterItemUtilImpl
 import org.junit.Assert.assertEquals
@@ -45,12 +44,9 @@ class MyOverViewGreenCardAdapterUtilImplTest: AutoCloseKoinTest() {
     private val credentialUtil = mockk<CredentialUtil>(relaxed = true)
     private val testResultAdapterItemUtil: TestResultAdapterItemUtil = mockk(relaxed = true)
     private val greenCardUtil: GreenCardUtil = mockk(relaxed = true)
-    private val originUtil = mockk<OriginUtil>(relaxed = true).apply {
-        every { hideSubtitle(any(), any()) } returns false
-    }
 
     private val myOverViewGreenCardAdapterUtil: MyOverViewGreenCardAdapterUtil by lazy {
-        MyOverViewGreenCardAdapterUtilImpl(context, credentialUtil, testResultAdapterItemUtil, greenCardUtil, originUtil)
+        MyOverViewGreenCardAdapterUtilImpl(context, credentialUtil, testResultAdapterItemUtil, greenCardUtil)
     }
 
     private val viewBinding = object: ViewBindingWrapper {
@@ -196,7 +192,7 @@ class MyOverViewGreenCardAdapterUtilImplTest: AutoCloseKoinTest() {
         val testResultAdapterItemUtil = TestResultAdapterItemUtilImpl(Clock.fixed(Instant.ofEpochSecond(1627495600), ZoneId.of("UTC")))
         val greenCard = greenCard(GreenCardType.Domestic)
         every { greenCardUtil.getExpireDate(greenCard) } returns greenCard.credentialEntities.first().expirationTime
-        val myOverViewGreenCardAdapterUtil = MyOverViewGreenCardAdapterUtilImpl(context, credentialUtil, testResultAdapterItemUtil, greenCardUtil, originUtil)
+        val myOverViewGreenCardAdapterUtil = MyOverViewGreenCardAdapterUtilImpl(context, credentialUtil, testResultAdapterItemUtil, greenCardUtil)
 
         myOverViewGreenCardAdapterUtil.setContent(greenCard, listOf(OriginState.Valid(greenCard.origins.first())), viewBinding)
 

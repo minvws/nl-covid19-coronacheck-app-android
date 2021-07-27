@@ -132,7 +132,7 @@ fun holderModule(baseUrl: String) = module {
     factory<GetMyOverviewItemsUseCase> {
         GetMyOverviewItemsUseCaseImpl(get(), get(), get(), get())
     }
-    factory<MyOverViewGreenCardAdapterUtil> { MyOverViewGreenCardAdapterUtilImpl(androidContext(), get(), get(), get(), get()) }
+    factory<MyOverViewGreenCardAdapterUtil> { MyOverViewGreenCardAdapterUtilImpl(androidContext(), get(), get(), get()) }
     factory<TokenValidatorUtil> { TokenValidatorUtilImpl() }
     factory<CredentialUtil> { CredentialUtilImpl(Clock.systemUTC(), get()) }
     factory<OriginUtil> { OriginUtilImpl(Clock.systemUTC()) }
