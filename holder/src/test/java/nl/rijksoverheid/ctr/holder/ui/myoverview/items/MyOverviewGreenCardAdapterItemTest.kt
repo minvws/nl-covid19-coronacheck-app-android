@@ -52,41 +52,41 @@ class MyOverviewGreenCardAdapterItemTest: AutoCloseKoinTest() {
 
     private val context = ApplicationProvider.getApplicationContext<Context>()
 
-//    private val proof1Title = TextView(context)
-//    private val proof2Title = TextView(context)
-//    private val proof3Title = TextView(context)
-//    private val proof1Subtitle = TextView(context)
-//    private val proof2Subtitle = TextView(context)
-//    private val proof3Subtitle = TextView(context)
-//
-//    fun openApp() {
-//        loadKoinModules(
-//            module(override = true) {
-//                factory {
-//                    testResultAdapterItemUtil
-//                }
-//                factory {
-//                    greenCardUtil
-//                }
-//                factory {
-//                    credentialUtil
-//                }
-//                factory {
-//                    originUtil
-//                }
-//                factory {
-//                    mockk<HolderDatabase>(relaxed = true)
-//                }
-//            }
-//        )
-//
-//        ActivityScenario.launch<HolderMainActivity>(
-//            Intent(
-//                ApplicationProvider.getApplicationContext(),
-//                HolderMainActivity::class.java
-//            )
-//        )
-//    }
+    private val proof1Title = TextView(context)
+    private val proof2Title = TextView(context)
+    private val proof3Title = TextView(context)
+    private val proof1Subtitle = TextView(context)
+    private val proof2Subtitle = TextView(context)
+    private val proof3Subtitle = TextView(context)
+
+    fun openApp() {
+        loadKoinModules(
+            module(override = true) {
+                factory {
+                    testResultAdapterItemUtil
+                }
+                factory {
+                    greenCardUtil
+                }
+                factory {
+                    credentialUtil
+                }
+                factory {
+                    originUtil
+                }
+                factory {
+                    mockk<HolderDatabase>(relaxed = true)
+                }
+            }
+        )
+
+        ActivityScenario.launch<HolderMainActivity>(
+            Intent(
+                ApplicationProvider.getApplicationContext(),
+                HolderMainActivity::class.java
+            )
+        )
+    }
 
     @Test
     fun `domestic test`() {
@@ -103,67 +103,67 @@ class MyOverviewGreenCardAdapterItemTest: AutoCloseKoinTest() {
 
     }
 
-//    @Test
-//    fun `european test`() {
-//        val credentialEntity = CredentialEntity(
-//            id = 1,
-//            greenCardId = 1,
-//            data = "".toByteArray(),
-//            credentialVersion = 2,
-//            validFrom = OffsetDateTime.now(),
-//            expirationTime = OffsetDateTime.now(),
-//        )
-//
-//        val originEntity = OriginEntity(
-//            id = 1,
-//            greenCardId = 1,
-//            type = OriginType.Test,
-//            eventTime = OffsetDateTime.now(),
-//            expirationTime = OffsetDateTime.now(),
-//            validFrom = OffsetDateTime.now(),
-//        )
-//
-//        val testEuropeanGreenCard = GreenCard(
-//            greenCardEntity = GreenCardEntity(
-//                id = 1,
-//                walletId = 1,
-//                type = GreenCardType.Eu
-//            ),
-//            origins = listOf(),
-//            credentialEntities = listOf(credentialEntity),
-//        )
-//
-//        val originStates = listOf(OriginState.Valid(originEntity))
-//
-//        val credentialState = MyOverviewItem.GreenCardItem.CredentialState.HasCredential(credentialEntity)
-//
-//        val item = MyOverviewGreenCardAdapterItem(testEuropeanGreenCard, originStates, credentialState, onButtonClick = {_, _ -> })
-//
-//        openApp()
-//
-//        val root = mockk<ConstraintLayout>(relaxed = true).apply {
-////        every { context } returns context
-//
-//            every { findViewById<TextView>(R.id.type_title) } returns TextView(context)
-//            every { findViewById<ButtonWithProgressWidget>(R.id.buttonWithProgressWidgetContainer) } returns ButtonWithProgressWidget(context)
-//            every { findViewById<ImageView>(R.id.imageView) } returns ImageView(context)
-//
-//            every { findViewById<TextView>(R.id.proof1_title) } returns proof1Title
-//            every { findViewById<TextView>(R.id.proof2_title) } returns proof2Title
-//            every { findViewById<TextView>(R.id.proof3_title) } returns proof3Title
-//            every { findViewById<TextView>(R.id.proof1_subtitle) } returns proof1Subtitle
-//            every { findViewById<TextView>(R.id.proof2_subtitle) } returns proof2Subtitle
-//            every { findViewById<TextView>(R.id.proof3_subtitle) } returns proof3Subtitle
-//        }
-//
-//        val binding = ItemMyOverviewGreenCardBinding.bind(root)
-//
-//        item.bind(binding, 0)
-//    }
+    @Test
+    fun `european test`() {
+        val credentialEntity = CredentialEntity(
+            id = 1,
+            greenCardId = 1,
+            data = "".toByteArray(),
+            credentialVersion = 2,
+            validFrom = OffsetDateTime.now(),
+            expirationTime = OffsetDateTime.now(),
+        )
+
+        val originEntity = OriginEntity(
+            id = 1,
+            greenCardId = 1,
+            type = OriginType.Test,
+            eventTime = OffsetDateTime.now(),
+            expirationTime = OffsetDateTime.now(),
+            validFrom = OffsetDateTime.now(),
+        )
+
+        val testEuropeanGreenCard = GreenCard(
+            greenCardEntity = GreenCardEntity(
+                id = 1,
+                walletId = 1,
+                type = GreenCardType.Eu
+            ),
+            origins = listOf(),
+            credentialEntities = listOf(credentialEntity),
+        )
+
+        val originStates = listOf(OriginState.Valid(originEntity))
+
+        val credentialState = MyOverviewItem.GreenCardItem.CredentialState.HasCredential(credentialEntity)
+
+        val item = MyOverviewGreenCardAdapterItem(testEuropeanGreenCard, originStates, credentialState, onButtonClick = {_, _ -> })
+
+        openApp()
+
+        val root = mockk<ConstraintLayout>(relaxed = true).apply {
+//        every { context } returns context
+
+            every { findViewById<TextView>(R.id.type_title) } returns TextView(context)
+            every { findViewById<ButtonWithProgressWidget>(R.id.buttonWithProgressWidgetContainer) } returns ButtonWithProgressWidget(context)
+            every { findViewById<ImageView>(R.id.imageView) } returns ImageView(context)
+
+            every { findViewById<TextView>(R.id.proof1_title) } returns proof1Title
+            every { findViewById<TextView>(R.id.proof2_title) } returns proof2Title
+            every { findViewById<TextView>(R.id.proof3_title) } returns proof3Title
+            every { findViewById<TextView>(R.id.proof1_subtitle) } returns proof1Subtitle
+            every { findViewById<TextView>(R.id.proof2_subtitle) } returns proof2Subtitle
+            every { findViewById<TextView>(R.id.proof3_subtitle) } returns proof3Subtitle
+        }
+
+        val binding = ItemMyOverviewGreenCardBinding.bind(root)
+
+        item.bind(binding, 0)
+    }
 
     @Test
     fun `european vaccination`() {
-        println(context.getString(R.string.qr_card_validity_future_from))
+
     }
 
     @Test
