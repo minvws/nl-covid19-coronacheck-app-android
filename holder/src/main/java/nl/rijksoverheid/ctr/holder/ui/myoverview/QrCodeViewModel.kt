@@ -20,7 +20,7 @@ abstract class QrCodeViewModel : ViewModel() {
         shouldDisclose: Boolean
     )
 
-    abstract fun onReturnUriGiven(uri: String)
+    abstract fun onReturnUriGiven(uri: String, type: GreenCardType)
 }
 
 class QrCodeViewModelImpl(
@@ -48,7 +48,9 @@ class QrCodeViewModelImpl(
         }
     }
 
-    override fun onReturnUriGiven(uri: String) {
-        returnAppLivedata.postValue(returnToAppUseCase.get(uri))
+    override fun onReturnUriGiven(uri: String, type: GreenCardType) {
+        if (type == GreenCardType.Domestic) {
+            returnAppLivedata.postValue(returnToAppUseCase.get(uri))
+        }
     }
 }

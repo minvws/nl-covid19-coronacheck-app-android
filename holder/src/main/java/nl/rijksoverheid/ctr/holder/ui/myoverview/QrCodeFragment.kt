@@ -81,7 +81,7 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
         qrCodeViewModel.qrCodeDataLiveData.observe(viewLifecycleOwner, ::bindQrCodeData)
         qrCodeViewModel.returnAppLivedata.observe(viewLifecycleOwner, ::returnToApp)
 
-        args.returnUri?.let { qrCodeViewModel.onReturnUriGiven(it) }
+        args.returnUri?.let { qrCodeViewModel.onReturnUriGiven(it, args.data.type) }
     }
 
     private fun returnToApp(returnAppData: ReturnAppData?) {
