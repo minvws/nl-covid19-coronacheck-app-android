@@ -167,7 +167,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
                                 expireCountDownResult.minutesLeft.toString()
                             )
                         } else {
-                            viewBinding.expiresIn.text = context.getString(
+                             viewBinding.expiresIn.text = context.getString(
                                 R.string.my_overview_test_result_expires_in_hours_minutes,
                                 expireCountDownResult.hoursLeft.toString(),
                                 expireCountDownResult.minutesLeft.toString()

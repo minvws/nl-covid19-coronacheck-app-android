@@ -13,6 +13,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TestResultAdapterItemUtil
+import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TestResultAdapterItemUtilImpl
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -190,12 +191,27 @@ class MyOverViewGreenCardAdapterUtilImplTest: AutoCloseKoinTest() {
         assertEquals(View.VISIBLE, viewBinding.expiresIn.visibility)
     }
 
-    private fun greenCard(greenCardType: GreenCardType, originType: OriginType = OriginType.Test): GreenCard {
+    @Test
+    fun domesticTestExpiringIn6Minutes() {
+        val testResultAdapterItemUtil = TestResultAdapterItemUtilImpl(Clock.fixed(Instant.ofEpochSecond(1627495600), ZoneId.of("UTC")))
+        val greenCard = greenCard(GreenCardType.Domestic)
+        every { greenCardUtil.getExpireDate(greenCard) } returns greenCard.credentialEntities.first().expirationTime
+        val myOverViewGreenCardAdapterUtil = MyOverViewGreenCardAdapterUtilImpl(context, credentialUtil, testResultAdapterItemUtil, greenCardUtil, originUtil)
+
+        myOverViewGreenCardAdapterUtil.setContent(greenCard, listOf(OriginState.Valid(greenCard.origins.first())), viewBinding)
+
+        assertEquals("Testbewijs:", viewBinding.proof3Title.text)
+        assertEquals("geldig t/m woensdag 28 juli 21:06", viewBinding.proof3Subtitle.text)
+        assertEquals(View.VISIBLE, viewBinding.expiresIn.visibility)
+        assertEquals("Verloopt in 1 uur 1 min", viewBinding.expiresIn.text)
+    }
+
+    private fun greenCard(greenCardType: GreenCardType, originType: OriginType = OriginType.Test, expiringSoon: Boolean = false): GreenCard {
         // 2021-07-27T09:10Z
         val eventTime = OffsetDateTime.now(Clock.fixed(Instant.ofEpochSecond(1627377000), ZoneId.of("UTC")))
         // 2021-07-27T09:11:40Z
         val validFrom = OffsetDateTime.now(Clock.fixed(Instant.ofEpochSecond(1627377100), ZoneId.of("UTC")))
-        // 2021-07-27T09:13:20Z
+        // 2021-07-28T21:06:20Z
         val expirationTime = OffsetDateTime.now(Clock.fixed(Instant.ofEpochSecond(1627499200), ZoneId.of("UTC")))
         val credentialEntity = CredentialEntity(
             id = 1,
