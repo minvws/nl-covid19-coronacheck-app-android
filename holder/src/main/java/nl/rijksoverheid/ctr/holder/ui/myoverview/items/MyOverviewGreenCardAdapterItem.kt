@@ -9,25 +9,20 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview.items
 
 import android.view.View
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.xwray.groupie.viewbinding.BindableItem
-import nl.rijksoverheid.ctr.design.ext.*
+import nl.rijksoverheid.ctr.design.ext.enableCustomLinks
+import nl.rijksoverheid.ctr.design.ext.getThemeColor
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.ItemMyOverviewGreenCardBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.CredentialEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItem
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
-import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TestResultAdapterItemUtil
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import java.time.LocalDate
-import java.time.ZoneOffset
-import java.time.temporal.ChronoUnit
 
 class MyOverviewGreenCardAdapterItem(
     private val greenCard: GreenCard,
@@ -40,10 +35,7 @@ class MyOverviewGreenCardAdapterItem(
     BindableItem<ItemMyOverviewGreenCardBinding>(R.layout.item_my_overview_green_card.toLong()),
     KoinComponent {
 
-    private val testResultAdapterItemUtil: TestResultAdapterItemUtil by inject()
-    private val greenCardUtil: GreenCardUtil by inject()
-    private val credentialUtil: CredentialUtil by inject()
-    private val originUtil: OriginUtil by inject()
+    private val myOverViewGreenCardAdapterUtil: MyOverViewGreenCardAdapterUtil by inject()
 
     override fun bind(viewBinding: ItemMyOverviewGreenCardBinding, position: Int) {
         applyStyling(
@@ -96,12 +88,6 @@ class MyOverviewGreenCardAdapterItem(
     private fun setContent(viewBinding: ItemMyOverviewGreenCardBinding) {
         val context = viewBinding.root.context
 
-        println("GIO pame")
-
-        greenCard.credentialEntities.forEach {
-            println("GIO pame ${String(it.data)}")
-        }
-
         viewBinding.proof1Title.visibility = View.GONE
         viewBinding.proof1Subtitle.visibility = View.GONE
         viewBinding.proof2Title.visibility = View.GONE
@@ -117,7 +103,7 @@ class MyOverviewGreenCardAdapterItem(
         viewBinding.errorText.visibility = View.GONE
         viewBinding.errorTextRetry.visibility = View.GONE
 
-
+        myOverViewGreenCardAdapterUtil.setContent(greenCard, originStates, ViewBindingWrapperImpl(viewBinding))
 
         showError(viewBinding)
     }
