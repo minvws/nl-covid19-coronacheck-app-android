@@ -175,15 +175,15 @@ class MyOverViewGreenCardAdapterUtilImpl(
                         }
                     }
                 }
-
-                val becomesValidAutomatically = originStates.size == 1 &&
-                        originStates.first() is OriginState.Future &&
-                        (originStates.first().origin.type == OriginType.Recovery || (originStates.first().origin.type == OriginType.Vaccination && greenCard.greenCardEntity.type == GreenCardType.Domestic))
-                if (becomesValidAutomatically) {
-                    viewBinding.expiresIn.visibility = View.VISIBLE
-                    viewBinding.expiresIn.text = context.getString(R.string.qr_card_validity_future)
-                }
             }
+        }
+
+        val becomesValidAutomatically = originStates.size == 1 &&
+                originStates.first() is OriginState.Future &&
+                (originStates.first().origin.type == OriginType.Recovery || (originStates.first().origin.type == OriginType.Vaccination && greenCard.greenCardEntity.type == GreenCardType.Domestic))
+        if (becomesValidAutomatically) {
+            viewBinding.expiresIn.visibility = View.VISIBLE
+            viewBinding.expiresIn.text = context.getString(R.string.qr_card_validity_future)
         }
     }
 
