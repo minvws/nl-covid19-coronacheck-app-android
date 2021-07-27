@@ -1,15 +1,10 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
-import io.mockk.every
 import io.mockk.mockk
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.CredentialEntity
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
-import org.json.JSONObject
 import org.junit.Assert.*
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.koin.test.AutoCloseKoinTest
-import org.robolectric.RobolectricTestRunner
 import java.time.*
 
 /*
@@ -19,8 +14,7 @@ import java.time.*
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-@RunWith(RobolectricTestRunner::class)
-class CredentialUtilImplTest: AutoCloseKoinTest() {
+class CredentialUtilImplTest {
 
     private fun credentialIdentity(expirationTime: OffsetDateTime) = CredentialEntity(
         id = 1,
@@ -133,29 +127,5 @@ class CredentialUtilImplTest: AutoCloseKoinTest() {
 
         val credentialUtil = CredentialUtilImpl(clock, mobileCoreWrapper)
         assertTrue(credentialUtil.isExpiring(5L, credentialEntity))
-    }
-
-    @Test
-    fun `european credentials of 1 dose vaccine`() {
-        val readEuropeanCredentialVaccination = "{\"credentialVersion\":1,\"issuer\":\"NL\",\"issuedAt\":1627294308,\"expirationTime\":1629717843,\"dcc\":{\"ver\":\"1.3.0\",\"dob\":\"1960-01-01\",\"nam\":{\"fn\":\"Bouwer\",\"fnt\":\"BOUWER\",\"gn\":\"Bob\",\"gnt\":\"BOB\"},\"v\":[{\"tg\":\"840539006\",\"vp\":\"1119349007\",\"mp\":\"EU\\/1\\/20\\/1528\",\"ma\":\"ORG-100030215\",\"dn\":1,\"sd\":1,\"dt\":\"2021-07-18\",\"co\":\"NL\",\"is\":\"Ministry of Health Welfare and Sport\",\"ci\":\"URN:UCI:01:NL:FE6BOX7GLBBZTH6K5OFO42#1\"}],\"t\":null,\"r\":null}}"
-        every { mobileCoreWrapper.readEuropeanCredential(any()) } returns JSONObject(readEuropeanCredentialVaccination)
-
-        val credentialUtil = CredentialUtilImpl(Clock.systemUTC(), mobileCoreWrapper)
-        val dosesString = credentialUtil.getVaccinationDosesForEuropeanCredentials(listOf(mockk(relaxed = true))) { doseNumber, sumDoses ->
-            "Dose $doseNumber of $sumDoses"
-        }
-
-        assertEquals("Dose 1 of 1", dosesString)
-    }
-
-    @Test
-    fun `test type of RAT test`() {
-        val readEuropeanCredentialTest = "{\"credentialVersion\":1,\"issuer\":\"NL\",\"issuedAt\":1627401558,\"expirationTime\":1629820758,\"dcc\":{\"ver\":\"1.3.0\",\"dob\":\"1982-08-01\",\"nam\":{\"fn\":\"Epitheto\",\"fnt\":\"EPITHETO\",\"gn\":\"Onoma\",\"gnt\":\"ONOMA\"},\"v\":null,\"t\":[{\"tg\":\"840539006\",\"tt\":\"LP217198-3\",\"nm\":\"\",\"ma\":\"\",\"sc\":\"2021-07-27T16:57:00+02:00\",\"dr\":\"\",\"tr\":\"260415000\",\"tc\":\"Facility approved by the State of The Netherlands\",\"co\":\"NL\",\"is\":\"Ministry of Health Welfare and Sport\",\"ci\":\"URN:UCI:01:NL:RK3RLAOFRBAN5GXCL2KY42#H\"}],\"r\":null}}"
-        every { mobileCoreWrapper.readEuropeanCredential(any()) } returns JSONObject(readEuropeanCredentialTest)
-
-        val credentialUtil = CredentialUtilImpl(Clock.systemUTC(), mobileCoreWrapper)
-        val testType = credentialUtil.getTestTypeForEuropeanCredentials(listOf(mockk(relaxed = true)))
-
-        assertEquals("RAT", testType)
     }
 }
