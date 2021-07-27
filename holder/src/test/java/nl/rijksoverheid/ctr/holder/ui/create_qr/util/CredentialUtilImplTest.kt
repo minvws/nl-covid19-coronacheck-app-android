@@ -3,8 +3,6 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 import io.mockk.every
 import io.mockk.mockk
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.CredentialEntity
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import org.json.JSONObject
 import org.junit.Assert.*
@@ -151,7 +149,7 @@ class CredentialUtilImplTest: AutoCloseKoinTest() {
     }
 
     @Test
-    fun `test type of NAAT test`() {
+    fun `test type of RAT test`() {
         val readEuropeanCredentialTest = "{\"credentialVersion\":1,\"issuer\":\"NL\",\"issuedAt\":1627401558,\"expirationTime\":1629820758,\"dcc\":{\"ver\":\"1.3.0\",\"dob\":\"1982-08-01\",\"nam\":{\"fn\":\"Epitheto\",\"fnt\":\"EPITHETO\",\"gn\":\"Onoma\",\"gnt\":\"ONOMA\"},\"v\":null,\"t\":[{\"tg\":\"840539006\",\"tt\":\"LP217198-3\",\"nm\":\"\",\"ma\":\"\",\"sc\":\"2021-07-27T16:57:00+02:00\",\"dr\":\"\",\"tr\":\"260415000\",\"tc\":\"Facility approved by the State of The Netherlands\",\"co\":\"NL\",\"is\":\"Ministry of Health Welfare and Sport\",\"ci\":\"URN:UCI:01:NL:RK3RLAOFRBAN5GXCL2KY42#H\"}],\"r\":null}}"
         every { mobileCoreWrapper.readEuropeanCredential(any()) } returns JSONObject(readEuropeanCredentialTest)
 
