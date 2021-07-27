@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview.items
 
 import android.content.Context
+import android.view.View
 import android.widget.TextView
 import androidx.test.core.app.ApplicationProvider
 import io.mockk.every
@@ -17,6 +18,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 import java.time.Clock
 import java.time.Instant
 import java.time.OffsetDateTime
@@ -30,6 +32,7 @@ import java.time.ZoneId
  *
  */
 @RunWith(RobolectricTestRunner::class)
+@Config(qualifiers = "nl-land")
 class MyOverViewGreenCardAdapterUtilImplTest: AutoCloseKoinTest() {
         val readEuropeanCredentialVaccination = "{\"credentialVersion\":1,\"issuer\":\"NL\",\"issuedAt\":1627294308,\"expirationTime\":1629717843,\"dcc\":{\"ver\":\"1.3.0\",\"dob\":\"1960-01-01\",\"nam\":{\"fn\":\"Bouwer\",\"fnt\":\"BOUWER\",\"gn\":\"Bob\",\"gnt\":\"BOB\"},\"v\":[{\"tg\":\"840539006\",\"vp\":\"1119349007\",\"mp\":\"EU\\/1\\/20\\/1528\",\"ma\":\"ORG-100030215\",\"dn\":1,\"sd\":1,\"dt\":\"2021-07-18\",\"co\":\"NL\",\"is\":\"Ministry of Health Welfare and Sport\",\"ci\":\"URN:UCI:01:NL:FE6BOX7GLBBZTH6K5OFO42#1\"}],\"t\":null,\"r\":null}}"
 
@@ -104,12 +107,35 @@ class MyOverViewGreenCardAdapterUtilImplTest: AutoCloseKoinTest() {
     }
 
     @Test
+    fun europeanVaccinationFuture() {
+        every { credentialUtil.getVaccinationDoses(any(), any()) } returns "dosis 2 van 2"
+        val greenCard = greenCard(GreenCardType.Eu, OriginType.Vaccination)
+        myOverViewGreenCardAdapterUtil.setContent(greenCard, listOf(OriginState.Future(greenCard.origins.first())), viewBinding)
+
+        assertEquals("Vaccinatiebewijs: dosis 2 van 2", viewBinding.proof1Title.text)
+        assertEquals("Vaccinatiedatum: 27 juli 2021", viewBinding.proof1Subtitle.text)
+        assertEquals(View.GONE, viewBinding.expiresIn.visibility)
+    }
+
+    @Test
     fun domesticVaccination() {
         val greenCard = greenCard(GreenCardType.Domestic, OriginType.Vaccination)
         myOverViewGreenCardAdapterUtil.setContent(greenCard, listOf(OriginState.Valid(greenCard.origins.first())), viewBinding)
 
         assertEquals("Vaccinatiebewijs:", viewBinding.proof1Title.text)
         assertEquals("geldig vanaf 27 juli 2021  ", viewBinding.proof1Subtitle.text)
+        assertEquals(View.GONE, viewBinding.expiresIn.visibility)
+    }
+
+    @Test
+    fun domesticVaccinationFuture() {
+        val greenCard = greenCard(GreenCardType.Domestic, OriginType.Vaccination)
+        myOverViewGreenCardAdapterUtil.setContent(greenCard, listOf(OriginState.Future(greenCard.origins.first())), viewBinding)
+
+        assertEquals("Vaccinatiebewijs:", viewBinding.proof1Title.text)
+        assertEquals("geldig vanaf 27 juli 2021  ", viewBinding.proof1Subtitle.text)
+        assertEquals("Wordt automatisch geldig", viewBinding.expiresIn.text)
+        assertEquals(View.VISIBLE, viewBinding.expiresIn.visibility)
     }
 
     @Test

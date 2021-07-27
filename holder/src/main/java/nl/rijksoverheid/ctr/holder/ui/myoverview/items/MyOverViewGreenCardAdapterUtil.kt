@@ -74,7 +74,9 @@ class MyOverViewGreenCardAdapterUtilImpl(
 
                         setOriginSubtitle(
                             textView = viewBinding.proof1Subtitle,
-                            originState = originState,
+                            // force a valid origin, as we need to allow the user to view the QR
+                            // and when is valid from, it depends from the country going to
+                            originState = OriginState.Valid(greenCard.origins.first()),
                             subtitle = "${context.getString(R.string.qr_card_vaccination_title_eu)} ${origin.eventTime.toLocalDate().formatDayMonthYear()}",
                         )
                     }
@@ -178,6 +180,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
                         originStates.first() is OriginState.Future &&
                         (originStates.first().origin.type == OriginType.Recovery || (originStates.first().origin.type == OriginType.Vaccination && greenCard.greenCardEntity.type == GreenCardType.Domestic))
                 if (becomesValidAutomatically) {
+                    viewBinding.expiresIn.visibility = View.VISIBLE
                     viewBinding.expiresIn.text = context.getString(R.string.qr_card_validity_future)
                 }
             }
