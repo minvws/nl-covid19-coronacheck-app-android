@@ -35,8 +35,6 @@ import java.time.ZoneId
 @RunWith(RobolectricTestRunner::class)
 @Config(qualifiers = "nl-land")
 class MyOverViewGreenCardAdapterUtilImplTest: AutoCloseKoinTest() {
-    val readEuropeanCredentialVaccination = "{\"credentialVersion\":1,\"issuer\":\"NL\",\"issuedAt\":1627294308,\"expirationTime\":1629717843,\"dcc\":{\"ver\":\"1.3.0\",\"dob\":\"1960-01-01\",\"nam\":{\"fn\":\"Bouwer\",\"fnt\":\"BOUWER\",\"gn\":\"Bob\",\"gnt\":\"BOB\"},\"v\":[{\"tg\":\"840539006\",\"vp\":\"1119349007\",\"mp\":\"EU\\/1\\/20\\/1528\",\"ma\":\"ORG-100030215\",\"dn\":1,\"sd\":1,\"dt\":\"2021-07-18\",\"co\":\"NL\",\"is\":\"Ministry of Health Welfare and Sport\",\"ci\":\"URN:UCI:01:NL:FE6BOX7GLBBZTH6K5OFO42#1\"}],\"t\":null,\"r\":null}}"
-
     private val context: Context by lazy {
         ApplicationProvider.getApplicationContext()
     }
@@ -88,7 +86,7 @@ class MyOverViewGreenCardAdapterUtilImplTest: AutoCloseKoinTest() {
 
     @Test
     fun europeanTest() {
-        every { credentialUtil.getTestType(any()) } returns "NAAT"
+        every { credentialUtil.getTestTypeForEuropeanCredentials(any()) } returns "NAAT"
         val greenCard = greenCard(GreenCardType.Eu)
         myOverViewGreenCardAdapterUtil.setContent(greenCard, listOf(OriginState.Valid(greenCard.origins.first())), viewBinding)
 
@@ -107,7 +105,7 @@ class MyOverViewGreenCardAdapterUtilImplTest: AutoCloseKoinTest() {
 
     @Test
     fun europeanVaccination() {
-        every { credentialUtil.getVaccinationDoses(any(), any()) } returns "dosis 2 van 2"
+        every { credentialUtil.getVaccinationDosesForEuropeanCredentials(any(), any()) } returns "dosis 2 van 2"
         val greenCard = greenCard(GreenCardType.Eu, OriginType.Vaccination)
         myOverViewGreenCardAdapterUtil.setContent(greenCard, listOf(OriginState.Valid(greenCard.origins.first())), viewBinding)
 
@@ -117,7 +115,7 @@ class MyOverViewGreenCardAdapterUtilImplTest: AutoCloseKoinTest() {
 
     @Test
     fun europeanVaccinationFuture() {
-        every { credentialUtil.getVaccinationDoses(any(), any()) } returns "dosis 2 van 2"
+        every { credentialUtil.getVaccinationDosesForEuropeanCredentials(any(), any()) } returns "dosis 2 van 2"
         val greenCard = greenCard(GreenCardType.Eu, OriginType.Vaccination)
         myOverViewGreenCardAdapterUtil.setContent(greenCard, listOf(OriginState.Future(greenCard.origins.first())), viewBinding)
 

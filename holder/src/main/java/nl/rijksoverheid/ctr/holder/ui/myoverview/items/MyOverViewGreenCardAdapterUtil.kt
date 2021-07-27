@@ -7,14 +7,12 @@ import nl.rijksoverheid.ctr.design.ext.formatDateTime
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
 import nl.rijksoverheid.ctr.design.ext.formatDayShortMonthYear
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.databinding.ItemMyOverviewGreenCardBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CredentialUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TestResultAdapterItemUtil
 
 /*
@@ -37,6 +35,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
     override fun setContent(greenCard: GreenCard, originStates: List<OriginState>, viewBinding: ViewBindingWrapper) {
         when (greenCard.greenCardEntity.type) {
             is GreenCardType.Eu -> {
+                credentialUtil.getTestTypeForEuropeanCredentials(greenCard.credentialEntities)
                 // European card only has one origin
                 val originState = originStates.first()
                 val origin = originState.origin
@@ -44,7 +43,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
                     is OriginType.Test -> {
                         setOriginTitle(
                             textView = viewBinding.proof1Title,
-                            title = "${context.getString(R.string.qr_card_test_domestic)} PCR (${credentialUtil.getTestType(greenCard.credentialEntities)})",
+                            title = "${context.getString(R.string.qr_card_test_domestic)} PCR (${credentialUtil.getTestTypeForEuropeanCredentials(greenCard.credentialEntities)})",
                         )
 
                         setOriginSubtitle(
@@ -61,7 +60,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
                                 currentDose, sumDoses
                             )
                         }
-                        val doses = credentialUtil.getVaccinationDoses(greenCard.credentialEntities, getString)
+                        val doses = credentialUtil.getVaccinationDosesForEuropeanCredentials(greenCard.credentialEntities, getString)
                         setOriginTitle(
                             textView = viewBinding.proof1Title,
                             title = "${context.getString(R.string.qr_card_vaccination_title_domestic)} $doses",

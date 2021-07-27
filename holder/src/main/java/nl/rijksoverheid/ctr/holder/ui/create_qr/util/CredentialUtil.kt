@@ -11,8 +11,8 @@ import java.time.OffsetDateTime
 interface CredentialUtil {
     fun getActiveCredential(entities: List<CredentialEntity>): CredentialEntity?
     fun isExpiring(credentialRenewalDays: Long, credential: CredentialEntity): Boolean
-    fun getTestType(entities: List<CredentialEntity>): String
-    fun getVaccinationDoses(entities: List<CredentialEntity>, getString: (String, String) -> String): String
+    fun getTestTypeForEuropeanCredentials(entities: List<CredentialEntity>): String
+    fun getVaccinationDosesForEuropeanCredentials(entities: List<CredentialEntity>, getString: (String, String) -> String): String
 }
 
 class CredentialUtilImpl(private val clock: Clock, private val mobileCoreWrapper: MobileCoreWrapper): CredentialUtil {
@@ -41,8 +41,9 @@ class CredentialUtilImpl(private val clock: Clock, private val mobileCoreWrapper
         return credential.expirationTime.minusDays(credentialRenewalDays).isBefore(now)
     }
 
-    override fun getTestType(entities: List<CredentialEntity>): String {
+    override fun getTestTypeForEuropeanCredentials(entities: List<CredentialEntity>): String {
         val data = mobileCoreWrapper.readEuropeanCredential(entities.first().data)
+
         return try {
             val type = ((((data["dcc"] as JSONObject)["t"] as JSONArray)[0]) as JSONObject)["tt"]
             when (type) {
@@ -56,9 +57,8 @@ class CredentialUtilImpl(private val clock: Clock, private val mobileCoreWrapper
         }
     }
 
-    override fun getVaccinationDoses(entities: List<CredentialEntity>, getString: (String, String) -> String): String {
+    override fun getVaccinationDosesForEuropeanCredentials(entities: List<CredentialEntity>, getString: (String, String) -> String): String {
         val data = mobileCoreWrapper.readEuropeanCredential(entities.first().data)
-        println("GIO data: $data")
 
         return try {
             val vaccinationData = (((data["dcc"] as JSONObject)["v"] as JSONArray)[0]) as JSONObject
