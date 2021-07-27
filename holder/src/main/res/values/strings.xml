@@ -174,7 +174,7 @@
     <string name="dialog_rooted_device_title">Er zijn beveiligingsrisico’s gevonden</string>
     <string name="dialog_rooted_device_message">Let op: je apparaat is geroot. Je gegevens zijn mogelijk niet veilig.</string>
     <string name="dialog_rooted_device_positive_button">Ok</string>
-    <string name="about_this_app_read_more">Lees meer</string>
+    <string name="about_this_app_read_more">Lees meer:</string>
     <string name="about_this_app_accessibility">Toegankelijkheid</string>
     <string name="url_accessibility">https://coronacheck.nl/nl/accessibility-in-app</string>
     <string name="create_qr_explanation_menu_title">QR-code maken</string>
@@ -354,4 +354,8 @@ Scan daarom met de camera van je telefoon <b>alleen je internationale QR-code</b
     <string name="your_events_replace_dialog_negative_button">Nee, stop</string>
     <string name="your_events_replace_dialog_positive_button">Ja, vervang</string>
     <string name="qr_explanation_certificate_issuer">Ministerie VWS / Ministry of Health, Welfare and Sport</string>
+    <string name="qr_card_validity_future_from">geldig vanaf %1s%2s</string>
+    <string name="qr_card_validity_future_until">t/m %1s</string>
+    <string name="your_vaccination_explanation_dose">dosis %1s</string>
+    <string name="qr_card_validity_future">Wordt automatisch geldig</string>
 </resources>

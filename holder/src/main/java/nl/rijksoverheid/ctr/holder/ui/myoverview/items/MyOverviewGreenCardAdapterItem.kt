@@ -127,27 +127,34 @@ class MyOverviewGreenCardAdapterItem(
                         setOriginTitle(
                             textView = viewBinding.proof1Title,
                             originState = originState,
-                            title = "Testbewijs: PCR (${credentialUtil.getTestType(greenCard.credentialEntities)})"
+                            title = "${context.getString(R.string.qr_card_test_domestic)} PCR (${credentialUtil.getTestType(greenCard.credentialEntities)})"
                         )
 
                         setOriginSubtitle(
                             textView = viewBinding.proof1Subtitle,
                             originState = originState,
-                            subtitle = "Testdatum: ${origin.eventTime.formatDateTime(context)}",
+                            subtitle = "${context.getString(R.string.qr_card_test_title_eu)} ${origin.eventTime.formatDateTime(context)}",
                         )
                     }
 
                     is OriginType.Vaccination -> {
+                        val getString = { currentDose: String, sumDoses: String ->
+                            context.getString(
+                                R.string.your_vaccination_explanation_doses,
+                                currentDose, sumDoses
+                            )
+                        }
+                        val doses = credentialUtil.getVaccinationDoses(greenCard.credentialEntities, getString)
                         setOriginTitle(
                             textView = viewBinding.proof1Title,
                             originState = originState,
-                            title = context.getString(R.string.qr_card_vaccination_title_eu)
+                            title = "${context.getString(R.string.qr_card_vaccination_title_domestic)} $doses"
                         )
 
                         setOriginSubtitle(
                             textView = viewBinding.proof1Subtitle,
                             originState = originState,
-                            subtitle = origin.eventTime.toLocalDate().formatDayMonthYear(),
+                            subtitle = "${context.getString(R.string.qr_card_vaccination_title_eu)} ${origin.eventTime.toLocalDate().formatDayMonthYear()}",
                         )
                     }
 
@@ -161,7 +168,7 @@ class MyOverviewGreenCardAdapterItem(
                         setOriginSubtitle(
                             textView = viewBinding.proof1Subtitle,
                             originState = originState,
-                            subtitle = origin.eventTime.toLocalDate().formatDayMonthYear(),
+                            subtitle = "${context.getString(R.string.qr_card_validity_valid)} ${origin.eventTime.toLocalDate().formatDayMonthYear()}",
                         )
                     }
 
@@ -197,10 +204,7 @@ class MyOverviewGreenCardAdapterItem(
                             setOriginSubtitle(
                                 textView = viewBinding.proof1Subtitle,
                                 originState = originState,
-                                subtitle = context.getString(
-                                    R.string.qr_card_validity_valid,
-                                    origin.expirationTime.toLocalDate().formatDayMonthYear()
-                                )
+                                subtitle = context.getString(R.string.qr_card_validity_future_from, origin.validFrom.toLocalDate().formatDayMonthYear(), "")
                             )
                         }
                         is OriginType.Recovery -> {
@@ -243,6 +247,13 @@ class MyOverviewGreenCardAdapterItem(
                             )
                         }
                     }
+                }
+
+                val becomesValidAutomatically = originStates.size == 1 &&
+                        originStates.first() is OriginState.Future &&
+                        (originStates.first().origin.type == OriginType.Recovery || (originStates.first().origin.type == OriginType.Vaccination && greenCard.greenCardEntity.type == GreenCardType.Domestic))
+                if (becomesValidAutomatically) {
+                    viewBinding.expiresIn.text = context.getString(R.string.qr_card_validity_future)
                 }
             }
         }
@@ -293,20 +304,29 @@ class MyOverviewGreenCardAdapterItem(
         val context = textView.context
 
         when {
-            originUtil.hideSubtitle(
-                greenCardType = greenCard.greenCardEntity.type,
-                originState = originState) -> {
-                    textView.text = ""
-            }
+//            originUtil.hideSubtitle(
+//                greenCardType = greenCard.greenCardEntity.type,
+//                originState = originState) -> {
+//                    textView.text = ""
+//            }
             originState is OriginState.Future -> {
-                textView.setTextColor(ContextCompat.getColor(context, R.color.link))
+                val showUntil = originState.origin.type == OriginType.Recovery
+//                textView.setTextColor(ContextCompat.getColor(context, R.color.link))
 
-                val daysBetween = ChronoUnit.DAYS.between(LocalDate.now(ZoneOffset.UTC), originState.origin.validFrom.toLocalDate())
-                if (daysBetween == 1L) {
-                    textView.text = context.getString(R.string.qr_card_validity_future_day, daysBetween.toString())
+//                val daysBetween = ChronoUnit.DAYS.between(LocalDate.now(ZoneOffset.UTC), originState.origin.validFrom.toLocalDate())
+//                if (daysBetween == 1L) {
+//                    textView.text = context.getString(R.string.qr_card_validity_future_day, daysBetween.toString())
+//                } else {
+//                    textView.text = context.getString(R.string.qr_card_validity_future_days, daysBetween.toString())
+//                }
+
+                val validFrom = originState.origin.validFrom.toLocalDate().formatDayMonthYear()
+                textView.text = context.getString(R.string.qr_card_validity_future_from, validFrom, if (showUntil) {
+                    val until = originState.origin.expirationTime.toLocalDate().formatDayMonthYear()
+                    context.getString(R.string.qr_card_validity_future_until, until)
                 } else {
-                    textView.text = context.getString(R.string.qr_card_validity_future_days, daysBetween.toString())
-                }
+                    ""
+                })
 
                 textView.visibility = View.VISIBLE
             }

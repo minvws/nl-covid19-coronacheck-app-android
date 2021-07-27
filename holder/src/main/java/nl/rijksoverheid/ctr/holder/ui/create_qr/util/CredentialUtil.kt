@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.CredentialEntity
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import org.json.JSONArray
 import org.json.JSONObject
@@ -11,6 +12,7 @@ interface CredentialUtil {
     fun getActiveCredential(entities: List<CredentialEntity>): CredentialEntity?
     fun isExpiring(credentialRenewalDays: Long, credential: CredentialEntity): Boolean
     fun getTestType(entities: List<CredentialEntity>): String
+    fun getVaccinationDoses(entities: List<CredentialEntity>, getString: (String, String) -> String): String
 }
 
 class CredentialUtilImpl(private val clock: Clock, private val mobileCoreWrapper: MobileCoreWrapper): CredentialUtil {
@@ -48,6 +50,21 @@ class CredentialUtilImpl(private val clock: Clock, private val mobileCoreWrapper
                 "LP217198-3" -> "RAT"
                 else -> ""
             }
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+            ""
+        }
+    }
+
+    override fun getVaccinationDoses(entities: List<CredentialEntity>, getString: (String, String) -> String): String {
+        val data = mobileCoreWrapper.readEuropeanCredential(entities.first().data)
+        println("GIO data: $data")
+
+        return try {
+            val vaccinationData = (((data["dcc"] as JSONObject)["v"] as JSONArray)[0]) as JSONObject
+            val dn = vaccinationData["dn"] as Int
+            val sd = vaccinationData["sd"] as Int
+            getString("$dn", "$sd")
         } catch (exception: Exception) {
             exception.printStackTrace()
             ""
