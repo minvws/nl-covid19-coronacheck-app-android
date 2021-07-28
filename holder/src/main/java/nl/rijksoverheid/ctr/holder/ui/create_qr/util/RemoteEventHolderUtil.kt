@@ -56,15 +56,31 @@ class RemoteEventHolderUtilImpl(
         storedEventHolders.forEach { storedEventHolder ->
             val storedBirthDay = birthDay(storedEventHolder.birthDate!!)
             val storedBirthMonth = birthMonth(storedEventHolder.birthDate)
+            val storedFirstName = storedEventHolder.firstName!!
+            val storedLastName = storedEventHolder.lastName!!
             incomingEventHolders.forEach { incomingEventHolder ->
                 val incomingBirthDay = birthDay(incomingEventHolder.birthDate!!)
                 val incomingBirthMonth = birthMonth(incomingEventHolder.birthDate)
                 val birthDateIsNotMatching =
                     storedBirthDay != incomingBirthDay || storedBirthMonth != incomingBirthMonth
-                return birthDateIsNotMatching
+                val incomingFirstName = incomingEventHolder.firstName!!
+                val incomingLastName = incomingEventHolder.lastName!!
+                val nameIsNotMatching = nameIsNotMatching(storedFirstName, incomingFirstName) && nameIsNotMatching(storedLastName, incomingLastName)
+                return birthDateIsNotMatching || nameIsNotMatching
             }
         }
         return false
+    }
+
+    private fun nameIsNotMatching(stored: String, incoming: String): Boolean {
+        val storedNameInitial = stored.firstOrNull { it.isLetter() } ?: return false
+        val incomingNameInitial = incoming.firstOrNull { it.isLetter() } ?: return false
+
+        val input = "$storedNameInitial$incomingNameInitial"
+        if (!latinCharactersRegex.matches(input)) return false
+
+        return storedNameInitial != incomingNameInitial
+
     }
 
     private fun birthMonth(birthDate: String): Int {
@@ -73,6 +89,10 @@ class RemoteEventHolderUtilImpl(
 
     private fun birthDay(birthDate: String): Int {
         return LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).dayOfMonth
+    }
+
+    companion object {
+        private val latinCharactersRegex = Regex(pattern = "[A-Za-z]{2}")
     }
 }
 
