@@ -8,15 +8,6 @@
     android:keepScreenOn="true"
     android:orientation="vertical">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginVertical="8dp"
-        tools:text="Return to app"
-        android:visibility="gone" />
-
     <ImageView
         android:id="@+id/image"
         android:layout_width="match_parent"
@@ -28,6 +19,17 @@
         android:paddingHorizontal="16dp"
         android:scaleType="fitCenter"
         tools:layout_height="400dp" />
+
+    <com.google.android.material.button.MaterialButton
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        tools:text="Return to app"
+        android:paddingHorizontal="16dp"
+        tools:visibility="visible"
+        android:visibility="gone" />
 
     <nl.rijksoverheid.ctr.holder.ui.myoverview.QrCodeAnimationWidget
         android:id="@+id/animation"
