@@ -54,13 +54,13 @@ class MyOverViewGreenCardAdapterUtilImpl(
                     }
 
                     is OriginType.Vaccination -> {
-                        val getString = { currentDose: String, sumDoses: String ->
+                        val getCurrentDosesString: (String, String) -> String = { currentDose: String, sumDoses: String ->
                             context.getString(
                                 R.string.your_vaccination_explanation_doses,
                                 currentDose, sumDoses
                             )
                         }
-                        val doses = credentialUtil.getVaccinationDosesForEuropeanCredentials(greenCard.credentialEntities, getString)
+                        val doses = credentialUtil.getVaccinationDosesForEuropeanCredentials(greenCard.credentialEntities, getCurrentDosesString)
                         setOriginTitle(
                             textView = viewBinding.proof1Title,
                             title = "${context.getString(R.string.qr_card_vaccination_title_domestic)} $doses",
