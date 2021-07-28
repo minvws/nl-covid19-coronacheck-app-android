@@ -108,7 +108,7 @@
     <string name="url_faq">https://www.coronacheck.nl/nl/faq-scanner-in-app</string>
     <string name="url_privacy_statement">https://coronacheck.nl/nl/privacy-in-app</string>
     <string name="url_terms_of_use">https://coronacheck.nl/nl/gebruikersvoorwaarden-in-app</string>
-    <string name="about_this_app_read_more">Lees meer</string>
+    <string name="about_this_app_read_more">Lees meer:</string>
     <string name="about_this_app_accessibility">Toegankelijkheid</string>
     <string name="url_accessibility">https://coronacheck.nl/nl/accessibility-in-app</string>
     <string name="accessibility_flash_on">Zet de zaklamp aan.</string>
