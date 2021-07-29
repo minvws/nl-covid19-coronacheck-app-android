@@ -6,6 +6,20 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
+    <nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
+        android:id="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="24dp"
+        android:textAppearance="?attr/textAppearanceBody1"
+        app:enableHtmlLinks="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/my_overview_qr_placeholder_description" />
+
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/make_appointment_card"
         android:layout_width="match_parent"
@@ -36,11 +50,10 @@
 
             <ImageView
                 android:id="@+id/icon"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
                 android:contentDescription="@null"
-                android:src="@drawable/ic_illustration_hand_qr_placeholder"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -64,19 +77,5 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>
-
-    <nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
-        android:id="@+id/text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="24dp"
-        android:textAppearance="?attr/textAppearanceBody1"
-        app:enableHtmlLinks="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="@string/my_overview_qr_placeholder_description" />
 
 </LinearLayout>

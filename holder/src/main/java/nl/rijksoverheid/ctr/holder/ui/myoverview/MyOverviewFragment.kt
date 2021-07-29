@@ -188,7 +188,9 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                     )
                 }
                 is MyOverviewItem.PlaceholderCardItem -> {
-                    adapterItems.add(MyOverviewGreenCardPlaceholderItem())
+                    adapterItems.add(MyOverviewGreenCardPlaceholderItem(
+                        isEu = myOverviewItems.selectedType == GreenCardType.Eu
+                    ))
                 }
                 is MyOverviewItem.GreenCardItem -> {
                     adapterItems.add(

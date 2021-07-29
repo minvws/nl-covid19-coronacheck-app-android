@@ -86,14 +86,6 @@ class GetMyOverviewItemsUseCaseImpl(
                 items.add(it)
             }
 
-            getTravelModeItem(
-                greenCards = allGreenCards,
-                selectedType = selectedType,
-                shouldRefresh = shouldRefresh
-            )?.let {
-                items.add(it)
-            }
-
             MyOverviewItems(
                 items = items,
                 selectedType = selectedType
@@ -211,11 +203,7 @@ class GetMyOverviewItemsUseCaseImpl(
         selectedType: GreenCardType
     ): MyOverviewItem? {
         return if (greenCards.isEmpty() || greenCards.all { greenCardUtil.isExpired(it) }) {
-            if (selectedType == GreenCardType.Domestic) {
-                PlaceholderCardItem
-            } else {
-                null
-            }
+            PlaceholderCardItem
         } else {
             null
         }
