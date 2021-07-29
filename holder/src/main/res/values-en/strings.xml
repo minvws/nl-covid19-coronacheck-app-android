@@ -275,7 +275,7 @@
     <string name="missing_events_description">Due to increased traffic or an outage at one of the parties, some details may be missing. Please try again later.</string>
     <string name="dialog_vaccination_something_wrong_description"><![CDATA[Is your name or date of birth wrong? Or are your vaccination details incorrect? Find more information on <a href="https://coronacheck.nl/en/guidepost">the Guidepost.</a>]]></string>
     <string name="dialog_title_no_internet">Connect to the internet</string>
-    <string name="dialog_update_credentials_no_internet">The QR code sometimes needs an internet connection. Without an internet connection, your QR code can be used for 3 more days. When you’re connected, you’ll be able to use the QR code again for a longer period of time.</string>
+    <string name="dialog_update_credentials_no_internet">"The QR code sometimes needs an internet connection. Without an internet connection, your QR code can be used for 3 more days. When you’re connected, you’ll be able to use the QR code again for a longer period of time."</string>
     <string name="dialog_credentials_expired_no_internet">You need an internet connection to regain access to your QR code.</string>
     <string name="commercial_test_unique_code_hint_screenreader">Enter your retrieval code here</string>
     <string name="new_in_app_subtitle">New in the app</string>
@@ -354,9 +354,5 @@
     <string name="your_events_replace_dialog_negative_button">No, stop</string>
     <string name="your_events_replace_dialog_positive_button">Yes, replace</string>
     <string name="qr_explanation_certificate_issuer">Ministry of Health, Welfare and Sport</string>
-    <string name="qr_card_validity_future_from">valid from %1s%2s</string>
-    <string name="qr_card_validity_future_until">until %1s</string>
-    <string name="your_vaccination_explanation_dose">dose %1s</string>
-    <string name="qr_card_validity_future">Automatically becomes valid</string>
     <string name="qr_code_return_app_button">To %s</string>
 </resources>
