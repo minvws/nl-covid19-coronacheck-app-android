@@ -140,7 +140,7 @@ class MyOverViewGreenCardAdapterUtilImplTest: AutoCloseKoinTest() {
         myOverViewGreenCardAdapterUtil.setContent(greenCard, listOf(OriginState.Future(greenCard.origins.first())), viewBinding)
 
         assertEquals("Vaccinatiebewijs:", viewBinding.proof1Title.text)
-        assertEquals("geldig vanaf 27 juli 2021   ", viewBinding.proof1Subtitle.text)
+        assertEquals("geldig vanaf 27 juli 11:11   ", viewBinding.proof1Subtitle.text)
         assertEquals("Wordt automatisch geldig", viewBinding.expiresIn.text)
         assertEquals(View.VISIBLE, viewBinding.expiresIn.visibility)
     }
@@ -161,7 +161,7 @@ class MyOverViewGreenCardAdapterUtilImplTest: AutoCloseKoinTest() {
         myOverViewGreenCardAdapterUtil.setContent(greenCard, listOf(OriginState.Future(greenCard.origins.first())), viewBinding)
 
         assertEquals("Herstelbewijs:", viewBinding.proof1Title.text)
-        assertEquals("geldig vanaf 27 juli 2021 t/m 28 juli 2021", viewBinding.proof1Subtitle.text)
+        assertEquals("geldig vanaf 27 juli 11:11 t/m 28 juli 2021", viewBinding.proof1Subtitle.text)
         assertEquals(View.VISIBLE, viewBinding.expiresIn.visibility)
     }
 
@@ -181,7 +181,7 @@ class MyOverViewGreenCardAdapterUtilImplTest: AutoCloseKoinTest() {
         myOverViewGreenCardAdapterUtil.setContent(greenCard, listOf(OriginState.Future(greenCard.origins.first())), viewBinding)
 
         assertEquals("Herstelbewijs:", viewBinding.proof2Title.text)
-        assertEquals("geldig vanaf 27 juli 2021 t/m 28 juli 2021", viewBinding.proof2Subtitle.text)
+        assertEquals("geldig vanaf 27 juli 11:11 t/m 28 juli 2021", viewBinding.proof2Subtitle.text)
         assertEquals(View.VISIBLE, viewBinding.expiresIn.visibility)
     }
 

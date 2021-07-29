@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.View
 import android.widget.TextView
 import nl.rijksoverheid.ctr.design.ext.formatDateTime
+import nl.rijksoverheid.ctr.design.ext.formatDayMonthTime
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
 import nl.rijksoverheid.ctr.design.ext.formatDayShortMonthYear
 import nl.rijksoverheid.ctr.holder.R
@@ -33,11 +34,13 @@ class MyOverViewGreenCardAdapterUtilImpl(
     private val greenCardUtil: GreenCardUtil,
 ): MyOverViewGreenCardAdapterUtil {
     override fun setContent(greenCard: GreenCard, originStates: List<OriginState>, viewBinding: ViewBindingWrapper) {
+        val greenCardType = greenCard.greenCardEntity.type
         when (greenCard.greenCardEntity.type) {
             is GreenCardType.Eu -> {
                 credentialUtil.getTestTypeForEuropeanCredentials(greenCard.credentialEntities)
                 // European card only has one origin
                 val originState = originStates.first()
+                val showTimeFrom = originState.origin.type == OriginType.Recovery || (originState.origin.type == OriginType.Vaccination && greenCardType == GreenCardType.Domestic)
                 val origin = originState.origin
                 when (origin.type) {
                     is OriginType.Test -> {
@@ -49,6 +52,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
                         setOriginSubtitle(
                             textView = viewBinding.proof1Subtitle,
                             originState = originState,
+                            showTime = showTimeFrom,
                             subtitle = "${context.getString(R.string.qr_card_test_title_eu)} ${origin.eventTime.formatDateTime(context)}",
                         )
                     }
@@ -71,6 +75,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
                             // force a valid origin, as we need to allow the user to view the QR
                             // and when is valid from, it depends from the country going to
                             originState = OriginState.Valid(greenCard.origins.first()),
+                            showTime = showTimeFrom,
                             subtitle = "${context.getString(R.string.qr_card_vaccination_title_eu)} ${origin.eventTime.toLocalDate().formatDayMonthYear()}",
                         )
                     }
@@ -84,6 +89,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
                         setOriginSubtitle(
                             textView = viewBinding.proof1Subtitle,
                             originState = originState,
+                            showTime = showTimeFrom,
                             subtitle = context.getString(R.string.qr_card_validity_valid, origin.expirationTime.toLocalDate().formatDayShortMonthYear()),
                         )
                     }
@@ -92,6 +98,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
             }
             is GreenCardType.Domestic -> {
                 originStates.forEach { originState ->
+                    val showTimeFrom = originState.origin.type == OriginType.Recovery || (originState.origin.type == OriginType.Vaccination && greenCardType == GreenCardType.Domestic)
                     val origin = originState.origin
                     when (origin.type) {
                         is OriginType.Test -> {
@@ -103,6 +110,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
                             setOriginSubtitle(
                                 textView = viewBinding.proof3Subtitle,
                                 originState = originState,
+                            showTime = showTimeFrom,
                                 subtitle = context.getString(
                                     R.string.qr_card_validity_valid,
                                     origin.expirationTime.formatDateTime(context)
@@ -118,6 +126,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
                             setOriginSubtitle(
                                 textView = viewBinding.proof1Subtitle,
                                 originState = originState,
+                            showTime = showTimeFrom,
                                 subtitle = context.getString(R.string.qr_card_validity_future_from, origin.validFrom.toLocalDate().formatDayMonthYear(), "")
                             )
                         }
@@ -130,6 +139,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
                             setOriginSubtitle(
                                 textView = viewBinding.proof2Subtitle,
                                 originState = originState,
+                            showTime = showTimeFrom,
                                 subtitle = context.getString(
                                     R.string.qr_card_validity_valid,
                                     origin.expirationTime.toLocalDate().formatDayShortMonthYear()
@@ -184,6 +194,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
     private fun setOriginSubtitle(
         textView: TextView,
         originState: OriginState,
+        showTime: Boolean,
         subtitle: String,
     ) {
         val context = textView.context
@@ -192,7 +203,12 @@ class MyOverViewGreenCardAdapterUtilImpl(
             is OriginState.Future -> {
                 val showUntil = originState.origin.type == OriginType.Recovery
 
-                val validFrom = originState.origin.validFrom.toLocalDate().formatDayMonthYear()
+                val validFromDateTime = originState.origin.validFrom
+                val validFrom = if (showTime) {
+                    validFromDateTime.formatDayMonthTime(context)
+                } else {
+                    validFromDateTime.toLocalDate().formatDayMonthYear()
+                }
                 textView.text = context.getString(R.string.qr_card_validity_future_from, validFrom, if (showUntil) {
                     val until = originState.origin.expirationTime.toLocalDate().formatDayMonthYear()
                     context.getString(R.string.qr_card_validity_future_until, until)
