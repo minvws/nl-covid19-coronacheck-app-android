@@ -57,6 +57,7 @@ class MyOverviewViewModelImpl(
     }
 
     override fun refreshOverviewItems(selectType: GreenCardType, forceSync: Boolean) {
+        println("GIO refreshOverviewItems: $selectType")
         // When the app is opened we need to remember the tab that was selected
         persistenceManager.setSelectedGreenCardType(selectType)
 
