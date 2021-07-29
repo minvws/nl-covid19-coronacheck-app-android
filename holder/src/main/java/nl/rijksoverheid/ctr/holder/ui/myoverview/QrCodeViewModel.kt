@@ -49,8 +49,6 @@ class QrCodeViewModelImpl(
     }
 
     override fun onReturnUriGiven(uri: String, type: GreenCardType) {
-        if (type == GreenCardType.Domestic) {
-            returnAppLivedata.postValue(returnToAppUseCase.get(uri))
-        }
+        returnAppLivedata.postValue(returnToAppUseCase.get(uri, type))
     }
 }

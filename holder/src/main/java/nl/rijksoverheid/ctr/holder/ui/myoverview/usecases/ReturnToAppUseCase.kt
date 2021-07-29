@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.holder.ui.myoverview.usecases
 import android.content.Intent
 import android.net.Uri
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.ReturnAppData
 
 /*
@@ -13,7 +14,7 @@ import nl.rijksoverheid.ctr.holder.ui.myoverview.models.ReturnAppData
  *
  */
 interface ReturnToAppUseCase {
-    fun get(uri: String): ReturnAppData?
+    fun get(uri: String, type: GreenCardType): ReturnAppData?
 }
 
 class ReturnToAppUseCaseImpl(
@@ -22,9 +23,10 @@ class ReturnToAppUseCaseImpl(
 
     private val holderConfig = cachedAppConfigUseCase.getCachedAppConfig()
 
-    override fun get(uri: String): ReturnAppData? {
+    override fun get(uri: String, type: GreenCardType): ReturnAppData? {
         return holderConfig.deeplinkDomains
-            .firstOrNull { uri.contains(it.url) }
+            .takeIf { type == GreenCardType.Domestic }
+            ?.firstOrNull { uri.contains(it.url) }
             ?.let {
                 ReturnAppData(
                     appName = it.name,

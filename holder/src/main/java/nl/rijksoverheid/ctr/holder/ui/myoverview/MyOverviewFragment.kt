@@ -219,9 +219,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                                             type = greenCard.greenCardEntity.type,
                                             originType = greenCard.origins.first().type
                                         ),
-                                        returnUri = if (greenCard.greenCardEntity.type == GreenCardType.Domestic) {
-                                            args.returnUri
-                                        } else null
+                                        returnUri = args.returnUri
                                     )
                                 )
                             },
