@@ -29,6 +29,7 @@ import nl.rijksoverheid.ctr.shared.ext.sharedViewModelWithOwner
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ViewModelOwner
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.concurrent.TimeUnit
 
 
@@ -44,6 +45,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
     companion object {
         const val REQUEST_KEY = "REQUEST_KEY"
         const val EXTRA_BACK_FROM_QR = "EXTRA_BACK_FROM_QR"
+        const val GREEN_CARD_TYPE = "GREEN_CARD_TYPE"
     }
 
     private val section = Section()
@@ -52,13 +54,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
     private val refreshOverviewItemsRunnable = Runnable { refreshOverviewItems() }
 
     private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
-    private val myOverviewViewModel: MyOverviewViewModel by sharedViewModelWithOwner(
-        owner = {
-            ViewModelOwner.from(
-                findNavController().getViewModelStoreOwner(R.id.nav_graph_overview),
-                this
-            )
-        })
+    private val myOverviewViewModel: MyOverviewViewModel by viewModel()
 
     private val dialogUtil: DialogUtil by inject()
 
@@ -147,14 +143,16 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
 
     private fun refreshOverviewItems(forceSync: Boolean = false) {
         myOverviewViewModel.refreshOverviewItems(
-            forceSync = forceSync
+            forceSync = forceSync,
+            selectType = arguments?.getParcelable(GREEN_CARD_TYPE)!!
         )
         refreshOverviewItemsHandler.postDelayed(refreshOverviewItemsRunnable, TimeUnit.SECONDS.toMillis(10))
     }
 
     override fun onResume() {
         super.onResume()
-//        refreshOverviewItems()
+        println("GIO resume")
+        refreshOverviewItems()
 
 //        (parentFragment?.parentFragment as HolderMainFragment?)?.getToolbar().let { toolbar ->
 //            if (toolbar?.menu?.size() == 0) {
@@ -167,6 +165,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
 
     override fun onPause() {
         super.onPause()
+        println("GIO pause")
         refreshOverviewItemsHandler.removeCallbacks(refreshOverviewItemsRunnable)
 //        (parentFragment?.parentFragment as HolderMainFragment).getToolbar().menu.clear()
     }
@@ -199,6 +198,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                             credentialState = myOverviewItem.credentialState,
                             databaseSyncerResult = myOverviewItem.databaseSyncerResult,
                             onButtonClick = { greenCard, credential ->
+                                println("GIO edw click")
                                 navigateSafety(
                                     MyOverviewFragmentDirections.actionQrCode(
                                         toolbarTitle = when (greenCard.greenCardEntity.type) {
