@@ -2,8 +2,7 @@ package nl.rijksoverheid.ctr.holder.ui.myoverview.usecases
 
 import android.content.Intent
 import android.net.Uri
-import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
-import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.ReturnAppData
 
 /*
@@ -18,11 +17,13 @@ interface ReturnToAppUseCase {
 }
 
 class ReturnToAppUseCaseImpl(
-    private val cachedAppConfigUseCase: CachedAppConfigUseCase
+    cachedAppConfigUseCase: CachedAppConfigUseCase
 ) : ReturnToAppUseCase {
 
+    private val holderConfig = cachedAppConfigUseCase.getCachedAppConfig()
+
     override fun get(uri: String): ReturnAppData? {
-        return (cachedAppConfigUseCase.getCachedAppConfig() as HolderConfig).returnApps
+        return holderConfig.deeplinkDomains
             .firstOrNull { uri.contains(it.url) }
             ?.let {
                 ReturnAppData(

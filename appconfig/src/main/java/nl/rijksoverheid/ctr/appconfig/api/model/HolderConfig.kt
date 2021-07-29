@@ -2,7 +2,6 @@ package nl.rijksoverheid.ctr.appconfig.api.model
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import nl.rijksoverheid.ctr.shared.models.JSON
 
 
 /*
@@ -36,7 +35,7 @@ data class HolderConfig(
     @Json(name = "nlTestTypes") val nlTestTypes: List<Code>,
     @Json(name = "providerIdentifiers") val providerIdentifiers: List<Code>,
     @Json(name = "ggdEnabled") val ggdEnabled: Boolean,
-    @Json(name = "universalLinkDomains") val returnApps: List<Url>,
+    @Json(name = "universalLinkDomains") val deeplinkDomains: List<Url>,
 ): AppConfig(holderAppDeactivated, holderInformationURL, holderMinimumVersion, configTTL, providerIdentifiers) {
 
     companion object {
@@ -63,7 +62,7 @@ data class HolderConfig(
             nlTestTypes: List<Code> = listOf(),
             providerIdentifiers: List<Code> = listOf(),
             ggdEnabled: Boolean = true,
-            returnApps: List<Url> = listOf(Url("joe", "joe"))
+            returnApps: List<Url> = listOf()
         ) = HolderConfig(
             holderMinimumVersion = holderMinimumVersion,
             holderAppDeactivated = holderAppDeactivated,
@@ -87,7 +86,7 @@ data class HolderConfig(
             nlTestTypes = nlTestTypes,
             providerIdentifiers = providerIdentifiers,
             ggdEnabled = ggdEnabled,
-            returnApps = returnApps
+            deeplinkDomains = returnApps
         )
     }
 }
