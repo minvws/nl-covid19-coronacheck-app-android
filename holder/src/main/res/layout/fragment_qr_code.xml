@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         tools:text="Return to app"
-        android:paddingHorizontal="16dp"
+        android:layout_marginHorizontal="16dp"
         tools:visibility="visible"
         android:visibility="gone" />
 
