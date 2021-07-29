@@ -71,7 +71,28 @@ class RemoteEventHolderUtilImplTest: AutoCloseKoinTest() {
     }
 
     @Test
-    fun `two matching holders with different first case initial are not conflicting`() {
+    fun `two matching holders with different alphabet are not conflicting`() {
+        val storedHolders = listOf(
+            getHolderExample(
+                firstName = "Giorgos",
+                lastName = "Pap"
+            ),
+        )
+
+        val incomingHolders = listOf(
+            getHolderExample(
+                firstName = "Γιώργος",
+                lastName = "Παπ"
+            ),
+        )
+
+        val remoteUtil = RemoteEventHolderUtilImpl(moshi, mockk())
+
+        assertFalse(remoteUtil.conflicting(storedHolders, incomingHolders))
+    }
+
+    @Test
+    fun `two matching holders with one name starting with apostrophe are not conflicting`() {
         val storedHolders = listOf(
             getHolderExample(),
         )
@@ -79,13 +100,97 @@ class RemoteEventHolderUtilImplTest: AutoCloseKoinTest() {
         val incomingHolders = listOf(
             getHolderExample(
                 firstName = "ian",
-                lastName = "pijter"
+                lastName = "'rijter"
             ),
         )
 
         val remoteUtil = RemoteEventHolderUtilImpl(moshi, mockk())
 
         assertFalse(remoteUtil.conflicting(storedHolders, incomingHolders))
+    }
+
+    @Test
+    fun `two matching holders with different names are conflicting`() {
+        val storedHolders = listOf(
+            getHolderExample(),
+        )
+
+        val incomingHolders = listOf(
+            getHolderExample(
+                firstName = "ian",
+                lastName = "'pijter"
+            ),
+        )
+
+        val remoteUtil = RemoteEventHolderUtilImpl(moshi, mockk())
+
+        assertTrue(remoteUtil.conflicting(storedHolders, incomingHolders))
+    }
+
+    @Test
+    fun `two matching holders with different first name only are not conflicting`() {
+        val storedHolders = listOf(
+            getHolderExample(),
+        )
+
+        val incomingHolders = listOf(
+            getHolderExample(
+                firstName = "ian",
+                lastName = "'rijter"
+            ),
+        )
+
+        val remoteUtil = RemoteEventHolderUtilImpl(moshi, mockk())
+
+        assertFalse(remoteUtil.conflicting(storedHolders, incomingHolders))
+    }
+
+    @Test
+    fun `two matching holders with different last name only are not conflicting`() {
+        val storedHolders = listOf(
+            getHolderExample(),
+        )
+
+        val incomingHolders = listOf(
+            getHolderExample(
+                firstName = "jan",
+                lastName = "'pijter"
+            ),
+        )
+
+        val remoteUtil = RemoteEventHolderUtilImpl(moshi, mockk())
+
+        assertFalse(remoteUtil.conflicting(storedHolders, incomingHolders))
+    }
+
+    @Test
+    fun `two matching holders with different birth month are conflicting`() {
+        val storedHolders = listOf(
+            RemoteProtocol3.Holder("De", "jan", "pijter", "1982-06-25")
+        )
+
+        val incomingHolders = listOf(
+            RemoteProtocol3.Holder("De", "jan", "pijter", "1982-05-25")
+        )
+
+        val remoteUtil = RemoteEventHolderUtilImpl(moshi, mockk())
+
+        assertTrue(remoteUtil.conflicting(storedHolders, incomingHolders))
+    }
+
+    @Test
+    fun `two matching holders with different birth day are conflicting`() {
+        val storedHolders = listOf(
+            RemoteProtocol3.Holder("De", "jan", "pijter", "1982-06-26")
+        )
+
+        val incomingHolders = listOf(
+            RemoteProtocol3.Holder("De", "jan", "pijter", "1982-06-25")
+        )
+
+        val remoteUtil = RemoteEventHolderUtilImpl(moshi, mockk())
+
+        assertTrue(remoteUtil.conflicting(storedHolders, incomingHolders))
     }
 
     private fun getHolderExample(

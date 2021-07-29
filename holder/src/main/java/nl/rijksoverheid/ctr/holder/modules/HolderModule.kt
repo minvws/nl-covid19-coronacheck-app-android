@@ -39,6 +39,8 @@ import nl.rijksoverheid.ctr.holder.ui.myoverview.QrCodeViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.QrCodeViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.ReturnToAppUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.ReturnToAppUseCaseImpl
+import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverViewGreenCardAdapterUtil
+import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverViewGreenCardAdapterUtilImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCaseImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.*
@@ -132,8 +134,9 @@ fun holderModule(baseUrl: String) = module {
     factory<GetMyOverviewItemsUseCase> {
         GetMyOverviewItemsUseCaseImpl(get(), get(), get(), get())
     }
+    factory<MyOverViewGreenCardAdapterUtil> { MyOverViewGreenCardAdapterUtilImpl(androidContext(), get(), get(), get()) }
     factory<TokenValidatorUtil> { TokenValidatorUtilImpl() }
-    factory<CredentialUtil> { CredentialUtilImpl(Clock.systemUTC()) }
+    factory<CredentialUtil> { CredentialUtilImpl(Clock.systemUTC(), get()) }
     factory<OriginUtil> { OriginUtilImpl(Clock.systemUTC()) }
     factory<RemoteEventRecoveryUtil> { RemoteEventRecoveryUtilImpl(get()) }
     factory<RemoteEventHolderUtil> { RemoteEventHolderUtilImpl(get(), get()) }
