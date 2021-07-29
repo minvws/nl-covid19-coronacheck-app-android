@@ -24,3 +24,11 @@ fun OffsetDateTime.formatDateTime(context: Context): String =
         )
     ).withLocale(Locale.getDefault()).withZone(ZoneId.of("CET")).format(this)
 
+fun OffsetDateTime.formatDayMonthTime(context: Context): String =
+    DateTimeFormatter.ofPattern(
+        DateFormat.getBestDateTimePattern(
+            Locale.getDefault(),
+            if (DateFormat.is24HourFormat(context)) "d MMMM HH:mm" else "d MMMM hh:mm"
+        )
+    ).withLocale(Locale.getDefault()).withZone(ZoneId.of("CET")).format(this)
+

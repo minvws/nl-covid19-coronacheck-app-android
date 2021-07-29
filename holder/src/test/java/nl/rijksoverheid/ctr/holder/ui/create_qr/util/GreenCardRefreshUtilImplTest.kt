@@ -11,6 +11,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.CredentialEntit
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
+import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import org.junit.Assert.*
 import org.junit.Test
 import java.time.Clock
@@ -42,7 +43,8 @@ class GreenCardRefreshUtilImplTest {
 
     private val firstJanuaryClock = Clock.fixed(Instant.parse("2021-01-01T00:00:00.00Z"), ZoneId.of("UTC"))
 
-    private val credentialUtil = CredentialUtilImpl(firstJanuaryClock)
+    private val mobileCoreWrapper: MobileCoreWrapper = mockk(relaxed = true)
+    private val credentialUtil = CredentialUtilImpl(firstJanuaryClock, mobileCoreWrapper)
 
     private val greenCardRefreshUtil = GreenCardRefreshUtilImpl(holderDatabase, cachedAppConfigUseCase, greenCardUtil, firstJanuaryClock, credentialUtil)
     

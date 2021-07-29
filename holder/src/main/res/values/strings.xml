@@ -354,4 +354,8 @@ Scan daarom met de camera van je telefoon <b>alleen je internationale QR-code</b
     <string name="your_events_replace_dialog_negative_button">Nee, stop</string>
     <string name="your_events_replace_dialog_positive_button">Ja, vervang</string>
     <string name="qr_explanation_certificate_issuer">Ministerie VWS / Ministry of Health, Welfare and Sport</string>
+    <string name="qr_card_validity_future_from">geldig vanaf %1s %2s</string>
+    <string name="qr_card_validity_future_until">t/m %1s</string>
+    <string name="your_vaccination_explanation_dose">dosis %1s</string>
+    <string name="qr_card_validity_future">Wordt automatisch geldig</string>
 </resources>
