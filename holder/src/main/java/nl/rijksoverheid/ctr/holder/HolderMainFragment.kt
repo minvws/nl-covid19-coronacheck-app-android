@@ -56,6 +56,7 @@ class HolderMainFragment : BaseMainFragment(
             binding.drawerLayout
         )
 
+        binding.toolbar.elevation = 0f
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
         binding.navView.setupWithNavController(navController)
 
