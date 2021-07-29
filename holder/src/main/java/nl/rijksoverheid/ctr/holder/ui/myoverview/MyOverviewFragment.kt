@@ -156,19 +156,19 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
         super.onResume()
         refreshOverviewItems()
 
-        (parentFragment?.parentFragment as HolderMainFragment?)?.getToolbar().let { toolbar ->
-            if (toolbar?.menu?.size() == 0) {
-                toolbar.apply {
-                    inflateMenu(R.menu.overview_toolbar)
-                }
-            }
-        }
+//        (parentFragment?.parentFragment as HolderMainFragment?)?.getToolbar().let { toolbar ->
+//            if (toolbar?.menu?.size() == 0) {
+//                toolbar.apply {
+//                    inflateMenu(R.menu.overview_toolbar)
+//                }
+//            }
+//        }
     }
 
     override fun onPause() {
         super.onPause()
         refreshOverviewItemsHandler.removeCallbacks(refreshOverviewItemsRunnable)
-        (parentFragment?.parentFragment as HolderMainFragment).getToolbar().menu.clear()
+//        (parentFragment?.parentFragment as HolderMainFragment).getToolbar().menu.clear()
     }
 
     private fun setItems(
@@ -252,9 +252,9 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
 
                     binding.typeToggle.button.setText(myOverviewItem.buttonText)
 
-                    binding.typeToggle.button.setOnClickListener {
-                        navigateSafety(MyOverviewFragmentDirections.actionShowTravelMode())
-                    }
+//                    binding.typeToggle.button.setOnClickListener {
+//                        navigateSafety(MyOverviewFragmentDirections.actionShowTravelMode())
+//                    }
                 }
                 MyOverviewItem.AddCertificateItem -> binding.bottom.visibility = View.VISIBLE
             }
