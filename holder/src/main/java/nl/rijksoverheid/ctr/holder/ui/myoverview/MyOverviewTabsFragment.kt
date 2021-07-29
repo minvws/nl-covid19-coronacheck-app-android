@@ -14,6 +14,7 @@ import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewFragment.Companion.GREEN_CARD_TYPE
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewTabsFragment.Companion.positionTabsMap
+import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import org.koin.android.ext.android.inject
 
 class TabPagesAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
@@ -66,6 +67,12 @@ class MyOverviewTabsFragment: Fragment(R.layout.fragment_tabs_my_overview) {
 
         val defaultTab = binding.tabs.getTabAt(tabsMap[persistenceManager.getSelectedGreenCardType()]!!)
         defaultTab?.select()
+
+        binding.addQrButton.setOnClickListener {
+            navigateSafety(
+                MyOverviewFragmentDirections.actionQrType()
+            )
+        }
 
         return view
     }

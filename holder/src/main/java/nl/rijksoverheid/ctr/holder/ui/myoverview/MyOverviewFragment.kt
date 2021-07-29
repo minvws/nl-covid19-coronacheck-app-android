@@ -130,15 +130,15 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
     }
 
     private fun setListeners(binding: FragmentMyOverviewBinding) {
-        binding.addQrButton.setOnClickListener {
-            findNavController().navigate(
-                MyOverviewFragmentDirections.actionQrType()
-            )
-        }
+//        binding.addQrButton.setOnClickListener {
+//            findNavController().navigate(
+//                MyOverviewFragmentDirections.actionQrType()
+//            )
+//        }
 
-        binding.scroll.setOnScrollChangeListener { _, _, _, _, _ ->
-            setBottomElevation(binding)
-        }
+//        binding.scroll.setOnScrollChangeListener { _, _, _, _, _ ->
+//            setBottomElevation(binding)
+//        }
     }
 
     private fun refreshOverviewItems(forceSync: Boolean = false) {
@@ -175,7 +175,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
         myOverviewItems: MyOverviewItems
     ) {
 //        binding.typeToggle.root.visibility = View.GONE
-        binding.bottom.visibility = View.GONE
+//        binding.bottom.visibility = View.GONE
 
         val adapterItems = mutableListOf<BindableItem<*>>()
         myOverviewItems.items.forEach { myOverviewItem ->
@@ -258,13 +258,13 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
 //                        navigateSafety(MyOverviewFragmentDirections.actionShowTravelMode())
 //                    }
                 }
-                MyOverviewItem.AddCertificateItem -> binding.bottom.visibility = View.VISIBLE
+//                MyOverviewItem.AddCertificateItem -> binding.bottom.visibility = View.VISIBLE
             }
         }
 
         section.update(adapterItems)
 
-        setBottomElevation(binding)
+//        setBottomElevation(binding)
     }
 
     private fun navigateToEuQr(originType: OriginType) {
@@ -329,9 +329,9 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
         }
     }
 
-    private fun setBottomElevation(binding: FragmentMyOverviewBinding) {
-        binding.bottom.cardElevation = if (binding.scroll.canScrollVertically(1)) {
-            resources.getDimensionPixelSize(R.dimen.scroll_view_button_elevation).toFloat()
-        } else 0f
-    }
+//    private fun setBottomElevation(binding: FragmentMyOverviewBinding) {
+//        binding.bottom.cardElevation = if (binding.scroll.canScrollVertically(1)) {
+//            resources.getDimensionPixelSize(R.dimen.scroll_view_button_elevation).toFloat()
+//        } else 0f
+//    }
 }
