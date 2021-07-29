@@ -23,7 +23,7 @@ class ReturnToAppUseCaseImpl(
 
     override fun get(uri: String): ReturnAppData? {
         return (cachedAppConfigUseCase.getCachedAppConfig() as HolderConfig).returnApps
-            .firstOrNull { uri.contains(it.code) }
+            .firstOrNull { uri.contains(it.url) }
             ?.let {
                 ReturnAppData(
                     appName = it.name,
