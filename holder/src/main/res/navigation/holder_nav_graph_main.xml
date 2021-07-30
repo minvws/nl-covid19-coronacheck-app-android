@@ -38,6 +38,10 @@
                 app:popEnterAnim="@anim/fragment_close_enter"
                 app:popExitAnim="@anim/fragment_close_exit" />
 
+            <action
+                android:id="@+id/action_show_qr_explanation"
+                app:destination="@id/qr_code_explanation_bottomsheet" />
+
         </fragment>
 
     </navigation>
@@ -77,10 +81,6 @@
         <action
             android:id="@+id/action_about_this_app"
             app:destination="@id/nav_about_this_app" />
-
-        <action
-            android:id="@+id/action_show_qr_explanation"
-            app:destination="@id/qr_code_explanation_bottomsheet" />
 
     </fragment>
 

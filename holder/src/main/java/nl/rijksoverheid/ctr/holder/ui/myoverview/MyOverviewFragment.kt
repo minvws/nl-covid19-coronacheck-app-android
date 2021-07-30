@@ -223,7 +223,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
         when (originType) {
             is OriginType.Test -> {
                 navigateSafety(
-                    MyOverviewFragmentDirections.actionShowQrExplanation(
+                    MyOverviewTabsFragmentDirections.actionShowQrExplanation(
                         title = getString(R.string.my_overview_green_card_not_valid_title_test),
                         description = getString(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_test)
                     )
@@ -231,7 +231,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
             }
             is OriginType.Vaccination -> {
                 navigateSafety(
-                    MyOverviewFragmentDirections.actionShowQrExplanation(
+                    MyOverviewTabsFragmentDirections.actionShowQrExplanation(
                         title = getString(R.string.my_overview_green_card_not_valid_title_vaccination),
                         description = getString(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_vaccination)
                     )
@@ -239,7 +239,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
             }
             is OriginType.Recovery -> {
                 navigateSafety(
-                    MyOverviewFragmentDirections.actionShowQrExplanation(
+                    MyOverviewTabsFragmentDirections.actionShowQrExplanation(
                         title = getString(R.string.my_overview_green_card_not_valid_title_recovery),
                         description = getString(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_recovery)
                     )
@@ -252,7 +252,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
         when (originType) {
             is OriginType.Test -> {
                 navigateSafety(
-                    MyOverviewFragmentDirections.actionShowQrExplanation(
+                    MyOverviewTabsFragmentDirections.actionShowQrExplanation(
                         title = getString(R.string.my_overview_green_card_not_valid_title_test),
                         description = getString(
                             R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_test,
@@ -264,7 +264,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
             }
             is OriginType.Vaccination -> {
                 navigateSafety(
-                    MyOverviewFragmentDirections.actionShowQrExplanation(
+                    MyOverviewTabsFragmentDirections.actionShowQrExplanation(
                         title = getString(R.string.my_overview_green_card_not_valid_title_vaccination),
                         description = getString(R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_vaccination)
                     )
@@ -272,7 +272,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
             }
             is OriginType.Recovery -> {
                 navigateSafety(
-                    MyOverviewFragmentDirections.actionShowQrExplanation(
+                    MyOverviewTabsFragmentDirections.actionShowQrExplanation(
                         title = getString(R.string.my_overview_green_card_not_valid_title_recovery),
                         description = getString(R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_recovery)
                     )
