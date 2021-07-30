@@ -238,7 +238,7 @@
     <string name="your_vaccination_explanation_last_dose_no">no</string>
     <string name="your_vaccination_explanation_last_dose_unknown">unknown</string>
     <string name="your_vaccination_explanation_covid_19">COVID-19</string>
-    <string name="your_vaccination_explanation_doses">%1$s of %2$s</string>
+    <string name="your_vaccination_explanation_doses">%1$s / %2$s</string>
     <string name="my_overview_not_valid_domestic_but_is_in_eu">Your %1$s isn\'t valid in the Netherlands. You\'ve only got an international certificate.</string>
     <string name="my_overview_not_valid_eu_but_is_in_domestic">Your %1$s isn\'t valid internationally. You\'ve only got a Dutch certificate.</string>
     <string name="type_recovery">recovery certificate</string>

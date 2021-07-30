@@ -351,11 +351,16 @@ class InfoScreenUtilImpl(
 
     private fun getCountry(countryCode: String?): String = if (countryCode != null) {
         val currentLocale = getCurrentLocale()
-        val isNL = currentLocale.country == "NL"
+        val localeIsNL = currentLocale.country == "NL"
+        val countryIsNL = countryCode == "NL"
         val countryNameInDutch = Locale("", countryCode).getDisplayCountry(Locale("nl"))
         val countryNameInEnglish = Locale("", countryCode).getDisplayCountry(Locale("en"))
 
-        if (isNL) {
+        // GetDisplayCountry returns country for "NL" as "Netherlands" instead of "The Netherlands"
+        if(localeIsNL && countryIsNL){
+            "$countryNameInDutch / The $countryNameInEnglish"
+        }
+        else if (localeIsNL) {
             "$countryNameInDutch / $countryNameInEnglish"
         } else {
             countryNameInEnglish
