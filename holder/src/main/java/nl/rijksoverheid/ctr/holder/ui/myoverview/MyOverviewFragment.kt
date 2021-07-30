@@ -167,7 +167,6 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                             credentialState = myOverviewItem.credentialState,
                             databaseSyncerResult = myOverviewItem.databaseSyncerResult,
                             onButtonClick = { greenCard, credential ->
-                                println("GIO edw click")
                                 navigateSafety(
                                     MyOverviewFragmentDirections.actionQrCode(
                                         toolbarTitle = when (greenCard.greenCardEntity.type) {
