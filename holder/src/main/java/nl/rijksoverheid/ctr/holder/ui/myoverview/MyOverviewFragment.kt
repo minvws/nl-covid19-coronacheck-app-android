@@ -281,10 +281,4 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
             }
         }
     }
-
-//    private fun setBottomElevation(binding: FragmentMyOverviewBinding) {
-//        binding.bottom.cardElevation = if (binding.scroll.canScrollVertically(1)) {
-//            resources.getDimensionPixelSize(R.dimen.scroll_view_button_elevation).toFloat()
-//        } else 0f
-//    }
 }

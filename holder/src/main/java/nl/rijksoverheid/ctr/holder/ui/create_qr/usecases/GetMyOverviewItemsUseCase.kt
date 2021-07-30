@@ -82,10 +82,6 @@ class GetMyOverviewItemsUseCaseImpl(
                 items.add(it)
             }
 
-            getAddCertificateItem(allGreenCards)?.let {
-                items.add(it)
-            }
-
             MyOverviewItems(
                 items = items,
                 selectedType = selectedType
@@ -208,9 +204,6 @@ class GetMyOverviewItemsUseCaseImpl(
         }
     }
 
-    private fun getAddCertificateItem(greenCards: List<GreenCard>): AddCertificateItem? =
-        if (greenCards.isEmpty()) AddCertificateItem else null
-
 }
 
 data class MyOverviewItems(
@@ -245,5 +238,4 @@ sealed class MyOverviewItem {
     data class OriginInfoItem(val greenCardType: GreenCardType, val originType: OriginType) :
         MyOverviewItem()
 
-    object AddCertificateItem : MyOverviewItem()
 }

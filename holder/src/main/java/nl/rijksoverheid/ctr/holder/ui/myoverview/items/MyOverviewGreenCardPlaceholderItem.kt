@@ -37,7 +37,11 @@ class MyOverviewGreenCardPlaceholderItem(private val isEu: Boolean) :
             R.string.my_overview_qr_placeholder_header
         })
         viewBinding.text.setHtmlText(
-            htmlText = viewBinding.root.context.getString(R.string.my_overview_qr_placeholder_description),
+            htmlText = viewBinding.root.context.getString(if (isEu) {
+                R.string.my_overview_qr_placeholder_description_eu
+            } else {
+                R.string.my_overview_qr_placeholder_description
+            }),
             htmlLinksEnabled = true
         )
     }
