@@ -13,6 +13,7 @@ import org.json.JSONObject
 import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 import java.util.*
 
 interface InfoScreenUtil {
@@ -376,6 +377,12 @@ class InfoScreenUtilImpl(
         val birthDate = dcc.getStringOrNull("dob")?.let { birthDate ->
             try {
                 LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).formatDayMonthYearNumerical()
+            } catch (e: DateTimeParseException) {
+                // Check if date has removed content, if so return year or string only
+                if (birthDate.contains("XX")) {
+                    // Retrieve birth year only
+                    birthDate.split("-").first()
+                } else birthDate
             } catch (e: Exception) {
                 ""
             }
