@@ -54,6 +54,8 @@ interface InfoScreenUtil {
     fun getForEuropeanTestQr(readEuropeanCredential: JSONObject): InfoScreen
     fun getForEuropeanVaccinationQr(readEuropeanCredential: JSONObject): InfoScreen
     fun getForEuropeanRecoveryQr(readEuropeanCredential: JSONObject): InfoScreen
+
+    fun getCountry(countryCode: String?, currentLocale: Locale?): String
 }
 
 class InfoScreenUtilImpl(
@@ -319,7 +321,7 @@ class InfoScreenUtilImpl(
                 it.code == test.getStringOrNull("ma")
             }?.name ?: test.getStringOrNull("ma") ?: ""
 
-        val vaccinationCountry = getCountry(test.getStringOrNull("co"))
+        val vaccinationCountry = getCountry(test.getStringOrNull("co"), getCurrentLocale())
         val uniqueCode = test.getStringOrNull("ci")
 
         val description = application.getString(
@@ -349,18 +351,19 @@ class InfoScreenUtilImpl(
         application.resources.configuration.locale
     }
 
-    private fun getCountry(countryCode: String?): String = if (countryCode != null) {
-        val currentLocale = getCurrentLocale()
-        val localeIsNL = currentLocale.country == "NL"
+    override fun getCountry(
+        countryCode: String?,
+        currentLocale: Locale?
+    ): String = if (countryCode != null) {
+        val localeIsNL = currentLocale?.country == "NL"
         val countryIsNL = countryCode == "NL"
         val countryNameInDutch = Locale("", countryCode).getDisplayCountry(Locale("nl"))
         val countryNameInEnglish = Locale("", countryCode).getDisplayCountry(Locale("en"))
 
         // GetDisplayCountry returns country for "NL" as "Netherlands" instead of "The Netherlands"
-        if(localeIsNL && countryIsNL){
+        if (localeIsNL && countryIsNL) {
             "$countryNameInDutch / The $countryNameInEnglish"
-        }
-        else if (localeIsNL) {
+        } else if (localeIsNL) {
             "$countryNameInDutch / $countryNameInEnglish"
         } else {
             countryNameInEnglish
@@ -427,7 +430,7 @@ class InfoScreenUtilImpl(
         } ?: ""
 
         val countryCode = vaccination.getStringOrNull("co")
-        val vaccinationCountry = getCountry(countryCode)
+        val vaccinationCountry = getCountry(countryCode, getCurrentLocale())
 
         val issuerValue = vaccination.getStringOrNull("is")
         val issuer = if (issuerValue == issuerVWS) {
@@ -485,7 +488,7 @@ class InfoScreenUtilImpl(
             }
         } ?: ""
 
-        val country = getCountry(recovery.getStringOrNull("co"))
+        val country = getCountry(recovery.getStringOrNull("co"), getCurrentLocale())
 
         val producer = recovery.getStringOrNull("is")
 
