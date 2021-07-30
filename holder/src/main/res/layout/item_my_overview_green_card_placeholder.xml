@@ -67,7 +67,6 @@
                 android:layout_marginBottom="40dp"
                 android:focusable="true"
                 android:gravity="center"
-                android:text="@string/my_overview_qr_placeholder_header"
                 android:textAppearance="?attr/textAppearanceHeadline6"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
