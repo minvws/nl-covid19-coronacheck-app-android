@@ -47,7 +47,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/title"
-                app:htmlTextWithList="@string/add_paper_proof_consent_description" />
+                app:htmlText="@string/add_paper_proof_consent_description" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
