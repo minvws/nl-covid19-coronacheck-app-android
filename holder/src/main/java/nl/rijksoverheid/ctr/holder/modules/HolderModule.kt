@@ -33,10 +33,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
 import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModel
 import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModelImpl
-import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewViewModel
-import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewViewModelImpl
-import nl.rijksoverheid.ctr.holder.ui.myoverview.QrCodeViewModel
-import nl.rijksoverheid.ctr.holder.ui.myoverview.QrCodeViewModelImpl
+import nl.rijksoverheid.ctr.holder.ui.myoverview.*
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverViewGreenCardAdapterUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverViewGreenCardAdapterUtilImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
@@ -159,6 +156,7 @@ fun holderModule(baseUrl: String) = module {
     viewModel<DeviceRootedViewModel> { DeviceRootedViewModelImpl(get(), get()) }
     viewModel<YourEventsViewModel> { YourEventsViewModelImpl(get(), get()) }
     viewModel<MyOverviewViewModel> { MyOverviewViewModelImpl(get(), get(), get(), get(), get()) }
+    viewModel<MyOverviewTabsViewModel> { MyOverviewTabsViewModelImpl(get()) }
     viewModel<GetEventsViewModel> { GetEventsViewModelImpl(get()) }
     viewModel<PaperProofCodeViewModel> { PaperProofCodeViewModelImpl(get(), get()) }
     viewModel<PaperProofQrScannerViewModel> { PaperProofQrScannerViewModelImpl(get()) }

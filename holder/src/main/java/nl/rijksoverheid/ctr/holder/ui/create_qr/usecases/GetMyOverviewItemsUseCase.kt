@@ -32,6 +32,8 @@ interface GetMyOverviewItemsUseCase {
         databaseSyncerResult: DatabaseSyncerResult = DatabaseSyncerResult.Success,
         shouldRefresh: Boolean
     ): MyOverviewItems
+
+    suspend fun getGreenCards(): List<GreenCard>
 }
 
 class GetMyOverviewItemsUseCaseImpl(
@@ -204,6 +206,9 @@ class GetMyOverviewItemsUseCaseImpl(
         }
     }
 
+    override suspend fun getGreenCards(): List<GreenCard> {
+        return holderDatabase.greenCardDao().getAll()
+    }
 }
 
 data class MyOverviewItems(
