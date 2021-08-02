@@ -1,7 +1,6 @@
 package nl.rijksoverheid.ctr.design.ext
 
 import android.graphics.Typeface
-import android.text.ParcelableSpan
 import android.text.Spanned
 import android.text.style.BulletSpan
 import android.text.style.RelativeSizeSpan
@@ -35,7 +34,10 @@ fun Spanned.separated(separator: String): List<Spanned> {
 
     substrings.add(substring(start, length))
 
-    return substrings
+    return substrings.filterNot {
+        // Filter out any strings containing only whitespace
+        it.length == 1 && Character.isWhitespace(it[0])
+    }
 }
 
 /**
