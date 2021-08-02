@@ -64,11 +64,10 @@ class HtmlTextViewWidget @JvmOverloads constructor(
      * Sets the text based on a string.
      * Links are disabled by default, but can be enabled.
      */
-    fun setHtmlText(htmlText: String?, htmlLinksEnabled: Boolean = false) {
+    fun setHtmlText(htmlText: String, htmlLinksEnabled: Boolean = false) {
         removeAllViews()
 
-        if (htmlText == null) {
-            text = ""
+        if (htmlText.isEmpty()) {
             return
         }
 
