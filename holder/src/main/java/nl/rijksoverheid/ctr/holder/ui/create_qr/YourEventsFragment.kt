@@ -37,6 +37,7 @@ import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 import java.util.*
 
 class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
@@ -130,14 +131,22 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                         if (it) {
                             replaceCertificateDialog(type.remoteEvents, type.originType)
                         } else {
-                            yourEventsViewModel.saveRemoteProtocol3Events(type.remoteEvents, type.originType, false)
+                            yourEventsViewModel.saveRemoteProtocol3Events(
+                                type.remoteEvents,
+                                type.originType,
+                                false
+                            )
                         }
                     }
                     is YourEventsFragmentType.DCC -> {
                         if (it) {
                             replaceCertificateDialog(type.remoteEvents, type.originType)
                         } else {
-                            yourEventsViewModel.saveRemoteProtocol3Events(type.remoteEvents, type.originType, false)
+                            yourEventsViewModel.saveRemoteProtocol3Events(
+                                type.remoteEvents,
+                                type.originType,
+                                false
+                            )
                         }
                     }
                 }
@@ -209,7 +218,10 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                     remoteProtocol2 = type.remoteTestResult
                 )
             }
-            is YourEventsFragmentType.RemoteProtocol3Type -> presentEvents(type.remoteEvents, binding)
+            is YourEventsFragmentType.RemoteProtocol3Type -> presentEvents(
+                type.remoteEvents,
+                binding
+            )
             is YourEventsFragmentType.DCC -> presentEvents(type.remoteEvents, binding)
         }
     }
@@ -341,8 +353,10 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
         binding.eventsGroup.addView(eventWidget)
     }
 
-    private fun getTitle(providerIdentifier: String,
-                         event: RemoteEventVaccination): String {
+    private fun getTitle(
+        providerIdentifier: String,
+        event: RemoteEventVaccination
+    ): String {
         return if (providerIdentifier.toLowerCase(Locale.US) == "dcc") {
             resources.getString(
                 R.string.retrieved_vaccination_title,
@@ -533,6 +547,11 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
         holder?.birthDate?.let { birthDate ->
             try {
                 LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).formatDayMonthYear()
+            } catch (e: DateTimeParseException) {
+                // Check if date has removed content, if so return string directly
+                if (birthDate.contains("XX")) {
+                    birthDate
+                } else ""
             } catch (e: Exception) {
                 ""
             }

@@ -46,6 +46,7 @@ open class DigiDFragment(contentLayoutId: Int) : Fragment(contentLayoutId) {
     private fun getSupportedBrowsers(): Array<VersionedBrowserMatcher> =
         BrowserSelector.getAllBrowsers(context)
             .filter { it.useCustomTab == false }
+            .filter { it.packageName != "android" }
             .map {
                 VersionedBrowserMatcher(
                     it.packageName,

@@ -238,7 +238,7 @@
     <string name="your_vaccination_explanation_last_dose_no">no</string>
     <string name="your_vaccination_explanation_last_dose_unknown">unknown</string>
     <string name="your_vaccination_explanation_covid_19">COVID-19</string>
-    <string name="your_vaccination_explanation_doses">%1$s of %2$s</string>
+    <string name="your_vaccination_explanation_doses">%1$s / %2$s</string>
     <string name="my_overview_not_valid_domestic_but_is_in_eu">Your %1$s isn\'t valid in the Netherlands. You\'ve only got an international certificate.</string>
     <string name="my_overview_not_valid_eu_but_is_in_domestic">Your %1$s isn\'t valid internationally. You\'ve only got a Dutch certificate.</string>
     <string name="type_recovery">recovery certificate</string>
@@ -309,8 +309,10 @@
     <string name="dialog_faultyvaccination28June_message">You’ve wrongly received a Dutch vaccination certificate due to a technical error. This was corrected.</string>
     <string name="dialog_faultyvaccination28June_refresh_error_title">Something went wrong while refreshing your details</string>
     <string name="dialog_faultyvaccination28June_refresh_error_message">Please retrieve your details again via the app.</string>
-    <string name="my_overview_qr_placeholder_header">Find your certificate here later</string>
-    <string name="my_overview_qr_placeholder_description"><![CDATA[You can add a certificate if you\'re vaccinated, if you\'ve had corona or by taking a test at an <a href="https://coronacheck.nl/en/testafspraak-in-app">affiliated test location</a>. The app generates a certificate for the Netherlands and one for other countries.<br /></p><p><b>Travelling outside the Netherlands?</b><br />Check <a href="https://www.nederlandwereldwijd.nl/reizen/reisadviezen">wijsopreis.nl</a> before you leave. There you will find which certificate is valid in the country you’re planning to visit.]]></string>
+    <string name="my_overview_qr_placeholder_header">Find your dutch certificate here later</string>
+    <string name="my_overview_qr_placeholder_header_eu">Find your international certificate here later</string>
+    <string name="my_overview_qr_placeholder_description"><![CDATA[You can add a certificate if you\'re vaccinated, if you\'ve had corona or by taking a test at an <a href="https://coronacheck.nl/en/testafspraak-in-app">affiliated test location</a>. <br />The app generates a certificate for the Netherlands and one for other countries.]]></string>
+    <string name="my_overview_qr_placeholder_description_eu"><![CDATA[Are you abroad or crossing the borders? Use then your international certificate. Check before departing which certificate you need. <br /> <a href="https://www.coronacheck.nl/wegwijzer">Which certificate is valid for my destination?</a>]]></string>
     <string name="my_overview_add_qr_button">Add certificate</string>
     <string name="add_paper_proof">Add paper certificate</string>
     <string name="add_paper_proof_title">Your letter combination</string>
