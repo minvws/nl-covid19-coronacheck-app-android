@@ -34,7 +34,9 @@ class HtmlTextViewWidget @JvmOverloads constructor(
     defStyleRes: Int = 0,
 ) : LinearLayout(context, attrs, defStyle, defStyleRes) {
 
+    // Reflects the full text shown in the subviews. Can only be set internally.
     var text: CharSequence? = null
+        private set
 
     /**
      * Checks if any attributes were passed by XML, and if so, calls the relevant methods.
