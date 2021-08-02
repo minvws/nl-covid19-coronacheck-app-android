@@ -17,6 +17,16 @@ import nl.rijksoverheid.ctr.design.R
 import nl.rijksoverheid.ctr.design.ext.*
 import nl.rijksoverheid.ctr.design.spans.BulletPointSpan
 
+/**
+ * The HtmlTextViewWidget is able to display (simple) HTML in an accessible way.
+ * 1. HTML is parsed to a Spanned object.
+ * 2. the Spanned object is split on the linebreak character.
+ * 3. Each Spanned object is then displayed using a `HtmlTextView`.
+ * 4. Accessibility attributes are applied to the HtmlTextView.
+ *
+ * The methods enableHtmlLinks() and enableCustomLinks() are dispatched to each TextView subview.
+ * The getSpannableFromHtml() method parses HTML into a Spannable object while taking legacy implementations into account.
+ */
 class HtmlTextViewWidget @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,

@@ -10,6 +10,15 @@ import com.google.android.material.textview.MaterialTextView
 import nl.rijksoverheid.ctr.design.R
 import nl.rijksoverheid.ctr.shared.utils.Accessibility
 
+/**
+ * Subclass of MaterialTextView which is capable of displaying HTML.
+ * HTML should be parsed to a Spanned object, which can be displayed directly by using the text attribute.
+ *
+ * For improved accessibility, the `dispatchPopulateAccessibilityEvent` method is overridden.
+ * The first clickable span is activated if:
+ * 1. TYPE_VIEW_CLICKED event is dispatched
+ * 2. User is using touch exploration
+ */
 class HtmlTextView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
