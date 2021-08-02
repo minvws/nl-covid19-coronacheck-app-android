@@ -8,12 +8,12 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
@@ -23,9 +23,9 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.util.InfoScreenUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeData
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.ReturnAppData
 import nl.rijksoverheid.ctr.shared.QrCodeConstants
+import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAccessibilityFocus
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
-import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.time.Instant
@@ -48,6 +48,7 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
     private val args: QrCodeFragmentArgs by navArgs()
     private val personalDetailsUtil: PersonalDetailsUtil by inject()
     private val infoScreenUtil: InfoScreenUtil by inject()
+    private val dialogUtil: DialogUtil by inject()
 
     private val qrCodeHandler = Handler(Looper.getMainLooper())
     private val qrCodeRunnable = Runnable {
@@ -86,11 +87,14 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
 
     private fun returnToApp(returnAppData: ReturnAppData?) {
         binding.button.run {
-            returnAppData?.let {
+            if (returnAppData != null) {
                 visibility = View.VISIBLE
-                text = getString(R.string.qr_code_return_app_button, it.appName)
+                text = getString(R.string.qr_code_return_app_button, returnAppData.appName)
                 setOnClickListener { startIntent(returnAppData) }
-            } ?: run { visibility = View.GONE }
+            } else {
+                visibility = View.GONE
+
+            }
         }
     }
 
@@ -98,13 +102,13 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
         try {
             startActivity(returnAppData.intent)
         } catch (exception: ActivityNotFoundException) {
-            // TODO: improve error handling
-            Toast.makeText(
-                requireContext(),
-                "failed to return to app",
-                Toast.LENGTH_SHORT
+            dialogUtil.presentDialog(
+                context = requireContext(),
+                title = R.string.dialog_error_title,
+                message = getString(R.string.dialog_error_message),
+                positiveButtonText = R.string.dialog_close,
+                positiveButtonCallback = {}
             )
-                .show()
         }
     }
 
@@ -133,7 +137,8 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
                                     val infoScreen = infoScreenUtil.getForDomesticQr(
                                         personalDetails = personalDetails
                                     )
-                                        navigateSafety(QrCodeFragmentDirections.actionShowQrExplanation(
+                                    navigateSafety(
+                                        QrCodeFragmentDirections.actionShowQrExplanation(
                                             title = infoScreen.title,
                                             description = infoScreen.description
                                         )
@@ -145,7 +150,8 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
                                             val infoScreen = infoScreenUtil.getForEuropeanTestQr(
                                                 qrCodeData.readEuropeanCredential
                                             )
-                                                navigateSafety(QrCodeFragmentDirections.actionShowQrExplanation(
+                                            navigateSafety(
+                                                QrCodeFragmentDirections.actionShowQrExplanation(
                                                     title = infoScreen.title,
                                                     description = infoScreen.description
                                                 )
@@ -156,7 +162,8 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
                                                 infoScreenUtil.getForEuropeanVaccinationQr(
                                                     qrCodeData.readEuropeanCredential
                                                 )
-                                                navigateSafety(QrCodeFragmentDirections.actionShowQrExplanation(
+                                            navigateSafety(
+                                                QrCodeFragmentDirections.actionShowQrExplanation(
                                                     title = infoScreen.title,
                                                     description = infoScreen.description
                                                 )
@@ -167,7 +174,8 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
                                                 infoScreenUtil.getForEuropeanRecoveryQr(
                                                     qrCodeData.readEuropeanCredential
                                                 )
-                                                navigateSafety(QrCodeFragmentDirections.actionShowQrExplanation(
+                                            navigateSafety(
+                                                QrCodeFragmentDirections.actionShowQrExplanation(
                                                     title = infoScreen.title,
                                                     description = infoScreen.description
                                                 )

@@ -47,28 +47,20 @@
     </navigation>
 
 
-
     <fragment
         android:id="@+id/nav_my_overview"
         android:name="nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewFragment"
         android:label="@string/my_overview"
         tools:layout="@layout/fragment_my_overview">
 
-            <deepLink app:uri=".*/app/open?returnUri={returnUri}" />
+        <deepLink app:uri=".*/app/open?returnUri={returnUri}" />
 
-            <argument
-                android:name="returnUri"
-                android:defaultValue="@null"
-                app:argType="string"
-                app:nullable="true" />
+        <argument
+            android:name="returnUri"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
 
-            <action
-                android:id="@+id/action_choose_provider"
-                app:destination="@id/nav_choose_provider"
-                app:enterAnim="@anim/fragment_open_enter"
-                app:exitAnim="@anim/fragment_open_exit"
-                app:popEnterAnim="@anim/fragment_close_enter"
-                app:popExitAnim="@anim/fragment_close_exit" />
         <action
             android:id="@+id/action_choose_provider"
             app:destination="@id/nav_choose_provider"
@@ -212,7 +204,7 @@
 
             <argument
                 android:name="couplingCode"
-                app:argType="string"/>
+                app:argType="string" />
 
         </fragment>
 
