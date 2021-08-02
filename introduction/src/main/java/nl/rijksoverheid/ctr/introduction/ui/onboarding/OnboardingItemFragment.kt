@@ -49,7 +49,7 @@ class OnboardingItemFragment : Fragment(R.layout.fragment_onboarding_item) {
         val binding = FragmentOnboardingItemBinding.bind(view)
 
         binding.title.text = getString(item.titleResource)
-        binding.description.setHtmlText(item.description, false)
+        binding.description.setHtmlText(item.description, htmlLinksEnabled = false)
 
         if (androidUtil.isSmallScreen()) {
             binding.image.visibility = View.GONE

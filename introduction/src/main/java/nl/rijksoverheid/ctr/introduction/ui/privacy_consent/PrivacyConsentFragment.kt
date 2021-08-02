@@ -52,7 +52,7 @@ class PrivacyConsentFragment : Fragment(R.layout.fragment_privacy_consent) {
             val viewBinding =
                 ItemPrivacyConsentBinding.inflate(layoutInflater, binding.items, true)
             viewBinding.icon.setImageResource(item.iconResource)
-            viewBinding.description.setHtmlText(item.textResource,false)
+            viewBinding.description.setHtmlText(item.textResource,htmlLinksEnabled = false)
         }
 
         if (args.introductionData.hideConsent) {

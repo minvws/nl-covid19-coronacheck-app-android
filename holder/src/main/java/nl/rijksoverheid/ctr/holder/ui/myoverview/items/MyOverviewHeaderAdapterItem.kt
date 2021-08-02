@@ -16,7 +16,7 @@ import nl.rijksoverheid.ctr.holder.databinding.ItemMyOverviewHeaderBinding
 class MyOverviewHeaderAdapterItem(@StringRes private val text: Int) :
     BindableItem<ItemMyOverviewHeaderBinding>(R.layout.item_my_overview_header.toLong()) {
     override fun bind(viewBinding: ItemMyOverviewHeaderBinding, position: Int) {
-        viewBinding.text.setHtmlText(text, true)
+        viewBinding.text.setHtmlText(text, htmlLinksEnabled = true)
     }
 
     override fun getLayout(): Int {

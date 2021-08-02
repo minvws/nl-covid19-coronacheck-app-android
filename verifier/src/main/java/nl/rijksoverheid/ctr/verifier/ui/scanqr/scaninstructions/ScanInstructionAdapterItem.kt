@@ -22,10 +22,7 @@ class ScanInstructionAdapterItem(
 ) : BindableItem<ItemScanInstructionBinding>() {
     override fun bind(viewBinding: ItemScanInstructionBinding, position: Int) {
         viewBinding.title.setText(title)
-        viewBinding.description.setHtmlText(
-            htmlText = description,
-            htmlLinksEnabled = true
-        )
+        viewBinding.description.setHtmlText(description, htmlLinksEnabled = true)
 
         if (image == null) {
             viewBinding.image.visibility = View.GONE

@@ -50,8 +50,8 @@ class HtmlTextViewWidget @JvmOverloads constructor(
                 val htmlText = getText(R.styleable.HtmlTextViewWidget_htmlText)
                 if (htmlText?.isNotEmpty() == true) {
                     setHtmlText(
-                        htmlText.toString(),
-                        getBoolean(R.styleable.HtmlTextViewWidget_enableHtmlLinks, false)
+                        htmlText = htmlText.toString(),
+                        htmlLinksEnabled = getBoolean(R.styleable.HtmlTextViewWidget_enableHtmlLinks, false)
                     )
                 }
             } finally {
@@ -67,7 +67,7 @@ class HtmlTextViewWidget @JvmOverloads constructor(
      */
     fun setHtmlText(htmlText: Int, htmlLinksEnabled: Boolean = false) {
         val text = context.getString(htmlText)
-        setHtmlText(text, htmlLinksEnabled)
+        setHtmlText(text, htmlLinksEnabled = htmlLinksEnabled)
     }
 
     /**
