@@ -13,6 +13,9 @@
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
+            app:tabMaxWidth="0dp"
+            app:tabGravity="fill"
+            app:tabMode="fixed"
             app:tabSelectedTextColor="@color/black"
             app:tabIndicatorColor="@color/black"
             app:tabTextColor="@color/secondary_text"

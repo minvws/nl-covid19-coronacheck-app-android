@@ -69,6 +69,9 @@ class MyOverviewTabsFragment: Fragment(R.layout.fragment_tabs_my_overview) {
         binding.viewPager.adapter = viewPagerAdapter
 
         TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
+            tab.view.setOnLongClickListener {
+                true
+            }
             tab.text = arrayOf(getString(R.string.travel_button_domestic), getString(R.string.travel_button_europe))[position]
         }.attach()
 
