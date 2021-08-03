@@ -11,8 +11,8 @@ import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
 import nl.rijksoverheid.ctr.introduction.R
 import nl.rijksoverheid.ctr.introduction.databinding.FragmentOnboardingBinding
-import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.getNavigationIconView
+import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAccessibilityFocus
 
 /*
@@ -61,7 +61,7 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
         binding.button.setOnClickListener {
             val currentItem = binding.viewPager.currentItem
             if (currentItem == adapter.itemCount - 1) {
-                findNavControllerSafety(R.id.nav_onboarding)?.navigate(
+                navigateSafety(R.id.nav_onboarding,
                     OnboardingFragmentDirections.actionPrivacyPolicy(
                         args.introductionData
                     )
@@ -92,7 +92,9 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putInt(indicatorPositionKey, binding.viewPager.currentItem)
+        _binding?.let {
+            outState.putInt(indicatorPositionKey, it.viewPager.currentItem)
+        }
     }
 
     private fun initViewPager(

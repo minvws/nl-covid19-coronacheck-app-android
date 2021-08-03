@@ -13,12 +13,35 @@ import java.util.*
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-// Change to Locale.getDefault() to support multiple languages
 fun LocalDate.formatDayMonthYear(): String =
     DateTimeFormatter.ofPattern(
         DateFormat.getBestDateTimePattern(
             Locale.getDefault(),
             "d MMMM yyyy"
+        )
+    ).withLocale(Locale.getDefault()).withZone(ZoneId.of("CET")).format(this)
+
+fun LocalDate.formatDayMonthTime(): String =
+    DateTimeFormatter.ofPattern(
+        DateFormat.getBestDateTimePattern(
+            Locale.getDefault(),
+            "d MMMM HH:mm"
+        )
+    ).withLocale(Locale.getDefault()).withZone(ZoneId.of("CET")).format(this)
+
+fun LocalDate.formatDayShortMonthYear(): String =
+    DateTimeFormatter.ofPattern(
+        DateFormat.getBestDateTimePattern(
+            Locale.getDefault(),
+            "d MMM yyyy"
+        )
+    ).withLocale(Locale.getDefault()).withZone(ZoneId.of("CET")).format(this).replace(".", "")
+
+fun LocalDate.formatDayMonthYearNumerical(): String =
+    DateTimeFormatter.ofPattern(
+        DateFormat.getBestDateTimePattern(
+            Locale("nl"),
+            "dd-MM-yyyy"
         )
     ).withLocale(Locale.getDefault()).withZone(ZoneId.of("CET")).format(this)
 

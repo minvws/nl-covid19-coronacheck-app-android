@@ -4,19 +4,19 @@ import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteGreenCards
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
+import nl.rijksoverheid.ctr.shared.models.DomesticCredential
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 
 interface CreateDomesticGreenCardUseCase {
-    suspend fun create(greenCard: RemoteGreenCards.DomesticGreenCard)
+    suspend fun create(greenCard: RemoteGreenCards.DomesticGreenCard, domesticCredentials: List<DomesticCredential>)
 }
 
 class CreateDomesticGreenCardUseCaseImpl(
     private val holderDatabase: HolderDatabase,
-    private val mobileCoreWrapper: MobileCoreWrapper
 ): CreateDomesticGreenCardUseCase {
-    override suspend fun create(greenCard: RemoteGreenCards.DomesticGreenCard) {
+    override suspend fun create(greenCard: RemoteGreenCards.DomesticGreenCard, domesticCredentials: List<DomesticCredential>) {
         // Create green card
         val localDomesticGreenCardId = holderDatabase.greenCardDao().insert(
             GreenCardEntity(
@@ -37,11 +37,6 @@ class CreateDomesticGreenCardUseCaseImpl(
                 )
             )
         }
-
-        // Create credentials
-        val domesticCredentials = mobileCoreWrapper.createDomesticCredentials(
-            createCredentials = greenCard.createCredentialMessages
-        )
 
         val entities = domesticCredentials.map { domesticCredential ->
             CredentialEntity(

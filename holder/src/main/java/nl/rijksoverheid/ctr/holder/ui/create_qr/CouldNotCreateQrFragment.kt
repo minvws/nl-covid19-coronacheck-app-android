@@ -36,5 +36,6 @@ class CouldNotCreateQrFragment : Fragment() {
         binding.bottom.setButtonClick {
             findNavController().navigate(CouldNotCreateQrFragmentDirections.actionMyOverview())
         }
+        binding.bottom.setButtonText(args.buttonTitle)
     }
 }

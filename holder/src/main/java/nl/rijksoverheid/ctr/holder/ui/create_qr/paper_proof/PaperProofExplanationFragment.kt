@@ -5,7 +5,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentPaperProofExplanationFragmentBinding
-import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
+import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 
 class PaperProofExplanationFragment: Fragment(R.layout.fragment_paper_proof_explanation_fragment) {
 
@@ -14,7 +14,7 @@ class PaperProofExplanationFragment: Fragment(R.layout.fragment_paper_proof_expl
 
         val binding = FragmentPaperProofExplanationFragmentBinding.bind(view)
         binding.bottom.setButtonClick {
-            findNavControllerSafety()?.navigate(PaperProofExplanationFragmentDirections.actionPaperProofCode())
+            navigateSafety(PaperProofExplanationFragmentDirections.actionPaperProofCode())
         }
     }
 }
