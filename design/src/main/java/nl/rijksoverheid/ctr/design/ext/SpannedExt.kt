@@ -34,10 +34,27 @@ fun Spanned.separated(separator: String): List<Spanned> {
 
     substrings.add(substring(start, length))
 
-    return substrings.filterNot {
-        // Filter out any strings containing only whitespace
-        it.length == 1 && Character.isWhitespace(it[0])
+    // Remove trailing whitespace and empty spans
+    return substrings.mapNotNull { span ->
+        span.trim()
     }
+}
+
+/**
+ * Removes trailing whitespace, returns null if the whole Spanned contains whitespace.
+ */
+fun Spanned.trim(): Spanned? {
+    if (length == 0) {
+        return null
+    }
+    var index = length - 1
+    while (index >= 0 && Character.isWhitespace(this[index])) {
+        index--
+    }
+    if (index > 0) {
+        return substring(0, index + 1)
+    }
+    return null
 }
 
 /**
