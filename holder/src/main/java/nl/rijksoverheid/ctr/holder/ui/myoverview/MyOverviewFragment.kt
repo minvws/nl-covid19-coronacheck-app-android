@@ -131,7 +131,10 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
             forceSync = forceSync,
             selectType = arguments?.getParcelable(GREEN_CARD_TYPE)!!
         )
-        refreshOverviewItemsHandler.postDelayed(refreshOverviewItemsRunnable, TimeUnit.SECONDS.toMillis(10))
+        refreshOverviewItemsHandler.postDelayed(
+            refreshOverviewItemsRunnable,
+            TimeUnit.SECONDS.toMillis(cachedAppConfigUseCase.getCachedAppConfig().domesticQRRefreshSeconds.toLong())
+        )
     }
 
     override fun onResume() {
@@ -159,9 +162,11 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                     )
                 }
                 is MyOverviewItem.PlaceholderCardItem -> {
-                    adapterItems.add(MyOverviewGreenCardPlaceholderItem(
-                        isEu = myOverviewItems.selectedType == GreenCardType.Eu
-                    ))
+                    adapterItems.add(
+                        MyOverviewGreenCardPlaceholderItem(
+                            isEu = myOverviewItems.selectedType == GreenCardType.Eu
+                        )
+                    )
                 }
                 is MyOverviewItem.GreenCardItem -> {
                     adapterItems.add(
@@ -192,9 +197,11 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                                     )
                                 )
                             },
-                            onRetryClick = { refreshOverviewItems(
-                                forceSync = true
-                            ) },
+                            onRetryClick = {
+                                refreshOverviewItems(
+                                    forceSync = true
+                                )
+                            },
                         )
                     )
                 }

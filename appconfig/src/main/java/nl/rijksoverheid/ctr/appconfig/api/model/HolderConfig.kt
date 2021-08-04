@@ -36,6 +36,7 @@ data class HolderConfig(
     @Json(name = "providerIdentifiers") val providerIdentifiers: List<Code>,
     @Json(name = "ggdEnabled") val ggdEnabled: Boolean,
     @Json(name = "universalLinkDomains") val deeplinkDomains: List<Url>,
+    @Json(name = "domesticQRRefreshSeconds") val domesticQRRefreshSeconds: Int,
 ): AppConfig(holderAppDeactivated, holderInformationURL, holderMinimumVersion, configTTL, providerIdentifiers) {
 
     companion object {
@@ -62,7 +63,8 @@ data class HolderConfig(
             nlTestTypes: List<Code> = listOf(),
             providerIdentifiers: List<Code> = listOf(),
             ggdEnabled: Boolean = true,
-            returnApps: List<Url> = listOf()
+            returnApps: List<Url> = listOf(),
+            domesticQRRefreshSeconds: Int = 10,
         ) = HolderConfig(
             holderMinimumVersion = holderMinimumVersion,
             holderAppDeactivated = holderAppDeactivated,
@@ -86,7 +88,8 @@ data class HolderConfig(
             nlTestTypes = nlTestTypes,
             providerIdentifiers = providerIdentifiers,
             ggdEnabled = ggdEnabled,
-            deeplinkDomains = returnApps
+            deeplinkDomains = returnApps,
+            domesticQRRefreshSeconds = domesticQRRefreshSeconds,
         )
     }
 }
