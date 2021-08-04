@@ -2,6 +2,8 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
 import android.app.Application
 import android.os.Build
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYearNumerical
 import nl.rijksoverheid.ctr.holder.R
@@ -16,6 +18,13 @@ import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 import java.util.*
 
+/*
+ *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+ *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+ *
+ *   SPDX-License-Identifier: EUPL-1.2
+ *
+ */
 interface InfoScreenUtil {
     fun getForRemoteTestResult2(
         result: RemoteTestResult2.Result,
@@ -533,7 +542,8 @@ class InfoScreenUtilImpl(
 
 }
 
+@Parcelize
 data class InfoScreen(
     val title: String,
     val description: String
-)
+): Parcelable

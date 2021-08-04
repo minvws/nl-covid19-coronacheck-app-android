@@ -8,6 +8,8 @@ import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEvent
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventVaccination
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SaveEventsUseCase
@@ -26,9 +28,18 @@ abstract class YourEventsViewModel : ViewModel() {
     val conflictingEventsResult: LiveData<Event<Boolean>> = MutableLiveData()
 
     abstract fun saveNegativeTest2(negativeTest2: RemoteTestResult2, rawResponse: ByteArray)
-    abstract fun saveRemoteProtocol3Events(remoteProtocols3: Map<RemoteProtocol3, ByteArray>, originType: OriginType, removePreviousEvents: Boolean)
+    abstract fun saveRemoteProtocol3Events(
+        remoteProtocols3: Map<RemoteProtocol3, ByteArray>,
+        originType: OriginType,
+        removePreviousEvents: Boolean
+    )
+
     abstract fun checkForConflictingEvents(remoteProtocols3: Map<RemoteProtocol3, ByteArray>)
+    abstract fun combineSameVaccinationEvents(remoteEvents: List<RemoteEvent>): List<RemoteEvent>
+    abstract fun combineSameEventsFromDifferentProviders(remoteEvents: List<RemoteProtocol3>): Map<RemoteEvent, List<RemoteEventInformation>>
 }
+
+data class RemoteEventInformation(val providerIdentifier: String, val holder: RemoteProtocol3.Holder?, val remoteEvent: RemoteEvent)
 
 class YourEventsViewModelImpl(
     private val saveEventsUseCase: SaveEventsUseCase,
@@ -64,7 +75,8 @@ class YourEventsViewModelImpl(
         (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {
             try {
-                val conflictingEvents = saveEventsUseCase.remoteProtocols3AreConflicting(remoteProtocols3)
+                val conflictingEvents =
+                    saveEventsUseCase.remoteProtocols3AreConflicting(remoteProtocols3)
 
                 (conflictingEventsResult as MutableLiveData).postValue(Event(conflictingEvents))
             } catch (e: Exception) {
@@ -77,7 +89,11 @@ class YourEventsViewModelImpl(
         }
     }
 
-    override fun saveRemoteProtocol3Events(remoteProtocols3: Map<RemoteProtocol3, ByteArray>, originType: OriginType, removePreviousEvents: Boolean) {
+    override fun saveRemoteProtocol3Events(
+        remoteProtocols3: Map<RemoteProtocol3, ByteArray>,
+        originType: OriginType,
+        removePreviousEvents: Boolean
+    ) {
         (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {
             try {
@@ -85,7 +101,8 @@ class YourEventsViewModelImpl(
                 saveEventsUseCase.saveRemoteProtocols3(
                     remoteProtocols3 = remoteProtocols3,
                     originType = originType,
-                    removePreviousEvents = removePreviousEvents)
+                    removePreviousEvents = removePreviousEvents
+                )
 
                 // Send all events to database and create green cards, origins and credentials
                 val databaseSyncerResult = holderDatabaseSyncer.sync(
@@ -96,7 +113,7 @@ class YourEventsViewModelImpl(
                     databaseSyncerResult
                 )
 
-            } catch(e: Exception) {
+            } catch (e: Exception) {
                 (yourEventsResult as MutableLiveData).value = Event(
                     DatabaseSyncerResult.ServerError(999)
                 )
@@ -104,5 +121,31 @@ class YourEventsViewModelImpl(
                 loading.value = Event(false)
             }
         }
+    }
+
+    override fun combineSameVaccinationEvents(remoteEvents: List<RemoteEvent>): List<RemoteEvent> {
+        // we combine only vaccination events
+        if (remoteEvents.any { it !is RemoteEventVaccination }) {
+            return remoteEvents
+        }
+        return remoteEvents.toSet().toList()
+    }
+
+    override fun combineSameEventsFromDifferentProviders(remoteEvents: List<RemoteProtocol3>): Map<RemoteEvent, List<RemoteEventInformation>> {
+        val sameEventsGrouped = mutableMapOf<RemoteEvent, MutableList<RemoteEventInformation>>()
+
+        remoteEvents.sortedBy { it.providerIdentifier }.forEach {
+            val provider = it.providerIdentifier
+            val holder = it.holder
+            it.events?.forEach { remoteEvent ->
+                if (sameEventsGrouped.contains(remoteEvent)) {
+                    sameEventsGrouped[remoteEvent]?.add(RemoteEventInformation(provider, holder, remoteEvent))
+                } else {
+                    sameEventsGrouped[remoteEvent] = mutableListOf(RemoteEventInformation(provider, holder, remoteEvent))
+                }
+            }
+        }
+
+        return sameEventsGrouped
     }
 }

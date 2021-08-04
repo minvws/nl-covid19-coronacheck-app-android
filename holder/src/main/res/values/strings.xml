@@ -193,7 +193,7 @@
     <string name="your_retrieved_vaccinations_description">Je kunt een QR-code maken van je vaccinatie. Dat is jouw bewijs.</string>
     <string name="your_vaccination_result_toolbar_title">Jouw vaccinaties</string>
     <string name="your_retrieved_vaccinations_toolbar">Gegevens van je vaccinatie ophalen</string>
-    <string name="retrieved_vaccination_title">Vaccinatie %1$s (%2$s)</string>
+    <string name="retrieved_vaccination_title">Vaccinatie %1$s</string>
     <string name="travel_toggle_europe">Ik reis internationaal</string>
     <string name="travel_toggle_domestic">Ik ben in Nederland</string>
     <string name="travel_toggle_change_domestic">Aanpassen naar NL</string>
@@ -229,7 +229,7 @@
     <string name="your_test_result_explanation_negative_test_result">negatief (geen corona)</string>
     <string name="your_test_result_3.0_explanation_description"><![CDATA[De volgende gegevens zijn opgehaald bij de testlocatie:<br\><br\>Naam:  <b>%1$s</b><br/>Geboortedatum: <b>%2$s</b><br/><br/>Type test: <b>%3$s</b><br/>Testnaam: <b>%4$s</b><br/>Testdatum: <b>%5$s</b><br/>Testuitslag: <b>%6$s</b><br/>Testlocatie: <b>%7$s</b><br/>Testproducent: <b>%8$s</b><br/>Uniek certificaatnummer: <b>%9$s</b>]]></string>
     <string name="your_negative_test_3.0_results_row_subtitle"><![CDATA[Testdatum: %1$s<br/>Naam: %2$s<br/>Geboortedatum: %3$s]]></string>
-    <string name="your_vaccination_row_subtitle"><![CDATA[Naam: %1$s<br/>Geboortedatum: %2$s]]></string>
+    <string name="your_vaccination_row_subtitle"><![CDATA[Naam: %1$s<br/>Geboortedatum: %2$s<br/>Gegevens opgehaald bij: %3$s]]></string>
     <string name="your_vaccination_explanation_toolbar_title">Over jouw vaccinatie</string>
     <string name="your_vaccination_explanation_description"><![CDATA[Deze gegevens van je vaccinatie zijn opgehaald:<br/><br/>Naam: <b>%1$s</b><br/>Geboortedatum: <b>%2$s</b><br/><br/>Ziekteverwekker: <b>%3$s</b><br/>Vaccin: <b>%4$s</b><br/>Vaccin type: <b>%5$s</b><br/>Producent: <b>%6$s</b><br/>Doses: <b>%7$s</b><br/>Is dit de laatste doses van je vaccinatie? <b>%8$s</b><br/>Vaccinatiedatum: <b>%9$s</b><br/>Gevaccineerd in: <b>%10$s</b><br/>Uniek certificaatnummer: <b>%11$s</b>]]></string>
     <string name="your_vaccination_explanation_last_dose_yes">ja</string>
@@ -361,4 +361,6 @@ Scan daarom met de camera van je telefoon <b>alleen je internationale QR-code</b
     <string name="qr_card_validity_future_until">t/m %1s</string>
     <string name="your_vaccination_explanation_dose">dosis %1s</string>
     <string name="qr_card_validity_future">Wordt automatisch geldig</string>
+    <string name="your_events_and">en</string>
+
 </resources>

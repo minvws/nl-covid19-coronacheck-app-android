@@ -193,7 +193,7 @@
     <string name="your_retrieved_vaccinations_description">You can make a QR code of your vaccination. That is your certificate.</string>
     <string name="your_vaccination_result_toolbar_title">Your retrieved vaccinations</string>
     <string name="your_retrieved_vaccinations_toolbar">Retrieve details of your vaccination</string>
-    <string name="retrieved_vaccination_title">Vaccination %1$s (%2$s)</string>
+    <string name="retrieved_vaccination_title">Vaccination %1$s</string>
     <string name="travel_toggle_europe">I\'m travelling internationally</string>
     <string name="travel_toggle_domestic">I\'m in the Netherlands</string>
     <string name="travel_toggle_change_domestic">Change to NL</string>
@@ -229,7 +229,7 @@
     <string name="your_test_result_explanation_negative_test_result">negative (no coronavirus)</string>
     <string name="your_test_result_3.0_explanation_description"><![CDATA[The following details were retrieved at the test location:<br\><br\>Name: <b>%1$s</b><br/>Date of birth: <b>%2$s</b><br/><br/>Test type: <b>%3$s</b><br/>Test name: <b>%4$s</b><br/>Test date: <b>%5$s</b><br/>Test result: <b>%6$s</b><br/>Test location: <b>%7$s</b><br/>Test manufacturer: <b>%8$s</b><br/>Unique certificate identifier: <b>%9$s</b>]]></string>
     <string name="your_negative_test_3.0_results_row_subtitle"><![CDATA[Test date: %1$s<br/>Name: %2$s<br/>Date of birth: %3$s]]></string>
-    <string name="your_vaccination_row_subtitle"><![CDATA[Name: %1$s<br/>Date of birth: %2$s]]></string>
+    <string name="your_vaccination_row_subtitle"><![CDATA[Name: %1$s<br/>Date of birth: %2$s<br/>Data retrieved from: %3$s]]></string>
     <string name="your_vaccination_explanation_toolbar_title">About your vaccination</string>
     <string name="your_vaccination_explanation_description"><![CDATA[<p>The following details of your vaccination were retrieved:<br/><br/>Name: <b>%1$s</b><br/>Date of birth*: <b>%2$s</b><br/><br/>Disease targeted: <b>%3$s</b><br/>Vaccine: <b>%4$s</b><br/>Vaccine medicinal product: <b>%5$s</b><br/>Vaccine manufacturer: <b>%6$s</b><br/>Number in serie of doses: <b>%7$s</b><br/>Is this the last dose of your vaccination? <b>%8$s</b><br/>Date of vaccination*: <b>%9$s</b><br/>Member state of vaccination: <b>%10$s</b><br/>Unique certificate identifier: <b>%11$s</b>]]></string>
     <string name="your_vaccination_explanation_last_dose_yes">yes</string>
@@ -356,9 +356,10 @@
     <string name="your_events_replace_dialog_negative_button">No, stop</string>
     <string name="your_events_replace_dialog_positive_button">Yes, replace</string>
     <string name="qr_explanation_certificate_issuer">Ministry of Health, Welfare and Sport</string>
-    <string name="qr_code_return_app_button">To %s</string>
-    <string name="qr_card_validity_future_from">geldig vanaf %1s %2s</string>
-    <string name="qr_card_validity_future_until">t/m %1s</string>
-    <string name="your_vaccination_explanation_dose">dosis %1s</string>
-    <string name="qr_card_validity_future">Wordt automatisch geldig</string>
+    <string name="qr_code_return_app_button">Back to the %s</string>
+    <string name="qr_card_validity_future_from">valid from %1s%2s</string>
+    <string name="qr_card_validity_future_until">until %1s</string>
+    <string name="your_vaccination_explanation_dose">dose %1s</string>
+    <string name="qr_card_validity_future">Automatically becomes valid</string>
+    <string name="your_events_and">and</string>
 </resources>

@@ -321,12 +321,8 @@
         tools:layout="@layout/fragment_your_event_explanation">
 
         <argument
-            android:name="toolbarTitle"
-            app:argType="string" />
-
-        <argument
-            android:name="description"
-            app:argType="string" />
+            android:name="data"
+            app:argType="nl.rijksoverheid.ctr.holder.ui.create_qr.util.InfoScreen[]" />
 
     </fragment>
 

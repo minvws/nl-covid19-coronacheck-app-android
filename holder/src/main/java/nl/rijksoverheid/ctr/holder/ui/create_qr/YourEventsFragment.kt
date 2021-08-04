@@ -12,7 +12,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import nl.rijksoverheid.ctr.design.ext.formatDateTime
@@ -27,7 +26,9 @@ import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.items.YourEventWidget
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.InfoScreen
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.InfoScreenUtil
+import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import org.koin.android.ext.android.inject
@@ -38,7 +39,6 @@ import java.time.OffsetDateTime
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
-import java.util.*
 
 class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
 
@@ -85,12 +85,12 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                 when (databaseSyncerResult) {
                     is DatabaseSyncerResult.Success -> {
                         // We have a origin in the database that we expect, so success
-                        findNavController().navigate(
+                        navigateSafety(
                             YourEventsFragmentDirections.actionMyOverview()
                         )
                     }
                     is DatabaseSyncerResult.MissingOrigin -> {
-                        findNavController().navigate(
+                        navigateSafety(
                             YourEventsFragmentDirections.actionCouldNotCreateQr(
                                 toolbarTitle = args.toolbarTitle,
                                 title = getString(R.string.rule_engine_no_origin_title),
@@ -172,7 +172,7 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
             },
             negativeButtonText = R.string.your_events_replace_dialog_negative_button,
             negativeButtonCallback = {
-                findNavController().navigate(
+                navigateSafety(
                     YourEventsFragmentDirections.actionMyOverview()
                 )
             }
@@ -232,39 +232,45 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
     ) {
         val protocols = remoteEvents.map { it.key }
 
-        protocols.forEach { remoteProtocol3 ->
-            remoteProtocol3.events?.forEach { remoteEvent ->
+        val groupedEvents = yourEventsViewModel.combineSameEventsFromDifferentProviders(protocols)
+
+        groupedEvents.forEach { protocolGroupedEvent ->
+            val holder = protocolGroupedEvent.value.firstOrNull()?.holder
+            val providerIdentifiers = protocolGroupedEvent.value.map { it.providerIdentifier }
+            val allSameEvents = protocolGroupedEvent.value.map { it.remoteEvent }
+            yourEventsViewModel.combineSameVaccinationEvents(allSameEvents).forEach { remoteEvent ->
                 when (remoteEvent) {
                     is RemoteEventVaccination -> {
                         presentVaccinationEvent(
                             binding = binding,
-                            providerIdentifier = remoteProtocol3.providerIdentifier,
-                            fullName = getFullName(remoteProtocol3.holder),
-                            birthDate = getBirthDate(remoteProtocol3.holder),
-                            event = remoteEvent
+                            providerIdentifiers = providerIdentifiers.toSet().joinToString(" ${getString(R.string.your_events_and)} "),
+                            fullName = getFullName(holder),
+                            birthDate = getBirthDate(holder),
+                            currentEvent = remoteEvent,
+                            allSameEvents = allSameEvents,
                         )
                     }
                     is RemoteEventNegativeTest -> {
                         presentNegativeTestEvent(
                             binding = binding,
-                            fullName = getFullName(remoteProtocol3.holder),
-                            birthDate = getBirthDate(remoteProtocol3.holder),
+                            fullName = getFullName(holder),
+                            birthDate = getBirthDate(holder),
                             event = remoteEvent
                         )
                     }
                     is RemoteEventPositiveTest -> {
                         presentPositiveTestEvent(
                             binding = binding,
-                            fullName = getFullName(remoteProtocol3.holder),
-                            birthDate = getBirthDate(remoteProtocol3.holder),
+                            fullName = getFullName(holder),
+                            birthDate = getBirthDate(holder),
                             event = remoteEvent
                         )
                     }
                     is RemoteEventRecovery -> {
                         presentRecoveryEvent(
                             binding = binding,
-                            fullName = getFullName(remoteProtocol3.holder),
-                            birthDate = getBirthDate(remoteProtocol3.holder),
+                            fullName = getFullName(holder),
+                            birthDate = getBirthDate(holder),
                             event = remoteEvent
                         )
                     }
@@ -306,10 +312,9 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                         "${personalDetails.firstNameInitial} ${personalDetails.lastNameInitial} ${personalDetails.birthDay} ${personalDetails.birthMonth}"
                     ),
                     infoClickListener = {
-                        findNavController().navigate(
+                        navigateSafety(
                             YourEventsFragmentDirections.actionShowExplanation(
-                                toolbarTitle = infoScreen.title,
-                                description = infoScreen.description
+                                data = arrayOf(infoScreen)
                             )
                         )
                     }
@@ -321,55 +326,41 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
 
     private fun presentVaccinationEvent(
         binding: FragmentYourEventsBinding,
-        providerIdentifier: String,
+        providerIdentifiers: String,
         fullName: String,
         birthDate: String,
-        event: RemoteEventVaccination
+        currentEvent: RemoteEventVaccination,
+        allSameEvents: List<RemoteEvent>,
     ) {
-        val infoScreen = infoScreenUtil.getForVaccination(
-            event = event,
-            fullName = fullName,
-            birthDate = birthDate
-        )
 
         val eventWidget = YourEventWidget(requireContext()).apply {
             setContent(
-                title = getTitle(providerIdentifier, event),
+                title = resources.getString(
+                    R.string.retrieved_vaccination_title,
+                    currentEvent.vaccination?.date?.formatMonth(),
+                ),
                 subtitle = resources.getString(
                     R.string.your_vaccination_row_subtitle,
                     fullName,
-                    birthDate
+                    birthDate,
+                    providerIdentifiers,
                 ),
                 infoClickListener = {
-                    findNavController().navigate(
+                    navigateSafety(
                         YourEventsFragmentDirections.actionShowExplanation(
-                            toolbarTitle = infoScreen.title,
-                            description = infoScreen.description
+                            data = allSameEvents.map {
+                                infoScreenUtil.getForVaccination(
+                                    event = it as RemoteEventVaccination,
+                                    fullName = fullName,
+                                    birthDate = birthDate,
+                                )
+                            }.toTypedArray()
                         )
                     )
                 }
             )
         }
         binding.eventsGroup.addView(eventWidget)
-    }
-
-    private fun getTitle(
-        providerIdentifier: String,
-        event: RemoteEventVaccination
-    ): String {
-        return if (providerIdentifier.toLowerCase(Locale.US) == "dcc") {
-            resources.getString(
-                R.string.retrieved_vaccination_title,
-                event.vaccination?.date?.formatMonth(),
-                ""
-            ).replace(" ()", "")
-        } else {
-            resources.getString(
-                R.string.retrieved_vaccination_title,
-                event.vaccination?.date?.formatMonth(),
-                cachedAppConfigUseCase.getProviderName(providerIdentifier)
-            )
-        }
     }
 
     private fun presentNegativeTestEvent(
@@ -397,10 +388,9 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                     birthDate
                 ),
                 infoClickListener = {
-                    findNavController().navigate(
+                    navigateSafety(
                         YourEventsFragmentDirections.actionShowExplanation(
-                            toolbarTitle = infoScreen.title,
-                            description = infoScreen.description
+                            data = arrayOf(infoScreen)
                         )
                     )
                 }
@@ -434,10 +424,9 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                     birthDate
                 ),
                 infoClickListener = {
-                    findNavController().navigate(
+                    navigateSafety(
                         YourEventsFragmentDirections.actionShowExplanation(
-                            toolbarTitle = infoScreen.title,
-                            description = infoScreen.description
+                            data = arrayOf(infoScreen)
                         )
                     )
                 }
@@ -471,10 +460,9 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                     birthDate
                 ),
                 infoClickListener = {
-                    findNavController().navigate(
+                    navigateSafety(
                         YourEventsFragmentDirections.actionShowExplanation(
-                            toolbarTitle = infoScreen.title,
-                            description = infoScreen.description
+                            data = arrayOf(infoScreen)
                         )
                     )
                 }
@@ -508,7 +496,7 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
 
     private fun presentFooter(binding: FragmentYourEventsBinding) {
         binding.somethingWrongButton.setOnClickListener {
-            findNavController().navigate(
+            navigateSafety(
                 YourEventsFragmentDirections.actionShowSomethingWrong(
                     protocolType = args.type
                 )
@@ -521,16 +509,18 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object :
             OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                MaterialAlertDialogBuilder(requireContext())
-                    .setTitle(R.string.your_events_block_back_dialog_title)
-                    .setMessage(R.string.your_events_block_back_dialog_description)
-                    .setPositiveButton(R.string.your_events_block_back_dialog_positive_button) { _, _ ->
-                        findNavController().navigate(
-                            YourEventsFragmentDirections.actionMyOverview()
-                        )
-                    }
-                    .setNegativeButton(R.string.your_events_block_back_dialog_negative_button) { _, _ -> }
-                    .show()
+                if (isAdded) {
+                    MaterialAlertDialogBuilder(requireContext())
+                        .setTitle(R.string.your_events_block_back_dialog_title)
+                        .setMessage(R.string.your_events_block_back_dialog_description)
+                        .setPositiveButton(R.string.your_events_block_back_dialog_positive_button) { _, _ ->
+                            navigateSafety(
+                                YourEventsFragmentDirections.actionMyOverview()
+                            )
+                        }
+                        .setNegativeButton(R.string.your_events_block_back_dialog_negative_button) { _, _ -> }
+                        .show()
+                }
             }
         })
     }
