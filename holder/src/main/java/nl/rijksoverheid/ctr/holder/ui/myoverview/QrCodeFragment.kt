@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview
 
 import android.annotation.SuppressLint
+import android.content.ActivityNotFoundException
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.os.Handler
@@ -12,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
@@ -19,10 +21,11 @@ import nl.rijksoverheid.ctr.holder.databinding.FragmentQrCodeBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.InfoScreenUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeData
+import nl.rijksoverheid.ctr.holder.ui.myoverview.models.ReturnAppData
 import nl.rijksoverheid.ctr.shared.QrCodeConstants
+import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAccessibilityFocus
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
-import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.time.Instant
@@ -45,6 +48,7 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
     private val args: QrCodeFragmentArgs by navArgs()
     private val personalDetailsUtil: PersonalDetailsUtil by inject()
     private val infoScreenUtil: InfoScreenUtil by inject()
+    private val dialogUtil: DialogUtil by inject()
 
     private val qrCodeHandler = Handler(Looper.getMainLooper())
     private val qrCodeRunnable = Runnable {
@@ -75,76 +79,113 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
 
         _binding = FragmentQrCodeBinding.bind(view)
 
-        qrCodeViewModel.qrCodeDataLiveData.observe(viewLifecycleOwner) { qrCodeData ->
-            binding.image.setImageBitmap(qrCodeData.bitmap)
-            binding.animation.setWidget(qrCodeData.animationResource, qrCodeData.backgroundResource)
-            presentQrLoading(false)
+        qrCodeViewModel.qrCodeDataLiveData.observe(viewLifecycleOwner, ::bindQrCodeData)
+        qrCodeViewModel.returnAppLivedata.observe(viewLifecycleOwner, ::returnToApp)
 
-            // Nullable so tests don't trip over parentFragment
-            (parentFragment?.parentFragment as HolderMainFragment?)?.getToolbar().let { toolbar ->
-                if (toolbar?.menu?.size() == 0) {
-                    toolbar.apply {
-                        inflateMenu(R.menu.my_qr_toolbar)
+        args.returnUri?.let { qrCodeViewModel.onReturnUriGiven(it, args.data.type) }
+    }
 
-                        setOnMenuItemClickListener {
-                            if (it.itemId == R.id.action_show_qr_explanation) {
+    private fun returnToApp(returnAppData: ReturnAppData?) {
+        binding.button.run {
+            if (returnAppData != null) {
+                visibility = View.VISIBLE
+                text = getString(R.string.qr_code_return_app_button, returnAppData.appName)
+                setOnClickListener { startIntent(returnAppData) }
+            } else {
+                visibility = View.GONE
 
-                                when (qrCodeData) {
-                                    is QrCodeData.Domestic -> {
-                                        val personalDetails = personalDetailsUtil.getPersonalDetails(
-                                            firstNameInitial = qrCodeData.readDomesticCredential.firstNameInitial,
-                                            lastNameInitial = qrCodeData.readDomesticCredential.lastNameInitial,
-                                            birthDay = qrCodeData.readDomesticCredential.birthDay,
-                                            birthMonth = qrCodeData.readDomesticCredential.birthMonth
-                                        )
+            }
+        }
+    }
 
-                                        val infoScreen = infoScreenUtil.getForDomesticQr(
-                                            personalDetails = personalDetails
-                                        )
+    private fun startIntent(returnAppData: ReturnAppData) {
+        try {
+            startActivity(returnAppData.intent)
+        } catch (exception: ActivityNotFoundException) {
+            dialogUtil.presentDialog(
+                context = requireContext(),
+                title = R.string.dialog_error_title,
+                message = getString(R.string.dialog_error_message),
+                positiveButtonText = R.string.dialog_close,
+                positiveButtonCallback = {}
+            )
+        }
+    }
 
-                                        navigateSafety(QrCodeFragmentDirections.actionShowQrExplanation(
+    private fun bindQrCodeData(qrCodeData: QrCodeData) {
+        binding.image.setImageBitmap(qrCodeData.bitmap)
+        binding.animation.setWidget(qrCodeData.animationResource, qrCodeData.backgroundResource)
+        presentQrLoading(false)
+
+        // Nullable so tests don't trip over parentFragment
+        (parentFragment?.parentFragment as HolderMainFragment?)?.getToolbar().let { toolbar ->
+            if (toolbar?.menu?.size() == 0) {
+                toolbar.apply {
+                    inflateMenu(R.menu.my_qr_toolbar)
+
+                    setOnMenuItemClickListener {
+                        if (it.itemId == R.id.action_show_qr_explanation) {
+                            when (qrCodeData) {
+                                is QrCodeData.Domestic -> {
+                                    val personalDetails = personalDetailsUtil.getPersonalDetails(
+                                        firstNameInitial = qrCodeData.readDomesticCredential.firstNameInitial,
+                                        lastNameInitial = qrCodeData.readDomesticCredential.lastNameInitial,
+                                        birthDay = qrCodeData.readDomesticCredential.birthDay,
+                                        birthMonth = qrCodeData.readDomesticCredential.birthMonth
+                                    )
+
+                                    val infoScreen = infoScreenUtil.getForDomesticQr(
+                                        personalDetails = personalDetails
+                                    )
+                                    navigateSafety(
+                                        QrCodeFragmentDirections.actionShowQrExplanation(
                                             title = infoScreen.title,
                                             description = infoScreen.description
-                                        ))
-                                    }
-                                    is QrCodeData.European -> {
-                                        when (args.data.originType) {
-                                            is OriginType.Test -> {
-                                                val infoScreen = infoScreenUtil.getForEuropeanTestQr(
-                                                    qrCodeData.readEuropeanCredential
-                                                )
-
-                                                navigateSafety(QrCodeFragmentDirections.actionShowQrExplanation(
+                                        )
+                                    )
+                                }
+                                is QrCodeData.European -> {
+                                    when (args.data.originType) {
+                                        is OriginType.Test -> {
+                                            val infoScreen = infoScreenUtil.getForEuropeanTestQr(
+                                                qrCodeData.readEuropeanCredential
+                                            )
+                                            navigateSafety(
+                                                QrCodeFragmentDirections.actionShowQrExplanation(
                                                     title = infoScreen.title,
                                                     description = infoScreen.description
-                                                ))
-                                            }
-                                            is OriginType.Vaccination -> {
-                                                val infoScreen = infoScreenUtil.getForEuropeanVaccinationQr(
+                                                )
+                                            )
+                                        }
+                                        is OriginType.Vaccination -> {
+                                            val infoScreen =
+                                                infoScreenUtil.getForEuropeanVaccinationQr(
                                                     qrCodeData.readEuropeanCredential
                                                 )
-
-                                                navigateSafety(QrCodeFragmentDirections.actionShowQrExplanation(
+                                            navigateSafety(
+                                                QrCodeFragmentDirections.actionShowQrExplanation(
                                                     title = infoScreen.title,
                                                     description = infoScreen.description
-                                                ))
-                                            }
-                                            is OriginType.Recovery -> {
-                                                val infoScreen = infoScreenUtil.getForEuropeanRecoveryQr(
+                                                )
+                                            )
+                                        }
+                                        is OriginType.Recovery -> {
+                                            val infoScreen =
+                                                infoScreenUtil.getForEuropeanRecoveryQr(
                                                     qrCodeData.readEuropeanCredential
                                                 )
-
-                                                navigateSafety(QrCodeFragmentDirections.actionShowQrExplanation(
+                                            navigateSafety(
+                                                QrCodeFragmentDirections.actionShowQrExplanation(
                                                     title = infoScreen.title,
                                                     description = infoScreen.description
-                                                ))
-                                            }
+                                                )
+                                            )
                                         }
                                     }
                                 }
                             }
-                            true
                         }
+                        true
                     }
                 }
             }
@@ -153,7 +194,7 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
 
     private fun presentQrLoading(loading: Boolean) {
         (parentFragment?.parentFragment as HolderMainFragment).presentLoading(loading)
-        binding.content.visibility = if (loading) View.GONE else View.VISIBLE
+        binding.root.visibility = if (loading) View.GONE else View.VISIBLE
         // Move focus to loading indicator or QR depending on state
         if (!loading) {
             binding.image.setAccessibilityFocus()

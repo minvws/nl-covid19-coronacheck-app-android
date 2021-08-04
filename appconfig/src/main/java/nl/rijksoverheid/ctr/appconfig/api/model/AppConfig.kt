@@ -27,4 +27,7 @@ abstract class AppConfig(
 ) : JSON() {
     @JsonClass(generateAdapter = true)
     data class Code(val code: String, val name: String): JSON()
+
+    @JsonClass(generateAdapter = true)
+    data class Url(val url: String, val name: String): JSON()
 }

@@ -356,8 +356,9 @@
     <string name="your_events_replace_dialog_negative_button">No, stop</string>
     <string name="your_events_replace_dialog_positive_button">Yes, replace</string>
     <string name="qr_explanation_certificate_issuer">Ministry of Health, Welfare and Sport</string>
-    <string name="qr_card_validity_future_from">valid from %1s%2s</string>
-    <string name="qr_card_validity_future_until">until %1s</string>
-    <string name="your_vaccination_explanation_dose">dose %1s</string>
-    <string name="qr_card_validity_future">Automatically becomes valid</string>
+    <string name="qr_code_return_app_button">To %s</string>
+    <string name="qr_card_validity_future_from">geldig vanaf %1s %2s</string>
+    <string name="qr_card_validity_future_until">t/m %1s</string>
+    <string name="your_vaccination_explanation_dose">dosis %1s</string>
+    <string name="qr_card_validity_future">Wordt automatisch geldig</string>
 </resources>
