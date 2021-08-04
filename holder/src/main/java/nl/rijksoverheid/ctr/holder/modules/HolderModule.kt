@@ -191,6 +191,9 @@ fun holderModule(baseUrl: String) = module {
     factory<QrCodeUtil> { QrCodeUtilImpl() }
     factory<TestResultAdapterItemUtil> { TestResultAdapterItemUtilImpl(get()) }
     factory<InfoScreenUtil> { InfoScreenUtilImpl(get(), get(), get()) }
+    factory<VaccinationInfoScreenUtil> {
+        VaccinationInfoScreenUtilImpl(get(), androidContext().resources, get())
+    }
     factory<LastVaccinationDoseUtil> { LastVaccinationDoseUtilImpl(androidContext().resources) }
     factory<GreenCardUtil> { GreenCardUtilImpl(Clock.systemUTC(), get()) }
 

@@ -81,38 +81,29 @@ class LastVaccinationDoseUtilImplTest {
     }
 
     @Test
-    fun `when statement is not completed and, answer is no`() {
-        val answer = "nee"
-        every { resources.getString(R.string.your_vaccination_explanation_last_dose_no) } returns answer
-
+    fun `when statement is not completed and, answer is empty`() {
         val vaccination = RemoteEventTestFactory.createRemoteVaccination(
             completedByPersonalStatement = false,
             completedByMedicalStatement = false,
         )
 
-        assertEquals(util.getIsLastDoseAnswer(vaccination), answer)
+        assertEquals(util.getIsLastDoseAnswer(vaccination), "")
     }
 
     @Test
-    fun `when it's unknown, answer is unknown`() {
-        val answer = "onbekend"
-        every { resources.getString(R.string.your_vaccination_explanation_last_dose_unknown) } returns answer
-
+    fun `when it's unknown, answer is empty`() {
         val vaccination = RemoteEventTestFactory.createRemoteVaccination(
             completedByPersonalStatement = null,
             completedByMedicalStatement = null,
         )
 
-        assertEquals(util.getIsLastDoseAnswer(vaccination), answer)
+        assertEquals(util.getIsLastDoseAnswer(vaccination), "")
     }
 
     @Test
-    fun `when vaccination is null, answer is unknown`() {
-        val answer = "onbekend"
-        every { resources.getString(R.string.your_vaccination_explanation_last_dose_unknown) } returns answer
-
+    fun `when vaccination is null, answer is empty`() {
         val vaccination = RemoteEventTestFactory.createRemoteVaccination().copy(vaccination = null)
 
-        assertEquals(util.getIsLastDoseAnswer(vaccination), answer)
+        assertEquals(util.getIsLastDoseAnswer(vaccination), "")
     }
 }

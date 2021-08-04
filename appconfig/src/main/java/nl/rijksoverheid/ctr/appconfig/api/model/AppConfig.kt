@@ -25,6 +25,16 @@ abstract class AppConfig(
     val configTtlSeconds: Int,
     val providers: List<Code>,
 ) : JSON() {
+
+    @JsonClass(generateAdapter = true)
+    data class HpkCode(
+        val code: String,
+        val name: String,
+        val vp: String,
+        val mp: String,
+        val ma: String
+    )
+
     @JsonClass(generateAdapter = true)
     data class Code(val code: String, val name: String): JSON()
 
