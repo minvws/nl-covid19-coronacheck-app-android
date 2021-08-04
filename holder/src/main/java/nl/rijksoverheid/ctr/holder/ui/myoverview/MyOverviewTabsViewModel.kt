@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetMyOverviewItemsUseCase
-import nl.rijksoverheid.ctr.shared.livedata.Event
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -16,7 +15,7 @@ import nl.rijksoverheid.ctr.shared.livedata.Event
  *
  */
 abstract class MyOverviewTabsViewModel: ViewModel() {
-    open val showAddCertificateButtonEvent: LiveData<Event<Boolean>> = MutableLiveData()
+    open val showAddCertificateButtonEvent: LiveData<Boolean> = MutableLiveData()
 }
 
 class MyOverviewTabsViewModelImpl(
@@ -25,7 +24,7 @@ class MyOverviewTabsViewModelImpl(
     init {
         viewModelScope.launch {
             val greenCards = getMyOverviewItemsUseCase.getGreenCards()
-            (showAddCertificateButtonEvent as MutableLiveData).postValue(Event(greenCards.isEmpty()))
+            (showAddCertificateButtonEvent as MutableLiveData).postValue(greenCards.isEmpty())
         }
     }
 }
