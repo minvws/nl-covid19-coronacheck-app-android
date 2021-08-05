@@ -9,7 +9,7 @@
     <string name="onboarding_screen_2_title">Certificate of test or vaccination</string>
     <string name="onboarding_screen_2_description"><![CDATA[You can generate a coronavirus pass if:<ul><li>You have been vaccinated</li><li>A test result confirms you don’t have corona.</li><li>A test result confirms you\'ve had coronavirus and are recovered.</li></ul>]]></string>
     <string name="onboarding_screen_4_title">QR code = your proof</string>
-    <string name="onboarding_screen_4_description">This app generates a QR code with your vaccination, test result or recovery. That is your certificate. This QR code will be checked at the entrance of places or activities or at the border. If your certificate expires, the QR code disappears from the app.</string>
+    <string name="onboarding_screen_4_description">This app generates a QR code with your vaccination, test result or recovery. That is your certificate. This QR code will be checked at the entrance of places or activities or at the border.</string>
     <string name="onboarding_screen_3_title">QR codes for the Netherlands and international</string>
     <string name="onboarding_screen_3_description">This app generates a QR code for the Netherlands and one for other countries. You can find both QR codes in the app. Travelling outside of the Netherlands? Then use your international QR code.</string>
     <string name="onboarding_next">Next</string>
@@ -236,7 +236,6 @@
     <string name="your_vaccination_explanation_last_dose_yes_prior_event">yes (I have been vaccinated elsewhere)</string>
     <string name="your_vaccination_explanation_last_dose_no">no</string>
     <string name="your_vaccination_explanation_last_dose_unknown">unknown</string>
-    <string name="your_vaccination_explanation_doses_answer">%1$s of %2$s</string>
     <string name="your_vaccination_explanation_header">The following details of your vaccination were retrieved:</string>
     <string name="your_vaccination_explanation_name">Name:</string>
     <string name="your_vaccination_explanation_birthday">Date of birth:</string>
@@ -250,6 +249,7 @@
     <string name="your_vaccination_explanation_vaccination_date">Date of vaccination:</string>
     <string name="your_vaccination_explanation_vaccination_country">Member state of vaccination:</string>
     <string name="your_vaccination_explanation_unique_code">Unique vaccination identifier:</string>
+    <string name="your_vaccination_explanation_doses_answer">%1$s of %2$s</string>
     <string name="my_overview_not_valid_domestic_but_is_in_eu">Your %1$s isn\'t valid in the Netherlands. You\'ve only got an international certificate.</string>
     <string name="my_overview_not_valid_eu_but_is_in_domestic">Your %1$s isn\'t valid internationally. You\'ve only got a Dutch certificate.</string>
     <string name="type_recovery">recovery certificate</string>
@@ -368,7 +368,7 @@
     <string name="qr_card_validity_future_from">valid from %1s %2s</string>
     <string name="qr_card_validity_future_until">until %1s</string>
     <string name="your_vaccination_explanation_dose">dose %1s</string>
-    <string name="qr_card_validity_future">Automatically becomes valid</string>
+    <string name="qr_card_validity_future">Becomes valid automatically</string>
     <string name="new_in_app_tabs_title">A Dutch and an international tab</string>
     <string name="new_in_app_tabs_description">From now on you can easily switch between your Dutch and international certificate. At the top of the screen, you’ll find a tab named ‘the Netherlands’ and a tab named ‘International’. Are you travelling abroad? Use the certificates found under ‘International’.</string>
     <string name="your_events_and">and</string>

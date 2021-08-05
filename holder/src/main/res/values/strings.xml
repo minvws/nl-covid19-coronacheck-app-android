@@ -9,7 +9,7 @@
     <string name="onboarding_screen_2_title">Bewijs van test of vaccinatie</string>
     <string name="onboarding_screen_2_description"><![CDATA[De app kan een coronabewijs voor jou maken als:<ul><li>Je bent gevaccineerd</li><li>Uit een test blijkt dat je geen corona hebt</li><li>Uit een test blijkt dat je corona hebt gehad en bent hersteld</li>]]></string>
     <string name="onboarding_screen_4_title">QR-code = jouw bewijs</string>
-    <string name="onboarding_screen_4_description">Deze app maakt van jouw vaccinatie, testuitslag of herstel een QR-code. Dat is jouw bewijs. De QR-code wordt gecheckt bij de ingang van plekken en activiteiten. Of aan de grens. Verloopt je bewijs? Dan verdwijnt de QR-code.</string>
+    <string name="onboarding_screen_4_description">Deze app maakt van jouw vaccinatie, testuitslag of herstel een QR-code. Dat is jouw bewijs. De QR-code wordt gecheckt bij de ingang van plekken en activiteiten. Of aan de grens.</string>
     <string name="onboarding_screen_3_title">QR-codes voor Nederland en internationaal</string>
     <string name="onboarding_screen_3_description">"De app maakt twee QR-codes: een QR-code voor Nederland en een internationale. Beide QR-codes vind je in de app. Reis je buiten Nederland? Gebruik dan je internationale QR-code."</string>
     <string name="onboarding_next">Volgende</string>
@@ -157,6 +157,8 @@
     <string name="new_terms_title">Nieuw in de app</string>
     <string name="new_terms_highlights"><![CDATA[<b>Vaccinatiebewijs</b><br/>Ben je gevaccineerd? Je kunt nu ook je vaccinatiebewijs ophalen in de app. En daar een QR-code van maken. Hiermee krijg je toegang tot bepaalde locaties of activiteiten. Ook krijg je een QR-code om internationaal te reizen.]]></string>
     <string name="new_terms_consent_button">Volgende</string>
+    <string name="new_terms_highlights"><![CDATA[<b>Vaccinatiebewijs</b><br/>Ben je gevaccineerd? Je kunt nu ook je vaccinatiebewijs ophalen in de app. En daar een QR-code van maken. Hiermee krijg je toegang tot bepaalde locaties of activiteiten. Ook krijg je een QR-code om internationaal te reizen.</b>]]></string>
+    <string name="new_terms_consent_button">Aan de slag</string>
     <string name="new_terms_consent_needed_positive_button">Akkoord</string>
     <string name="new_terms_consent_needed_negative_button">Niet akkoord</string>
     <string name="new_terms_no_consent_dialog_title">Je kan niet verder als je niet akkoord gaat</string>
@@ -192,7 +194,7 @@
     <string name="your_retrieved_vaccinations_description">Je kunt een QR-code maken van je vaccinatie. Dat is jouw bewijs.</string>
     <string name="your_vaccination_result_toolbar_title">Jouw vaccinaties</string>
     <string name="your_retrieved_vaccinations_toolbar">Gegevens van je vaccinatie ophalen</string>
-    <string name="retrieved_vaccination_title">Vaccinatie %1$s</string>
+    <string name="retrieved_vaccination_title">Vaccinatiebewijs %1$s</string>
     <string name="travel_toggle_europe">Ik reis internationaal</string>
     <string name="travel_toggle_domestic">Ik ben in Nederland</string>
     <string name="travel_toggle_change_domestic">Aanpassen naar NL</string>
@@ -364,7 +366,7 @@
     <string name="your_events_replace_dialog_positive_button">Ja, vervang</string>
     <string name="your_events_details_button">Details</string>
     <string name="qr_explanation_certificate_issuer">Ministerie van VWS / Ministry of Health, Welfare and Sport</string>
-    <string name="qr_code_return_app_button">Terug naar de %s</string>
+    <string name="qr_code_return_app_button">Naar de %s</string>
     <string name="qr_card_validity_future_from">geldig vanaf %1s %2s</string>
     <string name="qr_card_validity_future_until">t/m %1s</string>
     <string name="your_vaccination_explanation_dose">dosis %1s</string>
