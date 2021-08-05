@@ -14,7 +14,6 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentTabsMyOverviewBinding
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetMyOverviewItemsUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewFragment.Companion.GREEN_CARD_TYPE
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewTabsFragment.Companion.positionTabsMap
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
@@ -84,9 +83,9 @@ class MyOverviewTabsFragment: Fragment(R.layout.fragment_tabs_my_overview) {
             )
         }
 
-        viewModel.showAddCertificateButtonEvent.observe(viewLifecycleOwner, EventObserver {
+        viewModel.showAddCertificateButtonEvent.observe(viewLifecycleOwner) {
             binding.addQrButton.visibility = if (it) VISIBLE else GONE
-        })
+        }
 
         return view
     }

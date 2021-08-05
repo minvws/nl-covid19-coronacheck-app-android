@@ -21,7 +21,6 @@ import nl.rijksoverheid.ctr.verifier.ui.scanner.ScannerViewModel
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.VerifiedQrResultState
 import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.TestResultValidUseCase
 import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.VerifyQrUseCase
-import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.QrCodeUtil
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrViewModel
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody
@@ -93,14 +92,6 @@ fun fakeTestResultValidUseCase(
 ) = object : TestResultValidUseCase {
     override suspend fun validate(qrContent: String): VerifiedQrResultState {
         return result
-    }
-}
-
-fun fakeQrCodeUtil(
-    isValid: Boolean = true
-) = object : QrCodeUtil {
-    override fun isValid(creationDate: OffsetDateTime, isPaperProof: String): Boolean {
-        return isValid
     }
 }
 

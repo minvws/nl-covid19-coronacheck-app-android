@@ -34,6 +34,12 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
 import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModel
 import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.*
+import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewViewModel
+import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewViewModelImpl
+import nl.rijksoverheid.ctr.holder.ui.myoverview.QrCodeViewModel
+import nl.rijksoverheid.ctr.holder.ui.myoverview.QrCodeViewModelImpl
+import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.ReturnToAppUseCase
+import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.ReturnToAppUseCaseImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverViewGreenCardAdapterUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverViewGreenCardAdapterUtilImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
@@ -148,8 +154,8 @@ fun holderModule(baseUrl: String) = module {
     factory<WorkerManagerWrapper> { WorkerManagerWrapperImpl(androidContext(), get()) }
 
     // ViewModels
+    viewModel<QrCodeViewModel> { QrCodeViewModelImpl(get(), get()) }
     viewModel<HolderMainActivityViewModel> { HolderMainActivityViewModelImpl() }
-    viewModel<QrCodeViewModel> { QrCodeViewModelImpl(get()) }
     viewModel<CommercialTestCodeViewModel> { CommercialTestCodeViewModelImpl(get(), get()) }
     viewModel { DigiDViewModel(get()) }
     viewModel { TokenQrViewModel(get()) }
@@ -185,6 +191,9 @@ fun holderModule(baseUrl: String) = module {
     factory<QrCodeUtil> { QrCodeUtilImpl() }
     factory<TestResultAdapterItemUtil> { TestResultAdapterItemUtilImpl(get()) }
     factory<InfoScreenUtil> { InfoScreenUtilImpl(get(), get(), get()) }
+    factory<VaccinationInfoScreenUtil> {
+        VaccinationInfoScreenUtilImpl(get(), androidContext().resources, get())
+    }
     factory<LastVaccinationDoseUtil> { LastVaccinationDoseUtilImpl(androidContext().resources) }
     factory<GreenCardUtil> { GreenCardUtilImpl(Clock.systemUTC(), get()) }
 
@@ -205,6 +214,10 @@ fun holderModule(baseUrl: String) = module {
 
     factory<TestResultAttributesUseCase> {
         TestResultAttributesUseCaseImpl(get(), get())
+    }
+
+    factory<ReturnToAppUseCase> {
+        ReturnToAppUseCaseImpl(get())
     }
 
     factory<RemoveExpiredEventsUseCase> {

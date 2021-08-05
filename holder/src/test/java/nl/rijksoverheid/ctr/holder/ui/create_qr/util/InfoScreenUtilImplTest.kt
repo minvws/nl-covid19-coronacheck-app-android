@@ -8,7 +8,6 @@
 
 package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
-import android.content.res.Resources
 import io.mockk.mockk
 import junit.framework.Assert.assertEquals
 import nl.rijksoverheid.ctr.holder.fakeCachedAppConfigUseCase
@@ -17,11 +16,8 @@ import java.util.*
 
 class InfoScreenUtilImplTest {
 
-    private val resources: Resources = mockk()
-
-    private val lastVaccinationDoseUtil = LastVaccinationDoseUtilImpl(resources)
     private val infoScreenUtil =
-        InfoScreenUtilImpl(mockk(), lastVaccinationDoseUtil, fakeCachedAppConfigUseCase())
+        InfoScreenUtilImpl(mockk(), mockk(), fakeCachedAppConfigUseCase())
 
     @Test
     fun `getCountry returns correct strings for the Netherlands in Dutch locale`() {

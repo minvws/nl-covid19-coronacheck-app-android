@@ -2,6 +2,8 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
 import android.app.Application
 import android.os.Build
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYearNumerical
 import nl.rijksoverheid.ctr.holder.R
@@ -60,7 +62,7 @@ interface InfoScreenUtil {
 
 class InfoScreenUtilImpl(
     private val application: Application,
-    private val lastVaccinationDoseUtil: LastVaccinationDoseUtil,
+    private val vaccinationInfoScreenUtil: VaccinationInfoScreenUtil,
     cachedAppConfigUseCase: CachedAppConfigUseCase
 ) : InfoScreenUtil {
 
@@ -127,6 +129,14 @@ class InfoScreenUtilImpl(
             title = title,
             description = description
         )
+    }
+
+    override fun getForVaccination(
+        event: RemoteEventVaccination,
+        fullName: String,
+        birthDate: String
+    ): InfoScreen {
+        return vaccinationInfoScreenUtil.getForVaccination(event, fullName, birthDate)
     }
 
     override fun getForPositiveTest(
@@ -198,70 +208,7 @@ class InfoScreenUtilImpl(
         )
     }
 
-    override fun getForVaccination(
-        event: RemoteEventVaccination,
-        fullName: String,
-        birthDate: String
-    ): InfoScreen {
-        val title = application.getString(R.string.your_vaccination_explanation_toolbar_title)
 
-        val disease = application.getString(R.string.your_vaccination_explanation_covid_19)
-
-        val hpkCode = holderConfig.hpkCodes.firstOrNull {
-            it.code == event.vaccination?.hpkCode
-        }?.name ?: event.vaccination?.hpkCode ?: ""
-
-        val brand = holderConfig.euBrands.firstOrNull {
-            it.code == event.vaccination?.brand
-        }?.name ?: event.vaccination?.brand ?: ""
-
-        val vaccin = when {
-            hpkCode.isNotEmpty() -> hpkCode
-            brand.isNotEmpty() -> brand
-            else -> ""
-        }
-
-        val vaccinType = holderConfig.euVaccinations.firstOrNull {
-            it.code == event.vaccination?.type
-        }?.name ?: event.vaccination?.type ?: ""
-
-        val producer = holderConfig.euManufacturers.firstOrNull {
-            it.code == event.vaccination?.manufacturer
-        }?.name ?: event.vaccination?.manufacturer ?: ""
-
-        val doses =
-            if (event.vaccination?.doseNumber != null && event.vaccination.totalDoses != null) {
-                application.getString(
-                    R.string.your_vaccination_explanation_doses,
-                    event.vaccination.doseNumber,
-                    event.vaccination.totalDoses
-                )
-            } else ""
-
-        val lastDose = lastVaccinationDoseUtil.getIsLastDoseAnswer(event)
-
-        val vaccinationDate = event.vaccination?.date?.formatDayMonthYear() ?: ""
-        val vaccinationCountry = event.vaccination?.country ?: ""
-        val uniqueCode = event.unique ?: ""
-
-        return InfoScreen(
-            title = title,
-            description = application.getString(
-                R.string.your_vaccination_explanation_description,
-                fullName,
-                birthDate,
-                disease,
-                vaccin,
-                vaccinType,
-                producer,
-                doses,
-                lastDose,
-                vaccinationDate,
-                vaccinationCountry,
-                uniqueCode
-            )
-        )
-    }
 
     override fun getForDomesticQr(personalDetails: PersonalDetails): InfoScreen {
         val title = application.getString(R.string.qr_explanation_title_domestic)
@@ -414,7 +361,14 @@ class InfoScreenUtilImpl(
         val doses =
             if (vaccination.getStringOrNull("dn") != null && vaccination.getStringOrNull("sd") != null) {
                 application.getString(
-                    R.string.your_vaccination_explanation_doses,
+                    R.string.your_vaccination_explanation_doses_answer,
+/*
+ *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+ *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+ *
+ *   SPDX-License-Identifier: EUPL-1.2
+ *
+ */
                     vaccination.getStringOrNull("dn"),
                     vaccination.getStringOrNull("sd")
                 )
@@ -533,7 +487,8 @@ class InfoScreenUtilImpl(
 
 }
 
+@Parcelize
 data class InfoScreen(
     val title: String,
     val description: String
-)
+): Parcelable

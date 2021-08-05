@@ -7,6 +7,8 @@ import android.os.Looper
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
@@ -53,6 +55,8 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
     private val myOverviewViewModel: MyOverviewViewModel by viewModel()
 
     private val dialogUtil: DialogUtil by inject()
+
+    private val args: MyOverviewFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -127,7 +131,10 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
             forceSync = forceSync,
             selectType = arguments?.getParcelable(GREEN_CARD_TYPE)!!
         )
-        refreshOverviewItemsHandler.postDelayed(refreshOverviewItemsRunnable, TimeUnit.SECONDS.toMillis(10))
+        refreshOverviewItemsHandler.postDelayed(
+            refreshOverviewItemsRunnable,
+            TimeUnit.SECONDS.toMillis(cachedAppConfigUseCase.getCachedAppConfig().domesticQRRefreshSeconds.toLong())
+        )
     }
 
     override fun onResume() {
@@ -155,9 +162,11 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                     )
                 }
                 is MyOverviewItem.PlaceholderCardItem -> {
-                    adapterItems.add(MyOverviewGreenCardPlaceholderItem(
-                        isEu = myOverviewItems.selectedType == GreenCardType.Eu
-                    ))
+                    adapterItems.add(
+                        MyOverviewGreenCardPlaceholderItem(
+                            isEu = myOverviewItems.selectedType == GreenCardType.Eu
+                        )
+                    )
                 }
                 is MyOverviewItem.GreenCardItem -> {
                     adapterItems.add(
@@ -183,13 +192,16 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                                             credentialExpirationTimeSeconds = credential.expirationTime.toEpochSecond(),
                                             type = greenCard.greenCardEntity.type,
                                             originType = greenCard.origins.first().type
-                                        )
+                                        ),
+                                        returnUri = args.returnUri
                                     )
                                 )
                             },
-                            onRetryClick = { refreshOverviewItems(
-                                forceSync = true
-                            ) },
+                            onRetryClick = {
+                                refreshOverviewItems(
+                                    forceSync = true
+                                )
+                            },
                         )
                     )
                 }

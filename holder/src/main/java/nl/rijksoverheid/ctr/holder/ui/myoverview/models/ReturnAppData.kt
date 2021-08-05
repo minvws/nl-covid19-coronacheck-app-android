@@ -1,6 +1,6 @@
-package nl.rijksoverheid.ctr.shared
+package nl.rijksoverheid.ctr.holder.ui.myoverview.models
 
-import java.util.concurrent.TimeUnit
+import android.content.Intent
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-object QrCodeConstants {
-    val VALID_FOR_SECONDS = TimeUnit.MINUTES.toSeconds(3)
-}
+data class ReturnAppData(
+    val appName: String,
+    val intent: Intent
+)
