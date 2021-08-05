@@ -228,7 +228,7 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
         remoteEvents: Map<RemoteProtocol3, ByteArray>,
         binding: FragmentYourEventsBinding
     ) {
-        val protocols = listOf(remoteEvents.map { it.key }.first(), remoteEvents.map { it.key }.first().copy(providerIdentifier = "TEST"))
+        val protocols = remoteEvents.map { it.key }
 
         val groupedEvents = yourEventsViewModel.combineSameEventsFromDifferentProviders(protocols)
 
