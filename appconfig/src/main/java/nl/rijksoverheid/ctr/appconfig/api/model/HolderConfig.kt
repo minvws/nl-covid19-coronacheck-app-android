@@ -37,7 +37,8 @@ data class HolderConfig(
     @Json(name = "ggdEnabled") val ggdEnabled: Boolean,
     @Json(name = "universalLinkDomains") val deeplinkDomains: List<Url>,
     @Json(name = "domesticQRRefreshSeconds") val domesticQRRefreshSeconds: Int,
-): AppConfig(holderAppDeactivated, holderInformationURL, holderMinimumVersion, configTTL, providerIdentifiers) {
+    @Json(name = "clockDeviationThresholdSeconds") val holderClockDeviationThresholdSeconds: Int
+): AppConfig(holderAppDeactivated, holderInformationURL, holderMinimumVersion, configTTL, providerIdentifiers, holderClockDeviationThresholdSeconds) {
 
     companion object {
         fun default(
@@ -65,6 +66,7 @@ data class HolderConfig(
             ggdEnabled: Boolean = true,
             returnApps: List<Url> = listOf(),
             domesticQRRefreshSeconds: Int = 10,
+            holderClockDeviationThresholdSeconds: Int = 30
         ) = HolderConfig(
             holderMinimumVersion = holderMinimumVersion,
             holderAppDeactivated = holderAppDeactivated,
@@ -90,6 +92,7 @@ data class HolderConfig(
             ggdEnabled = ggdEnabled,
             deeplinkDomains = returnApps,
             domesticQRRefreshSeconds = domesticQRRefreshSeconds,
+            holderClockDeviationThresholdSeconds = holderClockDeviationThresholdSeconds
         )
     }
 }

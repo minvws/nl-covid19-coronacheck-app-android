@@ -33,13 +33,20 @@ interface AppConfigUseCase {
 class AppConfigUseCaseImpl(
     private val clock: Clock,
     private val appConfigPersistenceManager: AppConfigPersistenceManager,
-    private val configRepository: ConfigRepository
+    private val configRepository: ConfigRepository,
+    private val clockDeviationUseCase: ClockDeviationUseCase
 ) : AppConfigUseCase {
     override suspend fun get(): ConfigResult = withContext(Dispatchers.IO) {
         try {
+            val config = configRepository.getConfig()
             val success = ConfigResult.Success(
-                appConfig = configRepository.getConfig(),
+                appConfig = config.body,
                 publicKeys = configRepository.getPublicKeys()
+            )
+
+            clockDeviationUseCase.store(
+                serverResponseTimestamp = config.headers.getDate("date")?.time ?: clock.millis(),
+                localReceivedTimestamp = clock.millis()
             )
             appConfigPersistenceManager.saveAppConfigLastFetchedSeconds(
                 OffsetDateTime.now(clock).toEpochSecond()

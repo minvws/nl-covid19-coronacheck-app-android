@@ -378,4 +378,7 @@
     <string name="new_in_app_tabs_title">A Dutch and an international tab</string>
     <string name="new_in_app_tabs_description">From now on you can easily switch between your Dutch and international certificate. At the top of the screen, you’ll find a tab named ‘the Netherlands’ and a tab named ‘International’. Are you travelling abroad? Use the certificates found under ‘International’.</string>
     <string name="your_events_and">and</string>
+    <string name="my_overview_clock_deviation_description">Please check the time settings of your device. These might not be correct.</string>
+    <string name="clock_deviation_explanation_title">Check the time settings of your device</string>
+    <string name="clock_deviation_explanation_description"><![CDATA[The time set on your device might not be correct. For instance it is possible that your device’s time is several minutes ahead. To be able to use the CoronaCheck-app correctly it is important that your device’s time is set correctly.<br/><br/><a href="#">Go to the settings</a> of your device and set the date and time to ‘automatic settings’.]]></string>
 </resources>
