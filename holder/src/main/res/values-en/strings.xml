@@ -187,7 +187,7 @@
     <string name="qr_code_type_vaccination_title">A vaccination certificate</string>
     <string name="qr_code_type_vaccination_description">I\'ve had my injection or injections</string>
     <string name="get_vaccination_title">Retrieve vaccination details</string>
-    <string name="get_vaccination_description"><![CDATA[Got vaccinated? Log in with DigiD. Details regarding your vaccination will be retrieved automatically.<br/><br/> You only need one injection to make an international QR-code. For a Dutch QR code you need to be fully vaccinated. <br/><br/>Didn\'t get an injection yet? Get vaccinated first.]]></string>
+    <string name="get_vaccination_description"><![CDATA[Were you vaccinated? Log in with DigiD. Details regarding your vaccination will be retrieved automatically.<br/><br/> For a Dutch QR code, you need to be fully vaccinated. You only need one injection to make an international QR code.<br/><br/>Please note: the validity of a QR code made after one vaccination depends on the rules of the country you’re visiting.]]></string>
     <string name="get_vaccination_button">Log in with your DigiD</string>
     <string name="get_vaccination_no_digid_button">I don\'t have DigiD</string>
     <string name="your_retrieved_vaccinations_title">Your retrieved vaccinations</string>
@@ -259,7 +259,7 @@
     <string name="my_overview_green_card_not_valid_title_vaccination">About your vaccination certificate</string>
     <string name="my_overview_green_card_not_valid_title_test">About your test certificate</string>
     <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_test"><![CDATA[Your test certificate isn\'t valid in the Netherlands. That\'s why only an international certificate was made.<br/><br/>It\'s possible the validity period in the Netherlands is shorter than the validity period in other countries. Get tested again.]]></string>
-    <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_vaccination"><![CDATA[Your vaccination certificate isn\'t valid in the Netherlands. That\'s why only an international certificate was made.<br/><br/>It\'s possible you\'ve only had one injection. Add your second vaccination to get a valid Dutch certificate.]]></string>
+    <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_vaccination"><![CDATA[Your vaccination certificate isn\'t valid in the Netherlands. That\'s why only an international certificate was made.<br/><br/>It\'s possible you\'ve only had one injection. Add your second vaccination to get a valid Dutch certificate.<a href="https://coronacheck.nl/en/faq/2-4-ik-heb-wel-een-internationale-qr-code-maar-geen-nederlandse/</a> Read all about the possible causes.</a>]]></string>
     <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_test"><![CDATA[Your test certificate isn\'t valid internationally. That\'s why only a Dutch certificate was made.<br/><br/>It\'s possible your type of test isn\'t accepted abroad. Get tested again.]]></string>
     <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_vaccination"><![CDATA[Your vaccination certificate isn\'t valid internationally. That\'s why only a Dutch certificate was made.<br/><br/>It\'s possible your type of vaccination isn\'t accepted abroad.]]></string>
     <string name="rule_engine_no_origin_title">We can\'t make a certificate</string>
@@ -342,7 +342,7 @@
     <string name="add_paper_proof_explanation_description"><![CDATA[Have you requested your paper coronavirus pass <b>at the healthcare provider</b> who vaccinated or tested you? Then you can add it here in the app.]]></string>
     <string name="add_paper_proof_explanation_highlight"><![CDATA[<b>Did you print your certificate yourself?</b> Please add your certificate to the app via the menu. Go to “Add certificate” and log in using your DigiD.]]></string>
     <string name="add_paper_proof_consent_title">Only scan the international QR code</string>
-    <string name="add_paper_proof_consent_description"><![CDATA[The international QR code contains enough information to create both a Dutch certificate and an international certificate. Therefore please <b>only scan the international QR code</b> using your smartphone camera.
+    <string name="add_paper_proof_consent_description"><![CDATA[The international QR code contains enough information to create both a Dutch certificate and an international certificate. Therefore please <b>only scan the international QR code</b> using your smartphone camera. 
 
 <br/><br/><b>You will receive the following: <br/><ul><li>- A Dutch certificate</li><li>An international certificate</li></ul>]]></string>
     <string name="add_paper_proof_qr_scanner_text">Point your phone at the QR code on the international certificate</string>
