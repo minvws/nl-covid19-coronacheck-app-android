@@ -13,6 +13,7 @@
     <string name="onboarding_screen_4_title">Voor wie is de scanner?</string>
     <string name="onboarding_screen_4_description"><![CDATA[Met behulp van deze app kun je weer bezoekers ontvangen. Maar alleen als jouw locatie of activiteit onder de aangewezen locaties valt.]]></string>
     <string name="onboarding_next">Volgende</string>
+    <string name="onboarding_finish">Aan de slag</string>
     <string name="privacy_policy_title">Voorwaarden voor gebruik</string>
     <string name="privacy_policy_description"><![CDATA[In de <a href="https://coronacheck.nl/nl/gebruikersvoorwaarden-in-app">gebruiksvoorwaarden</a> staat hoe CoronaCheck Scanner werkt en wat je rechten zijn.]]></string>
     <string name="privacy_policy_1"><![CDATA[Er worden <b>geen locatiegegevens</b> gebruikt of bewaard]]></string>
