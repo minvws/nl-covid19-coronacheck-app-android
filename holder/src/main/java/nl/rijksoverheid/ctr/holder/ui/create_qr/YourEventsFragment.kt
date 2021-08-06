@@ -26,7 +26,6 @@ import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.items.YourEventWidget
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.InfoScreen
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.InfoScreenUtil
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
@@ -222,13 +221,18 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                 type.remoteEvents,
                 binding
             )
-            is YourEventsFragmentType.DCC -> presentEvents(type.remoteEvents, binding)
+            is YourEventsFragmentType.DCC -> presentEvents(
+                type.remoteEvents,
+                binding,
+                isDccEvent = true
+            )
         }
     }
 
     private fun presentEvents(
         remoteEvents: Map<RemoteProtocol3, ByteArray>,
-        binding: FragmentYourEventsBinding
+        binding: FragmentYourEventsBinding,
+        isDccEvent: Boolean = false
     ) {
         val protocols = remoteEvents.map { it.key }
 
@@ -244,11 +248,13 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                     is RemoteEventVaccination -> {
                         presentVaccinationEvent(
                             binding = binding,
-                            providerIdentifiers = providerIdentifiers.toSet().joinToString(" ${getString(R.string.your_events_and)} "),
+                            providerIdentifiers = providerIdentifiers.toSet()
+                                .joinToString(" ${getString(R.string.your_events_and)} "),
                             fullName = getFullName(holder),
                             birthDate = getBirthDate(holder),
                             currentEvent = remoteEvent,
                             allEventsInformation = allEventsInformation,
+                            isDccEvent = isDccEvent
                         )
                     }
                     is RemoteEventNegativeTest -> {
@@ -332,14 +338,12 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
         birthDate: String,
         currentEvent: RemoteEventVaccination,
         allEventsInformation: List<RemoteEventInformation>,
+        isDccEvent: Boolean,
     ) {
 
         val eventWidget = YourEventWidget(requireContext()).apply {
             setContent(
-                title = resources.getString(
-                    R.string.retrieved_vaccination_title,
-                    currentEvent.vaccination?.date?.formatMonth(),
-                ),
+                title = getVaccinationEventTitle(isDccEvent, currentEvent),
                 subtitle = resources.getString(
                     R.string.your_vaccination_row_subtitle,
                     fullName,
@@ -364,6 +368,18 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
             )
         }
         binding.eventsGroup.addView(eventWidget)
+    }
+
+    private fun YourEventWidget.getVaccinationEventTitle(
+        isDccEvent: Boolean,
+        currentEvent: RemoteEventVaccination
+    ) = if (isDccEvent) {
+        resources.getString(R.string.retrieved_vaccination_dcc_title)
+    } else {
+        resources.getString(
+            R.string.retrieved_vaccination_title,
+            currentEvent.vaccination?.date?.formatMonth(),
+        )
     }
 
     private fun presentNegativeTestEvent(
