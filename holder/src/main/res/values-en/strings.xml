@@ -237,7 +237,7 @@
     <string name="your_vaccination_explanation_last_dose_yes_prior_event">yes (I have been vaccinated elsewhere)</string>
     <string name="your_vaccination_explanation_last_dose_no">no</string>
     <string name="your_vaccination_explanation_last_dose_unknown">unknown</string>
-    <string name="your_vaccination_explanation_header">The following details of your vaccination were retrieved:</string>
+    <string name="your_vaccination_explanation_header">The following details of your vaccination were retrieved by %1$s:</string>
     <string name="your_vaccination_explanation_name">Name:</string>
     <string name="your_vaccination_explanation_birthday">Date of birth:</string>
     <string name="your_vaccination_explanation_covid_19">Disease targeted:</string>

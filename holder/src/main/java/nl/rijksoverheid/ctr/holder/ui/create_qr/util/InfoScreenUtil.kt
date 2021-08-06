@@ -35,7 +35,8 @@ interface InfoScreenUtil {
     fun getForVaccination(
         event: RemoteEventVaccination,
         fullName: String,
-        birthDate: String
+        birthDate: String,
+        providerIdentifier: String,
     ): InfoScreen
 
     fun getForPositiveTest(
@@ -134,9 +135,10 @@ class InfoScreenUtilImpl(
     override fun getForVaccination(
         event: RemoteEventVaccination,
         fullName: String,
-        birthDate: String
+        birthDate: String,
+        providerIdentifier: String,
     ): InfoScreen {
-        return vaccinationInfoScreenUtil.getForVaccination(event, fullName, birthDate)
+        return vaccinationInfoScreenUtil.getForVaccination(event, fullName, birthDate, providerIdentifier)
     }
 
     override fun getForPositiveTest(

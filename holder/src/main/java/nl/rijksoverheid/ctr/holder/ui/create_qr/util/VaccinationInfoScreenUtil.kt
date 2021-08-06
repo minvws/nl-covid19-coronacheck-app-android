@@ -20,7 +20,8 @@ interface VaccinationInfoScreenUtil {
     fun getForVaccination(
         event: RemoteEventVaccination,
         fullName: String,
-        birthDate: String
+        birthDate: String,
+        providerIdentifier: String,
     ): InfoScreen
 }
 
@@ -35,7 +36,8 @@ class VaccinationInfoScreenUtilImpl(
     override fun getForVaccination(
         event: RemoteEventVaccination,
         fullName: String,
-        birthDate: String
+        birthDate: String,
+        providerIdentifier: String,
     ): InfoScreen {
         val title = resources.getString(R.string.your_vaccination_explanation_toolbar_title)
 
@@ -79,7 +81,7 @@ class VaccinationInfoScreenUtilImpl(
         return InfoScreen(
             title = title,
             description = (TextUtils.concat(
-                resources.getString(R.string.your_vaccination_explanation_header),
+                resources.getString(R.string.your_vaccination_explanation_header, providerIdentifier),
                 "<br/><br/>",
                 createdLine(name, fullName),
                 createdLine(birthDateQuestion, birthDate, isOptional = true),

@@ -238,6 +238,7 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
             val holder = protocolGroupedEvent.value.firstOrNull()?.holder
             val providerIdentifiers = protocolGroupedEvent.value.map { it.providerIdentifier }
             val allSameEvents = protocolGroupedEvent.value.map { it.remoteEvent }
+            val allEventsInformation = protocolGroupedEvent.value.map { RemoteEventInformation(it.providerIdentifier, holder, it.remoteEvent) }
             yourEventsViewModel.combineSameVaccinationEvents(allSameEvents).forEach { remoteEvent ->
                 when (remoteEvent) {
                     is RemoteEventVaccination -> {
@@ -247,7 +248,7 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                             fullName = getFullName(holder),
                             birthDate = getBirthDate(holder),
                             currentEvent = remoteEvent,
-                            allSameEvents = allSameEvents,
+                            allEventsInformation = allEventsInformation,
                         )
                     }
                     is RemoteEventNegativeTest -> {
@@ -330,7 +331,7 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
         fullName: String,
         birthDate: String,
         currentEvent: RemoteEventVaccination,
-        allSameEvents: List<RemoteEvent>,
+        allEventsInformation: List<RemoteEventInformation>,
     ) {
 
         val eventWidget = YourEventWidget(requireContext()).apply {
@@ -348,11 +349,13 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                 infoClickListener = {
                     navigateSafety(
                         YourEventsFragmentDirections.actionShowExplanation(
-                            data = allSameEvents.map {
+                            data = allEventsInformation.map {
+                                val vaccinationEvent = it.remoteEvent as RemoteEventVaccination
                                 infoScreenUtil.getForVaccination(
-                                    event = it as RemoteEventVaccination,
+                                    event = vaccinationEvent,
                                     fullName = fullName,
                                     birthDate = birthDate,
+                                    providerIdentifier = it.providerIdentifier,
                                 )
                             }.toTypedArray()
                         )

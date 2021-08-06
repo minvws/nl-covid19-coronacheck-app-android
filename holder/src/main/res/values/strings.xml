@@ -237,7 +237,7 @@
     <string name="your_vaccination_explanation_last_dose_yes_prior_event">ja (ergens anders corona gehad)</string>
     <string name="your_vaccination_explanation_last_dose_no">nee</string>
     <string name="your_vaccination_explanation_last_dose_unknown">niet bekend</string>
-    <string name="your_vaccination_explanation_header">Deze gegevens van je vaccinatie zijn opgehaald:</string>
+    <string name="your_vaccination_explanation_header">Deze gegevens van je vaccinatie zijn opgehaald bij %1$s:</string>
     <string name="your_vaccination_explanation_name">Naam:</string>
     <string name="your_vaccination_explanation_birthday">Geboortedatum:</string>
     <string name="your_vaccination_explanation_covid_19">Ziekteverwekker:</string>
