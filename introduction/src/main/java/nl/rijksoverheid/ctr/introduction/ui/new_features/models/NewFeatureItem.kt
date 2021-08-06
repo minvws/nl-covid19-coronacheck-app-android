@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.introduction.ui.new_features.models
 
 import android.os.Parcelable
+import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import kotlinx.parcelize.Parcelize
@@ -16,5 +17,7 @@ import kotlinx.parcelize.Parcelize
 data class NewFeatureItem(
     @DrawableRes val imageResource: Int,
     @StringRes val titleResource: Int,
-    @StringRes val description: Int
+    @StringRes val description: Int,
+    @ColorRes val subTitleColor: Int? = null,
+    @ColorRes val backgroundColor: Int? = null,
 ) : Parcelable

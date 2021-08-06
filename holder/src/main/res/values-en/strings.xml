@@ -324,7 +324,7 @@
     <string name="my_overview_qr_placeholder_header_eu">Find your international certificate here later</string>
     <string name="my_overview_qr_placeholder_description"><![CDATA[You can add a certificate if you\'re vaccinated, if you\'ve had corona or by taking a test at an <a href="https://coronacheck.nl/en/testafspraak-in-app">affiliated test location</a>. 
 <br />The app generates a certificate for the Netherlands and one for other countries.]]></string>
-    <string name="my_overview_qr_placeholder_description_eu"><![CDATA[Ben je in het buitenland of ga je de grens over? Gebruik dan altijd jouw internationale bewijs. Controleer voor vertrek welk bewijs je nodig hebt. <a href="https://www.coronacheck.nl/wegwijzer">Welk bewijs is geldig op mijn bestemming?</a>]]></string>
+    <string name="my_overview_qr_placeholder_description_eu"><![CDATA[Are you abroad or crossing the borders? Use then your international certificate. Check before departing which certificate you need. <br /> <a href="https://www.coronacheck.nl/wegwijzer"><br/>Which certificate is valid for my destination?</a>]]></string>
     <string name="my_overview_add_qr_button">Add certificate</string>
     <string name="add_paper_proof">Add paper certificate</string>
     <string name="add_paper_proof_title">Your letter combination</string>
