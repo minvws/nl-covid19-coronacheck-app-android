@@ -56,7 +56,7 @@
     <string name="my_overview_no_qr_replace_qr_button">Vervang bewijs</string>
     <string name="choose_provider_toolbar">Bewijs toevoegen</string>
     <string name="choose_provider_title">Waar ben je getest?</string>
-    <string name="choose_provider_description">Je kunt een QR-code maken van jouw testuitslag, als blijkt dat je geen corona hebt. Geef aan waar je getest bent.</string>
+    <string name="choose_provider_description">Blijkt uit de test dat je geen corona hebt? Dan kun je van de testuitslag een QR-code maken. Geef aan waar je getest bent.</string>
     <string name="choose_provider_commercial_title">Andere testlocatie</string>
     <string name="choose_provider_commercial_subtitle">Haal testuitslag op</string>
     <string name="choose_provider_ggd_title">GGD</string>
@@ -158,7 +158,7 @@
     <string name="dialog_retry">Probeer opnieuw</string>
     <string name="new_terms_title">Nieuw in de app</string>
     <string name="new_terms_highlights"><![CDATA[<b>Vaccinatiebewijs</b><br/>Ben je gevaccineerd? Je kunt nu ook je vaccinatiebewijs ophalen in de app. En daar een QR-code van maken. Hiermee krijg je toegang tot bepaalde locaties of activiteiten. Ook krijg je een QR-code om internationaal te reizen.</b>]]></string>
-    <string name="new_terms_consent_button">Aan de slag</string>
+    <string name="new_terms_consent_button">Volgende</string>
     <string name="new_terms_consent_needed_positive_button">Akkoord</string>
     <string name="new_terms_consent_needed_negative_button">Niet akkoord</string>
     <string name="new_terms_no_consent_dialog_title">Je kan niet verder als je niet akkoord gaat</string>
@@ -260,7 +260,7 @@
     <string name="my_overview_green_card_not_valid_title_vaccination">Over je vaccinatiebewijs</string>
     <string name="my_overview_green_card_not_valid_title_test">Over je testbewijs</string>
     <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_test"><![CDATA[Jouw testbewijs is niet geldig in Nederland. Je hebt wel een internationaal bewijs.<br/><br/>Dit kan komen doordat de geldigheidsduur in Nederland korter is dan in andere landen. Laat je opnieuw testen voor een bewijs dat ook in Nederland geldig is.]]></string>
-    <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_vaccination"><![CDATA[Jouw vaccinatiebewijs is niet geldig in Nederland. Je hebt wel een internationaal bewijs.<br/><br/>Het kan bijvoorbeeld zijn dat je maar één prik hebt gehad. Voeg je tweede vaccinatie toe om een bewijs te maken dat ook in Nederland geldig is. <a href="https://coronacheck.nl/nl/faq/2-4-ik-heb-wel-een-internationale-qr-code-maar-geen-nederlandse/</a> Lees hier meer over de mogelijke oorzaken.</a>]]></string>
+    <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_vaccination"><![CDATA[Jouw vaccinatiebewijs is niet geldig in Nederland. Je hebt wel een internationaal bewijs.<br/><br/>Het kan bijvoorbeeld zijn dat je maar één prik hebt gehad. Voeg je tweede vaccinatie toe om een bewijs te maken dat ook in Nederland geldig is. <a href="https://coronacheck.nl/nl/faq/2-4-ik-heb-wel-een-internationale-qr-code-maar-geen-nederlandse/">Lees hier meer over de mogelijke oorzaken.</a>]]></string>
     <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_test"><![CDATA[Jouw testbewijs is niet internationaal geldig. Je hebt wel een Nederlands bewijs.<br/><br/>Dit kan bijvoorbeeld komen door je type test niet geaccepteerd wordt in andere landen. Laat je opnieuw testen voor een bewijs dat ook internationaal geldig is.]]></string>
     <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_vaccination"><![CDATA[Jouw vaccinatiebewijs is niet internationaal geldig. Je hebt wel een Nederlands bewijs.<br/><br/>Dit kan bijvoorbeeld komen doordat jouw type vaccin niet geaccepteerd wordt in het buitenland.]]></string>
     <string name="rule_engine_no_origin_title">We kunnen geen bewijs maken</string>
@@ -364,7 +364,7 @@ Scan daarom met de camera van je telefoon <b>alleen je internationale QR-code</b
     <string name="your_events_block_back_dialog_title">Weet je zeker dat je wilt stoppen?</string>
     <string name="your_events_block_back_dialog_description">Je kunt later opnieuw proberen deze QR-code in de app te zetten.</string>
     <string name="your_events_block_back_dialog_positive_button">Ja, stop</string>
-    <string name="your_events_block_back_dialog_negative_button">Nee, terug</string>
+    <string name="your_events_block_back_dialog_negative_button">Nee, ga verder</string>
     <string name="your_events_replace_dialog_title">Wil je je bewijs vervangen?</string>
     <string name="your_events_replace_dialog_message">Je hebt eerder een bewijs gemaakt. De gegevens daarvan zijn anders dan de gegevens die net zijn opgehaald. Daarom kan je het bewijs alleen vervangen.</string>
     <string name="your_events_replace_dialog_negative_button">Nee, stop</string>
@@ -382,5 +382,4 @@ Scan daarom met de camera van je telefoon <b>alleen je internationale QR-code</b
     <string name="my_overview_clock_deviation_description">Controleer de tijd van je telefoon. Mogelijk staat deze niet goed ingesteld.</string>
     <string name="clock_deviation_explanation_title">Controleer de tijd van je telefoon</string>
     <string name="clock_deviation_explanation_description"><![CDATA[Mogelijk klopt de tijd van jouw telefoon niet. Het kan bijvoorbeeld zijn dat je telefoon een paar minuten voor loopt. Om de CoronaCheck-app goed te kunnen gebruiken is het belangrijk dat de tijd juist staat ingesteld.<br/><br/><a href="#">Ga naar de instellingen</a> van jouw telefoon en zet de datum en tijd op ‘automatisch instellen’.]]></string>
-
 </resources>
