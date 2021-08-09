@@ -182,7 +182,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                                     MyOverviewFragmentDirections.actionQrCode(
                                         toolbarTitle = when (greenCard.greenCardEntity.type) {
                                             is GreenCardType.Domestic -> {
-                                                getString(R.string.my_overview_test_result_title)
+                                                getString(R.string.domestic_qr_code_title)
                                             }
                                             is GreenCardType.Eu -> {
                                                 getString(R.string.my_overview_test_result_international_title)
