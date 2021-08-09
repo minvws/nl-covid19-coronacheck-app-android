@@ -137,7 +137,7 @@ class YourEventsViewModelImpl(
         remoteEvents.sortedBy { it.providerIdentifier }.forEach {
             val provider = it.providerIdentifier
             val holder = it.holder
-            it.events?.forEach { remoteEvent ->
+            it.events?.sortedBy { it.getDate() }?.forEach { remoteEvent ->
                 if (sameEventsGrouped.contains(remoteEvent)) {
                     sameEventsGrouped[remoteEvent]?.add(RemoteEventInformation(provider, holder, remoteEvent))
                 } else {

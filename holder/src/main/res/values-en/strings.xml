@@ -244,7 +244,7 @@
     <string name="your_vaccination_explanation_covid_19">Disease targeted:</string>
     <string name="your_vaccination_explanation_covid_19_answer">COVID-19</string>
     <string name="your_vaccination_explanation_vaccine">Vaccine:</string>
-    <string name="your_vaccination_explanation_vaccine_type">Vaccine medicinal product:</string>
+    <string name="your_vaccination_explanation_vaccine_type">Vaccine type:</string>
     <string name="your_vaccination_explanation_producer">Vaccine manufacturer:</string>
     <string name="your_vaccination_explanation_doses">Number in series of doses:</string>
     <string name="your_vaccination_explanation_last_dose">Is this the last dose of your vaccination?</string>

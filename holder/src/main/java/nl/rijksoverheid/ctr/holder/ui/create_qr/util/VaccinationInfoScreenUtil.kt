@@ -7,6 +7,7 @@ import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventVaccination
+import java.util.*
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -71,9 +72,14 @@ class VaccinationInfoScreenUtilImpl(
             resources.getString(R.string.your_vaccination_explanation_vaccination_date)
         val vaccinationDateAnswer = event.vaccination?.date?.formatDayMonthYear() ?: ""
 
+        val fullCountryName = if (event.vaccination?.country != null) {
+            getFullCountryName(Locale.getDefault().language, event.vaccination.country)
+        } else {
+            ""
+        }
+
         val vaccinationCountry =
             resources.getString(R.string.your_vaccination_explanation_vaccination_country)
-        val vaccinationCountryAnswer = event.vaccination?.country ?: ""
 
         val uniqueCode = resources.getString(R.string.your_vaccination_explanation_unique_code)
         val uniqueCodeAnswer = event.unique ?: ""
@@ -93,7 +99,7 @@ class VaccinationInfoScreenUtilImpl(
                 createdLine(doses, dosesAnswer, isOptional = true),
                 createdLine(lastDose, lastDoseAnswer, isOptional = true),
                 createdLine(vaccinationDate, vaccinationDateAnswer, isOptional = true),
-                createdLine(vaccinationCountry, vaccinationCountryAnswer, isOptional = true),
+                createdLine(vaccinationCountry, fullCountryName, isOptional = true),
                 createdLine(uniqueCode, uniqueCodeAnswer)
             ) as String)
         )
@@ -140,6 +146,18 @@ class VaccinationInfoScreenUtilImpl(
             brand.isNotEmpty() -> brand
             else -> ""
         }
+    }
+
+    private fun getFullCountryName(currentDeviceLanguage: String, currentCountryIso3Code: String): String {
+        val countriesMap: MutableMap<String, String> = mutableMapOf()
+        Locale.getISOCountries().forEach {
+            val locale = Locale(currentDeviceLanguage, it)
+            val countryIso3Code = locale.isO3Country
+            val fullCountryName = locale.displayCountry
+            countriesMap[countryIso3Code] = fullCountryName
+        }
+
+        return countriesMap[currentCountryIso3Code] ?: ""
     }
 
     private fun createdLine(

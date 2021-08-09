@@ -125,6 +125,9 @@ class YourEventsViewModelImplTest {
 
         assertEquals(2, groupedEvents.keys.size)
         assertEquals(2, groupedEvents.values.size)
+        val firstEvent = groupedEvents.keys.toList()[0]
+        val secondEvent = groupedEvents.keys.toList()[1]
+        assertTrue(firstEvent.getDate()!! < secondEvent.getDate()!!)
         assertEquals("GGD, RIVM", groupedEvents.values.first().map { it.providerIdentifier }.joinToString(", "))
     }
 
