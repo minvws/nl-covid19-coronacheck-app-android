@@ -350,7 +350,7 @@
     <string name="add_paper_proof_qr_error_dutch_qr_code_dialog_title">Scan the international QR code</string>
     <string name="add_paper_proof_qr_error_dutch_qr_code_dialog_description">Scan the QR code on your international certificate. You don\'t have to scan the Dutch QR code.</string>
     <string name="add_paper_proof_qr_error_invalid_qr_dialog_title">Invalid QR code</string>
-    <string name="add_paper_proof_qr_error_invalid_qr_dialog_description">This QR code is not valid. Scan the QR code on the international certificate.</string>
+    <string name="add_paper_proof_qr_error_invalid_qr_dialog_description">Scan the QR code on your international certificate. You don\'t have to scan the Dutch QR code.</string>
     <string name="add_paper_proof_expired_paper_proof_title">This paper certificate has expired</string>
     <string name="add_paper_proof_expired_paper_proof_description"><![CDATA[This paper certificate is no longer valid. This may have various causes:<br/><br/><ul><li>Your vaccination or recovery certificate is still valid, but the paper certificate isn’t. Please request a new paper coronavirus from the healthcare provider who vaccinated or tested you.</li><li>Your vaccination or recovery has expired.</li></ul>]]></string>
     <string name="add_paper_proof_limit_reached_paper_proof_title">Too many attempts</string>

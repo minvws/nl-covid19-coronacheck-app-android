@@ -350,7 +350,7 @@ Scan daarom met de camera van je telefoon <b>alleen je internationale QR-code</b
     <string name="add_paper_proof_qr_error_dutch_qr_code_dialog_title">Scan de internationale QR-code</string>
     <string name="add_paper_proof_qr_error_dutch_qr_code_dialog_description">Scan de QR-code op je internationale bewijs. Je hoeft de Nederlandse QR-code niet te scannen.</string>
     <string name="add_paper_proof_qr_error_invalid_qr_dialog_title">Ongeldige QR-code</string>
-    <string name="add_paper_proof_qr_error_invalid_qr_dialog_description">Deze QR-code is niet geldig. Scan de QR-code op je internationale bewijs.</string>
+    <string name="add_paper_proof_qr_error_invalid_qr_dialog_description">Scan de QR-code op je internationale bewijs. Je hoeft de Nederlandse QR-code niet te scannen.</string>
     <string name="add_paper_proof_expired_paper_proof_title">Dit papieren bewijs is verlopen</string>
     <string name="add_paper_proof_expired_paper_proof_description"><![CDATA[Dit papieren bewijs is niet meer geldig. Dit kan verschillende oorzaken hebben:<br/><br/><ul><li>Je vaccinatie of herstel is nog geldig, maar het papieren bewijs niet. Vraag een nieuw papieren coronabewijs aan bij de zorgverlener waar je bent gevaccineerd of getest.</li><li>Je vaccinatie of herstel is verlopen.</li></ul>]]></string>
     <string name="add_paper_proof_limit_reached_paper_proof_title">Te vaak geprobeerd</string>
