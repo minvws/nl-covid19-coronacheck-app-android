@@ -38,7 +38,7 @@ data class HolderConfig(
     @Json(name = "universalLinkDomains") val deeplinkDomains: List<Url>,
     @Json(name = "domesticQRRefreshSeconds") val domesticQRRefreshSeconds: Int,
     @Json(name = "clockDeviationThresholdSeconds") val holderClockDeviationThresholdSeconds: Int
-): AppConfig(holderAppDeactivated, holderInformationURL, holderMinimumVersion, configTTL, providerIdentifiers, holderClockDeviationThresholdSeconds) {
+): AppConfig(holderAppDeactivated, holderInformationURL, holderMinimumVersion, configTTL, providerIdentifiers) {
 
     companion object {
         fun default(

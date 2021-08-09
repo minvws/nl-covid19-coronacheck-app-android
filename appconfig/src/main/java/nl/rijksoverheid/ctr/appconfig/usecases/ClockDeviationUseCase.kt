@@ -9,6 +9,7 @@
 package nl.rijksoverheid.ctr.appconfig.usecases
 
 import android.os.SystemClock
+import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.appconfig.persistence.ClockDeviationPersistenceManager
 import java.time.Clock
 import kotlin.math.abs
@@ -53,7 +54,7 @@ class ClockDeviationUseCaseImpl(
         val responseSystemStartDatetime = localReceivedTimestamp - uptimeAtResponse
         val responseTimeDelta = localReceivedTimestamp - serverResponseTimestamp
         val systemUptimeDelta = currentSystemStartDatetime - responseSystemStartDatetime
-        val thresholdInSeconds = cachedAppConfigUseCase.getCachedAppConfig().clockDeviationThresholdSeconds
+        val thresholdInSeconds = (cachedAppConfigUseCase.getCachedAppConfig() as HolderConfig).holderClockDeviationThresholdSeconds
 
         val hasDeviation =
             (abs(systemUptimeDelta + responseTimeDelta) / SECOND_IN_MS) >= thresholdInSeconds

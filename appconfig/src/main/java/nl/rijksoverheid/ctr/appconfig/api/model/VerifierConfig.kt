@@ -18,8 +18,7 @@ class VerifierConfig(
     @Json(name = "configTTL") val configTTL: Int,
     @Json(name = "maxValidityHours") val maxValidityHours: Int,
     @Json(name = "informationURL") val verifierInformationURL: String,
-    @Json(name = "clockDeviationThresholdSeconds") val verifierClockDeviationThresholdSeconds: Int
-): AppConfig(verifierAppDeactivated, verifierInformationURL, verifierMinimumVersion, configTTL, emptyList(), verifierClockDeviationThresholdSeconds) {
+): AppConfig(verifierAppDeactivated, verifierInformationURL, verifierMinimumVersion, configTTL, emptyList()) {
     companion object {
         fun default(
             verifierMinimumVersion: Int = 1275,
@@ -29,7 +28,6 @@ class VerifierConfig(
             configTTL: Int = 3600,
             maxValidityHours: Int = 40,
             verifierInformationURL: String = "https://coronacheck.nl",
-            verifierClockDeviationThresholdSeconds: Int = 30
         ) = VerifierConfig(
             verifierMinimumVersion = verifierMinimumVersion,
             verifierMinimumVersionMessage = verifierMinimumVersionMessage,
@@ -38,7 +36,6 @@ class VerifierConfig(
             configTTL = configTTL, 
             maxValidityHours = maxValidityHours, 
             verifierInformationURL = verifierInformationURL,
-            verifierClockDeviationThresholdSeconds = verifierClockDeviationThresholdSeconds
         )
     }
 }
