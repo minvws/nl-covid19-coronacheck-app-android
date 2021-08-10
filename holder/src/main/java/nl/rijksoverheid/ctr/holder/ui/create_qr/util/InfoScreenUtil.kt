@@ -271,6 +271,14 @@ class InfoScreenUtilImpl(
             }?.name ?: test.getStringOrNull("ma") ?: ""
 
         val vaccinationCountry = getCountry(test.getStringOrNull("co"), getCurrentLocale())
+
+        val issuerValue = test.getStringOrNull("is")
+        val issuer = if (issuerValue == issuerVWS) {
+            application.getString(R.string.qr_explanation_certificate_issuer)
+        } else {
+            issuerValue
+        }
+
         val uniqueCode = test.getStringOrNull("ci")
 
         val description = application.getString(
@@ -285,6 +293,7 @@ class InfoScreenUtilImpl(
             testLocation,
             manufacturer,
             vaccinationCountry,
+            issuer,
             uniqueCode
         )
 
