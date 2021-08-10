@@ -121,6 +121,7 @@ class VaccinationInfoScreenUtilImpl(
         event: RemoteEventVaccination
     ) =
         (holderConfig.euManufacturers.firstOrNull { hpkCode?.ma == event.vaccination?.manufacturer }?.name
+            ?: event.vaccination?.manufacturer
             ?: "")
 
     private fun getVaccineTypeAnswer(

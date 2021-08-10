@@ -227,9 +227,9 @@
     <string name="qr_card_validity_future_day">automatically becomes valid in %1$s day</string>
     <string name="qr_card_validity_future_hours">automatically becomes valid in %1$s hours</string>
     <string name="your_test_result_explanation_toolbar_title">What was retrieved?</string>
-    <string name="your_test_result_explanation_description"><![CDATA[The following details were retrieved at the test location:<br\><br\>Your details: <b>%1$s<b/><br/>Test type: <b>%2$s</b><br/>Test date: <b>%3$s</b><br/>Test result: <b>%4$s</b><br/>Unique certificate identifier: <b>%5$s</b>]]></string>
+    <string name="your_test_result_explanation_description"><![CDATA[The following details were retrieved at the test location:<br\><br\>Your details: <b>%1$s<b/><br/>Test type: <b>%2$s</b><br/>Test date: <b>%3$s</b><br/>Test result: <b>%4$s</b><br/>Unique test identifier: <b>%5$s</b>]]></string>
     <string name="your_test_result_explanation_negative_test_result">negative (no coronavirus)</string>
-    <string name="your_test_result_3.0_explanation_description"><![CDATA[The following details were retrieved at the test location:<br\><br\>Name: <b>%1$s</b><br/>Date of birth: <b>%2$s</b><br/><br/>Test type: <b>%3$s</b><br/>Test name: <b>%4$s</b><br/>Test date: <b>%5$s</b><br/>Test result: <b>%6$s</b><br/>Test location: <b>%7$s</b><br/>Test manufacturer: <b>%8$s</b><br/>Unique certificate identifier: <b>%9$s</b>]]></string>
+    <string name="your_test_result_3.0_explanation_description"><![CDATA[The following details were retrieved at the test location:<br\><br\>Name: <b>%1$s</b><br/>Date of birth: <b>%2$s</b><br/><br/>Test type: <b>%3$s</b><br/>Test name: <b>%4$s</b><br/>Test date: <b>%5$s</b><br/>Test result: <b>%6$s</b><br/>Test location: <b>%7$s</b><br/>Test manufacturer: <b>%8$s</b><br/>Unique test identifier: <b>%9$s</b>]]></string>
     <string name="your_negative_test_3.0_results_row_subtitle"><![CDATA[Test date: %1$s<br/>Name: %2$s<br/>Date of birth: %3$s]]></string>
     <string name="your_vaccination_row_subtitle"><![CDATA[Name: %1$s<br/>Date of birth: %2$s<br/>Data retrieved from: %3$s]]></string>
     <string name="your_vaccination_explanation_toolbar_title">About your vaccination</string>
@@ -307,7 +307,7 @@
     <string name="qr_code_type_recovery_title">A recovery certificate</string>
     <string name="qr_code_type_recovery_description">The test proves I have had coronavirus</string>
     <string name="your_test_result_explanation_positive_test_result">positive (corona)</string>
-    <string name="recovery_explanation_description"><![CDATA[The following details were retrieved at the test location:<br\><br\>Name: <b>%1$s</b><br/>Date of birth: <b>%2$s</b><br/><br/>Test date: <b>%3$s</b><br/>Valid from: <b>%4$s</b><br/>Valid until: <b>%5$s</b><br/>Unique certificate identifier: <b>%6$s</b>]]></string>
+    <string name="recovery_explanation_description"><![CDATA[The following details were retrieved at the test location:<br\><br\>Name: <b>%1$s</b><br/>Date of birth: <b>%2$s</b><br/><br/>Test date: <b>%3$s</b><br/>Valid from: <b>%4$s</b><br/>Valid until: <b>%5$s</b><br/>Unique test identifier: <b>%6$s</b>]]></string>
     <string name="rule_engine_no_positive_test_origin_description"><![CDATA[At this moment, we can\'t make a certificate from your positive test result. This can have various causes. Find more information on <a href="https://www.coronacheck.nl/en/guidepost"> the Guidepost.</a>]]></string>
     <string name="positive_test_no_longer_valid_title">Positive test result is not valid</string>
     <string name="positive_test_no_longer_valid_description"><![CDATA[Have you been tested more than 180 days ago? Then your test result is no longer valid. In this case, you cannot create a recovery certificate.]]></string>
