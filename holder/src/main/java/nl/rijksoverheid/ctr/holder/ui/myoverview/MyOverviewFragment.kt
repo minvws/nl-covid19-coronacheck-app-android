@@ -82,6 +82,10 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                 )
             })
 
+        observeSyncErrors()
+    }
+
+    private fun observeSyncErrors() {
         myOverviewViewModel.databaseSyncerResultLiveData.observe(viewLifecycleOwner,
             EventObserver {
                 if (it is DatabaseSyncerResult.NetworkError) {

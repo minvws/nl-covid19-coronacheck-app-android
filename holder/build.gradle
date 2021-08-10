@@ -169,14 +169,4 @@ dependencies {
     kapt "org.xerial:sqlite-jdbc:$sqlite_jdbc"
 
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
-    androidTestImplementation "androidx.test:runner:$androix_test_version"
-    androidTestImplementation("com.schibsted.spain:barista:$barista_version") {
-        exclude group: "org.jetbrains.kotlin"
-    }
-    androidTestImplementation "androidx.navigation:navigation-testing:$navigation_version"
-    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
-    androidTestImplementation "androidx.room:room-testing:$room_version"
-    androidTestImplementation "androidx.work:work-testing:$work_manager_version"
-    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
-    androidTestImplementation "androidx.arch.core:core-testing:$androidx_arch_core_version"
 }
