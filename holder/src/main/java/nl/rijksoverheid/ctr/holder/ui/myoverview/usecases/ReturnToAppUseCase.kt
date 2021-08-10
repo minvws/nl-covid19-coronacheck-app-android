@@ -26,7 +26,7 @@ class ReturnToAppUseCaseImpl(
     override fun get(uri: String, type: GreenCardType): ReturnAppData? {
         return holderConfig.deeplinkDomains
             .takeIf { type == GreenCardType.Domestic }
-            ?.firstOrNull { uri.contains(it.url) }
+            ?.firstOrNull { uri.contains("https://${it.url}") }
             ?.let {
                 ReturnAppData(
                     appName = it.name,
