@@ -12,6 +12,7 @@ import androidx.test.core.app.ApplicationProvider
 import com.schibsted.spain.barista.assertion.BaristaVisibilityAssertions
 import com.schibsted.spain.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
 import com.schibsted.spain.barista.assertion.BaristaVisibilityAssertions.assertNotDisplayed
+import com.schibsted.spain.barista.assertion.BaristaVisibilityAssertions.assertNotExist
 import io.mockk.mockk
 import io.mockk.verify
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
@@ -33,6 +34,7 @@ import org.koin.core.context.loadKoinModules
 import org.koin.dsl.module
 import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 import java.time.Clock
 import java.time.Instant
 import java.time.OffsetDateTime
@@ -46,6 +48,7 @@ import java.time.ZoneId
  *
  */
 @RunWith(RobolectricTestRunner::class)
+@Config(qualifiers = "nl-land")
 class MyOverviewFragmentTest : AutoCloseKoinTest() {
 
     @get:Rule
@@ -113,12 +116,74 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
         assertDisplayed(R.id.type_title, R.string.validity_type_dutch_title)
         assertDisplayed(R.id.title, R.string.my_overview_test_result_title)
         assertDisplayed(R.id.proof1_title, R.string.qr_card_vaccination_title_domestic)
-        assertDisplayed(R.id.proof1_subtitle)
+        assertDisplayed(R.id.proof1_subtitle, "geldig vanaf 1 juni 2021   ")
         assertNotDisplayed(R.id.proof2_title)
         assertNotDisplayed(R.id.proof3_title)
         assertNotDisplayed(R.id.proof2_subtitle)
         assertNotDisplayed(R.id.proof3_subtitle)
     }
+
+    @Test
+    fun `overview with one expired green card item shows properly`() {
+        val viewModel = launchFragment()
+
+        (viewModel.myOverviewItemsLiveData as MutableLiveData).postValue(Event(
+            expiredItem()
+        ))
+
+        assertDisplayed(R.id.text, R.string.qr_card_expired)
+        assertNotExist(R.id.test_result)
+    }
+
+    @Test
+    fun `overview with one origin info item shows properly`() {
+        val viewModel = launchFragment()
+
+        (viewModel.myOverviewItemsLiveData as MutableLiveData).postValue(Event(
+            originInfoItem()
+        ))
+
+        assertDisplayed(R.id.text, "Je vaccinatiebewijs is niet geldig in Nederland. Je hebt wel een internationaal bewijs.")
+        assertNotExist(R.id.test_result)
+    }
+
+    @Test
+    fun `overview with one clock deviation item shows properly`() {
+        val viewModel = launchFragment()
+
+        (viewModel.myOverviewItemsLiveData as MutableLiveData).postValue(Event(
+            clockDeviationItem()
+        ))
+
+        assertDisplayed(R.id.text, R.string.my_overview_clock_deviation_description)
+        assertNotExist(R.id.test_result)
+    }
+
+    private fun clockDeviationItem() = MyOverviewItems(
+        items = listOf(
+            MyOverviewItem.ClockDeviationItem
+        ),
+        selectedType = GreenCardType.Domestic
+    )
+
+    private fun originInfoItem() = MyOverviewItems(
+        items = listOf(
+            MyOverviewItem.OriginInfoItem(
+                greenCardType = GreenCardType.Domestic,
+                originType = OriginType.Vaccination,
+            )
+        ),
+        selectedType = GreenCardType.Domestic
+    )
+
+    private fun expiredItem() = MyOverviewItems(
+        items = listOf(
+            MyOverviewItem.GreenCardExpiredItem(
+                greenCardType = GreenCardType.Domestic
+            )
+        ),
+        selectedType = GreenCardType.Domestic
+    )
 
     private fun myOverViewItemsWithValidDomesticGreenCard() = MyOverviewItems(
         items = listOf(
