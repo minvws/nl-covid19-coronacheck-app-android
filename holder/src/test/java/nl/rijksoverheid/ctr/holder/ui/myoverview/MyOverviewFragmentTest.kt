@@ -9,6 +9,9 @@ import androidx.lifecycle.ViewModelStore
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
+import com.schibsted.spain.barista.assertion.BaristaVisibilityAssertions
+import com.schibsted.spain.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
+import com.schibsted.spain.barista.assertion.BaristaVisibilityAssertions.assertNotDisplayed
 import io.mockk.mockk
 import io.mockk.verify
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
@@ -100,12 +103,21 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `overview with one green card item shows properly`() {
+    fun `overview with one green card item (vaccination) shows properly`() {
         val viewModel = launchFragment()
 
         (viewModel.myOverviewItemsLiveData as MutableLiveData).postValue(Event(
             myOverViewItemsWithValidDomesticGreenCard()
         ))
+
+        assertDisplayed(R.id.type_title, R.string.validity_type_dutch_title)
+        assertDisplayed(R.id.title, R.string.my_overview_test_result_title)
+        assertDisplayed(R.id.proof1_title, R.string.qr_card_vaccination_title_domestic)
+        assertDisplayed(R.id.proof1_subtitle)
+        assertNotDisplayed(R.id.proof2_title)
+        assertNotDisplayed(R.id.proof3_title)
+        assertNotDisplayed(R.id.proof2_subtitle)
+        assertNotDisplayed(R.id.proof3_subtitle)
     }
 
     private fun myOverViewItemsWithValidDomesticGreenCard() = MyOverviewItems(
@@ -134,10 +146,10 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
         selectedType = GreenCardType.Domestic
     )
 
-    private fun originEntity() = OriginEntity(
+    private fun originEntity(type: OriginType = OriginType.Vaccination) = OriginEntity(
         id = 1,
         greenCardId = 1,
-        type = OriginType.Vaccination,
+        type = type,
         eventTime = OffsetDateTime.now(eventTimeClock),
         validFrom = OffsetDateTime.now(eventTimeClock),
         expirationTime = OffsetDateTime.now(expireTimeClock),
