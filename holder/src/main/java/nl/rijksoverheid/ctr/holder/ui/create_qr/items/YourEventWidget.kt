@@ -12,8 +12,10 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import nl.rijksoverheid.ctr.holder.databinding.ItemYourEventBinding
-import nl.rijksoverheid.ctr.shared.utils.Accessibility
+import nl.rijksoverheid.ctr.shared.utils.Accessibility.addAccessibilityAction
+import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAsAccessibilityButton
 
 class YourEventWidget @JvmOverloads constructor(
     context: Context,
@@ -29,11 +31,16 @@ class YourEventWidget @JvmOverloads constructor(
         binding.rowTitle.text = title
         binding.rowSubtitle.setHtmlText(subtitle)
 
-        binding.testResultsGroup.setOnClickListener {
-            infoClickListener.invoke()
+        with (binding.testResultsGroup) {
+            setOnClickListener {
+                infoClickListener.invoke()
+            }
+            contentDescription = String.format("%s. %s.",
+                binding.rowTitle.text,
+                binding.rowSubtitle.text
+            )
+            setAsAccessibilityButton(true)
+            addAccessibilityAction(AccessibilityNodeInfoCompat.ACTION_CLICK, binding.detailsButton.text)
         }
-
-        binding.testResultsGroup.contentDescription = String.format("%s. %s", binding.rowTitle.text, binding.rowSubtitle.text)
-        Accessibility.button(binding.testResultsGroup)
     }
 }
