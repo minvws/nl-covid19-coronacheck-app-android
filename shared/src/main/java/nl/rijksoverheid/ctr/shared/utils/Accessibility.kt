@@ -196,4 +196,24 @@ object Accessibility {
     fun View.addAccessibilityAction(type: Int, description: CharSequence): View {
         return action(this, type, description)
     }
+
+    /**
+     * Helper method to mark a view as accessibility heading
+     *
+     * @param view View to label
+     * @param label The label to set
+     */
+    fun label(view: View, label: CharSequence): View {
+        view.contentDescription = label
+        return view
+    }
+
+    /**
+     * Extension to add an accessibility label to the the given view
+     *
+     * @param label The label to set
+     */
+    fun View.setAccessibilityLabel(label: CharSequence): View {
+        return label(this, label)
+    }
 }
