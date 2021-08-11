@@ -14,7 +14,6 @@ import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import nl.rijksoverheid.ctr.holder.databinding.ItemYourEventBinding
-import nl.rijksoverheid.ctr.shared.utils.Accessibility
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.addAccessibilityAction
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAccessibilityLabel
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAsAccessibilityButton
