@@ -1,5 +1,8 @@
 package nl.rijksoverheid.ctr.verifier
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
@@ -54,11 +57,33 @@ class VerifierMainActivity : AppCompatActivity() {
         })
 
         appStatusViewModel.appStatusLiveData.observe(this, EventObserver {
+            if (it is AppStatus.UpdateRecommended) {
+
+            }
             if (it !is AppStatus.NoActionRequired) {
                 val bundle = bundleOf(AppStatusFragment.EXTRA_APP_STATUS to it)
                 navController.navigate(R.id.action_app_status, bundle)
             }
         })
+    }
+
+    private fun openPlayStore() {
+        val intent = Intent(
+            Intent.ACTION_VIEW,
+            Uri.parse("market://details?id=${this.packageName}")
+        )
+            .setPackage("com.android.vending")
+        try {
+            startActivity(intent)
+        } catch (ex: ActivityNotFoundException) {
+            // fall back to browser intent
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://play.google.com/store/apps/details?id=${this.packageName}")
+                )
+            )
+        }
     }
 
     override fun onStart() {
