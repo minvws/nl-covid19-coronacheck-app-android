@@ -9,6 +9,7 @@ import nl.rijksoverheid.ctr.appconfig.api.model.VerifierConfig
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.appconfig.models.ConfigResult
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
+import nl.rijksoverheid.ctr.appconfig.persistence.RecommendedUpdatePersistenceManager
 import nl.rijksoverheid.ctr.shared.ext.toObject
 import java.time.Clock
 import java.time.OffsetDateTime
@@ -28,10 +29,15 @@ class AppStatusUseCaseImpl(
     private val clock: Clock,
     private val cachedAppConfigUseCase: CachedAppConfigUseCase,
     private val appConfigPersistenceManager: AppConfigPersistenceManager,
+    private val recommendedUpdatePersistenceManager: RecommendedUpdatePersistenceManager,
     private val moshi: Moshi,
     private val isVerifierApp: Boolean,
 ) :
     AppStatusUseCase {
+
+    companion object {
+        private const val SECONDS_IN_HOUR = 3600
+    }
 
     override suspend fun get(config: ConfigResult, currentVersionCode: Int): AppStatus =
         withContext(Dispatchers.IO) {
@@ -66,12 +72,18 @@ class AppStatusUseCaseImpl(
         return when {
             appConfig.appDeactivated -> AppStatus.Deactivated(appConfig.informationURL)
             currentVersionCode < appConfig.minimumVersion -> AppStatus.UpdateRequired
-            currentVersionCode < appConfig.recommendedVersion -> getUpdatedRecommendedStatus()
+            currentVersionCode < appConfig.recommendedVersion -> getUpdatedRecommendedStatus(appConfig)
             else -> AppStatus.NoActionRequired
         }
     }
 
-    private fun getUpdatedRecommendedStatus(): AppStatus {
-        return AppStatus.UpdateRecommended
+    private fun getUpdatedRecommendedStatus(appConfig: AppConfig): AppStatus {
+        val localTime = clock.instant().toEpochMilli()
+        val updateLastShown = recommendedUpdatePersistenceManager.getRecommendedUpdateShownSeconds()
+        val updateIntervalSeconds = appConfig.recommendedUpgradeIntervalHours * SECONDS_IN_HOUR
+        return if (localTime > updateLastShown + updateIntervalSeconds) {
+            recommendedUpdatePersistenceManager.saveRecommendedUpdateShownSeconds(localTime)
+            AppStatus.UpdateRecommended
+        } else AppStatus.NoActionRequired
     }
 }
