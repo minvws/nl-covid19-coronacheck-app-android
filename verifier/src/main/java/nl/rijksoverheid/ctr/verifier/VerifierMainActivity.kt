@@ -7,10 +7,12 @@ import android.os.Bundle
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.AppStatusFragment
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
+import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.introduction.IntroductionFragment
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
@@ -32,6 +34,7 @@ class VerifierMainActivity : AppCompatActivity() {
     private val introductionViewModel: IntroductionViewModel by viewModel()
     private val appStatusViewModel: AppConfigViewModel by viewModel()
     private val mobileCoreWrapper: MobileCoreWrapper by inject()
+    private val dialogUtil: DialogUtil by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
@@ -39,13 +42,12 @@ class VerifierMainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        if (BuildConfig.FLAVOR == "prod") {
-            window.setFlags(
-                WindowManager.LayoutParams.FLAG_SECURE,
-                WindowManager.LayoutParams.FLAG_SECURE
-            )
-        }
+        setProductionFlags()
 
+        observeStatuses()
+    }
+
+    private fun observeStatuses() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
@@ -57,14 +59,38 @@ class VerifierMainActivity : AppCompatActivity() {
         })
 
         appStatusViewModel.appStatusLiveData.observe(this, EventObserver {
-            if (it is AppStatus.UpdateRecommended) {
-
-            }
-            if (it !is AppStatus.NoActionRequired) {
-                val bundle = bundleOf(AppStatusFragment.EXTRA_APP_STATUS to it)
-                navController.navigate(R.id.action_app_status, bundle)
-            }
+            handleAppStatus(it, navController)
         })
+    }
+
+    private fun handleAppStatus(
+        appStatus: AppStatus,
+        navController: NavController
+    ) {
+        if (appStatus is AppStatus.UpdateRecommended) {
+            dialogUtil.presentDialog(
+                context = this,
+                title = R.string.app_status_update_recommended_title,
+                message = getString(R.string.app_status_update_recommended_message),
+                positiveButtonText = R.string.app_status_update_recommended_action,
+                positiveButtonCallback = { openPlayStore() },
+                negativeButtonText = R.string.app_status_update_recommended_dismiss_action
+            )
+            return
+        }
+        if (appStatus !is AppStatus.NoActionRequired) {
+            val bundle = bundleOf(AppStatusFragment.EXTRA_APP_STATUS to appStatus)
+            navController.navigate(R.id.action_app_status, bundle)
+        }
+    }
+
+    private fun setProductionFlags() {
+        if (BuildConfig.FLAVOR == "prod") {
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE
+            )
+        }
     }
 
     private fun openPlayStore() {

@@ -66,7 +66,12 @@ class AppStatusUseCaseImpl(
         return when {
             appConfig.appDeactivated -> AppStatus.Deactivated(appConfig.informationURL)
             currentVersionCode < appConfig.minimumVersion -> AppStatus.UpdateRequired
+            currentVersionCode < appConfig.recommendedVersion -> getUpdatedRecommendedStatus()
             else -> AppStatus.NoActionRequired
         }
+    }
+
+    private fun getUpdatedRecommendedStatus(): AppStatus {
+        return AppStatus.UpdateRecommended
     }
 }
