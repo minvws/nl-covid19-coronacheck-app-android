@@ -52,7 +52,6 @@
     <string name="my_overview_no_qr_make_qr_title">Make QR code</string>
     <string name="my_overview_no_qr_replace_qr_title">Update QR code</string>
     <string name="my_overview_no_qr_make_qr_description">Turn your vaccination, negative test result or recovery into a QR code.</string>
-    <string name="my_overview_no_qr_make_qr_button">Make certificate</string>
     <string name="my_overview_no_qr_replace_qr_button">Replace certificate</string>
     <string name="choose_provider_toolbar">Add certificate</string>
     <string name="choose_provider_title">Where were you tested?</string>
