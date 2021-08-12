@@ -67,13 +67,12 @@ class VerifierMainActivity : AppCompatActivity() {
         appStatus: AppStatus,
         navController: NavController
     ) {
-        when (appStatus) {
-            is AppStatus.Deactivated,
-            is AppStatus.UpdateRequired,
-            is AppStatus.Error -> navigateToAppStatus(appStatus, navController)
-            is AppStatus.UpdateRecommended -> showRecommendedUpdateDialog()
-            is AppStatus.NoActionRequired -> Unit // No Action
+        if ( appStatus is AppStatus.UpdateRecommended) {
+            showRecommendedUpdateDialog()
+            return
         }
+
+        if (appStatus !is AppStatus.NoActionRequired) navigateToAppStatus(appStatus, navController)
     }
 
     private fun navigateToAppStatus(
