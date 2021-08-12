@@ -53,9 +53,7 @@ class VerifierMainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
 
         introductionViewModel.introductionStatusLiveData.observe(this, EventObserver {
-            navController.navigate(
-                R.id.action_introduction, IntroductionFragment.getBundle(it)
-            )
+            navController.navigate(R.id.action_introduction, IntroductionFragment.getBundle(it))
         })
 
         appStatusViewModel.appStatusLiveData.observe(this, EventObserver {
@@ -67,21 +65,32 @@ class VerifierMainActivity : AppCompatActivity() {
         appStatus: AppStatus,
         navController: NavController
     ) {
-        if (appStatus is AppStatus.UpdateRecommended) {
-            dialogUtil.presentDialog(
-                context = this,
-                title = R.string.app_status_update_recommended_title,
-                message = getString(R.string.app_status_update_recommended_message),
-                positiveButtonText = R.string.app_status_update_recommended_action,
-                positiveButtonCallback = { openPlayStore() },
-                negativeButtonText = R.string.app_status_update_recommended_dismiss_action
-            )
-            return
+        when (appStatus) {
+            is AppStatus.Deactivated,
+            is AppStatus.UpdateRequired,
+            is AppStatus.Error -> navigateToAppStatus(appStatus, navController)
+            is AppStatus.UpdateRecommended -> showRecommendedUpdateDialog()
+            is AppStatus.NoActionRequired -> Unit // No Action
         }
-        if (appStatus !is AppStatus.NoActionRequired) {
-            val bundle = bundleOf(AppStatusFragment.EXTRA_APP_STATUS to appStatus)
-            navController.navigate(R.id.action_app_status, bundle)
-        }
+    }
+
+    private fun navigateToAppStatus(
+        appStatus: AppStatus,
+        navController: NavController
+    ) {
+        val bundle = bundleOf(AppStatusFragment.EXTRA_APP_STATUS to appStatus)
+        navController.navigate(R.id.action_app_status, bundle)
+    }
+
+    private fun showRecommendedUpdateDialog() {
+        dialogUtil.presentDialog(
+            context = this,
+            title = R.string.app_status_update_recommended_title,
+            message = getString(R.string.app_status_update_recommended_message),
+            positiveButtonText = R.string.app_status_update_recommended_action,
+            positiveButtonCallback = { openPlayStore() },
+            negativeButtonText = R.string.app_status_update_recommended_dismiss_action
+        )
     }
 
     private fun setProductionFlags() {
@@ -97,8 +106,7 @@ class VerifierMainActivity : AppCompatActivity() {
         val intent = Intent(
             Intent.ACTION_VIEW,
             Uri.parse("market://details?id=${this.packageName}")
-        )
-            .setPackage("com.android.vending")
+        ).setPackage("com.android.vending")
         try {
             startActivity(intent)
         } catch (ex: ActivityNotFoundException) {
