@@ -37,7 +37,6 @@ class MyOverViewGreenCardAdapterUtilImpl(
         val greenCardType = greenCard.greenCardEntity.type
         when (greenCard.greenCardEntity.type) {
             is GreenCardType.Eu -> {
-                credentialUtil.getTestTypeForEuropeanCredentials(greenCard.credentialEntities)
                 // European card only has one origin
                 val originState = originStates.first()
                 val showTimeFrom = originState.origin.type == OriginType.Recovery || (originState.origin.type == OriginType.Vaccination && greenCardType == GreenCardType.Domestic)

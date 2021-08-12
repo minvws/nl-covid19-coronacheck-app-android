@@ -2,9 +2,10 @@ package nl.rijksoverheid.ctr.introduction.ui.new_features
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.introduction.R
-import nl.rijksoverheid.ctr.introduction.databinding.FragmentOnboardingItemBinding
+import nl.rijksoverheid.ctr.introduction.databinding.FragmentNewFeatureItemBinding
 import nl.rijksoverheid.ctr.introduction.ui.new_features.models.NewFeatureItem
 import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 import org.koin.android.ext.android.inject
@@ -41,10 +42,13 @@ class NewFeatureItemFragment : Fragment(R.layout.fragment_new_feature_item) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val binding = FragmentOnboardingItemBinding.bind(view)
+        val binding = FragmentNewFeatureItemBinding.bind(view)
 
         binding.title.text = getString(item.titleResource)
-        binding.description.setHtmlText(item.description, htmlLinksEnabled = false)
+        item.subTitleColor?.let {
+            binding.subTitle.setTextColor(ContextCompat.getColor(requireContext(), it))
+        }
+        binding.description.setHtmlText(getString(item.description), false)
 
         if (androidUtil.isSmallScreen()) {
             binding.image.visibility = View.GONE
@@ -52,6 +56,9 @@ class NewFeatureItemFragment : Fragment(R.layout.fragment_new_feature_item) {
             binding.image.visibility = View.VISIBLE
             if (item.imageResource != 0) {
                 binding.image.setImageResource(item.imageResource)
+            }
+            item.backgroundColor?.let {
+                binding.image.setBackgroundColor(ContextCompat.getColor(requireContext(), it))
             }
         }
     }

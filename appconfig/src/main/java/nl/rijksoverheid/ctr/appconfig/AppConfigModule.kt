@@ -10,10 +10,7 @@ package nl.rijksoverheid.ctr.appconfig
 
 import android.content.Context
 import nl.rijksoverheid.ctr.appconfig.api.AppConfigApi
-import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
-import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManagerImpl
-import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
-import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManagerImpl
+import nl.rijksoverheid.ctr.appconfig.persistence.*
 import nl.rijksoverheid.ctr.appconfig.repositories.ConfigRepository
 import nl.rijksoverheid.ctr.appconfig.repositories.ConfigRepositoryImpl
 import nl.rijksoverheid.ctr.appconfig.usecases.*
@@ -31,12 +28,34 @@ import retrofit2.Retrofit
  */
 fun appConfigModule(path: String, versionCode: Int) = module {
     factory<ConfigRepository> { ConfigRepositoryImpl(get()) }
-    factory<AppConfigUseCase> { AppConfigUseCaseImpl(get(), get(), get()) }
-    factory<AppStatusUseCase> { AppStatusUseCaseImpl(get(), get(), get(), get(), isVerifierApp(androidContext())) }
+    factory<AppConfigUseCase> { AppConfigUseCaseImpl(get(), get(), get(), get()) }
+    factory<AppStatusUseCase> {
+        AppStatusUseCaseImpl(
+            get(),
+            get(),
+            get(),
+            get(),
+            isVerifierApp(androidContext())
+        )
+    }
     factory<AppConfigPersistenceManager> { AppConfigPersistenceManagerImpl(get()) }
     factory<AppConfigStorageManager> { AppConfigStorageManagerImpl(androidContext().filesDir.path) }
-    factory<CachedAppConfigUseCase> { CachedAppConfigUseCaseImpl(get(), androidContext().filesDir.path, get(), isVerifierApp(androidContext())) }
-    factory<PersistConfigUseCase> { PersistConfigUseCaseImpl(get(), androidContext().filesDir.path) }
+    factory<CachedAppConfigUseCase> {
+        CachedAppConfigUseCaseImpl(
+            get(),
+            androidContext().filesDir.path,
+            get(),
+            isVerifierApp(androidContext())
+        )
+    }
+    factory<PersistConfigUseCase> {
+        PersistConfigUseCaseImpl(
+            get(),
+            androidContext().filesDir.path
+        )
+    }
+    factory<ClockDeviationUseCase> { ClockDeviationUseCaseImpl(get(), get(), get()) }
+    factory<ClockDeviationPersistenceManager> { ClockDeviationPersistenceManagerImpl(get()) }
 
     single {
         val okHttpClient = get<OkHttpClient>(OkHttpClient::class).newBuilder().build()
@@ -47,8 +66,18 @@ fun appConfigModule(path: String, versionCode: Int) = module {
     }
 
     viewModel<AppConfigViewModel> {
-        AppConfigViewModelImpl(get(), get(), get(), get(), get(), androidContext().filesDir.path, isVerifierApp(androidContext()),versionCode)
+        AppConfigViewModelImpl(
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+            androidContext().filesDir.path,
+            isVerifierApp(androidContext()),
+            versionCode
+        )
     }
 }
 
-fun isVerifierApp(applicationContext: Context): Boolean = applicationContext.packageName.contains("verifier")
+fun isVerifierApp(applicationContext: Context): Boolean =
+    applicationContext.packageName.contains("verifier")

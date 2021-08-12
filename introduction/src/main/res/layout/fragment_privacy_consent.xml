@@ -106,7 +106,7 @@
         android:layout_height="wrap_content"
         app:attachToScrollView="@id/scroll"
         app:buttonEnabled="false"
-        app:buttonText="@string/onboarding_next"
+        app:buttonText="@string/onboarding_finish"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -7,6 +7,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
@@ -15,13 +16,14 @@ import nl.rijksoverheid.ctr.holder.databinding.FragmentTabsMyOverviewBinding
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewFragment.Companion.GREEN_CARD_TYPE
+import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewFragment.Companion.RETURN_URI
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewTabsFragment.Companion.positionTabsMap
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
-import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class TabPagesAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
+class TabPagesAdapter(fragment: Fragment, private val returnUri: String?) :
+    FragmentStateAdapter(fragment) {
 
     override fun getItemCount(): Int = 2
 
@@ -29,6 +31,7 @@ class TabPagesAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
         val fragment = MyOverviewFragment()
         fragment.arguments = Bundle().apply {
             putParcelable(GREEN_CARD_TYPE, positionTabsMap[position])
+            putString(RETURN_URI, returnUri)
         }
         return fragment
     }
@@ -41,18 +44,22 @@ class TabPagesAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class MyOverviewTabsFragment: Fragment(R.layout.fragment_tabs_my_overview) {
+class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
 
     companion object {
         private const val domesticPosition = 0
         private const val euPosition = 1
-        val tabsMap = mapOf(GreenCardType.Domestic to domesticPosition, GreenCardType.Eu to euPosition)
-        val positionTabsMap = mapOf(domesticPosition to GreenCardType.Domestic, euPosition to GreenCardType.Eu)
+        val tabsMap =
+            mapOf(GreenCardType.Domestic to domesticPosition, GreenCardType.Eu to euPosition)
+        val positionTabsMap =
+            mapOf(domesticPosition to GreenCardType.Domestic, euPosition to GreenCardType.Eu)
     }
 
     private val persistenceManager: PersistenceManager by inject()
 
     private val viewModel: MyOverviewTabsViewModel by viewModel()
+
+    private val args: MyOverviewTabsFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -63,7 +70,7 @@ class MyOverviewTabsFragment: Fragment(R.layout.fragment_tabs_my_overview) {
         val binding = FragmentTabsMyOverviewBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        val viewPagerAdapter = TabPagesAdapter(this)
+        val viewPagerAdapter = TabPagesAdapter(this, args.returnUri)
 
         binding.viewPager.adapter = viewPagerAdapter
 
@@ -71,10 +78,14 @@ class MyOverviewTabsFragment: Fragment(R.layout.fragment_tabs_my_overview) {
             tab.view.setOnLongClickListener {
                 true
             }
-            tab.text = arrayOf(getString(R.string.travel_button_domestic), getString(R.string.travel_button_europe))[position]
+            tab.text = arrayOf(
+                getString(R.string.travel_button_domestic),
+                getString(R.string.travel_button_europe)
+            )[position]
         }.attach()
 
-        val defaultTab = binding.tabs.getTabAt(tabsMap[persistenceManager.getSelectedGreenCardType()]!!)
+        val defaultTab =
+            binding.tabs.getTabAt(tabsMap[persistenceManager.getSelectedGreenCardType()]!!)
         defaultTab?.select()
 
         binding.addQrButton.setOnClickListener {

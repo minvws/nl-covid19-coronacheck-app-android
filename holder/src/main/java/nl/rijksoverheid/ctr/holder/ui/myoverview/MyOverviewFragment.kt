@@ -7,7 +7,6 @@ import android.os.Looper
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
@@ -44,6 +43,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
         const val REQUEST_KEY = "REQUEST_KEY"
         const val EXTRA_BACK_FROM_QR = "EXTRA_BACK_FROM_QR"
         const val GREEN_CARD_TYPE = "GREEN_CARD_TYPE"
+        const val RETURN_URI = "RETURN_URI"
     }
 
     private val section = Section()
@@ -55,8 +55,6 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
     private val myOverviewViewModel: MyOverviewViewModel by viewModel()
 
     private val dialogUtil: DialogUtil by inject()
-
-    private val args: MyOverviewFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -83,6 +81,10 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                 )
             })
 
+        observeSyncErrors()
+    }
+
+    private fun observeSyncErrors() {
         myOverviewViewModel.databaseSyncerResultLiveData.observe(viewLifecycleOwner,
             EventObserver {
                 if (it is DatabaseSyncerResult.NetworkError) {
@@ -129,7 +131,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
     private fun refreshOverviewItems(forceSync: Boolean = false) {
         myOverviewViewModel.refreshOverviewItems(
             forceSync = forceSync,
-            selectType = arguments?.getParcelable(GREEN_CARD_TYPE)!!
+            selectType = arguments?.getParcelable(GREEN_CARD_TYPE) ?: myOverviewViewModel.getSelectedType()
         )
         refreshOverviewItemsHandler.postDelayed(
             refreshOverviewItemsRunnable,
@@ -180,7 +182,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                                     MyOverviewFragmentDirections.actionQrCode(
                                         toolbarTitle = when (greenCard.greenCardEntity.type) {
                                             is GreenCardType.Domestic -> {
-                                                getString(R.string.my_overview_test_result_title)
+                                                getString(R.string.domestic_qr_code_title)
                                             }
                                             is GreenCardType.Eu -> {
                                                 getString(R.string.my_overview_test_result_international_title)
@@ -193,7 +195,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                                             type = greenCard.greenCardEntity.type,
                                             originType = greenCard.origins.first().type
                                         ),
-                                        returnUri = args.returnUri
+                                        returnUri = arguments?.getString(RETURN_URI)
                                     )
                                 )
                             },
@@ -224,6 +226,11 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                             }
                         }
                     ))
+                }
+                is MyOverviewItem.ClockDeviationItem -> {
+                    adapterItems.add(MyOverviewClockDeviationItem(onInfoIconClicked = {
+                        navigateSafety(MyOverviewTabsFragmentDirections.actionShowClockDeviationExplanation())
+                    }))
                 }
             }
         }

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ScrollView
 import androidx.activity.OnBackPressedCallback
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -109,12 +110,18 @@ class NewFeaturesFragment : Fragment(R.layout.fragment_new_features) {
     ) {
         binding.viewPager.offscreenPageLimit = args.introductionData.newFeatures.size
         binding.viewPager.adapter = adapter
+        val hideToolbar = adapter.itemCount == 1
+        if (hideToolbar) {
+            binding.toolbar.visibility = View.GONE
+        }
         binding.viewPager.registerOnPageChangeCallback(object :
             ViewPager2.OnPageChangeCallback() {
             @SuppressLint("StringFormatInvalid")
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                binding.toolbar.visibility = if (position == 0) View.INVISIBLE else View.VISIBLE
+                if (!hideToolbar) {
+                    binding.toolbar.visibility = if (position == 0) View.INVISIBLE else View.VISIBLE
+                }
                 binding.indicators.updateSelected(position)
 
                 binding.indicators.contentDescription = getString(

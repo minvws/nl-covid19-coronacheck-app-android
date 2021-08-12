@@ -16,7 +16,7 @@ import java.util.*
 fun LocalDate.formatDayMonthYear(): String =
     DateTimeFormatter.ofPattern(
         DateFormat.getBestDateTimePattern(
-            Locale.getDefault(),
+            Locale("nl"),
             "d MMMM yyyy"
         )
     ).withLocale(Locale.getDefault()).withZone(ZoneId.of("CET")).format(this)

@@ -7,12 +7,12 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.RemoveExpiredEventsUseCase
-import nl.rijksoverheid.ctr.holder.persistence.database.usecases.RemoveExpiredEventsUseCaseImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetMyOverviewItemsUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItems
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardRefreshUtil
@@ -46,7 +46,8 @@ class MyOverviewViewModelImpl(
     private val persistenceManager: PersistenceManager,
     private val greenCardRefreshUtil: GreenCardRefreshUtil,
     private val holderDatabaseSyncer: HolderDatabaseSyncer,
-    private val removeExpiredEventsUseCase: RemoveExpiredEventsUseCase
+    private val removeExpiredEventsUseCase: RemoveExpiredEventsUseCase,
+    private val clockDeviationUseCase: ClockDeviationUseCase
 ) : MyOverviewViewModel() {
 
     private val mutex = Mutex()
@@ -65,8 +66,17 @@ class MyOverviewViewModelImpl(
                 removeExpiredEventsUseCase.execute()
 
                 // Check if we need to refresh our data
-                val hasDoneRefreshCall = databaseSyncerResultLiveData.value?.peekContent() != null && selectType == getSelectedType()
-                val shouldRefresh = (forceSync) || (greenCardRefreshUtil.shouldRefresh() && !hasDoneRefreshCall)
+                val hasDoneRefreshCall =
+                    databaseSyncerResultLiveData.value?.peekContent() != null && selectType == getSelectedType()
+                val shouldRefresh =
+                    (forceSync) || (greenCardRefreshUtil.shouldRefresh() && !hasDoneRefreshCall)
+
+                // If domestic, check for deviation, otherwise return stored value
+                val hasClockDeviation = if (selectType == GreenCardType.Domestic) {
+                    clockDeviationUseCase.calculateDeviationState()
+                } else {
+                    clockDeviationUseCase.retrieveDeviationState()
+                }
 
                 // Get items we need to show on the overview
                 (myOverviewItemsLiveData as MutableLiveData).postValue(
@@ -74,8 +84,10 @@ class MyOverviewViewModelImpl(
                         getMyOverviewItemsUseCase.get(
                             selectedType = selectType,
                             walletId = 1,
-                            databaseSyncerResult = databaseSyncerResultLiveData.value?.peekContent() ?: DatabaseSyncerResult.Success,
-                            shouldRefresh = shouldRefresh
+                            databaseSyncerResult = databaseSyncerResultLiveData.value?.peekContent()
+                                ?: DatabaseSyncerResult.Success,
+                            shouldRefresh = shouldRefresh,
+                            hasClockDeviation = hasClockDeviation
                         )
                     )
                 )
@@ -105,7 +117,8 @@ class MyOverviewViewModelImpl(
                                 selectedType = selectType,
                                 walletId = 1,
                                 databaseSyncerResult = databaseSyncerResult,
-                                shouldRefresh = false
+                                shouldRefresh = false,
+                                hasClockDeviation = hasClockDeviation
                             )
                         )
                     )
