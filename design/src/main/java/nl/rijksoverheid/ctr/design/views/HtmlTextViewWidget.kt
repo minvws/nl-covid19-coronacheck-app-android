@@ -34,6 +34,11 @@ class HtmlTextViewWidget @JvmOverloads constructor(
     defStyleRes: Int = 0,
 ) : LinearLayout(context, attrs, defStyle, defStyleRes) {
 
+    private val HTML_LINKS_ENABLED = false
+    private val PARAGRAPH_MARGIN_MULTIPLIER = 1.0f
+    private val HEADING_MARGIN_MULTIPLIER = 1.0f
+    private val LIST_ITEM_MARGIN_MULTIPLIER = 0.25f
+
     // Reflects the full text shown in the subviews. Can only be set internally.
     var text: CharSequence? = null
         private set
@@ -53,7 +58,10 @@ class HtmlTextViewWidget @JvmOverloads constructor(
                 if (htmlText?.isNotEmpty() == true) {
                     setHtmlText(
                         htmlText = htmlText.toString(),
-                        htmlLinksEnabled = getBoolean(R.styleable.HtmlTextViewWidget_enableHtmlLinks, false)
+                        htmlLinksEnabled = getBoolean(R.styleable.HtmlTextViewWidget_enableHtmlLinks, HTML_LINKS_ENABLED),
+                        paragraphMarginMultiplier = getFloat(R.styleable.HtmlTextViewWidget_enableHtmlLinks, PARAGRAPH_MARGIN_MULTIPLIER),
+                        headingMarginMultiplier = getFloat(R.styleable.HtmlTextViewWidget_enableHtmlLinks, HEADING_MARGIN_MULTIPLIER),
+                        listItemMarginMultiplier = getFloat(R.styleable.HtmlTextViewWidget_enableHtmlLinks, LIST_ITEM_MARGIN_MULTIPLIER)
                     )
                 }
             } finally {
@@ -75,8 +83,15 @@ class HtmlTextViewWidget @JvmOverloads constructor(
     /**
      * Sets the text based on a string.
      * Links are disabled by default, but can be enabled.
+     * A multiplier can be set for the paragraph, heading and list item margins.
      */
-    fun setHtmlText(htmlText: String, htmlLinksEnabled: Boolean = false) {
+    fun setHtmlText(
+        htmlText: String,
+        htmlLinksEnabled: Boolean = HTML_LINKS_ENABLED,
+        paragraphMarginMultiplier: Float = PARAGRAPH_MARGIN_MULTIPLIER,
+        headingMarginMultiplier: Float = HEADING_MARGIN_MULTIPLIER,
+        listItemMarginMultiplier: Float = LIST_ITEM_MARGIN_MULTIPLIER
+    ) {
         removeAllViews()
 
         if (htmlText.isEmpty()) {
@@ -91,10 +106,7 @@ class HtmlTextViewWidget @JvmOverloads constructor(
         val parts = spannable.separated("\n")
 
         // Step 3: Add a HtmlTextView for each part of the Spannable
-        val iterator = parts.iterator()
-        while (iterator.hasNext()) {
-            val part = iterator.next()
-
+        parts.forEachIndexed { index, part ->
             val textView = HtmlTextView(context)
             textView.text = part
 
@@ -103,13 +115,13 @@ class HtmlTextViewWidget @JvmOverloads constructor(
             }
 
             val params = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-            if (iterator.hasNext()) {
-                val marginBottom = if (part.isHeading || part.isListItem) {
-                    textView.lineHeight / 4 // Headings and list items have a quarter of the default margin
-                } else {
-                    textView.lineHeight // By default, the line height is used as bottom bottom
+            if (index > 0) {
+                val marginTop = when {
+                    part.isHeading -> textView.lineHeight * headingMarginMultiplier
+                    part.isListItem -> textView.lineHeight * listItemMarginMultiplier
+                    else -> textView.lineHeight * paragraphMarginMultiplier
                 }
-                params.setMargins(0, 0, 0, marginBottom)
+                params.setMargins(0, marginTop.toInt(), 0, 0)
             }
             textView.layoutParams = params
 

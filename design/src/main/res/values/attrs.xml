@@ -13,6 +13,8 @@
     <declare-styleable name="HtmlTextViewWidget">
         <attr name="htmlText" format="string" />
         <attr name="enableHtmlLinks" format="boolean" />
+        <attr name="listItemMarginMultiplier" format="float" />
+        <attr name="headingMarginMultiplier" format="float" />
     </declare-styleable>
     <declare-styleable name="ScrollViewButtonWidget">
         <attr name="buttonText" format="string" />

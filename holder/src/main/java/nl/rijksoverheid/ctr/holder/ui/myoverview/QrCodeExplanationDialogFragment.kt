@@ -51,6 +51,10 @@ class QrCodeExplanationDialogFragment : ExpandedBottomSheetDialogFragment() {
         })
 
         binding.title.text = args.title
-        binding.description.setHtmlText(args.description, htmlLinksEnabled = true)
+        binding.description.setHtmlText(
+            args.description,
+            htmlLinksEnabled = true,
+            headingMarginMultiplier = 0.25f
+        )
     }
 }
