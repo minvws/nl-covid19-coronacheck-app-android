@@ -72,18 +72,25 @@ class AppStatusUseCaseImpl(
         return when {
             appConfig.appDeactivated -> AppStatus.Deactivated(appConfig.informationURL)
             currentVersionCode < appConfig.minimumVersion -> AppStatus.UpdateRequired
-            currentVersionCode < appConfig.recommendedVersion -> getUpdatedRecommendedStatus(appConfig)
-            else -> AppStatus.NoActionRequired
+            else -> getUpdateRecommendedStatus(currentVersionCode, appConfig)
         }
     }
 
-    private fun getUpdatedRecommendedStatus(appConfig: AppConfig): AppStatus {
+    private fun getUpdateRecommendedStatus(
+        currentVersionCode: Int,
+        appConfig: AppConfig
+    ): AppStatus {
         val localTime = clock.instant().toEpochMilli()
         val updateLastShown = recommendedUpdatePersistenceManager.getRecommendedUpdateShownSeconds()
         val updateIntervalSeconds = appConfig.recommendedUpgradeIntervalHours * SECONDS_IN_HOUR
-        return if (localTime > updateLastShown + updateIntervalSeconds) {
+
+        return if (localTime > updateLastShown + updateIntervalSeconds
+            && currentVersionCode < appConfig.recommendedVersion
+        ) {
             recommendedUpdatePersistenceManager.saveRecommendedUpdateShownSeconds(localTime)
             AppStatus.UpdateRecommended
-        } else AppStatus.NoActionRequired
+        } else {
+            AppStatus.NoActionRequired
+        }
     }
 }
