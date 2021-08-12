@@ -16,7 +16,6 @@ import java.util.*
  *
  */
 
-// Change to Locale.getDefault() to support multiple languages
 fun OffsetDateTime.formatDateTime(context: Context): String =
     DateTimeFormatter.ofPattern(
         DateFormat.getBestDateTimePattern(
@@ -25,11 +24,11 @@ fun OffsetDateTime.formatDateTime(context: Context): String =
         )
     ).withLocale(Locale.getDefault()).withZone(ZoneId.of("CET")).format(this)
 
-fun OffsetDateTime.formatDayMonth(): String =
+fun OffsetDateTime.formatDayMonthTime(context: Context): String =
     DateTimeFormatter.ofPattern(
         DateFormat.getBestDateTimePattern(
             Locale.getDefault(),
-            "d MMMM"
+            if (DateFormat.is24HourFormat(context)) "d MMMM HH:mm" else "d MMMM hh:mm"
         )
     ).withLocale(Locale.getDefault()).withZone(ZoneId.of("CET")).format(this)
 

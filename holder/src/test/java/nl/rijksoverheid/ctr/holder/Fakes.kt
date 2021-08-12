@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.holder
 
+import androidx.lifecycle.MutableLiveData
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
@@ -23,12 +24,10 @@ import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.VerificationResult
+import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.*
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import nl.rijksoverheid.ctr.shared.utils.TestResultUtil
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.ResponseBody.Companion.toResponseBody
-import okio.BufferedSource
 import org.json.JSONObject
 import java.time.OffsetDateTime
 
@@ -43,7 +42,7 @@ import java.time.OffsetDateTime
 fun fakeAppConfigViewModel(appStatus: AppStatus = AppStatus.NoActionRequired) =
     object : AppConfigViewModel() {
         override fun refresh(mobileCoreWrapper: MobileCoreWrapper) {
-            appStatusLiveData.value = appStatus
+            appStatusLiveData.value = Event(appStatus)
         }
     }
 
@@ -101,17 +100,24 @@ fun fakeCachedAppConfigUseCase(
         return appConfig
     }
 
-    override fun getProviderName(providerIdentifier: String?): String {
+    override fun getProviderName(providerIdentifier: String): String {
         return ""
     }
 }
 
 fun fakeIntroductionViewModel(
-    introductionStatus: IntroductionStatus = IntroductionStatus.IntroductionFinished.NoActionRequired,
+    introductionStatus: IntroductionStatus? = null,
 ): IntroductionViewModel {
     return object : IntroductionViewModel() {
+
+        init {
+            if (introductionStatus != null) {
+                (introductionStatusLiveData as MutableLiveData).postValue(Event(introductionStatus))
+            }
+        }
+
         override fun getIntroductionStatus(): IntroductionStatus {
-            return introductionStatus
+            return introductionStatus ?: IntroductionStatus.IntroductionFinished.NoActionRequired
         }
 
         override fun saveIntroductionFinished(introductionData: IntroductionData) {
@@ -252,6 +258,13 @@ fun fakeCoronaCheckRepository(
 
         override suspend fun getPrepareIssue(): RemotePrepareIssue {
             return prepareIssue
+        }
+
+        override suspend fun getCoupling(
+            credential: String,
+            couplingCode: String
+        ): RemoteCouplingResponse {
+            return RemoteCouplingResponse(RemoteCouplingStatus.Accepted)
         }
     }
 }

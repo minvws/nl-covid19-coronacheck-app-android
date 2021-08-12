@@ -15,6 +15,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.EventsResult
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
+import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -79,18 +80,20 @@ class GetEventsFragment: DigiDFragment(R.layout.fragment_get_events) {
                 is EventsResult.HasNoEvents -> {
                     if (it.missingEvents) {
                         findNavController().navigate(
-                            GetVaccinationFragmentDirections.actionCouldNotCreateQr(
+                            GetEventsFragmentDirections.actionCouldNotCreateQr(
                                 toolbarTitle = copy.toolbarTitle,
                                 title = getString(R.string.missing_events_title),
-                                description = getString(R.string.missing_events_description)
+                                description = getString(R.string.missing_events_description),
+                                buttonTitle = getString(R.string.back_to_overview)
                             )
                         )
                     } else {
                         findNavController().navigate(
-                            GetVaccinationFragmentDirections.actionCouldNotCreateQr(
+                            GetEventsFragmentDirections.actionCouldNotCreateQr(
                                 toolbarTitle = copy.toolbarTitle,
                                 title = copy.hasNoEventsTitle,
-                                description = copy.hasNoEventsDescription
+                                description = copy.hasNoEventsDescription,
+                                buttonTitle = getString(R.string.back_to_overview)
                             )
                         )
                     }
@@ -109,19 +112,21 @@ class GetEventsFragment: DigiDFragment(R.layout.fragment_get_events) {
                 }
                 is EventsResult.Error.EventProviderError.ServerError -> {
                     findNavController().navigate(
-                        GetVaccinationFragmentDirections.actionCouldNotCreateQr(
+                        GetEventsFragmentDirections.actionCouldNotCreateQr(
                             toolbarTitle = copy.toolbarTitle,
                             title = getString(R.string.event_provider_error_title),
-                            description = getString(R.string.event_provider_error_description)
+                            description = getString(R.string.event_provider_error_description),
+                            buttonTitle = getString(R.string.back_to_overview)
                         )
                     )
                 }
                 is EventsResult.Error.CoronaCheckError.ServerError -> {
                     findNavController().navigate(
-                        GetVaccinationFragmentDirections.actionCouldNotCreateQr(
+                        GetEventsFragmentDirections.actionCouldNotCreateQr(
                             toolbarTitle = copy.toolbarTitle,
                             title = getString(R.string.coronacheck_error_title),
-                            description = getString(R.string.coronacheck_error_description, it.httpCode.toString())
+                            description = getString(R.string.coronacheck_error_description, it.httpCode.toString()),
+                            buttonTitle = getString(R.string.back_to_overview)
                         )
                     )
                 }
@@ -184,8 +189,8 @@ class GetEventsFragment: DigiDFragment(R.layout.fragment_get_events) {
     }
 
     private fun navigateToYourEvents(signedEvents: List<SignedResponseWithModel<RemoteProtocol3>>) {
-        findNavController().navigate(
-            GetVaccinationFragmentDirections.actionYourEvents(
+        navigateSafety(
+            GetEventsFragmentDirections.actionYourEvents(
                 type = YourEventsFragmentType.RemoteProtocol3Type(
                     remoteEvents = signedEvents.map { signedModel -> signedModel.model to signedModel.rawResponse }
                         .toMap(),

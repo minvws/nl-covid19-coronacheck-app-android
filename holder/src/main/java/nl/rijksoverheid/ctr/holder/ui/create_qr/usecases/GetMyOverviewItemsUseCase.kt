@@ -12,7 +12,10 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItem.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItem.GreenCardItem.CredentialState
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CredentialUtil
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginUtil
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -30,8 +33,11 @@ interface GetMyOverviewItemsUseCase {
         walletId: Int,
         selectedType: GreenCardType,
         databaseSyncerResult: DatabaseSyncerResult = DatabaseSyncerResult.Success,
-        shouldRefresh: Boolean
+        shouldRefresh: Boolean,
+        hasClockDeviation: Boolean
     ): MyOverviewItems
+
+    suspend fun getGreenCards(): List<GreenCard>
 }
 
 class GetMyOverviewItemsUseCaseImpl(
@@ -46,7 +52,8 @@ class GetMyOverviewItemsUseCaseImpl(
         walletId: Int,
         selectedType: GreenCardType,
         databaseSyncerResult: DatabaseSyncerResult,
-        shouldRefresh: Boolean
+        shouldRefresh: Boolean,
+        hasClockDeviation: Boolean
     ): MyOverviewItems {
         return withContext(Dispatchers.IO) {
             val unselectedType = when (selectedType) {
@@ -65,7 +72,17 @@ class GetMyOverviewItemsUseCaseImpl(
             getHeaderItem(allGreenCards, selectedType)?.let {
                 items.add(
                     it
-                )
+                ).also {
+                    if(hasClockDeviation) {
+                        // Add below header but before greencards
+                        getClockDeviationItem(allGreenCards, selectedType)?.let { item ->
+                            items.add(
+                                index = 1,
+                                item
+                            )
+                        }
+                    }
+                }
             }
 
             items.addAll(
@@ -78,18 +95,9 @@ class GetMyOverviewItemsUseCaseImpl(
                 )
             )
 
-            getCreatePlaceholderCardItem(allGreenCards, selectedType)?.let {
-                items.add(it)
-            }
 
-            getAddCertificateItem(allGreenCards)?.let {
-                items.add(it)
-            }
 
-            getTravelModeItem(
-                greenCards = allGreenCards,
-                selectedType = selectedType
-            )?.let {
+            getCreatePlaceholderCardItem(allGreenCards)?.let {
                 items.add(it)
             }
 
@@ -113,6 +121,15 @@ class GetMyOverviewItemsUseCaseImpl(
             HeaderItem(
                 text = text
             )
+        }
+    }
+
+    private fun getClockDeviationItem(greenCards: List<GreenCard>,
+                                      type: GreenCardType) : MyOverviewItem?{
+        return if (greenCards.isEmpty() || greenCards.all { greenCardUtil.isExpired(it) }) {
+            null
+        } else {
+            ClockDeviationItem
         }
     }
 
@@ -207,43 +224,16 @@ class GetMyOverviewItemsUseCaseImpl(
 
     private fun getCreatePlaceholderCardItem(
         greenCards: List<GreenCard>,
-        selectedType: GreenCardType
     ): MyOverviewItem? {
         return if (greenCards.isEmpty() || greenCards.all { greenCardUtil.isExpired(it) }) {
-            if (selectedType == GreenCardType.Domestic) {
-                PlaceholderCardItem
-            } else {
-                null
-            }
+            PlaceholderCardItem
         } else {
             null
         }
     }
 
-    private fun getAddCertificateItem(greenCards: List<GreenCard>): AddCertificateItem? =
-        if (greenCards.isEmpty()) AddCertificateItem else null
-
-    private fun getTravelModeItem(
-        greenCards: List<GreenCard>,
-        selectedType: GreenCardType
-    ): MyOverviewItem? {
-        return when (selectedType) {
-            is GreenCardType.Eu -> {
-                TravelModeItem(
-                    text = R.string.travel_toggle_europe,
-                    buttonText = R.string.travel_toggle_change_domestic)
-            }
-            is GreenCardType.Domestic -> {
-                val hasGreenCards = greenCards.map { greenCardUtil.isExpired(it) }.any { !it }
-                if (hasGreenCards) {
-                    TravelModeItem(
-                        text = R.string.travel_toggle_domestic,
-                        buttonText = R.string.travel_toggle_change_eu)
-                } else {
-                    null
-                }
-            }
-        }
+    override suspend fun getGreenCards(): List<GreenCard> {
+        return holderDatabase.greenCardDao().getAll()
     }
 }
 
@@ -257,6 +247,8 @@ sealed class MyOverviewItem {
     data class HeaderItem(@StringRes val text: Int) : MyOverviewItem()
 
     object PlaceholderCardItem : MyOverviewItem()
+
+    object ClockDeviationItem : MyOverviewItem()
 
     data class GreenCardItem(
         val greenCard: GreenCard,
@@ -276,11 +268,7 @@ sealed class MyOverviewItem {
         val greenCardType: GreenCardType
     ) : MyOverviewItem()
 
-    data class TravelModeItem(@StringRes val text: Int, @StringRes val buttonText: Int) :
-        MyOverviewItem()
-
     data class OriginInfoItem(val greenCardType: GreenCardType, val originType: OriginType) :
         MyOverviewItem()
 
-    object AddCertificateItem : MyOverviewItem()
 }

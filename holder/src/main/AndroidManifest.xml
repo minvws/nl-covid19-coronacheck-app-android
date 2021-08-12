@@ -4,6 +4,7 @@
     package="nl.rijksoverheid.ctr.holder">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:name=".HolderApplication"
@@ -35,6 +36,11 @@
                 <data
                     android:host="www.${deepLinkHost}"
                     android:path="/app/redeem"
+                    android:scheme="https" />
+
+                <data
+                    android:host="${deepLinkHost}"
+                    android:path="/app/open"
                     android:scheme="https" />
             </intent-filter>
 

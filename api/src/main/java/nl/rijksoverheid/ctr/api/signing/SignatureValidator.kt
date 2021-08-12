@@ -19,26 +19,19 @@ import org.bouncycastle.operator.jcajce.JcaDigestCalculatorProviderBuilder
 import java.io.BufferedInputStream
 import java.io.ByteArrayInputStream
 import java.io.InputStream
-import java.security.cert.CertPathBuilder
-import java.security.cert.CertPathBuilderException
-import java.security.cert.CertStore
-import java.security.cert.CertificateFactory
-import java.security.cert.PKIXBuilderParameters
-import java.security.cert.PKIXCertPathBuilderResult
-import java.security.cert.TrustAnchor
-import java.security.cert.X509CertSelector
-import java.security.cert.X509Certificate
+import java.security.cert.*
+
 
 class SignatureValidator private constructor(
     private val signingCertificate: X509Certificate?,
     private val trustAnchors: Set<TrustAnchor>,
-    private val cnMatchingRegex: Regex?
+    private val matchingString: String?,
 ) {
 
     class Builder {
-        private var cnMatchingRegEx: Regex? = null
         private var trustAnchors = mutableSetOf<TrustAnchor>()
         private var signingCertificate: X509Certificate? = null
+        private var matchingString: String? = null
 
         /**
          * The subject key identifier of the root certificate that is used as the trust anchor. If unset the default value will be used.
@@ -65,41 +58,35 @@ class SignatureValidator private constructor(
          */
         fun signingCertificate(signingCertificate: X509Certificate): Builder {
             this.signingCertificate = signingCertificate
-            this.cnMatchingRegEx = null
+            this.matchingString = null
             return this
         }
 
         fun signingCertificate(signingCertificateBytes: ByteArray): Builder {
+            val x509 = CertificateFactory.getInstance("X509")
+                .generateCertificate(ByteArrayInputStream(signingCertificateBytes)) as X509Certificate
             signingCertificate(
-                CertificateFactory.getInstance("X509")
-                    .generateCertificate(ByteArrayInputStream(signingCertificateBytes)) as X509Certificate
+                x509
             )
             return this
         }
 
         /**
-         * Set the regex for validating the signing certificate CN. Not used when [signingCertificate] is set.
-         */
-        fun cnMatching(regex: Regex): Builder {
-            if (signingCertificate != null) {
-                throw IllegalStateException("CN regex cannot be used if signing certificate is set")
-            }
-            this.cnMatchingRegEx = regex
-            return this
-        }
-
-        /**
-         * Set a substring that the CN of the signing certificate should match.
+         * Set a substring that the CN of the signing certificate should match. Not used when [signingCertificate] is set.
          */
         fun cnMatching(substring: String): Builder {
-            return cnMatching(Regex(Regex.escape(substring)))
+            if (signingCertificate != null) {
+                throw IllegalStateException("CN matching string cannot be used if signing certificate is set")
+            }
+            this.matchingString = substring
+            return this
         }
 
         fun build(): SignatureValidator {
             return SignatureValidator(
                 signingCertificate,
                 trustAnchors,
-                cnMatchingRegEx
+                matchingString
             )
         }
     }
@@ -132,6 +119,7 @@ class SignatureValidator private constructor(
             val signer =
                 sp.signerInfos.signers.firstOrNull()
                     ?: throw SignatureValidationException("No signing certificate found")
+
             val result = checkCertPath(trustAnchors, signer.sid, store)
             val signingCertificate = result.certPath.certificates[0] as X509Certificate
 
@@ -139,10 +127,10 @@ class SignatureValidator private constructor(
                 throw SignatureValidationException("Signing certificate does not match expected certificate")
             }
 
-            if (cnMatchingRegex != null) {
-                if (!JcaX509CertificateHolder(signingCertificate).subject.getRDNs(BCStyle.CN).any {
-                        val cn = IETFUtils.valueToString(it.first.value)
-                        cnMatchingRegex.containsMatchIn(cn)
+            if (matchingString != null) {
+                val subjectRDNs = JcaX509CertificateHolder(signingCertificate).subject.getRDNs(BCStyle.CN).map { IETFUtils.valueToString(it.first.value) }
+                if (!subjectRDNs.any {
+                        it.endsWith(matchingString)
                     }) {
                     throw SignatureValidationException("Signing certificate does not match expected CN")
                 }
@@ -183,7 +171,6 @@ class SignatureValidator private constructor(
             trustAnchors,
             targetConstraints
         )
-
         params.addCertStore(certs)
         params.isRevocationEnabled = false
         return pathBuilder.build(params) as PKIXCertPathBuilderResult

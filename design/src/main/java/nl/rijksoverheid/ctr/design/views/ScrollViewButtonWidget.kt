@@ -85,7 +85,7 @@ class ScrollViewButtonWidget @JvmOverloads constructor(
         }
     }
 
-    private fun setButtonText(text: String) {
+    fun setButtonText(text: String) {
         val binding = WidgetScrollViewButtonBinding.bind(this)
         binding.button.text = text
     }

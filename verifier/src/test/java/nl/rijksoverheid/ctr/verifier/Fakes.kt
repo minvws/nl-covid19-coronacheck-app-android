@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.verifier
 
+import androidx.lifecycle.MutableLiveData
 import mobilecore.Mobilecore
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
@@ -20,7 +21,6 @@ import nl.rijksoverheid.ctr.verifier.ui.scanner.ScannerViewModel
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.VerifiedQrResultState
 import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.TestResultValidUseCase
 import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.VerifyQrUseCase
-import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.QrCodeUtil
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrViewModel
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody
@@ -39,16 +39,24 @@ import java.time.OffsetDateTime
 fun fakeAppConfigViewModel(appStatus: AppStatus = AppStatus.NoActionRequired) =
     object : AppConfigViewModel() {
         override fun refresh(mobileCoreWrapper: MobileCoreWrapper) {
-            appStatusLiveData.value = appStatus
+            appStatusLiveData.value = Event(appStatus)
         }
     }
 
 fun fakeIntroductionViewModel(
-    introductionStatus: IntroductionStatus = IntroductionStatus.IntroductionFinished.NoActionRequired,
+    introductionStatus: IntroductionStatus? = null,
 ): IntroductionViewModel {
+
     return object : IntroductionViewModel() {
+
+        init {
+            if (introductionStatus != null) {
+                (introductionStatusLiveData as MutableLiveData).postValue(Event(introductionStatus))
+            }
+        }
+
         override fun getIntroductionStatus(): IntroductionStatus {
-            return introductionStatus
+            return introductionStatus ?: IntroductionStatus.IntroductionFinished.NoActionRequired
         }
 
         override fun saveNewFeaturesFinished(newFeaturesVersion: Int) {
@@ -84,14 +92,6 @@ fun fakeTestResultValidUseCase(
 ) = object : TestResultValidUseCase {
     override suspend fun validate(qrContent: String): VerifiedQrResultState {
         return result
-    }
-}
-
-fun fakeQrCodeUtil(
-    isValid: Boolean = true
-) = object : QrCodeUtil {
-    override fun isValid(creationDate: OffsetDateTime, isPaperProof: String): Boolean {
-        return isValid
     }
 }
 

@@ -56,12 +56,14 @@ val holderIntroductionModule = module {
             ),
             newFeatures = listOf(
                 NewFeatureItem(
-                    R.drawable.illustration_onboarding_3,
-                    R.string.new_in_app_screen_1_title,
-                    R.string.new_in_app_screen_1_description,
+                    R.drawable.tabs,
+                    R.string.new_in_app_tabs_title,
+                    R.string.new_in_app_tabs_description,
+                    R.color.primary_blue,
+                    R.color.light_blue,
                 )
             ),
-            newFeatureVersion = 1,
+            newFeatureVersion = 2,
             hideConsent = true
         )
     }

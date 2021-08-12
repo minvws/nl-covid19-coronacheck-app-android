@@ -11,8 +11,8 @@ import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
 import nl.rijksoverheid.ctr.introduction.R
 import nl.rijksoverheid.ctr.introduction.databinding.FragmentOnboardingBinding
-import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.getNavigationIconView
+import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAccessibilityFocus
 
 /*
@@ -26,10 +26,13 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
 
     private val args: OnboardingFragmentArgs by navArgs()
 
+    private var _binding: FragmentOnboardingBinding? = null
+    private val binding get() = _binding!!
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val binding = FragmentOnboardingBinding.bind(view)
+        _binding = FragmentOnboardingBinding.bind(view)
 
         val adapter =
             OnboardingPagerAdapter(
@@ -40,7 +43,7 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
 
         if (args.introductionData.onboardingItems.isNotEmpty()) {
             binding.indicators.initIndicator(adapter.itemCount)
-            initViewPager(binding, adapter)
+            initViewPager(binding, adapter, savedInstanceState?.getInt(indicatorPositionKey))
         }
 
         setBackPressListener(binding)
@@ -58,7 +61,7 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
         binding.button.setOnClickListener {
             val currentItem = binding.viewPager.currentItem
             if (currentItem == adapter.itemCount - 1) {
-                findNavControllerSafety(R.id.nav_onboarding)?.navigate(
+                navigateSafety(R.id.nav_onboarding,
                     OnboardingFragmentDirections.actionPrivacyPolicy(
                         args.introductionData
                     )
@@ -87,9 +90,17 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
         })
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        _binding?.let {
+            outState.putInt(indicatorPositionKey, it.viewPager.currentItem)
+        }
+    }
+
     private fun initViewPager(
         binding: FragmentOnboardingBinding,
-        adapter: OnboardingPagerAdapter
+        adapter: OnboardingPagerAdapter,
+        startingItem: Int? = null,
     ) {
         binding.viewPager.offscreenPageLimit = args.introductionData.onboardingItems.size
         binding.viewPager.adapter = adapter
@@ -119,5 +130,15 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
                 }
             }
         })
+        startingItem?.let { binding.viewPager.currentItem = it }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    companion object {
+        private const val indicatorPositionKey = "indicator_position_key"
     }
 }

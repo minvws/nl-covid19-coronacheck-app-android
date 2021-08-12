@@ -2,7 +2,6 @@ package nl.rijksoverheid.ctr.appconfig.api.model
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import nl.rijksoverheid.ctr.shared.models.JSON
 
 
 /*
@@ -27,7 +26,7 @@ data class HolderConfig(
     @Json(name = "maxValidityHours") val maxValidityHours: Int,
     @Json(name = "vaccinationEventValidity") val vaccinationEventValidity: Int,
     @Json(name = "euLaunchDate") val euLaunchDate: String,
-    @Json(name = "hpkCodes") val hpkCodes: List<Code>,
+    @Json(name = "hpkCodes") val hpkCodes: List<HpkCode>,
     @Json(name = "euBrands") val euBrands: List<Code>,
     @Json(name = "euVaccinations") val euVaccinations: List<Code>,
     @Json(name = "euManufacturers") val euManufacturers: List<Code>,
@@ -36,6 +35,9 @@ data class HolderConfig(
     @Json(name = "nlTestTypes") val nlTestTypes: List<Code>,
     @Json(name = "providerIdentifiers") val providerIdentifiers: List<Code>,
     @Json(name = "ggdEnabled") val ggdEnabled: Boolean,
+    @Json(name = "universalLinkDomains") val deeplinkDomains: List<Url>,
+    @Json(name = "domesticQRRefreshSeconds") val domesticQRRefreshSeconds: Int,
+    @Json(name = "clockDeviationThresholdSeconds") val holderClockDeviationThresholdSeconds: Int
 ): AppConfig(holderAppDeactivated, holderInformationURL, holderMinimumVersion, configTTL, providerIdentifiers) {
 
     companion object {
@@ -53,7 +55,7 @@ data class HolderConfig(
             maxValidityHours: Int = 40,
             vaccinationEventValidity: Int = 14600,
             euLaunchDate: String = "2021-07-01T00:00:00Z",
-            hpkCodes: List<Code> = listOf(),
+            hpkCodes: List<HpkCode> = listOf(),
             euBrands: List<Code> = listOf(),
             euVaccinations: List<Code> = listOf(),
             euManufacturers: List<Code> = listOf(),
@@ -62,6 +64,9 @@ data class HolderConfig(
             nlTestTypes: List<Code> = listOf(),
             providerIdentifiers: List<Code> = listOf(),
             ggdEnabled: Boolean = true,
+            returnApps: List<Url> = listOf(),
+            domesticQRRefreshSeconds: Int = 10,
+            holderClockDeviationThresholdSeconds: Int = 30
         ) = HolderConfig(
             holderMinimumVersion = holderMinimumVersion,
             holderAppDeactivated = holderAppDeactivated,
@@ -85,6 +90,9 @@ data class HolderConfig(
             nlTestTypes = nlTestTypes,
             providerIdentifiers = providerIdentifiers,
             ggdEnabled = ggdEnabled,
+            deeplinkDomains = returnApps,
+            domesticQRRefreshSeconds = domesticQRRefreshSeconds,
+            holderClockDeviationThresholdSeconds = holderClockDeviationThresholdSeconds
         )
     }
 }

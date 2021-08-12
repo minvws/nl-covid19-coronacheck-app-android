@@ -9,16 +9,21 @@
 package nl.rijksoverheid.ctr.appconfig.repositories
 
 import nl.rijksoverheid.ctr.appconfig.api.AppConfigApi
+import nl.rijksoverheid.ctr.appconfig.models.ConfigResponse
 
 interface ConfigRepository {
-    suspend fun getConfig(): String
+    suspend fun getConfig(): ConfigResponse
     suspend fun getPublicKeys(): String
 }
 
 @Suppress("BlockingMethodInNonBlockingContext")
 class ConfigRepositoryImpl(private val api: AppConfigApi) : ConfigRepository {
-    override suspend fun getConfig(): String {
-        return api.getConfig().source().readUtf8()
+    override suspend fun getConfig(): ConfigResponse {
+        val response = api.getConfig()
+        return ConfigResponse(
+            body = response.body()!!.toString(),
+            headers = response.headers()
+        )
     }
 
     override suspend fun getPublicKeys(): String {

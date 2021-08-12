@@ -60,4 +60,11 @@ dependencies {
     testImplementation "junit:junit:$junit_version"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
     testImplementation "androidx.arch.core:core-testing:$androidx_arch_core_version"
+    testImplementation("org.robolectric:robolectric:$robolectric_version") {
+        exclude group: 'org.bouncycastle'
+    }
+    testImplementation "androidx.test:runner:$androix_test_version"
+    testImplementation("com.schibsted.spain:barista:$barista_version") {
+        exclude group: "org.jetbrains.kotlin"
+    }
 }

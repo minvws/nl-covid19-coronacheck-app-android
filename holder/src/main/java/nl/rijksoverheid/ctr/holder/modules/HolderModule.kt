@@ -11,6 +11,8 @@ import nl.rijksoverheid.ctr.api.signing.certificates.ROOT_CA_G3
 import nl.rijksoverheid.ctr.appconfig.usecases.DeviceRootedUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.DeviceRootedUseCaseImpl
 import nl.rijksoverheid.ctr.holder.BuildConfig
+import nl.rijksoverheid.ctr.holder.HolderMainActivityViewModel
+import nl.rijksoverheid.ctr.holder.HolderMainActivityViewModelImpl
 import nl.rijksoverheid.ctr.holder.persistence.*
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
@@ -19,21 +21,27 @@ import nl.rijksoverheid.ctr.holder.persistence.database.migration.TestResultsMig
 import nl.rijksoverheid.ctr.holder.persistence.database.migration.TestResultsMigrationManagerImpl
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.*
-import nl.rijksoverheid.ctr.holder.ui.create_qr.api.HolderApiClient
-import nl.rijksoverheid.ctr.holder.ui.create_qr.api.OriginTypeJsonAdapter
-import nl.rijksoverheid.ctr.holder.ui.create_qr.api.RemoteTestStatusJsonAdapter
-import nl.rijksoverheid.ctr.holder.ui.create_qr.api.TestProviderApiClient
+import nl.rijksoverheid.ctr.holder.ui.create_qr.api.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigiDViewModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
+import nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.PaperProofCodeViewModel
+import nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.PaperProofCodeViewModelImpl
+import nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.PaperProofQrScannerViewModel
+import nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.PaperProofQrScannerViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
 import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModel
 import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModelImpl
+import nl.rijksoverheid.ctr.holder.ui.myoverview.*
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.QrCodeViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.QrCodeViewModelImpl
+import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.ReturnToAppUseCase
+import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.ReturnToAppUseCaseImpl
+import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverViewGreenCardAdapterUtil
+import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverViewGreenCardAdapterUtilImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCaseImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.*
@@ -60,7 +68,7 @@ import java.time.Clock
 fun holderModule(baseUrl: String) = module {
 
     single {
-        HolderDatabase.createInstance(androidContext(), get())
+        HolderDatabase.createInstance(androidContext(), get(), androidContext().packageName == "nl.rijksoverheid.ctr.holder")
     }
 
     factory<HolderDatabaseSyncer> { HolderDatabaseSyncerImpl(get(), get(), get(), get(), get(), get()) }
@@ -72,14 +80,17 @@ fun holderModule(baseUrl: String) = module {
     }
 
     // Use cases
+    factory<PaperProofCodeUseCase> {
+        PaperProofCodeUseCaseImpl()
+    }
     factory<GetRemoteGreenCardsUseCase> {
         GetRemoteGreenCardsUseCaseImpl(get(), get(), get())
     }
     factory<SyncRemoteGreenCardsUseCase> {
-        SyncRemoteGreenCardsUseCaseImpl(get(), get(), get())
+        SyncRemoteGreenCardsUseCaseImpl(get(), get(), get(), get())
     }
     factory<CreateDomesticGreenCardUseCase> {
-        CreateDomesticGreenCardUseCaseImpl(get(), get())
+        CreateDomesticGreenCardUseCaseImpl(get())
     }
     factory<CreateEuGreenCardUseCase> {
         CreateEuGreenCardUseCaseImpl(get(), get())
@@ -124,31 +135,37 @@ fun holderModule(baseUrl: String) = module {
     factory<GetMyOverviewItemsUseCase> {
         GetMyOverviewItemsUseCaseImpl(get(), get(), get(), get())
     }
+    factory<MyOverViewGreenCardAdapterUtil> { MyOverViewGreenCardAdapterUtilImpl(androidContext(), get(), get(), get()) }
     factory<TokenValidatorUtil> { TokenValidatorUtilImpl() }
-    factory<CredentialUtil> { CredentialUtilImpl(Clock.systemUTC()) }
+    factory<CredentialUtil> { CredentialUtilImpl(Clock.systemUTC(), get()) }
     factory<OriginUtil> { OriginUtilImpl(Clock.systemUTC()) }
     factory<RemoteEventRecoveryUtil> { RemoteEventRecoveryUtilImpl(get()) }
+    factory<RemoteEventHolderUtil> { RemoteEventHolderUtilImpl(get(), get()) }
     factory {
         TokenQrUseCase(get())
     }
     factory<DeviceRootedUseCase> { DeviceRootedUseCaseImpl(androidContext()) }
     factory<GetEventsUseCase> { GetEventsUseCaseImpl(get(), get(), get(), get()) }
-    factory<SaveEventsUseCase> { SaveEventsUseCaseImpl(get()) }
+    factory<SaveEventsUseCase> { SaveEventsUseCaseImpl(get(), get()) }
     factory<CachedAppConfigUseCase> { CachedAppConfigUseCaseImpl(get(), androidContext().filesDir.path, get()) }
 
-    factory<TestResultsMigrationManager> { TestResultsMigrationManagerImpl(get(), get(), get()) }
+    factory<TestResultsMigrationManager> { TestResultsMigrationManagerImpl(get()) }
 
     factory<WorkerManagerWrapper> { WorkerManagerWrapperImpl(androidContext(), get()) }
 
     // ViewModels
-    viewModel<QrCodeViewModel> { QrCodeViewModelImpl(get()) }
+    viewModel<QrCodeViewModel> { QrCodeViewModelImpl(get(), get()) }
+    viewModel<HolderMainActivityViewModel> { HolderMainActivityViewModelImpl() }
     viewModel<CommercialTestCodeViewModel> { CommercialTestCodeViewModelImpl(get(), get()) }
     viewModel { DigiDViewModel(get()) }
     viewModel { TokenQrViewModel(get()) }
     viewModel<DeviceRootedViewModel> { DeviceRootedViewModelImpl(get(), get()) }
     viewModel<YourEventsViewModel> { YourEventsViewModelImpl(get(), get()) }
-    viewModel<MyOverviewViewModel> { MyOverviewViewModelImpl(get(), get(), get(), get()) }
+    viewModel<MyOverviewViewModel> { MyOverviewViewModelImpl(get(), get(), get(), get(), get(), get()) }
+    viewModel<MyOverviewTabsViewModel> { MyOverviewTabsViewModelImpl(get()) }
     viewModel<GetEventsViewModel> { GetEventsViewModelImpl(get()) }
+    viewModel<PaperProofCodeViewModel> { PaperProofCodeViewModelImpl(get(), get()) }
+    viewModel<PaperProofQrScannerViewModel> { PaperProofQrScannerViewModelImpl(get()) }
 
     // Repositories
     single { AuthenticationRepository() }
@@ -173,10 +190,22 @@ fun holderModule(baseUrl: String) = module {
     // Utils
     factory<QrCodeUtil> { QrCodeUtilImpl() }
     factory<TestResultAdapterItemUtil> { TestResultAdapterItemUtilImpl(get()) }
-    factory<InfoScreenUtil> { InfoScreenUtilImpl(get(), get()) }
+    factory<InfoScreenUtil> { InfoScreenUtilImpl(get(), get(), get()) }
+    factory<VaccinationInfoScreenUtil> {
+        VaccinationInfoScreenUtilImpl(get(), androidContext().resources, get())
+    }
+    factory<LastVaccinationDoseUtil> { LastVaccinationDoseUtilImpl(androidContext().resources) }
     factory<GreenCardUtil> { GreenCardUtilImpl(Clock.systemUTC(), get()) }
 
     // Usecases
+    factory<ValidatePaperProofUseCase> {
+        ValidatePaperProofUseCaseImpl(get(), get())
+    }
+
+    factory<GetEventsFromPaperProofQrUseCase> {
+        GetEventsFromPaperProofQrUseCaseImpl(get())
+    }
+
     factory<CreateCredentialUseCase> {
         CreateCredentialUseCaseImpl(get())
     }
@@ -187,6 +216,10 @@ fun holderModule(baseUrl: String) = module {
         TestResultAttributesUseCaseImpl(get(), get())
     }
 
+    factory<ReturnToAppUseCase> {
+        ReturnToAppUseCaseImpl(get())
+    }
+
     factory<RemoveExpiredEventsUseCase> {
         RemoveExpiredEventsUseCaseImpl(Clock.systemUTC(), get(), get())
     }
@@ -195,7 +228,7 @@ fun holderModule(baseUrl: String) = module {
         GreenCardRefreshUtilImpl(get(), get(), get(), get(), get())
     }
 
-    factory<HolderWorkerFactory> {
+    factory {
         HolderWorkerFactory(get(), get())
     }
 
@@ -250,6 +283,7 @@ fun holderModule(baseUrl: String) = module {
         get<Moshi.Builder>(Moshi.Builder::class)
             .add(RemoteTestStatusJsonAdapter())
             .add(OriginTypeJsonAdapter())
+            .add(RemoteCouplingStatusJsonAdapter())
             .add(PolymorphicJsonAdapterFactory.of(
                 RemoteProtocol::class.java, "protocolVersion")
                 .withSubtype(RemoteTestResult2::class.java, "2.0")

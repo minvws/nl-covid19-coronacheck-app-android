@@ -13,6 +13,7 @@
     <string name="onboarding_screen_4_title">Voor wie is de scanner?</string>
     <string name="onboarding_screen_4_description"><![CDATA[Met behulp van deze app kun je weer bezoekers ontvangen. Maar alleen als jouw locatie of activiteit onder de aangewezen locaties valt.]]></string>
     <string name="onboarding_next">Volgende</string>
+    <string name="onboarding_finish">Aan de slag</string>
     <string name="privacy_policy_title">Voorwaarden voor gebruik</string>
     <string name="privacy_policy_description"><![CDATA[In de <a href="https://coronacheck.nl/nl/gebruikersvoorwaarden-in-app">gebruiksvoorwaarden</a> staat hoe CoronaCheck Scanner werkt en wat je rechten zijn.]]></string>
     <string name="privacy_policy_1"><![CDATA[Er worden <b>geen locatiegegevens</b> gebruikt of bewaard]]></string>
@@ -60,7 +61,7 @@
     <string name="scan_instructions_3_description">Groen scherm? De bezoeker heeft een geldig bewijs. Controleer nu of de gegevens op het groene scherm hetzelfde zijn als de gegevens op het identiteitsbewijs. Om privacy te beschermen zie je soms niet alle gegevens op jouw scherm. Dan staat er een streepje (-) in het vak. Controle van de gegevens die je wel ziet is dan voldoende.&lt;br\&gt;&lt;br\&gt;Check? Dan mag de bezoeker naar binnen. Het kan zijn dat er ook een toegangskaartje nodig is.</string>
     <string name="scan_instructions_4_image">Persoon houdt een telefoon vast met een rood scherm en een zwart kruis.</string>
     <string name="scan_instructions_4_title">4. Rood scherm</string>
-    <string name="scan_instructions_4_description"><![CDATA[Rood scherm? Dat betekent niet dat de bezoeker corona heeft. Het betekent alleen dat de QR-code ongeldig is. Of dat de QR-code niet aan de eisen voor gebruik in Nederland voldoet. Er is dus geen bewijs dat de bezoeker al corona gehad heeft, gevaccineerd is of een negatieve testuitslag heeft. Dit kun je doen:<br\><br\><ul><li>Controleer of de bezoeker de QR-code vanuit de CoronaCheck-app laat zien. Een schermafbeelding of kopie van een QR-code uit de app geeft altijd een rood scherm.</li><li>Controleer of de bezoeker een Nederlandse QR-code laat zien. Een internationale QR-code kan een rood scherm geven.</li><li>Vraag de bezoeker de app volledig af te sluiten en opnieuw op te starten. Scan daarna opnieuw de QR-code.</li><li>Blijft er een rood scherm komen, terwijl de bezoeker wel een geldig coronabewijs heeft? Stuur de bezoeker naar onze helpdesk, telefoonnummer: 0800-1421.</li></ul> <br\>Er is altijd een groen scherm nodig voor toegang.</a> Heeft de bezoeker geen (geldige) QR-code? Dan kun je de bezoeker niet binnenlaten.<br/><a href="https://coronacheck.nl/nl/scanner">Lees meer over bezoekers binnenlaten</a>
+    <string name="scan_instructions_4_description"><![CDATA[Rood scherm? Dat betekent niet dat de bezoeker corona heeft. Het betekent alleen dat de QR-code ongeldig is. Of dat de QR-code niet aan de eisen voor gebruik in Nederland voldoet. Er is dus geen bewijs dat de bezoeker al corona gehad heeft, gevaccineerd is of een negatieve testuitslag heeft. Dit kun je doen:<br\><br\><ul><li>Controleer of de bezoeker de QR-code vanuit de CoronaCheck-app laat zien. Een schermafbeelding of kopie van een QR-code uit de app geeft altijd een rood scherm.</li><li>Woont de bezoeker in Nederland? Controleer of de bezoeker een Nederlandse QR-code laat zien. Het scannen van een internationale QR-code in de CoronaCheck-app geeft een rood scherm.</li><li>Vraag de bezoeker de app volledig af te sluiten en opnieuw op te starten. Scan daarna opnieuw de QR-code.</li><li>Blijft er een rood scherm komen, terwijl de bezoeker wel een geldig coronabewijs heeft? Stuur de bezoeker naar onze helpdesk, telefoonnummer: 0800-1421.</li></ul> <br\>Er is altijd een groen scherm nodig voor toegang.</a> Heeft de bezoeker geen (geldige) QR-code? Dan kun je de bezoeker niet binnenlaten.<br/><a href="https://coronacheck.nl/nl/scanner">Lees meer over bezoekers binnenlaten</a>
 ]]></string>
     <string name="privacy_statement">Gebruikersvoorwaarden</string>
     <string name="scanner_custom_title">Scan QR-Code</string>
@@ -108,7 +109,7 @@
     <string name="url_faq">https://www.coronacheck.nl/nl/faq-scanner-in-app</string>
     <string name="url_privacy_statement">https://coronacheck.nl/nl/privacy-in-app</string>
     <string name="url_terms_of_use">https://coronacheck.nl/nl/gebruikersvoorwaarden-in-app</string>
-    <string name="about_this_app_read_more">Lees meer</string>
+    <string name="about_this_app_read_more">Lees meer:</string>
     <string name="about_this_app_accessibility">Toegankelijkheid</string>
     <string name="url_accessibility">https://coronacheck.nl/nl/accessibility-in-app</string>
     <string name="accessibility_flash_on">Zet de zaklamp aan.</string>

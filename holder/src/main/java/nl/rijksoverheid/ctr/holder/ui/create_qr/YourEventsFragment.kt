@@ -11,9 +11,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
-import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import nl.rijksoverheid.ctr.design.ext.formatDateTime
@@ -29,6 +27,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.items.YourEventWidget
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.InfoScreenUtil
+import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import org.koin.android.ext.android.inject
@@ -38,6 +37,7 @@ import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 
 class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
 
@@ -71,7 +71,7 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
             binding = binding
         )
 
-        handleBackButton()
+        blockBackButton()
 
         yourEventsViewModel.loading.observe(viewLifecycleOwner, EventObserver {
             (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
@@ -84,16 +84,17 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                 when (databaseSyncerResult) {
                     is DatabaseSyncerResult.Success -> {
                         // We have a origin in the database that we expect, so success
-                        findNavController().navigate(
+                        navigateSafety(
                             YourEventsFragmentDirections.actionMyOverview()
                         )
                     }
                     is DatabaseSyncerResult.MissingOrigin -> {
-                        findNavController().navigate(
+                        navigateSafety(
                             YourEventsFragmentDirections.actionCouldNotCreateQr(
                                 toolbarTitle = args.toolbarTitle,
                                 title = getString(R.string.rule_engine_no_origin_title),
-                                description = getString(R.string.rule_engine_no_test_origin_description)
+                                description = getString(R.string.rule_engine_no_test_origin_description),
+                                buttonTitle = getString(R.string.back_to_overview)
                             )
                         )
                     }
@@ -120,6 +121,61 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                     }
                 }
             })
+
+        yourEventsViewModel.conflictingEventsResult.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                when (val type = args.type) {
+                    is YourEventsFragmentType.RemoteProtocol3Type -> {
+                        if (it) {
+                            replaceCertificateDialog(type.remoteEvents, type.originType)
+                        } else {
+                            yourEventsViewModel.saveRemoteProtocol3Events(
+                                type.remoteEvents,
+                                type.originType,
+                                false
+                            )
+                        }
+                    }
+                    is YourEventsFragmentType.DCC -> {
+                        if (it) {
+                            replaceCertificateDialog(type.remoteEvents, type.originType)
+                        } else {
+                            yourEventsViewModel.saveRemoteProtocol3Events(
+                                type.remoteEvents,
+                                type.originType,
+                                false
+                            )
+                        }
+                    }
+                }
+            }
+        )
+    }
+
+    private fun replaceCertificateDialog(
+        remoteEvents: Map<RemoteProtocol3, ByteArray>,
+        originType: OriginType
+    ) {
+        dialogUtil.presentDialog(
+            context = requireContext(),
+            title = R.string.your_events_replace_dialog_title,
+            message = getString(R.string.your_events_replace_dialog_message),
+            positiveButtonText = R.string.your_events_replace_dialog_positive_button,
+            positiveButtonCallback = {
+                yourEventsViewModel.saveRemoteProtocol3Events(
+                    remoteProtocols3 = remoteEvents,
+                    originType = originType,
+                    removePreviousEvents = true
+                )
+            },
+            negativeButtonText = R.string.your_events_replace_dialog_negative_button,
+            negativeButtonCallback = {
+                navigateSafety(
+                    YourEventsFragmentDirections.actionMyOverview()
+                )
+            }
+        )
     }
 
     private fun presentHeader(binding: FragmentYourEventsBinding) {
@@ -141,9 +197,14 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                     }
                     is OriginType.Recovery -> {
                         binding.title.visibility = View.GONE
-                        binding.description.text = getString(R.string.your_positive_test_description)
+                        binding.description.text =
+                            getString(R.string.your_positive_test_description)
                     }
                 }
+            }
+            is YourEventsFragmentType.DCC -> {
+                binding.title.visibility = View.GONE
+                binding.description.text = getString(R.string.your_dcc_event_description)
             }
         }
     }
@@ -156,46 +217,69 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                     remoteProtocol2 = type.remoteTestResult
                 )
             }
-            is YourEventsFragmentType.RemoteProtocol3Type -> {
-                val remoteEvents = type.remoteEvents.map { it.key }
+            is YourEventsFragmentType.RemoteProtocol3Type -> presentEvents(
+                type.remoteEvents,
+                binding
+            )
+            is YourEventsFragmentType.DCC -> presentEvents(
+                type.remoteEvents,
+                binding,
+                isDccEvent = true
+            )
+        }
+    }
 
-                remoteEvents.forEach { remoteProtocol3 ->
-                    remoteProtocol3.events?.forEach { remoteEvent ->
-                        when (remoteEvent) {
-                            is RemoteEventVaccination -> {
-                                presentVaccinationEvent(
-                                    binding = binding,
-                                    providerIdentifier = remoteProtocol3.providerIdentifier,
-                                    fullName = getFullName(remoteProtocol3.holder),
-                                    birthDate = getBirthDate(remoteProtocol3.holder),
-                                    event = remoteEvent
-                                )
-                            }
-                            is RemoteEventNegativeTest -> {
-                                presentNegativeTestEvent(
-                                    binding = binding,
-                                    fullName = getFullName(remoteProtocol3.holder),
-                                    birthDate = getBirthDate(remoteProtocol3.holder),
-                                    event = remoteEvent
-                                )
-                            }
-                            is RemoteEventPositiveTest -> {
-                                presentPositiveTestEvent(
-                                    binding = binding,
-                                    fullName = getFullName(remoteProtocol3.holder),
-                                    birthDate = getBirthDate(remoteProtocol3.holder),
-                                    event = remoteEvent
-                                )
-                            }
-                            is RemoteEventRecovery -> {
-                                presentRecoveryEvent(
-                                    binding = binding,
-                                    fullName = getFullName(remoteProtocol3.holder),
-                                    birthDate = getBirthDate(remoteProtocol3.holder),
-                                    event = remoteEvent
-                                )
-                            }
-                        }
+    private fun presentEvents(
+        remoteEvents: Map<RemoteProtocol3, ByteArray>,
+        binding: FragmentYourEventsBinding,
+        isDccEvent: Boolean = false
+    ) {
+        val protocols = remoteEvents.map { it.key }
+
+        val groupedEvents = yourEventsViewModel.combineSameEventsFromDifferentProviders(protocols)
+
+        groupedEvents.forEach { protocolGroupedEvent ->
+            val holder = protocolGroupedEvent.value.firstOrNull()?.holder
+            val providerIdentifiers = protocolGroupedEvent.value.map { it.providerIdentifier }
+            val allSameEvents = protocolGroupedEvent.value.map { it.remoteEvent }
+            val allEventsInformation = protocolGroupedEvent.value.map { RemoteEventInformation(it.providerIdentifier, holder, it.remoteEvent) }
+            yourEventsViewModel.combineSameVaccinationEvents(allSameEvents).forEach { remoteEvent ->
+                when (remoteEvent) {
+                    is RemoteEventVaccination -> {
+                        presentVaccinationEvent(
+                            binding = binding,
+                            providerIdentifiers = providerIdentifiers.toSet()
+                                .joinToString(" ${getString(R.string.your_events_and)} "),
+                            fullName = getFullName(holder),
+                            birthDate = getBirthDate(holder),
+                            currentEvent = remoteEvent,
+                            allEventsInformation = allEventsInformation,
+                            isDccEvent = isDccEvent
+                        )
+                    }
+                    is RemoteEventNegativeTest -> {
+                        presentNegativeTestEvent(
+                            binding = binding,
+                            fullName = getFullName(holder),
+                            birthDate = getBirthDate(holder),
+                            event = remoteEvent
+                        )
+                    }
+                    is RemoteEventPositiveTest -> {
+                        presentPositiveTestEvent(
+                            binding = binding,
+                            fullName = getFullName(holder),
+                            birthDate = getBirthDate(holder),
+                            event = remoteEvent
+                        )
+                    }
+                    is RemoteEventRecovery -> {
+                        presentRecoveryEvent(
+                            binding = binding,
+                            fullName = getFullName(holder),
+                            birthDate = getBirthDate(holder),
+                            event = remoteEvent
+                        )
                     }
                 }
             }
@@ -235,10 +319,9 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                         "${personalDetails.firstNameInitial} ${personalDetails.lastNameInitial} ${personalDetails.birthDay} ${personalDetails.birthMonth}"
                     ),
                     infoClickListener = {
-                        findNavController().navigate(
+                        navigateSafety(
                             YourEventsFragmentDirections.actionShowExplanation(
-                                toolbarTitle = infoScreen.title,
-                                description = infoScreen.description
+                                data = arrayOf(infoScreen)
                             )
                         )
                     }
@@ -250,40 +333,53 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
 
     private fun presentVaccinationEvent(
         binding: FragmentYourEventsBinding,
-        providerIdentifier: String,
+        providerIdentifiers: String,
         fullName: String,
         birthDate: String,
-        event: RemoteEventVaccination
+        currentEvent: RemoteEventVaccination,
+        allEventsInformation: List<RemoteEventInformation>,
+        isDccEvent: Boolean,
     ) {
-        val infoScreen = infoScreenUtil.getForVaccination(
-            event = event,
-            fullName = fullName,
-            birthDate = birthDate
-        )
 
         val eventWidget = YourEventWidget(requireContext()).apply {
             setContent(
-                title = resources.getString(
-                    R.string.retrieved_vaccination_title,
-                    event.vaccination?.date?.formatMonth(),
-                    cachedAppConfigUseCase.getProviderName(providerIdentifier)
-                ),
+                title = getVaccinationEventTitle(isDccEvent, currentEvent),
                 subtitle = resources.getString(
                     R.string.your_vaccination_row_subtitle,
                     fullName,
-                    birthDate
+                    birthDate,
+                    providerIdentifiers,
                 ),
                 infoClickListener = {
-                    findNavController().navigate(
+                    navigateSafety(
                         YourEventsFragmentDirections.actionShowExplanation(
-                            toolbarTitle = infoScreen.title,
-                            description = infoScreen.description
+                            data = allEventsInformation.map {
+                                val vaccinationEvent = it.remoteEvent as RemoteEventVaccination
+                                infoScreenUtil.getForVaccination(
+                                    event = vaccinationEvent,
+                                    fullName = fullName,
+                                    birthDate = birthDate,
+                                    providerIdentifier = it.providerIdentifier,
+                                )
+                            }.toTypedArray()
                         )
                     )
                 }
             )
         }
         binding.eventsGroup.addView(eventWidget)
+    }
+
+    private fun YourEventWidget.getVaccinationEventTitle(
+        isDccEvent: Boolean,
+        currentEvent: RemoteEventVaccination
+    ) = if (isDccEvent) {
+        resources.getString(R.string.retrieved_vaccination_dcc_title)
+    } else {
+        resources.getString(
+            R.string.retrieved_vaccination_title,
+            currentEvent.vaccination?.date?.formatMonth(),
+        )
     }
 
     private fun presentNegativeTestEvent(
@@ -311,10 +407,9 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                     birthDate
                 ),
                 infoClickListener = {
-                    findNavController().navigate(
+                    navigateSafety(
                         YourEventsFragmentDirections.actionShowExplanation(
-                            toolbarTitle = infoScreen.title,
-                            description = infoScreen.description
+                            data = arrayOf(infoScreen)
                         )
                     )
                 }
@@ -348,10 +443,9 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                     birthDate
                 ),
                 infoClickListener = {
-                    findNavController().navigate(
+                    navigateSafety(
                         YourEventsFragmentDirections.actionShowExplanation(
-                            toolbarTitle = infoScreen.title,
-                            description = infoScreen.description
+                            data = arrayOf(infoScreen)
                         )
                     )
                 }
@@ -385,10 +479,9 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                     birthDate
                 ),
                 infoClickListener = {
-                    findNavController().navigate(
+                    navigateSafety(
                         YourEventsFragmentDirections.actionShowExplanation(
-                            toolbarTitle = infoScreen.title,
-                            description = infoScreen.description
+                            data = arrayOf(infoScreen)
                         )
                     )
                 }
@@ -402,14 +495,18 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
             when (val type = args.type) {
                 is YourEventsFragmentType.TestResult2 -> {
                     yourEventsViewModel.saveNegativeTest2(
-                        remoteTestResult = type.remoteTestResult,
+                        negativeTest2 = type.remoteTestResult,
                         rawResponse = type.rawResponse
                     )
                 }
                 is YourEventsFragmentType.RemoteProtocol3Type -> {
-                    yourEventsViewModel.saveRemoteProtocol3Events(
+                    yourEventsViewModel.checkForConflictingEvents(
                         remoteProtocols3 = type.remoteEvents,
-                        originType = type.originType
+                    )
+                }
+                is YourEventsFragmentType.DCC -> {
+                    yourEventsViewModel.checkForConflictingEvents(
+                        remoteProtocols3 = type.remoteEvents,
                     )
                 }
             }
@@ -418,7 +515,7 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
 
     private fun presentFooter(binding: FragmentYourEventsBinding) {
         binding.somethingWrongButton.setOnClickListener {
-            findNavController().navigate(
+            navigateSafety(
                 YourEventsFragmentDirections.actionShowSomethingWrong(
                     protocolType = args.type
                 )
@@ -426,36 +523,23 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
         }
     }
 
-    private fun handleBackButton() {
-        val type = args.type
-        if ((type is YourEventsFragmentType.RemoteProtocol3Type) && type.originType == OriginType.Vaccination) {
-            blockBackButton(
-                title = R.string.retrieved_vaccinations_backbutton_title,
-                message = R.string.retrieved_vaccinations_backbutton_message
-            )
-        } else {
-            blockBackButton(
-                title = R.string.your_negative_test_results_backbutton_title,
-                message = R.string.your_negative_test_results_backbutton_message
-            )
-        }
-    }
-
-    private fun blockBackButton(@StringRes title: Int, @StringRes message: Int) {
+    private fun blockBackButton() {
         // Catch back button to show modal instead
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object :
             OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                MaterialAlertDialogBuilder(requireContext())
-                    .setTitle(getString(title))
-                    .setMessage(getString(message))
-                    .setPositiveButton(R.string.your_negative_test_results_backbutton_ok) { _, _ ->
-                        findNavController().navigate(
-                            YourEventsFragmentDirections.actionMyOverview()
-                        )
-                    }
-                    .setNegativeButton(R.string.your_negative_test_results_backbutton_cancel) { _, _ -> }
-                    .show()
+                if (isAdded) {
+                    MaterialAlertDialogBuilder(requireContext())
+                        .setTitle(R.string.your_events_block_back_dialog_title)
+                        .setMessage(R.string.your_events_block_back_dialog_description)
+                        .setPositiveButton(R.string.your_events_block_back_dialog_positive_button) { _, _ ->
+                            navigateSafety(
+                                YourEventsFragmentDirections.actionMyOverview()
+                            )
+                        }
+                        .setNegativeButton(R.string.your_events_block_back_dialog_negative_button) { _, _ -> }
+                        .show()
+                }
             }
         })
     }
@@ -472,6 +556,11 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
         holder?.birthDate?.let { birthDate ->
             try {
                 LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).formatDayMonthYear()
+            } catch (e: DateTimeParseException) {
+                // Check if date has removed content, if so return string directly
+                if (birthDate.contains("XX")) {
+                    birthDate
+                } else ""
             } catch (e: Exception) {
                 ""
             }

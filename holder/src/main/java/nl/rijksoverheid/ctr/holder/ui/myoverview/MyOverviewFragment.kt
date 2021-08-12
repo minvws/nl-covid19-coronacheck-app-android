@@ -7,14 +7,12 @@ import android.os.Looper
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
-import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
 import com.xwray.groupie.viewbinding.BindableItem
-import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
-import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMyOverviewBinding
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
@@ -25,11 +23,10 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItems
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.*
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeFragmentData
-import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
-import nl.rijksoverheid.ctr.shared.ext.sharedViewModelWithOwner
+import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ViewModelOwner
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.concurrent.TimeUnit
 
 
@@ -45,6 +42,8 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
     companion object {
         const val REQUEST_KEY = "REQUEST_KEY"
         const val EXTRA_BACK_FROM_QR = "EXTRA_BACK_FROM_QR"
+        const val GREEN_CARD_TYPE = "GREEN_CARD_TYPE"
+        const val RETURN_URI = "RETURN_URI"
     }
 
     private val section = Section()
@@ -53,13 +52,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
     private val refreshOverviewItemsRunnable = Runnable { refreshOverviewItems() }
 
     private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
-    private val myOverviewViewModel: MyOverviewViewModel by sharedViewModelWithOwner(
-        owner = {
-            ViewModelOwner.from(
-                findNavController().getViewModelStoreOwner(R.id.nav_graph_overview),
-                this
-            )
-        })
+    private val myOverviewViewModel: MyOverviewViewModel by viewModel()
 
     private val dialogUtil: DialogUtil by inject()
 
@@ -68,8 +61,6 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
 
         val binding = FragmentMyOverviewBinding.bind(view)
         initRecyclerView(binding)
-
-        setListeners(binding)
 
         setFragmentResultListener(
             REQUEST_KEY
@@ -86,11 +77,14 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
         myOverviewViewModel.myOverviewItemsLiveData.observe(viewLifecycleOwner,
             EventObserver { myOverviewItems ->
                 setItems(
-                    binding = binding,
                     myOverviewItems = myOverviewItems
                 )
             })
 
+        observeSyncErrors()
+    }
+
+    private fun observeSyncErrors() {
         myOverviewViewModel.databaseSyncerResultLiveData.observe(viewLifecycleOwner,
             EventObserver {
                 if (it is DatabaseSyncerResult.NetworkError) {
@@ -134,50 +128,30 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
         binding.recyclerView.itemAnimator = null
     }
 
-    private fun setListeners(binding: FragmentMyOverviewBinding) {
-        binding.addQrButton.setOnClickListener {
-            findNavController().navigate(
-                MyOverviewFragmentDirections.actionQrType()
-            )
-        }
-
-        binding.scroll.setOnScrollChangeListener { _, _, _, _, _ ->
-            setBottomElevation(binding)
-        }
-    }
-
     private fun refreshOverviewItems(forceSync: Boolean = false) {
         myOverviewViewModel.refreshOverviewItems(
-            forceSync = forceSync
+            forceSync = forceSync,
+            selectType = arguments?.getParcelable(GREEN_CARD_TYPE) ?: myOverviewViewModel.getSelectedType()
         )
-        refreshOverviewItemsHandler.postDelayed(refreshOverviewItemsRunnable, TimeUnit.SECONDS.toMillis(10))
+        refreshOverviewItemsHandler.postDelayed(
+            refreshOverviewItemsRunnable,
+            TimeUnit.SECONDS.toMillis(cachedAppConfigUseCase.getCachedAppConfig().domesticQRRefreshSeconds.toLong())
+        )
     }
 
     override fun onResume() {
         super.onResume()
         refreshOverviewItems()
-
-        (parentFragment?.parentFragment as HolderMainFragment?)?.getToolbar().let { toolbar ->
-            if (toolbar?.menu?.size() == 0) {
-                toolbar.apply {
-                    inflateMenu(R.menu.overview_toolbar)
-                }
-            }
-        }
     }
 
     override fun onPause() {
         super.onPause()
         refreshOverviewItemsHandler.removeCallbacks(refreshOverviewItemsRunnable)
-        (parentFragment?.parentFragment as HolderMainFragment).getToolbar().menu.clear()
     }
 
     private fun setItems(
-        binding: FragmentMyOverviewBinding,
         myOverviewItems: MyOverviewItems
     ) {
-        binding.typeToggle.root.visibility = View.GONE
-        binding.bottom.visibility = View.GONE
 
         val adapterItems = mutableListOf<BindableItem<*>>()
         myOverviewItems.items.forEach { myOverviewItem ->
@@ -190,7 +164,11 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                     )
                 }
                 is MyOverviewItem.PlaceholderCardItem -> {
-                    adapterItems.add(MyOverviewGreenCardPlaceholderItem())
+                    adapterItems.add(
+                        MyOverviewGreenCardPlaceholderItem(
+                            isEu = myOverviewItems.selectedType == GreenCardType.Eu
+                        )
+                    )
                 }
                 is MyOverviewItem.GreenCardItem -> {
                     adapterItems.add(
@@ -200,11 +178,11 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                             credentialState = myOverviewItem.credentialState,
                             databaseSyncerResult = myOverviewItem.databaseSyncerResult,
                             onButtonClick = { greenCard, credential ->
-                                findNavControllerSafety()?.navigate(
+                                navigateSafety(
                                     MyOverviewFragmentDirections.actionQrCode(
                                         toolbarTitle = when (greenCard.greenCardEntity.type) {
                                             is GreenCardType.Domestic -> {
-                                                getString(R.string.my_overview_test_result_title)
+                                                getString(R.string.domestic_qr_code_title)
                                             }
                                             is GreenCardType.Eu -> {
                                                 getString(R.string.my_overview_test_result_international_title)
@@ -216,13 +194,16 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                                             credentialExpirationTimeSeconds = credential.expirationTime.toEpochSecond(),
                                             type = greenCard.greenCardEntity.type,
                                             originType = greenCard.origins.first().type
-                                        )
+                                        ),
+                                        returnUri = arguments?.getString(RETURN_URI)
                                     )
                                 )
                             },
-                            onRetryClick = { refreshOverviewItems(
-                                forceSync = true
-                            ) },
+                            onRetryClick = {
+                                refreshOverviewItems(
+                                    forceSync = true
+                                )
+                            },
                         )
                     )
                 }
@@ -246,46 +227,38 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                         }
                     ))
                 }
-                is MyOverviewItem.TravelModeItem -> {
-                    binding.typeToggle.root.visibility = View.VISIBLE
-                    binding.typeToggle.description.setText(myOverviewItem.text)
-
-                    binding.typeToggle.button.setText(myOverviewItem.buttonText)
-
-                    binding.typeToggle.button.setOnClickListener {
-                        findNavControllerSafety()?.navigate(MyOverviewFragmentDirections.actionShowTravelMode())
-                    }
+                is MyOverviewItem.ClockDeviationItem -> {
+                    adapterItems.add(MyOverviewClockDeviationItem(onInfoIconClicked = {
+                        navigateSafety(MyOverviewTabsFragmentDirections.actionShowClockDeviationExplanation())
+                    }))
                 }
-                MyOverviewItem.AddCertificateItem -> binding.bottom.visibility = View.VISIBLE
             }
         }
 
         section.update(adapterItems)
-
-        setBottomElevation(binding)
     }
 
     private fun navigateToEuQr(originType: OriginType) {
         when (originType) {
             is OriginType.Test -> {
-                findNavControllerSafety()?.navigate(
-                    MyOverviewFragmentDirections.actionShowQrExplanation(
+                navigateSafety(
+                    MyOverviewTabsFragmentDirections.actionShowQrExplanation(
                         title = getString(R.string.my_overview_green_card_not_valid_title_test),
                         description = getString(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_test)
                     )
                 )
             }
             is OriginType.Vaccination -> {
-                findNavControllerSafety()?.navigate(
-                    MyOverviewFragmentDirections.actionShowQrExplanation(
+                navigateSafety(
+                    MyOverviewTabsFragmentDirections.actionShowQrExplanation(
                         title = getString(R.string.my_overview_green_card_not_valid_title_vaccination),
                         description = getString(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_vaccination)
                     )
                 )
             }
             is OriginType.Recovery -> {
-                findNavControllerSafety()?.navigate(
-                    MyOverviewFragmentDirections.actionShowQrExplanation(
+                navigateSafety(
+                    MyOverviewTabsFragmentDirections.actionShowQrExplanation(
                         title = getString(R.string.my_overview_green_card_not_valid_title_recovery),
                         description = getString(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_recovery)
                     )
@@ -297,8 +270,8 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
     private fun navigateToDomesticQr(originType: OriginType) {
         when (originType) {
             is OriginType.Test -> {
-                findNavControllerSafety()?.navigate(
-                    MyOverviewFragmentDirections.actionShowQrExplanation(
+                navigateSafety(
+                    MyOverviewTabsFragmentDirections.actionShowQrExplanation(
                         title = getString(R.string.my_overview_green_card_not_valid_title_test),
                         description = getString(
                             R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_test,
@@ -309,27 +282,21 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                 )
             }
             is OriginType.Vaccination -> {
-                findNavControllerSafety()?.navigate(
-                    MyOverviewFragmentDirections.actionShowQrExplanation(
+                navigateSafety(
+                    MyOverviewTabsFragmentDirections.actionShowQrExplanation(
                         title = getString(R.string.my_overview_green_card_not_valid_title_vaccination),
                         description = getString(R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_vaccination)
                     )
                 )
             }
             is OriginType.Recovery -> {
-                findNavControllerSafety()?.navigate(
-                    MyOverviewFragmentDirections.actionShowQrExplanation(
+                navigateSafety(
+                    MyOverviewTabsFragmentDirections.actionShowQrExplanation(
                         title = getString(R.string.my_overview_green_card_not_valid_title_recovery),
                         description = getString(R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_recovery)
                     )
                 )
             }
         }
-    }
-
-    private fun setBottomElevation(binding: FragmentMyOverviewBinding) {
-        binding.bottom.cardElevation = if (binding.scroll.canScrollVertically(1)) {
-            resources.getDimensionPixelSize(R.dimen.scroll_view_button_elevation).toFloat()
-        } else 0f
     }
 }

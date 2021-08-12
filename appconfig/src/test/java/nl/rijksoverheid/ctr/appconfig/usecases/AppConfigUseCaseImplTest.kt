@@ -12,46 +12,51 @@ import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.appconfig.api.AppConfigApi
-import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
-import nl.rijksoverheid.ctr.appconfig.api.model.PublicKeys
 import nl.rijksoverheid.ctr.appconfig.models.ConfigResult
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.repositories.ConfigRepositoryImpl
-import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigUseCaseImpl
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody
 import okhttp3.ResponseBody.Companion.toResponseBody
-import okio.BufferedSource
+import org.json.JSONObject
 import org.junit.Assert.assertEquals
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 import retrofit2.Response
 import java.io.IOException
 import java.time.Clock
 import java.time.Instant
 import java.time.ZoneId
 
+@RunWith(RobolectricTestRunner::class)
 class AppConfigUseCaseImplTest {
 
-    private val appConfig = "".toResponseBody("application/json".toMediaType())
+    private val appConfig = Response.success(JSONObject())
 
     private val publicKeys = "".toResponseBody("application/json".toMediaType())
 
     private val clock = Clock.fixed(Instant.ofEpochSecond(0), ZoneId.of("UTC"))
     private val appConfigPersistenceManager = mockk<AppConfigPersistenceManager>(relaxed = true)
+    private val clockDeviationUseCase = mockk<ClockDeviationUseCaseImpl>(relaxed = true)
 
     @Test
     fun `config returns Success when both calls succeed`() = runBlocking {
         val fakeApi = object : AppConfigApi {
-            override suspend fun getConfig(): ResponseBody = appConfig
+            override suspend fun getConfig(): Response<JSONObject> = appConfig
             override suspend fun getPublicKeys(): ResponseBody = publicKeys
         }
         val configRepository = ConfigRepositoryImpl(api = fakeApi)
         val appConfigUseCase =
-            AppConfigUseCaseImpl(clock, appConfigPersistenceManager, configRepository)
+            AppConfigUseCaseImpl(
+                clock,
+                appConfigPersistenceManager,
+                configRepository,
+                clockDeviationUseCase
+            )
         assertEquals(
             appConfigUseCase.get(), ConfigResult.Success(
-                appConfig = appConfig.source().readUtf8(),
+                appConfig = appConfig.body().toString(),
                 publicKeys = publicKeys.source().readUtf8()
             )
         )
@@ -61,7 +66,7 @@ class AppConfigUseCaseImplTest {
     @Test
     fun `config returns Error when config call fails`() = runBlocking {
         val fakeApi = object : AppConfigApi {
-            override suspend fun getConfig(): ResponseBody {
+            override suspend fun getConfig(): Response<JSONObject> {
                 throw IOException()
             }
 
@@ -69,7 +74,12 @@ class AppConfigUseCaseImplTest {
         }
         val configRepository = ConfigRepositoryImpl(api = fakeApi)
         val appConfigUseCase =
-            AppConfigUseCaseImpl(clock, appConfigPersistenceManager, configRepository)
+            AppConfigUseCaseImpl(
+                clock,
+                appConfigPersistenceManager,
+                configRepository,
+                clockDeviationUseCase
+            )
         assertEquals(
             appConfigUseCase.get(), ConfigResult.Error
         )
@@ -79,14 +89,19 @@ class AppConfigUseCaseImplTest {
     @Test
     fun `config returns Error when public keys call fails`() = runBlocking {
         val fakeApi = object : AppConfigApi {
-            override suspend fun getConfig(): ResponseBody = appConfig
+            override suspend fun getConfig(): Response<JSONObject> = appConfig
             override suspend fun getPublicKeys(): ResponseBody {
                 throw IOException()
             }
         }
         val configRepository = ConfigRepositoryImpl(api = fakeApi)
         val appConfigUseCase =
-            AppConfigUseCaseImpl(clock, appConfigPersistenceManager, configRepository)
+            AppConfigUseCaseImpl(
+                clock,
+                appConfigPersistenceManager,
+                configRepository,
+                clockDeviationUseCase
+            )
         assertEquals(
             appConfigUseCase.get(), ConfigResult.Error
         )

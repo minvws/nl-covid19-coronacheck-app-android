@@ -8,6 +8,13 @@ import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 
+/*
+ *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+ *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+ *
+ *   SPDX-License-Identifier: EUPL-1.2
+ *
+ */
 @Parcelize
 @JsonClass(generateAdapter = true)
 data class RemoteEventVaccination(
@@ -24,6 +31,8 @@ data class RemoteEventVaccination(
         val type: String?,
         val brand: String?,
         val completedByMedicalStatement: Boolean?,
+        val completedByPersonalStatement: Boolean?,
+        val completionReason: String?,
         val doseNumber: String?,
         val totalDoses: String?,
         val country: String?,
@@ -34,4 +43,17 @@ data class RemoteEventVaccination(
         return vaccination?.date?.atStartOfDay()?.atOffset(ZoneOffset.UTC)
     }
 
+    override fun equals(other: Any?): Boolean {
+        val otherVaccination = (other as? RemoteEventVaccination)?.vaccination ?: return false
+        return this.vaccination?.date == otherVaccination.date &&
+                ((this.vaccination?.hpkCode != null && otherVaccination.hpkCode != null && this.vaccination.hpkCode == otherVaccination.hpkCode) ||
+                        (this.vaccination?.manufacturer != null && otherVaccination.manufacturer != null && this.vaccination.manufacturer == otherVaccination.manufacturer))
+    }
+
+    override fun hashCode(): Int {
+        var result = vaccination?.date.hashCode()
+        result = 31 * result + vaccination?.hpkCode.hashCode()
+        result = 31 * result + vaccination?.manufacturer.hashCode()
+        return result
+    }
 }

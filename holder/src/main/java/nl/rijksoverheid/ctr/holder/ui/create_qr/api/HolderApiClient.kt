@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.api
 
 import nl.rijksoverheid.ctr.api.signing.http.SignedRequest
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.post.GetCouplingData
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.post.GetCredentialsPostData
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.post.GetTestIsmPostData
 import okhttp3.ResponseBody
@@ -36,4 +37,8 @@ interface HolderApiClient {
     @POST("holder/access_tokens")
     @SignedRequest
     suspend fun getAccessTokens(@Header("Authorization") authorization: String): RemoteAccessTokens
+
+    @POST("holder/coupling")
+    @SignedRequest
+    suspend fun getCoupling(@Body data: GetCouplingData): RemoteCouplingResponse
 }

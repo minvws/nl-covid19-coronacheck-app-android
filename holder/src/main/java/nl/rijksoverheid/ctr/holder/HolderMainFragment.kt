@@ -31,7 +31,7 @@ import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAccessibilityFocus
 
 class HolderMainFragment : BaseMainFragment(
     R.layout.fragment_main, setOf(
-        R.id.nav_my_overview,
+        R.id.nav_my_overview_tabs,
         R.id.nav_about_this_app
     )
 ) {
@@ -56,6 +56,7 @@ class HolderMainFragment : BaseMainFragment(
             binding.drawerLayout
         )
 
+        binding.toolbar.elevation = 0f
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
         binding.navView.setupWithNavController(navController)
 
@@ -166,6 +167,8 @@ class HolderMainFragment : BaseMainFragment(
         binding.navView.menu.findItem(R.id.nav_frequently_asked_questions)
             .styleTitle(context, R.attr.textAppearanceBody1)
         binding.navView.menu.findItem(R.id.nav_terms_of_use)
+            .styleTitle(context, R.attr.textAppearanceBody1)
+        binding.navView.menu.findItem(R.id.nav_paper_proof)
             .styleTitle(context, R.attr.textAppearanceBody1)
     }
 }

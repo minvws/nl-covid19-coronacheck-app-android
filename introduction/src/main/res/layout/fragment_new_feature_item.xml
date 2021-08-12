@@ -10,9 +10,9 @@
     android:clipToPadding="false">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/image"
@@ -32,6 +32,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
+            android:layout_marginHorizontal="16dp"
             android:text="@string/new_in_app_subtitle"
             android:textAppearance="?attr/textAppearanceSubtitle1"
             app:layout_constraintBottom_toTopOf="@+id/title"
@@ -45,8 +46,8 @@
             android:layout_height="wrap_content"
             android:textAppearance="?attr/textAppearanceHeadline5"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/subTitle"
+            app:layout_constraintStart_toStartOf="@+id/subTitle"
             app:layout_constraintTop_toBottomOf="@+id/subTitle"
             tools:text="Title" />
 
@@ -57,8 +58,8 @@
             android:layout_marginTop="24dp"
             android:layout_marginBottom="16dp"
             android:textAppearance="?attr/textAppearanceBody1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/subTitle"
+            app:layout_constraintStart_toStartOf="@+id/subTitle"
             app:layout_constraintTop_toBottomOf="@+id/title"
             tools:text="Description" />
 
