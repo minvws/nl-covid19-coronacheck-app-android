@@ -6,7 +6,6 @@ import android.os.Looper
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
-import nl.rijksoverheid.ctr.design.ext.enableCustomLinks
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.verifier.BuildConfig
 import nl.rijksoverheid.ctr.verifier.R
@@ -48,7 +47,7 @@ class ScanResultInvalidFragment : Fragment(R.layout.fragment_scan_result_invalid
         when (args.invalidData) {
             is ScanResultInvalidData.Invalid -> {
                 binding.title.text = getString(R.string.scan_result_european_nl_invalid_title)
-                binding.subtitle.text = getString(R.string.scan_result_european_nl_invalid_subtitle)
+                binding.subtitle.setHtmlText(R.string.scan_result_european_nl_invalid_subtitle)
             }
             is ScanResultInvalidData.Error -> {
                 binding.subtitle.enableCustomLinks {
@@ -60,7 +59,6 @@ class ScanResultInvalidFragment : Fragment(R.layout.fragment_scan_result_invalid
         binding.button.setOnClickListener {
             scannerUtil.launchScanner(requireActivity())
         }
-
     }
 
     override fun onResume() {
