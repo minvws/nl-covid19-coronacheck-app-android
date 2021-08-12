@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.appconfig.usecases
 
 import com.squareup.moshi.Moshi
+import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.appconfig.fakeAppConfig
@@ -42,6 +43,7 @@ class AppStatusUseCaseImplTest {
                 appConfigPersistenceManager = fakeAppConfigPersistenceManager(),
                 moshi = Moshi.Builder().build(),
                 isVerifierApp = false,
+                recommendedUpdatePersistenceManager = mockk(relaxed = true)
             )
 
             val appStatus = appStatusUseCase.get(
@@ -63,6 +65,7 @@ class AppStatusUseCaseImplTest {
                 appConfigPersistenceManager = fakeAppConfigPersistenceManager(),
                 moshi = Moshi.Builder().build(),
                 isVerifierApp = false,
+                recommendedUpdatePersistenceManager = mockk(relaxed = true)
             )
 
             val appStatus = appStatusUseCase.get(
@@ -84,6 +87,7 @@ class AppStatusUseCaseImplTest {
                 appConfigPersistenceManager = fakeAppConfigPersistenceManager(),
                 moshi = Moshi.Builder().build(),
                 isVerifierApp = false,
+                recommendedUpdatePersistenceManager = mockk(relaxed = true)
             )
 
             val appStatus = appStatusUseCase.get(
@@ -115,6 +119,7 @@ class AppStatusUseCaseImplTest {
                 ),
                 moshi = Moshi.Builder().build(),
                 isVerifierApp = false,
+                recommendedUpdatePersistenceManager = mockk(relaxed = true)
             )
 
             val appStatus = appStatusUseCase.get(
@@ -143,11 +148,12 @@ class AppStatusUseCaseImplTest {
                 ),
                 moshi = Moshi.Builder().build(),
                 isVerifierApp = false,
+                recommendedUpdatePersistenceManager = mockk(relaxed = true)
             )
 
             val appStatus = appStatusUseCase.get(
                 config = ConfigResult.Error,
-                currentVersionCode = 1
+                currentVersionCode = 1026
             )
             Assert.assertEquals(AppStatus.NoActionRequired, appStatus)
         }

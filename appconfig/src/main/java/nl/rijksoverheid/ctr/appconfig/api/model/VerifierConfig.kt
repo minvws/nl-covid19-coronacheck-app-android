@@ -18,7 +18,17 @@ class VerifierConfig(
     @Json(name = "configTTL") val configTTL: Int,
     @Json(name = "maxValidityHours") val maxValidityHours: Int,
     @Json(name = "informationURL") val verifierInformationURL: String,
-): AppConfig(verifierAppDeactivated, verifierInformationURL, verifierMinimumVersion, configTTL, emptyList()) {
+    @Json(name = "androidRecommendedVersion") val verifierRecommendedVersion: Int,
+    @Json(name = "upgradeRecommendationInterval") val upgradeRecommendationIntervalHours: Int,
+) : AppConfig(
+    verifierAppDeactivated,
+    verifierInformationURL,
+    verifierMinimumVersion,
+    configTTL,
+    emptyList(),
+    verifierRecommendedVersion,
+    upgradeRecommendationIntervalHours
+) {
     companion object {
         fun default(
             verifierMinimumVersion: Int = 1275,
@@ -28,14 +38,18 @@ class VerifierConfig(
             configTTL: Int = 3600,
             maxValidityHours: Int = 40,
             verifierInformationURL: String = "https://coronacheck.nl",
+            verifierRecommendedVersion: Int = 1275,
+            upgradeRecommendationIntervalHours: Int = 24
         ) = VerifierConfig(
             verifierMinimumVersion = verifierMinimumVersion,
             verifierMinimumVersionMessage = verifierMinimumVersionMessage,
-            playStoreURL = playStoreURL, 
-            verifierAppDeactivated = verifierAppDeactivated, 
-            configTTL = configTTL, 
-            maxValidityHours = maxValidityHours, 
+            playStoreURL = playStoreURL,
+            verifierAppDeactivated = verifierAppDeactivated,
+            configTTL = configTTL,
+            maxValidityHours = maxValidityHours,
             verifierInformationURL = verifierInformationURL,
+            verifierRecommendedVersion = verifierRecommendedVersion,
+            upgradeRecommendationIntervalHours = upgradeRecommendationIntervalHours
         )
     }
 }

@@ -24,6 +24,8 @@ abstract class AppConfig(
     val minimumVersion: Int,
     val configTtlSeconds: Int,
     val providers: List<Code>,
+    val recommendedVersion: Int,
+    val recommendedUpgradeIntervalHours: Int
 ) : JSON() {
 
     @JsonClass(generateAdapter = true)

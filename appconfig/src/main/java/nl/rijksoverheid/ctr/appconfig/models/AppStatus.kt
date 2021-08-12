@@ -16,6 +16,9 @@ sealed class AppStatus : Parcelable {
     object UpdateRequired : AppStatus(), Parcelable
 
     @Parcelize
+    object UpdateRecommended : AppStatus(), Parcelable
+
+    @Parcelize
     data class Deactivated(val informationUrl: String) : AppStatus(), Parcelable
 
     @Parcelize
