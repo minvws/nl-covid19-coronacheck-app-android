@@ -18,6 +18,7 @@ import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
+import nl.rijksoverheid.ctr.shared.utils.IntentUtil
 import nl.rijksoverheid.ctr.verifier.databinding.ActivityMainBinding
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -35,6 +36,7 @@ class VerifierMainActivity : AppCompatActivity() {
     private val appStatusViewModel: AppConfigViewModel by viewModel()
     private val mobileCoreWrapper: MobileCoreWrapper by inject()
     private val dialogUtil: DialogUtil by inject()
+    private val intentUtil: IntentUtil by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
@@ -88,7 +90,7 @@ class VerifierMainActivity : AppCompatActivity() {
             title = R.string.app_status_update_recommended_title,
             message = getString(R.string.app_status_update_recommended_message),
             positiveButtonText = R.string.app_status_update_recommended_action,
-            positiveButtonCallback = { openPlayStore() },
+            positiveButtonCallback = { intentUtil.openPlayStore() },
             negativeButtonText = R.string.app_status_update_recommended_dismiss_action
         )
     }
@@ -98,24 +100,6 @@ class VerifierMainActivity : AppCompatActivity() {
             window.setFlags(
                 WindowManager.LayoutParams.FLAG_SECURE,
                 WindowManager.LayoutParams.FLAG_SECURE
-            )
-        }
-    }
-
-    private fun openPlayStore() {
-        val intent = Intent(
-            Intent.ACTION_VIEW,
-            Uri.parse("market://details?id=${this.packageName}")
-        ).setPackage("com.android.vending")
-        try {
-            startActivity(intent)
-        } catch (ex: ActivityNotFoundException) {
-            // fall back to browser intent
-            startActivity(
-                Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("https://play.google.com/store/apps/details?id=${this.packageName}")
-                )
             )
         }
     }
