@@ -14,12 +14,12 @@ import android.net.Uri
  */
 interface IntentUtil {
 
-    fun openPlayStore()
+    fun openPlayStore(context: Context)
 }
 
-class IntentUtilImpl(private val context: Context) : IntentUtil {
+class IntentUtilImpl() : IntentUtil {
 
-    override fun openPlayStore() {
+    override fun openPlayStore(context: Context) {
         val intent = Intent(
             Intent.ACTION_VIEW,
             Uri.parse("market://details?id=${context.packageName}")

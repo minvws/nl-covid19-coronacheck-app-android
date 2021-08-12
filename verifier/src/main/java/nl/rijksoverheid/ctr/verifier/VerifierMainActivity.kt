@@ -1,8 +1,5 @@
 package nl.rijksoverheid.ctr.verifier
 
-import android.content.ActivityNotFoundException
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
@@ -89,7 +86,7 @@ class VerifierMainActivity : AppCompatActivity() {
             title = R.string.app_status_update_recommended_title,
             message = getString(R.string.app_status_update_recommended_message),
             positiveButtonText = R.string.app_status_update_recommended_action,
-            positiveButtonCallback = { intentUtil.openPlayStore() },
+            positiveButtonCallback = { intentUtil.openPlayStore(this) },
             negativeButtonText = R.string.app_status_update_recommended_dismiss_action
         )
     }

@@ -27,5 +27,5 @@ val sharedModule = module {
             ).toList()
         )
     }
-    factory<IntentUtil> { IntentUtilImpl(androidContext()) }
+    factory<IntentUtil> { IntentUtilImpl() }
 }
