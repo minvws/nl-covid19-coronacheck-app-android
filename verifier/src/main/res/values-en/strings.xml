@@ -78,10 +78,10 @@
     <string name="app_status_internet_required_title">You\'re not connected to the internet</string>
     <string name="app_status_internet_required_message">You need to be connected to start the app.</string>
     <string name="app_status_internet_required_action">Try again</string>
-    <string name="app_status_update_recommended_title">Wil je de app updaten?</string>
-    <string name="app_status_update_recommended_message">Er is een nieuwe versie van de app beschikbaar.</string>
-    <string name="app_status_update_recommended_dismiss_action">Nee, doe ik later</string>
-    <string name="app_status_update_recommended_action">Installeer update</string>
+    <string name="app_status_update_recommended_title">Want to update the app?</string>
+    <string name="app_status_update_recommended_message">There\'s a new version of the app available.</string>
+    <string name="app_status_update_recommended_dismiss_action">No, I\'ll do it later</string>
+    <string name="app_status_update_recommended_action">Install update</string>
     <string name="personal_details_month_january">JAN</string>
     <string name="personal_details_month_february">FEB</string>
     <string name="personal_details_month_march">MAR</string>
