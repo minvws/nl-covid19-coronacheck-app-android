@@ -338,6 +338,10 @@
             android:name="data"
             app:argType="nl.rijksoverheid.ctr.holder.ui.create_qr.util.InfoScreen[]" />
 
+        <argument
+            android:name="toolbarTitle"
+            app:argType="string" />
+
     </fragment>
 
     <dialog

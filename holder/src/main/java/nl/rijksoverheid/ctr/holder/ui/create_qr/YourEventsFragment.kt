@@ -321,7 +321,8 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                     infoClickListener = {
                         navigateSafety(
                             YourEventsFragmentDirections.actionShowExplanation(
-                                data = arrayOf(infoScreen)
+                                data = arrayOf(infoScreen),
+                                toolbarTitle = infoScreen.title
                             )
                         )
                     }
@@ -341,6 +342,13 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
         isDccEvent: Boolean,
     ) {
 
+        val infoScreen = infoScreenUtil.getForVaccination(
+            event = currentEvent,
+            fullName = fullName,
+            birthDate = birthDate,
+            providerIdentifier = allEventsInformation.first().providerIdentifier
+        )
+
         val eventWidget = YourEventWidget(requireContext()).apply {
             setContent(
                 title = getVaccinationEventTitle(isDccEvent, currentEvent),
@@ -353,6 +361,7 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                 infoClickListener = {
                     navigateSafety(
                         YourEventsFragmentDirections.actionShowExplanation(
+                            toolbarTitle = infoScreen.title,
                             data = allEventsInformation.map {
                                 val vaccinationEvent = it.remoteEvent as RemoteEventVaccination
                                 infoScreenUtil.getForVaccination(
@@ -409,6 +418,7 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                 infoClickListener = {
                     navigateSafety(
                         YourEventsFragmentDirections.actionShowExplanation(
+                            toolbarTitle = infoScreen.title,
                             data = arrayOf(infoScreen)
                         )
                     )
@@ -445,6 +455,7 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                 infoClickListener = {
                     navigateSafety(
                         YourEventsFragmentDirections.actionShowExplanation(
+                            toolbarTitle = infoScreen.title,
                             data = arrayOf(infoScreen)
                         )
                     )
@@ -481,6 +492,7 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                 infoClickListener = {
                     navigateSafety(
                         YourEventsFragmentDirections.actionShowExplanation(
+                            toolbarTitle = infoScreen.title,
                             data = arrayOf(infoScreen)
                         )
                     )
@@ -566,4 +578,3 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
             }
         } ?: ""
 }
-
