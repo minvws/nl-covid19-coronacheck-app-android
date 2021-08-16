@@ -7,8 +7,8 @@
     <string name="onboarding_screen_1_title">Alleen toegang met een bewijs</string>
     <string name="onboarding_screen_1_description">"Jouw gezondheid en die van anderen is belangrijk. Daarom vragen sommige landen of plekken om een coronabewijs. Alleen met dit bewijs krijg je toegang."</string>
     <string name="onboarding_screen_2_title">Bewijs van test of vaccinatie</string>
-    <string name="onboarding_screen_2_description">De app kan een coronabewijs voor jou maken als:&lt;br/&gt;&lt;br/&gt;
-&lt;ul&gt;&lt;li&gt;Je bent gevaccineerd&lt;/li&gt;&lt;li&gt;Uit een test blijkt dat je geen corona hebt&lt;/li&gt;&lt;li&gt;Uit een test blijkt dat je corona hebt gehad en bent hersteld&lt;/li&gt;&lt;/ul&gt;</string>
+    <string name="onboarding_screen_2_description"><![CDATA[De app kan een coronabewijs voor jou maken als:<br/><br/>
+<ul><li>Je bent gevaccineerd</li><li>Uit een test blijkt dat je geen corona hebt</li><li>Uit een test blijkt dat je corona hebt gehad en bent hersteld</li></ul>]]></string>
     <string name="onboarding_screen_4_title">QR-code = jouw bewijs</string>
     <string name="onboarding_screen_4_description">Deze app maakt van jouw vaccinatie, testuitslag of herstel een QR-code. Dat is jouw bewijs. De QR-code wordt gecheckt bij de ingang van plekken en activiteiten. Of aan de grens.</string>
     <string name="onboarding_screen_3_title">QR-codes voor Nederland en internationaal</string>
@@ -84,7 +84,7 @@
     <string name="commercial_test_scanner_custom_title">QR-code scannen</string>
     <string name="commercial_test_scanner_custom_message">Richt je telefoon op de QR-code die je van de testlocatie hebt gekregen.</string>
     <string name="your_negative_test_results_title">Controleer je testuitslag</string>
-    <string name="your_negative_test_results_description">Deze testuitslag is opgehaald bij de testlocatie.&lt;br\&gt;&lt;br\&gt;Kloppen de gegevens hieronder? Dan kun je van de negatieve testuitslag een QR-code maken. Dat is jouw bewijs.</string>
+    <string name="your_negative_test_results_description"><![CDATA[Deze testuitslag is opgehaald bij de testlocatie.<br\><br\>Kloppen de gegevens hieronder? Dan kun je van de negatieve testuitslag een QR-code maken. Dat is jouw bewijs.]]></string>
     <string name="your_negative_test_results_header">Opgehaalde testuitslag</string>
     <string name="your_negative_test_results_row_title">Negatieve testuitslag</string>
     <string name="your_negative_test_results_row_subtitle"><![CDATA[Testdatum: %1$s<br/>Jouw gegevens: %2$s]]></string>
@@ -232,6 +232,7 @@
     <string name="your_negative_test_3.0_results_row_subtitle"><![CDATA[Testdatum: %1$s<br/>Naam: %2$s<br/>Geboortedatum: %3$s]]></string>
     <string name="your_vaccination_row_subtitle"><![CDATA[Naam: %1$s<br/>Geboortedatum: %2$s<br/>Gegevens opgehaald bij: %3$s]]></string>
     <string name="your_vaccination_explanation_toolbar_title">Over jouw vaccinatie</string>
+    <string name="your_vaccination_explanation_description"><![CDATA[Deze gegevens van je vaccinatie zijn opgehaald:<br/><br/>Naam: <b>%1$s</b><br/>Geboortedatum: <b>%2$s</b><br/><br/>Ziekteverwekker: <b>%3$s</b><br/>Vaccin: <b>%4$s</b><br/>Vaccin type: <b>%5$s</b><br/>Producent: <b>%6$s</b><br/>Doses: <b>%7$s</b><br/>Is dit de laatste doses van je vaccinatie? <b>%8$s</b><br/>Vaccinatiedatum: <b>%9$s</b><br/>Gevaccineerd in: <b>%10$s</b><br/>Uniek certificaatnummer: <b>%11$s</b>]]></string>
     <string name="your_vaccination_explanation_last_dose_yes">ja</string>
     <string name="your_vaccination_explanation_last_dose_yes_recovery">ja (eerder corona gehad)</string>
     <string name="your_vaccination_explanation_last_dose_yes_prior_event">ja (ergens anders corona gehad)</string>
@@ -269,7 +270,7 @@
     <string name="no_vaccinations_title">Geen vaccinaties beschikbaar</string>
     <string name="no_vaccinations_description"><![CDATA[Er zijn geen gegevens over je vaccinatie(s) beschikbaar. Dit kan verschillende oorzaken hebben. Kijk voor meer informatie op <a href="https://www.coronacheck.nl/wegwijzer">de Wegwijzer</a>.<br/><br/>Ben je kortgeleden gevaccineerd? Dan kan het even duren tot de gegevens beschikbaar zijn.]]></string>
     <string name="no_test_results_title">Geen testuitslag beschikbaar</string>
-    <string name="no_test_results_description"><![CDATA[Er zijn geen gegevens over je testuitslag beschikbaar. Dit kan verschillende oorzaken hebben. Kijk voor meer informatie op <a href="https://www.coronacheck.nl/wegwijzer">de Wegwijzer</a>.<br/><br/>Heb je al een negatieve testuitslag van de GGD gekregen? Het kan een paar uur duren voordat je de uitslag hier kunt ophalen. Probeer het later opnieuw.]]></string>
+    <string name="no_test_results_description"><![CDATA[Er zijn geen gegevens over je testuitslag beschikbaar. Dit kan verschillende oorzaken hebben. Kijk voor meer informatie op <a href="https://www.coronacheck.nl/wegwijzer">de Wegwijzer</a>.]]></string>
     <string name="not_yet_tested_title">Ik ben nog niet getest</string>
     <string name="not_yet_tested_description"><![CDATA[Voor een testbewijs moet je eerst een test doen. Blijkt uit de test dat je geen corona hebt? Dan kan je jouw QR-code maken.]]></string>
     <string name="not_yet_tested_button">Maak een afspraak</string>
@@ -378,8 +379,8 @@ Scan daarom met de camera van je telefoon <b>alleen je internationale QR-code</b
     <string name="new_in_app_tabs_title">Een Nederlands en internationaal tabblad</string>
     <string name="new_in_app_tabs_description">Je kunt nu makkelijker wisselen tussen je Nederlandse en internationale bewijs. Bovenin het scherm vind je een tabblad ‘Nederland’ en een tabblad ‘Internationaal’. Ga je de grens over? Gebruik dan de bewijzen onder ‘Internationaal’.</string>
     <string name="your_events_and">en</string>
-    <string name="my_overview_clock_deviation_description">Controleer de tijd van je telefoon. Mogelijk staat deze niet goed ingesteld.</string>
+    <string name="my_overview_clock_deviation_description">Controleer de tijd van je telefoon. Deze lijkt niet goed ingesteld te staan.</string>
     <string name="clock_deviation_explanation_title">Controleer de tijd van je telefoon</string>
-    <string name="clock_deviation_explanation_description"><![CDATA[Mogelijk klopt de tijd van jouw telefoon niet. Het kan bijvoorbeeld zijn dat je telefoon een paar minuten voor loopt. Om de CoronaCheck-app goed te kunnen gebruiken is het belangrijk dat de tijd juist staat ingesteld.<br/><br/><a href="#">Ga naar de instellingen</a> van jouw telefoon en zet de datum en tijd op ‘automatisch instellen’.]]></string>
+    <string name="clock_deviation_explanation_description"><![CDATA[De tijd van jouw telefoon lijkt niet te kloppen. Het kan bijvoorbeeld zijn dat je telefoon een paar minuten voor loopt. Om de CoronaCheck-app goed te kunnen gebruiken is het belangrijk dat de tijd juist staat ingesteld.<br/><br/><a href="#">Ga naar de instellingen</a> van jouw telefoon en zet de datum en tijd op ‘automatisch instellen’.]]></string>
     <string name="domestic_qr_code_title">Nederlandse QR-code</string>
 </resources>
