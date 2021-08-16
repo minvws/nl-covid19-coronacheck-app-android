@@ -27,6 +27,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.items.YourEventWidget
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.InfoScreenUtil
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.RemoteProtocol3Util
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
@@ -43,10 +44,10 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
 
     private val args: YourEventsFragmentArgs by navArgs()
 
-    private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
     private val personalDetailsUtil: PersonalDetailsUtil by inject()
     private val infoScreenUtil: InfoScreenUtil by inject()
     private val dialogUtil: DialogUtil by inject()
+    private val remoteProtocol3Util: RemoteProtocol3Util by inject()
 
     private val yourEventsViewModel: YourEventsViewModel by viewModel()
 
@@ -236,7 +237,7 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
     ) {
         val protocols = remoteEvents.map { it.key }
 
-        val groupedEvents = yourEventsViewModel.combineSameEventsFromDifferentProviders(protocols)
+        val groupedEvents = remoteProtocol3Util.groupEvents(protocols)
 
         groupedEvents.forEach { protocolGroupedEvent ->
             val holder = protocolGroupedEvent.value.firstOrNull()?.holder
