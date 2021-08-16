@@ -198,6 +198,7 @@ class AppStatusUseCaseImplTest {
                 ),
                 currentVersionCode = 2000
             )
+
             verify { recommendedUpdatePersistenceManager.saveRecommendedUpdateShownSeconds(10000) }
             Assert.assertEquals(AppStatus.UpdateRecommended, appStatus)
         }
@@ -228,6 +229,7 @@ class AppStatusUseCaseImplTest {
                 ),
                 currentVersionCode = 2000
             )
+
             Assert.assertEquals(AppStatus.NoActionRequired, appStatus)
         }
     }
