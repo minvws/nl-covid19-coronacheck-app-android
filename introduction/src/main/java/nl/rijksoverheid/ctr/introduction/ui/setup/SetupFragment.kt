@@ -34,15 +34,19 @@ class SetupFragment : Fragment(R.layout.fragment_setup) {
 
         Accessibility.announce(requireContext(), getString(R.string.app_setup_text))
 
+        setObservers()
+
+        appStatusViewModel.refresh(mobileCoreWrapper)
+    }
+
+    private fun setObservers() {
         appStatusViewModel.appStatusLiveData.observe(viewLifecycleOwner, EventObserver {
-            if (it is AppStatus.NoActionRequired) {
+            if (it is AppStatus.NoActionRequired || it is AppStatus.UpdateRecommended) {
                 findNavController().navigate(SetupFragmentDirections.actionOnboarding(args.introductionData))
             } else {
                 val bundle = bundleOf(AppStatusFragment.EXTRA_APP_STATUS to it)
                 findNavController().navigate(R.id.action_app_status, bundle)
             }
         })
-
-        appStatusViewModel.refresh(mobileCoreWrapper)
     }
 }

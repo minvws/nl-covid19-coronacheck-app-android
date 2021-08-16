@@ -55,6 +55,7 @@
         android:layout_height="wrap_content"
         android:text="@string/your_events_details_button"
         android:layout_marginStart="4dp"
+        android:focusable="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/row_subtitle" />
 
