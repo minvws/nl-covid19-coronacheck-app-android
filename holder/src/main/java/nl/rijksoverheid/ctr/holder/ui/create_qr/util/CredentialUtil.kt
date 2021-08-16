@@ -58,9 +58,8 @@ class CredentialUtilImpl(private val clock: Clock, private val mobileCoreWrapper
     }
 
     override fun getVaccinationDosesForEuropeanCredentials(entities: List<CredentialEntity>, getString: (String, String) -> String): String {
-        val data = mobileCoreWrapper.readEuropeanCredential(entities.first().data)
-
         return try {
+            val data = mobileCoreWrapper.readEuropeanCredential(entities.first().data)
             val vaccinationData = (((data["dcc"] as JSONObject)["v"] as JSONArray)[0]) as JSONObject
             val dn = vaccinationData["dn"] as Int
             val sd = vaccinationData["sd"] as Int
