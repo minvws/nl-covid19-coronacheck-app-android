@@ -243,7 +243,7 @@ class InfoScreenUtilImpl(
             }
         } ?: ""
 
-        val disease = application.getString(R.string.your_vaccination_explanation_covid_19)
+        val disease = application.getString(R.string.your_vaccination_explanation_covid_19_answer)
 
         val testType = holderConfig.euTestTypes.firstOrNull {
             it.code == test.getStringOrNull("tt")
@@ -354,7 +354,7 @@ class InfoScreenUtilImpl(
             }
         } ?: ""
 
-        val disease = application.getString(R.string.your_vaccination_explanation_covid_19)
+        val disease = application.getString(R.string.your_vaccination_explanation_covid_19_answer)
 
         val vaccin = holderConfig.euBrands.firstOrNull {
             it.code == vaccination.getStringOrNull("mp")
@@ -443,7 +443,7 @@ class InfoScreenUtilImpl(
             }
         } ?: ""
 
-        val disease = application.getString(R.string.your_vaccination_explanation_covid_19)
+        val disease = application.getString(R.string.your_vaccination_explanation_covid_19_answer)
 
         val testDate = recovery.getStringOrNull("fr")?.let { testDate ->
             try {

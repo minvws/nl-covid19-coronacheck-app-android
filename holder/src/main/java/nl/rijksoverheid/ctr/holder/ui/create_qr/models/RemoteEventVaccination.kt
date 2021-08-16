@@ -51,9 +51,6 @@ data class RemoteEventVaccination(
     }
 
     override fun hashCode(): Int {
-        var result = vaccination?.date.hashCode()
-        result = 31 * result + vaccination?.hpkCode.hashCode()
-        result = 31 * result + vaccination?.manufacturer.hashCode()
-        return result
+        return vaccination?.date.hashCode()
     }
 }

@@ -35,8 +35,6 @@ abstract class YourEventsViewModel : ViewModel() {
     )
 
     abstract fun checkForConflictingEvents(remoteProtocols3: Map<RemoteProtocol3, ByteArray>)
-    abstract fun combineSameVaccinationEvents(remoteEvents: List<RemoteEvent>): List<RemoteEvent>
-    abstract fun combineSameEventsFromDifferentProviders(remoteEvents: List<RemoteProtocol3>): Map<RemoteEvent, List<RemoteEventInformation>>
 }
 
 data class RemoteEventInformation(val providerIdentifier: String, val holder: RemoteProtocol3.Holder?, val remoteEvent: RemoteEvent)
@@ -121,31 +119,5 @@ class YourEventsViewModelImpl(
                 loading.value = Event(false)
             }
         }
-    }
-
-    override fun combineSameVaccinationEvents(remoteEvents: List<RemoteEvent>): List<RemoteEvent> {
-        // we combine only vaccination events
-        if (remoteEvents.any { it !is RemoteEventVaccination }) {
-            return remoteEvents
-        }
-        return remoteEvents.toSet().toList()
-    }
-
-    override fun combineSameEventsFromDifferentProviders(remoteEvents: List<RemoteProtocol3>): Map<RemoteEvent, List<RemoteEventInformation>> {
-        val sameEventsGrouped = mutableMapOf<RemoteEvent, MutableList<RemoteEventInformation>>()
-
-        remoteEvents.sortedBy { it.providerIdentifier }.forEach {
-            val provider = it.providerIdentifier
-            val holder = it.holder
-            it.events?.sortedBy { it.getDate() }?.forEach { remoteEvent ->
-                if (sameEventsGrouped.contains(remoteEvent)) {
-                    sameEventsGrouped[remoteEvent]?.add(RemoteEventInformation(provider, holder, remoteEvent))
-                } else {
-                    sameEventsGrouped[remoteEvent] = mutableListOf(RemoteEventInformation(provider, holder, remoteEvent))
-                }
-            }
-        }
-
-        return sameEventsGrouped
     }
 }
