@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.appconfig.api.model
 
 import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
 
 /*
@@ -10,6 +11,7 @@ import com.squareup.moshi.Json
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
+@JsonClass(generateAdapter = true)
 class VerifierConfig(
     @Json(name = "androidMinimumVersion") val verifierMinimumVersion: Int,
     @Json(name = "androidMinimumVersionMessage") val verifierMinimumVersionMessage: String,
