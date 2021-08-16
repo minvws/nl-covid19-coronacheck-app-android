@@ -9,7 +9,14 @@ interface RemoteEventUtil {
 
 class RemoteEventUtilImpl: RemoteEventUtil {
 
+    /**
+     * Only remove duplicate events for vaccination events
+     */
     override fun removeDuplicateEvents(remoteEvents: List<RemoteEvent>): List<RemoteEvent> {
-        return remoteEvents.filterIsInstance<RemoteEventVaccination>().distinct()
+        return if (remoteEvents.all { it is RemoteEventVaccination }) {
+            return remoteEvents.filterIsInstance<RemoteEventVaccination>().distinct()
+        } else {
+            remoteEvents
+        }
     }
 }
