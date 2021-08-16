@@ -169,4 +169,51 @@ object Accessibility {
     fun View.setAsAccessibilityButton(isButton: Boolean = true): View {
         return button(this, isButton)
     }
+
+    /**
+     * Adds an AccessibilityAction of the given type to the given view
+     *
+     * @param view The view to set the action to
+     * @param type Type of the action, listed in AccessibilityNodeInfoCompat
+     * @param description Short description of the action
+     *
+     * @see androidx.core.view.accessibility.AccessibilityNodeInfoCompat
+     */
+    fun action(view: View, type: Int, description: CharSequence): View {
+        accessibilityDelegate(view) { _, info ->
+            val action = AccessibilityNodeInfoCompat.AccessibilityActionCompat(type, description)
+            info.addAction(action)
+        }
+        return view
+    }
+
+    /**
+     * Extension to add an accessibility action to the the given view
+     *
+     * @param type Type of the action, listed in AccessibilityNodeInfoCompat
+     * @param description Short description of the action
+     */
+    fun View.addAccessibilityAction(type: Int, description: CharSequence): View {
+        return action(this, type, description)
+    }
+
+    /**
+     * Helper method to mark a view as accessibility heading
+     *
+     * @param view View to label
+     * @param label The label to set
+     */
+    fun label(view: View, label: CharSequence): View {
+        view.contentDescription = label
+        return view
+    }
+
+    /**
+     * Extension to add an accessibility label to the the given view
+     *
+     * @param label The label to set
+     */
+    fun View.setAccessibilityLabel(label: CharSequence): View {
+        return label(this, label)
+    }
 }
