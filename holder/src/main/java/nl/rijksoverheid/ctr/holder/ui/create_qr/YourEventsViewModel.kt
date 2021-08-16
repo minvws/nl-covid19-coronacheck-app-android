@@ -35,7 +35,6 @@ abstract class YourEventsViewModel : ViewModel() {
     )
 
     abstract fun checkForConflictingEvents(remoteProtocols3: Map<RemoteProtocol3, ByteArray>)
-    abstract fun combineSameVaccinationEvents(remoteEvents: List<RemoteEvent>): List<RemoteEvent>
 }
 
 data class RemoteEventInformation(val providerIdentifier: String, val holder: RemoteProtocol3.Holder?, val remoteEvent: RemoteEvent)
@@ -120,13 +119,5 @@ class YourEventsViewModelImpl(
                 loading.value = Event(false)
             }
         }
-    }
-
-    override fun combineSameVaccinationEvents(remoteEvents: List<RemoteEvent>): List<RemoteEvent> {
-        // we combine only vaccination events
-        if (remoteEvents.any { it !is RemoteEventVaccination }) {
-            return remoteEvents
-        }
-        return remoteEvents.toSet().toList()
     }
 }

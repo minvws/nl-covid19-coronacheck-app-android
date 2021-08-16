@@ -27,6 +27,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.items.YourEventWidget
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.InfoScreenUtil
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.RemoteEventUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.RemoteProtocol3Util
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
@@ -48,6 +49,7 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
     private val infoScreenUtil: InfoScreenUtil by inject()
     private val dialogUtil: DialogUtil by inject()
     private val remoteProtocol3Util: RemoteProtocol3Util by inject()
+    private val remoteEventUtil: RemoteEventUtil by inject()
 
     private val yourEventsViewModel: YourEventsViewModel by viewModel()
 
@@ -244,7 +246,7 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
             val providerIdentifiers = protocolGroupedEvent.value.map { it.providerIdentifier }
             val allSameEvents = protocolGroupedEvent.value.map { it.remoteEvent }
             val allEventsInformation = protocolGroupedEvent.value.map { RemoteEventInformation(it.providerIdentifier, holder, it.remoteEvent) }
-            yourEventsViewModel.combineSameVaccinationEvents(allSameEvents).forEach { remoteEvent ->
+            remoteEventUtil.removeDuplicateEvents(allSameEvents).forEach { remoteEvent ->
                 when (remoteEvent) {
                     is RemoteEventVaccination -> {
                         presentVaccinationEvent(
