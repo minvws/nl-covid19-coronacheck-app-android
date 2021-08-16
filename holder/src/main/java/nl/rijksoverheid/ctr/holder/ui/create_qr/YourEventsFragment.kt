@@ -45,6 +45,7 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
 
     private val args: YourEventsFragmentArgs by navArgs()
 
+    private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
     private val personalDetailsUtil: PersonalDetailsUtil by inject()
     private val infoScreenUtil: InfoScreenUtil by inject()
     private val dialogUtil: DialogUtil by inject()
@@ -243,7 +244,7 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
 
         groupedEvents.forEach { protocolGroupedEvent ->
             val holder = protocolGroupedEvent.value.firstOrNull()?.holder
-            val providerIdentifiers = protocolGroupedEvent.value.map { it.providerIdentifier }
+            val providerIdentifiers = protocolGroupedEvent.value.map { it.providerIdentifier }.map { cachedAppConfigUseCase.getProviderName(it) }
             val allSameEvents = protocolGroupedEvent.value.map { it.remoteEvent }
             val allEventsInformation = protocolGroupedEvent.value.map { RemoteEventInformation(it.providerIdentifier, holder, it.remoteEvent) }
             remoteEventUtil.removeDuplicateEvents(allSameEvents).forEach { remoteEvent ->
@@ -371,7 +372,7 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                                     event = vaccinationEvent,
                                     fullName = fullName,
                                     birthDate = birthDate,
-                                    providerIdentifier = it.providerIdentifier,
+                                    providerIdentifier = cachedAppConfigUseCase.getProviderName(it.providerIdentifier),
                                 )
                             }.toTypedArray()
                         )
