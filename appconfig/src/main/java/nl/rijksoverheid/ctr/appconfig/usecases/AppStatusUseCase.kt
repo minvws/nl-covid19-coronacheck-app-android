@@ -36,7 +36,8 @@ class AppStatusUseCaseImpl(
     AppStatusUseCase {
 
     companion object {
-        private const val MS_SECONDS_IN_HOUR = 3600000
+        private const val SECONDS_IN_HOUR = 3600
+        private const val MS_IN_SECONDS = 1000
     }
 
     override suspend fun get(config: ConfigResult, currentVersionCode: Int): AppStatus =
@@ -78,9 +79,9 @@ class AppStatusUseCaseImpl(
     }
 
     private fun getUpdateRecommendedStatus(appConfig: AppConfig): AppStatus {
-        val localTime = clock.instant().toEpochMilli()
+        val localTime = clock.instant().toEpochMilli() / MS_IN_SECONDS
         val updateLastShown = recommendedUpdatePersistenceManager.getRecommendedUpdateShownSeconds()
-        val updateIntervalSeconds = appConfig.recommendedUpgradeIntervalHours * MS_SECONDS_IN_HOUR
+        val updateIntervalSeconds = appConfig.recommendedUpgradeIntervalHours * SECONDS_IN_HOUR
 
         return if (localTime > updateLastShown + updateIntervalSeconds) {
             recommendedUpdatePersistenceManager.saveRecommendedUpdateShownSeconds(localTime)

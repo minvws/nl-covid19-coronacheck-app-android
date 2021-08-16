@@ -183,7 +183,7 @@ class AppStatusUseCaseImplTest {
                     every { getRecommendedUpdateShownSeconds() } returns 0
                 }
             val appStatusUseCase = AppStatusUseCaseImpl(
-                clock = Clock.fixed(Instant.ofEpochSecond(100000), ZoneId.of("UTC")),
+                clock = Clock.fixed(Instant.ofEpochSecond(10000), ZoneId.of("UTC")),
                 cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
                 appConfigPersistenceManager = fakeAppConfigPersistenceManager(),
                 moshi = Moshi.Builder().build(),
@@ -198,7 +198,7 @@ class AppStatusUseCaseImplTest {
                 ),
                 currentVersionCode = 2000
             )
-            verify { recommendedUpdatePersistenceManager.saveRecommendedUpdateShownSeconds(100000000) }
+            verify { recommendedUpdatePersistenceManager.saveRecommendedUpdateShownSeconds(10000) }
             Assert.assertEquals(AppStatus.UpdateRecommended, appStatus)
         }
 
@@ -207,7 +207,7 @@ class AppStatusUseCaseImplTest {
         runBlocking {
             val recommendedUpdatePersistenceManager: RecommendedUpdatePersistenceManager =
                 mockk(relaxed = true) {
-                    every { getRecommendedUpdateShownSeconds() } returns 3600001
+                    every { getRecommendedUpdateShownSeconds() } returns 3601
                 }
             val appStatusUseCase = AppStatusUseCaseImpl(
                 clock = Clock.fixed(Instant.ofEpochSecond(0), ZoneId.of("UTC")),
