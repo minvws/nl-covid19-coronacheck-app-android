@@ -382,4 +382,8 @@ Scan daarom met de camera van je telefoon <b>alleen je internationale QR-code</b
     <string name="clock_deviation_explanation_title">Controleer de tijd van je telefoon</string>
     <string name="clock_deviation_explanation_description"><![CDATA[Mogelijk klopt de tijd van jouw telefoon niet. Het kan bijvoorbeeld zijn dat je telefoon een paar minuten voor loopt. Om de CoronaCheck-app goed te kunnen gebruiken is het belangrijk dat de tijd juist staat ingesteld.<br/><br/><a href="#">Ga naar de instellingen</a> van jouw telefoon en zet de datum en tijd op ‘automatisch instellen’.]]></string>
     <string name="domestic_qr_code_title">Nederlandse QR-code</string>
+    <string name="app_status_update_recommended_title">Wil je de app updaten?</string>
+    <string name="app_status_update_recommended_message">Er is een nieuwe versie van de app beschikbaar.</string>
+    <string name="app_status_update_recommended_dismiss_action">Nee, doe ik later</string>
+    <string name="app_status_update_recommended_action">Installeer update</string>
 </resources>

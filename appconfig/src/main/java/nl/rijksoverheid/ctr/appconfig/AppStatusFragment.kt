@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.appconfig.databinding.FragmentAppStatusBinding
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
+import nl.rijksoverheid.ctr.shared.utils.IntentUtil
 import org.koin.android.ext.android.inject
 
 class AppStatusFragment : Fragment(R.layout.fragment_app_status) {
@@ -34,6 +35,7 @@ class AppStatusFragment : Fragment(R.layout.fragment_app_status) {
     }
 
     private val androidUtil: AndroidUtil by inject()
+    private val intentUtil: IntentUtil by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -64,7 +66,7 @@ class AppStatusFragment : Fragment(R.layout.fragment_app_status) {
                     R.string.app_status_update_required_action,
                     R.drawable.illustration_app_status_update_required
                 ) {
-                    openPlayStore()
+                    intentUtil.openPlayStore(requireContext())
                 }
             }
             is AppStatus.Error -> {
@@ -88,25 +90,6 @@ class AppStatusFragment : Fragment(R.layout.fragment_app_status) {
             }
         }
 
-    }
-
-    private fun openPlayStore() {
-        val intent = Intent(
-            Intent.ACTION_VIEW,
-            Uri.parse("market://details?id=${requireContext().packageName}")
-        )
-            .setPackage("com.android.vending")
-        try {
-            startActivity(intent)
-        } catch (ex: ActivityNotFoundException) {
-            // fall back to browser intent
-            startActivity(
-                Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("https://play.google.com/store/apps/details?id=${requireContext().packageName}")
-                )
-            )
-        }
     }
 }
 
