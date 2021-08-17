@@ -12,6 +12,8 @@ import android.content.SharedPreferences
  */
 
 interface RecommendedUpdatePersistenceManager {
+    fun getHolderVersionUpdateShown(): Int
+    fun saveHolderVersionShown(version: Int)
     fun getRecommendedUpdateShownSeconds(): Long
     fun saveRecommendedUpdateShownSeconds(seconds: Long)
 }
@@ -20,7 +22,17 @@ class RecommendedUpdatePersistenceManagerImpl(private val sharedPreferences: Sha
     RecommendedUpdatePersistenceManager {
 
     companion object {
-        private const val RECOMMENDED_UPDATE_SHOWN_EPOCH_SECONDS = "RECOMMENDED_UPDATE_SHOWN_EPOCH_SECONDS"
+        private const val HOLDER_RECOMMENDED_VERSION_SHOWN = "HOLDER_RECOMMENDED_VERSION_SHOWN"
+        private const val RECOMMENDED_UPDATE_SHOWN_EPOCH_SECONDS =
+            "RECOMMENDED_UPDATE_SHOWN_EPOCH_SECONDS"
+    }
+
+    override fun getHolderVersionUpdateShown(): Int {
+        return sharedPreferences.getInt(HOLDER_RECOMMENDED_VERSION_SHOWN, 0)
+    }
+
+    override fun saveHolderVersionShown(version: Int) {
+        sharedPreferences.edit().putInt(HOLDER_RECOMMENDED_VERSION_SHOWN, version).apply()
     }
 
     override fun getRecommendedUpdateShownSeconds(): Long {

@@ -79,10 +79,26 @@ class AppStatusUseCaseImpl(
     }
 
     private fun getUpdateRecommendedStatus(appConfig: AppConfig): AppStatus {
-        val localTime = clock.instant().toEpochMilli() / MS_IN_SECONDS
-        val updateLastShown = recommendedUpdatePersistenceManager.getRecommendedUpdateShownSeconds()
-        val updateIntervalSeconds = appConfig.recommendedUpgradeIntervalHours * SECONDS_IN_HOUR
+        return if (appConfig is VerifierConfig) {
+            getVerifierRecommendedUpdateStatus(appConfig)
+        } else {
+            getHolderRecommendUpdateStatus(appConfig)
+        }
+    }
 
+    private fun getHolderRecommendUpdateStatus(appConfig: AppConfig) =
+        if (appConfig.recommendedVersion > recommendedUpdatePersistenceManager.getHolderVersionUpdateShown()) {
+            recommendedUpdatePersistenceManager.saveHolderVersionShown(appConfig.recommendedVersion)
+            AppStatus.UpdateRecommended
+        } else {
+            AppStatus.NoActionRequired
+        }
+
+    private fun getVerifierRecommendedUpdateStatus(appConfig: AppConfig): AppStatus {
+        val localTime = clock.instant().toEpochMilli() / MS_IN_SECONDS
+        val updateLastShown =
+            recommendedUpdatePersistenceManager.getRecommendedUpdateShownSeconds()
+        val updateIntervalSeconds = appConfig.recommendedUpgradeIntervalHours * SECONDS_IN_HOUR
         return if (localTime > updateLastShown + updateIntervalSeconds) {
             recommendedUpdatePersistenceManager.saveRecommendedUpdateShownSeconds(localTime)
             AppStatus.UpdateRecommended
