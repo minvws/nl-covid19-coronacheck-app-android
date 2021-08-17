@@ -39,8 +39,8 @@ class HtmlTextViewWidget @JvmOverloads constructor(
     private val HEADING_MARGIN_MULTIPLIER = 1.0f
     private val LIST_ITEM_MARGIN_MULTIPLIER = 0.25f
 
-    // Reflects the full text shown in the subviews. Can only be set internally.
-    var text: CharSequence? = null
+    // Reflects the unparsed HTML text shown in the subviews. Can only be set internally.
+    var text: String? = null
         private set
 
     /**
@@ -97,10 +97,10 @@ class HtmlTextViewWidget @JvmOverloads constructor(
         if (htmlText.isEmpty()) {
             return
         }
+        text = htmlText
 
         // Step 1: Parse the given String into a Spannable
         val spannable = getSpannableFromHtml(htmlText)
-        text = spannable
 
         // Step 2: Separate the Spannable on each linebreak
         val parts = spannable.separated("\n")
