@@ -193,7 +193,7 @@ class GetEventsFragment: DigiDFragment(R.layout.fragment_get_events) {
                         .toMap(),
                     originType = args.originType
                 ),
-                toolbarTitle = getString(R.string.your_vaccination_result_toolbar_title)
+                toolbarTitle = getCopyForOriginType().toolbarTitle
             )
         )
     }

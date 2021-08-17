@@ -141,6 +141,8 @@ fun holderModule(baseUrl: String) = module {
     factory<OriginUtil> { OriginUtilImpl(Clock.systemUTC()) }
     factory<RemoteEventRecoveryUtil> { RemoteEventRecoveryUtilImpl(get()) }
     factory<RemoteEventHolderUtil> { RemoteEventHolderUtilImpl(get(), get()) }
+    factory<RemoteProtocol3Util> { RemoteProtocol3UtilImpl() }
+    factory<RemoteEventUtil> { RemoteEventUtilImpl() }
     factory {
         TokenQrUseCase(get())
     }

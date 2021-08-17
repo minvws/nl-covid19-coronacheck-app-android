@@ -117,7 +117,7 @@
     <string name="app_setup_text">We starten de app voor je op…</string>
     <!-- App Status strings -->
     <string name="app_status_deactivated_title">App buiten werking</string>
-    <string name="app_status_deactivated_message">De app is niet meer in gebruik. Ga voor meer informatie naar CoronaCheck.nl</string>
+    <string name="app_status_deactivated_message">Op dit moment is de app niet in gebruik. Ga voor meer informatie naar CoronaCheck.nl</string>
     <string name="app_status_deactivated_action">Lees meer op de website</string>
     <string name="app_status_update_required_title">Tijd voor een update</string>
     <string name="app_status_update_required_message">Je hebt de laatste versie van de app nodig om verder te gaan.</string>
@@ -269,7 +269,7 @@
     <string name="no_vaccinations_title">Geen vaccinaties beschikbaar</string>
     <string name="no_vaccinations_description"><![CDATA[Er zijn geen gegevens over je vaccinatie(s) beschikbaar. Dit kan verschillende oorzaken hebben. Kijk voor meer informatie op <a href="https://www.coronacheck.nl/wegwijzer">de Wegwijzer</a>.<br/>Ben je kortgeleden gevaccineerd? Dan kan het even duren tot de gegevens beschikbaar zijn.]]></string>
     <string name="no_test_results_title">Geen testuitslag beschikbaar</string>
-    <string name="no_test_results_description"><![CDATA[Er zijn geen gegevens over je testuitslag beschikbaar. Dit kan verschillende oorzaken hebben. Kijk voor meer informatie op <a href="https://www.coronacheck.nl/wegwijzer">de Wegwijzer</a>.<br/>Heb je al een negatieve testuitslag van de GGD gekregen? Het kan een paar uur duren voordat je de uitslag hier kunt ophalen. Probeer het later opnieuw.]]></string>
+    <string name="no_test_results_description"><![CDATA[Er zijn geen gegevens over je testuitslag beschikbaar. Dit kan verschillende oorzaken hebben. Kijk voor meer informatie op <a href="https://www.coronacheck.nl/wegwijzer">de Wegwijzer</a>.]]></string>
     <string name="not_yet_tested_title">Ik ben nog niet getest</string>
     <string name="not_yet_tested_description"><![CDATA[Voor een testbewijs moet je eerst een test doen. Blijkt uit de test dat je geen corona hebt? Dan kan je jouw QR-code maken.]]></string>
     <string name="not_yet_tested_button">Maak een afspraak</string>
@@ -373,8 +373,8 @@
     <string name="new_in_app_tabs_title">Een Nederlands en internationaal tabblad</string>
     <string name="new_in_app_tabs_description">Je kunt nu makkelijker wisselen tussen je Nederlandse en internationale bewijs. Bovenin het scherm vind je een tabblad ‘Nederland’ en een tabblad ‘Internationaal’. Ga je de grens over? Gebruik dan de bewijzen onder ‘Internationaal’.</string>
     <string name="your_events_and">en</string>
-    <string name="my_overview_clock_deviation_description">Controleer de tijd van je telefoon. Mogelijk staat deze niet goed ingesteld.</string>
+    <string name="my_overview_clock_deviation_description">Controleer de tijd van je telefoon. Deze lijkt niet goed ingesteld te staan.</string>
     <string name="clock_deviation_explanation_title">Controleer de tijd van je telefoon</string>
-    <string name="clock_deviation_explanation_description"><![CDATA[Mogelijk klopt de tijd van jouw telefoon niet. Het kan bijvoorbeeld zijn dat je telefoon een paar minuten voor loopt. Om de CoronaCheck-app goed te kunnen gebruiken is het belangrijk dat de tijd juist staat ingesteld.<br/><a href="#">Ga naar de instellingen</a> van jouw telefoon en zet de datum en tijd op ‘automatisch instellen’.]]></string>
+    <string name="clock_deviation_explanation_description"><![CDATA[<p>De tijd van jouw telefoon lijkt niet te kloppen. Het kan bijvoorbeeld zijn dat je telefoon een paar minuten voor loopt. Om de CoronaCheck-app goed te kunnen gebruiken is het belangrijk dat de tijd juist staat ingesteld.</p><p><a href="#">Ga naar de instellingen</a> van jouw telefoon en zet de datum en tijd op ‘automatisch instellen’.</p>]]></string>
     <string name="domestic_qr_code_title">Nederlandse QR-code</string>
 </resources>

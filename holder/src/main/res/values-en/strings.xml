@@ -117,7 +117,7 @@
     <string name="app_setup_text">We\'re starting the app...</string>
     <!-- App Status strings -->
     <string name="app_status_deactivated_title">App out of order</string>
-    <string name="app_status_deactivated_message">The app is no longer in use. For more information, go to CoronaCheck.nl</string>
+    <string name="app_status_deactivated_message">The app is not in use at the moment. For more information, go to CoronaCheck.nl</string>
     <string name="app_status_deactivated_action">Read more on the website</string>
     <string name="app_status_update_required_title">Time for an update</string>
     <string name="app_status_update_required_message">To continue, install the latest version of the app.</string>
@@ -269,7 +269,7 @@
     <string name="no_vaccinations_title">Vaccinations not available</string>
     <string name="no_vaccinations_description"><![CDATA[There is no available vaccination data. This can have various causes. Read <a href="https://www.coronacheck.nl/en/guidepost">the Guidepost</a> for more information.<br/>Got vaccinated recently? It can take a few hours until your details are available. Try again later.]]></string>
     <string name="no_test_results_title">No test result available</string>
-    <string name="no_test_results_description"><![CDATA[There is no available data of your test result. This can have various causes. Read <a href="https://www.coronacheck.nl/en/guidepost">the Guidepost</a> for more information.<br/>Already got a negative test result from the GGD? It can take a few hours until your details are available. Try again later.]]></string>
+    <string name="no_test_results_description"><![CDATA[There is no available data of your test result. This can have various causes. Read <a href="https://www.coronacheck.nl/en/guidepost">the Guidepost</a> for more information.]]></string>
     <string name="not_yet_tested_title">I haven\'t been tested yet</string>
     <string name="not_yet_tested_description"><![CDATA[For a test certificate, you must take a test first. Does the test prove you don\'t have coronavirus? Then you can make your QR code.]]></string>
     <string name="not_yet_tested_button">Make an appointment</string>
@@ -321,7 +321,7 @@
     <string name="dialog_faultyvaccination28June_message">You’ve wrongly received a Dutch vaccination certificate due to a technical error. This was corrected.</string>
     <string name="dialog_faultyvaccination28June_refresh_error_title">Something went wrong while refreshing your details</string>
     <string name="dialog_faultyvaccination28June_refresh_error_message">Please retrieve your details again via the app.</string>
-    <string name="my_overview_qr_placeholder_header">Find your dutch certificate here later</string>
+    <string name="my_overview_qr_placeholder_header">Find your Dutch certificate here later</string>
     <string name="my_overview_qr_placeholder_header_eu">Find your international certificate here later</string>
     <string name="my_overview_qr_placeholder_description"><![CDATA[You can add a certificate if you\'re vaccinated, if you\'ve had corona or by taking a test at an <a href="https://coronacheck.nl/en/testafspraak-in-app">affiliated test location</a>.<br/>The app generates a certificate for the Netherlands and one for other countries.]]></string>
     <string name="my_overview_qr_placeholder_description_eu"><![CDATA[Are you abroad, or planning to cross the border? Then always use your international certificate. Please check before leaving which certificate you need.<br/><a href="https://www.coronacheck.nl/wegwijzer">Which certificate is valid where I\'m heading?</a>]]></string>
@@ -356,7 +356,7 @@
     <string name="your_dcc_event_description">You can create a QR code with the retrieved details. This is your certificate.</string>
     <string name="your_dcc_event_toolbar_title">Retrieved details</string>
     <string name="your_events_block_back_dialog_title">Are you sure you want to stop?</string>
-    <string name="your_events_block_back_dialog_description">You can try to add a paper certificate again later.</string>
+    <string name="your_events_block_back_dialog_description">You can try to add this QR code in the app again later.</string>
     <string name="your_events_block_back_dialog_positive_button">Yes, stop</string>
     <string name="your_events_block_back_dialog_negative_button">No, continue</string>
     <string name="your_events_replace_dialog_title">Do you want to replace your certificate?</string>

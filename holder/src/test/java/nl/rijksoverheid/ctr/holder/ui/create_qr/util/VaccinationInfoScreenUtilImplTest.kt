@@ -54,7 +54,7 @@ class VaccinationInfoScreenUtilImplTest : AutoCloseKoinTest() {
                 euManufacturers = listOf(
                     AppConfig.Code(
                         code = "ORG-100030215",
-                        name = "manufacturerName"
+                        name = "Biontech Manufacturing GmbH"
                     )
                 )
             )
@@ -100,7 +100,7 @@ class VaccinationInfoScreenUtilImplTest : AutoCloseKoinTest() {
 
         assertEquals("Over jouw vaccinatie", infoScreen.title)
         assertEquals(
-            "Deze gegevens van je vaccinatie zijn opgehaald bij GGD:<br/><br/>Naam: <b>Surname</b><br/>Geboortedatum: <b>01-08-1982</b><br/><br/>Ziekteverwekker: <b>COVID-19</b><br/>Vaccin: <b>Pfizer (Comirnaty)</b><br/>Type vaccin: <b>type</b><br/>Producent: <b>manufacturer</b><br/>Dosis: <b>1 van 2</b><br/>Vaccinatiedatum: <b>1 augustus 2021</b><br/>Gevaccineerd in: <b>Nederland</b><br/>Uniek vaccinatienummer: <b>unique</b><br/>",
+            "Deze gegevens van je vaccinatie zijn opgehaald bij GGD:<br/><br/>Naam: <b>Surname</b><br/>Geboortedatum: <b>01-08-1982</b><br/><br/>Ziekteverwekker: <b>COVID-19</b><br/>Vaccin: <b>Pfizer (Comirnaty)</b><br/>Type vaccin: <b>type</b><br/>Producent: <b>Biontech Manufacturing GmbH</b><br/>Dosis: <b>1 van 2</b><br/>Vaccinatiedatum: <b>1 augustus 2021</b><br/>Gevaccineerd in: <b>Nederland</b><br/>Uniek vaccinatienummer: <b>unique</b><br/>",
             infoScreen.description
         )
 
