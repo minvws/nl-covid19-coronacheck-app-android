@@ -120,15 +120,16 @@ class VaccinationInfoScreenUtilImpl(
         hpkCode: AppConfig.HpkCode?,
         event: RemoteEventVaccination
     ) =
-        (holderConfig.euManufacturers.firstOrNull { hpkCode?.ma == event.vaccination?.manufacturer }?.name
+        (holderConfig.euManufacturers.firstOrNull { it.code == event.vaccination?.manufacturer }?.name
+            ?: holderConfig.euManufacturers.firstOrNull { it.code == hpkCode?.ma }?.name
             ?: event.vaccination?.manufacturer
             ?: "")
 
     private fun getVaccineTypeAnswer(
         hpkCode: AppConfig.HpkCode?,
         event: RemoteEventVaccination
-    ) = (holderConfig.euVaccinations.firstOrNull { hpkCode?.vp == event.vaccination?.type }?.name
-        ?: holderConfig.euVaccinations.firstOrNull { it.code == event.vaccination?.type }?.name
+    ) = (holderConfig.euVaccinations.firstOrNull { it.code == event.vaccination?.type }?.name
+        ?: holderConfig.euVaccinations.firstOrNull { it.code == hpkCode?.vp }?.name
         ?: event.vaccination?.type
         ?: "")
 
@@ -138,8 +139,8 @@ class VaccinationInfoScreenUtilImpl(
     ): String {
         val hpkCodeName = hpkCode?.name ?: ""
         val brand =
-            holderConfig.euBrands.firstOrNull { hpkCode?.mp == event.vaccination?.brand }?.name
-                ?: holderConfig.euBrands.firstOrNull { it.code == event.vaccination?.brand }?.name
+            holderConfig.euBrands.firstOrNull { it.code == event.vaccination?.brand }?.name
+                ?: holderConfig.euBrands.firstOrNull { it.code == hpkCode?.mp }?.name
                 ?: event.vaccination?.brand
                 ?: ""
         return when {
