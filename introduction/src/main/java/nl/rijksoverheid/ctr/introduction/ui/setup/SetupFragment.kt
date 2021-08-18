@@ -46,6 +46,7 @@ class SetupFragment : Fragment(R.layout.fragment_setup) {
     private fun setObservers() {
         appStatusViewModel.appStatusLiveData.observe(viewLifecycleOwner, EventObserver {
             when {
+                // Checking on package name for verifier on recommended update as it's not implemented yet on holder
                 it is AppStatus.UpdateRecommended && requireContext().packageName.contains("verifier") -> showRecommendedUpdateDialog()
                 it is AppStatus.NoActionRequired -> navigateToOnboarding()
                 else -> navigateToAppStatus(it)
