@@ -96,15 +96,9 @@ class HolderMainActivity : AppCompatActivity() {
             return
         }
 
-        if (appStatus !is AppStatus.NoActionRequired) navigateToAppStatus(appStatus, navController)
-    }
-
-    private fun navigateToAppStatus(
-        appStatus: AppStatus,
-        navController: NavController
-    ) {
-        val bundle = bundleOf(AppStatusFragment.EXTRA_APP_STATUS to appStatus)
-        navController.navigate(R.id.action_app_status, bundle)
+        if (appStatus !is AppStatus.NoActionRequired) {
+            navController.navigate(R.id.action_app_status, AppStatusFragment.getBundle(appStatus))
+        }
     }
 
     private fun showRecommendedUpdateDialog() {
