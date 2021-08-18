@@ -13,7 +13,6 @@ import nl.rijksoverheid.ctr.appconfig.persistence.RecommendedUpdatePersistenceMa
 import nl.rijksoverheid.ctr.shared.ext.toObject
 import java.time.Clock
 import java.time.OffsetDateTime
-import java.util.concurrent.TimeUnit
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -24,7 +23,6 @@ import java.util.concurrent.TimeUnit
  */
 interface AppStatusUseCase {
     suspend fun get(config: ConfigResult, currentVersionCode: Int): AppStatus
-    fun setUpdateRecommendedIsHandled()
 }
 
 class AppStatusUseCaseImpl(
@@ -36,6 +34,11 @@ class AppStatusUseCaseImpl(
     private val isVerifierApp: Boolean,
 ) :
     AppStatusUseCase {
+
+    companion object {
+        private const val SECONDS_IN_HOUR = 3600
+        private const val MS_IN_SECONDS = 1000
+    }
 
     override suspend fun get(config: ConfigResult, currentVersionCode: Int): AppStatus =
         withContext(Dispatchers.IO) {
@@ -66,10 +69,6 @@ class AppStatusUseCaseImpl(
             }
         }
 
-    override fun setUpdateRecommendedIsHandled() {
-        recommendedUpdatePersistenceManager.saveRecommendedUpdateShownSeconds(getLocalTime())
-    }
-
     private fun checkIfActionRequired(currentVersionCode: Int, appConfig: AppConfig): AppStatus {
         return when {
             appConfig.appDeactivated -> AppStatus.Deactivated(appConfig.informationURL)
@@ -80,17 +79,15 @@ class AppStatusUseCaseImpl(
     }
 
     private fun getUpdateRecommendedStatus(appConfig: AppConfig): AppStatus {
+        val localTime = clock.instant().toEpochMilli() / MS_IN_SECONDS
         val updateLastShown = recommendedUpdatePersistenceManager.getRecommendedUpdateShownSeconds()
-        val updateIntervalSeconds =
-            TimeUnit.HOURS.toSeconds(appConfig.recommendedUpgradeIntervalHours.toLong())
+        val updateIntervalSeconds = appConfig.recommendedUpgradeIntervalHours * SECONDS_IN_HOUR
 
-
-        return if (getLocalTime() > updateLastShown + updateIntervalSeconds) {
+        return if (localTime > updateLastShown + updateIntervalSeconds) {
+            recommendedUpdatePersistenceManager.saveRecommendedUpdateShownSeconds(localTime)
             AppStatus.UpdateRecommended
         } else {
             AppStatus.NoActionRequired
         }
     }
-
-    private fun getLocalTime() = TimeUnit.MILLISECONDS.toSeconds(clock.instant().toEpochMilli())
 }

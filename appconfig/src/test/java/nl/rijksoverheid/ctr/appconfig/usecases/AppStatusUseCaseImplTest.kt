@@ -199,6 +199,7 @@ class AppStatusUseCaseImplTest {
                 currentVersionCode = 2000
             )
 
+            verify { recommendedUpdatePersistenceManager.saveRecommendedUpdateShownSeconds(10000) }
             Assert.assertEquals(AppStatus.UpdateRecommended, appStatus)
         }
 
@@ -231,22 +232,5 @@ class AppStatusUseCaseImplTest {
 
             Assert.assertEquals(AppStatus.NoActionRequired, appStatus)
         }
-    }
-
-    @Test
-    fun `handle update recommended by storing local time in persistence manager`() {
-        val recommendedUpdatePersistenceManager: RecommendedUpdatePersistenceManager = mockk(relaxed = true)
-        val appStatusUseCase = AppStatusUseCaseImpl(
-            clock = Clock.fixed(Instant.ofEpochSecond(10000), ZoneId.of("UTC")),
-            cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
-            appConfigPersistenceManager = fakeAppConfigPersistenceManager(),
-            moshi = Moshi.Builder().build(),
-            isVerifierApp = true,
-            recommendedUpdatePersistenceManager = recommendedUpdatePersistenceManager
-        )
-
-        appStatusUseCase.setUpdateRecommendedIsHandled()
-
-        verify { recommendedUpdatePersistenceManager.saveRecommendedUpdateShownSeconds(10000) }
     }
 }
