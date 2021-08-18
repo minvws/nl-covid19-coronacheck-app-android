@@ -27,6 +27,7 @@ abstract class AppConfigViewModel : ViewModel() {
     val appStatusLiveData = MutableLiveData<Event<AppStatus>>()
 
     abstract fun refresh(mobileCoreWrapper: MobileCoreWrapper)
+    abstract fun onUpdateRecommendedHandled()
 }
 
 class AppConfigViewModelImpl(
@@ -68,5 +69,9 @@ class AppConfigViewModelImpl(
 
             appStatusLiveData.postValue(Event(appStatus))
         }
+    }
+
+    override fun onUpdateRecommendedHandled() {
+        appStatusUseCase.setUpdateRecommendedIsHandled()
     }
 }

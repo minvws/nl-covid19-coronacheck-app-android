@@ -43,14 +43,12 @@ class VerifierMainActivity : AppCompatActivity() {
 
         setProductionFlags()
 
-        observeStatuses()
+        val navController =
+            (supportFragmentManager.findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment).navController
+        observeStatuses(navController)
     }
 
-    private fun observeStatuses() {
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment
-        val navController = navHostFragment.navController
-
+    private fun observeStatuses(navController: NavController) {
         introductionViewModel.introductionStatusLiveData.observe(this, EventObserver {
             navController.navigate(R.id.action_introduction, IntroductionFragment.getBundle(it))
         })
@@ -64,7 +62,7 @@ class VerifierMainActivity : AppCompatActivity() {
         appStatus: AppStatus,
         navController: NavController
     ) {
-        if ( appStatus is AppStatus.UpdateRecommended) {
+        if (appStatus is AppStatus.UpdateRecommended) {
             showRecommendedUpdateDialog()
             return
         }
@@ -89,6 +87,7 @@ class VerifierMainActivity : AppCompatActivity() {
             positiveButtonCallback = { intentUtil.openPlayStore(this) },
             negativeButtonText = R.string.app_status_update_recommended_dismiss_action
         )
+        appStatusViewModel.onUpdateRecommendedHandled()
     }
 
     private fun setProductionFlags() {
@@ -102,9 +101,6 @@ class VerifierMainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        // Only get app config on every app foreground when introduction is finished
-        if (introductionViewModel.getIntroductionStatus() is IntroductionStatus.IntroductionFinished) {
-            appStatusViewModel.refresh(mobileCoreWrapper)
-        }
+        appStatusViewModel.refresh(mobileCoreWrapper)
     }
 }
