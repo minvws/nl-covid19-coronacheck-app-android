@@ -13,6 +13,7 @@ import nl.rijksoverheid.ctr.appconfig.persistence.RecommendedUpdatePersistenceMa
 import nl.rijksoverheid.ctr.shared.ext.toObject
 import java.time.Clock
 import java.time.OffsetDateTime
+import java.util.concurrent.TimeUnit
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -34,11 +35,6 @@ class AppStatusUseCaseImpl(
     private val isVerifierApp: Boolean,
 ) :
     AppStatusUseCase {
-
-    companion object {
-        private const val SECONDS_IN_HOUR = 3600
-        private const val MS_IN_SECONDS = 1000
-    }
 
     override suspend fun get(config: ConfigResult, currentVersionCode: Int): AppStatus =
         withContext(Dispatchers.IO) {
@@ -95,10 +91,11 @@ class AppStatusUseCaseImpl(
         }
 
     private fun getVerifierRecommendedUpdateStatus(appConfig: AppConfig): AppStatus {
-        val localTime = clock.instant().toEpochMilli() / MS_IN_SECONDS
+        val localTime = TimeUnit.MILLISECONDS.toSeconds(clock.instant().toEpochMilli())
         val updateLastShown =
             recommendedUpdatePersistenceManager.getRecommendedUpdateShownSeconds()
-        val updateIntervalSeconds = appConfig.recommendedUpgradeIntervalHours * SECONDS_IN_HOUR
+        val updateIntervalSeconds =
+            TimeUnit.HOURS.toSeconds(appConfig.recommendedUpgradeIntervalHours.toLong())
         return if (localTime > updateLastShown + updateIntervalSeconds) {
             recommendedUpdatePersistenceManager.saveRecommendedUpdateShownSeconds(localTime)
             AppStatus.UpdateRecommended
