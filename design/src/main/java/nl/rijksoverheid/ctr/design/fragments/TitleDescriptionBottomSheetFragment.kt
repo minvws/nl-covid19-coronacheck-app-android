@@ -30,7 +30,7 @@ class TitleDescriptionBottomSheetFragment: ExpandedBottomSheetDialogFragment() {
         }
 
         arguments?.getString("description")?.let {
-            binding.description.setHtmlText(it, true)
+            binding.description.setHtmlText(it, htmlLinksEnabled = true)
         }
 
         binding.close.setOnClickListener {

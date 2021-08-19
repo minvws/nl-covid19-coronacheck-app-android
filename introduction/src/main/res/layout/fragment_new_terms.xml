@@ -57,7 +57,7 @@
                     android:layout_height="match_parent"
                     android:padding="16dp"
                     android:textAppearance="?attr/textAppearanceBody1"
-                    app:htmlTextWithList="@string/new_terms_highlights"
+                    app:htmlText="@string/new_terms_highlights"
                     tools:text="Content" />
 
             </androidx.cardview.widget.CardView>

@@ -186,29 +186,27 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
         when (val type = args.type) {
             is YourEventsFragmentType.TestResult2 -> {
                 binding.title.setText(R.string.your_negative_test_results_title)
-                binding.description.setHtmlText(getString(R.string.your_negative_test_results_description))
+                binding.description.setHtmlText(R.string.your_negative_test_results_description)
             }
             is YourEventsFragmentType.RemoteProtocol3Type -> {
                 when (type.originType) {
                     is OriginType.Test -> {
                         binding.title.setText(R.string.your_negative_test_results_title)
-                        binding.description.setHtmlText(getString(R.string.your_negative_test_results_description))
+                        binding.description.setHtmlText(R.string.your_negative_test_results_description)
                     }
                     is OriginType.Vaccination -> {
                         binding.title.visibility = View.GONE
-                        binding.description.text =
-                            getString(R.string.your_retrieved_vaccinations_description)
+                        binding.description.setHtmlText(R.string.your_retrieved_vaccinations_description)
                     }
                     is OriginType.Recovery -> {
                         binding.title.visibility = View.GONE
-                        binding.description.text =
-                            getString(R.string.your_positive_test_description)
+                        binding.description.setHtmlText(R.string.your_positive_test_description)
                     }
                 }
             }
             is YourEventsFragmentType.DCC -> {
                 binding.title.visibility = View.GONE
-                binding.description.text = getString(R.string.your_dcc_event_description)
+                binding.description.setHtmlText(R.string.your_dcc_event_description)
             }
         }
     }
