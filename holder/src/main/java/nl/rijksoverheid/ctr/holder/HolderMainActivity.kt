@@ -12,7 +12,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
@@ -91,7 +90,7 @@ class HolderMainActivity : AppCompatActivity() {
         appStatus: AppStatus,
         navController: NavController
     ) {
-        if ( appStatus is AppStatus.UpdateRecommended) {
+        if (appStatus is AppStatus.UpdateRecommended) {
             showRecommendedUpdateDialog()
             return
         }
