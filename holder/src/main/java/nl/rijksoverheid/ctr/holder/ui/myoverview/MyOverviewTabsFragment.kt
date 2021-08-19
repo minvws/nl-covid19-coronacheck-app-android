@@ -91,7 +91,7 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
         }.attach()
 
         val defaultTab =
-            binding.tabs.getTabAt(tabsMap[persistenceManager.getSelectedGreenCardType()]!!)
+            binding.tabs.getTabAt(tabsMap[getSelectedGreenCardType()]!!)
         defaultTab?.select()
 
         binding.addQrButton.setOnClickListener {
@@ -105,6 +105,12 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
         }
 
         return view
+    }
+
+    private fun getSelectedGreenCardType() = if (args.returnUri != null) {
+        GreenCardType.Domestic
+    } else {
+        persistenceManager.getSelectedGreenCardType()
     }
 
     override fun onPause() {
