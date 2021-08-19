@@ -47,16 +47,16 @@ class ScanResultInvalidFragment : Fragment(R.layout.fragment_scan_result_invalid
         when (args.invalidData) {
             is ScanResultInvalidData.Invalid -> {
                 binding.title.text = getString(R.string.scan_result_european_nl_invalid_title)
-                binding.subtitle.setHtmlText(R.string.scan_result_european_nl_invalid_subtitle)
+                binding.buttonExplanation.visibility = View.INVISIBLE
             }
             is ScanResultInvalidData.Error -> {
-                binding.subtitle.enableCustomLinks {
+                binding.buttonExplanation.setOnClickListener {
                     navigateSafety(ScanResultInvalidFragmentDirections.actionShowInvalidExplanation())
                 }
             }
         }
 
-        binding.button.setOnClickListener {
+        binding.buttonNext.setOnClickListener {
             scannerUtil.launchScanner(requireActivity())
         }
     }

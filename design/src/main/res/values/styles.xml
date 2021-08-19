@@ -34,6 +34,16 @@
         <item name="cornerRadius">26dp</item>
     </style>
 
+    <style name="Widget.App.Button.Outlined" parent="Widget.App.Button">
+        <item name="android:textColor">?colorOnSurface</item>
+        <item name="android:strokeColor">?colorOnSurface</item>
+        <item name="backgroundTint">@android:color/transparent</item>
+        <item name="android:elevation">0dp</item>
+        <item name="elevation">0dp</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="android:stateListAnimator">@null</item>
+    </style>
+
     <style name="Widget.App.Button.Small" parent="Widget.App.Button">
         <item name="android:paddingStart">32dp</item>
         <item name="android:paddingEnd">32dp</item>
