@@ -45,10 +45,7 @@ class YourEventsTestResultSomethingWrongDialogFragment : ExpandedBottomSheetDial
                 getString(R.string.dialog_negative_test_result_something_wrong_description)
             }
 
-        binding.description.setHtmlText(
-            htmlText = description,
-            htmlLinksEnabled = true
-        )
+        binding.description.setHtmlText(description, htmlLinksEnabled = true)
 
         binding.close.setOnClickListener {
             dismiss()

@@ -113,7 +113,7 @@ class MyOverviewGreenCardAdapterItem(
             val context = viewBinding.errorText.context
             when (databaseSyncerResult) {
                 is DatabaseSyncerResult.NetworkError -> {
-                    viewBinding.errorText.setHtmlText(context.getString(R.string.my_overview_green_card_internet_error))
+                    viewBinding.errorText.setHtmlText(R.string.my_overview_green_card_internet_error)
                     viewBinding.errorText.enableCustomLinks(onRetryClick)
                     viewBinding.errorTextRetry.setHtmlText("")
                     viewBinding.errorIcon.visibility = View.VISIBLE
@@ -121,7 +121,7 @@ class MyOverviewGreenCardAdapterItem(
                     viewBinding.errorTextRetry.visibility = View.GONE
                 }
                 is DatabaseSyncerResult.ServerError -> {
-                    viewBinding.errorText.setHtmlText(context.getString(R.string.my_overview_green_card_server_error))
+                    viewBinding.errorText.setHtmlText(R.string.my_overview_green_card_server_error)
                     viewBinding.errorText.enableCustomLinks(onRetryClick)
                     viewBinding.errorIcon.visibility = View.VISIBLE
                     viewBinding.errorText.visibility = View.VISIBLE

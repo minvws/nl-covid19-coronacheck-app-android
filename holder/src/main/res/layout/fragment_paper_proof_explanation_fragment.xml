@@ -54,7 +54,7 @@
                     android:layout_height="match_parent"
                     android:padding="16dp"
                     android:textAppearance="?attr/textAppearanceBody1"
-                    app:htmlTextWithList="@string/add_paper_proof_explanation_highlight"
+                    app:htmlText="@string/add_paper_proof_explanation_highlight"
                     tools:text="Content" />
 
             </androidx.cardview.widget.CardView>

@@ -40,10 +40,7 @@ class GetEventsFragment: DigiDFragment(R.layout.fragment_get_events) {
 
         val copy = getCopyForOriginType()
         binding.title.text = copy.title
-        binding.description.setHtmlText(
-            htmlText = copy.description,
-            htmlLinksEnabled = true
-        )
+        binding.description.setHtmlText(copy.description, htmlLinksEnabled = true)
 
         digidViewModel.loading.observe(viewLifecycleOwner, EventObserver {
             binding.button.isEnabled = !it

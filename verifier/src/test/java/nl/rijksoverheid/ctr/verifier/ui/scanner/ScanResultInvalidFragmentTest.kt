@@ -1,22 +1,22 @@
 package nl.rijksoverheid.ctr.verifier.ui.scanner
 
 import androidx.core.os.bundleOf
-import androidx.core.text.parseAsHtml
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.action.ViewActions.openLinkWithUri
-import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.platform.app.InstrumentationRegistry
+import com.schibsted.spain.barista.assertion.BaristaAssertions.assertAny
 import com.schibsted.spain.barista.assertion.BaristaBackgroundAssertions.assertHasBackground
 import com.schibsted.spain.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
 import com.schibsted.spain.barista.interaction.BaristaClickInteractions.clickOn
 import com.schibsted.spain.barista.interaction.BaristaScrollInteractions.scrollTo
 import com.schibsted.spain.barista.internal.performActionOnView
-import io.mockk.InternalPlatformDsl.toStr
 import io.mockk.mockk
 import io.mockk.verify
+import nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.fakeVerifiedQr
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultInvalidData
@@ -48,17 +48,17 @@ class ScanResultInvalidFragmentTest : AutoCloseKoinTest() {
         assertHasBackground(R.id.root, R.color.red)
         assertDisplayed(R.id.title, R.string.scan_result_invalid_title)
         scrollTo(R.id.subtitle)
-        assertDisplayed(
-            R.id.subtitle,
-            InstrumentationRegistry.getInstrumentation().context.getString(R.string.scan_result_invalid_subtitle)
-                .parseAsHtml().toStr()
-        )
+        assertAny<HtmlTextViewWidget>(R.id.subtitle) {
+            it.text == InstrumentationRegistry.getInstrumentation().context.getString(
+                R.string.scan_result_invalid_subtitle
+            )
+        }
     }
 
     @Test
     fun `Invalid result on description click opens explanation dialog`() {
         launchScanResultInvalidFragment(data = ScanResultInvalidData.Error("invalid QR code"))
-        performActionOnView(withId(R.id.subtitle), openLinkWithUri(""))
+        performActionOnView(withParent(withId(R.id.subtitle)), openLinkWithUri(""))
         assertEquals(
             navController.currentDestination?.id,
             R.id.invalid_explanation_bottomsheet
@@ -71,11 +71,11 @@ class ScanResultInvalidFragmentTest : AutoCloseKoinTest() {
         assertHasBackground(R.id.root, R.color.red)
         assertDisplayed(R.id.title, R.string.scan_result_european_nl_invalid_title)
         scrollTo(R.id.subtitle)
-        assertDisplayed(
-            R.id.subtitle,
-            InstrumentationRegistry.getInstrumentation().context.getString(R.string.scan_result_european_nl_invalid_subtitle)
-                .parseAsHtml().toStr()
-        )
+        assertAny<HtmlTextViewWidget>(R.id.subtitle) {
+            it.text == InstrumentationRegistry.getInstrumentation().context.getString(
+                R.string.scan_result_european_nl_invalid_subtitle
+            )
+        }
     }
 
     @Test
