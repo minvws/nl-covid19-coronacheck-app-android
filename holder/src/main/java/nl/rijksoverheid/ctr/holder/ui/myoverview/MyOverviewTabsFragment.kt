@@ -22,7 +22,13 @@ import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class TabPagesAdapter(fragment: Fragment, private val returnUri: String?) :
+/**
+ * viewpager adapter to house green card overviews for domestic and European.
+ *
+ * @param[fragment] Tabs fragment with viewpager where the overviews are nested within.
+ * @param[returnToExternalAppUri] Uri used to return to external app from which it was deep linked from.
+ */
+class TabPagesAdapter(fragment: Fragment, private val returnToExternalAppUri: String?) :
     FragmentStateAdapter(fragment) {
 
     override fun getItemCount(): Int = 2
@@ -31,7 +37,7 @@ class TabPagesAdapter(fragment: Fragment, private val returnUri: String?) :
         val fragment = MyOverviewFragment()
         fragment.arguments = Bundle().apply {
             putParcelable(GREEN_CARD_TYPE, positionTabsMap[position])
-            putString(RETURN_URI, returnUri)
+            putString(RETURN_URI, returnToExternalAppUri)
         }
         return fragment
     }
