@@ -42,8 +42,8 @@
     <string name="scan_result_invalid_title">Geen geldige QR-code</string>
     <string name="scan_result_invalid_subtitle"><![CDATA[De bezoeker heeft geen geldig coronabewijs. <a href="#"><b>Lees mogelijke oorzaken</b></a>]]></string>
     <string name="scan_result_invalid_button">Scan volgende</string>
-    <string name="scan_result_invalid_reason_title">Ongeldige QR-code</string>
-    <string name="scan_result_invalid_reason_description"><![CDATA[Dit betekent <b>niet</b> dat deze bezoeker corona heeft. Mogelijke oorzaken<ul><li>De bezoeker heeft een internationale QR-code die niet aan Nederlandse eisen voldoet</li><li>De QR-code is doorgestuurd</li><li>De QR-code is vervalst</li><li>De tijdinstellingen op de telefoon van de bezoeker wijken af</li></ul><br/><b>Wat nu?</b><br/>De bezoeker kan een test doen of zich laten vaccineren. Daarna kan in de CoronaCheck-app een geldige QR-code gemaakt worden.]]></string>
+    <string name="scan_result_invalid_reason_title">Wat kan ik doen?</string>
+    <string name="scan_result_invalid_reason_description"><![CDATA[Een rood scherm betekent dat de QR-code niet aan Nederlandse eisen voldoet.<br\><br\><b>Dit kun je doen</b><br\><ol><li>Controleer of de tijd op de telefoon van de bezoeker goed staat ingesteld.</li><li>Controleer of de bezoeker een origineel bewijs laat zien. Een screenshot van een bewijs kan voor problemen zorgen.</li><li>Vraag de bezoeker om de app volledig af te sluiten en opnieuw op te starten. Scan daarna opnieuw de QR-code.</li></ol><br\><b>Blijft het scherm rood?</b><br\>Vraag de bezoeker contact op te nemen met de helpdesk van CoronaCheck.<br\><br\><b>Zonder groen scherm mag de bezoeker niet toegelaten worden.</b>]]></string>
     <string name="scan_result_unknown_qr_dialog_title">Dit is geen bewijs voor CoronaCheck</string>
     <string name="scan_result_unknown_qr_dialog_message">Je hebt een onbekende QR-code gescand. Vraag de bezoeker een bewijs in de CoronaCheck-app te laten zien. Of een QR-code op papier.</string>
     <string name="scan_result_european_in_nl_dialog_title">Scan een Nederlandse QR-code</string>
