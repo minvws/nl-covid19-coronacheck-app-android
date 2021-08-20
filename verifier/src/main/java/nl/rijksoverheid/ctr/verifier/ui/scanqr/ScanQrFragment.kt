@@ -28,7 +28,7 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
         super.onViewCreated(view, savedInstanceState)
 
         val binding = FragmentScanQrBinding.bind(view)
-        binding.description.enableCustomLinks {
+        binding.instructionsButton.setOnClickListener {
             navigateSafety(R.id.nav_scan_qr, ScanQrFragmentDirections.actionScanInstructions())
         }
 
