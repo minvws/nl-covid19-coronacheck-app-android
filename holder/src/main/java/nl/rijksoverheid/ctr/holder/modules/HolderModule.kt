@@ -38,8 +38,8 @@ import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.QrCodeViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.QrCodeViewModelImpl
-import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.ReturnToAppUseCase
-import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.ReturnToAppUseCaseImpl
+import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.ReturnToExternalAppUseCase
+import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.ReturnToExternalAppUseCaseImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverViewGreenCardAdapterUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverViewGreenCardAdapterUtilImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
@@ -218,8 +218,8 @@ fun holderModule(baseUrl: String) = module {
         TestResultAttributesUseCaseImpl(get(), get())
     }
 
-    factory<ReturnToAppUseCase> {
-        ReturnToAppUseCaseImpl(get())
+    factory<ReturnToExternalAppUseCase> {
+        ReturnToExternalAppUseCaseImpl(get())
     }
 
     factory<RemoveExpiredEventsUseCase> {

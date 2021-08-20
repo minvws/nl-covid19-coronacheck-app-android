@@ -7,12 +7,12 @@ import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.QrCodeDataUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeData
-import nl.rijksoverheid.ctr.holder.ui.myoverview.models.ReturnAppData
-import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.ReturnToAppUseCase
+import nl.rijksoverheid.ctr.holder.ui.myoverview.models.ExternalReturnAppData
+import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.ReturnToExternalAppUseCase
 
 abstract class QrCodeViewModel : ViewModel() {
     val qrCodeDataLiveData = MutableLiveData<QrCodeData>()
-    val returnAppLivedata = MutableLiveData<ReturnAppData>()
+    val returnAppLivedata = MutableLiveData<ExternalReturnAppData>()
     abstract fun generateQrCode(
         type: GreenCardType,
         size: Int,
@@ -25,7 +25,7 @@ abstract class QrCodeViewModel : ViewModel() {
 
 class QrCodeViewModelImpl(
     private val qrCodeDataUseCase: QrCodeDataUseCase,
-    private val returnToAppUseCase: ReturnToAppUseCase
+    private val returnToExternalAppUseCase: ReturnToExternalAppUseCase
 ) : QrCodeViewModel() {
 
     override fun generateQrCode(
@@ -49,6 +49,6 @@ class QrCodeViewModelImpl(
     }
 
     override fun onReturnUriGiven(uri: String, type: GreenCardType) {
-        returnAppLivedata.postValue(returnToAppUseCase.get(uri, type))
+        returnAppLivedata.postValue(returnToExternalAppUseCase.get(uri, type))
     }
 }

@@ -22,7 +22,13 @@ import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class TabPagesAdapter(fragment: Fragment, private val returnUri: String?) :
+/**
+ * viewpager adapter to house green card overviews for domestic and European.
+ *
+ * @param[fragment] Tabs fragment with viewpager where the overviews are nested within.
+ * @param[returnToExternalAppUri] Uri used to return to external app from which it was deep linked from.
+ */
+class TabPagesAdapter(fragment: Fragment, private val returnToExternalAppUri: String?) :
     FragmentStateAdapter(fragment) {
 
     override fun getItemCount(): Int = 2
@@ -31,7 +37,7 @@ class TabPagesAdapter(fragment: Fragment, private val returnUri: String?) :
         val fragment = MyOverviewFragment()
         fragment.arguments = Bundle().apply {
             putParcelable(GREEN_CARD_TYPE, positionTabsMap[position])
-            putString(RETURN_URI, returnUri)
+            putString(RETURN_URI, returnToExternalAppUri)
         }
         return fragment
     }
@@ -85,7 +91,7 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
         }.attach()
 
         val defaultTab =
-            binding.tabs.getTabAt(tabsMap[persistenceManager.getSelectedGreenCardType()]!!)
+            binding.tabs.getTabAt(tabsMap[getSelectedGreenCardType()]!!)
         defaultTab?.select()
 
         binding.addQrButton.setOnClickListener {
@@ -99,6 +105,12 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
         }
 
         return view
+    }
+
+    private fun getSelectedGreenCardType() = if (args.returnUri != null) {
+        GreenCardType.Domestic
+    } else {
+        persistenceManager.getSelectedGreenCardType()
     }
 
     override fun onPause() {

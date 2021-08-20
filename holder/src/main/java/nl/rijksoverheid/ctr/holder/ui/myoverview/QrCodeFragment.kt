@@ -22,7 +22,7 @@ import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.InfoScreenUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeData
-import nl.rijksoverheid.ctr.holder.ui.myoverview.models.ReturnAppData
+import nl.rijksoverheid.ctr.holder.ui.myoverview.models.ExternalReturnAppData
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAccessibilityFocus
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
@@ -86,12 +86,12 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
         args.returnUri?.let { qrCodeViewModel.onReturnUriGiven(it, args.data.type) }
     }
 
-    private fun returnToApp(returnAppData: ReturnAppData?) {
+    private fun returnToApp(externalReturnAppData: ExternalReturnAppData?) {
         binding.button.run {
-            if (returnAppData != null) {
+            if (externalReturnAppData != null) {
                 visibility = View.VISIBLE
-                text = getString(R.string.qr_code_return_app_button, returnAppData.appName)
-                setOnClickListener { startIntent(returnAppData) }
+                text = getString(R.string.qr_code_return_app_button, externalReturnAppData.appName)
+                setOnClickListener { startIntent(externalReturnAppData) }
             } else {
                 visibility = View.GONE
 
@@ -99,9 +99,9 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
         }
     }
 
-    private fun startIntent(returnAppData: ReturnAppData) {
+    private fun startIntent(externalReturnAppData: ExternalReturnAppData) {
         try {
-            startActivity(returnAppData.intent)
+            startActivity(externalReturnAppData.intent)
         } catch (exception: ActivityNotFoundException) {
             dialogUtil.presentDialog(
                 context = requireContext(),
