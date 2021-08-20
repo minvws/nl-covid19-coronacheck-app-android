@@ -42,9 +42,3 @@ fun Context.getThemeColor(@AttrRes attribute: Int): ColorStateList = TypedValue(
         true
     ); AppCompatResources.getColorStateList(this, it.resourceId)
 }
-
-fun Context.resolveThemeAttr(@AttrRes attrRes: Int): TypedValue {
-    val typedValue = TypedValue()
-    theme.resolveAttribute(attrRes, typedValue, true)
-    return typedValue
-}
