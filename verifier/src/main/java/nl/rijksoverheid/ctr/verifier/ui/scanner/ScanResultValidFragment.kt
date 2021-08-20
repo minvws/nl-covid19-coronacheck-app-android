@@ -130,8 +130,4 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
         autoCloseHandler.removeCallbacks(autoCloseRunnable)
         transitionPersonalDetailsHandler.removeCallbacks(transitionPersonalDetailsRunnable)
     }
-
-    private fun setPersonalDetailState(){
-
-    }
 }

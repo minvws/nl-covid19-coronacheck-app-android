@@ -12,8 +12,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
-import nl.rijksoverheid.ctr.design.ext.resolveColorAttr
+import nl.rijksoverheid.ctr.shared.utils.HIDDEN_PERSONAL_DETAIL
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.PersonalDetailsItemWidgetBinding
 
@@ -49,32 +48,13 @@ class PersonalDetailItemWidget @JvmOverloads constructor(
         }
     }
 
-    fun setHeader(header: String) {
+    private fun setHeader(header: String) {
         binding.header.text = header
     }
 
     fun setContent(content: String) {
         binding.content.text = content
-        if (content.contentEquals("_")) {
-            setState(disabled = true)
-        } else {
-            setState(disabled = false)
-        }
+        binding.content.isEnabled = !content.contentEquals(HIDDEN_PERSONAL_DETAIL)
+        binding.header.isEnabled = !content.contentEquals(HIDDEN_PERSONAL_DETAIL)
     }
-
-    private fun setState(disabled: Boolean) {
-        if (disabled) {
-            binding.content.background = ContextCompat.getDrawable(
-                context,
-                R.drawable.shape_personal_detail_disabled_background
-            )
-            binding.header.setTextColor(ContextCompat.getColor(context, R.color.grey_5_halved))
-        } else {
-            binding.content.background =
-                ContextCompat.getDrawable(context, R.drawable.shape_personal_detail_background)
-            binding.header.setTextColor(context.resolveColorAttr(android.R.attr.textColorPrimary))
-        }
-    }
-
-
 }

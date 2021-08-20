@@ -15,22 +15,24 @@
         android:id="@+id/header"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        tools:text="@string/scan_result_valid_last_name"
+        android:enabled="true"
         android:textAppearance="?attr/textAppearanceCaption"
-        android:textColor="?android:textColorPrimary"
+        android:textColor="@color/personal_detail_header"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/scan_result_valid_last_name" />
 
     <TextView
         android:id="@+id/content"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:background="@drawable/shape_personal_detail_background"
+        android:background="@drawable/personal_detail_background"
         android:padding="16dp"
         android:textAlignment="center"
         android:textAppearance="?attr/textAppearanceHeadline6"
+
         app:layout_constraintEnd_toEndOf="@+id/header"
         app:layout_constraintStart_toStartOf="@+id/header"
         app:layout_constraintTop_toBottomOf="@+id/header"

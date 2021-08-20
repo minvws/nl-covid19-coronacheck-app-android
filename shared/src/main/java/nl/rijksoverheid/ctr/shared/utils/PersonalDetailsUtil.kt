@@ -19,6 +19,8 @@ interface PersonalDetailsUtil {
     ): PersonalDetails
 }
 
+const val HIDDEN_PERSONAL_DETAIL = "_"
+
 class PersonalDetailsUtilImpl(private val passportMonths: List<String>) : PersonalDetailsUtil {
 
     override fun getPersonalDetails(
