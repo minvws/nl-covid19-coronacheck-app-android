@@ -118,4 +118,5 @@
     <string name="accessibility_flash_off">Turn the flashlight off.</string>
     <string name="new_in_app_subtitle">New in the app</string>
     <string name="scan_result_invalid_explanation_button">What can I do?</string>
+    <string name="scan_result_valid_incorrect_data">Are the details incorrect?</string>
 </resources>

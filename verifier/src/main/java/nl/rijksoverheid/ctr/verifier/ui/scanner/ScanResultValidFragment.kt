@@ -73,7 +73,7 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
             }
         }
 
-        binding.personalDetails.icon.setOnClickListener {
+        binding.personalDetails.buttonIncorrectData.setOnClickListener {
             findNavController().navigate(ScanResultValidFragmentDirections.actionShowValidExplanation())
         }
 
