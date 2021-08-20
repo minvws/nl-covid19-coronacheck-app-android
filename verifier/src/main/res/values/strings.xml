@@ -118,4 +118,5 @@
     <string name="accessibility_flash_off">Zet de zaklamp uit.</string>
     <string name="new_in_app_subtitle">Nieuw in de app</string>
     <string name="scan_result_invalid_explanation_button">Wat kan ik doen?</string>
+    <string name="scan_result_valid_incorrect_data">Kloppen de gegevens niet?</string>
 </resources>
