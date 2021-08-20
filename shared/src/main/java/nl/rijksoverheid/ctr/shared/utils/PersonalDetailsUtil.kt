@@ -19,6 +19,8 @@ interface PersonalDetailsUtil {
     ): PersonalDetails
 }
 
+const val HIDDEN_PERSONAL_DETAIL = "_"
+
 class PersonalDetailsUtilImpl(private val passportMonths: List<String>) : PersonalDetailsUtil {
 
     override fun getPersonalDetails(
@@ -46,10 +48,10 @@ class PersonalDetailsUtilImpl(private val passportMonths: List<String>) : Person
         }
 
         return PersonalDetails(
-            firstNameInitial = if (firstNameInitial.isEmpty()) "_" else firstNameInitial,
-            lastNameInitial = if (lastNameInitial.isEmpty()) "_" else lastNameInitial,
-            birthDay = if (birthDayReadableString.isEmpty()) "_" else birthDayReadableString,
-            birthMonth = if (birthMonthReadableString.isEmpty()) "_" else birthMonthReadableString
+            firstNameInitial = if (firstNameInitial.isEmpty()) HIDDEN_PERSONAL_DETAIL else firstNameInitial,
+            lastNameInitial = if (lastNameInitial.isEmpty()) HIDDEN_PERSONAL_DETAIL else lastNameInitial,
+            birthDay = if (birthDayReadableString.isEmpty()) HIDDEN_PERSONAL_DETAIL else birthDayReadableString,
+            birthMonth = if (birthMonthReadableString.isEmpty()) HIDDEN_PERSONAL_DETAIL else birthMonthReadableString
         )
     }
 

@@ -105,10 +105,10 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
             testResultAttributes.birthMonth,
             includeBirthMonthNumber = true
         )
-        binding.personalDetails.lastNameInitial.text = personalDetails.lastNameInitial
-        binding.personalDetails.firstNameInitial.text = personalDetails.firstNameInitial
-        binding.personalDetails.birthMonth.text = personalDetails.birthMonth
-        binding.personalDetails.birthDay.text = personalDetails.birthDay
+        binding.personalDetails.personalDetailsLastname.setContent(personalDetails.lastNameInitial)
+        binding.personalDetails.personalDetailsFirstname.setContent(personalDetails.firstNameInitial)
+        binding.personalDetails.personalDetailsBirthmonth.setContent(personalDetails.birthMonth)
+        binding.personalDetails.personalDetailsBirthdate.setContent(personalDetails.birthDay)
     }
 
     override fun onResume() {
