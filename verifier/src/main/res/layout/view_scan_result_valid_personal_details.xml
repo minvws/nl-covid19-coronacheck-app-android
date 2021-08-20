@@ -30,20 +30,10 @@
                 android:layout_marginEnd="16dp"
                 android:text="@string/scan_result_valid_personal_details_title"
                 android:textAppearance="?attr/textAppearanceHeadline5"
-                app:layout_constraintEnd_toStartOf="@+id/icon"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_question"
-                app:layout_constraintBottom_toBottomOf="@+id/title"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/title" />
-
 
             <nl.rijksoverheid.ctr.verifier.ui.views.PersonalDetailItemWidget
                 android:id="@+id/personal_details_lastname"
@@ -75,8 +65,8 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="24dp"
                 app:header="@string/scan_result_valid_birth_day"
-                app:layout_constraintHorizontal_weight="4"
                 app:layout_constraintEnd_toStartOf="@id/personal_details_birthmonth"
+                app:layout_constraintHorizontal_weight="4"
                 app:layout_constraintStart_toStartOf="@+id/personal_details_lastname"
                 app:layout_constraintTop_toBottomOf="@+id/personal_details_firstname" />
 
@@ -84,11 +74,23 @@
                 android:id="@+id/personal_details_birthmonth"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintHorizontal_weight="6"
                 app:header="@string/scan_result_valid_birth_month"
-               app:layout_constraintStart_toEndOf="@id/personal_details_birthdate"
                 app:layout_constraintEnd_toEndOf="@id/personal_details_lastname"
+                app:layout_constraintHorizontal_weight="6"
+                app:layout_constraintStart_toEndOf="@id/personal_details_birthdate"
                 app:layout_constraintTop_toTopOf="@id/personal_details_birthdate" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_incorrect_data"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:paddingStart="0dp"
+                android:text="@string/scan_result_valid_incorrect_data"
+                android:textColor="@color/link"
+                app:layout_constraintStart_toStartOf="@+id/personal_details_birthdate"
+                app:layout_constraintTop_toBottomOf="@+id/personal_details_birthdate" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
