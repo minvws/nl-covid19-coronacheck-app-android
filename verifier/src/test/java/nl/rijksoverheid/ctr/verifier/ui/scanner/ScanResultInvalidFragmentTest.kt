@@ -47,7 +47,6 @@ class ScanResultInvalidFragmentTest : AutoCloseKoinTest() {
         launchScanResultInvalidFragment(data = ScanResultInvalidData.Error("invalid QR code"))
         assertHasBackground(R.id.root, R.color.red)
         assertDisplayed(R.id.title, R.string.scan_result_invalid_title)
-        scrollTo(R.id.button_explanation)
         assertAny<MaterialButton>(R.id.button_explanation) {
             it.text == InstrumentationRegistry.getInstrumentation().context.getString(
                 R.string.scan_result_invalid_explanation_button
