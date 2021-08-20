@@ -33,11 +33,16 @@ class AppStatusUseCaseImplTest {
     private val publicKeys =
         "{\"cl_keys\":[]}".toResponseBody("application/json".toMediaType()).source().readUtf8()
 
-    private fun getHolderConfig(minimumVersion: Int = 1, appDeactivated: Boolean = false): String =
+    private fun getHolderConfig(
+        minimumVersion: Int = 1,
+        appDeactivated: Boolean = false,
+        recommendedVersion: Int = 1,
+    ): String =
         HolderConfig.default(
             holderMinimumVersion = minimumVersion,
             holderAppDeactivated = appDeactivated,
             holderInformationURL = "dummy",
+            holderRecommendedVersion = recommendedVersion
         ).toJson(Moshi.Builder().build()).toResponseBody("application/json".toMediaType()).source()
             .readUtf8()
 
@@ -176,7 +181,7 @@ class AppStatusUseCaseImplTest {
         }
 
     @Test
-    fun `status is recommended update when version is higher and it's shown after upgrade interval`() =
+    fun `status is recommended update when verifier version is higher and it's shown after upgrade interval`() =
         runBlocking {
             val recommendedUpdatePersistenceManager: RecommendedUpdatePersistenceManager =
                 mockk(relaxed = true) {
@@ -204,7 +209,7 @@ class AppStatusUseCaseImplTest {
         }
 
     @Test
-    fun `status is no action required when recommend update was shown in upgrade interval`() {
+    fun `status is no action required when verifier recommend update was shown in upgrade interval`() {
         runBlocking {
             val recommendedUpdatePersistenceManager: RecommendedUpdatePersistenceManager =
                 mockk(relaxed = true) {
@@ -233,4 +238,59 @@ class AppStatusUseCaseImplTest {
             Assert.assertEquals(AppStatus.NoActionRequired, appStatus)
         }
     }
+
+    @Test
+    fun `status is update recommended when holder version is higher and not shown before`() =
+        runBlocking {
+            val recommendedUpdatePersistenceManager: RecommendedUpdatePersistenceManager =
+                mockk(relaxed = true) {
+                    every { getHolderVersionUpdateShown() } returns 0
+                }
+            val appStatusUseCase = AppStatusUseCaseImpl(
+                clock = Clock.fixed(Instant.ofEpochSecond(10000), ZoneId.of("UTC")),
+                cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
+                appConfigPersistenceManager = fakeAppConfigPersistenceManager(),
+                moshi = Moshi.Builder().build(),
+                isVerifierApp = false,
+                recommendedUpdatePersistenceManager = recommendedUpdatePersistenceManager
+            )
+
+            val appStatus = appStatusUseCase.get(
+                config = ConfigResult.Success(
+                    appConfig = getHolderConfig(recommendedVersion = 2001),
+                    publicKeys = publicKeys
+                ),
+                currentVersionCode = 2000
+            )
+
+            verify { recommendedUpdatePersistenceManager.saveHolderVersionShown(2001) }
+            Assert.assertEquals(AppStatus.UpdateRecommended, appStatus)
+        }
+
+    @Test
+    fun `status is no action required recommended version was shown before`() =
+        runBlocking {
+            val recommendedUpdatePersistenceManager: RecommendedUpdatePersistenceManager =
+                mockk(relaxed = true) {
+                    every { getHolderVersionUpdateShown() } returns 2001
+                }
+            val appStatusUseCase = AppStatusUseCaseImpl(
+                clock = Clock.fixed(Instant.ofEpochSecond(10000), ZoneId.of("UTC")),
+                cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
+                appConfigPersistenceManager = fakeAppConfigPersistenceManager(),
+                moshi = Moshi.Builder().build(),
+                isVerifierApp = false,
+                recommendedUpdatePersistenceManager = recommendedUpdatePersistenceManager
+            )
+
+            val appStatus = appStatusUseCase.get(
+                config = ConfigResult.Success(
+                    appConfig = getHolderConfig(recommendedVersion = 2001),
+                    publicKeys = publicKeys
+                ),
+                currentVersionCode = 2000
+            )
+
+            Assert.assertEquals(AppStatus.NoActionRequired, appStatus)
+        }
 }
