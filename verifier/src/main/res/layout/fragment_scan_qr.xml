@@ -25,7 +25,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-
                 android:paddingHorizontal="16dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/illustration_scanner_get_started"
