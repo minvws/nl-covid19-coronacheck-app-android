@@ -110,6 +110,11 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
     }
 
     protected fun setupCamera() {
+        // make sure it's still added when coming back from a dialog
+        if (!isAdded) {
+            return
+        }
+
         // Set up preview view
         val previewView = binding.previewView
 
