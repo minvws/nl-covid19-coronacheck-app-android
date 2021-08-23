@@ -288,6 +288,9 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
                     barcodes.firstOrNull()?.rawValue?.let {
                         onQrScanned(it)
                         cameraProvider.unbindAll()
+                        if (isAdded) {
+                            binding.toolbar.menu.findItem(R.id.flash).setIcon(R.drawable.ic_flash_on)
+                        }
                     }
                 }
                 .addOnFailureListener {
