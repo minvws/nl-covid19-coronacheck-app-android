@@ -20,7 +20,7 @@
 
         <action
             android:id="@+id/action_scan_instructions"
-            app:destination="@id/nav_scan_instructions"
+            app:destination="@id/instructions_nav"
             app:enterAnim="@anim/fragment_open_enter"
             app:exitAnim="@anim/fragment_open_exit"
             app:popEnterAnim="@anim/fragment_close_enter"
@@ -33,17 +33,13 @@
         app:destination="@id/nav_about_this_app" />
 
     <fragment
-        android:id="@+id/nav_scan_instructions"
-        android:name="nl.rijksoverheid.ctr.verifier.ui.scanqr.scaninstructions.ScanInstructionsFragment"
-        android:label="@string/scan_instructions"
-        tools:layout="@layout/fragment_scan_instructions" />
-
-    <fragment
         android:id="@+id/nav_about_this_app"
         android:name="nl.rijksoverheid.ctr.design.menu.about.AboutThisAppFragment"
         android:label="@string/about_this_app"
         tools:layout="@layout/fragment_about_app" />
 
     <include app:graph="@navigation/verifier_nav_graph_scanner" />
+
+    <include app:graph="@navigation/verifier_nav_graph_instructions" />
 
 </navigation>
