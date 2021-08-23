@@ -7,7 +7,6 @@ import android.os.Looper
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
-import androidx.navigation.fragment.navArgs
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
@@ -274,9 +273,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                     MyOverviewTabsFragmentDirections.actionShowQrExplanation(
                         title = getString(R.string.my_overview_green_card_not_valid_title_test),
                         description = getString(
-                            R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_test,
-                            (cachedAppConfigUseCase.getCachedAppConfig()).maxValidityHours
-                                .toString()
+                            R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_test
                         )
                     )
                 )
