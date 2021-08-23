@@ -8,6 +8,7 @@
 
 package nl.rijksoverheid.ctr.design.menu.about
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -30,6 +31,7 @@ class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
         }
     }
 
+    @SuppressLint("StringFormatInvalid")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentAboutAppBinding.bind(view)
