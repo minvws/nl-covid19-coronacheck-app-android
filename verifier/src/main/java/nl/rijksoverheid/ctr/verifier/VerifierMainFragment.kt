@@ -11,6 +11,7 @@ package nl.rijksoverheid.ctr.verifier
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -120,5 +121,9 @@ class VerifierMainFragment :
             .styleTitle(context, R.attr.textAppearanceBody1)
         binding.navView.menu.findItem(R.id.nav_close_menu)
             .styleTitle(context, R.attr.textAppearanceBody1)
+    }
+
+    fun getToolbar(): Toolbar {
+        return binding.toolbar
     }
 }
