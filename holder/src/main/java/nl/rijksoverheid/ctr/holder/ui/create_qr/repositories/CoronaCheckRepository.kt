@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.repositories
 
 import android.util.Base64
+import nl.rijksoverheid.ctr.api.models.CoronaCheckErrorResponse
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.HolderApiClient
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.post.GetCouplingData
@@ -31,7 +32,7 @@ interface CoronaCheckRepository {
 
 open class CoronaCheckRepositoryImpl(
     private val api: HolderApiClient,
-    private val errorResponseConverter: Converter<ResponseBody, ResponseError>
+    private val errorResponseConverter: Converter<ResponseBody, CoronaCheckErrorResponse>
 ) : CoronaCheckRepository {
 
     override suspend fun configProviders(): RemoteConfigProviders {

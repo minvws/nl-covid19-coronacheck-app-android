@@ -18,6 +18,7 @@ import nl.rijksoverheid.ctr.design.ext.formatDateTime
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
 import nl.rijksoverheid.ctr.design.ext.formatMonth
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
+import nl.rijksoverheid.ctr.holder.BaseFragment
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentYourEventsBinding
@@ -41,7 +42,7 @@ import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 
-class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
+class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
 
     private val args: YourEventsFragmentArgs by navArgs()
 
@@ -53,6 +54,30 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
     private val remoteEventUtil: RemoteEventUtil by inject()
 
     private val yourEventsViewModel: YourEventsViewModel by viewModel()
+
+    override fun getFlow(): Flow {
+        when (val type = args.type) {
+            is YourEventsFragmentType.TestResult2 -> {
+                return Flow.CommercialTest
+            }
+            is YourEventsFragmentType.RemoteProtocol3Type -> {
+                return when (type.originType) {
+                    is OriginType.Vaccination -> {
+                        Flow.Vaccination
+                    }
+                    is OriginType.Recovery -> {
+                        Flow.Recovery
+                    }
+                    is OriginType.Test -> {
+                        Flow.DigidTest
+                    }
+                }
+            }
+            is YourEventsFragmentType.DCC -> {
+                return Flow.HkviScan
+            }
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

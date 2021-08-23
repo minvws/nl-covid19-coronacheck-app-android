@@ -4,6 +4,7 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import nl.rijksoverheid.ctr.api.models.CoronaCheckErrorResponse
 import nl.rijksoverheid.ctr.api.signing.certificates.DIGICERT_BTC_ROOT_CA
 import nl.rijksoverheid.ctr.api.signing.certificates.EV_ROOT_CA
 import nl.rijksoverheid.ctr.api.signing.certificates.PRIVATE_ROOT_CA
@@ -275,9 +276,9 @@ fun holderModule(baseUrl: String) = module {
         )
     }
 
-    single<Converter<ResponseBody, ResponseError>>(named("ResponseError")) {
+    single<Converter<ResponseBody, CoronaCheckErrorResponse>>(named("ResponseError")) {
         get<Retrofit>(Retrofit::class).responseBodyConverter(
-            ResponseError::class.java, emptyArray()
+            CoronaCheckErrorResponse::class.java, emptyArray()
         )
     }
 

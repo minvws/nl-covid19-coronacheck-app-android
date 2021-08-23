@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.holder.ui.create_qr.models
+package nl.rijksoverheid.ctr.api.models
 
 import com.squareup.moshi.JsonClass
 
@@ -9,12 +9,11 @@ import com.squareup.moshi.JsonClass
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
+/**
+ * Response error body that the CoronaCheck API can return
+ */
 @JsonClass(generateAdapter = true)
-data class ResponseError(
+data class CoronaCheckErrorResponse(
     val status: String,
     val code: Int
-) {
-    companion object {
-        const val CODE_ALREADY_SIGNED = 99994
-    }
-}
+)
