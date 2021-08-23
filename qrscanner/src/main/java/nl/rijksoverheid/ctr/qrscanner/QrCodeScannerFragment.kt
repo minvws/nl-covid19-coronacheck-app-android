@@ -110,6 +110,11 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
     }
 
     protected fun setupCamera() {
+        // make sure it's still added when coming back from a dialog
+        if (!isAdded) {
+            return
+        }
+
         // Set up preview view
         val previewView = binding.previewView
 
@@ -288,6 +293,9 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
                     barcodes.firstOrNull()?.rawValue?.let {
                         onQrScanned(it)
                         cameraProvider.unbindAll()
+                        if (isAdded) {
+                            binding.toolbar.menu.findItem(R.id.flash).setIcon(R.drawable.ic_flash_on)
+                        }
                     }
                 }
                 .addOnFailureListener {
