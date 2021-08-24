@@ -24,8 +24,8 @@ class ScanQrViewModelImpl(
     }
 
     override fun setScanInstructionsSeen() {
-        persistenceManager.setScanInstructionsSeen()
+        if (!hasSeenScanInstructions()) {
+            persistenceManager.setScanInstructionsSeen()
+        }
     }
-
-
 }
