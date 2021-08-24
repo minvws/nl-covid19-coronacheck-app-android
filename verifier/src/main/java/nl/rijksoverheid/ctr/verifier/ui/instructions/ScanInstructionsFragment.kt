@@ -74,18 +74,32 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
             }
         }
 
-        // Nullable so tests don't trip over parentFragment
-        (parentFragment?.parentFragment as VerifierMainFragment?)?.getToolbar().let { toolbar ->
-            if (toolbar?.menu?.size() == 0) {
-                toolbar.apply {
-                    inflateMenu(R.menu.scan_instructions_toolbar)
-                    setOnMenuItemClickListener {
-                        when (it.itemId) {
-                            R.id.action_skip_instructions -> {
-                                scannerUtil.launchScanner(requireActivity())
+        // Check if parent is VerifierMainFragment so we can reuse the toolbar
+        if (parentFragment?.parentFragment is VerifierMainFragment) {
+            (parentFragment?.parentFragment as VerifierMainFragment?)?.getToolbar().let { toolbar ->
+                if (toolbar?.menu?.size() == 0) {
+                    toolbar.apply {
+                        inflateMenu(R.menu.scan_instructions_toolbar)
+                        setOnMenuItemClickListener {
+                            when (it.itemId) {
+                                R.id.action_skip_instructions -> {
+                                    scannerUtil.launchScanner(requireActivity())
+                                }
                             }
+                            true
                         }
-                        true
+                    }
+                }
+            }
+        } else {
+            // Set up toolbar ourselves as parent doesn't have one
+            binding.toolbar.apply {
+                visibility = View.VISIBLE
+                title = getString(R.string.scan_instructions)
+                setNavigationOnClickListener {
+                    val canPop = findNavController().popBackStack()
+                    if (!canPop) {
+                        requireActivity().finish()
                     }
                 }
             }
