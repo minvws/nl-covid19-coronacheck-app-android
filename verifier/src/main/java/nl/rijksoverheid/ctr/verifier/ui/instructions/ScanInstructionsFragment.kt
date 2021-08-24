@@ -98,10 +98,7 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
             override fun handleOnBackPressed() {
                 val currentItem = binding.viewPager.currentItem
                 if (currentItem == 0) {
-                    val canPop = findNavController().popBackStack()
-                    if (!canPop) {
-                        requireActivity().finish()
-                    }
+                    findNavController().popBackStack()
                 } else {
                     binding.viewPager.currentItem = binding.viewPager.currentItem - 1
                 }

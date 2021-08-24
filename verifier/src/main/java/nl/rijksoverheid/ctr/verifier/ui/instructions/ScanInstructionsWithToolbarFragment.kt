@@ -24,10 +24,7 @@ class ScanInstructionsWithToolbarFragment :
 
         val binding = FragmentScanInstructionsWithToolbarBinding.bind(view)
         binding.toolbar.setNavigationOnClickListener {
-            val canPop = findNavController().popBackStack()
-            if (!canPop) {
-                requireActivity().finish()
-            }
+          findNavController().popBackStack()
         }
     }
 }
