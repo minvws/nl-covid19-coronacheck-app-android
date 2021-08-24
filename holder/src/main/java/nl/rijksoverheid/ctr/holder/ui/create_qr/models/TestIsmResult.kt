@@ -1,6 +1,6 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.models
 
-import nl.rijksoverheid.ctr.api.models.CoronaCheckErrorResponse
+import nl.rijksoverheid.ctr.shared.models.CoronaCheckErrorResponse
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

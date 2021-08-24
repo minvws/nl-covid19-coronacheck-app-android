@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
-            android:layout_marginVertical="48dp">
+            android:layout_marginVertical="16dp">
 
             <nl.rijksoverheid.ctr.design.views.AccessibilityHeaderWidget
                 android:id="@+id/title"
@@ -47,7 +47,21 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/title"
-                tools:text="Description" />
+                tools:htmlText="Description" />
+
+            <Button
+                android:id="@+id/url_button"
+                style="?attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="@+id/description"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="@+id/description"
+                app:layout_constraintTop_toBottomOf="@+id/description"
+                tools:visibility="visible"
+                tools:text="Url Button"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -59,7 +73,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:attachToScrollView="@id/scroll"
-        app:buttonText="@string/back_to_overview"
+        app:buttonText="Button"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -4,7 +4,8 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import nl.rijksoverheid.ctr.api.models.CoronaCheckErrorResponse
+import nl.rijksoverheid.ctr.api.factory.NetworkRequestResultFactory
+import nl.rijksoverheid.ctr.shared.models.CoronaCheckErrorResponse
 import nl.rijksoverheid.ctr.api.signing.certificates.DIGICERT_BTC_ROOT_CA
 import nl.rijksoverheid.ctr.api.signing.certificates.EV_ROOT_CA
 import nl.rijksoverheid.ctr.api.signing.certificates.PRIVATE_ROOT_CA
@@ -46,6 +47,8 @@ import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverViewGreenCardAdapte
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCaseImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.*
+import nl.rijksoverheid.ctr.shared.error.ErrorCodeStringFactory
+import nl.rijksoverheid.ctr.shared.error.ErrorCodeStringFactoryImpl
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import okhttp3.tls.HandshakeCertificates
@@ -175,7 +178,7 @@ fun holderModule(baseUrl: String) = module {
     factory<CoronaCheckRepository> {
         CoronaCheckRepositoryImpl(
             get(),
-            get(named("ResponseError"))
+            get()
         )
     }
     factory<TestProviderRepository> {
@@ -280,6 +283,14 @@ fun holderModule(baseUrl: String) = module {
         get<Retrofit>(Retrofit::class).responseBodyConverter(
             CoronaCheckErrorResponse::class.java, emptyArray()
         )
+    }
+
+    factory {
+        NetworkRequestResultFactory(get(named("ResponseError")))
+    }
+
+    factory<ErrorCodeStringFactory> {
+        ErrorCodeStringFactoryImpl()
     }
 
     single {

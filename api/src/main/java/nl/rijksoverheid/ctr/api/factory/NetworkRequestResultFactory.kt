@@ -1,8 +1,8 @@
 package nl.rijksoverheid.ctr.api.factory
 
-import nl.rijksoverheid.ctr.api.models.NetworkRequestResult
-import nl.rijksoverheid.ctr.api.models.CoronaCheckErrorResponse
-import nl.rijksoverheid.ctr.api.models.Step
+import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
+import nl.rijksoverheid.ctr.shared.models.CoronaCheckErrorResponse
+import nl.rijksoverheid.ctr.shared.error.Step
 import okhttp3.ResponseBody
 import retrofit2.Converter
 import retrofit2.HttpException
@@ -22,7 +22,7 @@ class NetworkRequestResultFactory(
         networkCall: suspend () -> R): NetworkRequestResult<R> {
         return try {
             val response = networkCall.invoke()
-            NetworkRequestResult.Success(step, response)
+            NetworkRequestResult.Success(response)
         } catch (httpException: HttpException) {
             try {
                 // Check if there is a error body
@@ -31,7 +31,7 @@ class NetworkRequestResultFactory(
                 // Check if the error body is a [CoronaCheckErrorResponse]
                 val errorResponse = errorResponseBodyConverter.convert(errorBody) ?: return NetworkRequestResult.Failed.HttpError(step, httpException)
 
-                return NetworkRequestResult.Failed.CoronaCheckHttpError(step, errorResponse)
+                return NetworkRequestResult.Failed.CoronaCheckHttpError(step, httpException, errorResponse)
             } catch (e: Exception) {
                 return NetworkRequestResult.Failed.HttpError(step, httpException)
             }

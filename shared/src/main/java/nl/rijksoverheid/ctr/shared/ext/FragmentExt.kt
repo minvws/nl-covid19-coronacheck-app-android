@@ -61,6 +61,14 @@ fun Fragment.navigateSafety(currentId: Int, directions: NavDirections) {
     }
 }
 
+fun Fragment.navigateSafety(currentId: Int, directionId: Int) {
+    try {
+        findNavControllerSafety(currentId)?.navigate(directionId)
+    } catch(e: Exception) {
+        // no op
+    }
+}
+
 fun Fragment.showKeyboard(editText: EditText) {
     editText.requestFocus()
     val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager

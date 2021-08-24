@@ -1,6 +1,6 @@
 package nl.rijksoverheid.ctr.api.exceptions
 
-import nl.rijksoverheid.ctr.api.models.CoronaCheckErrorResponse
+import nl.rijksoverheid.ctr.shared.models.CoronaCheckErrorResponse
 import retrofit2.HttpException
 import retrofit2.Response
 

@@ -20,7 +20,6 @@ class PaperProofQrScannerFragment : QrCodeScannerFragment() {
         const val EXTRA_COUPLING_CODE = "EXTRA_COUPLING_CODE"
     }
 
-    private val dialogUtil: DialogUtil by inject()
     private val holderMainActivityViewModel: HolderMainActivityViewModel by sharedViewModel()
     private val paperProofScannerViewModel: PaperProofQrScannerViewModel by viewModel()
 
@@ -60,64 +59,13 @@ class PaperProofQrScannerFragment : QrCodeScannerFragment() {
 
         paperProofScannerViewModel.validatePaperProofResultLiveData.observe(viewLifecycleOwner, EventObserver {
             when (it) {
-                is ValidatePaperProofResult.Success -> {
+                is ValidatePaperProofResult.Valid -> {
                     holderMainActivityViewModel.sendEvents(it.events)
                     findNavControllerSafety()?.popBackStack()
                 }
-                is ValidatePaperProofResult.Error.NetworkError -> {
-                    dialogUtil.presentDialog(
-                        context = requireContext(),
-                        title = R.string.dialog_no_internet_connection_title,
-                        message = getString(R.string.dialog_no_internet_connection_description),
-                        positiveButtonText = R.string.ok,
-                        positiveButtonCallback = { setupCamera() },
-                        onDismissCallback = { setupCamera() }
-                    )
-                }
-                is ValidatePaperProofResult.Error.ServerError -> {
-                    dialogUtil.presentDialog(
-                        context = requireContext(),
-                        title = R.string.dialog_error_title,
-                        message = getString(
-                            R.string.dialog_error_message_with_error_code,
-                            it.httpCode.toString()
-                        ),
-                        positiveButtonText = R.string.ok,
-                        positiveButtonCallback = { setupCamera() },
-                        onDismissCallback = { setupCamera() }
-                    )
-                }
-                is ValidatePaperProofResult.Error.ExpiredQr -> {
-                    holderMainActivityViewModel.sendValidatePaperProofError(it)
+                is ValidatePaperProofResult.Invalid -> {
+                    holderMainActivityViewModel.sendValidatePaperProofInvalid(it)
                     findNavControllerSafety()?.popBackStack()
-                }
-                is ValidatePaperProofResult.Error.BlockedQr -> {
-                    holderMainActivityViewModel.sendValidatePaperProofError(it)
-                    findNavControllerSafety()?.popBackStack()
-                }
-                is ValidatePaperProofResult.Error.RejectedQr -> {
-                    holderMainActivityViewModel.sendValidatePaperProofError(it)
-                    findNavControllerSafety()?.popBackStack()
-                }
-                is ValidatePaperProofResult.Error.InvalidQr -> {
-                    dialogUtil.presentDialog(
-                        context = requireContext(),
-                        title = R.string.add_paper_proof_qr_error_dutch_qr_code_dialog_title,
-                        message = getString(R.string.add_paper_proof_qr_error_invalid_qr_dialog_description),
-                        positiveButtonText = R.string.ok,
-                        positiveButtonCallback = { setupCamera() },
-                        onDismissCallback = { setupCamera() }
-                    )
-                }
-                is ValidatePaperProofResult.Error.DutchQr -> {
-                    dialogUtil.presentDialog(
-                        context = requireContext(),
-                        title = R.string.add_paper_proof_qr_error_dutch_qr_code_dialog_title,
-                        message = getString(R.string.add_paper_proof_qr_error_invalid_qr_dialog_description),
-                        positiveButtonText = R.string.ok,
-                        positiveButtonCallback = { setupCamera() },
-                        onDismissCallback = { setupCamera() }
-                    )
                 }
             }
         })

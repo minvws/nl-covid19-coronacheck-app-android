@@ -381,4 +381,8 @@
     <string name="app_status_update_recommended_message">Er is een nieuwe versie van de app beschikbaar.</string>
     <string name="app_status_update_recommended_dismiss_action">Nee, doe ik later</string>
     <string name="app_status_update_recommended_action">Installeer update</string>
+    <string name="error_something_went_wrong_title">Sorry, er gaat iets mis</string>
+    <string name="error_something_went_wrong_description"><![CDATA[We zijn bezig om dit probleem op te lossen (foutcode: <b>%1s</b>). Wil je het later nog eens proberen?]]></string>
+    <string name="error_something_went_wrong_outage_button">Bekijk de actuele storingen</string>
+    <string name="error_something_went_wrong_outage_button_url">https://status.coronacheck.nl/</string>
 </resources>
