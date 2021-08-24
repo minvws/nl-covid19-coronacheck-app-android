@@ -14,6 +14,7 @@
     <string name="onboarding_screen_3_description">"This app generates a QR code for the Netherlands and one for other countries. You can find both QR codes in the app. Travelling outside of the Netherlands? Then use your international QR code."</string>
     <string name="onboarding_next">Next</string>
     <string name="onboarding_finish">Get started</string>
+    <string name="onboarding_step">Step %1$s</string>
     <string name="privacy_policy_title">This is how the app uses your data</string>
     <string name="privacy_policy_description"><![CDATA[The <a href="https://coronacheck.nl/en/privacy-in-app">privacy statement</a> details how CoronaCheck handles your data. These are the most important points:]]></string>
     <string name="privacy_policy_1"><![CDATA[Your data is <b>not centrally stored anywhere</b>]]></string>

@@ -9,6 +9,7 @@
     <item name="onboarding_next" type="string" />
     <item name="onboarding_finish" type="string" />
     <item name="onboarding_page_indicator_label" type="string" />
+    <item name="onboarding_step" type="string" />
     <item name="action_main" type="id" />
     <item name="new_terms_title" type="string" />
     <item name="new_terms_highlights" type="string" />

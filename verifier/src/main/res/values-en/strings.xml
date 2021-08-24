@@ -14,6 +14,7 @@
     <string name="onboarding_screen_4_description"><![CDATA[With this app, you can receive visitors again. But only if your location or activity falls under the designated locations.]]></string>
     <string name="onboarding_next">Next</string>
     <string name="onboarding_finish">Get started</string>
+    <string name="onboarding_step">Step %1$s</string>
     <string name="privacy_policy_title">Acceptable use policy</string>
     <string name="privacy_policy_description"><![CDATA[The <a href="https://coronacheck.nl/en/gebruikersvoorwaarden-in-app">acceptable use policy</a> details how CoronaCheck Scanner uses your data and what your rights are.]]></string>
     <string name="privacy_policy_1"><![CDATA[Location data are <b>not saved or used</b>]]></string>
@@ -51,17 +52,17 @@
     <string name="scan_result_valid_reason_title">About the check</string>
     <string name="scan_result_valid_reason_description"><![CDATA[Make sure the QR code belongs to the visitor by checking if the details on your screen correspond with their proof of identity.<br/><b>Note: details may be incomplete</b><br/>In order to protect the visitor’s privacy, not all data is displayed. Some fields may contain a hyphen (-). It’s sufficient to check the details that are displayed.<br/><b>Are the details incorrect? </b><br/>The visitor is not allowed access.]]></string>
     <string name="about_this_app_description">CoronaCheck Scanner is created so that certain locations and activities can open their doors again. Think for example of football matches and concerts. Visitors create a coronavirus pass of a vaccination, a negative test result or if they\'ve had corona and are recovered. With this app, only visitors with a coronavirus pass gain access. This way, the Netherlands can head out more often.</string>
-    <string name="scan_instructions">How scanning works</string>
-    <string name="scan_instructions_1_title">1. Keep a distance</string>
-    <string name="scan_instructions_1_description">Press the \'Start Scanning\' button and ask the visitor to show their QR code. They can show their code using the CoronaCheck app or the paper version. The QR code acts as a coronavirus pass and can be read at a safe distance.</string>
-    <string name="scan_instructions_2_title">2. Scan the QR code</string>
-    <string name="scan_instructions_2_description">Point your phone camera at the visitor\'s certificate. Scan the QR code.</string>
+    <string name="scan_instructions">About scanning</string>
+    <string name="scan_instructions_1_title">Scan the QR code</string>
+    <string name="scan_instructions_1_description">The visitor shows a QR code in the CoronaCheck app or on paper. A tourist may show a QR code in a foreign app, or on paper.</string>
+    <string name="scan_instructions_2_title">Always check the details</string>
+    <string name="scan_instructions_2_description">Green screen? Verify if the details on your screen are the same as those on the identity document. This way you can ensure the QR code belongs to the visitor.</string>
     <string name="scan_instructions_3_image">Person is holding a phone with a green screen and a black check mark.</string>
-    <string name="scan_instructions_3_title">3. Green screen</string>
-    <string name="scan_instructions_3_description">Green screen? The visitor has a valid negative test certificate. Now check whether the data on your screen matches the data on the proof of identity. In order to protect the visitor’s privacy, not all data is displayed. Some fields may contain a hyphen (-). It’s sufficient to check the details that are displayed.&lt;/br&gt;All good? Then the visitor may enter. They might also need an entrance ticket.</string>
+    <string name="scan_instructions_3_title">Sometimes details may disappear</string>
+    <string name="scan_instructions_3_description">This happens to protect the visitor’s privacy. You will see a hyphen (-). In this case, verify only the details you’re seeing.</string>
     <string name="scan_instructions_4_image">Person is holding a phone with a red screen and a black cross.</string>
-    <string name="scan_instructions_4_title">4. Red screen</string>
-    <string name="scan_instructions_4_description"><![CDATA[Red screen? This does not mean the visitor has coronavirus. It just means the QR code is invalid. So there is no proof of a vaccination, recovery or a negative test result. Here\'s what you can do: <ul><li>Check whether the visitor shows the QR code using the CoronaCheck app. A screenshot or copy of the QR code always results in a red screen.</li><li>Is the visitor a Dutch resident? Then check that they are showing the Dutch QR code. Scanning an international QR code in the CoronaCheck app will result in a red screen.</li><li>Ask the visitor to completely close the app and open it again. Then scan the QR code again.</li><li>Do you keep getting a red screen even though the visitor has a valid coronavirus pass? Direct the visitor to our help desk. Phone number: <a href=\"tel:\\08001421\">0800-1421.</li></ul>A green screen is always needed for entry.</a>Does the visitor not have a (valid) QR code? Then you cannot let them enter.<br/><a href="https://coronacheck.nl/en/scanner">Read more about visitor access</a>]]></string>
+    <string name="scan_instructions_4_title">Red screen - what happens now?</string>
+    <string name="scan_instructions_4_description">In case of a red screen, you will get information to assist the visitor. If the screen stays red, you cannot grant the visitor access.</string>
     <string name="privacy_statement">Acceptable use policy</string>
     <string name="scanner_custom_title">Scan QR code</string>
     <string name="scanner_custom_message">Which things should I pay attention to?</string>
@@ -120,4 +121,5 @@
     <string name="scan_result_invalid_explanation_button">What can I do?</string>
     <string name="scan_result_valid_incorrect_data">Are the details incorrect?</string>
     <string name="scan_qr_instructions_button">Which things should I pay attention to?</string>
+    <string name="scan_instructions_skip">Skip</string>
 </resources>
