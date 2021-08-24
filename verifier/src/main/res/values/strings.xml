@@ -121,4 +121,5 @@
     <string name="scan_result_invalid_explanation_button">Wat kan ik doen?</string>
     <string name="scan_result_valid_incorrect_data">Kloppen de gegevens niet?</string>
     <string name="scan_qr_instructions_button">Waar moet ik op letten?</string>
+    <string name="scan_instructions_skip">Sla over</string>
 </resources>

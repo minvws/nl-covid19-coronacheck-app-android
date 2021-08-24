@@ -10,6 +10,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_skip_instructions"
-        android:title="Sla over"
+        android:title="@string/scan_instructions_skip"
         app:showAsAction="always" />
 </menu>
