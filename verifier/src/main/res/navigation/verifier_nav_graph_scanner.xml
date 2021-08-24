@@ -28,7 +28,7 @@
 
         <action
             android:id="@+id/action_scan_instructions"
-            app:destination="@id/instructions_nav"
+            app:destination="@id/instructions_with_toolbar_nav"
             app:enterAnim="@anim/fragment_open_enter"
             app:exitAnim="@anim/fragment_open_exit"
             app:popEnterAnim="@anim/fragment_close_enter"
@@ -98,6 +98,6 @@
         android:label="ScanResultInvalidExplanationDialogFragment"
         tools:layout="@layout/fragment_scan_result_invalid_reason" />
 
-    <include app:graph="@navigation/verifier_nav_graph_instructions" />
+    <include app:graph="@navigation/verifier_nav_graph_instructions_with_toolbar" />
 
 </navigation>
