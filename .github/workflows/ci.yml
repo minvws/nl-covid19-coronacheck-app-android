@@ -91,7 +91,7 @@ jobs:
           node-version: 10.x
 
       - name: Install firebase-cli
-        run: npm install -g firebase-tools
+        run: npm install -g firebase-tools --loglevel verbose
       - name: Distribute holder test variant
         run: |
           firebase appdistribution:distribute `ls apks/holder/build/outputs/apk/tst/release/holder-*.apk` \
