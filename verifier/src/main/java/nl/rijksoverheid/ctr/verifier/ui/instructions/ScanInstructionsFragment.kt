@@ -21,7 +21,7 @@ import nl.rijksoverheid.ctr.introduction.ui.onboarding.OnboardingPagerAdapter
 import nl.rijksoverheid.ctr.introduction.ui.onboarding.models.OnboardingItem
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.VerifierMainFragment
-import nl.rijksoverheid.ctr.verifier.databinding.FragmentInstructionsBinding
+import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanInstructionsBinding
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
 import org.koin.android.ext.android.inject
 
@@ -32,17 +32,17 @@ import org.koin.android.ext.android.inject
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class InstructionsFragment : Fragment(R.layout.fragment_instructions) {
+class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
 
     private val scannerUtil: ScannerUtil by inject()
 
-    private var _binding: FragmentInstructionsBinding? = null
+    private var _binding: FragmentScanInstructionsBinding? = null
     private val binding get() = _binding!!
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        _binding = FragmentInstructionsBinding.bind(view)
+        _binding = FragmentScanInstructionsBinding.bind(view)
 
         val adapter =
             OnboardingPagerAdapter(
@@ -62,7 +62,7 @@ class InstructionsFragment : Fragment(R.layout.fragment_instructions) {
     }
 
     private fun setBindings(
-        binding: FragmentInstructionsBinding,
+        binding: FragmentScanInstructionsBinding,
         adapter: OnboardingPagerAdapter
     ) {
         binding.button.setOnClickListener {
@@ -92,7 +92,7 @@ class InstructionsFragment : Fragment(R.layout.fragment_instructions) {
         }
     }
 
-    private fun setBackPressListener(binding: FragmentInstructionsBinding) {
+    private fun setBackPressListener(binding: FragmentScanInstructionsBinding) {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object :
             OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -117,7 +117,7 @@ class InstructionsFragment : Fragment(R.layout.fragment_instructions) {
     }
 
     private fun initViewPager(
-        binding: FragmentInstructionsBinding,
+        binding: FragmentScanInstructionsBinding,
         adapter: OnboardingPagerAdapter,
         startingItem: Int? = null,
     ) {
