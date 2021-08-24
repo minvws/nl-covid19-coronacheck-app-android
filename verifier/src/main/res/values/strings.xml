@@ -36,7 +36,7 @@
     <string name="scan_result_valid_first_name">Voornaam</string>
     <string name="scan_result_valid_birth_day">Geboortedag</string>
     <string name="scan_result_valid_birth_month">Geboortemaand</string>
-    <string name="scan_result_valid_personal_details_title">Controleer nu de gegevens</string>
+    <string name="scan_result_valid_personal_details_title">Controleer gegevens</string>
     <string name="scan_result_european_nl_invalid_title">Dit is een internationale QR-code</string>
     <string name="scan_result_european_nl_invalid_subtitle">Dit is geen geldig bewijs in Nederland. Vraag de bezoeker een Nederlandse QR-code te laten zien.</string>
     <string name="scan_result_invalid_title">Geen geldige QR-code</string>

@@ -95,7 +95,7 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
         if (args.validData is ScanResultValidData.Demo) {
             binding.toolbar.setTitle(R.string.scan_result_demo_title)
         } else {
-            binding.toolbar.setTitle(R.string.scan_result_valid_title)
+            binding.toolbar.setTitle(R.string.scan_result_valid_personal_details_title)
         }
         val testResultAttributes = args.validData.verifiedQr.details
         val personalDetails = personalDetailsUtil.getPersonalDetails(

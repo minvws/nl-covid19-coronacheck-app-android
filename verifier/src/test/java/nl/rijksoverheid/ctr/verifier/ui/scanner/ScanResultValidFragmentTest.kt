@@ -78,7 +78,7 @@ class ScanResultValidFragmentTest : AutoCloseKoinTest() {
         // Make sure the correct title is shown in toolbar
         assertDisplayed(R.id.toolbar)
         assertAny<Toolbar>(R.id.toolbar, "Toolbar shows correct title"){
-            it.title == it.context.getString(R.string.scan_result_valid_title)
+            it.title == it.context.getString(R.string.scan_result_valid_personal_details_title)
         }
 
         // Assert correct content is displayed on screen
@@ -117,7 +117,7 @@ class ScanResultValidFragmentTest : AutoCloseKoinTest() {
         // Make sure the correct title is shown in toolbar
         assertDisplayed(R.id.toolbar)
         assertAny<Toolbar>(R.id.toolbar, "Toolbar shows correct title"){
-            it.title == it.context.getString(R.string.scan_result_valid_title)
+            it.title == it.context.getString(R.string.scan_result_valid_personal_details_title)
         }
 
         // Assert correct content is displayed on screen
