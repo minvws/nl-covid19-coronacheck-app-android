@@ -23,7 +23,9 @@ import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.VerifierMainFragment
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanInstructionsBinding
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
+import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrViewModel
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -35,7 +37,7 @@ import org.koin.android.ext.android.inject
 class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
 
     private val scannerUtil: ScannerUtil by inject()
-
+    private val scanQrViewModel: ScanQrViewModel by viewModel()
     private var _binding: FragmentScanInstructionsBinding? = null
     private val binding get() = _binding!!
 
@@ -57,8 +59,8 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
         }
 
         setBackPressListener(binding)
-
         setBindings(binding, adapter)
+
     }
 
     private fun setBindings(
@@ -78,14 +80,17 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
         (parentFragment?.parentFragment as? VerifierMainFragment?)?.getToolbar().let { toolbar ->
             if (toolbar?.menu?.size() == 0) {
                 toolbar.apply {
-                    inflateMenu(R.menu.scan_instructions_toolbar)
-                    setOnMenuItemClickListener {
-                        when (it.itemId) {
-                            R.id.action_skip_instructions -> {
-                                scannerUtil.launchScanner(requireActivity())
+                    // only show Skip option if user hasn't seen the instructions before
+                    if (!scanQrViewModel.hasSeenScanInstructions()) {
+                        inflateMenu(R.menu.scan_instructions_toolbar)
+                        setOnMenuItemClickListener {
+                            when (it.itemId) {
+                                R.id.action_skip_instructions -> {
+                                    scannerUtil.launchScanner(requireActivity())
+                                }
                             }
+                            true
                         }
-                        true
                     }
                 }
             }
@@ -167,6 +172,8 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
                 it.getToolbar().menu.clear()
             }
         }
+        // Instructions have been opened, set as seen
+        scanQrViewModel.setScanInstructionsSeen()
     }
 
     companion object {
