@@ -14,6 +14,7 @@
     <string name="onboarding_screen_4_description"><![CDATA[With this app, you can receive visitors again. But only if your location or activity falls under the designated locations.]]></string>
     <string name="onboarding_next">Next</string>
     <string name="onboarding_finish">Get started</string>
+    <string name="onboarding_step">Step %1$s</string>
     <string name="privacy_policy_title">Acceptable use policy</string>
     <string name="privacy_policy_description"><![CDATA[The <a href="https://coronacheck.nl/en/gebruikersvoorwaarden-in-app">acceptable use policy</a> details how CoronaCheck Scanner uses your data and what your rights are.]]></string>
     <string name="privacy_policy_1"><![CDATA[Location data are <b>not saved or used</b>]]></string>
