@@ -81,7 +81,7 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
             if (toolbar?.menu?.size() == 0) {
                 toolbar.apply {
                     // only show Skip option if user hasn't seen the instructions before
-                    if (!scanQrViewModel.hasSeenScanInstructions()) {
+                    if (scanQrViewModel.hasSeenScanInstructions()) {
                         inflateMenu(R.menu.scan_instructions_toolbar)
                         setOnMenuItemClickListener {
                             when (it.itemId) {
