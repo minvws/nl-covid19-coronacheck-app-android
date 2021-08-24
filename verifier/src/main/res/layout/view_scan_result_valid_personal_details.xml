@@ -22,30 +22,17 @@
             android:layout_height="wrap_content"
             android:padding="16dp">
 
-            <nl.rijksoverheid.ctr.design.views.AccessibilityHeaderWidget
-                android:id="@+id/title"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:layout_marginEnd="16dp"
-                android:text="@string/scan_result_valid_personal_details_title"
-                android:textAppearance="?attr/textAppearanceHeadline5"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <nl.rijksoverheid.ctr.verifier.ui.views.PersonalDetailItemWidget
                 android:id="@+id/personal_details_lastname"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="48dp"
-                android:layout_marginTop="48dp"
+                android:layout_marginTop="40dp"
                 android:layout_marginEnd="48dp"
                 app:header="@string/scan_result_valid_last_name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/title" />
+                app:layout_constraintTop_toTopOf="parent"  />
 
 
             <nl.rijksoverheid.ctr.verifier.ui.views.PersonalDetailItemWidget
