@@ -45,12 +45,12 @@
     <string name="scan_result_invalid_button">Scan volgende</string>
     <string name="scan_result_invalid_reason_title">Wat kan ik doen?</string>
     <string name="scan_result_invalid_reason_description"><![CDATA[Een rood scherm betekent dat de QR-code niet aan Nederlandse eisen voldoet.<br\><br\><b>Dit kun je doen</b><br\><ol><li>Controleer of de tijd op de telefoon van de bezoeker goed staat ingesteld.</li><li>Controleer of de bezoeker een origineel bewijs laat zien. Een screenshot van een bewijs kan voor problemen zorgen.</li><li>Vraag de bezoeker om de app volledig af te sluiten en opnieuw op te starten. Scan daarna opnieuw de QR-code.</li></ol><br\><b>Blijft het scherm rood?</b><br\>Vraag de bezoeker contact op te nemen met de helpdesk van CoronaCheck.<br\><br\><b>Zonder groen scherm mag de bezoeker niet toegelaten worden.</b>]]></string>
-    <string name="scan_result_unknown_qr_dialog_title">Dit is geen bewijs voor CoronaCheck</string>
-    <string name="scan_result_unknown_qr_dialog_message">Je hebt een onbekende QR-code gescand. Vraag de bezoeker een bewijs in de CoronaCheck-app te laten zien. Of een QR-code op papier.</string>
-    <string name="scan_result_european_in_nl_dialog_title">Scan een Nederlandse QR-code</string>
-    <string name="scan_result_european_in_nl_dialog_message">Je hebt een internationale QR-code gescand. Dat is geen geldig bewijs in Nederland. Vraag de bezoeker om een Nederlands bewijs en scan de QR-code.</string>
+    <string name="scan_result_unknown_qr_dialog_title">Deze QR-code bevat geen coronabewijs</string>
+    <string name="scan_result_unknown_qr_dialog_message">Vraag de bezoeker een QR-code van een coronabewijs te laten zien.</string>
+    <string name="scan_result_european_in_nl_dialog_title">Vraag naar de Nederlandse QR-code</string>
+    <string name="scan_result_european_in_nl_dialog_message">Je hebt een internationale QR-code gescand. Gebruikers van CoronaCheck moeten in Nederland hun Nederlandse bewijs laten zien.</string>
     <string name="scan_result_valid_reason_title">Over de controle</string>
-    <string name="scan_result_valid_reason_description"><![CDATA[Controleer of de QR-code ook echt bij de bezoeker hoort. Kijk daarvoor of de gegevens op jouw scherm hetzelfde zijn als de gegevens op het identiteitsbewijs.<br/><b>Let op: er kunnen gegevens wegvallen</b><br/>Om de privacy van de bezoeker te beschermen zie je soms niet alle gegevens op jouw scherm. Dan staat er een streepje (-) in het vak. Controle van de gegevens die je wel ziet is dan voldoende.<br/><b>Kloppen de gegevens niet?</b><br/>Dan kun je de bezoeker geen toegang geven.]]></string>
+    <string name="scan_result_valid_reason_description"><![CDATA[Je mag de bezoeker geen toegang geven als de gegevens op jouw scherm anders zijn dan op het identiteitsbewijs.<br/><b>Let op: soms vallen gegevens weg</b><br/>Om de privacy van de bezoeker te beschermen zie je soms niet alle gegevens op jouw scherm. Dan staat er een streepje (-) in het vak. Controleer in dat geval alleen de gegevens die je wel ziet.]]></string>
     <string name="about_this_app_description">CoronaCheck Scanner is ontwikkeld zodat bepaalde locaties en activiteiten hun deuren kunnen openen. Denk bijvoorbeeld aan voetbalwedstrijden en concerten. Bezoekers maken een coronabewijs van een vaccinatie, een negatieve testuitslag of als zij corona hebben gehad en hersteld zijn. Met behulp van deze app krijgen alleen bezoekers met zo’n coronabewijs toegang. Zo kunnen steeds meer plekken bezocht worden.</string>
     <string name="scan_instructions">Over scannen</string>
     <string name="scan_instructions_1_title">Scan de QR-code</string>
@@ -65,13 +65,13 @@
     <string name="scan_instructions_4_description">Bij een rood scherm krijg je uitleg om de bezoeker te helpen. Blijft het scherm rood? Dan kun je de bezoeker geen toegang geven.</string>
     <string name="privacy_statement">Gebruikersvoorwaarden</string>
     <string name="scanner_custom_title">Scan QR-Code</string>
-    <string name="scanner_custom_message">Waar moet ik op letten?</string>
+    <string name="scanner_custom_message">"Waar moet ik op letten?"</string>
     <string name="camera_rationale_dialog_title">Scanner wil toegang tot je camera</string>
     <string name="camera_rationale_dialog_description">Zo kan de app QR-codes scannen</string>
     <string name="app_setup_text">We starten de app voor je op…</string>
     <!-- App Status strings -->
     <string name="app_status_deactivated_title">App buiten werking</string>
-    <string name="app_status_deactivated_message">De app is niet meer in gebruik. Ga voor meer informatie naar CoronaCheck.nl</string>
+    <string name="app_status_deactivated_message">Op dit moment is de app niet in gebruik. Ga voor meer informatie naar CoronaCheck.nl</string>
     <string name="app_status_deactivated_action">Lees meer</string>
     <string name="app_status_update_required_title">Tijd voor een update</string>
     <string name="app_status_update_required_message">Je hebt de laatste versie van de app nodig om verder te gaan.</string>
