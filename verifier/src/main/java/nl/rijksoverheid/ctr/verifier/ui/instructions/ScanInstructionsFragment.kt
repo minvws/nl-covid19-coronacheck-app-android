@@ -164,12 +164,10 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
 
     override fun onPause() {
         super.onPause()
-        if (parentFragment?.parentFragment is VerifierMainFragment) {
-            (parentFragment?.parentFragment as VerifierMainFragment).let {
-                it.getToolbar()
+        // Remove added toolbar item(s) so they don't show up in other screens
+        (parentFragment?.parentFragment as? VerifierMainFragment).let {
+            it?.let {
                 it.getToolbar().menu.clear()
-                // Reset menu item listener to default
-                it.resetMenuItemListener()
             }
         }
     }

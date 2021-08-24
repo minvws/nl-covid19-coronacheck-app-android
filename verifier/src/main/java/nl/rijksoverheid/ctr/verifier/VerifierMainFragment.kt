@@ -129,10 +129,4 @@ class VerifierMainFragment :
     fun getToolbar(): Toolbar {
         return binding.toolbar
     }
-
-    fun resetMenuItemListener() {
-        binding.toolbar.setOnMenuItemClickListener {
-            NavigationUI.onNavDestinationSelected(it, navController)
-        }
-    }
 }

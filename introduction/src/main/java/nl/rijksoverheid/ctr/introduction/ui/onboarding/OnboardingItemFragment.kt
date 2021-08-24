@@ -47,6 +47,8 @@ class OnboardingItemFragment : Fragment(R.layout.fragment_onboarding_item) {
 
         binding.title.text = getString(item.titleResource)
         binding.description.setHtmlText(item.description, htmlLinksEnabled = false)
+
+        // If a position is set (default = -1) show "Step x of x" above header
         if (item.position >= 0) {
             binding.step.apply {
                 visibility = View.VISIBLE
