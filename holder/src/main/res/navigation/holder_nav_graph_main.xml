@@ -216,6 +216,14 @@
                 app:popEnterAnim="@anim/slide_in_left"
                 app:popExitAnim="@anim/slide_out_right" />
 
+            <action
+                android:id="@+id/action_error_result"
+                app:destination="@id/nav_error_result"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right" />
+
             <argument
                 android:name="couplingCode"
                 app:argType="string" />
@@ -506,14 +514,6 @@
         android:id="@+id/nav_error_result"
         android:name="nl.rijksoverheid.ctr.design.fragments.ErrorResultFragment"
         tools:layout="@layout/fragment_error_result" />
-
-    <action
-        android:id="@+id/action_error_result"
-        app:destination="@id/nav_error_result"
-        app:enterAnim="@anim/slide_in_right"
-        app:exitAnim="@anim/slide_out_left"
-        app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right" />
 
     <action
         android:id="@+id/action_my_overview"

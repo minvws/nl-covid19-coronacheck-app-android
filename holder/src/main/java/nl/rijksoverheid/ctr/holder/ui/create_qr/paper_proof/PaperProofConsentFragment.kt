@@ -47,12 +47,6 @@ class PaperProofConsentFragment: BaseFragment(R.layout.fragment_paper_proof_cons
             ))
         })
 
-        Handler().postDelayed({
-            presentError(
-                errorResult = AppErrorResult(HolderStep.CouplingNetworkRequest, IllegalStateException())
-            )
-        }, 3000)
-
         holderMainActivityViewModel.validatePaperProofError.observe(viewLifecycleOwner, EventObserver {
             when (it) {
                 is ValidatePaperProofResult.Invalid.DutchQr -> {
@@ -79,7 +73,7 @@ class PaperProofConsentFragment: BaseFragment(R.layout.fragment_paper_proof_cons
                             title = getString(R.string.add_paper_proof_limit_reached_paper_proof_title),
                             description = getString(R.string.add_paper_proof_limit_reached_paper_proof_description),
                             buttonTitle = getString(R.string.back_to_overview),
-                            buttonCallback = { findNavControllerSafety()?.navigate(R.id.action_my_overview) }
+                            buttonDestinationId = R.id.action_my_overview
                         )
                     )
                 }
@@ -89,7 +83,7 @@ class PaperProofConsentFragment: BaseFragment(R.layout.fragment_paper_proof_cons
                             title = getString(R.string.add_paper_proof_expired_paper_proof_title),
                             description = getString(R.string.add_paper_proof_expired_paper_proof_description),
                             buttonTitle = getString(R.string.back_to_overview),
-                            buttonCallback = { findNavControllerSafety()?.navigate(R.id.action_my_overview) }
+                            buttonDestinationId = R.id.action_my_overview
                         )
                     )
                 }
@@ -99,7 +93,7 @@ class PaperProofConsentFragment: BaseFragment(R.layout.fragment_paper_proof_cons
                             title = getString(R.string.add_paper_proof_invalid_combination_title),
                             description = getString(R.string.add_paper_proof_invalid_combination_),
                             buttonTitle = getString(R.string.back_to_overview),
-                            buttonCallback = { findNavControllerSafety()?.navigate(R.id.action_my_overview) }
+                            buttonDestinationId = R.id.action_my_overview
                         )
                     )
                 }

@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.design.R
 import nl.rijksoverheid.ctr.design.databinding.FragmentErrorResultBinding
 import nl.rijksoverheid.ctr.shared.error.ErrorResultFragmentData
+import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 
 class ErrorResultFragment: Fragment(R.layout.fragment_error_result) {
@@ -16,12 +17,12 @@ class ErrorResultFragment: Fragment(R.layout.fragment_error_result) {
 
         fun getBundle(data: ErrorResultFragmentData): Bundle {
             val bundle = Bundle()
-            bundle.putSerializable(EXTRA_DATA, data)
+            bundle.putParcelable(EXTRA_DATA, data)
             return bundle
         }
     }
 
-    private val data by lazy { arguments?.getSerializable(EXTRA_DATA) as ErrorResultFragmentData }
+    private val data by lazy { arguments?.getParcelable<ErrorResultFragmentData>(EXTRA_DATA) ?: error("ErrorResultFragmentData cannot be null") }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -39,7 +40,7 @@ class ErrorResultFragment: Fragment(R.layout.fragment_error_result) {
         }
 
         binding.bottom.setButtonClick {
-            data.buttonCallback.invoke()
+            findNavControllerSafety()?.navigate(data.buttonDestinationId)
         }
         binding.bottom.setButtonText(data.buttonTitle)
     }
