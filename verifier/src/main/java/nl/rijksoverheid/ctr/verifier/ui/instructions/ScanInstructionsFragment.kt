@@ -70,6 +70,9 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
         binding.button.setOnClickListener {
             val currentItem = binding.viewPager.currentItem
             if (currentItem == adapter.itemCount - 1) {
+                clearToolbar()
+                // Instructions have been opened, set as seen
+                scanQrViewModel.setScanInstructionsSeen()
                 scannerUtil.launchScanner(requireActivity())
             } else {
                 binding.viewPager.currentItem = currentItem + 1
@@ -86,6 +89,9 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
                         setOnMenuItemClickListener {
                             when (it.itemId) {
                                 R.id.action_skip_instructions -> {
+                                    clearToolbar()
+                                    // Instructions have been opened, set as seen
+                                    scanQrViewModel.setScanInstructionsSeen()
                                     scannerUtil.launchScanner(requireActivity())
                                 }
                             }
@@ -104,6 +110,9 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
                 val currentItem = binding.viewPager.currentItem
                 if (currentItem == 0) {
                     findNavController().popBackStack()
+                    clearToolbar()
+                    // Instructions have been opened, set as seen
+                    scanQrViewModel.setScanInstructionsSeen()
                 } else {
                     binding.viewPager.currentItem = binding.viewPager.currentItem - 1
                 }
@@ -159,21 +168,18 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
         startingItem?.let { binding.viewPager.currentItem = it }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-    override fun onPause() {
-        super.onPause()
+    private fun clearToolbar(){
         // Remove added toolbar item(s) so they don't show up in other screens
         (parentFragment?.parentFragment as? VerifierMainFragment).let {
             it?.let {
                 it.getToolbar().menu.clear()
             }
         }
-        // Instructions have been opened, set as seen
-        scanQrViewModel.setScanInstructionsSeen()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {
