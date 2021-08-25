@@ -20,6 +20,7 @@ import java.io.BufferedInputStream
 import java.io.ByteArrayInputStream
 import java.io.InputStream
 import java.security.cert.*
+import java.time.Clock
 
 
 class SignatureValidator private constructor(
@@ -93,7 +94,7 @@ class SignatureValidator private constructor(
 
     private val provider = BouncyCastleProvider()
 
-    fun verifySignature(content: InputStream, signature: ByteArray) {
+    fun verifySignature(content: InputStream, signature: ByteArray, clock: Clock = Clock.systemUTC()) {
 
         try {
             val sp = CMSSignedDataParser(
@@ -119,6 +120,13 @@ class SignatureValidator private constructor(
             val signer =
                 sp.signerInfos.signers.firstOrNull()
                     ?: throw SignatureValidationException("No signing certificate found")
+
+            if (this.signingCertificate != null) {
+                val expiringTime = this.signingCertificate.notAfter.time
+                if (clock.millis() > expiringTime) {
+                    throw SignatureValidationException("Expired certificate")
+                }
+            }
 
             val result = checkCertPath(trustAnchors, signer.sid, store)
             val signingCertificate = result.certPath.certificates[0] as X509Certificate
