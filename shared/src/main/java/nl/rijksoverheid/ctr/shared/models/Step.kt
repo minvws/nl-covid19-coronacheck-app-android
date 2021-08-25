@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.shared.error
+package nl.rijksoverheid.ctr.shared.models
 
 import java.io.Serializable
 

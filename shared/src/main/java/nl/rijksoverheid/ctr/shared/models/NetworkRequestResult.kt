@@ -1,7 +1,5 @@
 package nl.rijksoverheid.ctr.shared.models
-import nl.rijksoverheid.ctr.shared.error.Step
 import retrofit2.HttpException
-import java.io.Serializable
 
 sealed class NetworkRequestResult<R> {
 

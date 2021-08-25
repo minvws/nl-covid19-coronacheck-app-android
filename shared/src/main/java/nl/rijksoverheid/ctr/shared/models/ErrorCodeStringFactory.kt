@@ -1,7 +1,5 @@
-package nl.rijksoverheid.ctr.shared.error
+package nl.rijksoverheid.ctr.shared.models
 
-import nl.rijksoverheid.ctr.shared.models.ErrorResult
-import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import retrofit2.HttpException
 import java.lang.StringBuilder
 

@@ -1,6 +1,6 @@
 package nl.rijksoverheid.ctr.holder
 
-import nl.rijksoverheid.ctr.shared.error.Step
+import nl.rijksoverheid.ctr.shared.models.Step
 
 sealed class HolderStep(override val code: Int) : Step(code) {
     object ConfigurationNetworkRequest: HolderStep(10)

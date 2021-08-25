@@ -2,7 +2,7 @@ package nl.rijksoverheid.ctr.api.factory
 
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import nl.rijksoverheid.ctr.shared.models.CoronaCheckErrorResponse
-import nl.rijksoverheid.ctr.shared.error.Step
+import nl.rijksoverheid.ctr.shared.models.Step
 import okhttp3.ResponseBody
 import retrofit2.Converter
 import retrofit2.HttpException

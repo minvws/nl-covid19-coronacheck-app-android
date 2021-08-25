@@ -1,7 +1,6 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.navigation.Navigation
@@ -13,12 +12,9 @@ import nl.rijksoverheid.ctr.holder.databinding.FragmentPaperProofConsentBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.YourEventsFragmentType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.ValidatePaperProofResult
-import nl.rijksoverheid.ctr.shared.error.ErrorResultFragmentData
-import nl.rijksoverheid.ctr.shared.error.Flow
-import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
-import nl.rijksoverheid.ctr.shared.ext.navigateSafety
+import nl.rijksoverheid.ctr.shared.models.ErrorResultFragmentData
+import nl.rijksoverheid.ctr.shared.models.Flow
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
-import nl.rijksoverheid.ctr.shared.models.AppErrorResult
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 

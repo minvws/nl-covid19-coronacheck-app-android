@@ -1,7 +1,7 @@
 package nl.rijksoverheid.ctr.holder
 
 import android.os.Parcelable
-import nl.rijksoverheid.ctr.shared.error.Flow
+import nl.rijksoverheid.ctr.shared.models.Flow
 
 sealed class HolderFlow(code: Int) : Flow(code) {
     object Startup: HolderFlow(0), Parcelable

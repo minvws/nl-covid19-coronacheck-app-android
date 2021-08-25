@@ -46,9 +46,11 @@ class ValidatePaperProofUseCaseImpl(
                 }
             }
         } catch (e: Exception) {
-            ValidatePaperProofResult.Invalid.Error(AppErrorResult(
+            ValidatePaperProofResult.Invalid.Error(
+                AppErrorResult(
                 step = HolderStep.CouplingNetworkRequest,
-                e = e))
+                e = e)
+            )
         }
     }
 

@@ -4,9 +4,9 @@ import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import nl.rijksoverheid.ctr.design.fragments.ErrorResultFragment
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
-import nl.rijksoverheid.ctr.shared.error.ErrorCodeStringFactory
-import nl.rijksoverheid.ctr.shared.error.ErrorResultFragmentData
-import nl.rijksoverheid.ctr.shared.error.Flow
+import nl.rijksoverheid.ctr.shared.models.ErrorCodeStringFactory
+import nl.rijksoverheid.ctr.shared.models.ErrorResultFragmentData
+import nl.rijksoverheid.ctr.shared.models.Flow
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import org.koin.android.ext.android.inject
