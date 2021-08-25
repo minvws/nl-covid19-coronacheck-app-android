@@ -26,14 +26,14 @@ class NetworkRequestResultFactory(
         } catch (httpException: HttpException) {
             try {
                 // Check if there is a error body
-                val errorBody = httpException.response()?.errorBody() ?: return NetworkRequestResult.Failed.HttpError(step, httpException)
+                val errorBody = httpException.response()?.errorBody() ?: return NetworkRequestResult.Failed.CoronaCheckHttpError(step, httpException)
 
                 // Check if the error body is a [CoronaCheckErrorResponse]
-                val errorResponse = errorResponseBodyConverter.convert(errorBody) ?: return NetworkRequestResult.Failed.HttpError(step, httpException)
+                val errorResponse = errorResponseBodyConverter.convert(errorBody) ?: return NetworkRequestResult.Failed.CoronaCheckHttpError(step, httpException)
 
-                return NetworkRequestResult.Failed.CoronaCheckHttpError(step, httpException, errorResponse)
+                return NetworkRequestResult.Failed.CoronaCheckWithErrorResponseHttpError(step, httpException, errorResponse)
             } catch (e: Exception) {
-                return NetworkRequestResult.Failed.HttpError(step, httpException)
+                return NetworkRequestResult.Failed.CoronaCheckHttpError(step, httpException)
             }
         } catch (e: IOException) {
             when (e) {

@@ -33,7 +33,7 @@ abstract class BaseFragment(contentLayoutId: Int) : Fragment(contentLayoutId) {
                 errorResult = errorResult
             )
 
-            val errorDescription = if (errorResult is NetworkRequestResult.Failed.HttpError<*>) {
+            val errorDescription = if (errorResult is NetworkRequestResult.Failed.CoronaCheckHttpError<*>) {
                 getString(R.string.error_something_went_wrong_http_error_description, errorCodeString)
             } else {
                 getString(R.string.error_something_went_wrong_making_proof_description, errorCodeString)

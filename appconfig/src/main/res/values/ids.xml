@@ -9,5 +9,4 @@
     <item name="app_status_internet_required_title" type="string" />
     <item name="app_status_internet_required_message" type="string" />
     <item name="app_status_internet_required_action" type="string" />
-    <item name="back_to_overview" type="string" />
 </resources>

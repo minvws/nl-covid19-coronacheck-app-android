@@ -11,6 +11,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import nl.rijksoverheid.ctr.design.ext.formatDateTime
@@ -43,7 +44,7 @@ import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 
-class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
+class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
 
     private val args: YourEventsFragmentArgs by navArgs()
 
@@ -55,30 +56,6 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
     private val remoteEventUtil: RemoteEventUtil by inject()
 
     private val yourEventsViewModel: YourEventsViewModel by viewModel()
-
-    override fun getFlow(): Flow {
-        when (val type = args.type) {
-            is YourEventsFragmentType.TestResult2 -> {
-                return HolderFlow.CommercialTest
-            }
-            is YourEventsFragmentType.RemoteProtocol3Type -> {
-                return when (type.originType) {
-                    is OriginType.Vaccination -> {
-                        HolderFlow.Vaccination
-                    }
-                    is OriginType.Recovery -> {
-                        HolderFlow.Recovery
-                    }
-                    is OriginType.Test -> {
-                        HolderFlow.DigidTest
-                    }
-                }
-            }
-            is YourEventsFragmentType.DCC -> {
-                return HolderFlow.HkviScan
-            }
-        }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

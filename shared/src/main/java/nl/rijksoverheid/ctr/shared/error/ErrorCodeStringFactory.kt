@@ -32,7 +32,7 @@ class ErrorCodeStringFactoryImpl: ErrorCodeStringFactory {
 
         stringBuilder.append(" $exceptionErrorCode")
 
-        if (errorResult is NetworkRequestResult.Failed.CoronaCheckHttpError<*>) {
+        if (errorResult is NetworkRequestResult.Failed.CoronaCheckWithErrorResponseHttpError<*>) {
             stringBuilder.append(" ${errorResult.errorResponse.code}")
         }
 
