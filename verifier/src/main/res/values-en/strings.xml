@@ -44,28 +44,28 @@
     <string name="scan_result_invalid_subtitle"><![CDATA[The visitor doesn\'t have a valid coronavirus pass. <a href="#"><b>Read possible causes</b></a>]]></string>
     <string name="scan_result_invalid_button">Scan next</string>
     <string name="scan_result_invalid_reason_title">What should I do?</string>
-    <string name="scan_result_invalid_reason_description"><![CDATA[A red screen means that the QR code does not meet Dutch requirements.<br\><br\><b>Here’s what you can do:</b><br\><ol><li>Verify if the time on the visitor’s phone is set correctly.</li><li>Verify if the visitor is showing an original certificate. A screenshot of a certificate may cause problems.</li><li>Ask the visitor to completely shut down the app and restart it. Please scan the QR code again after.</li></ol><br\><b>Still looking at a red screen?</b><br\>Please ask the visitor to contact the CoronaCheck help desk.<br\><br\><b>Without a green screen, you can’t grant the visitor access.</b>]]></string>
+    <string name="scan_result_invalid_reason_description"><![CDATA[A red screen means that the QR code does not meet Dutch requirements.<br\><br\><b>Here’s what you can do:</b><br\><ol><li>Verify if the time on the visitor’s phone is set correctly.</li><li>Verify if the visitor is showing an original certificate. A screenshot of a certificate may cause problems.</li><li>Ask the visitor to completely shut down the app and restart it. Please scan the QR code again after.</li></ol><br\><b>Still looking at a red screen?</b>Please ask the visitor to contact the CoronaCheck help desk.<br\><br\><b>Without a green screen, you can’t grant the visitor access.</b>]]></string>
     <string name="scan_result_unknown_qr_dialog_title">This QR code does not contain a coronavirus pass</string>
     <string name="scan_result_unknown_qr_dialog_message">Ask the visitor to show a QR code of a coronavirus pass.</string>
     <string name="scan_result_european_in_nl_dialog_title">Ask for a Dutch QR code</string>
     <string name="scan_result_european_in_nl_dialog_message">You have scanned an international QR code. In the Netherlands, CoronaCheck users should show their Dutch QR code.</string>
     <string name="scan_result_valid_reason_title">About the check</string>
-    <string name="scan_result_valid_reason_description"><![CDATA[You cannot grant the visitor access if the details on your screen are different from those on the identity document.<br/><b>Please note: sometimes details may disappear</b><br/>This happens to protect the visitor’s privacy. You will see a dash (-) in the field. In this case, verify only the details you’re seeing.]]></string>
+    <string name="scan_result_valid_reason_description"><![CDATA[You cannot grant the visitor access if the details on your screen are different from those on the identity document.<br/><b>Please note: sometimes not all details are shown</b>This happens to protect the visitor’s privacy. You will see a dash (-) in the field. In this case, verify only the details you’re seeing.]]></string>
     <string name="about_this_app_description">CoronaCheck Scanner is created so that certain locations and activities can open their doors again. Think for example of football matches and concerts. Visitors create a coronavirus pass of a vaccination, a negative test result or if they\'ve had corona and are recovered. With this app, only visitors with a coronavirus pass gain access. This way, the Netherlands can head out more often.</string>
-    <string name="scan_instructions">About scanning</string>
-    <string name="scan_instructions_1_title">Scan the QR code</string>
+    <string name="scan_instructions">How scanning works</string>
+    <string name="scan_instructions_1_title">1. Keep a distance</string>
     <string name="scan_instructions_1_description">The visitor shows a QR code in the CoronaCheck app or on paper. A tourist may show a QR code in a foreign app, or on paper.</string>
     <string name="scan_instructions_2_title">Always check the details</string>
     <string name="scan_instructions_2_description">Green screen? Verify if the details on your screen are the same as those on the identity document. This way you can ensure the QR code belongs to the visitor.</string>
-    <string name="scan_instructions_3_image">Person is holding a phone with a green screen and a black check mark.</string>
-    <string name="scan_instructions_3_title">Sometimes details may disappear</string>
+    <string name="scan_instructions_3_image">Sometimes not all details are shown</string>
+    <string name="scan_instructions_3_title">Sometimes not all details are shown</string>
     <string name="scan_instructions_3_description">This happens to protect the visitor’s privacy. You will see a hyphen (-). In this case, verify only the details you’re seeing.</string>
     <string name="scan_instructions_4_image">Person is holding a phone with a red screen and a black cross.</string>
     <string name="scan_instructions_4_title">Red screen - what happens now?</string>
-    <string name="scan_instructions_4_description">In case of a red screen, you will get information to assist the visitor. If the screen stays red, you cannot grant the visitor access.</string>
+    <string name="scan_instructions_4_description"><![CDATA[In case of a red screen, you will get information to assist the visitor. If the screen stays red, you cannot grant the visitor access.]]></string>
     <string name="privacy_statement">Acceptable use policy</string>
     <string name="scanner_custom_title">Scan QR code</string>
-    <string name="scanner_custom_message">"hich things should I pay attention to?</string>
+    <string name="scanner_custom_message">"What should I pay attention to?"</string>
     <string name="camera_rationale_dialog_title">Scanner wants to access your camera</string>
     <string name="camera_rationale_dialog_description">So the app can scan QR codes</string>
     <string name="app_setup_text">We\'re starting the app...</string>
@@ -120,6 +120,6 @@
     <string name="new_in_app_subtitle">New in the app</string>
     <string name="scan_result_invalid_explanation_button">What should I do?</string>
     <string name="scan_result_valid_incorrect_data">Are the details incorrect?</string>
-    <string name="scan_qr_instructions_button">Which things should I pay attention to?</string>
+    <string name="scan_qr_instructions_button">What should I pay attention to?</string>
     <string name="scan_instructions_skip">Skip</string>
 </resources>
