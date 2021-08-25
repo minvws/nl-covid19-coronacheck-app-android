@@ -14,7 +14,7 @@ class ErrorCodeStringFactoryImplTest {
     private val factory = ErrorCodeStringFactoryImpl()
 
     @Test
-    fun `get() returns correct string if errorResult is a IllegalStateException`() {
+    fun `get() returns correct string if errorResult is an IllegalStateException`() {
         val errorCodeString = factory.get(
             flow = Flow(0),
             errorResult = AppErrorResult(

@@ -9,6 +9,9 @@ import nl.rijksoverheid.ctr.shared.models.ErrorResultFragmentData
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 
+/**
+ * Fragment to show errors
+ */
 class ErrorResultFragment: Fragment(R.layout.fragment_error_result) {
 
     companion object {

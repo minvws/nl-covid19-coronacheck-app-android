@@ -11,6 +11,9 @@ import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import org.koin.android.ext.android.inject
 
+/**
+ * BaseFragment that should be used by all fragments that require error handling
+ */
 abstract class BaseFragment(contentLayoutId: Int) : Fragment(contentLayoutId) {
 
     private val errorCodeStringFactory: ErrorCodeStringFactory by inject()

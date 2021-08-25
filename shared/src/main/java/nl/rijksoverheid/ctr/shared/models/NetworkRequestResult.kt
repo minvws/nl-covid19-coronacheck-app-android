@@ -1,6 +1,9 @@
 package nl.rijksoverheid.ctr.shared.models
 import retrofit2.HttpException
 
+/**
+ * Base class that should be returned from all repository methods that do network requests
+ */
 sealed class NetworkRequestResult<R> {
 
     data class Success<R>(val response: R): NetworkRequestResult<R>()
