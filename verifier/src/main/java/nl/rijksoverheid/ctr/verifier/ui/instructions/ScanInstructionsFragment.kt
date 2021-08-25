@@ -79,28 +79,7 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
             }
         }
 
-        // Check if parent is VerifierMainFragment so we can reuse the toolbar
-        (parentFragment?.parentFragment as? VerifierMainFragment?)?.getToolbar().let { toolbar ->
-            if (toolbar?.menu?.size() == 0) {
-                toolbar.apply {
-                    // only show Skip option if user hasn't seen the instructions before
-                    if (!scanQrViewModel.hasSeenScanInstructions()) {
-                        inflateMenu(R.menu.scan_instructions_toolbar)
-                        setOnMenuItemClickListener {
-                            when (it.itemId) {
-                                R.id.action_skip_instructions -> {
-                                    clearToolbar()
-                                    // Instructions have been opened, set as seen
-                                    scanQrViewModel.setScanInstructionsSeen()
-                                    scannerUtil.launchScanner(requireActivity())
-                                }
-                            }
-                            true
-                        }
-                    }
-                }
-            }
-        }
+        setupToolbarMenu()
     }
 
     private fun setBackPressListener(binding: FragmentScanInstructionsBinding) {
@@ -148,8 +127,10 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
                 )
 
                 if (position == adapter.itemCount - 1) {
+                    clearToolbar()
                     binding.button.text = getString(R.string.scan_qr_button)
                 } else {
+                    setupToolbarMenu()
                     binding.button.text = getString(R.string.onboarding_next)
                 }
 
@@ -166,6 +147,31 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
             }
         })
         startingItem?.let { binding.viewPager.currentItem = it }
+    }
+
+    private fun setupToolbarMenu() {
+        // Check if parent is VerifierMainFragment so we can reuse the toolbar
+        (parentFragment?.parentFragment as? VerifierMainFragment?)?.getToolbar().let { toolbar ->
+            if (toolbar?.menu?.size() == 0) {
+                toolbar.apply {
+                    // only show Skip option if user hasn't seen the instructions before
+                    if (!scanQrViewModel.hasSeenScanInstructions()) {
+                        inflateMenu(R.menu.scan_instructions_toolbar)
+                        setOnMenuItemClickListener {
+                            when (it.itemId) {
+                                R.id.action_skip_instructions -> {
+                                    clearToolbar()
+                                    // Instructions have been opened, set as seen
+                                    scanQrViewModel.setScanInstructionsSeen()
+                                    scannerUtil.launchScanner(requireActivity())
+                                }
+                            }
+                            true
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private fun clearToolbar(){
