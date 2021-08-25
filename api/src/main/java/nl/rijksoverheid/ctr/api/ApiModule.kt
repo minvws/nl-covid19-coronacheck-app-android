@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.api
 import android.content.Context
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import nl.rijksoverheid.ctr.api.factory.NetworkRequestResultFactory
 import nl.rijksoverheid.ctr.api.interceptors.CacheOverrideInterceptor
 import nl.rijksoverheid.ctr.api.interceptors.SignedResponseInterceptor
 import nl.rijksoverheid.ctr.api.json.Base64JsonAdapter
@@ -91,5 +92,4 @@ fun apiModule(
             .add(OffsetDateTimeJsonAdapter())
             .add(LocalDateJsonAdapter())
     }
-
 }

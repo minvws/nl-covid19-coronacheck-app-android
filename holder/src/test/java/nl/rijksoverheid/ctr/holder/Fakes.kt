@@ -263,8 +263,8 @@ fun fakeCoronaCheckRepository(
         override suspend fun getCoupling(
             credential: String,
             couplingCode: String
-        ): RemoteCouplingResponse {
-            return RemoteCouplingResponse(RemoteCouplingStatus.Accepted)
+        ): NetworkRequestResult<RemoteCouplingResponse> {
+            return NetworkRequestResult.Success(RemoteCouplingResponse(RemoteCouplingStatus.Accepted))
         }
     }
 }

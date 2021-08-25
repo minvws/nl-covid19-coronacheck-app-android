@@ -16,10 +16,10 @@ abstract class HolderMainActivityViewModel: ViewModel() {
     /**
      * For when we need to communicate paper proof event errors between different navigations (holder_nav_graph_root and holder_nav_graph_main)
      */
-    val validatePaperProofError: LiveData<Event<ValidatePaperProofResult.Error>> = MutableLiveData()
+    val validatePaperProofError: LiveData<Event<ValidatePaperProofResult.Invalid>> = MutableLiveData()
 
     abstract fun sendEvents(events: Map<RemoteProtocol3, ByteArray>)
-    abstract fun sendValidatePaperProofError(error: ValidatePaperProofResult.Error)
+    abstract fun sendValidatePaperProofInvalid(result: ValidatePaperProofResult.Invalid)
 }
 
 class HolderMainActivityViewModelImpl: HolderMainActivityViewModel() {
@@ -28,7 +28,7 @@ class HolderMainActivityViewModelImpl: HolderMainActivityViewModel() {
         (eventsLiveData as MutableLiveData).postValue(Event(events))
     }
 
-    override fun sendValidatePaperProofError(error: ValidatePaperProofResult.Error) {
-        (validatePaperProofError as MutableLiveData).postValue(Event(error))
+    override fun sendValidatePaperProofInvalid(result: ValidatePaperProofResult.Invalid) {
+        (validatePaperProofError as MutableLiveData).postValue(Event(result))
     }
 }

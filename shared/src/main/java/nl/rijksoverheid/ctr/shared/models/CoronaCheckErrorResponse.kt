@@ -1,6 +1,8 @@
-package nl.rijksoverheid.ctr.holder.ui.create_qr.models
+package nl.rijksoverheid.ctr.shared.models
 
+import android.os.Parcelable
 import com.squareup.moshi.JsonClass
+import kotlinx.parcelize.Parcelize
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -9,12 +11,12 @@ import com.squareup.moshi.JsonClass
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
+/**
+ * Response error body that the CoronaCheck API can return
+ */
 @JsonClass(generateAdapter = true)
-data class ResponseError(
+@Parcelize
+data class CoronaCheckErrorResponse(
     val status: String,
     val code: Int
-) {
-    companion object {
-        const val CODE_ALREADY_SIGNED = 99994
-    }
-}
+): Parcelable
