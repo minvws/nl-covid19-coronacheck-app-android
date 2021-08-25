@@ -47,8 +47,8 @@ import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverViewGreenCardAdapte
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCaseImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.*
-import nl.rijksoverheid.ctr.shared.models.ErrorCodeStringFactory
-import nl.rijksoverheid.ctr.shared.models.ErrorCodeStringFactoryImpl
+import nl.rijksoverheid.ctr.shared.factories.ErrorCodeStringFactory
+import nl.rijksoverheid.ctr.shared.factories.ErrorCodeStringFactoryImpl
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import okhttp3.tls.HandshakeCertificates

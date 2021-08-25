@@ -1,5 +1,8 @@
-package nl.rijksoverheid.ctr.shared.models
+package nl.rijksoverheid.ctr.shared.factories
 
+import nl.rijksoverheid.ctr.shared.models.ErrorResult
+import nl.rijksoverheid.ctr.shared.models.Flow
+import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import retrofit2.HttpException
 import java.lang.StringBuilder
 
