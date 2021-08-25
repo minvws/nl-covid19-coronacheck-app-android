@@ -5,7 +5,6 @@ import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import nl.rijksoverheid.ctr.design.fragments.ErrorResultFragment
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.shared.error.ErrorCodeStringFactory
-import nl.rijksoverheid.ctr.shared.error.ErrorCodeStringFactoryImpl
 import nl.rijksoverheid.ctr.shared.error.ErrorResultFragmentData
 import nl.rijksoverheid.ctr.shared.error.Flow
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
@@ -33,9 +32,16 @@ abstract class BaseFragment(contentLayoutId: Int) : Fragment(contentLayoutId) {
                 flow = getFlow(),
                 errorResult = errorResult
             )
+
+            val errorDescription = if (errorResult is NetworkRequestResult.Failed.HttpError<*>) {
+                getString(R.string.error_something_went_wrong_http_error_description, errorCodeString)
+            } else {
+                getString(R.string.error_something_went_wrong_making_proof_description, errorCodeString)
+            }
+
             val data = ErrorResultFragmentData(
                 title = getString(R.string.error_something_went_wrong_title),
-                description = getString(R.string.error_something_went_wrong_description, errorCodeString),
+                description = errorDescription,
                 urlData = ErrorResultFragmentData.UrlData(
                     urlButtonTitle = getString(R.string.error_something_went_wrong_outage_button),
                     urlButtonUrl = getString(R.string.error_something_went_wrong_outage_button_url)

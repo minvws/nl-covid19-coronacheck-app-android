@@ -5,10 +5,10 @@ import java.io.Serializable
 
 sealed class NetworkRequestResult<R> {
 
-    data class Success<R>(val response: R): NetworkRequestResult<R>(), Serializable
+    data class Success<R>(val response: R): NetworkRequestResult<R>()
 
-    sealed class Failed<R>(open val step: Step, open val e: Exception): NetworkRequestResult<R>(), ErrorResult, Serializable {
-        open class HttpError<R>(override val step: Step, override val e: HttpException): Failed<R>(step, e), Serializable {
+    sealed class Failed<R>(open val step: Step, open val e: Exception): NetworkRequestResult<R>(), ErrorResult {
+        open class HttpError<R>(override val step: Step, override val e: HttpException): Failed<R>(step, e) {
             override fun getCurrentStep(): Step {
                 return step
             }
@@ -18,9 +18,9 @@ sealed class NetworkRequestResult<R> {
             }
         }
 
-        data class ProviderHttpError<R>(override val step: Step, override val e: HttpException, val provider: String): HttpError<R>(step, e), Serializable
+        data class ProviderHttpError<R>(override val step: Step, override val e: HttpException, val provider: String): HttpError<R>(step, e)
 
-        data class CoronaCheckHttpError<R>(override val step: Step, override val e: HttpException, val errorResponse: CoronaCheckErrorResponse): Failed<R>(step, e), Serializable {
+        data class CoronaCheckHttpError<R>(override val step: Step, override val e: HttpException, val errorResponse: CoronaCheckErrorResponse): HttpError<R>(step, e) {
             override fun getCurrentStep(): Step {
                 return step
             }
@@ -30,7 +30,7 @@ sealed class NetworkRequestResult<R> {
             }
         }
 
-        data class NetworkError<R>(override val step: Step, override val e: Exception): Failed<R>(step, e), Serializable {
+        data class NetworkError<R>(override val step: Step, override val e: Exception): Failed<R>(step, e) {
             override fun getCurrentStep(): Step {
                 return step
             }
@@ -40,7 +40,7 @@ sealed class NetworkRequestResult<R> {
             }
         }
 
-        data class Error<R>(override val step: Step, override val e: Exception): Failed<R>(step, e), Serializable {
+        data class Error<R>(override val step: Step, override val e: Exception): Failed<R>(step, e) {
             override fun getCurrentStep(): Step {
                 return step
             }

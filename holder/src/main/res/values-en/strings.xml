@@ -382,7 +382,8 @@
     <string name="app_status_update_recommended_dismiss_action">No, I\'ll do it later</string>
     <string name="app_status_update_recommended_action">Install update</string>
     <string name="error_something_went_wrong_title">Sorry, er gaat iets mis</string>
-    <string name="error_something_went_wrong_description"><![CDATA[We zijn bezig om dit probleem op te lossen (foutcode: <b>%1s</b>). Wil je het later nog eens proberen?]]></string>
+    <string name="error_something_went_wrong_http_error_description"><![CDATA[We zijn bezig om dit probleem op te lossen (foutcode: <b>%1s</b>). Wil je het later nog eens proberen?]]></string>
+    <string name="error_something_went_wrong_making_proof_description"><![CDATA[Er gaat iets mis bij het maken van je bewijs  (foutcode: <b>%1s</b>). Wil je het later nog eens proberen?]]></string>
     <string name="error_something_went_wrong_outage_button">Bekijk de actuele storingen</string>
     <string name="error_something_went_wrong_outage_button_url">https://status.coronacheck.en/</string>
 </resources>
