@@ -76,11 +76,29 @@ class NetworkRequestResultFactoryTest {
             testApi.request()
         }
 
-        assertTrue(result is NetworkRequestResult.Failed.HttpError)
+        assertTrue(result is NetworkRequestResult.Failed.CoronaCheckHttpError)
     }
 
     @Test
-    fun `createResult returns CoronaCheckHttpError if request failed with specific body`() = runBlocking {
+    fun `createResult returns ProviderHttpError if request to provider failed with normal body`() = runBlocking {
+        mockWebServer.enqueue(
+            MockResponse()
+                .setBody("{\"hello\":\"world\"}")
+                .setResponseCode(404)
+        )
+
+        val result = networkRequestResultFactory.createResult(
+            step = TestStep,
+            provider = "GGD"
+        ) {
+            testApi.request()
+        }
+
+        assertTrue(result is NetworkRequestResult.Failed.ProviderHttpError)
+    }
+
+    @Test
+    fun `createResult returns CoronaCheckWithErrorResponseHttpError if request failed with specific body`() = runBlocking {
         mockWebServer.enqueue(
             MockResponse()
                 .setBody("{\"status\":\"1\",\"code\":1000}")
@@ -93,7 +111,7 @@ class NetworkRequestResultFactoryTest {
             testApi.request()
         }
 
-        assertTrue(result is NetworkRequestResult.Failed.CoronaCheckHttpError)
+        assertTrue(result is NetworkRequestResult.Failed.CoronaCheckWithErrorResponseHttpError)
     }
 
     @Test

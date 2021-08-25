@@ -19,12 +19,18 @@ class NetworkRequestResultFactory(
 
     suspend fun <R: Any> createResult(
         step: Step,
+        provider: String ? = null,
         networkCall: suspend () -> R): NetworkRequestResult<R> {
         return try {
             val response = networkCall.invoke()
             NetworkRequestResult.Success(response)
         } catch (httpException: HttpException) {
             try {
+                provider?.let {
+                    // If this is a call to a provider we return a ProviderHttpError
+                    return NetworkRequestResult.Failed.ProviderHttpError(step, httpException, it)
+                }
+
                 // Check if there is a error body
                 val errorBody = httpException.response()?.errorBody() ?: return NetworkRequestResult.Failed.CoronaCheckHttpError(step, httpException)
 
