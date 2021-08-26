@@ -9,6 +9,7 @@
     <item name="onboarding_next" type="string" />
     <item name="onboarding_finish" type="string" />
     <item name="onboarding_page_indicator_label" type="string" />
+    <item name="onboarding_step" type="string" />
     <item name="action_main" type="id" />
     <item name="new_terms_title" type="string" />
     <item name="new_terms_highlights" type="string" />
@@ -20,4 +21,8 @@
     <item name="new_terms_no_consent_dialog_title" type="string" />
     <item name="new_terms_no_consent_dialog_message" type="string" />
     <item name="new_terms_no_consent_dialog_button" type="string" />
+    <item name="app_status_update_recommended_title" type="string" />
+    <item name="app_status_update_recommended_message" type="string" />
+    <item name="app_status_update_recommended_action" type="string" />
+    <item name="app_status_update_recommended_dismiss_action" type="string" />
 </resources>

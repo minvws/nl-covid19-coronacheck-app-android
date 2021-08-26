@@ -67,10 +67,10 @@ class PersonalDetailsUtilImplTest {
             birthDay = "",
             birthMonth = ""
         )
-        assertEquals("_", personalDetails.firstNameInitial)
-        assertEquals("_", personalDetails.lastNameInitial)
-        assertEquals("_", personalDetails.birthDay)
-        assertEquals("_", personalDetails.birthMonth)
+        assertEquals(HIDDEN_PERSONAL_DETAIL, personalDetails.firstNameInitial)
+        assertEquals(HIDDEN_PERSONAL_DETAIL, personalDetails.lastNameInitial)
+        assertEquals(HIDDEN_PERSONAL_DETAIL, personalDetails.birthDay)
+        assertEquals(HIDDEN_PERSONAL_DETAIL, personalDetails.birthMonth)
     }
 
 }

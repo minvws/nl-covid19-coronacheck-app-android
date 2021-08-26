@@ -12,6 +12,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
+import android.graphics.Paint
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.View
@@ -84,7 +85,13 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
             insets
         }
 
-        binding.scannerFooter.text = getCopy().message
+        binding.scannerFooter.run {
+            text = getCopy().message
+            getCopy().onMessageClicked?.let { onClicked ->
+                paintFlags = paintFlags or Paint.UNDERLINE_TEXT_FLAG
+                setOnClickListener { onClicked.invoke() }
+            }
+        }
         binding.toolbar.title = getCopy().title
 
         // Show header below overlay window after overlay finishes drawing
@@ -103,6 +110,11 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
     }
 
     protected fun setupCamera() {
+        // make sure it's still added when coming back from a dialog
+        if (!isAdded) {
+            return
+        }
+
         // Set up preview view
         val previewView = binding.previewView
 
@@ -281,6 +293,9 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
                     barcodes.firstOrNull()?.rawValue?.let {
                         onQrScanned(it)
                         cameraProvider.unbindAll()
+                        if (isAdded) {
+                            binding.toolbar.menu.findItem(R.id.flash).setIcon(R.drawable.ic_flash_on)
+                        }
                     }
                 }
                 .addOnFailureListener {
@@ -348,7 +363,8 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
     data class Copy(
         val title: String,
         val message: String,
-        val rationaleDialog: RationaleDialog? = null
+        val rationaleDialog: RationaleDialog? = null,
+        val onMessageClicked: (() -> Unit)? = null
     ) {
         data class RationaleDialog(
             val title: String,

@@ -164,7 +164,7 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
                         .toMap(),
                     originType = OriginType.Test
                 ),
-                toolbarTitle = getString(R.string.your_vaccination_result_toolbar_title)
+                toolbarTitle = getString(R.string.commercial_test_type_title)
             )
         )
     }

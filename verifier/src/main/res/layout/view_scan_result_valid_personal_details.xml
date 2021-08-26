@@ -22,136 +22,62 @@
             android:layout_height="wrap_content"
             android:padding="16dp">
 
-            <nl.rijksoverheid.ctr.design.views.AccessibilityHeaderWidget
-                android:id="@+id/title"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:layout_marginEnd="16dp"
-                android:text="@string/scan_result_valid_personal_details_title"
-                android:textAppearance="?attr/textAppearanceHeadline5"
-                app:layout_constraintEnd_toStartOf="@+id/icon"
-                app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_question"
-                app:layout_constraintBottom_toBottomOf="@+id/title"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/title" />
-
-            <TextView
-                android:id="@+id/last_name_header"
+            <nl.rijksoverheid.ctr.verifier.ui.views.PersonalDetailItemWidget
+                android:id="@+id/personal_details_lastname"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="48dp"
-                android:layout_marginTop="48dp"
+                android:layout_marginTop="40dp"
                 android:layout_marginEnd="48dp"
-                android:text="@string/scan_result_valid_last_name"
-                android:textAppearance="?attr/textAppearanceCaption"
-                android:textColor="?android:textColorPrimary"
+                app:header="@string/scan_result_valid_last_name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/title" />
+                app:layout_constraintTop_toTopOf="parent"  />
 
-            <TextView
-                android:id="@+id/last_name_initial"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/shape_personal_detail_background"
-                android:padding="16dp"
-                android:textAlignment="center"
-                android:textAppearance="?attr/textAppearanceHeadline6"
-                app:layout_constraintEnd_toEndOf="@+id/last_name_header"
-                app:layout_constraintStart_toStartOf="@+id/last_name_header"
-                app:layout_constraintTop_toBottomOf="@+id/last_name_header"
-                tools:text="M" />
 
-            <TextView
-                android:id="@+id/first_name_header"
+            <nl.rijksoverheid.ctr.verifier.ui.views.PersonalDetailItemWidget
+                android:id="@+id/personal_details_firstname"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="@string/scan_result_valid_first_name"
-                android:textAppearance="?attr/textAppearanceCaption"
-                android:textColor="?android:textColorPrimary"
-                app:layout_constraintEnd_toEndOf="@+id/last_name_header"
-                app:layout_constraintStart_toStartOf="@+id/last_name_header"
-                app:layout_constraintTop_toBottomOf="@+id/last_name_initial" />
+                app:header="@string/scan_result_valid_first_name"
+                app:layout_constraintEnd_toEndOf="@+id/personal_details_lastname"
+                app:layout_constraintStart_toStartOf="@+id/personal_details_lastname"
+                app:layout_constraintTop_toBottomOf="@+id/personal_details_lastname" />
 
-            <TextView
-                android:id="@+id/first_name_initial"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/shape_personal_detail_background"
-                android:padding="16dp"
-                android:textAlignment="center"
-                android:textAppearance="?attr/textAppearanceHeadline6"
-                app:layout_constraintEnd_toEndOf="@+id/last_name_header"
-                app:layout_constraintStart_toStartOf="@+id/last_name_header"
-                app:layout_constraintTop_toBottomOf="@+id/first_name_header"
-                tools:text="S" />
-
-            <TextView
-                android:id="@+id/birth_day_header"
+            <nl.rijksoverheid.ctr.verifier.ui.views.PersonalDetailItemWidget
+                android:id="@+id/personal_details_birthdate"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="24dp"
-                android:text="@string/scan_result_valid_birth_day"
-                android:textAppearance="?attr/textAppearanceCaption"
-                android:textColor="?android:textColorPrimary"
-                app:layout_constraintEnd_toStartOf="@+id/birth_month_header"
+                app:header="@string/scan_result_valid_birth_day"
+                app:layout_constraintEnd_toStartOf="@id/personal_details_birthmonth"
                 app:layout_constraintHorizontal_weight="4"
-                app:layout_constraintStart_toStartOf="@+id/last_name_header"
-                app:layout_constraintTop_toBottomOf="@+id/first_name_initial" />
+                app:layout_constraintStart_toStartOf="@+id/personal_details_lastname"
+                app:layout_constraintTop_toBottomOf="@+id/personal_details_firstname" />
 
-            <TextView
-                android:id="@+id/birth_day"
+            <nl.rijksoverheid.ctr.verifier.ui.views.PersonalDetailItemWidget
+                android:id="@+id/personal_details_birthmonth"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/shape_personal_detail_background"
-                android:padding="16dp"
-                android:textAlignment="center"
-                android:textAppearance="?attr/textAppearanceHeadline6"
-                app:layout_constraintEnd_toEndOf="@+id/birth_day_header"
-                app:layout_constraintStart_toStartOf="@+id/birth_day_header"
-                app:layout_constraintTop_toBottomOf="@+id/birth_day_header"
-                tools:text="06" />
-
-            <TextView
-                android:id="@+id/birth_month_header"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/scan_result_valid_birth_month"
-                android:textAppearance="?attr/textAppearanceCaption"
-                android:textColor="?android:textColorPrimary"
-                app:layout_constraintBottom_toBottomOf="@+id/birth_day_header"
-                app:layout_constraintEnd_toEndOf="@+id/last_name_header"
+                app:header="@string/scan_result_valid_birth_month"
+                app:layout_constraintEnd_toEndOf="@id/personal_details_lastname"
                 app:layout_constraintHorizontal_weight="6"
-                app:layout_constraintStart_toEndOf="@+id/birth_day_header"
-                app:layout_constraintTop_toTopOf="@+id/birth_day_header" />
+                app:layout_constraintStart_toEndOf="@id/personal_details_birthdate"
+                app:layout_constraintTop_toTopOf="@id/personal_details_birthdate" />
 
-            <TextView
-                android:id="@+id/birth_month"
-                android:layout_width="0dp"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_incorrect_data"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/shape_personal_detail_background"
-                android:padding="16dp"
-                android:textAlignment="center"
-                android:textAppearance="?attr/textAppearanceHeadline6"
-                app:layout_constraintEnd_toEndOf="@+id/birth_month_header"
-                app:layout_constraintStart_toStartOf="@+id/birth_month_header"
-                app:layout_constraintTop_toBottomOf="@+id/birth_month_header"
-                tools:text="AUG (08)" />
+                android:layout_marginTop="32dp"
+                android:paddingStart="0dp"
+                android:text="@string/scan_result_valid_incorrect_data"
+                android:textColor="@color/link"
+                app:layout_constraintStart_toStartOf="@+id/personal_details_birthdate"
+                app:layout_constraintTop_toBottomOf="@+id/personal_details_birthdate" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

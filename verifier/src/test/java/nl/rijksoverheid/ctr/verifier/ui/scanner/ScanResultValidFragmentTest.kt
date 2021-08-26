@@ -6,6 +6,7 @@ import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
+import androidx.test.espresso.matcher.ViewMatchers.*
 import com.schibsted.spain.barista.assertion.BaristaAssertions.assertAny
 import com.schibsted.spain.barista.assertion.BaristaBackgroundAssertions.assertHasBackground
 import com.schibsted.spain.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
@@ -14,12 +15,14 @@ import com.schibsted.spain.barista.interaction.BaristaClickInteractions.clickOn
 import com.schibsted.spain.barista.interaction.BaristaScrollInteractions.safelyScrollTo
 import com.schibsted.spain.barista.interaction.BaristaScrollInteractions.scrollTo
 import com.schibsted.spain.barista.interaction.BaristaSleepInteractions
+import com.schibsted.spain.barista.internal.assertAny
 import io.mockk.mockk
 import io.mockk.verify
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.fakeVerifiedQr
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultValidData
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
+import org.hamcrest.Matchers
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.core.context.loadKoinModules
@@ -74,20 +77,18 @@ class ScanResultValidFragmentTest : AutoCloseKoinTest() {
 
         // Make sure the correct title is shown in toolbar
         assertDisplayed(R.id.toolbar)
-        assertAny<Toolbar>(R.id.toolbar, "Toolbar shows correct title"){
-            it.title == it.context.getString(R.string.scan_result_valid_title)
-        }
+        assertDisplayed(R.id.screen_header, R.string.scan_result_valid_personal_details_title)
 
         // Assert correct content is displayed on screen
         assertDisplayed(R.id.personal_details)
-        scrollTo(R.id.first_name_initial)
-        assertDisplayed(R.id.first_name_initial, "B")
-        scrollTo(R.id.last_name_initial)
-        assertDisplayed(R.id.last_name_initial, "N")
-        scrollTo(R.id.birth_day)
-        assertDisplayed(R.id.birth_day, "02")
-        scrollTo(R.id.birth_month)
-        assertDisplayed(R.id.birth_month, "JUL (07)")
+        scrollTo(R.id.personal_details_firstname)
+        withId(R.id.content).assertAny(Matchers.allOf(withParent(withId(R.id.personal_details_firstname)), isDisplayed(), withText("B")))
+        scrollTo(R.id.personal_details_lastname)
+        withId(R.id.content).assertAny(Matchers.allOf(withParent(withId(R.id.personal_details_lastname)), isDisplayed(), withText("N")))
+        scrollTo(R.id.personal_details_birthdate)
+        withId(R.id.content).assertAny(Matchers.allOf(withParent(withId(R.id.personal_details_birthdate)), isDisplayed(), withText("02")))
+        scrollTo(R.id.personal_details_birthmonth)
+        withId(R.id.content).assertAny(Matchers.allOf(withParent(withId(R.id.personal_details_birthmonth)), isDisplayed(), withText("JUL (07)")))
 
         // Assert button click
         safelyScrollTo(R.id.button)
@@ -113,20 +114,18 @@ class ScanResultValidFragmentTest : AutoCloseKoinTest() {
 
         // Make sure the correct title is shown in toolbar
         assertDisplayed(R.id.toolbar)
-        assertAny<Toolbar>(R.id.toolbar, "Toolbar shows correct title"){
-            it.title == it.context.getString(R.string.scan_result_valid_title)
-        }
+        assertDisplayed(R.id.screen_header, R.string.scan_result_valid_personal_details_title)
 
         // Assert correct content is displayed on screen
         assertDisplayed(R.id.personal_details)
-        scrollTo(R.id.first_name_initial)
-        assertDisplayed(R.id.first_name_initial, "B")
-        scrollTo(R.id.last_name_initial)
-        assertDisplayed(R.id.last_name_initial, "N")
-        scrollTo(R.id.birth_day)
-        assertDisplayed(R.id.birth_day, "02")
-        scrollTo(R.id.birth_month)
-        assertDisplayed(R.id.birth_month, "JUL (07)")
+        scrollTo(R.id.personal_details_firstname)
+        withId(R.id.content).assertAny(Matchers.allOf(withParent(withId(R.id.personal_details_firstname)), isDisplayed(), withText("B")))
+        scrollTo(R.id.personal_details_lastname)
+        withId(R.id.content).assertAny(Matchers.allOf(withParent(withId(R.id.personal_details_lastname)), isDisplayed(), withText("N")))
+        scrollTo(R.id.personal_details_birthdate)
+        withId(R.id.content).assertAny(Matchers.allOf(withParent(withId(R.id.personal_details_birthdate)), isDisplayed(), withText("02")))
+        scrollTo(R.id.personal_details_birthmonth)
+        withId(R.id.content).assertAny(Matchers.allOf(withParent(withId(R.id.personal_details_birthmonth)), isDisplayed(), withText("JUL (07)")))
 
         // Assert button click
         safelyScrollTo(R.id.button)
@@ -152,20 +151,18 @@ class ScanResultValidFragmentTest : AutoCloseKoinTest() {
 
         // Make sure the correct title is shown in toolbar
         assertDisplayed(R.id.toolbar)
-        assertAny<Toolbar>(R.id.toolbar, "Toolbar shows correct title"){
-            it.title == it.context.getString(R.string.scan_result_demo_title)
-        }
+        assertDisplayed(R.id.screen_header, R.string.scan_result_valid_personal_details_title)
 
         // Assert correct content is displayed on screen
         assertDisplayed(R.id.personal_details)
-        scrollTo(R.id.first_name_initial)
-        assertDisplayed(R.id.first_name_initial, "B")
-        scrollTo(R.id.last_name_initial)
-        assertDisplayed(R.id.last_name_initial, "N")
-        scrollTo(R.id.birth_day)
-        assertDisplayed(R.id.birth_day, "02")
-        scrollTo(R.id.birth_month)
-        assertDisplayed(R.id.birth_month, "JUL (07)")
+        scrollTo(R.id.personal_details_firstname)
+        withId(R.id.content).assertAny(Matchers.allOf(withParent(withId(R.id.personal_details_firstname)), isDisplayed(), withText("B")))
+        scrollTo(R.id.personal_details_lastname)
+        withId(R.id.content).assertAny(Matchers.allOf(withParent(withId(R.id.personal_details_lastname)), isDisplayed(), withText("N")))
+        scrollTo(R.id.personal_details_birthdate)
+        withId(R.id.content).assertAny(Matchers.allOf(withParent(withId(R.id.personal_details_birthdate)), isDisplayed(), withText("02")))
+        scrollTo(R.id.personal_details_birthmonth)
+        withId(R.id.content).assertAny(Matchers.allOf(withParent(withId(R.id.personal_details_birthmonth)), isDisplayed(), withText("JUL (07)")))
 
         // Assert button click
         safelyScrollTo(R.id.button)
@@ -191,20 +188,18 @@ class ScanResultValidFragmentTest : AutoCloseKoinTest() {
 
         // Make sure the correct title is shown in toolbar
         assertDisplayed(R.id.toolbar)
-        assertAny<Toolbar>(R.id.toolbar, "Toolbar shows correct title"){
-            it.title == it.context.getString(R.string.scan_result_demo_title)
-        }
+        assertDisplayed(R.id.screen_header, R.string.scan_result_valid_personal_details_title)
 
         // Assert correct content is displayed on screen
         assertDisplayed(R.id.personal_details)
-        scrollTo(R.id.first_name_initial)
-        assertDisplayed(R.id.first_name_initial, "B")
-        scrollTo(R.id.last_name_initial)
-        assertDisplayed(R.id.last_name_initial, "N")
-        scrollTo(R.id.birth_day)
-        assertDisplayed(R.id.birth_day, "02")
-        scrollTo(R.id.birth_month)
-        assertDisplayed(R.id.birth_month, "JUL (07)")
+        scrollTo(R.id.personal_details_firstname)
+        withId(R.id.content).assertAny(Matchers.allOf(withParent(withId(R.id.personal_details_firstname)), isDisplayed(), withText("B")))
+        scrollTo(R.id.personal_details_lastname)
+        withId(R.id.content).assertAny(Matchers.allOf(withParent(withId(R.id.personal_details_lastname)), isDisplayed(), withText("N")))
+        scrollTo(R.id.personal_details_birthdate)
+        withId(R.id.content).assertAny(Matchers.allOf(withParent(withId(R.id.personal_details_birthdate)), isDisplayed(), withText("02")))
+        scrollTo(R.id.personal_details_birthmonth)
+        withId(R.id.content).assertAny(Matchers.allOf(withParent(withId(R.id.personal_details_birthmonth)), isDisplayed(), withText("JUL (07)")))
 
         // Assert button click
         safelyScrollTo(R.id.button)

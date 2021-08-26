@@ -4,6 +4,8 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import nl.rijksoverheid.ctr.api.factory.NetworkRequestResultFactory
+import nl.rijksoverheid.ctr.shared.models.CoronaCheckErrorResponse
 import nl.rijksoverheid.ctr.api.signing.certificates.DIGICERT_BTC_ROOT_CA
 import nl.rijksoverheid.ctr.api.signing.certificates.EV_ROOT_CA
 import nl.rijksoverheid.ctr.api.signing.certificates.PRIVATE_ROOT_CA
@@ -38,13 +40,15 @@ import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.QrCodeViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.QrCodeViewModelImpl
-import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.ReturnToAppUseCase
-import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.ReturnToAppUseCaseImpl
+import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.ReturnToExternalAppUseCase
+import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.ReturnToExternalAppUseCaseImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverViewGreenCardAdapterUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverViewGreenCardAdapterUtilImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCaseImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.*
+import nl.rijksoverheid.ctr.shared.factories.ErrorCodeStringFactory
+import nl.rijksoverheid.ctr.shared.factories.ErrorCodeStringFactoryImpl
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import okhttp3.tls.HandshakeCertificates
@@ -141,6 +145,8 @@ fun holderModule(baseUrl: String) = module {
     factory<OriginUtil> { OriginUtilImpl(Clock.systemUTC()) }
     factory<RemoteEventRecoveryUtil> { RemoteEventRecoveryUtilImpl(get()) }
     factory<RemoteEventHolderUtil> { RemoteEventHolderUtilImpl(get(), get()) }
+    factory<RemoteProtocol3Util> { RemoteProtocol3UtilImpl() }
+    factory<RemoteEventUtil> { RemoteEventUtilImpl() }
     factory {
         TokenQrUseCase(get())
     }
@@ -172,7 +178,7 @@ fun holderModule(baseUrl: String) = module {
     factory<CoronaCheckRepository> {
         CoronaCheckRepositoryImpl(
             get(),
-            get(named("ResponseError"))
+            get()
         )
     }
     factory<TestProviderRepository> {
@@ -216,8 +222,8 @@ fun holderModule(baseUrl: String) = module {
         TestResultAttributesUseCaseImpl(get(), get())
     }
 
-    factory<ReturnToAppUseCase> {
-        ReturnToAppUseCaseImpl(get())
+    factory<ReturnToExternalAppUseCase> {
+        ReturnToExternalAppUseCaseImpl(get())
     }
 
     factory<RemoveExpiredEventsUseCase> {
@@ -273,10 +279,18 @@ fun holderModule(baseUrl: String) = module {
         )
     }
 
-    single<Converter<ResponseBody, ResponseError>>(named("ResponseError")) {
+    single<Converter<ResponseBody, CoronaCheckErrorResponse>>(named("ResponseError")) {
         get<Retrofit>(Retrofit::class).responseBodyConverter(
-            ResponseError::class.java, emptyArray()
+            CoronaCheckErrorResponse::class.java, emptyArray()
         )
+    }
+
+    factory {
+        NetworkRequestResultFactory(get(named("ResponseError")))
+    }
+
+    factory<ErrorCodeStringFactory> {
+        ErrorCodeStringFactoryImpl()
     }
 
     single {

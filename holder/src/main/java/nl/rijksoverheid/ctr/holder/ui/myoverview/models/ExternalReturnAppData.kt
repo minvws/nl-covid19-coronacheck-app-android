@@ -9,7 +9,7 @@ import android.content.Intent
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-data class ReturnAppData(
+data class ExternalReturnAppData(
     val appName: String,
     val intent: Intent
 )

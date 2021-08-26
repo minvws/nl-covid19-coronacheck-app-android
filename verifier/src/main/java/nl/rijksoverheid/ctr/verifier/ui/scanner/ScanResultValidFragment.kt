@@ -37,7 +37,8 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
 
     private val autoCloseHandler = Handler(Looper.getMainLooper())
     private val autoCloseRunnable = Runnable {
-        navigateSafety(R.id.nav_scan_result_valid,
+        navigateSafety(
+            R.id.nav_scan_result_valid,
             ScanResultValidFragmentDirections.actionNavMain()
         )
     }
@@ -73,7 +74,7 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
             }
         }
 
-        binding.personalDetails.icon.setOnClickListener {
+        binding.personalDetails.buttonIncorrectData.setOnClickListener {
             findNavController().navigate(ScanResultValidFragmentDirections.actionShowValidExplanation())
         }
 
@@ -92,11 +93,7 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
 
     private fun presentPersonalDetails() {
         binding.personalDetails.root.visibility = View.VISIBLE
-        if (args.validData is ScanResultValidData.Demo) {
-            binding.toolbar.setTitle(R.string.scan_result_demo_title)
-        } else {
-            binding.toolbar.setTitle(R.string.scan_result_valid_title)
-        }
+        binding.screenHeader.visibility = View.VISIBLE
         val testResultAttributes = args.validData.verifiedQr.details
         val personalDetails = personalDetailsUtil.getPersonalDetails(
             testResultAttributes.firstNameInitial,
@@ -105,10 +102,10 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
             testResultAttributes.birthMonth,
             includeBirthMonthNumber = true
         )
-        binding.personalDetails.lastNameInitial.text = personalDetails.lastNameInitial
-        binding.personalDetails.firstNameInitial.text = personalDetails.firstNameInitial
-        binding.personalDetails.birthMonth.text = personalDetails.birthMonth
-        binding.personalDetails.birthDay.text = personalDetails.birthDay
+        binding.personalDetails.personalDetailsLastname.setContent(personalDetails.lastNameInitial)
+        binding.personalDetails.personalDetailsFirstname.setContent(personalDetails.firstNameInitial)
+        binding.personalDetails.personalDetailsBirthmonth.setContent(personalDetails.birthMonth)
+        binding.personalDetails.personalDetailsBirthdate.setContent(personalDetails.birthDay)
     }
 
     override fun onResume() {

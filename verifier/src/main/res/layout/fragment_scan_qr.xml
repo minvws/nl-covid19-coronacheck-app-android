@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -19,14 +18,14 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="16dp">
+            android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/image"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:paddingHorizontal="16dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/illustration_scanner_get_started"
                 app:layout_constraintBottom_toTopOf="@+id/title"
@@ -41,6 +40,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
+                android:paddingHorizontal="16dp"
                 android:text="@string/scan_qr_header"
                 android:textAppearance="?attr/textAppearanceHeadline5"
                 app:layout_constraintBottom_toTopOf="@+id/description"
@@ -48,18 +48,33 @@
                 app:layout_constraintStart_toStartOf="@+id/image"
                 app:layout_constraintTop_toBottomOf="@+id/image" />
 
-            <nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
+            <TextView
                 android:id="@+id/description"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
+                android:paddingHorizontal="16dp"
+                android:text="@string/scan_qr_description"
                 android:textAppearance="?attr/textAppearanceBody1"
-                app:htmlText="@string/scan_qr_description"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/image"
                 app:layout_constraintStart_toStartOf="@+id/image"
-                app:layout_constraintTop_toBottomOf="@+id/title"
-                tools:text="@string/scan_qr_description" />
+                app:layout_constraintTop_toBottomOf="@+id/title" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/instructionsButton"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="12dp"
+                android:gravity="start|center"
+                android:text="@string/scan_qr_instructions_button"
+                android:textColor="@color/link"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/description" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

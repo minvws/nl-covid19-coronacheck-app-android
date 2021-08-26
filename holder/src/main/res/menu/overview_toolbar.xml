@@ -13,6 +13,6 @@
         android:id="@+id/action_qr_type"
         android:icon="@drawable/ic_add"
         android:title=""
-        app:contentDescription="@string/my_overview_no_qr_make_qr_button"
+        app:contentDescription="@string/my_overview_add_qr_button"
         app:showAsAction="always" />
 </menu>

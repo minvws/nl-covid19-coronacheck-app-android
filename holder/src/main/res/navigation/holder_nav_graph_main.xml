@@ -216,6 +216,14 @@
                 app:popEnterAnim="@anim/slide_in_left"
                 app:popExitAnim="@anim/slide_out_right" />
 
+            <action
+                android:id="@+id/action_error_result"
+                app:destination="@id/nav_error_result"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right" />
+
             <argument
                 android:name="couplingCode"
                 app:argType="string" />
@@ -337,6 +345,10 @@
         <argument
             android:name="data"
             app:argType="nl.rijksoverheid.ctr.holder.ui.create_qr.util.InfoScreen[]" />
+
+        <argument
+            android:name="toolbarTitle"
+            app:argType="string" />
 
     </fragment>
 
@@ -497,5 +509,20 @@
             app:argType="string" />
 
     </dialog>
+
+    <fragment
+        android:id="@+id/nav_error_result"
+        android:name="nl.rijksoverheid.ctr.design.fragments.ErrorResultFragment"
+        tools:layout="@layout/fragment_error_result" />
+
+    <action
+        android:id="@+id/action_my_overview"
+        app:destination="@id/nav_graph_overview"
+        app:enterAnim="@anim/fragment_open_enter"
+        app:exitAnim="@anim/fragment_open_exit"
+        app:popEnterAnim="@anim/fragment_close_enter"
+        app:popExitAnim="@anim/fragment_close_exit"
+        app:popUpTo="@id/nav_graph_overview"
+        app:popUpToInclusive="true" />
 
 </navigation>

@@ -42,9 +42,9 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `Clicking description navigates to scan instructions`() {
+    fun `Clicking instruction button navigates to scan instructions`() {
         launchScanQrFragment()
-        clickOn(R.id.description)
+        clickOn(R.id.instructionsButton)
         assertEquals(navController.currentDestination?.id, R.id.nav_scan_instructions)
     }
 

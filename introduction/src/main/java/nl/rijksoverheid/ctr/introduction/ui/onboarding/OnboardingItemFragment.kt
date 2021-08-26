@@ -1,9 +1,9 @@
 package nl.rijksoverheid.ctr.introduction.ui.onboarding
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.introduction.R
 import nl.rijksoverheid.ctr.introduction.databinding.FragmentOnboardingItemBinding
 import nl.rijksoverheid.ctr.introduction.ui.onboarding.models.OnboardingItem
@@ -32,7 +32,6 @@ class OnboardingItemFragment : Fragment(R.layout.fragment_onboarding_item) {
         }
     }
 
-    private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
     private val androidUtil: AndroidUtil by inject()
 
     private val item: OnboardingItem by lazy {
@@ -41,12 +40,21 @@ class OnboardingItemFragment : Fragment(R.layout.fragment_onboarding_item) {
         ) ?: throw Exception("Failed to get item")
     }
 
+    @SuppressLint("StringFormatInvalid")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentOnboardingItemBinding.bind(view)
 
         binding.title.text = getString(item.titleResource)
-        binding.description.setHtmlTextWithBullets(getString(item.description), false)
+        binding.description.setHtmlText(item.description, htmlLinksEnabled = false)
+
+        // If a position is set (default = -1) show "Step x of x" above header
+        if (item.position >= 0) {
+            binding.step.apply {
+                visibility = View.VISIBLE
+                text = getString(R.string.onboarding_step, item.position)
+            }
+        }
 
         if (androidUtil.isSmallScreen()) {
             binding.image.visibility = View.GONE

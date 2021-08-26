@@ -41,7 +41,7 @@ class ScanQrViewModelImplTest {
         )
 
         every { fakePersistenceManager.getScanInstructionsSeen() } answers { false }
-        viewModel.scanInstructionsSeen()
+        viewModel.setScanInstructionsSeen()
 
         verify { fakePersistenceManager.setScanInstructionsSeen() }
     }
@@ -53,7 +53,7 @@ class ScanQrViewModelImplTest {
         )
 
         every { fakePersistenceManager.getScanInstructionsSeen() } answers { true }
-        viewModel.scanInstructionsSeen()
+        viewModel.setScanInstructionsSeen()
 
         verify(exactly = 0) { fakePersistenceManager.setScanInstructionsSeen() }
     }

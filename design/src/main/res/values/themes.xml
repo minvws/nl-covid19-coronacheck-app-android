@@ -13,6 +13,7 @@
         <item name="colorControlNormal">@color/black</item>
         <item name="android:textColorHint">@color/secondary_text</item>
         <item name="colorError">@color/error</item>
+        <item name="actionMenuTextColor">@color/link</item>
 
         <!-- Text Styles -->
         <item name="android:textColorPrimary">@color/black</item>

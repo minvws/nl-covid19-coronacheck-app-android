@@ -30,7 +30,7 @@
             android:layout_height="0dp"
             android:clipToPadding="false"
             android:fillViewport="true"
-            app:layout_constraintBottom_toTopOf="@+id/button"
+            app:layout_constraintBottom_toTopOf="@+id/button_next"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar">
@@ -55,49 +55,47 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="32dp"
+                    android:layout_marginBottom="8dp"
                     android:text="@string/scan_result_invalid_title"
                     android:textAlignment="center"
                     android:textAppearance="?attr/textAppearanceHeadline5"
-                    app:layout_constraintEnd_toEndOf="@+id/image"
-                    app:layout_constraintStart_toStartOf="@+id/image"
-                    app:layout_constraintTop_toBottomOf="@+id/image" />
-
-                <nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
-                    android:id="@+id/subtitle"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:textAlignment="center"
-                    android:textAppearance="?attr/textAppearanceBody1"
-                    android:textColorLink="?android:textColorPrimary"
-                    app:htmlText="@string/scan_result_invalid_subtitle"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@+id/image"
                     app:layout_constraintStart_toStartOf="@+id/image"
-                    app:layout_constraintTop_toBottomOf="@+id/title"
-                    app:layout_constraintVertical_bias="0.0"
-                    app:layout_goneMarginTop="32dp" />
+                    app:layout_constraintTop_toBottomOf="@+id/image"
+                    app:layout_constraintVertical_bias="0.0" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </ScrollView>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/button"
-            style="@style/Widget.App.Button.Surface"
+            android:id="@+id/button_explanation"
+            style="@style/Widget.App.Button.Outlined"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="24dp"
+            app:layout_constraintBottom_toTopOf="@id/button_next"
+            android:text="@string/scan_result_invalid_explanation_button"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_next"
+            style="@style/Widget.App.Button.Surface"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginTop="24dp"
             android:layout_marginBottom="16dp"
             android:text="@string/scan_result_invalid_button"
             app:layout_constrainedWidth="true"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/button_explanation"
+            app:layout_constraintStart_toStartOf="@id/button_explanation"
             app:layout_constraintVertical_bias="1" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

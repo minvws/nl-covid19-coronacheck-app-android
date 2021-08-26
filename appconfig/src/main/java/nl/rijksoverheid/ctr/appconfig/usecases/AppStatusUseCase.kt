@@ -3,15 +3,17 @@ package nl.rijksoverheid.ctr.appconfig.usecases
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.VerifierConfig
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.appconfig.models.ConfigResult
+import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
+import nl.rijksoverheid.ctr.appconfig.persistence.RecommendedUpdatePersistenceManager
 import nl.rijksoverheid.ctr.shared.ext.toObject
 import java.time.Clock
 import java.time.OffsetDateTime
+import java.util.concurrent.TimeUnit
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -28,6 +30,7 @@ class AppStatusUseCaseImpl(
     private val clock: Clock,
     private val cachedAppConfigUseCase: CachedAppConfigUseCase,
     private val appConfigPersistenceManager: AppConfigPersistenceManager,
+    private val recommendedUpdatePersistenceManager: RecommendedUpdatePersistenceManager,
     private val moshi: Moshi,
     private val isVerifierApp: Boolean,
 ) :
@@ -48,10 +51,8 @@ class AppStatusUseCaseImpl(
                 }
                 is ConfigResult.Error -> {
                     val cachedAppConfig = cachedAppConfigUseCase.getCachedAppConfig()
-                    if (appConfigPersistenceManager.getAppConfigLastFetchedSeconds() + cachedAppConfig.configTtlSeconds >= OffsetDateTime.now(
-                            clock
-                        )
-                            .toEpochSecond()
+                    if (appConfigPersistenceManager.getAppConfigLastFetchedSeconds() + cachedAppConfig.configTtlSeconds
+                        >= OffsetDateTime.now(clock).toEpochSecond()
                     ) {
                         checkIfActionRequired(
                             currentVersionCode = currentVersionCode,
@@ -68,7 +69,38 @@ class AppStatusUseCaseImpl(
         return when {
             appConfig.appDeactivated -> AppStatus.Deactivated(appConfig.informationURL)
             currentVersionCode < appConfig.minimumVersion -> AppStatus.UpdateRequired
+            currentVersionCode < appConfig.recommendedVersion -> getUpdateRecommendedStatus(appConfig)
             else -> AppStatus.NoActionRequired
+        }
+    }
+
+    private fun getUpdateRecommendedStatus(appConfig: AppConfig): AppStatus {
+        return if (appConfig is VerifierConfig) {
+            getVerifierRecommendedUpdateStatus(appConfig)
+        } else {
+            getHolderRecommendUpdateStatus(appConfig)
+        }
+    }
+
+    private fun getHolderRecommendUpdateStatus(appConfig: AppConfig) =
+        if (appConfig.recommendedVersion > recommendedUpdatePersistenceManager.getHolderVersionUpdateShown()) {
+            recommendedUpdatePersistenceManager.saveHolderVersionShown(appConfig.recommendedVersion)
+            AppStatus.UpdateRecommended
+        } else {
+            AppStatus.NoActionRequired
+        }
+
+    private fun getVerifierRecommendedUpdateStatus(appConfig: AppConfig): AppStatus {
+        val localTime = TimeUnit.MILLISECONDS.toSeconds(clock.instant().toEpochMilli())
+        val updateLastShown =
+            recommendedUpdatePersistenceManager.getRecommendedUpdateShownSeconds()
+        val updateIntervalSeconds =
+            TimeUnit.HOURS.toSeconds(appConfig.recommendedUpgradeIntervalHours.toLong())
+        return if (localTime > updateLastShown + updateIntervalSeconds) {
+            recommendedUpdatePersistenceManager.saveRecommendedUpdateShownSeconds(localTime)
+            AppStatus.UpdateRecommended
+        } else {
+            AppStatus.NoActionRequired
         }
     }
 }

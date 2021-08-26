@@ -13,8 +13,8 @@ import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultInvalidData
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultValidData
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.VerifiedQrResultState
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -39,6 +39,11 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
         return Copy(
             title = getString(R.string.scanner_custom_title),
             message = getString(R.string.scanner_custom_message),
+            onMessageClicked = {
+                findNavController().navigate(
+                    VerifierQrScannerFragmentDirections.actionScanInstructions()
+                )
+            },
             rationaleDialog = Copy.RationaleDialog(
                 title = getString(R.string.camera_rationale_dialog_title),
                 description = getString(R.string.camera_rationale_dialog_description),
@@ -92,8 +97,14 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
                         )
                     )
                 }
-                is VerifiedQrResultState.InvalidInNL -> presentDialog(R.string.scan_result_european_in_nl_dialog_title, getString(R.string.scan_result_european_in_nl_dialog_message))
-                is VerifiedQrResultState.UnknownQR -> presentDialog(R.string.scan_result_unknown_qr_dialog_title, getString(R.string.scan_result_unknown_qr_dialog_message))
+                is VerifiedQrResultState.InvalidInNL -> presentDialog(
+                    R.string.scan_result_european_in_nl_dialog_title,
+                    getString(R.string.scan_result_european_in_nl_dialog_message)
+                )
+                is VerifiedQrResultState.UnknownQR -> presentDialog(
+                    R.string.scan_result_unknown_qr_dialog_title,
+                    getString(R.string.scan_result_unknown_qr_dialog_message)
+                )
             }
         })
     }

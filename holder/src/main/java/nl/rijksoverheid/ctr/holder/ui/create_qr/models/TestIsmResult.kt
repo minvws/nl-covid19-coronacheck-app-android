@@ -1,5 +1,7 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.models
 
+import nl.rijksoverheid.ctr.shared.models.CoronaCheckErrorResponse
+
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
  *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
@@ -9,5 +11,5 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.models
  */
 sealed class TestIsmResult {
     data class Success(val body: String) : TestIsmResult()
-    data class Error(val httpCode: Int, val responseError: ResponseError) : TestIsmResult()
+    data class Error(val httpCode: Int, val responseError: CoronaCheckErrorResponse) : TestIsmResult()
 }

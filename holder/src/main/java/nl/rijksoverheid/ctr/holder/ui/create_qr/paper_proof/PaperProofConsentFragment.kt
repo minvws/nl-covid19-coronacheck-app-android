@@ -3,22 +3,24 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import nl.rijksoverheid.ctr.holder.HolderMainActivityViewModel
-import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.design.utils.DialogUtil
+import nl.rijksoverheid.ctr.holder.*
 import nl.rijksoverheid.ctr.holder.databinding.FragmentPaperProofConsentBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.YourEventsFragmentType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.ValidatePaperProofResult
-import nl.rijksoverheid.ctr.shared.ext.navigateSafety
+import nl.rijksoverheid.ctr.shared.models.ErrorResultFragmentData
+import nl.rijksoverheid.ctr.shared.models.Flow
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class PaperProofConsentFragment: Fragment(R.layout.fragment_paper_proof_consent) {
+class PaperProofConsentFragment: BaseFragment(R.layout.fragment_paper_proof_consent) {
 
+    private val dialogUtil: DialogUtil by inject()
     private val args: PaperProofConsentFragmentArgs by navArgs()
     private val holderMainActivityViewModel: HolderMainActivityViewModel by sharedViewModel()
 
@@ -43,39 +45,64 @@ class PaperProofConsentFragment: Fragment(R.layout.fragment_paper_proof_consent)
 
         holderMainActivityViewModel.validatePaperProofError.observe(viewLifecycleOwner, EventObserver {
             when (it) {
-                is ValidatePaperProofResult.Error.BlockedQr -> {
-                    navigateSafety(R.id.nav_paper_proof_consent, PaperProofConsentFragmentDirections.actionCouldNotCreateQr(
-                        toolbarTitle = getString(R.string.add_paper_proof),
-                        title = getString(R.string.add_paper_proof_limit_reached_paper_proof_title),
-                        description = getString(R.string.add_paper_proof_limit_reached_paper_proof_description),
-                        buttonTitle = getString(R.string.dialog_retry)
-                    ))
+                is ValidatePaperProofResult.Invalid.DutchQr -> {
+                    dialogUtil.presentDialog(
+                        context = requireContext(),
+                        title = R.string.add_paper_proof_qr_error_dutch_qr_code_dialog_title,
+                        message = getString(R.string.add_paper_proof_qr_error_dutch_qr_code_dialog_description),
+                        positiveButtonText = R.string.ok,
+                        positiveButtonCallback = {}
+                    )
                 }
-                is ValidatePaperProofResult.Error.ExpiredQr -> {
-                    navigateSafety(R.id.nav_paper_proof_consent, PaperProofConsentFragmentDirections.actionCouldNotCreateQr(
-                        toolbarTitle = getString(R.string.add_paper_proof),
-                        title = getString(R.string.add_paper_proof_expired_paper_proof_title),
-                        description = getString(R.string.add_paper_proof_expired_paper_proof_description),
-                        buttonTitle = getString(R.string.dialog_retry)
-                    ))
+                is ValidatePaperProofResult.Invalid.InvalidQr -> {
+                    dialogUtil.presentDialog(
+                        context = requireContext(),
+                        title = R.string.add_paper_proof_qr_error_invalid_qr_dialog_title,
+                        message = getString(R.string.add_paper_proof_qr_error_invalid_qr_dialog_description),
+                        positiveButtonText = R.string.ok,
+                        positiveButtonCallback = {}
+                    )
                 }
-                is ValidatePaperProofResult.Error.RejectedQr -> {
-                    navigateSafety(R.id.nav_paper_proof_consent, PaperProofConsentFragmentDirections.actionCouldNotCreateQr(
-                        toolbarTitle = getString(R.string.add_paper_proof),
-                        title = getString(R.string.add_paper_proof_invalid_combination_title),
-                        description = getString(R.string.add_paper_proof_invalid_combination_),
-                        buttonTitle = getString(R.string.dialog_retry)
-                    ))
+                is ValidatePaperProofResult.Invalid.BlockedQr -> {
+                    presentError(
+                        data = ErrorResultFragmentData(
+                            title = getString(R.string.add_paper_proof_limit_reached_paper_proof_title),
+                            description = getString(R.string.add_paper_proof_limit_reached_paper_proof_description),
+                            buttonTitle = getString(R.string.back_to_overview),
+                            buttonDestinationId = R.id.action_my_overview
+                        )
+                    )
                 }
-                else -> {
-                    navigateSafety(R.id.nav_paper_proof_consent, PaperProofConsentFragmentDirections.actionCouldNotCreateQr(
-                        toolbarTitle = getString(R.string.add_paper_proof),
-                        title = getString(R.string.add_paper_proof_invalid_combination_title),
-                        description = getString(R.string.add_paper_proof_invalid_combination_),
-                        buttonTitle = getString(R.string.dialog_retry)
-                    ))
+                is ValidatePaperProofResult.Invalid.ExpiredQr -> {
+                    presentError(
+                        data = ErrorResultFragmentData(
+                            title = getString(R.string.add_paper_proof_expired_paper_proof_title),
+                            description = getString(R.string.add_paper_proof_expired_paper_proof_description),
+                            buttonTitle = getString(R.string.back_to_overview),
+                            buttonDestinationId = R.id.action_my_overview
+                        )
+                    )
+                }
+                is ValidatePaperProofResult.Invalid.RejectedQr -> {
+                    presentError(
+                        data = ErrorResultFragmentData(
+                            title = getString(R.string.add_paper_proof_invalid_combination_title),
+                            description = getString(R.string.add_paper_proof_invalid_combination_),
+                            buttonTitle = getString(R.string.back_to_overview),
+                            buttonDestinationId = R.id.action_my_overview
+                        )
+                    )
+                }
+                is ValidatePaperProofResult.Invalid.Error -> {
+                    presentError(
+                        errorResult = it.errorResult
+                    )
                 }
             }
         })
+    }
+
+    override fun getFlow(): Flow {
+        return HolderFlow.HkviScan
     }
 }

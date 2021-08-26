@@ -11,7 +11,9 @@ package nl.rijksoverheid.ctr.verifier
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
@@ -29,6 +31,8 @@ class VerifierMainFragment :
 
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
+    private var _navController: NavController? = null
+    private val navController get() = _navController!!
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -37,7 +41,7 @@ class VerifierMainFragment :
 
         val navHostFragment =
             childFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        val navController = navHostFragment.navController
+        _navController = navHostFragment.navController
 
         val appBarConfiguration = AppBarConfiguration(
             topLevelDestinations,
@@ -120,5 +124,9 @@ class VerifierMainFragment :
             .styleTitle(context, R.attr.textAppearanceBody1)
         binding.navView.menu.findItem(R.id.nav_close_menu)
             .styleTitle(context, R.attr.textAppearanceBody1)
+    }
+
+    fun getToolbar(): Toolbar {
+        return binding.toolbar
     }
 }

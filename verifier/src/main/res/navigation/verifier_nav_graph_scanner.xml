@@ -26,6 +26,14 @@
             app:popEnterAnim="@anim/fragment_close_enter"
             app:popExitAnim="@anim/fragment_close_exit" />
 
+        <action
+            android:id="@+id/action_scan_instructions"
+            app:destination="@id/nav_scan_instructions_with_toolbar"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
+
     </fragment>
 
     <fragment
@@ -82,12 +90,18 @@
         android:id="@+id/valid_explanation_bottomsheet"
         android:name="nl.rijksoverheid.ctr.verifier.ui.scanner.ScanResultValidExplanationDialogFragment"
         android:label="ScanResultValidExplanationDialogFragment"
-        tools:layout="@layout/fragment_scan_result_valid_reason"/>
+        tools:layout="@layout/fragment_scan_result_valid_reason" />
 
     <dialog
         android:id="@+id/invalid_explanation_bottomsheet"
         android:name="nl.rijksoverheid.ctr.verifier.ui.scanner.ScanResultInvalidExplanationDialogFragment"
         android:label="ScanResultInvalidExplanationDialogFragment"
         tools:layout="@layout/fragment_scan_result_invalid_reason" />
+
+    <fragment
+        android:id="@+id/nav_scan_instructions_with_toolbar"
+        android:name="nl.rijksoverheid.ctr.verifier.ui.instructions.ScanInstructionsWithToolbarFragment"
+        android:label="@string/scan_instructions"
+        tools:layout="@layout/fragment_scan_instructions" />
 
 </navigation>

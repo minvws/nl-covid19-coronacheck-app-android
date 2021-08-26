@@ -17,4 +17,5 @@ data class OnboardingItem(
     @DrawableRes val imageResource: Int,
     @StringRes val titleResource: Int,
     @StringRes val description: Int,
+    val position : Int = -1 // Holds position in viewpager to show current step in progress
 ) : Parcelable

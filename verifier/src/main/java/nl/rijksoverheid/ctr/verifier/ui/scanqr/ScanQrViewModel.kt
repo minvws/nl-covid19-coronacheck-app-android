@@ -12,17 +12,20 @@ import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
  */
 
 abstract class ScanQrViewModel : ViewModel() {
-    abstract fun scanInstructionsSeen(): Boolean
+    abstract fun hasSeenScanInstructions() : Boolean
+    abstract fun setScanInstructionsSeen()
 }
 
 class ScanQrViewModelImpl(
     private val persistenceManager: PersistenceManager
 ) : ScanQrViewModel() {
-    override fun scanInstructionsSeen(): Boolean {
-        val seen = persistenceManager.getScanInstructionsSeen()
-        if (!seen) {
+    override fun hasSeenScanInstructions(): Boolean {
+        return persistenceManager.getScanInstructionsSeen()
+    }
+
+    override fun setScanInstructionsSeen() {
+        if (!hasSeenScanInstructions()) {
             persistenceManager.setScanInstructionsSeen()
         }
-        return seen
     }
 }

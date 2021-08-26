@@ -4,7 +4,6 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
 import retrofit2.HttpException
-import timber.log.Timber
 import java.io.IOException
 
 /*

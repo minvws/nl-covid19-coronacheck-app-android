@@ -18,6 +18,7 @@
     <color name="grey_3">#C7C7CC</color>
     <color name="grey_4">#E5E5EA</color>
     <color name="grey_5">#F2F2F7</color>
+    <color name="grey_5_halved">#80F2F2F7</color>
     <color name="darkened_blue">#002D88</color>
     <color name="light_blue">#EFF7F9</color>
 </resources>

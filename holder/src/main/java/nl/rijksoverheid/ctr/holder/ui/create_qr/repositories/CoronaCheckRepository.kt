@@ -1,12 +1,13 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.repositories
 
 import android.util.Base64
+import nl.rijksoverheid.ctr.api.factory.NetworkRequestResultFactory
+import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
+import nl.rijksoverheid.ctr.holder.HolderStep
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.HolderApiClient
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.post.GetCouplingData
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.post.GetCredentialsPostData
-import okhttp3.ResponseBody
-import retrofit2.Converter
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -26,12 +27,12 @@ interface CoronaCheckRepository {
     ): RemoteGreenCards
 
     suspend fun getPrepareIssue(): RemotePrepareIssue
-    suspend fun getCoupling(credential: String, couplingCode: String): RemoteCouplingResponse
+    suspend fun getCoupling(credential: String, couplingCode: String): NetworkRequestResult<RemoteCouplingResponse>
 }
 
 open class CoronaCheckRepositoryImpl(
     private val api: HolderApiClient,
-    private val errorResponseConverter: Converter<ResponseBody, ResponseError>
+    private val networkRequestResultFactory: NetworkRequestResultFactory
 ) : CoronaCheckRepository {
 
     override suspend fun configProviders(): RemoteConfigProviders {
@@ -63,12 +64,15 @@ open class CoronaCheckRepositoryImpl(
         return api.getPrepareIssue()
     }
 
-    override suspend fun getCoupling(credential: String, couplingCode: String): RemoteCouplingResponse {
-        return api.getCoupling(
-            data = GetCouplingData(
-                credential = credential,
-                couplingCode = couplingCode
+    override suspend fun getCoupling(credential: String,
+                                     couplingCode: String): NetworkRequestResult<RemoteCouplingResponse> {
+        return networkRequestResultFactory.createResult(HolderStep.CouplingNetworkRequest) {
+            api.getCoupling(
+                data = GetCouplingData(
+                    credential = credential,
+                    couplingCode = couplingCode
+                )
             )
-        )
+        }
     }
 }
