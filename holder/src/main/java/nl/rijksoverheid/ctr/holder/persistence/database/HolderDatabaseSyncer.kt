@@ -9,6 +9,7 @@ import nl.rijksoverheid.ctr.holder.persistence.WorkerManagerWrapper
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
+import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -29,9 +30,7 @@ interface HolderDatabaseSyncer {
 
 class HolderDatabaseSyncerImpl(
     private val holderDatabase: HolderDatabase,
-    private val workerManagerWrapper: WorkerManagerWrapper,
     private val greenCardUtil: GreenCardUtil,
-    private val removeExpiredEventsUseCase: RemoveExpiredEventsUseCase,
     private val getRemoteGreenCardsUseCase: GetRemoteGreenCardsUseCase,
     private val syncRemoteGreenCardsUseCase: SyncRemoteGreenCardsUseCase
 ) : HolderDatabaseSyncer {
@@ -72,20 +71,22 @@ class HolderDatabaseSyncerImpl(
                                 // creating new credentials failed but previous cards and credentials not deleted
                             }
 
-                            // Schedule refreshing of green cards in background
-//                        workerManagerWrapper.scheduleNextCredentialsRefreshIfAny()
-
                             DatabaseSyncerResult.Success
                         }
-                        is RemoteGreenCardsResult.Error.ServerError -> {
-                            DatabaseSyncerResult.ServerError(remoteGreenCardsResult.httpCode)
-                        }
-                        is RemoteGreenCardsResult.Error.NetworkError -> {
-                            val greenCards = holderDatabase.greenCardDao().getAll()
-                            DatabaseSyncerResult.NetworkError(
-                                hasGreenCardsWithoutCredentials = greenCards
-                                    .any { greenCardUtil.hasNoActiveCredentials(it) }
-                            )
+                        is RemoteGreenCardsResult.Error -> {
+                            when (remoteGreenCardsResult.errorResult) {
+                                is NetworkRequestResult.Failed.NetworkError<*> -> {
+                                    val greenCards = holderDatabase.greenCardDao().getAll()
+                                    DatabaseSyncerResult.NetworkError(
+                                        hasGreenCardsWithoutCredentials = greenCards
+                                            .any { greenCardUtil.hasNoActiveCredentials(it) }
+                                    )
+                                }
+                                is NetworkRequestResult.Failed.CoronaCheckHttpError<*> -> {
+                                    DatabaseSyncerResult.ServerError(remoteGreenCardsResult.errorResult.e.code())
+                                }
+                                else -> throw(remoteGreenCardsResult.errorResult.getException())
+                            }
                         }
                     }
                 } else {
