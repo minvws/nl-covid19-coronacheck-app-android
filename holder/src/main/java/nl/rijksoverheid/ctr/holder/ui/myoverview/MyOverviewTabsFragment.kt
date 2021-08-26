@@ -1,14 +1,18 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview
 
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
@@ -80,19 +84,7 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
 
         binding.viewPager.adapter = viewPagerAdapter
 
-        TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
-            tab.view.setOnLongClickListener {
-                true
-            }
-            tab.text = arrayOf(
-                getString(R.string.travel_button_domestic),
-                getString(R.string.travel_button_europe)
-            )[position]
-        }.attach()
-
-        val defaultTab =
-            binding.tabs.getTabAt(tabsMap[getSelectedGreenCardType()]!!)
-        defaultTab?.select()
+        setupTabs(binding)
 
         binding.addQrButton.setOnClickListener {
             navigateSafety(
@@ -105,6 +97,37 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
         }
 
         return view
+    }
+
+    private fun setupTabs(binding: FragmentTabsMyOverviewBinding) {
+        TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
+            tab.view.setOnLongClickListener {
+                true
+            }
+            tab.text = arrayOf(
+                getString(R.string.travel_button_domestic),
+                getString(R.string.travel_button_europe)
+            )[position]
+        }.attach()
+
+        binding.tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                val textView = tab.view.children.find { it is TextView } as? TextView
+                textView?.setTypeface(null, Typeface.BOLD)
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab) {
+                val textView = tab.view.children.find { it is TextView } as? TextView
+                textView?.setTypeface(null, Typeface.NORMAL)
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab) {}
+        })
+
+        val defaultTab =
+            binding.tabs.getTabAt(tabsMap[getSelectedGreenCardType()]!!)
+        defaultTab?.select()
+        (defaultTab?.view?.children?.find { it is TextView } as? TextView)?.setTypeface(null, Typeface.BOLD)
     }
 
     private fun getSelectedGreenCardType() = if (args.returnUri != null) {
