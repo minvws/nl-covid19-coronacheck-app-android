@@ -14,7 +14,6 @@
     <string name="onboarding_screen_3_description">"This app generates a QR code for the Netherlands and one for other countries. You can find both QR codes in the app. Travelling outside of the Netherlands? Then use your international QR code."</string>
     <string name="onboarding_next">Next</string>
     <string name="onboarding_finish">Get started</string>
-    <string name="onboarding_step">Step %1$s</string>
     <string name="privacy_policy_title">This is how the app uses your data</string>
     <string name="privacy_policy_description"><![CDATA[The <a href="https://coronacheck.nl/en/privacy-in-app">privacy statement</a> details how CoronaCheck handles your data. These are the most important points:]]></string>
     <string name="privacy_policy_1"><![CDATA[Your data is <b>not centrally stored anywhere</b>]]></string>
@@ -101,7 +100,7 @@
     <string name="testresult_to_qr_code_description">That you tested negative (no coronavirus) on February 2 at 14:06 will be processed into the QR code. The CoronaCheck app only shows the anonymous QR code, without test details.</string>
     <string name="button_continue">Continue</string>
     <string name="commercial_test_error_invalid_code">This code is invalid</string>
-    <string name="commercial_test_error_invalid_combination">Invalid combination</string>
+    <string name="commercial_test_error_invalid_combination">Invalid retrieval code</string>
     <string name="no_negative_test_result_title">No negative test result</string>
     <string name="no_negative_test_result_description"><![CDATA[No negative test result available.]]></string>
     <string name="test_result_not_known_title">Test result not yet known</string>
@@ -384,7 +383,7 @@
     <string name="app_status_update_recommended_action">Install update</string>
     <string name="error_something_went_wrong_title">Sorry, er gaat iets mis</string>
     <string name="error_something_went_wrong_http_error_description"><![CDATA[We zijn bezig om dit probleem op te lossen (foutcode: <b>%1s</b>). Wil je het later nog eens proberen?]]></string>
-    <string name="error_something_went_wrong_making_proof_description"><![CDATA[Er gaat iets mis bij het maken van je bewijs  (foutcode: <b>%1s</b>). Wil je het later nog eens proberen?]]></string>
+    <string name="error_something_went_wrong_making_proof_description"><![CDATA[Er gaat iets mis bij het maken van je bewijs (foutcode: <b>%1s</b>). Wil je het later nog eens proberen?]]></string>
     <string name="error_something_went_wrong_outage_button">Bekijk de actuele storingen</string>
-    <string name="error_something_went_wrong_outage_button_url">https://status.coronacheck.en/</string>
+    <string name="error_something_went_wrong_outage_button_url">https://status.coronacheck.nl/en</string>
 </resources>

@@ -49,7 +49,7 @@
     <string name="scan_result_unknown_qr_dialog_message">Vraag de bezoeker een QR-code van een coronabewijs te laten zien.</string>
     <string name="scan_result_european_in_nl_dialog_title">Vraag naar de Nederlandse QR-code</string>
     <string name="scan_result_european_in_nl_dialog_message">Je hebt een internationale QR-code gescand. Gebruikers van CoronaCheck moeten in Nederland hun Nederlandse bewijs laten zien.</string>
-    <string name="scan_result_valid_reason_title">Over de controle</string>
+    <string name="scan_result_valid_reason_title">Kloppen de gegevens niet?</string>
     <string name="scan_result_valid_reason_description"><![CDATA[Je mag de bezoeker geen toegang geven als de gegevens op jouw scherm anders zijn dan op het identiteitsbewijs.<br/><b>Let op: soms vallen gegevens weg</b><br/>Om de privacy van de bezoeker te beschermen zie je soms niet alle gegevens op jouw scherm. Dan staat er een streepje (-) in het vak. Controleer in dat geval alleen de gegevens die je wel ziet.]]></string>
     <string name="about_this_app_description">CoronaCheck Scanner is ontwikkeld zodat bepaalde locaties en activiteiten hun deuren kunnen openen. Denk bijvoorbeeld aan voetbalwedstrijden en concerten. Bezoekers maken een coronabewijs van een vaccinatie, een negatieve testuitslag of als zij corona hebben gehad en hersteld zijn. Met behulp van deze app krijgen alleen bezoekers met zo’n coronabewijs toegang. Zo kunnen steeds meer plekken bezocht worden.</string>
     <string name="scan_instructions">Zo werkt scannen</string>
