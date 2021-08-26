@@ -7,6 +7,7 @@ import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.BulletSpan
 import android.util.AttributeSet
+import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.text.HtmlCompat
@@ -110,14 +111,22 @@ class HtmlTextViewWidget @JvmOverloads constructor(
             val textView = HtmlTextView(context)
             textView.text = part
 
+            // Mark as heading?
             if (part.isHeading) {
                 ViewCompat.setAccessibilityHeading(textView, true)
+            }
+
+            // Hide for assistive technologies?
+            if (part.isBlank()) {
+                textView.isFocusable = false
+                textView.isFocusableInTouchMode = false
+                textView.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
             }
             
             addView(textView)
         }
 
-        // Step 4: Enable links, if enabled
+        // Step 4: Enable links if requested
         if (htmlLinksEnabled) {
             enableHtmlLinks()
         }
