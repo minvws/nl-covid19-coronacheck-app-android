@@ -66,15 +66,15 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                 return HolderFlow.HkviScan
             }
             is YourEventsFragmentType.RemoteProtocol3Type -> {
-                when (type.originType) {
+                return when (type.originType) {
                     is OriginType.Test -> {
-                        return HolderFlow.DigidTest
+                        HolderFlow.DigidTest
                     }
                     is OriginType.Recovery -> {
-                        return HolderFlow.Recovery
+                        HolderFlow.Recovery
                     }
                     is OriginType.Vaccination -> {
-                        return HolderFlow.Vaccination
+                        HolderFlow.Vaccination
                     }
                 }
             }
