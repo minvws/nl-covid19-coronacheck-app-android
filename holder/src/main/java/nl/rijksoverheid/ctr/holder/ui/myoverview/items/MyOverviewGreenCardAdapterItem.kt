@@ -59,9 +59,9 @@ class MyOverviewGreenCardAdapterItem(
             is GreenCardType.Eu -> {
                 viewBinding.typeTitle.apply {
                     text = context.getString(R.string.validity_type_european_title)
-                    setTextColor(ContextCompat.getColor(context, R.color.darkened_blue))
+                    setTextColor(ContextCompat.getColor(context, R.color.primary_blue))
                 }
-                viewBinding.buttonWithProgressWidgetContainer.setEnabledButtonColor(R.color.darkened_blue)
+                viewBinding.buttonWithProgressWidgetContainer.setEnabledButtonColor(R.color.primary_blue)
                 viewBinding.imageView.setImageResource(R.drawable.ic_international_card)
             }
             is GreenCardType.Domestic -> {
