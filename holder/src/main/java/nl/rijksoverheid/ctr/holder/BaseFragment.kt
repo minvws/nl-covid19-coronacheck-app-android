@@ -31,28 +31,40 @@ abstract class BaseFragment(contentLayoutId: Int) : Fragment(contentLayoutId) {
                 positiveButtonCallback = {}
             )
         } else {
-            val errorCodeString = errorCodeStringFactory.get(
-                flow = getFlow(),
-                errorResult = errorResult
-            )
-
-            val errorDescription = if (errorResult is NetworkRequestResult.Failed.CoronaCheckHttpError<*>) {
-                getString(R.string.error_something_went_wrong_http_error_description, errorCodeString)
+            if (errorResult is NetworkRequestResult.Failed.CoronaCheckHttpError<*> && errorResult.e.code() == 429) {
+                // On HTTP 429 we make an exception and show a too busy screen
+                presentError(
+                    data = ErrorResultFragmentData(
+                        title = getString(R.string.too_busy_title),
+                        description = getString(R.string.too_busy_description),
+                        buttonTitle = getString(R.string.back_to_overview),
+                        buttonDestinationId = R.id.action_my_overview
+                    )
+                )
             } else {
-                getString(R.string.error_something_went_wrong_making_proof_description, errorCodeString)
-            }
+                val errorCodeString = errorCodeStringFactory.get(
+                    flow = getFlow(),
+                    errorResult = errorResult
+                )
 
-            val data = ErrorResultFragmentData(
-                title = getString(R.string.error_something_went_wrong_title),
-                description = errorDescription,
-                urlData = ErrorResultFragmentData.UrlData(
-                    urlButtonTitle = getString(R.string.error_something_went_wrong_outage_button),
-                    urlButtonUrl = getString(R.string.error_something_went_wrong_outage_button_url)
-                ),
-                buttonTitle = getString(R.string.back_to_overview),
-                buttonDestinationId = R.id.action_my_overview
-            )
-            presentError(data)
+                val errorDescription = if (errorResult is NetworkRequestResult.Failed.CoronaCheckHttpError<*>) {
+                    getString(R.string.error_something_went_wrong_http_error_description, errorCodeString)
+                } else {
+                    getString(R.string.error_something_went_wrong_making_proof_description, errorCodeString)
+                }
+
+                val data = ErrorResultFragmentData(
+                    title = getString(R.string.error_something_went_wrong_title),
+                    description = errorDescription,
+                    urlData = ErrorResultFragmentData.UrlData(
+                        urlButtonTitle = getString(R.string.error_something_went_wrong_outage_button),
+                        urlButtonUrl = getString(R.string.error_something_went_wrong_outage_button_url)
+                    ),
+                    buttonTitle = getString(R.string.back_to_overview),
+                    buttonDestinationId = R.id.action_my_overview
+                )
+                presentError(data)
+            }
         }
     }
 
