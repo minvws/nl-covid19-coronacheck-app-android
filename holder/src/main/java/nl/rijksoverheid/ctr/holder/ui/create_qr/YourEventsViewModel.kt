@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import nl.rijksoverheid.ctr.holder.HolderStep
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
@@ -14,6 +15,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SaveEventsUseCase
 import nl.rijksoverheid.ctr.shared.livedata.Event
+import nl.rijksoverheid.ctr.shared.models.AppErrorResult
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -61,7 +63,7 @@ class YourEventsViewModelImpl(
                 )
             } catch (e: Exception) {
                 (yourEventsResult as MutableLiveData).value = Event(
-                    DatabaseSyncerResult.ServerError(999)
+                    DatabaseSyncerResult.Failed.Error(AppErrorResult(HolderStep.StoringEvents, e))
                 )
             } finally {
                 loading.value = Event(false)
@@ -79,7 +81,7 @@ class YourEventsViewModelImpl(
                 (conflictingEventsResult as MutableLiveData).postValue(Event(conflictingEvents))
             } catch (e: Exception) {
                 (yourEventsResult as MutableLiveData).value = Event(
-                    DatabaseSyncerResult.ServerError(999)
+                    DatabaseSyncerResult.Failed.Error(AppErrorResult(HolderStep.StoringEvents, e))
                 )
             } finally {
                 loading.value = Event(false)
@@ -113,7 +115,7 @@ class YourEventsViewModelImpl(
 
             } catch (e: Exception) {
                 (yourEventsResult as MutableLiveData).value = Event(
-                    DatabaseSyncerResult.ServerError(999)
+                    DatabaseSyncerResult.Failed.Error(AppErrorResult(HolderStep.StoringEvents, e))
                 )
             } finally {
                 loading.value = Event(false)

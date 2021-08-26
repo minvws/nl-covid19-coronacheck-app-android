@@ -24,7 +24,7 @@ interface CoronaCheckRepository {
         stoken: String,
         events: List<String>,
         issueCommitmentMessage: String
-    ): RemoteGreenCards
+    ): NetworkRequestResult<RemoteGreenCards>
 
     suspend fun getPrepareIssue(): RemotePrepareIssue
     suspend fun getCoupling(credential: String, couplingCode: String): NetworkRequestResult<RemoteCouplingResponse>
@@ -47,17 +47,19 @@ open class CoronaCheckRepositoryImpl(
         stoken: String,
         events: List<String>,
         issueCommitmentMessage: String
-    ): RemoteGreenCards {
-        return api.getCredentials(
-            data = GetCredentialsPostData(
-                stoken = stoken,
-                events = events,
-                issueCommitmentMessage = Base64.encodeToString(
-                    issueCommitmentMessage.toByteArray(),
-                    Base64.NO_WRAP
+    ): NetworkRequestResult<RemoteGreenCards> {
+        return networkRequestResultFactory.createResult(HolderStep.GetCredentialsNetworkRequest) {
+            api.getCredentials(
+                data = GetCredentialsPostData(
+                    stoken = stoken,
+                    events = events,
+                    issueCommitmentMessage = Base64.encodeToString(
+                        issueCommitmentMessage.toByteArray(),
+                        Base64.NO_WRAP
+                    )
                 )
             )
-        )
+        }
     }
 
     override suspend fun getPrepareIssue(): RemotePrepareIssue {

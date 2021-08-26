@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModelStore
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
-import com.schibsted.spain.barista.assertion.BaristaVisibilityAssertions
 import com.schibsted.spain.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
 import com.schibsted.spain.barista.assertion.BaristaVisibilityAssertions.assertNotDisplayed
 import com.schibsted.spain.barista.assertion.BaristaVisibilityAssertions.assertNotExist
@@ -26,6 +25,8 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItems
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
 import nl.rijksoverheid.ctr.shared.livedata.Event
+import nl.rijksoverheid.ctr.shared.models.AppErrorResult
+import nl.rijksoverheid.ctr.shared.models.Step
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -35,6 +36,7 @@ import org.koin.dsl.module
 import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import java.lang.IllegalStateException
 import java.time.Clock
 import java.time.Instant
 import java.time.OffsetDateTime
@@ -230,7 +232,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
     )
 
             private fun triggerNetworkError(viewModel: MyOverviewViewModel, noCredentialsLeft: Boolean = true) =
-        triggerSyncerResult(viewModel, DatabaseSyncerResult.NetworkError(noCredentialsLeft))
+        triggerSyncerResult(viewModel, DatabaseSyncerResult.Failed.NetworkError(AppErrorResult(Step(1), IllegalStateException()), noCredentialsLeft))
 
     private fun triggerSyncerResult(
         viewModel: MyOverviewViewModel,
