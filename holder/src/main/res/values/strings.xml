@@ -225,13 +225,13 @@
     <string name="qr_card_validity_future_day">wordt automatisch geldig over %1$s dag</string>
     <string name="qr_card_validity_future_hours">wordt automatisch geldig over %1$s uur</string>
     <string name="your_test_result_explanation_toolbar_title">Wat is er opgehaald?</string>
-    <string name="your_test_result_explanation_description"><![CDATA[De volgende gegevens zijn opgehaald bij de testlocatie:<br/><br/>Jouw gegevens: <b>%1$s</b><br/><br/>Type test: <b>%2$s</b><br/><br/>Testdatum: <b>%3$s</b><br/><br/>Testuitslag: <b>%4$s</b><br/><br/>Uniek testnummer: <b>%5$s</b>]]></string>
+    <string name="your_test_result_explanation_description"><![CDATA[De volgende gegevens zijn opgehaald bij de testlocatie:<br/><br/>Jouw gegevens: <b>%1$s</b><br/>Type test: <b>%2$s</b><br/>Testdatum: <b>%3$s</b><br/>Testuitslag: <b>%4$s</b><br/><br/>Uniek testnummer: <b>%5$s</b>]]></string>
     <string name="your_test_result_explanation_negative_test_result">negatief (geen corona)</string>
-    <string name="your_test_result_3.0_explanation_description"><![CDATA[De volgende gegevens zijn opgehaald bij de testlocatie:<br/><br/>Naam: <b>%1$s</b><br/><br/>Geboortedatum: <b>%2$s</b><br/><br/>Type test: <b>%3$s</b><br/><br/>Testnaam: <b>%4$s</b><br/><br/>Testdatum: <b>%5$s</b><br/><br/>Testuitslag: <b>%6$s</b><br/><br/>Testlocatie: <b>%7$s</b><br/><br/>Testproducent: <b>%8$s</b><br/><br/>Uniek testnummer: <b>%9$s</b>]]></string>
+    <string name="your_test_result_3.0_explanation_description"><![CDATA[De volgende gegevens zijn opgehaald bij de testlocatie:<br/><br/>Naam: <b>%1$s</b><br/>Geboortedatum: <b>%2$s</b><br/><br/>Type test: <b>%3$s</b><br/>Testnaam: <b>%4$s</b><br/>Testdatum: <b>%5$s</b><br/>Testuitslag: <b>%6$s</b><br/>Testlocatie: <b>%7$s</b><br/>Testproducent: <b>%8$s</b><br/><br/>Uniek testnummer: <b>%9$s</b>]]></string>
     <string name="your_negative_test_3.0_results_row_subtitle"><![CDATA[Testdatum: %1$s<br/>Naam: %2$s<br/>Geboortedatum: %3$s]]></string>
     <string name="your_vaccination_row_subtitle"><![CDATA[Naam: %1$s<br/>Geboortedatum: %2$s<br/>Gegevens opgehaald bij: %3$s]]></string>
     <string name="your_vaccination_explanation_toolbar_title">Over jouw vaccinatie</string>
-    <string name="your_vaccination_explanation_description"><![CDATA[Deze gegevens van je vaccinatie zijn opgehaald:<br/><br/>Naam: <b>%1$s</b><br/><br/>Geboortedatum: <b>%2$s</b><br/><br/>Ziekteverwekker: <b>%3$s</b><br/><br/>Vaccin: <b>%4$s</b><br/><br/>Vaccin type: <b>%5$s</b><br/><br/>Producent: <b>%6$s</b><br/><br/>Doses: <b>%7$s</b><br/><br/>Is dit de laatste doses van je vaccinatie? <b>%8$s</b><br/><br/>Vaccinatiedatum: <b>%9$s</b><br/><br/>Gevaccineerd in: <b>%10$s</b><br/><br/>Uniek certificaatnummer: <b>%11$s</b>]]></string>
+    <string name="your_vaccination_explanation_description"><![CDATA[Deze gegevens van je vaccinatie zijn opgehaald:<br/><br/>Naam: <b>%1$s</b><br/>Geboortedatum: <b>%2$s</b><br/><br/>Ziekteverwekker: <b>%3$s</b><br/>Vaccin: <b>%4$s</b><br/>Vaccin type: <b>%5$s</b><br/>Producent: <b>%6$s</b><br/>Doses: <b>%7$s</b><br/>Is dit de laatste doses van je vaccinatie? <b>%8$s</b><br/>Vaccinatiedatum: <b>%9$s</b><br/>Gevaccineerd in: <b>%10$s</b><br/><br/>Uniek certificaatnummer: <b>%11$s</b>]]></string>
     <string name="your_vaccination_explanation_last_dose_yes">ja</string>
     <string name="your_vaccination_explanation_last_dose_yes_recovery">ja (eerder corona gehad)</string>
     <string name="your_vaccination_explanation_last_dose_yes_prior_event">ja (ergens anders corona gehad)</string>
@@ -306,7 +306,7 @@
     <string name="qr_code_type_recovery_title">Een herstelbewijs</string>
     <string name="qr_code_type_recovery_description">Uit de test blijkt dat ik corona heb gehad</string>
     <string name="your_test_result_explanation_positive_test_result">positief (corona)</string>
-    <string name="recovery_explanation_description"><![CDATA[De volgende gegevens zijn opgehaald bij de testlocatie:<br/><br/>Naam: <b>%1$s</b><br/><br/>Geboortedatum: <b>%2$s</b><br/><br/>Testdatum: <b>%3$s</b><br/><br/>Geldig vanaf: <b>%4$s</b><br/><br/>Geldig tot: <b>%5$s</b><br/><br/>Uniek testnummer: <b>%6$s</b>]]></string>
+    <string name="recovery_explanation_description"><![CDATA[De volgende gegevens zijn opgehaald bij de testlocatie:<br/><br/>Naam: <b>%1$s</b><br/>Geboortedatum: <b>%2$s</b><br/><br/>Testdatum: <b>%3$s</b><br/>Geldig vanaf: <b>%4$s</b><br/>Geldig tot: <b>%5$s</b><br/><br/>Uniek testnummer: <b>%6$s</b>]]></string>
     <string name="rule_engine_no_positive_test_origin_description"><![CDATA[Op dit moment kunnen we geen bewijs maken van jouw positieve testuitslag. Dit kan verschillende oorzaken hebben. Lees meer op <a href="https://www.coronacheck.nl/wegwijzer">de Wegwijzer.</a>]]></string>
     <string name="positive_test_no_longer_valid_title">Positieve testuitslag niet meer geldig</string>
     <string name="positive_test_no_longer_valid_description"><![CDATA[Ben je langer dan 180 dagen geleden getest? Dan is je testuitslag niet meer geldig. Je kunt dan geen herstelbewijs maken.]]></string>
