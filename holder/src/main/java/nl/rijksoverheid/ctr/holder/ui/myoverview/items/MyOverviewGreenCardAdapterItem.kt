@@ -62,7 +62,7 @@ class MyOverviewGreenCardAdapterItem(
                     setTextColor(ContextCompat.getColor(context, R.color.darkened_blue))
                 }
                 viewBinding.buttonWithProgressWidgetContainer.setEnabledButtonColor(R.color.darkened_blue)
-                viewBinding.imageView.setImageResource(R.drawable.illustration_hand_qr_eu)
+                viewBinding.imageView.setImageResource(R.drawable.ic_international_card)
             }
             is GreenCardType.Domestic -> {
                 viewBinding.typeTitle.apply {
@@ -70,7 +70,7 @@ class MyOverviewGreenCardAdapterItem(
                     setTextColor(ContextCompat.getColor(context, R.color.primary_blue))
                 }
                 viewBinding.buttonWithProgressWidgetContainer.setEnabledButtonColor(R.color.primary_blue)
-                viewBinding.imageView.setImageResource(R.drawable.illustration_hand_qr_nl)
+                viewBinding.imageView.setImageResource(R.drawable.ic_dutch_card)
             }
         }
 
