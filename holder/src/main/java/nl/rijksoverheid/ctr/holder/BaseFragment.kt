@@ -35,8 +35,8 @@ abstract class BaseFragment(contentLayoutId: Int) : Fragment(contentLayoutId) {
                 // On HTTP 429 we make an exception and show a too busy screen
                 presentError(
                     data = ErrorResultFragmentData(
-                        title = getString(R.string.too_busy_title),
-                        description = getString(R.string.too_busy_description),
+                        title = getString(R.string.error_too_busy_title),
+                        description = getString(R.string.error_too_busy_description),
                         buttonTitle = getString(R.string.back_to_overview),
                         buttonDestinationId = R.id.action_my_overview
                     )
