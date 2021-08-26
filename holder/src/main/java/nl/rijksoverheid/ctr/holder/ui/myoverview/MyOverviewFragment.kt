@@ -7,6 +7,7 @@ import android.os.Looper
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
+import androidx.room.Database
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
@@ -86,34 +87,32 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
     private fun observeSyncErrors() {
         myOverviewViewModel.databaseSyncerResultLiveData.observe(viewLifecycleOwner,
             EventObserver {
-                if (it is DatabaseSyncerResult.NetworkError) {
-                    if (it.hasGreenCardsWithoutCredentials) {
-                        dialogUtil.presentDialog(
-                            context = requireContext(),
-                            title = R.string.dialog_title_no_internet,
-                            message = getString(R.string.dialog_credentials_expired_no_internet),
-                            positiveButtonText = R.string.app_status_internet_required_action,
-                            positiveButtonCallback = {
-                                refreshOverviewItems(
-                                    forceSync = true
-                                )
-                            },
-                            negativeButtonText = R.string.dialog_close,
-                        )
-                    } else {
-                        dialogUtil.presentDialog(
-                            context = requireContext(),
-                            title = R.string.dialog_title_no_internet,
-                            message = getString(R.string.dialog_update_credentials_no_internet),
-                            positiveButtonText = R.string.app_status_internet_required_action,
-                            positiveButtonCallback = {
-                                refreshOverviewItems(
-                                    forceSync = true
-                                )
-                            },
-                            negativeButtonText = R.string.dialog_close,
-                        )
-                    }
+                if (it is DatabaseSyncerResult.Failed.NetworkError) {
+                    dialogUtil.presentDialog(
+                        context = requireContext(),
+                        title = R.string.dialog_title_no_internet,
+                        message = getString(R.string.dialog_credentials_expired_no_internet),
+                        positiveButtonText = R.string.app_status_internet_required_action,
+                        positiveButtonCallback = {
+                            refreshOverviewItems(
+                                forceSync = true
+                            )
+                        },
+                        negativeButtonText = R.string.dialog_close,
+                    )
+                } else {
+                    dialogUtil.presentDialog(
+                        context = requireContext(),
+                        title = R.string.dialog_title_no_internet,
+                        message = getString(R.string.dialog_update_credentials_no_internet),
+                        positiveButtonText = R.string.app_status_internet_required_action,
+                        positiveButtonCallback = {
+                            refreshOverviewItems(
+                                forceSync = true
+                            )
+                        },
+                        negativeButtonText = R.string.dialog_close,
+                    )
                 }
             }
         )
@@ -129,7 +128,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
 
     private fun refreshOverviewItems(forceSync: Boolean = false) {
         myOverviewViewModel.refreshOverviewItems(
-            forceSync = forceSync,
+            forceSync = true,
             selectType = arguments?.getParcelable(GREEN_CARD_TYPE) ?: myOverviewViewModel.getSelectedType()
         )
         refreshOverviewItemsHandler.postDelayed(

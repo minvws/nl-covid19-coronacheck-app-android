@@ -9,7 +9,9 @@ import nl.rijksoverheid.ctr.holder.persistence.WorkerManagerWrapper
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
+import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
+import timber.log.Timber
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -70,22 +72,29 @@ class HolderDatabaseSyncerImpl(
                             } catch (exception: Exception) {
                                 // creating new credentials failed but previous cards and credentials not deleted
                             }
-
                             DatabaseSyncerResult.Success
                         }
                         is RemoteGreenCardsResult.Error -> {
+                            val greenCards = holderDatabase.greenCardDao().getAll()
+
                             when (remoteGreenCardsResult.errorResult) {
                                 is NetworkRequestResult.Failed.NetworkError<*> -> {
-                                    val greenCards = holderDatabase.greenCardDao().getAll()
-                                    DatabaseSyncerResult.NetworkError(
+                                    DatabaseSyncerResult.Failed.NetworkError(
+                                        errorResult = remoteGreenCardsResult.errorResult,
                                         hasGreenCardsWithoutCredentials = greenCards
                                             .any { greenCardUtil.hasNoActiveCredentials(it) }
                                     )
                                 }
                                 is NetworkRequestResult.Failed.CoronaCheckHttpError<*> -> {
-                                    DatabaseSyncerResult.ServerError(remoteGreenCardsResult.errorResult.e.code())
+                                    DatabaseSyncerResult.Failed.ServerError(
+                                        errorResult = remoteGreenCardsResult.errorResult
+                                    )
                                 }
-                                else -> throw(remoteGreenCardsResult.errorResult.getException())
+                                else -> {
+                                    DatabaseSyncerResult.Failed.Error(
+                                        errorResult = remoteGreenCardsResult.errorResult
+                                    )
+                                }
                             }
                         }
                     }
@@ -101,6 +110,9 @@ sealed class DatabaseSyncerResult {
     object Loading : DatabaseSyncerResult()
     object Success : DatabaseSyncerResult()
     object MissingOrigin : DatabaseSyncerResult()
-    data class ServerError(val httpCode: Int) : DatabaseSyncerResult()
-    data class NetworkError(val hasGreenCardsWithoutCredentials: Boolean) : DatabaseSyncerResult()
+    sealed class Failed(open val errorResult: ErrorResult): DatabaseSyncerResult() {
+        data class NetworkError(override val errorResult: ErrorResult, val hasGreenCardsWithoutCredentials: Boolean): Failed(errorResult)
+        data class ServerError(override val errorResult: ErrorResult): Failed(errorResult)
+        data class Error(override val errorResult: ErrorResult): Failed(errorResult)
+    }
 }

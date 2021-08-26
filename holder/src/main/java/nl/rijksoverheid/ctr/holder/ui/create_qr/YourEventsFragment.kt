@@ -129,25 +129,9 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                             )
                         )
                     }
-                    is DatabaseSyncerResult.NetworkError -> {
-                        dialogUtil.presentDialog(
-                            context = requireContext(),
-                            title = R.string.dialog_no_internet_connection_title,
-                            message = getString(R.string.dialog_no_internet_connection_description),
-                            positiveButtonText = R.string.dialog_close,
-                            positiveButtonCallback = {}
-                        )
-                    }
-                    is DatabaseSyncerResult.ServerError -> {
-                        dialogUtil.presentDialog(
-                            context = requireContext(),
-                            title = R.string.dialog_error_title,
-                            message = getString(
-                                R.string.dialog_error_message_with_error_code,
-                                databaseSyncerResult.httpCode.toString()
-                            ),
-                            positiveButtonText = R.string.dialog_close,
-                            positiveButtonCallback = {}
+                    is DatabaseSyncerResult.Failed -> {
+                        presentError(
+                            errorResult = databaseSyncerResult.errorResult
                         )
                     }
                 }

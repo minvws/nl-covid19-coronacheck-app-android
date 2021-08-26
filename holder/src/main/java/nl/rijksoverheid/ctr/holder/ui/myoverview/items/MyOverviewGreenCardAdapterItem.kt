@@ -112,7 +112,7 @@ class MyOverviewGreenCardAdapterItem(
         if (credentialState is MyOverviewItem.GreenCardItem.CredentialState.NoCredential) {
             val context = viewBinding.errorText.context
             when (databaseSyncerResult) {
-                is DatabaseSyncerResult.NetworkError -> {
+                is DatabaseSyncerResult.Failed.NetworkError -> {
                     viewBinding.errorText.setHtmlText(R.string.my_overview_green_card_internet_error)
                     viewBinding.errorText.enableCustomLinks(onRetryClick)
                     viewBinding.errorTextRetry.setHtmlText("")
@@ -120,7 +120,7 @@ class MyOverviewGreenCardAdapterItem(
                     viewBinding.errorText.visibility = View.VISIBLE
                     viewBinding.errorTextRetry.visibility = View.GONE
                 }
-                is DatabaseSyncerResult.ServerError -> {
+                is DatabaseSyncerResult.Failed.ServerError -> {
                     viewBinding.errorText.setHtmlText(R.string.my_overview_green_card_server_error)
                     viewBinding.errorText.enableCustomLinks(onRetryClick)
                     viewBinding.errorIcon.visibility = View.VISIBLE
