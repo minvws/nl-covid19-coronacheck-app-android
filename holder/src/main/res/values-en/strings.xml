@@ -386,4 +386,6 @@
     <string name="error_something_went_wrong_making_proof_description"><![CDATA[Er gaat iets mis bij het maken van je bewijs (foutcode: <b>%1s</b>). Wil je het later nog eens proberen?]]></string>
     <string name="error_something_went_wrong_outage_button">Bekijk de actuele storingen</string>
     <string name="error_something_went_wrong_outage_button_url">https://status.coronacheck.nl/en</string>
+    <string name="error_too_busy_title">Sorry, het is erg druk</string>
+    <string name="error_too_busy_description">Probeer het op een later moment nog eens.</string>
 </resources>
