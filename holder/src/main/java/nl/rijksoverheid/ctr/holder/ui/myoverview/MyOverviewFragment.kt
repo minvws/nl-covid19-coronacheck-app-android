@@ -88,7 +88,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
         myOverviewViewModel.databaseSyncerResultLiveData.observe(viewLifecycleOwner,
             EventObserver {
                 if (it is DatabaseSyncerResult.Failed) {
-                    if (it is DatabaseSyncerResult.Failed.NetworkError) {
+                    if (it is DatabaseSyncerResult.Failed.NetworkError && it.hasGreenCardsWithoutCredentials) {
                         dialogUtil.presentDialog(
                             context = requireContext(),
                             title = R.string.dialog_title_no_internet,
