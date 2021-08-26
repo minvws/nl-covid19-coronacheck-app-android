@@ -66,6 +66,7 @@
     <string name="privacy_statement">Acceptable use policy</string>
     <string name="scanner_custom_title">Scan QR code</string>
     <string name="scanner_custom_message">"What should I pay attention to?"</string>
+    <string name="scanner_custom_message_zebra">The YELLOW scan BUTTONS can be used to scan a barcode. What should I pay attention to?</string>
     <string name="camera_rationale_dialog_title">Scanner wants to access your camera</string>
     <string name="camera_rationale_dialog_description">So the app can scan QR codes</string>
     <string name="app_setup_text">We\'re starting the app...</string>

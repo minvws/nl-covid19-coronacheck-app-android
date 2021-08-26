@@ -10,10 +10,16 @@ package nl.rijksoverheid.ctr.qrscanner
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.graphics.Paint
+import android.os.Build
 import android.os.Bundle
+import android.os.Parcelable
 import android.util.DisplayMetrics
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
@@ -45,6 +51,8 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
 
     private var _binding: FragmentScannerBinding? = null
     val binding get() = _binding!!
+
+    private var zebraIntentSet = false
 
     companion object {
         private const val RATIO_4_3_VALUE = 4.0 / 3.0
@@ -101,6 +109,10 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
             set.setGuidelineBegin(binding.headerGuideline.id, binding.overlay.bottomOfOverlayWindow)
             set.applyTo(binding.root)
         }
+
+        if( Build.MANUFACTURER == "Zebra Technologies")
+            setupImager()
+
     }
 
     override fun onStart() {
@@ -109,7 +121,154 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
         requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+
+        if(( Build.MANUFACTURER == "Zebra Technologies") && (zebraIntentSet)) {
+            suspendScanner()
+            context?.unregisterReceiver(myDataWedgeBroadcastReceiver)
+            context?.unregisterReceiver(myDataWedgeResultBroadcastReceiver)
+            zebraIntentSet = false
+        }
+    }
+
+    private fun setupImager() {
+
+        if (!zebraIntentSet) {
+
+            val filter = IntentFilter()
+            filter.addCategory(Intent.CATEGORY_DEFAULT)
+            filter.addAction(resources.getString(R.string.activity_intent_filter_action))
+            context?.registerReceiver(myDataWedgeBroadcastReceiver, filter)
+
+            val resultFilter = IntentFilter()
+            resultFilter.addAction(resources.getString(R.string.datawedge_intent_result_receiver))
+            resultFilter.addCategory("android.intent.category.DEFAULT")
+            context?.registerReceiver(myDataWedgeResultBroadcastReceiver, resultFilter)
+
+            zebraIntentSet = true
+
+            setupDataWedgeProfile()
+
+        }
+    }
+
+    private val myDataWedgeBroadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+
+            intent.getStringExtra(resources.getString(R.string.datawedge_intent_key_data))?.let {
+                suspendScanner()
+                onQrScanned(it)
+            }
+        }
+    }
+
+    private val myDataWedgeResultBroadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+
+            intent.getStringArrayExtra(resources.getString(R.string.datawedge_intent_result_get_profile_list))?.let {
+
+                var profileExist = false
+
+                if (it.isNotEmpty()) {
+                    it.forEach { profile ->
+                        if(profile.equals(resources.getString(R.string.datawedge_profile_name)))
+                            profileExist = true
+                    }
+                }
+                if (!profileExist) {
+                    createDataWedgeProfile()
+                }
+            }
+        }
+    }
+
+    private fun setupDataWedgeProfile() {
+        val i = Intent()
+        i.action = resources.getString(R.string.datawedge_intent_api_ACTION)
+        i.putExtra(resources.getString(R.string.datawedge_intent_get_profile_list), "")
+        context?.sendBroadcast(i)
+    }
+
+    private fun createDataWedgeProfile() {
+
+        val setConfigBundle = Bundle()
+        setConfigBundle.putString("PROFILE_NAME", resources.getString(R.string.datawedge_profile_name))
+        setConfigBundle.putString("PROFILE_ENABLED", "true")
+        setConfigBundle.putString("CONFIG_MODE", "CREATE_IF_NOT_EXIST")
+        setConfigBundle.putString("RESET_CONFIG", "false")
+
+        // Associate profile with this app
+        val appConfig = Bundle()
+        appConfig.putString("PACKAGE_NAME", context?.packageName)
+        appConfig.putStringArray("ACTIVITY_LIST", arrayOf("*"))
+        setConfigBundle.putParcelableArray("APP_LIST", arrayOf(appConfig))
+        setConfigBundle.remove("PLUGIN_CONFIG")
+
+        // Configure scanner input parameters, decoders for barcode type to be sent to this app
+        val barcodeInputConfig = Bundle()
+        barcodeInputConfig.putString("PLUGIN_NAME", "BARCODE")
+        barcodeInputConfig.putString("RESET_CONFIG", "true")
+        val barcodeInputProps = Bundle()
+        barcodeInputProps.putString("scanner_input_enabled","true")
+        barcodeInputProps.putString("decoder_qrcode","true")
+        barcodeInputConfig.putBundle("PARAM_LIST",barcodeInputProps)
+
+        // Configure keystroke output for captured data to be sent to this app
+        val keystrokeConfig = Bundle()
+        keystrokeConfig.putString("PLUGIN_NAME", "KEYSTROKE")
+        keystrokeConfig.putString("RESET_CONFIG", "true")
+        val keystrokeProps = Bundle()
+        keystrokeProps.putString("keystroke_output_enabled","false")
+        keystrokeConfig.putBundle("PARAM_LIST",keystrokeProps)
+
+        // Configure intent output for captured data to be sent to this app
+        val intentConfig = Bundle()
+        intentConfig.putString("PLUGIN_NAME", "INTENT")
+        intentConfig.putString("RESET_CONFIG", "true")
+        val intentProps = Bundle()
+        intentProps.putString("intent_output_enabled", "true")
+        intentProps.putString("intent_action", resources.getString(R.string.activity_intent_filter_action))
+        intentProps.putString("intent_category", "android.intent.category.DEFAULT")
+        intentProps.putString("intent_delivery", "2")
+        intentConfig.putBundle("PARAM_LIST", intentProps)
+
+        // Add configurations into a collection
+        val configBundles: ArrayList<Parcelable> = ArrayList()
+        configBundles.add(barcodeInputConfig)
+        configBundles.add(keystrokeConfig)
+        configBundles.add(intentConfig)
+        setConfigBundle.putParcelableArrayList("PLUGIN_CONFIG", configBundles)
+
+        // Broadcast the intent
+        val intent = Intent()
+        intent.action = resources.getString(R.string.datawedge_intent_api_ACTION)
+        intent.putExtra("com.symbol.datawedge.api.SET_CONFIG", setConfigBundle)
+        context?.sendBroadcast(intent)
+    }
+
+    private fun suspendScanner() {
+        val intent = Intent()
+        intent.action = resources.getString(R.string.datawedge_intent_api_ACTION)
+        intent.putExtra(resources.getString(R.string.datawedge_intent_api_SCANNER_INPUT_PLUGIN), "SUSPEND_PLUGIN")
+        intent.putExtra("SEND_RESULT", "true")
+        intent.putExtra("COMMAND_IDENTIFIER", "MY_SUSPEND_SCANNER") //Unique identifier
+        context?.sendBroadcast(intent)
+    }
+
+    private fun resumeScanner() {
+        val intent = Intent()
+        intent.action = resources.getString(R.string.datawedge_intent_api_ACTION)
+        intent.putExtra(resources.getString(R.string.datawedge_intent_api_SCANNER_INPUT_PLUGIN), "RESUME_PLUGIN")
+        intent.putExtra("SEND_RESULT", "true")
+        intent.putExtra("COMMAND_IDENTIFIER", "MY_RESUME_SCANNER") //Unique identifier
+        context?.sendBroadcast(intent)
+    }
+
     protected fun setupCamera() {
+
+        resumeScanner()
+
         // make sure it's still added when coming back from a dialog
         if (!isAdded) {
             return

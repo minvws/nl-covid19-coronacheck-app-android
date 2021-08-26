@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="activity_intent_filter_action">nl.rijksoverheid.ctr.qrscanner.ACTION</string>
+    <string name="datawedge_intent_key_source">com.symbol.datawedge.source</string>
+    <string name="datawedge_intent_key_label_type">com.symbol.datawedge.label_type</string>
+    <string name="datawedge_intent_key_data">com.symbol.datawedge.data_string</string>
+    <string name="datawedge_intent_api_ACTION">com.symbol.datawedge.api.ACTION</string>
+    <string name="datawedge_intent_api_SCANNER_INPUT_PLUGIN">"com.symbol.datawedge.api.SCANNER_INPUT_PLUGIN"</string>
+    <string name="datawedge_intent_result_receiver">com.symbol.datawedge.api.RESULT_ACTION</string>
+    <string name="datawedge_intent_get_profile_list">com.symbol.datawedge.api.GET_PROFILES_LIST</string>
+    <string name="datawedge_intent_result_get_profile_list">com.symbol.datawedge.api.RESULT_GET_PROFILES_LIST</string>
+    <string name="datawedge_profile_name">nl.rijksoverheid.CoronaCheckApp</string>
+</resources>

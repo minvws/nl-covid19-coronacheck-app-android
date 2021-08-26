@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.verifier.ui.scanner
 
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.StringRes
@@ -13,6 +14,7 @@ import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultInvalidData
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultValidData
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.VerifiedQrResultState
+import org.bouncycastle.asn1.x500.style.RFC4519Style.title
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -36,9 +38,15 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
     }
 
     override fun getCopy(): Copy {
+
+        var displayMessage = getString(R.string.scanner_custom_message)
+
+        if (Build.MANUFACTURER.equals("Zebra Technologies"))
+            displayMessage = getString(R.string.scanner_custom_message_zebra)
+
         return Copy(
             title = getString(R.string.scanner_custom_title),
-            message = getString(R.string.scanner_custom_message),
+            message = displayMessage,
             onMessageClicked = {
                 findNavController().navigate(
                     VerifierQrScannerFragmentDirections.actionScanInstructions()
