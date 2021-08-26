@@ -87,32 +87,34 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
     private fun observeSyncErrors() {
         myOverviewViewModel.databaseSyncerResultLiveData.observe(viewLifecycleOwner,
             EventObserver {
-                if (it is DatabaseSyncerResult.Failed.NetworkError) {
-                    dialogUtil.presentDialog(
-                        context = requireContext(),
-                        title = R.string.dialog_title_no_internet,
-                        message = getString(R.string.dialog_credentials_expired_no_internet),
-                        positiveButtonText = R.string.app_status_internet_required_action,
-                        positiveButtonCallback = {
-                            refreshOverviewItems(
-                                forceSync = true
-                            )
-                        },
-                        negativeButtonText = R.string.dialog_close,
-                    )
-                } else {
-                    dialogUtil.presentDialog(
-                        context = requireContext(),
-                        title = R.string.dialog_title_no_internet,
-                        message = getString(R.string.dialog_update_credentials_no_internet),
-                        positiveButtonText = R.string.app_status_internet_required_action,
-                        positiveButtonCallback = {
-                            refreshOverviewItems(
-                                forceSync = true
-                            )
-                        },
-                        negativeButtonText = R.string.dialog_close,
-                    )
+                if (it is DatabaseSyncerResult.Failed) {
+                    if (it is DatabaseSyncerResult.Failed.NetworkError) {
+                        dialogUtil.presentDialog(
+                            context = requireContext(),
+                            title = R.string.dialog_title_no_internet,
+                            message = getString(R.string.dialog_credentials_expired_no_internet),
+                            positiveButtonText = R.string.app_status_internet_required_action,
+                            positiveButtonCallback = {
+                                refreshOverviewItems(
+                                    forceSync = true
+                                )
+                            },
+                            negativeButtonText = R.string.dialog_close,
+                        )
+                    } else {
+                        dialogUtil.presentDialog(
+                            context = requireContext(),
+                            title = R.string.dialog_title_no_internet,
+                            message = getString(R.string.dialog_update_credentials_no_internet),
+                            positiveButtonText = R.string.app_status_internet_required_action,
+                            positiveButtonCallback = {
+                                refreshOverviewItems(
+                                    forceSync = true
+                                )
+                            },
+                            negativeButtonText = R.string.dialog_close,
+                        )
+                    }
                 }
             }
         )
