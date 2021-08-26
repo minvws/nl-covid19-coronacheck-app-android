@@ -41,7 +41,7 @@
     <string name="scan_result_european_nl_invalid_title">This is an international QR code</string>
     <string name="scan_result_european_nl_invalid_subtitle">This is not a valid certificate in the Netherlands. Ask the visitor to show a Dutch QR code.</string>
     <string name="scan_result_invalid_title">Invalid QR code</string>
-    <string name="scan_result_invalid_subtitle"><![CDATA[The visitor doesn\'t have a valid coronavirus pass.<br/><a href="#"><b>Read possible causes</b></a>]]></string>
+    <string name="scan_result_invalid_subtitle"><![CDATA[The visitor doesn\'t have a valid coronavirus pass.<br/><a href=\"#\"><b>Read possible causes</b></a>]]></string>
     <string name="scan_result_invalid_button">Scan next</string>
     <string name="scan_result_invalid_reason_title">What should I do?</string>
     <string name="scan_result_invalid_reason_description"><![CDATA[A red screen means that the QR code does not meet Dutch requirements.<br\><br\><b>Here\'s what you can do:</b><br\><br/><ol><li>Verify if the time on the visitor\'s phone is set correctly.</li><li>Verify if the visitor is showing an original certificate. A screenshot of a certificate may cause problems.</li><li>Ask the visitor to completely shut down the app and restart it. Please scan the QR code again after.</li></ol><br\><br/><b>Still looking at a red screen?</b><br/>Please ask the visitor to contact the CoronaCheck help desk.<br\><br\><b>Without a green screen, you can\'t grant the visitor access.</b>]]></string>
@@ -65,7 +65,7 @@
     <string name="scan_instructions_4_description"><![CDATA[In case of a red screen, you will get information to assist the visitor. If the screen stays red, you cannot grant the visitor access.]]></string>
     <string name="privacy_statement">Acceptable use policy</string>
     <string name="scanner_custom_title">Scan QR code</string>
-    <string name="scanner_custom_message">What should I pay attention to?</string>
+    <string name="scanner_custom_message">"What should I pay attention to?"</string>
     <string name="camera_rationale_dialog_title">Scanner wants to access your camera</string>
     <string name="camera_rationale_dialog_description">So the app can scan QR codes</string>
     <string name="app_setup_text">We\'re starting the app…</string>
@@ -100,7 +100,7 @@
     <string name="onboarding_page_indicator_label">Page %1$s of %2$s</string>
     <string name="menu_close">Close</string>
     <string name="new_terms_title">We\'ve updated our policy</string>
-    <string name="new_terms_highlights"><![CDATA[<b>Here\'s what changed</b><br/><br/><ul><li>Description of acceptable use policy</li><li>App usage explanation</li><li>Camera usage permission</li></ul>]]></string>
+    <string name="new_terms_highlights"><![CDATA[<b>Here\'s what changed</b><br/>br/><ul><li>Description of acceptable use policy</li><li>App usage explanation</li><li>Camera usage permission</li></ul>]]></string>
     <string name="new_terms"><![CDATA[Read the full acceptable use policy <a href="https://coronacheck.nl/en/gebruikersvoorwaarden-in-app">here</a>.]]></string>
     <string name="new_terms_consent_button">Next</string>
     <string name="new_terms_consent_needed_positive_button">Agree</string>
