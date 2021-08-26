@@ -7,7 +7,7 @@
     <string name="onboarding_screen_1_title">Alleen toegang met een bewijs</string>
     <string name="onboarding_screen_1_description">"Jouw gezondheid en die van anderen is belangrijk. Daarom vragen sommige landen of plekken om een coronabewijs. Alleen met dit bewijs krijg je toegang."</string>
     <string name="onboarding_screen_2_title">Bewijs van test of vaccinatie</string>
-    <string name="onboarding_screen_2_description"><![CDATA[De app kan een coronabewijs voor jou maken als:<br/><ul><li>Je bent gevaccineerd</li><li>Uit een test blijkt dat je geen corona hebt</li><li>Uit een test blijkt dat je corona hebt gehad en bent hersteld</li></ul>]]></string>
+    <string name="onboarding_screen_2_description"><![CDATA[De app kan een coronabewijs voor jou maken als:<br/><br/><ul><li>Je bent gevaccineerd</li><li>Uit een test blijkt dat je geen corona hebt</li><li>Uit een test blijkt dat je corona hebt gehad en bent hersteld</li></ul>]]></string>
     <string name="onboarding_screen_4_title">QR-code = jouw bewijs</string>
     <string name="onboarding_screen_4_description">Deze app maakt van jouw vaccinatie, testuitslag of herstel een QR-code. Dat is jouw bewijs. De QR-code wordt gecheckt bij de ingang van plekken en activiteiten. Of aan de grens.</string>
     <string name="onboarding_screen_3_title">QR-codes voor Nederland en internationaal</string>
@@ -339,14 +339,14 @@
     <string name="add_paper_proof_explanation_description"><![CDATA[Heb je een papieren coronabewijs <b>aangevraagd bij de zorgverlener</b> waar je bent gevaccineerd of getest? Dan kan je deze hier ook toevoegen in de app.]]></string>
     <string name="add_paper_proof_explanation_highlight"><![CDATA[<b>Zelf je bewijs uitgeprint?</b> Voeg je bewijs dan toe in de app via het menu. Ga naar \'Bewijs toevoegen\' en log in met DigiD.]]></string>
     <string name="add_paper_proof_consent_title">Scan alleen de internationale QR-code</string>
-    <string name="add_paper_proof_consent_description"><![CDATA[In de internationale QR-code staan genoeg gegevens om zowel een Nederlands als een internationaal bewijs te maken. Scan daarom met de camera van je telefoon <b>alleen je internationale QR-code</b>.<br/><br/><b>Dit krijg je:</b><br/><ul><li>Een Nederlands bewijs</li><li>Een internationaal bewijs</li></ul>]]></string>
+    <string name="add_paper_proof_consent_description"><![CDATA[In de internationale QR-code staan genoeg gegevens om zowel een Nederlands als een internationaal bewijs te maken. Scan daarom met de camera van je telefoon <b>alleen je internationale QR-code</b>.<br/><br/><b>Dit krijg je:</b><br/><br/><ul><li>Een Nederlands bewijs</li><li>Een internationaal bewijs</li></ul>]]></string>
     <string name="add_paper_proof_qr_scanner_text">Richt je telefoon op de QR-code op je internationale bewijs</string>
     <string name="add_paper_proof_qr_error_dutch_qr_code_dialog_title">Scan de internationale QR-code</string>
     <string name="add_paper_proof_qr_error_dutch_qr_code_dialog_description">Scan de QR-code op je internationale bewijs. Je hoeft de Nederlandse QR-code niet te scannen.</string>
     <string name="add_paper_proof_qr_error_invalid_qr_dialog_title">Ongeldige QR-code</string>
     <string name="add_paper_proof_qr_error_invalid_qr_dialog_description">Scan de QR-code op je internationale bewijs. Je hoeft de Nederlandse QR-code niet te scannen.</string>
     <string name="add_paper_proof_expired_paper_proof_title">Dit papieren bewijs is verlopen</string>
-    <string name="add_paper_proof_expired_paper_proof_description"><![CDATA[Dit papieren bewijs is niet meer geldig. Dit kan verschillende oorzaken hebben:<br/><ul><li>Je vaccinatie of herstel is nog geldig, maar het papieren bewijs niet. Vraag een nieuw papieren coronabewijs aan bij de zorgverlener waar je bent gevaccineerd of getest.</li><li>Je vaccinatie of herstel is verlopen.</li></ul>]]></string>
+    <string name="add_paper_proof_expired_paper_proof_description"><![CDATA[Dit papieren bewijs is niet meer geldig. Dit kan verschillende oorzaken hebben:<br/><br/><ul><li>Je vaccinatie of herstel is nog geldig, maar het papieren bewijs niet. Vraag een nieuw papieren coronabewijs aan bij de zorgverlener waar je bent gevaccineerd of getest.</li><li>Je vaccinatie of herstel is verlopen.</li></ul>]]></string>
     <string name="add_paper_proof_limit_reached_paper_proof_title">Te vaak geprobeerd</string>
     <string name="add_paper_proof_limit_reached_paper_proof_description"><![CDATA[Voor de veiligheid kan je deze QR-code tijdelijk niet meer in de app zetten.<br/><br/>Je kunt het over 24 uur weer proberen.]]></string>
     <string name="add_paper_proof_invalid_combination_title">Geen geldige combinatie</string>

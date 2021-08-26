@@ -7,7 +7,7 @@
     <string name="onboarding_screen_1_title">Only access with a certificate</string>
     <string name="onboarding_screen_1_description">Your and other people\'s health matters. That is why some countries and places ask for a coronavirus pass. You\'re only allowed to enter carrying this pass.</string>
     <string name="onboarding_screen_2_title">Certificate of test or vaccination</string>
-    <string name="onboarding_screen_2_description"><![CDATA[You can generate a coronavirus pass if:<br/><ul><li>You have been vaccinated</li><li>A test result confirms you don\'t have corona.</li><li>A test result confirms you\'ve had coronavirus and are recovered.</li></ul>]]></string>
+    <string name="onboarding_screen_2_description"><![CDATA[You can generate a coronavirus pass if:<br/><br/><ul><li>You have been vaccinated</li><li>A test result confirms you don\'t have corona.</li><li>A test result confirms you\'ve had coronavirus and are recovered.</li></ul>]]></string>
     <string name="onboarding_screen_4_title">QR code = your proof</string>
     <string name="onboarding_screen_4_description">This app generates a QR code with your vaccination, test result or recovery. That is your certificate. This QR code will be checked at the entrance of places or activities or at the border.</string>
     <string name="onboarding_screen_3_title">QR codes for the Netherlands and international</string>
@@ -339,14 +339,14 @@
     <string name="add_paper_proof_explanation_description"><![CDATA[Have you requested your paper coronavirus pass <b>at the healthcare provider</b> who vaccinated or tested you? Then you can add it here in the app.]]></string>
     <string name="add_paper_proof_explanation_highlight"><![CDATA[<b>Did you print your certificate yourself?</b> Please add your certificate to the app via the menu. Go to \'Add certificate\' and log in using your DigiD.]]></string>
     <string name="add_paper_proof_consent_title">Only scan the international QR code</string>
-    <string name="add_paper_proof_consent_description"><![CDATA[The international QR code contains enough information to create both a Dutch certificate and an international certificate. Therefore please <b>only scan the international QR code</b> using your smartphone camera.<br/><br/><b>You will receive the following:</b><br/><ul><li>A Dutch certificate</li><li>An international certificate</li></ul>]]></string>
+    <string name="add_paper_proof_consent_description"><![CDATA[The international QR code contains enough information to create both a Dutch certificate and an international certificate. Therefore please <b>only scan the international QR code</b> using your smartphone camera.<br/><br/><b>You will receive the following:</b><br/><br/><ul><li>A Dutch certificate</li><li>An international certificate</li></ul>]]></string>
     <string name="add_paper_proof_qr_scanner_text">Point your phone at the QR code on the international certificate</string>
     <string name="add_paper_proof_qr_error_dutch_qr_code_dialog_title">Scan the international QR code</string>
     <string name="add_paper_proof_qr_error_dutch_qr_code_dialog_description">Scan the QR code on your international certificate. You don\'t have to scan the Dutch QR code.</string>
     <string name="add_paper_proof_qr_error_invalid_qr_dialog_title">Invalid QR code</string>
     <string name="add_paper_proof_qr_error_invalid_qr_dialog_description">Scan the QR code on your international certificate. You don\'t have to scan the Dutch QR code.</string>
     <string name="add_paper_proof_expired_paper_proof_title">This paper certificate has expired</string>
-    <string name="add_paper_proof_expired_paper_proof_description"><![CDATA[This paper certificate is no longer valid. This may have various causes:<br/><ul><li>Your vaccination or recovery certificate is still valid, but the paper certificate isn\'t. Please request a new paper coronavirus from the healthcare provider who vaccinated or tested you.</li><li>Your vaccination or recovery has expired.</li></ul>]]></string>
+    <string name="add_paper_proof_expired_paper_proof_description"><![CDATA[This paper certificate is no longer valid. This may have various causes:<br/><br/><ul><li>Your vaccination or recovery certificate is still valid, but the paper certificate isn\'t. Please request a new paper coronavirus from the healthcare provider who vaccinated or tested you.</li><li>Your vaccination or recovery has expired.</li></ul>]]></string>
     <string name="add_paper_proof_limit_reached_paper_proof_title">Too many attempts</string>
     <string name="add_paper_proof_limit_reached_paper_proof_description"><![CDATA[For safety reasons, you temporarily can\'t add this QR code in the app.<br/><br/>You can try again in 24 hours.]]></string>
     <string name="add_paper_proof_invalid_combination_title">No valid combination</string>
