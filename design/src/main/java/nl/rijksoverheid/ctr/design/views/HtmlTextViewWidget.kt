@@ -113,18 +113,7 @@ class HtmlTextViewWidget @JvmOverloads constructor(
             if (part.isHeading) {
                 ViewCompat.setAccessibilityHeading(textView, true)
             }
-
-            val params = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-            if (index > 0) {
-                val marginTop = when {
-                    part.isHeading -> textView.lineHeight * headingMarginMultiplier
-                    part.isListItem -> textView.lineHeight * listItemMarginMultiplier
-                    else -> textView.lineHeight * paragraphMarginMultiplier
-                }
-                params.setMargins(0, marginTop.toInt(), 0, 0)
-            }
-            textView.layoutParams = params
-
+            
             addView(textView)
         }
 
