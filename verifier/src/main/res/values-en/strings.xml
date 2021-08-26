@@ -49,11 +49,11 @@
     <string name="scan_result_unknown_qr_dialog_message">Ask the visitor to show a QR code of a coronavirus pass.</string>
     <string name="scan_result_european_in_nl_dialog_title">Ask for a Dutch QR code</string>
     <string name="scan_result_european_in_nl_dialog_message">You have scanned an international QR code. In the Netherlands, CoronaCheck users should show their Dutch QR code.</string>
-    <string name="scan_result_valid_reason_title">About the check</string>
+    <string name="scan_result_valid_reason_title">Are the details incorrect?</string>
     <string name="scan_result_valid_reason_description"><![CDATA[You cannot grant the visitor access if the details on your screen are different from those on the identity document.<br/><b>Please note: sometimes not all details are shown</b><br/>This happens to protect the visitor’s privacy. You will see a dash (-) in the field. In this case, verify only the details you’re seeing.]]></string>
     <string name="about_this_app_description">CoronaCheck Scanner is created so that certain locations and activities can open their doors again. Think for example of football matches and concerts. Visitors create a coronavirus pass of a vaccination, a negative test result or if they\'ve had corona and are recovered. With this app, only visitors with a coronavirus pass gain access. This way, the Netherlands can head out more often.</string>
     <string name="scan_instructions">How scanning works</string>
-    <string name="scan_instructions_1_title">1. Keep a distance</string>
+    <string name="scan_instructions_1_title">Scan the QR code</string>
     <string name="scan_instructions_1_description">The visitor shows a QR code in the CoronaCheck app or on paper. A tourist may show a QR code in a foreign app, or on paper.</string>
     <string name="scan_instructions_2_title">Always check the details</string>
     <string name="scan_instructions_2_description">Green screen? Verify if the details on your screen are the same as those on the identity document. This way you can ensure the QR code belongs to the visitor.</string>
