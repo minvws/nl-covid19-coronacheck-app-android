@@ -32,7 +32,7 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
         }
 
         binding.bottom.setButtonClick {
-            if (!scanQrViewModel.scanInstructionsSeen()) {
+            if (!scanQrViewModel.hasSeenScanInstructions()) {
                 findNavController().navigate(ScanQrFragmentDirections.actionScanInstructions())
             } else {
                 scannerUtil.launchScanner(requireActivity())

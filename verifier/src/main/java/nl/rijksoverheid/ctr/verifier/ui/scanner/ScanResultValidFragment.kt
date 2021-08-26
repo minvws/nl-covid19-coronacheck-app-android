@@ -37,7 +37,8 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
 
     private val autoCloseHandler = Handler(Looper.getMainLooper())
     private val autoCloseRunnable = Runnable {
-        navigateSafety(R.id.nav_scan_result_valid,
+        navigateSafety(
+            R.id.nav_scan_result_valid,
             ScanResultValidFragmentDirections.actionNavMain()
         )
     }
@@ -92,11 +93,7 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
 
     private fun presentPersonalDetails() {
         binding.personalDetails.root.visibility = View.VISIBLE
-        if (args.validData is ScanResultValidData.Demo) {
-            binding.toolbar.setTitle(R.string.scan_result_demo_title)
-        } else {
-            binding.toolbar.setTitle(R.string.scan_result_valid_personal_details_title)
-        }
+        binding.screenHeader.visibility = View.VISIBLE
         val testResultAttributes = args.validData.verifiedQr.details
         val personalDetails = personalDetailsUtil.getPersonalDetails(
             testResultAttributes.firstNameInitial,

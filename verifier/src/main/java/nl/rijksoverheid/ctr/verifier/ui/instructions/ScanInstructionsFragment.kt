@@ -23,7 +23,9 @@ import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.VerifierMainFragment
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanInstructionsBinding
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
+import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrViewModel
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -35,7 +37,7 @@ import org.koin.android.ext.android.inject
 class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
 
     private val scannerUtil: ScannerUtil by inject()
-
+    private val scanQrViewModel: ScanQrViewModel by viewModel()
     private var _binding: FragmentScanInstructionsBinding? = null
     private val binding get() = _binding!!
 
@@ -57,8 +59,8 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
         }
 
         setBackPressListener(binding)
-
         setBindings(binding, adapter)
+
     }
 
     private fun setBindings(
@@ -68,28 +70,16 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
         binding.button.setOnClickListener {
             val currentItem = binding.viewPager.currentItem
             if (currentItem == adapter.itemCount - 1) {
+                clearToolbar()
+                // Instructions have been opened, set as seen
+                scanQrViewModel.setScanInstructionsSeen()
                 scannerUtil.launchScanner(requireActivity())
             } else {
                 binding.viewPager.currentItem = currentItem + 1
             }
         }
 
-        // Check if parent is VerifierMainFragment so we can reuse the toolbar
-        (parentFragment?.parentFragment as? VerifierMainFragment?)?.getToolbar().let { toolbar ->
-            if (toolbar?.menu?.size() == 0) {
-                toolbar.apply {
-                    inflateMenu(R.menu.scan_instructions_toolbar)
-                    setOnMenuItemClickListener {
-                        when (it.itemId) {
-                            R.id.action_skip_instructions -> {
-                                scannerUtil.launchScanner(requireActivity())
-                            }
-                        }
-                        true
-                    }
-                }
-            }
-        }
+        setupToolbarMenu()
     }
 
     private fun setBackPressListener(binding: FragmentScanInstructionsBinding) {
@@ -99,6 +89,9 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
                 val currentItem = binding.viewPager.currentItem
                 if (currentItem == 0) {
                     findNavController().popBackStack()
+                    clearToolbar()
+                    // Instructions have been opened, set as seen
+                    scanQrViewModel.setScanInstructionsSeen()
                 } else {
                     binding.viewPager.currentItem = binding.viewPager.currentItem - 1
                 }
@@ -134,8 +127,10 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
                 )
 
                 if (position == adapter.itemCount - 1) {
+                    clearToolbar()
                     binding.button.text = getString(R.string.scan_qr_button)
                 } else {
+                    setupToolbarMenu()
                     binding.button.text = getString(R.string.onboarding_next)
                 }
 
@@ -154,19 +149,43 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
         startingItem?.let { binding.viewPager.currentItem = it }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    private fun setupToolbarMenu() {
+        // Check if parent is VerifierMainFragment so we can reuse the toolbar
+        (parentFragment?.parentFragment as? VerifierMainFragment?)?.getToolbar().let { toolbar ->
+            if (toolbar?.menu?.size() == 0) {
+                toolbar.apply {
+                    // only show Skip option if user hasn't seen the instructions before
+                    if (!scanQrViewModel.hasSeenScanInstructions()) {
+                        inflateMenu(R.menu.scan_instructions_toolbar)
+                        setOnMenuItemClickListener {
+                            when (it.itemId) {
+                                R.id.action_skip_instructions -> {
+                                    clearToolbar()
+                                    // Instructions have been opened, set as seen
+                                    scanQrViewModel.setScanInstructionsSeen()
+                                    scannerUtil.launchScanner(requireActivity())
+                                }
+                            }
+                            true
+                        }
+                    }
+                }
+            }
+        }
     }
 
-    override fun onPause() {
-        super.onPause()
+    private fun clearToolbar(){
         // Remove added toolbar item(s) so they don't show up in other screens
         (parentFragment?.parentFragment as? VerifierMainFragment).let {
             it?.let {
                 it.getToolbar().menu.clear()
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {
