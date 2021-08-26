@@ -4,11 +4,13 @@ import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import androidx.work.ListenableWorker
 import androidx.work.testing.TestListenableWorkerBuilder
+import nl.rijksoverheid.ctr.holder.HolderStep
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardRefreshUtil
+import nl.rijksoverheid.ctr.shared.models.AppErrorResult
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -41,7 +43,7 @@ class RefreshCredentialsJobTest: AutoCloseKoinTest() {
     fun `given a unsuccessful database sync, when worker does work, then it returns retry`() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         val worker = TestListenableWorkerBuilder<RefreshCredentialsJob>(context).setWorkerFactory(
-            testWorkerFactory(databaseSyncerResult = DatabaseSyncerResult.ServerError(500))
+            testWorkerFactory(databaseSyncerResult = DatabaseSyncerResult.Failed.ServerError(AppErrorResult(HolderStep.GetCredentialsNetworkRequest, IllegalStateException())))
         ).build()
 
         val result = worker.startWork().get()

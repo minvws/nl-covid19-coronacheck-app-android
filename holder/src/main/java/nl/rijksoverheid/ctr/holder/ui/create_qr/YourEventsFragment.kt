@@ -18,6 +18,8 @@ import nl.rijksoverheid.ctr.design.ext.formatDateTime
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
 import nl.rijksoverheid.ctr.design.ext.formatMonth
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
+import nl.rijksoverheid.ctr.holder.BaseFragment
+import nl.rijksoverheid.ctr.holder.HolderFlow
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentYourEventsBinding
@@ -31,6 +33,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.util.RemoteEventUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.RemoteProtocol3Util
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
+import nl.rijksoverheid.ctr.shared.models.Flow
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -41,7 +44,7 @@ import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 
-class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
+class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
 
     private val args: YourEventsFragmentArgs by navArgs()
 
@@ -53,6 +56,30 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
     private val remoteEventUtil: RemoteEventUtil by inject()
 
     private val yourEventsViewModel: YourEventsViewModel by viewModel()
+
+    override fun getFlow(): Flow {
+        when (val type = args.type) {
+            is YourEventsFragmentType.TestResult2 -> {
+                return HolderFlow.CommercialTest
+            }
+            is YourEventsFragmentType.DCC -> {
+                return HolderFlow.HkviScan
+            }
+            is YourEventsFragmentType.RemoteProtocol3Type -> {
+                return when (type.originType) {
+                    is OriginType.Test -> {
+                        HolderFlow.DigidTest
+                    }
+                    is OriginType.Recovery -> {
+                        HolderFlow.Recovery
+                    }
+                    is OriginType.Vaccination -> {
+                        HolderFlow.Vaccination
+                    }
+                }
+            }
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -102,25 +129,9 @@ class YourEventsFragment : Fragment(R.layout.fragment_your_events) {
                             )
                         )
                     }
-                    is DatabaseSyncerResult.NetworkError -> {
-                        dialogUtil.presentDialog(
-                            context = requireContext(),
-                            title = R.string.dialog_no_internet_connection_title,
-                            message = getString(R.string.dialog_no_internet_connection_description),
-                            positiveButtonText = R.string.dialog_close,
-                            positiveButtonCallback = {}
-                        )
-                    }
-                    is DatabaseSyncerResult.ServerError -> {
-                        dialogUtil.presentDialog(
-                            context = requireContext(),
-                            title = R.string.dialog_error_title,
-                            message = getString(
-                                R.string.dialog_error_message_with_error_code,
-                                databaseSyncerResult.httpCode.toString()
-                            ),
-                            positiveButtonText = R.string.dialog_close,
-                            positiveButtonCallback = {}
+                    is DatabaseSyncerResult.Failed -> {
+                        presentError(
+                            errorResult = databaseSyncerResult.errorResult
                         )
                     }
                 }

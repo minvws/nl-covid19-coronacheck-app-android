@@ -252,8 +252,8 @@ fun fakeCoronaCheckRepository(
             stoken: String,
             events: List<String>,
             issueCommitmentMessage: String
-        ): RemoteGreenCards {
-            return remoteCredentials
+        ): NetworkRequestResult<RemoteGreenCards> {
+            return NetworkRequestResult.Success(remoteCredentials)
         }
 
         override suspend fun getPrepareIssue(): RemotePrepareIssue {
