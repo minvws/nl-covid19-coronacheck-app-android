@@ -130,7 +130,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
 
     private fun refreshOverviewItems(forceSync: Boolean = false) {
         myOverviewViewModel.refreshOverviewItems(
-            forceSync = true,
+            forceSync = forceSync,
             selectType = arguments?.getParcelable(GREEN_CARD_TYPE) ?: myOverviewViewModel.getSelectedType()
         )
         refreshOverviewItemsHandler.postDelayed(
