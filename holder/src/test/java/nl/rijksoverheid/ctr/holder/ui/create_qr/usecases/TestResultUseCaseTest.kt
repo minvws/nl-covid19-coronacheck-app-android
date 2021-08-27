@@ -4,6 +4,7 @@ import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.holder.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.TestProviderRepository
+import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -242,7 +243,7 @@ class TestResultUseCaseTest {
                 testResultAttributesUseCase = fakeTestResultAttributesUseCase()
             )
             val result = usecase.testResult(uniqueCode = "$providerIdentifier-B-t1")
-            assertTrue(result is TestResult.ServerError)
+            assertTrue(result is TestResult.Error)
         }
 
     @Test
@@ -261,7 +262,7 @@ class TestResultUseCaseTest {
                         token: String,
                         verifierCode: String?,
                         signingCertificateBytes: ByteArray
-                    ): SignedResponseWithModel<RemoteProtocol> {
+                    ): NetworkRequestResult<SignedResponseWithModel<RemoteProtocol>> {
                         throw IOException()
                     }
                 },
@@ -276,7 +277,7 @@ class TestResultUseCaseTest {
                 testResultAttributesUseCase = fakeTestResultAttributesUseCase()
             )
             val result = usecase.testResult(uniqueCode = "$providerIdentifier-B-t1")
-            assertTrue(result is TestResult.NetworkError)
+            assertTrue(result is TestResult.Error)
         }
 
     @Test
