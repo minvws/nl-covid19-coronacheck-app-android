@@ -184,7 +184,8 @@ fun holderModule(baseUrl: String) = module {
     factory<TestProviderRepository> {
         TestProviderRepositoryImpl(
             get(),
-            get(named("SignedResponseWithModel"))
+            get(),
+            get(named("SignedResponseWithModel")),
         )
     }
     factory<EventProviderRepository> {

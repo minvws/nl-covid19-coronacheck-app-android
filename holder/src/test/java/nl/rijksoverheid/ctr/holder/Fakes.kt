@@ -200,9 +200,9 @@ fun fakeTestProviderRepository(
             token: String,
             verifierCode: String?,
             signingCertificateBytes: ByteArray
-        ): SignedResponseWithModel<RemoteProtocol> {
+        ): NetworkRequestResult<SignedResponseWithModel<RemoteProtocol>> {
             remoteTestResultExceptionCallback?.invoke()
-            return model
+            return NetworkRequestResult.Success(model)
         }
     }
 }

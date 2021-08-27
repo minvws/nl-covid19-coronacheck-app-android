@@ -4,8 +4,10 @@ import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import nl.rijksoverheid.ctr.shared.models.CoronaCheckErrorResponse
 import nl.rijksoverheid.ctr.shared.models.Step
 import okhttp3.ResponseBody
+import okhttp3.ResponseBody.Companion.toResponseBody
 import retrofit2.Converter
 import retrofit2.HttpException
+import retrofit2.Response
 import java.io.IOException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
@@ -20,12 +22,19 @@ class NetworkRequestResultFactory(
     suspend fun <R: Any> createResult(
         step: Step,
         provider: String ? = null,
+        interceptHttpError: (suspend (e: HttpException) -> R?)? = null,
         networkCall: suspend () -> R): NetworkRequestResult<R> {
         return try {
             val response = networkCall.invoke()
             NetworkRequestResult.Success(response)
         } catch (httpException: HttpException) {
             try {
+                // We intercept here if a HttpException is expected
+                val result = interceptHttpError?.invoke(httpException)
+                result?.let {
+                    return NetworkRequestResult.Success(it)
+                }
+
                 provider?.let {
                     // If this is a call to a provider we return a ProviderHttpError
                     return NetworkRequestResult.Failed.ProviderHttpError(step, httpException, it)
