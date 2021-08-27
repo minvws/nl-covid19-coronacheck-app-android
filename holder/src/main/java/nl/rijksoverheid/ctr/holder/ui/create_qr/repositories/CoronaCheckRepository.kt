@@ -19,7 +19,8 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.post.GetCredentialsPostDa
 
 interface CoronaCheckRepository {
     suspend fun configProviders(): RemoteConfigProviders
-    suspend fun accessTokens(jwt: String): RemoteAccessTokens
+    suspend fun configProvidersResult(): NetworkRequestResult<RemoteConfigProviders>
+    suspend fun accessTokens(jwt: String): NetworkRequestResult<RemoteAccessTokens>
     suspend fun getGreenCards(
         stoken: String,
         events: List<String>,
@@ -39,8 +40,16 @@ open class CoronaCheckRepositoryImpl(
         return api.getConfigCtp()
     }
 
-    override suspend fun accessTokens(jwt: String): RemoteAccessTokens {
-        return api.getAccessTokens(authorization = "Bearer $jwt")
+    override suspend fun configProvidersResult(): NetworkRequestResult<RemoteConfigProviders> {
+        return networkRequestResultFactory.createResult(HolderStep.ConfigProvidersNetworkRequest) {
+            api.getConfigCtp()
+        }
+    }
+
+    override suspend fun accessTokens(jwt: String): NetworkRequestResult<RemoteAccessTokens> {
+        return networkRequestResultFactory.createResult(HolderStep.AccessTokensNetworkRequest) {
+            api.getAccessTokens(authorization = "Bearer $jwt")
+        }
     }
 
     override suspend fun getGreenCards(
