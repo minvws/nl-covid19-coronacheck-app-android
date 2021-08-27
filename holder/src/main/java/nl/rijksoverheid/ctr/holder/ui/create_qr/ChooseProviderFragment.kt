@@ -113,38 +113,6 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
                     //TODO change to use the full list when [BaseFragment] supports it
                     presentError(it.errorResults.first())
                 }
-//                is EventsResult.Error.NetworkError -> {
-//                    dialogUtil.presentDialog(
-//                        context = requireContext(),
-//                        title = R.string.dialog_no_internet_connection_title,
-//                        message = getString(R.string.dialog_no_internet_connection_description),
-//                        positiveButtonText = R.string.dialog_retry,
-//                        positiveButtonCallback = {
-//                            loginWithDigiD()
-//                        },
-//                        negativeButtonText = R.string.dialog_close
-//                    )
-//                }
-//                is EventsResult.Error.EventProviderError.ServerError -> {
-//                    findNavController().navigate(
-//                        ChooseProviderFragmentDirections.actionCouldNotCreateQr(
-//                            toolbarTitle = getString(R.string.commercial_test_type_title),
-//                            title = getString(R.string.event_provider_error_title),
-//                            description = getString(R.string.event_provider_error_description),
-//                            buttonTitle = getString(R.string.back_to_overview)
-//                        )
-//                    )
-//                }
-//                is EventsResult.Error.CoronaCheckError.ServerError -> {
-//                    findNavController().navigate(
-//                        ChooseProviderFragmentDirections.actionCouldNotCreateQr(
-//                            toolbarTitle = getString(R.string.commercial_test_type_title),
-//                            title = getString(R.string.coronacheck_error_title),
-//                            description = getString(R.string.coronacheck_error_description, it.httpCode.toString()),
-//                            buttonTitle = getString(R.string.back_to_overview)
-//                        )
-//                    )
-//                }
             }
         })
 

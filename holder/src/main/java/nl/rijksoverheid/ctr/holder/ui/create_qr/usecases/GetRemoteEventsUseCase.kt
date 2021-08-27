@@ -43,8 +43,4 @@ class GetRemoteEventsUseCaseImpl(private val eventProviderRepository: EventProvi
 sealed class RemoteEventsResult {
     data class Success(val signedModel: SignedResponseWithModel<RemoteProtocol3>): RemoteEventsResult()
     data class Error(val errorResult: ErrorResult): RemoteEventsResult()
-//    sealed class Error: RemoteEventsResult() {
-//        data class ServerError(val httpCode: Int): Error()
-//        object NetworkError : Error()
-//    }
 }

@@ -105,14 +105,6 @@ class GetEventsUseCaseImpl(
                             } else {
                                 // We don't have any successful responses from retrieving events for providers
                                 EventsResult.Error(eventFailureResults.map { it.errorResult })
-
-//                                val isNetworkError =
-//                                    eventFailureResults.any { it is RemoteEventsResult.Error.NetworkError }
-//                                if (isNetworkError) {
-//                                    EventsResult.Error.NetworkError
-//                                } else {
-//                                    EventsResult.Error.EventProviderError.ServerError
-//                                }
                             }
                         } else {
                             if (eventProvidersWithTokensErrorResults.isEmpty()) {
@@ -121,13 +113,6 @@ class GetEventsUseCaseImpl(
                             } else {
                                 // We don't have any successful responses but do have error responses
                                     EventsResult.Error(eventProvidersWithTokensErrorResults.map { it.errorResult })
-//                                val isNetworkError =
-//                                    eventProvidersWithTokensErrorResults.any { it is EventProviderWithTokenResult.Error.NetworkError }
-//                                if (isNetworkError) {
-//                                    EventsResult.Error.NetworkError
-//                                } else {
-//                                    EventsResult.Error.EventProviderError.ServerError
-//                                }
                             }
                         }
                     }
@@ -151,15 +136,4 @@ sealed class EventsResult {
         constructor(errorResult: ErrorResult): this(listOf(errorResult))
     }
 
-//    sealed class Error(): EventsResult() {
-//        object NetworkError : Error()
-//
-//        sealed class CoronaCheckError: Error() {
-//            data class ServerError(val httpCode: Int) : CoronaCheckError()
-//        }
-//
-//        sealed class EventProviderError: Error() {
-//            object ServerError : EventProviderError()
-//        }
-//    }
 }

@@ -91,8 +91,4 @@ sealed class EventProviderWithTokenResult {
     ) : EventProviderWithTokenResult()
 
     data class Error(val errorResult: ErrorResult): EventProviderWithTokenResult()
-//    sealed class Error : EventProviderWithTokenResult() {
-//        data class ServerError(val httpCode: Int) : Error()
-//        object NetworkError : Error()
-//    }
 }
