@@ -3,16 +3,12 @@ package nl.rijksoverheid.ctr.holder.persistence.database.usecases
 import nl.rijksoverheid.ctr.holder.HolderStep
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteGreenCards
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemotePrepareIssue
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SecretKeyUseCase
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.models.AppErrorResult
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
-import retrofit2.HttpException
-import java.io.IOException
-import kotlin.coroutines.suspendCoroutine
 
 /**
  * Get green cards from remote
