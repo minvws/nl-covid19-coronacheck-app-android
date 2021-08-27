@@ -14,6 +14,7 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import kotlinx.parcelize.Parcelize
 import mobilecore.Mobilecore
+import nl.rijksoverheid.ctr.shared.exceptions.CreateCommitmentMessageException
 import nl.rijksoverheid.ctr.shared.ext.*
 import nl.rijksoverheid.ctr.shared.models.DomesticCredential
 import nl.rijksoverheid.ctr.shared.models.ReadDomesticCredential
@@ -55,11 +56,16 @@ class MobileCoreWrapperImpl(private val moshi: Moshi) : MobileCoreWrapper {
         return Mobilecore.readDomesticCredential(credentials).verify()
     }
 
+    @Throws(CreateCommitmentMessageException::class)
     override fun createCommitmentMessage(secretKey: ByteArray, prepareIssueMessage: ByteArray): String {
-        return Mobilecore.createCommitmentMessage(
+        val result = Mobilecore.createCommitmentMessage(
             secretKey,
             prepareIssueMessage
-        ).successString()
+        )
+        if (result.error.isNotEmpty()) {
+            throw CreateCommitmentMessageException()
+        }
+        return String(result.value)
     }
 
     override fun disclose(secretKey: ByteArray, credential: ByteArray): String {

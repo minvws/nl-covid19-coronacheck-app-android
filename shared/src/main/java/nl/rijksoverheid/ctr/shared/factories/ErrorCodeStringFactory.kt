@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.shared.factories
 
+import nl.rijksoverheid.ctr.shared.exceptions.CreateCommitmentMessageException
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.Flow
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
@@ -28,6 +29,7 @@ class ErrorCodeStringFactoryImpl: ErrorCodeStringFactory {
 
         val exceptionErrorCode = when (val exception = errorResult.getException()) {
             is HttpException -> exception.code()
+            is CreateCommitmentMessageException -> "054"
             else -> "999"
         }
 
