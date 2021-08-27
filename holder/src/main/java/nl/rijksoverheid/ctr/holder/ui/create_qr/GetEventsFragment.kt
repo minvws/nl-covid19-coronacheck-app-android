@@ -5,6 +5,7 @@ import android.view.View
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
+import nl.rijksoverheid.ctr.holder.HolderFlow
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentGetEventsBinding
@@ -17,6 +18,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.EventsResult
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
+import nl.rijksoverheid.ctr.shared.models.Flow
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -32,6 +34,14 @@ class GetEventsFragment: DigiDFragment(R.layout.fragment_get_events) {
     private val args: GetEventsFragmentArgs by navArgs()
     private val dialogUtil: DialogUtil by inject()
     private val getEventsViewModel: GetEventsViewModel by viewModel()
+
+    override fun getFlow(): Flow {
+        return when (args.originType) {
+            OriginType.Recovery -> HolderFlow.Recovery
+            OriginType.Test -> HolderFlow.DigidTest
+            OriginType.Vaccination -> HolderFlow.Vaccination
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -55,6 +65,7 @@ class GetEventsFragment: DigiDFragment(R.layout.fragment_get_events) {
         getEventsViewModel.eventsResult.observe(viewLifecycleOwner, EventObserver {
             when (it) {
                 is EventsResult.Success -> {
+                    //TODO check if needs to change
                     if (it.missingEvents) {
                         dialogUtil.presentDialog(
                             context = requireContext(),
@@ -75,6 +86,7 @@ class GetEventsFragment: DigiDFragment(R.layout.fragment_get_events) {
                     }
                 }
                 is EventsResult.HasNoEvents -> {
+                    //TODO check if needs to change
                     if (it.missingEvents) {
                         findNavController().navigate(
                             GetEventsFragmentDirections.actionCouldNotCreateQr(
@@ -95,38 +107,42 @@ class GetEventsFragment: DigiDFragment(R.layout.fragment_get_events) {
                         )
                     }
                 }
-                is EventsResult.Error.NetworkError -> {
-                    dialogUtil.presentDialog(
-                        context = requireContext(),
-                        title = R.string.dialog_no_internet_connection_title,
-                        message = getString(R.string.dialog_no_internet_connection_description),
-                        positiveButtonText = R.string.dialog_retry,
-                        positiveButtonCallback = {
-                            loginWithDigiD()
-                        },
-                        negativeButtonText = R.string.dialog_close
-                    )
+                is EventsResult.Error -> {
+                    //TODO change to use the full list when [BaseFragment] supports it
+                    presentError(it.errorResults.first())
                 }
-                is EventsResult.Error.EventProviderError.ServerError -> {
-                    findNavController().navigate(
-                        GetEventsFragmentDirections.actionCouldNotCreateQr(
-                            toolbarTitle = copy.toolbarTitle,
-                            title = getString(R.string.event_provider_error_title),
-                            description = getString(R.string.event_provider_error_description),
-                            buttonTitle = getString(R.string.back_to_overview)
-                        )
-                    )
-                }
-                is EventsResult.Error.CoronaCheckError.ServerError -> {
-                    findNavController().navigate(
-                        GetEventsFragmentDirections.actionCouldNotCreateQr(
-                            toolbarTitle = copy.toolbarTitle,
-                            title = getString(R.string.coronacheck_error_title),
-                            description = getString(R.string.coronacheck_error_description, it.httpCode.toString()),
-                            buttonTitle = getString(R.string.back_to_overview)
-                        )
-                    )
-                }
+//                is EventsResult.Error.NetworkError -> {
+//                    dialogUtil.presentDialog(
+//                        context = requireContext(),
+//                        title = R.string.dialog_no_internet_connection_title,
+//                        message = getString(R.string.dialog_no_internet_connection_description),
+//                        positiveButtonText = R.string.dialog_retry,
+//                        positiveButtonCallback = {
+//                            loginWithDigiD()
+//                        },
+//                        negativeButtonText = R.string.dialog_close
+//                    )
+//                }
+//                is EventsResult.Error.EventProviderError.ServerError -> {
+//                    findNavController().navigate(
+//                        GetEventsFragmentDirections.actionCouldNotCreateQr(
+//                            toolbarTitle = copy.toolbarTitle,
+//                            title = getString(R.string.event_provider_error_title),
+//                            description = getString(R.string.event_provider_error_description),
+//                            buttonTitle = getString(R.string.back_to_overview)
+//                        )
+//                    )
+//                }
+//                is EventsResult.Error.CoronaCheckError.ServerError -> {
+//                    findNavController().navigate(
+//                        GetEventsFragmentDirections.actionCouldNotCreateQr(
+//                            toolbarTitle = copy.toolbarTitle,
+//                            title = getString(R.string.coronacheck_error_title),
+//                            description = getString(R.string.coronacheck_error_description, it.httpCode.toString()),
+//                            buttonTitle = getString(R.string.back_to_overview)
+//                        )
+//                    )
+//                }
             }
         })
 

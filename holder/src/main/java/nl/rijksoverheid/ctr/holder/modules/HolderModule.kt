@@ -119,7 +119,7 @@ fun holderModule(baseUrl: String) = module {
         CommitmentMessageUseCaseImpl(get(), get())
     }
     factory<ConfigProvidersUseCase> {
-        ConfigProvidersUseCaseImpl(get())
+        ConfigProvidersUseCaseImpl(get(), get())
     }
     factory {
         TestResultUseCase(
@@ -189,7 +189,8 @@ fun holderModule(baseUrl: String) = module {
     }
     factory<EventProviderRepository> {
         EventProviderRepositoryImpl(
-            get()
+            get(),
+            get(),
         )
     }
 

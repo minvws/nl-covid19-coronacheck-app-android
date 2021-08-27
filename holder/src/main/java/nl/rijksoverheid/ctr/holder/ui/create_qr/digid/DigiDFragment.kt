@@ -8,6 +8,9 @@ import net.openid.appauth.browser.BrowserAllowList
 import net.openid.appauth.browser.BrowserSelector
 import net.openid.appauth.browser.VersionRange
 import net.openid.appauth.browser.VersionedBrowserMatcher
+import nl.rijksoverheid.ctr.holder.BaseFragment
+import nl.rijksoverheid.ctr.holder.HolderFlow
+import nl.rijksoverheid.ctr.shared.models.Flow
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -18,7 +21,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-open class DigiDFragment(contentLayoutId: Int) : Fragment(contentLayoutId) {
+abstract class DigiDFragment(contentLayoutId: Int) : BaseFragment(contentLayoutId) {
 
     protected val digidViewModel: DigiDViewModel by viewModel()
     private val authService by lazy {
