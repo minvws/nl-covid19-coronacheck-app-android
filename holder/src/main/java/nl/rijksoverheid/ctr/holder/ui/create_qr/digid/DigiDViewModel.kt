@@ -25,6 +25,11 @@ import nl.rijksoverheid.ctr.shared.models.AppErrorResult
  */
 class DigiDViewModel(private val authenticationRepository: AuthenticationRepository) : ViewModel() {
 
+    private companion object {
+        const val GENERIC_ERROR_TYPE = 0
+        const val USER_CANCELLED_FLOW_CODE = 1
+    }
+
     val loading: LiveData<Event<Boolean>> = MutableLiveData()
     val digidResultLiveData = MutableLiveData<Event<DigidResult>>()
 
@@ -63,7 +68,7 @@ class DigiDViewModel(private val authenticationRepository: AuthenticationReposit
     }
 
     private fun postErrorResult(authError: AuthorizationException) {
-        if (authError.code == 1) {
+        if (authError.type == GENERIC_ERROR_TYPE && authError.code == USER_CANCELLED_FLOW_CODE) {
             digidResultLiveData.postValue(Event(DigidResult.Cancelled))
         } else {
             digidResultLiveData.postValue(
