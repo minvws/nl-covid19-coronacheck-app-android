@@ -155,7 +155,7 @@ class GetEventProvidersWithTokensUseCaseImplTest {
                     }
                     else -> {
                         NetworkRequestResult.Failed.NetworkError(
-                            HolderStep.ConfigProvidersNetworkRequest, exception
+                            HolderStep.UnomiNetworkRequest, exception
                         )
                     }
                 }
@@ -173,7 +173,7 @@ class GetEventProvidersWithTokensUseCaseImplTest {
                     token = tokenProvider1
                 ),
                 EventProviderWithTokenResult.Error(NetworkRequestResult.Failed.NetworkError<RemoteConfigProviders.EventProvider>(
-                    HolderStep.ConfigProvidersNetworkRequest, exception))),
+                    HolderStep.UnomiNetworkRequest, exception))),
             usecase.get(
                 eventProviders = listOf(eventProvider1, eventProvider2),
                 tokens = listOf(tokenProvider1, tokenProvider2),
