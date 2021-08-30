@@ -41,85 +41,78 @@ class GetEventsUseCaseImpl(
         targetProviderIds: List<String>?
     ): EventsResult {
         // Fetch event providers
-        return when (val eventProvidersResult = configProvidersUseCase.eventProviders()) {
-            is EventProvidersResult.Error -> {
-                EventsResult.Error(eventProvidersResult.errorResult)
-            }
+        val eventProvidersResult = configProvidersUseCase.eventProviders()
+        val tokens = when (eventProvidersResult) {
+            is EventProvidersResult.Error -> return EventsResult.Error(eventProvidersResult.errorResult)
             is EventProvidersResult.Success -> {
-                // Fetch access tokens
                 when (val tokensResult = coronaCheckRepository.accessTokens(jwt)) {
-                    is NetworkRequestResult.Failed -> EventsResult.Error(tokensResult)
-                    is NetworkRequestResult.Success -> {
-                        val tokens = tokensResult.response
-
-                        // Fetch event providers that have events for us
-                        val eventProviderWithTokensResults = getEventProvidersWithTokensUseCase.get(
-                            eventProviders = eventProvidersResult.eventProviders,
-                            tokens = tokens.tokens,
-                            originType = originType,
-                            targetProviderIds = targetProviderIds
-                        )
-
-                        val eventProvidersWithTokensSuccessResults =
-                            eventProviderWithTokensResults.filterIsInstance<EventProviderWithTokenResult.Success>()
-                        val eventProvidersWithTokensErrorResults =
-                            eventProviderWithTokensResults.filterIsInstance<EventProviderWithTokenResult.Error>()
-
-                        if (eventProvidersWithTokensSuccessResults.isNotEmpty()) {
-
-                            // We have received providers that claim to have events for us so we get those events for each provider
-                            val eventResults = eventProvidersWithTokensSuccessResults.map {
-                                getRemoteEventsUseCase.getRemoteEvents(
-                                    eventProvider = it.eventProvider,
-                                    token = it.token,
-                                    originType = originType
-                                )
-                            }
-
-                            // All successful responses
-                            val eventSuccessResults =
-                                eventResults.filterIsInstance<RemoteEventsResult.Success>()
-
-                            // All failed responses
-                            val eventFailureResults =
-                                eventResults.filterIsInstance<RemoteEventsResult.Error>()
-
-                            if (eventSuccessResults.isNotEmpty()) {
-                                // If we have success responses
-                                val signedModels = eventSuccessResults.map { it.signedModel }
-                                val hasEvents = signedModels.map { it.model }
-                                    .any { it.events?.isNotEmpty() ?: false }
-
-                                if (!hasEvents) {
-                                    // But we do not have any events
-                                    EventsResult.HasNoEvents(
-                                        missingEvents = eventProvidersWithTokensErrorResults.isNotEmpty() || eventFailureResults.isNotEmpty()
-                                    )
-                                } else {
-                                    // We do have events
-                                    EventsResult.Success(
-                                        signedModels = signedModels,
-                                        missingEvents = eventProvidersWithTokensErrorResults.isNotEmpty() || eventFailureResults.isNotEmpty()
-                                    )
-                                }
-                            } else {
-                                // We don't have any successful responses from retrieving events for providers
-                                EventsResult.Error(eventFailureResults.map { it.errorResult })
-                            }
-                        } else {
-                            if (eventProvidersWithTokensErrorResults.isEmpty()) {
-                                // There are no successful responses and no error responses so no events
-                                EventsResult.HasNoEvents(missingEvents = false)
-                            } else {
-                                // We don't have any successful responses but do have error responses
-                                    EventsResult.Error(eventProvidersWithTokensErrorResults.map { it.errorResult })
-                            }
-                        }
-                    }
+                    is NetworkRequestResult.Failed -> return EventsResult.Error(tokensResult)
+                    is NetworkRequestResult.Success -> tokensResult.response
                 }
             }
         }
+        // Fetch event providers that have events for us
+        val eventProviderWithTokensResults = getEventProvidersWithTokensUseCase.get(
+            eventProviders = eventProvidersResult.eventProviders,
+            tokens = tokens.tokens,
+            originType = originType,
+            targetProviderIds = targetProviderIds
+        )
 
+        val eventProvidersWithTokensSuccessResults =
+            eventProviderWithTokensResults.filterIsInstance<EventProviderWithTokenResult.Success>()
+        val eventProvidersWithTokensErrorResults =
+            eventProviderWithTokensResults.filterIsInstance<EventProviderWithTokenResult.Error>()
+
+        return if (eventProvidersWithTokensSuccessResults.isNotEmpty()) {
+            // We have received providers that claim to have events for us so we get those events for each provider
+            val eventResults = eventProvidersWithTokensSuccessResults.map {
+                getRemoteEventsUseCase.getRemoteEvents(
+                    eventProvider = it.eventProvider,
+                    token = it.token,
+                    originType = originType
+                )
+            }
+
+            // All successful responses
+            val eventSuccessResults =
+                eventResults.filterIsInstance<RemoteEventsResult.Success>()
+
+            // All failed responses
+            val eventFailureResults =
+                eventResults.filterIsInstance<RemoteEventsResult.Error>()
+
+            if (eventSuccessResults.isNotEmpty()) {
+                // If we have success responses
+                val signedModels = eventSuccessResults.map { it.signedModel }
+                val hasEvents = signedModels.map { it.model }
+                    .any { it.events?.isNotEmpty() ?: false }
+
+                if (!hasEvents) {
+                    // But we do not have any events
+                    EventsResult.HasNoEvents(
+                        missingEvents = eventProvidersWithTokensErrorResults.isNotEmpty() || eventFailureResults.isNotEmpty()
+                    )
+                } else {
+                    // We do have events
+                    EventsResult.Success(
+                        signedModels = signedModels,
+                        missingEvents = eventProvidersWithTokensErrorResults.isNotEmpty() || eventFailureResults.isNotEmpty()
+                    )
+                }
+            } else {
+                // We don't have any successful responses from retrieving events for providers
+                EventsResult.Error(eventFailureResults.map { it.errorResult })
+            }
+        } else {
+            if (eventProvidersWithTokensErrorResults.isEmpty()) {
+                // There are no successful responses and no error responses so no events
+                EventsResult.HasNoEvents(missingEvents = false)
+            } else {
+                // We don't have any successful responses but do have error responses
+                EventsResult.Error(eventProvidersWithTokensErrorResults.map { it.errorResult })
+            }
+        }
 
     }
 }
@@ -135,5 +128,4 @@ sealed class EventsResult {
     data class Error constructor(val errorResults: List<ErrorResult>): EventsResult() {
         constructor(errorResult: ErrorResult): this(listOf(errorResult))
     }
-
 }
