@@ -54,17 +54,17 @@ class DigiDViewModel(private val authenticationRepository: AuthenticationReposit
                 when {
                     authError != null -> postErrorResult(authError)
                     authResponse != null -> postResponseResult(authService, authResponse)
-                    else -> postCancelledResult()
+                    else -> postAuthNullResult()
                 }
             } else {
-                postCancelledResult()
+                digidResultLiveData.postValue(Event(DigidResult.Cancelled))
             }
         }
     }
 
     private fun postErrorResult(authError: AuthorizationException) {
         if (authError.code == 1) {
-            postCancelledResult()
+            digidResultLiveData.postValue(Event(DigidResult.Cancelled))
         } else {
             digidResultLiveData.postValue(
                 Event(DigidResult.Failed(AppErrorResult(DigidNetworkRequest, authError)))
@@ -89,7 +89,9 @@ class DigiDViewModel(private val authenticationRepository: AuthenticationReposit
         }
     }
 
-    private fun postCancelledResult() {
-        digidResultLiveData.postValue(Event(DigidResult.Cancelled))
+    private fun postAuthNullResult() {
+        digidResultLiveData.postValue(
+            Event(DigidResult.Failed(AppErrorResult(DigidNetworkRequest, NullPointerException())))
+        )
     }
 }
