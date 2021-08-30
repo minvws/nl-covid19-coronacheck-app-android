@@ -52,39 +52,44 @@ class DigiDViewModel(private val authenticationRepository: AuthenticationReposit
                 val authResponse = AuthorizationResponse.fromIntent(intent)
                 val authError = AuthorizationException.fromIntent(intent)
                 when {
-                    authError != null -> {
-                        digidResultLiveData.postValue(
-                            Event(
-                                DigidResult.Failed(AppErrorResult(DigidNetworkRequest, authError))
-                            )
-                        )
-                    }
-                    authResponse != null -> {
-                        try {
-                            val jwt =
-                                authenticationRepository.jwt(authService, authResponse)
-                            digidResultLiveData.postValue(Event(DigidResult.Success(jwt)))
-                        } catch (e: Exception) {
-                            digidResultLiveData.postValue(
-                                Event(
-                                    DigidResult.Failed(AppErrorResult(DigidNetworkRequest, e))
-                                )
-                            )
-                        }
-                    }
-                    else -> {
-                        digidResultLiveData.postValue(
-                            Event(
-                                DigidResult.Failed(AppErrorResult(DigidNetworkRequest, Exception()))
-                            )
-                        )
-                    }
+                    authError != null -> postErrorResult(authError)
+                    authResponse != null -> postResponseResult(authService, authResponse)
+                    else -> postCancelledResult()
                 }
             } else {
-                digidResultLiveData.postValue(
-                    Event(DigidResult.Failed(AppErrorResult(DigidNetworkRequest, Exception())))
-                )
+                postCancelledResult()
             }
         }
+    }
+
+    private fun postErrorResult(authError: AuthorizationException) {
+        if (authError.code == 1) {
+            postCancelledResult()
+        } else {
+            digidResultLiveData.postValue(
+                Event(DigidResult.Failed(AppErrorResult(DigidNetworkRequest, authError)))
+            )
+        }
+    }
+
+    private suspend fun postResponseResult(
+        authService: AuthorizationService,
+        authResponse: AuthorizationResponse
+    ) {
+        try {
+            val jwt =
+                authenticationRepository.jwt(authService, authResponse)
+            digidResultLiveData.postValue(Event(DigidResult.Success(jwt)))
+        } catch (e: Exception) {
+            digidResultLiveData.postValue(
+                Event(
+                    DigidResult.Failed(AppErrorResult(DigidNetworkRequest, e))
+                )
+            )
+        }
+    }
+
+    private fun postCancelledResult() {
+        digidResultLiveData.postValue(Event(DigidResult.Cancelled))
     }
 }
