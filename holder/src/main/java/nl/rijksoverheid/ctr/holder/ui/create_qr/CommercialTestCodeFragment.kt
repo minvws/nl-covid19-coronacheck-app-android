@@ -10,6 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
+import nl.rijksoverheid.ctr.holder.BaseFragment
+import nl.rijksoverheid.ctr.holder.HolderFlow
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentCommercialTestCodeBinding
@@ -21,6 +23,7 @@ import nl.rijksoverheid.ctr.shared.ext.hideKeyboard
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.ext.showKeyboard
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
+import nl.rijksoverheid.ctr.shared.models.Flow
 import nl.rijksoverheid.ctr.shared.utils.Accessibility
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
@@ -33,7 +36,7 @@ import org.koin.androidx.viewmodel.scope.emptyState
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_code) {
+class CommercialTestCodeFragment : BaseFragment(R.layout.fragment_commercial_test_code) {
 
     private var _binding: FragmentCommercialTestCodeBinding? = null
     private val binding get() = _binding!!
@@ -43,6 +46,10 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
 
     private val dialogUtil: DialogUtil by inject()
     private val navArgs: CommercialTestCodeFragmentArgs by navArgs()
+
+    override fun getFlow(): Flow {
+        return HolderFlow.CommercialTest
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -95,40 +102,12 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
 
         viewModel.testResult.observe(viewLifecycleOwner, EventObserver {
             when (it) {
-                TestResult.InvalidToken -> {
+                is TestResult.InvalidToken -> {
                     binding.uniqueCodeInput.error =
                         getString(R.string.commercial_test_error_invalid_code)
                     binding.verificationCodeInput.isVisible = false
                 }
-                is TestResult.NetworkError -> {
-                    dialogUtil.presentDialog(
-                        context = requireContext(),
-                        title = R.string.dialog_no_internet_connection_title,
-                        message = getString(R.string.dialog_no_internet_connection_description),
-                        positiveButtonText = R.string.dialog_retry,
-                        positiveButtonCallback = {
-                            viewModel.getTestResult()
-                        },
-                        negativeButtonText = R.string.dialog_close
-                    )
-                }
-                is TestResult.ServerError -> {
-                    dialogUtil.presentDialog(
-                        context = requireContext(),
-                        title = R.string.dialog_error_title,
-                        message = getString(
-                            R.string.dialog_error_message_with_error_code,
-                            it.httpCode.toString()
-                        ),
-                        positiveButtonText = R.string.dialog_retry,
-                        positiveButtonCallback = {
-                            viewModel.getTestResult()
-                        },
-                        negativeButtonText = R.string.dialog_close
-                    )
-                }
                 is TestResult.NegativeTestResult -> {
-
                     when (it.remoteTestResult) {
                         is RemoteTestResult2 -> {
                             findNavController().navigate(
@@ -172,13 +151,18 @@ class CommercialTestCodeFragment : Fragment(R.layout.fragment_commercial_test_co
                         )
                     )
                 }
-                TestResult.VerificationRequired -> {
+                is TestResult.VerificationRequired -> {
                     // If we come here a second time, it means the inputted verification code is not valid
                     if (binding.verificationCodeText.text?.isNotEmpty() == true) {
                         binding.verificationCodeInput.error =
                             getString(R.string.commercial_test_error_invalid_combination)
                     }
                     binding.verificationCodeInput.requestFocus()
+                }
+                is TestResult.Error -> {
+                    presentError(
+                        errorResult = it.errorResult
+                    )
                 }
             }
         })

@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.repositories
 
+import android.net.NetworkRequest
 import android.util.Base64
 import nl.rijksoverheid.ctr.api.factory.NetworkRequestResultFactory
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
@@ -27,7 +28,7 @@ interface CoronaCheckRepository {
         issueCommitmentMessage: String
     ): NetworkRequestResult<RemoteGreenCards>
 
-    suspend fun getPrepareIssue(): RemotePrepareIssue
+    suspend fun getPrepareIssue(): NetworkRequestResult<RemotePrepareIssue>
     suspend fun getCoupling(credential: String, couplingCode: String): NetworkRequestResult<RemoteCouplingResponse>
 }
 
@@ -71,8 +72,10 @@ open class CoronaCheckRepositoryImpl(
         }
     }
 
-    override suspend fun getPrepareIssue(): RemotePrepareIssue {
-        return api.getPrepareIssue()
+    override suspend fun getPrepareIssue(): NetworkRequestResult<RemotePrepareIssue> {
+        return networkRequestResultFactory.createResult(HolderStep.PrepareIssueNetworkRequest) {
+            api.getPrepareIssue()
+        }
     }
 
     override suspend fun getCoupling(credential: String,

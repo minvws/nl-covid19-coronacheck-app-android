@@ -104,7 +104,7 @@ class HtmlTextViewWidget @JvmOverloads constructor(
         val spannable = getSpannableFromHtml(htmlText)
 
         // Step 2: Separate the Spannable on each linebreak
-        val parts = spannable.separated("\n")
+        val parts = listOf(spannable) // spannable.separated("\n") --> NOTE: disabled for now
 
         // Step 3: Add a HtmlTextView for each part of the Spannable
         parts.forEachIndexed { index, part ->
@@ -122,7 +122,7 @@ class HtmlTextViewWidget @JvmOverloads constructor(
                 textView.isFocusableInTouchMode = false
                 textView.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
             }
-            
+
             addView(textView)
         }
 

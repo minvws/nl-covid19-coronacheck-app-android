@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
+import nl.rijksoverheid.ctr.holder.HolderStep
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
@@ -10,6 +11,9 @@ import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUs
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TokenValidatorUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TokenValidatorUtilImpl
 import nl.rijksoverheid.ctr.shared.ext.removeWhitespace
+import nl.rijksoverheid.ctr.shared.models.AppErrorResult
+import nl.rijksoverheid.ctr.shared.models.ErrorResult
+import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import nl.rijksoverheid.ctr.shared.utils.TestResultUtil
 import retrofit2.HttpException
@@ -38,27 +42,28 @@ class TestResultUseCase(
 ) {
 
     suspend fun testResult(uniqueCode: String, verificationCode: String? = null): TestResult {
-        if (uniqueCode.indexOf("-") == -1) {
-            return TestResult.InvalidToken
-        }
-
-        val uniqueCodeAttributes = uniqueCode.split("-")
-
-        if (uniqueCodeAttributes.size != 3) {
-            return TestResult.InvalidToken
-        }
-
-        val providerIdentifier = uniqueCodeAttributes[0]
-        val token = uniqueCodeAttributes[1]
-        val checksum = uniqueCodeAttributes[2]
-
-        // Disable the luhn check for now since providers do not yet support it
-        // We need to check for valid chars
-        token.toCharArray().forEach {
-            if (!TokenValidatorUtilImpl.CODE_POINTS.contains(it)) {
+        try {
+            if (uniqueCode.indexOf("-") == -1) {
                 return TestResult.InvalidToken
             }
-        }
+
+            val uniqueCodeAttributes = uniqueCode.split("-")
+
+            if (uniqueCodeAttributes.size != 3) {
+                return TestResult.InvalidToken
+            }
+
+            val providerIdentifier = uniqueCodeAttributes[0]
+            val token = uniqueCodeAttributes[1]
+            val checksum = uniqueCodeAttributes[2]
+
+            // Disable the luhn check for now since providers do not yet support it
+            // We need to check for valid chars
+            token.toCharArray().forEach {
+                if (!TokenValidatorUtilImpl.CODE_POINTS.contains(it)) {
+                    return TestResult.InvalidToken
+                }
+            }
 
 //        if (!tokenValidatorUtil.validate(
 //                token = token,
@@ -68,16 +73,24 @@ class TestResultUseCase(
 //            return TestResult.InvalidToken
 //        }
 
-        return try {
             val testProvider = configProviderUseCase.testProvider(providerIdentifier)
                 ?: return TestResult.InvalidToken
 
-            val signedResponseWithTestResult = testProviderRepository.remoteTestResult(
+            val signedResponseWithTestResultRequestResult = testProviderRepository.remoteTestResult(
                 url = testProvider.resultUrl,
                 token = token.removeWhitespace(),
                 verifierCode = verificationCode?.removeWhitespace(),
                 signingCertificateBytes = testProvider.publicKey
             )
+
+            val signedResponseWithTestResult = when (signedResponseWithTestResultRequestResult) {
+                is NetworkRequestResult.Success -> {
+                    signedResponseWithTestResultRequestResult.response
+                }
+                is NetworkRequestResult.Failed -> {
+                    return TestResult.Error(signedResponseWithTestResultRequestResult)
+                }
+            }
 
             val remoteTestResult = signedResponseWithTestResult.model
 
@@ -99,12 +112,13 @@ class TestResultUseCase(
                 }
                 else -> throw IllegalStateException("Unsupported status ${remoteTestResult.status}")
             }
-        } catch (ex: HttpException) {
-            Timber.e(ex, "Server error while getting test result")
-            TestResult.ServerError(ex.code())
-        } catch (ex: IOException) {
-            Timber.e(ex, "Network error while getting test result")
-            TestResult.NetworkError
+        } catch (e: Exception) {
+            return TestResult.Error(
+                errorResult = AppErrorResult(
+                    step = HolderStep.TestProvidersNetworkRequest,
+                    e = e
+                )
+            )
         }
     }
 }
@@ -119,6 +133,5 @@ sealed class TestResult {
     object Pending : TestResult()
     object InvalidToken : TestResult()
     object VerificationRequired : TestResult()
-    data class ServerError(val httpCode: Int) : TestResult()
-    object NetworkError : TestResult()
+    data class Error(val errorResult: ErrorResult) : TestResult()
 }

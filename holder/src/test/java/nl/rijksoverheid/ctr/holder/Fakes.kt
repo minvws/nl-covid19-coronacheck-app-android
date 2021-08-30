@@ -197,9 +197,9 @@ fun fakeTestProviderRepository(
             token: String,
             verifierCode: String?,
             signingCertificateBytes: ByteArray
-        ): SignedResponseWithModel<RemoteProtocol> {
+        ): NetworkRequestResult<SignedResponseWithModel<RemoteProtocol>> {
             remoteTestResultExceptionCallback?.invoke()
-            return model
+            return NetworkRequestResult.Success(model)
         }
     }
 }
@@ -257,8 +257,8 @@ fun fakeCoronaCheckRepository(
             return NetworkRequestResult.Success(remoteCredentials)
         }
 
-        override suspend fun getPrepareIssue(): RemotePrepareIssue {
-            return prepareIssue
+        override suspend fun getPrepareIssue(): NetworkRequestResult<RemotePrepareIssue> {
+            return NetworkRequestResult.Success(prepareIssue)
         }
 
         override suspend fun getCoupling(
