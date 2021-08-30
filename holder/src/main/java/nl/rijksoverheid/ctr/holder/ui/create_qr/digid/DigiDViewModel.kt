@@ -11,8 +11,10 @@ import kotlinx.coroutines.launch
 import net.openid.appauth.AuthorizationException
 import net.openid.appauth.AuthorizationResponse
 import net.openid.appauth.AuthorizationService
+import nl.rijksoverheid.ctr.holder.HolderStep.DigidNetworkRequest
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.AuthenticationRepository
 import nl.rijksoverheid.ctr.shared.livedata.Event
+import nl.rijksoverheid.ctr.shared.models.AppErrorResult
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -35,7 +37,9 @@ class DigiDViewModel(private val authenticationRepository: AuthenticationReposit
             try {
                 authenticationRepository.authResponse(activityResultLauncher, authService)
             } catch (e: Exception) {
-                digidResultLiveData.postValue(Event(DigidResult.Failed(e.toString())))
+                digidResultLiveData.postValue(
+                    Event(DigidResult.Failed(AppErrorResult(DigidNetworkRequest, e)))
+                )
             }
             loading.value = Event(false)
         }
@@ -49,7 +53,11 @@ class DigiDViewModel(private val authenticationRepository: AuthenticationReposit
                 val authError = AuthorizationException.fromIntent(intent)
                 when {
                     authError != null -> {
-                        digidResultLiveData.postValue(Event(DigidResult.Failed("$authError.error ${authError.errorDescription}")))
+                        digidResultLiveData.postValue(
+                            Event(
+                                DigidResult.Failed(AppErrorResult(DigidNetworkRequest, authError))
+                            )
+                        )
                     }
                     authResponse != null -> {
                         try {
@@ -57,15 +65,25 @@ class DigiDViewModel(private val authenticationRepository: AuthenticationReposit
                                 authenticationRepository.jwt(authService, authResponse)
                             digidResultLiveData.postValue(Event(DigidResult.Success(jwt)))
                         } catch (e: Exception) {
-                            digidResultLiveData.postValue(Event(DigidResult.Failed(e.toString())))
+                            digidResultLiveData.postValue(
+                                Event(
+                                    DigidResult.Failed(AppErrorResult(DigidNetworkRequest, e))
+                                )
+                            )
                         }
                     }
                     else -> {
-                        digidResultLiveData.postValue(Event(DigidResult.Failed(null)))
+                        digidResultLiveData.postValue(
+                            Event(
+                                DigidResult.Failed(AppErrorResult(DigidNetworkRequest, Exception()))
+                            )
+                        )
                     }
                 }
             } else {
-                digidResultLiveData.postValue(Event(DigidResult.Failed(null)))
+                digidResultLiveData.postValue(
+                    Event(DigidResult.Failed(AppErrorResult(DigidNetworkRequest, Exception())))
+                )
             }
         }
     }

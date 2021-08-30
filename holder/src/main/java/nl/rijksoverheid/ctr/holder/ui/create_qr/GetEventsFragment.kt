@@ -146,13 +146,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                     )
                 }
                 is DigidResult.Failed -> {
-                    dialogUtil.presentDialog(
-                        context = requireContext(),
-                        title = R.string.digid_login_failed_title,
-                        message = getString(R.string.digid_login_failed_description),
-                        positiveButtonText = R.string.dialog_close,
-                        positiveButtonCallback = {}
-                    )
+                    presentError(it.errorResult)
                 }
             }
         })
