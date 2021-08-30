@@ -28,7 +28,11 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) {
 
     private val dialogUtil: DialogUtil by inject()
+
     private val getEventsViewModel: GetEventsViewModel by viewModel()
+
+    override val originType: OriginType
+        get() = OriginType.Test
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

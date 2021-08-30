@@ -27,11 +27,15 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class GetEventsFragment: DigiDFragment(R.layout.fragment_get_events) {
+class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
 
     private val args: GetEventsFragmentArgs by navArgs()
+
     private val dialogUtil: DialogUtil by inject()
     private val getEventsViewModel: GetEventsViewModel by viewModel()
+
+    override val originType: OriginType
+        get() = args.originType
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -122,7 +126,10 @@ class GetEventsFragment: DigiDFragment(R.layout.fragment_get_events) {
                         GetEventsFragmentDirections.actionCouldNotCreateQr(
                             toolbarTitle = copy.toolbarTitle,
                             title = getString(R.string.coronacheck_error_title),
-                            description = getString(R.string.coronacheck_error_description, it.httpCode.toString()),
+                            description = getString(
+                                R.string.coronacheck_error_description,
+                                it.httpCode.toString()
+                            ),
                             buttonTitle = getString(R.string.back_to_overview)
                         )
                     )

@@ -1,13 +1,16 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.digid
 
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.fragment.app.Fragment
 import net.openid.appauth.AppAuthConfiguration
 import net.openid.appauth.AuthorizationService
 import net.openid.appauth.browser.BrowserAllowList
 import net.openid.appauth.browser.BrowserSelector
 import net.openid.appauth.browser.VersionRange
 import net.openid.appauth.browser.VersionedBrowserMatcher
+import nl.rijksoverheid.ctr.holder.BaseFragment
+import nl.rijksoverheid.ctr.holder.HolderFlow
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.shared.models.Flow
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -18,7 +21,9 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-open class DigiDFragment(contentLayoutId: Int) : Fragment(contentLayoutId) {
+abstract class DigiDFragment(contentLayoutId: Int) : BaseFragment(contentLayoutId) {
+
+    abstract val originType: OriginType
 
     protected val digidViewModel: DigiDViewModel by viewModel()
     private val authService by lazy {
@@ -55,4 +60,12 @@ open class DigiDFragment(contentLayoutId: Int) : Fragment(contentLayoutId) {
                     VersionRange.ANY_VERSION
                 )
             }.toTypedArray()
+
+    override fun getFlow(): Flow {
+        return when (originType) {
+            is OriginType.Vaccination -> HolderFlow.Vaccination
+            is OriginType.Test -> HolderFlow.DigidTest
+            is OriginType.Recovery -> HolderFlow.Recovery
+        }
+    }
 }
