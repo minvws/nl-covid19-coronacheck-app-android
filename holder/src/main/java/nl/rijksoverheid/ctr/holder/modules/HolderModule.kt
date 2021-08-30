@@ -119,7 +119,7 @@ fun holderModule(baseUrl: String) = module {
         CommitmentMessageUseCaseImpl(get(), get())
     }
     factory<ConfigProvidersUseCase> {
-        ConfigProvidersUseCaseImpl(get(), get())
+        ConfigProvidersUseCaseImpl(get())
     }
     factory {
         TestResultUseCase(

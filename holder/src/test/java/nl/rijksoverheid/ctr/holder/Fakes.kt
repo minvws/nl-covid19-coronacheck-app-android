@@ -12,10 +12,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.EventProviderRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.TestProviderRepository
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.CommitmentMessageUseCase
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.ConfigProvidersUseCase
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.CreateCredentialUseCase
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SecretKeyUseCase
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TokenValidatorUtil
@@ -212,8 +209,8 @@ fun fakeConfigProviderUseCase(
     provider: RemoteConfigProviders.TestProvider? = null
 ): ConfigProvidersUseCase {
     return object : ConfigProvidersUseCase {
-        override suspend fun eventProviders(): List<RemoteConfigProviders.EventProvider> {
-            return eventProviders
+        override suspend fun eventProviders(): EventProvidersResult {
+            return EventProvidersResult.Success(eventProviders)
         }
 
         override suspend fun testProvider(id: String): RemoteConfigProviders.TestProvider? {
@@ -244,8 +241,12 @@ fun fakeCoronaCheckRepository(
             return testProviders
         }
 
-        override suspend fun accessTokens(tvsToken: String): RemoteAccessTokens {
-            return accessTokens
+        override suspend fun configProvidersResult(): NetworkRequestResult<RemoteConfigProviders> {
+            return NetworkRequestResult.Success(testProviders)
+        }
+
+        override suspend fun accessTokens(jwt: String): NetworkRequestResult<RemoteAccessTokens> {
+            return NetworkRequestResult.Success(accessTokens)
         }
 
         override suspend fun getGreenCards(
@@ -427,13 +428,15 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
 }
 
 fun fakeEventProviderRepository(
-    unomi: ((url: String) -> RemoteUnomi) = { RemoteUnomi("", "", false) },
-    events: ((url: String) -> SignedResponseWithModel<RemoteProtocol3>) = {
-        SignedResponseWithModel(
-            "".toByteArray(),
-            RemoteProtocol3(
-                "", "", RemoteProtocol.Status.COMPLETE, null, listOf()
-            ),
+    unomi: ((url: String) -> NetworkRequestResult<RemoteUnomi>) = { NetworkRequestResult.Success(RemoteUnomi("", "", false)) },
+    events: ((url: String) -> NetworkRequestResult<SignedResponseWithModel<RemoteProtocol3>>) = {
+        NetworkRequestResult.Success(
+            SignedResponseWithModel(
+                "".toByteArray(),
+                RemoteProtocol3(
+                    "", "", RemoteProtocol.Status.COMPLETE, null, listOf()
+                ),
+            )
         )
     },
 ) = object : EventProviderRepository {
@@ -442,7 +445,7 @@ fun fakeEventProviderRepository(
         token: String,
         filter: String,
         signingCertificateBytes: ByteArray
-    ): RemoteUnomi {
+    ): NetworkRequestResult<RemoteUnomi> {
         return unomi.invoke(url)
     }
 
@@ -451,7 +454,7 @@ fun fakeEventProviderRepository(
         token: String,
         signingCertificateBytes: ByteArray,
         filter: String
-    ): SignedResponseWithModel<RemoteProtocol3> {
+    ): NetworkRequestResult<SignedResponseWithModel<RemoteProtocol3>> {
         return events.invoke(url)
     }
 

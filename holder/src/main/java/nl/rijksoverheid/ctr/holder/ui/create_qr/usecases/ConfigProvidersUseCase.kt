@@ -19,7 +19,7 @@ interface ConfigProvidersUseCase {
 }
 
 class ConfigProvidersUseCaseImpl(
-    private val coronaCheckRepository: CoronaCheckRepository, private val networkRequestResultFactory: NetworkRequestResultFactory) :
+    private val coronaCheckRepository: CoronaCheckRepository) :
     ConfigProvidersUseCase {
     override suspend fun testProvider(id: String): RemoteConfigProviders.TestProvider? {
         return coronaCheckRepository.configProviders().testProviders.firstOrNull { it.providerIdentifier == id }
