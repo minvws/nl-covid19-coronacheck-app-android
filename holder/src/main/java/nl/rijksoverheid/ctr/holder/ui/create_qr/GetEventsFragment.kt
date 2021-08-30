@@ -18,6 +18,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.EventsResult
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
+import nl.rijksoverheid.ctr.shared.models.ErrorResultFragmentData
 import nl.rijksoverheid.ctr.shared.models.Flow
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -89,12 +90,12 @@ class GetEventsFragment: DigiDFragment(R.layout.fragment_get_events) {
                         //TODO change to use the full list when [BaseFragment] supports it
                         presentError(it.errorResults.first())
                     } else {
-                        findNavController().navigate(
-                            GetEventsFragmentDirections.actionCouldNotCreateQr(
-                                toolbarTitle = copy.toolbarTitle,
+                        presentError(
+                            data = ErrorResultFragmentData(
                                 title = copy.hasNoEventsTitle,
                                 description = copy.hasNoEventsDescription,
-                                buttonTitle = getString(R.string.back_to_overview)
+                                buttonTitle = getString(R.string.back_to_overview),
+                                buttonDestinationId = R.id.action_my_overview,
                             )
                         )
                     }
