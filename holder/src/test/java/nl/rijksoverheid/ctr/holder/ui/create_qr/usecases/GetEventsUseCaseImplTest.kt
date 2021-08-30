@@ -138,7 +138,7 @@ class GetEventsUseCaseImplTest {
         val eventsResult = getEvents()
 
         assertEquals(
-            EventsResult.HasNoEvents(true),
+            EventsResult.HasNoEvents(true, listOf(httpError)),
             eventsResult
         )
     }
@@ -159,7 +159,7 @@ class GetEventsUseCaseImplTest {
         )
     }
     
-    private suspend fun httpError(): NetworkRequestResult.Failed<*> {
+    private fun httpError(): NetworkRequestResult.Failed<*> {
         val httpException = HttpException(
             Response.error<String>(
                 404, "".toResponseBody()

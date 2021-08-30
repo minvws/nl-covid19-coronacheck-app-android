@@ -65,7 +65,6 @@ class GetEventsFragment: DigiDFragment(R.layout.fragment_get_events) {
         getEventsViewModel.eventsResult.observe(viewLifecycleOwner, EventObserver {
             when (it) {
                 is EventsResult.Success -> {
-                    //TODO check if needs to change
                     if (it.missingEvents) {
                         dialogUtil.presentDialog(
                             context = requireContext(),
@@ -86,16 +85,9 @@ class GetEventsFragment: DigiDFragment(R.layout.fragment_get_events) {
                     }
                 }
                 is EventsResult.HasNoEvents -> {
-                    //TODO check if needs to change
                     if (it.missingEvents) {
-                        findNavController().navigate(
-                            GetEventsFragmentDirections.actionCouldNotCreateQr(
-                                toolbarTitle = copy.toolbarTitle,
-                                title = getString(R.string.missing_events_title),
-                                description = getString(R.string.missing_events_description),
-                                buttonTitle = getString(R.string.back_to_overview)
-                            )
-                        )
+                        //TODO change to use the full list when [BaseFragment] supports it
+                        presentError(it.errorResults.first())
                     } else {
                         findNavController().navigate(
                             GetEventsFragmentDirections.actionCouldNotCreateQr(

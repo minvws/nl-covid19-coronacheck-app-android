@@ -90,8 +90,15 @@ class GetEventsUseCaseImpl(
 
                 if (!hasEvents) {
                     // But we do not have any events
+                    val missingEvents = eventProvidersWithTokensErrorResults.isNotEmpty() || eventFailureResults.isNotEmpty()
+                    val errorResults: List<ErrorResult> = if (missingEvents) {
+                        eventProvidersWithTokensErrorResults.map { it.errorResult } + eventFailureResults.map { it.errorResult }
+                    } else {
+                        emptyList()
+                    }
                     EventsResult.HasNoEvents(
-                        missingEvents = eventProvidersWithTokensErrorResults.isNotEmpty() || eventFailureResults.isNotEmpty()
+                        missingEvents = missingEvents,
+                        errorResults = errorResults
                     )
                 } else {
                     // We do have events
@@ -123,7 +130,7 @@ sealed class EventsResult {
         val missingEvents: Boolean
     ) :
         EventsResult()
-    data class HasNoEvents(val missingEvents: Boolean) : EventsResult()
+    data class HasNoEvents(val missingEvents: Boolean, val errorResults: List<ErrorResult> = emptyList()) : EventsResult()
 
     data class Error constructor(val errorResults: List<ErrorResult>): EventsResult() {
         constructor(errorResult: ErrorResult): this(listOf(errorResult))
