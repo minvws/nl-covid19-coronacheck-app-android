@@ -30,7 +30,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
 
     private val args: GetEventsFragmentArgs by navArgs()
-
     private val dialogUtil: DialogUtil by inject()
     private val getEventsViewModel: GetEventsViewModel by viewModel()
 
