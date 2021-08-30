@@ -54,7 +54,7 @@
     <string name="about_this_app_description">CoronaCheck Scanner is created so that certain locations and activities can open their doors again. Think for example of football matches and concerts. Visitors create a coronavirus pass of a vaccination, a negative test result or if they\'ve had corona and are recovered. With this app, only visitors with a coronavirus pass gain access. This way, the Netherlands can head out more often.</string>
     <string name="scan_instructions">How scanning works</string>
     <string name="scan_instructions_1_title">Scan the QR code</string>
-    <string name="scan_instructions_1_description">Vraag de bezoeker naar een QR-code in de CoronaCheck-app of op papier. Een toerist kan een QR-code in een buitenlandse app of op papier tonen. Scan de QR-code met de camera van je telefoon.</string>
+    <string name="scan_instructions_1_description">Ask the visitor to show a QR code in the CoronaCheck app or on paper. A tourist may show a QR code in a foreign app, or on paper. Scan the visitor’s QR code with your phone camera.</string>
     <string name="scan_instructions_2_title">Always check the details</string>
     <string name="scan_instructions_2_description">Green screen? Verify if the details on your screen are the same as those on the identity document. This way you can ensure the QR code belongs to the visitor.</string>
     <string name="scan_instructions_3_image">Sometimes not all details are shown</string>
