@@ -17,7 +17,9 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.EventsResult
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
+import nl.rijksoverheid.ctr.shared.factories.ErrorCodeStringFactory
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
+import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.ErrorResultFragmentData
 import nl.rijksoverheid.ctr.shared.models.Flow
 import org.koin.android.ext.android.inject
@@ -35,6 +37,7 @@ class GetEventsFragment: DigiDFragment(R.layout.fragment_get_events) {
     private val args: GetEventsFragmentArgs by navArgs()
     private val dialogUtil: DialogUtil by inject()
     private val getEventsViewModel: GetEventsViewModel by viewModel()
+    private val errorCodeStringFactory: ErrorCodeStringFactory by inject()
 
     override fun getFlow(): Flow {
         return when (args.originType) {
@@ -69,9 +72,9 @@ class GetEventsFragment: DigiDFragment(R.layout.fragment_get_events) {
                     if (it.missingEvents) {
                         dialogUtil.presentDialog(
                             context = requireContext(),
-                            title = R.string.missing_events_title,
-                            message = getString(R.string.missing_events_description),
-                            positiveButtonText = R.string.ok,
+                            title = getDialogTitleFromOriginType(),
+                            message = getString(R.string.error_get_events_missing_events_dialog_description),
+                            positiveButtonText = R.string.dialog_close,
                             positiveButtonCallback = {},
                             onDismissCallback = {
                                 navigateToYourEvents(
@@ -87,22 +90,42 @@ class GetEventsFragment: DigiDFragment(R.layout.fragment_get_events) {
                 }
                 is EventsResult.HasNoEvents -> {
                     if (it.missingEvents) {
-                        //TODO change to use the full list when [BaseFragment] supports it
-                        presentError(it.errorResults.first())
-                    } else {
                         presentError(
                             data = ErrorResultFragmentData(
-                                title = copy.hasNoEventsTitle,
-                                description = copy.hasNoEventsDescription,
+                                title = getString(R.string.error_get_events_no_events_title),
+                                description = getString(R.string.error_get_events_http_error_description, getErrorCodes(it.errorResults)),
                                 buttonTitle = getString(R.string.back_to_overview),
                                 buttonDestinationId = R.id.action_my_overview,
+                                urlData = ErrorResultFragmentData.UrlData(
+                                    urlButtonTitle = getString(R.string.error_something_went_wrong_outage_button),
+                                    urlButtonUrl = getString(R.string.error_something_went_wrong_outage_button_url)
+                                ),
+                            )
+                        )
+                    } else {
+                        findNavController().navigate(
+                            GetEventsFragmentDirections.actionCouldNotCreateQr(
+                                toolbarTitle = copy.toolbarTitle,
+                                title = copy.hasNoEventsTitle,
+                                description = copy.hasNoEventsDescription,
+                                buttonTitle = getString(R.string.back_to_overview)
                             )
                         )
                     }
                 }
                 is EventsResult.Error -> {
-                    //TODO change to use the full list when [BaseFragment] supports it
-                    presentError(it.errorResults.first())
+                    presentError(
+                        data = ErrorResultFragmentData(
+                            title = getString(R.string.error_something_went_wrong_title),
+                            description = getString(R.string.error_get_events_http_error_description, getErrorCodes(it.errorResults)),
+                            buttonTitle = getString(R.string.back_to_overview),
+                            buttonDestinationId = R.id.action_my_overview,
+                            urlData = ErrorResultFragmentData.UrlData(
+                                urlButtonTitle = getString(R.string.error_something_went_wrong_outage_button),
+                                urlButtonUrl = getString(R.string.error_something_went_wrong_outage_button_url)
+                            ),
+                        )
+                    )
                 }
             }
         })
@@ -133,6 +156,21 @@ class GetEventsFragment: DigiDFragment(R.layout.fragment_get_events) {
 
         binding.noDigidButton.setOnClickListener {
             getString(R.string.no_digid_url).launchUrl(requireContext())
+        }
+    }
+
+    private fun getErrorCodes(errorResults: List<ErrorResult>): String {
+        return errorCodeStringFactory.get(
+            flow = getFlow(),
+            errorResults = errorResults
+        )
+    }
+
+    private fun getDialogTitleFromOriginType(): Int {
+        return when (args.originType) {
+            OriginType.Recovery -> R.string.error_get_events_missing_events_dialog_title_recoveries
+            OriginType.Test -> R.string.error_get_events_missing_events_dialog_title_testresults
+            OriginType.Vaccination -> R.string.error_get_events_missing_events_dialog_title_vaccines
         }
     }
 
