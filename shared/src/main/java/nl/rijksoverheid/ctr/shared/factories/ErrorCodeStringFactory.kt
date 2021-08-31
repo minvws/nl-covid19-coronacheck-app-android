@@ -31,7 +31,7 @@ class ErrorCodeStringFactoryImpl: ErrorCodeStringFactory {
         val exceptionErrorCode = when (val exception = errorResult.getException()) {
             is HttpException -> exception.code()
             is CreateCommitmentMessageException -> "054"
-            is AuthorizationException -> exception.error
+            is AuthorizationException -> "${exception.type}-${exception.code}"
             else -> "999"
         }
 
