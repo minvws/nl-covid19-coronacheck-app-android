@@ -95,7 +95,11 @@ class HolderMainFragment : BaseMainFragment(
                                     AboutThisAppData.ReadMoreItem(
                                         text = getString(R.string.about_this_app_accessibility),
                                         url = getString(R.string.url_accessibility),
-                                    )
+                                    ),
+                                    AboutThisAppData.ReadMoreItem(
+                                        text = getString(R.string.about_this_app_colofon),
+                                        url = getString(R.string.about_this_app_colofon_url),
+                                    ),
                                 )
                             )
                         )

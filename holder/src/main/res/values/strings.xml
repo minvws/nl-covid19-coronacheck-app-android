@@ -176,6 +176,8 @@
     <string name="about_this_app_read_more">Lees meer:</string>
     <string name="about_this_app_accessibility">Toegankelijkheid</string>
     <string name="url_accessibility">https://coronacheck.nl/nl/accessibility-in-app</string>
+    <string name="about_this_app_colofon">Colofon</string>
+    <string name="about_this_app_colofon_url">https://coronacheck.nl/nl/colofon-in-app.html</string>
     <string name="create_qr_explanation_menu_title">QR-code maken</string>
     <string name="create_qr_explanation_menu_title_alternative">Voeg een QR-code toe</string>
     <string name="qr_code_type_title">Welk bewijs wil je toevoegen?</string>

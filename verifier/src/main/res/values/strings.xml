@@ -115,6 +115,8 @@
     <string name="about_this_app_read_more">Lees meer:</string>
     <string name="about_this_app_accessibility">Toegankelijkheid</string>
     <string name="url_accessibility">https://coronacheck.nl/nl/accessibility-in-app</string>
+    <string name="about_this_app_colofon">Colofon</string>
+    <string name="about_this_app_colofon_url">https://coronacheck.nl/nl/colofon-in-app.html</string>
     <string name="accessibility_flash_on">Zet de zaklamp aan.</string>
     <string name="accessibility_flash_off">Zet de zaklamp uit.</string>
     <string name="new_in_app_subtitle">Nieuw in de app</string>
