@@ -4,10 +4,11 @@ import android.annotation.SuppressLint
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteAccessTokens
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteConfigProviders
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteUnomi
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.EventProviderRepository
 import nl.rijksoverheid.ctr.shared.ext.filterNotNullValues
-import retrofit2.HttpException
-import java.io.IOException
+import nl.rijksoverheid.ctr.shared.models.ErrorResult
+import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 
 /**
  * Get all event providers that have events for the [OriginType]
@@ -57,32 +58,29 @@ class GetEventProvidersWithTokensUseCaseImpl(
             val eventProvider = it.key
             val token = it.value
 
-            try {
-                val unomiResult = eventProviderRepository.getUnomi(
-                    url = eventProvider.unomiUrl,
-                    token = token.unomi,
-                    filter = EventProviderRepository.getFilter(originType),
-                    signingCertificateBytes = eventProvider.cms
-                )
+            val unomiResult = eventProviderRepository.getUnomi(
+                url = eventProvider.unomiUrl,
+                token = token.unomi,
+                filter = EventProviderRepository.getFilter(originType),
+                signingCertificateBytes = eventProvider.cms,
+                provider = eventProvider.providerIdentifier,
+            )
 
-                if (unomiResult.informationAvailable) {
-                    EventProviderWithTokenResult.Success(
-                        eventProvider = eventProvider,
-                        token = token
-                    )
-                } else {
-                    null
+            when (unomiResult) {
+                is NetworkRequestResult.Success<RemoteUnomi> -> {
+                    if (unomiResult.response.informationAvailable) {
+                        EventProviderWithTokenResult.Success(
+                            eventProvider = eventProvider,
+                            token = token
+                        )
+                    } else {
+                        null
+                    }
                 }
-            } catch (e: HttpException) {
-                EventProviderWithTokenResult.Error.ServerError(e.code())
-            } catch (e: IOException) {
-                EventProviderWithTokenResult.Error.NetworkError
-            } catch (e: Exception) {
-                // In case the event provider gives us back a 200 with json we are not expecting
-                EventProviderWithTokenResult.Error.ServerError(
-                    httpCode = 200
-                )
+                is NetworkRequestResult.Failed -> EventProviderWithTokenResult.Error(unomiResult)
             }
+
+
         }.filterNotNull()
     }
 }
@@ -93,8 +91,5 @@ sealed class EventProviderWithTokenResult {
         val token: RemoteAccessTokens.Token
     ) : EventProviderWithTokenResult()
 
-    sealed class Error : EventProviderWithTokenResult() {
-        data class ServerError(val httpCode: Int) : Error()
-        object NetworkError : Error()
-    }
+    data class Error(val errorResult: ErrorResult): EventProviderWithTokenResult()
 }

@@ -13,12 +13,12 @@ import org.koin.android.ext.android.inject
  */
 abstract class BaseFragment(contentLayoutId: Int) : Fragment(contentLayoutId) {
 
-    private val errorCodeStringFactory: ErrorCodeStringFactory by inject()
+    protected val errorCodeStringFactory: ErrorCodeStringFactory by inject()
     private val dialogUtil: DialogUtil by inject()
 
     abstract fun getFlow(): Flow
 
-    fun presentError(errorResult: ErrorResult) {
+    fun presentError(errorResult: ErrorResult, customerErrorDescription: String? = null) {
         if (errorResult is NetworkRequestResult.Failed.NetworkError<*>) {
             dialogUtil.presentDialog(
                 context = requireContext(),
@@ -41,14 +41,21 @@ abstract class BaseFragment(contentLayoutId: Int) : Fragment(contentLayoutId) {
             } else {
                 val errorCodeString = errorCodeStringFactory.get(
                     flow = getFlow(),
-                    errorResult = errorResult
+                    errorResults = listOf(errorResult)
                 )
 
-                val errorDescription = if (errorResult is NetworkRequestResult.Failed.CoronaCheckHttpError<*>) {
-                    getString(R.string.error_something_went_wrong_http_error_description, errorCodeString)
-                } else {
-                    getString(R.string.error_something_went_wrong_making_proof_description, errorCodeString)
-                }
+                val errorDescription = customerErrorDescription
+                    ?: if (errorResult is NetworkRequestResult.Failed.CoronaCheckHttpError<*>) {
+                        getString(
+                            R.string.error_something_went_wrong_http_error_description,
+                            errorCodeString
+                        )
+                    } else {
+                        getString(
+                            R.string.error_something_went_wrong_making_proof_description,
+                            errorCodeString
+                        )
+                    }
 
                 val data = ErrorResultFragmentData(
                     title = getString(R.string.error_something_went_wrong_title),

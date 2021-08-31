@@ -5,7 +5,9 @@ import android.view.View
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
+import nl.rijksoverheid.ctr.holder.HolderFlow
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
+import nl.rijksoverheid.ctr.holder.HolderStep
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentGetEventsBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
@@ -17,6 +19,8 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.EventsResult
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
+import nl.rijksoverheid.ctr.shared.models.ErrorResultFragmentData
+import nl.rijksoverheid.ctr.shared.models.Flow
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -33,8 +37,13 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
     private val dialogUtil: DialogUtil by inject()
     private val getEventsViewModel: GetEventsViewModel by viewModel()
 
-    override val originType: OriginType
-        get() = args.originType
+    override fun getFlow(): Flow {
+        return when (args.originType) {
+            OriginType.Recovery -> HolderFlow.Recovery
+            OriginType.Test -> HolderFlow.DigidTest
+            OriginType.Vaccination -> HolderFlow.Vaccination
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -61,9 +70,9 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                     if (it.missingEvents) {
                         dialogUtil.presentDialog(
                             context = requireContext(),
-                            title = R.string.missing_events_title,
-                            message = getString(R.string.missing_events_description),
-                            positiveButtonText = R.string.ok,
+                            title = getDialogTitleFromOriginType(args.originType),
+                            message = getString(R.string.error_get_events_missing_events_dialog_description),
+                            positiveButtonText = R.string.dialog_close,
                             positiveButtonCallback = {},
                             onDismissCallback = {
                                 navigateToYourEvents(
@@ -79,12 +88,16 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                 }
                 is EventsResult.HasNoEvents -> {
                     if (it.missingEvents) {
-                        findNavController().navigate(
-                            GetEventsFragmentDirections.actionCouldNotCreateQr(
-                                toolbarTitle = copy.toolbarTitle,
-                                title = getString(R.string.missing_events_title),
-                                description = getString(R.string.missing_events_description),
-                                buttonTitle = getString(R.string.back_to_overview)
+                        presentError(
+                            data = ErrorResultFragmentData(
+                                title = getString(R.string.error_get_events_no_events_title),
+                                description = getString(R.string.error_get_events_http_error_description, getErrorCodes(it.errorResults)),
+                                buttonTitle = getString(R.string.back_to_overview),
+                                buttonDestinationId = R.id.action_my_overview,
+                                urlData = ErrorResultFragmentData.UrlData(
+                                    urlButtonTitle = getString(R.string.error_something_went_wrong_outage_button),
+                                    urlButtonUrl = getString(R.string.error_something_went_wrong_outage_button_url)
+                                ),
                             )
                         )
                     } else {
@@ -98,40 +111,16 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                         )
                     }
                 }
-                is EventsResult.Error.NetworkError -> {
-                    dialogUtil.presentDialog(
-                        context = requireContext(),
-                        title = R.string.dialog_no_internet_connection_title,
-                        message = getString(R.string.dialog_no_internet_connection_description),
-                        positiveButtonText = R.string.dialog_retry,
-                        positiveButtonCallback = {
-                            loginWithDigiD()
-                        },
-                        negativeButtonText = R.string.dialog_close
-                    )
-                }
-                is EventsResult.Error.EventProviderError.ServerError -> {
-                    findNavController().navigate(
-                        GetEventsFragmentDirections.actionCouldNotCreateQr(
-                            toolbarTitle = copy.toolbarTitle,
-                            title = getString(R.string.event_provider_error_title),
-                            description = getString(R.string.event_provider_error_description),
-                            buttonTitle = getString(R.string.back_to_overview)
-                        )
-                    )
-                }
-                is EventsResult.Error.CoronaCheckError.ServerError -> {
-                    findNavController().navigate(
-                        GetEventsFragmentDirections.actionCouldNotCreateQr(
-                            toolbarTitle = copy.toolbarTitle,
-                            title = getString(R.string.coronacheck_error_title),
-                            description = getString(
-                                R.string.coronacheck_error_description,
-                                it.httpCode.toString()
-                            ),
-                            buttonTitle = getString(R.string.back_to_overview)
-                        )
-                    )
+                is EventsResult.Error -> {
+                    val eventCallResult = it.errorResults.find { errorResult ->
+                        val step = errorResult.getCurrentStep()
+                        step == HolderStep.UnomiNetworkRequest || step == HolderStep.EventNetworkRequest
+                    }
+                    if (eventCallResult != null) {
+                        presentError(eventCallResult, getString(R.string.error_get_events_http_error_description, getErrorCodes(it.errorResults)))
+                    } else {
+                        presentError(it.errorResults.first())
+                    }
                 }
             }
         })
