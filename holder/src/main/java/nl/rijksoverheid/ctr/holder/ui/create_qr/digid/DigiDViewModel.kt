@@ -13,6 +13,7 @@ import net.openid.appauth.AuthorizationResponse
 import net.openid.appauth.AuthorizationService
 import nl.rijksoverheid.ctr.holder.HolderStep.DigidNetworkRequest
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.AuthenticationRepository
+import nl.rijksoverheid.ctr.shared.exceptions.OpenIdAuthorizationException
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.OpenIdErrorResult.Error
 import nl.rijksoverheid.ctr.shared.models.OpenIdErrorResult.ServerBusy
@@ -73,11 +74,16 @@ class DigiDViewModel(private val authenticationRepository: AuthenticationReposit
     private fun postErrorResult(authError: AuthorizationException) {
         val digidResult = when {
             isUserCancelled(authError) -> DigidResult.Cancelled
-            isServerBusy(authError) -> DigidResult.Failed(ServerBusy(DigidNetworkRequest, authError))
-            else -> DigidResult.Failed(Error(DigidNetworkRequest, authError))
+            isServerBusy(authError) -> DigidResult.Failed(
+                ServerBusy(DigidNetworkRequest, mapToOpenIdException(authError))
+            )
+            else -> DigidResult.Failed(Error(DigidNetworkRequest, mapToOpenIdException(authError)))
         }
         digidResultLiveData.postValue(Event(digidResult))
     }
+
+    private fun mapToOpenIdException(authError: AuthorizationException) =
+        OpenIdAuthorizationException(type = authError.type, code = authError.code)
 
     private fun isServerBusy(authError: AuthorizationException) =
         authError.error == LOGIN_REQUIRED_ERROR || authError.error == SAML_AUTHN_FAILED_ERROR
