@@ -4,10 +4,8 @@ import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import nl.rijksoverheid.ctr.shared.models.CoronaCheckErrorResponse
 import nl.rijksoverheid.ctr.shared.models.Step
 import okhttp3.ResponseBody
-import okhttp3.ResponseBody.Companion.toResponseBody
 import retrofit2.Converter
 import retrofit2.HttpException
-import retrofit2.Response
 import java.io.IOException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException

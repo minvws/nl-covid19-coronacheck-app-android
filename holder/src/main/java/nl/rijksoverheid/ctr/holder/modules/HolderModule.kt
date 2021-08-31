@@ -190,7 +190,8 @@ fun holderModule(baseUrl: String) = module {
     }
     factory<EventProviderRepository> {
         EventProviderRepositoryImpl(
-            get()
+            get(),
+            get(),
         )
     }
 
