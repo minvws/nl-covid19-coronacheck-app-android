@@ -14,7 +14,10 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigidResult
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.EventsResult
+import nl.rijksoverheid.ctr.shared.factories.ErrorCodeStringFactory
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
+import nl.rijksoverheid.ctr.shared.models.ErrorResult
+import nl.rijksoverheid.ctr.shared.models.ErrorResultFragmentData
 import nl.rijksoverheid.ctr.shared.models.Flow
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAsAccessibilityButton
 import org.koin.android.ext.android.inject
@@ -71,16 +74,17 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
         getEventsViewModel.eventsResult.observe(viewLifecycleOwner, EventObserver {
             when (it) {
                 is EventsResult.Success -> {
-                    //TODO check if needs to change
                     if (it.missingEvents) {
                         dialogUtil.presentDialog(
                             context = requireContext(),
-                            title = R.string.missing_events_title,
-                            message = getString(R.string.missing_events_description),
-                            positiveButtonText = R.string.ok,
+                            title = getDialogTitleFromOriginType(OriginType.Test),
+                            message = getString(R.string.error_get_events_missing_events_dialog_description),
+                            positiveButtonText = R.string.dialog_close,
                             positiveButtonCallback = {},
                             onDismissCallback = {
-                                navigateToYourEvents(it.signedModels)
+                                navigateToYourEvents(
+                                    signedEvents = it.signedModels
+                                )
                             }
                         )
                     } else {
@@ -88,14 +92,17 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
                     }
                 }
                 is EventsResult.HasNoEvents -> {
-                    //TODO check if needs to change
                     if (it.missingEvents) {
-                        findNavController().navigate(
-                            ChooseProviderFragmentDirections.actionCouldNotCreateQr(
-                                toolbarTitle = getString(R.string.your_vaccination_result_toolbar_title),
-                                title = getString(R.string.missing_events_title),
-                                description = getString(R.string.missing_events_description),
-                                buttonTitle = getString(R.string.back_to_overview)
+                        presentError(
+                            data = ErrorResultFragmentData(
+                                title = getString(R.string.error_get_events_no_events_title),
+                                description = getString(R.string.error_get_events_http_error_description, getErrorCodes(it.errorResults)),
+                                buttonTitle = getString(R.string.back_to_overview),
+                                buttonDestinationId = R.id.action_my_overview,
+                                urlData = ErrorResultFragmentData.UrlData(
+                                    urlButtonTitle = getString(R.string.error_something_went_wrong_outage_button),
+                                    urlButtonUrl = getString(R.string.error_something_went_wrong_outage_button_url)
+                                ),
                             )
                         )
                     } else {
@@ -110,8 +117,18 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
                     }
                 }
                 is EventsResult.Error -> {
-                    //TODO change to use the full list when [BaseFragment] supports it
-                    presentError(it.errorResults.first())
+                    presentError(
+                        data = ErrorResultFragmentData(
+                            title = getString(R.string.error_something_went_wrong_title),
+                            description = getString(R.string.error_get_events_http_error_description, getErrorCodes(it.errorResults)),
+                            buttonTitle = getString(R.string.back_to_overview),
+                            buttonDestinationId = R.id.action_my_overview,
+                            urlData = ErrorResultFragmentData.UrlData(
+                                urlButtonTitle = getString(R.string.error_something_went_wrong_outage_button),
+                                urlButtonUrl = getString(R.string.error_something_went_wrong_outage_button_url)
+                            ),
+                        )
+                    )
                 }
             }
         })

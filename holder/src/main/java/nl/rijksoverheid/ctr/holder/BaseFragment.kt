@@ -16,7 +16,7 @@ import org.koin.android.ext.android.inject
  */
 abstract class BaseFragment(contentLayoutId: Int) : Fragment(contentLayoutId) {
 
-    private val errorCodeStringFactory: ErrorCodeStringFactory by inject()
+    protected val errorCodeStringFactory: ErrorCodeStringFactory by inject()
     private val dialogUtil: DialogUtil by inject()
 
     abstract fun getFlow(): Flow

@@ -17,9 +17,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.EventsResult
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
-import nl.rijksoverheid.ctr.shared.factories.ErrorCodeStringFactory
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
-import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.ErrorResultFragmentData
 import nl.rijksoverheid.ctr.shared.models.Flow
 import org.koin.android.ext.android.inject
@@ -37,7 +35,6 @@ class GetEventsFragment: DigiDFragment(R.layout.fragment_get_events) {
     private val args: GetEventsFragmentArgs by navArgs()
     private val dialogUtil: DialogUtil by inject()
     private val getEventsViewModel: GetEventsViewModel by viewModel()
-    private val errorCodeStringFactory: ErrorCodeStringFactory by inject()
 
     override fun getFlow(): Flow {
         return when (args.originType) {
@@ -72,7 +69,7 @@ class GetEventsFragment: DigiDFragment(R.layout.fragment_get_events) {
                     if (it.missingEvents) {
                         dialogUtil.presentDialog(
                             context = requireContext(),
-                            title = getDialogTitleFromOriginType(),
+                            title = getDialogTitleFromOriginType(args.originType),
                             message = getString(R.string.error_get_events_missing_events_dialog_description),
                             positiveButtonText = R.string.dialog_close,
                             positiveButtonCallback = {},
@@ -156,21 +153,6 @@ class GetEventsFragment: DigiDFragment(R.layout.fragment_get_events) {
 
         binding.noDigidButton.setOnClickListener {
             getString(R.string.no_digid_url).launchUrl(requireContext())
-        }
-    }
-
-    private fun getErrorCodes(errorResults: List<ErrorResult>): String {
-        return errorCodeStringFactory.get(
-            flow = getFlow(),
-            errorResults = errorResults
-        )
-    }
-
-    private fun getDialogTitleFromOriginType(): Int {
-        return when (args.originType) {
-            OriginType.Recovery -> R.string.error_get_events_missing_events_dialog_title_recoveries
-            OriginType.Test -> R.string.error_get_events_missing_events_dialog_title_testresults
-            OriginType.Vaccination -> R.string.error_get_events_missing_events_dialog_title_vaccines
         }
     }
 
