@@ -3,8 +3,8 @@ package nl.rijksoverheid.ctr.shared.factories
 import android.database.sqlite.SQLiteConstraintException
 import com.squareup.moshi.JsonDataException
 import com.squareup.moshi.JsonEncodingException
-import net.openid.appauth.AuthorizationException
 import nl.rijksoverheid.ctr.shared.exceptions.CreateCommitmentMessageException
+import nl.rijksoverheid.ctr.shared.exceptions.OpenIdAuthorizationException
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.Flow
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
@@ -43,7 +43,7 @@ class ErrorCodeStringFactoryImpl: ErrorCodeStringFactory {
                 is SSLProtocolException -> "012"
                 is SSLPeerUnverifiedException -> "013"
                 is SQLiteConstraintException -> "060"
-                is AuthorizationException -> "${exception.type}-${exception.code}"
+                is OpenIdAuthorizationException -> "07${exception.type}-${exception.code}"
                 else -> "999"
             }
 
