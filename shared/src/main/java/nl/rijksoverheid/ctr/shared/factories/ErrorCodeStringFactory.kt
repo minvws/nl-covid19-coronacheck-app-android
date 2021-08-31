@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.shared.factories
 
+import net.openid.appauth.AuthorizationException
 import nl.rijksoverheid.ctr.shared.exceptions.CreateCommitmentMessageException
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.Flow
@@ -30,6 +31,7 @@ class ErrorCodeStringFactoryImpl: ErrorCodeStringFactory {
         val exceptionErrorCode = when (val exception = errorResult.getException()) {
             is HttpException -> exception.code()
             is CreateCommitmentMessageException -> "054"
+            is AuthorizationException -> exception.error
             else -> "999"
         }
 
