@@ -58,7 +58,6 @@
 
     </navigation>
 
-
     <fragment
         android:id="@+id/nav_my_overview"
         android:name="nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewFragment"

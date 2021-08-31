@@ -130,11 +130,6 @@ class HolderMainFragment : BaseMainFragment(
         _binding = null
     }
 
-    fun changeMenuItem(@IdRes menuItemId: Int, @StringRes text: Int) {
-        binding.navView.menu.findItem(menuItemId).title = getString(text)
-        navigationDrawerStyling()
-    }
-
     fun presentLoading(loading: Boolean) {
         binding.loading.visibility = if (loading) View.VISIBLE else View.GONE
         if (loading) {
@@ -160,7 +155,7 @@ class HolderMainFragment : BaseMainFragment(
             .styleTitle(context, R.attr.textAppearanceHeadline6)
         binding.navView.menu.findItem(R.id.nav_settings)
             .styleTitle(context, R.attr.textAppearanceHeadline6)
-        binding.navView.menu.findItem(R.id.action_qr_type)
+        binding.navView.menu.findItem(R.id.nav_qr_code_type)
             .styleTitle(context, R.attr.textAppearanceHeadline6)
         binding.navView.menu.findItem(R.id.nav_about_this_app)
             .styleTitle(context, R.attr.textAppearanceBody1)

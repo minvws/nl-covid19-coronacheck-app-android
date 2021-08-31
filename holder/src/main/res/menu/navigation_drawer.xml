@@ -9,7 +9,7 @@
             android:title="@string/my_overview" />
 
         <item
-            android:id="@+id/action_qr_type"
+            android:id="@+id/nav_qr_code_type"
             android:checkable="false"
             android:title="@string/choose_provider_toolbar" />
 
