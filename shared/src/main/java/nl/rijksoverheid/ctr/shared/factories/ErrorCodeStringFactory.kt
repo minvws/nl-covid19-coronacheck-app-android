@@ -4,6 +4,7 @@ import android.database.sqlite.SQLiteConstraintException
 import com.squareup.moshi.JsonDataException
 import com.squareup.moshi.JsonEncodingException
 import nl.rijksoverheid.ctr.shared.exceptions.CreateCommitmentMessageException
+import nl.rijksoverheid.ctr.shared.exceptions.OpenIdAuthorizationException
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.Flow
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
@@ -42,6 +43,7 @@ class ErrorCodeStringFactoryImpl: ErrorCodeStringFactory {
                 is SSLProtocolException -> "012"
                 is SSLPeerUnverifiedException -> "013"
                 is SQLiteConstraintException -> "060"
+                is OpenIdAuthorizationException -> "07${exception.type}-${exception.code}"
                 else -> "999"
             }
 

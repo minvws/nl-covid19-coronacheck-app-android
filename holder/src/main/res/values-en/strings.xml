@@ -26,8 +26,8 @@
     <string name="dialog_error_title">Sorry, something went wrong</string>
     <string name="dialog_error_message">Because of a technical error.</string>
     <string name="dialog_error_message_with_error_code">Because of a technical error (%1$s).</string>
-    <string name="digid_login_failed_title">Retrieval is cancelled</string>
-    <string name="digid_login_failed_description">It might be too busy. Please try again later.</string>
+    <string name="digid_login_cancelled_title">Inloggen afgebroken</string>
+    <string name="digid_login_cancelled_description">Wil je jouw vaccinatiegegevens  ophalen? Log dan opnieuw in met DigiD.</string>
     <string name="ok">OK</string>
     <string name="settings">Settings</string>
     <string name="about_this_app">About this app</string>

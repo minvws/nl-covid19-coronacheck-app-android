@@ -11,8 +11,12 @@ import kotlinx.coroutines.launch
 import net.openid.appauth.AuthorizationException
 import net.openid.appauth.AuthorizationResponse
 import net.openid.appauth.AuthorizationService
+import nl.rijksoverheid.ctr.holder.HolderStep.DigidNetworkRequest
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.AuthenticationRepository
+import nl.rijksoverheid.ctr.shared.exceptions.OpenIdAuthorizationException
 import nl.rijksoverheid.ctr.shared.livedata.Event
+import nl.rijksoverheid.ctr.shared.models.OpenIdErrorResult.Error
+import nl.rijksoverheid.ctr.shared.models.OpenIdErrorResult.ServerBusy
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -22,6 +26,13 @@ import nl.rijksoverheid.ctr.shared.livedata.Event
  *
  */
 class DigiDViewModel(private val authenticationRepository: AuthenticationRepository) : ViewModel() {
+
+    private companion object {
+        const val GENERIC_ERROR_TYPE = 0
+        const val USER_CANCELLED_FLOW_CODE = 1
+        const val LOGIN_REQUIRED_ERROR = "login_required"
+        const val SAML_AUTHN_FAILED_ERROR = "saml_authn_failed"
+    }
 
     val loading: LiveData<Event<Boolean>> = MutableLiveData()
     val digidResultLiveData = MutableLiveData<Event<DigidResult>>()
@@ -35,7 +46,9 @@ class DigiDViewModel(private val authenticationRepository: AuthenticationReposit
             try {
                 authenticationRepository.authResponse(activityResultLauncher, authService)
             } catch (e: Exception) {
-                digidResultLiveData.postValue(Event(DigidResult.Failed(e.toString())))
+                digidResultLiveData.postValue(
+                    Event(DigidResult.Failed(Error(DigidNetworkRequest, e)))
+                )
             }
             loading.value = Event(false)
         }
@@ -48,25 +61,54 @@ class DigiDViewModel(private val authenticationRepository: AuthenticationReposit
                 val authResponse = AuthorizationResponse.fromIntent(intent)
                 val authError = AuthorizationException.fromIntent(intent)
                 when {
-                    authError != null -> {
-                        digidResultLiveData.postValue(Event(DigidResult.Failed("$authError.error ${authError.errorDescription}")))
-                    }
-                    authResponse != null -> {
-                        try {
-                            val jwt =
-                                authenticationRepository.jwt(authService, authResponse)
-                            digidResultLiveData.postValue(Event(DigidResult.Success(jwt)))
-                        } catch (e: Exception) {
-                            digidResultLiveData.postValue(Event(DigidResult.Failed(e.toString())))
-                        }
-                    }
-                    else -> {
-                        digidResultLiveData.postValue(Event(DigidResult.Failed(null)))
-                    }
+                    authError != null -> postErrorResult(authError)
+                    authResponse != null -> postResponseResult(authService, authResponse)
+                    else -> postAuthNullResult()
                 }
             } else {
-                digidResultLiveData.postValue(Event(DigidResult.Failed(null)))
+                digidResultLiveData.postValue(Event(DigidResult.Cancelled))
             }
         }
+    }
+
+    private fun postErrorResult(authError: AuthorizationException) {
+        val digidResult = when {
+            isUserCancelled(authError) -> DigidResult.Cancelled
+            isServerBusy(authError) -> DigidResult.Failed(
+                ServerBusy(DigidNetworkRequest, mapToOpenIdException(authError))
+            )
+            else -> DigidResult.Failed(Error(DigidNetworkRequest, mapToOpenIdException(authError)))
+        }
+        digidResultLiveData.postValue(Event(digidResult))
+    }
+
+    private fun mapToOpenIdException(authError: AuthorizationException) =
+        OpenIdAuthorizationException(type = authError.type, code = authError.code)
+
+    private fun isServerBusy(authError: AuthorizationException) =
+        authError.error == LOGIN_REQUIRED_ERROR || authError.error == SAML_AUTHN_FAILED_ERROR
+
+    private fun isUserCancelled(authError: AuthorizationException) =
+        authError.type == GENERIC_ERROR_TYPE && authError.code == USER_CANCELLED_FLOW_CODE
+
+    private suspend fun postResponseResult(
+        authService: AuthorizationService,
+        authResponse: AuthorizationResponse
+    ) {
+        try {
+            val jwt =
+                authenticationRepository.jwt(authService, authResponse)
+            digidResultLiveData.postValue(Event(DigidResult.Success(jwt)))
+        } catch (e: Exception) {
+            digidResultLiveData.postValue(
+                Event(DigidResult.Failed(Error(DigidNetworkRequest, e)))
+            )
+        }
+    }
+
+    private fun postAuthNullResult() {
+        digidResultLiveData.postValue(
+            Event(DigidResult.Failed(Error(DigidNetworkRequest, NullPointerException())))
+        )
     }
 }

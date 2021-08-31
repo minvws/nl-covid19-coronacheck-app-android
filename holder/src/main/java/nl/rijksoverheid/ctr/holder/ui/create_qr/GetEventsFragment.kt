@@ -31,7 +31,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class GetEventsFragment: DigiDFragment(R.layout.fragment_get_events) {
+class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
 
     private val args: GetEventsFragmentArgs by navArgs()
     private val dialogUtil: DialogUtil by inject()
@@ -134,10 +134,13 @@ class GetEventsFragment: DigiDFragment(R.layout.fragment_get_events) {
                     )
                 }
                 is DigidResult.Failed -> {
+                    presentError(it.errorResult)
+                }
+                DigidResult.Cancelled -> {
                     dialogUtil.presentDialog(
                         context = requireContext(),
-                        title = R.string.digid_login_failed_title,
-                        message = getString(R.string.digid_login_failed_description),
+                        title = R.string.digid_login_cancelled_title,
+                        message = getString(R.string.digid_login_cancelled_description),
                         positiveButtonText = R.string.dialog_close,
                         positiveButtonCallback = {}
                     )

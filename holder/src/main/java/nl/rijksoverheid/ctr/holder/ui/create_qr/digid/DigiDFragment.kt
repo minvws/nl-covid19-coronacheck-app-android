@@ -7,10 +7,10 @@ import net.openid.appauth.browser.BrowserAllowList
 import net.openid.appauth.browser.BrowserSelector
 import net.openid.appauth.browser.VersionRange
 import net.openid.appauth.browser.VersionedBrowserMatcher
-import nl.rijksoverheid.ctr.holder.BaseFragment
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
+import nl.rijksoverheid.ctr.holder.BaseFragment
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 

@@ -1,14 +1,11 @@
 package nl.rijksoverheid.ctr.holder
 
 import androidx.fragment.app.Fragment
-import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import nl.rijksoverheid.ctr.design.fragments.ErrorResultFragment
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.shared.factories.ErrorCodeStringFactory
-import nl.rijksoverheid.ctr.shared.models.ErrorResultFragmentData
-import nl.rijksoverheid.ctr.shared.models.Flow
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
-import nl.rijksoverheid.ctr.shared.models.ErrorResult
+import nl.rijksoverheid.ctr.shared.models.*
 import org.koin.android.ext.android.inject
 
 /**
@@ -31,8 +28,8 @@ abstract class BaseFragment(contentLayoutId: Int) : Fragment(contentLayoutId) {
                 positiveButtonCallback = {}
             )
         } else {
-            if (errorResult is NetworkRequestResult.Failed.CoronaCheckHttpError<*> && errorResult.e.code() == 429) {
-                // On HTTP 429 we make an exception and show a too busy screen
+            if (is429HttpError(errorResult) || errorResult is OpenIdErrorResult.ServerBusy ) {
+                // On HTTP 429 or server busy error we make an exception and show a too busy screen
                 presentError(
                     data = ErrorResultFragmentData(
                         title = getString(R.string.error_too_busy_title),
@@ -74,6 +71,9 @@ abstract class BaseFragment(contentLayoutId: Int) : Fragment(contentLayoutId) {
             }
         }
     }
+
+    private fun is429HttpError(errorResult: ErrorResult) =
+        errorResult is NetworkRequestResult.Failed.CoronaCheckHttpError<*> && errorResult.e.code() == 429
 
     fun presentError(data: ErrorResultFragmentData) {
         findNavControllerSafety()?.navigate(R.id.action_error_result, ErrorResultFragment.getBundle(data))
