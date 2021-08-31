@@ -29,7 +29,8 @@ class GetRemoteEventsUseCaseImpl(private val eventProviderRepository: EventProvi
                 url = eventProvider.eventUrl,
                 token = token.event,
                 filter = EventProviderRepository.getFilter(originType),
-                signingCertificateBytes = eventProvider.cms
+                signingCertificateBytes = eventProvider.cms,
+                provider = eventProvider.providerIdentifier,
             )) {
 
             is NetworkRequestResult.Success<SignedResponseWithModel<RemoteProtocol3>> -> RemoteEventsResult.Success(eventsResult.response)

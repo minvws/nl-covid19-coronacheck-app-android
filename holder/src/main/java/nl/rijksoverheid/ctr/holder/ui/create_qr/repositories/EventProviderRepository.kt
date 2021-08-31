@@ -39,7 +39,8 @@ interface EventProviderRepository {
         url: String,
         token: String,
         filter: String,
-        signingCertificateBytes: ByteArray
+        signingCertificateBytes: ByteArray,
+        provider: String,
     ): NetworkRequestResult<RemoteUnomi>
 
     suspend fun getEvents(
@@ -47,6 +48,7 @@ interface EventProviderRepository {
         token: String,
         signingCertificateBytes: ByteArray,
         filter: String,
+        provider: String,
     ): NetworkRequestResult<SignedResponseWithModel<RemoteProtocol3>>
 }
 
@@ -59,9 +61,13 @@ class EventProviderRepositoryImpl(
         url: String,
         token: String,
         filter: String,
-        signingCertificateBytes: ByteArray
+        signingCertificateBytes: ByteArray,
+        provider: String,
     ): NetworkRequestResult<RemoteUnomi> {
-        return networkRequestResultFactory.createResult(HolderStep.UnomiNetworkRequest) {
+        return networkRequestResultFactory.createResult(
+            step = HolderStep.UnomiNetworkRequest,
+            provider = provider,
+        ) {
             testProviderApiClient.getUnomi(
                 url = url,
                 authorization = "Bearer $token",
@@ -75,9 +81,13 @@ class EventProviderRepositoryImpl(
         url: String,
         token: String,
         signingCertificateBytes: ByteArray,
-        filter: String
+        filter: String,
+        provider: String,
     ): NetworkRequestResult<SignedResponseWithModel<RemoteProtocol3>> {
-        return networkRequestResultFactory.createResult(HolderStep.EventNetworkRequest) {
+        return networkRequestResultFactory.createResult(
+            step = HolderStep.EventNetworkRequest,
+            provider = provider,
+        ) {
             testProviderApiClient.getEvents(
                 url = url,
                 authorization = "Bearer $token",

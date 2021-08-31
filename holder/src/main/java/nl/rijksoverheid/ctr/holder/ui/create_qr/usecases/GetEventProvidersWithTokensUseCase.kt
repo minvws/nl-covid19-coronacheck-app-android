@@ -62,7 +62,8 @@ class GetEventProvidersWithTokensUseCaseImpl(
                 url = eventProvider.unomiUrl,
                 token = token.unomi,
                 filter = EventProviderRepository.getFilter(originType),
-                signingCertificateBytes = eventProvider.cms
+                signingCertificateBytes = eventProvider.cms,
+                provider = eventProvider.providerIdentifier,
             )
 
             when (unomiResult) {
