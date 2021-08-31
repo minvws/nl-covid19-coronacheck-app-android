@@ -26,8 +26,8 @@
     <string name="dialog_error_title">Sorry, er ging iets mis</string>
     <string name="dialog_error_message">Dat komt door een technische fout.</string>
     <string name="dialog_error_message_with_error_code">Dat komt door een technische fout (%1$s).</string>
-    <string name="digid_login_cancelled_title">Inloggen afgebroken</string>
-    <string name="digid_login_cancelled_description">Wil je jouw vaccinatiegegevens  ophalen? Log dan opnieuw in met DigiD.</string>
+    <string name="digid_login_failed_title">Het ophalen is afgebroken</string>
+    <string name="digid_login_failed_description">Mogelijk is het te druk. Probeer het later opnieuw.</string>
     <string name="ok">Oke</string>
     <string name="settings">Instellingen</string>
     <string name="about_this_app">Over deze app</string>
