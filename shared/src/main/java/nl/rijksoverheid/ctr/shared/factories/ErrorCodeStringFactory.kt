@@ -1,11 +1,15 @@
 package nl.rijksoverheid.ctr.shared.factories
 
+import android.database.sqlite.SQLiteConstraintException
+import com.squareup.moshi.JsonDataException
+import com.squareup.moshi.JsonEncodingException
 import nl.rijksoverheid.ctr.shared.exceptions.CreateCommitmentMessageException
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.Flow
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import retrofit2.HttpException
 import java.lang.StringBuilder
+import javax.net.ssl.*
 
 /**
  * Generates a String that we can show in the app to point out want went wrong where
@@ -31,6 +35,13 @@ class ErrorCodeStringFactoryImpl: ErrorCodeStringFactory {
             val exceptionErrorCode = when (val exception = it.getException()) {
                 is HttpException -> exception.code()
                 is CreateCommitmentMessageException -> "054"
+                is JsonEncodingException -> "031"
+                is JsonDataException -> "030"
+                is SSLHandshakeException -> "010"
+                is SSLKeyException -> "011"
+                is SSLProtocolException -> "012"
+                is SSLPeerUnverifiedException -> "013"
+                is SQLiteConstraintException -> "060"
                 else -> "999"
             }
 
