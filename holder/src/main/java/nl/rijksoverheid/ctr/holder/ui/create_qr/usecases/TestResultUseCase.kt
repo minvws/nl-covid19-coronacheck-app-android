@@ -5,20 +5,13 @@ import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
-import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.TestProviderRepository
-import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TokenValidatorUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TokenValidatorUtilImpl
 import nl.rijksoverheid.ctr.shared.ext.removeWhitespace
 import nl.rijksoverheid.ctr.shared.models.AppErrorResult
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
-import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
-import nl.rijksoverheid.ctr.shared.utils.TestResultUtil
-import retrofit2.HttpException
-import timber.log.Timber
-import java.io.IOException
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -30,15 +23,8 @@ import java.io.IOException
 class TestResultUseCase(
     private val configProviderUseCase: ConfigProvidersUseCase,
     private val testProviderRepository: TestProviderRepository,
-    private val coronaCheckRepository: CoronaCheckRepository,
-    private val commitmentMessageUseCase: CommitmentMessageUseCase,
-    private val secretKeyUseCase: SecretKeyUseCase,
-    private val createCredentialUseCase: CreateCredentialUseCase,
-    private val personalDetailsUtil: PersonalDetailsUtil,
-    private val testResultUtil: TestResultUtil,
-    private val cachedAppConfigUseCase: CachedAppConfigUseCase,
-    private val testResultAttributesUseCase: TestResultAttributesUseCase,
-    private val tokenValidatorUtil: TokenValidatorUtil
+    private val tokenValidatorUtil: TokenValidatorUtil,
+    private val configUseCase: CachedAppConfigUseCase,
 ) {
 
     suspend fun testResult(uniqueCode: String, verificationCode: String? = null): TestResult {
@@ -57,7 +43,6 @@ class TestResultUseCase(
             val token = uniqueCodeAttributes[1]
             val checksum = uniqueCodeAttributes[2]
 
-            // Disable the luhn check for now since providers do not yet support it
             // We need to check for valid chars
             token.toCharArray().forEach {
                 if (!TokenValidatorUtilImpl.CODE_POINTS.contains(it)) {
@@ -65,13 +50,16 @@ class TestResultUseCase(
                 }
             }
 
-//        if (!tokenValidatorUtil.validate(
-//                token = token,
-//                checksum = checksum
-//            )
-//        ) {
-//            return TestResult.InvalidToken
-//        }
+            // Enable the luhn check based on the current config value
+            if (configUseCase.getCachedAppConfig().luhnCheckEnabled) {
+                if (!tokenValidatorUtil.validate(
+                        token = token,
+                        checksum = checksum
+                    )
+                ) {
+                    return TestResult.InvalidToken
+                }
+            }
 
             val testProvider = configProviderUseCase.testProvider(providerIdentifier)
                 ?: return TestResult.InvalidToken
