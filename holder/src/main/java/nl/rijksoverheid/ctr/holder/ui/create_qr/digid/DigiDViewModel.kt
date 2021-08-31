@@ -14,7 +14,8 @@ import net.openid.appauth.AuthorizationService
 import nl.rijksoverheid.ctr.holder.HolderStep.DigidNetworkRequest
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.AuthenticationRepository
 import nl.rijksoverheid.ctr.shared.livedata.Event
-import nl.rijksoverheid.ctr.shared.models.OpenIdErrorResult
+import nl.rijksoverheid.ctr.shared.models.OpenIdErrorResult.Error
+import nl.rijksoverheid.ctr.shared.models.OpenIdErrorResult.ServerBusy
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -28,6 +29,8 @@ class DigiDViewModel(private val authenticationRepository: AuthenticationReposit
     private companion object {
         const val GENERIC_ERROR_TYPE = 0
         const val USER_CANCELLED_FLOW_CODE = 1
+        const val LOGIN_REQUIRED_ERROR = "login_required"
+        const val SAML_AUTHN_FAILED_ERROR = "saml_authn_failed"
     }
 
     val loading: LiveData<Event<Boolean>> = MutableLiveData()
@@ -43,7 +46,7 @@ class DigiDViewModel(private val authenticationRepository: AuthenticationReposit
                 authenticationRepository.authResponse(activityResultLauncher, authService)
             } catch (e: Exception) {
                 digidResultLiveData.postValue(
-                    Event(DigidResult.Failed(OpenIdErrorResult.Error(DigidNetworkRequest, e)))
+                    Event(DigidResult.Failed(Error(DigidNetworkRequest, e)))
                 )
             }
             loading.value = Event(false)
@@ -68,14 +71,19 @@ class DigiDViewModel(private val authenticationRepository: AuthenticationReposit
     }
 
     private fun postErrorResult(authError: AuthorizationException) {
-        if (authError.type == GENERIC_ERROR_TYPE && authError.code == USER_CANCELLED_FLOW_CODE) {
-            digidResultLiveData.postValue(Event(DigidResult.Cancelled))
-        } else {
-            digidResultLiveData.postValue(
-                Event(DigidResult.Failed(OpenIdErrorResult.Error(DigidNetworkRequest, authError)))
-            )
+        val digidResult = when {
+            isUserCancelled(authError) -> DigidResult.Cancelled
+            isServerBusy(authError) -> DigidResult.Failed(ServerBusy(DigidNetworkRequest, authError))
+            else -> DigidResult.Failed(Error(DigidNetworkRequest, authError))
         }
+        digidResultLiveData.postValue(Event(digidResult))
     }
+
+    private fun isServerBusy(authError: AuthorizationException) =
+        authError.error == LOGIN_REQUIRED_ERROR || authError.error == SAML_AUTHN_FAILED_ERROR
+
+    private fun isUserCancelled(authError: AuthorizationException) =
+        authError.type == GENERIC_ERROR_TYPE && authError.code == USER_CANCELLED_FLOW_CODE
 
     private suspend fun postResponseResult(
         authService: AuthorizationService,
@@ -87,16 +95,14 @@ class DigiDViewModel(private val authenticationRepository: AuthenticationReposit
             digidResultLiveData.postValue(Event(DigidResult.Success(jwt)))
         } catch (e: Exception) {
             digidResultLiveData.postValue(
-                Event(
-                    DigidResult.Failed(OpenIdErrorResult.Error(DigidNetworkRequest, e))
-                )
+                Event(DigidResult.Failed(Error(DigidNetworkRequest, e)))
             )
         }
     }
 
     private fun postAuthNullResult() {
         digidResultLiveData.postValue(
-            Event(DigidResult.Failed(OpenIdErrorResult.Error(DigidNetworkRequest, NullPointerException())))
+            Event(DigidResult.Failed(Error(DigidNetworkRequest, NullPointerException())))
         )
     }
 }
