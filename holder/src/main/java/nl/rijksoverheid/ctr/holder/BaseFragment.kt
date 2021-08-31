@@ -21,7 +21,7 @@ abstract class BaseFragment(contentLayoutId: Int) : Fragment(contentLayoutId) {
 
     abstract fun getFlow(): Flow
 
-    fun presentError(errorResult: ErrorResult) {
+    fun presentError(errorResult: ErrorResult, customerErrorDescription: String? = null) {
         if (errorResult is NetworkRequestResult.Failed.NetworkError<*>) {
             dialogUtil.presentDialog(
                 context = requireContext(),
@@ -47,11 +47,18 @@ abstract class BaseFragment(contentLayoutId: Int) : Fragment(contentLayoutId) {
                     errorResults = listOf(errorResult)
                 )
 
-                val errorDescription = if (errorResult is NetworkRequestResult.Failed.CoronaCheckHttpError<*>) {
-                    getString(R.string.error_something_went_wrong_http_error_description, errorCodeString)
-                } else {
-                    getString(R.string.error_something_went_wrong_making_proof_description, errorCodeString)
-                }
+                val errorDescription = customerErrorDescription
+                    ?: if (errorResult is NetworkRequestResult.Failed.CoronaCheckHttpError<*>) {
+                        getString(
+                            R.string.error_something_went_wrong_http_error_description,
+                            errorCodeString
+                        )
+                    } else {
+                        getString(
+                            R.string.error_something_went_wrong_making_proof_description,
+                            errorCodeString
+                        )
+                    }
 
                 val data = ErrorResultFragmentData(
                     title = getString(R.string.error_something_went_wrong_title),

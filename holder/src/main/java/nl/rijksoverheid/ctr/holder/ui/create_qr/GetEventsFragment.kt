@@ -7,6 +7,7 @@ import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderFlow
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
+import nl.rijksoverheid.ctr.holder.HolderStep
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentGetEventsBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
@@ -111,18 +112,15 @@ class GetEventsFragment: DigiDFragment(R.layout.fragment_get_events) {
                     }
                 }
                 is EventsResult.Error -> {
-                    presentError(
-                        data = ErrorResultFragmentData(
-                            title = getString(R.string.error_something_went_wrong_title),
-                            description = getString(R.string.error_get_events_http_error_description, getErrorCodes(it.errorResults)),
-                            buttonTitle = getString(R.string.back_to_overview),
-                            buttonDestinationId = R.id.action_my_overview,
-                            urlData = ErrorResultFragmentData.UrlData(
-                                urlButtonTitle = getString(R.string.error_something_went_wrong_outage_button),
-                                urlButtonUrl = getString(R.string.error_something_went_wrong_outage_button_url)
-                            ),
-                        )
-                    )
+                    val eventCallResult = it.errorResults.find { errorResult ->
+                        val step = errorResult.getCurrentStep()
+                        step == HolderStep.UnomiNetworkRequest || step == HolderStep.EventNetworkRequest
+                    }
+                    if (eventCallResult != null) {
+                        presentError(eventCallResult, getString(R.string.error_get_events_http_error_description, getErrorCodes(it.errorResults)))
+                    } else {
+                        presentError(it.errorResults.first())
+                    }
                 }
             }
         })
