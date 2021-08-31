@@ -14,6 +14,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventVaccination
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SaveEventsUseCase
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SaveEventsUseCaseImpl
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.AppErrorResult
 
@@ -51,7 +52,14 @@ class YourEventsViewModelImpl(
         viewModelScope.launch {
             try {
                 // Save the event in the database
-                saveEventsUseCase.saveNegativeTest2(negativeTest2, rawResponse)
+                when (val result = saveEventsUseCase.saveNegativeTest2(negativeTest2, rawResponse)) {
+                    is SaveEventsUseCaseImpl.SaveEventResult.Success -> {
+                        // Events saved successfully
+                    }
+                    is SaveEventsUseCaseImpl.SaveEventResult.Failed -> {
+                        DatabaseSyncerResult.Failed.Error(result.errorResult)
+                    }
+                }
 
                 // Send all events to database and create green cards, origins and credentials
                 val databaseSyncerResult = holderDatabaseSyncer.sync(
@@ -98,11 +106,20 @@ class YourEventsViewModelImpl(
         viewModelScope.launch {
             try {
                 // Save the events in the database
-                saveEventsUseCase.saveRemoteProtocols3(
+                val result = saveEventsUseCase.saveRemoteProtocols3(
                     remoteProtocols3 = remoteProtocols3,
                     originType = originType,
                     removePreviousEvents = removePreviousEvents
                 )
+
+                when (result) {
+                    is SaveEventsUseCaseImpl.SaveEventResult.Success -> {
+                        // Events saved successfully
+                    }
+                    is SaveEventsUseCaseImpl.SaveEventResult.Failed -> {
+                        DatabaseSyncerResult.Failed.Error(result.errorResult)
+                    }
+                }
 
                 // Send all events to database and create green cards, origins and credentials
                 val databaseSyncerResult = holderDatabaseSyncer.sync(
