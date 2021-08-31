@@ -444,7 +444,8 @@ fun fakeEventProviderRepository(
         url: String,
         token: String,
         filter: String,
-        signingCertificateBytes: ByteArray
+        signingCertificateBytes: ByteArray,
+        provider: String,
     ): NetworkRequestResult<RemoteUnomi> {
         return unomi.invoke(url)
     }
@@ -453,7 +454,8 @@ fun fakeEventProviderRepository(
         url: String,
         token: String,
         signingCertificateBytes: ByteArray,
-        filter: String
+        filter: String,
+        provider: String,
     ): NetworkRequestResult<SignedResponseWithModel<RemoteProtocol3>> {
         return events.invoke(url)
     }
