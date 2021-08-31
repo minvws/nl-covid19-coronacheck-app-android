@@ -44,7 +44,7 @@ abstract class BaseFragment(contentLayoutId: Int) : Fragment(contentLayoutId) {
             } else {
                 val errorCodeString = errorCodeStringFactory.get(
                     flow = getFlow(),
-                    errorResult = errorResult
+                    errorResults = listOf(errorResult)
                 )
 
                 val errorDescription = if (errorResult is NetworkRequestResult.Failed.CoronaCheckHttpError<*>) {

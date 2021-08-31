@@ -382,8 +382,8 @@
     <string name="app_status_update_recommended_dismiss_action">No, I\'ll do it later</string>
     <string name="app_status_update_recommended_action">Install update</string>
     <string name="error_something_went_wrong_title">Sorry, something went wrong</string>
-    <string name="error_something_went_wrong_http_error_description"><![CDATA[We are working hard to solve this problem (error code: <b>%1s</b>). Could you please try again later?]]></string>
-    <string name="error_something_went_wrong_making_proof_description"><![CDATA[Something is going wrong while creating your certificate (error code: <b>%1s</b>). Could you please try again later?]]></string>
+    <string name="error_something_went_wrong_http_error_description"><![CDATA[We are working hard to solve this problem. Could you please try again later?<br/><br/><b>Error code:</b><br/>%1s]]></string>
+    <string name="error_something_went_wrong_making_proof_description"><![CDATA[Something is going wrong while creating your certificate. Could you please try again later?<br/><br/><b>Error code:</b><br/>%1s]]></string>
     <string name="error_something_went_wrong_outage_button">View the latest outages</string>
     <string name="error_something_went_wrong_outage_button_url">https://status.coronacheck.nl/en</string>
     <string name="error_too_busy_title">Sorry, it is really busy</string>
