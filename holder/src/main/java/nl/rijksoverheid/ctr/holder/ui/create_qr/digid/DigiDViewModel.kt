@@ -14,7 +14,7 @@ import net.openid.appauth.AuthorizationService
 import nl.rijksoverheid.ctr.holder.HolderStep.DigidNetworkRequest
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.AuthenticationRepository
 import nl.rijksoverheid.ctr.shared.livedata.Event
-import nl.rijksoverheid.ctr.shared.models.AppErrorResult
+import nl.rijksoverheid.ctr.shared.models.OpenIdErrorResult
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -43,7 +43,7 @@ class DigiDViewModel(private val authenticationRepository: AuthenticationReposit
                 authenticationRepository.authResponse(activityResultLauncher, authService)
             } catch (e: Exception) {
                 digidResultLiveData.postValue(
-                    Event(DigidResult.Failed(AppErrorResult(DigidNetworkRequest, e)))
+                    Event(DigidResult.Failed(OpenIdErrorResult.Error(DigidNetworkRequest, e)))
                 )
             }
             loading.value = Event(false)
@@ -72,7 +72,7 @@ class DigiDViewModel(private val authenticationRepository: AuthenticationReposit
             digidResultLiveData.postValue(Event(DigidResult.Cancelled))
         } else {
             digidResultLiveData.postValue(
-                Event(DigidResult.Failed(AppErrorResult(DigidNetworkRequest, authError)))
+                Event(DigidResult.Failed(OpenIdErrorResult.Error(DigidNetworkRequest, authError)))
             )
         }
     }
@@ -88,7 +88,7 @@ class DigiDViewModel(private val authenticationRepository: AuthenticationReposit
         } catch (e: Exception) {
             digidResultLiveData.postValue(
                 Event(
-                    DigidResult.Failed(AppErrorResult(DigidNetworkRequest, e))
+                    DigidResult.Failed(OpenIdErrorResult.Error(DigidNetworkRequest, e))
                 )
             )
         }
@@ -96,7 +96,7 @@ class DigiDViewModel(private val authenticationRepository: AuthenticationReposit
 
     private fun postAuthNullResult() {
         digidResultLiveData.postValue(
-            Event(DigidResult.Failed(AppErrorResult(DigidNetworkRequest, NullPointerException())))
+            Event(DigidResult.Failed(OpenIdErrorResult.Error(DigidNetworkRequest, NullPointerException())))
         )
     }
 }
