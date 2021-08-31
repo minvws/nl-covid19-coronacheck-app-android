@@ -10,7 +10,6 @@ import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEvent
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventVaccination
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SaveEventsUseCase
@@ -54,21 +53,19 @@ class YourEventsViewModelImpl(
                 // Save the event in the database
                 when (val result = saveEventsUseCase.saveNegativeTest2(negativeTest2, rawResponse)) {
                     is SaveEventsUseCaseImpl.SaveEventResult.Success -> {
-                        // Events saved successfully
+                        // Send all events to database and create green cards, origins and credentials
+                        val databaseSyncerResult = holderDatabaseSyncer.sync(
+                            expectedOriginType = OriginType.Test
+                        )
+
+                        (yourEventsResult as MutableLiveData).value = Event(
+                            databaseSyncerResult
+                        )
                     }
                     is SaveEventsUseCaseImpl.SaveEventResult.Failed -> {
-                        DatabaseSyncerResult.Failed.Error(result.errorResult)
+                        (yourEventsResult as MutableLiveData).value = Event(DatabaseSyncerResult.Failed.Error(result.errorResult))
                     }
                 }
-
-                // Send all events to database and create green cards, origins and credentials
-                val databaseSyncerResult = holderDatabaseSyncer.sync(
-                    expectedOriginType = OriginType.Test
-                )
-
-                (yourEventsResult as MutableLiveData).value = Event(
-                    databaseSyncerResult
-                )
             } catch (e: Exception) {
                 (yourEventsResult as MutableLiveData).value = Event(
                     DatabaseSyncerResult.Failed.Error(AppErrorResult(HolderStep.StoringEvents, e))
@@ -114,22 +111,19 @@ class YourEventsViewModelImpl(
 
                 when (result) {
                     is SaveEventsUseCaseImpl.SaveEventResult.Success -> {
-                        // Events saved successfully
+                        // Send all events to database and create green cards, origins and credentials
+                        val databaseSyncerResult = holderDatabaseSyncer.sync(
+                            expectedOriginType = originType
+                        )
+
+                        (yourEventsResult as MutableLiveData).value = Event(
+                            databaseSyncerResult
+                        )
                     }
                     is SaveEventsUseCaseImpl.SaveEventResult.Failed -> {
-                        DatabaseSyncerResult.Failed.Error(result.errorResult)
+                        (yourEventsResult as MutableLiveData).value = Event(DatabaseSyncerResult.Failed.Error(result.errorResult))
                     }
                 }
-
-                // Send all events to database and create green cards, origins and credentials
-                val databaseSyncerResult = holderDatabaseSyncer.sync(
-                    expectedOriginType = originType
-                )
-
-                (yourEventsResult as MutableLiveData).value = Event(
-                    databaseSyncerResult
-                )
-
             } catch (e: Exception) {
                 (yourEventsResult as MutableLiveData).value = Event(
                     DatabaseSyncerResult.Failed.Error(AppErrorResult(HolderStep.StoringEvents, e))
