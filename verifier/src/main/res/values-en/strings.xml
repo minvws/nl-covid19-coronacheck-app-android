@@ -37,7 +37,7 @@
     <string name="scan_result_valid_first_name">First name</string>
     <string name="scan_result_valid_birth_day">Day of birth</string>
     <string name="scan_result_valid_birth_month">Birth month</string>
-    <string name="scan_result_valid_personal_details_title">Check personal details</string>
+    <string name="scan_result_valid_personal_details_title">Check details</string>
     <string name="scan_result_european_nl_invalid_title">This is an international QR code</string>
     <string name="scan_result_european_nl_invalid_subtitle">This is not a valid certificate in the Netherlands. Ask the visitor to show a Dutch QR code.</string>
     <string name="scan_result_invalid_title">Invalid QR code</string>
@@ -54,7 +54,7 @@
     <string name="about_this_app_description">CoronaCheck Scanner is created so that certain locations and activities can open their doors again. Think for example of football matches and concerts. Visitors create a coronavirus pass of a vaccination, a negative test result or if they\'ve had corona and are recovered. With this app, only visitors with a coronavirus pass gain access. This way, the Netherlands can head out more often.</string>
     <string name="scan_instructions">How scanning works</string>
     <string name="scan_instructions_1_title">Scan the QR code</string>
-    <string name="scan_instructions_1_description">Ask the visitor to show a QR code in the CoronaCheck app or on paper. A tourist may show a QR code in a foreign app, or on paper. Scan the visitor’s QR code with your phone camera.</string>
+    <string name="scan_instructions_1_description">The visitor shows a QR code in the CoronaCheck app or on paper. A tourist may show a QR code in a foreign app, or on paper.</string>
     <string name="scan_instructions_2_title">Always check the details</string>
     <string name="scan_instructions_2_description">Green screen? Verify if the details on your screen are the same as those on the identity document. This way you can ensure the QR code belongs to the visitor.</string>
     <string name="scan_instructions_3_image">Sometimes not all details are shown</string>
@@ -115,8 +115,6 @@
     <string name="about_this_app_read_more">Read more:</string>
     <string name="about_this_app_accessibility">Accessibility</string>
     <string name="url_accessibility">https://coronacheck.nl/en/accessibility-in-app</string>
-    <string name="about_this_app_colofon">Colophon</string>
-    <string name="about_this_app_colofon_url">https://coronacheck.nl/en/colofon-in-app.html</string>
     <string name="accessibility_flash_on">Turn the flashlight on.</string>
     <string name="accessibility_flash_off">Turn the flashlight off.</string>
     <string name="new_in_app_subtitle">New in the app</string>
