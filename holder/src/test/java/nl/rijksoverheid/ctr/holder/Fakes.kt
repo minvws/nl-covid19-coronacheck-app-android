@@ -1,18 +1,30 @@
 package nl.rijksoverheid.ctr.holder
 
 import androidx.lifecycle.MutableLiveData
+import androidx.room.DatabaseConfiguration
+import androidx.room.InvalidationTracker
+import androidx.sqlite.db.SupportSQLiteOpenHelper
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
+import io.mockk.mockk
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
+import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
+import nl.rijksoverheid.ctr.holder.persistence.database.dao.*
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
+import nl.rijksoverheid.ctr.holder.persistence.database.usecases.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.CommercialTestCodeViewModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.EventProviderRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.TestProviderRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TokenValidatorUtil
@@ -459,7 +471,51 @@ fun fakeEventProviderRepository(
     ): NetworkRequestResult<SignedResponseWithModel<RemoteProtocol3>> {
         return events.invoke(url)
     }
-
 }
+
+fun fakeGreenCardUtil(
+    isExpired: Boolean = false,
+    expireDate: OffsetDateTime = OffsetDateTime.now(),
+    errorCorrectionLevel: ErrorCorrectionLevel = ErrorCorrectionLevel.H,
+    isExpiring: Boolean = false,
+    hasNoActiveCredentials: Boolean = false
+) = object: GreenCardUtil {
+    override fun isExpired(greenCard: GreenCard): Boolean {
+        return isExpired
+    }
+
+    override fun getExpireDate(greenCard: GreenCard): OffsetDateTime {
+        return expireDate
+    }
+
+    override fun getErrorCorrectionLevel(greenCardType: GreenCardType): ErrorCorrectionLevel {
+        return errorCorrectionLevel
+    }
+
+    override fun isExpiring(renewalDays: Long, greenCard: GreenCard): Boolean {
+        return isExpiring
+    }
+
+    override fun hasNoActiveCredentials(greenCard: GreenCard): Boolean {
+        return hasNoActiveCredentials
+    }
+}
+
+fun fakeGetRemoteGreenCardUseCase(result: RemoteGreenCardsResult = RemoteGreenCardsResult.Success(
+    RemoteGreenCards(null, null)
+)) = object: GetRemoteGreenCardsUseCase {
+    override suspend fun get(events: List<EventGroupEntity>): RemoteGreenCardsResult {
+        return result
+    }
+}
+
+fun fakeSyncRemoteGreenCardUseCase(
+    result: SyncRemoteGreenCardsResult = SyncRemoteGreenCardsResult.Success,
+) = object: SyncRemoteGreenCardsUseCase {
+    override suspend fun execute(remoteGreenCards: RemoteGreenCards): SyncRemoteGreenCardsResult {
+        return result
+    }
+}
+
 
 
