@@ -27,7 +27,7 @@
     <string name="dialog_error_message">Because of a technical error.</string>
     <string name="dialog_error_message_with_error_code">Because of a technical error (%1$s).</string>
     <string name="digid_login_cancelled_title">Login was cancelled</string>
-    <string name="digid_login_cancelled_description">Want to retrieve your vaccination details? Log in again with DigiD.</string>
+    <string name="digid_login_cancelled_description">Want to retrieve your vaccination details? Login again with DigiD.</string>
     <string name="ok">OK</string>
     <string name="settings">Settings</string>
     <string name="about_this_app">About this app</string>
