@@ -19,7 +19,7 @@ abstract class BaseFragment(contentLayoutId: Int) : Fragment(contentLayoutId) {
     abstract fun getFlow(): Flow
 
     fun presentError(errorResult: ErrorResult, customerErrorDescription: String? = null) {
-        if (errorResult is NetworkRequestResult.Failed.NetworkError<*>) {
+        if (errorResult is NetworkRequestResult.Failed.NetworkError) {
             dialogUtil.presentDialog(
                 context = requireContext(),
                 title = R.string.dialog_no_internet_connection_title,
@@ -45,7 +45,7 @@ abstract class BaseFragment(contentLayoutId: Int) : Fragment(contentLayoutId) {
                 )
 
                 val errorDescription = customerErrorDescription
-                    ?: if (errorResult is NetworkRequestResult.Failed.CoronaCheckHttpError<*>) {
+                    ?: if (errorResult is NetworkRequestResult.Failed.CoronaCheckHttpError) {
                         getString(
                             R.string.error_something_went_wrong_http_error_description,
                             errorCodeString
@@ -73,7 +73,7 @@ abstract class BaseFragment(contentLayoutId: Int) : Fragment(contentLayoutId) {
     }
 
     private fun is429HttpError(errorResult: ErrorResult) =
-        errorResult is NetworkRequestResult.Failed.CoronaCheckHttpError<*> && errorResult.e.code() == 429
+        errorResult is NetworkRequestResult.Failed.CoronaCheckHttpError && errorResult.e.code() == 429
 
     fun presentError(data: ErrorResultFragmentData) {
         findNavControllerSafety()?.navigate(R.id.action_error_result, ErrorResultFragment.getBundle(data))

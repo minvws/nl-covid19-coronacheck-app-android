@@ -27,7 +27,7 @@ class ErrorCodeStringFactoryImpl: ErrorCodeStringFactory {
             stringBuilder.append(" ${flow.code}")
             stringBuilder.append(" ${errorResults.first().getCurrentStep().code}")
 
-            if (it is NetworkRequestResult.Failed.ProviderHttpError<*>) {
+            if (it is NetworkRequestResult.Failed.ProviderHttpError) {
                 stringBuilder.append(" ${it.provider}")
             } else {
                 stringBuilder.append(" 000")
@@ -49,7 +49,7 @@ class ErrorCodeStringFactoryImpl: ErrorCodeStringFactory {
 
             stringBuilder.append(" $exceptionErrorCode")
 
-            if (it is NetworkRequestResult.Failed.CoronaCheckWithErrorResponseHttpError<*>) {
+            if (it is NetworkRequestResult.Failed.CoronaCheckWithErrorResponseHttpError) {
                 stringBuilder.append(" ${it.errorResponse.code}")
             }
 
