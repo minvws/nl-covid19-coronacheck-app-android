@@ -29,7 +29,6 @@ import nl.rijksoverheid.ctr.shared.models.OpenIdErrorResult.ServerBusy
 class DigiDViewModel(private val authenticationRepository: AuthenticationRepository) : ViewModel() {
 
     private companion object {
-        const val GENERIC_ERROR_TYPE = 0
         const val USER_CANCELLED_FLOW_CODE = 1
         const val NETWORK_ERROR = 3
         const val LOGIN_REQUIRED_ERROR = "login_required"
@@ -85,7 +84,7 @@ class DigiDViewModel(private val authenticationRepository: AuthenticationReposit
         OpenIdAuthorizationException(type = authError.type, code = authError.code)
 
     private fun isNetworkError(authError: AuthorizationException) =
-        authError.type == GENERIC_ERROR_TYPE && authError.code == NETWORK_ERROR
+        authError.type == AuthorizationException.TYPE_GENERAL_ERROR && authError.code == NETWORK_ERROR
 
     private fun getNetworkErrorResult(authError: AuthorizationException) =
         DigidResult.Failed(
@@ -101,7 +100,7 @@ class DigiDViewModel(private val authenticationRepository: AuthenticationReposit
         )
 
     private fun isUserCancelled(authError: AuthorizationException) =
-        authError.type == GENERIC_ERROR_TYPE && authError.code == USER_CANCELLED_FLOW_CODE
+        authError.type == AuthorizationException.TYPE_GENERAL_ERROR && authError.code == USER_CANCELLED_FLOW_CODE
 
     private suspend fun postAuthResponseResult(
         authService: AuthorizationService,
