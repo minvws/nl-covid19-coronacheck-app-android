@@ -4,9 +4,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
+import nl.rijksoverheid.ctr.holder.HolderStep
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
+import nl.rijksoverheid.ctr.shared.models.AppErrorResult
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 
@@ -45,7 +47,7 @@ class HolderDatabaseSyncerImpl(
                 val events = holderDatabase.eventGroupDao().getAll()
 
                 // Sync with remote
-                if (syncWithRemote) {
+                if (syncWithRemote && events.isNotEmpty()) {
                     val remoteGreenCardsResult = getRemoteGreenCardsUseCase.get(
                         events = events
                     )
@@ -62,14 +64,18 @@ class HolderDatabaseSyncerImpl(
                             }
 
                             // Insert green cards in database
-                            try {
-                                syncRemoteGreenCardsUseCase.execute(
-                                    remoteGreenCards = remoteGreenCardsResult.remoteGreenCards
-                                )
-                            } catch (exception: Exception) {
-                                // creating new credentials failed but previous cards and credentials not deleted
+                            val result = syncRemoteGreenCardsUseCase.execute(
+                                remoteGreenCards = remoteGreenCardsResult.remoteGreenCards
+                            )
+
+                            when (result) {
+                                is SyncRemoteGreenCardsResult.Success -> {
+                                    return@withContext DatabaseSyncerResult.Success
+                                }
+                                is SyncRemoteGreenCardsResult.Failed -> {
+                                    return@withContext DatabaseSyncerResult.Failed.Error(result.errorResult)
+                                }
                             }
-                            DatabaseSyncerResult.Success
                         }
                         is RemoteGreenCardsResult.Error -> {
                             val greenCards = holderDatabase.greenCardDao().getAll()
