@@ -29,6 +29,10 @@ sealed class NetworkRequestResult<R> {
             override fun getException(): Exception {
                 return e
             }
+
+            fun getCode(): Int {
+                return errorResponse.code
+            }
         }
 
         data class NetworkError<R>(override val step: Step, override val e: Exception): Failed<R>(step, e) {
