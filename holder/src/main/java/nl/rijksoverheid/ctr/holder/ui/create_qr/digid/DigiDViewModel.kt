@@ -81,8 +81,8 @@ class DigiDViewModel(private val authenticationRepository: AuthenticationReposit
         digidResultLiveData.postValue(Event(digidResult))
     }
 
-    private fun isUserCancelled(authError: AuthorizationException) =
-        authError.type == GENERIC_ERROR_TYPE && authError.code == USER_CANCELLED_FLOW_CODE
+    private fun mapToOpenIdException(authError: AuthorizationException) =
+        OpenIdAuthorizationException(type = authError.type, code = authError.code)
 
     private fun isNetworkError(authError: AuthorizationException) =
         authError.type == GENERIC_ERROR_TYPE && authError.code == NETWORK_ERROR
@@ -100,8 +100,8 @@ class DigiDViewModel(private val authenticationRepository: AuthenticationReposit
             ServerBusy(DigidNetworkRequest, mapToOpenIdException(authError))
         )
 
-    private fun mapToOpenIdException(authError: AuthorizationException) =
-        OpenIdAuthorizationException(type = authError.type, code = authError.code)
+    private fun isUserCancelled(authError: AuthorizationException) =
+        authError.type == GENERIC_ERROR_TYPE && authError.code == USER_CANCELLED_FLOW_CODE
 
     private suspend fun postResponseResult(
         authService: AuthorizationService,
