@@ -18,7 +18,7 @@
     <string name="privacy_policy_title">Acceptable use policy</string>
     <string name="privacy_policy_description"><![CDATA[The <a href="https://coronacheck.nl/en/gebruikersvoorwaarden-in-app">acceptable use policy</a> details how CoronaCheck Scanner uses your data and what your rights are.]]></string>
     <string name="privacy_policy_1"><![CDATA[Location data are <b>not saved or used</b>]]></string>
-    <string name="privacy_policy_2"><![CDATA[You\'re only allowed to use this data to <b>check the valid certificate</b>]]></string>
+    <string name="privacy_policy_2"><![CDATA[You\'re only allowed to use this data to <b>check the certificate</b>]]></string>
     <string name="privacy_policy_3"><![CDATA[The visitor\'s data is <b>not centrally stored anywhere</b>]]></string>
     <string name="privacy_policy_checkbox_text">I\'ve read and agree to the acceptable use policy.</string>
     <string name="dialog_error_title">Technical error</string>
@@ -115,6 +115,8 @@
     <string name="about_this_app_read_more">Read more:</string>
     <string name="about_this_app_accessibility">Accessibility</string>
     <string name="url_accessibility">https://coronacheck.nl/en/accessibility-in-app</string>
+    <string name="about_this_app_colofon">Colophon</string>
+    <string name="about_this_app_colofon_url">https://coronacheck.nl/en/colofon-in-app.html</string>
     <string name="accessibility_flash_on">Turn the flashlight on.</string>
     <string name="accessibility_flash_off">Turn the flashlight off.</string>
     <string name="new_in_app_subtitle">New in the app</string>
