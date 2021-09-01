@@ -397,7 +397,7 @@
     <string name="error_get_events_missing_events_dialog_description">Due to increased traffic or an outage, some of your details may be missing. Are you missing a vaccination? Please come back later and retrieve your details again.</string>
     <string name="error_get_events_no_events_title">Sorry, it was not succesful</string>
     <string name="error_access_tokens_no_bsn_title">No social security number found</string>
-    <string name="error_access_tokens_no_bsn_description">The healthcare provider who vaccinated you can help you further. Contact them and let them know the CoronaCheck app couldn’t find a social security number.</string>
+    <string name="error_access_tokens_no_bsn_description">The healthcare provider who vaccinated or tested you can help you further. Contact them and let them know the CoronaCheck app couldn’t find a social security number.</string>
     <string name="error_access_tokens_session_expired_title">Your session has expired</string>
     <string name="error_access_tokens_Session_expired_description">You’ve waited too long. For safety reasons, you were logged out. Login again with your DigiD to retrieve your details.</string>
 </resources>

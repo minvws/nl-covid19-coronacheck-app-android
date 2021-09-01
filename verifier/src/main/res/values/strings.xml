@@ -54,7 +54,7 @@
     <string name="about_this_app_description">CoronaCheck Scanner is ontwikkeld zodat bepaalde locaties en activiteiten hun deuren kunnen openen. Denk bijvoorbeeld aan voetbalwedstrijden en concerten. Bezoekers maken een coronabewijs van een vaccinatie, een negatieve testuitslag of als zij corona hebben gehad en hersteld zijn. Met behulp van deze app krijgen alleen bezoekers met zo’n coronabewijs toegang. Zo kunnen steeds meer plekken bezocht worden.</string>
     <string name="scan_instructions">Zo werkt scannen</string>
     <string name="scan_instructions_1_title">Scan de QR-code</string>
-    <string name="scan_instructions_1_description">De bezoeker laat een QR-code zien in de CoronaCheck-app of op papier. Een toerist kan een QR-code in een buitenlandse app of op papier tonen.</string>
+    <string name="scan_instructions_1_description">Vraag de bezoeker naar een QR-code in de CoronaCheck-app of op papier. Een toerist kan een QR-code in een buitenlandse app of op papier tonen. Scan de QR-code met de camera van je telefoon.</string>
     <string name="scan_instructions_2_title">Controleer altijd de gegevens</string>
     <string name="scan_instructions_2_description">Groen scherm? Controleer of de gegevens op jouw scherm hetzelfde zijn als die op het identiteitsbewijs van de bezoeker. Zo weet je zeker dat de QR-code van de bezoeker is.</string>
     <string name="scan_instructions_3_image">Soms vallen gegevens weg</string>

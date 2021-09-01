@@ -397,7 +397,7 @@
     <string name="error_get_events_missing_events_dialog_description">Door een storing of drukte zijn mogelijk niet al jouw gegevens opgehaald. Mist er een vaccinatie? Kom later terug en haal opnieuw je gegevens op.</string>
     <string name="error_get_events_no_events_title">Sorry, het is niet gelukt</string>
     <string name="error_access_tokens_no_bsn_title">Geen BSN gevonden</string>
-    <string name="error_access_tokens_no_bsn_description">De zorgverlener waar je bent gevaccineerd kan je verder helpen. Neem contact op en geef door dat de CoronaCheck-app geen BSN gevonden heeft.</string>
+    <string name="error_access_tokens_no_bsn_description">De zorgverlener waar je gevaccineerd of getest bent kan je verder helpen. Neem contact op en geef door dat de CoronaCheck-app geen BSN gevonden heeft.</string>
     <string name="error_access_tokens_session_expired_title">Je sessie is gestopt</string>
     <string name="error_access_tokens_Session_expired_description">Je hebt te lang gewacht. Voor de veiligheid ben je daarom uitgelogd. Log opnieuw in met DigiD om je gegevens op te halen.</string>
 </resources>

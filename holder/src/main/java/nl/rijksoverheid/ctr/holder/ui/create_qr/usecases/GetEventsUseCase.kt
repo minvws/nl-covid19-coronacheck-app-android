@@ -140,7 +140,7 @@ sealed class EventsResult {
             val accessTokenCallError = errorResults.find { it.getCurrentStep() == HolderStep.AccessTokensNetworkRequest }
             accessTokenCallError?.let {
                 return if (it is NetworkRequestResult.Failed.CoronaCheckWithErrorResponseHttpError<*>) {
-                    it.getCode() == 99708
+                    return hasErrorCode(it, 99708)
                 } else {
                     false
                 }
@@ -151,13 +151,17 @@ sealed class EventsResult {
         fun accessTokenNoBsn(): Boolean {
             val accessTokenCallError = errorResults.find { it.getCurrentStep() == HolderStep.AccessTokensNetworkRequest }
             accessTokenCallError?.let {
-                return if (it is NetworkRequestResult.Failed.CoronaCheckWithErrorResponseHttpError<*>) {
-                    it.getCode() == 99782
-                } else {
-                    false
-                }
+                return hasErrorCode(it, 99782)
             }
             return false
+        }
+
+        private fun hasErrorCode(errorResult: ErrorResult, expectedErrorCode: Int): Boolean {
+            return if (errorResult is NetworkRequestResult.Failed.CoronaCheckWithErrorResponseHttpError<*>) {
+                errorResult.getCode() == expectedErrorCode
+            } else {
+                false
+            }
         }
 
         fun unomiOrEventErrors(): Boolean {
