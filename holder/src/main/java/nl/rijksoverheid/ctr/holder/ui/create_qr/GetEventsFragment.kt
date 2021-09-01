@@ -115,10 +115,24 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                 is EventsResult.Error -> {
                     when {
                         it.accessTokenSessionExpiredError() -> {
-
+                            presentError(
+                                data = ErrorResultFragmentData(
+                                    title = getString(R.string.error_access_tokens_session_expired_title),
+                                    description = getString(R.string.error_access_tokens_Session_expired_description),
+                                    buttonTitle = getString(R.string.back_to_overview),
+                                    buttonDestinationId = R.id.action_my_overview
+                                )
+                            )
                         }
                         it.accessTokenNoBsn() -> {
-
+                            presentError(
+                                data = ErrorResultFragmentData(
+                                    title = getString(R.string.error_access_tokens_no_bsn_title),
+                                    description = getString(R.string.error_access_tokens_no_bsn_description),
+                                    buttonTitle = getString(R.string.back_to_overview),
+                                    buttonDestinationId = R.id.action_my_overview
+                                )
+                            )
                         }
                         it.unomiOrEventErrors() -> {
                             presentError(it.errorResults.first(), getString(R.string.error_get_events_http_error_description, getErrorCodes(it.errorResults)))
