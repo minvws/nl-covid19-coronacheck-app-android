@@ -26,6 +26,8 @@
     <string name="dialog_error_title">Sorry, something went wrong</string>
     <string name="dialog_error_message">Because of a technical error.</string>
     <string name="dialog_error_message_with_error_code">Because of a technical error (%1$s).</string>
+    <string name="digid_login_cancelled_title">Login was cancelled</string>
+    <string name="digid_login_cancelled_description">Want to retrieve your vaccination details? Log in again with DigiD.</string>
     <string name="ok">OK</string>
     <string name="settings">Settings</string>
     <string name="about_this_app">About this app</string>
@@ -389,4 +391,9 @@
     <string name="error_too_busy_title">Sorry, it is really busy</string>
     <string name="error_too_busy_description">Please try again later.</string>
     <string name="error_get_events_http_error_description"><![CDATA[Something is going wrong while creating your certificate. Could you please try again later?<br/><br/><b>Error code:</b><br/>%1s]]></string>
+    <string name="error_get_events_missing_events_dialog_title_vaccines">Are these all your vaccinations?</string>
+    <string name="error_get_events_missing_events_dialog_title_testresults">"Are these all your test certificates? "</string>
+    <string name="error_get_events_missing_events_dialog_title_recoveries">Are these all your recovery certificates?</string>
+    <string name="error_get_events_missing_events_dialog_description">Due to increased traffic or an outage, some of your details may be missing. Are you missing a vaccination? Please come back later and retrieve your details again.</string>
+    <string name="error_get_events_no_events_title">Sorry, it was not succesful</string>
 </resources>
