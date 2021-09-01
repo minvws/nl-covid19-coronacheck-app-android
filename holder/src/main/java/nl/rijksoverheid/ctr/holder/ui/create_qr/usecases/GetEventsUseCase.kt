@@ -139,11 +139,7 @@ sealed class EventsResult {
         fun accessTokenSessionExpiredError(): Boolean {
             val accessTokenCallError = errorResults.find { it.getCurrentStep() == HolderStep.AccessTokensNetworkRequest }
             accessTokenCallError?.let {
-                return if (it is NetworkRequestResult.Failed.CoronaCheckWithErrorResponseHttpError<*>) {
-                    return hasErrorCode(it, 99708)
-                } else {
-                    false
-                }
+                return hasErrorCode(it, 99708)
             }
             return false
         }
