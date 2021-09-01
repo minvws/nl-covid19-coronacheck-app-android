@@ -61,8 +61,8 @@ class DigiDViewModel(private val authenticationRepository: AuthenticationReposit
                 val authResponse = AuthorizationResponse.fromIntent(intent)
                 val authError = AuthorizationException.fromIntent(intent)
                 when {
-                    authError != null -> postErrorResult(authError)
-                    authResponse != null -> postResponseResult(authService, authResponse)
+                    authError != null -> postAuthErrorResult(authError)
+                    authResponse != null -> postAuthResponseResult(authService, authResponse)
                     else -> postAuthNullResult()
                 }
             } else {
@@ -71,7 +71,7 @@ class DigiDViewModel(private val authenticationRepository: AuthenticationReposit
         }
     }
 
-    private fun postErrorResult(authError: AuthorizationException) {
+    private fun postAuthErrorResult(authError: AuthorizationException) {
         val digidResult = when {
             isUserCancelled(authError) -> DigidResult.Cancelled
             isNetworkError(authError) -> getNetworkErrorResult(authError)
@@ -103,7 +103,7 @@ class DigiDViewModel(private val authenticationRepository: AuthenticationReposit
     private fun isUserCancelled(authError: AuthorizationException) =
         authError.type == GENERIC_ERROR_TYPE && authError.code == USER_CANCELLED_FLOW_CODE
 
-    private suspend fun postResponseResult(
+    private suspend fun postAuthResponseResult(
         authService: AuthorizationService,
         authResponse: AuthorizationResponse
     ) {
@@ -118,7 +118,7 @@ class DigiDViewModel(private val authenticationRepository: AuthenticationReposit
 
     private fun postExceptionResult(e: Exception) {
         if (e is AuthorizationException) {
-            postErrorResult(e)
+            postAuthErrorResult(e)
         } else {
             digidResultLiveData.postValue(
                 Event(DigidResult.Failed(Error(DigidNetworkRequest, e)))
