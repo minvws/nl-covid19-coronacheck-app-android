@@ -75,6 +75,7 @@
         app:attachToScrollView="@id/scroll"
         app:buttonText="Button"
         app:layout_constrainedWidth="true"
+        android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
