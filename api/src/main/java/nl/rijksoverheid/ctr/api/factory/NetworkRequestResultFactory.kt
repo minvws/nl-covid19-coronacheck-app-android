@@ -1,12 +1,13 @@
 package nl.rijksoverheid.ctr.api.factory
 
-import nl.rijksoverheid.ctr.shared.models.CoronaCheckErrorResponse
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
+import nl.rijksoverheid.ctr.shared.models.CoronaCheckErrorResponse
 import nl.rijksoverheid.ctr.shared.models.Step
 import okhttp3.ResponseBody
 import retrofit2.Converter
 import retrofit2.HttpException
 import java.io.IOException
+import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
@@ -50,7 +51,7 @@ class NetworkRequestResultFactory(
             }
         } catch (e: IOException) {
             when {
-                e is SocketTimeoutException || e is UnknownHostException -> {
+                e is SocketTimeoutException || e is UnknownHostException || e is ConnectException -> {
                     NetworkRequestResult.Failed.NetworkError(step, e)
                 }
                 provider != null -> NetworkRequestResult.Failed.ProviderError(step, e, provider)

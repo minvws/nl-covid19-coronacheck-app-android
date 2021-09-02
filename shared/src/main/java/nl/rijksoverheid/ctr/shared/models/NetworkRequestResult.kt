@@ -52,7 +52,7 @@ sealed class NetworkRequestResult<out R> {
             }
 
             override fun getException(): Exception {
-                return e
+               return e
             }
         }
     }

@@ -98,7 +98,7 @@ class GetEventProvidersWithTokensUseCaseImplTest {
                 404, "".toResponseBody()
             )
         )
-        val httpError = NetworkRequestResult.Failed.CoronaCheckHttpError<RemoteUnomi>(
+        val httpError = NetworkRequestResult.Failed.CoronaCheckHttpError(
             HolderStep.UnomiNetworkRequest, httpException
         )
         val eventProviderRepository = fakeEventProviderRepository(
@@ -172,7 +172,7 @@ class GetEventProvidersWithTokensUseCaseImplTest {
                     eventProvider = eventProvider1,
                     token = tokenProvider1
                 ),
-                EventProviderWithTokenResult.Error(NetworkRequestResult.Failed.NetworkError<RemoteConfigProviders.EventProvider>(
+                EventProviderWithTokenResult.Error(NetworkRequestResult.Failed.NetworkError(
                     HolderStep.UnomiNetworkRequest, exception))),
             usecase.get(
                 eventProviders = listOf(eventProvider1, eventProvider2),
