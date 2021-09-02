@@ -81,14 +81,14 @@ class HolderDatabaseSyncerImpl(
                             val greenCards = holderDatabase.greenCardDao().getAll()
 
                             when (remoteGreenCardsResult.errorResult) {
-                                is NetworkRequestResult.Failed.NetworkError<*> -> {
+                                is NetworkRequestResult.Failed.NetworkError -> {
                                     DatabaseSyncerResult.Failed.NetworkError(
                                         errorResult = remoteGreenCardsResult.errorResult,
                                         hasGreenCardsWithoutCredentials = greenCards
                                             .any { greenCardUtil.hasNoActiveCredentials(it) }
                                     )
                                 }
-                                is NetworkRequestResult.Failed.CoronaCheckHttpError<*> -> {
+                                is NetworkRequestResult.Failed.CoronaCheckHttpError -> {
                                     DatabaseSyncerResult.Failed.ServerError(
                                         errorResult = remoteGreenCardsResult.errorResult
                                     )

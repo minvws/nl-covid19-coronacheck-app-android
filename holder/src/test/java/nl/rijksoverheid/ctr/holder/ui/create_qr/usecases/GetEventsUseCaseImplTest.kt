@@ -21,7 +21,7 @@ class GetEventsUseCaseImplTest {
     private val getEventProvidersWithTokensUseCase: GetEventProvidersWithTokensUseCase =  mockk()
     private val getRemoteEventsUseCase: GetRemoteEventsUseCase =  mockk()
 
-    private val eventsError = mockk<NetworkRequestResult.Failed.Error<*>>()
+    private val eventsError = mockk<NetworkRequestResult.Failed.Error>()
     private val jwt = "jwt"
     private val originType = OriginType.Test
     private val targetProviderIds = listOf(RemoteConfigProviders.EventProvider.PROVIDER_IDENTIFIER_GGD)
@@ -45,7 +45,7 @@ class GetEventsUseCaseImplTest {
     @Test
     fun `given access tokens call returns error then getEvents returns EventsResultError`() = runBlocking {
         coEvery { configProvidersUseCase.eventProviders() } returns EventProvidersResult.Success(mockk())
-        coEvery { coronaCheckRepository.accessTokens("jwt") } returns mockk<NetworkRequestResult.Failed.Error<RemoteAccessTokens>>()
+        coEvery { coronaCheckRepository.accessTokens("jwt") } returns mockk<NetworkRequestResult.Failed.Error>()
 
         val eventsResult = getEvents()
 
@@ -159,13 +159,13 @@ class GetEventsUseCaseImplTest {
         )
     }
     
-    private fun httpError(): NetworkRequestResult.Failed<*> {
+    private fun httpError(): NetworkRequestResult.Failed {
         val httpException = HttpException(
             Response.error<String>(
                 404, "".toResponseBody()
             )
         )
-        return NetworkRequestResult.Failed.CoronaCheckHttpError<RemoteUnomi>(
+        return NetworkRequestResult.Failed.CoronaCheckHttpError(
             HolderStep.UnomiNetworkRequest, httpException
         )
     }

@@ -136,7 +136,7 @@ class HolderDatabaseSyncerImplTest {
             holderDatabase = holderDatabase,
             greenCardUtil = fakeGreenCardUtil(),
             getRemoteGreenCardsUseCase = fakeGetRemoteGreenCardUseCase(
-                result = RemoteGreenCardsResult.Error(NetworkRequestResult.Failed.NetworkError<Any>(Step(1), IllegalStateException("Some error")))),
+                result = RemoteGreenCardsResult.Error(NetworkRequestResult.Failed.NetworkError(Step(1), IllegalStateException("Some error")))),
             syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(
                 result = SyncRemoteGreenCardsResult.Success
             )
@@ -159,7 +159,7 @@ class HolderDatabaseSyncerImplTest {
             holderDatabase = holderDatabase,
             greenCardUtil = fakeGreenCardUtil(),
             getRemoteGreenCardsUseCase = fakeGetRemoteGreenCardUseCase(
-                result = RemoteGreenCardsResult.Error(NetworkRequestResult.Failed.CoronaCheckHttpError<Any>(Step(1), HttpException(
+                result = RemoteGreenCardsResult.Error(NetworkRequestResult.Failed.CoronaCheckHttpError(Step(1), HttpException(
                     Response.error<String>(
                         400, "".toResponseBody()
                     )
@@ -186,7 +186,7 @@ class HolderDatabaseSyncerImplTest {
             holderDatabase = holderDatabase,
             greenCardUtil = fakeGreenCardUtil(),
             getRemoteGreenCardsUseCase = fakeGetRemoteGreenCardUseCase(
-                result = RemoteGreenCardsResult.Error(NetworkRequestResult.Failed.Error<Any>(Step(1), IllegalStateException("Some error")))),
+                result = RemoteGreenCardsResult.Error(NetworkRequestResult.Failed.Error(Step(1), IllegalStateException("Some error")))),
             syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(
                 result = SyncRemoteGreenCardsResult.Success
             )

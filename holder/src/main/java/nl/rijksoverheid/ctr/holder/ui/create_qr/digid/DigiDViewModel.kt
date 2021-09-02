@@ -88,7 +88,7 @@ class DigiDViewModel(private val authenticationRepository: AuthenticationReposit
 
     private fun getNetworkErrorResult(authError: AuthorizationException) =
         DigidResult.Failed(
-            NetworkRequestResult.Failed.NetworkError<Unit>(DigidNetworkRequest, authError)
+            NetworkRequestResult.Failed.NetworkError(DigidNetworkRequest, authError)
         )
 
     private fun isServerBusy(authError: AuthorizationException) =

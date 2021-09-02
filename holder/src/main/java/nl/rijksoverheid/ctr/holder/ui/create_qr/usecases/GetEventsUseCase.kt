@@ -153,7 +153,7 @@ sealed class EventsResult {
         }
 
         private fun hasErrorCode(errorResult: ErrorResult, expectedErrorCode: Int): Boolean {
-            return if (errorResult is NetworkRequestResult.Failed.CoronaCheckWithErrorResponseHttpError<*>) {
+            return if (errorResult is NetworkRequestResult.Failed.CoronaCheckWithErrorResponseHttpError) {
                 errorResult.getCode() == expectedErrorCode
             } else {
                 false

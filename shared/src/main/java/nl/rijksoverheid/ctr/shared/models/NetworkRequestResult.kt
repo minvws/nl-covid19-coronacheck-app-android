@@ -4,12 +4,12 @@ import retrofit2.HttpException
 /**
  * Base class that should be returned from all repository methods that do network requests
  */
-sealed class NetworkRequestResult<R> {
+sealed class NetworkRequestResult<out R> {
 
     data class Success<R>(val response: R): NetworkRequestResult<R>()
 
-    sealed class Failed<R>(open val step: Step, open val e: Exception): NetworkRequestResult<R>(), ErrorResult {
-        open class CoronaCheckHttpError<R>(override val step: Step, override val e: HttpException): Failed<R>(step, e) {
+    sealed class Failed(open val step: Step, open val e: Exception): NetworkRequestResult<Nothing>(), ErrorResult {
+        open class CoronaCheckHttpError(override val step: Step, override val e: HttpException): Failed(step, e) {
             override fun getCurrentStep(): Step {
                 return step
             }
@@ -19,9 +19,9 @@ sealed class NetworkRequestResult<R> {
             }
         }
 
-        data class ProviderHttpError<R>(override val step: Step, override val e: HttpException, val provider: String): CoronaCheckHttpError<R>(step, e)
+        data class ProviderHttpError(override val step: Step, override val e: HttpException, val provider: String): CoronaCheckHttpError(step, e)
 
-        data class CoronaCheckWithErrorResponseHttpError<R>(override val step: Step, override val e: HttpException, val errorResponse: CoronaCheckErrorResponse): CoronaCheckHttpError<R>(step, e) {
+        data class CoronaCheckWithErrorResponseHttpError(override val step: Step, override val e: HttpException, val errorResponse: CoronaCheckErrorResponse): CoronaCheckHttpError(step, e) {
             override fun getCurrentStep(): Step {
                 return step
             }
@@ -35,7 +35,7 @@ sealed class NetworkRequestResult<R> {
             }
         }
 
-        data class NetworkError<R>(override val step: Step, override val e: Exception): Failed<R>(step, e) {
+        data class NetworkError(override val step: Step, override val e: Exception): Failed(step, e) {
             override fun getCurrentStep(): Step {
                 return step
             }
@@ -45,7 +45,7 @@ sealed class NetworkRequestResult<R> {
             }
         }
 
-        data class Error<R>(override val step: Step, override val e: Exception): Failed<R>(step, e) {
+        data class Error(override val step: Step, override val e: Exception): Failed(step, e) {
             override fun getCurrentStep(): Step {
                 return step
             }
