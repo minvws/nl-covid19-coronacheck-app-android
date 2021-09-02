@@ -32,6 +32,7 @@ class DigiDViewModel(private val authenticationRepository: AuthenticationReposit
         const val USER_CANCELLED_FLOW_CODE = 1
         const val NETWORK_ERROR = 3
         const val LOGIN_REQUIRED_ERROR = "login_required"
+        const val SAML_AUTHN_FAILED_ERROR = "saml_authn_failed"
     }
 
     val loading: LiveData<Event<Boolean>> = MutableLiveData()
@@ -99,7 +100,8 @@ class DigiDViewModel(private val authenticationRepository: AuthenticationReposit
         )
 
     private fun isUserCancelled(authError: AuthorizationException) =
-        authError.type == AuthorizationException.TYPE_GENERAL_ERROR && authError.code == USER_CANCELLED_FLOW_CODE
+        (authError.type == AuthorizationException.TYPE_GENERAL_ERROR && authError.code == USER_CANCELLED_FLOW_CODE)
+                || authError.error == SAML_AUTHN_FAILED_ERROR
 
     private suspend fun postAuthResponseResult(
         authService: AuthorizationService,
