@@ -89,7 +89,6 @@ object Accessibility {
      */
     fun focus(view: View): View {
         view.isFocusable = true
-        view.isFocusableInTouchMode = true
         view.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED)
         return view
     }
