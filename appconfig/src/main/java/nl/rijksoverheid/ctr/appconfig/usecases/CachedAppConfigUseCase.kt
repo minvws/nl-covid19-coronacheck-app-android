@@ -6,7 +6,6 @@ import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.VerifierConfig
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
 import nl.rijksoverheid.ctr.shared.ext.toObject
-import okio.BufferedSource
 import java.io.File
 
 /*
@@ -29,7 +28,7 @@ class CachedAppConfigUseCaseImpl constructor(
     private val isVerifierApp: Boolean,
 ) : CachedAppConfigUseCase {
     private val configFile = File(filesDirPath, "config.json")
-    
+
     private val defaultConfig = if (isVerifierApp) {
         VerifierConfig.default()
     } else {
@@ -49,13 +48,15 @@ class CachedAppConfigUseCaseImpl constructor(
     }
 
     override fun getCachedAppConfig(): AppConfig {
-
-        if (!configFile.exists()) {
-            return defaultConfig
-        }
-
         return try {
-            appConfigStorageManager.getFileAsBufferedSource(configFile)?.readUtf8()?.toObject(moshi) ?: defaultConfig
+            val config = if (isVerifierApp) {
+                appConfigStorageManager.getFileAsBufferedSource(configFile)?.readUtf8()
+                    ?.toObject(moshi) as? VerifierConfig
+            } else {
+                appConfigStorageManager.getFileAsBufferedSource(configFile)?.readUtf8()
+                    ?.toObject(moshi) as? HolderConfig
+            }
+            return config ?: defaultConfig
         } catch (exc: Exception) {
             defaultConfig
         }
