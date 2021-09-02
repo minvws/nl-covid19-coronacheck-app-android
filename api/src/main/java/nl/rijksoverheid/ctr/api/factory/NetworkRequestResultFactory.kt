@@ -1,7 +1,7 @@
 package nl.rijksoverheid.ctr.api.factory
 
-import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import nl.rijksoverheid.ctr.shared.models.CoronaCheckErrorResponse
+import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import nl.rijksoverheid.ctr.shared.models.Step
 import okhttp3.ResponseBody
 import retrofit2.Converter
@@ -49,10 +49,11 @@ class NetworkRequestResultFactory(
                 return NetworkRequestResult.Failed.CoronaCheckHttpError(step, httpException)
             }
         } catch (e: IOException) {
-            when (e) {
-                is SocketTimeoutException, is UnknownHostException -> {
+            when {
+                e is SocketTimeoutException || e is UnknownHostException -> {
                     NetworkRequestResult.Failed.NetworkError(step, e)
                 }
+                provider != null -> NetworkRequestResult.Failed.ProviderError(step, e, provider)
                 else -> NetworkRequestResult.Failed.Error(step, e)
             }
         } catch (e: Exception) {
