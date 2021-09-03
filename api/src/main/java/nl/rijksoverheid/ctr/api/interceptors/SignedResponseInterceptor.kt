@@ -95,8 +95,6 @@ class SignedResponseInterceptor(
             }
         } catch (e: Exception) {
             return if (response.isSuccessful) {
-                // When something is wrong in parsing a successful request, handle it like a 500
-                // in the UI (this should never happen)
                 throw CharacterCodingException()
             } else {
                 // When something is wrong in parsing a unsuccessful request, cascade down the
