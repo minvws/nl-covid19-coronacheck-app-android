@@ -20,6 +20,7 @@ sealed class NetworkRequestResult<out R> {
         }
 
         data class ProviderHttpError(override val step: Step, override val e: HttpException, val provider: String): CoronaCheckHttpError(step, e)
+        data class ProviderError(override val step: Step, override val e: Exception, val provider: String): Error(step, e)
 
         data class CoronaCheckWithErrorResponseHttpError(override val step: Step, override val e: HttpException, val errorResponse: CoronaCheckErrorResponse): CoronaCheckHttpError(step, e) {
             override fun getCurrentStep(): Step {
@@ -45,7 +46,7 @@ sealed class NetworkRequestResult<out R> {
             }
         }
 
-        data class Error(override val step: Step, override val e: Exception): Failed(step, e) {
+        open class Error(override val step: Step, override val e: Exception): Failed(step, e) {
             override fun getCurrentStep(): Step {
                 return step
             }

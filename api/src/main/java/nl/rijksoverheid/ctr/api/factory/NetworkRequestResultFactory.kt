@@ -50,10 +50,11 @@ class NetworkRequestResultFactory(
                 return NetworkRequestResult.Failed.CoronaCheckHttpError(step, httpException)
             }
         } catch (e: IOException) {
-            when (e) {
-                is SocketTimeoutException, is UnknownHostException, is ConnectException -> {
+            when {
+                e is SocketTimeoutException || e is UnknownHostException || e is ConnectException -> {
                     NetworkRequestResult.Failed.NetworkError(step, e)
                 }
+                provider != null -> NetworkRequestResult.Failed.ProviderError(step, e, provider)
                 else -> NetworkRequestResult.Failed.Error(step, e)
             }
         } catch (e: Exception) {

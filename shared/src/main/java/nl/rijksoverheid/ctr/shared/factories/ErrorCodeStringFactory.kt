@@ -10,6 +10,7 @@ import nl.rijksoverheid.ctr.shared.models.Flow
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import retrofit2.HttpException
 import java.lang.StringBuilder
+import java.nio.charset.CharacterCodingException
 import javax.net.ssl.*
 
 /**
@@ -29,6 +30,8 @@ class ErrorCodeStringFactoryImpl: ErrorCodeStringFactory {
 
             if (it is NetworkRequestResult.Failed.ProviderHttpError) {
                 stringBuilder.append(" ${it.provider}")
+            } else if (it is NetworkRequestResult.Failed.ProviderError) {
+                stringBuilder.append(" ${it.provider}")
             } else {
                 stringBuilder.append(" 000")
             }
@@ -44,6 +47,7 @@ class ErrorCodeStringFactoryImpl: ErrorCodeStringFactory {
                 is SSLPeerUnverifiedException -> "013"
                 is SQLiteConstraintException -> "060"
                 is OpenIdAuthorizationException -> "07${exception.type}-${exception.code}"
+                is CharacterCodingException -> "020"
                 else -> "999"
             }
 
