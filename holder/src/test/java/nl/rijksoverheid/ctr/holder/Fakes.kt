@@ -207,6 +207,7 @@ fun fakeTestProviderRepository(
         override suspend fun remoteTestResult(
             url: String,
             token: String,
+            provider: String,
             verifierCode: String?,
             signingCertificateBytes: ByteArray
         ): NetworkRequestResult<SignedResponseWithModel<RemoteProtocol>> {
