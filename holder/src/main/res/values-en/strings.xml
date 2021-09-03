@@ -400,4 +400,5 @@
     <string name="error_access_tokens_no_bsn_description">The healthcare provider who vaccinated or tested you can help you further. Contact them and let them know the CoronaCheck app couldn’t find a social security number.</string>
     <string name="error_access_tokens_session_expired_title">Your session has expired</string>
     <string name="error_access_tokens_Session_expired_description">You’ve waited too long. For safety reasons, you were logged out. Login again with your DigiD to retrieve your details.</string>
+    <string name="error_access_tokens_session_expired_button">Begin opnieuw</string>
 </resources>

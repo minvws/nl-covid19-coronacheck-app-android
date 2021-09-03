@@ -35,7 +35,7 @@ abstract class BaseFragment(contentLayoutId: Int) : Fragment(contentLayoutId) {
                         title = getString(R.string.error_too_busy_title),
                         description = getString(R.string.error_too_busy_description),
                         buttonTitle = getString(R.string.back_to_overview),
-                        buttonDestinationId = R.id.action_my_overview
+                        buttonAction = ErrorResultFragmentData.ButtonAction.Destination(R.id.action_my_overview)
                     )
                 )
             } else {
@@ -65,7 +65,7 @@ abstract class BaseFragment(contentLayoutId: Int) : Fragment(contentLayoutId) {
                         urlButtonUrl = getString(R.string.error_something_went_wrong_outage_button_url)
                     ),
                     buttonTitle = getString(R.string.back_to_overview),
-                    buttonDestinationId = R.id.action_my_overview
+                    buttonAction = ErrorResultFragmentData.ButtonAction.Destination(R.id.action_my_overview)
                 )
                 presentError(data)
             }

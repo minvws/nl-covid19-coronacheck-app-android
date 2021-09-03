@@ -43,7 +43,14 @@ class ErrorResultFragment: Fragment(R.layout.fragment_error_result) {
         }
 
         binding.bottom.setButtonClick {
-            findNavControllerSafety()?.navigate(data.buttonDestinationId)
+            when (val buttonAction = data.buttonAction) {
+                is ErrorResultFragmentData.ButtonAction.Destination -> {
+                    findNavControllerSafety()?.navigate(buttonAction.buttonDestinationId)
+                }
+                is ErrorResultFragmentData.ButtonAction.PopBackStack -> {
+                    findNavControllerSafety()?.popBackStack()
+                }
+            }
         }
         binding.bottom.setButtonText(data.buttonTitle)
     }

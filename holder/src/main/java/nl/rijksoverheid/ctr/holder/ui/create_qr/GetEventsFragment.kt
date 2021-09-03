@@ -94,7 +94,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                                 title = getString(R.string.error_get_events_no_events_title),
                                 description = getString(R.string.error_get_events_http_error_description, getErrorCodes(it.errorResults)),
                                 buttonTitle = getString(R.string.back_to_overview),
-                                buttonDestinationId = R.id.action_my_overview,
+                                ErrorResultFragmentData.ButtonAction.Destination(R.id.action_my_overview),
                                 urlData = ErrorResultFragmentData.UrlData(
                                     urlButtonTitle = getString(R.string.error_something_went_wrong_outage_button),
                                     urlButtonUrl = getString(R.string.error_something_went_wrong_outage_button_url)
@@ -119,8 +119,8 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                                 data = ErrorResultFragmentData(
                                     title = getString(R.string.error_access_tokens_session_expired_title),
                                     description = getString(R.string.error_access_tokens_Session_expired_description),
-                                    buttonTitle = getString(R.string.back_to_overview),
-                                    buttonDestinationId = R.id.action_my_overview
+                                    buttonTitle = getString(R.string.error_access_tokens_session_expired_button),
+                                    ErrorResultFragmentData.ButtonAction.PopBackStack
                                 )
                             )
                         }
@@ -130,7 +130,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                                     title = getString(R.string.error_access_tokens_no_bsn_title),
                                     description = getString(R.string.error_access_tokens_no_bsn_description),
                                     buttonTitle = getString(R.string.back_to_overview),
-                                    buttonDestinationId = R.id.action_my_overview
+                                    buttonAction = ErrorResultFragmentData.ButtonAction.Destination(R.id.action_my_overview)
                                 )
                             )
                         }
