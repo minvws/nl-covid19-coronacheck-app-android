@@ -265,8 +265,7 @@
     <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_test"><![CDATA[Your test certificate isn\'t valid internationally. That\'s why only a Dutch certificate was made.<br/><br/>It\'s possible your type of test isn\'t accepted abroad. Get tested again.]]></string>
     <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_vaccination"><![CDATA[Your vaccination certificate isn\'t valid internationally. That\'s why only a Dutch certificate was made.<br/><br/>It\'s possible your type of vaccination isn\'t accepted abroad.]]></string>
     <string name="rule_engine_no_origin_title">We can\'t make a certificate</string>
-    <string name="rule_engine_no_test_origin_description"><![CDATA[At this moment, we can\'t make a certificate from your negative test certificate. This can have various causes.  Find more information on the <a href="https://www.coronacheck.nl//en/guidepost">Guidepost.</a>]]></string>
-    <string name="rule_engine_no_vaccination_origin_description"><![CDATA[At this moment, we can\'t make a certificate from your vaccination. This can have various causes. Find more information on the <a href="https://www.coronacheck.nl/en/guidepost"> Guidepost.</a>]]></string>
+    <string name="rule_engine_no_test_origin_description"><![CDATA[At this moment, we can\'t make a certificate from %1$s. This can have various causes.  Find more information on the <a href="https://www.coronacheck.nl//en/guidepost">Guidepost.</a>]]></string>
     <string name="back_to_overview">To my certificates</string>
     <string name="no_vaccinations_title">Vaccinations not available</string>
     <string name="no_vaccinations_description"><![CDATA[There is no available vaccination data. This can have various causes. Read the <a href="https://www.coronacheck.nl/en/guidepost">Guidepost</a> for more information.<br/><br/>Got vaccinated recently? It can take a few hours until your details are available. Try again later.]]></string>
@@ -300,7 +299,6 @@
     <string name="positive_test_title">Positive test result</string>
     <string name="get_recovery_title">Retrieve recovery details</string>
     <string name="get_recovery_description"><![CDATA[Have you had coronavirus? Then you can make a recovery certificate of the positive test result from the GGD. Log in with DigiD to retrieve your test result.<br/><br/>Your recovery certificate will be valid 11 days after the positive test result. You also need to be free of symptoms.]]></string>
-    <string name="rule_engine_no_recovery_origin_description"><![CDATA[At this moment, we can\'t make a certificate from your positive test result. This can have various causes. Find more information on the <a href="https://coronacheck.nl/en/guidepost">Guidepost.</a>]]></string>
     <string name="no_positive_test_result_title">No positive test result available</string>
     <string name="no_positive_test_result_description"><![CDATA[There is no positive test result available.<br/><br/>Got tested recently? It can take a few hours until your details are available. Try again later.<br/><br/>Have you been tested more than 180 days ago? Then your test result is no longer valid.]]></string>
     <string name="positive_test_not_valid_title">Positive test result is not valid</string>
@@ -309,7 +307,6 @@
     <string name="qr_code_type_recovery_description">The test proves I have had coronavirus</string>
     <string name="your_test_result_explanation_positive_test_result">positive (corona)</string>
     <string name="recovery_explanation_description"><![CDATA[The following details were retrieved at the test location:<br/><br/>Name: <b>%1$s</b><br/>Date of birth: <b>%2$s</b><br/>Test date: <b>%3$s</b><br/>Valid from: <b>%4$s</b><br/>Valid until: <b>%5$s</b><br/>Unique test identifier: <b>%6$s</b>]]></string>
-    <string name="rule_engine_no_positive_test_origin_description"><![CDATA[At this moment, we can\'t make a certificate from your positive test result. This can have various causes. Find more information on the <a href="https://www.coronacheck.nl/en/guidepost"> Guidepost.</a>]]></string>
     <string name="positive_test_no_longer_valid_title">Positive test result is not valid</string>
     <string name="positive_test_no_longer_valid_description"><![CDATA[Have you been tested more than 180 days ago? Then your test result is no longer valid. In this case, you cannot create a recovery certificate.]]></string>
     <string name="qr_explanation_description_eu_recovery"><![CDATA[Travelling outside of the Netherlands? Then more data is required. That\'s why the international QR code contains the following details:<br/><br/>Name:<br/><b>%1$s</b><br/><br/>Date of birth*:<br/><b>%2$s</b><br/><br/>Disease recovered from:<br/><b>%3$s</b><br/><br/>Test date*:<br/><b>%4$s</b><br/><br/>Member state of test:<br/><b>%5$s</b><br/><br/>Certificate issuer:<br/><b>%6$s</b><br/><br/>Valid from*:<br/><b>%7$s</b><br/><br/>Valid to*:<br/><b>%8$s</b><br/><br/>Unique certificate identifier:<br/><b>%9$s</b><br/><br/>*Date noted in day-month-year.]]></string>
