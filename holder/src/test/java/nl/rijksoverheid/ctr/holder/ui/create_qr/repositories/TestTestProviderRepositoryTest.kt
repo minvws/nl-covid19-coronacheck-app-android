@@ -100,6 +100,7 @@ class TestTestProviderRepositoryTest : AutoCloseKoinTest() {
             url = mockWebServer.url("/").toStr(),
             token = "",
             verifierCode = "",
+            provider = "",
             signingCertificateBytes = certificate.toByteArray()
         )
 
@@ -127,6 +128,7 @@ class TestTestProviderRepositoryTest : AutoCloseKoinTest() {
             url = mockWebServer.url("/").toStr(),
             token = "",
             verifierCode = "",
+            provider = "",
             signingCertificateBytes = certificate.toByteArray()
         )
 
@@ -152,6 +154,7 @@ class TestTestProviderRepositoryTest : AutoCloseKoinTest() {
                 url = mockWebServer.url("/").toStr(),
                 token = "",
                 verifierCode = "",
+                provider = "",
                 signingCertificateBytes = certificate.toByteArray()
             )
 
@@ -181,6 +184,7 @@ class TestTestProviderRepositoryTest : AutoCloseKoinTest() {
                 url = mockWebServer.url("/").toStr(),
                 token = "",
                 verifierCode = "",
+                provider = "",
                 signingCertificateBytes = certificate.toByteArray()
             )
 

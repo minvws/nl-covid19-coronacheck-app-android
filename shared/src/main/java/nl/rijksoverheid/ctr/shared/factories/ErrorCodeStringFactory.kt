@@ -26,7 +26,7 @@ class ErrorCodeStringFactoryImpl: ErrorCodeStringFactory {
             val stringBuilder = StringBuilder()
             stringBuilder.append("A")
             stringBuilder.append(" ${flow.code}")
-            stringBuilder.append(" ${errorResults.first().getCurrentStep().code}")
+            stringBuilder.append("${errorResults.first().getCurrentStep().code}")
 
             if (it is NetworkRequestResult.Failed.ProviderHttpError) {
                 stringBuilder.append(" ${it.provider}")
