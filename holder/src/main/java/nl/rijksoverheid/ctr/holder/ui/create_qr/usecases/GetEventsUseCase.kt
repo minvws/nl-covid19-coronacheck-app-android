@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
+import nl.rijksoverheid.ctr.holder.HolderStep
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
@@ -134,5 +135,34 @@ sealed class EventsResult {
 
     data class Error constructor(val errorResults: List<ErrorResult>): EventsResult() {
         constructor(errorResult: ErrorResult): this(listOf(errorResult))
+
+        fun accessTokenSessionExpiredError(): Boolean {
+            val accessTokenCallError = errorResults.find { it.getCurrentStep() == HolderStep.AccessTokensNetworkRequest }
+            accessTokenCallError?.let {
+                return hasErrorCode(it, 99708)
+            }
+            return false
+        }
+
+        fun accessTokenNoBsn(): Boolean {
+            val accessTokenCallError = errorResults.find { it.getCurrentStep() == HolderStep.AccessTokensNetworkRequest }
+            accessTokenCallError?.let {
+                return hasErrorCode(it, 99782)
+            }
+            return false
+        }
+
+        private fun hasErrorCode(errorResult: ErrorResult, expectedErrorCode: Int): Boolean {
+            return if (errorResult is NetworkRequestResult.Failed.CoronaCheckWithErrorResponseHttpError) {
+                errorResult.getCode() == expectedErrorCode
+            } else {
+                false
+            }
+        }
+
+        fun unomiOrEventErrors(): Boolean {
+            val unomiOrEventErrors = errorResults.find { it.getCurrentStep() == HolderStep.UnomiNetworkRequest || it.getCurrentStep() == HolderStep.EventNetworkRequest }
+            return unomiOrEventErrors != null
+        }
     }
 }

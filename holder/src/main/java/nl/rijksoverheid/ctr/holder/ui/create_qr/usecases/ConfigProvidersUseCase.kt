@@ -28,7 +28,7 @@ class ConfigProvidersUseCaseImpl(
     override suspend fun eventProviders(): EventProvidersResult {
         return when (val result = coronaCheckRepository.configProvidersResult()) {
             is NetworkRequestResult.Success<RemoteConfigProviders> -> EventProvidersResult.Success(result.response.eventProviders)
-            is NetworkRequestResult.Failed<*> -> EventProvidersResult.Error(result)
+            is NetworkRequestResult.Failed -> EventProvidersResult.Error(result)
         }
     }
 }

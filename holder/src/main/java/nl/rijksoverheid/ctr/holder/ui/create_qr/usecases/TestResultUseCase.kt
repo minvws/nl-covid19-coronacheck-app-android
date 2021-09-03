@@ -93,6 +93,10 @@ class TestResultUseCase(
                         }
                     }
 
+                    if (!remoteTestResult.hasEvents()) {
+                        return TestResult.NoNegativeTestResult
+                    }
+
                     return TestResult.NegativeTestResult(
                         remoteTestResult,
                         signedResponseWithTestResult

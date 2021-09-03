@@ -7,6 +7,7 @@ import okhttp3.ResponseBody
 import retrofit2.Converter
 import retrofit2.HttpException
 import java.io.IOException
+import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
@@ -49,10 +50,11 @@ class NetworkRequestResultFactory(
                 return NetworkRequestResult.Failed.CoronaCheckHttpError(step, httpException)
             }
         } catch (e: IOException) {
-            when (e) {
-                is SocketTimeoutException, is UnknownHostException -> {
+            when {
+                e is SocketTimeoutException || e is UnknownHostException || e is ConnectException -> {
                     NetworkRequestResult.Failed.NetworkError(step, e)
                 }
+                provider != null -> NetworkRequestResult.Failed.ProviderError(step, e, provider)
                 else -> NetworkRequestResult.Failed.Error(step, e)
             }
         } catch (e: Exception) {

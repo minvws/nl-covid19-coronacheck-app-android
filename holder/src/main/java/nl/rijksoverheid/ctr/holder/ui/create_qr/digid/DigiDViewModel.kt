@@ -88,11 +88,11 @@ class DigiDViewModel(private val authenticationRepository: AuthenticationReposit
 
     private fun getNetworkErrorResult(authError: AuthorizationException) =
         DigidResult.Failed(
-            NetworkRequestResult.Failed.NetworkError<Unit>(DigidNetworkRequest, authError)
+            NetworkRequestResult.Failed.NetworkError(DigidNetworkRequest, authError)
         )
 
     private fun isServerBusy(authError: AuthorizationException) =
-        authError.error == LOGIN_REQUIRED_ERROR || authError.error == SAML_AUTHN_FAILED_ERROR
+        authError.error == LOGIN_REQUIRED_ERROR
 
     private fun getServerBusyResult(authError: AuthorizationException) =
         DigidResult.Failed(
@@ -100,7 +100,8 @@ class DigiDViewModel(private val authenticationRepository: AuthenticationReposit
         )
 
     private fun isUserCancelled(authError: AuthorizationException) =
-        authError.type == AuthorizationException.TYPE_GENERAL_ERROR && authError.code == USER_CANCELLED_FLOW_CODE
+        (authError.type == AuthorizationException.TYPE_GENERAL_ERROR && authError.code == USER_CANCELLED_FLOW_CODE)
+                || authError.error == SAML_AUTHN_FAILED_ERROR
 
     private suspend fun postAuthResponseResult(
         authService: AuthorizationService,

@@ -21,6 +21,7 @@ import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.ErrorResultFragmentData
 import nl.rijksoverheid.ctr.shared.models.Flow
+import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -112,14 +113,33 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                     }
                 }
                 is EventsResult.Error -> {
-                    val eventCallResult = it.errorResults.find { errorResult ->
-                        val step = errorResult.getCurrentStep()
-                        step == HolderStep.UnomiNetworkRequest || step == HolderStep.EventNetworkRequest
-                    }
-                    if (eventCallResult != null) {
-                        presentError(eventCallResult, getString(R.string.error_get_events_http_error_description, getErrorCodes(it.errorResults)))
-                    } else {
-                        presentError(it.errorResults.first())
+                    when {
+                        it.accessTokenSessionExpiredError() -> {
+                            presentError(
+                                data = ErrorResultFragmentData(
+                                    title = getString(R.string.error_access_tokens_session_expired_title),
+                                    description = getString(R.string.error_access_tokens_Session_expired_description),
+                                    buttonTitle = getString(R.string.back_to_overview),
+                                    buttonDestinationId = R.id.action_my_overview
+                                )
+                            )
+                        }
+                        it.accessTokenNoBsn() -> {
+                            presentError(
+                                data = ErrorResultFragmentData(
+                                    title = getString(R.string.error_access_tokens_no_bsn_title),
+                                    description = getString(R.string.error_access_tokens_no_bsn_description),
+                                    buttonTitle = getString(R.string.back_to_overview),
+                                    buttonDestinationId = R.id.action_my_overview
+                                )
+                            )
+                        }
+                        it.unomiOrEventErrors() -> {
+                            presentError(it.errorResults.first(), getString(R.string.error_get_events_http_error_description, getErrorCodes(it.errorResults)))
+                        }
+                        else -> {
+                            presentError(it.errorResults.first())
+                        }
                     }
                 }
             }
