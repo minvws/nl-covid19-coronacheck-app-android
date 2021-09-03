@@ -23,7 +23,7 @@ class ErrorCodeStringFactoryImplTest {
             ))
         )
 
-        assertEquals(errorCodeString, "A 0 1 000 999")
+        assertEquals(errorCodeString, "A 01 000 999")
     }
 
     @Test
@@ -40,7 +40,7 @@ class ErrorCodeStringFactoryImplTest {
             ))
         )
 
-        assertEquals(errorCodeString, "A 0 1 000 400")
+        assertEquals(errorCodeString, "A 01 000 400")
     }
 
     @Test
@@ -58,7 +58,7 @@ class ErrorCodeStringFactoryImplTest {
             )
         ))
 
-        assertEquals(errorCodeString, "A 0 1 GGD 400")
+        assertEquals(errorCodeString, "A 01 GGD 400")
     }
 
     @Test
@@ -79,6 +79,6 @@ class ErrorCodeStringFactoryImplTest {
             )
         ))
 
-        assertEquals(errorCodeString, "A 0 1 000 400 2")
+        assertEquals(errorCodeString, "A 01 000 400 2")
     }
 }

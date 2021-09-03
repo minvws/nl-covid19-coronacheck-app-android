@@ -25,6 +25,7 @@ interface TestProviderRepository {
     suspend fun remoteTestResult(
         url: String,
         token: String,
+        provider: String,
         verifierCode: String?,
         signingCertificateBytes: ByteArray
     ): NetworkRequestResult<SignedResponseWithModel<RemoteProtocol>>
@@ -39,11 +40,13 @@ class TestProviderRepositoryImpl(
     override suspend fun remoteTestResult(
         url: String,
         token: String,
+        provider: String,
         verifierCode: String?,
         signingCertificateBytes: ByteArray
     ): NetworkRequestResult<SignedResponseWithModel<RemoteProtocol>> {
         return networkRequestResultFactory.createResult(
-            step = HolderStep.TestProvidersNetworkRequest,
+            step = HolderStep.TestResultNetworkRequest,
+            provider = provider,
             networkCall = {
                 testProviderApiClient.getTestResult(
                     url = url,

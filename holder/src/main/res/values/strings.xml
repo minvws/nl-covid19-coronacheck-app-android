@@ -265,8 +265,7 @@
     <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_test"><![CDATA[Jouw testbewijs is niet internationaal geldig. Je hebt wel een Nederlandse QR-code.<br/><br/>Dit kan bijvoorbeeld komen doordat een testbewijs in Nederland minder lang geldig is dan in het buitenland. Laat je opnieuw testen voor een bewijs dat ook geldig is in Nederland.]]></string>
     <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_vaccination"><![CDATA[Jouw vaccinatiebewijs is niet internationaal geldig. Je hebt wel een Nederlands bewijs.<br/><br/>Dit kan bijvoorbeeld komen doordat jouw type vaccin niet geaccepteerd wordt in het buitenland.]]></string>
     <string name="rule_engine_no_origin_title">We kunnen geen bewijs maken</string>
-    <string name="rule_engine_no_test_origin_description"><![CDATA[Op dit moment kunnen we geen bewijs maken van jouw negatieve testuitslag. Dit kan verschillende oorzaken hebben. Lees meer op de <a href="https://www.coronacheck.nl/wegwijzer">Wegwijzer.</a>]]></string>
-    <string name="rule_engine_no_vaccination_origin_description"><![CDATA[Op dit moment kunnen we geen bewijs maken van jouw vaccinatie. Dit kan verschillende oorzaken hebben. Lees meer op de <a href="https://www.coronacheck.nl/wegwijzer">Wegwijzer.</a>]]></string>
+    <string name="rule_engine_no_test_origin_description"><![CDATA[Op dit moment kunnen we geen bewijs maken van %1$s. Dit kan verschillende oorzaken hebben. Lees meer op de <a href="https://www.coronacheck.nl/wegwijzer">Wegwijzer.</a>]]></string>
     <string name="back_to_overview">Naar mijn bewijzen</string>
     <string name="no_vaccinations_title">Geen vaccinaties beschikbaar</string>
     <string name="no_vaccinations_description"><![CDATA[Er zijn geen gegevens over je vaccinatie(s) beschikbaar. Dit kan verschillende oorzaken hebben. Kijk voor meer informatie op de  <a href="https://www.coronacheck.nl/wegwijzer">Wegwijzer</a>.<br/><br/>Ben je kortgeleden gevaccineerd? Dan kan het even duren tot de gegevens beschikbaar zijn.]]></string>
@@ -300,7 +299,6 @@
     <string name="positive_test_title">Positieve testuitslag</string>
     <string name="get_recovery_title">Gegevens van je herstel ophalen</string>
     <string name="get_recovery_description"><![CDATA[Heb je corona gehad? Dan kun je van de positieve testuitslag van de GGD een herstelbewijs maken. Log in met DigiD om een testuitslag op te halen.<br/><br/>Je herstelbewijs wordt 11 dagen na de positieve testuitslag geldig. Je moet dan ook vrij zijn van klachten.]]></string>
-    <string name="rule_engine_no_recovery_origin_description"><![CDATA[Op dit moment kunnen we geen bewijs maken van jouw positieve testuitslag. Dit kan verschillende oorzaken hebben. Lees meer op de <a href="https://www.coronacheck.nl/wegwijzer">Wegwijzer.</a>]]></string>
     <string name="no_positive_test_result_title">Geen positieve testuitslag beschikbaar</string>
     <string name="no_positive_test_result_description"><![CDATA[Er is geen positieve testuitslag beschikbaar.<br/><br/>Ben je net getest? Het kan een paar uur duren voordat je jouw positieve testuitslag terugziet. Probeer het later nog eens.<br/><br/>Ben je langer dan 180 dagen geleden positief getest? Dan is de testuitslag niet meer geldig.]]></string>
     <string name="positive_test_not_valid_title">Positieve testuitslag niet meer geldig</string>
@@ -309,7 +307,6 @@
     <string name="qr_code_type_recovery_description">Uit de test blijkt dat ik corona heb gehad</string>
     <string name="your_test_result_explanation_positive_test_result">positief (corona)</string>
     <string name="recovery_explanation_description"><![CDATA[De volgende gegevens zijn opgehaald bij de testlocatie:<br\><br\>Naam: <b>%1$s</b><br/>Geboortedatum: <b>%2$s</b><br/><br/>Testdatum: <b>%3$s</b><br/>Geldig vanaf: <b>%4$s</b><br/>Geldig tot: <b>%5$s</b><br/>Uniek testnummer: <b>%6$s</b>]]></string>
-    <string name="rule_engine_no_positive_test_origin_description"><![CDATA[Op dit moment kunnen we geen bewijs maken van jouw positieve testuitslag. Dit kan verschillende oorzaken hebben. Lees meer op de <a href="https://www.coronacheck.nl/wegwijzer">Wegwijzer.</a>]]></string>
     <string name="positive_test_no_longer_valid_title">Positieve testuitslag niet meer geldig</string>
     <string name="positive_test_no_longer_valid_description"><![CDATA[Ben je langer dan 180 dagen geleden getest? Dan is je testuitslag niet meer geldig. Je kunt dan geen herstelbewijs maken.]]></string>
     <string name="qr_explanation_description_eu_recovery"><![CDATA[Reis je buiten Nederland? Dan zijn er meer gegevens nodig. Daarom staan in de internationale QR-code de volgende gegevens:<br/><br/>Naam / Name:<br/> <b>%1$s</b><br/><br/>Geboortedatum / Date of birth*:<br/><b>%2$s</b><br/><br/>Ziekte waarvan hersteld / Disease recovered from:<br/><b>%3$s</b><br/><br/>Testdatum / Test date*:<br/><b>%4$s</b><br/><br/>Getest in / Member state of test:<br/><b>%5$s</b><br/><br/>Afgever certificaat / Certificate issuer:<br/><b>%6$s</b><br/><br/>Geldig vanaf / Valid from*:<br/><b>%7$s</b><br/><br/>Geldig tot / Valid to*:<br/><b>%8$s</b><br/><br/>Uniek certificaatnummer / Unique certificate identifier:<br/><b>%9$s</b><br/><br/>*Datum weergegeven in dag-maand-jaar / Date noted in day-month-year.]]></string>
@@ -400,4 +397,5 @@
     <string name="error_access_tokens_no_bsn_description">De zorgverlener waar je gevaccineerd of getest bent kan je verder helpen. Neem contact op en geef door dat de CoronaCheck-app geen BSN gevonden heeft.</string>
     <string name="error_access_tokens_session_expired_title">Je sessie is gestopt</string>
     <string name="error_access_tokens_Session_expired_description">Je hebt te lang gewacht. Voor de veiligheid ben je daarom uitgelogd. Log opnieuw in met DigiD om je gegevens op te halen.</string>
+    <string name="error_access_tokens_session_expired_button">Begin opnieuw</string>
 </resources>

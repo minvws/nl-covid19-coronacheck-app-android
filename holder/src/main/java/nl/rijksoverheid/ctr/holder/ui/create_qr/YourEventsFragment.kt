@@ -11,7 +11,6 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import nl.rijksoverheid.ctr.design.ext.formatDateTime
@@ -43,6 +42,7 @@ import java.time.OffsetDateTime
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
+import java.util.*
 
 class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
 
@@ -124,7 +124,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                             YourEventsFragmentDirections.actionCouldNotCreateQr(
                                 toolbarTitle = args.toolbarTitle,
                                 title = getString(R.string.rule_engine_no_origin_title),
-                                description = getString(R.string.rule_engine_no_test_origin_description),
+                                description = getString(R.string.rule_engine_no_test_origin_description, args.toolbarTitle.toLowerCase(Locale.getDefault())),
                                 buttonTitle = getString(R.string.back_to_overview)
                             )
                         )

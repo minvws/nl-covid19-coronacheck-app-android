@@ -98,7 +98,7 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
                                 title = getString(R.string.error_get_events_no_events_title),
                                 description = getString(R.string.error_get_events_http_error_description, getErrorCodes(it.errorResults)),
                                 buttonTitle = getString(R.string.back_to_overview),
-                                buttonDestinationId = R.id.action_my_overview,
+                                ErrorResultFragmentData.ButtonAction.Destination(R.id.action_my_overview),
                                 urlData = ErrorResultFragmentData.UrlData(
                                     urlButtonTitle = getString(R.string.error_something_went_wrong_outage_button),
                                     urlButtonUrl = getString(R.string.error_something_went_wrong_outage_button_url)
@@ -122,7 +122,7 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
                             title = getString(R.string.error_something_went_wrong_title),
                             description = getString(R.string.error_get_events_http_error_description, getErrorCodes(it.errorResults)),
                             buttonTitle = getString(R.string.back_to_overview),
-                            buttonDestinationId = R.id.action_my_overview,
+                            ErrorResultFragmentData.ButtonAction.Destination(R.id.action_my_overview),
                             urlData = ErrorResultFragmentData.UrlData(
                                 urlButtonTitle = getString(R.string.error_something_went_wrong_outage_button),
                                 urlButtonUrl = getString(R.string.error_something_went_wrong_outage_button_url)

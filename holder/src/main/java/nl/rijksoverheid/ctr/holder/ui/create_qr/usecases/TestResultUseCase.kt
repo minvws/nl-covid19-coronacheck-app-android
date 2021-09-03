@@ -68,7 +68,8 @@ class TestResultUseCase(
                 url = testProvider.resultUrl,
                 token = token.removeWhitespace(),
                 verifierCode = verificationCode?.removeWhitespace(),
-                signingCertificateBytes = testProvider.publicKey
+                signingCertificateBytes = testProvider.publicKey,
+                provider = providerIdentifier
             )
 
             val signedResponseWithTestResult = when (signedResponseWithTestResultRequestResult) {
@@ -107,7 +108,7 @@ class TestResultUseCase(
         } catch (e: Exception) {
             return TestResult.Error(
                 errorResult = AppErrorResult(
-                    step = HolderStep.TestProvidersNetworkRequest,
+                    step = HolderStep.TestResultNetworkRequest,
                     e = e
                 )
             )
