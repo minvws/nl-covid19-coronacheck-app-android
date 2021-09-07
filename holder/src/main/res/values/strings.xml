@@ -20,7 +20,7 @@
     <string name="privacy_policy_2"><![CDATA[Er worden <b>geen locatiegegevens</b> gebruikt of bewaard]]></string>
     <string name="privacy_policy_checkbox_text">Ik heb de privacyverklaring gelezen en begrijp hoe de app met mijn gegevens omgaat.</string>
     <string name="my_overview">Mijn bewijzen</string>
-    <string name="my_overview_description">Laat de QR-code en je identiteitsbewijs zien bij de ingang van de locatie die je bezoekt.</string>
+    <string name="my_overview_description">Bezoek je een locatie binnen Nederland? Laat de QR-code en je identiteitsbewijs zien bij de ingang van de locatie die je bezoekt.</string>
     <string name="my_overview_description_eu"><![CDATA[Ben je in het buitenland of ga je de grens over? Gebruik dan altijd de internationale QR-code hieronder. Controleer voor vertrek welk bewijs je nodig hebt.<br/><br/><a href="https://www.nederlandwereldwijd.nl/reizen/reisadviezen">Is mijn bewijs geldig op mijn bestemming?</a>]]></string>
     <string name="my_overview_no_qr_description"><![CDATA[Je kan een QR-code maken als je bent gevaccineerd, als je corona hebt gehad of als je bent getest bij een <a href="https://coronacheck.nl/nl/testafspraak-in-app">aangesloten testlocatie</a>.]]></string>
     <string name="dialog_error_title">Sorry, er ging iets mis</string>
@@ -34,7 +34,7 @@
     <string name="frequently_asked_questions">Meestgestelde vragen</string>
     <string name="privacy_statement">Privacyverklaring</string>
     <string name="terms_of_use">Gebruikersvoorwaarden</string>
-    <string name="my_overview_test_result_title">Mijn QR-code</string>
+    <string name="my_overview_test_result_title">Mijn bewijs</string>
     <string name="my_overview_test_result_international_title">Internationale QR-code</string>
     <string name="my_overview_test_result_validity">Geldig tot %1$s</string>
     <string name="accessibility_label_my_overview_test_result_personal_data">Jouw persoonsgegevens: %1$s %2$s %3$s %4$s</string>
@@ -83,7 +83,7 @@
     <string name="commercial_test_scanner_custom_title">QR-code scannen</string>
     <string name="commercial_test_scanner_custom_message">Richt je telefoon op de QR-code die je van de testlocatie hebt gekregen.</string>
     <string name="your_negative_test_results_title">Controleer je testuitslag</string>
-    <string name="your_negative_test_results_description"><![CDATA[Deze testuitslag is opgehaald bij de testlocatie.<br\><br\>Kloppen de gegevens hieronder? Dan kun je van de negatieve testuitslag een QR-code maken. Dat is jouw bewijs.]]></string>
+    <string name="your_negative_test_results_description"><![CDATA[Deze testuitslag is opgehaald bij de testlocatie. Kloppen de gegevens? Dan kun je van de negatieve testuitslag een QR-code maken. Dat is jouw bewijs.]]></string>
     <string name="your_negative_test_results_header">Opgehaalde testuitslag</string>
     <string name="your_negative_test_results_row_title">Negatieve testuitslag</string>
     <string name="your_negative_test_results_row_subtitle"><![CDATA[Testdatum: %1$s<br/>Jouw gegevens: %2$s]]></string>
