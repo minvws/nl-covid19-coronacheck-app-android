@@ -58,7 +58,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
 
     private val yourEventsViewModel: YourEventsViewModel by viewModel()
 
-    override fun executeNetworkRequest() {
+    override fun onButtonClickWithRetryAction() {
         when (val type = args.type) {
             is YourEventsFragmentType.TestResult2 -> {
                 yourEventsViewModel.saveNegativeTest2(
@@ -539,7 +539,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
 
     private fun handleButton(binding: FragmentYourEventsBinding) {
         binding.bottom.setButtonClick {
-            executeNetworkRequest()
+            onButtonClickWithRetryAction()
         }
     }
 

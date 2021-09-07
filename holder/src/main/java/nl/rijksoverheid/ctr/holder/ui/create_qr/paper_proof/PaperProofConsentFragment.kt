@@ -25,7 +25,7 @@ class PaperProofConsentFragment: BaseFragment(R.layout.fragment_paper_proof_cons
     private val args: PaperProofConsentFragmentArgs by navArgs()
     private val holderMainActivityViewModel: HolderMainActivityViewModel by sharedViewModel()
 
-    override fun executeNetworkRequest() {
+    override fun onButtonClickWithRetryAction() {
         Navigation.findNavController(requireActivity(), R.id.main_nav_host_fragment)
             .navigate(R.id.action_paper_proof_qr_scanner, bundleOf(PaperProofQrScannerFragment.EXTRA_COUPLING_CODE to args.couplingCode))
     }
@@ -35,7 +35,7 @@ class PaperProofConsentFragment: BaseFragment(R.layout.fragment_paper_proof_cons
 
         val binding = FragmentPaperProofConsentBinding.bind(view)
         binding.bottom.setButtonClick {
-            executeNetworkRequest()
+            onButtonClickWithRetryAction()
         }
 
         holderMainActivityViewModel.eventsLiveData.observe(viewLifecycleOwner, EventObserver {

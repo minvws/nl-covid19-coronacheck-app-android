@@ -36,7 +36,7 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
 
     private val getEventsViewModel: GetEventsViewModel by viewModel()
 
-    override fun executeNetworkRequest() {
+    override fun onButtonClickWithRetryAction() {
         loginWithDigiD()
     }
 
@@ -59,7 +59,7 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
             R.string.choose_provider_ggd_title,
             getString(R.string.choose_provider_ggd_subtitle)
         ) {
-            executeNetworkRequest()
+            onButtonClickWithRetryAction()
         }
 
         binding.notYetTested.setOnClickListener {

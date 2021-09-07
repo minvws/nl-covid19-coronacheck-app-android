@@ -39,7 +39,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
 
     private val getEventsViewModel: GetEventsViewModel by viewModel()
 
-    override fun executeNetworkRequest() {
+    override fun onButtonClickWithRetryAction() {
         loginWithDigiD()
     }
 
@@ -174,7 +174,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
         })
 
         binding.button.setOnClickListener {
-            executeNetworkRequest()
+            onButtonClickWithRetryAction()
         }
 
         binding.noDigidButton.setOnClickListener {

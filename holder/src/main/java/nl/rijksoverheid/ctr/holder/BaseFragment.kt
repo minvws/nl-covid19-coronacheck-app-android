@@ -16,7 +16,14 @@ abstract class BaseFragment(contentLayoutId: Int) : Fragment(contentLayoutId) {
     protected val errorCodeStringFactory: ErrorCodeStringFactory by inject()
     private val dialogUtil: DialogUtil by inject()
 
-    abstract fun executeNetworkRequest()
+    /**
+     * Function that is also called when a network requests fails and a user presses the "retry" button
+     */
+    abstract fun onButtonClickWithRetryAction()
+
+    /**
+     * Get the current [Flow] for this screen
+     */
     abstract fun getFlow(): Flow
 
     fun presentError(errorResult: ErrorResult, customerErrorDescription: String? = null) {
@@ -27,7 +34,7 @@ abstract class BaseFragment(contentLayoutId: Int) : Fragment(contentLayoutId) {
                 message = getString(R.string.dialog_no_internet_connection_description),
                 positiveButtonText = R.string.dialog_retry,
                 positiveButtonCallback = {
-                    executeNetworkRequest()
+                    onButtonClickWithRetryAction()
                 },
                 negativeButtonText = R.string.dialog_close
             )

@@ -47,7 +47,7 @@ import org.koin.androidx.viewmodel.scope.emptyState
 
     private val navArgs: CommercialTestCodeFragmentArgs by navArgs()
 
-    override fun executeNetworkRequest() {
+    override fun onButtonClickWithRetryAction() {
         fetchTestResults(binding)
     }
 
@@ -186,7 +186,7 @@ import org.koin.androidx.viewmodel.scope.emptyState
         }
 
         binding.bottom.setButtonClick {
-            executeNetworkRequest()
+            onButtonClickWithRetryAction()
         }
 
         // If a location token is set, automatically fill it in. Else we show the keyboard focussing on first code input field
