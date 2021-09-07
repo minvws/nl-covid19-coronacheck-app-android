@@ -27,7 +27,7 @@
     <string name="dialog_error_message">Dat komt door een technische fout.</string>
     <string name="dialog_error_message_with_error_code">Dat komt door een technische fout (%1$s).</string>
     <string name="digid_login_cancelled_title">Inloggen afgebroken</string>
-    <string name="digid_login_cancelled_description">Wil je jouw vaccinatiegegevens ophalen? Log dan opnieuw in met DigiD.</string>
+    <string name="digid_login_cancelled_description">Wil je jouw gegevens ophalen? Log dan opnieuw in met DigiD.</string>
     <string name="ok">Oke</string>
     <string name="settings">Instellingen</string>
     <string name="about_this_app">Over deze app</string>
@@ -118,7 +118,7 @@
     <!-- App Status strings -->
     <string name="app_status_deactivated_title">App buiten werking</string>
     <string name="app_status_deactivated_message">Op dit moment is de app niet in gebruik. Ga voor meer informatie naar CoronaCheck.nl</string>
-    <string name="app_status_deactivated_action">Lees meer op de website</string>
+    <string name="app_status_deactivated_action">Naar CoronaCheck.nl</string>
     <string name="app_status_update_required_title">Tijd voor een update</string>
     <string name="app_status_update_required_message">Je hebt de laatste versie van de app nodig om verder te gaan.</string>
     <string name="app_status_update_required_action">Installeer update</string>
@@ -150,8 +150,8 @@
     <string name="accessibility_label_your_qr">Hier wordt een afbeelding getoond van jouw QR-code.</string>
     <string name="accessibility_testresult_icon_description">Informatie over je negatieve testuitslag</string>
     <string name="menu_close">Sluiten</string>
-    <string name="dialog_no_internet_connection_title">Geen verbinding met de server</string>
-    <string name="dialog_no_internet_connection_description">De server reageert niet. Dit kan bijvoorbeeld komen doordat je geen internet hebt of omdat de server onbereikbaar is.</string>
+    <string name="dialog_no_internet_connection_title">Sorry, er gaat iets mis</string>
+    <string name="dialog_no_internet_connection_description">Het is niet gelukt de server te bereiken. Wil je controleren of je verbinding met het internet hebt?</string>
     <string name="dialog_close">Sluiten</string>
     <string name="dialog_retry">Probeer opnieuw</string>
     <string name="new_terms_title">Nieuw in de app</string>
