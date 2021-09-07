@@ -20,7 +20,7 @@
     <string name="privacy_policy_2"><![CDATA[No location data is <b>used or saved</b>]]></string>
     <string name="privacy_policy_checkbox_text">I have read the privacy statement and understand how CoronaCheck processes my data.</string>
     <string name="my_overview">My certificates</string>
-    <string name="my_overview_description">Show both your QR code and your proof of identity at the entrance of the location you\'re visiting.</string>
+    <string name="my_overview_description">Visiting a location within the Netherlands? Show both your QR code and your proof of identity at the entrance of the location you\'re visiting.</string>
     <string name="my_overview_description_eu"><![CDATA[Are you abroad, or planning to cross the border? Then always use the international QR code below. Please check before leaving which certificate you need. <br /><br /><a href="https://www.netherlandsworldwide.nl/travelling-outside-the-netherlands">Is my certificate valid where I’m heading?</a>]]></string>
     <string name="my_overview_no_qr_description"><![CDATA[You can create a QR code if you\'re vaccinated, if you\'ve had corona or by taking a test at an <a href="https://coronacheck.nl/en/testafspraak-in-app">affiliated test location</a>.]]></string>
     <string name="dialog_error_title">Sorry, something went wrong</string>
@@ -34,7 +34,7 @@
     <string name="frequently_asked_questions">Frequently asked questions</string>
     <string name="privacy_statement">Privacy statement</string>
     <string name="terms_of_use">Acceptable use policy</string>
-    <string name="my_overview_test_result_title">My QR code</string>
+    <string name="my_overview_test_result_title">My certificate</string>
     <string name="my_overview_test_result_international_title">International QR code</string>
     <string name="my_overview_test_result_validity">Valid until %1$s</string>
     <string name="accessibility_label_my_overview_test_result_personal_data">Your personal data: %1$s %2$s %3$s %4$s</string>
@@ -83,7 +83,7 @@
     <string name="commercial_test_scanner_custom_title">Scan QR code</string>
     <string name="commercial_test_scanner_custom_message">Point your phone at the QR code the test location gave you.</string>
     <string name="your_negative_test_results_title">Check your test result</string>
-    <string name="your_negative_test_results_description"><![CDATA[This test result is retrieved from the test location.<br\><br\>Is the below correct? Then you can convert the negative test result into a QR code. This is your test certificate.]]></string>
+    <string name="your_negative_test_results_description"><![CDATA[This test result is retrieved from the test location. Is the below correct? Then you can convert the negative test result into a QR code. This is your test certificate.]]></string>
     <string name="your_negative_test_results_header">Retrieved test result</string>
     <string name="your_negative_test_results_row_title">Negative test result</string>
     <string name="your_negative_test_results_row_subtitle"><![CDATA[Test date: %1$s<br/>Your details: %2$s]]></string>
@@ -298,7 +298,7 @@
     <string name="your_positive_test_description">Are your details correct? Then you can turn your positive test result into a QR code. This is your certificate.</string>
     <string name="positive_test_title">Positive test result</string>
     <string name="get_recovery_title">Retrieve recovery details</string>
-    <string name="get_recovery_description"><![CDATA[Have you had coronavirus? Then you can make a recovery certificate of the positive test result from the GGD. Log in with DigiD to retrieve your test result.<br/><br/>Your recovery certificate will be valid 11 days after the positive test result. You also need to be free of symptoms.]]></string>
+    <string name="get_recovery_description"><![CDATA[Have you had coronavirus? Then you can make a recovery certificate of the positive test result from the GGD. Login with DigiD to retrieve your test result.<br/><br/>Your recovery certificate will be valid 11 days after the positive test result. You also need to be free of symptoms.]]></string>
     <string name="no_positive_test_result_title">No positive test result available</string>
     <string name="no_positive_test_result_description"><![CDATA[There is no positive test result available.<br/><br/>Got tested recently? It can take a few hours until your details are available. Try again later.<br/><br/>Have you been tested more than 180 days ago? Then your test result is no longer valid.]]></string>
     <string name="positive_test_not_valid_title">Positive test result is not valid</string>
