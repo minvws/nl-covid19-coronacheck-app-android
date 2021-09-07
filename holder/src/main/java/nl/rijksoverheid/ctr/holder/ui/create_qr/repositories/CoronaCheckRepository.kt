@@ -19,8 +19,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.post.GetCredentialsPostDa
  */
 
 interface CoronaCheckRepository {
-    suspend fun configProviders(): RemoteConfigProviders
-    suspend fun configProvidersResult(): NetworkRequestResult<RemoteConfigProviders>
+    suspend fun configProviders(): NetworkRequestResult<RemoteConfigProviders>
     suspend fun accessTokens(jwt: String): NetworkRequestResult<RemoteAccessTokens>
     suspend fun getGreenCards(
         stoken: String,
@@ -37,11 +36,7 @@ open class CoronaCheckRepositoryImpl(
     private val networkRequestResultFactory: NetworkRequestResultFactory
 ) : CoronaCheckRepository {
 
-    override suspend fun configProviders(): RemoteConfigProviders {
-        return api.getConfigCtp()
-    }
-
-    override suspend fun configProvidersResult(): NetworkRequestResult<RemoteConfigProviders> {
+    override suspend fun configProviders(): NetworkRequestResult<RemoteConfigProviders> {
         return networkRequestResultFactory.createResult(HolderStep.ConfigProvidersNetworkRequest) {
             api.getConfigCtp()
         }
