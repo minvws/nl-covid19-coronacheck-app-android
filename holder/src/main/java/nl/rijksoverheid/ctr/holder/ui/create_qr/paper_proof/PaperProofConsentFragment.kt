@@ -21,16 +21,21 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 class PaperProofConsentFragment: BaseFragment(R.layout.fragment_paper_proof_consent) {
 
     private val dialogUtil: DialogUtil by inject()
+
     private val args: PaperProofConsentFragmentArgs by navArgs()
     private val holderMainActivityViewModel: HolderMainActivityViewModel by sharedViewModel()
+
+    override fun onButtonClickWithRetryAction() {
+        Navigation.findNavController(requireActivity(), R.id.main_nav_host_fragment)
+            .navigate(R.id.action_paper_proof_qr_scanner, bundleOf(PaperProofQrScannerFragment.EXTRA_COUPLING_CODE to args.couplingCode))
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val binding = FragmentPaperProofConsentBinding.bind(view)
         binding.bottom.setButtonClick {
-            Navigation.findNavController(requireActivity(), R.id.main_nav_host_fragment)
-                .navigate(R.id.action_paper_proof_qr_scanner, bundleOf(PaperProofQrScannerFragment.EXTRA_COUPLING_CODE to args.couplingCode))
+            onButtonClickWithRetryAction()
         }
 
         holderMainActivityViewModel.eventsLiveData.observe(viewLifecycleOwner, EventObserver {

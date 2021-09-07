@@ -35,8 +35,7 @@ import org.koin.androidx.viewmodel.scope.emptyState
  *
  *   SPDX-License-Identifier: EUPL-1.2
  *
- */
-class CommercialTestCodeFragment : BaseFragment(R.layout.fragment_commercial_test_code) {
+ */class CommercialTestCodeFragment : BaseFragment(R.layout.fragment_commercial_test_code) {
 
     private var _binding: FragmentCommercialTestCodeBinding? = null
     private val binding get() = _binding!!
@@ -45,7 +44,12 @@ class CommercialTestCodeFragment : BaseFragment(R.layout.fragment_commercial_tes
     )
 
     private val dialogUtil: DialogUtil by inject()
+
     private val navArgs: CommercialTestCodeFragmentArgs by navArgs()
+
+    override fun onButtonClickWithRetryAction() {
+        fetchTestResults(binding)
+    }
 
     override fun getFlow(): Flow {
         return HolderFlow.CommercialTest
@@ -182,7 +186,7 @@ class CommercialTestCodeFragment : BaseFragment(R.layout.fragment_commercial_tes
         }
 
         binding.bottom.setButtonClick {
-            fetchTestResults(binding)
+            onButtonClickWithRetryAction()
         }
 
         // If a location token is set, automatically fill it in. Else we show the keyboard focussing on first code input field

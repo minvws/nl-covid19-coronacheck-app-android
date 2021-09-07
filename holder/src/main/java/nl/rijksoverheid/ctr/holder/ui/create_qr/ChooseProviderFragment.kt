@@ -33,7 +33,12 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) {
 
     private val dialogUtil: DialogUtil by inject()
+
     private val getEventsViewModel: GetEventsViewModel by viewModel()
+
+    override fun onButtonClickWithRetryAction() {
+        loginWithDigiD()
+    }
 
     override fun getFlow(): Flow {
         return HolderFlow.CommercialTest
@@ -54,7 +59,7 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
             R.string.choose_provider_ggd_title,
             getString(R.string.choose_provider_ggd_subtitle)
         ) {
-            loginWithDigiD()
+            onButtonClickWithRetryAction()
         }
 
         binding.notYetTested.setOnClickListener {
