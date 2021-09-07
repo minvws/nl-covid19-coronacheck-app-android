@@ -16,6 +16,7 @@ abstract class BaseFragment(contentLayoutId: Int) : Fragment(contentLayoutId) {
     protected val errorCodeStringFactory: ErrorCodeStringFactory by inject()
     private val dialogUtil: DialogUtil by inject()
 
+    abstract fun executeNetworkRequest()
     abstract fun getFlow(): Flow
 
     fun presentError(errorResult: ErrorResult, customerErrorDescription: String? = null) {
@@ -24,8 +25,11 @@ abstract class BaseFragment(contentLayoutId: Int) : Fragment(contentLayoutId) {
                 context = requireContext(),
                 title = R.string.dialog_no_internet_connection_title,
                 message = getString(R.string.dialog_no_internet_connection_description),
-                positiveButtonText = R.string.dialog_close,
-                positiveButtonCallback = {}
+                positiveButtonText = R.string.dialog_retry,
+                positiveButtonCallback = {
+                    executeNetworkRequest()
+                },
+                negativeButtonText = R.string.dialog_close
             )
         } else {
             if (is429HttpError(errorResult) || errorResult is OpenIdErrorResult.ServerBusy ) {
