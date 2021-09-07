@@ -1,20 +1,17 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
+import nl.rijksoverheid.ctr.holder.HolderStep
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
-import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.TestProviderRepository
-import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TokenValidatorUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TokenValidatorUtilImpl
 import nl.rijksoverheid.ctr.shared.ext.removeWhitespace
-import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
-import nl.rijksoverheid.ctr.shared.utils.TestResultUtil
-import retrofit2.HttpException
-import timber.log.Timber
-import java.io.IOException
+import nl.rijksoverheid.ctr.shared.models.AppErrorResult
+import nl.rijksoverheid.ctr.shared.models.ErrorResult
+import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -26,58 +23,63 @@ import java.io.IOException
 class TestResultUseCase(
     private val configProviderUseCase: ConfigProvidersUseCase,
     private val testProviderRepository: TestProviderRepository,
-    private val coronaCheckRepository: CoronaCheckRepository,
-    private val commitmentMessageUseCase: CommitmentMessageUseCase,
-    private val secretKeyUseCase: SecretKeyUseCase,
-    private val createCredentialUseCase: CreateCredentialUseCase,
-    private val personalDetailsUtil: PersonalDetailsUtil,
-    private val testResultUtil: TestResultUtil,
-    private val cachedAppConfigUseCase: CachedAppConfigUseCase,
-    private val testResultAttributesUseCase: TestResultAttributesUseCase,
-    private val tokenValidatorUtil: TokenValidatorUtil
+    private val tokenValidatorUtil: TokenValidatorUtil,
+    private val configUseCase: CachedAppConfigUseCase,
 ) {
 
     suspend fun testResult(uniqueCode: String, verificationCode: String? = null): TestResult {
-        if (uniqueCode.indexOf("-") == -1) {
-            return TestResult.InvalidToken
-        }
-
-        val uniqueCodeAttributes = uniqueCode.split("-")
-
-        if (uniqueCodeAttributes.size != 3) {
-            return TestResult.InvalidToken
-        }
-
-        val providerIdentifier = uniqueCodeAttributes[0]
-        val token = uniqueCodeAttributes[1]
-        val checksum = uniqueCodeAttributes[2]
-
-        // Disable the luhn check for now since providers do not yet support it
-        // We need to check for valid chars
-        token.toCharArray().forEach {
-            if (!TokenValidatorUtilImpl.CODE_POINTS.contains(it)) {
+        try {
+            if (uniqueCode.indexOf("-") == -1) {
                 return TestResult.InvalidToken
             }
-        }
 
-//        if (!tokenValidatorUtil.validate(
-//                token = token,
-//                checksum = checksum
-//            )
-//        ) {
-//            return TestResult.InvalidToken
-//        }
+            val uniqueCodeAttributes = uniqueCode.split("-")
 
-        return try {
+            if (uniqueCodeAttributes.size != 3) {
+                return TestResult.InvalidToken
+            }
+
+            val providerIdentifier = uniqueCodeAttributes[0]
+            val token = uniqueCodeAttributes[1]
+            val checksum = uniqueCodeAttributes[2]
+
+            // We need to check for valid chars
+            token.toCharArray().forEach {
+                if (!TokenValidatorUtilImpl.CODE_POINTS.contains(it)) {
+                    return TestResult.InvalidToken
+                }
+            }
+
+            // Enable the luhn check based on the current config value
+            if (configUseCase.getCachedAppConfig().luhnCheckEnabled) {
+                if (!tokenValidatorUtil.validate(
+                        token = token,
+                        checksum = checksum
+                    )
+                ) {
+                    return TestResult.InvalidToken
+                }
+            }
+
             val testProvider = configProviderUseCase.testProvider(providerIdentifier)
                 ?: return TestResult.InvalidToken
 
-            val signedResponseWithTestResult = testProviderRepository.remoteTestResult(
+            val signedResponseWithTestResultRequestResult = testProviderRepository.remoteTestResult(
                 url = testProvider.resultUrl,
                 token = token.removeWhitespace(),
                 verifierCode = verificationCode?.removeWhitespace(),
-                signingCertificateBytes = testProvider.publicKey
+                signingCertificateBytes = testProvider.publicKey,
+                provider = providerIdentifier
             )
+
+            val signedResponseWithTestResult = when (signedResponseWithTestResultRequestResult) {
+                is NetworkRequestResult.Success -> {
+                    signedResponseWithTestResultRequestResult.response
+                }
+                is NetworkRequestResult.Failed -> {
+                    return TestResult.Error(signedResponseWithTestResultRequestResult)
+                }
+            }
 
             val remoteTestResult = signedResponseWithTestResult.model
 
@@ -92,6 +94,10 @@ class TestResultUseCase(
                         }
                     }
 
+                    if (!remoteTestResult.hasEvents()) {
+                        return TestResult.NoNegativeTestResult
+                    }
+
                     return TestResult.NegativeTestResult(
                         remoteTestResult,
                         signedResponseWithTestResult
@@ -99,12 +105,13 @@ class TestResultUseCase(
                 }
                 else -> throw IllegalStateException("Unsupported status ${remoteTestResult.status}")
             }
-        } catch (ex: HttpException) {
-            Timber.e(ex, "Server error while getting test result")
-            TestResult.ServerError(ex.code())
-        } catch (ex: IOException) {
-            Timber.e(ex, "Network error while getting test result")
-            TestResult.NetworkError
+        } catch (e: Exception) {
+            return TestResult.Error(
+                errorResult = AppErrorResult(
+                    step = HolderStep.TestResultNetworkRequest,
+                    e = e
+                )
+            )
         }
     }
 }
@@ -119,6 +126,5 @@ sealed class TestResult {
     object Pending : TestResult()
     object InvalidToken : TestResult()
     object VerificationRequired : TestResult()
-    data class ServerError(val httpCode: Int) : TestResult()
-    object NetworkError : TestResult()
+    data class Error(val errorResult: ErrorResult) : TestResult()
 }

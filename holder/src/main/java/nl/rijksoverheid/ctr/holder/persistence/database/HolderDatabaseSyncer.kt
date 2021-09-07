@@ -1,14 +1,16 @@
 package nl.rijksoverheid.ctr.holder.persistence.database
 
-import androidx.room.Database
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
-import nl.rijksoverheid.ctr.holder.persistence.WorkerManagerWrapper
+import nl.rijksoverheid.ctr.holder.HolderStep
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
+import nl.rijksoverheid.ctr.shared.models.AppErrorResult
+import nl.rijksoverheid.ctr.shared.models.ErrorResult
+import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -29,9 +31,7 @@ interface HolderDatabaseSyncer {
 
 class HolderDatabaseSyncerImpl(
     private val holderDatabase: HolderDatabase,
-    private val workerManagerWrapper: WorkerManagerWrapper,
     private val greenCardUtil: GreenCardUtil,
-    private val removeExpiredEventsUseCase: RemoveExpiredEventsUseCase,
     private val getRemoteGreenCardsUseCase: GetRemoteGreenCardsUseCase,
     private val syncRemoteGreenCardsUseCase: SyncRemoteGreenCardsUseCase
 ) : HolderDatabaseSyncer {
@@ -47,7 +47,7 @@ class HolderDatabaseSyncerImpl(
                 val events = holderDatabase.eventGroupDao().getAll()
 
                 // Sync with remote
-                if (syncWithRemote) {
+                if (syncWithRemote && events.isNotEmpty()) {
                     val remoteGreenCardsResult = getRemoteGreenCardsUseCase.get(
                         events = events
                     )
@@ -64,28 +64,41 @@ class HolderDatabaseSyncerImpl(
                             }
 
                             // Insert green cards in database
-                            try {
-                                syncRemoteGreenCardsUseCase.execute(
-                                    remoteGreenCards = remoteGreenCardsResult.remoteGreenCards
-                                )
-                            } catch (exception: Exception) {
-                                // creating new credentials failed but previous cards and credentials not deleted
-                            }
-
-                            // Schedule refreshing of green cards in background
-//                        workerManagerWrapper.scheduleNextCredentialsRefreshIfAny()
-
-                            DatabaseSyncerResult.Success
-                        }
-                        is RemoteGreenCardsResult.Error.ServerError -> {
-                            DatabaseSyncerResult.ServerError(remoteGreenCardsResult.httpCode)
-                        }
-                        is RemoteGreenCardsResult.Error.NetworkError -> {
-                            val greenCards = holderDatabase.greenCardDao().getAll()
-                            DatabaseSyncerResult.NetworkError(
-                                hasGreenCardsWithoutCredentials = greenCards
-                                    .any { greenCardUtil.hasNoActiveCredentials(it) }
+                            val result = syncRemoteGreenCardsUseCase.execute(
+                                remoteGreenCards = remoteGreenCardsResult.remoteGreenCards
                             )
+
+                            when (result) {
+                                is SyncRemoteGreenCardsResult.Success -> {
+                                    return@withContext DatabaseSyncerResult.Success
+                                }
+                                is SyncRemoteGreenCardsResult.Failed -> {
+                                    return@withContext DatabaseSyncerResult.Failed.Error(result.errorResult)
+                                }
+                            }
+                        }
+                        is RemoteGreenCardsResult.Error -> {
+                            val greenCards = holderDatabase.greenCardDao().getAll()
+
+                            when (remoteGreenCardsResult.errorResult) {
+                                is NetworkRequestResult.Failed.NetworkError -> {
+                                    DatabaseSyncerResult.Failed.NetworkError(
+                                        errorResult = remoteGreenCardsResult.errorResult,
+                                        hasGreenCardsWithoutCredentials = greenCards
+                                            .any { greenCardUtil.hasNoActiveCredentials(it) }
+                                    )
+                                }
+                                is NetworkRequestResult.Failed.CoronaCheckHttpError -> {
+                                    DatabaseSyncerResult.Failed.ServerError(
+                                        errorResult = remoteGreenCardsResult.errorResult
+                                    )
+                                }
+                                else -> {
+                                    DatabaseSyncerResult.Failed.Error(
+                                        errorResult = remoteGreenCardsResult.errorResult
+                                    )
+                                }
+                            }
                         }
                     }
                 } else {
@@ -100,6 +113,9 @@ sealed class DatabaseSyncerResult {
     object Loading : DatabaseSyncerResult()
     object Success : DatabaseSyncerResult()
     object MissingOrigin : DatabaseSyncerResult()
-    data class ServerError(val httpCode: Int) : DatabaseSyncerResult()
-    data class NetworkError(val hasGreenCardsWithoutCredentials: Boolean) : DatabaseSyncerResult()
+    sealed class Failed(open val errorResult: ErrorResult): DatabaseSyncerResult() {
+        data class NetworkError(override val errorResult: ErrorResult, val hasGreenCardsWithoutCredentials: Boolean): Failed(errorResult)
+        data class ServerError(override val errorResult: ErrorResult): Failed(errorResult)
+        data class Error(override val errorResult: ErrorResult): Failed(errorResult)
+    }
 }

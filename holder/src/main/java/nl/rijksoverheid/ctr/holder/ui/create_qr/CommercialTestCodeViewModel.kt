@@ -99,7 +99,7 @@ open class CommercialTestCodeViewModelImpl(
             val result = testResultUseCase.testResult(testCode, "")
 
             // Only notify the UI of errors, since this is just about resending a sms verification on the backend
-            if (result is TestResult.NetworkError || result is TestResult.ServerError) {
+            if (result is TestResult.Error) {
                 (testResult as MutableLiveData).value = Event(result)
             }
         }

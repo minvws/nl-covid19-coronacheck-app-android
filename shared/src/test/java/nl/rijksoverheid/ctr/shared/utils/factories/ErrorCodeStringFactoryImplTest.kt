@@ -17,37 +17,37 @@ class ErrorCodeStringFactoryImplTest {
     fun `get() returns correct string if errorResult is an IllegalStateException`() {
         val errorCodeString = factory.get(
             flow = Flow(0),
-            errorResult = AppErrorResult(
+            errorResults = listOf(AppErrorResult(
                 step = Step(1),
                 e = IllegalStateException()
-            )
+            ))
         )
 
-        assertEquals(errorCodeString, "A 0 1 000 999")
+        assertEquals(errorCodeString, "A 01 000 999")
     }
 
     @Test
     fun `get() returns correct string if errorResult is a CoronaCheckHttpError`() {
         val errorCodeString = factory.get(
             flow = Flow(0),
-            errorResult = NetworkRequestResult.Failed.CoronaCheckHttpError<Any>(
+            errorResults = listOf(NetworkRequestResult.Failed.CoronaCheckHttpError(
                 step = Step(1),
                 e = HttpException(
                     Response.error<String>(
                         400, "".toResponseBody()
                     )
                 )
-            )
+            ))
         )
 
-        assertEquals(errorCodeString, "A 0 1 000 400")
+        assertEquals(errorCodeString, "A 01 000 400")
     }
 
     @Test
     fun `get() returns correct string if errorResult is a ProviderHttpError`() {
         val errorCodeString = factory.get(
             flow = Flow(0),
-            errorResult = NetworkRequestResult.Failed.ProviderHttpError<Any>(
+            errorResults = listOf(NetworkRequestResult.Failed.ProviderHttpError(
                 step = Step(1),
                 e = HttpException(
                     Response.error<String>(
@@ -56,16 +56,16 @@ class ErrorCodeStringFactoryImplTest {
                 ),
                 provider = "GGD"
             )
-        )
+        ))
 
-        assertEquals(errorCodeString, "A 0 1 GGD 400")
+        assertEquals(errorCodeString, "A 01 GGD 400")
     }
 
     @Test
     fun `get() returns correct string if errorResult is a CoronaCheckWithErrorResponseHttpError`() {
         val errorCodeString = factory.get(
             flow = Flow(0),
-            errorResult = NetworkRequestResult.Failed.CoronaCheckWithErrorResponseHttpError<Any>(
+            errorResults = listOf(NetworkRequestResult.Failed.CoronaCheckWithErrorResponseHttpError(
                 step = Step(1),
                 e = HttpException(
                     Response.error<String>(
@@ -77,8 +77,8 @@ class ErrorCodeStringFactoryImplTest {
                     code = 2
                 )
             )
-        )
+        ))
 
-        assertEquals(errorCodeString, "A 0 1 000 400 2")
+        assertEquals(errorCodeString, "A 01 000 400 2")
     }
 }

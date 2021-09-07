@@ -7,7 +7,7 @@ plugins {
 }
 
 def appVersionCode = System.getenv("GITHUB_RUN_NUMBER") != null ? System.getenv("GITHUB_RUN_NUMBER").toInteger() : 1000000
-version = "2.2.2"
+version = "2.3"
 archivesBaseName = "holder-v${version}-${appVersionCode}"
 
 android {
@@ -32,7 +32,7 @@ android {
         buildConfigField "String", "SIGNATURE_CERTIFICATE_CN_MATCH", '".coronatester.nl"'
         buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "true"
         buildConfigField "boolean", "FEATURE_TEST_PROVIDER_API_CHECKS", "true"
-        buildConfigField "String", "DIGI_D_REDIRECT_URI", "\"coronacheck://auth/login\""
+        buildConfigField "String", "DIGI_D_REDIRECT_URI", "\"https://coronacheck.nl/app/auth\""
         buildConfigField "String", "BASE_API_URL", "\"https://holder-api.coronacheck.nl/v4/\""
         buildConfigField "String", "DIGI_D_BASE_URL", "\"https://tvs.coronacheck.nl\""
         buildConfigField "String", "DIGI_D_CLIENT_ID", "\"cc_app\""
@@ -83,7 +83,7 @@ android {
             buildConfigField "String", "BASE_API_URL", "\"https://holder-api.acc.coronacheck.nl/v4/\""
             buildConfigField "String", "DIGI_D_BASE_URL", "\"https://tvs.acc.coronacheck.nl\""
             buildConfigField "String", "DIGI_D_CLIENT_ID", "\"cc_app\""
-            buildConfigField "String", "DIGI_D_REDIRECT_URI", "\"coronacheck-acc://auth/login\""
+            buildConfigField "String", "DIGI_D_REDIRECT_URI", "\"https://web.acc.coronacheck.nl/app/auth\""
             dimension "environment"
             versionNameSuffix "-acc"
             applicationIdSuffix ".acc"

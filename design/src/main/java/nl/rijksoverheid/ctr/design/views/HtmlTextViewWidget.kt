@@ -7,6 +7,7 @@ import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.BulletSpan
 import android.util.AttributeSet
+import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.text.HtmlCompat
@@ -103,32 +104,29 @@ class HtmlTextViewWidget @JvmOverloads constructor(
         val spannable = getSpannableFromHtml(htmlText)
 
         // Step 2: Separate the Spannable on each linebreak
-        val parts = spannable.separated("\n")
+        val parts = listOf(spannable) // spannable.separated("\n") --> NOTE: disabled for now
 
         // Step 3: Add a HtmlTextView for each part of the Spannable
         parts.forEachIndexed { index, part ->
             val textView = HtmlTextView(context)
             textView.text = part
 
+            // Mark as heading?
             if (part.isHeading) {
                 ViewCompat.setAccessibilityHeading(textView, true)
             }
 
-            val params = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-            if (index > 0) {
-                val marginTop = when {
-                    part.isHeading -> textView.lineHeight * headingMarginMultiplier
-                    part.isListItem -> textView.lineHeight * listItemMarginMultiplier
-                    else -> textView.lineHeight * paragraphMarginMultiplier
-                }
-                params.setMargins(0, marginTop.toInt(), 0, 0)
+            // Hide for assistive technologies?
+            if (part.isBlank()) {
+                textView.isFocusable = false
+                textView.isFocusableInTouchMode = false
+                textView.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
             }
-            textView.layoutParams = params
 
             addView(textView)
         }
 
-        // Step 4: Enable links, if enabled
+        // Step 4: Enable links if requested
         if (htmlLinksEnabled) {
             enableHtmlLinks()
         }

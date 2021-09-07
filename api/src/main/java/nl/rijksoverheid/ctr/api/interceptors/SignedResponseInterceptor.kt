@@ -16,7 +16,6 @@ import nl.rijksoverheid.ctr.api.json.Base64JsonAdapter
 import nl.rijksoverheid.ctr.api.signing.certificates.EV_ROOT_CA
 import nl.rijksoverheid.ctr.api.signing.certificates.PRIVATE_ROOT_CA
 import nl.rijksoverheid.ctr.api.signing.certificates.ROOT_CA_G3
-import nl.rijksoverheid.ctr.api.signing.certificates.ROOT_UZI
 import nl.rijksoverheid.ctr.api.signing.http.SignedRequest
 import nl.rijksoverheid.ctr.signing.SignatureValidationException
 import nl.rijksoverheid.ctr.signing.SignatureValidator
@@ -25,11 +24,11 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.Response
 import okhttp3.ResponseBody.Companion.toResponseBody
 import okio.Buffer
-import org.json.JSONObject
 import retrofit2.Invocation
 import timber.log.Timber
 import java.io.ByteArrayInputStream
 import java.lang.Exception
+import java.nio.charset.CharacterCodingException
 
 private val responseAdapter by lazy {
     Moshi.Builder()
@@ -83,9 +82,7 @@ class SignedResponseInterceptor(
             }
 
             return if (!validateSignature(validator, signedResponse)) {
-                response.newBuilder().body("Signature failed to validate".toResponseBody())
-                    .code(500)
-                    .message("Signature failed to validate").build().also { response.close() }
+                throw CharacterCodingException()
             } else {
                 response.newBuilder()
                     .body(
@@ -98,11 +95,7 @@ class SignedResponseInterceptor(
             }
         } catch (e: Exception) {
             return if (response.isSuccessful) {
-                // When something is wrong in parsing a successful request, handle it like a 500
-                // in the UI (this should never happen)
-                response.newBuilder().body("Failed to handle signed response".toResponseBody())
-                    .code(500)
-                    .message("Failed to handle signed response").build().also { response.close() }
+                throw CharacterCodingException()
             } else {
                 // When something is wrong in parsing a unsuccessful request, cascade down the
                 // request as usual (so that HttpExceptions get picked up for example)

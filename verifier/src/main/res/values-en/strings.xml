@@ -18,7 +18,7 @@
     <string name="privacy_policy_title">Acceptable use policy</string>
     <string name="privacy_policy_description"><![CDATA[The <a href="https://coronacheck.nl/en/gebruikersvoorwaarden-in-app">acceptable use policy</a> details how CoronaCheck Scanner uses your data and what your rights are.]]></string>
     <string name="privacy_policy_1"><![CDATA[Location data are <b>not saved or used</b>]]></string>
-    <string name="privacy_policy_2"><![CDATA[You\'re only allowed to use this data to <b>check the valid certificate</b>]]></string>
+    <string name="privacy_policy_2"><![CDATA[You\'re only allowed to use this data to <b>check the certificate</b>]]></string>
     <string name="privacy_policy_3"><![CDATA[The visitor\'s data is <b>not centrally stored anywhere</b>]]></string>
     <string name="privacy_policy_checkbox_text">I\'ve read and agree to the acceptable use policy.</string>
     <string name="dialog_error_title">Technical error</string>
@@ -37,29 +37,29 @@
     <string name="scan_result_valid_first_name">First name</string>
     <string name="scan_result_valid_birth_day">Day of birth</string>
     <string name="scan_result_valid_birth_month">Birth month</string>
-    <string name="scan_result_valid_personal_details_title">Check personal details</string>
+    <string name="scan_result_valid_personal_details_title">Check details</string>
     <string name="scan_result_european_nl_invalid_title">This is an international QR code</string>
     <string name="scan_result_european_nl_invalid_subtitle">This is not a valid certificate in the Netherlands. Ask the visitor to show a Dutch QR code.</string>
     <string name="scan_result_invalid_title">Invalid QR code</string>
-    <string name="scan_result_invalid_subtitle"><![CDATA[The visitor doesn\'t have a valid coronavirus pass. <a href="#"><b>Read possible causes</b></a>]]></string>
+    <string name="scan_result_invalid_subtitle"><![CDATA[The visitor doesn\'t have a valid coronavirus pass.<br/><a href=\"#\"><b>Read possible causes</b></a>]]></string>
     <string name="scan_result_invalid_button">Scan next</string>
     <string name="scan_result_invalid_reason_title">What should I do?</string>
-    <string name="scan_result_invalid_reason_description"><![CDATA[A red screen means that the QR code does not meet Dutch requirements.<br\><br\><b>Here’s what you can do:</b><br\><ol><li>Verify if the time on the visitor’s phone is set correctly.</li><li>Verify if the visitor is showing an original certificate. A screenshot of a certificate may cause problems.</li><li>Ask the visitor to completely shut down the app and restart it. Please scan the QR code again after.</li></ol><br\><b>Still looking at a red screen?</b><br/>Please ask the visitor to contact the CoronaCheck help desk.<br\><br\><b>Without a green screen, you can’t grant the visitor access.</b>]]></string>
+    <string name="scan_result_invalid_reason_description"><![CDATA[A red screen means that the QR code does not meet Dutch requirements.<br\><br\><b>Here\'s what you can do:</b><br\><br/><ol><li>Verify if the time on the visitor\'s phone is set correctly.</li><li>Verify if the visitor is showing an original certificate. A screenshot of a certificate may cause problems.</li><li>Ask the visitor to completely shut down the app and restart it. Please scan the QR code again after.</li></ol><br\><br/><b>Still looking at a red screen?</b><br/>Please ask the visitor to contact the CoronaCheck help desk.<br\><br\><b>Without a green screen, you can\'t grant the visitor access.</b>]]></string>
     <string name="scan_result_unknown_qr_dialog_title">This QR code does not contain a coronavirus pass</string>
     <string name="scan_result_unknown_qr_dialog_message">Ask the visitor to show a QR code of a coronavirus pass.</string>
     <string name="scan_result_european_in_nl_dialog_title">Ask for a Dutch QR code</string>
     <string name="scan_result_european_in_nl_dialog_message">You have scanned an international QR code. In the Netherlands, CoronaCheck users should show their Dutch QR code.</string>
     <string name="scan_result_valid_reason_title">Are the details incorrect?</string>
-    <string name="scan_result_valid_reason_description"><![CDATA[You cannot grant the visitor access if the details on your screen are different from those on the identity document.<br/><b>Please note: sometimes not all details are shown</b><br/>This happens to protect the visitor’s privacy. You will see a dash (-) in the field. In this case, verify only the details you’re seeing.]]></string>
+    <string name="scan_result_valid_reason_description"><![CDATA[You cannot grant the visitor access if the details on your screen are different from those on the identity document.<br/><br/><b>Please note: sometimes not all details are shown</b><br/><br/>This happens to protect the visitor\'s privacy. You will see a dash (-) in the field. In this case, verify only the details you\'re seeing.]]></string>
     <string name="about_this_app_description">CoronaCheck Scanner is created so that certain locations and activities can open their doors again. Think for example of football matches and concerts. Visitors create a coronavirus pass of a vaccination, a negative test result or if they\'ve had corona and are recovered. With this app, only visitors with a coronavirus pass gain access. This way, the Netherlands can head out more often.</string>
     <string name="scan_instructions">How scanning works</string>
     <string name="scan_instructions_1_title">Scan the QR code</string>
-    <string name="scan_instructions_1_description">The visitor shows a QR code in the CoronaCheck app or on paper. A tourist may show a QR code in a foreign app, or on paper.</string>
+    <string name="scan_instructions_1_description">Ask the visitor to show a QR code in the CoronaCheck app or on paper. A tourist may show a QR code in a foreign app, or on paper. Scan the visitor\'s QR code with your phone camera.</string>
     <string name="scan_instructions_2_title">Always check the details</string>
     <string name="scan_instructions_2_description">Green screen? Verify if the details on your screen are the same as those on the identity document. This way you can ensure the QR code belongs to the visitor.</string>
     <string name="scan_instructions_3_image">Sometimes not all details are shown</string>
     <string name="scan_instructions_3_title">Sometimes not all details are shown</string>
-    <string name="scan_instructions_3_description">This happens to protect the visitor’s privacy. You will see a hyphen (-). In this case, verify only the details you’re seeing.</string>
+    <string name="scan_instructions_3_description">This happens to protect the visitor\'s privacy. You will see a hyphen (-). In this case, verify only the details you\'re seeing.</string>
     <string name="scan_instructions_4_image">Person is holding a phone with a red screen and a black cross.</string>
     <string name="scan_instructions_4_title">Red screen - what happens now?</string>
     <string name="scan_instructions_4_description"><![CDATA[In case of a red screen, you will get information to assist the visitor. If the screen stays red, you cannot grant the visitor access.]]></string>
@@ -68,7 +68,7 @@
     <string name="scanner_custom_message">"What should I pay attention to?"</string>
     <string name="camera_rationale_dialog_title">Scanner wants to access your camera</string>
     <string name="camera_rationale_dialog_description">So the app can scan QR codes</string>
-    <string name="app_setup_text">We\'re starting the app...</string>
+    <string name="app_setup_text">We\'re starting the app…</string>
     <!-- App Status strings -->
     <string name="app_status_deactivated_title">App out of order</string>
     <string name="app_status_deactivated_message">The app is not in use at the moment. For more information, go to CoronaCheck.nl</string>
@@ -100,7 +100,7 @@
     <string name="onboarding_page_indicator_label">Page %1$s of %2$s</string>
     <string name="menu_close">Close</string>
     <string name="new_terms_title">We\'ve updated our policy</string>
-    <string name="new_terms_highlights"><![CDATA[<b>Here\'s what changed</b><ul><li>Description of acceptable use policy</li><li>App usage explanation</li><li>Camera usage permission</li></ul>]]></string>
+    <string name="new_terms_highlights"><![CDATA[<b>Here\'s what changed</b><br/>br/><ul><li>Description of acceptable use policy</li><li>App usage explanation</li><li>Camera usage permission</li></ul>]]></string>
     <string name="new_terms"><![CDATA[Read the full acceptable use policy <a href="https://coronacheck.nl/en/gebruikersvoorwaarden-in-app">here</a>.]]></string>
     <string name="new_terms_consent_button">Next</string>
     <string name="new_terms_consent_needed_positive_button">Agree</string>
@@ -115,6 +115,8 @@
     <string name="about_this_app_read_more">Read more:</string>
     <string name="about_this_app_accessibility">Accessibility</string>
     <string name="url_accessibility">https://coronacheck.nl/en/accessibility-in-app</string>
+    <string name="about_this_app_colofon">Colophon</string>
+    <string name="about_this_app_colofon_url">https://coronacheck.nl/en/colofon-in-app.html</string>
     <string name="accessibility_flash_on">Turn the flashlight on.</string>
     <string name="accessibility_flash_off">Turn the flashlight off.</string>
     <string name="new_in_app_subtitle">New in the app</string>

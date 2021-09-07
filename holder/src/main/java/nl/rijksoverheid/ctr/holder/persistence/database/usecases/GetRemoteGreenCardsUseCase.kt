@@ -1,12 +1,14 @@
 package nl.rijksoverheid.ctr.holder.persistence.database.usecases
 
+import nl.rijksoverheid.ctr.holder.HolderStep
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteGreenCards
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SecretKeyUseCase
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
-import retrofit2.HttpException
-import java.io.IOException
+import nl.rijksoverheid.ctr.shared.models.AppErrorResult
+import nl.rijksoverheid.ctr.shared.models.ErrorResult
+import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 
 /**
  * Get green cards from remote
@@ -23,33 +25,48 @@ class GetRemoteGreenCardsUseCaseImpl(
 
     override suspend fun get(events: List<EventGroupEntity>): RemoteGreenCardsResult {
         return try {
-            val prepareIssue = coronaCheckRepository.getPrepareIssue()
+            val prepareIssue = when (val prepareIssueResult = coronaCheckRepository.getPrepareIssue()) {
+                is NetworkRequestResult.Success -> {
+                    prepareIssueResult.response
+                }
+                is NetworkRequestResult.Failed -> {
+                    return RemoteGreenCardsResult.Error(prepareIssueResult)
+                }
+            }
 
-            val commitmentMessage = mobileCoreWrapper.createCommitmentMessage(
-                secretKey = secretKeyUseCase.json().toByteArray(),
-                prepareIssueMessage = prepareIssue.prepareIssueMessage
-            )
+            val commitmentMessage = try {
+                mobileCoreWrapper.createCommitmentMessage(
+                    secretKey = secretKeyUseCase.json().toByteArray(),
+                    prepareIssueMessage = prepareIssue.prepareIssueMessage
+                )
+            } catch (e: Exception) {
+                return RemoteGreenCardsResult.Error(AppErrorResult(
+                    step = HolderStep.PrepareIssueNetworkRequest,
+                    e = e
+                ))
+            }
 
-            val remoteGreenCards =  coronaCheckRepository.getGreenCards(
+            val remoteGreenCardsResult =  coronaCheckRepository.getGreenCards(
                 stoken = prepareIssue.stoken,
                 events = events.map { String(it.jsonData) },
                 issueCommitmentMessage = commitmentMessage
             )
-            RemoteGreenCardsResult.Success(remoteGreenCards)
-        } catch (e: HttpException) {
-            RemoteGreenCardsResult.Error.ServerError(e.code())
-        } catch (e: IOException) {
-            RemoteGreenCardsResult.Error.NetworkError
+
+            when (remoteGreenCardsResult) {
+                is NetworkRequestResult.Success -> {
+                    RemoteGreenCardsResult.Success(remoteGreenCardsResult.response)
+                }
+                is NetworkRequestResult.Failed -> {
+                    RemoteGreenCardsResult.Error(remoteGreenCardsResult)
+                }
+            }
         } catch (e: Exception) {
-            RemoteGreenCardsResult.Error.ServerError(200)
+            RemoteGreenCardsResult.Error(AppErrorResult(HolderStep.GetCredentialsNetworkRequest, e))
         }
     }
 }
 
 sealed class RemoteGreenCardsResult {
-    data class Success (val remoteGreenCards: RemoteGreenCards): RemoteGreenCardsResult()
-    sealed class Error: RemoteGreenCardsResult() {
-        object NetworkError : Error()
-        data class ServerError(val httpCode: Int) : Error()
-    }
+    data class Success(val remoteGreenCards: RemoteGreenCards): RemoteGreenCardsResult()
+    data class Error(val errorResult: ErrorResult): RemoteGreenCardsResult()
 }

@@ -7,6 +7,7 @@ import okhttp3.ResponseBody
 import retrofit2.Converter
 import retrofit2.HttpException
 import java.io.IOException
+import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
@@ -20,12 +21,19 @@ class NetworkRequestResultFactory(
     suspend fun <R: Any> createResult(
         step: Step,
         provider: String ? = null,
+        interceptHttpError: (suspend (e: HttpException) -> R?)? = null,
         networkCall: suspend () -> R): NetworkRequestResult<R> {
         return try {
             val response = networkCall.invoke()
             NetworkRequestResult.Success(response)
         } catch (httpException: HttpException) {
             try {
+                // We intercept here if a HttpException is expected
+                val result = interceptHttpError?.invoke(httpException)
+                result?.let {
+                    return NetworkRequestResult.Success(it)
+                }
+
                 provider?.let {
                     // If this is a call to a provider we return a ProviderHttpError
                     return NetworkRequestResult.Failed.ProviderHttpError(step, httpException, it)
@@ -42,10 +50,11 @@ class NetworkRequestResultFactory(
                 return NetworkRequestResult.Failed.CoronaCheckHttpError(step, httpException)
             }
         } catch (e: IOException) {
-            when (e) {
-                is SocketTimeoutException, is UnknownHostException -> {
+            when {
+                e is SocketTimeoutException || e is UnknownHostException || e is ConnectException -> {
                     NetworkRequestResult.Failed.NetworkError(step, e)
                 }
+                provider != null -> NetworkRequestResult.Failed.ProviderError(step, e, provider)
                 else -> NetworkRequestResult.Failed.Error(step, e)
             }
         } catch (e: Exception) {

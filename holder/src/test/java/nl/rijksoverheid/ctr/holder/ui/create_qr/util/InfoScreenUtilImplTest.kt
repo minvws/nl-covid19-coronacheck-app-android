@@ -8,9 +8,11 @@
 
 package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
+import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import io.mockk.mockk
 import junit.framework.Assert.assertEquals
+import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.fakeCachedAppConfigUseCase
 import org.json.JSONObject
 import org.junit.Test
@@ -23,6 +25,7 @@ import java.util.*
 @RunWith(RobolectricTestRunner::class)
 @Config(qualifiers = "nl-land")
 class InfoScreenUtilImplTest: AutoCloseKoinTest() {
+
 
     private val infoScreenUtil =
         InfoScreenUtilImpl(ApplicationProvider.getApplicationContext(), mockk(), fakeCachedAppConfigUseCase())
@@ -52,8 +55,20 @@ class InfoScreenUtilImplTest: AutoCloseKoinTest() {
 
         val infoScreen = infoScreenUtil.getForEuropeanTestQr(json)
 
-        assertEquals("Over mijn internationale QR-code", infoScreen.title)
-        assertEquals("Reis je buiten Nederland? Dan zijn er meer gegevens nodig. Daarom staan in de internationale QR-code de volgende gegevens:<br/>Naam / Name:<br/><b>ten Bouwer, Bob</b><br/>Geboortedatum / Date of birth*:<br/><b>18-08-1991</b><br/>Ziekteverwekker / Disease targeted:<br/><b>COVID-19</b><br/>Type test / Type of test:<br/><b>LP6464-4</b><br/>Test naam / Test name:<br/><b></b><br/>Testdatum / Test date*:<br/><b>10-08-2021</b><br/> <br/>Testuitslag / Test result:<br/><b>negatief (geen corona)</b><br/> <br/>Testlocatie / Testing centre:<br/><b>Facility approved by the State of The Netherlands</b><br/> <br/>Producent / Test manufacturer:<br/><b></b><br/> <br/>Getest in / Member state of test:<br/><b>Netherlands</b><br/>Afgever certificaat / Certificate issuer:<br/><b>Ministerie van VWS / Ministry of Health, Welfare and Sport</b><br/>Uniek certificaatnummer / Unique certificate identifier:<br/><b>URN:UCI:01:NL:PJ7JLSZ4KRGX5O2E7OD342#E</b><br/>*Datum weergegeven in dag-maand-jaar / Date noted in day-month-year.", infoScreen.description)
+        assertEquals((ApplicationProvider.getApplicationContext() as Context).getString(R.string.qr_explanation_description_eu_test,
+            "ten Bouwer, Bob",
+            "18-08-1991",
+            "COVID-19",
+            "LP6464-4",
+            "",
+            "10-08-2021",
+            "negatief (geen corona)",
+            "Facility approved by the State of The Netherlands",
+            "",
+            "Netherlands",
+            "Ministerie van VWS / Ministry of Health, Welfare and Sport",
+            "URN:UCI:01:NL:PJ7JLSZ4KRGX5O2E7OD342#E"
+            ), infoScreen.description)
     }
 
 }

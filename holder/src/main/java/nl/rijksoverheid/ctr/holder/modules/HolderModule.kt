@@ -75,7 +75,7 @@ fun holderModule(baseUrl: String) = module {
         HolderDatabase.createInstance(androidContext(), get(), androidContext().packageName == "nl.rijksoverheid.ctr.holder")
     }
 
-    factory<HolderDatabaseSyncer> { HolderDatabaseSyncerImpl(get(), get(), get(), get(), get(), get()) }
+    factory<HolderDatabaseSyncer> { HolderDatabaseSyncerImpl(get(), get(), get(), get()) }
 
     single<PersistenceManager> {
         SharedPreferencesPersistenceManager(
@@ -127,13 +127,6 @@ fun holderModule(baseUrl: String) = module {
             get(),
             get(),
             get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get()
         )
     }
     factory<GetMyOverviewItemsUseCase> {
@@ -184,12 +177,14 @@ fun holderModule(baseUrl: String) = module {
     factory<TestProviderRepository> {
         TestProviderRepositoryImpl(
             get(),
-            get(named("SignedResponseWithModel"))
+            get(),
+            get(named("SignedResponseWithModel")),
         )
     }
     factory<EventProviderRepository> {
         EventProviderRepositoryImpl(
-            get()
+            get(),
+            get(),
         )
     }
 

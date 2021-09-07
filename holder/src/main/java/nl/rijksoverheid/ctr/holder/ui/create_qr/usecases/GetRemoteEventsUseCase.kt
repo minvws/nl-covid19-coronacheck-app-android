@@ -3,8 +3,8 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.EventProviderRepository
-import retrofit2.HttpException
-import java.io.IOException
+import nl.rijksoverheid.ctr.shared.models.ErrorResult
+import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 
 /**
  * Get events for a event provider
@@ -23,35 +23,23 @@ class GetRemoteEventsUseCaseImpl(private val eventProviderRepository: EventProvi
         originType: OriginType,
         token: RemoteAccessTokens.Token
     ): RemoteEventsResult {
-        return try {
-            val events = eventProviderRepository
-                .getEvents(
-                    url = eventProvider.eventUrl,
-                    token = token.event,
-                    filter = EventProviderRepository.getFilter(originType),
-                    signingCertificateBytes = eventProvider.cms
-                )
 
-            RemoteEventsResult.Success(events)
-        } catch (e: HttpException) {
-            RemoteEventsResult.Error.ServerError(
-                httpCode = e.code()
-            )
-        } catch (e: IOException) {
-            RemoteEventsResult.Error.NetworkError
-        } catch (e: Exception) {
-            // In case the event provider gives us back a 200 with json we are not expecting
-            RemoteEventsResult.Error.ServerError(
-                httpCode = 200
-            )
+        return when (val eventsResult = eventProviderRepository
+            .getEvents(
+                url = eventProvider.eventUrl,
+                token = token.event,
+                filter = EventProviderRepository.getFilter(originType),
+                signingCertificateBytes = eventProvider.cms,
+                provider = eventProvider.providerIdentifier,
+            )) {
+
+            is NetworkRequestResult.Success<SignedResponseWithModel<RemoteProtocol3>> -> RemoteEventsResult.Success(eventsResult.response)
+            is NetworkRequestResult.Failed -> RemoteEventsResult.Error(eventsResult)
         }
     }
 }
 
 sealed class RemoteEventsResult {
     data class Success(val signedModel: SignedResponseWithModel<RemoteProtocol3>): RemoteEventsResult()
-    sealed class Error: RemoteEventsResult() {
-        data class ServerError(val httpCode: Int): Error()
-        object NetworkError : Error()
-    }
+    data class Error(val errorResult: ErrorResult): RemoteEventsResult()
 }

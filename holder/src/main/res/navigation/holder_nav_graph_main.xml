@@ -58,7 +58,6 @@
 
     </navigation>
 
-
     <fragment
         android:id="@+id/nav_my_overview"
         android:name="nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewFragment"
@@ -211,14 +210,6 @@
             <action
                 android:id="@+id/action_could_not_create_qr"
                 app:destination="@id/nav_could_not_create_qr"
-                app:enterAnim="@anim/slide_in_right"
-                app:exitAnim="@anim/slide_out_left"
-                app:popEnterAnim="@anim/slide_in_left"
-                app:popExitAnim="@anim/slide_out_right" />
-
-            <action
-                android:id="@+id/action_error_result"
-                app:destination="@id/nav_error_result"
                 app:enterAnim="@anim/slide_in_right"
                 app:exitAnim="@anim/slide_out_left"
                 app:popEnterAnim="@anim/slide_in_left"
@@ -524,5 +515,13 @@
         app:popExitAnim="@anim/fragment_close_exit"
         app:popUpTo="@id/nav_graph_overview"
         app:popUpToInclusive="true" />
+
+    <action
+        android:id="@+id/action_error_result"
+        app:destination="@id/nav_error_result"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
 
 </navigation>

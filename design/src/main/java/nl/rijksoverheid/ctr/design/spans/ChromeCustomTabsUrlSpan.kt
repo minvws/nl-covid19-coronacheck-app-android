@@ -13,7 +13,6 @@ import nl.rijksoverheid.ctr.shared.ext.launchUrl
  */
 class ChromeCustomTabsUrlSpan(url: String?) : URLSpan(url) {
     override fun onClick(widget: View) {
-        super.onClick(widget)
-            url?.launchUrl(widget.context)
+        url?.launchUrl(widget.context)
     }
 }

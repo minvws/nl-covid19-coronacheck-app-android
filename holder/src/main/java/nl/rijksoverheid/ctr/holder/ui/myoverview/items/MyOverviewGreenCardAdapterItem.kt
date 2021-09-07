@@ -59,10 +59,10 @@ class MyOverviewGreenCardAdapterItem(
             is GreenCardType.Eu -> {
                 viewBinding.typeTitle.apply {
                     text = context.getString(R.string.validity_type_european_title)
-                    setTextColor(ContextCompat.getColor(context, R.color.darkened_blue))
+                    setTextColor(ContextCompat.getColor(context, R.color.primary_blue))
                 }
-                viewBinding.buttonWithProgressWidgetContainer.setEnabledButtonColor(R.color.darkened_blue)
-                viewBinding.imageView.setImageResource(R.drawable.illustration_hand_qr_eu)
+                viewBinding.buttonWithProgressWidgetContainer.setEnabledButtonColor(R.color.primary_blue)
+                viewBinding.imageView.setImageResource(R.drawable.ic_international_card)
             }
             is GreenCardType.Domestic -> {
                 viewBinding.typeTitle.apply {
@@ -70,7 +70,7 @@ class MyOverviewGreenCardAdapterItem(
                     setTextColor(ContextCompat.getColor(context, R.color.primary_blue))
                 }
                 viewBinding.buttonWithProgressWidgetContainer.setEnabledButtonColor(R.color.primary_blue)
-                viewBinding.imageView.setImageResource(R.drawable.illustration_hand_qr_nl)
+                viewBinding.imageView.setImageResource(R.drawable.ic_dutch_card)
             }
         }
 
@@ -112,7 +112,7 @@ class MyOverviewGreenCardAdapterItem(
         if (credentialState is MyOverviewItem.GreenCardItem.CredentialState.NoCredential) {
             val context = viewBinding.errorText.context
             when (databaseSyncerResult) {
-                is DatabaseSyncerResult.NetworkError -> {
+                is DatabaseSyncerResult.Failed.NetworkError -> {
                     viewBinding.errorText.setHtmlText(R.string.my_overview_green_card_internet_error)
                     viewBinding.errorText.enableCustomLinks(onRetryClick)
                     viewBinding.errorTextRetry.setHtmlText("")
@@ -120,7 +120,7 @@ class MyOverviewGreenCardAdapterItem(
                     viewBinding.errorText.visibility = View.VISIBLE
                     viewBinding.errorTextRetry.visibility = View.GONE
                 }
-                is DatabaseSyncerResult.ServerError -> {
+                is DatabaseSyncerResult.Failed.ServerError -> {
                     viewBinding.errorText.setHtmlText(R.string.my_overview_green_card_server_error)
                     viewBinding.errorText.enableCustomLinks(onRetryClick)
                     viewBinding.errorIcon.visibility = View.VISIBLE

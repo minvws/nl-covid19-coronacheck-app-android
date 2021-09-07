@@ -28,33 +28,30 @@ class ClockDeviationUseCaseImpl(
     private val cachedAppConfigUseCase: CachedAppConfigUseCase
 ) : ClockDeviationUseCase {
 
+    private var localServerResponseTimeStamp: Long = 0
+    private var localResponseReceivedTimeStamp: Long = 0
+    private var localUptimeAtResponse: Long = 0
+
 
     override fun store(serverResponseTimestamp: Long, localReceivedTimestamp: Long) {
-        clockDeviationPersistenceManager.saveTimestamps(
-            serverResponseTimestamp,
-            localReceivedTimestamp,
-            SystemClock.elapsedRealtime()
-        )
+        this.localServerResponseTimeStamp = serverResponseTimestamp
+        this.localResponseReceivedTimeStamp = localReceivedTimestamp
+        this.localUptimeAtResponse = SystemClock.elapsedRealtime()
     }
 
     override fun calculateDeviationState(): Boolean {
-        val localReceivedTimestamp =
-            clockDeviationPersistenceManager.getLastLocalResponseReceivedTimestamp()
-        val serverResponseTimestamp =
-            clockDeviationPersistenceManager.getLastServerResponseTimestamp()
-
-        if (localReceivedTimestamp == 0L && serverResponseTimestamp == 0L) {
+        if (localResponseReceivedTimeStamp == 0L && localServerResponseTimeStamp == 0L) {
             return false
         }
 
-        val uptimeAtResponse = clockDeviationPersistenceManager.getSystemUptimeTimestamp()
         val currentLocalUptime = SystemClock.elapsedRealtime()
         val localTime = clock.instant().toEpochMilli()
         val currentSystemStartDatetime = localTime - currentLocalUptime
-        val responseSystemStartDatetime = localReceivedTimestamp - uptimeAtResponse
-        val responseTimeDelta = localReceivedTimestamp - serverResponseTimestamp
+        val responseSystemStartDatetime = localResponseReceivedTimeStamp - localUptimeAtResponse
+        val responseTimeDelta = localResponseReceivedTimeStamp - localServerResponseTimeStamp
         val systemUptimeDelta = currentSystemStartDatetime - responseSystemStartDatetime
-        val thresholdInSeconds = (cachedAppConfigUseCase.getCachedAppConfig() as HolderConfig).holderClockDeviationThresholdSeconds
+        val thresholdInSeconds =
+            (cachedAppConfigUseCase.getCachedAppConfig() as HolderConfig).holderClockDeviationThresholdSeconds
 
         val hasDeviation =
             (abs(systemUptimeDelta + responseTimeDelta) / SECOND_IN_MS) >= thresholdInSeconds

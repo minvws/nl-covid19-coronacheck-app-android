@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
+import nl.rijksoverheid.ctr.holder.HolderFlow
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentChooseProviderBinding
@@ -13,7 +14,11 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigidResult
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.EventsResult
+import nl.rijksoverheid.ctr.shared.factories.ErrorCodeStringFactory
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
+import nl.rijksoverheid.ctr.shared.models.ErrorResult
+import nl.rijksoverheid.ctr.shared.models.ErrorResultFragmentData
+import nl.rijksoverheid.ctr.shared.models.Flow
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAsAccessibilityButton
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -29,6 +34,10 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
 
     private val dialogUtil: DialogUtil by inject()
     private val getEventsViewModel: GetEventsViewModel by viewModel()
+
+    override fun getFlow(): Flow {
+        return HolderFlow.CommercialTest
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -68,12 +77,14 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
                     if (it.missingEvents) {
                         dialogUtil.presentDialog(
                             context = requireContext(),
-                            title = R.string.missing_events_title,
-                            message = getString(R.string.missing_events_description),
-                            positiveButtonText = R.string.ok,
+                            title = getDialogTitleFromOriginType(OriginType.Test),
+                            message = getString(R.string.error_get_events_missing_events_dialog_description),
+                            positiveButtonText = R.string.dialog_close,
                             positiveButtonCallback = {},
                             onDismissCallback = {
-                                navigateToYourEvents(it.signedModels)
+                                navigateToYourEvents(
+                                    signedEvents = it.signedModels
+                                )
                             }
                         )
                     } else {
@@ -82,12 +93,16 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
                 }
                 is EventsResult.HasNoEvents -> {
                     if (it.missingEvents) {
-                        findNavController().navigate(
-                            ChooseProviderFragmentDirections.actionCouldNotCreateQr(
-                                toolbarTitle = getString(R.string.your_vaccination_result_toolbar_title),
-                                title = getString(R.string.missing_events_title),
-                                description = getString(R.string.missing_events_description),
-                                buttonTitle = getString(R.string.back_to_overview)
+                        presentError(
+                            data = ErrorResultFragmentData(
+                                title = getString(R.string.error_get_events_no_events_title),
+                                description = getString(R.string.error_get_events_http_error_description, getErrorCodes(it.errorResults)),
+                                buttonTitle = getString(R.string.back_to_overview),
+                                ErrorResultFragmentData.ButtonAction.Destination(R.id.action_my_overview),
+                                urlData = ErrorResultFragmentData.UrlData(
+                                    urlButtonTitle = getString(R.string.error_something_went_wrong_outage_button),
+                                    urlButtonUrl = getString(R.string.error_something_went_wrong_outage_button_url)
+                                ),
                             )
                         )
                     } else {
@@ -101,35 +116,17 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
                         )
                     }
                 }
-                is EventsResult.Error.NetworkError -> {
-                    dialogUtil.presentDialog(
-                        context = requireContext(),
-                        title = R.string.dialog_no_internet_connection_title,
-                        message = getString(R.string.dialog_no_internet_connection_description),
-                        positiveButtonText = R.string.dialog_retry,
-                        positiveButtonCallback = {
-                            loginWithDigiD()
-                        },
-                        negativeButtonText = R.string.dialog_close
-                    )
-                }
-                is EventsResult.Error.EventProviderError.ServerError -> {
-                    findNavController().navigate(
-                        ChooseProviderFragmentDirections.actionCouldNotCreateQr(
-                            toolbarTitle = getString(R.string.commercial_test_type_title),
-                            title = getString(R.string.event_provider_error_title),
-                            description = getString(R.string.event_provider_error_description),
-                            buttonTitle = getString(R.string.back_to_overview)
-                        )
-                    )
-                }
-                is EventsResult.Error.CoronaCheckError.ServerError -> {
-                    findNavController().navigate(
-                        ChooseProviderFragmentDirections.actionCouldNotCreateQr(
-                            toolbarTitle = getString(R.string.commercial_test_type_title),
-                            title = getString(R.string.coronacheck_error_title),
-                            description = getString(R.string.coronacheck_error_description, it.httpCode.toString()),
-                            buttonTitle = getString(R.string.back_to_overview)
+                is EventsResult.Error -> {
+                    presentError(
+                        data = ErrorResultFragmentData(
+                            title = getString(R.string.error_something_went_wrong_title),
+                            description = getString(R.string.error_get_events_http_error_description, getErrorCodes(it.errorResults)),
+                            buttonTitle = getString(R.string.back_to_overview),
+                            ErrorResultFragmentData.ButtonAction.Destination(R.id.action_my_overview),
+                            urlData = ErrorResultFragmentData.UrlData(
+                                urlButtonTitle = getString(R.string.error_something_went_wrong_outage_button),
+                                urlButtonUrl = getString(R.string.error_something_went_wrong_outage_button_url)
+                            ),
                         )
                     )
                 }
@@ -144,10 +141,13 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
                         originType = OriginType.Test)
                 }
                 is DigidResult.Failed -> {
+                    presentError(it.errorResult)
+                }
+                DigidResult.Cancelled -> {
                     dialogUtil.presentDialog(
                         context = requireContext(),
-                        title = R.string.digid_login_failed_title,
-                        message = getString(R.string.digid_login_failed_description),
+                        title = R.string.digid_login_cancelled_title,
+                        message = getString(R.string.digid_login_cancelled_description),
                         positiveButtonText = R.string.dialog_close,
                         positiveButtonCallback = {}
                     )

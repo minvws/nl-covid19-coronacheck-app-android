@@ -1,13 +1,13 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
 import kotlinx.coroutines.runBlocking
-import nl.rijksoverheid.ctr.holder.fakeConfigProviderUseCase
-import nl.rijksoverheid.ctr.holder.fakeCoronaCheckRepository
+import nl.rijksoverheid.ctr.holder.HolderStep
 import nl.rijksoverheid.ctr.holder.fakeEventProviderRepository
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteAccessTokens
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteConfigProviders
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteUnomi
+import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Test
 import retrofit2.HttpException
@@ -53,17 +53,21 @@ class GetEventProvidersWithTokensUseCaseImplTest {
             unomi = {
                  when (it) {
                     "event_provider_1_url" -> {
-                        RemoteUnomi(
-                            providerIdentifier = "",
-                            protocolVersion = "",
-                            informationAvailable = true
+                        NetworkRequestResult.Success(
+                            RemoteUnomi(
+                                providerIdentifier = "",
+                                protocolVersion = "",
+                                informationAvailable = true
+                            )
                         )
                     }
                      else -> {
-                         RemoteUnomi(
-                             providerIdentifier = "",
-                             protocolVersion = "",
-                             informationAvailable = false
+                         NetworkRequestResult.Success(
+                             RemoteUnomi(
+                                 providerIdentifier = "",
+                                 protocolVersion = "",
+                                 informationAvailable = false
+                             )
                          )
                      }
                 }
@@ -88,23 +92,29 @@ class GetEventProvidersWithTokensUseCaseImplTest {
     }
 
     @Test
-    fun `get() returns ServerError for event provider that returns 400`() = runBlocking {
+    fun `get() returns ServerError for event provider that returns 404`() = runBlocking {
+        val httpException = HttpException(
+            Response.error<String>(
+                404, "".toResponseBody()
+            )
+        )
+        val httpError = NetworkRequestResult.Failed.CoronaCheckHttpError(
+            HolderStep.UnomiNetworkRequest, httpException
+        )
         val eventProviderRepository = fakeEventProviderRepository(
             unomi = {
                 when (it) {
                     "event_provider_1_url" -> {
-                        RemoteUnomi(
-                            providerIdentifier = "",
-                            protocolVersion = "",
-                            informationAvailable = true
+                        NetworkRequestResult.Success(
+                            RemoteUnomi(
+                                providerIdentifier = "",
+                                protocolVersion = "",
+                                informationAvailable = true
+                            )
                         )
                     }
                     else -> {
-                        throw HttpException(
-                            Response.error<String>(
-                                404, "".toResponseBody()
-                            )
-                        )
+                        httpError
                     }
                 }
             }
@@ -120,7 +130,7 @@ class GetEventProvidersWithTokensUseCaseImplTest {
                     eventProvider = eventProvider1,
                     token = tokenProvider1
                 ),
-                EventProviderWithTokenResult.Error.ServerError(404)),
+                EventProviderWithTokenResult.Error(httpError)),
             usecase.get(
                 eventProviders = listOf(eventProvider1, eventProvider2),
                 tokens = listOf(tokenProvider1, tokenProvider2),
@@ -130,18 +140,23 @@ class GetEventProvidersWithTokensUseCaseImplTest {
 
     @Test
     fun `get() returns Network for event provider that throws SocketTimeOutException`() = runBlocking {
+        val exception = SocketTimeoutException()
         val eventProviderRepository = fakeEventProviderRepository(
             unomi = {
                 when (it) {
                     "event_provider_1_url" -> {
-                        RemoteUnomi(
-                            providerIdentifier = "",
-                            protocolVersion = "",
-                            informationAvailable = true
+                        NetworkRequestResult.Success(
+                            RemoteUnomi(
+                                providerIdentifier = "",
+                                protocolVersion = "",
+                                informationAvailable = true
+                            )
                         )
                     }
                     else -> {
-                        throw SocketTimeoutException()
+                        NetworkRequestResult.Failed.NetworkError(
+                            HolderStep.UnomiNetworkRequest, exception
+                        )
                     }
                 }
             }
@@ -157,7 +172,8 @@ class GetEventProvidersWithTokensUseCaseImplTest {
                     eventProvider = eventProvider1,
                     token = tokenProvider1
                 ),
-                EventProviderWithTokenResult.Error.NetworkError),
+                EventProviderWithTokenResult.Error(NetworkRequestResult.Failed.NetworkError(
+                    HolderStep.UnomiNetworkRequest, exception))),
             usecase.get(
                 eventProviders = listOf(eventProvider1, eventProvider2),
                 tokens = listOf(tokenProvider1, tokenProvider2),

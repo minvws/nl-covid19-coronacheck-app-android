@@ -40,6 +40,7 @@ data class HolderConfig(
     @Json(name = "clockDeviationThresholdSeconds") val holderClockDeviationThresholdSeconds: Int,
     @Json(name = "androidRecommendedVersion") val holderRecommendedVersion: Int,
     @Json(name = "upgradeRecommendationInterval") val upgradeRecommendationIntervalHours: Int,
+    @Json(name = "luhnCheckEnabled") val luhnCheckEnabled: Boolean,
 ) : AppConfig(
     holderAppDeactivated,
     holderInformationURL,
@@ -78,7 +79,8 @@ data class HolderConfig(
             domesticQRRefreshSeconds: Int = 10,
             holderClockDeviationThresholdSeconds: Int = 30,
             holderRecommendedVersion: Int = 1025,
-            upgradeRecommendationIntervalHours: Int = 24
+            upgradeRecommendationIntervalHours: Int = 24,
+            luhnCheckEnabled: Boolean = false,
         ) = HolderConfig(
             holderMinimumVersion = holderMinimumVersion,
             holderAppDeactivated = holderAppDeactivated,
@@ -106,7 +108,8 @@ data class HolderConfig(
             domesticQRRefreshSeconds = domesticQRRefreshSeconds,
             holderClockDeviationThresholdSeconds = holderClockDeviationThresholdSeconds,
             holderRecommendedVersion = holderRecommendedVersion,
-            upgradeRecommendationIntervalHours = upgradeRecommendationIntervalHours
+            upgradeRecommendationIntervalHours = upgradeRecommendationIntervalHours,
+            luhnCheckEnabled = luhnCheckEnabled,
         )
     }
 }
