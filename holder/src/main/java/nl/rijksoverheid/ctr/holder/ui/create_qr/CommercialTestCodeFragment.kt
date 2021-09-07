@@ -107,8 +107,7 @@ import org.koin.androidx.viewmodel.scope.emptyState
         viewModel.testResult.observe(viewLifecycleOwner, EventObserver {
             when (it) {
                 is TestResult.InvalidToken -> {
-                    binding.uniqueCodeInput.error =
-                        getString(R.string.commercial_test_error_invalid_code)
+                    binding.uniqueCodeInput.error = it.invalidReason
                     binding.verificationCodeInput.isVisible = false
                 }
                 is TestResult.NegativeTestResult -> {

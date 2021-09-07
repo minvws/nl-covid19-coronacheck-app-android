@@ -1,6 +1,8 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
+import android.content.res.Resources
 import nl.rijksoverheid.ctr.holder.HolderStep
+import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
@@ -25,18 +27,19 @@ class TestResultUseCase(
     private val testProviderRepository: TestProviderRepository,
     private val tokenValidatorUtil: TokenValidatorUtil,
     private val configUseCase: CachedAppConfigUseCase,
+    private val resources: Resources
 ) {
 
     suspend fun testResult(uniqueCode: String, verificationCode: String? = null): TestResult {
         try {
             if (uniqueCode.indexOf("-") == -1) {
-                return TestResult.InvalidToken
+                return TestResult.InvalidToken(resources.getString(R.string.commercial_test_error_invalid_code))
             }
 
             val uniqueCodeAttributes = uniqueCode.split("-")
 
             if (uniqueCodeAttributes.size != 3) {
-                return TestResult.InvalidToken
+                return TestResult.InvalidToken(resources.getString(R.string.commercial_test_error_invalid_code))
             }
 
             val providerIdentifier = uniqueCodeAttributes[0]
@@ -46,7 +49,7 @@ class TestResultUseCase(
             // We need to check for valid chars
             token.toCharArray().forEach {
                 if (!TokenValidatorUtilImpl.CODE_POINTS.contains(it)) {
-                    return TestResult.InvalidToken
+                    return TestResult.InvalidToken(resources.getString(R.string.commercial_test_error_invalid_code))
                 }
             }
 
@@ -57,19 +60,21 @@ class TestResultUseCase(
                         checksum = checksum
                     )
                 ) {
-                    return TestResult.InvalidToken
+                    return TestResult.InvalidToken(resources.getString(R.string.commercial_test_error_invalid_code))
                 }
             }
 
-            val testProvider = when (val testProvidersResult = configProviderUseCase.testProviders()) {
-                is TestProvidersResult.Success -> {
-                    testProvidersResult.testProviders
-                        .firstOrNull { it.providerIdentifier == providerIdentifier } ?: return TestResult.InvalidToken
+            val testProvider =
+                when (val testProvidersResult = configProviderUseCase.testProviders()) {
+                    is TestProvidersResult.Success -> {
+                        testProvidersResult.testProviders
+                            .firstOrNull { it.providerIdentifier == providerIdentifier }
+                            ?: return TestResult.InvalidToken(resources.getString(R.string.commercial_test_error_invalid_code))
+                    }
+                    is TestProvidersResult.Error -> {
+                        return TestResult.Error(testProvidersResult.errorResult)
+                    }
                 }
-                is TestProvidersResult.Error -> {
-                    return TestResult.Error(testProvidersResult.errorResult)
-                }
-            }
 
             val signedResponseWithTestResultRequestResult = testProviderRepository.remoteTestResult(
                 url = testProvider.resultUrl,
@@ -92,7 +97,9 @@ class TestResultUseCase(
 
             when (remoteTestResult.status) {
                 RemoteProtocol.Status.VERIFICATION_REQUIRED -> return TestResult.VerificationRequired
-                RemoteProtocol.Status.INVALID_TOKEN -> return TestResult.InvalidToken
+                RemoteProtocol.Status.INVALID_TOKEN -> return TestResult.InvalidToken(
+                    resources.getString(R.string.commercial_test_error_invalid_code)
+                )
                 RemoteProtocol.Status.PENDING -> return TestResult.Pending
                 RemoteProtocol.Status.COMPLETE -> {
                     if (remoteTestResult is RemoteTestResult2) {
@@ -131,7 +138,7 @@ sealed class TestResult {
     ) : TestResult()
 
     object Pending : TestResult()
-    object InvalidToken : TestResult()
+    data class InvalidToken(val invalidReason: String) : TestResult()
     object VerificationRequired : TestResult()
     data class Error(val errorResult: ErrorResult) : TestResult()
 }

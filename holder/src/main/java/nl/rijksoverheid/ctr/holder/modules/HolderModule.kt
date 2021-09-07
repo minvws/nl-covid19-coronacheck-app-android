@@ -127,6 +127,7 @@ fun holderModule(baseUrl: String) = module {
             get(),
             get(),
             get(),
+            androidContext().resources
         )
     }
     factory<GetMyOverviewItemsUseCase> {
