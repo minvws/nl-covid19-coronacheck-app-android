@@ -63,7 +63,7 @@
     <string name="commercial_test_type_title">Testuitslag ophalen</string>
     <string name="commercial_test_type_description">Om je testuitslag op te halen heb je een ophaalcode nodig.</string>
     <string name="commercial_test_type_code_title">Ik heb een ophaalcode</string>
-    <string name="commercial_test_type_code_toolbar_title">Ophaalcode invullen</string>
+    <string name="commercial_test_type_code_toolbar_title">Testuitslag ophalen</string>
     <string name="commercial_test_type_qr_code_title">Ik heb een QR-code</string>
     <string name="commercial_test_type_no_code_title">Ik heb geen code</string>
     <string name="commercial_test_type_no_code_received_title">Ik heb geen code gekregen</string>
