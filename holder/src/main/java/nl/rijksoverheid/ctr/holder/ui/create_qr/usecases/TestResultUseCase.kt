@@ -69,7 +69,7 @@ class TestResultUseCase(
                     is TestProvidersResult.Success -> {
                         testProvidersResult.testProviders
                             .firstOrNull { it.providerIdentifier == providerIdentifier }
-                            ?: return TestResult.InvalidToken(resources.getString(R.string.commercial_test_error_invalid_code))
+                            ?: return TestResult.InvalidToken(resources.getString(R.string.commercial_test_error_unknown_test_provider))
                     }
                     is TestProvidersResult.Error -> {
                         return TestResult.Error(testProvidersResult.errorResult)
