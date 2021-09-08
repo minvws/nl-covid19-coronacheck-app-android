@@ -8,8 +8,9 @@
 
 package nl.rijksoverheid.ctr.design
 
+import android.content.res.Configuration
+import android.view.WindowManager
 import android.widget.ImageView
-import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -17,12 +18,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.navigation.NavigationView
 import nl.rijksoverheid.ctr.design.databinding.MenuHeaderBinding
-import nl.rijksoverheid.ctr.design.ext.isScreenReaderOn
 import nl.rijksoverheid.ctr.shared.AccessibilityConstants
-import nl.rijksoverheid.ctr.shared.ext.getNavigationIconView
 import nl.rijksoverheid.ctr.shared.utils.Accessibility
-import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAccessibilityFocus
-
 
 /**
  * Base activity that adjust the navigation menu for system bar insets and handles custom destination logic
@@ -46,7 +43,7 @@ abstract class BaseMainFragment(
             // within the layout (for example due to using fitSystemWindows)
             ViewCompat.setOnApplyWindowInsetsListener(drawer) { _, insets ->
                 navView.setPadding(
-                    0,
+                    if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) insets.systemWindowInsetLeft else 0,
                     if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.R) insets.systemWindowInsetTop else 0,
                     0,
                     insets.systemWindowInsetBottom
