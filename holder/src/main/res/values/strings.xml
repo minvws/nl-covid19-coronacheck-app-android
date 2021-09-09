@@ -102,7 +102,8 @@
     <string name="commercial_test_error_invalid_code">Deze code is niet geldig</string>
     <string name="commercial_test_error_invalid_combination">Geen geldige combinatie van ophaalcode en verificatiecode</string>
     <string name="commercial_test_error_unknown_test_provider">Ophaalcode is van een onbekende testlocatie</string>
-    <string name="commercial_test_error_empty_code">Graag eerst een ophaalcode invullen</string>
+    <string name="commercial_test_error_empty_retrieval_code">Graag eerst een ophaalcode invullen</string>
+    <string name="commercial_test_error_empty_verification_code">Graag eerst een verificatiecode invullen</string>
     <string name="no_negative_test_result_title">Geen negatieve testuitslag</string>
     <string name="no_negative_test_result_description"><![CDATA[Er is geen negatieve testuitslag beschikbaar.]]></string>
     <string name="test_result_not_known_title">Testuitslag nog niet bekend</string>

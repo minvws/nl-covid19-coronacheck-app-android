@@ -80,6 +80,12 @@ class TestResultUseCase(
                     }
                 }
 
+            if (verificationCode != null && verificationCode.isEmpty()) {
+                return TestResult.InvalidVerificationCode(
+                    resources.getString(R.string.commercial_test_error_empty_verification_code)
+                )
+            }
+
             val signedResponseWithTestResultRequestResult = testProviderRepository.remoteTestResult(
                 url = testProvider.resultUrl,
                 token = token.removeWhitespace(),
@@ -143,6 +149,7 @@ sealed class TestResult {
 
     object Pending : TestResult()
     data class InvalidToken(val invalidReason: String) : TestResult()
+    data class InvalidVerificationCode(val invalidReason: String) : TestResult()
     object VerificationRequired : TestResult()
     data class Error(val errorResult: ErrorResult) : TestResult()
 }

@@ -6,7 +6,6 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
@@ -125,8 +124,10 @@ import org.koin.androidx.viewmodel.scope.emptyState
                         is RemoteProtocol3 -> {
                             findNavController().navigate(
                                 CommercialTestCodeFragmentDirections.actionYourEvents(
-                                    type = YourEventsFragmentType.RemoteProtocol3Type(mapOf(it.remoteTestResult to it.signedResponseWithTestResult.rawResponse),
-                                    originType = OriginType.Test),
+                                    type = YourEventsFragmentType.RemoteProtocol3Type(
+                                        mapOf(it.remoteTestResult to it.signedResponseWithTestResult.rawResponse),
+                                        originType = OriginType.Test
+                                    ),
                                     toolbarTitle = getString(R.string.commercial_test_type_title)
                                 )
                             )
@@ -160,6 +161,9 @@ import org.koin.androidx.viewmodel.scope.emptyState
                             getString(R.string.commercial_test_error_invalid_combination)
                     }
                     binding.verificationCodeInput.requestFocus()
+                }
+                is TestResult.InvalidVerificationCode -> {
+                    binding.verificationCodeInput.error = it.invalidReason
                 }
                 is TestResult.Error -> {
                     presentError(
@@ -206,7 +210,8 @@ import org.koin.androidx.viewmodel.scope.emptyState
         })
 
         binding.noTokenReceivedBtn.setOnClickListener {
-            navigateSafety(R.id.nav_commercial_test_code,
+            navigateSafety(
+                R.id.nav_commercial_test_code,
                 CommercialTestCodeFragmentDirections.actionNoCode()
             )
         }

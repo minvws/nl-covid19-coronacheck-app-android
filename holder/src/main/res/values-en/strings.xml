@@ -102,7 +102,8 @@
     <string name="commercial_test_error_invalid_code">This code is invalid</string>
     <string name="commercial_test_error_invalid_combination">Invalid retrieval code</string>
     <string name="commercial_test_error_unknown_test_provider">Retrieval code is from an unknown test location</string>
-    <string name="commercial_test_error_empty_code">Graag eerst een ophaalcode invullen</string>
+    <string name="commercial_test_error_empty_retrieval_code">Graag eerst een ophaalcode invullen</string>
+    <string name="commercial_test_error_empty_verification_code">Graag eerst een verificatiecode invullen</string>
     <string name="no_negative_test_result_title">No negative test result</string>
     <string name="no_negative_test_result_description"><![CDATA[No negative test result available.]]></string>
     <string name="test_result_not_known_title">Test result not yet known</string>
