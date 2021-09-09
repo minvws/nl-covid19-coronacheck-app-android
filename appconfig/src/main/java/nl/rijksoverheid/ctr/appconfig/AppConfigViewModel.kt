@@ -12,6 +12,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.appconfig.models.ConfigResult
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
@@ -40,33 +42,38 @@ class AppConfigViewModelImpl(
     private val versionCode: Int
 ) : AppConfigViewModel() {
 
+    private val mutex = Mutex()
+
     override fun refresh(mobileCoreWrapper: MobileCoreWrapper) {
         viewModelScope.launch {
-            val configResult = appConfigUseCase.get()
-            val appStatus = appStatusUseCase.get(configResult, versionCode)
-            if (configResult is ConfigResult.Success) {
-                persistConfigUseCase.persist(
-                    appConfigContents = configResult.appConfig,
-                    publicKeyContents = configResult.publicKeys
-                )
-            }
+            mutex.withLock {
+                val configResult = appConfigUseCase.get()
+                val appStatus = appStatusUseCase.get(configResult, versionCode)
+                if (configResult is ConfigResult.Success) {
+                    persistConfigUseCase.persist(
+                        appConfigContents = configResult.appConfig,
+                        publicKeyContents = configResult.publicKeys
+                    )
+                }
 
-            val configFilesArePresentInFilesFolder = appConfigStorageManager.areConfigFilesPresentInFilesFolder()
-            if (!configFilesArePresentInFilesFolder || !cachedAppConfigUseCase.isCachedAppConfigValid()) {
-                return@launch appStatusLiveData.postValue(Event(AppStatus.Error))
-            }
+                val configFilesArePresentInFilesFolder =
+                    appConfigStorageManager.areConfigFilesPresentInFilesFolder()
+                if (!configFilesArePresentInFilesFolder || !cachedAppConfigUseCase.isCachedAppConfigValid()) {
+                    return@launch appStatusLiveData.postValue(Event(AppStatus.Error))
+                }
 
-            val initializationError = if (isVerifierApp) {
-                mobileCoreWrapper.initializeVerifier(filesDirPath)
-            } else {
-                mobileCoreWrapper.initializeHolder(filesDirPath)
-            }
+                val initializationError = if (isVerifierApp) {
+                    mobileCoreWrapper.initializeVerifier(filesDirPath)
+                } else {
+                    mobileCoreWrapper.initializeHolder(filesDirPath)
+                }
 
-            if (initializationError != null) {
-                throw ClmobileVerifyException(initializationError)
-            }
+                if (initializationError != null) {
+                    throw ClmobileVerifyException(initializationError)
+                }
 
-            appStatusLiveData.postValue(Event(appStatus))
+                appStatusLiveData.postValue(Event(appStatus))
+            }
         }
     }
 }
