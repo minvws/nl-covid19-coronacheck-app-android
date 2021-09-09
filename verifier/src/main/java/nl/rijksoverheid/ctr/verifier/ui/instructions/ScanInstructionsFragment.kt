@@ -163,7 +163,9 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
                                     clearToolbar()
                                     // Instructions have been opened, set as seen
                                     scanQrViewModel.setScanInstructionsSeen()
-                                    scannerUtil.launchScanner(requireActivity())
+                                    if (isAdded) {
+                                        scannerUtil.launchScanner(requireActivity())
+                                    }
                                 }
                             }
                             true
