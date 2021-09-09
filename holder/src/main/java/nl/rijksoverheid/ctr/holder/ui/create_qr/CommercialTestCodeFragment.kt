@@ -70,7 +70,6 @@ import org.koin.androidx.viewmodel.scope.emptyState
         }
 
         viewModel.viewState.observe(viewLifecycleOwner) {
-            binding.bottom.setButtonEnabled(it.canRetrieveResult)
             binding.uniqueCodeText.imeOptions =
                 (if (it.verificationRequired) EditorInfo.IME_ACTION_NEXT else EditorInfo.IME_ACTION_SEND)
             binding.verificationCodeInput.visibility =

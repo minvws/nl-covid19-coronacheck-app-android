@@ -73,7 +73,6 @@ open class CommercialTestCodeViewModelImpl(
     override fun updateViewState() {
         (viewState as MutableLiveData).value = currentViewState.copy(
             verificationRequired = verificationRequired,
-            canRetrieveResult = (testCode.isNotEmpty() && !verificationRequired) || (verificationRequired && testCode.isNotEmpty() && verificationCode.isNotEmpty()),
             fromDeeplink = fromDeeplink
         )
     }
@@ -108,6 +107,5 @@ open class CommercialTestCodeViewModelImpl(
 
 data class ViewState(
     val verificationRequired: Boolean = false,
-    val canRetrieveResult: Boolean = false,
     val fromDeeplink: Boolean = false
 )
