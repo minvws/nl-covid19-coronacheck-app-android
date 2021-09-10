@@ -65,7 +65,9 @@ import org.koin.androidx.viewmodel.scope.emptyState
         }
 
         binding.verificationCodeText.addTextChangedListener {
-            viewModel.verificationCode = it?.toString() ?: ""
+            if (it?.isNotEmpty() == true) {
+                viewModel.verificationCode = it.toString()
+            }
         }
 
         viewModel.viewState.observe(viewLifecycleOwner) {
@@ -77,6 +79,11 @@ import org.koin.androidx.viewmodel.scope.emptyState
                 if (it.verificationRequired) View.VISIBLE else View.GONE
             binding.noTokenReceivedBtn.visibility =
                 if (!it.verificationRequired) View.VISIBLE else View.GONE
+
+            // Start with empty text for possible empty field error when field is visible
+            if (it.verificationRequired && viewModel.verificationCode == null) {
+                viewModel.verificationCode = ""
+            }
 
             if (it.fromDeeplink && it.verificationRequired) {
                 binding.uniqueCodeInput.isVisible = false

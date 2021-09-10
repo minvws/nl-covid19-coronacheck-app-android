@@ -33,7 +33,7 @@ class TestResultUseCase(
     suspend fun testResult(uniqueCode: String, verificationCode: String? = null): TestResult {
         try {
             if (uniqueCode.isEmpty()) {
-                return TestResult.InvalidToken(resources.getString(R.string.commercial_test_error_invalid_code))
+                return TestResult.InvalidToken(resources.getString(R.string.commercial_test_error_empty_retrieval_code))
             }
 
             if (uniqueCode.indexOf("-") == -1) {
