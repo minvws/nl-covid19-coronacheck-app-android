@@ -59,11 +59,7 @@ class TestResultUseCase(
 
             // Enable the luhn check based on the current config value
             if (configUseCase.getCachedAppConfig().luhnCheckEnabled) {
-                if (!tokenValidatorUtil.validate(
-                        token = token,
-                        checksum = checksum
-                    )
-                ) {
+                if (!tokenValidatorUtil.validate(token = token, checksum = checksum)) {
                     return TestResult.InvalidToken(resources.getString(R.string.commercial_test_error_invalid_code))
                 }
             }
