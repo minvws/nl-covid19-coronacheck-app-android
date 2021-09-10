@@ -65,7 +65,7 @@ import org.koin.androidx.viewmodel.scope.emptyState
         }
 
         binding.verificationCodeText.addTextChangedListener {
-            if (it?.isNotEmpty() == true) {
+            if (binding.verificationCodeInput.isVisible) {
                 viewModel.verificationCode = it.toString()
             }
         }
