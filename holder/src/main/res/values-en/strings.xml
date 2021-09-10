@@ -20,7 +20,7 @@
     <string name="privacy_policy_2"><![CDATA[No location data is <b>used or saved</b>]]></string>
     <string name="privacy_policy_checkbox_text">I have read the privacy statement and understand how CoronaCheck processes my data.</string>
     <string name="my_overview">My certificates</string>
-    <string name="my_overview_description">Visiting a location within the Netherlands? Show both your QR code and your proof of identity at the entrance of the location you\'re visiting.</string>
+    <string name="my_overview_description">Visiting a location within the Netherlands? Show both your Dutch QR code and your proof of identity at the entrance of the location you\'re visiting.</string>
     <string name="my_overview_description_eu"><![CDATA[Are you abroad, or planning to cross the border? Then always use the international QR code below. Please check before leaving which certificate you need. <br /><br /><a href="https://www.netherlandsworldwide.nl/travelling-outside-the-netherlands">Is my certificate valid where I’m heading?</a>]]></string>
     <string name="my_overview_no_qr_description"><![CDATA[You can create a QR code if you\'re vaccinated, if you\'ve had corona or by taking a test at an <a href="https://coronacheck.nl/en/testafspraak-in-app">affiliated test location</a>.]]></string>
     <string name="dialog_error_title">Sorry, something went wrong</string>
@@ -337,7 +337,7 @@
     <string name="add_paper_proof_input_not_6_chars">Enter the 6-letter combination.</string>
     <string name="add_paper_proof_no_letter_combination_button">No letter combination?</string>
     <string name="no_letter_combination_dialog_title">No letter combination?</string>
-    <string name="no_letter_combination_dialog_description"><![CDATA[Then you won’t be able to add your certificate to the app this way.<br/>You’ve only received a letter combination if you requested your paper coronavirus pass <a href="http://coronatest.nl/en">at the healthcare provider</a> who vaccinated or tested you.<br/><b>Did you print your certificate yourself?</b> Please add your certificate to the app via the menu. Go to “Add certificate” and log in using your DigiD.]]></string>
+    <string name="no_letter_combination_dialog_description"><![CDATA[Then you won’t be able to add your certificate to the app this way.<br/>You’ve only received a letter combination if you requested your paper coronavirus pass <a href="http://coronatest.nl/en">at the healthcare provider</a> who vaccinated or tested you.<br/><br/><b>Did you print your certificate yourself?</b> Please add your certificate to the app via the menu. Go to “Add certificate” and log in using your DigiD.]]></string>
     <string name="add_paper_proof_explanation_description"><![CDATA[Have you requested your paper coronavirus pass <b>at the healthcare provider</b> who vaccinated or tested you? Then you can add it here in the app.]]></string>
     <string name="add_paper_proof_explanation_highlight"><![CDATA[<b>Did you print your certificate yourself?</b> Please add your certificate to the app via the menu. Go to “Add certificate” and log in using your DigiD.]]></string>
     <string name="add_paper_proof_consent_title">Only scan the international QR code</string>
