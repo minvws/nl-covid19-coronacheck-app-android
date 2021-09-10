@@ -89,7 +89,7 @@ class TestResultUseCase(
             val signedResponseWithTestResultRequestResult = testProviderRepository.remoteTestResult(
                 url = testProvider.resultUrl,
                 token = token.removeWhitespace(),
-                verifierCode = verificationCode?.removeWhitespace(),
+                verifierCode = verificationCode?.removeWhitespace() ?: "",
                 signingCertificateBytes = testProvider.publicKey,
                 provider = providerIdentifier
             )
