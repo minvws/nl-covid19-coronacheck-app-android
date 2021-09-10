@@ -63,6 +63,8 @@ class YourEventExplanationFragment : Fragment(R.layout.fragment_your_event_expla
         val linearLayoutManager = LinearLayoutManager(requireContext())
         val dividerItemDecoration = DividerItemDecoration(requireContext(), linearLayoutManager.orientation)
         binding.scroll.layoutManager = linearLayoutManager
-        binding.scroll.addItemDecoration(dividerItemDecoration)
+        if (args.data.size > 1) {
+            binding.scroll.addItemDecoration(dividerItemDecoration)
+        }
     }
 }

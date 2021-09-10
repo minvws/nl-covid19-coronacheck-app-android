@@ -20,9 +20,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/ic_back"
-        app:navigationContentDescription="@string/back"
         app:menu="@menu/menu_scanner"
+        app:navigationContentDescription="@string/back"
+        app:navigationIcon="@drawable/ic_back"
         tools:title="QR-Code scannen" />
 
     <androidx.camera.view.PreviewView
@@ -60,18 +60,63 @@
         android:layout_marginTop="32dp"
         app:layout_constraintBottom_toBottomOf="@+id/preview_view"
         app:layout_constraintEnd_toEndOf="parent"
+        android:fillViewport="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/header_guideline">
 
-        <TextView
-            android:id="@+id/scanner_footer"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/overlay_cutout_margin"
-            android:gravity="center_horizontal"
-            android:textAppearance="?attr/textAppearanceBody1"
-            android:textStyle="bold"
-            tools:text="Richt je toestel op de QR-code op het scherm van de bezoeker." />
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/scanner_footer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/overlay_cutout_margin"
+                android:gravity="center_horizontal"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Richt je toestel op de QR-code op het scherm van de bezoeker." />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/zebra_contrainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="icon,zebra_footer"
+                android:visibility="gone"/>
+
+            <ImageView
+                android:id="@+id/icon"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginBottom="4dp"
+                android:src="@drawable/ic_zebra_laserscanner"
+                app:layout_constraintBottom_toTopOf="@id/zebra_footer"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/scanner_footer"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <TextView
+                android:id="@+id/zebra_footer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/overlay_cutout_margin"
+                android:layout_marginBottom="8dp"
+                android:gravity="center_horizontal"
+                android:text="@string/scanner_zebra_footer"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
 
