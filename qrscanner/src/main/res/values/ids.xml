@@ -10,4 +10,5 @@
     <item name="accessibility_flash_on" type="string" />
     <item name="accessibility_flash_off" type="string" />
     <item name="back" type="string" />
+    <item name="scanner_zebra_footer" type="string" />
 </resources>

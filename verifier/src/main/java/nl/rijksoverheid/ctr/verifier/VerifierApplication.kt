@@ -5,6 +5,7 @@ import nl.rijksoverheid.ctr.appconfig.*
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
 import nl.rijksoverheid.ctr.design.designModule
 import nl.rijksoverheid.ctr.introduction.introductionModule
+import nl.rijksoverheid.ctr.qrscanner.qrScannerModule
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.SharedApplication
 import nl.rijksoverheid.ctr.shared.sharedModule
@@ -44,7 +45,8 @@ open class VerifierApplication : SharedApplication() {
                 appConfigModule("verifier", BuildConfig.VERSION_CODE),
                 introductionModule,
                 *getAdditionalModules().toTypedArray(),
-                designModule
+                designModule,
+                qrScannerModule
             )
         }
 
