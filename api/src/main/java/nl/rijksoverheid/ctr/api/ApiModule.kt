@@ -35,31 +35,7 @@ fun apiModule(
     testProviderApiChecks: Boolean,
     certificatePins: Array<String>,
 ) = module(override = true) {
-//    test
-//    Peer certificate chain:
-//    sha256/ijPJtUxvyW65XLVzgoNUx9pjBIlSTgzZXbFhZ43mnW4=: CN=api-ct.bananenhalen.nl
-//    sha256/jQJTbIh0grw0/1TkHSumWb+Fs0Ggogr621gT3PvPKG0=: CN=R3,O=Let's Encrypt,C=US
-//    sha256/C5+lpZ7tcVwmwQIMcRtPbsQtWLABXhQzejna0wHFr8M=: CN=ISRG Root X1,O=Internet Security Research Group,C=US
-//    Pinned certificates for api-ct.bananenhalen.nl:
-
-//    acc
-//    Peer certificate chain:
-//    sha256/7wUCSlYbr+pQ8wGizsQOK1NOCxldhmflswIkU5XqW9M=: CN=holder-api.acc.coronacheck.nl,O=Ministerie van Volksgezondheid\, Welzijn en Sport,L='s-Gravenhage,C=NL
-//    sha256/Yao+RgzIlYNhXc65ch9IpKzSRFUSiL01Et8c6sN4XLU=: CN=KPN PKIoverheid Server CA 2020,O=KPN B.V.,C=NL
-//    sha256/N9+YluTCUa/HTXc60QxjUReBLpRniAkIK2N84DhgmW4=: CN=Staat der Nederlanden Domein Server CA 2020,O=Staat der Nederlanden,C=NL
-//    sha256/lR7gRvqDMW5nhsCMRPE7TKLq0tJkTWMxQ5HAzHCIfQ0=: CN=Staat der Nederlanden EV Root CA,O=Staat der Nederlanden,C=NL
-//    Pinned certificates for holder-api.acc.coronacheck.nl:
-
     val url = URL(baseUrl)
-//    prod
-//    HTTP FAILED: javax.net.ssl.SSLPeerUnverifiedException: Certificate pinning failure!
-//    Peer certificate chain:
-//    sha256/WSn3YP84KZCric17vR8cTIyqgk+PIDntvMLYiBqOCN4=: CN=holder-api.coronacheck.nl,O=Ministerie van Volksgezondheid\, Welzijn en Sport,L='s-Gravenhage,C=NL
-//    sha256/Yao+RgzIlYNhXc65ch9IpKzSRFUSiL01Et8c6sN4XLU=: CN=KPN PKIoverheid Server CA 2020,O=KPN B.V.,C=NL
-//    sha256/N9+YluTCUa/HTXc60QxjUReBLpRniAkIK2N84DhgmW4=: CN=Staat der Nederlanden Domein Server CA 2020,O=Staat der Nederlanden,C=NL
-//    sha256/lR7gRvqDMW5nhsCMRPE7TKLq0tJkTWMxQ5HAzHCIfQ0=: CN=Staat der Nederlanden EV Root CA,O=Staat der Nederlanden,C=NL
-//    Pinned certificates for holder-api.coronacheck.nl:
-//    sha256/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
     single {
         OkHttpClient.Builder()
             .addNetworkInterceptor(CacheOverrideInterceptor())
