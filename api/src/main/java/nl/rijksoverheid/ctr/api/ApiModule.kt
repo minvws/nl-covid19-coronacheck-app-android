@@ -1,9 +1,6 @@
 package nl.rijksoverheid.ctr.api
 
-import android.content.Context
 import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import nl.rijksoverheid.ctr.api.factory.NetworkRequestResultFactory
 import nl.rijksoverheid.ctr.api.interceptors.CacheOverrideInterceptor
 import nl.rijksoverheid.ctr.api.interceptors.SignedResponseInterceptor
 import nl.rijksoverheid.ctr.api.json.Base64JsonAdapter
@@ -11,7 +8,6 @@ import nl.rijksoverheid.ctr.api.json.JsonObjectJsonAdapter
 import nl.rijksoverheid.ctr.api.json.LocalDateJsonAdapter
 import nl.rijksoverheid.ctr.api.json.OffsetDateTimeJsonAdapter
 import nl.rijksoverheid.ctr.api.signing.certificates.EV_ROOT_CA
-import okhttp3.Cache
 import okhttp3.CertificatePinner
 import okhttp3.ConnectionSpec
 import okhttp3.OkHttpClient
@@ -22,7 +18,6 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import timber.log.Timber
-import java.io.File
 import java.net.URL
 import java.util.concurrent.TimeUnit
 
@@ -37,7 +32,8 @@ fun apiModule(
     baseUrl: String,
     signatureCertificateCnMatch: String,
     coronaCheckApiChecks: Boolean,
-    testProviderApiChecks: Boolean
+    testProviderApiChecks: Boolean,
+    certificatePins: Array<String>,
 ) = module(override = true) {
 //    test
 //    Peer certificate chain:
@@ -70,8 +66,9 @@ fun apiModule(
             .connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
             .followRedirects(false)
-            .certificatePinner(CertificatePinner.Builder()
-                .add(url.host, "sha256/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=").build()
+            .certificatePinner(
+                CertificatePinner.Builder()
+                    .add(url.host, *certificatePins).build()
             )
             .apply {
                 if (BuildConfig.DEBUG) {

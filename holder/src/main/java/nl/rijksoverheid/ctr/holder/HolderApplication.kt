@@ -46,7 +46,6 @@ open class HolderApplication : SharedApplication(), Configuration.Provider {
     override fun onCreate() {
         super.onCreate()
 
-
         startKoin {
             androidContext(this@HolderApplication)
             modules(
@@ -56,7 +55,8 @@ open class HolderApplication : SharedApplication(), Configuration.Provider {
                     BuildConfig.BASE_API_URL,
                     BuildConfig.SIGNATURE_CERTIFICATE_CN_MATCH,
                     BuildConfig.FEATURE_CORONA_CHECK_API_CHECKS,
-                    BuildConfig.FEATURE_TEST_PROVIDER_API_CHECKS
+                    BuildConfig.FEATURE_TEST_PROVIDER_API_CHECKS,
+                    BuildConfig.CERTIFICATE_PINS,
                 ),
                 sharedModule,
                 appConfigModule("holder", BuildConfig.VERSION_CODE),
