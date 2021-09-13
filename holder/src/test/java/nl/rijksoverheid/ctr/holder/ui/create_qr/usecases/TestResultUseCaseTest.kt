@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
 import kotlinx.coroutines.runBlocking
+import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.holder.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.TestProviderRepository
@@ -12,6 +13,7 @@ import retrofit2.HttpException
 import retrofit2.Response
 import java.io.IOException
 import java.time.OffsetDateTime
+import kotlin.test.assertEquals
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -28,10 +30,10 @@ class TestResultUseCaseTest {
             configProviderUseCase = fakeConfigProviderUseCase(),
             testProviderRepository = fakeTestProviderRepository(),
             tokenValidatorUtil = fakeTokenValidatorUtil(),
-            configUseCase = fakeCachedAppConfigUseCase(),
+            configUseCase = fakeCachedAppConfigUseCase()
         )
         val result = usecase.testResult(uniqueCode = "dummy")
-        assertTrue(result is TestResult.InvalidToken)
+        assertEquals(result, TestResult.InvalidToken)
     }
 
     @Test
@@ -40,10 +42,10 @@ class TestResultUseCaseTest {
             configProviderUseCase = fakeConfigProviderUseCase(),
             testProviderRepository = fakeTestProviderRepository(),
             tokenValidatorUtil = fakeTokenValidatorUtil(),
-            configUseCase = fakeCachedAppConfigUseCase(),
+            configUseCase = fakeCachedAppConfigUseCase()
         )
         val result = usecase.testResult(uniqueCode = "dummy-dummy")
-        assertTrue(result is TestResult.InvalidToken)
+        assertEquals(result, TestResult.InvalidToken)
     }
 
     @Test
@@ -54,10 +56,10 @@ class TestResultUseCaseTest {
             tokenValidatorUtil = fakeTokenValidatorUtil(
                 isValid = false
             ),
-            configUseCase = fakeCachedAppConfigUseCase(),
+            configUseCase = fakeCachedAppConfigUseCase(HolderConfig.default(luhnCheckEnabled = true))
         )
         val result = usecase.testResult(uniqueCode = "provider-B-t1")
-        assertTrue(result is TestResult.InvalidToken)
+        assertEquals(result, TestResult.InvalidToken)
     }
 
     @Test
@@ -66,10 +68,10 @@ class TestResultUseCaseTest {
             configProviderUseCase = fakeConfigProviderUseCase(),
             testProviderRepository = fakeTestProviderRepository(),
             tokenValidatorUtil = fakeTokenValidatorUtil(),
-            configUseCase = fakeCachedAppConfigUseCase(),
+            configUseCase = fakeCachedAppConfigUseCase()
         )
         val result = usecase.testResult(uniqueCode = "provider-B-t1")
-        assertTrue(result is TestResult.InvalidToken)
+        assertEquals(result, TestResult.UnknownTestProvider)
     }
 
     @Test
@@ -87,7 +89,7 @@ class TestResultUseCaseTest {
                     getRemoteTestResult(status = RemoteProtocol.Status.COMPLETE)
                 ),
                 tokenValidatorUtil = fakeTokenValidatorUtil(),
-                configUseCase = fakeCachedAppConfigUseCase(),
+                configUseCase = fakeCachedAppConfigUseCase()
             )
             val result = usecase.testResult(uniqueCode = "$providerIdentifier-B-t1")
             assertTrue(result is TestResult.NegativeTestResult)
@@ -110,7 +112,7 @@ class TestResultUseCaseTest {
                     )
                 ),
                 tokenValidatorUtil = fakeTokenValidatorUtil(),
-                configUseCase = fakeCachedAppConfigUseCase(),
+                configUseCase = fakeCachedAppConfigUseCase()
             )
             val result = usecase.testResult(uniqueCode = "$providerIdentifier-B-t1")
             assertTrue(result is TestResult.NoNegativeTestResult)
@@ -131,7 +133,7 @@ class TestResultUseCaseTest {
                     getRemoteTestResult(status = RemoteProtocol.Status.VERIFICATION_REQUIRED)
                 ),
                 tokenValidatorUtil = fakeTokenValidatorUtil(),
-                configUseCase = fakeCachedAppConfigUseCase(),
+                configUseCase = fakeCachedAppConfigUseCase()
             )
             val result = usecase.testResult(uniqueCode = "$providerIdentifier-B-t1")
             assertTrue(result is TestResult.VerificationRequired)
@@ -152,7 +154,7 @@ class TestResultUseCaseTest {
                     getRemoteTestResult(status = RemoteProtocol.Status.INVALID_TOKEN)
                 ),
                 tokenValidatorUtil = fakeTokenValidatorUtil(),
-                configUseCase = fakeCachedAppConfigUseCase(),
+                configUseCase = fakeCachedAppConfigUseCase()
             )
             val result = usecase.testResult(uniqueCode = "$providerIdentifier-B-t1")
             assertTrue(result is TestResult.InvalidToken)
@@ -177,7 +179,7 @@ class TestResultUseCaseTest {
                         )
                     }),
                 tokenValidatorUtil = fakeTokenValidatorUtil(),
-                configUseCase = fakeCachedAppConfigUseCase(),
+                configUseCase = fakeCachedAppConfigUseCase()
             )
             val result = usecase.testResult(uniqueCode = "$providerIdentifier-B-t1")
             assertTrue(result is TestResult.Error)
@@ -189,10 +191,12 @@ class TestResultUseCaseTest {
             val providerIdentifier = "provider"
             val usecase = TestResultUseCase(
                 configProviderUseCase = fakeConfigProviderUseCase(
-                    testProviders = listOf(getRemoteTestProvider(
-                        identifier = providerIdentifier
+                    testProviders = listOf(
+                        getRemoteTestProvider(
+                            identifier = providerIdentifier
+                        )
                     )
-                )),
+                ),
                 testProviderRepository = object : TestProviderRepository {
                     override suspend fun remoteTestResult(
                         url: String,
@@ -205,7 +209,7 @@ class TestResultUseCaseTest {
                     }
                 },
                 tokenValidatorUtil = fakeTokenValidatorUtil(),
-                configUseCase = fakeCachedAppConfigUseCase(),
+                configUseCase = fakeCachedAppConfigUseCase()
             )
             val result = usecase.testResult(uniqueCode = "$providerIdentifier-B-t1")
             assertTrue(result is TestResult.Error)
@@ -217,19 +221,56 @@ class TestResultUseCaseTest {
             val providerIdentifier = "provider"
             val usecase = TestResultUseCase(
                 configProviderUseCase = fakeConfigProviderUseCase(
-                    testProviders = listOf(getRemoteTestProvider(
-                        identifier = providerIdentifier
+                    testProviders = listOf(
+                        getRemoteTestProvider(
+                            identifier = providerIdentifier
+                        )
                     )
-                )),
+                ),
                 testProviderRepository = fakeTestProviderRepository(
                     model =
                     getRemoteTestResult(status = RemoteProtocol.Status.PENDING)
                 ),
                 tokenValidatorUtil = fakeTokenValidatorUtil(),
-                configUseCase = fakeCachedAppConfigUseCase(),
+                configUseCase = fakeCachedAppConfigUseCase()
             )
             val result = usecase.testResult(uniqueCode = "$providerIdentifier-B-t1")
             assertTrue(result is TestResult.Pending)
+        }
+
+    @Test
+    fun `testResult returns InvalidToken if unique code is empty`() = runBlocking {
+        val usecase = TestResultUseCase(
+            configProviderUseCase = fakeConfigProviderUseCase(),
+            testProviderRepository = fakeTestProviderRepository(),
+            tokenValidatorUtil = fakeTokenValidatorUtil(),
+            configUseCase = fakeCachedAppConfigUseCase()
+        )
+        val result = usecase.testResult(uniqueCode = "")
+        assertEquals(result, TestResult.EmptyToken)
+    }
+
+    @Test
+    fun `testResult returns invalid verification code if verification code is empty`() =
+        runBlocking {
+            val providerIdentifier = "provider"
+            val usecase = TestResultUseCase(
+                configProviderUseCase = fakeConfigProviderUseCase(
+                    testProviders = listOf(getRemoteTestProvider(
+                        identifier = providerIdentifier
+                    )
+                    )),
+                testProviderRepository = fakeTestProviderRepository(
+                    model = getRemoteTestResult(
+                        status = RemoteProtocol.Status.COMPLETE,
+                        negativeResult = false
+                    )
+                ),
+                tokenValidatorUtil = fakeTokenValidatorUtil(),
+                configUseCase = fakeCachedAppConfigUseCase()
+            )
+            val result = usecase.testResult(uniqueCode = "$providerIdentifier-B-t1", verificationCode = "")
+            assertEquals(result, TestResult.EmptyVerificationCode)
         }
 
     private fun getRemoteTestProvider(identifier: String): RemoteConfigProviders.TestProvider {

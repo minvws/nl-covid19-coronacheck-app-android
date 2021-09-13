@@ -126,7 +126,7 @@ fun holderModule(baseUrl: String) = module {
             get(),
             get(),
             get(),
-            get(),
+            get()
         )
     }
     factory<GetMyOverviewItemsUseCase> {

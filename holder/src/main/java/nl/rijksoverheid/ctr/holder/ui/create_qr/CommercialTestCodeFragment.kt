@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.text.InputFilter
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import androidx.annotation.StringRes
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
@@ -66,11 +66,12 @@ import org.koin.androidx.viewmodel.scope.emptyState
         }
 
         binding.verificationCodeText.addTextChangedListener {
-            viewModel.verificationCode = it?.toString() ?: ""
+            if (binding.verificationCodeInput.isVisible) {
+                viewModel.verificationCode = it.toString()
+            }
         }
 
         viewModel.viewState.observe(viewLifecycleOwner) {
-            binding.bottom.setButtonEnabled(it.canRetrieveResult)
             binding.uniqueCodeText.imeOptions =
                 (if (it.verificationRequired) EditorInfo.IME_ACTION_NEXT else EditorInfo.IME_ACTION_SEND)
             binding.verificationCodeInput.visibility =
@@ -79,6 +80,11 @@ import org.koin.androidx.viewmodel.scope.emptyState
                 if (it.verificationRequired) View.VISIBLE else View.GONE
             binding.noTokenReceivedBtn.visibility =
                 if (!it.verificationRequired) View.VISIBLE else View.GONE
+
+            // Start with empty text for possible empty field error when field is visible
+            if (it.verificationRequired && viewModel.verificationCode == null) {
+                viewModel.verificationCode = ""
+            }
 
             if (it.fromDeeplink && it.verificationRequired) {
                 binding.uniqueCodeInput.isVisible = false
@@ -106,35 +112,10 @@ import org.koin.androidx.viewmodel.scope.emptyState
 
         viewModel.testResult.observe(viewLifecycleOwner, EventObserver {
             when (it) {
-                is TestResult.InvalidToken -> {
-                    binding.uniqueCodeInput.error =
-                        getString(R.string.commercial_test_error_invalid_code)
-                    binding.verificationCodeInput.isVisible = false
-                }
-                is TestResult.NegativeTestResult -> {
-                    when (it.remoteTestResult) {
-                        is RemoteTestResult2 -> {
-                            findNavController().navigate(
-                                CommercialTestCodeFragmentDirections.actionYourEvents(
-                                    type = YourEventsFragmentType.TestResult2(
-                                        remoteTestResult = it.remoteTestResult,
-                                        rawResponse = it.signedResponseWithTestResult.rawResponse
-                                    ),
-                                    toolbarTitle = getString(R.string.commercial_test_type_title)
-                                )
-                            )
-                        }
-                        is RemoteProtocol3 -> {
-                            findNavController().navigate(
-                                CommercialTestCodeFragmentDirections.actionYourEvents(
-                                    type = YourEventsFragmentType.RemoteProtocol3Type(mapOf(it.remoteTestResult to it.signedResponseWithTestResult.rawResponse),
-                                    originType = OriginType.Test),
-                                    toolbarTitle = getString(R.string.commercial_test_type_title)
-                                )
-                            )
-                        }
-                    }
-                }
+                is TestResult.EmptyToken -> showTokenError(R.string.commercial_test_error_empty_retrieval_code)
+                is TestResult.InvalidToken -> showTokenError(R.string.commercial_test_error_invalid_code)
+                is TestResult.UnknownTestProvider -> showTokenError(R.string.commercial_test_error_unknown_test_provider)
+                is TestResult.NegativeTestResult -> showNegativeTestResult(it)
                 is TestResult.NoNegativeTestResult -> {
                     findNavController().navigate(
                         CommercialTestCodeFragmentDirections.actionCouldNotCreateQr(
@@ -162,6 +143,10 @@ import org.koin.androidx.viewmodel.scope.emptyState
                             getString(R.string.commercial_test_error_invalid_combination)
                     }
                     binding.verificationCodeInput.requestFocus()
+                }
+                is TestResult.EmptyVerificationCode -> {
+                    binding.verificationCodeInput.error =
+                        getString(R.string.commercial_test_error_empty_verification_code)
                 }
                 is TestResult.Error -> {
                     presentError(
@@ -208,10 +193,43 @@ import org.koin.androidx.viewmodel.scope.emptyState
         })
 
         binding.noTokenReceivedBtn.setOnClickListener {
-            navigateSafety(R.id.nav_commercial_test_code,
+            navigateSafety(
+                R.id.nav_commercial_test_code,
                 CommercialTestCodeFragmentDirections.actionNoCode()
             )
         }
+    }
+
+    private fun showNegativeTestResult(result: TestResult.NegativeTestResult) {
+        when (result.remoteTestResult) {
+            is RemoteTestResult2 -> {
+                findNavController().navigate(
+                    CommercialTestCodeFragmentDirections.actionYourEvents(
+                        type = YourEventsFragmentType.TestResult2(
+                            remoteTestResult = result.remoteTestResult,
+                            rawResponse = result.signedResponseWithTestResult.rawResponse
+                        ),
+                        toolbarTitle = getString(R.string.commercial_test_type_title)
+                    )
+                )
+            }
+            is RemoteProtocol3 -> {
+                findNavController().navigate(
+                    CommercialTestCodeFragmentDirections.actionYourEvents(
+                        type = YourEventsFragmentType.RemoteProtocol3Type(
+                            mapOf(result.remoteTestResult to result.signedResponseWithTestResult.rawResponse),
+                            originType = OriginType.Test
+                        ),
+                        toolbarTitle = getString(R.string.commercial_test_type_title)
+                    )
+                )
+            }
+        }
+    }
+
+    private fun showTokenError(@StringRes errorMessageRes: Int) {
+        binding.uniqueCodeInput.error = getString(errorMessageRes)
+        binding.verificationCodeInput.isVisible = false
     }
 
     override fun onPause() {

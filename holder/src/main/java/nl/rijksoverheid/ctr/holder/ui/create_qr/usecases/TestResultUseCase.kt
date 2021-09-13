@@ -24,11 +24,15 @@ class TestResultUseCase(
     private val configProviderUseCase: ConfigProvidersUseCase,
     private val testProviderRepository: TestProviderRepository,
     private val tokenValidatorUtil: TokenValidatorUtil,
-    private val configUseCase: CachedAppConfigUseCase,
+    private val configUseCase: CachedAppConfigUseCase
 ) {
 
     suspend fun testResult(uniqueCode: String, verificationCode: String? = null): TestResult {
         try {
+            if (uniqueCode.isEmpty()) {
+                return TestResult.EmptyToken
+            }
+
             if (uniqueCode.indexOf("-") == -1) {
                 return TestResult.InvalidToken
             }
@@ -52,29 +56,31 @@ class TestResultUseCase(
 
             // Enable the luhn check based on the current config value
             if (configUseCase.getCachedAppConfig().luhnCheckEnabled) {
-                if (!tokenValidatorUtil.validate(
-                        token = token,
-                        checksum = checksum
-                    )
-                ) {
+                if (!tokenValidatorUtil.validate(token = token, checksum = checksum)) {
                     return TestResult.InvalidToken
                 }
             }
 
-            val testProvider = when (val testProvidersResult = configProviderUseCase.testProviders()) {
-                is TestProvidersResult.Success -> {
-                    testProvidersResult.testProviders
-                        .firstOrNull { it.providerIdentifier == providerIdentifier } ?: return TestResult.InvalidToken
+            val testProvider =
+                when (val testProvidersResult = configProviderUseCase.testProviders()) {
+                    is TestProvidersResult.Success -> {
+                        testProvidersResult.testProviders
+                            .firstOrNull { it.providerIdentifier == providerIdentifier }
+                            ?: return TestResult.UnknownTestProvider
+                    }
+                    is TestProvidersResult.Error -> {
+                        return TestResult.Error(testProvidersResult.errorResult)
+                    }
                 }
-                is TestProvidersResult.Error -> {
-                    return TestResult.Error(testProvidersResult.errorResult)
-                }
+
+            if (verificationCode != null && verificationCode.isEmpty()) {
+                return TestResult.EmptyVerificationCode
             }
 
             val signedResponseWithTestResultRequestResult = testProviderRepository.remoteTestResult(
                 url = testProvider.resultUrl,
                 token = token.removeWhitespace(),
-                verifierCode = verificationCode?.removeWhitespace(),
+                verifierCode = verificationCode?.removeWhitespace() ?: "",
                 signingCertificateBytes = testProvider.publicKey,
                 provider = providerIdentifier
             )
@@ -131,7 +137,10 @@ sealed class TestResult {
     ) : TestResult()
 
     object Pending : TestResult()
+    object EmptyToken : TestResult()
     object InvalidToken : TestResult()
+    object UnknownTestProvider : TestResult()
+    object EmptyVerificationCode : TestResult()
     object VerificationRequired : TestResult()
     data class Error(val errorResult: ErrorResult) : TestResult()
 }
