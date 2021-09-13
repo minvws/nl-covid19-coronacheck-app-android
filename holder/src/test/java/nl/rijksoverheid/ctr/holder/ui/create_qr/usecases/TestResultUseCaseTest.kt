@@ -78,9 +78,9 @@ class TestResultUseCaseTest {
             val providerIdentifier = "provider"
             val usecase = TestResultUseCase(
                 configProviderUseCase = fakeConfigProviderUseCase(
-                    provider = getRemoteTestProvider(
+                    testProviders = listOf(getRemoteTestProvider(
                         identifier = providerIdentifier
-                    )
+                    ))
                 ),
                 testProviderRepository = fakeTestProviderRepository(
                     model =
@@ -99,10 +99,10 @@ class TestResultUseCaseTest {
             val providerIdentifier = "provider"
             val usecase = TestResultUseCase(
                 configProviderUseCase = fakeConfigProviderUseCase(
-                    provider = getRemoteTestProvider(
+                    testProviders = listOf(getRemoteTestProvider(
                         identifier = providerIdentifier
                     )
-                ),
+                )),
                 testProviderRepository = fakeTestProviderRepository(
                     model = getRemoteTestResult(
                         status = RemoteProtocol.Status.COMPLETE,
@@ -122,10 +122,10 @@ class TestResultUseCaseTest {
             val providerIdentifier = "provider"
             val usecase = TestResultUseCase(
                 configProviderUseCase = fakeConfigProviderUseCase(
-                    provider = getRemoteTestProvider(
+                    testProviders = listOf(getRemoteTestProvider(
                         identifier = providerIdentifier
                     )
-                ),
+                )),
                 testProviderRepository = fakeTestProviderRepository(
                     model =
                     getRemoteTestResult(status = RemoteProtocol.Status.VERIFICATION_REQUIRED)
@@ -143,10 +143,10 @@ class TestResultUseCaseTest {
             val providerIdentifier = "provider"
             val usecase = TestResultUseCase(
                 configProviderUseCase = fakeConfigProviderUseCase(
-                    provider = getRemoteTestProvider(
+                    testProviders = listOf(getRemoteTestProvider(
                         identifier = providerIdentifier
                     )
-                ),
+                )),
                 testProviderRepository = fakeTestProviderRepository(
                     model =
                     getRemoteTestResult(status = RemoteProtocol.Status.INVALID_TOKEN)
@@ -164,10 +164,10 @@ class TestResultUseCaseTest {
             val providerIdentifier = "provider"
             val usecase = TestResultUseCase(
                 configProviderUseCase = fakeConfigProviderUseCase(
-                    provider = getRemoteTestProvider(
+                    testProviders = listOf(getRemoteTestProvider(
                         identifier = providerIdentifier
                     )
-                ),
+                )),
                 testProviderRepository = fakeTestProviderRepository(
                     remoteTestResultExceptionCallback = {
                         throw HttpException(
@@ -189,10 +189,10 @@ class TestResultUseCaseTest {
             val providerIdentifier = "provider"
             val usecase = TestResultUseCase(
                 configProviderUseCase = fakeConfigProviderUseCase(
-                    provider = getRemoteTestProvider(
+                    testProviders = listOf(getRemoteTestProvider(
                         identifier = providerIdentifier
                     )
-                ),
+                )),
                 testProviderRepository = object : TestProviderRepository {
                     override suspend fun remoteTestResult(
                         url: String,
@@ -217,10 +217,10 @@ class TestResultUseCaseTest {
             val providerIdentifier = "provider"
             val usecase = TestResultUseCase(
                 configProviderUseCase = fakeConfigProviderUseCase(
-                    provider = getRemoteTestProvider(
+                    testProviders = listOf(getRemoteTestProvider(
                         identifier = providerIdentifier
                     )
-                ),
+                )),
                 testProviderRepository = fakeTestProviderRepository(
                     model =
                     getRemoteTestResult(status = RemoteProtocol.Status.PENDING)

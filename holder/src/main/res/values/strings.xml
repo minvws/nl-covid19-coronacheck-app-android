@@ -20,21 +20,21 @@
     <string name="privacy_policy_2"><![CDATA[Er worden <b>geen locatiegegevens</b> gebruikt of bewaard]]></string>
     <string name="privacy_policy_checkbox_text">Ik heb de privacyverklaring gelezen en begrijp hoe de app met mijn gegevens omgaat.</string>
     <string name="my_overview">Mijn bewijzen</string>
-    <string name="my_overview_description">Laat de QR-code en je identiteitsbewijs zien bij de ingang van de locatie die je bezoekt.</string>
+    <string name="my_overview_description">Bezoek je een locatie binnen Nederland? Laat de QR-code en je identiteitsbewijs zien bij de ingang van de locatie die je bezoekt.</string>
     <string name="my_overview_description_eu"><![CDATA[Ben je in het buitenland of ga je de grens over? Gebruik dan altijd de internationale QR-code hieronder. Controleer voor vertrek welk bewijs je nodig hebt.<br/><br/><a href="https://www.nederlandwereldwijd.nl/reizen/reisadviezen">Is mijn bewijs geldig op mijn bestemming?</a>]]></string>
     <string name="my_overview_no_qr_description"><![CDATA[Je kan een QR-code maken als je bent gevaccineerd, als je corona hebt gehad of als je bent getest bij een <a href="https://coronacheck.nl/nl/testafspraak-in-app">aangesloten testlocatie</a>.]]></string>
     <string name="dialog_error_title">Sorry, er ging iets mis</string>
     <string name="dialog_error_message">Dat komt door een technische fout.</string>
     <string name="dialog_error_message_with_error_code">Dat komt door een technische fout (%1$s).</string>
     <string name="digid_login_cancelled_title">Inloggen afgebroken</string>
-    <string name="digid_login_cancelled_description">Wil je jouw vaccinatiegegevens ophalen? Log dan opnieuw in met DigiD.</string>
+    <string name="digid_login_cancelled_description">Wil je jouw gegevens ophalen? Log dan opnieuw in met DigiD.</string>
     <string name="ok">Oke</string>
     <string name="settings">Instellingen</string>
     <string name="about_this_app">Over deze app</string>
     <string name="frequently_asked_questions">Meestgestelde vragen</string>
     <string name="privacy_statement">Privacyverklaring</string>
     <string name="terms_of_use">Gebruikersvoorwaarden</string>
-    <string name="my_overview_test_result_title">Mijn QR-code</string>
+    <string name="my_overview_test_result_title">Mijn bewijs</string>
     <string name="my_overview_test_result_international_title">Internationale QR-code</string>
     <string name="my_overview_test_result_validity">Geldig tot %1$s</string>
     <string name="accessibility_label_my_overview_test_result_personal_data">Jouw persoonsgegevens: %1$s %2$s %3$s %4$s</string>
@@ -83,7 +83,7 @@
     <string name="commercial_test_scanner_custom_title">QR-code scannen</string>
     <string name="commercial_test_scanner_custom_message">Richt je telefoon op de QR-code die je van de testlocatie hebt gekregen.</string>
     <string name="your_negative_test_results_title">Controleer je testuitslag</string>
-    <string name="your_negative_test_results_description"><![CDATA[Deze testuitslag is opgehaald bij de testlocatie.<br\><br\>Kloppen de gegevens hieronder? Dan kun je van de negatieve testuitslag een QR-code maken. Dat is jouw bewijs.]]></string>
+    <string name="your_negative_test_results_description"><![CDATA[Deze testuitslag is opgehaald bij de testlocatie. Kloppen de gegevens? Dan kun je van de negatieve testuitslag een QR-code maken. Dat is jouw bewijs.]]></string>
     <string name="your_negative_test_results_header">Opgehaalde testuitslag</string>
     <string name="your_negative_test_results_row_title">Negatieve testuitslag</string>
     <string name="your_negative_test_results_row_subtitle"><![CDATA[Testdatum: %1$s<br/>Jouw gegevens: %2$s]]></string>
@@ -118,7 +118,7 @@
     <!-- App Status strings -->
     <string name="app_status_deactivated_title">App buiten werking</string>
     <string name="app_status_deactivated_message">Op dit moment is de app niet in gebruik. Ga voor meer informatie naar CoronaCheck.nl</string>
-    <string name="app_status_deactivated_action">Lees meer op de website</string>
+    <string name="app_status_deactivated_action">Naar CoronaCheck.nl</string>
     <string name="app_status_update_required_title">Tijd voor een update</string>
     <string name="app_status_update_required_message">Je hebt de laatste versie van de app nodig om verder te gaan.</string>
     <string name="app_status_update_required_action">Installeer update</string>
@@ -150,8 +150,8 @@
     <string name="accessibility_label_your_qr">Hier wordt een afbeelding getoond van jouw QR-code.</string>
     <string name="accessibility_testresult_icon_description">Informatie over je negatieve testuitslag</string>
     <string name="menu_close">Sluiten</string>
-    <string name="dialog_no_internet_connection_title">Geen verbinding met de server</string>
-    <string name="dialog_no_internet_connection_description">De server reageert niet. Dit kan bijvoorbeeld komen doordat je geen internet hebt of omdat de server onbereikbaar is.</string>
+    <string name="dialog_no_internet_connection_title">Sorry, er gaat iets mis</string>
+    <string name="dialog_no_internet_connection_description">Het is niet gelukt de server te bereiken. Wil je controleren of je verbinding met het internet hebt?</string>
     <string name="dialog_close">Sluiten</string>
     <string name="dialog_retry">Probeer opnieuw</string>
     <string name="new_terms_title">Nieuw in de app</string>

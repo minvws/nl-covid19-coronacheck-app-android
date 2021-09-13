@@ -219,15 +219,15 @@ fun fakeTestProviderRepository(
 
 fun fakeConfigProviderUseCase(
     eventProviders: List<RemoteConfigProviders.EventProvider> = listOf(),
-    provider: RemoteConfigProviders.TestProvider? = null
+    testProviders: List<RemoteConfigProviders.TestProvider> = listOf()
 ): ConfigProvidersUseCase {
     return object : ConfigProvidersUseCase {
         override suspend fun eventProviders(): EventProvidersResult {
             return EventProvidersResult.Success(eventProviders)
         }
 
-        override suspend fun testProvider(id: String): RemoteConfigProviders.TestProvider? {
-            return provider
+        override suspend fun testProviders(): TestProvidersResult {
+            return TestProvidersResult.Success(testProviders)
         }
     }
 }
@@ -250,11 +250,7 @@ fun fakeCoronaCheckRepository(
 ): CoronaCheckRepository {
     return object : CoronaCheckRepository {
 
-        override suspend fun configProviders(): RemoteConfigProviders {
-            return testProviders
-        }
-
-        override suspend fun configProvidersResult(): NetworkRequestResult<RemoteConfigProviders> {
+        override suspend fun configProviders(): NetworkRequestResult<RemoteConfigProviders> {
             return NetworkRequestResult.Success(testProviders)
         }
 

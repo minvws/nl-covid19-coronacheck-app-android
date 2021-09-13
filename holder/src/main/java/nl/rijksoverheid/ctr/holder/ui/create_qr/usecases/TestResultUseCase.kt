@@ -61,8 +61,15 @@ class TestResultUseCase(
                 }
             }
 
-            val testProvider = configProviderUseCase.testProvider(providerIdentifier)
-                ?: return TestResult.InvalidToken
+            val testProvider = when (val testProvidersResult = configProviderUseCase.testProviders()) {
+                is TestProvidersResult.Success -> {
+                    testProvidersResult.testProviders
+                        .firstOrNull { it.providerIdentifier == providerIdentifier } ?: return TestResult.InvalidToken
+                }
+                is TestProvidersResult.Error -> {
+                    return TestResult.Error(testProvidersResult.errorResult)
+                }
+            }
 
             val signedResponseWithTestResultRequestResult = testProviderRepository.remoteTestResult(
                 url = testProvider.resultUrl,

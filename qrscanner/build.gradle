@@ -42,6 +42,7 @@ android {
 
 dependencies {
     implementation project(":design")
+    api project(":qrscanner:zebrasupport")
 
     implementation "androidx.appcompat:appcompat:${appcompat_version}"
     implementation "com.google.mlkit:barcode-scanning:${mlkit_barcode_version}"

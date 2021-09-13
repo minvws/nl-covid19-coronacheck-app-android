@@ -20,8 +20,8 @@
         android:gravity="center" />
 
     <item
-        android:width="411dp"
-        android:height="91dp"
+        android:width="153dp"
+        android:height="90dp"
         android:drawable="@drawable/illustration_splash_banner"
         android:gravity="center_horizontal|top" />
 

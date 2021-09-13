@@ -116,10 +116,10 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
             message = message,
             positiveButtonText = R.string.ok,
             positiveButtonCallback = {
-                setupCamera()
+                setUpScanner()
             },
             onDismissCallback = {
-                setupCamera()
+                setUpScanner()
             }
         )
     }

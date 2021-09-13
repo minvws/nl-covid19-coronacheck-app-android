@@ -52,10 +52,32 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
     private val personalDetailsUtil: PersonalDetailsUtil by inject()
     private val infoScreenUtil: InfoScreenUtil by inject()
     private val dialogUtil: DialogUtil by inject()
+
     private val remoteProtocol3Util: RemoteProtocol3Util by inject()
     private val remoteEventUtil: RemoteEventUtil by inject()
 
     private val yourEventsViewModel: YourEventsViewModel by viewModel()
+
+    override fun onButtonClickWithRetryAction() {
+        when (val type = args.type) {
+            is YourEventsFragmentType.TestResult2 -> {
+                yourEventsViewModel.saveNegativeTest2(
+                    negativeTest2 = type.remoteTestResult,
+                    rawResponse = type.rawResponse
+                )
+            }
+            is YourEventsFragmentType.RemoteProtocol3Type -> {
+                yourEventsViewModel.checkForConflictingEvents(
+                    remoteProtocols3 = type.remoteEvents,
+                )
+            }
+            is YourEventsFragmentType.DCC -> {
+                yourEventsViewModel.checkForConflictingEvents(
+                    remoteProtocols3 = type.remoteEvents,
+                )
+            }
+        }
+    }
 
     override fun getFlow(): Flow {
         when (val type = args.type) {
@@ -517,24 +539,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
 
     private fun handleButton(binding: FragmentYourEventsBinding) {
         binding.bottom.setButtonClick {
-            when (val type = args.type) {
-                is YourEventsFragmentType.TestResult2 -> {
-                    yourEventsViewModel.saveNegativeTest2(
-                        negativeTest2 = type.remoteTestResult,
-                        rawResponse = type.rawResponse
-                    )
-                }
-                is YourEventsFragmentType.RemoteProtocol3Type -> {
-                    yourEventsViewModel.checkForConflictingEvents(
-                        remoteProtocols3 = type.remoteEvents,
-                    )
-                }
-                is YourEventsFragmentType.DCC -> {
-                    yourEventsViewModel.checkForConflictingEvents(
-                        remoteProtocols3 = type.remoteEvents,
-                    )
-                }
-            }
+            onButtonClickWithRetryAction()
         }
     }
 

@@ -16,4 +16,12 @@
         app:contentDescription="@string/accessibility_flash_on"
         android:visible="false"
         app:showAsAction="always" />
+
+    <item
+        android:id="@+id/camera"
+        android:icon="@drawable/ic_camera"
+        android:title=""
+        app:contentDescription="@string/accessibility_flash_on"
+        android:visible="false"
+        app:showAsAction="always" />
 </menu>
