@@ -19,9 +19,13 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentTabsMyOverviewBinding
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItem
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItems
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewFragment.Companion.GREEN_CARD_TYPE
+import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewFragment.Companion.ITEMS
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewFragment.Companion.RETURN_URI
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewTabsFragment.Companion.positionTabsMap
+import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardTabItem
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -33,14 +37,23 @@ import timber.log.Timber
  * @param[fragment] Tabs fragment with viewpager where the overviews are nested within.
  * @param[returnToExternalAppUri] Uri used to return to external app from which it was deep linked from.
  */
-class TabPagesAdapter(fragment: Fragment, private val returnToExternalAppUri: String?) :
+class TabPagesAdapter(fragment: Fragment,
+                      private val returnToExternalAppUri: String?) :
     FragmentStateAdapter(fragment) {
 
-    override fun getItemCount(): Int = 2
+    private val items: List<DashboardTabItem> = mutableListOf()
+
+    fun setItems(items: List<DashboardTabItem>) {
+        (this.items as MutableList<DashboardTabItem>).addAll(items)
+        notifyDataSetChanged()
+    }
+
+    override fun getItemCount(): Int = items.size
 
     override fun createFragment(position: Int): Fragment {
         val fragment = MyOverviewFragment()
         fragment.arguments = Bundle().apply {
+            putParcelableArray(ITEMS, items[position].items.toTypedArray())
             putParcelable(GREEN_CARD_TYPE, positionTabsMap[position])
             putString(RETURN_URI, returnToExternalAppUri)
         }
@@ -71,6 +84,7 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
     private val dashboardViewModel: DashboardViewModel by viewModel()
     private val viewModel: MyOverviewTabsViewModel by viewModel()
 
+    private val adapter by lazy { TabPagesAdapter(this, args.returnUri) }
     private val args: MyOverviewTabsFragmentArgs by navArgs()
 
     override fun onCreateView(
@@ -82,8 +96,7 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
         val binding = FragmentTabsMyOverviewBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        val viewPagerAdapter = TabPagesAdapter(this, args.returnUri)
-        binding.viewPager.adapter = viewPagerAdapter
+        binding.viewPager.adapter = adapter
         setupTabs(binding)
 
         binding.addQrButton.setOnClickListener {
@@ -102,7 +115,7 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         dashboardViewModel.dashboardTabItems.observe(viewLifecycleOwner, {
-            Timber.v("Received dashboard tab items: " + it.size)
+            adapter.setItems(it)
         })
         dashboardViewModel.refresh()
     }

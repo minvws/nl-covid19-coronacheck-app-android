@@ -1,9 +1,11 @@
 package nl.rijksoverheid.ctr.holder.persistence.database.entities
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import kotlinx.parcelize.Parcelize
 import java.time.Clock
 import java.time.OffsetDateTime
 import kotlin.math.exp
@@ -24,6 +26,7 @@ import kotlin.math.exp
         onDelete = ForeignKey.CASCADE
     )]
 )
+@Parcelize
 data class CredentialEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     @ColumnInfo(name = "green_card_id") val greenCardId: Long,
@@ -31,7 +34,7 @@ data class CredentialEntity(
     val credentialVersion: Int,
     val validFrom: OffsetDateTime,
     val expirationTime: OffsetDateTime
-) {
+): Parcelable {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

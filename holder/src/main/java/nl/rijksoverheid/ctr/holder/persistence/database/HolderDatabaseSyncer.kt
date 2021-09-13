@@ -1,9 +1,11 @@
 package nl.rijksoverheid.ctr.holder.persistence.database
 
+import android.os.Parcelable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
+import kotlinx.parcelize.Parcelize
 import nl.rijksoverheid.ctr.holder.HolderStep
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.*
@@ -109,13 +111,25 @@ class HolderDatabaseSyncerImpl(
     }
 }
 
-sealed class DatabaseSyncerResult {
+sealed class DatabaseSyncerResult: Parcelable {
+
+    @Parcelize
     object Loading : DatabaseSyncerResult()
+
+    @Parcelize
     object Success : DatabaseSyncerResult()
+
+    @Parcelize
     object MissingOrigin : DatabaseSyncerResult()
-    sealed class Failed(open val errorResult: ErrorResult): DatabaseSyncerResult() {
+
+    sealed class Failed(open val errorResult: ErrorResult): DatabaseSyncerResult(), Parcelable {
+        @Parcelize
         data class NetworkError(override val errorResult: ErrorResult, val hasGreenCardsWithoutCredentials: Boolean): Failed(errorResult)
+
+        @Parcelize
         data class ServerError(override val errorResult: ErrorResult): Failed(errorResult)
+
+        @Parcelize
         data class Error(override val errorResult: ErrorResult): Failed(errorResult)
     }
 }

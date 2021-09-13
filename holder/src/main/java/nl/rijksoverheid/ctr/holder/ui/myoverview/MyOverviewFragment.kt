@@ -27,6 +27,7 @@ import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 
@@ -43,6 +44,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
         const val REQUEST_KEY = "REQUEST_KEY"
         const val EXTRA_BACK_FROM_QR = "EXTRA_BACK_FROM_QR"
         const val GREEN_CARD_TYPE = "GREEN_CARD_TYPE"
+        const val ITEMS = "ITEMS"
         const val RETURN_URI = "RETURN_URI"
     }
 
@@ -53,6 +55,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
 
     private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
     private val myOverviewViewModel: MyOverviewViewModel by viewModel()
+    private val items by lazy { arguments?.getParcelableArray(ITEMS)?.toList() ?: error("ITEMS should not be empty") }
 
     private val dialogUtil: DialogUtil by inject()
 
@@ -152,7 +155,6 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
     private fun setItems(
         myOverviewItems: MyOverviewItems
     ) {
-
         val adapterItems = mutableListOf<BindableItem<*>>()
         myOverviewItems.items.forEach { myOverviewItem ->
             when (myOverviewItem) {

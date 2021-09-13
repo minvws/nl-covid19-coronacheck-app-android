@@ -1,9 +1,13 @@
 package nl.rijksoverheid.ctr.shared.models
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
 /**
  * Class to represent app (not network) triggered errors
  */
-data class AppErrorResult(val step: Step, val e: Exception) : ErrorResult {
+@Parcelize
+data class AppErrorResult(val step: Step, val e: Exception) : ErrorResult, Parcelable {
     override fun getCurrentStep(): Step {
         return step
     }

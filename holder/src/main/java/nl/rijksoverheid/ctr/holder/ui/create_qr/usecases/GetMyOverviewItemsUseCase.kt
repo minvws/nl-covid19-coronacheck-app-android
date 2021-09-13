@@ -1,8 +1,10 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
+import android.os.Parcelable
 import androidx.annotation.StringRes
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlinx.parcelize.Parcelize
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
@@ -242,14 +244,18 @@ data class MyOverviewItems(
     val selectedType: GreenCardType,
 )
 
-sealed class MyOverviewItem {
+sealed class MyOverviewItem: Parcelable {
 
-    data class HeaderItem(@StringRes val text: Int) : MyOverviewItem()
+    @Parcelize
+    data class HeaderItem(@StringRes val text: Int) : MyOverviewItem(), Parcelable
 
+    @Parcelize
     object PlaceholderCardItem : MyOverviewItem()
 
+    @Parcelize
     object ClockDeviationItem : MyOverviewItem()
 
+    @Parcelize
     data class GreenCardItem(
         val greenCard: GreenCard,
         val originStates: List<OriginState>,
@@ -257,17 +263,24 @@ sealed class MyOverviewItem {
         val databaseSyncerResult: DatabaseSyncerResult
     ) : MyOverviewItem() {
 
-        sealed class CredentialState {
-            data class HasCredential(val credential: CredentialEntity) : CredentialState()
-            object LoadingCredential: CredentialState()
-            object NoCredential : CredentialState()
+        sealed class CredentialState: Parcelable {
+            @Parcelize
+            data class HasCredential(val credential: CredentialEntity) : CredentialState(), Parcelable
+
+            @Parcelize
+            object LoadingCredential: CredentialState(), Parcelable
+
+            @Parcelize
+            object NoCredential : CredentialState(), Parcelable
         }
     }
 
+    @Parcelize
     data class GreenCardExpiredItem(
         val greenCardType: GreenCardType
     ) : MyOverviewItem()
 
+    @Parcelize
     data class OriginInfoItem(val greenCardType: GreenCardType, val originType: OriginType) :
         MyOverviewItem()
 

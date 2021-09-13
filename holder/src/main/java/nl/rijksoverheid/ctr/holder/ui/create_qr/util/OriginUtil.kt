@@ -1,5 +1,7 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
@@ -46,8 +48,13 @@ class OriginUtilImpl(private val clock: Clock): OriginUtil {
     }
 }
 
-sealed class OriginState(open val origin: OriginEntity) {
-    data class Valid(override val origin: OriginEntity) : OriginState(origin)
-    data class Future(override val origin: OriginEntity) : OriginState(origin)
-    data class Expired(override val origin: OriginEntity) : OriginState(origin)
+sealed class OriginState(open val origin: OriginEntity): Parcelable {
+    @Parcelize
+    data class Valid(override val origin: OriginEntity) : OriginState(origin), Parcelable
+
+    @Parcelize
+    data class Future(override val origin: OriginEntity) : OriginState(origin), Parcelable
+
+    @Parcelize
+    data class Expired(override val origin: OriginEntity) : OriginState(origin), Parcelable
 }
