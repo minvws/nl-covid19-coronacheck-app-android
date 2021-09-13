@@ -18,6 +18,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetMyOverviewItemsUseCa
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardRefreshUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardTabItem
 import nl.rijksoverheid.ctr.shared.livedata.Event
+import timber.log.Timber
 
 abstract class DashboardViewModel : ViewModel() {
     open val dashboardTabItems: LiveData<List<DashboardTabItem>> = MutableLiveData()
@@ -79,7 +80,7 @@ class DashboardViewModelImpl(
                         getDashboardTabItems(
                             databaseSyncerResult = databaseSyncerResultLiveData.value?.peekContent() ?: DatabaseSyncerResult.Success,
                             hasClockDeviation = hasClockDeviation,
-                            shouldRefresh = shouldRefresh
+                            shouldRefresh = false
                         )
                     )
                 }
@@ -100,7 +101,8 @@ class DashboardViewModelImpl(
                 databaseSyncerResult = databaseSyncerResult,
                 shouldRefresh = shouldRefresh,
                 hasClockDeviation = hasClockDeviation
-            ).items
+            ).items,
+            greenCardType = GreenCardType.Domestic
         )
 
         val internationalItem = DashboardTabItem(
@@ -111,7 +113,8 @@ class DashboardViewModelImpl(
                 databaseSyncerResult = databaseSyncerResult,
                 shouldRefresh = shouldRefresh,
                 hasClockDeviation = hasClockDeviation
-            ).items
+            ).items,
+            greenCardType = GreenCardType.Eu
         )
 
         return listOf(

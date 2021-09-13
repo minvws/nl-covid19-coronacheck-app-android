@@ -2,34 +2,23 @@ package nl.rijksoverheid.ctr.holder.ui.myoverview
 
 import android.content.pm.ActivityInfo
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
-import androidx.room.Database
+import androidx.navigation.navGraphViewModels
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
 import com.xwray.groupie.viewbinding.BindableItem
-import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMyOverviewBinding
-import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
-import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItem
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItems
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.*
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeFragmentData
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
-import nl.rijksoverheid.ctr.shared.livedata.EventObserver
-import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
-import java.util.concurrent.TimeUnit
-
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -48,16 +37,9 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
         const val RETURN_URI = "RETURN_URI"
     }
 
+    private val dashboardViewModel: DashboardViewModel by navGraphViewModels(R.id.nav_graph_overview)
     private val section = Section()
-
-    private val refreshOverviewItemsHandler = Handler(Looper.getMainLooper())
-    private val refreshOverviewItemsRunnable = Runnable { refreshOverviewItems() }
-
-    private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
-    private val myOverviewViewModel: MyOverviewViewModel by viewModel()
-    private val items by lazy { arguments?.getParcelableArray(ITEMS)?.toList() ?: error("ITEMS should not be empty") }
-
-    private val dialogUtil: DialogUtil by inject()
+    private val items by lazy { arguments?.getParcelableArray(ITEMS)?.toList() as List<MyOverviewItem> }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -76,51 +58,6 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                     ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
             }
         }
-
-        myOverviewViewModel.myOverviewItemsLiveData.observe(viewLifecycleOwner,
-            EventObserver { myOverviewItems ->
-                setItems(
-                    myOverviewItems = myOverviewItems
-                )
-            })
-
-        observeSyncErrors()
-    }
-
-    private fun observeSyncErrors() {
-        myOverviewViewModel.databaseSyncerResultLiveData.observe(viewLifecycleOwner,
-            EventObserver {
-                if (it is DatabaseSyncerResult.Failed) {
-                    if (it is DatabaseSyncerResult.Failed.NetworkError && it.hasGreenCardsWithoutCredentials) {
-                        dialogUtil.presentDialog(
-                            context = requireContext(),
-                            title = R.string.dialog_title_no_internet,
-                            message = getString(R.string.dialog_credentials_expired_no_internet),
-                            positiveButtonText = R.string.app_status_internet_required_action,
-                            positiveButtonCallback = {
-                                refreshOverviewItems(
-                                    forceSync = true
-                                )
-                            },
-                            negativeButtonText = R.string.dialog_close,
-                        )
-                    } else {
-                        dialogUtil.presentDialog(
-                            context = requireContext(),
-                            title = R.string.dialog_title_no_internet,
-                            message = getString(R.string.dialog_update_credentials_no_internet),
-                            positiveButtonText = R.string.app_status_internet_required_action,
-                            positiveButtonCallback = {
-                                refreshOverviewItems(
-                                    forceSync = true
-                                )
-                            },
-                            negativeButtonText = R.string.dialog_close,
-                        )
-                    }
-                }
-            }
-        )
     }
 
     private fun initRecyclerView(binding: FragmentMyOverviewBinding) {
@@ -131,32 +68,11 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
         binding.recyclerView.itemAnimator = null
     }
 
-    private fun refreshOverviewItems(forceSync: Boolean = false) {
-        myOverviewViewModel.refreshOverviewItems(
-            forceSync = forceSync,
-            selectType = arguments?.getParcelable(GREEN_CARD_TYPE) ?: myOverviewViewModel.getSelectedType()
-        )
-        refreshOverviewItemsHandler.postDelayed(
-            refreshOverviewItemsRunnable,
-            TimeUnit.SECONDS.toMillis(cachedAppConfigUseCase.getCachedAppConfig().domesticQRRefreshSeconds.toLong())
-        )
-    }
-
-    override fun onResume() {
-        super.onResume()
-        refreshOverviewItems()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        refreshOverviewItemsHandler.removeCallbacks(refreshOverviewItemsRunnable)
-    }
-
-    private fun setItems(
-        myOverviewItems: MyOverviewItems
+    fun setItems(
+        myOverviewItems: List<MyOverviewItem>
     ) {
         val adapterItems = mutableListOf<BindableItem<*>>()
-        myOverviewItems.items.forEach { myOverviewItem ->
+        myOverviewItems.forEach { myOverviewItem ->
             when (myOverviewItem) {
                 is MyOverviewItem.HeaderItem -> {
                     adapterItems.add(
@@ -168,7 +84,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                 is MyOverviewItem.PlaceholderCardItem -> {
                     adapterItems.add(
                         MyOverviewGreenCardPlaceholderItem(
-                            isEu = myOverviewItems.selectedType == GreenCardType.Eu
+                            greenCardType = myOverviewItem.greenCardType
                         )
                     )
                 }
@@ -202,7 +118,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                                 )
                             },
                             onRetryClick = {
-                                refreshOverviewItems(
+                                dashboardViewModel.refresh(
                                     forceSync = true
                                 )
                             },

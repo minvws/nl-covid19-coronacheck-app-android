@@ -2,64 +2,28 @@ package nl.rijksoverheid.ctr.holder.ui.myoverview
 
 import android.graphics.Typeface
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
-import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentTabsMyOverviewBinding
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItem
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItems
-import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewFragment.Companion.GREEN_CARD_TYPE
-import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewFragment.Companion.ITEMS
-import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewFragment.Companion.RETURN_URI
-import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewTabsFragment.Companion.positionTabsMap
+import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardTabItem
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
+import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import timber.log.Timber
-
-/**
- * viewpager adapter to house green card overviews for domestic and European.
- *
- * @param[fragment] Tabs fragment with viewpager where the overviews are nested within.
- * @param[returnToExternalAppUri] Uri used to return to external app from which it was deep linked from.
- */
-class TabPagesAdapter(fragment: Fragment,
-                      private val returnToExternalAppUri: String?) :
-    FragmentStateAdapter(fragment) {
-
-    private val items: List<DashboardTabItem> = mutableListOf()
-
-    fun setItems(items: List<DashboardTabItem>) {
-        (this.items as MutableList<DashboardTabItem>).addAll(items)
-        notifyDataSetChanged()
-    }
-
-    override fun getItemCount(): Int = items.size
-
-    override fun createFragment(position: Int): Fragment {
-        val fragment = MyOverviewFragment()
-        fragment.arguments = Bundle().apply {
-            putParcelableArray(ITEMS, items[position].items.toTypedArray())
-            putParcelable(GREEN_CARD_TYPE, positionTabsMap[position])
-            putString(RETURN_URI, returnToExternalAppUri)
-        }
-        return fragment
-    }
-}
+import java.util.concurrent.TimeUnit
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -70,22 +34,17 @@ class TabPagesAdapter(fragment: Fragment,
  */
 class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
 
-    companion object {
-        private const val domesticPosition = 0
-        private const val euPosition = 1
-        val tabsMap =
-            mapOf(GreenCardType.Domestic to domesticPosition, GreenCardType.Eu to euPosition)
-        val positionTabsMap =
-            mapOf(domesticPosition to GreenCardType.Domestic, euPosition to GreenCardType.Eu)
-    }
-
-    private val persistenceManager: PersistenceManager by inject()
-
     private val dashboardViewModel: DashboardViewModel by viewModel()
     private val viewModel: MyOverviewTabsViewModel by viewModel()
-
-    private val adapter by lazy { TabPagesAdapter(this, args.returnUri) }
     private val args: MyOverviewTabsFragmentArgs by navArgs()
+    private val dialogUtil: DialogUtil by inject()
+    private val persistenceManager: PersistenceManager by inject()
+
+    private val adapter by lazy { DashboardPagerAdapter(childFragmentManager, viewLifecycleOwner.lifecycle, args.returnUri) }
+    private val refreshHandler = Handler(Looper.getMainLooper())
+    private val refreshRunnable = Runnable {
+        refresh()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -95,9 +54,6 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
 
         val binding = FragmentTabsMyOverviewBinding.inflate(inflater, container, false)
         val view = binding.root
-
-        binding.viewPager.adapter = adapter
-        setupTabs(binding)
 
         binding.addQrButton.setOnClickListener {
             navigateSafety(
@@ -114,57 +70,94 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        dashboardViewModel.dashboardTabItems.observe(viewLifecycleOwner, {
-            adapter.setItems(it)
-        })
-        dashboardViewModel.refresh()
+        val binding = FragmentTabsMyOverviewBinding.bind(view)
+        observeItems(binding)
+        observeSyncErrors()
     }
 
-    private fun setupTabs(binding: FragmentTabsMyOverviewBinding) {
+    private fun setupViewPager(binding: FragmentTabsMyOverviewBinding) {
+        binding.viewPager.adapter = adapter
+
+    }
+
+    private fun observeItems(binding: FragmentTabsMyOverviewBinding) {
+        dashboardViewModel.dashboardTabItems.observe(viewLifecycleOwner, {
+
+            // Add pager items only once
+            if (adapter.itemCount == 0) {
+                adapter.setItems(it)
+
+                setupTabs(
+                    binding = binding,
+                    items = it
+                )
+            }
+        })
+    }
+
+    private fun observeSyncErrors() {
+        dashboardViewModel.databaseSyncerResultLiveData.observe(viewLifecycleOwner,
+            EventObserver {
+                if (it is DatabaseSyncerResult.Failed) {
+                    if (it is DatabaseSyncerResult.Failed.NetworkError && it.hasGreenCardsWithoutCredentials) {
+                        dialogUtil.presentDialog(
+                            context = requireContext(),
+                            title = R.string.dialog_title_no_internet,
+                            message = getString(R.string.dialog_credentials_expired_no_internet),
+                            positiveButtonText = R.string.app_status_internet_required_action,
+                            positiveButtonCallback = {
+                                refresh(
+                                    forceSync = true
+                                )
+                            },
+                            negativeButtonText = R.string.dialog_close,
+                        )
+                    } else {
+                        dialogUtil.presentDialog(
+                            context = requireContext(),
+                            title = R.string.dialog_title_no_internet,
+                            message = getString(R.string.dialog_update_credentials_no_internet),
+                            positiveButtonText = R.string.app_status_internet_required_action,
+                            positiveButtonCallback = {
+                                refresh(
+                                    forceSync = true
+                                )
+                            },
+                            negativeButtonText = R.string.dialog_close,
+                        )
+                    }
+                }
+            }
+        )
+    }
+
+    private fun refresh(forceSync: Boolean = true) {
+        dashboardViewModel.refresh(forceSync)
+        refreshHandler.postDelayed(
+            refreshRunnable,
+            TimeUnit.SECONDS.toMillis(10)
+        )
+    }
+
+    private fun setupTabs(binding: FragmentTabsMyOverviewBinding,
+                          items: List<DashboardTabItem>) {
         TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
             tab.view.setOnLongClickListener {
                 true
             }
-            tab.text = arrayOf(
-                getString(R.string.travel_button_domestic),
-                getString(R.string.travel_button_europe)
-            )[position]
+            tab.text = getString(items[position].title)
         }.attach()
-
-        binding.tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab) {
-                val textView = tab.view.children.find { it is TextView } as? TextView
-                textView?.setTypeface(null, Typeface.BOLD)
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab) {
-                val textView = tab.view.children.find { it is TextView } as? TextView
-                textView?.setTypeface(null, Typeface.NORMAL)
-            }
-
-            override fun onTabReselected(tab: TabLayout.Tab) {}
-        })
-
-        val defaultTab =
-            binding.tabs.getTabAt(tabsMap[getSelectedGreenCardType()]!!)
-        defaultTab?.select()
-        (defaultTab?.view?.children?.find { it is TextView } as? TextView)?.setTypeface(null, Typeface.BOLD)
-    }
-
-    private fun getSelectedGreenCardType() = if (args.returnUri != null) {
-        GreenCardType.Domestic
-    } else {
-        persistenceManager.getSelectedGreenCardType()
     }
 
     override fun onPause() {
         super.onPause()
-
+        refreshHandler.removeCallbacks(refreshRunnable)
         (parentFragment?.parentFragment as HolderMainFragment).getToolbar().menu.clear()
     }
 
     override fun onResume() {
         super.onResume()
+        refresh()
 
         (parentFragment?.parentFragment as HolderMainFragment?)?.getToolbar().let { toolbar ->
             if (toolbar?.menu?.size() == 0) {
