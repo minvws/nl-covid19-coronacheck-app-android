@@ -1,7 +1,5 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
-import io.mockk.every
-import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.holder.*
@@ -32,13 +30,10 @@ class TestResultUseCaseTest {
             configProviderUseCase = fakeConfigProviderUseCase(),
             testProviderRepository = fakeTestProviderRepository(),
             tokenValidatorUtil = fakeTokenValidatorUtil(),
-            configUseCase = fakeCachedAppConfigUseCase(),
-            resources = mockk {
-                every { getString(R.string.commercial_test_error_invalid_code) } returns "test"
-            }
+            configUseCase = fakeCachedAppConfigUseCase()
         )
         val result = usecase.testResult(uniqueCode = "dummy")
-        assertEquals((result as TestResult.InvalidToken).invalidReason, "test")
+        assertEquals(result, TestResult.InvalidToken)
     }
 
     @Test
@@ -47,13 +42,10 @@ class TestResultUseCaseTest {
             configProviderUseCase = fakeConfigProviderUseCase(),
             testProviderRepository = fakeTestProviderRepository(),
             tokenValidatorUtil = fakeTokenValidatorUtil(),
-            configUseCase = fakeCachedAppConfigUseCase(),
-            resources = mockk {
-                every { getString(R.string.commercial_test_error_invalid_code) } returns "test"
-            }
+            configUseCase = fakeCachedAppConfigUseCase()
         )
         val result = usecase.testResult(uniqueCode = "dummy-dummy")
-        assertEquals((result as TestResult.InvalidToken).invalidReason, "test")
+        assertEquals(result, TestResult.InvalidToken)
     }
 
     @Test
@@ -64,13 +56,10 @@ class TestResultUseCaseTest {
             tokenValidatorUtil = fakeTokenValidatorUtil(
                 isValid = false
             ),
-            configUseCase = fakeCachedAppConfigUseCase(HolderConfig.default(luhnCheckEnabled = true)),
-            resources = mockk {
-                every { getString(R.string.commercial_test_error_invalid_code) } returns "test"
-            }
+            configUseCase = fakeCachedAppConfigUseCase(HolderConfig.default(luhnCheckEnabled = true))
         )
         val result = usecase.testResult(uniqueCode = "provider-B-t1")
-        assertEquals((result as TestResult.InvalidToken).invalidReason, "test")
+        assertEquals(result, TestResult.InvalidToken)
     }
 
     @Test
@@ -79,13 +68,10 @@ class TestResultUseCaseTest {
             configProviderUseCase = fakeConfigProviderUseCase(),
             testProviderRepository = fakeTestProviderRepository(),
             tokenValidatorUtil = fakeTokenValidatorUtil(),
-            configUseCase = fakeCachedAppConfigUseCase(),
-            resources = mockk {
-                every { getString(R.string.commercial_test_error_unknown_test_provider) } returns "test"
-            }
+            configUseCase = fakeCachedAppConfigUseCase()
         )
         val result = usecase.testResult(uniqueCode = "provider-B-t1")
-        assertEquals((result as TestResult.InvalidToken).invalidReason, "test")
+        assertEquals(result, TestResult.UnknownTestProvider)
     }
 
     @Test
@@ -103,10 +89,7 @@ class TestResultUseCaseTest {
                     getRemoteTestResult(status = RemoteProtocol.Status.COMPLETE)
                 ),
                 tokenValidatorUtil = fakeTokenValidatorUtil(),
-                configUseCase = fakeCachedAppConfigUseCase(),
-                resources = mockk {
-                    every { getString(R.string.commercial_test_error_invalid_code) } returns "test"
-                }
+                configUseCase = fakeCachedAppConfigUseCase()
             )
             val result = usecase.testResult(uniqueCode = "$providerIdentifier-B-t1")
             assertTrue(result is TestResult.NegativeTestResult)
@@ -129,8 +112,7 @@ class TestResultUseCaseTest {
                     )
                 ),
                 tokenValidatorUtil = fakeTokenValidatorUtil(),
-                configUseCase = fakeCachedAppConfigUseCase(),
-                resources = mockk()
+                configUseCase = fakeCachedAppConfigUseCase()
             )
             val result = usecase.testResult(uniqueCode = "$providerIdentifier-B-t1")
             assertTrue(result is TestResult.NoNegativeTestResult)
@@ -151,8 +133,7 @@ class TestResultUseCaseTest {
                     getRemoteTestResult(status = RemoteProtocol.Status.VERIFICATION_REQUIRED)
                 ),
                 tokenValidatorUtil = fakeTokenValidatorUtil(),
-                configUseCase = fakeCachedAppConfigUseCase(),
-                resources = mockk()
+                configUseCase = fakeCachedAppConfigUseCase()
             )
             val result = usecase.testResult(uniqueCode = "$providerIdentifier-B-t1")
             assertTrue(result is TestResult.VerificationRequired)
@@ -173,10 +154,7 @@ class TestResultUseCaseTest {
                     getRemoteTestResult(status = RemoteProtocol.Status.INVALID_TOKEN)
                 ),
                 tokenValidatorUtil = fakeTokenValidatorUtil(),
-                configUseCase = fakeCachedAppConfigUseCase(),
-                resources = mockk {
-                    every { getString(R.string.commercial_test_error_invalid_code) } returns "test"
-                }
+                configUseCase = fakeCachedAppConfigUseCase()
             )
             val result = usecase.testResult(uniqueCode = "$providerIdentifier-B-t1")
             assertTrue(result is TestResult.InvalidToken)
@@ -201,8 +179,7 @@ class TestResultUseCaseTest {
                         )
                     }),
                 tokenValidatorUtil = fakeTokenValidatorUtil(),
-                configUseCase = fakeCachedAppConfigUseCase(),
-                resources = mockk()
+                configUseCase = fakeCachedAppConfigUseCase()
             )
             val result = usecase.testResult(uniqueCode = "$providerIdentifier-B-t1")
             assertTrue(result is TestResult.Error)
@@ -232,8 +209,7 @@ class TestResultUseCaseTest {
                     }
                 },
                 tokenValidatorUtil = fakeTokenValidatorUtil(),
-                configUseCase = fakeCachedAppConfigUseCase(),
-                resources = mockk()
+                configUseCase = fakeCachedAppConfigUseCase()
             )
             val result = usecase.testResult(uniqueCode = "$providerIdentifier-B-t1")
             assertTrue(result is TestResult.Error)
@@ -256,8 +232,7 @@ class TestResultUseCaseTest {
                     getRemoteTestResult(status = RemoteProtocol.Status.PENDING)
                 ),
                 tokenValidatorUtil = fakeTokenValidatorUtil(),
-                configUseCase = fakeCachedAppConfigUseCase(),
-                resources = mockk()
+                configUseCase = fakeCachedAppConfigUseCase()
             )
             val result = usecase.testResult(uniqueCode = "$providerIdentifier-B-t1")
             assertTrue(result is TestResult.Pending)
@@ -269,13 +244,10 @@ class TestResultUseCaseTest {
             configProviderUseCase = fakeConfigProviderUseCase(),
             testProviderRepository = fakeTestProviderRepository(),
             tokenValidatorUtil = fakeTokenValidatorUtil(),
-            configUseCase = fakeCachedAppConfigUseCase(),
-            resources = mockk {
-                every { getString(R.string.commercial_test_error_empty_retrieval_code) } returns "test"
-            }
+            configUseCase = fakeCachedAppConfigUseCase()
         )
         val result = usecase.testResult(uniqueCode = "")
-        assertEquals((result as TestResult.InvalidToken).invalidReason, "test")
+        assertEquals(result, TestResult.EmptyToken)
     }
 
     @Test
@@ -295,13 +267,10 @@ class TestResultUseCaseTest {
                     )
                 ),
                 tokenValidatorUtil = fakeTokenValidatorUtil(),
-                configUseCase = fakeCachedAppConfigUseCase(),
-                resources = mockk {
-                    every { getString(R.string.commercial_test_error_empty_verification_code) } returns "test"
-                }
+                configUseCase = fakeCachedAppConfigUseCase()
             )
             val result = usecase.testResult(uniqueCode = "$providerIdentifier-B-t1", verificationCode = "")
-            assertEquals((result as TestResult.InvalidVerificationCode).invalidReason, "test")
+            assertEquals(result, TestResult.EmptyVerificationCode)
         }
 
     private fun getRemoteTestProvider(identifier: String): RemoteConfigProviders.TestProvider {

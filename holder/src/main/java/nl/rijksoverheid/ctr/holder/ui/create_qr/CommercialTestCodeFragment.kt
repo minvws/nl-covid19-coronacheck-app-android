@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.text.InputFilter
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import androidx.annotation.StringRes
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.navigation.fragment.findNavController
@@ -111,10 +112,9 @@ import org.koin.androidx.viewmodel.scope.emptyState
 
         viewModel.testResult.observe(viewLifecycleOwner, EventObserver {
             when (it) {
-                is TestResult.InvalidToken -> {
-                    binding.uniqueCodeInput.error = it.invalidReason
-                    binding.verificationCodeInput.isVisible = false
-                }
+                is TestResult.EmptyToken -> showTokenError(R.string.commercial_test_error_empty_retrieval_code)
+                is TestResult.InvalidToken -> showTokenError(R.string.commercial_test_error_invalid_code)
+                is TestResult.UnknownTestProvider -> showTokenError(R.string.commercial_test_error_unknown_test_provider)
                 is TestResult.NegativeTestResult -> {
                     when (it.remoteTestResult) {
                         is RemoteTestResult2 -> {
@@ -169,8 +169,9 @@ import org.koin.androidx.viewmodel.scope.emptyState
                     }
                     binding.verificationCodeInput.requestFocus()
                 }
-                is TestResult.InvalidVerificationCode -> {
-                    binding.verificationCodeInput.error = it.invalidReason
+                is TestResult.EmptyVerificationCode -> {
+                    binding.verificationCodeInput.error =
+                        getString(R.string.commercial_test_error_empty_verification_code)
                 }
                 is TestResult.Error -> {
                     presentError(
@@ -222,6 +223,11 @@ import org.koin.androidx.viewmodel.scope.emptyState
                 CommercialTestCodeFragmentDirections.actionNoCode()
             )
         }
+    }
+
+    private fun showTokenError(@StringRes errorMessageRes: Int) {
+        binding.uniqueCodeInput.error = getString(errorMessageRes)
+        binding.verificationCodeInput.isVisible = false
     }
 
     override fun onPause() {
