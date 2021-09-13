@@ -14,6 +14,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.RemoveExpiredEventsUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetMyOverviewItemsUseCase
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItems
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardRefreshUtil
 import nl.rijksoverheid.ctr.shared.livedata.Event

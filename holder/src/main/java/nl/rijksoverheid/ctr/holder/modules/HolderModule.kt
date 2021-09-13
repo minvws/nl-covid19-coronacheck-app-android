@@ -165,6 +165,7 @@ fun holderModule(baseUrl: String) = module {
     viewModel<GetEventsViewModel> { GetEventsViewModelImpl(get()) }
     viewModel<PaperProofCodeViewModel> { PaperProofCodeViewModelImpl(get(), get()) }
     viewModel<PaperProofQrScannerViewModel> { PaperProofQrScannerViewModelImpl(get()) }
+    viewModel<DashboardViewModel> { DashboardViewModelImpl(get(), get(), get(), get(), get(), get()) }
 
     // Repositories
     single { AuthenticationRepository() }

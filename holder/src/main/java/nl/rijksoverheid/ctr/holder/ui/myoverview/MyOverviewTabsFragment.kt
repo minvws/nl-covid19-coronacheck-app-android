@@ -25,6 +25,7 @@ import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewTabsFragment.Companio
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
 /**
  * viewpager adapter to house green card overviews for domestic and European.
@@ -67,6 +68,7 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
 
     private val persistenceManager: PersistenceManager by inject()
 
+    private val dashboardViewModel: DashboardViewModel by viewModel()
     private val viewModel: MyOverviewTabsViewModel by viewModel()
 
     private val args: MyOverviewTabsFragmentArgs by navArgs()
@@ -81,9 +83,7 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
         val view = binding.root
 
         val viewPagerAdapter = TabPagesAdapter(this, args.returnUri)
-
         binding.viewPager.adapter = viewPagerAdapter
-
         setupTabs(binding)
 
         binding.addQrButton.setOnClickListener {
@@ -97,6 +97,14 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
         }
 
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        dashboardViewModel.dashboardTabItems.observe(viewLifecycleOwner, {
+            Timber.v("Received dashboard tab items: " + it.size)
+        })
+        dashboardViewModel.refresh()
     }
 
     private fun setupTabs(binding: FragmentTabsMyOverviewBinding) {
