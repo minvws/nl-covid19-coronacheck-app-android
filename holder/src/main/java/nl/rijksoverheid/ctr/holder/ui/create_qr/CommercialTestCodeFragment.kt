@@ -115,32 +115,7 @@ import org.koin.androidx.viewmodel.scope.emptyState
                 is TestResult.EmptyToken -> showTokenError(R.string.commercial_test_error_empty_retrieval_code)
                 is TestResult.InvalidToken -> showTokenError(R.string.commercial_test_error_invalid_code)
                 is TestResult.UnknownTestProvider -> showTokenError(R.string.commercial_test_error_unknown_test_provider)
-                is TestResult.NegativeTestResult -> {
-                    when (it.remoteTestResult) {
-                        is RemoteTestResult2 -> {
-                            findNavController().navigate(
-                                CommercialTestCodeFragmentDirections.actionYourEvents(
-                                    type = YourEventsFragmentType.TestResult2(
-                                        remoteTestResult = it.remoteTestResult,
-                                        rawResponse = it.signedResponseWithTestResult.rawResponse
-                                    ),
-                                    toolbarTitle = getString(R.string.commercial_test_type_title)
-                                )
-                            )
-                        }
-                        is RemoteProtocol3 -> {
-                            findNavController().navigate(
-                                CommercialTestCodeFragmentDirections.actionYourEvents(
-                                    type = YourEventsFragmentType.RemoteProtocol3Type(
-                                        mapOf(it.remoteTestResult to it.signedResponseWithTestResult.rawResponse),
-                                        originType = OriginType.Test
-                                    ),
-                                    toolbarTitle = getString(R.string.commercial_test_type_title)
-                                )
-                            )
-                        }
-                    }
-                }
+                is TestResult.NegativeTestResult -> showNegativeTestResult(it)
                 is TestResult.NoNegativeTestResult -> {
                     findNavController().navigate(
                         CommercialTestCodeFragmentDirections.actionCouldNotCreateQr(
@@ -222,6 +197,33 @@ import org.koin.androidx.viewmodel.scope.emptyState
                 R.id.nav_commercial_test_code,
                 CommercialTestCodeFragmentDirections.actionNoCode()
             )
+        }
+    }
+
+    private fun showNegativeTestResult(result: TestResult.NegativeTestResult) {
+        when (result.remoteTestResult) {
+            is RemoteTestResult2 -> {
+                findNavController().navigate(
+                    CommercialTestCodeFragmentDirections.actionYourEvents(
+                        type = YourEventsFragmentType.TestResult2(
+                            remoteTestResult = result.remoteTestResult,
+                            rawResponse = result.signedResponseWithTestResult.rawResponse
+                        ),
+                        toolbarTitle = getString(R.string.commercial_test_type_title)
+                    )
+                )
+            }
+            is RemoteProtocol3 -> {
+                findNavController().navigate(
+                    CommercialTestCodeFragmentDirections.actionYourEvents(
+                        type = YourEventsFragmentType.RemoteProtocol3Type(
+                            mapOf(result.remoteTestResult to result.signedResponseWithTestResult.rawResponse),
+                            originType = OriginType.Test
+                        ),
+                        toolbarTitle = getString(R.string.commercial_test_type_title)
+                    )
+                )
+            }
         }
     }
 
