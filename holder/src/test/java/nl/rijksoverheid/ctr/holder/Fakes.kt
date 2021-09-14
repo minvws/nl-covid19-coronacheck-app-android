@@ -357,6 +357,14 @@ fun fakePersistenceManager(
 
         }
 
+        override fun getSelectedDashboardTab(): Int {
+            return 0
+        }
+
+        override fun setSelectedDashboardTab(position: Int) {
+
+        }
+
         override fun hasAppliedJune28Fix(): Boolean {
             TODO("Not yet implemented")
         }

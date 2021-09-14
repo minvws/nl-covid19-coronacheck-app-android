@@ -281,7 +281,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
             // Supply navArgs
             bundleOf(
                 "returnUri" to "",
-                MyOverviewFragment.GREEN_CARD_TYPE to GreenCardType.Domestic,
+                MyOverviewFragment.EXTRA_GREEN_CARD_TYPE to GreenCardType.Domestic,
             ), themeResId = R.style.AppTheme
         ) {
             MyOverviewFragment().also {
