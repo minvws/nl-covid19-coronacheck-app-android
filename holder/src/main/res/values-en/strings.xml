@@ -389,7 +389,7 @@
     <string name="error_something_went_wrong_outage_button">View the latest outages</string>
     <string name="error_something_went_wrong_outage_button_url">https://status.coronacheck.nl/en</string>
     <string name="error_too_busy_title">Sorry, it is really busy</string>
-    <string name="error_too_busy_description">Please try again later.</string>
+    <string name="error_too_busy_description"><![CDATA[Please try again later.<br/><br/><b>Error code:</b><br/>%1s]]></string>
     <string name="error_get_events_http_error_description"><![CDATA[Something is going wrong while creating your certificate. Could you please try again later?<br/><br/><b>Error code:</b><br/>%1s]]></string>
     <string name="error_get_events_missing_events_dialog_title_vaccines">Are these all your vaccinations?</string>
     <string name="error_get_events_missing_events_dialog_title_testresults">"Are these all your test certificates? "</string>

@@ -389,7 +389,7 @@
     <string name="error_something_went_wrong_outage_button">Bekijk de actuele storingen</string>
     <string name="error_something_went_wrong_outage_button_url">https://status.coronacheck.nl/</string>
     <string name="error_too_busy_title">Sorry, het is erg druk</string>
-    <string name="error_too_busy_description">Probeer het op een later moment nog eens.</string>
+    <string name="error_too_busy_description"><![CDATA[Probeer het op een later moment nog eens.<br/><br/><b>Foutcode:</b><br/>%1s]]></string>
     <string name="error_get_events_http_error_description"><![CDATA[Er gaat iets mis bij het ophalen van je gegevens. Wil je het later nog eens proberen?<br/><br/><b>Foutcode:</b><br/>%1s]]></string>
     <string name="error_get_events_missing_events_dialog_title_vaccines">Zijn dit al je vaccinaties?</string>
     <string name="error_get_events_missing_events_dialog_title_testresults">Zijn dit al je testbewijzen?</string>
