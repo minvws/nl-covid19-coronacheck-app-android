@@ -73,12 +73,8 @@ class MyOverviewViewModelImpl(
                 val shouldRefresh =
                     (forceSync) || (greenCardRefreshUtil.shouldRefresh() && !hasDoneRefreshCall)
 
-                // If domestic, check for deviation, otherwise return stored value
-                val hasClockDeviation = if (selectType == GreenCardType.Domestic) {
-                    clockDeviationUseCase.calculateDeviationState()
-                } else {
-                    clockDeviationUseCase.retrieveDeviationState()
-                }
+                // Check for clock deviation
+                val hasClockDeviation = clockDeviationUseCase.calculateDeviationState()
 
                 // Get items we need to show on the overview
                 (myOverviewItemsLiveData as MutableLiveData).postValue(

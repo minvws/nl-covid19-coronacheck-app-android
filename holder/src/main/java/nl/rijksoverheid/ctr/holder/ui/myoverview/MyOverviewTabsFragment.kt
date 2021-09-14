@@ -14,6 +14,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
@@ -41,6 +42,7 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
     private val args: MyOverviewTabsFragmentArgs by navArgs()
     private val dialogUtil: DialogUtil by inject()
     private val persistenceManager: PersistenceManager by inject()
+    private val clockDeviationUseCase: ClockDeviationUseCase by inject()
 
     private val refreshHandler = Handler(Looper.getMainLooper())
     private val refreshRunnable = Runnable {
@@ -54,6 +56,7 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
 
         handleAddQrButton(binding)
         setupViewPager(binding, adapter)
+        observeServerTimeSynced()
         observeItems(binding, adapter)
         observeSyncErrors()
     }
@@ -74,6 +77,16 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
         binding: FragmentTabsMyOverviewBinding,
         adapter: DashboardPagerAdapter) {
         binding.viewPager.adapter = adapter
+    }
+
+    /**
+     * Whenever the server time is synced we want to refresh our dashboard to check
+     * if we want to inform the user that the clock is not correct
+     */
+    private fun observeServerTimeSynced() {
+        clockDeviationUseCase.serverTimeSyncedLiveData.observe(viewLifecycleOwner, EventObserver {
+            dashboardViewModel.refresh()
+        })
     }
 
     private fun observeItems(
