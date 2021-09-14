@@ -25,7 +25,7 @@ class DashboardPagerAdapter(
 
     fun setItems(items: List<DashboardTabItem>) {
         (this.items as MutableList<DashboardTabItem>).addAll(items)
-        notifyDataSetChanged()
+        notifyItemRangeInserted(0, items.size)
     }
 
     override fun getItemCount(): Int = items.size
@@ -33,9 +33,7 @@ class DashboardPagerAdapter(
     override fun createFragment(position: Int): Fragment {
         val fragment = MyOverviewFragment()
         fragment.arguments = Bundle().apply {
-            putParcelable(MyOverviewFragment.GREEN_CARD_TYPE, items[position].greenCardType)
-            putParcelableArray(MyOverviewFragment.ITEMS, items[position].items.toTypedArray())
-            putString(MyOverviewFragment.RETURN_URI, returnToExternalAppUri)
+            putParcelable(MyOverviewFragment.EXTRA_GREEN_CARD_TYPE, items[position].greenCardType)
         }
         return fragment
     }

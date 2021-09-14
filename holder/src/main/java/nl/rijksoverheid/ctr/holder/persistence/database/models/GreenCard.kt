@@ -17,7 +17,6 @@ import java.time.OffsetDateTime
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-@Parcelize
 data class GreenCard(
     @Embedded val greenCardEntity: GreenCardEntity,
 
@@ -32,4 +31,4 @@ data class GreenCard(
         entityColumn = "green_card_id"
     )
     val credentialEntities: List<CredentialEntity>,
-): Parcelable
+)

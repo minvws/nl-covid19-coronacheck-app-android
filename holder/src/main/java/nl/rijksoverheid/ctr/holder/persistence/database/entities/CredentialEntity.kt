@@ -26,7 +26,7 @@ import kotlin.math.exp
         onDelete = ForeignKey.CASCADE
     )]
 )
-@Parcelize
+
 data class CredentialEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     @ColumnInfo(name = "green_card_id") val greenCardId: Long,
@@ -34,7 +34,7 @@ data class CredentialEntity(
     val credentialVersion: Int,
     val validFrom: OffsetDateTime,
     val expirationTime: OffsetDateTime
-): Parcelable {
+) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

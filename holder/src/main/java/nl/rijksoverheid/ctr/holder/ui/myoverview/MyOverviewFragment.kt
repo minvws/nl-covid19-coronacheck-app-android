@@ -36,14 +36,26 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
     companion object {
         const val REQUEST_KEY = "REQUEST_KEY"
         const val EXTRA_BACK_FROM_QR = "EXTRA_BACK_FROM_QR"
-        const val GREEN_CARD_TYPE = "GREEN_CARD_TYPE"
-        const val ITEMS = "ITEMS"
-        const val RETURN_URI = "RETURN_URI"
+        const val EXTRA_GREEN_CARD_TYPE = "GREEN_CARD_TYPE"
+        const val EXTRA_RETURN_URI = "RETURN_URI"
+
+        fun getInstance(
+            greenCardType: GreenCardType,
+            returnUri: String?
+        ): MyOverviewFragment {
+            val fragment = MyOverviewFragment()
+            val arguments = Bundle()
+            arguments.putParcelable(EXTRA_GREEN_CARD_TYPE, greenCardType)
+            arguments.putString(EXTRA_RETURN_URI, returnUri)
+            fragment.arguments = arguments
+            return fragment
+        }
+
     }
 
     private val dashboardViewModel: DashboardViewModel by sharedViewModelWithOwner(owner = { ViewModelOwner.from(requireParentFragment()) })
     private val section = Section()
-    private val greenCardType: GreenCardType by lazy { arguments?.getParcelable<GreenCardType>(GREEN_CARD_TYPE) ?: error("GREEN_CARD_TYPE should not be null") }
+    private val greenCardType: GreenCardType by lazy { arguments?.getParcelable<GreenCardType>(EXTRA_GREEN_CARD_TYPE) ?: error("EXTRA_GREEN_CARD_TYPE should not be null") }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -126,7 +138,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                                             type = greenCard.greenCardEntity.type,
                                             originType = greenCard.origins.first().type
                                         ),
-                                        returnUri = arguments?.getString(RETURN_URI)
+                                        returnUri = arguments?.getString(EXTRA_RETURN_URI)
                                     )
                                 )
                             },

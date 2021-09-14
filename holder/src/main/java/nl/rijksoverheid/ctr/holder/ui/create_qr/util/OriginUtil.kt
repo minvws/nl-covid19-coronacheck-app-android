@@ -48,13 +48,8 @@ class OriginUtilImpl(private val clock: Clock): OriginUtil {
     }
 }
 
-sealed class OriginState(open val origin: OriginEntity): Parcelable {
-    @Parcelize
-    data class Valid(override val origin: OriginEntity) : OriginState(origin), Parcelable
-
-    @Parcelize
-    data class Future(override val origin: OriginEntity) : OriginState(origin), Parcelable
-
-    @Parcelize
-    data class Expired(override val origin: OriginEntity) : OriginState(origin), Parcelable
+sealed class OriginState(open val origin: OriginEntity) {
+    data class Valid(override val origin: OriginEntity) : OriginState(origin)
+    data class Future(override val origin: OriginEntity) : OriginState(origin)
+    data class Expired(override val origin: OriginEntity) : OriginState(origin)
 }

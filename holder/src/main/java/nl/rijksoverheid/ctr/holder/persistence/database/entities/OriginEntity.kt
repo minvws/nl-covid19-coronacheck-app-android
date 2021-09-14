@@ -24,7 +24,6 @@ import java.time.OffsetDateTime
         onDelete = ForeignKey.CASCADE
     )]
 )
-@Parcelize
 data class OriginEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     @ColumnInfo(name = "green_card_id") val greenCardId: Long,
@@ -32,4 +31,4 @@ data class OriginEntity(
     val eventTime: OffsetDateTime,
     val expirationTime: OffsetDateTime,
     val validFrom: OffsetDateTime
-): Parcelable
+)

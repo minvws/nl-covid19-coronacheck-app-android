@@ -112,25 +112,14 @@ class HolderDatabaseSyncerImpl(
     }
 }
 
-sealed class DatabaseSyncerResult: Parcelable {
-
-    @Parcelize
+sealed class DatabaseSyncerResult {
     object Loading : DatabaseSyncerResult()
-
-    @Parcelize
     object Success : DatabaseSyncerResult()
-
-    @Parcelize
     object MissingOrigin : DatabaseSyncerResult()
 
-    sealed class Failed(open val errorResult: ErrorResult): DatabaseSyncerResult(), Parcelable {
-        @Parcelize
+    sealed class Failed(open val errorResult: ErrorResult): DatabaseSyncerResult() {
         data class NetworkError(override val errorResult: ErrorResult, val hasGreenCardsWithoutCredentials: Boolean): Failed(errorResult)
-
-        @Parcelize
         data class ServerError(override val errorResult: ErrorResult): Failed(errorResult)
-
-        @Parcelize
         data class Error(override val errorResult: ErrorResult): Failed(errorResult)
     }
 }
