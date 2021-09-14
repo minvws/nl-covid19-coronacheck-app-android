@@ -1,10 +1,7 @@
 package nl.rijksoverheid.ctr.api
 
 import kotlinx.coroutines.runBlocking
-import okhttp3.CertificatePinner
-import okhttp3.OkHttpClient
-import okhttp3.mockwebserver.MockResponse
-import okhttp3.mockwebserver.MockWebServer
+import okhttp3.*
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThrows
@@ -15,6 +12,18 @@ import javax.net.ssl.KeyManagerFactory
 import javax.net.ssl.SSLContext
 import javax.net.ssl.SSLPeerUnverifiedException
 import javax.net.ssl.TrustManagerFactory
+
+import okhttp3.tls.HandshakeCertificates
+
+import okhttp3.mockwebserver.MockResponse
+
+import okhttp3.mockwebserver.MockWebServer
+
+import okhttp3.tls.HeldCertificate
+import org.junit.runner.RunWith
+
+import java.net.InetAddress
+import java.security.interfaces.RSAPrivateCrtKey
 
 
 /*
@@ -52,6 +61,25 @@ class CertificatePinningTest {
     @After
     fun tearDown() {
         mockWebServer.shutdown()
+    }
+
+    private fun mockServer() = MockWebServer().apply {
+        val localhost = InetAddress.getByName("localhost").canonicalHostName
+        val localhostCertificate: HeldCertificate = HeldCertificate.Builder()
+            .addSubjectAlternativeName(localhost)
+            .build()
+        val serverCertificates: HandshakeCertificates = HandshakeCertificates.Builder()
+            .heldCertificate(localhostCertificate)
+            .build()
+        useHttps(serverCertificates.sslSocketFactory(), false)
+    }
+
+    @Test
+    fun mock() {
+        val server = mockServer()
+        server.enqueue(MockResponse())
+
+
     }
 
     @Test

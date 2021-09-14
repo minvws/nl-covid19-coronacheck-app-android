@@ -10,6 +10,7 @@ import nl.rijksoverheid.ctr.api.json.OffsetDateTimeJsonAdapter
 import nl.rijksoverheid.ctr.api.signing.certificates.EV_ROOT_CA
 import okhttp3.CertificatePinner
 import okhttp3.ConnectionSpec
+import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.tls.HandshakeCertificates
@@ -29,13 +30,12 @@ import java.util.concurrent.TimeUnit
  *
  */
 fun apiModule(
-    baseUrl: String,
+    baseUrl: HttpUrl,
     signatureCertificateCnMatch: String,
     coronaCheckApiChecks: Boolean,
     testProviderApiChecks: Boolean,
     certificatePins: Array<String>,
 ) = module(override = true) {
-    val url = URL(baseUrl)
     single {
         OkHttpClient.Builder()
             .addNetworkInterceptor(CacheOverrideInterceptor())
@@ -44,7 +44,7 @@ fun apiModule(
             .followRedirects(false)
             .certificatePinner(
                 CertificatePinner.Builder()
-                    .add(url.host, *certificatePins).build()
+                    .add(baseUrl.host, *certificatePins).build()
             )
             .apply {
                 if (BuildConfig.DEBUG) {
