@@ -139,7 +139,12 @@ class InfoScreenUtilImpl(
         birthDate: String,
         providerIdentifier: String,
     ): InfoScreen {
-        return vaccinationInfoScreenUtil.getForVaccination(event, fullName, birthDate, providerIdentifier)
+        return vaccinationInfoScreenUtil.getForVaccination(
+            event,
+            fullName,
+            birthDate,
+            providerIdentifier
+        )
     }
 
     override fun getForPositiveTest(
@@ -270,7 +275,7 @@ class InfoScreenUtilImpl(
                 it.code == test.getStringOrNull("ma")
             }?.name ?: test.getStringOrNull("ma") ?: ""
 
-        val vaccinationCountry = getCountry(test.getStringOrNull("co"), getCurrentLocale())
+        val testCountry = getCountry(test.getStringOrNull("co"), getCurrentLocale())
 
         val issuerValue = test.getStringOrNull("is")
         val issuer = if (issuerValue == issuerVWS) {
@@ -281,25 +286,37 @@ class InfoScreenUtilImpl(
 
         val uniqueCode = test.getStringOrNull("ci")
 
-        val description = application.getString(
-            R.string.qr_explanation_description_eu_test,
-            fullName,
-            birthDate,
-            disease,
-            testType,
-            testName,
-            testDate,
-            testResult,
-            testLocation,
-            manufacturer,
-            vaccinationCountry,
-            issuer,
-            uniqueCode
-        )
-
         return InfoScreen(
             title = title,
-            description = description
+            description = (TextUtils.concat(
+                application.getString(R.string.qr_explanation_description_eu_test_header),
+                "<br/><br/>",
+                application.getString(R.string.qr_explanation_description_eu_test_name),
+                createQrAnswer(fullName),
+                application.getString(R.string.qr_explanation_description_eu_test_birth_date),
+                createQrAnswer(birthDate),
+                application.getString(R.string.qr_explanation_description_eu_test_disease),
+                createQrAnswer(disease),
+                application.getString(R.string.qr_explanation_description_eu_test_test_type),
+                createQrAnswer(testType),
+                application.getString(R.string.qr_explanation_description_eu_test_test_name),
+                createQrAnswer(testName),
+                application.getString(R.string.qr_explanation_description_eu_test_test_date),
+                createQrAnswer(testDate),
+                application.getString(R.string.qr_explanation_description_eu_test_test_result),
+                createQrAnswer(testResult),
+                application.getString(R.string.qr_explanation_description_eu_test_test_centre),
+                createQrAnswer(testLocation),
+                application.getString(R.string.qr_explanation_description_eu_test_manufacturer),
+                createQrAnswer(manufacturer),
+                application.getString(R.string.qr_explanation_description_eu_test_test_country),
+                createQrAnswer(testCountry),
+                application.getString(R.string.qr_explanation_description_eu_test_issuer),
+                createQrAnswer(issuer ?: ""),
+                application.getString(R.string.qr_explanation_description_eu_test_certificate_identifier),
+                createQrAnswer(uniqueCode ?: ""),
+                application.getString(R.string.qr_explanation_description_eu_test_footer),
+            ) as String)
         )
     }
 
