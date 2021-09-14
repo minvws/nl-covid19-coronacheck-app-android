@@ -313,6 +313,17 @@
     <string name="positive_test_no_longer_valid_title">Positieve testuitslag niet meer geldig</string>
     <string name="positive_test_no_longer_valid_description"><![CDATA[Ben je langer dan 180 dagen geleden getest? Dan is je testuitslag niet meer geldig. Je kunt dan geen herstelbewijs maken.]]></string>
     <string name="qr_explanation_description_eu_recovery"><![CDATA[Reis je buiten Nederland? Dan zijn er meer gegevens nodig. Daarom staan in de internationale QR-code de volgende gegevens:<br/><br/>Naam / Name:<br/> <b>%1$s</b><br/><br/>Geboortedatum / Date of birth*:<br/><b>%2$s</b><br/><br/>Ziekte waarvan hersteld / Disease recovered from:<br/><b>%3$s</b><br/><br/>Testdatum / Test date*:<br/><b>%4$s</b><br/><br/>Getest in / Member state of test:<br/><b>%5$s</b><br/><br/>Afgever certificaat / Certificate issuer:<br/><b>%6$s</b><br/><br/>Geldig vanaf / Valid from*:<br/><b>%7$s</b><br/><br/>Geldig tot / Valid to*:<br/><b>%8$s</b><br/><br/>Uniek certificaatnummer / Unique certificate identifier:<br/><b>%9$s</b><br/><br/>*Datum weergegeven in dag-maand-jaar / Date noted in day-month-year.]]></string>
+    <string name="qr_explanation_description_eu_recovery_header">Reis je buiten Nederland? Dan zijn er meer gegevens nodig. Daarom staan in de internationale QR-code de volgende gegevens:</string>
+    <string name="qr_explanation_description_eu_recovery_name">Naam / Name:</string>
+    <string name="qr_explanation_description_eu_recovery_birth_date">Geboortedatum / Date of birth*:</string>
+    <string name="qr_explanation_description_eu_recovery_disease">Ziekte waarvan hersteld / Disease recovered from:</string>
+    <string name="qr_explanation_description_eu_recovery_test_date">Testdatum / Test date*:</string>
+    <string name="qr_explanation_description_eu_recovery_country">Getest in / Member state of test:</string>
+    <string name="qr_explanation_description_eu_recovery_producer">Afgever certificaat / Certificate issuer:</string>
+    <string name="qr_explanation_description_eu_recovery_valid_from_date">Geldig vanaf / Valid from*:</string>
+    <string name="qr_explanation_description_eu_recovery_valid_until_date">Geldig tot / Valid to*:</string>
+    <string name="qr_explanation_description_eu_recovery_unique_code">Uniek certificaatnummer / Unique certificate identifier:</string>
+    <string name="qr_explanation_description_eu_recovery_footer">*Datum weergegeven in dag-maand-jaar / Date noted in day-month-year.</string>
     <string name="my_overview_green_card_not_valid_title_recovery">Over je herstelbewijs</string>
     <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_recovery"><![CDATA[Jouw herstelbewijs is niet geldig in Nederland. Je hebt wel een internationaal bewijs.<br/><br/>Dit komt doordat het type test niet voldoet in Nederland.]]></string>
     <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_recovery"><![CDATA[Jouw herstelbewijs is niet internationaal geldig. Je hebt wel een Nederlands bewijs.<br/><br/>Dit komt doordat het type test niet voldoet. Alleen van een PCR-test kan een internationaal bewijs gemaakt worden.]]></string>

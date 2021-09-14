@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 import android.app.Application
 import android.os.Build
 import android.os.Parcelable
+import android.text.TextUtils
 import kotlinx.parcelize.Parcelize
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYearNumerical
@@ -209,7 +210,6 @@ class InfoScreenUtilImpl(
             description = description
         )
     }
-
 
 
     override fun getForDomesticQr(personalDetails: PersonalDetails): InfoScreen {
@@ -477,20 +477,33 @@ class InfoScreenUtilImpl(
 
         return InfoScreen(
             title = title,
-            description = application.getString(
-                R.string.qr_explanation_description_eu_recovery,
-                fullName,
-                birthDate,
-                disease,
-                testDate,
-                country,
-                producer,
-                validFromDate,
-                validUntilDate,
-                uniqueCode
-            )
+            description = (TextUtils.concat(
+                application.getString(R.string.qr_explanation_description_eu_recovery_header),
+                "<br/><br/>",
+                application.getString(R.string.qr_explanation_description_eu_recovery_name),
+                createQrAnswer(fullName),
+                application.getString(R.string.qr_explanation_description_eu_recovery_birth_date),
+                createQrAnswer(birthDate),
+                application.getString(R.string.qr_explanation_description_eu_recovery_disease),
+                createQrAnswer(disease),
+                application.getString(R.string.qr_explanation_description_eu_recovery_test_date),
+                createQrAnswer(testDate),
+                application.getString(R.string.qr_explanation_description_eu_recovery_country),
+                createQrAnswer(country),
+                application.getString(R.string.qr_explanation_description_eu_recovery_producer),
+                createQrAnswer(producer ?: ""),
+                application.getString(R.string.qr_explanation_description_eu_recovery_valid_from_date),
+                createQrAnswer(validFromDate),
+                application.getString(R.string.qr_explanation_description_eu_recovery_valid_until_date),
+                createQrAnswer(validUntilDate),
+                application.getString(R.string.qr_explanation_description_eu_recovery_unique_code),
+                createQrAnswer(uniqueCode ?: ""),
+            ) as String)
         )
     }
+
+    private fun createQrAnswer(answer: String): String =
+        "<br/><b>$answer</b><br/><br/>"
 
     companion object {
         private const val issuerVWS = "Ministry of Health Welfare and Sport"
@@ -502,4 +515,4 @@ class InfoScreenUtilImpl(
 data class InfoScreen(
     val title: String,
     val description: String
-): Parcelable
+) : Parcelable

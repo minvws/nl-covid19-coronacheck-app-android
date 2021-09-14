@@ -313,6 +313,17 @@
     <string name="positive_test_no_longer_valid_title">Positive test result is not valid</string>
     <string name="positive_test_no_longer_valid_description"><![CDATA[Have you been tested more than 180 days ago? Then your test result is no longer valid. In this case, you cannot create a recovery certificate.]]></string>
     <string name="qr_explanation_description_eu_recovery"><![CDATA[Travelling outside of the Netherlands? Then more data is required. That\'s why the international QR code contains the following details:<br/><br/>Name:<br/><b>%1$s</b><br/><br/>Date of birth*:<br/><b>%2$s</b><br/><br/>Disease recovered from:<br/><b>%3$s</b><br/><br/>Test date*:<br/><b>%4$s</b><br/><br/>Member state of test:<br/><b>%5$s</b><br/><br/>Certificate issuer:<br/><b>%6$s</b><br/><br/>Valid from*:<br/><b>%7$s</b><br/><br/>Valid to*:<br/><b>%8$s</b><br/><br/>Unique certificate identifier:<br/><b>%9$s</b><br/><br/>*Date noted in day-month-year.]]></string>
+    <string name="qr_explanation_description_eu_recovery_header">Travelling outside of the Netherlands? Then more data is required. That\'s why the international QR code contains the following details:</string>
+    <string name="qr_explanation_description_eu_recovery_name">Name:</string>
+    <string name="qr_explanation_description_eu_recovery_birth_date">Date of birth*:</string>
+    <string name="qr_explanation_description_eu_recovery_disease">Disease recovered from:</string>
+    <string name="qr_explanation_description_eu_recovery_test_date">Test date*:</string>
+    <string name="qr_explanation_description_eu_recovery_country">Member state of test:</string>
+    <string name="qr_explanation_description_eu_recovery_producer">Certificate issuer:</string>
+    <string name="qr_explanation_description_eu_recovery_valid_from_date">Valid from*:</string>
+    <string name="qr_explanation_description_eu_recovery_valid_until_date">Valid to*:</string>
+    <string name="qr_explanation_description_eu_recovery_unique_code">Unique certificate identifier:</string>
+    <string name="qr_explanation_description_eu_recovery_footer">*Date noted in day-month-year.</string>
     <string name="my_overview_green_card_not_valid_title_recovery">About your recovery certificate</string>
     <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_recovery"><![CDATA[Your recovery certificate isn\'t valid in the Netherlands, because the type of test is not accepted.<br/><br/>You’ve only got an international QR code.]]></string>
     <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_recovery"><![CDATA[Your recovery certificate isn\'t valid internationally. You\'ve only got a Dutch certificate.<br/><br/>The reason is that the type of test is not accepted. An international recovery certificate can only be made with a PCR-test.]]></string>
