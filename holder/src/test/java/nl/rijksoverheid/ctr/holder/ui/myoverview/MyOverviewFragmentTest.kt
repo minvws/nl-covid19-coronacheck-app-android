@@ -24,6 +24,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItems
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
+import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardTabItem
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.AppErrorResult
 import nl.rijksoverheid.ctr.shared.models.Step
@@ -111,9 +112,9 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
     fun `overview with one green card item (vaccination) shows properly`() {
         val viewModel = launchFragment()
 
-        (viewModel.myOverviewItemsLiveData as MutableLiveData).postValue(Event(
-            myOverViewItemsWithValidDomesticGreenCard()
-        ))
+        (viewModel.dashboardTabItems as MutableLiveData).postValue(
+            listOf(dashboardItemWithValidDomesticGreenCard())
+        )
 
         assertDisplayed(R.id.type_title, R.string.validity_type_dutch_title)
         assertDisplayed(R.id.title, R.string.my_overview_test_result_title)
@@ -129,9 +130,8 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
     fun `overview with one expired green card item shows properly`() {
         val viewModel = launchFragment()
 
-        (viewModel.myOverviewItemsLiveData as MutableLiveData).postValue(Event(
-            expiredItem()
-        ))
+        (viewModel.dashboardTabItems as MutableLiveData).postValue(
+            listOf(expiredItem()))
 
         assertDisplayed(R.id.text, R.string.qr_card_expired)
         assertNotExist(R.id.test_result)
@@ -141,9 +141,8 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
     fun `overview with one origin info item shows properly`() {
         val viewModel = launchFragment()
 
-        (viewModel.myOverviewItemsLiveData as MutableLiveData).postValue(Event(
-            originInfoItem()
-        ))
+        (viewModel.dashboardTabItems as MutableLiveData).postValue(
+            listOf(originInfoItem()))
 
         assertDisplayed(R.id.text, "Je vaccinatiebewijs is niet geldig in Nederland. Je hebt wel een internationaal bewijs.")
         assertNotExist(R.id.test_result)
@@ -153,65 +152,68 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
     fun `overview with one clock deviation item shows properly`() {
         val viewModel = launchFragment()
 
-        (viewModel.myOverviewItemsLiveData as MutableLiveData).postValue(Event(
-            clockDeviationItem()
-        ))
+        (viewModel.dashboardTabItems as MutableLiveData).postValue(listOf(clockDeviationItem()))
 
         assertDisplayed(R.id.text, R.string.my_overview_clock_deviation_description)
         assertNotExist(R.id.test_result)
     }
 
-    private fun clockDeviationItem() = MyOverviewItems(
+    private fun clockDeviationItem() = DashboardTabItem(
+        title = 0,
+        greenCardType = GreenCardType.Domestic,
         items = listOf(
             MyOverviewItem.ClockDeviationItem
-        ),
-        selectedType = GreenCardType.Domestic
+        )
     )
 
-    private fun originInfoItem() = MyOverviewItems(
+    private fun originInfoItem() = DashboardTabItem(
+        title = 0,
+        greenCardType = GreenCardType.Domestic,
         items = listOf(
             MyOverviewItem.OriginInfoItem(
                 greenCardType = GreenCardType.Domestic,
                 originType = OriginType.Vaccination,
             )
-        ),
-        selectedType = GreenCardType.Domestic
+        )
     )
 
-    private fun expiredItem() = MyOverviewItems(
+    private fun expiredItem() = DashboardTabItem(
+        title = 0,
+        greenCardType = GreenCardType.Domestic,
         items = listOf(
             MyOverviewItem.GreenCardExpiredItem(
                 greenCardType = GreenCardType.Domestic
             )
-        ),
-        selectedType = GreenCardType.Domestic
+        )
     )
 
-    private fun myOverViewItemsWithValidDomesticGreenCard() = MyOverviewItems(
-        items = listOf(
-            MyOverviewItem.GreenCardItem(
-                greenCard = GreenCard(
-                    GreenCardEntity(
-                        id = 1,
-                        walletId = 1,
-                        GreenCardType.Domestic
+    private fun dashboardItemWithValidDomesticGreenCard() =
+        DashboardTabItem(
+            title = 0,
+            greenCardType = GreenCardType.Domestic,
+            items = listOf(
+                MyOverviewItem.GreenCardItem(
+                    greenCard = GreenCard(
+                        GreenCardEntity(
+                            id = 1,
+                            walletId = 1,
+                            GreenCardType.Domestic
+                        ),
+                        origins = listOf(
+                            originEntity()
+                        ),
+                        credentialEntities = listOf(
+                            credentialEntity()
+                        )
                     ),
-                    origins = listOf(
-                        originEntity()
+                    originStates = listOf(
+                        OriginState.Valid(originEntity())
                     ),
-                    credentialEntities = listOf(
-                        credentialEntity()
-                    )
-                ),
-                originStates = listOf(
-                    OriginState.Valid(originEntity())
-                ),
-                credentialState = MyOverviewItem.GreenCardItem.CredentialState.HasCredential(credentialEntity()),
-                databaseSyncerResult = DatabaseSyncerResult.Success
+                    credentialState = MyOverviewItem.GreenCardItem.CredentialState.HasCredential(credentialEntity()),
+                    databaseSyncerResult = DatabaseSyncerResult.Success
+                )
             )
-        ),
-        selectedType = GreenCardType.Domestic
-    )
+        )
 
     private fun originEntity(type: OriginType = OriginType.Vaccination) = OriginEntity(
         id = 1,
@@ -231,11 +233,11 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
         expirationTime = OffsetDateTime.now(expireTimeClock),
     )
 
-            private fun triggerNetworkError(viewModel: MyOverviewViewModel, noCredentialsLeft: Boolean = true) =
+            private fun triggerNetworkError(viewModel: DashboardViewModel, noCredentialsLeft: Boolean = true) =
         triggerSyncerResult(viewModel, DatabaseSyncerResult.Failed.NetworkError(AppErrorResult(Step(1), IllegalStateException()), noCredentialsLeft))
 
     private fun triggerSyncerResult(
-        viewModel: MyOverviewViewModel,
+        viewModel: DashboardViewModel,
         syncResult: DatabaseSyncerResult
     ) {
         ((viewModel.databaseSyncerResultLiveData) as MutableLiveData).postValue(
@@ -245,22 +247,15 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
         )
     }
 
-    private fun launchFragment(selectType: GreenCardType = GreenCardType.Domestic): MyOverviewViewModel {
-        val viewModel = object : MyOverviewViewModel() {
-            override fun getSelectedType(): GreenCardType {
-                return selectType
-            }
+    private fun launchFragment(): DashboardViewModel {
+        val viewModel = object : DashboardViewModel() {
+            override fun refresh(forceSync: Boolean) {
 
-            override fun refreshOverviewItems(
-                selectType: GreenCardType,
-                forceSync: Boolean
-            ) {
-                //
             }
         }
         loadKoinModules(
             module(override = true) {
-                viewModel<MyOverviewViewModel> { viewModel }
+                viewModel<DashboardViewModel> { viewModel }
 
                 factory<DialogUtil> { dialogUtil }
                 factory<CachedAppConfigUseCase> {
