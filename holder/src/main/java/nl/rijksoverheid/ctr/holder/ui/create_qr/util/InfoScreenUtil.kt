@@ -408,20 +408,33 @@ class InfoScreenUtilImpl(
 
         return InfoScreen(
             title = title,
-            description = application.getString(
-                R.string.qr_explanation_description_eu_vaccination,
-                fullName,
-                birthDate,
-                disease,
-                vaccin,
-                vaccinType,
-                manufacturer,
-                doses,
-                vaccinationDate,
-                vaccinationCountry,
-                issuer,
-                uniqueCode
-            )
+            description = (TextUtils.concat(
+                application.getString(R.string.qr_explanation_description_eu_vaccination_header),
+                "<br/><br/>",
+                application.getString(R.string.qr_explanation_description_eu_vaccination_name),
+                createQrAnswer(fullName),
+                application.getString(R.string.qr_explanation_description_eu_vaccination_birth_date),
+                createQrAnswer(birthDate),
+                application.getString(R.string.qr_explanation_description_eu_vaccination_disease),
+                createQrAnswer(disease),
+                application.getString(R.string.qr_explanation_description_eu_vaccination_vaccine),
+                createQrAnswer(vaccin),
+                application.getString(R.string.qr_explanation_description_eu_vaccination_vaccine_type),
+                createQrAnswer(vaccinType),
+                application.getString(R.string.qr_explanation_description_eu_vaccination_producer),
+                createQrAnswer(manufacturer),
+                application.getString(R.string.qr_explanation_description_eu_vaccination_doses),
+                createQrAnswer(doses),
+                application.getString(R.string.qr_explanation_description_eu_vaccination_vaccination_date),
+                createQrAnswer(vaccinationDate),
+                application.getString(R.string.qr_explanation_description_eu_vaccination_vaccinated_in),
+                createQrAnswer(vaccinationCountry),
+                application.getString(R.string.qr_explanation_description_eu_vaccination_certificate_issuer),
+                createQrAnswer(issuer ?: ""),
+                application.getString(R.string.qr_explanation_description_eu_vaccination_unique_certificate),
+                createQrAnswer(uniqueCode ?: ""),
+                application.getString(R.string.qr_explanation_description_eu_vaccination_footer),
+            ) as String)
         )
     }
 
@@ -498,6 +511,7 @@ class InfoScreenUtilImpl(
                 createQrAnswer(validUntilDate),
                 application.getString(R.string.qr_explanation_description_eu_recovery_unique_code),
                 createQrAnswer(uniqueCode ?: ""),
+                application.getString(R.string.qr_explanation_description_eu_recovery_footer)
             ) as String)
         )
     }
