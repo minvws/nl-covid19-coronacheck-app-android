@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
+import androidx.lifecycle.Observer
 import androidx.navigation.navGraphViewModels
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
@@ -18,6 +19,9 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.*
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeFragmentData
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
+import nl.rijksoverheid.ctr.shared.ext.sharedViewModelWithOwner
+import org.koin.androidx.viewmodel.ViewModelOwner
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import timber.log.Timber
 
 /*
@@ -37,15 +41,16 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
         const val RETURN_URI = "RETURN_URI"
     }
 
-    private val dashboardViewModel: DashboardViewModel by navGraphViewModels(R.id.nav_graph_overview)
+    private val dashboardViewModel: DashboardViewModel by sharedViewModelWithOwner(owner = { ViewModelOwner.from(requireParentFragment()) })
     private val section = Section()
-    private val items by lazy { arguments?.getParcelableArray(ITEMS)?.toList() as List<MyOverviewItem> }
+    private val greenCardType: GreenCardType by lazy { arguments?.getParcelable<GreenCardType>(GREEN_CARD_TYPE) ?: error("GREEN_CARD_TYPE should not be null") }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val binding = FragmentMyOverviewBinding.bind(view)
         initRecyclerView(binding)
+        observeItem()
 
         setFragmentResultListener(
             REQUEST_KEY
@@ -60,6 +65,14 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
         }
     }
 
+    private fun observeItem() {
+        dashboardViewModel.dashboardTabItems.observe(viewLifecycleOwner, {
+            setItems(
+                myOverviewItems = it.first { items -> items.greenCardType == greenCardType }.items
+            )
+        })
+    }
+
     private fun initRecyclerView(binding: FragmentMyOverviewBinding) {
         val adapter = GroupAdapter<GroupieViewHolder>().also {
             it.add(section)
@@ -68,7 +81,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
         binding.recyclerView.itemAnimator = null
     }
 
-    fun setItems(
+    private fun setItems(
         myOverviewItems: List<MyOverviewItem>
     ) {
         val adapterItems = mutableListOf<BindableItem<*>>()

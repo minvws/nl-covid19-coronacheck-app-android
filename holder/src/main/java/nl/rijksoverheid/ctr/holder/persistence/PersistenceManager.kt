@@ -22,6 +22,8 @@ interface PersistenceManager {
     fun setHasDismissedRootedDeviceDialog()
     fun getSelectedGreenCardType(): GreenCardType
     fun setSelectedGreenCardType(greenCardType: GreenCardType)
+    fun getSelectedDashboardTab(): Int
+    fun setSelectedDashboardTab(position: Int)
     fun hasAppliedJune28Fix(): Boolean
     fun setJune28FixApplied(applied: Boolean)
 }
@@ -38,6 +40,7 @@ class SharedPreferencesPersistenceManager(
         const val HAS_SEEN_ROOTED_DEVICE_DIALOG = "HAS_SEEN_ROOTED_DEVICE_DIALOG"
         const val SELECTED_GREEN_CARD_TYPE = "SELECTED_GREEN_CARD_TYPE"
         const val FIX28JUNE_APPLIED = "FIX_28_JUNE_APPLIED"
+        const val SELECTED_DASHBOARD_TAB = "SELECTED_DASHBOARD_TAB"
     }
 
     override fun saveSecretKeyJson(json: String) {
@@ -93,12 +96,14 @@ class SharedPreferencesPersistenceManager(
         }
     }
 
-    override fun getSelectedGreenCardType(): GreenCardType {
-        val type = sharedPreferences.getString(SELECTED_GREEN_CARD_TYPE, GreenCardType.TYPE_DOMESTIC)
-        return if (type == GreenCardType.TYPE_DOMESTIC) {
-            GreenCardType.Domestic
-        } else {
-            GreenCardType.Eu
+    override fun getSelectedDashboardTab(): Int {
+        return sharedPreferences.getInt(SELECTED_DASHBOARD_TAB, 0)
+    }
+
+    override fun setSelectedDashboardTab(position: Int) {
+        val result = sharedPreferences.edit().putInt(SELECTED_DASHBOARD_TAB, position).commit()
+        if (!result) {
+            throw IllegalStateException("Failed to set selected dashboard tab in shared preference")
         }
     }
 
@@ -110,6 +115,15 @@ class SharedPreferencesPersistenceManager(
         val result = sharedPreferences.edit().putString(SELECTED_GREEN_CARD_TYPE, typeString).commit()
         if (!result) {
             throw IllegalStateException("Failed to set selected green card type in shared preference")
+        }
+    }
+
+    override fun getSelectedGreenCardType(): GreenCardType {
+        val type = sharedPreferences.getString(SELECTED_GREEN_CARD_TYPE, GreenCardType.TYPE_DOMESTIC)
+        return if (type == GreenCardType.TYPE_DOMESTIC) {
+            GreenCardType.Domestic
+        } else {
+            GreenCardType.Eu
         }
     }
 

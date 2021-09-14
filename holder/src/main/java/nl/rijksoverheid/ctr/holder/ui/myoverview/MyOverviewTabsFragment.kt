@@ -9,8 +9,13 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.core.view.children
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
+import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
@@ -23,6 +28,7 @@ import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 /*
@@ -40,21 +46,23 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
     private val dialogUtil: DialogUtil by inject()
     private val persistenceManager: PersistenceManager by inject()
 
-    private val adapter by lazy { DashboardPagerAdapter(childFragmentManager, viewLifecycleOwner.lifecycle, args.returnUri) }
     private val refreshHandler = Handler(Looper.getMainLooper())
     private val refreshRunnable = Runnable {
         refresh()
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val binding = FragmentTabsMyOverviewBinding.bind(view)
+        val adapter = DashboardPagerAdapter(childFragmentManager, viewLifecycleOwner.lifecycle, args.returnUri)
 
-        val binding = FragmentTabsMyOverviewBinding.inflate(inflater, container, false)
-        val view = binding.root
+        handleAddQrButton(binding)
+        setupViewPager(binding, adapter)
+        observeItems(binding, adapter)
+        observeSyncErrors()
+    }
 
+    private fun handleAddQrButton(binding: FragmentTabsMyOverviewBinding) {
         binding.addQrButton.setOnClickListener {
             navigateSafety(
                 MyOverviewFragmentDirections.actionQrType()
@@ -64,23 +72,17 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
         viewModel.showAddCertificateButtonEvent.observe(viewLifecycleOwner) {
             binding.addQrButton.visibility = if (it) VISIBLE else GONE
         }
-
-        return view
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val binding = FragmentTabsMyOverviewBinding.bind(view)
-        observeItems(binding)
-        observeSyncErrors()
-    }
-
-    private fun setupViewPager(binding: FragmentTabsMyOverviewBinding) {
+    private fun setupViewPager(
+        binding: FragmentTabsMyOverviewBinding,
+        adapter: DashboardPagerAdapter) {
         binding.viewPager.adapter = adapter
-
     }
 
-    private fun observeItems(binding: FragmentTabsMyOverviewBinding) {
+    private fun observeItems(
+        binding: FragmentTabsMyOverviewBinding,
+        adapter: DashboardPagerAdapter) {
         dashboardViewModel.dashboardTabItems.observe(viewLifecycleOwner, {
 
             // Add pager items only once
@@ -91,6 +93,17 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
                     binding = binding,
                     items = it
                 )
+
+                // Default select the item that we had selected last
+                binding.viewPager.setCurrentItem(persistenceManager.getSelectedDashboardTab(), false)
+
+                // Register listener so that last selected item is saved
+                binding.viewPager.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
+                    override fun onPageSelected(position: Int) {
+                        super.onPageSelected(position)
+                        persistenceManager.setSelectedDashboardTab(position)
+                    }
+                })
             }
         })
     }
@@ -131,7 +144,7 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
         )
     }
 
-    private fun refresh(forceSync: Boolean = true) {
+    private fun refresh(forceSync: Boolean = false) {
         dashboardViewModel.refresh(forceSync)
         refreshHandler.postDelayed(
             refreshRunnable,
@@ -147,6 +160,26 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
             }
             tab.text = getString(items[position].title)
         }.attach()
+
+        binding.tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                val textView = tab.view.children.find { it is TextView } as? TextView
+                textView?.setTypeface(null, Typeface.BOLD)
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab) {
+                val textView = tab.view.children.find { it is TextView } as? TextView
+                textView?.setTypeface(null, Typeface.NORMAL)
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab) {
+                val textView = tab.view.children.find { it is TextView } as? TextView
+                textView?.setTypeface(null, Typeface.BOLD)
+            }
+        })
+
+        // Call selectTab so that styling get's picked up on launch
+        binding.tabs.selectTab(binding.tabs.getTabAt(0))
     }
 
     override fun onPause() {
