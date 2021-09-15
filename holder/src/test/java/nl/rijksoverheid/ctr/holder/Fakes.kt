@@ -354,14 +354,6 @@ fun fakePersistenceManager(
 
         }
 
-        override fun getSelectedGreenCardType(): GreenCardType {
-            return GreenCardType.Domestic
-        }
-
-        override fun setSelectedGreenCardType(greenCardType: GreenCardType) {
-
-        }
-
         override fun getSelectedDashboardTab(): Int {
             return 0
         }
