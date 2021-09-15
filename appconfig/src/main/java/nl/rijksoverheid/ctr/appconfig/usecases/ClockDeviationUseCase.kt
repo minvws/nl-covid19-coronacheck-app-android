@@ -21,7 +21,7 @@ abstract class ClockDeviationUseCase {
     val serverTimeSyncedLiveData: LiveData<Event<Unit>> = MutableLiveData()
 
     abstract fun store(serverResponseTimestamp: Long, localReceivedTimestamp: Long)
-    abstract fun calculateDeviationState(): Boolean
+    abstract fun hasDeviation(): Boolean
 }
 
 const val SECOND_IN_MS = 1000
@@ -43,7 +43,7 @@ class ClockDeviationUseCaseImpl(
         (serverTimeSyncedLiveData as MutableLiveData).postValue(Event(Unit))
     }
 
-    override fun calculateDeviationState(): Boolean {
+    override fun hasDeviation(): Boolean {
         if (localResponseReceivedTimeStamp == 0L && localServerResponseTimeStamp == 0L) {
             return false
         }

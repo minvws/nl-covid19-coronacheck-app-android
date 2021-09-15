@@ -15,6 +15,7 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMyOverviewBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.*
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeFragmentData
@@ -78,9 +79,9 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
     }
 
     private fun observeItem() {
-        dashboardViewModel.dashboardTabItems.observe(viewLifecycleOwner, {
+        dashboardViewModel.dashboardTabItemsLiveData.observe(viewLifecycleOwner, {
             setItems(
-                myOverviewItems = it.first { items -> items.greenCardType == greenCardType }.items
+                myDashboardItems = it.first { items -> items.greenCardType == greenCardType }.items
             )
         })
     }
@@ -94,32 +95,32 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
     }
 
     private fun setItems(
-        myOverviewItems: List<MyOverviewItem>
+        myDashboardItems: List<DashboardItem>
     ) {
         val adapterItems = mutableListOf<BindableItem<*>>()
-        myOverviewItems.forEach { myOverviewItem ->
-            when (myOverviewItem) {
-                is MyOverviewItem.HeaderItem -> {
+        myDashboardItems.forEach { dashboardItem ->
+            when (dashboardItem) {
+                is DashboardItem.HeaderItem -> {
                     adapterItems.add(
                         MyOverviewHeaderAdapterItem(
-                            text = myOverviewItem.text
+                            text = dashboardItem.text
                         )
                     )
                 }
-                is MyOverviewItem.PlaceholderCardItem -> {
+                is DashboardItem.PlaceholderCardItem -> {
                     adapterItems.add(
                         MyOverviewGreenCardPlaceholderItem(
-                            greenCardType = myOverviewItem.greenCardType
+                            greenCardType = dashboardItem.greenCardType
                         )
                     )
                 }
-                is MyOverviewItem.GreenCardItem -> {
+                is DashboardItem.GreenCardItem -> {
                     adapterItems.add(
                         MyOverviewGreenCardAdapterItem(
-                            greenCard = myOverviewItem.greenCard,
-                            originStates = myOverviewItem.originStates,
-                            credentialState = myOverviewItem.credentialState,
-                            databaseSyncerResult = myOverviewItem.databaseSyncerResult,
+                            greenCard = dashboardItem.greenCard,
+                            originStates = dashboardItem.originStates,
+                            credentialState = dashboardItem.credentialState,
+                            databaseSyncerResult = dashboardItem.databaseSyncerResult,
                             onButtonClick = { greenCard, credential ->
                                 navigateSafety(
                                     MyOverviewFragmentDirections.actionQrCode(
@@ -150,18 +151,18 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                         )
                     )
                 }
-                is MyOverviewItem.GreenCardExpiredItem -> {
+                is DashboardItem.GreenCardExpiredItem -> {
                     adapterItems.add(MyOverviewGreenCardExpiredAdapterItem(
-                        greenCardType = myOverviewItem.greenCardType,
+                        greenCardType = dashboardItem.greenCardType,
                         onDismissClick = {
                             section.remove(it)
                         }
                     ))
                 }
-                is MyOverviewItem.OriginInfoItem -> {
+                is DashboardItem.OriginInfoItem -> {
                     adapterItems.add(MyOverviewOriginInfoAdapterItem(
-                        greenCardType = myOverviewItem.greenCardType,
-                        originType = myOverviewItem.originType,
+                        greenCardType = dashboardItem.greenCardType,
+                        originType = dashboardItem.originType,
                         onInfoClick = { greenCardType, originType ->
                             when (greenCardType) {
                                 is GreenCardType.Domestic -> navigateToDomesticQr(originType)
@@ -170,7 +171,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                         }
                     ))
                 }
-                is MyOverviewItem.ClockDeviationItem -> {
+                is DashboardItem.ClockDeviationItem -> {
                     adapterItems.add(MyOverviewClockDeviationItem(onInfoIconClicked = {
                         navigateSafety(MyOverviewTabsFragmentDirections.actionShowClockDeviationExplanation())
                     }))

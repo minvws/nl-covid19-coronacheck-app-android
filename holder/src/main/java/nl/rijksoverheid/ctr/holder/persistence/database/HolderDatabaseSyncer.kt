@@ -36,7 +36,8 @@ class HolderDatabaseSyncerImpl(
     private val holderDatabase: HolderDatabase,
     private val greenCardUtil: GreenCardUtil,
     private val getRemoteGreenCardsUseCase: GetRemoteGreenCardsUseCase,
-    private val syncRemoteGreenCardsUseCase: SyncRemoteGreenCardsUseCase
+    private val syncRemoteGreenCardsUseCase: SyncRemoteGreenCardsUseCase,
+    private val removeExpiredEventsUseCase: RemoveExpiredEventsUseCase
 ) : HolderDatabaseSyncer {
 
     private val mutex = Mutex()
@@ -48,6 +49,11 @@ class HolderDatabaseSyncerImpl(
         return withContext(Dispatchers.IO) {
             mutex.withLock {
                 val events = holderDatabase.eventGroupDao().getAll()
+
+                // Clean up expired events in the database
+                removeExpiredEventsUseCase.execute(
+                    events = events
+                )
 
                 // Sync with remote
                 if (syncWithRemote && events.isNotEmpty()) {

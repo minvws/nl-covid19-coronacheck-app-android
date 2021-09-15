@@ -1,6 +1,8 @@
 package nl.rijksoverheid.ctr.holder.modules
 
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.*
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetDashboardItemsUseCase
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetDashboardItemsUseCaseImpl
 import org.koin.dsl.module
 
 /*
@@ -22,5 +24,8 @@ val greenCardUseCasesModule = module {
     }
     factory<CreateEuGreenCardUseCase> {
         CreateEuGreenCardUseCaseImpl(get(), get())
+    }
+    factory<GetDashboardItemsUseCase> {
+        GetDashboardItemsUseCaseImpl(get(), get(), get(), get(), get())
     }
 }

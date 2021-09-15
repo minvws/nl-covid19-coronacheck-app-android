@@ -29,19 +29,9 @@ val viewModels = module {
     viewModel { TokenQrViewModel(get()) }
     viewModel<DeviceRootedViewModel> { DeviceRootedViewModelImpl(get(), get()) }
     viewModel<YourEventsViewModel> { YourEventsViewModelImpl(get(), get()) }
-    viewModel<MyOverviewViewModel> {
-        MyOverviewViewModelImpl(
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get()
-        )
-    }
     viewModel<MyOverviewTabsViewModel> { MyOverviewTabsViewModelImpl(get()) }
     viewModel<GetEventsViewModel> { GetEventsViewModelImpl(get()) }
     viewModel<PaperProofCodeViewModel> { PaperProofCodeViewModelImpl(get(), get()) }
     viewModel<PaperProofQrScannerViewModel> { PaperProofQrScannerViewModelImpl(get()) }
-    viewModel<DashboardViewModel> { DashboardViewModelImpl(get(), get(), get(), get(), get(), get()) }
+    viewModel<DashboardViewModel> { DashboardViewModelImpl(get(), get(), get(), get()) }
 }

@@ -26,6 +26,7 @@ import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 /*
@@ -92,7 +93,7 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
     private fun observeItems(
         binding: FragmentTabsMyOverviewBinding,
         adapter: DashboardPagerAdapter) {
-        dashboardViewModel.dashboardTabItems.observe(viewLifecycleOwner, {
+        dashboardViewModel.dashboardTabItemsLiveData.observe(viewLifecycleOwner, {
 
             // Add pager items only once
             if (adapter.itemCount == 0) {
@@ -157,7 +158,7 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
         dashboardViewModel.refresh(forceSync)
         refreshHandler.postDelayed(
             refreshRunnable,
-            TimeUnit.SECONDS.toMillis(10)
+            TimeUnit.SECONDS.toMillis(60)
         )
     }
 

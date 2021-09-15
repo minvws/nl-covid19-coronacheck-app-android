@@ -48,8 +48,7 @@ class GetMyOverviewItemsUseCaseImpl(
     private val credentialUtil: CredentialUtil,
     private val greenCardUtil: GreenCardUtil,
     private val originUtil: OriginUtil
-) :
-    GetMyOverviewItemsUseCase {
+) : GetMyOverviewItemsUseCase {
 
     override suspend fun get(
         walletId: Int,
@@ -268,5 +267,4 @@ sealed class MyOverviewItem {
 
     data class GreenCardExpiredItem(val greenCardType: GreenCardType) : MyOverviewItem()
     data class OriginInfoItem(val greenCardType: GreenCardType, val originType: OriginType) : MyOverviewItem()
-
 }
