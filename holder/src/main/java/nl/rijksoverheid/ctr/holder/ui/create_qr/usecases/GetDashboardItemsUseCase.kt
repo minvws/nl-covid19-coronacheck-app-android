@@ -2,7 +2,6 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
-import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
@@ -22,7 +21,6 @@ interface GetDashboardItemsUseCase {
 }
 
 class GetDashboardItemsUseCaseImpl(
-    private val holderDatabase: HolderDatabase,
     private val greenCardUtil: GreenCardUtil,
     private val credentialUtil: CredentialUtil,
     private val originUtil: OriginUtil,
@@ -105,7 +103,7 @@ class GetDashboardItemsUseCaseImpl(
         return dashboardItems
     }
 
-    private suspend fun getGreenCardItems(
+    private fun getGreenCardItems(
         greenCardType: GreenCardType,
         greenCardsForSelectedType: List<GreenCard>,
         greenCardsForUnselectedType: List<GreenCard>,
