@@ -5,7 +5,6 @@ import com.squareup.moshi.Types
 import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import nl.rijksoverheid.ctr.api.factory.NetworkRequestResultFactory
-import nl.rijksoverheid.ctr.shared.models.CoronaCheckErrorResponse
 import nl.rijksoverheid.ctr.api.signing.certificates.DIGICERT_BTC_ROOT_CA
 import nl.rijksoverheid.ctr.api.signing.certificates.EV_ROOT_CA
 import nl.rijksoverheid.ctr.api.signing.certificates.PRIVATE_ROOT_CA
@@ -36,19 +35,16 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
 import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModel
 import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.*
-import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewViewModel
-import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewViewModelImpl
-import nl.rijksoverheid.ctr.holder.ui.myoverview.QrCodeViewModel
-import nl.rijksoverheid.ctr.holder.ui.myoverview.QrCodeViewModelImpl
-import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.ReturnToExternalAppUseCase
-import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.ReturnToExternalAppUseCaseImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverViewGreenCardAdapterUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverViewGreenCardAdapterUtilImpl
+import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.ReturnToExternalAppUseCase
+import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.ReturnToExternalAppUseCaseImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCaseImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.*
 import nl.rijksoverheid.ctr.shared.factories.ErrorCodeStringFactory
 import nl.rijksoverheid.ctr.shared.factories.ErrorCodeStringFactoryImpl
+import nl.rijksoverheid.ctr.shared.models.CoronaCheckErrorResponse
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import okhttp3.tls.HandshakeCertificates
@@ -72,7 +68,11 @@ import java.time.Clock
 fun holderModule(baseUrl: String) = module {
 
     single {
-        HolderDatabase.createInstance(androidContext(), get(), androidContext().packageName == "nl.rijksoverheid.ctr.holder")
+        HolderDatabase.createInstance(
+            androidContext(),
+            get(),
+            androidContext().packageName == "nl.rijksoverheid.ctr.holder"
+        )
     }
 
     factory<HolderDatabaseSyncer> { HolderDatabaseSyncerImpl(get(), get(), get(), get()) }
@@ -132,7 +132,14 @@ fun holderModule(baseUrl: String) = module {
     factory<GetMyOverviewItemsUseCase> {
         GetMyOverviewItemsUseCaseImpl(get(), get(), get(), get())
     }
-    factory<MyOverViewGreenCardAdapterUtil> { MyOverViewGreenCardAdapterUtilImpl(androidContext(), get(), get(), get()) }
+    factory<MyOverViewGreenCardAdapterUtil> {
+        MyOverViewGreenCardAdapterUtilImpl(
+            androidContext(),
+            get(),
+            get(),
+            get()
+        )
+    }
     factory<TokenValidatorUtil> { TokenValidatorUtilImpl() }
     factory<CredentialUtil> { CredentialUtilImpl(Clock.systemUTC(), get()) }
     factory<OriginUtil> { OriginUtilImpl(Clock.systemUTC()) }
@@ -146,7 +153,13 @@ fun holderModule(baseUrl: String) = module {
     factory<DeviceRootedUseCase> { DeviceRootedUseCaseImpl(androidContext()) }
     factory<GetEventsUseCase> { GetEventsUseCaseImpl(get(), get(), get(), get()) }
     factory<SaveEventsUseCase> { SaveEventsUseCaseImpl(get(), get()) }
-    factory<CachedAppConfigUseCase> { CachedAppConfigUseCaseImpl(get(), androidContext().filesDir.path, get()) }
+    factory<CachedAppConfigUseCase> {
+        CachedAppConfigUseCaseImpl(
+            get(),
+            androidContext().filesDir.path,
+            get()
+        )
+    }
 
     factory<TestResultsMigrationManager> { TestResultsMigrationManagerImpl(get()) }
 
@@ -160,7 +173,16 @@ fun holderModule(baseUrl: String) = module {
     viewModel { TokenQrViewModel(get()) }
     viewModel<DeviceRootedViewModel> { DeviceRootedViewModelImpl(get(), get()) }
     viewModel<YourEventsViewModel> { YourEventsViewModelImpl(get(), get()) }
-    viewModel<MyOverviewViewModel> { MyOverviewViewModelImpl(get(), get(), get(), get(), get(), get()) }
+    viewModel<MyOverviewViewModel> {
+        MyOverviewViewModelImpl(
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+            get()
+        )
+    }
     viewModel<MyOverviewTabsViewModel> { MyOverviewTabsViewModelImpl(get()) }
     viewModel<GetEventsViewModel> { GetEventsViewModelImpl(get()) }
     viewModel<PaperProofCodeViewModel> { PaperProofCodeViewModelImpl(get(), get()) }
@@ -195,6 +217,9 @@ fun holderModule(baseUrl: String) = module {
     factory<VaccinationInfoScreenUtil> {
         VaccinationInfoScreenUtilImpl(get(), androidContext().resources, get())
     }
+    factory<TestInfoScreenUtil> { TestInfoScreenUtilImpl(androidContext().resources, get()) }
+    factory<RecoveryInfoScreenUtil> { RecoveryInfoScreenUtilImpl(androidContext().resources) }
+    factory<QrInfoScreenUtil> { QrInfoScreenUtilImpl(androidContext().resources, get()) }
     factory<LastVaccinationDoseUtil> { LastVaccinationDoseUtilImpl(androidContext().resources) }
     factory<GreenCardUtil> { GreenCardUtilImpl(Clock.systemUTC(), get()) }
 
