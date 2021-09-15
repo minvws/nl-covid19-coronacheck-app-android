@@ -60,6 +60,10 @@ fun fakeDashboardViewModel() =
         override fun refresh(forceSync: Boolean) {
 
         }
+
+        override fun removeGreenCard(greenCard: GreenCard) {
+            
+        }
     }
 
 fun fakeRemoveExpiredEventsUseCase() = object: RemoveExpiredEventsUseCase {
