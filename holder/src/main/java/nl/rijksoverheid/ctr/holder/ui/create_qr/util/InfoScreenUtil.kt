@@ -77,26 +77,26 @@ class InfoScreenUtilImpl(
     ): InfoScreen {
         val title = application.getString(R.string.your_test_result_explanation_toolbar_title)
         val description = (TextUtils.concat(
-            application.getString(R.string.your_test_result_3_0_explanation_description_header),
+            application.getString(R.string.your_test_result_explanation_description_header),
             "<br/><br/>",
             createdLine(
-                application.getString(R.string.your_test_result_3_0_explanation_description_your_details),
+                application.getString(R.string.your_test_result_explanation_description_your_details),
                 "${personalDetails.firstNameInitial} ${personalDetails.lastNameInitial} ${personalDetails.birthDay} ${personalDetails.birthMonth}"
             ),
             createdLine(
-                application.getString(R.string.your_test_result_3_0_explanation_description_test_type),
+                application.getString(R.string.your_test_result_explanation_description_test_type),
                 result.testType,
             ),
             createdLine(
-                application.getString(R.string.your_test_result_3_0_explanation_description_test_date),
+                application.getString(R.string.your_test_result_explanation_description_test_date),
                 testDate
             ),
             createdLine(
-                application.getString(R.string.your_test_result_3_0_explanation_description_test_result),
+                application.getString(R.string.your_test_result_explanation_description_test_result),
                 application.getString(R.string.your_test_result_explanation_negative_test_result)
             ),
             createdLine(
-                application.getString(R.string.your_test_result_3_0_explanation_description_unique_identifier),
+                application.getString(R.string.your_test_result_explanation_description_unique_identifier),
                 result.unique
             )
         ) as String)
@@ -131,43 +131,43 @@ class InfoScreenUtilImpl(
 
         val title = application.getString(R.string.your_test_result_explanation_toolbar_title)
         val description = (TextUtils.concat(
-            application.getString(R.string.your_test_result_3_0_explanation_description_header),
+            application.getString(R.string.your_test_result_explanation_description_header),
             "<br/><br/>",
             createdLine(
-                application.getString(R.string.your_test_result_3_0_explanation_description_name),
+                application.getString(R.string.your_test_result_explanation_description_name),
                 fullName
             ),
             createdLine(
-                application.getString(R.string.your_test_result_3_0_explanation_description_date_of_birth),
+                application.getString(R.string.your_test_result_explanation_description_date_of_birth),
                 birthDate,
                 isOptional = true
             ),
             createdLine(
-                application.getString(R.string.your_test_result_3_0_explanation_description_test_type),
+                application.getString(R.string.your_test_result_explanation_description_test_type),
                 testType
             ),
             createdLine(
-                application.getString(R.string.your_test_result_3_0_explanation_description_test_name),
+                application.getString(R.string.your_test_result_explanation_description_test_name),
                 testName
             ),
             createdLine(
-                application.getString(R.string.your_test_result_3_0_explanation_description_test_date),
+                application.getString(R.string.your_test_result_explanation_description_test_date),
                 testDate
             ),
             createdLine(
-                application.getString(R.string.your_test_result_3_0_explanation_description_test_result),
+                application.getString(R.string.your_test_result_explanation_description_test_result),
                 application.getString(R.string.your_test_result_explanation_negative_test_result)
             ),
             createdLine(
-                application.getString(R.string.your_test_result_3_0_explanation_description_test_location),
+                application.getString(R.string.your_test_result_explanation_description_test_location),
                 testLocation
             ),
             createdLine(
-                application.getString(R.string.your_test_result_3_0_explanation_description_test_manufacturer),
+                application.getString(R.string.your_test_result_explanation_description_test_manufacturer),
                 testManufacturer
             ),
             createdLine(
-                application.getString(R.string.your_test_result_3_0_explanation_description_unique_identifier),
+                application.getString(R.string.your_test_result_explanation_description_unique_identifier),
                 unique
             )
         ) as String)
@@ -216,43 +216,43 @@ class InfoScreenUtilImpl(
 
         val title = application.getString(R.string.your_test_result_explanation_toolbar_title)
         val description = (TextUtils.concat(
-            application.getString(R.string.your_test_result_3_0_explanation_description_header),
+            application.getString(R.string.your_test_result_explanation_description_header),
             "<br/><br/>",
             createdLine(
-                application.getString(R.string.your_test_result_3_0_explanation_description_name),
+                application.getString(R.string.your_test_result_explanation_description_name),
                 fullName
             ),
             createdLine(
-                application.getString(R.string.your_test_result_3_0_explanation_description_date_of_birth),
+                application.getString(R.string.your_test_result_explanation_description_date_of_birth),
                 birthDate,
                 isOptional = true
             ),
             createdLine(
-                application.getString(R.string.your_test_result_3_0_explanation_description_test_type),
+                application.getString(R.string.your_test_result_explanation_description_test_type),
                 testType
             ),
             createdLine(
-                application.getString(R.string.your_test_result_3_0_explanation_description_test_name),
+                application.getString(R.string.your_test_result_explanation_description_test_name),
                 testName
             ),
             createdLine(
-                application.getString(R.string.your_test_result_3_0_explanation_description_test_date),
+                application.getString(R.string.your_test_result_explanation_description_test_date),
                 testDate
             ),
             createdLine(
-                application.getString(R.string.your_test_result_3_0_explanation_description_test_result),
+                application.getString(R.string.your_test_result_explanation_description_test_result),
                 application.getString(R.string.your_test_result_explanation_positive_test_result)
             ),
             createdLine(
-                application.getString(R.string.your_test_result_3_0_explanation_description_test_location),
+                application.getString(R.string.your_test_result_explanation_description_test_location),
                 testLocation
             ),
             createdLine(
-                application.getString(R.string.your_test_result_3_0_explanation_description_test_manufacturer),
+                application.getString(R.string.your_test_result_explanation_description_test_manufacturer),
                 testManufacturer
             ),
             createdLine(
-                application.getString(R.string.your_test_result_3_0_explanation_description_unique_identifier),
+                application.getString(R.string.your_test_result_explanation_description_unique_identifier),
                 unique
             )
         ) as String)
