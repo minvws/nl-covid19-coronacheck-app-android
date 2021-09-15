@@ -35,10 +35,7 @@ android {
         buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.coronacheck.nl/v4/\""
         buildConfigField "String[]", "CERTIFICATE_PINS",
                 "{" +
-                        "\"sha256/WSn3YP84KZCric17vR8cTIyqgk+PIDntvMLYiBqOCN4=\"," +
-                        "\"sha256/Yao+RgzIlYNhXc65ch9IpKzSRFUSiL01Et8c6sN4XLU=\"," +
-                        "\"sha256/N9+YluTCUa/HTXc60QxjUReBLpRniAkIK2N84DhgmW4=\"," +
-                        "\"sha256/lR7gRvqDMW5nhsCMRPE7TKLq0tJkTWMxQ5HAzHCIfQ0=\"" +
+                        "\"sha256/WSn3YP84KZCric17vR8cTIyqgk+PIDntvMLYiBqOCN4=\"" +
                         "}"
     }
 
@@ -71,9 +68,7 @@ android {
             buildConfigField "boolean", "FEATURE_TEST_PROVIDER_API_CHECKS", "false"
             buildConfigField "String[]", "CERTIFICATE_PINS",
                     "{" +
-                            "\"sha256/ijPJtUxvyW65XLVzgoNUx9pjBIlSTgzZXbFhZ43mnW4=\"," +
-                            "\"sha256/jQJTbIh0grw0/1TkHSumWb+Fs0Ggogr621gT3PvPKG0=\"," +
-                            "\"sha256/C5+lpZ7tcVwmwQIMcRtPbsQtWLABXhQzejna0wHFr8M=\"" +
+                            "\"sha256/ijPJtUxvyW65XLVzgoNUx9pjBIlSTgzZXbFhZ43mnW4=\"" +
                             "}"
             apply plugin: 'com.google.gms.google-services'
             apply plugin: 'com.google.firebase.crashlytics'
@@ -86,10 +81,7 @@ android {
             buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.acc.coronacheck.nl/v4/\""
             buildConfigField "String[]", "CERTIFICATE_PINS",
                     "{" +
-                            "\"sha256/7wUCSlYbr+pQ8wGizsQOK1NOCxldhmflswIkU5XqW9M=\"," +
-                            "\"sha256/Yao+RgzIlYNhXc65ch9IpKzSRFUSiL01Et8c6sN4XLU=\"," +
-                            "\"sha256/N9+YluTCUa/HTXc60QxjUReBLpRniAkIK2N84DhgmW4=\"," +
-                            "\"sha256/lR7gRvqDMW5nhsCMRPE7TKLq0tJkTWMxQ5HAzHCIfQ0=\"" +
+                            "\"sha256/7wUCSlYbr+pQ8wGizsQOK1NOCxldhmflswIkU5XqW9M=\"" +
                             "}"
             apply plugin: 'com.google.gms.google-services'
             apply plugin: 'com.google.firebase.crashlytics'
