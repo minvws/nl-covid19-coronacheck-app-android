@@ -38,7 +38,7 @@ class ClockDeviationUseCaseImplTest {
             serverResponseTimestamp = defaultClock.millis(),
             localReceivedTimestamp = defaultClock.millis()
         )
-        val hasDeviation = clockDeviationUseCase.calculateDeviationState()
+        val hasDeviation = clockDeviationUseCase.hasDeviation()
         assertFalse(hasDeviation)
     }
 
@@ -52,7 +52,7 @@ class ClockDeviationUseCaseImplTest {
             serverResponseTimestamp = defaultClock.millis(),
             localReceivedTimestamp = deviatedClock.millis()
         )
-        val hasDeviation = clockDeviationUseCase.calculateDeviationState()
+        val hasDeviation = clockDeviationUseCase.hasDeviation()
         assertTrue(hasDeviation)
     }
 
@@ -66,7 +66,7 @@ class ClockDeviationUseCaseImplTest {
             serverResponseTimestamp = defaultClock.millis(),
             localReceivedTimestamp = deviatedClock.millis()
         )
-        val hasDeviation = clockDeviationUseCase.calculateDeviationState()
+        val hasDeviation = clockDeviationUseCase.hasDeviation()
         assertTrue(hasDeviation)
     }
 
@@ -80,7 +80,7 @@ class ClockDeviationUseCaseImplTest {
             serverResponseTimestamp = defaultClock.millis(),
             localReceivedTimestamp = deviatedClock.millis()
         )
-        val hasDeviation = clockDeviationUseCase.calculateDeviationState()
+        val hasDeviation = clockDeviationUseCase.hasDeviation()
         assertFalse(hasDeviation)
     }
 }
