@@ -1,10 +1,7 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
-import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import java.time.Clock
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit

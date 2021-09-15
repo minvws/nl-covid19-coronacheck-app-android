@@ -1,14 +1,10 @@
 package nl.rijksoverheid.ctr.holder.persistence.database.entities
 
-import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import kotlinx.parcelize.Parcelize
-import java.time.Clock
 import java.time.OffsetDateTime
-import kotlin.math.exp
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

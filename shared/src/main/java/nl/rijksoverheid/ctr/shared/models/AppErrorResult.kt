@@ -1,8 +1,5 @@
 package nl.rijksoverheid.ctr.shared.models
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
-
 /**
  * Class to represent app (not network) triggered errors
  */
