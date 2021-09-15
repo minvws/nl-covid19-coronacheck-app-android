@@ -169,5 +169,4 @@ class VaccinationInfoScreenUtilImpl(
     ): String {
         return if (isOptional && nameAnswer.isEmpty()) "" else "$name <b>$nameAnswer</b><br/>"
     }
-
 }
