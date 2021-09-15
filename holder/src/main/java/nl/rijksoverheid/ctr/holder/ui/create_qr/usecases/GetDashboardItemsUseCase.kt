@@ -35,7 +35,6 @@ class GetDashboardItemsUseCaseImpl(
         isLoadingNewCredentials: Boolean,
     ): List<DashboardItem> {
         val dashboardItems = mutableListOf<DashboardItem>()
-        val allGreenCards = holderDatabase.greenCardDao().getAll()
         val domesticGreenCards = allGreenCards.filter { it.greenCardEntity.type == GreenCardType.Domestic }
         val internationalGreenCards = allGreenCards.filter { it.greenCardEntity.type == GreenCardType.Eu }
 
@@ -74,7 +73,6 @@ class GetDashboardItemsUseCaseImpl(
         isLoadingNewCredentials: Boolean,
     ): List<DashboardItem> {
         val dashboardItems = mutableListOf<DashboardItem>()
-        val allGreenCards = holderDatabase.greenCardDao().getAll()
         val domesticGreenCards = allGreenCards.filter { it.greenCardEntity.type == GreenCardType.Domestic }
         val internationalGreenCards = allGreenCards.filter { it.greenCardEntity.type == GreenCardType.Eu }
 
