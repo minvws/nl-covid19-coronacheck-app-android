@@ -80,10 +80,10 @@ android {
             apply plugin: 'com.google.firebase.crashlytics'
         }
         acc {
-            buildConfigField "String", "BASE_API_URL", "\"https://holder-api.acc.coronacheck.nl/v4/\""
-            buildConfigField "String", "DIGI_D_BASE_URL", "\"https://tvs.acc.coronacheck.nl\""
+            buildConfigField "String", "BASE_API_URL", "\"https://holders-api.acc.coronacheck.nl/v4/\""
+            buildConfigField "String", "DIGI_D_BASE_URL", "\"https://cdcd.cdld\""
             buildConfigField "String", "DIGI_D_CLIENT_ID", "\"cc_app\""
-            buildConfigField "String", "DIGI_D_REDIRECT_URI", "\"https://web.acc.coronacheck.nl/app/auth2\""
+            buildConfigField "String", "DIGI_D_REDIRECT_URI", "\"https://webs.acc.coronacheck.nl/app/auth2\""
             dimension "environment"
             versionNameSuffix "-acc"
             applicationIdSuffix ".acc"

@@ -28,8 +28,14 @@ abstract class BaseFragment(contentLayoutId: Int) : Fragment(contentLayoutId) {
 
     fun presentError(errorResult: ErrorResult, customerErrorDescription: String? = null) {
         if (errorResult is NetworkRequestResult.Failed.NetworkError) {
+
+            val errorCodeString = errorCodeStringFactory.get(
+                flow = getFlow(),
+                errorResults = listOf(errorResult)
+            )
+
             dialogUtil.presentDialog(
-                context = requireContext(),
+                 context = requireContext(),
                 title = R.string.dialog_no_internet_connection_title,
                 message = getString(R.string.dialog_no_internet_connection_description),
                 positiveButtonText = R.string.dialog_retry,
