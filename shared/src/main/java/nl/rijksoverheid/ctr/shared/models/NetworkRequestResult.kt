@@ -12,8 +12,7 @@ sealed class NetworkRequestResult<out R> {
 
     sealed class Failed(open val step: Step, open val e: Exception): NetworkRequestResult<Nothing>(), ErrorResult {
 
-        @Parcelize
-        open class CoronaCheckHttpError(override val step: Step, override val e: HttpException): Failed(step, e), Parcelable {
+        open class CoronaCheckHttpError(override val step: Step, override val e: HttpException): Failed(step, e) {
             override fun getCurrentStep(): Step {
                 return step
             }
@@ -23,14 +22,11 @@ sealed class NetworkRequestResult<out R> {
             }
         }
 
-        @Parcelize
-        data class ProviderHttpError(override val step: Step, override val e: HttpException, val provider: String): CoronaCheckHttpError(step, e), Parcelable
+        data class ProviderHttpError(override val step: Step, override val e: HttpException, val provider: String): CoronaCheckHttpError(step, e)
 
-        @Parcelize
-        data class ProviderError(override val step: Step, override val e: Exception, val provider: String): Error(step, e), Parcelable
+        data class ProviderError(override val step: Step, override val e: Exception, val provider: String): Error(step, e)
 
-        @Parcelize
-        data class CoronaCheckWithErrorResponseHttpError(override val step: Step, override val e: HttpException, val errorResponse: CoronaCheckErrorResponse): CoronaCheckHttpError(step, e), Parcelable {
+        data class CoronaCheckWithErrorResponseHttpError(override val step: Step, override val e: HttpException, val errorResponse: CoronaCheckErrorResponse): CoronaCheckHttpError(step, e) {
             override fun getCurrentStep(): Step {
                 return step
             }
@@ -44,8 +40,7 @@ sealed class NetworkRequestResult<out R> {
             }
         }
 
-        @Parcelize
-        data class NetworkError(override val step: Step, override val e: Exception): Failed(step, e), Parcelable {
+        data class NetworkError(override val step: Step, override val e: Exception): Failed(step, e) {
             override fun getCurrentStep(): Step {
                 return step
             }
@@ -55,8 +50,7 @@ sealed class NetworkRequestResult<out R> {
             }
         }
 
-        @Parcelize
-        open class Error(override val step: Step, override val e: Exception): Failed(step, e), Parcelable {
+        open class Error(override val step: Step, override val e: Exception): Failed(step, e) {
             override fun getCurrentStep(): Step {
                 return step
             }

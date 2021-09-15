@@ -8,27 +8,22 @@
 
 package nl.rijksoverheid.ctr.shared.models
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
-
 /**
  * Class to represent OpenID authentication triggered errors
  */
 sealed class OpenIdErrorResult(open val step: Step, open val e: Exception) :
     ErrorResult {
 
-    @Parcelize
     data class Error(override val step: Step, override val e: Exception) :
-        OpenIdErrorResult(step, e), Parcelable {
+        OpenIdErrorResult(step, e) {
 
         override fun getCurrentStep() = step
 
         override fun getException() = e
     }
 
-    @Parcelize
     data class ServerBusy(override val step: Step, override val e: Exception) :
-        OpenIdErrorResult(step, e), Parcelable {
+        OpenIdErrorResult(step, e) {
 
         override fun getCurrentStep() = step
 

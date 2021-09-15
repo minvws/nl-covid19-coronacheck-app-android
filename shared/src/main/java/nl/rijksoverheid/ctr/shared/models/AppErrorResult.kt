@@ -6,8 +6,7 @@ import kotlinx.parcelize.Parcelize
 /**
  * Class to represent app (not network) triggered errors
  */
-@Parcelize
-data class AppErrorResult(val step: Step, val e: Exception) : ErrorResult, Parcelable {
+data class AppErrorResult(val step: Step, val e: Exception) : ErrorResult {
     override fun getCurrentStep(): Step {
         return step
     }
