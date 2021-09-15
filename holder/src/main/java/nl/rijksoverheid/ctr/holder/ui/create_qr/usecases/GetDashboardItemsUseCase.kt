@@ -119,11 +119,8 @@ class GetDashboardItemsUseCaseImpl(
         val items = greenCardsForSelectedType.map { greenCard ->
             // If the origin with the highest possible expiration time is expired
             if (greenCardUtil.isExpired(greenCard)) {
-                // Remove green card from database
-                holderDatabase.greenCardDao().delete(greenCard.greenCardEntity)
-
                 // Show green card expired banner
-                DashboardItem.GreenCardExpiredItem(greenCardType = greenCard.greenCardEntity.type)
+                DashboardItem.GreenCardExpiredItem(greenCard = greenCard)
             } else {
                 // Check if we have a credential
                 val activeCredential = credentialUtil.getActiveCredential(

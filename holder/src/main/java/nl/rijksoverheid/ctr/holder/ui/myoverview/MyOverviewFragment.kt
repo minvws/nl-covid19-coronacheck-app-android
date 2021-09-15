@@ -153,9 +153,10 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                 }
                 is DashboardItem.GreenCardExpiredItem -> {
                     adapterItems.add(MyOverviewGreenCardExpiredAdapterItem(
-                        greenCardType = dashboardItem.greenCardType,
-                        onDismissClick = {
-                            section.remove(it)
+                        greenCard = dashboardItem.greenCard,
+                        onDismissClick = { item, greenCard ->
+                            section.remove(item)
+                            dashboardViewModel.removeGreenCard(greenCard)
                         }
                     ))
                 }

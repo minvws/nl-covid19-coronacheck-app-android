@@ -23,6 +23,7 @@ abstract class DashboardViewModel : ViewModel() {
     open val databaseSyncerResultLiveData: LiveData<Event<DatabaseSyncerResult>> = MutableLiveData()
 
     abstract fun refresh(forceSync: Boolean = false)
+    abstract fun removeGreenCard(greenCard: GreenCard)
 }
 
 class DashboardViewModelImpl(
@@ -67,6 +68,12 @@ class DashboardViewModelImpl(
                     )
                 }
             }
+        }
+    }
+
+    override fun removeGreenCard(greenCard: GreenCard) {
+        viewModelScope.launch {
+            holderDatabase.greenCardDao().delete(greenCard.greenCardEntity)
         }
     }
 
