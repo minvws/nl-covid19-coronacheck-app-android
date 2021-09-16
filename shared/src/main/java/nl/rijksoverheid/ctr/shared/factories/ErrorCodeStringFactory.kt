@@ -48,7 +48,7 @@ class ErrorCodeStringFactoryImpl: ErrorCodeStringFactory {
                 is SQLiteConstraintException -> "060"
                 is OpenIdAuthorizationException -> "07${exception.type}-${exception.code}"
                 is CharacterCodingException -> "020"
-                else -> "999"
+                else -> throw it.getException()
             }
 
             stringBuilder.append(" $exceptionErrorCode")
