@@ -51,19 +51,6 @@ fun apiModule(
                         Timber.tag("OkHttp").d(it)
                     }.setLevel(HttpLoggingInterceptor.Level.BODY))
                 }
-            }
-            .addInterceptor(
-                SignedResponseInterceptor(
-                    signatureCertificateCnMatch = signatureCertificateCnMatch,
-                    testProviderApiChecks = testProviderApiChecks
-                )
-            ).build()
-    }
-
-    single {
-        val okHttpClient = get<OkHttpClient>(OkHttpClient::class)
-            .newBuilder()
-            .apply {
                 if (coronaCheckApiChecks) {
                     val handshakeCertificates = HandshakeCertificates.Builder()
                         .addTrustedCertificate(EV_ROOT_CA.decodeCertificatePem())
@@ -77,11 +64,18 @@ fun apiModule(
                     connectionSpecs(listOf(ConnectionSpec.MODERN_TLS))
                 }
             }
-            .build()
+            .addInterceptor(
+                SignedResponseInterceptor(
+                    signatureCertificateCnMatch = signatureCertificateCnMatch,
+                    testProviderApiChecks = testProviderApiChecks
+                )
+            ).build()
+    }
 
+    single {
         Retrofit.Builder()
             .baseUrl(baseUrl)
-            .client(okHttpClient)
+            .client(get())
             .addConverterFactory(MoshiConverterFactory.create(get()))
             .build()
     }
