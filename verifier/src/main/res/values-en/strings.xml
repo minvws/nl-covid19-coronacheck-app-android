@@ -52,14 +52,14 @@
     <string name="scan_result_valid_reason_title">Are the details incorrect?</string>
     <string name="scan_result_valid_reason_description"><![CDATA[You cannot grant the visitor access if the details on your screen are different from those on the identity document.<br/><br/><b>Please note: sometimes not all details are shown</b><br/><br/>This happens to protect the visitor\'s privacy. You will see a dash (-) in the field. In this case, verify only the details you\'re seeing.]]></string>
     <string name="about_this_app_description">CoronaCheck Scanner is created so that certain locations and activities can open their doors again. Think for example of football matches and concerts. Visitors create a coronavirus pass of a vaccination, a negative test result or if they\'ve had corona and are recovered. With this app, only visitors with a coronavirus pass gain access. This way, the Netherlands can head out more often.</string>
-    <string name="scan_instructions">How scanning works</string>
+    <string name="scan_instructions">About scanning</string>
     <string name="scan_instructions_1_title">Scan the QR code</string>
     <string name="scan_instructions_1_description">Ask the visitor to show a QR code in the CoronaCheck app or on paper. A tourist may show a QR code in a foreign app, or on paper. Scan the visitor\'s QR code with your phone camera.</string>
     <string name="scan_instructions_2_title">Always check the details</string>
     <string name="scan_instructions_2_description">Green screen? Verify if the details on your screen are the same as those on the identity document. This way you can ensure the QR code belongs to the visitor.</string>
     <string name="scan_instructions_3_image">Sometimes not all details are shown</string>
     <string name="scan_instructions_3_title">Sometimes not all details are shown</string>
-    <string name="scan_instructions_3_description">Green screen? The visitor has a valid negative test certificate. Now check whether the data on your screen matches the data on the proof of identity. In order to protect the visitor’s privacy, not all data is displayed. Some fields may contain a hyphen (-). It’s sufficient to check the details that are displayed.&lt;/br&gt;&lt;/br&gt;All good? Then the visitor may enter. They might also need an entrance ticket.</string>
+    <string name="scan_instructions_3_description">This happens to protect the visitor’s privacy. You will see a hyphen (-). In this case, verify only the details you’re seeing.</string>
     <string name="scan_instructions_4_image">Person is holding a phone with a red screen and a black cross.</string>
     <string name="scan_instructions_4_title">Red screen - what happens now?</string>
     <string name="scan_instructions_4_description"><![CDATA[In case of a red screen, you will get information to assist the visitor. If the screen stays red, you cannot grant the visitor access.]]></string>
@@ -68,7 +68,7 @@
     <string name="scanner_custom_message">"What should I pay attention to?"</string>
     <string name="camera_rationale_dialog_title">Scanner wants to access your camera</string>
     <string name="camera_rationale_dialog_description">So the app can scan QR codes</string>
-    <string name="scanner_zebra_footer">Rather use the laserscanner?\nUse the yellow buttons on your device.</string>
+    <string name="scanner_zebra_footer">Prefer laser scanning?\n\nUse the yellow buttons on your device.</string>
     <string name="app_setup_text">We\'re starting the app…</string>
     <!-- App Status strings -->
     <string name="app_status_deactivated_title">App out of order</string>

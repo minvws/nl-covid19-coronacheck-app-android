@@ -163,7 +163,9 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
                                     clearToolbar()
                                     // Instructions have been opened, set as seen
                                     scanQrViewModel.setScanInstructionsSeen()
-                                    scannerUtil.launchScanner(requireActivity())
+                                    if (isAdded) {
+                                        scannerUtil.launchScanner(requireActivity())
+                                    }
                                 }
                             }
                             true
@@ -196,27 +198,27 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
         return IntroductionData(
             onboardingItems = listOf(
                 OnboardingItem(
-                    R.drawable.illustration_scaninstructions_1,
-                    R.string.scan_instructions_1_title,
-                    R.string.scan_instructions_1_description,
+                    animationResource = R.raw.scaninstructions_1,
+                    titleResource = R.string.scan_instructions_1_title,
+                    description = R.string.scan_instructions_1_description,
                     position = 1
                 ),
                 OnboardingItem(
-                    R.drawable.illustration_scaninstructions_2,
-                    R.string.scan_instructions_2_title,
-                    R.string.scan_instructions_2_description,
+                    animationResource = R.raw.scaninstructions_2,
+                    titleResource = R.string.scan_instructions_2_title,
+                    description = R.string.scan_instructions_2_description,
                     position = 2
                 ),
                 OnboardingItem(
-                    R.drawable.illustration_scaninstructions_3,
-                    R.string.scan_instructions_3_title,
-                    R.string.scan_instructions_3_description,
+                    animationResource = R.raw.scaninstructions_3,
+                    titleResource = R.string.scan_instructions_3_title,
+                    description = R.string.scan_instructions_3_description,
                     position = 3
                 ),
                 OnboardingItem(
-                    R.drawable.illustration_scaninstructions_4,
-                    R.string.scan_instructions_4_title,
-                    R.string.scan_instructions_4_description,
+                    animationResource = R.raw.scaninstructions_4,
+                    titleResource = R.string.scan_instructions_4_title,
+                    description = R.string.scan_instructions_4_description,
                     position = 4
                 ),
             )
