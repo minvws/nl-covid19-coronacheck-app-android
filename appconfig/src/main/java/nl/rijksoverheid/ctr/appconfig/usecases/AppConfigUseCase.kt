@@ -48,6 +48,7 @@ class AppConfigUseCaseImpl(
                 serverResponseTimestamp = config.headers.getDate("date")?.time ?: clock.millis(),
                 localReceivedTimestamp = clock.millis()
             )
+
             appConfigPersistenceManager.saveAppConfigLastFetchedSeconds(
                 OffsetDateTime.now(clock).toEpochSecond()
             )
