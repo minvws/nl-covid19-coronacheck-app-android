@@ -7,7 +7,7 @@
  */
 package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
-import android.content.res.Resources
+import android.app.Application
 import android.os.Build
 import android.text.TextUtils
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYearNumerical
@@ -31,18 +31,20 @@ interface QrInfoScreenUtil {
     fun getForEuropeanVaccinationQr(readEuropeanCredential: JSONObject): InfoScreen
 
     fun getForEuropeanRecoveryQr(readEuropeanCredential: JSONObject): InfoScreen
+
+    fun getCountry(countryCode: String?, currentLocale: Locale?): String
 }
 
 class QrInfoScreenUtilImpl(
-    private val resources: Resources,
+    private val application: Application,
     cachedAppConfigUseCase: CachedAppConfigUseCase
 ) : QrInfoScreenUtil {
 
     private val holderConfig = cachedAppConfigUseCase.getCachedAppConfig()
 
     override fun getForDomesticQr(personalDetails: PersonalDetails): InfoScreen {
-        val title = resources.getString(R.string.qr_explanation_title_domestic)
-        val description = resources.getString(
+        val title = application.getString(R.string.qr_explanation_title_domestic)
+        val description = application.getString(
             R.string.qr_explanation_description_domestic,
             "${personalDetails.firstNameInitial} ${personalDetails.lastNameInitial} ${personalDetails.birthDay} ${personalDetails.birthMonth}"
         )
@@ -57,7 +59,7 @@ class QrInfoScreenUtilImpl(
         val dcc = readEuropeanCredential.optJSONObject("dcc")
         val test = dcc.getJSONArray("t").optJSONObject(0)
 
-        val title = resources.getString(R.string.qr_explanation_title_eu)
+        val title = application.getString(R.string.qr_explanation_title_eu)
 
         val fullName = "${dcc.optJSONObject("nam").getStringOrNull("fn")}, ${
             dcc.optJSONObject("nam").getStringOrNull("gn")
@@ -71,7 +73,7 @@ class QrInfoScreenUtilImpl(
             }
         } ?: ""
 
-        val disease = resources.getString(R.string.your_vaccination_explanation_covid_19_answer)
+        val disease = application.getString(R.string.your_vaccination_explanation_covid_19_answer)
 
         val testType = holderConfig.euTestTypes.firstOrNull {
             it.code == test.getStringOrNull("tt")
@@ -89,7 +91,7 @@ class QrInfoScreenUtilImpl(
         } ?: ""
 
         val testResult =
-            resources.getString(R.string.your_test_result_explanation_negative_test_result)
+            application.getString(R.string.your_test_result_explanation_negative_test_result)
 
         val testLocation = test.getStringOrNull("tc") ?: ""
 
@@ -102,7 +104,7 @@ class QrInfoScreenUtilImpl(
 
         val issuerValue = test.getStringOrNull("is")
         val issuer = if (issuerValue == issuerVWS) {
-            resources.getString(R.string.qr_explanation_certificate_issuer)
+            application.getString(R.string.qr_explanation_certificate_issuer)
         } else {
             issuerValue
         }
@@ -112,44 +114,44 @@ class QrInfoScreenUtilImpl(
         return InfoScreen(
             title = title,
             description = (TextUtils.concat(
-                resources.getString(R.string.qr_explanation_description_eu_test_header),
+                application.getString(R.string.qr_explanation_description_eu_test_header),
                 "<br/><br/>",
-                resources.getString(R.string.qr_explanation_description_eu_test_name),
+                application.getString(R.string.qr_explanation_description_eu_test_name),
                 createQrAnswer(fullName),
-                resources.getString(R.string.qr_explanation_description_eu_test_birth_date),
+                application.getString(R.string.qr_explanation_description_eu_test_birth_date),
                 createQrAnswer(birthDate),
-                resources.getString(R.string.qr_explanation_description_eu_test_disease),
+                application.getString(R.string.qr_explanation_description_eu_test_disease),
                 createQrAnswer(disease),
-                resources.getString(R.string.qr_explanation_description_eu_test_test_type),
+                application.getString(R.string.qr_explanation_description_eu_test_test_type),
                 createQrAnswer(testType),
-                resources.getString(R.string.qr_explanation_description_eu_test_test_name),
+                application.getString(R.string.qr_explanation_description_eu_test_test_name),
                 createQrAnswer(testName),
-                resources.getString(R.string.qr_explanation_description_eu_test_test_date),
+                application.getString(R.string.qr_explanation_description_eu_test_test_date),
                 createQrAnswer(testDate),
-                resources.getString(R.string.qr_explanation_description_eu_test_test_result),
+                application.getString(R.string.qr_explanation_description_eu_test_test_result),
                 createQrAnswer(testResult),
-                resources.getString(R.string.qr_explanation_description_eu_test_test_centre),
+                application.getString(R.string.qr_explanation_description_eu_test_test_centre),
                 createQrAnswer(testLocation),
-                resources.getString(R.string.qr_explanation_description_eu_test_manufacturer),
+                application.getString(R.string.qr_explanation_description_eu_test_manufacturer),
                 createQrAnswer(manufacturer),
-                resources.getString(R.string.qr_explanation_description_eu_test_test_country),
+                application.getString(R.string.qr_explanation_description_eu_test_test_country),
                 createQrAnswer(testCountry),
-                resources.getString(R.string.qr_explanation_description_eu_test_issuer),
+                application.getString(R.string.qr_explanation_description_eu_test_issuer),
                 createQrAnswer(issuer ?: ""),
-                resources.getString(R.string.qr_explanation_description_eu_test_certificate_identifier),
+                application.getString(R.string.qr_explanation_description_eu_test_certificate_identifier),
                 createQrAnswer(uniqueCode ?: ""),
-                resources.getString(R.string.qr_explanation_description_eu_test_footer),
+                application.getString(R.string.qr_explanation_description_eu_test_footer),
             ) as String)
         )
     }
 
     private fun getCurrentLocale(): Locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        resources.configuration.locales[0]
+        application.resources.configuration.locales[0]
     } else {
-        resources.configuration.locale
+        application.resources.configuration.locale
     }
 
-    private fun getCountry(
+    override fun getCountry(
         countryCode: String?,
         currentLocale: Locale?
     ): String = if (countryCode != null) {
@@ -174,7 +176,7 @@ class QrInfoScreenUtilImpl(
         val dcc = readEuropeanCredential.optJSONObject("dcc")
         val vaccination = dcc.getJSONArray("v").optJSONObject(0)
 
-        val title = resources.getString(R.string.qr_explanation_title_eu)
+        val title = application.getString(R.string.qr_explanation_title_eu)
 
         val fullName = "${dcc.optJSONObject("nam").getStringOrNull("fn")}, ${
             dcc.optJSONObject("nam").getStringOrNull("gn")
@@ -194,7 +196,7 @@ class QrInfoScreenUtilImpl(
             }
         } ?: ""
 
-        val disease = resources.getString(R.string.your_vaccination_explanation_covid_19_answer)
+        val disease = application.getString(R.string.your_vaccination_explanation_covid_19_answer)
 
         val vaccin = holderConfig.euBrands.firstOrNull {
             it.code == vaccination.getStringOrNull("mp")
@@ -211,7 +213,7 @@ class QrInfoScreenUtilImpl(
 
         val doses =
             if (vaccination.getStringOrNull("dn") != null && vaccination.getStringOrNull("sd") != null) {
-                resources.getString(
+                application.getString(
                     R.string.your_vaccination_explanation_doses_answer,
                     vaccination.getStringOrNull("dn"),
                     vaccination.getStringOrNull("sd")
@@ -232,7 +234,7 @@ class QrInfoScreenUtilImpl(
 
         val issuerValue = vaccination.getStringOrNull("is")
         val issuer = if (issuerValue == issuerVWS) {
-            resources.getString(R.string.qr_explanation_certificate_issuer)
+            application.getString(R.string.qr_explanation_certificate_issuer)
         } else {
             issuerValue
         }
@@ -242,31 +244,31 @@ class QrInfoScreenUtilImpl(
         return InfoScreen(
             title = title,
             description = (TextUtils.concat(
-                resources.getString(R.string.qr_explanation_description_eu_vaccination_header),
+                application.getString(R.string.qr_explanation_description_eu_vaccination_header),
                 "<br/><br/>",
-                resources.getString(R.string.qr_explanation_description_eu_vaccination_name),
+                application.getString(R.string.qr_explanation_description_eu_vaccination_name),
                 createQrAnswer(fullName),
-                resources.getString(R.string.qr_explanation_description_eu_vaccination_birth_date),
+                application.getString(R.string.qr_explanation_description_eu_vaccination_birth_date),
                 createQrAnswer(birthDate),
-                resources.getString(R.string.qr_explanation_description_eu_vaccination_disease),
+                application.getString(R.string.qr_explanation_description_eu_vaccination_disease),
                 createQrAnswer(disease),
-                resources.getString(R.string.qr_explanation_description_eu_vaccination_vaccine),
+                application.getString(R.string.qr_explanation_description_eu_vaccination_vaccine),
                 createQrAnswer(vaccin),
-                resources.getString(R.string.qr_explanation_description_eu_vaccination_vaccine_type),
+                application.getString(R.string.qr_explanation_description_eu_vaccination_vaccine_type),
                 createQrAnswer(vaccinType),
-                resources.getString(R.string.qr_explanation_description_eu_vaccination_producer),
+                application.getString(R.string.qr_explanation_description_eu_vaccination_producer),
                 createQrAnswer(manufacturer),
-                resources.getString(R.string.qr_explanation_description_eu_vaccination_doses),
+                application.getString(R.string.qr_explanation_description_eu_vaccination_doses),
                 createQrAnswer(doses),
-                resources.getString(R.string.qr_explanation_description_eu_vaccination_vaccination_date),
+                application.getString(R.string.qr_explanation_description_eu_vaccination_vaccination_date),
                 createQrAnswer(vaccinationDate),
-                resources.getString(R.string.qr_explanation_description_eu_vaccination_vaccinated_in),
+                application.getString(R.string.qr_explanation_description_eu_vaccination_vaccinated_in),
                 createQrAnswer(vaccinationCountry),
-                resources.getString(R.string.qr_explanation_description_eu_vaccination_certificate_issuer),
+                application.getString(R.string.qr_explanation_description_eu_vaccination_certificate_issuer),
                 createQrAnswer(issuer ?: ""),
-                resources.getString(R.string.qr_explanation_description_eu_vaccination_unique_certificate),
+                application.getString(R.string.qr_explanation_description_eu_vaccination_unique_certificate),
                 createQrAnswer(uniqueCode ?: ""),
-                resources.getString(R.string.qr_explanation_description_eu_vaccination_footer),
+                application.getString(R.string.qr_explanation_description_eu_vaccination_footer),
             ) as String)
         )
     }
@@ -275,7 +277,7 @@ class QrInfoScreenUtilImpl(
         val dcc = readEuropeanCredential.optJSONObject("dcc")
         val recovery = dcc.getJSONArray("r").optJSONObject(0)
 
-        val title = resources.getString(R.string.qr_explanation_title_eu)
+        val title = application.getString(R.string.qr_explanation_title_eu)
 
         val fullName = "${dcc.optJSONObject("nam").getStringOrNull("fn")}, ${
             dcc.optJSONObject("nam").getStringOrNull("gn")
@@ -289,7 +291,7 @@ class QrInfoScreenUtilImpl(
             }
         } ?: ""
 
-        val disease = resources.getString(R.string.your_vaccination_explanation_covid_19_answer)
+        val disease = application.getString(R.string.your_vaccination_explanation_covid_19_answer)
 
         val testDate = recovery.getStringOrNull("fr")?.let { testDate ->
             try {
@@ -324,27 +326,27 @@ class QrInfoScreenUtilImpl(
         return InfoScreen(
             title = title,
             description = (TextUtils.concat(
-                resources.getString(R.string.qr_explanation_description_eu_recovery_header),
+                application.getString(R.string.qr_explanation_description_eu_recovery_header),
                 "<br/><br/>",
-                resources.getString(R.string.qr_explanation_description_eu_recovery_name),
+                application.getString(R.string.qr_explanation_description_eu_recovery_name),
                 createQrAnswer(fullName),
-                resources.getString(R.string.qr_explanation_description_eu_recovery_birth_date),
+                application.getString(R.string.qr_explanation_description_eu_recovery_birth_date),
                 createQrAnswer(birthDate),
-                resources.getString(R.string.qr_explanation_description_eu_recovery_disease),
+                application.getString(R.string.qr_explanation_description_eu_recovery_disease),
                 createQrAnswer(disease),
-                resources.getString(R.string.qr_explanation_description_eu_recovery_test_date),
+                application.getString(R.string.qr_explanation_description_eu_recovery_test_date),
                 createQrAnswer(testDate),
-                resources.getString(R.string.qr_explanation_description_eu_recovery_country),
+                application.getString(R.string.qr_explanation_description_eu_recovery_country),
                 createQrAnswer(country),
-                resources.getString(R.string.qr_explanation_description_eu_recovery_producer),
+                application.getString(R.string.qr_explanation_description_eu_recovery_producer),
                 createQrAnswer(producer ?: ""),
-                resources.getString(R.string.qr_explanation_description_eu_recovery_valid_from_date),
+                application.getString(R.string.qr_explanation_description_eu_recovery_valid_from_date),
                 createQrAnswer(validFromDate),
-                resources.getString(R.string.qr_explanation_description_eu_recovery_valid_until_date),
+                application.getString(R.string.qr_explanation_description_eu_recovery_valid_until_date),
                 createQrAnswer(validUntilDate),
-                resources.getString(R.string.qr_explanation_description_eu_recovery_unique_code),
+                application.getString(R.string.qr_explanation_description_eu_recovery_unique_code),
                 createQrAnswer(uniqueCode ?: ""),
-                resources.getString(R.string.qr_explanation_description_eu_recovery_footer)
+                application.getString(R.string.qr_explanation_description_eu_recovery_footer)
             ) as String)
         )
     }

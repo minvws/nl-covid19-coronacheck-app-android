@@ -219,7 +219,7 @@ fun holderModule(baseUrl: String) = module {
     }
     factory<TestInfoScreenUtil> { TestInfoScreenUtilImpl(androidContext().resources, get()) }
     factory<RecoveryInfoScreenUtil> { RecoveryInfoScreenUtilImpl(androidContext().resources) }
-    factory<QrInfoScreenUtil> { QrInfoScreenUtilImpl(androidContext().resources, get()) }
+    factory<QrInfoScreenUtil> { QrInfoScreenUtilImpl(get(), get()) }
     factory<LastVaccinationDoseUtil> { LastVaccinationDoseUtilImpl(androidContext().resources) }
     factory<GreenCardUtil> { GreenCardUtilImpl(Clock.systemUTC(), get()) }
 
