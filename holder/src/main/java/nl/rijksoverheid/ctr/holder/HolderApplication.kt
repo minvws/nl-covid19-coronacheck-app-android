@@ -6,7 +6,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.api.apiModule
 import nl.rijksoverheid.ctr.appconfig.*
-import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
 import nl.rijksoverheid.ctr.design.designModule
 import nl.rijksoverheid.ctr.holder.modules.*
@@ -43,6 +42,24 @@ open class HolderApplication : SharedApplication(), Configuration.Provider {
     private val mobileCoreWrapper: MobileCoreWrapper by inject()
     private val workerManagerWrapper: WorkerManagerWrapper by inject()
 
+
+    private val holderModules = listOf(
+        storageModule,
+        greenCardUseCasesModule,
+        eventsUseCasesModule,
+        secretUseCasesModule,
+        testProvidersUseCasesModule,
+        utilsModule,
+        viewModels,
+        cardUtilsModule,
+        repositoriesModule,
+        qrsModule,
+        appModule,
+        errorsModule,
+        retrofitModule(BuildConfig.BASE_API_URL),
+        responsesModule,
+    ).toTypedArray()
+
     override fun onCreate() {
         super.onCreate()
 
@@ -50,7 +67,7 @@ open class HolderApplication : SharedApplication(), Configuration.Provider {
         startKoin {
             androidContext(this@HolderApplication)
             modules(
-                holderModule(BuildConfig.BASE_API_URL),
+                *holderModules,
                 holderIntroductionModule,
                 apiModule(
                     BuildConfig.BASE_API_URL,

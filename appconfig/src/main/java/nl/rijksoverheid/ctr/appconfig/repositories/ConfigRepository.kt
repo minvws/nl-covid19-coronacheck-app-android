@@ -10,6 +10,7 @@ package nl.rijksoverheid.ctr.appconfig.repositories
 
 import nl.rijksoverheid.ctr.appconfig.api.AppConfigApi
 import nl.rijksoverheid.ctr.appconfig.models.ConfigResponse
+import retrofit2.HttpException
 
 interface ConfigRepository {
     suspend fun getConfig(): ConfigResponse
@@ -20,8 +21,14 @@ interface ConfigRepository {
 class ConfigRepositoryImpl(private val api: AppConfigApi) : ConfigRepository {
     override suspend fun getConfig(): ConfigResponse {
         val response = api.getConfig()
+        val responseBody = response.body()
+
+        if (!response.isSuccessful || responseBody == null) {
+            throw HttpException(response)
+        }
+
         return ConfigResponse(
-            body = response.body()!!.toString(),
+            body = responseBody.toString(),
             headers = response.headers()
         )
     }

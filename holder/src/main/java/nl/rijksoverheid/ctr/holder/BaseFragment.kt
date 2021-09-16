@@ -39,22 +39,21 @@ abstract class BaseFragment(contentLayoutId: Int) : Fragment(contentLayoutId) {
                 negativeButtonText = R.string.dialog_close
             )
         } else {
+            val errorCodeString = errorCodeStringFactory.get(
+                flow = getFlow(),
+                errorResults = listOf(errorResult)
+            )
             if (is429HttpError(errorResult) || errorResult is OpenIdErrorResult.ServerBusy ) {
                 // On HTTP 429 or server busy error we make an exception and show a too busy screen
                 presentError(
                     data = ErrorResultFragmentData(
                         title = getString(R.string.error_too_busy_title),
-                        description = getString(R.string.error_too_busy_description),
+                        description = getString(R.string.error_too_busy_description, errorCodeString),
                         buttonTitle = getString(R.string.back_to_overview),
                         buttonAction = ErrorResultFragmentData.ButtonAction.Destination(R.id.action_my_overview)
                     )
                 )
             } else {
-                val errorCodeString = errorCodeStringFactory.get(
-                    flow = getFlow(),
-                    errorResults = listOf(errorResult)
-                )
-
                 val errorDescription = customerErrorDescription
                     ?: if (errorResult is NetworkRequestResult.Failed.CoronaCheckHttpError) {
                         getString(
