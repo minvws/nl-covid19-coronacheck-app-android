@@ -21,6 +21,7 @@ import nl.rijksoverheid.ctr.holder.databinding.FragmentQrCodeBinding
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.InfoScreenUtil
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.QrInfoScreenUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeData
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.ExternalReturnAppData
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
@@ -47,7 +48,7 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
     private val binding get() = _binding!!
     private val args: QrCodeFragmentArgs by navArgs()
     private val personalDetailsUtil: PersonalDetailsUtil by inject()
-    private val infoScreenUtil: InfoScreenUtil by inject()
+    private val infoScreenUtil: QrInfoScreenUtil by inject()
     private val dialogUtil: DialogUtil by inject()
     private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
 
