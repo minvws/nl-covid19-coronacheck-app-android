@@ -68,11 +68,7 @@ import java.time.Clock
 fun holderModule(baseUrl: String) = module {
 
     single {
-        HolderDatabase.createInstance(
-            androidContext(),
-            get(),
-            androidContext().packageName == "nl.rijksoverheid.ctr.holder"
-        )
+        HolderDatabase.createInstance(androidContext(), get(), androidContext().packageName == "nl.rijksoverheid.ctr.holder")
     }
 
     factory<HolderDatabaseSyncer> { HolderDatabaseSyncerImpl(get(), get(), get(), get()) }
@@ -132,13 +128,7 @@ fun holderModule(baseUrl: String) = module {
     factory<GetMyOverviewItemsUseCase> {
         GetMyOverviewItemsUseCaseImpl(get(), get(), get(), get())
     }
-    factory<MyOverViewGreenCardAdapterUtil> {
-        MyOverViewGreenCardAdapterUtilImpl(
-            androidContext(),
-            get(),
-            get(),
-            get()
-        )
+    factory<MyOverViewGreenCardAdapterUtil> { MyOverViewGreenCardAdapterUtilImpl(androidContext(), get(), get(), get())
     }
     factory<TokenValidatorUtil> { TokenValidatorUtilImpl() }
     factory<CredentialUtil> { CredentialUtilImpl(Clock.systemUTC(), get()) }
@@ -153,13 +143,7 @@ fun holderModule(baseUrl: String) = module {
     factory<DeviceRootedUseCase> { DeviceRootedUseCaseImpl(androidContext()) }
     factory<GetEventsUseCase> { GetEventsUseCaseImpl(get(), get(), get(), get()) }
     factory<SaveEventsUseCase> { SaveEventsUseCaseImpl(get(), get()) }
-    factory<CachedAppConfigUseCase> {
-        CachedAppConfigUseCaseImpl(
-            get(),
-            androidContext().filesDir.path,
-            get()
-        )
-    }
+    factory<CachedAppConfigUseCase> { CachedAppConfigUseCaseImpl(get(), androidContext().filesDir.path, get()) }
 
     factory<TestResultsMigrationManager> { TestResultsMigrationManagerImpl(get()) }
 
@@ -173,16 +157,7 @@ fun holderModule(baseUrl: String) = module {
     viewModel { TokenQrViewModel(get()) }
     viewModel<DeviceRootedViewModel> { DeviceRootedViewModelImpl(get(), get()) }
     viewModel<YourEventsViewModel> { YourEventsViewModelImpl(get(), get()) }
-    viewModel<MyOverviewViewModel> {
-        MyOverviewViewModelImpl(
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get()
-        )
-    }
+    viewModel<MyOverviewViewModel> { MyOverviewViewModelImpl(get(), get(), get(), get(), get(), get()) }
     viewModel<MyOverviewTabsViewModel> { MyOverviewTabsViewModelImpl(get()) }
     viewModel<GetEventsViewModel> { GetEventsViewModelImpl(get()) }
     viewModel<PaperProofCodeViewModel> { PaperProofCodeViewModelImpl(get(), get()) }
