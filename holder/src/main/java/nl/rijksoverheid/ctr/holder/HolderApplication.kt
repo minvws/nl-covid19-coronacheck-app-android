@@ -43,13 +43,31 @@ open class HolderApplication : SharedApplication(), Configuration.Provider {
     private val mobileCoreWrapper: MobileCoreWrapper by inject()
     private val workerManagerWrapper: WorkerManagerWrapper by inject()
 
+
+    private val holderModules = listOf(
+        storageModule,
+        greenCardUseCasesModule,
+        eventsUseCasesModule,
+        secretUseCasesModule,
+        testProvidersUseCasesModule,
+        utilsModule,
+        viewModels,
+        cardUtilsModule,
+        repositoriesModule,
+        qrsModule,
+        appModule,
+        errorsModule,
+        retrofitModule(BuildConfig.BASE_API_URL),
+        responsesModule,
+    ).toTypedArray()
+
     override fun onCreate() {
         super.onCreate()
 
         startKoin {
             androidContext(this@HolderApplication)
             modules(
-                holderModule(BuildConfig.BASE_API_URL),
+                *holderModules,
                 holderIntroductionModule,
                 apiModule(
                     BuildConfig.BASE_API_URL.toHttpUrl(),

@@ -19,7 +19,7 @@ abstract class CommercialTestCodeViewModel : ViewModel() {
     abstract fun getTestResult(fromDeeplink: Boolean = false)
     abstract fun sendVerificationCode()
 
-    open var verificationCode: String = ""
+    open var verificationCode: String? = null
     open var verificationRequired: Boolean = false
     open var testCode: String = ""
     open var fromDeeplink: Boolean = false
@@ -34,7 +34,7 @@ open class CommercialTestCodeViewModelImpl(
     private val testResultUseCase: TestResultUseCase
 ) : CommercialTestCodeViewModel() {
 
-    override var verificationCode: String = savedStateHandle["verification_code"] ?: ""
+    override var verificationCode: String? = savedStateHandle["verification_code"]
         set(value) {
             field = value
             savedStateHandle["verification_code"] = value
@@ -73,7 +73,6 @@ open class CommercialTestCodeViewModelImpl(
     override fun updateViewState() {
         (viewState as MutableLiveData).value = currentViewState.copy(
             verificationRequired = verificationRequired,
-            canRetrieveResult = (testCode.isNotEmpty() && !verificationRequired) || (verificationRequired && testCode.isNotEmpty() && verificationCode.isNotEmpty()),
             fromDeeplink = fromDeeplink
         )
     }
@@ -108,6 +107,5 @@ open class CommercialTestCodeViewModelImpl(
 
 data class ViewState(
     val verificationRequired: Boolean = false,
-    val canRetrieveResult: Boolean = false,
     val fromDeeplink: Boolean = false
 )

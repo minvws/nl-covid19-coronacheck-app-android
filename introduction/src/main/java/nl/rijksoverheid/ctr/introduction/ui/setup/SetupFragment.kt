@@ -39,7 +39,10 @@ class SetupFragment : Fragment(R.layout.fragment_setup) {
         Accessibility.announce(requireContext(), getString(R.string.app_setup_text))
 
         setObservers()
+    }
 
+    override fun onStart() {
+        super.onStart()
         appStatusViewModel.refresh(mobileCoreWrapper)
     }
 

@@ -61,6 +61,18 @@
 
                 <data android:scheme="${digidSchema}" />
             </intent-filter>
+
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="${deepLinkHost}"
+                    android:path="/app/auth"
+                    android:scheme="https" />
+            </intent-filter>
         </activity>
 
         <provider

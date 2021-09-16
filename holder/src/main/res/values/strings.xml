@@ -20,7 +20,7 @@
     <string name="privacy_policy_2"><![CDATA[Er worden <b>geen locatiegegevens</b> gebruikt of bewaard]]></string>
     <string name="privacy_policy_checkbox_text">Ik heb de privacyverklaring gelezen en begrijp hoe de app met mijn gegevens omgaat.</string>
     <string name="my_overview">Mijn bewijzen</string>
-    <string name="my_overview_description">Bezoek je een locatie binnen Nederland? Laat de QR-code en je identiteitsbewijs zien bij de ingang van de locatie die je bezoekt.</string>
+    <string name="my_overview_description">Bezoek je een locatie binnen Nederland? Laat je Nederlandse QR-code en je identiteitsbewijs zien bij de ingang van de locatie die je bezoekt.</string>
     <string name="my_overview_description_eu"><![CDATA[Ben je in het buitenland of ga je de grens over? Gebruik dan altijd de internationale QR-code hieronder. Controleer voor vertrek welk bewijs je nodig hebt.<br/><br/><a href="https://www.nederlandwereldwijd.nl/reizen/reisadviezen">Is mijn bewijs geldig op mijn bestemming?</a>]]></string>
     <string name="my_overview_no_qr_description"><![CDATA[Je kan een QR-code maken als je bent gevaccineerd, als je corona hebt gehad of als je bent getest bij een <a href="https://coronacheck.nl/nl/testafspraak-in-app">aangesloten testlocatie</a>.]]></string>
     <string name="dialog_error_title">Sorry, er ging iets mis</string>
@@ -63,7 +63,7 @@
     <string name="commercial_test_type_title">Testuitslag ophalen</string>
     <string name="commercial_test_type_description">Om je testuitslag op te halen heb je een ophaalcode nodig.</string>
     <string name="commercial_test_type_code_title">Ik heb een ophaalcode</string>
-    <string name="commercial_test_type_code_toolbar_title">Ophaalcode invullen</string>
+    <string name="commercial_test_type_code_toolbar_title">Testuitslag ophalen</string>
     <string name="commercial_test_type_qr_code_title">Ik heb een QR-code</string>
     <string name="commercial_test_type_no_code_title">Ik heb geen code</string>
     <string name="commercial_test_type_no_code_received_title">Ik heb geen code gekregen</string>
@@ -100,7 +100,10 @@
     <string name="testresult_to_qr_code_description">In de QR-code staat dat je negatief getest bent op 2 februari om 14:06.\nIn de CoronaCheck-app is alleen de anonieme QR-code zichtbaar, zonder testdetails.</string>
     <string name="button_continue">Verder</string>
     <string name="commercial_test_error_invalid_code">Deze code is niet geldig</string>
-    <string name="commercial_test_error_invalid_combination">Geen geldige ophaalcode</string>
+    <string name="commercial_test_error_invalid_combination">Geen geldige combinatie van ophaalcode en verificatiecode</string>
+    <string name="commercial_test_error_unknown_test_provider">Ophaalcode is van een onbekende testlocatie</string>
+    <string name="commercial_test_error_empty_retrieval_code">Graag eerst een ophaalcode invullen</string>
+    <string name="commercial_test_error_empty_verification_code">Graag eerst een verificatiecode invullen</string>
     <string name="no_negative_test_result_title">Geen negatieve testuitslag</string>
     <string name="no_negative_test_result_description"><![CDATA[Er is geen negatieve testuitslag beschikbaar.]]></string>
     <string name="test_result_not_known_title">Testuitslag nog niet bekend</string>
@@ -222,7 +225,7 @@
     <string name="qr_card_vaccination_title_eu">Vaccinatiedatum:</string>
     <string name="qr_card_test_title_eu">Testdatum:</string>
     <string name="qr_card_recovery_title_eu">Hersteldatum:</string>
-    <string name="qr_card_validity_valid">geldig t/m %1$s</string>
+    <string name="qr_card_validity_valid">geldig tot %1$s</string>
     <string name="qr_card_validity_future_days">wordt automatisch geldig over %1$s dagen</string>
     <string name="qr_card_validity_future_day">wordt automatisch geldig over %1$s dag</string>
     <string name="qr_card_validity_future_hours">wordt automatisch geldig over %1$s uur</string>
@@ -334,7 +337,7 @@
     <string name="add_paper_proof_input_not_6_chars">Vul de 6-letterige combinatie in</string>
     <string name="add_paper_proof_no_letter_combination_button">Geen lettercombinatie?</string>
     <string name="no_letter_combination_dialog_title">Geen lettercombinatie?</string>
-    <string name="no_letter_combination_dialog_description"><![CDATA[Dan is het niet mogelijk om jouw bewijs op deze manier aan de app toe te voegen.<br/>Je hebt alleen een lettercombinatie gekregen als je jouw papieren coronabewijs hebt <a href="http://coronatest.nl">aangevraagd bij de zorgverlener</a> waar je bent gevaccineerd of getest.<br/><b>Zelf jouw bewijs geprint? </b>Voeg je bewijs dan toe in de app via het menu. Ga naar ‘Bewijs toevoegen’ en log in met DigiD.]]></string>
+    <string name="no_letter_combination_dialog_description"><![CDATA[Dan is het niet mogelijk om jouw bewijs op deze manier aan de app toe te voegen.<br/>Je hebt alleen een lettercombinatie gekregen als je jouw papieren coronabewijs hebt <a href="http://coronatest.nl">aangevraagd bij de zorgverlener</a> waar je bent gevaccineerd of getest.<br/><br/><b>Zelf jouw bewijs geprint? </b>Voeg je bewijs dan toe in de app via het menu. Ga naar ‘Bewijs toevoegen’ en log in met DigiD.]]></string>
     <string name="add_paper_proof_explanation_description"><![CDATA[Heb je een papieren coronabewijs <b>aangevraagd bij de zorgverlener</b> waar je bent gevaccineerd of getest? Dan kan je deze hier ook toevoegen in de app.]]></string>
     <string name="add_paper_proof_explanation_highlight"><![CDATA[<b>Zelf je bewijs uitgeprint?</b> Voeg je bewijs dan toe in de app via het menu. Ga naar ‘Bewijs toevoegen’ en log in met DigiD.]]></string>
     <string name="add_paper_proof_consent_title">Scan alleen de internationale QR-code</string>

@@ -14,7 +14,7 @@ import androidx.lifecycle.ViewModelStore
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
-import com.schibsted.spain.barista.assertion.BaristaEnabledAssertions.assertDisabled
+import com.schibsted.spain.barista.assertion.BaristaEnabledAssertions.assertEnabled
 import com.schibsted.spain.barista.assertion.BaristaHintAssertions.assertHint
 import com.schibsted.spain.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
 import nl.rijksoverheid.ctr.holder.R
@@ -44,7 +44,7 @@ class CommercialTestCodeFragmentTest : AutoCloseKoinTest() {
         assertDisplayed(R.id.description, R.string.commercial_test_code_description)
         assertDisplayed(R.id.unique_code_input)
         assertHint(R.id.unique_code_input, R.string.commercial_test_unique_code_header)
-        assertDisabled(R.id.button)
+        assertEnabled(R.id.button)
     }
 
     private fun launchInputFragment(token: String? = null) {
