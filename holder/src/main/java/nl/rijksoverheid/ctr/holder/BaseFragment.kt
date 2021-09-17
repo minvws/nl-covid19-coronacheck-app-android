@@ -52,7 +52,11 @@ abstract class BaseFragment(contentLayoutId: Int) : Fragment(contentLayoutId) {
                         title = getString(R.string.dialog_no_internet_connection_title),
                         description = getString(R.string.dialog_no_internet_connection_description_errorcode, errorCodeString),
                         buttonTitle = getString(R.string.back_to_overview),
-                        buttonAction = ErrorResultFragmentData.ButtonAction.Destination(R.id.action_my_overview)
+                        buttonAction = ErrorResultFragmentData.ButtonAction.Destination(R.id.action_my_overview),
+                        urlData = ErrorResultFragmentData.UrlData(
+                            urlButtonTitle = getString(R.string.error_something_went_wrong_outage_button),
+                            urlButtonUrl = getString(R.string.error_something_went_wrong_outage_button_url)
+                        ),
                     )
                 )
             }
