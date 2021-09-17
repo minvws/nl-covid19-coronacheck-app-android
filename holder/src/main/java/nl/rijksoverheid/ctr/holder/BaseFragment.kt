@@ -29,21 +29,33 @@ abstract class BaseFragment(contentLayoutId: Int) : Fragment(contentLayoutId) {
     fun presentError(errorResult: ErrorResult, customerErrorDescription: String? = null) {
         if (errorResult is NetworkRequestResult.Failed.NetworkError) {
 
-            val errorCodeString = errorCodeStringFactory.get(
-                flow = getFlow(),
-                errorResults = listOf(errorResult)
-            )
+            // For unomi requests, retrieving events, and test result events show the retry dialog. In other scenarios show the error page including errorcode
+            if (errorResult.step == HolderStep.EventNetworkRequest || errorResult.step == HolderStep.UnomiNetworkRequest || errorResult.step == HolderStep.TestResultNetworkRequest) {
+                dialogUtil.presentDialog(
+                    context = requireContext(),
+                    title = R.string.dialog_no_internet_connection_title,
+                    message = getString(R.string.dialog_no_internet_connection_description),
+                    positiveButtonText = R.string.dialog_retry,
+                    positiveButtonCallback = {
+                        onButtonClickWithRetryAction()
+                    },
+                    negativeButtonText = R.string.dialog_close
+                )
+            } else {
+                val errorCodeString = errorCodeStringFactory.get(
+                    flow = getFlow(),
+                    errorResults = listOf(errorResult)
+                )
 
-            dialogUtil.presentDialog(
-                 context = requireContext(),
-                title = R.string.dialog_no_internet_connection_title,
-                message = getString(R.string.dialog_no_internet_connection_description),
-                positiveButtonText = R.string.dialog_retry,
-                positiveButtonCallback = {
-                    onButtonClickWithRetryAction()
-                },
-                negativeButtonText = R.string.dialog_close
-            )
+                presentError(
+                    data = ErrorResultFragmentData(
+                        title = getString(R.string.dialog_no_internet_connection_title),
+                        description = getString(R.string.dialog_no_internet_connection_description_errorcode, errorCodeString),
+                        buttonTitle = getString(R.string.back_to_overview),
+                        buttonAction = ErrorResultFragmentData.ButtonAction.Destination(R.id.action_my_overview)
+                    )
+                )
+            }
         } else {
             val errorCodeString = errorCodeStringFactory.get(
                 flow = getFlow(),
