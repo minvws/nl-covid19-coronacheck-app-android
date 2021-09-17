@@ -19,6 +19,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.CredentialEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
 import org.koin.core.component.KoinComponent
@@ -27,7 +28,7 @@ import org.koin.core.component.inject
 class MyOverviewGreenCardAdapterItem(
     private val greenCard: GreenCard,
     private val originStates: List<OriginState>,
-    private val credentialState: MyOverviewItem.GreenCardItem.CredentialState,
+    private val credentialState: DashboardItem.GreenCardItem.CredentialState,
     private val databaseSyncerResult: DatabaseSyncerResult = DatabaseSyncerResult.Success,
     private val onButtonClick: (greenCard: GreenCard, credential: CredentialEntity) -> Unit,
     private val onRetryClick: () -> Unit = {},
@@ -47,7 +48,7 @@ class MyOverviewGreenCardAdapterItem(
         )
 
         viewBinding.buttonWithProgressWidgetContainer.setButtonOnClickListener {
-            if (credentialState is MyOverviewItem.GreenCardItem.CredentialState.HasCredential) {
+            if (credentialState is DashboardItem.GreenCardItem.CredentialState.HasCredential) {
                 onButtonClick.invoke(greenCard, credentialState.credential)
             }
         }
@@ -74,12 +75,12 @@ class MyOverviewGreenCardAdapterItem(
             }
         }
 
-        if (credentialState is MyOverviewItem.GreenCardItem.CredentialState.LoadingCredential) {
+        if (credentialState is DashboardItem.GreenCardItem.CredentialState.LoadingCredential) {
             viewBinding.buttonWithProgressWidgetContainer.setAccessibilityText(context.getString(R.string.my_overview_test_result_button_indicator_accessibility_description))
             viewBinding.buttonWithProgressWidgetContainer.loading()
         } else {
             viewBinding.buttonWithProgressWidgetContainer.idle(
-                isEnabled = credentialState is MyOverviewItem.GreenCardItem.CredentialState.HasCredential
+                isEnabled = credentialState is DashboardItem.GreenCardItem.CredentialState.HasCredential
             )
         }
 
@@ -109,7 +110,7 @@ class MyOverviewGreenCardAdapterItem(
     }
 
     private fun showError(viewBinding: ItemMyOverviewGreenCardBinding) {
-        if (credentialState is MyOverviewItem.GreenCardItem.CredentialState.NoCredential) {
+        if (credentialState is DashboardItem.GreenCardItem.CredentialState.NoCredential) {
             val context = viewBinding.errorText.context
             when (databaseSyncerResult) {
                 is DatabaseSyncerResult.Failed.NetworkError -> {

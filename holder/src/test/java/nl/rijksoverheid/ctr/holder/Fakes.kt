@@ -25,7 +25,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.EventProviderReposi
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.TestProviderRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
-import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewViewModel
+import nl.rijksoverheid.ctr.holder.ui.myoverview.DashboardViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TokenValidatorUtil
 import nl.rijksoverheid.ctr.introduction.IntroductionData
@@ -55,17 +55,22 @@ fun fakeAppConfigViewModel(appStatus: AppStatus = AppStatus.NoActionRequired) =
         }
     }
 
-fun fakeMyOverViewModel() =
-    object : MyOverviewViewModel() {
+fun fakeDashboardViewModel() =
+    object : DashboardViewModel() {
+        override fun refresh(forceSync: Boolean) {
 
-        override fun getSelectedType(): GreenCardType {
-            return GreenCardType.Domestic
         }
 
-        override fun refreshOverviewItems(selectType: GreenCardType, syncDatabase: Boolean) {
-
+        override fun removeGreenCard(greenCard: GreenCard) {
+            
         }
     }
+
+fun fakeRemoveExpiredEventsUseCase() = object: RemoveExpiredEventsUseCase {
+    override suspend fun execute(events: List<EventGroupEntity>) {
+
+    }
+}
 
 fun fakeTokenValidatorUtil(
     isValid: Boolean = true
@@ -349,11 +354,11 @@ fun fakePersistenceManager(
 
         }
 
-        override fun getSelectedGreenCardType(): GreenCardType {
-            return GreenCardType.Domestic
+        override fun getSelectedDashboardTab(): Int {
+            return 0
         }
 
-        override fun setSelectedGreenCardType(greenCardType: GreenCardType) {
+        override fun setSelectedDashboardTab(position: Int) {
 
         }
 

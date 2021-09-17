@@ -14,7 +14,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class MyOverviewGreenCardPlaceholderItem(private val isEu: Boolean) :
+class MyOverviewGreenCardPlaceholderItem(private val greenCardType: GreenCardType) :
     BindableItem<ItemMyOverviewGreenCardPlaceholderBinding>(R.layout.item_my_overview_green_card_placeholder.toLong()) {
 
     override fun getLayout(): Int {
@@ -26,6 +26,8 @@ class MyOverviewGreenCardPlaceholderItem(private val isEu: Boolean) :
     }
 
     override fun bind(viewBinding: ItemMyOverviewGreenCardPlaceholderBinding, position: Int) {
+        val isEu = greenCardType == GreenCardType.Eu
+
         viewBinding.icon.setBackgroundResource(if (isEu) {
             R.drawable.ic_illustration_hand_qr_placeholder_eu
         } else {

@@ -20,6 +20,9 @@ val cardUtilsModule = module {
     factory<QrCodeUtil> { QrCodeUtilImpl() }
     factory<TestResultAdapterItemUtil> { TestResultAdapterItemUtilImpl(get()) }
     factory<InfoScreenUtil> { InfoScreenUtilImpl(get(), get(), get()) }
+    factory<TestInfoScreenUtil> { TestInfoScreenUtilImpl(androidContext().resources, get()) }
+    factory<RecoveryInfoScreenUtil> { RecoveryInfoScreenUtilImpl(androidContext().resources) }
+    factory<QrInfoScreenUtil> { QrInfoScreenUtilImpl(get(), get()) }
     factory<VaccinationInfoScreenUtil> {
         VaccinationInfoScreenUtilImpl(get(), androidContext().resources, get())
     }

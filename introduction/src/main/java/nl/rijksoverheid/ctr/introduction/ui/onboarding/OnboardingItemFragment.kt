@@ -62,6 +62,9 @@ class OnboardingItemFragment : Fragment(R.layout.fragment_onboarding_item) {
             binding.image.visibility = View.VISIBLE
             if (item.imageResource != 0) {
                 binding.image.setImageResource(item.imageResource)
+            } else if (item.animationResource != 0) {
+                binding.image.setAnimation(item.animationResource)
+                binding.image.playAnimation()
             }
         }
     }
