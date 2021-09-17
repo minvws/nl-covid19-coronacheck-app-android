@@ -14,18 +14,16 @@ class ErrorCodeStringFactoryImplTest {
     private val factory = ErrorCodeStringFactoryImpl()
 
     @Test
-    fun `get() throws error if errorResult is an IllegalStateException`() {
-        assertThrows(IllegalStateException::class.java) {
-            factory.get(
-                flow = Flow(0),
-                errorResults = listOf(
-                    AppErrorResult(
-                        step = Step(1),
-                        e = IllegalStateException()
-                    )
-                )
-            )
-        }
+    fun `get() returns correct string if errorResult is an IllegalStateException`() {
+        val errorCodeString = factory.get(
+            flow = Flow(0),
+            errorResults = listOf(AppErrorResult(
+                step = Step(1),
+                e = IllegalStateException()
+            ))
+        )
+
+        assertEquals(errorCodeString, "A 01 000 999")
     }
 
     @Test
