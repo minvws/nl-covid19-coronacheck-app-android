@@ -16,6 +16,12 @@
     <group
         android:id="@+id/info"
         android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_mode_select"
+            android:checkable="false"
+            android:title="Risico instelling" />
+
         <item
             android:id="@+id/nav_support"
             android:checkable="false"
