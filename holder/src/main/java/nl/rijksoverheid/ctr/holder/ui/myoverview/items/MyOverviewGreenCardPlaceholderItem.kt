@@ -1,7 +1,8 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview.items
 
+import android.content.Intent
+import android.net.Uri
 import android.view.View
-import android.widget.ImageView
 import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.ItemMyOverviewGreenCardPlaceholderBinding
@@ -46,5 +47,21 @@ class MyOverviewGreenCardPlaceholderItem(private val greenCardType: GreenCardTyp
             }),
             htmlLinksEnabled = true
         )
+        viewBinding.button.run {
+            if (isEu) {
+                visibility = View.VISIBLE
+                text = viewBinding.root.context.getString(R.string.my_overview_qr_placeholder_button_eu)
+                setOnClickListener {
+                    context.startActivity(
+                        Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse(viewBinding.root.context.getString(R.string.my_overview_qr_placeholder_button_link_eu))
+                        )
+                    )
+                }
+            } else {
+                visibility = View.GONE
+            }
+        }
     }
 }
