@@ -24,6 +24,7 @@ import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.ext.showKeyboard
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.Flow
+import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import nl.rijksoverheid.ctr.shared.utils.Accessibility
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
@@ -149,9 +150,22 @@ import org.koin.androidx.viewmodel.scope.emptyState
                         getString(R.string.commercial_test_error_empty_verification_code)
                 }
                 is TestResult.Error -> {
-                    presentError(
-                        errorResult = it.errorResult
-                    )
+                    if (it.errorResult is NetworkRequestResult.Failed.NetworkError) {
+                        dialogUtil.presentDialog(
+                            context = requireContext(),
+                            title = R.string.dialog_no_internet_connection_title,
+                            message = getString(R.string.dialog_no_internet_connection_description),
+                            positiveButtonText = R.string.dialog_retry,
+                            positiveButtonCallback = {
+                                onButtonClickWithRetryAction()
+                            },
+                            negativeButtonText = R.string.dialog_close
+                        )
+                    } else {
+                        presentError(
+                            errorResult = it.errorResult
+                        )
+                    }
                 }
             }
         })
