@@ -406,6 +406,8 @@
     <string name="add_paper_proof_invalid_combination_">This letter combination and QR code don\'t belong together.</string>
     <string name="add_paper_proof_qr_scanner_title">Scan QR code</string>
     <string name="add_paper_proof_consent_button">Scan QR code</string>
+    <string name="add_paper_proof_no_camera_error_header">We can\'t add a certificate on your phone </string>
+    <string name="add_paper_proof_no_camera_error_description"><![CDATA[Your phone doesn\'t have a camera. This means you cannot scan the paper certificate and add it to your phone.<br><br>Please use the paper certificate you received from the healthcare provider.]]></string>
     <string name="your_dcc_event_description">You can create a QR code with the retrieved details. This is your certificate.</string>
     <string name="your_dcc_event_toolbar_title">Retrieved details</string>
     <string name="your_events_block_back_dialog_title">Are you sure you want to stop?</string>
