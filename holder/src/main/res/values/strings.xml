@@ -453,4 +453,7 @@
     <string name="error_access_tokens_session_expired_title">Je sessie is gestopt</string>
     <string name="error_access_tokens_Session_expired_description">Je hebt te lang gewacht. Voor de veiligheid ben je daarom uitgelogd. Log opnieuw in met DigiD om je gegevens op te halen.</string>
     <string name="error_access_tokens_session_expired_button">Begin opnieuw</string>
+    <string name="dialog_device_secure_warning_title">Er zijn beveiligingsrisico’s gevonden</string>
+    <string name="dialog_device_secure_warning_description">Let op: je toestel is niet beveiligd met een pincode of andere beveiligingsoptie. Daardoor kunnen anderen je data inzien en zijn je gegevens mogelijk niet veilig.</string>
+    <string name="dialog_device_secure_positive_button">Oke</string>
 </resources>

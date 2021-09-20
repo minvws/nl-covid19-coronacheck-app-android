@@ -91,11 +91,11 @@ class HolderMainActivity : AppCompatActivity() {
             if (it) {
                 dialogUtil.presentDialog(
                     context = this,
-                    title = R.string.dialog_rooted_device_title,
-                    message = getString(R.string.dialog_rooted_device_message),
-                    positiveButtonText = R.string.dialog_rooted_device_positive_button,
+                    title = R.string.dialog_device_secure_warning_title,
+                    message = getString(R.string.dialog_device_secure_warning_description),
+                    positiveButtonText = R.string.dialog_device_secure_positive_button,
                     positiveButtonCallback = { },
-                    onDismissCallback = { deviceRootedViewModel.setHasDismissedRootedDeviceDialog() }
+                    onDismissCallback = { deviceSecureViewModel.setHasDismissedSecureDeviceDialog() }
                 )
             }
         })
