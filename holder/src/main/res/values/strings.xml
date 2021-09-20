@@ -155,6 +155,7 @@
     <string name="menu_close">Sluiten</string>
     <string name="dialog_no_internet_connection_title">Sorry, er gaat iets mis</string>
     <string name="dialog_no_internet_connection_description">Het is niet gelukt de server te bereiken. Wil je controleren of je verbinding met het internet hebt?</string>
+    <string name="dialog_no_internet_connection_description_errorcode"><![CDATA[Het is niet gelukt de server te bereiken. Wil je controleren of je verbinding met het internet hebt?<br/><br/><b>Foutcode:</b><br/>%1s]]></string>
     <string name="dialog_close">Sluiten</string>
     <string name="dialog_retry">Probeer opnieuw</string>
     <string name="new_terms_title">Nieuw in de app</string>

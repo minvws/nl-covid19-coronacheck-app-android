@@ -155,6 +155,7 @@
     <string name="menu_close">Close</string>
     <string name="dialog_no_internet_connection_title">Sorry, something went wrong</string>
     <string name="dialog_no_internet_connection_description">We failed to reach the server. Can you check if you’re connected to the internet?</string>
+    <string name="dialog_no_internet_connection_description_errorcode"><![CDATA[We failed to reach the server. Can you check if you’re connected to the internet?<br/><br/><b>Error code:</b><br/>%1s]]></string>
     <string name="dialog_close">Close</string>
     <string name="dialog_retry">Try again</string>
     <string name="new_terms_title">New in the app</string>
@@ -448,7 +449,7 @@
     <string name="error_get_events_missing_events_dialog_title_testresults">"Are these all your test certificates? "</string>
     <string name="error_get_events_missing_events_dialog_title_recoveries">Are these all your recovery certificates?</string>
     <string name="error_get_events_missing_events_dialog_description">Due to increased traffic or an outage, some of your details may be missing. Are you missing a vaccination? Please come back later and retrieve your details again.</string>
-    <string name="error_get_events_no_events_title">Sorry, it was not succesful</string>
+    <string name="error_get_events_no_events_title">Sorry, it was not successful</string>
     <string name="error_access_tokens_no_bsn_title">No social security number found</string>
     <string name="error_access_tokens_no_bsn_description">The healthcare provider who vaccinated or tested you can help you further. Contact them and let them know the CoronaCheck app couldn’t find a social security number.</string>
     <string name="error_access_tokens_session_expired_title">Your session has expired</string>
