@@ -13,6 +13,7 @@ import android.content.Context
 import android.content.Context.KEYGUARD_SERVICE
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 interface DeviceSecureUseCase {
@@ -24,7 +25,7 @@ class DeviceSecureUseCaseImpl(val context: Context) : DeviceSecureUseCase {
         return withContext(Dispatchers.IO) {
             suspendCoroutine {
                 val keyguardManager = context.getSystemService(KEYGUARD_SERVICE) as KeyguardManager
-                keyguardManager.isDeviceSecure
+                it.resume(keyguardManager.isDeviceSecure)
             }
         }
     }

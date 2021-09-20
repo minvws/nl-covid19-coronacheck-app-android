@@ -88,7 +88,7 @@ class HolderMainActivity : AppCompatActivity() {
         })
 
         deviceSecureViewModel.deviceSecureLiveData.observe(this, EventObserver {
-            if (it) {
+            if (!it) {
                 dialogUtil.presentDialog(
                     context = this,
                     title = R.string.dialog_device_secure_warning_title,
