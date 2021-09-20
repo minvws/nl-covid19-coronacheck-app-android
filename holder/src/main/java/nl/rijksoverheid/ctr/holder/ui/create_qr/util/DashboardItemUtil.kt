@@ -7,6 +7,7 @@ interface DashboardItemUtil {
     fun shouldShowHeaderItem(allGreenCards: List<GreenCard>): Boolean
     fun shouldShowClockDeviationItem(allGreenCards: List<GreenCard>): Boolean
     fun shouldShowPlaceholderItem(allGreenCards: List<GreenCard>): Boolean
+    fun shouldAddQrButtonItem(allGreenCards: List<GreenCard>): Boolean
 }
 
 class DashboardItemUtilImpl(
@@ -16,4 +17,5 @@ class DashboardItemUtilImpl(
     override fun shouldShowHeaderItem(allGreenCards: List<GreenCard>) = allGreenCards.isNotEmpty() || !allGreenCards.all { greenCardUtil.isExpired(it) }
     override fun shouldShowClockDeviationItem(allGreenCards: List<GreenCard>) = clockDeviationUseCase.hasDeviation() && (allGreenCards.isNotEmpty() || !allGreenCards.all { greenCardUtil.isExpired(it) })
     override fun shouldShowPlaceholderItem(allGreenCards: List<GreenCard>) = allGreenCards.isEmpty() || allGreenCards.all { greenCardUtil.isExpired(it) }
+    override fun shouldAddQrButtonItem(allGreenCards: List<GreenCard>): Boolean = allGreenCards.isEmpty()
 }

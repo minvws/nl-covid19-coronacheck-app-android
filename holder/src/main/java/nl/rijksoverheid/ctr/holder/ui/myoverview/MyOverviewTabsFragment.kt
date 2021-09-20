@@ -37,8 +37,9 @@ import java.util.concurrent.TimeUnit
  */
 class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
 
+    private var _binding: FragmentTabsMyOverviewBinding? = null
+    private val binding get() = _binding!!
     private val dashboardViewModel: DashboardViewModel by viewModel()
-    private val viewModel: MyOverviewTabsViewModel by viewModel()
     private val args: MyOverviewTabsFragmentArgs by navArgs()
     private val dialogUtil: DialogUtil by inject()
     private val persistenceManager: PersistenceManager by inject()
@@ -51,31 +52,27 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val binding = FragmentTabsMyOverviewBinding.bind(view)
+        _binding = FragmentTabsMyOverviewBinding.bind(view)
         val adapter = DashboardPagerAdapter(childFragmentManager, viewLifecycleOwner.lifecycle, args.returnUri)
 
-        handleAddQrButton(binding)
-        setupViewPager(binding, adapter)
+        setupViewPager(adapter)
         observeServerTimeSynced()
-        observeItems(binding, adapter)
+        observeItems(adapter)
         observeSyncErrors()
     }
 
-    private fun handleAddQrButton(binding: FragmentTabsMyOverviewBinding) {
-        binding.addQrButton.setOnClickListener {
-            navigateSafety(
-                MyOverviewFragmentDirections.actionQrType()
-            )
-        }
-
-        viewModel.showAddCertificateButtonEvent.observe(viewLifecycleOwner) {
-            binding.addQrButton.visibility = if (it) VISIBLE else GONE
+    fun showAddQrButton(show: Boolean) {
+        binding.addQrButton.visibility = if (show) VISIBLE else GONE
+        if (show) {
+            binding.addQrButton.setOnClickListener {
+                navigateSafety(
+                    MyOverviewFragmentDirections.actionQrType()
+                )
+            }
         }
     }
 
-    private fun setupViewPager(
-        binding: FragmentTabsMyOverviewBinding,
-        adapter: DashboardPagerAdapter) {
+    private fun setupViewPager(adapter: DashboardPagerAdapter) {
         binding.viewPager.adapter = adapter
     }
 
@@ -89,9 +86,7 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
         })
     }
 
-    private fun observeItems(
-        binding: FragmentTabsMyOverviewBinding,
-        adapter: DashboardPagerAdapter) {
+    private fun observeItems(adapter: DashboardPagerAdapter) {
         dashboardViewModel.dashboardTabItemsLiveData.observe(viewLifecycleOwner, {
 
             // Add pager items only once
@@ -208,5 +203,10 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
                 }
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
