@@ -172,6 +172,9 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                         navigateSafety(MyOverviewTabsFragmentDirections.actionShowClockDeviationExplanation())
                     }))
                 }
+                is DashboardItem.AddQrButtonItem -> {
+                    (requireParentFragment() as MyOverviewTabsFragment).showAddQrButton(dashboardItem.show)
+                }
             }
         }
 
