@@ -154,7 +154,7 @@
     <string name="accessibility_testresult_icon_description">Information about your negative test result</string>
     <string name="menu_close">Close</string>
     <string name="dialog_no_internet_connection_title">Sorry, something went wrong</string>
-    <string name="dialog_no_internet_connection_description">We failed to reach the server. Can you check if you’re connected to the internet?</string>
+    <string name="dialog_no_internet_connection_description">We failed to reach the server. Can you check if you\'re connected to the internet?</string>
     <string name="dialog_no_internet_connection_description_errorcode"><![CDATA[We failed to reach the server. Can you check if you’re connected to the internet?<br/><br/><b>Error code:</b><br/>%1s]]></string>
     <string name="dialog_close">Close</string>
     <string name="dialog_retry">Try again</string>
@@ -257,7 +257,7 @@
     <string name="qr_card_validity_future_hours">automatically becomes valid in %1$s hours</string>
     <string name="your_test_result_explanation_toolbar_title">What was retrieved?</string>
     <string name="your_test_result_explanation_description"><![CDATA[The following details were retrieved at the test location:<br\><br\>Your details: <b>%1$s<b/><br/>Test type: <b>%2$s</b><br/>Test date: <b>%3$s</b><br/>Test result: <b>%4$s</b><br/>Unique test identifier: <b>%5$s</b>]]></string>
-    <string name="your_test_result_explanation_negative_test_result">negative (no coronavirus)</string>
+    <string name="your_test_result_explanation_negative_test_result">Negative (no coronavirus)</string>
     <string name="your_test_result_explanation_description_header">The following details were retrieved at the test location:</string>
     <string name="your_test_result_explanation_description_your_details">Your details:</string>
     <string name="your_test_result_explanation_description_name">Name:</string>
@@ -407,7 +407,7 @@
     <string name="add_paper_proof_invalid_combination_">This letter combination and QR code don\'t belong together.</string>
     <string name="add_paper_proof_qr_scanner_title">Scan QR code</string>
     <string name="add_paper_proof_consent_button">Scan QR code</string>
-    <string name="add_paper_proof_no_camera_error_header">We can\'t add a certificate on your phone </string>
+    <string name="add_paper_proof_no_camera_error_header">We can\'t add a certificate on your phone</string>
     <string name="add_paper_proof_no_camera_error_description"><![CDATA[Your phone doesn\'t have a camera. This means you cannot scan the paper certificate and add it to your phone.<br><br>Please use the paper certificate you received from the healthcare provider.]]></string>
     <string name="your_dcc_event_description">You can create a QR code with the retrieved details. This is your certificate.</string>
     <string name="your_dcc_event_toolbar_title">Retrieved details</string>

@@ -257,7 +257,7 @@
     <string name="qr_card_validity_future_hours">wordt automatisch geldig over %1$s uur</string>
     <string name="your_test_result_explanation_toolbar_title">Wat is er opgehaald?</string>
     <string name="your_test_result_explanation_description"><![CDATA[De volgende gegevens zijn opgehaald bij de testlocatie:<br\><br\>Jouw gegevens: <b>%1$s</b><br/><br/>Type test: <b>%2$s</b><br/>Testdatum: <b>%3$s</b><br/>Testuitslag: <b>%4$s</b><br/>Uniek testnummer: <b>%5$s</b>]]></string>
-    <string name="your_test_result_explanation_negative_test_result">negatief (geen corona)</string>
+    <string name="your_test_result_explanation_negative_test_result">Negatief (geen corona)</string>
     <string name="your_test_result_explanation_description_header">De volgende gegevens zijn opgehaald bij de testlocatie:</string>
     <string name="your_test_result_explanation_description_your_details">Jouw gegevens:</string>
     <string name="your_test_result_explanation_description_name">Naam:</string>
