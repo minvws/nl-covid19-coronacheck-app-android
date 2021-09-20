@@ -407,6 +407,8 @@
     <string name="add_paper_proof_invalid_combination_">Deze lettercombinatie en QR-code horen niet bij elkaar.</string>
     <string name="add_paper_proof_qr_scanner_title">Scan QR-code</string>
     <string name="add_paper_proof_consent_button">Scan QR-code</string>
+    <string name="add_paper_proof_no_camera_error_header">Bewijs toevoegen kan niet op jouw telefoon</string>
+    <string name="add_paper_proof_no_camera_error_description"><![CDATA[Jouw telefoon heeft geen geen camerafunctie. Daardoor kan je het papieren bewijs niet scannen en toevoegen op jouw telefoon.<br><br>Gebruik het papieren bewijs dat je van de zorgverlener hebt gekregen]]></string>
     <string name="your_dcc_event_description">Met de gegevens die zijn opgehaald kun je een QR-code maken. Dat is jouw bewijs.</string>
     <string name="your_dcc_event_toolbar_title">Opgehaalde gegevens</string>
     <string name="your_events_block_back_dialog_title">Weet je zeker dat je wilt stoppen?</string>
