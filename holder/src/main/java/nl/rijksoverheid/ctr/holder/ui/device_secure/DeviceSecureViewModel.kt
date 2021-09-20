@@ -17,7 +17,7 @@ import nl.rijksoverheid.ctr.shared.livedata.Event
 
 abstract class DeviceSecureViewModel : ViewModel() {
     val deviceSecureLiveData = MutableLiveData<Event<Boolean>>()
-    abstract fun setHasDismissedSecureDeviceDialog()
+    abstract fun setHasDismissedUnsecureDeviceDialog(value : Boolean)
 }
 
 class DeviceSecureViewModelImpl(
@@ -28,16 +28,22 @@ class DeviceSecureViewModelImpl(
 
     init {
         viewModelScope.launch {
-            // When the device rooted dialog has never been dismissed, keep checking if we are dealing
-            // with a rooted device
-            if (!persistenceManager.hasDismissedSecureDeviceDialog()) {
-                deviceSecureLiveData.postValue(Event(deviceSecureUseCase.isDeviceSecure()))
+            // When the device unsecured dialog has never been dismissed, keep checking if we are dealing
+            // with an unsecured device
+            // If user has dismissed the dialog before, but has since secured their device, reset the dialog
+            // check so we can re-show it if security gets removed
+            val isDeviceSecure = deviceSecureUseCase.isDeviceSecure()
+            if (isDeviceSecure && persistenceManager.hasDismissedUnsecureDeviceDialog()){
+                setHasDismissedUnsecureDeviceDialog(false)
+            }
+            if (!persistenceManager.hasDismissedUnsecureDeviceDialog()) {
+                deviceSecureLiveData.postValue(Event(isDeviceSecure))
             }
         }
     }
 
-    override fun setHasDismissedSecureDeviceDialog() {
-        persistenceManager.setHasDismissedSecureDeviceDialog()
+    override fun setHasDismissedUnsecureDeviceDialog(value : Boolean) {
+        persistenceManager.setHasDismissedUnsecureDeviceDialog(value)
     }
 
 }

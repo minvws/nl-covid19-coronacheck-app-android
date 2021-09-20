@@ -24,8 +24,8 @@ interface PersistenceManager {
     fun setSelectedDashboardTab(position: Int)
     fun hasAppliedJune28Fix(): Boolean
     fun setJune28FixApplied(applied: Boolean)
-    fun hasDismissedSecureDeviceDialog(): Boolean
-    fun setHasDismissedSecureDeviceDialog()
+    fun hasDismissedUnsecureDeviceDialog(): Boolean
+    fun setHasDismissedUnsecureDeviceDialog(value : Boolean)
 }
 
 class SharedPreferencesPersistenceManager(
@@ -119,13 +119,13 @@ class SharedPreferencesPersistenceManager(
         }
     }
 
-    override fun hasDismissedSecureDeviceDialog(): Boolean {
+    override fun hasDismissedUnsecureDeviceDialog(): Boolean {
         return sharedPreferences.getBoolean(HAS_SEEN_SECURE_DEVICE_DIALOG, false)
     }
 
-    override fun setHasDismissedSecureDeviceDialog() {
+    override fun setHasDismissedUnsecureDeviceDialog(value : Boolean) {
         val result =
-            sharedPreferences.edit().putBoolean(HAS_SEEN_SECURE_DEVICE_DIALOG, true).commit()
+            sharedPreferences.edit().putBoolean(HAS_SEEN_SECURE_DEVICE_DIALOG, value).commit()
         if (!result) {
             throw IllegalStateException("Failed to set secure device dialog has been seen in shared preference")
         }

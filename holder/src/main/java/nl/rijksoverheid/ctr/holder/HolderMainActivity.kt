@@ -95,7 +95,7 @@ class HolderMainActivity : AppCompatActivity() {
                     message = getString(R.string.dialog_device_secure_warning_description),
                     positiveButtonText = R.string.dialog_device_secure_positive_button,
                     positiveButtonCallback = { },
-                    onDismissCallback = { deviceSecureViewModel.setHasDismissedSecureDeviceDialog() }
+                    onDismissCallback = { deviceSecureViewModel.setHasDismissedUnsecureDeviceDialog(true) }
                 )
             }
         })
