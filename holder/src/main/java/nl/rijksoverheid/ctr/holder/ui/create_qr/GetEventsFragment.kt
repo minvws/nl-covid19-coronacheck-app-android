@@ -140,7 +140,26 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                             )
                         }
                         it.unomiOrEventErrors() -> {
-                            presentError(it.errorResults.first(), getString(R.string.error_get_events_http_error_description, getErrorCodes(it.errorResults)))
+                            if (it.errorResults.first() is NetworkRequestResult.Failed.NetworkError) {
+                                dialogUtil.presentDialog(
+                                    context = requireContext(),
+                                    title = R.string.dialog_no_internet_connection_title,
+                                    message = getString(R.string.dialog_no_internet_connection_description),
+                                    positiveButtonText = R.string.dialog_retry,
+                                    positiveButtonCallback = {
+                                        onButtonClickWithRetryAction()
+                                    },
+                                    negativeButtonText = R.string.dialog_close
+                                )
+                            } else {
+                                presentError(
+                                    it.errorResults.first(),
+                                    getString(
+                                        R.string.error_get_events_http_error_description,
+                                        getErrorCodes(it.errorResults)
+                                    )
+                                )
+                            }
                         }
                         else -> {
                             presentError(it.errorResults.first())
