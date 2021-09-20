@@ -54,7 +54,7 @@ class ErrorCodeStringFactoryImpl: ErrorCodeStringFactory {
                 is SocketTimeoutException -> "004"
                 is UnknownHostException -> "002"
                 is ConnectException -> "005"
-                else -> "999"
+                else -> throw it.getException()
             }
 
             stringBuilder.append(" $exceptionErrorCode")
