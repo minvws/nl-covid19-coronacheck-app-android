@@ -72,4 +72,48 @@ class DashboardItemUtilImplTest {
 
         assertEquals(true, shouldShowHeaderItem)
     }
+
+    @Test
+    fun `shouldShowPlaceholderItem returns true if has no green cards`() {
+        val util = DashboardItemUtilImpl(
+            clockDeviationUseCase = fakeClockDevationUseCase(),
+            greenCardUtil = fakeGreenCardUtil()
+        )
+
+        val shouldShowHeaderItem = util.shouldShowPlaceholderItem(
+            allGreenCards = listOf()
+        )
+
+        assertEquals(true, shouldShowHeaderItem)
+    }
+
+    @Test
+    fun `shouldShowPlaceholderItem returns true if all green cards expired`() {
+        val util = DashboardItemUtilImpl(
+            clockDeviationUseCase = fakeClockDevationUseCase(),
+            greenCardUtil = fakeGreenCardUtil(
+                isExpired = true
+            )
+        )
+
+        val shouldShowHeaderItem = util.shouldShowPlaceholderItem(
+            allGreenCards = listOf(fakeGreenCard)
+        )
+
+        assertEquals(true, shouldShowHeaderItem)
+    }
+
+    @Test
+    fun `shouldAddQrButtonItem returns true if has no green cards`() {
+        val util = DashboardItemUtilImpl(
+            clockDeviationUseCase = fakeClockDevationUseCase(),
+            greenCardUtil = fakeGreenCardUtil()
+        )
+
+        val shouldShowHeaderItem = util.shouldShowPlaceholderItem(
+            allGreenCards = listOf()
+        )
+
+        assertEquals(true, shouldShowHeaderItem)
+    }
 }
