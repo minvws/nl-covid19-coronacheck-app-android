@@ -37,24 +37,4 @@ class GetDashboardItemsUseCaseImplTest {
         assertTrue(dashboardItems.internationalItems[0] is DashboardItem.PlaceholderCardItem)
         assertTrue(dashboardItems.internationalItems[1] is DashboardItem.AddQrButtonItem)
     }
-
-    @Test
-    fun `get returns PlaceholderItem and AddQrButtonItem`() = runBlocking {
-        val usecase = GetDashboardItemsUseCaseImpl(
-            greenCardUtil = fakeGreenCardUtil(),
-            credentialUtil = fakeCredentialUtil(),
-            originUtil = fakeOriginUtil(),
-            dashboardItemUtil = fakeDashboardItemUtil(
-                shouldShowPlaceholderItem = true
-            )
-        )
-        val domesticItems = usecase.getDomesticItems(
-            allGreenCards = listOf(),
-            databaseSyncerResult = DatabaseSyncerResult.Success,
-            isLoadingNewCredentials = false
-        )
-        assertEquals(domesticItems.size, 2)
-        assertTrue(domesticItems[0] is DashboardItem.PlaceholderCardItem)
-        assertTrue(domesticItems[1] is DashboardItem.AddQrButtonItem)
-    }
 }
