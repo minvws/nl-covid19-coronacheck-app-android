@@ -21,11 +21,9 @@ import retrofit2.http.POST
  */
 interface HolderApiClient {
     @GET("holder/prepare_issue")
-    @SignedRequest
     suspend fun getPrepareIssue(): RemotePrepareIssue
 
     @POST("holder/get_credentials")
-    @SignedRequest
     suspend fun getCredentials(
         @Body data: GetCredentialsPostData
     ): RemoteGreenCards
@@ -35,10 +33,8 @@ interface HolderApiClient {
     suspend fun getConfigCtp(): RemoteConfigProviders
 
     @POST("holder/access_tokens")
-    @SignedRequest
     suspend fun getAccessTokens(@Header("Authorization") authorization: String): RemoteAccessTokens
 
     @POST("holder/coupling")
-    @SignedRequest
     suspend fun getCoupling(@Body data: GetCouplingData): RemoteCouplingResponse
 }
