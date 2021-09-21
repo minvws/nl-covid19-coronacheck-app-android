@@ -9,11 +9,13 @@ import io.mockk.mockk
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
+import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.dao.*
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
@@ -518,6 +520,30 @@ fun fakeSyncRemoteGreenCardUseCase(
         return result
     }
 }
+
+fun fakeClockDevationUseCase(
+    hasDeviation: Boolean = false
+) = object: ClockDeviationUseCase() {
+    override fun store(serverResponseTimestamp: Long, localReceivedTimestamp: Long) {
+
+    }
+
+    override fun hasDeviation(): Boolean {
+        return hasDeviation
+    }
+}
+
+val fakeGreenCardEntity = GreenCardEntity(
+    id = 0,
+    walletId = 1,
+    type = GreenCardType.Domestic
+)
+
+val fakeGreenCard = GreenCard(
+    greenCardEntity = fakeGreenCardEntity,
+    origins = listOf(),
+    credentialEntities = listOf()
+)
 
 
 
