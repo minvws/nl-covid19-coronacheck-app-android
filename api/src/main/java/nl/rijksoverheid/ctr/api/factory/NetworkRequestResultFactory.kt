@@ -27,8 +27,12 @@ class NetworkRequestResultFactory(
         networkCall: suspend () -> R
     ): NetworkRequestResult<R> {
         return try {
-            val response = networkCall.invoke()
-            NetworkRequestResult.Success(response)
+            if (!androidUtil.isNetworkAvailable()) {
+                NetworkRequestResult.Failed.ClientNetworkError(step)
+            } else {
+                val response = networkCall.invoke()
+                NetworkRequestResult.Success(response)
+            }
         } catch (httpException: HttpException) {
             try {
                 // We intercept here if a HttpException is expected
@@ -59,16 +63,12 @@ class NetworkRequestResultFactory(
                 return NetworkRequestResult.Failed.CoronaCheckHttpError(step, httpException)
             }
         } catch (e: IOException) {
-            if (androidUtil.isNetworkAvailable()) {
-                when {
-                    e is SocketTimeoutException || e is UnknownHostException || e is ConnectException -> {
-                        NetworkRequestResult.Failed.ServerNetworkError(step, e)
-                    }
-                    provider != null -> NetworkRequestResult.Failed.ProviderError(step, e, provider)
-                    else -> NetworkRequestResult.Failed.Error(step, e)
+            when {
+                e is SocketTimeoutException || e is UnknownHostException || e is ConnectException -> {
+                    NetworkRequestResult.Failed.ServerNetworkError(step, e)
                 }
-            } else {
-                NetworkRequestResult.Failed.ClientNetworkError(step)
+                provider != null -> NetworkRequestResult.Failed.ProviderError(step, e, provider)
+                else -> NetworkRequestResult.Failed.Error(step, e)
             }
         } catch (e: Exception) {
             NetworkRequestResult.Failed.Error(step, e)
