@@ -89,7 +89,7 @@
     <string name="your_negative_test_results_row_subtitle"><![CDATA[Testdatum: %1$s<br/>Jouw gegevens: %2$s]]></string>
     <string name="your_negative_test_results_something_wrong_button">Klopt er iets niet?</string>
     <string name="your_negative_test_results_row_personal_details">Identificatiegegevens: %1$s</string>
-    <string name="your_negative_test_results_row_button">Bewijs maken</string>
+    <string name="your_negative_test_results_row_button">Maak bewijs</string>
     <string name="your_negative_test_results_explanation_title">Meer over testuitslagen</string>
     <string name="your_negative_test_results_explanation_paragraph_1"><![CDATA[In een testuitslag staan de uitslag, het tijdstip van de test en minimale gegevens van jou.<br\><br\>Je gegevens bestaan uit: (1) de eerste letter van je voornaam, (2) de eerste letter van je achternaam, (3) je geboortedag en (4) geboortemaand.]]></string>
     <string name="your_negative_test_results_explanation_paragraph_2"><![CDATA[<b>Kloppen er gegevens niet?</b><br/>Neem contact op met je testlocatie. Zij kunnen de gegevens aanpassen.]]></string>
@@ -432,7 +432,7 @@
     <string name="new_in_app_tabs_title">Een Nederlands en internationaal tabblad</string>
     <string name="new_in_app_tabs_description">Je kunt nu makkelijker wisselen tussen je Nederlandse en internationale bewijs. Bovenin het scherm vind je een tabblad ‘Nederland’ en een tabblad ‘Internationaal’. Ga je de grens over? Gebruik dan de bewijzen onder ‘Internationaal’.</string>
     <string name="your_events_and">en</string>
-    <string name="my_overview_clock_deviation_description">Controleer de tijd van je telefoon. Deze lijkt niet goed ingesteld te staan.</string>
+    <string name="my_overview_clock_deviation_description">Controleer de tijd van je telefoon. Mogelijk staat het niet goed ingesteld.</string>
     <string name="clock_deviation_explanation_title">Controleer de tijd van je telefoon</string>
     <string name="clock_deviation_explanation_description"><![CDATA[De tijd van jouw telefoon lijkt niet te kloppen. Het kan bijvoorbeeld zijn dat je telefoon een paar minuten voor loopt. Om de CoronaCheck-app goed te kunnen gebruiken is het belangrijk dat de tijd juist staat ingesteld.<br/><br/><a href="#">Ga naar de instellingen</a> van jouw telefoon en zet de datum en tijd op ‘automatisch instellen’.]]></string>
     <string name="domestic_qr_code_title">Nederlandse QR-code</string>
