@@ -142,7 +142,8 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
                                     navigateSafety(
                                         QrCodeFragmentDirections.actionShowQrExplanation(
                                             title = infoScreen.title,
-                                            description = infoScreen.description
+                                            description = infoScreen.description,
+                                            footer = infoScreen.footer
                                         )
                                     )
                                 }
@@ -155,7 +156,8 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
                                             navigateSafety(
                                                 QrCodeFragmentDirections.actionShowQrExplanation(
                                                     title = infoScreen.title,
-                                                    description = infoScreen.description
+                                                    description = infoScreen.description,
+                                                    footer = infoScreen.footer
                                                 )
                                             )
                                         }
@@ -167,7 +169,8 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
                                             navigateSafety(
                                                 QrCodeFragmentDirections.actionShowQrExplanation(
                                                     title = infoScreen.title,
-                                                    description = infoScreen.description
+                                                    description = infoScreen.description,
+                                                    footer = infoScreen.footer
                                                 )
                                             )
                                         }
@@ -179,7 +182,8 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
                                             navigateSafety(
                                                 QrCodeFragmentDirections.actionShowQrExplanation(
                                                     title = infoScreen.title,
-                                                    description = infoScreen.description
+                                                    description = infoScreen.description,
+                                                    footer = infoScreen.footer
                                                 )
                                             )
                                         }

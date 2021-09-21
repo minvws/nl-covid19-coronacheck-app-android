@@ -8,11 +8,9 @@
 package nl.rijksoverheid.ctr.api
 
 import kotlinx.coroutines.runBlocking
-import nl.rijksoverheid.ctr.api.interceptors.CacheOverride
 import nl.rijksoverheid.ctr.api.interceptors.CacheOverrideInterceptor
 import okhttp3.Cache
 import okhttp3.OkHttpClient
-import okhttp3.ResponseBody
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
@@ -20,9 +18,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
-import retrofit2.Response
 import retrofit2.Retrofit
-import retrofit2.http.GET
 import java.io.File
 
 private const val RESPONSE = "Server response"
@@ -73,13 +69,5 @@ class CacheOverrideInterceptorTest {
         assertNull(cacheOverrideResponse.headers()["pragma"])
     }
 
-    interface TestApi {
-        @GET("/")
-        @CacheOverride("public,max-age=0")
-        suspend fun cacheOverridden(): Response<ResponseBody>
-
-        @GET("/")
-        suspend fun normalRequest(): Response<ResponseBody>
-    }
 }
 

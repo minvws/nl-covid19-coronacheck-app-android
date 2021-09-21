@@ -368,6 +368,14 @@ fun fakePersistenceManager(
         override fun setJune28FixApplied(applied: Boolean) {
             TODO("Not yet implemented")
         }
+
+        override fun hasDismissedUnsecureDeviceDialog(): Boolean {
+            return false
+        }
+
+        override fun setHasDismissedUnsecureDeviceDialog(value: Boolean) {
+            
+        }
     }
 }
 
