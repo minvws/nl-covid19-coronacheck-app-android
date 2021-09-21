@@ -27,6 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="8dp"
         android:layout_marginTop="16dp"
+        android:textAlignment="viewStart"
         android:visibility="gone"/>
 
     <com.google.android.material.card.MaterialCardView
