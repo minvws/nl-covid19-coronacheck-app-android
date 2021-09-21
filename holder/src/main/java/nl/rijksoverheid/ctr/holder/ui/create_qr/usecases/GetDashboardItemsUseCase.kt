@@ -86,7 +86,7 @@ class GetDashboardItemsUseCaseImpl(
 
         if (dashboardItemUtil.shouldShowHeaderItem(allGreenCards)) {
             dashboardItems.add(DashboardItem.HeaderItem(
-                text = R.string.my_overview_description
+                text = R.string.my_overview_description_eu
             ))
         }
 
