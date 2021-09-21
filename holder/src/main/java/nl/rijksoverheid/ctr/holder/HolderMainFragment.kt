@@ -32,7 +32,8 @@ import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAccessibilityFocus
 class HolderMainFragment : BaseMainFragment(
     R.layout.fragment_main, setOf(
         R.id.nav_my_overview_tabs,
-        R.id.nav_about_this_app
+        R.id.nav_about_this_app,
+        R.id.nav_paper_proof_explanation
     )
 ) {
 
