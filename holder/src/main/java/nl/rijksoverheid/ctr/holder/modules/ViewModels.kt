@@ -10,6 +10,8 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.PaperProofQrScannerV
 import nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.PaperProofQrScannerViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModel
 import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModelImpl
+import nl.rijksoverheid.ctr.holder.ui.device_secure.DeviceSecureViewModel
+import nl.rijksoverheid.ctr.holder.ui.device_secure.DeviceSecureViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.*
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -28,6 +30,7 @@ val viewModels = module {
     viewModel { DigiDViewModel(get()) }
     viewModel { TokenQrViewModel(get()) }
     viewModel<DeviceRootedViewModel> { DeviceRootedViewModelImpl(get(), get()) }
+    viewModel<DeviceSecureViewModel> { DeviceSecureViewModelImpl(get(), get()) }
     viewModel<YourEventsViewModel> { YourEventsViewModelImpl(get(), get()) }
     viewModel<GetEventsViewModel> { GetEventsViewModelImpl(get()) }
     viewModel<PaperProofCodeViewModel> { PaperProofCodeViewModelImpl(get(), get()) }

@@ -457,4 +457,7 @@
     <string name="error_access_tokens_session_expired_title">Your session has expired</string>
     <string name="error_access_tokens_Session_expired_description">You’ve waited too long. For safety reasons, you were logged out. Login again with your DigiD to retrieve your details.</string>
     <string name="error_access_tokens_session_expired_button">Start over</string>
+    <string name="dialog_device_secure_warning_title">Security risks have been found</string>
+    <string name="dialog_device_secure_warning_description">Please note that your device is not protected by PIN or other security measures. This means others might see your data and your details may not be secure.</string>
+    <string name="dialog_device_secure_positive_button">OK</string>
 </resources>
