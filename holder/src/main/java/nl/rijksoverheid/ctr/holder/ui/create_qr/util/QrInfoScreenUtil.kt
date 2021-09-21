@@ -9,7 +9,9 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
 import android.app.Application
 import android.os.Build
+import android.os.Parcelable
 import android.text.TextUtils
+import kotlinx.parcelize.Parcelize
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYearNumerical
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
@@ -24,13 +26,13 @@ import java.util.*
 
 interface QrInfoScreenUtil {
 
-    fun getForDomesticQr(personalDetails: PersonalDetails): InfoScreen
+    fun getForDomesticQr(personalDetails: PersonalDetails): QrInfoScreen
 
-    fun getForEuropeanTestQr(readEuropeanCredential: JSONObject): InfoScreen
+    fun getForEuropeanTestQr(readEuropeanCredential: JSONObject): QrInfoScreen
 
-    fun getForEuropeanVaccinationQr(readEuropeanCredential: JSONObject): InfoScreen
+    fun getForEuropeanVaccinationQr(readEuropeanCredential: JSONObject): QrInfoScreen
 
-    fun getForEuropeanRecoveryQr(readEuropeanCredential: JSONObject): InfoScreen
+    fun getForEuropeanRecoveryQr(readEuropeanCredential: JSONObject): QrInfoScreen
 
     fun getCountry(countryCode: String?, currentLocale: Locale?): String
 }
@@ -42,20 +44,20 @@ class QrInfoScreenUtilImpl(
 
     private val holderConfig = cachedAppConfigUseCase.getCachedAppConfig()
 
-    override fun getForDomesticQr(personalDetails: PersonalDetails): InfoScreen {
+    override fun getForDomesticQr(personalDetails: PersonalDetails): QrInfoScreen {
         val title = application.getString(R.string.qr_explanation_title_domestic)
         val description = application.getString(
             R.string.qr_explanation_description_domestic,
             "${personalDetails.firstNameInitial} ${personalDetails.lastNameInitial} ${personalDetails.birthDay} ${personalDetails.birthMonth}"
         )
 
-        return InfoScreen(
+        return QrInfoScreen(
             title = title,
             description = description
         )
     }
 
-    override fun getForEuropeanTestQr(readEuropeanCredential: JSONObject): InfoScreen {
+    override fun getForEuropeanTestQr(readEuropeanCredential: JSONObject): QrInfoScreen {
         val dcc = readEuropeanCredential.optJSONObject("dcc")
         val test = dcc.getJSONArray("t").optJSONObject(0)
 
@@ -111,7 +113,7 @@ class QrInfoScreenUtilImpl(
 
         val uniqueCode = test.getStringOrNull("ci")
 
-        return InfoScreen(
+        return QrInfoScreen(
             title = title,
             description = (TextUtils.concat(
                 application.getString(R.string.qr_explanation_description_eu_test_header),
@@ -139,9 +141,9 @@ class QrInfoScreenUtilImpl(
                 application.getString(R.string.qr_explanation_description_eu_test_issuer),
                 createQrAnswer(issuer ?: ""),
                 application.getString(R.string.qr_explanation_description_eu_test_certificate_identifier),
-                createQrAnswer(uniqueCode ?: ""),
-                application.getString(R.string.qr_explanation_description_eu_test_footer),
-            ) as String)
+                createQrAnswer(uniqueCode ?: "")
+            ) as String),
+            footer = application.getString(R.string.qr_explanation_description_eu_test_footer)
         )
     }
 
@@ -172,7 +174,7 @@ class QrInfoScreenUtilImpl(
         ""
     }
 
-    override fun getForEuropeanVaccinationQr(readEuropeanCredential: JSONObject): InfoScreen {
+    override fun getForEuropeanVaccinationQr(readEuropeanCredential: JSONObject): QrInfoScreen {
         val dcc = readEuropeanCredential.optJSONObject("dcc")
         val vaccination = dcc.getJSONArray("v").optJSONObject(0)
 
@@ -241,7 +243,7 @@ class QrInfoScreenUtilImpl(
 
         val uniqueCode = vaccination.getStringOrNull("ci")
 
-        return InfoScreen(
+        return QrInfoScreen(
             title = title,
             description = (TextUtils.concat(
                 application.getString(R.string.qr_explanation_description_eu_vaccination_header),
@@ -268,12 +270,12 @@ class QrInfoScreenUtilImpl(
                 createQrAnswer(issuer ?: ""),
                 application.getString(R.string.qr_explanation_description_eu_vaccination_unique_certificate),
                 createQrAnswer(uniqueCode ?: ""),
-                application.getString(R.string.qr_explanation_description_eu_vaccination_footer),
-            ) as String)
+            ) as String),
+            footer = application.getString(R.string.qr_explanation_description_eu_vaccination_footer)
         )
     }
 
-    override fun getForEuropeanRecoveryQr(readEuropeanCredential: JSONObject): InfoScreen {
+    override fun getForEuropeanRecoveryQr(readEuropeanCredential: JSONObject): QrInfoScreen {
         val dcc = readEuropeanCredential.optJSONObject("dcc")
         val recovery = dcc.getJSONArray("r").optJSONObject(0)
 
@@ -323,7 +325,7 @@ class QrInfoScreenUtilImpl(
 
         val uniqueCode = recovery.getStringOrNull("ci")
 
-        return InfoScreen(
+        return QrInfoScreen(
             title = title,
             description = (TextUtils.concat(
                 application.getString(R.string.qr_explanation_description_eu_recovery_header),
@@ -346,8 +348,8 @@ class QrInfoScreenUtilImpl(
                 createQrAnswer(validUntilDate),
                 application.getString(R.string.qr_explanation_description_eu_recovery_unique_code),
                 createQrAnswer(uniqueCode ?: ""),
-                application.getString(R.string.qr_explanation_description_eu_recovery_footer)
-            ) as String)
+            ) as String),
+            footer = application.getString(R.string.qr_explanation_description_eu_recovery_footer)
         )
     }
 
@@ -359,3 +361,8 @@ class QrInfoScreenUtilImpl(
     }
 }
 
+data class QrInfoScreen(
+    val title: String,
+    val description: String,
+    val footer: String? = null
+)
