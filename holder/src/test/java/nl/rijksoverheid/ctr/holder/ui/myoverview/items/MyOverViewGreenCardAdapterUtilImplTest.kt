@@ -100,7 +100,7 @@ class MyOverViewGreenCardAdapterUtilImplTest: AutoCloseKoinTest() {
         myOverViewGreenCardAdapterUtil.setContent(greenCard, listOf(OriginState.Valid(greenCard.origins.first())), viewBinding)
 
         assertEquals("Testbewijs:", viewBinding.proof3Title.text)
-        assertEquals("geldig t/m woensdag 28 juli 21:06", viewBinding.proof3Subtitle.text)
+        assertEquals("geldig tot woensdag 28 juli 21:06", viewBinding.proof3Subtitle.text)
     }
 
     @Test
@@ -151,7 +151,7 @@ class MyOverViewGreenCardAdapterUtilImplTest: AutoCloseKoinTest() {
         myOverViewGreenCardAdapterUtil.setContent(greenCard, listOf(OriginState.Valid(greenCard.origins.first())), viewBinding)
 
         assertEquals("Herstelbewijs:", viewBinding.proof1Title.text)
-        assertEquals("geldig t/m 28 jul 2021", viewBinding.proof1Subtitle.text)
+        assertEquals("geldig tot 28 jul 2021", viewBinding.proof1Subtitle.text)
         assertEquals(View.GONE, viewBinding.expiresIn.visibility)
     }
 
@@ -171,7 +171,7 @@ class MyOverViewGreenCardAdapterUtilImplTest: AutoCloseKoinTest() {
         myOverViewGreenCardAdapterUtil.setContent(greenCard, listOf(OriginState.Valid(greenCard.origins.first())), viewBinding)
 
         assertEquals("Herstelbewijs:", viewBinding.proof2Title.text)
-        assertEquals("geldig t/m 28 jul 2021", viewBinding.proof2Subtitle.text)
+        assertEquals("geldig tot 28 jul 2021", viewBinding.proof2Subtitle.text)
         assertEquals(View.GONE, viewBinding.expiresIn.visibility)
     }
 
@@ -195,7 +195,7 @@ class MyOverViewGreenCardAdapterUtilImplTest: AutoCloseKoinTest() {
         myOverViewGreenCardAdapterUtil.setContent(greenCard, listOf(OriginState.Valid(greenCard.origins.first())), viewBinding)
 
         assertEquals("Testbewijs:", viewBinding.proof3Title.text)
-        assertEquals("geldig t/m woensdag 28 juli 21:06", viewBinding.proof3Subtitle.text)
+        assertEquals("geldig tot woensdag 28 juli 21:06", viewBinding.proof3Subtitle.text)
         assertEquals(View.VISIBLE, viewBinding.expiresIn.visibility)
         assertEquals("Verloopt in 1 uur 1 min", viewBinding.expiresIn.text)
     }

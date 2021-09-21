@@ -41,7 +41,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="@string/commercial_test_unique_code_header"
-                app:errorEnabled="true"
+                app:errorEnabled="false"
                 app:layout_constraintBottom_toTopOf="@id/no_token_received_btn"
                 app:layout_constraintEnd_toEndOf="@+id/description"
                 app:layout_constraintStart_toStartOf="@+id/description">
@@ -117,7 +117,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:attachToScrollView="@id/scroll"
-        app:buttonEnabled="false"
         app:buttonText="@string/commercial_test_button"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="parent"

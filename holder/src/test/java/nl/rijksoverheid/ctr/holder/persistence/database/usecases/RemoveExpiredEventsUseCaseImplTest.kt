@@ -60,8 +60,7 @@ class RemoveExpiredEventsUseCaseImplTest {
             jsonData = "".toByteArray()
         )
 
-        coEvery { eventGroupDao.getAll() } answers { listOf(eventGroup) }
-        usecase.execute()
+        usecase.execute(listOf(eventGroup))
         coVerify { eventGroupDao.delete(eventGroup) }
     }
 
@@ -75,8 +74,7 @@ class RemoveExpiredEventsUseCaseImplTest {
             jsonData = "".toByteArray()
         )
 
-        coEvery { eventGroupDao.getAll() } answers { listOf(eventGroup) }
-        usecase.execute()
+        usecase.execute(listOf(eventGroup))
         coVerify(exactly = 0) { eventGroupDao.delete(eventGroup) }
     }
 
@@ -90,8 +88,7 @@ class RemoveExpiredEventsUseCaseImplTest {
             jsonData = "".toByteArray()
         )
 
-        coEvery { eventGroupDao.getAll() } answers { listOf(eventGroup) }
-        usecase.execute()
+        usecase.execute(listOf(eventGroup))
         coVerify { eventGroupDao.delete(eventGroup) }
     }
 
@@ -105,8 +102,7 @@ class RemoveExpiredEventsUseCaseImplTest {
             jsonData = "".toByteArray()
         )
 
-        coEvery { eventGroupDao.getAll() } answers { listOf(eventGroup) }
-        usecase.execute()
+        usecase.execute(listOf(eventGroup))
         coVerify(exactly = 0) { eventGroupDao.delete(eventGroup) }
     }
 
@@ -120,8 +116,7 @@ class RemoveExpiredEventsUseCaseImplTest {
             jsonData = "".toByteArray()
         )
 
-        coEvery { eventGroupDao.getAll() } answers { listOf(eventGroup) }
-        usecase.execute()
+        usecase.execute(listOf(eventGroup))
         coVerify { eventGroupDao.delete(eventGroup) }
     }
 
@@ -135,8 +130,7 @@ class RemoveExpiredEventsUseCaseImplTest {
             jsonData = "".toByteArray()
         )
 
-        coEvery { eventGroupDao.getAll() } answers { listOf(eventGroup) }
-        usecase.execute()
+        usecase.execute(listOf(eventGroup))
         coVerify(exactly = 0) { eventGroupDao.delete(eventGroup) }
     }
 }

@@ -10,6 +10,9 @@ import nl.rijksoverheid.ctr.shared.models.Flow
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import retrofit2.HttpException
 import java.lang.StringBuilder
+import java.net.ConnectException
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 import java.nio.charset.CharacterCodingException
 import javax.net.ssl.*
 
@@ -48,7 +51,10 @@ class ErrorCodeStringFactoryImpl: ErrorCodeStringFactory {
                 is SQLiteConstraintException -> "060"
                 is OpenIdAuthorizationException -> "07${exception.type}-${exception.code}"
                 is CharacterCodingException -> "020"
-                else -> "999"
+                is SocketTimeoutException -> "004"
+                is UnknownHostException -> "002"
+                is ConnectException -> "005"
+                else -> throw it.getException()
             }
 
             stringBuilder.append(" $exceptionErrorCode")

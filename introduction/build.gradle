@@ -55,6 +55,7 @@ dependencies {
     implementation "androidx.viewpager2:viewpager2:${viewpager2_version}"
     implementation "com.github.lisawray.groupie:groupie:${groupie_version}"
     implementation "com.github.lisawray.groupie:groupie-viewbinding:${groupie_version}"
+    implementation "com.airbnb.android:lottie:$lottie_version"
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$desugar_jdk_version"
 
     testImplementation "io.mockk:mockk:$mock_version"

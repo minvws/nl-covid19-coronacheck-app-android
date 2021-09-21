@@ -6,7 +6,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.api.apiModule
 import nl.rijksoverheid.ctr.appconfig.*
-import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
 import nl.rijksoverheid.ctr.design.designModule
 import nl.rijksoverheid.ctr.holder.modules.*
@@ -20,6 +19,7 @@ import nl.rijksoverheid.ctr.introduction.introductionModule
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.SharedApplication
 import nl.rijksoverheid.ctr.shared.sharedModule
+import okhttp3.HttpUrl.Companion.toHttpUrl
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -43,20 +43,38 @@ open class HolderApplication : SharedApplication(), Configuration.Provider {
     private val mobileCoreWrapper: MobileCoreWrapper by inject()
     private val workerManagerWrapper: WorkerManagerWrapper by inject()
 
+
+    private val holderModules = listOf(
+        storageModule,
+        greenCardUseCasesModule,
+        eventsUseCasesModule,
+        secretUseCasesModule,
+        testProvidersUseCasesModule,
+        utilsModule,
+        viewModels,
+        cardUtilsModule,
+        repositoriesModule,
+        qrsModule,
+        appModule,
+        errorsModule,
+        retrofitModule(BuildConfig.BASE_API_URL),
+        responsesModule,
+    ).toTypedArray()
+
     override fun onCreate() {
         super.onCreate()
-
 
         startKoin {
             androidContext(this@HolderApplication)
             modules(
-                holderModule(BuildConfig.BASE_API_URL),
+                *holderModules,
                 holderIntroductionModule,
                 apiModule(
-                    BuildConfig.BASE_API_URL,
+                    BuildConfig.BASE_API_URL.toHttpUrl(),
                     BuildConfig.SIGNATURE_CERTIFICATE_CN_MATCH,
                     BuildConfig.FEATURE_CORONA_CHECK_API_CHECKS,
-                    BuildConfig.FEATURE_TEST_PROVIDER_API_CHECKS
+                    BuildConfig.FEATURE_TEST_PROVIDER_API_CHECKS,
+                    BuildConfig.CERTIFICATE_PINS,
                 ),
                 sharedModule,
                 appConfigModule("holder", BuildConfig.VERSION_CODE),

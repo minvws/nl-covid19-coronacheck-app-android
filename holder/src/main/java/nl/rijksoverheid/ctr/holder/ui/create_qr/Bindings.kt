@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr
 
 import android.view.View
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.IncludeContentButtonBinding
@@ -16,6 +17,7 @@ import nl.rijksoverheid.ctr.shared.utils.Accessibility
 fun IncludeContentButtonBinding.bind(
     @StringRes title: Int,
     subtitle: String?,
+    @DrawableRes logo: Int? = null,
     onClick: () -> Unit
 ) {
     providerTitle.setText(title)
@@ -32,6 +34,7 @@ fun IncludeContentButtonBinding.bind(
         root.contentDescription = providerTitle.text
     } else {
         root.contentDescription = String.format("%s. %s", providerTitle.text, providerSubtitle.text)
+        logo?.let { providerSubtitle.setCompoundDrawablesWithIntrinsicBounds(0, 0, it, 0) }
     }
 
     Accessibility.button(root)

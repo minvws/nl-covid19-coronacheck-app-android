@@ -36,6 +36,10 @@ android {
         buildConfigField "String", "BASE_API_URL", "\"https://holder-api.coronacheck.nl/v4/\""
         buildConfigField "String", "DIGI_D_BASE_URL", "\"https://tvs.coronacheck.nl\""
         buildConfigField "String", "DIGI_D_CLIENT_ID", "\"cc_app\""
+        buildConfigField "String[]", "CERTIFICATE_PINS",
+                "{" +
+                        "\"sha256/lR7gRvqDMW5nhsCMRPE7TKLq0tJkTWMxQ5HAzHCIfQ0=\"" +
+                        "}"
         manifestPlaceholders = [appLabel: "@string/app_name", deepLinkHost: "coronacheck.nl", digidSchema: "coronacheck"]
 
         javaCompileOptions {
@@ -72,6 +76,10 @@ android {
             buildConfigField "String", "DIGI_D_REDIRECT_URI", "\"coronacheck-dev://auth/login\""
             buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "false"
             buildConfigField "boolean", "FEATURE_TEST_PROVIDER_API_CHECKS", "false"
+            buildConfigField "String[]", "CERTIFICATE_PINS",
+                    "{" +
+                            "\"sha256/C5+lpZ7tcVwmwQIMcRtPbsQtWLABXhQzejna0wHFr8M=\"" +
+                            "}"
             dimension "environment"
             versionNameSuffix "-test"
             applicationIdSuffix ".test"
@@ -84,6 +92,10 @@ android {
             buildConfigField "String", "DIGI_D_BASE_URL", "\"https://tvs.acc.coronacheck.nl\""
             buildConfigField "String", "DIGI_D_CLIENT_ID", "\"cc_app\""
             buildConfigField "String", "DIGI_D_REDIRECT_URI", "\"https://web.acc.coronacheck.nl/app/auth2\""
+            buildConfigField "String[]", "CERTIFICATE_PINS",
+                    "{" +
+                            "\"sha256/lR7gRvqDMW5nhsCMRPE7TKLq0tJkTWMxQ5HAzHCIfQ0=\"" +
+                            "}"
             dimension "environment"
             versionNameSuffix "-acc"
             applicationIdSuffix ".acc"

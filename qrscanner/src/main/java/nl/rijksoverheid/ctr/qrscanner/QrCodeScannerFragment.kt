@@ -231,14 +231,12 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
                                         item,
                                         resources.getString(R.string.accessibility_flash_off)
                                     )
-                                    item.setIcon(R.drawable.ic_flash_off)
                                 } else {
                                     camera.cameraControl.enableTorch(false)
                                     MenuItemCompat.setContentDescription(
                                         item,
                                         resources.getString(R.string.accessibility_flash_on)
                                     )
-                                    item.setIcon(R.drawable.ic_flash_on)
                                 }
                             }
                         }
@@ -326,7 +324,7 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
                         cameraProvider.unbindAll()
                         if (isAdded) {
                             binding.toolbar.menu.findItem(R.id.flash)
-                                .setIcon(R.drawable.ic_flash_on)
+                                .setIcon(R.drawable.ic_torch)
                         }
                     }
                 }
