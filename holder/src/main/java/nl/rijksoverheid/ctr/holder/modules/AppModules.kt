@@ -5,6 +5,8 @@ import nl.rijksoverheid.ctr.appconfig.usecases.DeviceRootedUseCaseImpl
 import nl.rijksoverheid.ctr.holder.persistence.*
 import nl.rijksoverheid.ctr.holder.persistence.database.migration.TestResultsMigrationManager
 import nl.rijksoverheid.ctr.holder.persistence.database.migration.TestResultsMigrationManagerImpl
+import nl.rijksoverheid.ctr.holder.ui.device_secure.DeviceSecureUseCase
+import nl.rijksoverheid.ctr.holder.ui.device_secure.DeviceSecureUseCaseImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.ReturnToExternalAppUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.ReturnToExternalAppUseCaseImpl
 import org.koin.android.ext.koin.androidContext
@@ -19,6 +21,7 @@ import org.koin.dsl.module
  */
 val appModule = module {
     factory<DeviceRootedUseCase> { DeviceRootedUseCaseImpl(androidContext()) }
+    factory<DeviceSecureUseCase> { DeviceSecureUseCaseImpl(androidContext()) }
     factory<CachedAppConfigUseCase> {
         CachedAppConfigUseCaseImpl(
             get(),

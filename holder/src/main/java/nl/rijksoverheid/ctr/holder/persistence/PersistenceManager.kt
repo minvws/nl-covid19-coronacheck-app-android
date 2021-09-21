@@ -24,6 +24,8 @@ interface PersistenceManager {
     fun setSelectedDashboardTab(position: Int)
     fun hasAppliedJune28Fix(): Boolean
     fun setJune28FixApplied(applied: Boolean)
+    fun hasDismissedUnsecureDeviceDialog(): Boolean
+    fun setHasDismissedUnsecureDeviceDialog(value : Boolean)
 }
 
 class SharedPreferencesPersistenceManager(
@@ -38,6 +40,7 @@ class SharedPreferencesPersistenceManager(
         const val HAS_SEEN_ROOTED_DEVICE_DIALOG = "HAS_SEEN_ROOTED_DEVICE_DIALOG"
         const val FIX28JUNE_APPLIED = "FIX_28_JUNE_APPLIED"
         const val SELECTED_DASHBOARD_TAB = "SELECTED_DASHBOARD_TAB"
+        const val HAS_SEEN_SECURE_DEVICE_DIALOG = "HAS_SEEN_SECURE_DEVICE_DIALOG"
     }
 
     override fun saveSecretKeyJson(json: String) {
@@ -113,6 +116,18 @@ class SharedPreferencesPersistenceManager(
             sharedPreferences.edit().putBoolean(FIX28JUNE_APPLIED, applied).commit()
         if (!result) {
             throw IllegalStateException("Failed to set that the june 28 fix has been applied in shared preferences")
+        }
+    }
+
+    override fun hasDismissedUnsecureDeviceDialog(): Boolean {
+        return sharedPreferences.getBoolean(HAS_SEEN_SECURE_DEVICE_DIALOG, false)
+    }
+
+    override fun setHasDismissedUnsecureDeviceDialog(value : Boolean) {
+        val result =
+            sharedPreferences.edit().putBoolean(HAS_SEEN_SECURE_DEVICE_DIALOG, value).commit()
+        if (!result) {
+            throw IllegalStateException("Failed to set secure device dialog has been seen in shared preference")
         }
     }
 }
