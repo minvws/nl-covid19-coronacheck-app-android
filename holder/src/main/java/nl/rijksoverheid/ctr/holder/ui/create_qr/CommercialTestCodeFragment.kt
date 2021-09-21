@@ -150,22 +150,9 @@ import org.koin.androidx.viewmodel.scope.emptyState
                         getString(R.string.commercial_test_error_empty_verification_code)
                 }
                 is TestResult.Error -> {
-                    if (it.errorResult is NetworkRequestResult.Failed.NetworkError) {
-                        dialogUtil.presentDialog(
-                            context = requireContext(),
-                            title = R.string.dialog_no_internet_connection_title,
-                            message = getString(R.string.dialog_no_internet_connection_description),
-                            positiveButtonText = R.string.dialog_retry,
-                            positiveButtonCallback = {
-                                onButtonClickWithRetryAction()
-                            },
-                            negativeButtonText = R.string.dialog_close
-                        )
-                    } else {
-                        presentError(
-                            errorResult = it.errorResult
-                        )
-                    }
+                    presentError(
+                        errorResult = it.errorResult
+                    )
                 }
             }
         })

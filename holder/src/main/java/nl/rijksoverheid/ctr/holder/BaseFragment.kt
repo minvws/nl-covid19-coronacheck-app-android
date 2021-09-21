@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.holder
 
 import androidx.fragment.app.Fragment
+import nl.rijksoverheid.ctr.design.ext.isNetworkAvailable
 import nl.rijksoverheid.ctr.design.fragments.ErrorResultFragment
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.shared.factories.ErrorCodeStringFactory
@@ -28,28 +29,17 @@ abstract class BaseFragment(contentLayoutId: Int) : Fragment(contentLayoutId) {
 
     fun presentError(errorResult: ErrorResult, customerErrorDescription: String? = null) {
         if (errorResult is NetworkRequestResult.Failed.NetworkError) {
-            // For network related issues we show a separate error page
-            val errorCodeString = errorCodeStringFactory.get(
-                flow = getFlow(),
-                errorResults = listOf(errorResult)
+            // Allow users to retry the call if an exception happens`
+            dialogUtil.presentDialog(
+                context = requireContext(),
+                title = R.string.dialog_no_internet_connection_title,
+                message = getString(R.string.dialog_no_internet_connection_description),
+                positiveButtonText = R.string.dialog_retry,
+                positiveButtonCallback = {
+                    onButtonClickWithRetryAction()
+                },
+                negativeButtonText = R.string.dialog_close
             )
-
-            presentError(
-                data = ErrorResultFragmentData(
-                    title = getString(R.string.dialog_no_internet_connection_title),
-                    description = getString(
-                        R.string.dialog_no_internet_connection_description_errorcode,
-                        errorCodeString
-                    ),
-                    buttonTitle = getString(R.string.back_to_overview),
-                    buttonAction = ErrorResultFragmentData.ButtonAction.Destination(R.id.action_my_overview),
-                    urlData = ErrorResultFragmentData.UrlData(
-                        urlButtonTitle = getString(R.string.error_something_went_wrong_outage_button),
-                        urlButtonUrl = getString(R.string.error_something_went_wrong_outage_button_url)
-                    ),
-                )
-            )
-
         } else {
             val errorCodeString = errorCodeStringFactory.get(
                 flow = getFlow(),
