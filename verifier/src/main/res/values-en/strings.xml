@@ -5,7 +5,7 @@
     <string name="app_name">Scanner</string>
     <string name="onboarding_title">Onboarding</string>
     <string name="onboarding_screen_1_title">Access only with a certificate</string>
-    <string name="onboarding_screen_1_description">Visitors of certain locations must be vaccinated or must have taken a coronavirus test. Does the person at the entrance show a coronavirus pass? Then they can enter.</string>
+    <string name="onboarding_screen_1_description">Ask the visitor to show a QR code in the CoronaCheck app or on paper. A tourist may show a QR code in a foreign app, or on paper. Scan the visitor’s QR code with your phone’s camera.</string>
     <string name="onboarding_screen_2_title">Scan QR code for access</string>
     <string name="onboarding_screen_2_description">Visitors first make a QR code of their vaccination, negative test result or if they\'ve had corona and are recovered. The certificate is a QR-code. With this app, you can check the QR codes and see who is allowed to enter.</string>
     <string name="onboarding_screen_3_title">Proof of identity check</string>
