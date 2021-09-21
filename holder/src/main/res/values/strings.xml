@@ -210,13 +210,13 @@
     <string name="travel_fragment_footer">In je Nederlandse QR-code staan alleen je initialen en je geboortedag en maand.</string>
     <string name="travel_fragment_footer_eu">In de internationale QR-code staan de volgende gegevens: o.a. je naam, geboortedatum en informatie over het vaccin.</string>
     <string name="dialog_negative_test_result_something_wrong_title">Er klopt iets niet</string>
-    <string name="dialog_negative_test_result_something_wrong_description"><![CDATA[Kloppen je naam en/of geboortedatum niet? Op de <a href="https://coronacheck.nl/wegwijzer">Wegwijzer</a> vind je meer informatie over wat te doen.]]></string>
+    <string name="dialog_negative_test_result_something_wrong_description"><![CDATA[Kloppen er gegevens niet? Neem contact op met je testlocatie. Zij kunnen de gegevens aanpassen.]]></string>
     <string name="validity_type_european_title">Internationaal</string>
     <string name="validity_type_dutch_title">Nederland</string>
     <string name="qr_explanation_title_domestic">Over mijn Nederlandse QR-code</string>
-    <string name="qr_explanation_description_domestic"><![CDATA[In jouw Nederlandse QR-code staan minimale gegevens. In de QR-code staat niet of je een testbewijs of vaccinatie hebt. Maar wel of de QR-code geldig is. Ook staan er enkele gegevens van jou in de QR-code. Dit is ter controle, om zeker te zijn dat de QR-code bij jou hoort. De gegevens bestaan uit de eerste letter van je voornaam, de eerste letter van je achternaam, je geboortedag en geboortemaand. Om privacyredenen kunnen er gegevens wegvallen.<br/><br/>Jouw gegevens: <b>%1$s</b><br/><br/>Gebruik in Nederland altijd de Nederlandse QR-code. De internationale QR-code is niet geldig in Nederland.]]></string>
+    <string name="qr_explanation_description_domestic"><![CDATA[In jouw Nederlandse QR-code staan minimale gegevens. In de QR-code staat dat je een geldig bewijs hebt. Niet of je een test of vaccinatie hebt gedaan.<br/><br/>Om zeker te zijn dat de QR-code bij jou hoort staan er enkele gegevens in de QR-code. Het gaat om de eerste letter van je voornaam, de eerste letter van je achternaam, je geboortedag en geboortemaand.<br/><br/>Jouw gegevens*: <b>%1$s</b><br/><br/>*Soms vallen gegevens weg om je privacy te beschermen. Je ziet dan een streepje (-).]]></string>
     <string name="qr_explanation_title_eu">Over mijn internationale QR-code</string>
-    <string name="qr_explanation_description_eu_vaccination_header">Reis je buiten Nederland? Dan zijn er meer gegevens nodig. Daarom staan in de internationale QR-code de volgende gegevens:</string>
+    <string name="qr_explanation_description_eu_vaccination_header">Ben je in het buitenland of ga je de grens over? Dan zijn er meer gegevens nodig dan in Nederland. Daarom staan in jouw internationale QR-code de volgende gegevens:</string>
     <string name="qr_explanation_description_eu_vaccination_name">Naam / Name:</string>
     <string name="qr_explanation_description_eu_vaccination_birth_date">Geboortedatum / Date of birth*:</string>
     <string name="qr_explanation_description_eu_vaccination_disease">Ziekteverwekker / Disease targeted:</string>
@@ -229,7 +229,7 @@
     <string name="qr_explanation_description_eu_vaccination_certificate_issuer">Afgever certificaat / Certificate issuer:</string>
     <string name="qr_explanation_description_eu_vaccination_unique_certificate">Uniek certificaatnummer / Unique certificate identifier:</string>
     <string name="qr_explanation_description_eu_vaccination_footer">*Datum weergegeven in dag-maand-jaar / Date noted in day-month-year.</string>
-    <string name="qr_explanation_description_eu_test_header">Reis je buiten Nederland? Dan zijn er meer gegevens nodig. Daarom staan in de internationale QR-code de volgende gegevens:</string>
+    <string name="qr_explanation_description_eu_test_header">Ben je in het buitenland of ga je de grens over? Dan zijn er meer gegevens nodig dan in Nederland. Daarom staan in jouw internationale QR-code de volgende gegevens:</string>
     <string name="qr_explanation_description_eu_test_name">Naam / Name:</string>
     <string name="qr_explanation_description_eu_test_birth_date">Geboortedatum / Date of birth*:</string>
     <string name="qr_explanation_description_eu_test_disease">Ziekteverwekker / Disease targeted:</string>
@@ -326,7 +326,7 @@
     <string name="coronacheck_error_description">Neem contact op met onze helpdesk en geef de foutcode (%1$s) door. Of probeer het later opnieuw.</string>
     <string name="missing_events_title">Gegevens mogelijk niet compleet</string>
     <string name="missing_events_description">Door drukte of een storing bij een van de partijen kunnen er gegevens missen. Probeer het eventueel later nog een keer.</string>
-    <string name="dialog_vaccination_something_wrong_description"><![CDATA[Kloppen je naam en/of geboortedatum niet? Of staat er onjuiste informatie over je vaccinatie? Op de <a href="https://coronacheck.nl/wegwijzer">Wegwijzer</a> vind je meer informatie over wat te doen. ]]></string>
+    <string name="dialog_vaccination_something_wrong_description"><![CDATA[Kloppen er gegevens niet? Neem contact op met de zorgverlener waar je bent gevaccineerd. Zij kunnen de gegevens aanpassen.]]></string>
     <string name="dialog_title_no_internet">Maak verbinding met het internet</string>
     <string name="dialog_update_credentials_no_internet">"De QR-code heeft af en toe internet nodig. Zonder internetverbinding kan je jouw QR-code nog 3 dagen gebruiken. Ook daarna kun je de QR-code weer gebruiken wanneer je internet hebt. "</string>
     <string name="dialog_credentials_expired_no_internet">Om toegang tot je QR-codes te houden heb je internet nodig. Maak nu verbinding.</string>
@@ -355,7 +355,7 @@
     <string name="recovery_explanation_description_unique_test_identifier">Uniek testnummer:</string>
     <string name="positive_test_no_longer_valid_title">Positieve testuitslag niet meer geldig</string>
     <string name="positive_test_no_longer_valid_description"><![CDATA[Ben je langer dan 180 dagen geleden getest? Dan is je testuitslag niet meer geldig. Je kunt dan geen herstelbewijs maken.]]></string>
-    <string name="qr_explanation_description_eu_recovery_header">Reis je buiten Nederland? Dan zijn er meer gegevens nodig. Daarom staan in de internationale QR-code de volgende gegevens:</string>
+    <string name="qr_explanation_description_eu_recovery_header">Ben je in het buitenland of ga je de grens over? Dan zijn er meer gegevens nodig dan in Nederland. Daarom staan in jouw internationale QR-code de volgende gegevens:</string>
     <string name="qr_explanation_description_eu_recovery_name">Naam / Name:</string>
     <string name="qr_explanation_description_eu_recovery_birth_date">Geboortedatum / Date of birth*:</string>
     <string name="qr_explanation_description_eu_recovery_disease">Ziekte waarvan hersteld / Disease recovered from:</string>
