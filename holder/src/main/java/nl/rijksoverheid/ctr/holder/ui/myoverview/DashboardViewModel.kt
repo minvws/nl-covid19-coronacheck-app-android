@@ -82,24 +82,22 @@ class DashboardViewModelImpl(
         databaseSyncerResult: DatabaseSyncerResult,
         isLoadingNewCredentials: Boolean
     ) {
+        val items = getDashboardItemsUseCase.getItems(
+            allGreenCards = allGreenCards,
+            databaseSyncerResult = databaseSyncerResult,
+            isLoadingNewCredentials = isLoadingNewCredentials
+        )
+
         val domesticItem = DashboardTabItem(
             title = R.string.travel_button_domestic,
             greenCardType = GreenCardType.Domestic,
-            items = getDashboardItemsUseCase.getDomesticItems(
-                allGreenCards = allGreenCards,
-                databaseSyncerResult = databaseSyncerResult,
-                isLoadingNewCredentials = isLoadingNewCredentials
-            )
+            items = items.domesticItems
         )
 
         val internationalItem = DashboardTabItem(
             title = R.string.travel_button_europe,
             greenCardType = GreenCardType.Eu,
-            items = getDashboardItemsUseCase.getInternationalItems(
-                allGreenCards = allGreenCards,
-                databaseSyncerResult = databaseSyncerResult,
-                isLoadingNewCredentials = isLoadingNewCredentials
-            )
+            items = items.internationalItems
         )
 
         val dashboardTabItems = listOf(

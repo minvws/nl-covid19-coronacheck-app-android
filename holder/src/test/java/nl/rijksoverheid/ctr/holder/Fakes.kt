@@ -14,10 +14,7 @@ import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.dao.*
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardEntity
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.CommercialTestCodeViewModel
@@ -26,7 +23,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckReposito
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.EventProviderRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.TestProviderRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
 import nl.rijksoverheid.ctr.holder.ui.myoverview.DashboardViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TokenValidatorUtil
@@ -502,6 +499,60 @@ fun fakeGreenCardUtil(
 
     override fun hasNoActiveCredentials(greenCard: GreenCard): Boolean {
         return hasNoActiveCredentials
+    }
+}
+
+fun fakeCredentialUtil() = object: CredentialUtil {
+    override fun getActiveCredential(entities: List<CredentialEntity>): CredentialEntity? {
+        return null
+    }
+
+    override fun isExpiring(credentialRenewalDays: Long, credential: CredentialEntity): Boolean {
+        return false
+    }
+
+    override fun getTestTypeForEuropeanCredentials(entities: List<CredentialEntity>): String {
+        return ""
+    }
+
+    override fun getVaccinationDosesForEuropeanCredentials(
+        entities: List<CredentialEntity>,
+        getString: (String, String) -> String
+    ): String {
+        return ""
+    }
+}
+
+fun fakeOriginUtil() = object: OriginUtil {
+    override fun getOriginState(origins: List<OriginEntity>): List<OriginState> {
+        return listOf()
+    }
+
+    override fun hideSubtitle(greenCardType: GreenCardType, originState: OriginState): Boolean {
+        return true
+    }
+}
+
+fun fakeDashboardItemUtil(
+    shouldShowHeaderItem: Boolean = false,
+    shouldShowClockDeviationItem: Boolean = false,
+    shouldShowPlaceholderItem: Boolean = false,
+    shouldAddQrButtonItem: Boolean = false
+) = object: DashboardItemUtil {
+    override fun shouldShowHeaderItem(allGreenCards: List<GreenCard>): Boolean {
+        return shouldShowHeaderItem
+    }
+
+    override fun shouldShowClockDeviationItem(allGreenCards: List<GreenCard>): Boolean {
+        return shouldShowClockDeviationItem
+    }
+
+    override fun shouldShowPlaceholderItem(allGreenCards: List<GreenCard>): Boolean {
+        return shouldShowPlaceholderItem
+    }
+
+    override fun shouldAddQrButtonItem(allGreenCards: List<GreenCard>): Boolean {
+        return shouldAddQrButtonItem
     }
 }
 
