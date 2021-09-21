@@ -19,7 +19,7 @@ import java.time.format.DateTimeFormatter
  *
  */
 interface RemoteEventHolderUtil {
-    fun holders(data: ByteArray, providerIdentifier: String): RemoteProtocol3.Holder
+    fun holder(data: ByteArray, providerIdentifier: String): RemoteProtocol3.Holder?
     fun conflicting(
         storedEventHolders: List<RemoteProtocol3.Holder>,
         incomingEventHolders: List<RemoteProtocol3.Holder>
@@ -30,7 +30,7 @@ class RemoteEventHolderUtilImpl(
     private val moshi: Moshi,
     private val getEventsFromPaperProofQrUseCase: GetEventsFromPaperProofQrUseCase
 ) : RemoteEventHolderUtil {
-    override fun holders(data: ByteArray, providerIdentifier: String): RemoteProtocol3.Holder {
+    override fun holder(data: ByteArray, providerIdentifier: String): RemoteProtocol3.Holder? {
         val remoteEvent =
             if (providerIdentifier == RemoteConfigProviders.EventProvider.PROVIDER_IDENTIFIER_DCC) {
                 val qr = JSONObject(String(data)).optString("credential")
@@ -41,7 +41,7 @@ class RemoteEventHolderUtilImpl(
                 val decodedPayload = String(Base64.decode(payload, Base64.DEFAULT))
                 moshi.adapter(RemoteProtocol3::class.java).fromJson(decodedPayload)!!
             }
-        return remoteEvent.holder!!
+        return remoteEvent.holder
     }
 
     /**
