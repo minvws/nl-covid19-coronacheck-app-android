@@ -5,7 +5,7 @@
     <string name="app_name">Scanner</string>
     <string name="onboarding_title">Onboarding</string>
     <string name="onboarding_screen_1_title">Alleen toegang met een bewijs</string>
-    <string name="onboarding_screen_1_description">Voor toegang tot sommige activiteiten of locaties moeten bezoekers zich laten testen of vaccineren. Laat de persoon bij de ingang een coronabewijs zien? Dan krijgt hij of zij toegang.</string>
+    <string name="onboarding_screen_1_description">Vraag de bezoeker naar een QR-code in de CoronaCheck-app of op papier. Een toerist kan een QR-code in een buitenlandse app of op papier tonen. Scan de QR-code met de camera van je telefoon.</string>
     <string name="onboarding_screen_2_title">Scan QR-code voor toegang</string>
     <string name="onboarding_screen_2_description">Bezoekers maken eerst een bewijs van een vaccinatie, een negatieve testuitslag of als zij corona hebben gehad en hersteld zijn. Het bewijs is een QR-code. Met deze app check jij de QR-codes en zie je wie toegang mag krijgen.</string>
     <string name="onboarding_screen_3_title">Controle van identiteitsbewijs</string>
