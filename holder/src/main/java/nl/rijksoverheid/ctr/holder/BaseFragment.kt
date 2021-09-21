@@ -1,11 +1,10 @@
 package nl.rijksoverheid.ctr.holder
 
 import androidx.fragment.app.Fragment
-import nl.rijksoverheid.ctr.design.ext.isNetworkAvailable
 import nl.rijksoverheid.ctr.design.fragments.ErrorResultFragment
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
-import nl.rijksoverheid.ctr.shared.factories.ErrorCodeStringFactory
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
+import nl.rijksoverheid.ctr.shared.factories.ErrorCodeStringFactory
 import nl.rijksoverheid.ctr.shared.models.*
 import org.koin.android.ext.android.inject
 

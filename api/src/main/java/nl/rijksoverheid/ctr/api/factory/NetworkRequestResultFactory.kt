@@ -1,7 +1,9 @@
 package nl.rijksoverheid.ctr.api.factory
 
-import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
+import android.content.Context
+import nl.rijksoverheid.ctr.shared.ext.isNetworkAvailable
 import nl.rijksoverheid.ctr.shared.models.CoronaCheckErrorResponse
+import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import nl.rijksoverheid.ctr.shared.models.Step
 import okhttp3.ResponseBody
 import retrofit2.Converter
@@ -16,16 +18,26 @@ import java.net.UnknownHostException
  *
  */
 class NetworkRequestResultFactory(
-    private val errorResponseBodyConverter: Converter<ResponseBody, CoronaCheckErrorResponse>) {
+    private val errorResponseBodyConverter: Converter<ResponseBody, CoronaCheckErrorResponse>,
+    private val context: Context
+) {
 
-    suspend fun <R: Any> createResult(
+    suspend fun <R : Any> createResult(
         step: Step,
-        provider: String ? = null,
+        provider: String? = null,
         interceptHttpError: (suspend (e: HttpException) -> R?)? = null,
-        networkCall: suspend () -> R): NetworkRequestResult<R> {
+        networkCall: suspend () -> R
+    ): NetworkRequestResult<R> {
         return try {
-            val response = networkCall.invoke()
-            NetworkRequestResult.Success(response)
+            if (!context.isNetworkAvailable()) {
+                NetworkRequestResult.Failed.NetworkError(
+                    step,
+                    UnknownHostException()
+                ) // Pick proper exception, this seems the most reasonable
+            } else {
+                val response = networkCall.invoke()
+                NetworkRequestResult.Success(response)
+            }
         } catch (httpException: HttpException) {
             try {
                 // We intercept here if a HttpException is expected
@@ -40,12 +52,18 @@ class NetworkRequestResultFactory(
                 }
 
                 // Check if there is a error body
-                val errorBody = httpException.response()?.errorBody() ?: return NetworkRequestResult.Failed.CoronaCheckHttpError(step, httpException)
+                val errorBody = httpException.response()?.errorBody()
+                    ?: return NetworkRequestResult.Failed.CoronaCheckHttpError(step, httpException)
 
                 // Check if the error body is a [CoronaCheckErrorResponse]
-                val errorResponse = errorResponseBodyConverter.convert(errorBody) ?: return NetworkRequestResult.Failed.CoronaCheckHttpError(step, httpException)
+                val errorResponse = errorResponseBodyConverter.convert(errorBody)
+                    ?: return NetworkRequestResult.Failed.CoronaCheckHttpError(step, httpException)
 
-                return NetworkRequestResult.Failed.CoronaCheckWithErrorResponseHttpError(step, httpException, errorResponse)
+                return NetworkRequestResult.Failed.CoronaCheckWithErrorResponseHttpError(
+                    step,
+                    httpException,
+                    errorResponse
+                )
             } catch (e: Exception) {
                 return NetworkRequestResult.Failed.CoronaCheckHttpError(step, httpException)
             }
