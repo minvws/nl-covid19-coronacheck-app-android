@@ -47,7 +47,7 @@ class RemoteEventHolderUtilImplTest: AutoCloseKoinTest() {
 
         val remoteUtil = RemoteEventHolderUtilImpl(moshi, mockk())
 
-        val holder = remoteUtil.holders(data.toByteArray(), "")
+        val holder = remoteUtil.holder(data.toByteArray(), "")
 
         assertEquals("1960-01-01", holder?.birthDate)
         assertEquals("Bob", holder?.firstName)
