@@ -49,10 +49,10 @@ class RemoteEventHolderUtilImplTest: AutoCloseKoinTest() {
 
         val holder = remoteUtil.holders(data.toByteArray(), "")
 
-        assertEquals("1960-01-01", holder.birthDate)
-        assertEquals("Bob", holder.firstName)
-        assertEquals("Bouwer", holder.lastName)
-        assertEquals("De", holder.infix)
+        assertEquals("1960-01-01", holder?.birthDate)
+        assertEquals("Bob", holder?.firstName)
+        assertEquals("Bouwer", holder?.lastName)
+        assertEquals("De", holder?.infix)
     }
     
     @Test
