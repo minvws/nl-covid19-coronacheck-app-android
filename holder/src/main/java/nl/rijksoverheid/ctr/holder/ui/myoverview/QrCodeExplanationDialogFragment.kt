@@ -56,5 +56,7 @@ class QrCodeExplanationDialogFragment : ExpandedBottomSheetDialogFragment() {
             htmlLinksEnabled = true,
             headingMarginMultiplier = 0.25f
         )
+        binding.footer.text = args.footer
+        binding.footer.visibility = if (args.footer.isNullOrEmpty()) View.GONE else View.VISIBLE
     }
 }

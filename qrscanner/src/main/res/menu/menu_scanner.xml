@@ -11,7 +11,7 @@
 
     <item
         android:id="@+id/flash"
-        android:icon="@drawable/ic_flash_on"
+        android:icon="@drawable/ic_torch"
         android:title=""
         app:contentDescription="@string/accessibility_flash_on"
         android:visible="false"

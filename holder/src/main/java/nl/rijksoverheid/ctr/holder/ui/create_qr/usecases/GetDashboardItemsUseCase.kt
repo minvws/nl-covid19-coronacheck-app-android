@@ -62,6 +62,10 @@ class GetDashboardItemsUseCaseImpl(
             )
         )
 
+        dashboardItems.add(
+            DashboardItem.AddQrButtonItem(dashboardItemUtil.shouldAddQrButtonItem(allGreenCards))
+        )
+
         return dashboardItems
     }
 

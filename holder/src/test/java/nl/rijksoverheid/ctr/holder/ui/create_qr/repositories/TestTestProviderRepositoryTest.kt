@@ -91,7 +91,7 @@ class TestTestProviderRepositoryTest : AutoCloseKoinTest() {
         )
 
         loadKoinModules(
-            apiModule(mockWebServer.url("/").toStr(), "", false, false)
+            apiModule(mockWebServer.url("/"), "", false, false, certificatePins = arrayOf("sha256/"))
         )
 
         val testProviderRepository: TestProviderRepository = get()
@@ -119,7 +119,7 @@ class TestTestProviderRepositoryTest : AutoCloseKoinTest() {
         )
 
         loadKoinModules(
-            apiModule(mockWebServer.url("/").toStr(),"", false, false)
+            apiModule(mockWebServer.url("/"),"", false, false, certificatePins = arrayOf("sha256/"))
         )
 
         val testProviderRepository: TestProviderRepository = get()
@@ -145,7 +145,7 @@ class TestTestProviderRepositoryTest : AutoCloseKoinTest() {
             )
 
             loadKoinModules(
-                apiModule(mockWebServer.url("/").toStr(), "", false, false)
+                apiModule(mockWebServer.url("/"), "", false, false, certificatePins = arrayOf("sha256/"))
             )
 
             val testProviderRepository: TestProviderRepository = get()
@@ -175,7 +175,7 @@ class TestTestProviderRepositoryTest : AutoCloseKoinTest() {
             )
 
             loadKoinModules(
-                apiModule(mockWebServer.url("/").toStr(), "", false, false)
+                apiModule(mockWebServer.url("/"), "", false, false, certificatePins = arrayOf("sha256/"))
             )
 
             val testProviderRepository: TestProviderRepository = get()

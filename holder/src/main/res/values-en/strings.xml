@@ -154,7 +154,8 @@
     <string name="accessibility_testresult_icon_description">Information about your negative test result</string>
     <string name="menu_close">Close</string>
     <string name="dialog_no_internet_connection_title">Sorry, something went wrong</string>
-    <string name="dialog_no_internet_connection_description">We failed to reach the server. Can you check if you’re connected to the internet?</string>
+    <string name="dialog_no_internet_connection_description">We failed to reach the server. Can you check if you\'re connected to the internet?</string>
+    <string name="dialog_no_internet_connection_description_errorcode"><![CDATA[We failed to reach the server. Can you check if you’re connected to the internet?<br/><br/><b>Error code:</b><br/>%1s]]></string>
     <string name="dialog_close">Close</string>
     <string name="dialog_retry">Try again</string>
     <string name="new_terms_title">New in the app</string>
@@ -256,7 +257,7 @@
     <string name="qr_card_validity_future_hours">automatically becomes valid in %1$s hours</string>
     <string name="your_test_result_explanation_toolbar_title">What was retrieved?</string>
     <string name="your_test_result_explanation_description"><![CDATA[The following details were retrieved at the test location:<br\><br\>Your details: <b>%1$s<b/><br/>Test type: <b>%2$s</b><br/>Test date: <b>%3$s</b><br/>Test result: <b>%4$s</b><br/>Unique test identifier: <b>%5$s</b>]]></string>
-    <string name="your_test_result_explanation_negative_test_result">negative (no coronavirus)</string>
+    <string name="your_test_result_explanation_negative_test_result">Negative (no coronavirus)</string>
     <string name="your_test_result_explanation_description_header">The following details were retrieved at the test location:</string>
     <string name="your_test_result_explanation_description_your_details">Your details:</string>
     <string name="your_test_result_explanation_description_name">Name:</string>
@@ -270,7 +271,7 @@
     <string name="your_test_result_explanation_description_unique_identifier">Unique test identifier:</string>
     <string name="your_negative_test_3.0_results_row_subtitle"><![CDATA[Test date: %1$s<br/>Name: %2$s<br/>Date of birth: %3$s]]></string>
     <string name="your_vaccination_row_subtitle"><![CDATA[Name: %1$s<br/>Date of birth: %2$s<br/>Data retrieved from: %3$s]]></string>
-    <string name="your_vaccination_explanation_toolbar_title">About your vaccination</string>
+    <string name="your_vaccination_explanation_toolbar_title">What was retrieved?</string>
     <string name="your_vaccination_explanation_description"><![CDATA[<p>The following details of your vaccination were retrieved:<br/><br/>Name: <b>%1$s</b><br/>Date of birth*: <b>%2$s</b><br/><br/>Disease targeted: <b>%3$s</b><br/>Vaccine: <b>%4$s</b><br/>Vaccine medicinal product: <b>%5$s</b><br/>Vaccine manufacturer: <b>%6$s</b><br/>Number in series of doses: <b>%7$s</b><br/>Is this the last dose of your vaccination? <b>%8$s</b><br/>Date of vaccination*: <b>%9$s</b><br/>Member state of vaccination: <b>%10$s</b><br/>Unique certificate identifier: <b>%11$s</b>]]></string>
     <string name="your_vaccination_explanation_last_dose_yes">yes</string>
     <string name="your_vaccination_explanation_last_dose_yes_recovery">yes (I\'ve had coronavirus earlier)</string>
@@ -377,7 +378,9 @@
     <string name="my_overview_qr_placeholder_header">Find your Dutch certificate here later</string>
     <string name="my_overview_qr_placeholder_header_eu">Find your international certificate here later</string>
     <string name="my_overview_qr_placeholder_description"><![CDATA[You can add a certificate if you\'re vaccinated, if you\'ve had corona or by taking a test at an <a href="https://coronacheck.nl/en/testafspraak-in-app">affiliated test location</a>.<br/>The app generates a certificate for the Netherlands and one for other countries.]]></string>
-    <string name="my_overview_qr_placeholder_description_eu"><![CDATA[Are you abroad, or planning to cross the border? Then always use your international certificate. Please check before leaving which certificate you need.<br/><a href="https://www.coronacheck.nl/en/wegwijzer">Which certificate is valid where I\'m heading?</a>]]></string>
+    <string name="my_overview_qr_placeholder_description_eu">Are you abroad, or planning to cross the border? Then always use your international certificate. Please check before leaving which certificate you need.</string>
+    <string name="my_overview_qr_placeholder_button_eu">Which certificate is valid where I\'m heading?</string>
+    <string name="my_overview_qr_placeholder_button_link_eu">https://www.coronacheck.nl/en/wegwijzer</string>
     <string name="my_overview_add_qr_button">Add certificate</string>
     <string name="add_paper_proof">Add paper certificate</string>
     <string name="add_paper_proof_title">Your letter combination</string>
@@ -406,6 +409,8 @@
     <string name="add_paper_proof_invalid_combination_">This letter combination and QR code don\'t belong together.</string>
     <string name="add_paper_proof_qr_scanner_title">Scan QR code</string>
     <string name="add_paper_proof_consent_button">Scan QR code</string>
+    <string name="add_paper_proof_no_camera_error_header">We can\'t add a certificate on your phone</string>
+    <string name="add_paper_proof_no_camera_error_description"><![CDATA[Your phone doesn\'t have a camera. This means you cannot scan the paper certificate and add it to your phone.<br><br>Please use the paper certificate you received from the healthcare provider.]]></string>
     <string name="your_dcc_event_description">You can create a QR code with the retrieved details. This is your certificate.</string>
     <string name="your_dcc_event_toolbar_title">Retrieved details</string>
     <string name="your_events_block_back_dialog_title">Are you sure you want to stop?</string>
@@ -446,10 +451,13 @@
     <string name="error_get_events_missing_events_dialog_title_testresults">"Are these all your test certificates? "</string>
     <string name="error_get_events_missing_events_dialog_title_recoveries">Are these all your recovery certificates?</string>
     <string name="error_get_events_missing_events_dialog_description">Due to increased traffic or an outage, some of your details may be missing. Are you missing a vaccination? Please come back later and retrieve your details again.</string>
-    <string name="error_get_events_no_events_title">Sorry, it was not succesful</string>
+    <string name="error_get_events_no_events_title">Sorry, it was not successful</string>
     <string name="error_access_tokens_no_bsn_title">No social security number found</string>
     <string name="error_access_tokens_no_bsn_description">The healthcare provider who vaccinated or tested you can help you further. Contact them and let them know the CoronaCheck app couldn’t find a social security number.</string>
     <string name="error_access_tokens_session_expired_title">Your session has expired</string>
     <string name="error_access_tokens_Session_expired_description">You’ve waited too long. For safety reasons, you were logged out. Login again with your DigiD to retrieve your details.</string>
     <string name="error_access_tokens_session_expired_button">Start over</string>
+    <string name="dialog_device_secure_warning_title">Security risks have been found</string>
+    <string name="dialog_device_secure_warning_description">Please note that your device is not protected by PIN or other security measures. This means others might see your data and your details may not be secure.</string>
+    <string name="dialog_device_secure_positive_button">OK</string>
 </resources>

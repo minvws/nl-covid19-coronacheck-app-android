@@ -28,27 +28,42 @@ abstract class BaseFragment(contentLayoutId: Int) : Fragment(contentLayoutId) {
 
     fun presentError(errorResult: ErrorResult, customerErrorDescription: String? = null) {
         if (errorResult is NetworkRequestResult.Failed.NetworkError) {
-            dialogUtil.presentDialog(
-                context = requireContext(),
-                title = R.string.dialog_no_internet_connection_title,
-                message = getString(R.string.dialog_no_internet_connection_description),
-                positiveButtonText = R.string.dialog_retry,
-                positiveButtonCallback = {
-                    onButtonClickWithRetryAction()
-                },
-                negativeButtonText = R.string.dialog_close
+            // For network related issues we show a separate error page
+            val errorCodeString = errorCodeStringFactory.get(
+                flow = getFlow(),
+                errorResults = listOf(errorResult)
             )
+
+            presentError(
+                data = ErrorResultFragmentData(
+                    title = getString(R.string.dialog_no_internet_connection_title),
+                    description = getString(
+                        R.string.dialog_no_internet_connection_description_errorcode,
+                        errorCodeString
+                    ),
+                    buttonTitle = getString(R.string.back_to_overview),
+                    buttonAction = ErrorResultFragmentData.ButtonAction.Destination(R.id.action_my_overview),
+                    urlData = ErrorResultFragmentData.UrlData(
+                        urlButtonTitle = getString(R.string.error_something_went_wrong_outage_button),
+                        urlButtonUrl = getString(R.string.error_something_went_wrong_outage_button_url)
+                    ),
+                )
+            )
+
         } else {
             val errorCodeString = errorCodeStringFactory.get(
                 flow = getFlow(),
                 errorResults = listOf(errorResult)
             )
-            if (is429HttpError(errorResult) || errorResult is OpenIdErrorResult.ServerBusy ) {
+            if (is429HttpError(errorResult) || errorResult is OpenIdErrorResult.ServerBusy) {
                 // On HTTP 429 or server busy error we make an exception and show a too busy screen
                 presentError(
                     data = ErrorResultFragmentData(
                         title = getString(R.string.error_too_busy_title),
-                        description = getString(R.string.error_too_busy_description, errorCodeString),
+                        description = getString(
+                            R.string.error_too_busy_description,
+                            errorCodeString
+                        ),
                         buttonTitle = getString(R.string.back_to_overview),
                         buttonAction = ErrorResultFragmentData.ButtonAction.Destination(R.id.action_my_overview)
                     )
@@ -86,6 +101,9 @@ abstract class BaseFragment(contentLayoutId: Int) : Fragment(contentLayoutId) {
         errorResult is NetworkRequestResult.Failed.CoronaCheckHttpError && errorResult.e.code() == 429
 
     fun presentError(data: ErrorResultFragmentData) {
-        findNavControllerSafety()?.navigate(R.id.action_error_result, ErrorResultFragment.getBundle(data))
+        findNavControllerSafety()?.navigate(
+            R.id.action_error_result,
+            ErrorResultFragment.getBundle(data)
+        )
     }
 }

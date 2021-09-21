@@ -137,6 +137,12 @@
             android:name="description"
             app:argType="string" />
 
+        <argument
+            android:name="footer"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null"/>
+
     </dialog>
 
     <dialog
