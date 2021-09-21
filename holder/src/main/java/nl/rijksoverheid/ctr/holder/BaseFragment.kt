@@ -27,61 +27,99 @@ abstract class BaseFragment(contentLayoutId: Int) : Fragment(contentLayoutId) {
     abstract fun getFlow(): Flow
 
     fun presentError(errorResult: ErrorResult, customerErrorDescription: String? = null) {
-        if (errorResult is NetworkRequestResult.Failed.NetworkError) {
-            // Allow users to retry the call if an exception happens`
-            dialogUtil.presentDialog(
-                context = requireContext(),
-                title = R.string.dialog_no_internet_connection_title,
-                message = getString(R.string.dialog_no_internet_connection_description),
-                positiveButtonText = R.string.dialog_retry,
-                positiveButtonCallback = {
-                    onButtonClickWithRetryAction()
-                },
-                negativeButtonText = R.string.dialog_close
-            )
-        } else {
-            val errorCodeString = errorCodeStringFactory.get(
-                flow = getFlow(),
-                errorResults = listOf(errorResult)
-            )
-            if (is429HttpError(errorResult) || errorResult is OpenIdErrorResult.ServerBusy) {
-                // On HTTP 429 or server busy error we make an exception and show a too busy screen
+        when (errorResult) {
+            is NetworkRequestResult.Failed.ClientNetworkError -> {
+                dialogUtil.presentDialog(
+                    context = requireContext(),
+                    title = R.string.dialog_no_internet_connection_title,
+                    message = getString(R.string.dialog_no_internet_connection_description),
+                    positiveButtonText = R.string.dialog_retry,
+                    positiveButtonCallback = {
+                        onButtonClickWithRetryAction()
+                    },
+                    negativeButtonText = R.string.dialog_close
+                )
+            }
+            is NetworkRequestResult.Failed.ServerNetworkError -> {
+                val errorCodeString = errorCodeStringFactory.get(
+                    flow = getFlow(),
+                    errorResults = listOf(errorResult)
+                )
+
                 presentError(
                     data = ErrorResultFragmentData(
-                        title = getString(R.string.error_too_busy_title),
+                        title = getString(R.string.dialog_no_internet_connection_title),
                         description = getString(
-                            R.string.error_too_busy_description,
+                            R.string.dialog_no_internet_connection_description_errorcode,
                             errorCodeString
                         ),
                         buttonTitle = getString(R.string.back_to_overview),
-                        buttonAction = ErrorResultFragmentData.ButtonAction.Destination(R.id.action_my_overview)
+                        buttonAction = ErrorResultFragmentData.ButtonAction.Destination(R.id.action_my_overview),
+                        urlData = ErrorResultFragmentData.UrlData(
+                            urlButtonTitle = getString(R.string.error_something_went_wrong_outage_button),
+                            urlButtonUrl = getString(R.string.error_something_went_wrong_outage_button_url)
+                        ),
                     )
                 )
-            } else {
-                val errorDescription = customerErrorDescription
-                    ?: if (errorResult is NetworkRequestResult.Failed.CoronaCheckHttpError) {
-                        getString(
-                            R.string.error_something_went_wrong_http_error_description,
-                            errorCodeString
+            }
+            else -> {
+                if (errorResult is NetworkRequestResult.Failed.ServerNetworkError) {
+                    // Allow users to retry the call if an exception happens`
+                    dialogUtil.presentDialog(
+                        context = requireContext(),
+                        title = R.string.dialog_no_internet_connection_title,
+                        message = getString(R.string.dialog_no_internet_connection_description),
+                        positiveButtonText = R.string.dialog_retry,
+                        positiveButtonCallback = {
+                            onButtonClickWithRetryAction()
+                        },
+                        negativeButtonText = R.string.dialog_close
+                    )
+                } else {
+                    val errorCodeString = errorCodeStringFactory.get(
+                        flow = getFlow(),
+                        errorResults = listOf(errorResult)
+                    )
+                    if (is429HttpError(errorResult) || errorResult is OpenIdErrorResult.ServerBusy) {
+                        // On HTTP 429 or server busy error we make an exception and show a too busy screen
+                        presentError(
+                            data = ErrorResultFragmentData(
+                                title = getString(R.string.error_too_busy_title),
+                                description = getString(
+                                    R.string.error_too_busy_description,
+                                    errorCodeString
+                                ),
+                                buttonTitle = getString(R.string.back_to_overview),
+                                buttonAction = ErrorResultFragmentData.ButtonAction.Destination(R.id.action_my_overview)
+                            )
                         )
                     } else {
-                        getString(
-                            R.string.error_something_went_wrong_making_proof_description,
-                            errorCodeString
-                        )
-                    }
+                        val errorDescription = customerErrorDescription
+                            ?: if (errorResult is NetworkRequestResult.Failed.CoronaCheckHttpError) {
+                                getString(
+                                    R.string.error_something_went_wrong_http_error_description,
+                                    errorCodeString
+                                )
+                            } else {
+                                getString(
+                                    R.string.error_something_went_wrong_making_proof_description,
+                                    errorCodeString
+                                )
+                            }
 
-                val data = ErrorResultFragmentData(
-                    title = getString(R.string.error_something_went_wrong_title),
-                    description = errorDescription,
-                    urlData = ErrorResultFragmentData.UrlData(
-                        urlButtonTitle = getString(R.string.error_something_went_wrong_outage_button),
-                        urlButtonUrl = getString(R.string.error_something_went_wrong_outage_button_url)
-                    ),
-                    buttonTitle = getString(R.string.back_to_overview),
-                    buttonAction = ErrorResultFragmentData.ButtonAction.Destination(R.id.action_my_overview)
-                )
-                presentError(data)
+                        val data = ErrorResultFragmentData(
+                            title = getString(R.string.error_something_went_wrong_title),
+                            description = errorDescription,
+                            urlData = ErrorResultFragmentData.UrlData(
+                                urlButtonTitle = getString(R.string.error_something_went_wrong_outage_button),
+                                urlButtonUrl = getString(R.string.error_something_went_wrong_outage_button_url)
+                            ),
+                            buttonTitle = getString(R.string.back_to_overview),
+                            buttonAction = ErrorResultFragmentData.ButtonAction.Destination(R.id.action_my_overview)
+                        )
+                        presentError(data)
+                    }
+                }
             }
         }
     }

@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.shared.models
 import retrofit2.HttpException
+import java.net.UnknownHostException
 
 /**
  * Base class that should be returned from all repository methods that do network requests
@@ -38,7 +39,17 @@ sealed class NetworkRequestResult<out R> {
             }
         }
 
-        data class NetworkError(override val step: Step, override val e: Exception): Failed(step, e) {
+        data class ClientNetworkError(override val step: Step): Failed(step, UnknownHostException()) {
+            override fun getCurrentStep(): Step {
+                return step
+            }
+
+            override fun getException(): Exception {
+                return e
+            }
+        }
+
+        data class ServerNetworkError(override val step: Step, override val e: Exception): Failed(step, e) {
             override fun getCurrentStep(): Step {
                 return step
             }

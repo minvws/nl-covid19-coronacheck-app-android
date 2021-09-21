@@ -6,6 +6,7 @@ import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.shared.models.CoronaCheckErrorResponse
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import nl.rijksoverheid.ctr.shared.models.Step
+import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import okhttp3.mockwebserver.MockResponse
@@ -42,7 +43,7 @@ class NetworkRequestResultFactoryTest {
             CoronaCheckErrorResponse::class.java, emptyArray()
         )
         testApi = retrofit.create(TestApi::class.java)
-        networkRequestResultFactory = NetworkRequestResultFactory(converter)
+        networkRequestResultFactory = NetworkRequestResultFactory(converter, getAndroidUtil(true))
     }
 
     @Test
@@ -129,7 +130,7 @@ class NetworkRequestResultFactoryTest {
             testApi.request()
         }
 
-        assertTrue(result is NetworkRequestResult.Failed.NetworkError)
+        assertTrue(result is NetworkRequestResult.Failed.ServerNetworkError)
     }
 
     @Test
@@ -156,4 +157,24 @@ class NetworkRequestResultFactoryTest {
 
     @JsonClass(generateAdapter = true)
     data class TestObject(val hello: String)
+
+    private fun getAndroidUtil(isNetworkAvailable: Boolean): AndroidUtil {
+        return object: AndroidUtil {
+            override fun isSmallScreen(): Boolean {
+                return false
+            }
+
+            override fun getMasterKeyAlias(): String {
+                return ""
+            }
+
+            override fun isFirstInstall(): Boolean {
+                return true
+            }
+
+            override fun isNetworkAvailable(): Boolean {
+                return true
+            }
+        }
+    }
 }

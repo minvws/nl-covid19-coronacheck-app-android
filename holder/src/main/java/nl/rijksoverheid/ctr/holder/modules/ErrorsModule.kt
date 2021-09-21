@@ -16,7 +16,7 @@ import org.koin.dsl.module
  */
 val errorsModule = module {
     factory {
-        NetworkRequestResultFactory(get(named("ResponseError")), androidContext())
+        NetworkRequestResultFactory(get(named("ResponseError")), get())
     }
 
     factory<ErrorCodeStringFactory> {

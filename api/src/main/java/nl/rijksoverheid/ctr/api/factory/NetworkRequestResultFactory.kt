@@ -1,10 +1,9 @@
 package nl.rijksoverheid.ctr.api.factory
 
-import android.content.Context
-import nl.rijksoverheid.ctr.shared.ext.isNetworkAvailable
 import nl.rijksoverheid.ctr.shared.models.CoronaCheckErrorResponse
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import nl.rijksoverheid.ctr.shared.models.Step
+import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 import okhttp3.ResponseBody
 import retrofit2.Converter
 import retrofit2.HttpException
@@ -15,11 +14,10 @@ import java.net.UnknownHostException
 
 /**
  * This class should be used for every network request
- *
  */
 class NetworkRequestResultFactory(
     private val errorResponseBodyConverter: Converter<ResponseBody, CoronaCheckErrorResponse>,
-    private val context: Context
+    private val androidUtil: AndroidUtil
 ) {
 
     suspend fun <R : Any> createResult(
@@ -29,15 +27,8 @@ class NetworkRequestResultFactory(
         networkCall: suspend () -> R
     ): NetworkRequestResult<R> {
         return try {
-            if (!context.isNetworkAvailable()) {
-                NetworkRequestResult.Failed.NetworkError(
-                    step,
-                    UnknownHostException()
-                ) // Pick proper exception, this seems the most reasonable
-            } else {
-                val response = networkCall.invoke()
-                NetworkRequestResult.Success(response)
-            }
+            val response = networkCall.invoke()
+            NetworkRequestResult.Success(response)
         } catch (httpException: HttpException) {
             try {
                 // We intercept here if a HttpException is expected
@@ -68,12 +59,16 @@ class NetworkRequestResultFactory(
                 return NetworkRequestResult.Failed.CoronaCheckHttpError(step, httpException)
             }
         } catch (e: IOException) {
-            when {
-                e is SocketTimeoutException || e is UnknownHostException || e is ConnectException -> {
-                    NetworkRequestResult.Failed.NetworkError(step, e)
+            if (androidUtil.isNetworkAvailable()) {
+                when {
+                    e is SocketTimeoutException || e is UnknownHostException || e is ConnectException -> {
+                        NetworkRequestResult.Failed.ServerNetworkError(step, e)
+                    }
+                    provider != null -> NetworkRequestResult.Failed.ProviderError(step, e, provider)
+                    else -> NetworkRequestResult.Failed.Error(step, e)
                 }
-                provider != null -> NetworkRequestResult.Failed.ProviderError(step, e, provider)
-                else -> NetworkRequestResult.Failed.Error(step, e)
+            } else {
+                NetworkRequestResult.Failed.ClientNetworkError(step)
             }
         } catch (e: Exception) {
             NetworkRequestResult.Failed.Error(step, e)

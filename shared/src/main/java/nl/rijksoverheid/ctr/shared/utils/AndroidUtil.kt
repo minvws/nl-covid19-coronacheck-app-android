@@ -3,6 +3,8 @@ package nl.rijksoverheid.ctr.shared.utils
 import android.content.Context
 import android.content.pm.PackageManager
 import android.content.res.Configuration
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import android.security.keystore.StrongBoxUnavailableException
@@ -19,6 +21,7 @@ interface AndroidUtil {
     fun isSmallScreen(): Boolean
     fun getMasterKeyAlias(): String
     fun isFirstInstall(): Boolean
+    fun isNetworkAvailable(): Boolean
 }
 
 class AndroidUtilImpl(private val context: Context) : AndroidUtil {
@@ -54,6 +57,21 @@ class AndroidUtilImpl(private val context: Context) : AndroidUtil {
             firstInstallTime == lastUpdateTime
         } catch (exc: PackageManager.NameNotFoundException) {
             true
+        }
+    }
+
+    override fun isNetworkAvailable(): Boolean {
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork = connectivityManager.activeNetwork ?: return false
+        val activeNetworkCapabilities =
+            connectivityManager.getNetworkCapabilities(activeNetwork) ?: return false
+        return when {
+            // Check if we can access the network through wifi or cellular data
+            activeNetworkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+            activeNetworkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+            // Check for bluetooth pass-through just in case
+            activeNetworkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH) -> true
+            else -> false
         }
     }
 }

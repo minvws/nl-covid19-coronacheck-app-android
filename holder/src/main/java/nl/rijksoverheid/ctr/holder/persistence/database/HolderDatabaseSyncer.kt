@@ -85,7 +85,7 @@ class HolderDatabaseSyncerImpl(
                             val greenCards = holderDatabase.greenCardDao().getAll()
 
                             when (remoteGreenCardsResult.errorResult) {
-                                is NetworkRequestResult.Failed.NetworkError -> {
+                                is NetworkRequestResult.Failed.ClientNetworkError, is NetworkRequestResult.Failed.ServerNetworkError -> {
                                     DatabaseSyncerResult.Failed.NetworkError(
                                         errorResult = remoteGreenCardsResult.errorResult,
                                         hasGreenCardsWithoutCredentials = greenCards
