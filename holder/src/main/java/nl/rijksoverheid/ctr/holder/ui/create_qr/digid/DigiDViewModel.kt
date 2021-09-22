@@ -91,7 +91,7 @@ class DigiDViewModel(
     }
 
     private fun getNetworkErrorResult(authError: AuthorizationException): DigidResult {
-        return if (androidUtil.isNetworkAvailable()) {
+        return if (!androidUtil.isNetworkAvailable()) {
             DigidResult.Failed(NetworkRequestResult.Failed.ClientNetworkError(DigidNetworkRequest))
         } else {
             DigidResult.Failed(
