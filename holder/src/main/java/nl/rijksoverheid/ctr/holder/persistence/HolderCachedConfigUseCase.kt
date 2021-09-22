@@ -8,7 +8,6 @@ import java.io.File
 
 interface CachedAppConfigUseCase {
     fun getCachedAppConfig(): HolderConfig
-    fun getProviderName(providerIdentifier: String): String
 }
 
 /*
@@ -38,12 +37,5 @@ class CachedAppConfigUseCaseImpl constructor(
         } catch (exc: Exception) {
             defaultConfig
         }
-    }
-
-    override fun getProviderName(providerIdentifier: String): String {
-        return getCachedAppConfig().providers
-            .firstOrNull { provider -> provider.code == providerIdentifier }
-            ?.name
-            ?: providerIdentifier
     }
 }

@@ -22,7 +22,6 @@ import nl.rijksoverheid.ctr.holder.HolderFlow
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentYourEventsBinding
-import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.items.YourEventWidget
@@ -266,6 +265,13 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         }
     }
 
+    private fun getProviderName(providerIdentifier: String): String {
+        return (args.type as? YourEventsFragmentType.RemoteProtocol3Type)
+            ?.eventProviders?.firstOrNull { it.identifier == providerIdentifier }
+            ?.name
+            ?: providerIdentifier
+    }
+
     private fun presentEvents(
         remoteEvents: Map<RemoteProtocol3, ByteArray>,
         binding: FragmentYourEventsBinding,
@@ -277,7 +283,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
 
         groupedEvents.forEach { protocolGroupedEvent ->
             val holder = protocolGroupedEvent.value.firstOrNull()?.holder
-            val providerIdentifiers = protocolGroupedEvent.value.map { it.providerIdentifier }.map { configProvidersUseCase.getProviderName(it) }
+            val providerIdentifiers = protocolGroupedEvent.value.map { it.providerIdentifier }.map { getProviderName(it) }
             val allSameEvents = protocolGroupedEvent.value.map { it.remoteEvent }
             val allEventsInformation = protocolGroupedEvent.value.map { RemoteEventInformation(it.providerIdentifier, holder, it.remoteEvent) }
             remoteEventUtil.removeDuplicateEvents(allSameEvents).forEach { remoteEvent ->
@@ -405,7 +411,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                                     event = vaccinationEvent,
                                     fullName = fullName,
                                     birthDate = birthDate,
-                                    providerIdentifier = configProvidersUseCase.getProviderName(it.providerIdentifier),
+                                    providerIdentifier = getProviderName(it.providerIdentifier),
                                 )
                             }.toTypedArray()
                         )

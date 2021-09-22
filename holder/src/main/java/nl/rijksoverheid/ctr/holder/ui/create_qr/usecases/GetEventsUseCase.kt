@@ -43,12 +43,12 @@ class GetEventsUseCaseImpl(
     ): EventsResult {
         // Fetch event providers
         val eventProvidersResult = configProvidersUseCase.eventProviders()
-        val tokens = when (eventProvidersResult) {
+        val (tokens, remoteEventProviders) = when (eventProvidersResult) {
             is EventProvidersResult.Error -> return EventsResult.Error(eventProvidersResult.errorResult)
             is EventProvidersResult.Success -> {
                 when (val tokensResult = coronaCheckRepository.accessTokens(jwt)) {
                     is NetworkRequestResult.Failed -> return EventsResult.Error(tokensResult)
-                    is NetworkRequestResult.Success -> tokensResult.response
+                    is NetworkRequestResult.Success -> Pair(tokensResult.response, eventProvidersResult.eventProviders)
                 }
             }
         }
@@ -105,7 +105,8 @@ class GetEventsUseCaseImpl(
                     // We do have events
                     EventsResult.Success(
                         signedModels = signedModels,
-                        missingEvents = eventProvidersWithTokensErrorResults.isNotEmpty() || eventFailureResults.isNotEmpty()
+                        missingEvents = eventProvidersWithTokensErrorResults.isNotEmpty() || eventFailureResults.isNotEmpty(),
+                        eventProviders = remoteEventProviders.map { EventProvider(it.providerIdentifier, it.name) }
                     )
                 }
             } else {
@@ -128,7 +129,8 @@ class GetEventsUseCaseImpl(
 sealed class EventsResult {
     data class Success (
         val signedModels: List<SignedResponseWithModel<RemoteProtocol3>>,
-        val missingEvents: Boolean
+        val missingEvents: Boolean,
+        val eventProviders: List<EventProvider>,
     ) :
         EventsResult()
     data class HasNoEvents(val missingEvents: Boolean, val errorResults: List<ErrorResult> = emptyList()) : EventsResult()
