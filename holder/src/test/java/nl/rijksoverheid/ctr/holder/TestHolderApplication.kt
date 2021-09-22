@@ -14,10 +14,6 @@ import org.koin.dsl.module
  */
 class TestHolderApplication : HolderApplication() {
 
-    fun addKoinModules(modules: List<Module>) {
-        loadKoinModules(modules)
-    }
-
     override fun getAdditionalModules(): List<Module> {
         return listOf(module {
             factory {

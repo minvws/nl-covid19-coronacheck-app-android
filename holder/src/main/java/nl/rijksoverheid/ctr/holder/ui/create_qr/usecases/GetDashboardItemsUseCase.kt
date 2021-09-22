@@ -50,12 +50,6 @@ class GetDashboardItemsUseCaseImpl(
         val domesticGreenCards = allGreenCards.filter { it.greenCardEntity.type == GreenCardType.Domestic }
         val internationalGreenCards = allGreenCards.filter { it.greenCardEntity.type == GreenCardType.Eu }
 
-        if (dashboardItemUtil.shouldShowPlaceholderItem(allGreenCards)) {
-            dashboardItems.add(DashboardItem.PlaceholderCardItem(
-                greenCardType = GreenCardType.Domestic
-            ))
-        }
-
         if (dashboardItemUtil.shouldShowHeaderItem(allGreenCards)) {
             dashboardItems.add(DashboardItem.HeaderItem(
                 text = R.string.my_overview_description
@@ -76,6 +70,12 @@ class GetDashboardItemsUseCaseImpl(
             )
         )
 
+        if (dashboardItemUtil.shouldShowPlaceholderItem(allGreenCards)) {
+            dashboardItems.add(DashboardItem.PlaceholderCardItem(
+                greenCardType = GreenCardType.Domestic
+            ))
+        }
+
         dashboardItems.add(
             DashboardItem.AddQrButtonItem(dashboardItemUtil.shouldAddQrButtonItem(allGreenCards))
         )
@@ -91,12 +91,6 @@ class GetDashboardItemsUseCaseImpl(
         val dashboardItems = mutableListOf<DashboardItem>()
         val domesticGreenCards = allGreenCards.filter { it.greenCardEntity.type == GreenCardType.Domestic }
         val internationalGreenCards = allGreenCards.filter { it.greenCardEntity.type == GreenCardType.Eu }
-
-        if (dashboardItemUtil.shouldShowPlaceholderItem(allGreenCards)) {
-            dashboardItems.add(DashboardItem.PlaceholderCardItem(
-                greenCardType = GreenCardType.Eu
-            ))
-        }
 
         if (dashboardItemUtil.shouldShowHeaderItem(allGreenCards)) {
             dashboardItems.add(DashboardItem.HeaderItem(
@@ -117,6 +111,12 @@ class GetDashboardItemsUseCaseImpl(
                 isLoadingNewCredentials = isLoadingNewCredentials
             )
         )
+
+        if (dashboardItemUtil.shouldShowPlaceholderItem(allGreenCards)) {
+            dashboardItems.add(DashboardItem.PlaceholderCardItem(
+                greenCardType = GreenCardType.Eu
+            ))
+        }
 
         dashboardItems.add(
             DashboardItem.AddQrButtonItem(dashboardItemUtil.shouldAddQrButtonItem(allGreenCards))
