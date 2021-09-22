@@ -108,10 +108,6 @@ class GetDashboardItemsUseCaseImpl(
             dashboardItems.add(DashboardItem.ClockDeviationItem)
         }
 
-        dashboardItems.add(
-            DashboardItem.AddQrButtonItem(dashboardItemUtil.shouldAddQrButtonItem(allGreenCards))
-        )
-
         dashboardItems.addAll(
             getGreenCardItems(
                 greenCardType = GreenCardType.Eu,
@@ -120,6 +116,10 @@ class GetDashboardItemsUseCaseImpl(
                 databaseSyncerResult = databaseSyncerResult,
                 isLoadingNewCredentials = isLoadingNewCredentials
             )
+        )
+
+        dashboardItems.add(
+            DashboardItem.AddQrButtonItem(dashboardItemUtil.shouldAddQrButtonItem(allGreenCards))
         )
 
         return dashboardItems

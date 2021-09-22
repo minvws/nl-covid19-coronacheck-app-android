@@ -2,6 +2,11 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardEntity
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -10,6 +15,7 @@ import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest
 import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
+import java.time.OffsetDateTime
 
 @RunWith(RobolectricTestRunner::class)
 class GetDashboardItemsUseCaseImplTest: AutoCloseKoinTest() {
@@ -31,5 +37,45 @@ class GetDashboardItemsUseCaseImplTest: AutoCloseKoinTest() {
         assertEquals(dashboardItems.internationalItems.size, 2)
         assertTrue(dashboardItems.internationalItems[0] is DashboardItem.PlaceholderCardItem)
         assertTrue(dashboardItems.internationalItems[1] is DashboardItem.AddQrButtonItem)
+    }
+
+    @Test
+    fun `getItems returns correct models when single domestic green card`() = runBlocking {
+        val domesticGreenCardEntity = GreenCardEntity(
+            id = 1,
+            walletId = 1,
+            type = GreenCardType.Domestic
+        )
+
+        val domesticGreenCard = GreenCard(
+            greenCardEntity = domesticGreenCardEntity,
+            origins = listOf(
+                OriginEntity(
+                    id = 1,
+                    greenCardId = 1,
+                    type = OriginType.Vaccination,
+                    eventTime = OffsetDateTime.now().minusHours(1),
+                    expirationTime = OffsetDateTime.now().plusHours(5),
+                    validFrom = OffsetDateTime.now().minusHours(5)
+                )
+            ),
+            credentialEntities = listOf()
+        )
+
+        val dashboardItems = usecase.getItems(
+            allGreenCards = listOf(domesticGreenCard),
+            databaseSyncerResult = DatabaseSyncerResult.Success,
+            isLoadingNewCredentials = false
+        )
+
+        assertEquals(dashboardItems.domesticItems.size, 3)
+        assertTrue(dashboardItems.domesticItems[0] is DashboardItem.HeaderItem)
+        assertTrue(dashboardItems.domesticItems[1] is DashboardItem.GreenCardItem)
+        assertTrue(dashboardItems.domesticItems[2] is DashboardItem.AddQrButtonItem)
+
+        assertEquals(dashboardItems.internationalItems.size, 3)
+        assertTrue(dashboardItems.domesticItems[0] is DashboardItem.HeaderItem)
+        assertTrue(dashboardItems.internationalItems[1] is DashboardItem.OriginInfoItem)
+        assertTrue(dashboardItems.internationalItems[2] is DashboardItem.AddQrButtonItem)
     }
 }
