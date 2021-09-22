@@ -48,11 +48,11 @@ class DashboardItemUtilImplTest {
             greenCardUtil = fakeGreenCardUtil()
         )
 
-        val shouldShowHeaderItem = util.shouldShowHeaderItem(
+        val shouldShowClockDeviationItem = util.shouldShowClockDeviationItem(
             allGreenCards = listOf(fakeGreenCard)
         )
 
-        assertEquals(true, shouldShowHeaderItem)
+        assertEquals(true, shouldShowClockDeviationItem)
     }
 
     @Test
@@ -66,11 +66,11 @@ class DashboardItemUtilImplTest {
             )
         )
 
-        val shouldShowHeaderItem = util.shouldShowClockDeviationItem(
+        val shouldShowClockDeviationItem = util.shouldShowClockDeviationItem(
             allGreenCards = listOf(fakeGreenCard)
         )
 
-        assertEquals(true, shouldShowHeaderItem)
+        assertEquals(true, shouldShowClockDeviationItem)
     }
 
     @Test
@@ -110,10 +110,10 @@ class DashboardItemUtilImplTest {
             greenCardUtil = fakeGreenCardUtil()
         )
 
-        val shouldShowHeaderItem = util.shouldShowPlaceholderItem(
+        val shouldAddQrButtonItem = util.shouldAddQrButtonItem(
             allGreenCards = listOf()
         )
 
-        assertEquals(true, shouldShowHeaderItem)
+        assertEquals(true, shouldAddQrButtonItem)
     }
 }
