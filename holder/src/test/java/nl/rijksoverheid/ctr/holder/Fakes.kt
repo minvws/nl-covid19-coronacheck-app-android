@@ -1,19 +1,13 @@
 package nl.rijksoverheid.ctr.holder
 
 import androidx.lifecycle.MutableLiveData
-import androidx.room.DatabaseConfiguration
-import androidx.room.InvalidationTracker
-import androidx.sqlite.db.SupportSQLiteOpenHelper
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
-import io.mockk.mockk
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
-import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
-import nl.rijksoverheid.ctr.holder.persistence.database.dao.*
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.*
@@ -528,39 +522,6 @@ fun fakeCredentialUtil() = object: CredentialUtil {
         getString: (String, String) -> String
     ): String {
         return ""
-    }
-}
-
-fun fakeOriginUtil() = object: OriginUtil {
-    override fun getOriginState(origins: List<OriginEntity>): List<OriginState> {
-        return listOf()
-    }
-
-    override fun hideSubtitle(greenCardType: GreenCardType, originState: OriginState): Boolean {
-        return true
-    }
-}
-
-fun fakeDashboardItemUtil(
-    shouldShowHeaderItem: Boolean = false,
-    shouldShowClockDeviationItem: Boolean = false,
-    shouldShowPlaceholderItem: Boolean = false,
-    shouldAddQrButtonItem: Boolean = false
-) = object: DashboardItemUtil {
-    override fun shouldShowHeaderItem(allGreenCards: List<GreenCard>): Boolean {
-        return shouldShowHeaderItem
-    }
-
-    override fun shouldShowClockDeviationItem(allGreenCards: List<GreenCard>): Boolean {
-        return shouldShowClockDeviationItem
-    }
-
-    override fun shouldShowPlaceholderItem(allGreenCards: List<GreenCard>): Boolean {
-        return shouldShowPlaceholderItem
-    }
-
-    override fun shouldAddQrButtonItem(allGreenCards: List<GreenCard>): Boolean {
-        return shouldAddQrButtonItem
     }
 }
 
