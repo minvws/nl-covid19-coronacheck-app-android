@@ -113,10 +113,6 @@ fun fakeCachedAppConfigUseCase(
     override fun getCachedAppConfig(): HolderConfig {
         return appConfig
     }
-
-    override fun getProviderName(providerIdentifier: String): String {
-        return ""
-    }
 }
 
 fun fakeIntroductionViewModel(
