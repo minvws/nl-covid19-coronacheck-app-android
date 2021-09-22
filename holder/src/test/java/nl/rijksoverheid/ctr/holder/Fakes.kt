@@ -234,6 +234,10 @@ fun fakeConfigProviderUseCase(
         override suspend fun testProviders(): TestProvidersResult {
             return TestProvidersResult.Success(testProviders)
         }
+
+        override fun getProviderName(providerIdentifier: String): String {
+            return "providerName"
+        }
     }
 }
 
