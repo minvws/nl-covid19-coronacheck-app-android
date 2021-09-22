@@ -1,21 +1,14 @@
 package nl.rijksoverheid.ctr.holder
 
 import androidx.lifecycle.MutableLiveData
-import androidx.room.DatabaseConfiguration
-import androidx.room.InvalidationTracker
-import androidx.sqlite.db.SupportSQLiteOpenHelper
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
-import io.mockk.mockk
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
+import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
-import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
-import nl.rijksoverheid.ctr.holder.persistence.database.dao.*
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.CommercialTestCodeViewModel
@@ -24,7 +17,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckReposito
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.EventProviderRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.TestProviderRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
 import nl.rijksoverheid.ctr.holder.ui.myoverview.DashboardViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TokenValidatorUtil
@@ -507,6 +500,27 @@ fun fakeGreenCardUtil(
     }
 }
 
+fun fakeCredentialUtil() = object: CredentialUtil {
+    override fun getActiveCredential(entities: List<CredentialEntity>): CredentialEntity? {
+        return null
+    }
+
+    override fun isExpiring(credentialRenewalDays: Long, credential: CredentialEntity): Boolean {
+        return false
+    }
+
+    override fun getTestTypeForEuropeanCredentials(entities: List<CredentialEntity>): String {
+        return ""
+    }
+
+    override fun getVaccinationDosesForEuropeanCredentials(
+        entities: List<CredentialEntity>,
+        getString: (String, String) -> String
+    ): String {
+        return ""
+    }
+}
+
 fun fakeGetRemoteGreenCardUseCase(result: RemoteGreenCardsResult = RemoteGreenCardsResult.Success(
     RemoteGreenCards(null, null)
 )) = object: GetRemoteGreenCardsUseCase {
@@ -522,6 +536,30 @@ fun fakeSyncRemoteGreenCardUseCase(
         return result
     }
 }
+
+fun fakeClockDevationUseCase(
+    hasDeviation: Boolean = false
+) = object: ClockDeviationUseCase() {
+    override fun store(serverResponseTimestamp: Long, localReceivedTimestamp: Long) {
+
+    }
+
+    override fun hasDeviation(): Boolean {
+        return hasDeviation
+    }
+}
+
+val fakeGreenCardEntity = GreenCardEntity(
+    id = 0,
+    walletId = 1,
+    type = GreenCardType.Domestic
+)
+
+val fakeGreenCard = GreenCard(
+    greenCardEntity = fakeGreenCardEntity,
+    origins = listOf(),
+    credentialEntities = listOf()
+)
 
 
 

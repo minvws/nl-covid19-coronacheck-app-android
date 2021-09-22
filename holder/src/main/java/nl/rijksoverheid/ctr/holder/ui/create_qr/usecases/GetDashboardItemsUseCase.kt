@@ -5,19 +5,15 @@ import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItems
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
 
 interface GetDashboardItemsUseCase {
-    suspend fun getDomesticItems(
+    suspend fun getItems(
         allGreenCards: List<GreenCard>,
         databaseSyncerResult: DatabaseSyncerResult = DatabaseSyncerResult.Success,
-        isLoadingNewCredentials: Boolean
-    ): List<DashboardItem>
-    suspend fun getInternationalItems(
-        allGreenCards: List<GreenCard>,
-        databaseSyncerResult: DatabaseSyncerResult = DatabaseSyncerResult.Success,
-        isLoadingNewCredentials: Boolean
-    ): List<DashboardItem>
+        isLoadingNewCredentials: Boolean,
+    ): DashboardItems
 }
 
 class GetDashboardItemsUseCaseImpl(
@@ -26,8 +22,26 @@ class GetDashboardItemsUseCaseImpl(
     private val originUtil: OriginUtil,
     private val dashboardItemUtil: DashboardItemUtil,
 ): GetDashboardItemsUseCase {
+    override suspend fun getItems(
+        allGreenCards: List<GreenCard>,
+        databaseSyncerResult: DatabaseSyncerResult,
+        isLoadingNewCredentials: Boolean
+    ): DashboardItems {
+        return DashboardItems(
+            domesticItems = getDomesticItems(
+                allGreenCards = allGreenCards,
+                databaseSyncerResult = databaseSyncerResult,
+                isLoadingNewCredentials = isLoadingNewCredentials
+            ),
+            internationalItems = getInternationalItems(
+                allGreenCards = allGreenCards,
+                databaseSyncerResult = databaseSyncerResult,
+                isLoadingNewCredentials = isLoadingNewCredentials
+            )
+        )
+    }
 
-    override suspend fun getDomesticItems(
+    private fun getDomesticItems(
         allGreenCards: List<GreenCard>,
         databaseSyncerResult: DatabaseSyncerResult,
         isLoadingNewCredentials: Boolean,
@@ -35,12 +49,6 @@ class GetDashboardItemsUseCaseImpl(
         val dashboardItems = mutableListOf<DashboardItem>()
         val domesticGreenCards = allGreenCards.filter { it.greenCardEntity.type == GreenCardType.Domestic }
         val internationalGreenCards = allGreenCards.filter { it.greenCardEntity.type == GreenCardType.Eu }
-
-        if (dashboardItemUtil.shouldShowPlaceholderItem(allGreenCards)) {
-            dashboardItems.add(DashboardItem.PlaceholderCardItem(
-                greenCardType = GreenCardType.Domestic
-            ))
-        }
 
         if (dashboardItemUtil.shouldShowHeaderItem(allGreenCards)) {
             dashboardItems.add(DashboardItem.HeaderItem(
@@ -62,6 +70,12 @@ class GetDashboardItemsUseCaseImpl(
             )
         )
 
+        if (dashboardItemUtil.shouldShowPlaceholderItem(allGreenCards)) {
+            dashboardItems.add(DashboardItem.PlaceholderCardItem(
+                greenCardType = GreenCardType.Domestic
+            ))
+        }
+
         dashboardItems.add(
             DashboardItem.AddQrButtonItem(dashboardItemUtil.shouldAddQrButtonItem(allGreenCards))
         )
@@ -69,7 +83,7 @@ class GetDashboardItemsUseCaseImpl(
         return dashboardItems
     }
 
-    override suspend fun getInternationalItems(
+    private fun getInternationalItems(
         allGreenCards: List<GreenCard>,
         databaseSyncerResult: DatabaseSyncerResult,
         isLoadingNewCredentials: Boolean,
@@ -77,12 +91,6 @@ class GetDashboardItemsUseCaseImpl(
         val dashboardItems = mutableListOf<DashboardItem>()
         val domesticGreenCards = allGreenCards.filter { it.greenCardEntity.type == GreenCardType.Domestic }
         val internationalGreenCards = allGreenCards.filter { it.greenCardEntity.type == GreenCardType.Eu }
-
-        if (dashboardItemUtil.shouldShowPlaceholderItem(allGreenCards)) {
-            dashboardItems.add(DashboardItem.PlaceholderCardItem(
-                greenCardType = GreenCardType.Eu
-            ))
-        }
 
         if (dashboardItemUtil.shouldShowHeaderItem(allGreenCards)) {
             dashboardItems.add(DashboardItem.HeaderItem(
@@ -94,10 +102,6 @@ class GetDashboardItemsUseCaseImpl(
             dashboardItems.add(DashboardItem.ClockDeviationItem)
         }
 
-        dashboardItems.add(
-            DashboardItem.AddQrButtonItem(dashboardItemUtil.shouldAddQrButtonItem(allGreenCards))
-        )
-
         dashboardItems.addAll(
             getGreenCardItems(
                 greenCardType = GreenCardType.Eu,
@@ -106,6 +110,16 @@ class GetDashboardItemsUseCaseImpl(
                 databaseSyncerResult = databaseSyncerResult,
                 isLoadingNewCredentials = isLoadingNewCredentials
             )
+        )
+
+        if (dashboardItemUtil.shouldShowPlaceholderItem(allGreenCards)) {
+            dashboardItems.add(DashboardItem.PlaceholderCardItem(
+                greenCardType = GreenCardType.Eu
+            ))
+        }
+
+        dashboardItems.add(
+            DashboardItem.AddQrButtonItem(dashboardItemUtil.shouldAddQrButtonItem(allGreenCards))
         )
 
         return dashboardItems
