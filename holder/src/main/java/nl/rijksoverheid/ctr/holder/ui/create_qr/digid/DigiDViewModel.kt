@@ -95,7 +95,7 @@ class DigiDViewModel(
             DigidResult.Failed(NetworkRequestResult.Failed.ClientNetworkError(DigidNetworkRequest))
         } else {
             DigidResult.Failed(
-                NetworkRequestResult.Failed.ServerNetworkError(DigidNetworkRequest, authError)
+                NetworkRequestResult.Failed.ServerNetworkError(DigidNetworkRequest, mapToOpenIdException(authError))
             )
         }
     }
