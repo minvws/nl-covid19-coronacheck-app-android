@@ -5,6 +5,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.ConfigProvidersUseCaseI
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.TestResultUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCaseImpl
+import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
 /*
@@ -16,7 +17,7 @@ import org.koin.dsl.module
  */
 val testProvidersUseCasesModule = module {
     factory<ConfigProvidersUseCase> {
-        ConfigProvidersUseCaseImpl(get())
+        ConfigProvidersUseCaseImpl(get(), get(), get(), androidContext().filesDir.path)
     }
 
     factory {

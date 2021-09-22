@@ -27,6 +27,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.items.YourEventWidget
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.ConfigProvidersUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.InfoScreenUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.RemoteEventUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.RemoteProtocol3Util
@@ -48,7 +49,6 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
 
     private val args: YourEventsFragmentArgs by navArgs()
 
-    private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
     private val personalDetailsUtil: PersonalDetailsUtil by inject()
     private val infoScreenUtil: InfoScreenUtil by inject()
     private val dialogUtil: DialogUtil by inject()
@@ -57,6 +57,8 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
     private val remoteEventUtil: RemoteEventUtil by inject()
 
     private val yourEventsViewModel: YourEventsViewModel by viewModel()
+
+    private val configProvidersUseCase: ConfigProvidersUseCase by inject()
 
     override fun onButtonClickWithRetryAction() {
         when (val type = args.type) {
@@ -275,7 +277,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
 
         groupedEvents.forEach { protocolGroupedEvent ->
             val holder = protocolGroupedEvent.value.firstOrNull()?.holder
-            val providerIdentifiers = protocolGroupedEvent.value.map { it.providerIdentifier }.map { cachedAppConfigUseCase.getProviderName(it) }
+            val providerIdentifiers = protocolGroupedEvent.value.map { it.providerIdentifier }.map { configProvidersUseCase.getProviderName(it) }
             val allSameEvents = protocolGroupedEvent.value.map { it.remoteEvent }
             val allEventsInformation = protocolGroupedEvent.value.map { RemoteEventInformation(it.providerIdentifier, holder, it.remoteEvent) }
             remoteEventUtil.removeDuplicateEvents(allSameEvents).forEach { remoteEvent ->
@@ -403,7 +405,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                                     event = vaccinationEvent,
                                     fullName = fullName,
                                     birthDate = birthDate,
-                                    providerIdentifier = cachedAppConfigUseCase.getProviderName(it.providerIdentifier),
+                                    providerIdentifier = configProvidersUseCase.getProviderName(it.providerIdentifier),
                                 )
                             }.toTypedArray()
                         )
