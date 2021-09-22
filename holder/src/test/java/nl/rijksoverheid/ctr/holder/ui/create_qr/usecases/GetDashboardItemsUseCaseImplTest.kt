@@ -40,7 +40,7 @@ class GetDashboardItemsUseCaseImplTest: AutoCloseKoinTest() {
     }
 
     @Test
-    fun `getItems returns correct models when single domestic green card`() = runBlocking {
+    fun `getItems returns correct models for single domestic green card`() = runBlocking {
         val domesticGreenCardEntity = GreenCardEntity(
             id = 1,
             walletId = 1,
@@ -76,6 +76,46 @@ class GetDashboardItemsUseCaseImplTest: AutoCloseKoinTest() {
         assertEquals(dashboardItems.internationalItems.size, 3)
         assertTrue(dashboardItems.domesticItems[0] is DashboardItem.HeaderItem)
         assertTrue(dashboardItems.internationalItems[1] is DashboardItem.OriginInfoItem)
+        assertTrue(dashboardItems.internationalItems[2] is DashboardItem.AddQrButtonItem)
+    }
+
+    @Test
+    fun `getItems returns correct models for single international green card`() = runBlocking {
+        val internationalGreenCardEntity = GreenCardEntity(
+            id = 1,
+            walletId = 1,
+            type = GreenCardType.Eu
+        )
+
+        val internationalGreenCard = GreenCard(
+            greenCardEntity = internationalGreenCardEntity,
+            origins = listOf(
+                OriginEntity(
+                    id = 1,
+                    greenCardId = 1,
+                    type = OriginType.Vaccination,
+                    eventTime = OffsetDateTime.now().minusHours(1),
+                    expirationTime = OffsetDateTime.now().plusHours(5),
+                    validFrom = OffsetDateTime.now().minusHours(5)
+                )
+            ),
+            credentialEntities = listOf()
+        )
+
+        val dashboardItems = usecase.getItems(
+            allGreenCards = listOf(internationalGreenCard),
+            databaseSyncerResult = DatabaseSyncerResult.Success,
+            isLoadingNewCredentials = false
+        )
+
+        assertEquals(dashboardItems.domesticItems.size, 3)
+        assertTrue(dashboardItems.domesticItems[0] is DashboardItem.HeaderItem)
+        assertTrue(dashboardItems.domesticItems[1] is DashboardItem.OriginInfoItem)
+        assertTrue(dashboardItems.domesticItems[2] is DashboardItem.AddQrButtonItem)
+
+        assertEquals(dashboardItems.internationalItems.size, 3)
+        assertTrue(dashboardItems.internationalItems[0] is DashboardItem.HeaderItem)
+        assertTrue(dashboardItems.internationalItems[1] is DashboardItem.GreenCardItem)
         assertTrue(dashboardItems.internationalItems[2] is DashboardItem.AddQrButtonItem)
     }
 }
