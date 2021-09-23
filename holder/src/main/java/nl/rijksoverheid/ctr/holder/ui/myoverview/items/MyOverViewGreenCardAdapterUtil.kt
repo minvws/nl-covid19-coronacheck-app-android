@@ -59,7 +59,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
                     is OriginType.Vaccination -> {
                         val getCurrentDosesString: (String, String) -> String = { currentDose: String, sumDoses: String ->
                             context.getString(
-                                R.string.your_vaccination_explanation_doses_answer,
+                                R.string.qr_card_vaccination_doses,
                                 currentDose, sumDoses
                             )
                         }

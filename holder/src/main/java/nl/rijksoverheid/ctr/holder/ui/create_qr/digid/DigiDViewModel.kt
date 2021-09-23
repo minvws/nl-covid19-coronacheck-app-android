@@ -18,6 +18,7 @@ import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import nl.rijksoverheid.ctr.shared.models.OpenIdErrorResult.Error
 import nl.rijksoverheid.ctr.shared.models.OpenIdErrorResult.ServerBusy
+import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -26,7 +27,9 @@ import nl.rijksoverheid.ctr.shared.models.OpenIdErrorResult.ServerBusy
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class DigiDViewModel(private val authenticationRepository: AuthenticationRepository) : ViewModel() {
+class DigiDViewModel(
+    private val authenticationRepository: AuthenticationRepository,
+    private val androidUtil: AndroidUtil) : ViewModel() {
 
     private companion object {
         const val USER_CANCELLED_FLOW_CODE = 1
@@ -83,13 +86,19 @@ class DigiDViewModel(private val authenticationRepository: AuthenticationReposit
     private fun mapToOpenIdException(authError: AuthorizationException) =
         OpenIdAuthorizationException(type = authError.type, code = authError.code)
 
-    private fun isNetworkError(authError: AuthorizationException) =
-        authError.type == AuthorizationException.TYPE_GENERAL_ERROR && authError.code == NETWORK_ERROR
+    private fun isNetworkError(authError: AuthorizationException): Boolean {
+        return authError.type == AuthorizationException.TYPE_GENERAL_ERROR && authError.code == NETWORK_ERROR
+    }
 
-    private fun getNetworkErrorResult(authError: AuthorizationException) =
-        DigidResult.Failed(
-            NetworkRequestResult.Failed.NetworkError(DigidNetworkRequest, authError)
-        )
+    private fun getNetworkErrorResult(authError: AuthorizationException): DigidResult {
+        return if (!androidUtil.isNetworkAvailable()) {
+            DigidResult.Failed(NetworkRequestResult.Failed.ClientNetworkError(DigidNetworkRequest))
+        } else {
+            DigidResult.Failed(
+                NetworkRequestResult.Failed.ServerNetworkError(DigidNetworkRequest, mapToOpenIdException(authError))
+            )
+        }
+    }
 
     private fun isServerBusy(authError: AuthorizationException) =
         authError.error == LOGIN_REQUIRED_ERROR

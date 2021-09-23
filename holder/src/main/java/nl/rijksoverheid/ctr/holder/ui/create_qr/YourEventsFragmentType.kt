@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.EventProvider
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
 
@@ -40,7 +41,8 @@ sealed class YourEventsFragmentType : Parcelable {
     @Parcelize
     data class RemoteProtocol3Type(
         val remoteEvents: Map<RemoteProtocol3, ByteArray>,
-        val originType: OriginType
+        val originType: OriginType,
+        val eventProviders: List<EventProvider> = emptyList(),
     ) : YourEventsFragmentType(), Parcelable
 
     @Parcelize

@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.holder.modules
 import nl.rijksoverheid.ctr.api.factory.NetworkRequestResultFactory
 import nl.rijksoverheid.ctr.shared.factories.ErrorCodeStringFactory
 import nl.rijksoverheid.ctr.shared.factories.ErrorCodeStringFactoryImpl
+import org.koin.android.ext.koin.androidContext
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
@@ -15,7 +16,7 @@ import org.koin.dsl.module
  */
 val errorsModule = module {
     factory {
-        NetworkRequestResultFactory(get(named("ResponseError")))
+        NetworkRequestResultFactory(get(named("ResponseError")), get())
     }
 
     factory<ErrorCodeStringFactory> {

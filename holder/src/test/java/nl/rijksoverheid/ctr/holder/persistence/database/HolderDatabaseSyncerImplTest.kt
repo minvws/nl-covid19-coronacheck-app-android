@@ -136,7 +136,7 @@ class HolderDatabaseSyncerImplTest {
             holderDatabase = holderDatabase,
             greenCardUtil = fakeGreenCardUtil(),
             getRemoteGreenCardsUseCase = fakeGetRemoteGreenCardUseCase(
-                result = RemoteGreenCardsResult.Error(NetworkRequestResult.Failed.NetworkError(Step(1), IllegalStateException("Some error")))),
+                result = RemoteGreenCardsResult.Error(NetworkRequestResult.Failed.ServerNetworkError(Step(1), IllegalStateException("Some error")))),
             syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(
                 result = SyncRemoteGreenCardsResult.Success
             ),

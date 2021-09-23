@@ -27,7 +27,7 @@ val viewModels = module {
     viewModel<QrCodeViewModel> { QrCodeViewModelImpl(get(), get()) }
     viewModel<HolderMainActivityViewModel> { HolderMainActivityViewModelImpl() }
     viewModel<CommercialTestCodeViewModel> { CommercialTestCodeViewModelImpl(get(), get()) }
-    viewModel { DigiDViewModel(get()) }
+    viewModel { DigiDViewModel(get(), get()) }
     viewModel { TokenQrViewModel(get()) }
     viewModel<DeviceRootedViewModel> { DeviceRootedViewModelImpl(get(), get()) }
     viewModel<DeviceSecureViewModel> { DeviceSecureViewModelImpl(get(), get()) }

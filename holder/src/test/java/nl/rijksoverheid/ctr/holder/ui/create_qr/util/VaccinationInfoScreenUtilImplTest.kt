@@ -58,10 +58,6 @@ class VaccinationInfoScreenUtilImplTest : AutoCloseKoinTest() {
                     )
                 )
             )
-
-            override fun getProviderName(providerIdentifier: String): String {
-                TODO("Not yet implemented")
-            }
         }
 
         val vaccinationClock =

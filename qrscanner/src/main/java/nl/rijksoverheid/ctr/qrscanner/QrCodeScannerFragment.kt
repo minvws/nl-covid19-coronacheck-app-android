@@ -36,7 +36,8 @@ import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
 import nl.rijksoverheid.ctr.qrscanner.databinding.FragmentScannerBinding
 import nl.rijksoverheid.ctr.zebrascanner.ZebraManager
-import org.koin.android.ext.android.inject
+import org.koin.android.ext.android.get
+import org.koin.core.error.NoBeanDefFoundException
 import timber.log.Timber
 import java.util.concurrent.Executors
 import kotlin.math.abs
@@ -47,7 +48,11 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
 
     private var _binding: FragmentScannerBinding? = null
     val binding get() = _binding!!
-    private val zebraManager: ZebraManager by inject()
+    private val zebraManager: ZebraManager? = try {
+        get()
+    } catch (e: NoBeanDefFoundException) {
+        null
+    }
 
     companion object {
         private const val RATIO_4_3_VALUE = 4.0 / 3.0
@@ -72,7 +77,7 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
         super.onViewCreated(view, savedInstanceState)
 
         _binding = FragmentScannerBinding.bind(view)
-        if(zebraManager.isZebraDevice()){
+        if(zebraManager?.isZebraDevice() == true){
             // Setup Zebra scanner
             zebraManager.setupZebraScanner(onDatawedgeResultListener = {
                 onQrScanned(it)
@@ -121,7 +126,7 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
     }
 
     protected fun setUpScanner(forceCamera: Boolean = false) {
-        if (forceCamera || !zebraManager.isZebraDevice()) {
+        if (forceCamera || zebraManager == null || zebraManager.isZebraDevice() == false) {
             setupCamera()
         } else {
             // Enable Zebra scanners
@@ -351,7 +356,7 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
         requireActivity().requestedOrientation =
             ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
         // Teardown Zebra scanner if one is running
-        zebraManager.teardownZebraScanner()
+        zebraManager?.teardownZebraScanner()
     }
 
     /**
