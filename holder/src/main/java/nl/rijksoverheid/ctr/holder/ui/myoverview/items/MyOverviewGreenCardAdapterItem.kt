@@ -93,17 +93,7 @@ class MyOverviewGreenCardAdapterItem(
     }
 
     private fun setContent(viewBinding: ItemMyOverviewGreenCardBinding) {
-        val context = viewBinding.root.context
-
-        viewBinding.proof1Title.visibility = View.GONE
-        viewBinding.proof1Subtitle.visibility = View.GONE
-        viewBinding.proof2Title.visibility = View.GONE
-        viewBinding.proof2Subtitle.visibility = View.GONE
-        viewBinding.proof3Title.visibility = View.GONE
-        viewBinding.proof3Subtitle.visibility = View.GONE
-        viewBinding.proof1Subtitle.setTextColor(context.getThemeColor(android.R.attr.textColorPrimary))
-        viewBinding.proof2Subtitle.setTextColor(context.getThemeColor(android.R.attr.textColorPrimary))
-        viewBinding.proof3Subtitle.setTextColor(context.getThemeColor(android.R.attr.textColorPrimary))
+        viewBinding.description.removeAllViews()
         viewBinding.errorText.setHtmlText("")
         viewBinding.errorTextRetry.setHtmlText("")
         viewBinding.errorIcon.visibility = View.GONE

@@ -5,9 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:clipToPadding="false"
+    android:layout_marginTop="16dp"
     android:clipChildren="false"
-    android:layout_marginTop="16dp">
+    android:clipToPadding="false">
 
     <FrameLayout
         android:id="@+id/green_cards"
@@ -63,69 +63,28 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/type_title" />
 
-                <TextView
-                    android:id="@+id/proof1_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
-                    android:textAppearance="@style/App.TextAppearance.MaterialComponents.Body1"
-                    app:layout_constraintTop_toBottomOf="@+id/title"
-                    tools:text="Geldigheid #1" />
-
-                <TextView
-                    android:id="@+id/proof1_subtitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="@style/App.TextAppearance.MaterialComponents.Body1"
-                    app:layout_constraintTop_toBottomOf="@+id/proof1_title"
-                    tools:text="Geldig tot en met 7 februari 2022" />
-
-                <TextView
-                    android:id="@+id/proof2_title"
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:id="@+id/description"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:textAppearance="@style/App.TextAppearance.MaterialComponents.Body1"
-                    app:layout_constraintTop_toBottomOf="@+id/proof1_subtitle"
-                    tools:text="Geldigheid #2" />
-
-                <TextView
-                    android:id="@+id/proof2_subtitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="@style/App.TextAppearance.MaterialComponents.Body1"
-                    app:layout_constraintTop_toBottomOf="@+id/proof2_title"
-                    tools:text="Geldig tot en met 7 februari 2022" />
-
-                <TextView
-                    android:id="@+id/proof3_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:textAppearance="@style/App.TextAppearance.MaterialComponents.Body1"
-                    app:layout_constraintTop_toBottomOf="@+id/proof2_subtitle"
-                    tools:text="Geldigheid #2" />
-
-                <TextView
-                    android:id="@+id/proof3_subtitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="@style/App.TextAppearance.MaterialComponents.Body1"
-                    app:layout_constraintTop_toBottomOf="@+id/proof3_title"
-                    tools:text="Geldig tot en met 7 februari 2022" />
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/title" />
 
                 <TextView
                     android:id="@+id/expires_in"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
                     android:textAppearance="?attr/textAppearanceBody1"
                     android:textStyle="bold"
                     android:visibility="gone"
+                    android:layout_marginBottom="24dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/proof3_subtitle"
+                    app:layout_constraintTop_toBottomOf="@+id/description"
                     tools:text="Verloopt in 5 uur 59 min"
                     tools:visibility="visible" />
 
@@ -133,7 +92,6 @@
                     android:id="@+id/buttonWithProgressWidgetContainer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
                     app:layout_constrainedWidth="true"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
