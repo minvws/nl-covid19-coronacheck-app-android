@@ -110,7 +110,12 @@ class MyOverviewGreenCardAdapterItem(
         viewBinding.errorText.visibility = View.GONE
         viewBinding.errorTextRetry.visibility = View.GONE
 
-        myOverViewGreenCardAdapterUtil.setContent(greenCard, originStates, ViewBindingWrapperImpl(viewBinding))
+        myOverViewGreenCardAdapterUtil.setContent(
+            ViewBindingWrapperImpl(viewBinding),
+            greenCard,
+            originStates,
+            itemsOfSameType.map { it.greenCard }
+        )
 
         showError(viewBinding)
     }
