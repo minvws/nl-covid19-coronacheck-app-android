@@ -18,7 +18,8 @@ sealed class DashboardItem {
         val greenCard: GreenCard,
         val originStates: List<OriginState>,
         val credentialState: CredentialState,
-        val databaseSyncerResult: DatabaseSyncerResult
+        val databaseSyncerResult: DatabaseSyncerResult,
+        val cardsOfSameType: List<GreenCardItem> = emptyList()
     ) : DashboardItem() {
 
         sealed class CredentialState {

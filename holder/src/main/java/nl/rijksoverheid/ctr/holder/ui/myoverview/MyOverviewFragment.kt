@@ -116,7 +116,8 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                             originStates = dashboardItem.originStates,
                             credentialState = dashboardItem.credentialState,
                             databaseSyncerResult = dashboardItem.databaseSyncerResult,
-                            onButtonClick = { greenCard, credential ->
+                            itemsOfSameType = dashboardItem.cardsOfSameType,
+                            onButtonClick = { greenCard, credentials, expiration ->
                                 navigateSafety(
                                     MyOverviewFragmentDirections.actionQrCode(
                                         toolbarTitle = when (greenCard.greenCardEntity.type) {
@@ -129,8 +130,8 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                                         },
                                         data = QrCodeFragmentData(
                                             shouldDisclose = greenCard.greenCardEntity.type == GreenCardType.Domestic,
-                                            credential = credential.data,
-                                            credentialExpirationTimeSeconds = credential.expirationTime.toEpochSecond(),
+                                            credentials = credentials,
+                                            credentialExpirationTimeSeconds = expiration,
                                             type = greenCard.greenCardEntity.type,
                                             originType = greenCard.origins.first().type
                                         ),
