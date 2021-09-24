@@ -9,7 +9,7 @@
     android:clipChildren="false"
     android:clipToPadding="false">
 
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/green_cards"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,11 +19,14 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/test_result"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             app:cardCornerRadius="16dp"
-            app:cardElevation="8dp">
+            app:cardElevation="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -77,10 +80,11 @@
                     android:id="@+id/expires_in"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
                     android:textAppearance="?attr/textAppearanceBody1"
                     android:textStyle="bold"
                     android:visibility="gone"
-                    android:layout_marginBottom="24dp"
+                    app:layout_constraintBottom_toTopOf="@id/buttonWithProgressWidgetContainer"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0"
                     app:layout_constraintStart_toStartOf="parent"
@@ -102,7 +106,7 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-    </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
         android:id="@+id/error_icon"
