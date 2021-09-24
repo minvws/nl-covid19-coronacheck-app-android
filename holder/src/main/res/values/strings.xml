@@ -461,4 +461,5 @@
     <string name="dialog_device_secure_warning_title">Er zijn beveiligingsrisico’s gevonden</string>
     <string name="dialog_device_secure_warning_description">Let op: je toestel is niet beveiligd met een pincode of andere beveiligingsoptie. Daardoor kunnen anderen je data inzien en zijn je gegevens mogelijk niet veilig.</string>
     <string name="dialog_device_secure_positive_button">Oke</string>
+    <string name="qr_code_details">Details</string>
 </resources>
