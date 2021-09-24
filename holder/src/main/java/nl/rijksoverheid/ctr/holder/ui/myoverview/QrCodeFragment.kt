@@ -20,7 +20,6 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentQrCodeBinding
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.InfoScreenUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.QrInfoScreenUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeData
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.ExternalReturnAppData
@@ -211,7 +210,7 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
         qrCodeViewModel.generateQrCode(
             type = args.data.type,
             size = resources.displayMetrics.widthPixels,
-            credential = args.data.credential,
+            credential = args.data.credentials.first(), // TODO: pick right credential to show
             shouldDisclose = args.data.shouldDisclose
         )
         val refreshMillis =
