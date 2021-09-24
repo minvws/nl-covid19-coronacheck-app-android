@@ -81,7 +81,7 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
 
         _binding = FragmentQrCodeBinding.bind(view)
 
-        qrCodeViewModel.qrCodeDataLiveData.observe(viewLifecycleOwner, ::bindQrCodeData)
+        qrCodeViewModel.qrCodeDataListLiveData.observe(viewLifecycleOwner, ::bindQrCodeDataList)
         qrCodeViewModel.returnAppLivedata.observe(viewLifecycleOwner, ::returnToApp)
 
         args.returnUri?.let { qrCodeViewModel.onReturnUriGiven(it, args.data.type) }
@@ -95,7 +95,6 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
                 setOnClickListener { startIntent(externalReturnAppData) }
             } else {
                 visibility = View.GONE
-
             }
         }
     }
@@ -114,7 +113,8 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
         }
     }
 
-    private fun bindQrCodeData(qrCodeData: QrCodeData) {
+    private fun bindQrCodeDataList(qrCodeDataList: List<QrCodeData>) {
+        val qrCodeData = qrCodeDataList.first()
         binding.image.setImageBitmap(qrCodeData.bitmap)
         binding.animation.setWidget(qrCodeData.animationResource, qrCodeData.backgroundResource)
         presentQrLoading(false)
@@ -208,10 +208,10 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
     }
 
     private fun generateQrCode() {
-        qrCodeViewModel.generateQrCode(
+        qrCodeViewModel.generateQrCodes(
             type = args.data.type,
             size = resources.displayMetrics.widthPixels,
-            credential = args.data.credential,
+            credentials = args.data.credentials,
             shouldDisclose = args.data.shouldDisclose
         )
         val refreshMillis =
