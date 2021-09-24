@@ -17,10 +17,9 @@ import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.databinding.FragmentQrCodeBinding
+import nl.rijksoverheid.ctr.holder.databinding.FragmentQrCodesBinding
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.InfoScreenUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.QrInfoScreenUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeData
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.ExternalReturnAppData
@@ -42,11 +41,11 @@ import java.util.concurrent.TimeUnit
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
+class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
 
-    private var _binding: FragmentQrCodeBinding? = null
+    private var _binding: FragmentQrCodesBinding? = null
     private val binding get() = _binding!!
-    private val args: QrCodeFragmentArgs by navArgs()
+    private val args: QrCodesFragmentArgs by navArgs()
     private val personalDetailsUtil: PersonalDetailsUtil by inject()
     private val infoScreenUtil: QrInfoScreenUtil by inject()
     private val dialogUtil: DialogUtil by inject()
@@ -79,7 +78,7 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
 
         requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
-        _binding = FragmentQrCodeBinding.bind(view)
+        _binding = FragmentQrCodesBinding.bind(view)
 
         qrCodeViewModel.qrCodeDataListLiveData.observe(viewLifecycleOwner, ::bindQrCodeDataList)
         qrCodeViewModel.returnAppLivedata.observe(viewLifecycleOwner, ::returnToApp)
@@ -140,7 +139,7 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
                                         personalDetails = personalDetails
                                     )
                                     navigateSafety(
-                                        QrCodeFragmentDirections.actionShowQrExplanation(
+                                        QrCodesFragmentDirections.actionShowQrExplanation(
                                             title = infoScreen.title,
                                             description = infoScreen.description,
                                             footer = infoScreen.footer
@@ -154,7 +153,7 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
                                                 qrCodeData.readEuropeanCredential
                                             )
                                             navigateSafety(
-                                                QrCodeFragmentDirections.actionShowQrExplanation(
+                                                QrCodesFragmentDirections.actionShowQrExplanation(
                                                     title = infoScreen.title,
                                                     description = infoScreen.description,
                                                     footer = infoScreen.footer
@@ -167,7 +166,7 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
                                                     qrCodeData.readEuropeanCredential
                                                 )
                                             navigateSafety(
-                                                QrCodeFragmentDirections.actionShowQrExplanation(
+                                                QrCodesFragmentDirections.actionShowQrExplanation(
                                                     title = infoScreen.title,
                                                     description = infoScreen.description,
                                                     footer = infoScreen.footer
@@ -180,7 +179,7 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
                                                     qrCodeData.readEuropeanCredential
                                                 )
                                             navigateSafety(
-                                                QrCodeFragmentDirections.actionShowQrExplanation(
+                                                QrCodesFragmentDirections.actionShowQrExplanation(
                                                     title = infoScreen.title,
                                                     description = infoScreen.description,
                                                     footer = infoScreen.footer
