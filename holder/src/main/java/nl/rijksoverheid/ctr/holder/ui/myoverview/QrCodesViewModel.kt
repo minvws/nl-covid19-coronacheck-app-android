@@ -10,7 +10,7 @@ import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeData
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.ExternalReturnAppData
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.ReturnToExternalAppUseCase
 
-abstract class QrCodeViewModel : ViewModel() {
+abstract class QrCodesViewModel : ViewModel() {
     val qrCodeDataListLiveData = MutableLiveData<List<QrCodeData>>()
     val returnAppLivedata = MutableLiveData<ExternalReturnAppData>()
     abstract fun generateQrCodes(
@@ -23,10 +23,10 @@ abstract class QrCodeViewModel : ViewModel() {
     abstract fun onReturnUriGiven(uri: String, type: GreenCardType)
 }
 
-class QrCodeViewModelImpl(
+class QrCodesViewModelImpl(
     private val qrCodeDataUseCase: QrCodeDataUseCase,
     private val returnToExternalAppUseCase: ReturnToExternalAppUseCase
-) : QrCodeViewModel() {
+) : QrCodesViewModel() {
 
     override fun generateQrCodes(
         type: GreenCardType,

@@ -50,6 +50,7 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
     private val infoScreenUtil: QrInfoScreenUtil by inject()
     private val dialogUtil: DialogUtil by inject()
     private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
+    private lateinit var qrCodePagerAdapter: QrCodePagerAdapter
 
     private val qrCodeHandler = Handler(Looper.getMainLooper())
     private val qrCodeRunnable = Runnable {
@@ -57,7 +58,7 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
         checkIfCredentialExpired()
     }
 
-    private val qrCodeViewModel: QrCodeViewModel by viewModel()
+    private val qrCodeViewModel: QrCodesViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,10 +81,17 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
 
         _binding = FragmentQrCodesBinding.bind(view)
 
+        setupViewPager()
+
         qrCodeViewModel.qrCodeDataListLiveData.observe(viewLifecycleOwner, ::bindQrCodeDataList)
         qrCodeViewModel.returnAppLivedata.observe(viewLifecycleOwner, ::returnToApp)
 
         args.returnUri?.let { qrCodeViewModel.onReturnUriGiven(it, args.data.type) }
+    }
+
+    private fun setupViewPager() {
+        qrCodePagerAdapter = QrCodePagerAdapter()
+        binding.viewPager.adapter = qrCodePagerAdapter
     }
 
     private fun returnToApp(externalReturnAppData: ExternalReturnAppData?) {
@@ -113,8 +121,10 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
     }
 
     private fun bindQrCodeDataList(qrCodeDataList: List<QrCodeData>) {
+        qrCodePagerAdapter.addData(qrCodeDataList)
+
+        // TODO: Refactor and get animation data out of the QrCodeData object
         val qrCodeData = qrCodeDataList.first()
-        binding.image.setImageBitmap(qrCodeData.bitmap)
         binding.animation.setWidget(qrCodeData.animationResource, qrCodeData.backgroundResource)
         presentQrLoading(false)
 
@@ -200,10 +210,6 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
     private fun presentQrLoading(loading: Boolean) {
         (parentFragment?.parentFragment as HolderMainFragment).presentLoading(loading)
         binding.root.visibility = if (loading) View.GONE else View.VISIBLE
-        // Move focus to loading indicator or QR depending on state
-        if (!loading) {
-            binding.image.setAccessibilityFocus()
-        }
     }
 
     private fun generateQrCode() {
