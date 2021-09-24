@@ -45,7 +45,6 @@ class QrCodesViewModelImpl(
                     shouldDisclose = shouldDisclose
                 )
             }
-
             qrCodeDataListLiveData.postValue(qrCodeDataList)
         }
     }

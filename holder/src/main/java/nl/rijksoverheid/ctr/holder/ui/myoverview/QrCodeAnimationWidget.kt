@@ -36,8 +36,7 @@ class QrCodeAnimationWidget(context: Context, attrs: AttributeSet?) :
         }
     }
 
-    fun setWidget(@RawRes animation: Int, @DrawableRes backgroundRes: Int?) {
-        background.setImageDrawable(backgroundRes?.let { ContextCompat.getDrawable(context, it) })
+    fun setWidget(@RawRes animation: Int) {
         animationView.setAnimation(animation)
         animationView.playAnimation()
     }
