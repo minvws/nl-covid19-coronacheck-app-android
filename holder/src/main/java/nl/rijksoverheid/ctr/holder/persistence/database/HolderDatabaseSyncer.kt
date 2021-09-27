@@ -58,13 +58,7 @@ class HolderDatabaseSyncerImpl(
 
                     when (remoteGreenCardsResult) {
                         is RemoteGreenCardsResult.Success -> {
-                            // TODO: remove mock code, inserting 2 green cards for now
-                            val remoteGreenCards = remoteGreenCardsResult.remoteGreenCards.copy(
-                                domesticGreencard = null,
-                                euGreencards = remoteGreenCardsResult.remoteGreenCards.euGreencards?.plus(
-                                    remoteGreenCardsResult.remoteGreenCards.euGreencards
-                                )
-                            )
+                            val remoteGreenCards = remoteGreenCardsResult.remoteGreenCards
 
                             // If we expect the remote green cards to have a certain origin
                             if (expectedOriginType != null && !remoteGreenCards.getAllOrigins()
