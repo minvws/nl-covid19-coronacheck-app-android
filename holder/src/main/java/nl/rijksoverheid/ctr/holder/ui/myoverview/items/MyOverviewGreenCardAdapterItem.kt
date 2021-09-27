@@ -8,7 +8,6 @@
 
 package nl.rijksoverheid.ctr.holder.ui.myoverview.items
 
-import android.content.res.Resources
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
