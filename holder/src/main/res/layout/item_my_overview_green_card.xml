@@ -28,7 +28,6 @@
                 android:id="@+id/imageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:src="@drawable/illustration_hand_qr_nl"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -164,6 +163,7 @@
         app:htmlText="@string/my_overview_green_card_server_error"
         app:layout_constraintTop_toBottomOf="@+id/test_result"
         app:layout_constraintStart_toEndOf="@id/error_icon"
+        app:layout_constraintEnd_toEndOf="parent"
         android:visibility="invisible"
         app:layout_goneMarginTop="32dp"
         tools:visibility="visible" />

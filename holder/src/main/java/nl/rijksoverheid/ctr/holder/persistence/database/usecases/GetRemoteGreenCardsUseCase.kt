@@ -30,7 +30,7 @@ class GetRemoteGreenCardsUseCaseImpl(
                     prepareIssueResult.response
                 }
                 is NetworkRequestResult.Failed -> {
-                    return RemoteGreenCardsResult.Error(prepareIssueResult)
+                    return RemoteGreenCardsResult.Error(NetworkRequestResult.Failed.ClientNetworkError(HolderStep.PrepareIssueNetworkRequest))
                 }
             }
 

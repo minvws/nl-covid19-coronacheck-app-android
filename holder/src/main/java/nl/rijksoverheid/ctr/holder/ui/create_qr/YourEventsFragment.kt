@@ -57,9 +57,15 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
 
     private val yourEventsViewModel: YourEventsViewModel by viewModel()
 
-    private val configProvidersUseCase: ConfigProvidersUseCase by inject()
+    override fun onButtonClickWithRetryTitle(): Int {
+        return R.string.my_overview
+    }
 
     override fun onButtonClickWithRetryAction() {
+        navigateSafety(YourEventsFragmentDirections.actionMyOverview())
+    }
+
+    private fun retrieveEvents() {
         when (val type = args.type) {
             is YourEventsFragmentType.TestResult2 -> {
                 yourEventsViewModel.saveNegativeTest2(
@@ -547,7 +553,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
 
     private fun handleButton(binding: FragmentYourEventsBinding) {
         binding.bottom.setButtonClick {
-            onButtonClickWithRetryAction()
+            retrieveEvents()
         }
     }
 
