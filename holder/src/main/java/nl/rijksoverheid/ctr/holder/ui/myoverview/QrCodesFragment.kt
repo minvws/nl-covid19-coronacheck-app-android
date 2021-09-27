@@ -136,7 +136,6 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
     private fun bindQrCodeDataList(qrCodeDataList: List<QrCodeData>) {
         qrCodePagerAdapter.addData(qrCodeDataList)
 
-        // TODO: Refactor and get animation data out of the QrCodeData object
         presentQrLoading(false)
 
         // Nullable so tests don't trip over parentFragment
