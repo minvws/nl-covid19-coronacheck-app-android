@@ -40,6 +40,7 @@ android {
                 "{" +
                         "\"sha256/lR7gRvqDMW5nhsCMRPE7TKLq0tJkTWMxQ5HAzHCIfQ0=\"" +
                         "}"
+        buildConfigField "String", "CDN_API_URL", "\"https://holder-api-cdn.coronacheck.nl/v5/\""
         manifestPlaceholders = [appLabel: "@string/app_name", deepLinkHost: "coronacheck.nl", digidSchema: "coronacheck"]
 
         javaCompileOptions {

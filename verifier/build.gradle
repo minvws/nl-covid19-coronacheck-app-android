@@ -37,6 +37,7 @@ android {
                 "{" +
                         "\"sha256/lR7gRvqDMW5nhsCMRPE7TKLq0tJkTWMxQ5HAzHCIfQ0=\"" +
                         "}"
+        buildConfigField "String", "CDN_API_URL", "\"https://verifier-api-cdn.coronacheck.nl/v5/\""
     }
 
     signingConfigs {

@@ -77,7 +77,7 @@ open class HolderApplication : SharedApplication(), Configuration.Provider {
                     BuildConfig.CERTIFICATE_PINS,
                 ),
                 sharedModule,
-                appConfigModule("holder", BuildConfig.VERSION_CODE),
+                appConfigModule(BuildConfig.CDN_API_URL,"holder", BuildConfig.VERSION_CODE),
                 introductionModule,
                 *getAdditionalModules().toTypedArray(),
                 designModule
