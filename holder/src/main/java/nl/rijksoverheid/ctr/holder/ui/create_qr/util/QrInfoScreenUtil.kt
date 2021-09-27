@@ -25,20 +25,15 @@ import java.time.format.DateTimeParseException
 import java.util.*
 
 interface QrInfoScreenUtil {
-
     fun getForDomesticQr(personalDetails: PersonalDetails): QrInfoScreen
-
     fun getForEuropeanTestQr(readEuropeanCredential: JSONObject): QrInfoScreen
-
     fun getForEuropeanVaccinationQr(readEuropeanCredential: JSONObject): QrInfoScreen
-
     fun getForEuropeanRecoveryQr(readEuropeanCredential: JSONObject): QrInfoScreen
-
-    fun getCountry(countryCode: String?, currentLocale: Locale?): String
 }
 
 class QrInfoScreenUtilImpl(
     private val application: Application,
+    private val readEuropeanCredentialUtil: ReadEuropeanCredentialUtil,
     cachedAppConfigUseCase: CachedAppConfigUseCase
 ) : QrInfoScreenUtil {
 
@@ -153,7 +148,7 @@ class QrInfoScreenUtilImpl(
         application.resources.configuration.locale
     }
 
-    override fun getCountry(
+    private fun getCountry(
         countryCode: String?,
         currentLocale: Locale?
     ): String = if (countryCode != null) {
@@ -213,14 +208,7 @@ class QrInfoScreenUtilImpl(
                 it.code == vaccination.getStringOrNull("ma")
             }?.name ?: vaccination.getStringOrNull("ma") ?: ""
 
-        val doses =
-            if (vaccination.getStringOrNull("dn") != null && vaccination.getStringOrNull("sd") != null) {
-                application.getString(
-                    R.string.your_vaccination_explanation_doses_answer,
-                    vaccination.getStringOrNull("dn"),
-                    vaccination.getStringOrNull("sd")
-                )
-            } else ""
+        val doses = readEuropeanCredentialUtil.getDosisForVaccination(readEuropeanCredential)
 
         val vaccinationDate = vaccination.getStringOrNull("dt")?.let { vaccinationDate ->
             try {
