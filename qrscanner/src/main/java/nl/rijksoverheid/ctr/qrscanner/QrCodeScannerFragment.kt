@@ -145,7 +145,7 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
         }
     }
 
-    private fun setupCamera() {
+    private fun setupCamera(lensFacing: Int = CameraSelector.LENS_FACING_BACK) {
         // make sure it's still added when coming back from a dialog
         if (!isAdded) {
             return
@@ -160,7 +160,7 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
 
         // Select camera to use, back facing camera by default
         val cameraSelector =
-            CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_BACK).build()
+            CameraSelector.Builder().requireLensFacing(lensFacing).build()
 
         // Request access to CameraX service. Will return a CameraProvider bound to the lifecycle of
         // our activity if one is available
@@ -254,7 +254,7 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
             throw illegalStateException
         } catch (illegalArgumentException: IllegalArgumentException) {
             Timber.e("Illegal argument, probably too many use cases linked to camera lifecycle, max is three: ${illegalArgumentException.message}")
-            throw illegalArgumentException
+            setupCamera(CameraSelector.LENS_FACING_FRONT)
         }
     }
 
@@ -305,7 +305,7 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
             throw illegalStateException
         } catch (illegalArgumentException: IllegalArgumentException) {
             Timber.e("Illegal argument, probably too many use cases linked to camera lifecycle, max is three: ${illegalArgumentException.message}")
-            throw illegalArgumentException
+            setupCamera(CameraSelector.LENS_FACING_FRONT)
         }
     }
 
