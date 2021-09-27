@@ -549,6 +549,12 @@ fun fakeClockDevationUseCase(
     }
 }
 
+fun fakeReadEuropeanCredentialUtil() = object: ReadEuropeanCredentialUtil {
+    override fun getDosisForVaccination(readEuropeanCredential: JSONObject): String {
+        return ""
+    }
+}
+
 val fakeGreenCardEntity = GreenCardEntity(
     id = 0,
     walletId = 1,
