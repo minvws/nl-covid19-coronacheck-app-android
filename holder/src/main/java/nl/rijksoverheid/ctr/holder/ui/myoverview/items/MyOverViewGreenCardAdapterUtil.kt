@@ -126,7 +126,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
 
         val becomesValidAutomatically = originStates.size == 1 &&
                 originStates.first() is OriginState.Future &&
-                showTimeFrom(originStates.first(), greenCard.greenCardEntity.type)
+                shouldShowTimeSubtitle(originStates.first(), greenCard.greenCardEntity.type)
         if (becomesValidAutomatically) {
             viewBinding.expiresIn.visibility = View.VISIBLE
             viewBinding.expiresIn.text = context.getString(R.string.qr_card_validity_future)
@@ -147,7 +147,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
         setOriginSubtitle(
             descriptionLayout = viewBinding.description,
             originState = originState,
-            showTime = showTimeFrom(originState, greenCardType),
+            showTime = shouldShowTimeSubtitle(originState, greenCardType),
             subtitle = context.getString(
                 R.string.qr_card_validity_valid,
                 origin.expirationTime.formatDateTime(context)
@@ -169,7 +169,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
         setOriginSubtitle(
             descriptionLayout = viewBinding.description,
             originState = originState,
-            showTime = showTimeFrom(originState, greenCardType),
+            showTime = shouldShowTimeSubtitle(originState, greenCardType),
             subtitle = context.getString(
                 R.string.qr_card_validity_future_from,
                 origin.validFrom.toLocalDate().formatDayMonthYear(),
@@ -192,7 +192,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
         setOriginSubtitle(
             descriptionLayout = viewBinding.description,
             originState = originState,
-            showTime = showTimeFrom(originState, greenCardType),
+            showTime = shouldShowTimeSubtitle(originState, greenCardType),
             subtitle = context.getString(
                 R.string.qr_card_validity_valid,
                 origin.expirationTime.toLocalDate().formatDayShortMonthYear()
@@ -228,7 +228,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
             // force a valid origin, as we need to allow the user to view the QR
             // and when is valid from, it depends from the country going to
             originState = OriginState.Valid(greenCard.origins.first()),
-            showTime = showTimeFrom(originState, greenCardType),
+            showTime = shouldShowTimeSubtitle(originState, greenCardType),
             subtitle = "${context.getString(R.string.qr_card_vaccination_title_eu)} ${
                 origin.eventTime.toLocalDate().formatDayMonthYear()
             }",
@@ -254,7 +254,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
         setOriginSubtitle(
             descriptionLayout = viewBinding.description,
             originState = originState,
-            showTime = showTimeFrom(originState, greenCardType),
+            showTime = shouldShowTimeSubtitle(originState, greenCardType),
             subtitle = "${context.getString(R.string.qr_card_test_title_eu)} ${
                 origin.eventTime.formatDateTime(
                     context
@@ -263,7 +263,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
         )
     }
 
-    private fun showTimeFrom(
+    private fun shouldShowTimeSubtitle(
         originState: OriginState,
         greenCardType: GreenCardType
     ) = originState.origin.type == OriginType.Recovery ||

@@ -107,7 +107,7 @@ class MyOverviewGreenCardAdapterItem(
     }
 
     /**
-     * Show a border if extra cards when item has additional items of the same type
+     * Show a border of extra cards when item has additional items of the same type
      *
      * @param[viewBinding] view binding containing binding of parent view group of green cards
      */
