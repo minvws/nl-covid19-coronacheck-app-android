@@ -17,7 +17,7 @@ import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAccessibilityFocus
  *
  */
 class QrCodePagerAdapter: RecyclerView.Adapter<QrCodeViewHolder>() {
-    private val qrCodeDataList: MutableList<QrCodeData> = mutableListOf()
+    val qrCodeDataList: MutableList<QrCodeData> = mutableListOf()
 
     fun addData(data: List<QrCodeData>) {
         qrCodeDataList.addAll(data)

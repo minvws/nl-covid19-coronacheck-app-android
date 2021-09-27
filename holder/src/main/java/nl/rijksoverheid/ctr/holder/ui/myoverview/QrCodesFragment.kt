@@ -19,6 +19,7 @@ import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentQrCodesBinding
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.QrInfoScreenUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeData
@@ -82,6 +83,7 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
         _binding = FragmentQrCodesBinding.bind(view)
 
         setupViewPager()
+        applyStyling()
 
         qrCodeViewModel.qrCodeDataListLiveData.observe(viewLifecycleOwner, ::bindQrCodeDataList)
         qrCodeViewModel.returnAppLivedata.observe(viewLifecycleOwner, ::returnToApp)
@@ -92,6 +94,17 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
     private fun setupViewPager() {
         qrCodePagerAdapter = QrCodePagerAdapter()
         binding.viewPager.adapter = qrCodePagerAdapter
+    }
+
+    private fun applyStyling() {
+        when (args.data.type) {
+            is GreenCardType.Domestic -> {
+                binding.animation.setWidget(R.raw.skatefiets2)
+            }
+            is GreenCardType.Eu -> {
+                binding.animation.setWidget(R.raw.moving_walkway)
+            }
+        }
     }
 
     private fun returnToApp(externalReturnAppData: ExternalReturnAppData?) {
@@ -124,8 +137,6 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
         qrCodePagerAdapter.addData(qrCodeDataList)
 
         // TODO: Refactor and get animation data out of the QrCodeData object
-        val qrCodeData = qrCodeDataList.first()
-        binding.animation.setWidget(qrCodeData.animationResource, qrCodeData.backgroundResource)
         presentQrLoading(false)
 
         // Nullable so tests don't trip over parentFragment
@@ -135,6 +146,7 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
                     inflateMenu(R.menu.my_qr_toolbar)
 
                     setOnMenuItemClickListener {
+                        val qrCodeData = qrCodePagerAdapter.qrCodeDataList.get(binding.viewPager.currentItem)
                         if (it.itemId == R.id.action_show_qr_explanation) {
                             when (qrCodeData) {
                                 is QrCodeData.Domestic -> {

@@ -36,18 +36,14 @@ class QrCodeDataUseCaseImpl(private val qrCodeUseCase: QrCodeUseCase,
             is GreenCardType.Domestic -> {
                 QrCodeData.Domestic(
                     bitmap = qrCodeBitmap,
-                    readDomesticCredential = mobileCoreWrapper.readDomesticCredential(credential),
-                    animationResource = R.raw.skatefiets2,
-                    backgroundResource = null
+                    readDomesticCredential = mobileCoreWrapper.readDomesticCredential(credential)
                 )
             }
 
             is GreenCardType.Eu -> {
                 QrCodeData.European(
                     bitmap = qrCodeBitmap,
-                    readEuropeanCredential = mobileCoreWrapper.readEuropeanCredential(credential),
-                    animationResource = R.raw.moving_walkway,
-                    backgroundResource = null
+                    readEuropeanCredential = mobileCoreWrapper.readEuropeanCredential(credential)
                 )
             }
         }
