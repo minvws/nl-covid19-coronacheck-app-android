@@ -157,11 +157,11 @@ class HolderMainFragment : BaseMainFragment(
     private fun navigationDrawerStyling() {
         val context = binding.navView.context
         binding.navView.menu.findItem(R.id.nav_graph_overview)
-            .styleTitle(context, R.attr.textAppearanceHeadline6)
+            .styleTitle(context, R.attr.textAppearanceHeadline6, heading = true)
         binding.navView.menu.findItem(R.id.nav_settings)
-            .styleTitle(context, R.attr.textAppearanceHeadline6)
+            .styleTitle(context, R.attr.textAppearanceHeadline6, heading = true)
         binding.navView.menu.findItem(R.id.nav_qr_code_type)
-            .styleTitle(context, R.attr.textAppearanceHeadline6)
+            .styleTitle(context, R.attr.textAppearanceHeadline6, heading = true)
         binding.navView.menu.findItem(R.id.nav_about_this_app)
             .styleTitle(context, R.attr.textAppearanceBody1)
         binding.navView.menu.findItem(R.id.nav_frequently_asked_questions)
