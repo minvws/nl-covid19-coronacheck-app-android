@@ -97,6 +97,7 @@ android {
                     "{" +
                             "\"sha256/lR7gRvqDMW5nhsCMRPE7TKLq0tJkTWMxQ5HAzHCIfQ0=\"" +
                             "}"
+            buildConfigField "String", "CDN_API_URL", "\"https://holder-api-cdn.acc.coronacheck.nl/v5/\""
             dimension "environment"
             versionNameSuffix "-acc"
             applicationIdSuffix ".acc"
