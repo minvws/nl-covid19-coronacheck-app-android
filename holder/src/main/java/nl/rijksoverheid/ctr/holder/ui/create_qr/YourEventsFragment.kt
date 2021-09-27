@@ -26,7 +26,6 @@ import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.items.YourEventWidget
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.ConfigProvidersUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.InfoScreenUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.RemoteEventUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.RemoteProtocol3Util
@@ -65,7 +64,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         navigateSafety(YourEventsFragmentDirections.actionMyOverview())
     }
 
-    private fun retrieveEvents() {
+    private fun retrieveGreenCards() {
         when (val type = args.type) {
             is YourEventsFragmentType.TestResult2 -> {
                 yourEventsViewModel.saveNegativeTest2(
@@ -553,7 +552,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
 
     private fun handleButton(binding: FragmentYourEventsBinding) {
         binding.bottom.setButtonClick {
-            retrieveEvents()
+            retrieveGreenCards()
         }
     }
 
