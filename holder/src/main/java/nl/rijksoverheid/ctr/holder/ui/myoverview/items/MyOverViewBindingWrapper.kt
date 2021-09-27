@@ -12,12 +12,16 @@ import nl.rijksoverheid.ctr.holder.databinding.ItemMyOverviewGreenCardBinding
  *
  */
 interface ViewBindingWrapper {
+    val title: TextView
     val description: LinearLayout
     val expiresIn: TextView
 }
 
 class ViewBindingWrapperImpl(private val viewBinding: ItemMyOverviewGreenCardBinding) :
     ViewBindingWrapper {
+
+    override val title: TextView
+        get() = viewBinding.title
 
     override val description: LinearLayout
         get() = viewBinding.description

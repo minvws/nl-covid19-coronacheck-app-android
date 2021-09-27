@@ -43,28 +43,15 @@
                     tools:src="@drawable/illustration_hand_qr_nl" />
 
                 <TextView
-                    android:id="@+id/type_title"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:text="@string/validity_type_dutch_title"
-                    android:textAppearance="?attr/textAppearanceBody1"
-                    android:textColor="@color/primary_blue"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toStartOf="@+id/imageView"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
                     android:id="@+id/title"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="@string/my_overview_test_result_title"
+                    tools:text="@string/my_overview_test_result_title"
                     android:textAppearance="?attr/textAppearanceHeadline6"
-                    app:layout_constraintEnd_toEndOf="@+id/type_title"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/type_title" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <LinearLayout
                     android:id="@+id/description"

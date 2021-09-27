@@ -55,17 +55,30 @@ class MyOverViewGreenCardAdapterUtilImpl(
                     val originState = originStates.first()
                     val origin = originState.origin
                     when (origin.type) {
-                        is OriginType.Test -> setEuTestOrigin(
-                            viewBinding, it, originState, greenCardType, origin
-                        )
-                        is OriginType.Vaccination -> setEuVaccinationOrigin(
-                            viewBinding, it, originState, greenCardType, origin
-                        )
-                        is OriginType.Recovery ->
+                        is OriginType.Test -> {
+                            viewBinding.title.text =
+                                context.getString(R.string.my_overview_test_result_title)
+                            setEuTestOrigin(
+                                viewBinding, it, originState, greenCardType, origin
+                            )
+                        }
+                        is OriginType.Vaccination -> {
+                            viewBinding.title.text =
+                                context.getString(R.string.my_overview_green_card_vaccination_title)
+                            setEuVaccinationOrigin(
+                                viewBinding, it, originState, greenCardType, origin
+                            )
+                        }
+                        is OriginType.Recovery -> {
+                            viewBinding.title.text =
+                                context.getString(R.string.my_overview_test_result_title)
                             setRecoveryOrigin(viewBinding, originState, greenCardType, origin)
+                        }
                     }
                 }
                 is GreenCardType.Domestic -> {
+                    viewBinding.title.text =
+                        context.getString(R.string.my_overview_test_result_title)
                     originStates
                         .sortedBy { state -> state.origin.type.order }
                         .forEach { originState ->

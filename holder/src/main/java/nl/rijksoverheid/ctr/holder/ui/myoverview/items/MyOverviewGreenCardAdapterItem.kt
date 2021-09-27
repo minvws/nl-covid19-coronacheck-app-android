@@ -62,18 +62,10 @@ class MyOverviewGreenCardAdapterItem(
         val context = viewBinding.root.context
         when (greenCard.greenCardEntity.type) {
             is GreenCardType.Eu -> {
-                viewBinding.typeTitle.apply {
-                    text = context.getString(R.string.validity_type_european_title)
-                    setTextColor(ContextCompat.getColor(context, R.color.primary_blue))
-                }
                 viewBinding.buttonWithProgressWidgetContainer.setEnabledButtonColor(R.color.primary_blue)
                 viewBinding.imageView.setImageResource(R.drawable.ic_international_card)
             }
             is GreenCardType.Domestic -> {
-                viewBinding.typeTitle.apply {
-                    text = context.getString(R.string.validity_type_dutch_title)
-                    setTextColor(ContextCompat.getColor(context, R.color.primary_blue))
-                }
                 viewBinding.buttonWithProgressWidgetContainer.setEnabledButtonColor(R.color.primary_blue)
                 viewBinding.imageView.setImageResource(R.drawable.ic_dutch_card)
             }
