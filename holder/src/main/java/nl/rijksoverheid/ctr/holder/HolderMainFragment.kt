@@ -9,11 +9,14 @@
 package nl.rijksoverheid.ctr.holder
 
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.IdRes
 import androidx.annotation.StringRes
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
@@ -41,6 +44,8 @@ class HolderMainFragment : BaseMainFragment(
     private val binding get() = _binding!!
     private var _navController : NavController? = null
     private val navController get() = _navController!!
+
+    private lateinit var defaultDrawerLayoutParams: DrawerLayout.LayoutParams
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -116,6 +121,8 @@ class HolderMainFragment : BaseMainFragment(
 
         navigationDrawerStyling()
 
+        defaultDrawerLayoutParams = binding.navView.layoutParams as DrawerLayout.LayoutParams
+
         // Close Navigation Drawer when pressing back if it's open
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object :
             OnBackPressedCallback(true) {
@@ -128,6 +135,21 @@ class HolderMainFragment : BaseMainFragment(
                 }
             }
         })
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        // detect if user has upscaled the font size via accessibility settings
+        // and make the drawer menu wider in this case only
+        binding.navView.layoutParams = if (resources.configuration.fontScale > 1.0f) {
+            val width = activity?.resources?.displayMetrics?.widthPixels ?: return
+            val layoutParams = binding.navView.layoutParams as DrawerLayout.LayoutParams
+            layoutParams.width = (0.9 * width).toInt()
+            layoutParams
+        } else {
+            defaultDrawerLayoutParams
+        }
     }
 
     override fun onDestroyView() {
