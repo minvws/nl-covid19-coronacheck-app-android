@@ -254,6 +254,8 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
             throw illegalStateException
         } catch (illegalArgumentException: IllegalArgumentException) {
             Timber.e("Illegal argument, probably too many use cases linked to camera lifecycle, max is three: ${illegalArgumentException.message}")
+            // back camera failed to be used, try also the front one; it
+            // seems that some scanner devices report it instead
             setupCamera(CameraSelector.LENS_FACING_FRONT)
         }
     }
