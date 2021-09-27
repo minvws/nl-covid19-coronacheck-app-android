@@ -21,10 +21,7 @@ import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
-import java.time.Clock
-import java.time.Instant
-import java.time.OffsetDateTime
-import java.time.ZoneId
+import java.time.*
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -118,10 +115,10 @@ class MyOverViewGreenCardAdapterUtilImplTest: AutoCloseKoinTest() {
     @Test
     fun domesticVaccinationFuture() {
         val greenCard = greenCard(GreenCardType.Domestic, OriginType.Vaccination)
-        myOverViewGreenCardAdapterUtil.setContent(viewBinding, greenCard, listOf(OriginState.Valid(greenCard.origins.first())))
+        myOverViewGreenCardAdapterUtil.setContent(viewBinding, greenCard, listOf(OriginState.Future(greenCard.origins.first())))
 
         assertEquals("Vaccinatiebewijs:", (viewBinding.description.getChildAt(0) as TextView).text)
-        assertEquals("geldig vanaf 27 juli 2021   ", (viewBinding.description.getChildAt(1) as TextView).text)
+        assertEquals("geldig vanaf 27 juli 11:11   ", (viewBinding.description.getChildAt(1) as TextView).text)
         assertEquals("Wordt automatisch geldig", viewBinding.expiresIn.text)
         assertEquals(View.VISIBLE, viewBinding.expiresIn.visibility)
     }
@@ -139,10 +136,10 @@ class MyOverViewGreenCardAdapterUtilImplTest: AutoCloseKoinTest() {
     @Test
     fun europeanRecoveryFuture() {
         val greenCard = greenCard(GreenCardType.Eu, OriginType.Recovery)
-        myOverViewGreenCardAdapterUtil.setContent(viewBinding, greenCard, listOf(OriginState.Valid(greenCard.origins.first())))
+        myOverViewGreenCardAdapterUtil.setContent(viewBinding, greenCard, listOf(OriginState.Future(greenCard.origins.first())))
 
         assertEquals("Herstelbewijs:", (viewBinding.description.getChildAt(0) as TextView).text)
-        assertEquals("geldig vanaf 27 juli 2021 t/m 28 juli 2021", (viewBinding.description.getChildAt(1) as TextView).text)
+        assertEquals("geldig vanaf 27 juli 11:11 t/m 28 juli 2021", (viewBinding.description.getChildAt(1) as TextView).text)
         assertEquals(View.VISIBLE, viewBinding.expiresIn.visibility)
     }
 
@@ -159,10 +156,10 @@ class MyOverViewGreenCardAdapterUtilImplTest: AutoCloseKoinTest() {
     @Test
     fun domesticRecoveryFuture() {
         val greenCard = greenCard(GreenCardType.Domestic, OriginType.Recovery)
-        myOverViewGreenCardAdapterUtil.setContent(viewBinding, greenCard, listOf(OriginState.Valid(greenCard.origins.first())))
+        myOverViewGreenCardAdapterUtil.setContent(viewBinding, greenCard, listOf(OriginState.Future(greenCard.origins.first())))
 
         assertEquals("Herstelbewijs:", (viewBinding.description.getChildAt(0) as TextView).text)
-        assertEquals("geldig vanaf 27 juli 2021 t/m 28 juli 2021", (viewBinding.description.getChildAt(1) as TextView).text)
+        assertEquals("geldig vanaf 27 juli 11:11 t/m 28 juli 2021", (viewBinding.description.getChildAt(1) as TextView).text)
         assertEquals(View.VISIBLE, viewBinding.expiresIn.visibility)
     }
 
