@@ -25,6 +25,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.QrInfoScreenUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeData
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.ExternalReturnAppData
+import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodesResult
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import org.koin.android.ext.android.inject
@@ -132,14 +133,18 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
         }
     }
 
-    private fun bindQrCodeDataList(qrCodeDataList: List<QrCodeData>) {
-        qrCodePagerAdapter.addData(qrCodeDataList)
-        presentQrLoading(false)
-
-        val europeanVaccinations = qrCodeDataList.filterIsInstance(QrCodeData.European.Vaccination::class.java)
-        if (europeanVaccinations.isNotEmpty()) {
-            setupEuropeanVaccinationQr(europeanVaccinations)
+    private fun bindQrCodeDataList(qrCodesResult: QrCodesResult) {
+        when (qrCodesResult) {
+            is QrCodesResult.SingleQrCode -> {
+                qrCodePagerAdapter.addData(listOf(qrCodesResult.qrCodeData))
+            }
+            is QrCodesResult.MultipleQrCodes -> {
+                qrCodePagerAdapter.addData(qrCodesResult.europeanVaccinationQrCodeDataList)
+                setupEuropeanVaccinationQr(qrCodesResult.europeanVaccinationQrCodeDataList)
+            }
         }
+
+        presentQrLoading(false)
 
         // Nullable so tests don't trip over parentFragment
         (parentFragment?.parentFragment as HolderMainFragment?)?.getToolbar().let { toolbar ->
