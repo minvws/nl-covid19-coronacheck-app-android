@@ -47,9 +47,12 @@ class MyOverViewGreenCardAdapterUtilImplTest: AutoCloseKoinTest() {
 
     private val viewBinding = object: ViewBindingWrapper {
 
+        private val titleText: TextView = TextView(context)
         private val layout = LinearLayout(context)
         private val lastText = TextView(context)
 
+        override val title: TextView
+            get() = titleText
         override val description: LinearLayout
             get() = layout
         override val expiresIn: TextView
