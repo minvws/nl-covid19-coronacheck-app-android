@@ -10,41 +10,42 @@ import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeData
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.ExternalReturnAppData
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.ReturnToExternalAppUseCase
 
-abstract class QrCodeViewModel : ViewModel() {
-    val qrCodeDataLiveData = MutableLiveData<QrCodeData>()
+abstract class QrCodesViewModel : ViewModel() {
+    val qrCodeDataListLiveData = MutableLiveData<List<QrCodeData>>()
     val returnAppLivedata = MutableLiveData<ExternalReturnAppData>()
-    abstract fun generateQrCode(
+    abstract fun generateQrCodes(
         type: GreenCardType,
         size: Int,
-        credential: ByteArray,
+        credentials: List<ByteArray>,
         shouldDisclose: Boolean
     )
 
     abstract fun onReturnUriGiven(uri: String, type: GreenCardType)
 }
 
-class QrCodeViewModelImpl(
+class QrCodesViewModelImpl(
     private val qrCodeDataUseCase: QrCodeDataUseCase,
     private val returnToExternalAppUseCase: ReturnToExternalAppUseCase
-) : QrCodeViewModel() {
+) : QrCodesViewModel() {
 
-    override fun generateQrCode(
+    override fun generateQrCodes(
         type: GreenCardType,
         size: Int,
-        credential: ByteArray,
+        credentials: List<ByteArray>,
         shouldDisclose: Boolean
     ) {
 
         viewModelScope.launch {
-            val qrCodeData = qrCodeDataUseCase.getQrCodeData(
-                greenCardType = type,
-                credential = credential,
-                qrCodeWidth = size,
-                qrCodeHeight = size,
-                shouldDisclose = shouldDisclose
-            )
-
-            qrCodeDataLiveData.postValue(qrCodeData)
+            val qrCodeDataList = credentials.map {
+                qrCodeDataUseCase.getQrCodeData(
+                    greenCardType = type,
+                    credential = it,
+                    qrCodeWidth = size,
+                    qrCodeHeight = size,
+                    shouldDisclose = shouldDisclose
+                )
+            }
+            qrCodeDataListLiveData.postValue(qrCodeDataList)
         }
     }
 
