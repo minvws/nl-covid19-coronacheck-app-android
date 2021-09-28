@@ -334,6 +334,5 @@ class MyOverViewGreenCardAdapterUtilImpl(
                 )
             }
         )
-        descriptionLayout.addView(Space(context))
     }
 }

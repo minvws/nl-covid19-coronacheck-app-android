@@ -181,21 +181,46 @@ class MyOverViewGreenCardAdapterUtilImplTest: AutoCloseKoinTest() {
         assertEquals("Verloopt in 1 uur 1 min", viewBinding.expiresIn.text)
     }
 
-    private fun greenCard(greenCardType: GreenCardType, originType: OriginType = OriginType.Test, expiringSoon: Boolean = false): GreenCard {
+    @Test
+    fun `Title should be specific for EU vaccination card`() {
+
+    }
+
+    @Test
+    fun `Title should be generic for green cards except EU vaccination`() {
+
+    }
+
+    @Test
+    fun `Additional cards of the same type should be shown in the description`() {
+        every { credentialUtil.getVaccinationDosesForEuropeanCredentials(any(), any()) } returns "dosis 2 van 2"
+        val greenCard = greenCard(GreenCardType.Eu, OriginType.Vaccination)
+        myOverViewGreenCardAdapterUtil.setContent(
+            viewBinding = viewBinding,
+            greenCard = greenCard,
+            originStates = listOf(OriginState.Valid(greenCard.origins.first())),
+            additionalGreenCards = listOf(greenCard, greenCard)
+        )
+
+        assertEquals("Vaccinatiebewijs: dosis 2 van 2", (viewBinding.description.getChildAt(0) as TextView).text)
+        assertEquals("Vaccinatiedatum: 27 juli 2021", (viewBinding.description.getChildAt(1) as TextView).text)
+        assertEquals("Vaccinatiebewijs: dosis 2 van 2", (viewBinding.description.getChildAt(2) as TextView).text)
+        assertEquals("Vaccinatiedatum: 27 juli 2021", (viewBinding.description.getChildAt(3) as TextView).text)
+        assertEquals("Vaccinatiebewijs: dosis 2 van 2", (viewBinding.description.getChildAt(4) as TextView).text)
+        assertEquals("Vaccinatiedatum: 27 juli 2021", (viewBinding.description.getChildAt(5) as TextView).text)
+    }
+
+    private fun greenCard(
+        greenCardType: GreenCardType,
+        originType: OriginType = OriginType.Test,
+        credentialEntity: CredentialEntity = credentialEntity()
+    ): GreenCard {
         // 2021-07-27T09:10Z
         val eventTime = OffsetDateTime.now(Clock.fixed(Instant.ofEpochSecond(1627377000), ZoneId.of("UTC")))
         // 2021-07-27T09:11:40Z
         val validFrom = OffsetDateTime.now(Clock.fixed(Instant.ofEpochSecond(1627377100), ZoneId.of("UTC")))
         // 2021-07-28T21:06:20Z
         val expirationTime = OffsetDateTime.now(Clock.fixed(Instant.ofEpochSecond(1627499200), ZoneId.of("UTC")))
-        val credentialEntity = CredentialEntity(
-            id = 1,
-            greenCardId = 1,
-            data = "".toByteArray(),
-            credentialVersion = 2,
-            validFrom = validFrom,
-            expirationTime = expirationTime,
-        )
 
         val originEntity = OriginEntity(
             id = 1,
@@ -218,4 +243,17 @@ class MyOverViewGreenCardAdapterUtilImplTest: AutoCloseKoinTest() {
 
         return greenCard
     }
+
+    private fun credentialEntity(
+        id: Long = 1L,
+        validFrom: OffsetDateTime = OffsetDateTime.now(Clock.fixed(Instant.ofEpochSecond(1627377100), ZoneId.of("UTC"))),
+        expirationTime: OffsetDateTime = OffsetDateTime.now(Clock.fixed(Instant.ofEpochSecond(1627499200), ZoneId.of("UTC"))),
+    ) = CredentialEntity(
+        id = id,
+        greenCardId = 1,
+        data = "".toByteArray(),
+        credentialVersion = 2,
+        validFrom = validFrom,
+        expirationTime = expirationTime,
+    )
 }
