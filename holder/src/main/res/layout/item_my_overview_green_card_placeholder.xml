@@ -20,6 +20,16 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="@string/my_overview_qr_placeholder_description" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button"
+        style="?attr/borderlessButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginTop="16dp"
+        android:textAlignment="viewStart"
+        android:visibility="gone"/>
+
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/make_appointment_card"
         android:layout_width="match_parent"

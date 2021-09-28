@@ -10,6 +10,8 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.PaperProofQrScannerV
 import nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.PaperProofQrScannerViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModel
 import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModelImpl
+import nl.rijksoverheid.ctr.holder.ui.device_secure.DeviceSecureViewModel
+import nl.rijksoverheid.ctr.holder.ui.device_secure.DeviceSecureViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.*
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -25,22 +27,13 @@ val viewModels = module {
     viewModel<QrCodeViewModel> { QrCodeViewModelImpl(get(), get()) }
     viewModel<HolderMainActivityViewModel> { HolderMainActivityViewModelImpl() }
     viewModel<CommercialTestCodeViewModel> { CommercialTestCodeViewModelImpl(get(), get()) }
-    viewModel { DigiDViewModel(get()) }
+    viewModel { DigiDViewModel(get(), get()) }
     viewModel { TokenQrViewModel(get()) }
     viewModel<DeviceRootedViewModel> { DeviceRootedViewModelImpl(get(), get()) }
+    viewModel<DeviceSecureViewModel> { DeviceSecureViewModelImpl(get(), get()) }
     viewModel<YourEventsViewModel> { YourEventsViewModelImpl(get(), get()) }
-    viewModel<MyOverviewViewModel> {
-        MyOverviewViewModelImpl(
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get()
-        )
-    }
-    viewModel<MyOverviewTabsViewModel> { MyOverviewTabsViewModelImpl(get()) }
     viewModel<GetEventsViewModel> { GetEventsViewModelImpl(get()) }
     viewModel<PaperProofCodeViewModel> { PaperProofCodeViewModelImpl(get(), get()) }
     viewModel<PaperProofQrScannerViewModel> { PaperProofQrScannerViewModelImpl(get()) }
+    viewModel<DashboardViewModel> { DashboardViewModelImpl(get(), get(), get(), get()) }
 }

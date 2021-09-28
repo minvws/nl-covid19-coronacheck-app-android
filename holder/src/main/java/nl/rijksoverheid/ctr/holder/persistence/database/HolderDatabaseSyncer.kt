@@ -4,11 +4,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
-import nl.rijksoverheid.ctr.holder.HolderStep
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
-import nl.rijksoverheid.ctr.shared.models.AppErrorResult
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 
@@ -33,7 +31,8 @@ class HolderDatabaseSyncerImpl(
     private val holderDatabase: HolderDatabase,
     private val greenCardUtil: GreenCardUtil,
     private val getRemoteGreenCardsUseCase: GetRemoteGreenCardsUseCase,
-    private val syncRemoteGreenCardsUseCase: SyncRemoteGreenCardsUseCase
+    private val syncRemoteGreenCardsUseCase: SyncRemoteGreenCardsUseCase,
+    private val removeExpiredEventsUseCase: RemoveExpiredEventsUseCase
 ) : HolderDatabaseSyncer {
 
     private val mutex = Mutex()
@@ -45,6 +44,11 @@ class HolderDatabaseSyncerImpl(
         return withContext(Dispatchers.IO) {
             mutex.withLock {
                 val events = holderDatabase.eventGroupDao().getAll()
+
+                // Clean up expired events in the database
+                removeExpiredEventsUseCase.execute(
+                    events = events
+                )
 
                 // Sync with remote
                 if (syncWithRemote && events.isNotEmpty()) {
@@ -81,7 +85,7 @@ class HolderDatabaseSyncerImpl(
                             val greenCards = holderDatabase.greenCardDao().getAll()
 
                             when (remoteGreenCardsResult.errorResult) {
-                                is NetworkRequestResult.Failed.NetworkError -> {
+                                is NetworkRequestResult.Failed.ClientNetworkError, is NetworkRequestResult.Failed.ServerNetworkError -> {
                                     DatabaseSyncerResult.Failed.NetworkError(
                                         errorResult = remoteGreenCardsResult.errorResult,
                                         hasGreenCardsWithoutCredentials = greenCards
@@ -113,6 +117,7 @@ sealed class DatabaseSyncerResult {
     object Loading : DatabaseSyncerResult()
     object Success : DatabaseSyncerResult()
     object MissingOrigin : DatabaseSyncerResult()
+
     sealed class Failed(open val errorResult: ErrorResult): DatabaseSyncerResult() {
         data class NetworkError(override val errorResult: ErrorResult, val hasGreenCardsWithoutCredentials: Boolean): Failed(errorResult)
         data class ServerError(override val errorResult: ErrorResult): Failed(errorResult)

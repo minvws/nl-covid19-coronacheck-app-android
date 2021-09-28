@@ -98,10 +98,13 @@ class GetEventsUseCaseImplTest {
         coEvery { getRemoteEventsUseCase.getRemoteEvents(provider1, any(), any()) } returns RemoteEventsResult.Success(signedModel1)
         coEvery { getRemoteEventsUseCase.getRemoteEvents(provider2, any(), any()) } returns RemoteEventsResult.Success(signedModel2)
 
+        coEvery { configProvidersUseCase.eventProviders() } returns EventProvidersResult.Success(
+            emptyList())
+
         val eventsResult = getEvents()
 
         assertEquals(
-            EventsResult.Success(listOf(signedModel1, signedModel2), false),
+            EventsResult.Success(listOf(signedModel1, signedModel2), false, emptyList()),
             eventsResult
         )
     }
@@ -116,10 +119,13 @@ class GetEventsUseCaseImplTest {
         val httpError = httpError()
         coEvery { getRemoteEventsUseCase.getRemoteEvents(provider2, any(), any()) } returns RemoteEventsResult.Error(httpError)
 
+        coEvery { configProvidersUseCase.eventProviders() } returns EventProvidersResult.Success(
+            emptyList())
+
         val eventsResult = getEvents()
 
         assertEquals(
-            EventsResult.Success(listOf(signedModel1), true),
+            EventsResult.Success(listOf(signedModel1), true, emptyList()),
             eventsResult
         )
     }

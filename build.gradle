@@ -45,7 +45,7 @@ buildscript {
     ext.barista_version = '3.9.0'
     ext.crashlytics_version = '17.3.1'
     ext.androidx_arch_core_version = '2.1.0'
-    ext.app_auth_version = '0.8.1'
+    ext.app_auth_version = '0.10.0'
     ext.security_crypto_version = '1.0.0'
     ext.rootbeer_version = '0.0.9'
     ext.room_version = '2.3.0'

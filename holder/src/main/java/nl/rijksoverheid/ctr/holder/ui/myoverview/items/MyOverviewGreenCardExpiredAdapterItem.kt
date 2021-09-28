@@ -5,6 +5,7 @@ import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.ItemMyOverviewGreenCardExpiredBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -14,13 +15,13 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
  *
  */
 class MyOverviewGreenCardExpiredAdapterItem(
-    private val greenCardType: GreenCardType,
-    private val onDismissClick: (item: BindableItem<*>) -> Unit
+    private val greenCard: GreenCard,
+    private val onDismissClick: (item: BindableItem<*>, greenCard: GreenCard) -> Unit
 ) :
     BindableItem<ItemMyOverviewGreenCardExpiredBinding>(R.layout.item_my_overview_green_card_expired.toLong()) {
     override fun bind(viewBinding: ItemMyOverviewGreenCardExpiredBinding, position: Int) {
         viewBinding.close.setOnClickListener {
-            onDismissClick.invoke(this)
+            onDismissClick.invoke(this, greenCard)
         }
     }
 

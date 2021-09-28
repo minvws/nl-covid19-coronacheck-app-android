@@ -6,6 +6,7 @@ import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.shared.models.CoronaCheckErrorResponse
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import nl.rijksoverheid.ctr.shared.models.Step
+import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import okhttp3.mockwebserver.MockResponse
@@ -25,7 +26,7 @@ class NetworkRequestResultFactoryTest {
     private val TestStep = Step(1)
     private lateinit var mockWebServer: MockWebServer
     private lateinit var testApi: TestApi
-    private lateinit var networkRequestResultFactory: NetworkRequestResultFactory
+    private lateinit var converter: Converter<ResponseBody, CoronaCheckErrorResponse>
 
     @Before
     fun setup() {
@@ -38,11 +39,8 @@ class NetworkRequestResultFactoryTest {
             .baseUrl(mockWebServer.url("/"))
             .addConverterFactory(MoshiConverterFactory.create(Moshi.Builder().build()))
             .build()
-        val converter: Converter<ResponseBody, CoronaCheckErrorResponse> = retrofit.responseBodyConverter(
-            CoronaCheckErrorResponse::class.java, emptyArray()
-        )
+        converter = retrofit.responseBodyConverter(CoronaCheckErrorResponse::class.java, emptyArray())
         testApi = retrofit.create(TestApi::class.java)
-        networkRequestResultFactory = NetworkRequestResultFactory(converter)
     }
 
     @Test
@@ -52,6 +50,8 @@ class NetworkRequestResultFactoryTest {
                 .setBody("{\"hello\":\"world\"}")
                 .setResponseCode(200)
         )
+
+        val networkRequestResultFactory = NetworkRequestResultFactory(converter, getAndroidUtil(true))
 
         val result = networkRequestResultFactory.createResult(
             TestStep
@@ -70,6 +70,8 @@ class NetworkRequestResultFactoryTest {
                 .setResponseCode(404)
         )
 
+        val networkRequestResultFactory = NetworkRequestResultFactory(converter, getAndroidUtil(true))
+
         val result = networkRequestResultFactory.createResult(
             TestStep
         ) {
@@ -86,6 +88,8 @@ class NetworkRequestResultFactoryTest {
                 .setBody("{\"hello\":\"world\"}")
                 .setResponseCode(404)
         )
+
+        val networkRequestResultFactory = NetworkRequestResultFactory(converter, getAndroidUtil(true))
 
         val result = networkRequestResultFactory.createResult(
             step = TestStep,
@@ -105,6 +109,8 @@ class NetworkRequestResultFactoryTest {
                 .setResponseCode(404)
         )
 
+        val networkRequestResultFactory = NetworkRequestResultFactory(converter, getAndroidUtil(true))
+
         val result = networkRequestResultFactory.createResult(
             TestStep
         ) {
@@ -123,13 +129,15 @@ class NetworkRequestResultFactoryTest {
                 .setSocketPolicy(SocketPolicy.NO_RESPONSE)
         )
 
+        val networkRequestResultFactory = NetworkRequestResultFactory(converter, getAndroidUtil(true))
+
         val result = networkRequestResultFactory.createResult(
             TestStep
         ) {
             testApi.request()
         }
 
-        assertTrue(result is NetworkRequestResult.Failed.NetworkError)
+        assertTrue(result is NetworkRequestResult.Failed.ServerNetworkError)
     }
 
     @Test
@@ -140,6 +148,8 @@ class NetworkRequestResultFactoryTest {
                 .setResponseCode(200)
         )
 
+        val networkRequestResultFactory = NetworkRequestResultFactory(converter, getAndroidUtil(true))
+
         val result = networkRequestResultFactory.createResult(
             TestStep
         ) {
@@ -149,6 +159,25 @@ class NetworkRequestResultFactoryTest {
         assertTrue(result is NetworkRequestResult.Failed.Error)
     }
 
+    @Test
+    fun `createResult returns ClientServerError if no internet connection`() = runBlocking {
+        mockWebServer.enqueue(
+            MockResponse()
+                .setBody("{\"world\":\"hello\"}")
+                .setResponseCode(200)
+        )
+
+        val networkRequestResultFactory = NetworkRequestResultFactory(converter, getAndroidUtil(false))
+
+        val result = networkRequestResultFactory.createResult(
+            TestStep
+        ) {
+            testApi.request()
+        }
+
+        assertTrue(result is NetworkRequestResult.Failed.ClientNetworkError)
+    }
+
     interface TestApi {
         @GET("/")
         suspend fun request(): TestObject
@@ -156,4 +185,24 @@ class NetworkRequestResultFactoryTest {
 
     @JsonClass(generateAdapter = true)
     data class TestObject(val hello: String)
+
+    private fun getAndroidUtil(isNetworkAvailable: Boolean): AndroidUtil {
+        return object: AndroidUtil {
+            override fun isSmallScreen(): Boolean {
+                return false
+            }
+
+            override fun getMasterKeyAlias(): String {
+                return ""
+            }
+
+            override fun isFirstInstall(): Boolean {
+                return true
+            }
+
+            override fun isNetworkAvailable(): Boolean {
+                return isNetworkAvailable
+            }
+        }
+    }
 }

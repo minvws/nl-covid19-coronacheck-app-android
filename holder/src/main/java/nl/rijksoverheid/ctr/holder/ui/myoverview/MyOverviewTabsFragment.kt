@@ -2,50 +2,31 @@ package nl.rijksoverheid.ctr.holder.ui.myoverview
 
 import android.graphics.Typeface
 import android.os.Bundle
-import android.view.LayoutInflater
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
-import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
+import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentTabsMyOverviewBinding
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
-import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewFragment.Companion.GREEN_CARD_TYPE
-import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewFragment.Companion.RETURN_URI
-import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewTabsFragment.Companion.positionTabsMap
+import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
+import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardTabItem
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
+import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-
-/**
- * viewpager adapter to house green card overviews for domestic and European.
- *
- * @param[fragment] Tabs fragment with viewpager where the overviews are nested within.
- * @param[returnToExternalAppUri] Uri used to return to external app from which it was deep linked from.
- */
-class TabPagesAdapter(fragment: Fragment, private val returnToExternalAppUri: String?) :
-    FragmentStateAdapter(fragment) {
-
-    override fun getItemCount(): Int = 2
-
-    override fun createFragment(position: Int): Fragment {
-        val fragment = MyOverviewFragment()
-        fragment.arguments = Bundle().apply {
-            putParcelable(GREEN_CARD_TYPE, positionTabsMap[position])
-            putString(RETURN_URI, returnToExternalAppUri)
-        }
-        return fragment
-    }
-}
+import java.util.concurrent.TimeUnit
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -56,58 +37,132 @@ class TabPagesAdapter(fragment: Fragment, private val returnToExternalAppUri: St
  */
 class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
 
-    companion object {
-        private const val domesticPosition = 0
-        private const val euPosition = 1
-        val tabsMap =
-            mapOf(GreenCardType.Domestic to domesticPosition, GreenCardType.Eu to euPosition)
-        val positionTabsMap =
-            mapOf(domesticPosition to GreenCardType.Domestic, euPosition to GreenCardType.Eu)
-    }
-
-    private val persistenceManager: PersistenceManager by inject()
-
-    private val viewModel: MyOverviewTabsViewModel by viewModel()
-
+    private var _binding: FragmentTabsMyOverviewBinding? = null
+    private val binding get() = _binding!!
+    private val dashboardViewModel: DashboardViewModel by viewModel()
     private val args: MyOverviewTabsFragmentArgs by navArgs()
+    private val dialogUtil: DialogUtil by inject()
+    private val persistenceManager: PersistenceManager by inject()
+    private val clockDeviationUseCase: ClockDeviationUseCase by inject()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-
-        val binding = FragmentTabsMyOverviewBinding.inflate(inflater, container, false)
-        val view = binding.root
-
-        val viewPagerAdapter = TabPagesAdapter(this, args.returnUri)
-
-        binding.viewPager.adapter = viewPagerAdapter
-
-        setupTabs(binding)
-
-        binding.addQrButton.setOnClickListener {
-            navigateSafety(
-                MyOverviewFragmentDirections.actionQrType()
-            )
-        }
-
-        viewModel.showAddCertificateButtonEvent.observe(viewLifecycleOwner) {
-            binding.addQrButton.visibility = if (it) VISIBLE else GONE
-        }
-
-        return view
+    private val refreshHandler = Handler(Looper.getMainLooper())
+    private val refreshRunnable = Runnable {
+        refresh()
     }
 
-    private fun setupTabs(binding: FragmentTabsMyOverviewBinding) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentTabsMyOverviewBinding.bind(view)
+        val adapter = DashboardPagerAdapter(childFragmentManager, viewLifecycleOwner.lifecycle, args.returnUri)
+
+        setupViewPager(adapter)
+        observeServerTimeSynced()
+        observeItems(adapter)
+        observeSyncErrors()
+    }
+
+    fun showAddQrButton(show: Boolean) {
+        binding.addQrButton.visibility = if (show) VISIBLE else GONE
+        if (show) {
+            binding.addQrButton.setOnClickListener {
+                navigateSafety(
+                    MyOverviewFragmentDirections.actionQrType()
+                )
+            }
+        }
+    }
+
+    private fun setupViewPager(adapter: DashboardPagerAdapter) {
+        binding.viewPager.adapter = adapter
+    }
+
+    /**
+     * Whenever the server time is synced we want to refresh our dashboard to check
+     * if we want to inform the user that the clock is not correct
+     */
+    private fun observeServerTimeSynced() {
+        clockDeviationUseCase.serverTimeSyncedLiveData.observe(viewLifecycleOwner, EventObserver {
+            dashboardViewModel.refresh()
+        })
+    }
+
+    private fun observeItems(adapter: DashboardPagerAdapter) {
+        dashboardViewModel.dashboardTabItemsLiveData.observe(viewLifecycleOwner, {
+
+            // Add pager items only once
+            if (adapter.itemCount == 0) {
+                adapter.setItems(it)
+
+                setupTabs(
+                    binding = binding,
+                    items = it
+                )
+
+                // Default select the item that we had selected last
+                binding.viewPager.setCurrentItem(persistenceManager.getSelectedDashboardTab(), false)
+
+                // Register listener so that last selected item is saved
+                binding.viewPager.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
+                    override fun onPageSelected(position: Int) {
+                        super.onPageSelected(position)
+                        persistenceManager.setSelectedDashboardTab(position)
+                    }
+                })
+            }
+        })
+    }
+
+    private fun observeSyncErrors() {
+        dashboardViewModel.databaseSyncerResultLiveData.observe(viewLifecycleOwner,
+            EventObserver {
+                if (it is DatabaseSyncerResult.Failed) {
+                    if (it is DatabaseSyncerResult.Failed.NetworkError && it.hasGreenCardsWithoutCredentials) {
+                        dialogUtil.presentDialog(
+                            context = requireContext(),
+                            title = R.string.dialog_title_no_internet,
+                            message = getString(R.string.dialog_credentials_expired_no_internet),
+                            positiveButtonText = R.string.app_status_internet_required_action,
+                            positiveButtonCallback = {
+                                refresh(
+                                    forceSync = true
+                                )
+                            },
+                            negativeButtonText = R.string.dialog_close,
+                        )
+                    } else {
+                        dialogUtil.presentDialog(
+                            context = requireContext(),
+                            title = R.string.dialog_title_no_internet,
+                            message = getString(R.string.dialog_update_credentials_no_internet),
+                            positiveButtonText = R.string.app_status_internet_required_action,
+                            positiveButtonCallback = {
+                                refresh(
+                                    forceSync = true
+                                )
+                            },
+                            negativeButtonText = R.string.dialog_close,
+                        )
+                    }
+                }
+            }
+        )
+    }
+
+    private fun refresh(forceSync: Boolean = false) {
+        dashboardViewModel.refresh(forceSync)
+        refreshHandler.postDelayed(
+            refreshRunnable,
+            TimeUnit.SECONDS.toMillis(60)
+        )
+    }
+
+    private fun setupTabs(binding: FragmentTabsMyOverviewBinding,
+                          items: List<DashboardTabItem>) {
         TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
             tab.view.setOnLongClickListener {
                 true
             }
-            tab.text = arrayOf(
-                getString(R.string.travel_button_domestic),
-                getString(R.string.travel_button_europe)
-            )[position]
+            tab.text = getString(items[position].title)
         }.attach()
 
         binding.tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -121,29 +176,25 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
                 textView?.setTypeface(null, Typeface.NORMAL)
             }
 
-            override fun onTabReselected(tab: TabLayout.Tab) {}
+            override fun onTabReselected(tab: TabLayout.Tab) {
+                val textView = tab.view.children.find { it is TextView } as? TextView
+                textView?.setTypeface(null, Typeface.BOLD)
+            }
         })
 
-        val defaultTab =
-            binding.tabs.getTabAt(tabsMap[getSelectedGreenCardType()]!!)
-        defaultTab?.select()
-        (defaultTab?.view?.children?.find { it is TextView } as? TextView)?.setTypeface(null, Typeface.BOLD)
-    }
-
-    private fun getSelectedGreenCardType() = if (args.returnUri != null) {
-        GreenCardType.Domestic
-    } else {
-        persistenceManager.getSelectedGreenCardType()
+        // Call selectTab so that styling get's picked up on launch
+        binding.tabs.selectTab(binding.tabs.getTabAt(0))
     }
 
     override fun onPause() {
         super.onPause()
-
+        refreshHandler.removeCallbacks(refreshRunnable)
         (parentFragment?.parentFragment as HolderMainFragment).getToolbar().menu.clear()
     }
 
     override fun onResume() {
         super.onResume()
+        refresh()
 
         (parentFragment?.parentFragment as HolderMainFragment?)?.getToolbar().let { toolbar ->
             if (toolbar?.menu?.size() == 0) {
@@ -152,5 +203,10 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
                 }
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

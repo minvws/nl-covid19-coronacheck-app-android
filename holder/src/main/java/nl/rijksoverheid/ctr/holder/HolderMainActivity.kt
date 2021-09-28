@@ -20,6 +20,7 @@ import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.databinding.ActivityMainBinding
 import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModel
+import nl.rijksoverheid.ctr.holder.ui.device_secure.DeviceSecureViewModel
 import nl.rijksoverheid.ctr.introduction.IntroductionFragment
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
@@ -41,6 +42,7 @@ class HolderMainActivity : AppCompatActivity() {
     private val introductionViewModel: IntroductionViewModel by viewModel()
     private val appStatusViewModel: AppConfigViewModel by viewModel()
     private val deviceRootedViewModel: DeviceRootedViewModel by viewModel()
+    private val deviceSecureViewModel: DeviceSecureViewModel by viewModel()
     private val dialogUtil: DialogUtil by inject()
     private val mobileCoreWrapper: MobileCoreWrapper by inject()
     private val intentUtil: IntentUtil by inject()
@@ -81,6 +83,19 @@ class HolderMainActivity : AppCompatActivity() {
                     positiveButtonText = R.string.dialog_rooted_device_positive_button,
                     positiveButtonCallback = { },
                     onDismissCallback = { deviceRootedViewModel.setHasDismissedRootedDeviceDialog() }
+                )
+            }
+        })
+
+        deviceSecureViewModel.deviceSecureLiveData.observe(this, EventObserver {
+            if (!it) {
+                dialogUtil.presentDialog(
+                    context = this,
+                    title = R.string.dialog_device_secure_warning_title,
+                    message = getString(R.string.dialog_device_secure_warning_description),
+                    positiveButtonText = R.string.dialog_device_secure_positive_button,
+                    positiveButtonCallback = { },
+                    onDismissCallback = { deviceSecureViewModel.setHasDismissedUnsecureDeviceDialog(true) }
                 )
             }
         })

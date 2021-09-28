@@ -10,6 +10,7 @@ import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.SharedApplication
 import nl.rijksoverheid.ctr.shared.sharedModule
 import nl.rijksoverheid.ctr.verifier.modules.*
+import okhttp3.HttpUrl.Companion.toHttpUrl
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -34,10 +35,11 @@ open class VerifierApplication : SharedApplication() {
             androidContext(this@VerifierApplication)
             modules(
                 apiModule(
-                    BuildConfig.BASE_API_URL,
+                    BuildConfig.BASE_API_URL.toHttpUrl(),
                     BuildConfig.SIGNATURE_CERTIFICATE_CN_MATCH,
                     BuildConfig.FEATURE_CORONA_CHECK_API_CHECKS,
-                    BuildConfig.FEATURE_TEST_PROVIDER_API_CHECKS
+                    BuildConfig.FEATURE_TEST_PROVIDER_API_CHECKS,
+                    BuildConfig.CERTIFICATE_PINS,
                 ),
                 verifierModule("verifier"),
                 verifierIntroductionModule,

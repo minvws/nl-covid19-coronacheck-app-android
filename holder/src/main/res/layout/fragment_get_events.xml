@@ -35,6 +35,7 @@
             app:layout_constraintEnd_toEndOf="@+id/title"
             app:layout_constraintStart_toStartOf="@+id/title"
             app:layout_constraintTop_toBottomOf="@+id/title" />
+
         <Button
             android:id="@+id/button"
             style="@style/Widget.App.Button"
@@ -42,12 +43,16 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:text="@string/get_vaccination_button"
+            android:drawableEnd="@drawable/ic_digid_logo"
+            android:drawablePadding="10dp"
+            android:paddingEnd="40dp"
             app:layout_constraintBottom_toTopOf="@+id/no_digid_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/description"
             app:layout_constraintVertical_bias="1"
-            app:layout_constraintVertical_chainStyle="packed"/>
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:ignore="RtlSymmetry" />
 
         <Button
             android:id="@+id/no_digid_button"

@@ -66,7 +66,7 @@ class SaveEventsUseCaseImpl(
 
     override suspend fun remoteProtocols3AreConflicting(remoteProtocols3: Map<RemoteProtocol3, ByteArray>): Boolean {
         val storedEventHolders = holderDatabase.eventGroupDao().getAll()
-            .map { remoteEventHolderUtil.holders(it.jsonData, it.providerIdentifier) }.distinct()
+            .mapNotNull { remoteEventHolderUtil.holder(it.jsonData, it.providerIdentifier) }.distinct()
         val incomingEventHolders = remoteProtocols3.map { it.key.holder!! }.distinct()
 
         return remoteEventHolderUtil.conflicting(storedEventHolders, incomingEventHolders)

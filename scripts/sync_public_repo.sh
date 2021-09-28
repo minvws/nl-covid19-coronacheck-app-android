@@ -52,4 +52,12 @@ PR_URL="https://github.com/minvws/$BASE_REPONAME/compare/sync/$TIMESTAMP?quick_p
 
 open $PR_URL
 
+# Sync tags
+# delete all local tags
+git tag -d $(git tag -l)
+# fetch all tags from private-repo
+git fetch private-repo --tags --force
+# push all tags to public-repo
+git push -f --tags public-repo
+
 echo -e "${GREEN}Done.${ENDCOL}"

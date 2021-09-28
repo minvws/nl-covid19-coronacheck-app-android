@@ -2,33 +2,23 @@ package nl.rijksoverheid.ctr.holder.ui.myoverview
 
 import android.content.pm.ActivityInfo
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
-import androidx.room.Database
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
 import com.xwray.groupie.viewbinding.BindableItem
-import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMyOverviewBinding
-import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
-import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItem
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItems
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.*
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeFragmentData
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
-import nl.rijksoverheid.ctr.shared.livedata.EventObserver
-import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.concurrent.TimeUnit
-
+import nl.rijksoverheid.ctr.shared.ext.sharedViewModelWithOwner
+import org.koin.androidx.viewmodel.ViewModelOwner
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -42,25 +32,33 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
     companion object {
         const val REQUEST_KEY = "REQUEST_KEY"
         const val EXTRA_BACK_FROM_QR = "EXTRA_BACK_FROM_QR"
-        const val GREEN_CARD_TYPE = "GREEN_CARD_TYPE"
-        const val RETURN_URI = "RETURN_URI"
+        const val EXTRA_GREEN_CARD_TYPE = "GREEN_CARD_TYPE"
+        const val EXTRA_RETURN_URI = "RETURN_URI"
+
+        fun getInstance(
+            greenCardType: GreenCardType,
+            returnUri: String?
+        ): MyOverviewFragment {
+            val fragment = MyOverviewFragment()
+            val arguments = Bundle()
+            arguments.putParcelable(EXTRA_GREEN_CARD_TYPE, greenCardType)
+            arguments.putString(EXTRA_RETURN_URI, returnUri)
+            fragment.arguments = arguments
+            return fragment
+        }
+
     }
 
+    private val dashboardViewModel: DashboardViewModel by sharedViewModelWithOwner(owner = { ViewModelOwner.from(requireParentFragment()) })
     private val section = Section()
-
-    private val refreshOverviewItemsHandler = Handler(Looper.getMainLooper())
-    private val refreshOverviewItemsRunnable = Runnable { refreshOverviewItems() }
-
-    private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
-    private val myOverviewViewModel: MyOverviewViewModel by viewModel()
-
-    private val dialogUtil: DialogUtil by inject()
+    private val greenCardType: GreenCardType by lazy { arguments?.getParcelable<GreenCardType>(EXTRA_GREEN_CARD_TYPE) ?: error("EXTRA_GREEN_CARD_TYPE should not be null") }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val binding = FragmentMyOverviewBinding.bind(view)
         initRecyclerView(binding)
+        observeItem()
 
         setFragmentResultListener(
             REQUEST_KEY
@@ -73,51 +71,14 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                     ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
             }
         }
-
-        myOverviewViewModel.myOverviewItemsLiveData.observe(viewLifecycleOwner,
-            EventObserver { myOverviewItems ->
-                setItems(
-                    myOverviewItems = myOverviewItems
-                )
-            })
-
-        observeSyncErrors()
     }
 
-    private fun observeSyncErrors() {
-        myOverviewViewModel.databaseSyncerResultLiveData.observe(viewLifecycleOwner,
-            EventObserver {
-                if (it is DatabaseSyncerResult.Failed) {
-                    if (it is DatabaseSyncerResult.Failed.NetworkError && it.hasGreenCardsWithoutCredentials) {
-                        dialogUtil.presentDialog(
-                            context = requireContext(),
-                            title = R.string.dialog_title_no_internet,
-                            message = getString(R.string.dialog_credentials_expired_no_internet),
-                            positiveButtonText = R.string.app_status_internet_required_action,
-                            positiveButtonCallback = {
-                                refreshOverviewItems(
-                                    forceSync = true
-                                )
-                            },
-                            negativeButtonText = R.string.dialog_close,
-                        )
-                    } else {
-                        dialogUtil.presentDialog(
-                            context = requireContext(),
-                            title = R.string.dialog_title_no_internet,
-                            message = getString(R.string.dialog_update_credentials_no_internet),
-                            positiveButtonText = R.string.app_status_internet_required_action,
-                            positiveButtonCallback = {
-                                refreshOverviewItems(
-                                    forceSync = true
-                                )
-                            },
-                            negativeButtonText = R.string.dialog_close,
-                        )
-                    }
-                }
-            }
-        )
+    private fun observeItem() {
+        dashboardViewModel.dashboardTabItemsLiveData.observe(viewLifecycleOwner, {
+            setItems(
+                myDashboardItems = it.first { items -> items.greenCardType == greenCardType }.items
+            )
+        })
     }
 
     private fun initRecyclerView(binding: FragmentMyOverviewBinding) {
@@ -128,55 +89,33 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
         binding.recyclerView.itemAnimator = null
     }
 
-    private fun refreshOverviewItems(forceSync: Boolean = false) {
-        myOverviewViewModel.refreshOverviewItems(
-            forceSync = forceSync,
-            selectType = arguments?.getParcelable(GREEN_CARD_TYPE) ?: myOverviewViewModel.getSelectedType()
-        )
-        refreshOverviewItemsHandler.postDelayed(
-            refreshOverviewItemsRunnable,
-            TimeUnit.SECONDS.toMillis(cachedAppConfigUseCase.getCachedAppConfig().domesticQRRefreshSeconds.toLong())
-        )
-    }
-
-    override fun onResume() {
-        super.onResume()
-        refreshOverviewItems()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        refreshOverviewItemsHandler.removeCallbacks(refreshOverviewItemsRunnable)
-    }
-
     private fun setItems(
-        myOverviewItems: MyOverviewItems
+        myDashboardItems: List<DashboardItem>
     ) {
-
         val adapterItems = mutableListOf<BindableItem<*>>()
-        myOverviewItems.items.forEach { myOverviewItem ->
-            when (myOverviewItem) {
-                is MyOverviewItem.HeaderItem -> {
+        myDashboardItems.forEach { dashboardItem ->
+            when (dashboardItem) {
+                is DashboardItem.HeaderItem -> {
                     adapterItems.add(
                         MyOverviewHeaderAdapterItem(
-                            text = myOverviewItem.text
+                            text = dashboardItem.text
                         )
                     )
                 }
-                is MyOverviewItem.PlaceholderCardItem -> {
+                is DashboardItem.PlaceholderCardItem -> {
                     adapterItems.add(
                         MyOverviewGreenCardPlaceholderItem(
-                            isEu = myOverviewItems.selectedType == GreenCardType.Eu
+                            greenCardType = dashboardItem.greenCardType
                         )
                     )
                 }
-                is MyOverviewItem.GreenCardItem -> {
+                is DashboardItem.GreenCardItem -> {
                     adapterItems.add(
                         MyOverviewGreenCardAdapterItem(
-                            greenCard = myOverviewItem.greenCard,
-                            originStates = myOverviewItem.originStates,
-                            credentialState = myOverviewItem.credentialState,
-                            databaseSyncerResult = myOverviewItem.databaseSyncerResult,
+                            greenCard = dashboardItem.greenCard,
+                            originStates = dashboardItem.originStates,
+                            credentialState = dashboardItem.credentialState,
+                            databaseSyncerResult = dashboardItem.databaseSyncerResult,
                             onButtonClick = { greenCard, credential ->
                                 navigateSafety(
                                     MyOverviewFragmentDirections.actionQrCode(
@@ -195,30 +134,31 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                                             type = greenCard.greenCardEntity.type,
                                             originType = greenCard.origins.first().type
                                         ),
-                                        returnUri = arguments?.getString(RETURN_URI)
+                                        returnUri = arguments?.getString(EXTRA_RETURN_URI)
                                     )
                                 )
                             },
                             onRetryClick = {
-                                refreshOverviewItems(
+                                dashboardViewModel.refresh(
                                     forceSync = true
                                 )
                             },
                         )
                     )
                 }
-                is MyOverviewItem.GreenCardExpiredItem -> {
+                is DashboardItem.GreenCardExpiredItem -> {
                     adapterItems.add(MyOverviewGreenCardExpiredAdapterItem(
-                        greenCardType = myOverviewItem.greenCardType,
-                        onDismissClick = {
-                            section.remove(it)
+                        greenCard = dashboardItem.greenCard,
+                        onDismissClick = { item, greenCard ->
+                            section.remove(item)
+                            dashboardViewModel.removeGreenCard(greenCard)
                         }
                     ))
                 }
-                is MyOverviewItem.OriginInfoItem -> {
+                is DashboardItem.OriginInfoItem -> {
                     adapterItems.add(MyOverviewOriginInfoAdapterItem(
-                        greenCardType = myOverviewItem.greenCardType,
-                        originType = myOverviewItem.originType,
+                        greenCardType = dashboardItem.greenCardType,
+                        originType = dashboardItem.originType,
                         onInfoClick = { greenCardType, originType ->
                             when (greenCardType) {
                                 is GreenCardType.Domestic -> navigateToDomesticQr(originType)
@@ -227,10 +167,13 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                         }
                     ))
                 }
-                is MyOverviewItem.ClockDeviationItem -> {
+                is DashboardItem.ClockDeviationItem -> {
                     adapterItems.add(MyOverviewClockDeviationItem(onInfoIconClicked = {
                         navigateSafety(MyOverviewTabsFragmentDirections.actionShowClockDeviationExplanation())
                     }))
+                }
+                is DashboardItem.AddQrButtonItem -> {
+                    (requireParentFragment() as MyOverviewTabsFragment).showAddQrButton(dashboardItem.show)
                 }
             }
         }

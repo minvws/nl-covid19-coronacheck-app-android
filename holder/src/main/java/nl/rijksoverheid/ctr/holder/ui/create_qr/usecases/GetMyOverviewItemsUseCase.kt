@@ -45,8 +45,7 @@ class GetMyOverviewItemsUseCaseImpl(
     private val credentialUtil: CredentialUtil,
     private val greenCardUtil: GreenCardUtil,
     private val originUtil: OriginUtil
-) :
-    GetMyOverviewItemsUseCase {
+) : GetMyOverviewItemsUseCase {
 
     override suspend fun get(
         walletId: Int,
@@ -97,7 +96,7 @@ class GetMyOverviewItemsUseCaseImpl(
 
 
 
-            getCreatePlaceholderCardItem(allGreenCards)?.let {
+            getCreatePlaceholderCardItem(allGreenCards, selectedType)?.let {
                 items.add(it)
             }
 
@@ -224,9 +223,10 @@ class GetMyOverviewItemsUseCaseImpl(
 
     private fun getCreatePlaceholderCardItem(
         greenCards: List<GreenCard>,
+        greenCardType: GreenCardType
     ): MyOverviewItem? {
         return if (greenCards.isEmpty() || greenCards.all { greenCardUtil.isExpired(it) }) {
-            PlaceholderCardItem
+            PlaceholderCardItem(greenCardType)
         } else {
             null
         }
@@ -245,9 +245,7 @@ data class MyOverviewItems(
 sealed class MyOverviewItem {
 
     data class HeaderItem(@StringRes val text: Int) : MyOverviewItem()
-
-    object PlaceholderCardItem : MyOverviewItem()
-
+    data class PlaceholderCardItem(val greenCardType: GreenCardType) : MyOverviewItem()
     object ClockDeviationItem : MyOverviewItem()
 
     data class GreenCardItem(
@@ -264,11 +262,6 @@ sealed class MyOverviewItem {
         }
     }
 
-    data class GreenCardExpiredItem(
-        val greenCardType: GreenCardType
-    ) : MyOverviewItem()
-
-    data class OriginInfoItem(val greenCardType: GreenCardType, val originType: OriginType) :
-        MyOverviewItem()
-
+    data class GreenCardExpiredItem(val greenCardType: GreenCardType) : MyOverviewItem()
+    data class OriginInfoItem(val greenCardType: GreenCardType, val originType: OriginType) : MyOverviewItem()
 }

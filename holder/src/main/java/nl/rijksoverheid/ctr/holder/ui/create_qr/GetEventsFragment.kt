@@ -7,12 +7,12 @@ import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderFlow
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
-import nl.rijksoverheid.ctr.holder.HolderStep
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentGetEventsBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigiDFragment
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigidResult
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.EventProvider
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.EventsResult
@@ -82,13 +82,15 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                             positiveButtonCallback = {},
                             onDismissCallback = {
                                 navigateToYourEvents(
-                                    signedEvents = it.signedModels
+                                    signedEvents = it.signedModels,
+                                    eventProviders = it.eventProviders,
                                 )
                             }
                         )
                     } else {
                         navigateToYourEvents(
-                            signedEvents = it.signedModels
+                            signedEvents = it.signedModels,
+                            eventProviders = it.eventProviders,
                         )
                     }
                 }
@@ -140,7 +142,13 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                             )
                         }
                         it.unomiOrEventErrors() -> {
-                            presentError(it.errorResults.first(), getString(R.string.error_get_events_http_error_description, getErrorCodes(it.errorResults)))
+                                presentError(
+                                    it.errorResults.first(),
+                                    getString(
+                                        R.string.error_get_events_http_error_description,
+                                        getErrorCodes(it.errorResults)
+                                    )
+                                )
                         }
                         else -> {
                             presentError(it.errorResults.first())
@@ -208,13 +216,17 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
         }
     }
 
-    private fun navigateToYourEvents(signedEvents: List<SignedResponseWithModel<RemoteProtocol3>>) {
+    private fun navigateToYourEvents(
+        signedEvents: List<SignedResponseWithModel<RemoteProtocol3>>,
+        eventProviders: List<EventProvider> = emptyList(),
+    ) {
         navigateSafety(
             GetEventsFragmentDirections.actionYourEvents(
                 type = YourEventsFragmentType.RemoteProtocol3Type(
                     remoteEvents = signedEvents.map { signedModel -> signedModel.model to signedModel.rawResponse }
                         .toMap(),
-                    originType = args.originType
+                    originType = args.originType,
+                    eventProviders = eventProviders,
                 ),
                 toolbarTitle = getCopyForOriginType().toolbarTitle
             )
