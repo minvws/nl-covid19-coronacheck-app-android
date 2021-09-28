@@ -63,18 +63,6 @@ class OnboardingItemFragment : Fragment(R.layout.fragment_onboarding_item) {
         } else {
             binding.image.visibility = View.VISIBLE
 
-            // Set image height programmatically to 30% of device screen height regardless of content
-            val displayMetrics = DisplayMetrics()
-            if (Build.VERSION.SDK_INT >= 30){
-                requireActivity().display?.apply {
-                    getRealMetrics(displayMetrics)
-                }
-            }else{
-                // getMetrics() method was deprecated in api level 30
-                requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
-            }
-            binding.image.layoutParams.height = (displayMetrics.heightPixels * 0.30f).toInt()
-
             if (item.imageResource != 0) {
                 binding.image.setImageResource(item.imageResource)
             } else if (item.animationResource != 0) {
