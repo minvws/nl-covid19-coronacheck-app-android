@@ -21,51 +21,72 @@
         android:id="@+id/vaccinationQrsContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         tools:visibility="visible">
 
-        <ImageView
-            android:id="@+id/previousQrButton"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/qrVaccinationDosisContainer"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackground"
-            android:src="@drawable/ic_qr_codes_previous"
-            android:visibility="gone"
-            android:padding="16dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/qrVaccinationDosis"
-            app:layout_constraintTop_toTopOf="@+id/qrVaccinationDosis"
-            app:layout_constraintBottom_toBottomOf="@+id/qrVaccinationDosis"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
-            tools:visibility="visible"/>
-
-        <TextView
-            style="@style/App.TextAppearance.MaterialComponents.Headline6.Montserrat"
-            android:id="@+id/qrVaccinationDosis"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
-            app:layout_constraintStart_toEndOf="@+id/previousQrButton"
-            app:layout_constraintEnd_toStartOf="@+id/nextQrButton"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            tools:text="Dosis 1 / 2"
-            tools:visibility="visible"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
-        <ImageView
-            android:id="@+id/nextQrButton"
+            <ImageView
+                android:id="@+id/previousQrButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:src="@drawable/ic_qr_codes_previous"
+                android:visibility="gone"
+                android:padding="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/qrVaccinationDosis"
+                app:layout_constraintTop_toTopOf="@+id/qrVaccinationDosis"
+                app:layout_constraintBottom_toBottomOf="@+id/qrVaccinationDosis"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                tools:visibility="visible"/>
+
+            <TextView
+                style="@style/App.TextAppearance.MaterialComponents.Headline6.Montserrat"
+                android:id="@+id/qrVaccinationDosis"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                app:layout_constraintStart_toEndOf="@+id/previousQrButton"
+                app:layout_constraintEnd_toStartOf="@+id/nextQrButton"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:text="Dosis 1 / 2"
+                tools:visibility="visible"/>
+
+            <ImageView
+                android:id="@+id/nextQrButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_qr_codes_next"
+                android:visibility="gone"
+                android:background="?attr/selectableItemBackground"
+                android:padding="16dp"
+                app:layout_constraintStart_toEndOf="@+id/qrVaccinationDosis"
+                app:layout_constraintTop_toTopOf="@+id/qrVaccinationDosis"
+                app:layout_constraintBottom_toBottomOf="@+id/qrVaccinationDosis"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:visibility="visible"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <nl.rijksoverheid.ctr.design.views.ViewPagerIndicator
+            android:id="@+id/qrVaccinationIndicators"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_qr_codes_next"
+            android:layout_marginTop="16dp"
+            android:focusable="true"
+            android:gravity="center"
             android:visibility="gone"
-            android:background="?attr/selectableItemBackground"
-            android:padding="16dp"
-            app:layout_constraintStart_toEndOf="@+id/qrVaccinationDosis"
-            app:layout_constraintTop_toTopOf="@+id/qrVaccinationDosis"
-            app:layout_constraintBottom_toBottomOf="@+id/qrVaccinationDosis"
+            app:layout_constraintTop_toBottomOf="@+id/qrVaccinationDosisContainer"
             app:layout_constraintEnd_toEndOf="parent"
-            tools:visibility="visible"/>
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

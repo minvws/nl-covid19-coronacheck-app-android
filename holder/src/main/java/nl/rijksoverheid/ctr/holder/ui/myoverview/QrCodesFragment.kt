@@ -237,9 +237,15 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
 
         // If there are more then one vaccinations we update UI based on the selected page
         if (europeanVaccinations.size > 1) {
+            // Initialize our viewpager indicators
+            binding.qrVaccinationIndicators.visibility = View.VISIBLE
+            binding.qrVaccinationIndicators.initIndicator(europeanVaccinations.size)
+
             binding.viewPager.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
+                    // Select current indicator
+                    binding.qrVaccinationIndicators.updateSelected(position)
 
                     Handler(Looper.getMainLooper()).post {
                         binding.previousQrButton.visibility = View.VISIBLE
