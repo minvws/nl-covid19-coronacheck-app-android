@@ -45,8 +45,6 @@ class HolderMainFragment : BaseMainFragment(
     private var _navController : NavController? = null
     private val navController get() = _navController!!
 
-    private lateinit var defaultDrawerLayoutParams: DrawerLayout.LayoutParams
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -121,8 +119,6 @@ class HolderMainFragment : BaseMainFragment(
 
         navigationDrawerStyling()
 
-        defaultDrawerLayoutParams = binding.navView.layoutParams as DrawerLayout.LayoutParams
-
         // Close Navigation Drawer when pressing back if it's open
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object :
             OnBackPressedCallback(true) {
@@ -135,21 +131,6 @@ class HolderMainFragment : BaseMainFragment(
                 }
             }
         })
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        // detect if user has upscaled the font size via accessibility settings
-        // and make the drawer menu wider in this case only
-        binding.navView.layoutParams = if (resources.configuration.fontScale > 1.0f) {
-            val width = activity?.resources?.displayMetrics?.widthPixels ?: return
-            val layoutParams = binding.navView.layoutParams as DrawerLayout.LayoutParams
-            layoutParams.width = (0.9 * width).toInt()
-            layoutParams
-        } else {
-            defaultDrawerLayoutParams
-        }
     }
 
     override fun onDestroyView() {
@@ -192,5 +173,15 @@ class HolderMainFragment : BaseMainFragment(
             .styleTitle(context, R.attr.textAppearanceBody1)
         binding.navView.menu.findItem(R.id.nav_paper_proof)
             .styleTitle(context, R.attr.textAppearanceBody1)
+
+        // resize drawer according to design
+        val width = activity?.resources?.displayMetrics?.widthPixels ?: return
+        val layoutParams = binding.navView.layoutParams as DrawerLayout.LayoutParams
+        layoutParams.width = (drawerWidthFactor * width).toInt()
+        binding.navView.layoutParams = layoutParams
+    }
+
+    companion object {
+        const val drawerWidthFactor = 0.87f
     }
 }
