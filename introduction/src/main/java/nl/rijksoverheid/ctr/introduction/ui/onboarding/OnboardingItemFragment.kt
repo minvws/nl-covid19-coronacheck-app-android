@@ -1,9 +1,7 @@
 package nl.rijksoverheid.ctr.introduction.ui.onboarding
 
 import android.annotation.SuppressLint
-import android.os.Build
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.View
 import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.introduction.R
@@ -62,7 +60,6 @@ class OnboardingItemFragment : Fragment(R.layout.fragment_onboarding_item) {
             binding.image.visibility = View.GONE
         } else {
             binding.image.visibility = View.VISIBLE
-
             if (item.imageResource != 0) {
                 binding.image.setImageResource(item.imageResource)
             } else if (item.animationResource != 0) {
