@@ -10,7 +10,6 @@ package nl.rijksoverheid.ctr.holder.ui.myoverview.items
 
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import com.google.android.material.card.MaterialCardView
 import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.holder.R
@@ -19,18 +18,13 @@ import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem.GreenCardItem.CredentialState.HasCredential
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem.GreenCardsItem.CredentialState.HasCredential
 import nl.rijksoverheid.ctr.shared.ext.dpToPx
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 class MyOverviewGreenCardAdapterItem(
-    private val greenCard: GreenCard,
-    private val originStates: List<OriginState>,
-    private val credentialState: DashboardItem.GreenCardItem.CredentialState,
-    private val databaseSyncerResult: DatabaseSyncerResult = DatabaseSyncerResult.Success,
-    private val itemsOfSameType: List<DashboardItem.GreenCardItem>,
+    private val greenCards: List<DashboardItem.GreenCardsItem.GreenCardItem>,
     private val onButtonClick: (greenCard: GreenCard, credentials: List<ByteArray>, credentialExpirationTimeSeconds: Long) -> Unit,
     private val onRetryClick: () -> Unit = {},
 ) :
@@ -45,14 +39,15 @@ class MyOverviewGreenCardAdapterItem(
         setContent(viewBinding = viewBinding)
 
         viewBinding.buttonWithProgressWidgetContainer.setButtonOnClickListener {
-            if (credentialState is HasCredential) {
-                val otherCredentials = itemsOfSameType.mapNotNull {
+            val mainCredentialState = greenCards.first().credentialState
+            if (mainCredentialState is HasCredential) {
+                val credentials = greenCards.mapNotNull {
                     (it.credentialState as? HasCredential)?.credential?.data
                 }
                 onButtonClick.invoke(
-                    greenCard,
-                    listOf(credentialState.credential.data) + otherCredentials,
-                    credentialState.credential.expirationTime.toEpochSecond()
+                    greenCards.first().greenCard,
+                    credentials,
+                    mainCredentialState.credential.expirationTime.toEpochSecond()
                 )
             }
         }
@@ -60,7 +55,7 @@ class MyOverviewGreenCardAdapterItem(
 
     private fun applyStyling(viewBinding: ItemMyOverviewGreenCardBinding) {
         val context = viewBinding.root.context
-        when (greenCard.greenCardEntity.type) {
+        when (greenCards.first().greenCard.greenCardEntity.type) {
             is GreenCardType.Eu -> {
                 viewBinding.buttonWithProgressWidgetContainer.setEnabledButtonColor(R.color.primary_blue)
                 viewBinding.imageView.setImageResource(R.drawable.ic_international_card)
@@ -71,12 +66,12 @@ class MyOverviewGreenCardAdapterItem(
             }
         }
 
-        if (credentialState is DashboardItem.GreenCardItem.CredentialState.LoadingCredential) {
+        if (greenCards.first().credentialState is DashboardItem.GreenCardsItem.CredentialState.LoadingCredential) {
             viewBinding.buttonWithProgressWidgetContainer.setAccessibilityText(context.getString(R.string.my_overview_test_result_button_indicator_accessibility_description))
             viewBinding.buttonWithProgressWidgetContainer.loading()
         } else {
             viewBinding.buttonWithProgressWidgetContainer.idle(
-                isEnabled = credentialState is HasCredential
+                isEnabled = greenCards.first().credentialState is HasCredential
             )
         }
 
@@ -96,9 +91,8 @@ class MyOverviewGreenCardAdapterItem(
 
         myOverViewGreenCardAdapterUtil.setContent(
             ViewBindingWrapperImpl(viewBinding),
-            greenCard,
-            originStates,
-            itemsOfSameType.map { it.greenCard }
+            greenCards.map { it.greenCard },
+            greenCards.first().originStates,
         )
 
         stackAdditionalCards(viewBinding)
@@ -112,7 +106,7 @@ class MyOverviewGreenCardAdapterItem(
      * @param[viewBinding] view binding containing binding of parent view group of green cards
      */
     private fun stackAdditionalCards(viewBinding: ItemMyOverviewGreenCardBinding) {
-        for (i in 1..itemsOfSameType.count()) {
+        for (i in 1 until greenCards.count()) {
             viewBinding.greenCards.addView(
                 MaterialCardView(viewBinding.greenCards.context).apply {
                     radius = 16F.dpToPx
@@ -130,8 +124,8 @@ class MyOverviewGreenCardAdapterItem(
     }
 
     private fun showError(viewBinding: ItemMyOverviewGreenCardBinding) {
-        if (credentialState is DashboardItem.GreenCardItem.CredentialState.NoCredential) {
-            when (databaseSyncerResult) {
+        if (greenCards.first().credentialState is DashboardItem.GreenCardsItem.CredentialState.NoCredential) {
+            when (greenCards.first().databaseSyncerResult) {
                 is DatabaseSyncerResult.Failed.NetworkError -> {
                     viewBinding.errorText.setHtmlText(R.string.my_overview_green_card_internet_error)
                     viewBinding.errorText.enableCustomLinks(onRetryClick)

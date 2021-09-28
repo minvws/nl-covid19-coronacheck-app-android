@@ -29,9 +29,8 @@ import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TestResultAdapterItemUtil
 interface MyOverViewGreenCardAdapterUtil {
     fun setContent(
         viewBinding: ViewBindingWrapper,
-        greenCard: GreenCard,
-        originStates: List<OriginState>,
-        additionalGreenCards: List<GreenCard> = emptyList()
+        greenCards: List<GreenCard>,
+        originStates: List<OriginState>
     )
 }
 
@@ -41,14 +40,14 @@ class MyOverViewGreenCardAdapterUtilImpl(
     private val testResultAdapterItemUtil: TestResultAdapterItemUtil,
     private val greenCardUtil: GreenCardUtil,
 ) : MyOverViewGreenCardAdapterUtil {
+
     override fun setContent(
         viewBinding: ViewBindingWrapper,
-        greenCard: GreenCard,
-        originStates: List<OriginState>,
-        additionalGreenCards: List<GreenCard>
+        greenCards: List<GreenCard>,
+        originStates: List<OriginState>
     ) {
-        val greenCardType = greenCard.greenCardEntity.type
-        (listOf(greenCard) + additionalGreenCards).forEach {
+        val greenCardType = greenCards.first().greenCardEntity.type
+        greenCards.forEach {
             when (it.greenCardEntity.type) {
                 is GreenCardType.Eu -> {
                     // European card only has one origin
@@ -126,7 +125,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
 
         val becomesValidAutomatically = originStates.size == 1 &&
                 originStates.first() is OriginState.Future &&
-                shouldShowTimeSubtitle(originStates.first(), greenCard.greenCardEntity.type)
+                shouldShowTimeSubtitle(originStates.first(), greenCards.first().greenCardEntity.type)
         if (becomesValidAutomatically) {
             viewBinding.expiresIn.visibility = View.VISIBLE
             viewBinding.expiresIn.text = context.getString(R.string.qr_card_validity_future)

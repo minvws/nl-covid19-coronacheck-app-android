@@ -138,11 +138,14 @@ class GetDashboardItemsUseCaseImpl(
     ): List<DashboardItem> {
 
         // Loop through all green cards that exists in the database and map them to UI models
-        val items = mapGreenCardsToItems(
-            greenCardsForSelectedType,
-            isLoadingNewCredentials,
-            databaseSyncerResult
-        ).let { if (combineVaccinations) combineVaccinationItems(it) else it }
+        val items = greenCardsForSelectedType
+            .map { greenCard ->
+                if (greenCardUtil.isExpired(greenCard)) {
+                    DashboardItem.GreenCardExpiredItem(greenCard = greenCard)
+                } else {
+                    mapGreenCardsItem(greenCard, isLoadingNewCredentials, databaseSyncerResult)
+                }
+            }.let { if (combineVaccinations) combineVaccinationItems(it) else it }.toMutableList()
 
         // If we have valid origins that exists in the other selected type but not in the current one, we show a banner
         val allOriginsForSelectedType = greenCardsForSelectedType.map { it.origins }.flatten()
@@ -168,8 +171,8 @@ class GetDashboardItemsUseCaseImpl(
         // Always order by origin type
         items.sortBy {
             when (it) {
-                is DashboardItem.GreenCardItem -> {
-                    it.originStates.first().origin.type.order
+                is DashboardItem.GreenCardsItem -> {
+                    it.greenCards.first().originStates.first().origin.type.order
                 }
                 is DashboardItem.OriginInfoItem -> {
                     it.originType.order
@@ -184,71 +187,65 @@ class GetDashboardItemsUseCaseImpl(
     }
 
     /**
-     * Multiple vaccination green card items will be combined into 1 with 1 main green card item
-     * containing all other vaccination green card items.
+     * Multiple vaccination green card items will be combined into 1.
      *
      * @param[items] Items list containing possible multiple vaccination items to combine.
      * @return Items list with vaccination green card items combined into 1.
      */
-    private fun combineVaccinationItems(items: MutableList<DashboardItem>): MutableList<DashboardItem> {
+    private fun combineVaccinationItems(items: List<DashboardItem>): List<DashboardItem> {
         return items
             .groupBy { it::class }
             .map { itemTypeToItem ->
-                if (itemTypeToItem.value.first() !is DashboardItem.GreenCardItem) return itemTypeToItem.value.toMutableList()
+                if (itemTypeToItem.value.first() !is DashboardItem.GreenCardsItem) return itemTypeToItem.value.toMutableList()
 
                 itemTypeToItem.value
-                    .groupBy { (it as DashboardItem.GreenCardItem).greenCard.origins.first().type }
+                    .groupBy { (it as DashboardItem.GreenCardsItem).greenCards.first().greenCard.origins.first().type }
                     .map {
                         if (it.key == OriginType.Vaccination) {
-                            listOfNotNull(
-                                (it.value.first() as DashboardItem.GreenCardItem).copy(
-                                    cardsOfSameType = it.value.drop(1) as List<DashboardItem.GreenCardItem>
-                                )
+                            listOf(
+                                DashboardItem.GreenCardsItem(it.value.map { greenCardsItem ->
+                                    (greenCardsItem as DashboardItem.GreenCardsItem).greenCards
+                                }.flatten())
                             )
                         } else it.value
                     }.flatten()
-            }.flatten().toMutableList()
+            }.flatten()
     }
 
-    private fun mapGreenCardsToItems(
-        greenCardsForSelectedType: List<GreenCard>,
+    private fun mapGreenCardsItem(
+        greenCard: GreenCard,
         isLoadingNewCredentials: Boolean,
         databaseSyncerResult: DatabaseSyncerResult
-    ) = greenCardsForSelectedType.map { greenCard ->
-        // If the origin with the highest possible expiration time is expired
-        if (greenCardUtil.isExpired(greenCard)) {
-            // Show green card expired banner
-            DashboardItem.GreenCardExpiredItem(greenCard = greenCard)
-        } else {
-            // Check if we have a credential
-            val activeCredential = credentialUtil.getActiveCredential(
-                entities = greenCard.credentialEntities
-            )
+    ): DashboardItem.GreenCardsItem {
+        // Check if we have a credential
+        val activeCredential = credentialUtil.getActiveCredential(
+            entities = greenCard.credentialEntities
+        )
 
-            // Check the states of our origins
-            val originStates = originUtil.getOriginState(
-                origins = greenCard.origins
-            ).sortedBy { it.origin.type.order }
+        // Check the states of our origins
+        val originStates = originUtil.getOriginState(
+            origins = greenCard.origins
+        ).sortedBy { it.origin.type.order }
 
-            // Check if we have any valid origins
-            val hasValidOriginStates = originStates.any { it is OriginState.Valid }
-            val nonExpiredOriginStates = originStates.filterNot { it is OriginState.Expired }
+        // Check if we have any valid origins
+        val hasValidOriginStates = originStates.any { it is OriginState.Valid }
+        val nonExpiredOriginStates = originStates.filterNot { it is OriginState.Expired }
 
-            // More our credential to a more readable state
-            val credentialState = when {
-                isLoadingNewCredentials -> DashboardItem.GreenCardItem.CredentialState.LoadingCredential
-                activeCredential == null -> DashboardItem.GreenCardItem.CredentialState.NoCredential
-                !hasValidOriginStates -> DashboardItem.GreenCardItem.CredentialState.NoCredential
-                else -> DashboardItem.GreenCardItem.CredentialState.HasCredential(activeCredential)
-            }
-
-            // Show green card
-            DashboardItem.GreenCardItem(
-                greenCard = greenCard,
-                originStates = nonExpiredOriginStates,
-                credentialState = credentialState,
-                databaseSyncerResult = databaseSyncerResult
-            )
+        // More our credential to a more readable state
+        val credentialState = when {
+            isLoadingNewCredentials -> DashboardItem.GreenCardsItem.CredentialState.LoadingCredential
+            activeCredential == null -> DashboardItem.GreenCardsItem.CredentialState.NoCredential
+            !hasValidOriginStates -> DashboardItem.GreenCardsItem.CredentialState.NoCredential
+            else -> DashboardItem.GreenCardsItem.CredentialState.HasCredential(activeCredential)
         }
-    }.toMutableList()
+
+        val greenCardItem = DashboardItem.GreenCardsItem.GreenCardItem(
+            greenCard = greenCard,
+            originStates = nonExpiredOriginStates,
+            credentialState = credentialState,
+            databaseSyncerResult = databaseSyncerResult
+        )
+
+        return DashboardItem.GreenCardsItem(listOf(greenCardItem))
+    }
 }
