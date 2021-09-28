@@ -369,8 +369,8 @@
     <string name="my_overview_green_card_not_valid_title_recovery">Over je herstelbewijs</string>
     <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_recovery"><![CDATA[Jouw herstelbewijs is niet geldig in Nederland. Je hebt wel een internationaal bewijs.<br/><br/>Dit komt doordat het type test niet voldoet in Nederland.]]></string>
     <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_recovery"><![CDATA[Jouw herstelbewijs is niet internationaal geldig. Je hebt wel een Nederlands bewijs.<br/><br/>Dit komt doordat het type test niet voldoet. Alleen van een PCR-test kan een internationaal bewijs gemaakt worden.]]></string>
-    <string name="my_overview_green_card_server_error"><![CDATA[Je kunt de QR-code niet gebruiken door een fout op de server.]]></string>
-    <string name="my_overview_green_card_server_error_after_retry"><![CDATA[of bel de helpdesk op 0800–1421 (gratis)]]></string>
+    <string name="my_overview_green_card_server_error"><![CDATA[De app heeft af en toe verbinding met de server nodig om je QR-code te vernieuwen. Dat is niet gelukt door een fout op de server. <a href="#">Probeer opnieuw</a>]]></string>
+    <string name="my_overview_green_card_server_error_after_retry"><![CDATA[Sorry, het is niet gelukt de QR-code te vernieuwen. Open de app opnieuw over 10 minuten.</br>Helpt dat niet? Bel dan de helpdesk op 0800-1421 (gratis)]]></string>
     <string name="my_overview_green_card_internet_error"><![CDATA[Maak verbinding met het internet om je QR-code weer te gebruiken.<br/><a href="#">Probeer opnieuw</a>]]></string>
     <string name="dialog_faultyvaccination28June_title">Vaccinatiebewijs gecorrigeerd</string>
     <string name="dialog_faultyvaccination28June_message">Je hebt een Nederlands vaccinatiebewijs gekregen door een fout. Dit is nu gecorrigeerd.</string>

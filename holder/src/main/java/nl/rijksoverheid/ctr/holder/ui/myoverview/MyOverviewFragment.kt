@@ -143,6 +143,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                                     forceSync = true
                                 )
                             },
+                            errorState = dashboardViewModel.dashboardErrorState,
                         )
                     )
                 }

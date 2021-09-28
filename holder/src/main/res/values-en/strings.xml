@@ -369,8 +369,8 @@
     <string name="my_overview_green_card_not_valid_title_recovery">About your recovery certificate</string>
     <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_recovery"><![CDATA[Your recovery certificate isn\'t valid in the Netherlands, because the type of test is not accepted.<br/><br/>You’ve only got an international QR code.]]></string>
     <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_recovery"><![CDATA[Your recovery certificate isn\'t valid internationally. You\'ve only got a Dutch certificate.<br/><br/>The reason is that the type of test is not accepted. An international recovery certificate can only be made with a PCR-test.]]></string>
-    <string name="my_overview_green_card_server_error"><![CDATA[You can\'t use the QR code because of a server error]]></string>
-    <string name="my_overview_green_card_server_error_after_retry"><![CDATA[or call the help desk at 0800-1421 (free)]]></string>
+    <string name="my_overview_green_card_server_error"><![CDATA[The app periodically needs a connection to the server to refresh your QR code. We failed to reach the server because of an error. <a href="#">Try again</a>]]></string>
+    <string name="my_overview_green_card_server_error_after_retry"><![CDATA[Sorry, we weren’t able to refresh your QR code. Open the app again in 10 minutes.</br>No success? Please call the help desk at 0800-1421 (free)]]></string>
     <string name="my_overview_green_card_internet_error"><![CDATA[Connect to the internet to make sure your QR code works again.<br/><a href="#">Try again</a>]]></string>
     <string name="dialog_faultyvaccination28June_title">Vaccination certificate corrected</string>
     <string name="dialog_faultyvaccination28June_message">You’ve wrongly received a Dutch vaccination certificate due to a technical error. This was corrected.</string>
