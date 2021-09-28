@@ -96,7 +96,11 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             is YourEventsFragmentType.RemoteProtocol3Type -> {
                 return when (type.originType) {
                     is OriginType.Test -> {
-                        HolderFlow.DigidTest
+                        if (type.fromCommercialTestCode) {
+                            HolderFlow.CommercialTest
+                        } else {
+                            HolderFlow.DigidTest
+                        }
                     }
                     is OriginType.Recovery -> {
                         HolderFlow.Recovery

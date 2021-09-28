@@ -43,6 +43,7 @@ sealed class YourEventsFragmentType : Parcelable {
         val remoteEvents: Map<RemoteProtocol3, ByteArray>,
         val originType: OriginType,
         val eventProviders: List<EventProvider> = emptyList(),
+        val fromCommercialTestCode: Boolean = false
     ) : YourEventsFragmentType(), Parcelable
 
     @Parcelize
