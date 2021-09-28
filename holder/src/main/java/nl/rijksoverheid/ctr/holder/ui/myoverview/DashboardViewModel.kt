@@ -13,17 +13,25 @@ import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardErrorState
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetDashboardItemsUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardRefreshUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardTabItem
 import nl.rijksoverheid.ctr.shared.livedata.Event
+import java.time.OffsetDateTime
 
 abstract class DashboardViewModel : ViewModel() {
     open val dashboardTabItemsLiveData: LiveData<List<DashboardTabItem>> = MutableLiveData()
     open val databaseSyncerResultLiveData: LiveData<Event<DatabaseSyncerResult>> = MutableLiveData()
 
+    var dashboardErrorState: DashboardErrorState = DashboardErrorState.None
+
     abstract fun refresh(forceSync: Boolean = false)
     abstract fun removeGreenCard(greenCard: GreenCard)
+
+    companion object {
+        internal const val retryIntervalMinutes = 10L
+    }
 }
 
 class DashboardViewModelImpl(
@@ -34,6 +42,8 @@ class DashboardViewModelImpl(
 ): DashboardViewModel() {
 
     private val mutex = Mutex()
+
+    private var lastRetryUpdate: OffsetDateTime? = null
 
     override fun refresh(forceSync: Boolean) {
         viewModelScope.launch {
@@ -55,6 +65,19 @@ class DashboardViewModelImpl(
                     syncWithRemote = shouldLoadNewCredentials
                 )
 
+                if (shouldLoadNewCredentials && databaseSyncerResult is DatabaseSyncerResult.Failed.ServerError) {
+                    dashboardErrorState = if (dashboardErrorState == DashboardErrorState.RetryErrorState || !shouldAllowRetry()) {
+                        lastRetryUpdate = OffsetDateTime.now()
+                        DashboardErrorState.RetryErrorState
+                    } else {
+                        DashboardErrorState.HelpdeskErrorState
+                    }
+                }
+
+                if (databaseSyncerResult !is DatabaseSyncerResult.Failed.ServerError) {
+                    dashboardErrorState = DashboardErrorState.None
+                }
+
                 (databaseSyncerResultLiveData as MutableLiveData).postValue(
                     Event(databaseSyncerResult)
                 )
@@ -69,6 +92,11 @@ class DashboardViewModelImpl(
                 }
             }
         }
+    }
+
+    private fun shouldAllowRetry(): Boolean {
+        val lastUpdate = lastRetryUpdate ?: return true
+        return OffsetDateTime.now().isAfter(lastUpdate.plusMinutes(retryIntervalMinutes))
     }
 
     override fun removeGreenCard(greenCard: GreenCard) {

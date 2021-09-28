@@ -129,7 +129,7 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
                             },
                             negativeButtonText = R.string.dialog_close,
                         )
-                    } else {
+                    } else if (it !is DatabaseSyncerResult.Failed.ServerError) {
                         dialogUtil.presentDialog(
                             context = requireContext(),
                             title = R.string.dialog_title_no_internet,
