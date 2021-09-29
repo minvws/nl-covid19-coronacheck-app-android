@@ -43,7 +43,7 @@ class RefreshCredentialsJobTest: AutoCloseKoinTest() {
     fun `given a unsuccessful database sync, when worker does work, then it returns retry`() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         val worker = TestListenableWorkerBuilder<RefreshCredentialsJob>(context).setWorkerFactory(
-            testWorkerFactory(databaseSyncerResult = DatabaseSyncerResult.Failed.ServerError(AppErrorResult(HolderStep.GetCredentialsNetworkRequest, IllegalStateException())))
+            testWorkerFactory(databaseSyncerResult = DatabaseSyncerResult.Failed.ServerError.FirstTime(AppErrorResult(HolderStep.GetCredentialsNetworkRequest, IllegalStateException())))
         ).build()
 
         val result = worker.startWork().get()
@@ -65,8 +65,11 @@ class RefreshCredentialsJobTest: AutoCloseKoinTest() {
         holderDatabaseSyncer = object: HolderDatabaseSyncer {
             override suspend fun sync(
                 expectedOriginType: OriginType?,
-                syncWithRemote: Boolean
-            ): DatabaseSyncerResult = databaseSyncerResult
+                syncWithRemote: Boolean,
+                previousSyncResult: DatabaseSyncerResult?
+            ): DatabaseSyncerResult {
+                return databaseSyncerResult
+            }
         }
     )
 }
