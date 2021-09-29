@@ -37,6 +37,7 @@ android {
                 "{" +
                         "\"sha256/lR7gRvqDMW5nhsCMRPE7TKLq0tJkTWMxQ5HAzHCIfQ0=\"" +
                         "}"
+        buildConfigField "String", "CDN_API_URL", "\"https://verifier-api-cdn.coronacheck.nl/v5/\""
     }
 
     signingConfigs {
@@ -79,10 +80,12 @@ android {
             applicationIdSuffix ".acc"
             manifestPlaceholders = [appLabel: "@string/app_name_acc"]
             buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.acc.coronacheck.nl/v5/\""
+            buildConfigField "String", "CDN_API_URL", "\"https://verifier-api-cdn.acc.coronacheck.nl/v5/\""
             buildConfigField "String[]", "CERTIFICATE_PINS",
                     "{" +
                             "\"sha256/lR7gRvqDMW5nhsCMRPE7TKLq0tJkTWMxQ5HAzHCIfQ0=\"" +
                             "}"
+            buildConfigField "String", "CDN_API_URL", "\"https://verifier-api-cdn.acc.coronacheck.nl/v5/\""
             apply plugin: 'com.google.gms.google-services'
             apply plugin: 'com.google.firebase.crashlytics'
         }

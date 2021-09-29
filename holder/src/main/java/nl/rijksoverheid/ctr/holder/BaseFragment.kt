@@ -21,6 +21,10 @@ abstract class BaseFragment(contentLayoutId: Int) : Fragment(contentLayoutId) {
      */
     abstract fun onButtonClickWithRetryAction()
 
+    open fun onButtonClickWithRetryTitle(): Int {
+        return R.string.dialog_retry
+    }
+
     /**
      * Get the current [Flow] for this screen
      */
@@ -33,7 +37,7 @@ abstract class BaseFragment(contentLayoutId: Int) : Fragment(contentLayoutId) {
                     context = requireContext(),
                     title = R.string.dialog_no_internet_connection_title,
                     message = getString(R.string.dialog_no_internet_connection_description),
-                    positiveButtonText = R.string.dialog_retry,
+                    positiveButtonText = onButtonClickWithRetryTitle(),
                     positiveButtonCallback = {
                         onButtonClickWithRetryAction()
                     },

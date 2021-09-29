@@ -44,7 +44,7 @@ open class VerifierApplication : SharedApplication() {
                 verifierModule("verifier"),
                 verifierIntroductionModule,
                 sharedModule,
-                appConfigModule("verifier", BuildConfig.VERSION_CODE),
+                appConfigModule(BuildConfig.CDN_API_URL, "verifier", BuildConfig.VERSION_CODE),
                 introductionModule,
                 *getAdditionalModules().toTypedArray(),
                 designModule,

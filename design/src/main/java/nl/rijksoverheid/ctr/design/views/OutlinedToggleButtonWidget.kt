@@ -15,7 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import com.google.android.material.button.MaterialButton
 import nl.rijksoverheid.ctr.design.R
-import nl.rijksoverheid.ctr.design.ext.getThemeColor
+import nl.rijksoverheid.ctr.design.ext.getThemeColorStateList
 
 class OutlinedToggleButtonWidget @JvmOverloads constructor(
     context: Context,
@@ -32,7 +32,7 @@ class OutlinedToggleButtonWidget @JvmOverloads constructor(
     fun setToggled(isToggled: Boolean) {
         this.isToggled = isToggled
         if (isToggled) {
-            backgroundTintList = context.getThemeColor(R.attr.colorSurface)
+            backgroundTintList = context.getThemeColorStateList(R.attr.colorSurface)
             setStrokeColorResource(R.color.primary_blue)
             ViewCompat.setElevation(this, 2f)
             contentDescription = "$text - ${context.getString(R.string.accessibility_label_selected)}"
