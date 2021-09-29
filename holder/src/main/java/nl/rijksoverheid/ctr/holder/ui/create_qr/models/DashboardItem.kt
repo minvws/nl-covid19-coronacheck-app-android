@@ -14,7 +14,7 @@ sealed class DashboardItem {
     data class PlaceholderCardItem(val greenCardType: GreenCardType) : DashboardItem()
     object ClockDeviationItem : DashboardItem()
 
-    data class GreenCardsItem(val greenCards: List<GreenCardItem>) : DashboardItem() {
+    data class CardsItem(val cards: List<CardItem>) : DashboardItem() {
 
         sealed class CredentialState {
             data class HasCredential(val credential: CredentialEntity) : CredentialState()
@@ -22,7 +22,7 @@ sealed class DashboardItem {
             object NoCredential : CredentialState()
         }
 
-        data class GreenCardItem(
+        data class CardItem(
             val greenCard: GreenCard,
             val originStates: List<OriginState>,
             val credentialState: CredentialState,

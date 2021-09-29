@@ -171,8 +171,8 @@ class GetDashboardItemsUseCaseImpl(
         // Always order by origin type
         items.sortBy {
             when (it) {
-                is DashboardItem.GreenCardsItem -> {
-                    it.greenCards.first().originStates.first().origin.type.order
+                is DashboardItem.CardsItem -> {
+                    it.cards.first().originStates.first().origin.type.order
                 }
                 is DashboardItem.OriginInfoItem -> {
                     it.originType.order
@@ -196,15 +196,15 @@ class GetDashboardItemsUseCaseImpl(
         return items
             .groupBy { it::class }
             .map { itemTypeToItem ->
-                if (itemTypeToItem.value.first() !is DashboardItem.GreenCardsItem) return itemTypeToItem.value.toMutableList()
+                if (itemTypeToItem.value.first() !is DashboardItem.CardsItem) return itemTypeToItem.value.toMutableList()
 
                 itemTypeToItem.value
-                    .groupBy { (it as DashboardItem.GreenCardsItem).greenCards.first().greenCard.origins.first().type }
+                    .groupBy { (it as DashboardItem.CardsItem).cards.first().greenCard.origins.first().type }
                     .map {
                         if (it.key == OriginType.Vaccination) {
                             listOf(
-                                DashboardItem.GreenCardsItem(it.value.map { greenCardsItem ->
-                                    (greenCardsItem as DashboardItem.GreenCardsItem).greenCards
+                                DashboardItem.CardsItem(it.value.map { greenCardsItem ->
+                                    (greenCardsItem as DashboardItem.CardsItem).cards
                                 }.flatten())
                             )
                         } else it.value
@@ -216,7 +216,7 @@ class GetDashboardItemsUseCaseImpl(
         greenCard: GreenCard,
         isLoadingNewCredentials: Boolean,
         databaseSyncerResult: DatabaseSyncerResult
-    ): DashboardItem.GreenCardsItem {
+    ): DashboardItem.CardsItem {
         // Check if we have a credential
         val activeCredential = credentialUtil.getActiveCredential(
             entities = greenCard.credentialEntities
@@ -233,19 +233,19 @@ class GetDashboardItemsUseCaseImpl(
 
         // More our credential to a more readable state
         val credentialState = when {
-            isLoadingNewCredentials -> DashboardItem.GreenCardsItem.CredentialState.LoadingCredential
-            activeCredential == null -> DashboardItem.GreenCardsItem.CredentialState.NoCredential
-            !hasValidOriginStates -> DashboardItem.GreenCardsItem.CredentialState.NoCredential
-            else -> DashboardItem.GreenCardsItem.CredentialState.HasCredential(activeCredential)
+            isLoadingNewCredentials -> DashboardItem.CardsItem.CredentialState.LoadingCredential
+            activeCredential == null -> DashboardItem.CardsItem.CredentialState.NoCredential
+            !hasValidOriginStates -> DashboardItem.CardsItem.CredentialState.NoCredential
+            else -> DashboardItem.CardsItem.CredentialState.HasCredential(activeCredential)
         }
 
-        val greenCardItem = DashboardItem.GreenCardsItem.GreenCardItem(
+        val greenCardItem = DashboardItem.CardsItem.CardItem(
             greenCard = greenCard,
             originStates = nonExpiredOriginStates,
             credentialState = credentialState,
             databaseSyncerResult = databaseSyncerResult
         )
 
-        return DashboardItem.GreenCardsItem(listOf(greenCardItem))
+        return DashboardItem.CardsItem(listOf(greenCardItem))
     }
 }
