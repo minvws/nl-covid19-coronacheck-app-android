@@ -16,6 +16,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardErrorState
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetDashboardItemsUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardRefreshUtil
+import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardSync
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardTabItem
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import java.time.OffsetDateTime
@@ -26,7 +27,7 @@ abstract class DashboardViewModel : ViewModel() {
 
     var dashboardErrorState: DashboardErrorState = DashboardErrorState.None
 
-    abstract fun refresh(forceSync: Boolean = false)
+    abstract fun refresh(dashboardSync: DashboardSync = DashboardSync.CheckCredentialsExpired)
     abstract fun removeGreenCard(greenCard: GreenCard)
 
     companion object {
@@ -45,12 +46,22 @@ class DashboardViewModelImpl(
 
     private var lastRetryUpdate: OffsetDateTime? = null
 
-    override fun refresh(forceSync: Boolean) {
+    override fun refresh(dashboardSync: DashboardSync) {
         viewModelScope.launch {
             mutex.withLock {
                 // Check if we need to refresh our data
                 val hasDoneRefreshCall = databaseSyncerResultLiveData.value?.peekContent() != null
-                val shouldLoadNewCredentials = (forceSync) || (greenCardRefreshUtil.shouldRefresh() && !hasDoneRefreshCall)
+                val shouldLoadNewCredentials = when (dashboardSync) {
+                    is DashboardSync.ForceSync -> {
+                        true
+                    }
+                    is DashboardSync.DisableSync -> {
+                        false
+                    }
+                    is DashboardSync.CheckCredentialsExpired -> {
+                        (greenCardRefreshUtil.shouldRefresh() && !hasDoneRefreshCall)
+                    }
+                }
 
                 val allGreenCards = holderDatabase.greenCardDao().getAll()
 
@@ -64,19 +75,6 @@ class DashboardViewModelImpl(
                 val databaseSyncerResult = holderDatabaseSyncer.sync(
                     syncWithRemote = shouldLoadNewCredentials
                 )
-
-                if (shouldLoadNewCredentials && databaseSyncerResult is DatabaseSyncerResult.Failed.ServerError) {
-                    dashboardErrorState = if (dashboardErrorState == DashboardErrorState.RetryErrorState || !shouldAllowRetry()) {
-                        lastRetryUpdate = OffsetDateTime.now()
-                        DashboardErrorState.RetryErrorState
-                    } else {
-                        DashboardErrorState.HelpdeskErrorState
-                    }
-                }
-
-                if (databaseSyncerResult !is DatabaseSyncerResult.Failed.ServerError) {
-                    dashboardErrorState = DashboardErrorState.None
-                }
 
                 (databaseSyncerResultLiveData as MutableLiveData).postValue(
                     Event(databaseSyncerResult)
