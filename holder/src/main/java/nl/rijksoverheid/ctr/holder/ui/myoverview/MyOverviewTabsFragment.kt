@@ -151,7 +151,7 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
         )
     }
 
-    private fun refresh(dashboardSync: DashboardSync = DashboardSync.CheckCredentialsExpired) {
+    private fun refresh(dashboardSync: DashboardSync = DashboardSync.CheckSync) {
         dashboardViewModel.refresh(dashboardSync)
         refreshHandler.postDelayed(
             refreshRunnable,

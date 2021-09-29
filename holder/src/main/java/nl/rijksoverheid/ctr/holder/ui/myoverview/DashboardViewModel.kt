@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
@@ -20,6 +21,7 @@ import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardSync
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardTabItem
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import java.time.OffsetDateTime
+import java.util.concurrent.TimeUnit
 
 abstract class DashboardViewModel : ViewModel() {
     open val dashboardTabItemsLiveData: LiveData<List<DashboardTabItem>> = MutableLiveData()
@@ -27,11 +29,11 @@ abstract class DashboardViewModel : ViewModel() {
 
     var dashboardErrorState: DashboardErrorState = DashboardErrorState.None
 
-    abstract fun refresh(dashboardSync: DashboardSync = DashboardSync.CheckCredentialsExpired)
+    abstract fun refresh(dashboardSync: DashboardSync = DashboardSync.CheckSync)
     abstract fun removeGreenCard(greenCard: GreenCard)
 
     companion object {
-        internal const val retryIntervalMinutes = 10L
+        val RETRY_FAILED_REQUEST_AFTER_SECONDS = if (BuildConfig.FLAVOR == "acc") TimeUnit.SECONDS.toSeconds(10) else TimeUnit.MINUTES.toSeconds(10)
     }
 }
 
@@ -44,22 +46,34 @@ class DashboardViewModelImpl(
 
     private val mutex = Mutex()
 
+    /**
+     * Refreshing of database happens every 60 seconds
+     */
     override fun refresh(dashboardSync: DashboardSync) {
         viewModelScope.launch {
             mutex.withLock {
-                // Check if we need to refresh our data
                 val previousSyncResult = databaseSyncerResultLiveData.value?.peekContent()
                 val hasDoneRefreshCall = previousSyncResult != null
 
+                // Check if we need to load new credentials
                 val shouldLoadNewCredentials = when (dashboardSync) {
                     is DashboardSync.ForceSync -> {
+                        // Load new credentials if we force it. For example on a retry button click
                         true
                     }
                     is DashboardSync.DisableSync -> {
+                        // Never load new credentials when we don't want to. For example if we are checking to show the clock skew banner
                         false
                     }
-                    is DashboardSync.CheckCredentialsExpired -> {
-                        (greenCardRefreshUtil.shouldRefresh() && !hasDoneRefreshCall)
+                    is DashboardSync.CheckSync -> {
+                        // Load new credentials if no previous refresh has been executed and we should refresh because a credentials for a green card expired
+                        val shouldRefreshCredentials = (greenCardRefreshUtil.shouldRefresh() && !hasDoneRefreshCall)
+
+                        // Load new credentials if we the previous request failed more than once and more than x minutes ago
+                        val shouldRetryFailedRequest = previousSyncResult is DatabaseSyncerResult.Failed.ServerError.MultipleTimes && OffsetDateTime.now().isAfter(previousSyncResult.failedAt.plusSeconds(RETRY_FAILED_REQUEST_AFTER_SECONDS))
+
+                        // Do the actual checks
+                        shouldRefreshCredentials || shouldRetryFailedRequest
                     }
                 }
 
@@ -77,13 +91,10 @@ class DashboardViewModelImpl(
                     previousSyncResult = previousSyncResult
                 )
 
-                (databaseSyncerResultLiveData as MutableLiveData).postValue(
-                    Event(databaseSyncerResult)
-                )
+                (databaseSyncerResultLiveData as MutableLiveData).value = Event(databaseSyncerResult)
 
                 // If we loaded new credentials, we want to update our items again
                 if (shouldLoadNewCredentials) {
-                    // Set the last time we loaded new credentials
                     refreshDashboardTabItems(
                         allGreenCards = allGreenCards,
                         databaseSyncerResult = databaseSyncerResult,

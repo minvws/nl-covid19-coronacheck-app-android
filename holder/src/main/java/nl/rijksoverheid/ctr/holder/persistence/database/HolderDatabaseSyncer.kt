@@ -24,6 +24,7 @@ interface HolderDatabaseSyncer {
      * Synchronized the database. Does cleanup in the database based on expiration dates and can resync with remote
      * @param expectedOriginType If not null checks if the remote credentials contain this origin. Will return [DatabaseSyncerResult.MissingOrigin] if it's not present.
      * @param syncWithRemote If true and the data call to resync succeeds, clear all green cards in the database and re-add them
+     * @param previousSyncResult The previous result outputted by this [sync] if known
      */
     suspend fun sync(
         expectedOriginType: OriginType? = null,
@@ -117,7 +118,7 @@ class HolderDatabaseSyncerImpl(
                         }
                     }
                 } else {
-                    DatabaseSyncerResult.Success
+                    previousSyncResult ?: DatabaseSyncerResult.Success
                 }
             }
         }
@@ -125,7 +126,6 @@ class HolderDatabaseSyncerImpl(
 }
 
 sealed class DatabaseSyncerResult {
-    object Loading : DatabaseSyncerResult()
     object Success : DatabaseSyncerResult()
     object MissingOrigin : DatabaseSyncerResult()
 
