@@ -9,6 +9,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.usecases.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
+import java.time.OffsetDateTime
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -24,7 +25,10 @@ interface HolderDatabaseSyncer {
      * @param expectedOriginType If not null checks if the remote credentials contain this origin. Will return [DatabaseSyncerResult.MissingOrigin] if it's not present.
      * @param syncWithRemote If true and the data call to resync succeeds, clear all green cards in the database and re-add them
      */
-    suspend fun sync(expectedOriginType: OriginType? = null, syncWithRemote: Boolean = true): DatabaseSyncerResult
+    suspend fun sync(
+        expectedOriginType: OriginType? = null,
+        syncWithRemote: Boolean = true,
+        previousSyncResult: DatabaseSyncerResult? = null): DatabaseSyncerResult
 }
 
 class HolderDatabaseSyncerImpl(
@@ -39,7 +43,8 @@ class HolderDatabaseSyncerImpl(
 
     override suspend fun sync(
         expectedOriginType: OriginType?,
-        syncWithRemote: Boolean
+        syncWithRemote: Boolean,
+        previousSyncResult: DatabaseSyncerResult?
     ): DatabaseSyncerResult {
         return withContext(Dispatchers.IO) {
             mutex.withLock {
@@ -93,9 +98,15 @@ class HolderDatabaseSyncerImpl(
                                     )
                                 }
                                 is NetworkRequestResult.Failed.CoronaCheckHttpError -> {
-                                    DatabaseSyncerResult.Failed.ServerError(
-                                        errorResult = remoteGreenCardsResult.errorResult
-                                    )
+                                    if (previousSyncResult == null) {
+                                        DatabaseSyncerResult.Failed.ServerError.FirstTime(
+                                            errorResult = remoteGreenCardsResult.errorResult
+                                        )
+                                    } else {
+                                        DatabaseSyncerResult.Failed.ServerError.MultipleTimes(
+                                            errorResult = remoteGreenCardsResult.errorResult
+                                        )
+                                    }
                                 }
                                 else -> {
                                     DatabaseSyncerResult.Failed.Error(
@@ -118,9 +129,12 @@ sealed class DatabaseSyncerResult {
     object Success : DatabaseSyncerResult()
     object MissingOrigin : DatabaseSyncerResult()
 
-    sealed class Failed(open val errorResult: ErrorResult): DatabaseSyncerResult() {
-        data class NetworkError(override val errorResult: ErrorResult, val hasGreenCardsWithoutCredentials: Boolean): Failed(errorResult)
-        data class ServerError(override val errorResult: ErrorResult): Failed(errorResult)
-        data class Error(override val errorResult: ErrorResult): Failed(errorResult)
+    sealed class Failed(open val errorResult: ErrorResult, open val failedAt: OffsetDateTime): DatabaseSyncerResult() {
+        data class NetworkError(override val errorResult: ErrorResult, val hasGreenCardsWithoutCredentials: Boolean): Failed(errorResult, OffsetDateTime.now())
+        sealed class ServerError(override val errorResult: ErrorResult): Failed(errorResult, OffsetDateTime.now()) {
+            data class FirstTime(override val errorResult: ErrorResult) : ServerError(errorResult)
+            data class MultipleTimes(override val errorResult: ErrorResult) : ServerError(errorResult)
+        }
+        data class Error(override val errorResult: ErrorResult): Failed(errorResult, OffsetDateTime.now())
     }
 }

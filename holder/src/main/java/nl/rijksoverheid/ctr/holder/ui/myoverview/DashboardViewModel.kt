@@ -44,13 +44,13 @@ class DashboardViewModelImpl(
 
     private val mutex = Mutex()
 
-    private var lastRetryUpdate: OffsetDateTime? = null
-
     override fun refresh(dashboardSync: DashboardSync) {
         viewModelScope.launch {
             mutex.withLock {
                 // Check if we need to refresh our data
-                val hasDoneRefreshCall = databaseSyncerResultLiveData.value?.peekContent() != null
+                val previousSyncResult = databaseSyncerResultLiveData.value?.peekContent()
+                val hasDoneRefreshCall = previousSyncResult != null
+
                 val shouldLoadNewCredentials = when (dashboardSync) {
                     is DashboardSync.ForceSync -> {
                         true
@@ -73,7 +73,8 @@ class DashboardViewModelImpl(
                 )
 
                 val databaseSyncerResult = holderDatabaseSyncer.sync(
-                    syncWithRemote = shouldLoadNewCredentials
+                    syncWithRemote = shouldLoadNewCredentials,
+                    previousSyncResult = previousSyncResult
                 )
 
                 (databaseSyncerResultLiveData as MutableLiveData).postValue(
@@ -82,6 +83,7 @@ class DashboardViewModelImpl(
 
                 // If we loaded new credentials, we want to update our items again
                 if (shouldLoadNewCredentials) {
+                    // Set the last time we loaded new credentials
                     refreshDashboardTabItems(
                         allGreenCards = allGreenCards,
                         databaseSyncerResult = databaseSyncerResult,
@@ -90,11 +92,6 @@ class DashboardViewModelImpl(
                 }
             }
         }
-    }
-
-    private fun shouldAllowRetry(): Boolean {
-        val lastUpdate = lastRetryUpdate ?: return true
-        return OffsetDateTime.now().isAfter(lastUpdate.plusMinutes(retryIntervalMinutes))
     }
 
     override fun removeGreenCard(greenCard: GreenCard) {

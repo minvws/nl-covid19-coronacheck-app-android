@@ -121,7 +121,7 @@ class MyOverviewGreenCardAdapterItem(
                     viewBinding.errorIcon.visibility = View.VISIBLE
                     viewBinding.errorText.visibility = View.VISIBLE
                 }
-                is DatabaseSyncerResult.Failed.ServerError -> {
+                is DatabaseSyncerResult.Failed.ServerError.FirstTime -> {
                     viewBinding.errorText.setHtmlText(
                         htmlText = context.getString(R.string.my_overview_green_card_server_error),
                         htmlTextColor = ContextCompat.getColor(context, R.color.error),
@@ -129,7 +129,15 @@ class MyOverviewGreenCardAdapterItem(
                     viewBinding.errorText.enableCustomLinks(onRetryClick)
                     viewBinding.errorText.visibility = View.VISIBLE
                 }
+                is DatabaseSyncerResult.Failed.ServerError.MultipleTimes -> {
+                    viewBinding.errorText.setHtmlText(
+                        htmlText = context.getString(R.string.my_overview_green_card_server_error_after_retry),
+                        htmlTextColor = ContextCompat.getColor(context, R.color.error),
+                        htmlTextColorLink = ContextCompat.getColor(context, R.color.error))
+                    viewBinding.errorText.visibility = View.VISIBLE
+                }
                 else -> {
+
                 }
             }
         }
