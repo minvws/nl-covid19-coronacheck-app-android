@@ -110,7 +110,6 @@ class MyOverviewGreenCardAdapterItem(
     private fun showError(viewBinding: ItemMyOverviewGreenCardBinding) {
         val context = viewBinding.root.context
         if (credentialState is DashboardItem.GreenCardItem.CredentialState.NoCredential) {
-            viewBinding.errorIcon.visibility = View.VISIBLE
             when (databaseSyncerResult) {
                 is DatabaseSyncerResult.Failed.NetworkError -> {
                     viewBinding.errorText.setHtmlText(
@@ -127,6 +126,7 @@ class MyOverviewGreenCardAdapterItem(
                         htmlTextColor = ContextCompat.getColor(context, R.color.error),
                         htmlTextColorLink = ContextCompat.getColor(context, R.color.error))
                     viewBinding.errorText.enableCustomLinks(onRetryClick)
+                    viewBinding.errorIcon.visibility = View.VISIBLE
                     viewBinding.errorText.visibility = View.VISIBLE
                 }
                 is DatabaseSyncerResult.Failed.ServerError.MultipleTimes -> {
@@ -135,6 +135,7 @@ class MyOverviewGreenCardAdapterItem(
                         htmlTextColor = ContextCompat.getColor(context, R.color.error),
                         htmlTextColorLink = ContextCompat.getColor(context, R.color.error))
                     viewBinding.errorText.visibility = View.VISIBLE
+                    viewBinding.errorIcon.visibility = View.VISIBLE
                 }
                 else -> {
 
