@@ -11,7 +11,7 @@ package nl.rijksoverheid.ctr.holder.ui.myoverview.items
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.xwray.groupie.viewbinding.BindableItem
-import nl.rijksoverheid.ctr.design.ext.getThemeColor
+import nl.rijksoverheid.ctr.design.ext.getThemeColorStateList
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.ItemMyOverviewGreenCardBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
@@ -95,13 +95,12 @@ class MyOverviewGreenCardAdapterItem(
         viewBinding.proof2Subtitle.visibility = View.GONE
         viewBinding.proof3Title.visibility = View.GONE
         viewBinding.proof3Subtitle.visibility = View.GONE
-        viewBinding.proof1Subtitle.setTextColor(context.getThemeColor(android.R.attr.textColorPrimary))
-        viewBinding.proof2Subtitle.setTextColor(context.getThemeColor(android.R.attr.textColorPrimary))
-        viewBinding.proof3Subtitle.setTextColor(context.getThemeColor(android.R.attr.textColorPrimary))
+        viewBinding.proof1Subtitle.setTextColor(context.getThemeColorStateList(android.R.attr.textColorPrimary))
+        viewBinding.proof2Subtitle.setTextColor(context.getThemeColorStateList(android.R.attr.textColorPrimary))
+        viewBinding.proof3Subtitle.setTextColor(context.getThemeColorStateList(android.R.attr.textColorPrimary))
         viewBinding.errorText.setHtmlText("")
         viewBinding.errorIcon.visibility = View.GONE
         viewBinding.errorText.visibility = View.GONE
-        viewBinding.errorTextRetry.visibility = View.GONE
 
         myOverViewGreenCardAdapterUtil.setContent(greenCard, originStates, ViewBindingWrapperImpl(viewBinding))
 
@@ -109,32 +108,26 @@ class MyOverviewGreenCardAdapterItem(
     }
 
     private fun showError(viewBinding: ItemMyOverviewGreenCardBinding) {
+        val context = viewBinding.root.context
         if (credentialState is DashboardItem.GreenCardItem.CredentialState.NoCredential) {
+            viewBinding.errorIcon.visibility = View.VISIBLE
             when (databaseSyncerResult) {
                 is DatabaseSyncerResult.Failed.NetworkError -> {
-                    viewBinding.errorText.setHtmlText(R.string.my_overview_green_card_internet_error)
+                    viewBinding.errorText.setHtmlText(
+                        htmlText = context.getString(R.string.my_overview_green_card_internet_error),
+                        htmlTextColor = ContextCompat.getColor(context, R.color.error),
+                        htmlTextColorLink = ContextCompat.getColor(context, R.color.error))
                     viewBinding.errorText.enableCustomLinks(onRetryClick)
                     viewBinding.errorIcon.visibility = View.VISIBLE
                     viewBinding.errorText.visibility = View.VISIBLE
-                    viewBinding.errorTextRetry.visibility = View.GONE
                 }
                 is DatabaseSyncerResult.Failed.ServerError -> {
-                    when (errorState) {
-                        DashboardErrorState.HelpdeskErrorState -> {
-                            viewBinding.errorText.visibility = View.GONE
-                            viewBinding.errorTextRetry.visibility = View.VISIBLE
-                        }
-                        DashboardErrorState.None -> {
-                            viewBinding.errorText.visibility = View.GONE
-                            viewBinding.errorTextRetry.visibility = View.GONE
-                        }
-                        DashboardErrorState.RetryErrorState -> {
-                            viewBinding.errorText.setHtmlText(R.string.my_overview_green_card_server_error)
-                            viewBinding.errorText.enableCustomLinks(onRetryClick)
-                            viewBinding.errorText.visibility = View.VISIBLE
-                            viewBinding.errorTextRetry.visibility = View.GONE
-                        }
-                    }
+                    viewBinding.errorText.setHtmlText(
+                        htmlText = context.getString(R.string.my_overview_green_card_server_error),
+                        htmlTextColor = ContextCompat.getColor(context, R.color.error),
+                        htmlTextColorLink = ContextCompat.getColor(context, R.color.error))
+                    viewBinding.errorText.enableCustomLinks(onRetryClick)
+                    viewBinding.errorText.visibility = View.VISIBLE
                 }
                 else -> {
                 }
