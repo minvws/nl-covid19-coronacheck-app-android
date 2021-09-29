@@ -112,7 +112,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                 is DashboardItem.CardsItem -> {
                     adapterItems.add(
                         MyOverviewGreenCardAdapterItem(
-                            greenCards = dashboardItem.cards,
+                            cards = dashboardItem.cards,
                             onButtonClick = { greenCard, credentials, expiration ->
                                 navigateSafety(
                                     MyOverviewFragmentDirections.actionQrCode(
