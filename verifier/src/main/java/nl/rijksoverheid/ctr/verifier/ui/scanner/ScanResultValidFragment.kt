@@ -50,7 +50,7 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
         _binding = FragmentScanResultValidBinding.bind(view)
 
         binding.toolbar.setNavigationOnClickListener {
-            findNavController().navigate(ScanResultValidFragmentDirections.actionNavMain())
+            navigateSafety(ScanResultValidFragmentDirections.actionNavMain())
         }
 
         when (args.validData) {
@@ -75,7 +75,7 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
         }
 
         binding.personalDetails.buttonIncorrectData.setOnClickListener {
-            findNavController().navigate(ScanResultValidFragmentDirections.actionShowValidExplanation())
+            navigateSafety(ScanResultValidFragmentDirections.actionShowValidExplanation())
         }
 
         binding.personalDetails.bottom.setButtonClick {
