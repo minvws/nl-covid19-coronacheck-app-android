@@ -85,7 +85,6 @@ android {
                     "{" +
                             "\"sha256/lR7gRvqDMW5nhsCMRPE7TKLq0tJkTWMxQ5HAzHCIfQ0=\"" +
                             "}"
-            buildConfigField "String", "CDN_API_URL", "\"https://verifier-api-cdn.acc.coronacheck.nl/v5/\""
             apply plugin: 'com.google.gms.google-services'
             apply plugin: 'com.google.firebase.crashlytics'
         }
