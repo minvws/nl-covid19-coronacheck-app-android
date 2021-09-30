@@ -197,9 +197,8 @@ class MyOverViewGreenCardAdapterUtilImplTest: AutoCloseKoinTest() {
         val greenCard = greenCard(GreenCardType.Eu, OriginType.Vaccination)
         myOverViewGreenCardAdapterUtil.setContent(
             viewBinding = viewBinding,
-            greenCard = greenCard,
             originStates = listOf(OriginState.Valid(greenCard.origins.first())),
-            additionalGreenCards = listOf(greenCard, greenCard)
+            greenCards = listOf(greenCard, greenCard, greenCard)
         )
 
         assertEquals("Vaccinatiebewijs: dosis 2 van 2", (viewBinding.description.getChildAt(0) as TextView).text)
