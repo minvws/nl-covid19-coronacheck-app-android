@@ -37,6 +37,7 @@
     <string name="my_overview_test_result_title">My certificate</string>
     <string name="my_overview_test_result_international_title">International QR code</string>
     <string name="my_overview_test_result_validity">Valid until %1$s</string>
+    <string name="my_overview_green_card_vaccination_title">Vaccination certificate</string>
     <string name="accessibility_label_my_overview_test_result_personal_data">Your personal data: %1$s %2$s %3$s %4$s</string>
     <string name="accessibility_label_selected">Selected</string>
     <string name="accessibility_label_not_selected">Not selected</string>
@@ -463,5 +464,4 @@
     <string name="dialog_device_secure_positive_button">OK</string>
     <string name="qr_code_details">Details</string>
     <string name="qr_code_dosis">Dosis %1s</string>
-    <string name="my_overview_green_card_vaccination_title">Vaccinatiebewijs</string>
 </resources>

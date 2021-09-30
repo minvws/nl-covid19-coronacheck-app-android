@@ -69,7 +69,7 @@ class HolderDatabaseSyncerImpl(
 
                             // Insert green cards in database
                             val result = syncRemoteGreenCardsUseCase.execute(
-                                remoteGreenCards = remoteGreenCardsResult.remoteGreenCards
+                                remoteGreenCards = remoteGreenCards
                             )
 
                             when (result) {

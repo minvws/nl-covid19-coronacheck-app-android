@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview.items
 
+import android.widget.LinearLayout
 import android.widget.TextView
 import nl.rijksoverheid.ctr.holder.databinding.ItemMyOverviewGreenCardBinding
 
@@ -11,29 +12,20 @@ import nl.rijksoverheid.ctr.holder.databinding.ItemMyOverviewGreenCardBinding
  *
  */
 interface ViewBindingWrapper {
-    val proof1Title: TextView
-    val proof2Title: TextView
-    val proof3Title: TextView
-    val proof1Subtitle: TextView
-    val proof2Subtitle: TextView
-    val proof3Subtitle: TextView
+    val title: TextView
+    val description: LinearLayout
     val expiresIn: TextView
 }
 
-class ViewBindingWrapperImpl(private val viewBinding: ItemMyOverviewGreenCardBinding): ViewBindingWrapper {
-    override val proof1Title: TextView
-        get() = viewBinding.proof1Title
+class ViewBindingWrapperImpl(private val viewBinding: ItemMyOverviewGreenCardBinding) :
+    ViewBindingWrapper {
 
-    override val proof2Title: TextView
-        get() = viewBinding.proof2Title
-    override val proof3Title: TextView
-        get() = viewBinding.proof3Title
-    override val proof1Subtitle: TextView
-        get() = viewBinding.proof1Subtitle
-    override val proof2Subtitle: TextView
-        get() = viewBinding.proof2Subtitle
-    override val proof3Subtitle: TextView
-        get() = viewBinding.proof3Subtitle
+    override val title: TextView
+        get() = viewBinding.title
+
+    override val description: LinearLayout
+        get() = viewBinding.description
+
     override val expiresIn: TextView
         get() = viewBinding.expiresIn
 }
