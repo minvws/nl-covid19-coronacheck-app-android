@@ -7,7 +7,7 @@ plugins {
 }
 
 def appVersionCode = System.getenv("GITHUB_RUN_NUMBER") != null ? System.getenv("GITHUB_RUN_NUMBER").toInteger() : 1000000
-version = "2.3.1"
+version = "2.3.2"
 archivesBaseName = "verifier-v${version}-${appVersionCode}"
 
 android {
@@ -141,4 +141,3 @@ dependencies {
 
     debugImplementation "androidx.fragment:fragment-testing:$fragment_version"
 }
-
