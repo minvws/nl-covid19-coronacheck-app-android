@@ -219,7 +219,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
         )
         setOriginTitle(
             descriptionLayout = viewBinding.description,
-            title = "${context.getString(R.string.qr_card_vaccination_title_domestic)} $doses",
+            title = doses,
         )
 
         setOriginSubtitle(
