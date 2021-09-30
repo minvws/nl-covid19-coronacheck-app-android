@@ -90,7 +90,7 @@ class MyOverViewGreenCardAdapterUtilImplTest: AutoCloseKoinTest() {
         val greenCard = greenCard(GreenCardType.Eu, OriginType.Vaccination)
         myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(greenCard), listOf(OriginState.Valid(greenCard.origins.first())))
 
-        assertEquals("Vaccinatiebewijs: dosis 2 van 2", (viewBinding.description.getChildAt(0) as TextView).text)
+        assertEquals("dosis 2 van 2", (viewBinding.description.getChildAt(0) as TextView).text)
         assertEquals("Vaccinatiedatum: 27 juli 2021", (viewBinding.description.getChildAt(1) as TextView).text)
     }
 
@@ -100,7 +100,7 @@ class MyOverViewGreenCardAdapterUtilImplTest: AutoCloseKoinTest() {
         val greenCard = greenCard(GreenCardType.Eu, OriginType.Vaccination)
         myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(greenCard), listOf(OriginState.Valid(greenCard.origins.first())))
 
-        assertEquals("Vaccinatiebewijs: dosis 2 van 2", (viewBinding.description.getChildAt(0) as TextView).text)
+        assertEquals("dosis 2 van 2", (viewBinding.description.getChildAt(0) as TextView).text)
         assertEquals("Vaccinatiedatum: 27 juli 2021", (viewBinding.description.getChildAt(1) as TextView).text)
         assertEquals(View.GONE, viewBinding.expiresIn.visibility)
     }
