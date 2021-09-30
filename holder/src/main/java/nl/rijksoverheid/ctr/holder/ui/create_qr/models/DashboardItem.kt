@@ -14,19 +14,20 @@ sealed class DashboardItem {
     data class PlaceholderCardItem(val greenCardType: GreenCardType) : DashboardItem()
     object ClockDeviationItem : DashboardItem()
 
-    data class GreenCardItem(
-        val greenCard: GreenCard,
-        val originStates: List<OriginState>,
-        val credentialState: CredentialState,
-        val databaseSyncerResult: DatabaseSyncerResult,
-        val cardsOfSameType: List<GreenCardItem> = emptyList()
-    ) : DashboardItem() {
+    data class CardsItem(val cards: List<CardItem>) : DashboardItem() {
 
         sealed class CredentialState {
             data class HasCredential(val credential: CredentialEntity) : CredentialState()
             object LoadingCredential : CredentialState()
             object NoCredential : CredentialState()
         }
+
+        data class CardItem(
+            val greenCard: GreenCard,
+            val originStates: List<OriginState>,
+            val credentialState: CredentialState,
+            val databaseSyncerResult: DatabaseSyncerResult
+        )
     }
 
     data class GreenCardExpiredItem(val greenCard: GreenCard) : DashboardItem()

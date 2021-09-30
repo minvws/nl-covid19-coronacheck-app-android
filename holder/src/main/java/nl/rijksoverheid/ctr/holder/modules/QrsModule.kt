@@ -13,10 +13,6 @@ import org.koin.dsl.module
 val qrsModule = module {
     factory<QrCodeDataUseCase> { QrCodeDataUseCaseImpl(get(), get(), get()) }
 
-    factory<GetMyOverviewItemsUseCase> {
-        GetMyOverviewItemsUseCaseImpl(get(), get(), get(), get())
-    }
-
     factory {
         TokenQrUseCase(get())
     }
