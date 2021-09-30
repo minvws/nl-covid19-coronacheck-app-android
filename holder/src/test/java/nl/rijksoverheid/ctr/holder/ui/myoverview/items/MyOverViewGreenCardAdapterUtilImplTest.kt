@@ -183,12 +183,34 @@ class MyOverViewGreenCardAdapterUtilImplTest: AutoCloseKoinTest() {
 
     @Test
     fun `Title should be specific for EU vaccination card`() {
+        every { credentialUtil.getVaccinationDosesForEuropeanCredentials(any(), any()) } returns "dosis 2 van 2"
+        val greenCard = greenCard(GreenCardType.Eu, OriginType.Vaccination)
+        myOverViewGreenCardAdapterUtil.setContent(
+            viewBinding = viewBinding,
+            originStates = listOf(OriginState.Valid(greenCard.origins.first())),
+            greenCards = listOf(greenCard)
+        )
 
+        assertEquals("Vaccinatiebewijs", (viewBinding.title).text)
     }
 
     @Test
-    fun `Title should be generic for green cards except EU vaccination`() {
+    fun `Title should be generic for EU test and recovery`() {
+        val testCard = greenCard(GreenCardType.Eu, OriginType.Test)
+        val recoveryCard = greenCard(GreenCardType.Eu, OriginType.Recovery)
 
+        myOverViewGreenCardAdapterUtil.setContent(
+            viewBinding, listOf(testCard), listOf(OriginState.Valid(testCard.origins.first()))
+        )
+        assertEquals("Mijn bewijs", (viewBinding.title).text)
+
+        // reset
+        viewBinding.title.text = ""
+
+        myOverViewGreenCardAdapterUtil.setContent(
+            viewBinding, listOf(recoveryCard), listOf(OriginState.Valid(testCard.origins.first()))
+        )
+        assertEquals("Mijn bewijs", (viewBinding.title).text)
     }
 
     @Test
