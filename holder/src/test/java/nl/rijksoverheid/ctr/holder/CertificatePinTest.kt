@@ -3,10 +3,19 @@ package nl.rijksoverheid.ctr.holder
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.api.json.JsonObjectJsonAdapter
+import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
+import nl.rijksoverheid.ctr.appconfig.AppConfigViewModelImpl
 import nl.rijksoverheid.ctr.appconfig.api.AppConfigApi
+import nl.rijksoverheid.ctr.appconfig.appConfigModule
+import nl.rijksoverheid.ctr.appconfig.isVerifierApp
+import nl.rijksoverheid.ctr.appconfig.persistence.*
+import nl.rijksoverheid.ctr.appconfig.repositories.ConfigRepository
+import nl.rijksoverheid.ctr.appconfig.repositories.ConfigRepositoryImpl
+import nl.rijksoverheid.ctr.appconfig.usecases.*
 import okhttp3.CertificatePinner
 import okhttp3.CertificatePinner.Companion.sha256Hash
 import okhttp3.HttpUrl
+import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -15,7 +24,10 @@ import okhttp3.tls.HeldCertificate
 import org.junit.Assert.assertThrows
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.android.ext.koin.androidContext
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.loadKoinModules
+import org.koin.core.context.unloadKoinModules
 import org.koin.dsl.module
 import org.koin.test.AutoCloseKoinTest
 import org.koin.test.get
@@ -57,7 +69,8 @@ class CertificatePinTest: AutoCloseKoinTest() {
             setBody("{}")
         })
 
-        loadKoinModules(apiModule(server.url("/")))
+        unloadKoinModules(appConfigModule(BuildConfig.CDN_API_URL, "holder", BuildConfig.VERSION_CODE))
+        loadKoinModules(listOf(apiModule(server.url("/")), appConfigModule(server.url("/").toString(), "holder", BuildConfig.VERSION_CODE)))
 
         val configApi: AppConfigApi = get()
 

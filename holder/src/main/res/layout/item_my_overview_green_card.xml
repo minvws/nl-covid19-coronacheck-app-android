@@ -28,7 +28,6 @@
                 android:id="@+id/imageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:src="@drawable/illustration_hand_qr_nl"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -151,36 +150,19 @@
 
     <nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
         android:id="@+id/error_text"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textAppearance="@style/App.TextAppearance.MaterialComponents.Body2.Secondary"
-        android:layout_marginStart="2dp"
-        android:layout_marginEnd="32dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:textAlignment="textStart"
-        android:textColor="@color/error"
-        android:textColorLink="@color/error"
+        app:htmlTextColor="@color/error"
+        app:htmlTextColorLink="@color/error"
         app:htmlText="@string/my_overview_green_card_server_error"
         app:layout_constraintTop_toBottomOf="@+id/test_result"
         app:layout_constraintStart_toEndOf="@id/error_icon"
-        android:visibility="invisible"
-        app:layout_goneMarginTop="32dp"
-        tools:visibility="visible" />
-
-    <nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
-        android:id="@+id/error_text_retry"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/App.TextAppearance.MaterialComponents.Body2.Secondary"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:textAlignment="textStart"
-        android:textColor="@color/error"
-        android:textColorLink="?android:textColorPrimary"
-        app:htmlText="@string/my_overview_green_card_server_error_after_retry"
-        app:layout_constraintTop_toBottomOf="@+id/error_text"
-        app:layout_constraintStart_toStartOf="@id/error_text"
+        app:layout_constraintEnd_toEndOf="@+id/test_result"
+        android:paddingStart="8dp"
         android:visibility="invisible"
         app:layout_goneMarginTop="32dp"
         tools:visibility="visible" />

@@ -21,6 +21,7 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentTabsMyOverviewBinding
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
+import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardSync
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardTabItem
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
@@ -82,7 +83,9 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
      */
     private fun observeServerTimeSynced() {
         clockDeviationUseCase.serverTimeSyncedLiveData.observe(viewLifecycleOwner, EventObserver {
-            dashboardViewModel.refresh()
+            dashboardViewModel.refresh(
+                dashboardSync = DashboardSync.DisableSync
+            )
         })
     }
 
@@ -124,12 +127,12 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
                             positiveButtonText = R.string.app_status_internet_required_action,
                             positiveButtonCallback = {
                                 refresh(
-                                    forceSync = true
+                                    dashboardSync = DashboardSync.ForceSync
                                 )
                             },
                             negativeButtonText = R.string.dialog_close,
                         )
-                    } else {
+                    } else if (it !is DatabaseSyncerResult.Failed.ServerError) {
                         dialogUtil.presentDialog(
                             context = requireContext(),
                             title = R.string.dialog_title_no_internet,
@@ -137,7 +140,7 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
                             positiveButtonText = R.string.app_status_internet_required_action,
                             positiveButtonCallback = {
                                 refresh(
-                                    forceSync = true
+                                    dashboardSync = DashboardSync.ForceSync
                                 )
                             },
                             negativeButtonText = R.string.dialog_close,
@@ -148,8 +151,8 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
         )
     }
 
-    private fun refresh(forceSync: Boolean = false) {
-        dashboardViewModel.refresh(forceSync)
+    private fun refresh(dashboardSync: DashboardSync = DashboardSync.CheckSync) {
+        dashboardViewModel.refresh(dashboardSync)
         refreshHandler.postDelayed(
             refreshRunnable,
             TimeUnit.SECONDS.toMillis(60)
