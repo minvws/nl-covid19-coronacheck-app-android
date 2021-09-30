@@ -182,6 +182,6 @@ class HolderMainFragment : BaseMainFragment(
     }
 
     companion object {
-        const val drawerWidthFactor = 0.87f
+        const val drawerWidthFactor = 0.85f
     }
 }
