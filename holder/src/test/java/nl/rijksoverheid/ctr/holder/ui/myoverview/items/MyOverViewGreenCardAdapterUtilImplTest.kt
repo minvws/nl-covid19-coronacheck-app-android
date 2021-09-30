@@ -231,7 +231,7 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
         )
 
         assertEquals(
-            "Vaccinatiebewijs: dosis 2 van 2",
+            "dosis 2 van 2",
             (viewBinding.description.getChildAt(0) as TextView).text
         )
         assertEquals(
@@ -239,7 +239,7 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
             (viewBinding.description.getChildAt(1) as TextView).text
         )
         assertEquals(
-            "Vaccinatiebewijs: dosis 2 van 2",
+            "dosis 2 van 2",
             (viewBinding.description.getChildAt(2) as TextView).text
         )
         assertEquals(
@@ -247,7 +247,7 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
             (viewBinding.description.getChildAt(3) as TextView).text
         )
         assertEquals(
-            "Vaccinatiebewijs: dosis 2 van 2",
+            "dosis 2 van 2",
             (viewBinding.description.getChildAt(4) as TextView).text
         )
         assertEquals(
