@@ -15,8 +15,16 @@ sealed class QrCodeData(
         val readDomesticCredential: ReadDomesticCredential
     ) : QrCodeData(bitmap)
 
-    data class European(
+    sealed class European(
         override val bitmap: Bitmap,
-        val readEuropeanCredential: JSONObject
-    ) : QrCodeData(bitmap)
+        open val readEuropeanCredential: JSONObject
+    ) : QrCodeData(bitmap) {
+
+        data class Vaccination(
+            val dosis: String, override val bitmap: Bitmap, override val readEuropeanCredential: JSONObject
+        ): European(bitmap, readEuropeanCredential)
+
+        data class NonVaccination(override val bitmap: Bitmap, override val readEuropeanCredential: JSONObject) :
+            European(bitmap, readEuropeanCredential)
+    }
 }

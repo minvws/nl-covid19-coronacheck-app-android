@@ -145,7 +145,7 @@ class GetDashboardItemsUseCaseImpl(
                 } else {
                     mapGreenCardsItem(greenCard, isLoadingNewCredentials, databaseSyncerResult)
                 }
-            }.let { if (combineVaccinations) combineVaccinationItems(it) else it }.toMutableList()
+            }.let { if (combineVaccinations) combineEuVaccinationItems(it) else it }.toMutableList()
 
         // If we have valid origins that exists in the other selected type but not in the current one, we show a banner
         val allOriginsForSelectedType = greenCardsForSelectedType.map { it.origins }.flatten()
@@ -187,12 +187,12 @@ class GetDashboardItemsUseCaseImpl(
     }
 
     /**
-     * Multiple vaccination green card items will be combined into 1.
+     * Multiple EU vaccination green card items will be combined into 1.
      *
      * @param[items] Items list containing possible multiple vaccination items to combine.
      * @return Items list with vaccination green card items combined into 1.
      */
-    private fun combineVaccinationItems(items: List<DashboardItem>): List<DashboardItem> {
+    private fun combineEuVaccinationItems(items: List<DashboardItem>): List<DashboardItem> {
         return items
             .groupBy { it::class }
             .map { itemTypeToItem ->

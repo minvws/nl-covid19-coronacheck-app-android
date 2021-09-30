@@ -43,10 +43,14 @@ class PaperProofCodeFragment : Fragment(R.layout.fragment_paper_proof_code) {
                 is PaperProofCodeResult.NotSixCharacters -> {
                     binding.codeInput.error =
                         getString(R.string.add_paper_proof_input_not_6_chars)
+                    binding.codeInput.isErrorEnabled = true
+                    binding.codeInput.setErrorIconDrawable(R.drawable.ic_error)
                 }
                 is PaperProofCodeResult.Invalid -> {
                     binding.codeInput.error =
                         getString(R.string.add_paper_proof_input_invalid)
+                    binding.codeInput.isErrorEnabled = true
+                    binding.codeInput.setErrorIconDrawable(R.drawable.ic_error)
                 }
             }
         })

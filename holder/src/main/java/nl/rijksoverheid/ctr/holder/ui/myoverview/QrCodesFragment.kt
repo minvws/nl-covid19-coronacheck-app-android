@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.viewpager2.widget.ViewPager2
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
@@ -24,8 +25,8 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.QrInfoScreenUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeData
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.ExternalReturnAppData
+import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodesResult
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
-import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAccessibilityFocus
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -33,7 +34,6 @@ import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 import java.util.concurrent.TimeUnit
-
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -133,10 +133,17 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
         }
     }
 
-    private fun bindQrCodeDataList(qrCodeDataList: List<QrCodeData>) {
-        qrCodePagerAdapter.addData(qrCodeDataList)
+    private fun bindQrCodeDataList(qrCodesResult: QrCodesResult) {
+        when (qrCodesResult) {
+            is QrCodesResult.SingleQrCode -> {
+                qrCodePagerAdapter.addData(listOf(qrCodesResult.qrCodeData))
+            }
+            is QrCodesResult.MultipleQrCodes -> {
+                qrCodePagerAdapter.addData(qrCodesResult.europeanVaccinationQrCodeDataList)
+                setupEuropeanVaccinationQr(qrCodesResult.europeanVaccinationQrCodeDataList)
+            }
+        }
 
-        // TODO: Refactor and get animation data out of the QrCodeData object
         presentQrLoading(false)
 
         // Nullable so tests don't trip over parentFragment
@@ -219,6 +226,49 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
         }
     }
 
+    /**
+     * Show extra UI when we are dealing with european vaccination qrs
+     */
+    private fun setupEuropeanVaccinationQr(europeanVaccinations: List<QrCodeData.European.Vaccination>) {
+        // Make extra UI visible to show more information about the QR
+        binding.vaccinationQrsContainer.visibility = View.VISIBLE
+        binding.qrVaccinationDosis.visibility = View.VISIBLE
+        binding.qrVaccinationDosis.text = getString(R.string.qr_code_dosis, europeanVaccinations.first().dosis)
+
+        // If there are more then one vaccinations we update UI based on the selected page
+        if (europeanVaccinations.size > 1) {
+            // Initialize our viewpager indicators
+            binding.qrVaccinationIndicators.visibility = View.VISIBLE
+            binding.qrVaccinationIndicators.initIndicator(europeanVaccinations.size)
+
+            binding.viewPager.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    // Select current indicator
+                    binding.qrVaccinationIndicators.updateSelected(position)
+
+                    Handler(Looper.getMainLooper()).post {
+                        binding.previousQrButton.visibility = if (position == 0) View.VISIBLE else View.INVISIBLE
+                        binding.nextQrButton.visibility = if (position == europeanVaccinations.size - 1) View.VISIBLE else View.INVISIBLE
+                        binding.qrVaccinationDosis.text = getString(R.string.qr_code_dosis, europeanVaccinations[position].dosis)
+                    }
+                }
+            })
+
+            // Default select the last item
+            binding.viewPager.setCurrentItem(europeanVaccinations.size - 1, false)
+
+            // Make buttons click to scroll through viewpager
+            binding.previousQrButton.setOnClickListener {
+                binding.viewPager.setCurrentItem(binding.viewPager.currentItem - 1, true)
+            }
+
+            binding.nextQrButton.setOnClickListener {
+                binding.viewPager.setCurrentItem(binding.viewPager.currentItem + 1, true)
+            }
+        }
+    }
+
     private fun presentQrLoading(loading: Boolean) {
         (parentFragment?.parentFragment as HolderMainFragment).presentLoading(loading)
         binding.root.visibility = if (loading) View.GONE else View.VISIBLE
@@ -226,7 +276,8 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
 
     private fun generateQrCode() {
         qrCodeViewModel.generateQrCodes(
-            type = args.data.type,
+            greenCardType = args.data.type,
+            originType = args.data.originType,
             size = resources.displayMetrics.widthPixels,
             credentials = args.data.credentials,
             shouldDisclose = args.data.shouldDisclose

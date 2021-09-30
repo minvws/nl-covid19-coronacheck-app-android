@@ -302,7 +302,7 @@
     <string name="my_overview_green_card_not_valid_title_vaccination">Over je vaccinatiebewijs</string>
     <string name="my_overview_green_card_not_valid_title_test">Over je testbewijs</string>
     <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_test"><![CDATA[Jouw testbewijs is niet geldig in Nederland. Je hebt wel een internationaal bewijs.<br/><br/>Dit kan komen doordat de geldigheidsduur in Nederland korter is dan in andere landen. Laat je opnieuw testen voor een bewijs dat ook in Nederland geldig is.]]></string>
-    <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_vaccination"><![CDATA[Jouw vaccinatiebewijs is niet geldig in Nederland. Je hebt wel een internationaal bewijs.<br/><br/>Het kan bijvoorbeeld zijn dat je maar één prik hebt gehad. Voeg je tweede vaccinatie toe om een bewijs te maken dat ook in Nederland geldig is. <a href=https://coronacheck.nl/nl/faq/2-4-ik-heb-wel-een-internationale-qr-code-maar-geen-nederlandse/</a> Lees hier meer over de mogelijke oorzaken.</a>]]></string>
+    <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_vaccination"><![CDATA[Jouw vaccinatiebewijs is niet geldig in Nederland. Je hebt wel een internationaal bewijs.<br/><br/>Het kan bijvoorbeeld zijn dat je maar één prik hebt gehad. Voeg je tweede vaccinatie toe om een bewijs te maken dat ook in Nederland geldig is. <a href="https://coronacheck.nl/nl/faq/2-4-ik-heb-wel-een-internationale-qr-code-maar-geen-nederlandse"/>Lees hier meer over de mogelijke oorzaken.</a>]]></string>
     <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_test"><![CDATA[Jouw testbewijs is niet internationaal geldig. Je hebt wel een Nederlandse QR-code.<br/><br/>Dit kan bijvoorbeeld komen doordat een testbewijs in Nederland minder lang geldig is dan in het buitenland. Laat je opnieuw testen voor een bewijs dat ook geldig is in Nederland.]]></string>
     <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_vaccination"><![CDATA[Jouw vaccinatiebewijs is niet internationaal geldig. Je hebt wel een Nederlands bewijs.<br/><br/>Dit kan bijvoorbeeld komen doordat jouw type vaccin niet geaccepteerd wordt in het buitenland.]]></string>
     <string name="rule_engine_no_origin_title">We kunnen geen bewijs maken</string>
@@ -370,7 +370,7 @@
     <string name="my_overview_green_card_not_valid_title_recovery">Over je herstelbewijs</string>
     <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_recovery"><![CDATA[Jouw herstelbewijs is niet geldig in Nederland. Je hebt wel een internationaal bewijs.<br/><br/>Dit komt doordat het type test niet voldoet in Nederland.]]></string>
     <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_recovery"><![CDATA[Jouw herstelbewijs is niet internationaal geldig. Je hebt wel een Nederlands bewijs.<br/><br/>Dit komt doordat het type test niet voldoet. Alleen van een PCR-test kan een internationaal bewijs gemaakt worden.]]></string>
-    <string name="my_overview_green_card_server_error"><![CDATA[Je kunt de QR-code niet gebruiken door een fout op de server.<br/><a href="#">Probeer opnieuw</a>]]></string>
+    <string name="my_overview_green_card_server_error"><![CDATA[Je kunt de QR-code niet gebruiken door een fout op de server.]]></string>
     <string name="my_overview_green_card_server_error_after_retry"><![CDATA[of bel de helpdesk op 0800–1421 (gratis)]]></string>
     <string name="my_overview_green_card_internet_error"><![CDATA[Maak verbinding met het internet om je QR-code weer te gebruiken.<br/><a href="#">Probeer opnieuw</a>]]></string>
     <string name="dialog_faultyvaccination28June_title">Vaccinatiebewijs gecorrigeerd</string>
@@ -395,7 +395,7 @@
     <string name="no_letter_combination_dialog_title">Geen lettercombinatie?</string>
     <string name="no_letter_combination_dialog_description"><![CDATA[Dan is het niet mogelijk om jouw bewijs op deze manier aan de app toe te voegen.<br/>Je hebt alleen een lettercombinatie gekregen als je jouw papieren coronabewijs hebt <a href="http://coronatest.nl">aangevraagd bij de zorgverlener</a> waar je bent gevaccineerd of getest.<br/><br/><b>Zelf jouw bewijs geprint? </b>Voeg je bewijs dan toe in de app via het menu. Ga naar ‘Bewijs toevoegen’ en log in met DigiD.]]></string>
     <string name="add_paper_proof_explanation_description"><![CDATA[Heb je een papieren coronabewijs <b>aangevraagd bij de zorgverlener</b> waar je bent gevaccineerd of getest? Dan kan je deze hier ook toevoegen in de app.]]></string>
-    <string name="add_paper_proof_explanation_highlight"><![CDATA[<b>Zelf je bewijs uitgeprint?</b> Voeg je bewijs dan toe in de app via het menu. Ga naar ‘Bewijs toevoegen’ en log in met DigiD.]]></string>
+    <string name="add_paper_proof_explanation_highlight"><![CDATA[<b>Zelf je bewijs uitgeprint?</b><br/>Voeg je bewijs dan toe in de app via het menu. Ga naar ‘Bewijs toevoegen’ en log in met DigiD.]]></string>
     <string name="add_paper_proof_consent_title">Scan alleen de internationale QR-code</string>
     <string name="add_paper_proof_consent_description"><![CDATA[In de internationale QR-code staan genoeg gegevens om zowel een Nederlands als een internationaal bewijs te maken. Scan daarom met de camera van je telefoon <b>alleen je internationale QR-code</b>.<br/><br/><b>Dit krijg je:</b><br/><br/><ul><li>Een Nederlands bewijs</li><li>Een internationaal bewijs</li></ul>]]></string>
     <string name="add_paper_proof_qr_scanner_text">Richt je telefoon op de QR-code op je internationale bewijs</string>
@@ -463,4 +463,5 @@
     <string name="dialog_device_secure_warning_description">Let op: je toestel is niet beveiligd met een pincode of andere beveiligingsoptie. Daardoor kunnen anderen je data inzien en zijn je gegevens mogelijk niet veilig.</string>
     <string name="dialog_device_secure_positive_button">Oke</string>
     <string name="qr_code_details">Details</string>
+    <string name="qr_code_dosis">Dosis %1s</string>
 </resources>

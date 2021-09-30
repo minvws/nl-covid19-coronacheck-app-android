@@ -1,7 +1,9 @@
 package nl.rijksoverheid.ctr.holder
 
+import android.graphics.Bitmap
 import androidx.lifecycle.MutableLiveData
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
+import io.mockk.mockk
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
@@ -546,6 +548,24 @@ fun fakeClockDevationUseCase(
 
     override fun hasDeviation(): Boolean {
         return hasDeviation
+    }
+}
+
+fun fakeReadEuropeanCredentialUtil() = object: ReadEuropeanCredentialUtil {
+    override fun getDosisForVaccination(readEuropeanCredential: JSONObject): String {
+        return ""
+    }
+}
+
+fun fakeQrCodeUsecase() = object: QrCodeUseCase {
+    override suspend fun qrCode(
+        credential: ByteArray,
+        shouldDisclose: Boolean,
+        qrCodeWidth: Int,
+        qrCodeHeight: Int,
+        errorCorrectionLevel: ErrorCorrectionLevel
+    ): Bitmap {
+        return mockk()
     }
 }
 

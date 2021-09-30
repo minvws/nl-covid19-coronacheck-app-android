@@ -39,19 +39,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:src="@drawable/illustration_hand_qr_nl" />
+                    app:layout_constraintTop_toTopOf="@id/title"
+                    app:layout_constraintBottom_toBottomOf="@id/title"
+                    tools:src="@drawable/ic_international_card" />
 
                 <TextView
                     android:id="@+id/title"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    tools:text="@string/my_overview_test_result_title"
+                    android:layout_marginEnd="8dp"
                     android:textAppearance="?attr/textAppearanceHeadline6"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/imageView"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="@string/my_overview_test_result_title" />
 
                 <LinearLayout
                     android:id="@+id/description"

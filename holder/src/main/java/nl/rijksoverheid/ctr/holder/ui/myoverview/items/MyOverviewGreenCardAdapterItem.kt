@@ -9,6 +9,7 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview.items
 
 import android.view.View
+import androidx.annotation.DimenRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.card.MaterialCardView
 import com.xwray.groupie.viewbinding.BindableItem
@@ -19,7 +20,6 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem.CardsItem.CredentialState.HasCredential
-import nl.rijksoverheid.ctr.shared.ext.dpToPx
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -109,9 +109,11 @@ class MyOverviewGreenCardAdapterItem(
         for (i in 1 until cards.count()) {
             viewBinding.greenCards.addView(
                 MaterialCardView(viewBinding.greenCards.context).apply {
-                    radius = 16F.dpToPx
-                    cardElevation = (8F - i).dpToPx
-                    translationY = (12F * i).dpToPx
+                    radius = getDimensionPixel(R.dimen.dashboard_card_corner_radius)
+                    cardElevation = getDimensionPixel(R.dimen.dashboard_card_elevation) -
+                            (getDimensionPixel(R.dimen.dashboard_card_additional_lower_elevation) * i)
+                    translationY =
+                        getDimensionPixel(R.dimen.dashboard_card_additional_translation_y) * i
                 },
                 ConstraintLayout.LayoutParams(0, 0).apply {
                     topToTop = viewBinding.testResult.id
@@ -122,6 +124,9 @@ class MyOverviewGreenCardAdapterItem(
             )
         }
     }
+
+    private fun MaterialCardView.getDimensionPixel(@DimenRes dimenRes: Int) =
+        context.resources.getDimensionPixelSize(dimenRes).toFloat()
 
     private fun showError(viewBinding: ItemMyOverviewGreenCardBinding) {
         if (cards.first().credentialState is DashboardItem.CardsItem.CredentialState.NoCredential) {
