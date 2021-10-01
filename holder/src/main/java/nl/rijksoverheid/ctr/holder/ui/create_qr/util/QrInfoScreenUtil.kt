@@ -9,9 +9,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
 import android.app.Application
 import android.os.Build
-import android.os.Parcelable
 import android.text.TextUtils
-import kotlinx.parcelize.Parcelize
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYearNumerical
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
@@ -188,7 +186,7 @@ class QrInfoScreenUtilImpl(
                 it.code == vaccination.getStringOrNull("ma")
             }?.name ?: vaccination.getStringOrNull("ma") ?: ""
 
-        val doses = readEuropeanCredentialUtil.getDosisForVaccination(readEuropeanCredential)
+        val doses = readEuropeanCredentialUtil.getDosesForVaccination(readEuropeanCredential)
 
         val vaccinationDate = vaccination.getStringOrNull("dt")?.let { vaccinationDate ->
             try {

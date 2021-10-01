@@ -13,36 +13,40 @@ import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
  */
 interface QrCodesResultUseCase {
     suspend fun getQrCodesResult(
-                              greenCardType: GreenCardType,
-                              originType: OriginType,
-                              credentials: List<ByteArray>,
-                              shouldDisclose: Boolean,
-                              qrCodeWidth: Int,
-                              qrCodeHeight: Int): QrCodesResult
+        greenCardType: GreenCardType,
+        originType: OriginType,
+        credentials: List<ByteArray>,
+        shouldDisclose: Boolean,
+        qrCodeWidth: Int,
+        qrCodeHeight: Int
+    ): QrCodesResult
 }
 
-class QrCodesResultUseCaseImpl(private val qrCodeUseCase: QrCodeUseCase,
-                            private val greenCardUtil: GreenCardUtil,
-                            private val mobileCoreWrapper: MobileCoreWrapper,
-                            private val readEuropeanCredentialUtil: ReadEuropeanCredentialUtil): QrCodesResultUseCase {
+class QrCodesResultUseCaseImpl(
+    private val qrCodeUseCase: QrCodeUseCase,
+    private val greenCardUtil: GreenCardUtil,
+    private val mobileCoreWrapper: MobileCoreWrapper,
+    private val readEuropeanCredentialUtil: ReadEuropeanCredentialUtil
+) : QrCodesResultUseCase {
 
     override suspend fun getQrCodesResult(
-                      greenCardType: GreenCardType,
-                      originType: OriginType,
-                      credentials: List<ByteArray>,
-                      shouldDisclose: Boolean,
-                      qrCodeWidth: Int,
-                      qrCodeHeight: Int): QrCodesResult {
+        greenCardType: GreenCardType,
+        originType: OriginType,
+        credentials: List<ByteArray>,
+        shouldDisclose: Boolean,
+        qrCodeWidth: Int,
+        qrCodeHeight: Int
+    ): QrCodesResult {
 
         return when (greenCardType) {
             is GreenCardType.Domestic -> {
-               getQrCodesResultForDomestic(
-                   greenCardType = greenCardType,
-                   credentials = credentials,
-                   shouldDisclose = shouldDisclose,
-                   qrCodeWidth = qrCodeWidth,
-                   qrCodeHeight = qrCodeHeight
-               )
+                getQrCodesResultForDomestic(
+                    greenCardType = greenCardType,
+                    credentials = credentials,
+                    shouldDisclose = shouldDisclose,
+                    qrCodeWidth = qrCodeWidth,
+                    qrCodeHeight = qrCodeHeight
+                )
             }
 
             is GreenCardType.Eu -> {
@@ -113,7 +117,9 @@ class QrCodesResultUseCaseImpl(private val qrCodeUseCase: QrCodeUseCase,
                 QrCodeData.European.Vaccination(
                     bitmap = qrCodeBitmap,
                     readEuropeanCredential = readEuropeanCredential,
-                    dosis = readEuropeanCredentialUtil.getDosisForVaccination(readEuropeanCredential)
+                    doses = readEuropeanCredentialUtil.getDosesForVaccination(readEuropeanCredential),
+                    isOverVaccinated = readEuropeanCredentialUtil
+                        .isOverVaccinated(readEuropeanCredential)
                 )
             }
         )

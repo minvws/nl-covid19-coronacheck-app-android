@@ -6,23 +6,42 @@ import nl.rijksoverheid.ctr.shared.ext.getStringOrNull
 import org.json.JSONObject
 
 interface ReadEuropeanCredentialUtil {
-    fun getDosisForVaccination(readEuropeanCredential: JSONObject): String
+    fun getDosesForVaccination(readEuropeanCredential: JSONObject): String
+    fun isOverVaccinated(readEuropeanCredential: JSONObject): Boolean
 }
 
 class ReadEuropeanCredentialUtilImpl(private val application: Application): ReadEuropeanCredentialUtil {
-    override fun getDosisForVaccination(readEuropeanCredential: JSONObject): String {
-        val dcc = readEuropeanCredential.optJSONObject("dcc")
-        val vaccination = dcc.getJSONArray("v").optJSONObject(0)
+
+    override fun getDosesForVaccination(readEuropeanCredential: JSONObject): String {
+        val (highestDose, totalDoses) = getHighestAndTotalDose(readEuropeanCredential)
 
         val doses =
-            if (vaccination.getStringOrNull("dn") != null && vaccination.getStringOrNull("sd") != null) {
+            if (highestDose.isNotEmpty() && totalDoses.isNotEmpty()) {
                 application.getString(
                     R.string.your_vaccination_explanation_doses_answer,
-                    vaccination.getStringOrNull("dn"),
-                    vaccination.getStringOrNull("sd")
+                    highestDose,
+                    totalDoses
                 )
             } else ""
 
         return doses
+    }
+
+    override fun isOverVaccinated(readEuropeanCredential: JSONObject): Boolean {
+        val (highestDose, totalDoses) = getHighestAndTotalDose(readEuropeanCredential)
+
+        return if (highestDose.isNotEmpty() && totalDoses.isNotEmpty()) {
+            highestDose > totalDoses
+        } else {
+            false
+        }
+    }
+
+    private fun getHighestAndTotalDose(readEuropeanCredential: JSONObject): Pair<String, String> {
+        val dcc = readEuropeanCredential.optJSONObject("dcc")
+        val vaccination = dcc?.getJSONArray("v")?.optJSONObject(0)
+        val highestDose = vaccination?.getStringOrNull("dn")
+        val totalDoses = vaccination?.getStringOrNull("sd")
+        return Pair(highestDose ?: "", totalDoses ?: "")
     }
 }

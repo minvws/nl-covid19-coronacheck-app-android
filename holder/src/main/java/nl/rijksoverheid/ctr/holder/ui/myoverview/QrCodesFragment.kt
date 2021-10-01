@@ -233,7 +233,7 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
         // Make extra UI visible to show more information about the QR
         binding.vaccinationQrsContainer.visibility = View.VISIBLE
         binding.qrVaccinationDosis.visibility = View.VISIBLE
-        binding.qrVaccinationDosis.text = getString(R.string.qr_code_dosis, europeanVaccinations.first().dosis)
+        binding.qrVaccinationDosis.text = getString(R.string.qr_code_dosis, europeanVaccinations.first().doses)
 
         // If there are more then one vaccinations we update UI based on the selected page
         if (europeanVaccinations.size > 1) {
@@ -250,7 +250,7 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
                     Handler(Looper.getMainLooper()).post {
                         binding.previousQrButton.visibility = if (position == 0) View.VISIBLE else View.INVISIBLE
                         binding.nextQrButton.visibility = if (position == europeanVaccinations.size - 1) View.VISIBLE else View.INVISIBLE
-                        binding.qrVaccinationDosis.text = getString(R.string.qr_code_dosis, europeanVaccinations[position].dosis)
+                        binding.qrVaccinationDosis.text = getString(R.string.qr_code_dosis, europeanVaccinations[position].doses)
                     }
                 }
             })

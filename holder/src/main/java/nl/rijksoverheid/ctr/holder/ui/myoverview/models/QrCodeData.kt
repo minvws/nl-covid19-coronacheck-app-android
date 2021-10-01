@@ -1,8 +1,6 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview.models
 
 import android.graphics.Bitmap
-import androidx.annotation.DrawableRes
-import androidx.annotation.RawRes
 import nl.rijksoverheid.ctr.shared.models.ReadDomesticCredential
 import org.json.JSONObject
 
@@ -21,10 +19,15 @@ sealed class QrCodeData(
     ) : QrCodeData(bitmap) {
 
         data class Vaccination(
-            val dosis: String, override val bitmap: Bitmap, override val readEuropeanCredential: JSONObject
+            val doses: String,
+            val isOverVaccinated: Boolean,
+            override val bitmap: Bitmap,
+            override val readEuropeanCredential: JSONObject
         ): European(bitmap, readEuropeanCredential)
 
-        data class NonVaccination(override val bitmap: Bitmap, override val readEuropeanCredential: JSONObject) :
-            European(bitmap, readEuropeanCredential)
+        data class NonVaccination(
+            override val bitmap: Bitmap,
+            override val readEuropeanCredential: JSONObject
+        ) : European(bitmap, readEuropeanCredential)
     }
 }
