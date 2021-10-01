@@ -7,10 +7,11 @@ import org.json.JSONObject
 
 interface ReadEuropeanCredentialUtil {
     fun getDosesForVaccination(readEuropeanCredential: JSONObject): String
-    fun isOverVaccinated(readEuropeanCredential: JSONObject): Boolean
+    fun getHighestAndTotalDose(readEuropeanCredential: JSONObject): Pair<String, String>
 }
 
-class ReadEuropeanCredentialUtilImpl(private val application: Application): ReadEuropeanCredentialUtil {
+class ReadEuropeanCredentialUtilImpl(private val application: Application) :
+    ReadEuropeanCredentialUtil {
 
     override fun getDosesForVaccination(readEuropeanCredential: JSONObject): String {
         val (highestDose, totalDoses) = getHighestAndTotalDose(readEuropeanCredential)
@@ -27,17 +28,7 @@ class ReadEuropeanCredentialUtilImpl(private val application: Application): Read
         return doses
     }
 
-    override fun isOverVaccinated(readEuropeanCredential: JSONObject): Boolean {
-        val (highestDose, totalDoses) = getHighestAndTotalDose(readEuropeanCredential)
-
-        return if (highestDose.isNotEmpty() && totalDoses.isNotEmpty()) {
-            highestDose > totalDoses
-        } else {
-            false
-        }
-    }
-
-    private fun getHighestAndTotalDose(readEuropeanCredential: JSONObject): Pair<String, String> {
+    override fun getHighestAndTotalDose(readEuropeanCredential: JSONObject): Pair<String, String> {
         val dcc = readEuropeanCredential.optJSONObject("dcc")
         val vaccination = dcc?.getJSONArray("v")?.optJSONObject(0)
         val highestDose = vaccination?.getStringOrNull("dn")

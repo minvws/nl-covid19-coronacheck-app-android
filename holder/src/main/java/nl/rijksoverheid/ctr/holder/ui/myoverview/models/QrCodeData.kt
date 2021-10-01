@@ -19,11 +19,13 @@ sealed class QrCodeData(
     ) : QrCodeData(bitmap) {
 
         data class Vaccination(
-            val doses: String,
-            val isOverVaccinated: Boolean,
+            val highestDose: String,
+            val ofTotalDoses: String,
             override val bitmap: Bitmap,
             override val readEuropeanCredential: JSONObject
-        ): European(bitmap, readEuropeanCredential)
+        ): European(bitmap, readEuropeanCredential) {
+            val isOverVaccinated: Boolean = highestDose > ofTotalDoses
+        }
 
         data class NonVaccination(
             override val bitmap: Bitmap,

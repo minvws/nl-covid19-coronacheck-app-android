@@ -464,4 +464,5 @@
     <string name="dialog_device_secure_positive_button">OK</string>
     <string name="qr_code_details">Details</string>
     <string name="qr_code_dosis">Dosis %1s</string>
+    <string name="qr_code_over_vaccinated">Deze QR is mogelijk niet overal geldig. Je kan dan dosis %1s gebruiken.</string>
 </resources>

@@ -113,13 +113,14 @@ class QrCodesResultUseCaseImpl(
                 )
 
                 val readEuropeanCredential = mobileCoreWrapper.readEuropeanCredential(credential)
+                val (highestDose, totalDoses) = readEuropeanCredentialUtil
+                    .getHighestAndTotalDose(readEuropeanCredential)
 
                 QrCodeData.European.Vaccination(
+                    highestDose = highestDose,
+                    ofTotalDoses = totalDoses,
                     bitmap = qrCodeBitmap,
-                    readEuropeanCredential = readEuropeanCredential,
-                    doses = readEuropeanCredentialUtil.getDosesForVaccination(readEuropeanCredential),
-                    isOverVaccinated = readEuropeanCredentialUtil
-                        .isOverVaccinated(readEuropeanCredential)
+                    readEuropeanCredential = readEuropeanCredential
                 )
             }
         )
