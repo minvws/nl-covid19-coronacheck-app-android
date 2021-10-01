@@ -21,7 +21,10 @@ import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
-import java.time.*
+import java.time.Clock
+import java.time.Instant
+import java.time.OffsetDateTime
+import java.time.ZoneId
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -32,7 +35,7 @@ import java.time.*
  */
 @RunWith(RobolectricTestRunner::class)
 @Config(qualifiers = "nl-land")
-class MyOverViewGreenCardAdapterUtilImplTest: AutoCloseKoinTest() {
+class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
     private val context: Context by lazy {
         ApplicationProvider.getApplicationContext()
     }
@@ -45,7 +48,7 @@ class MyOverViewGreenCardAdapterUtilImplTest: AutoCloseKoinTest() {
         MyOverViewGreenCardAdapterUtilImpl(context, credentialUtil, testResultAdapterItemUtil, greenCardUtil)
     }
 
-    private val viewBinding = object: ViewBindingWrapper {
+    private val viewBinding = object : ViewBindingWrapper {
 
         private val titleText: TextView = TextView(context)
         private val layout = LinearLayout(context)
@@ -181,13 +184,91 @@ class MyOverViewGreenCardAdapterUtilImplTest: AutoCloseKoinTest() {
         assertEquals("Verloopt in 1 uur 1 min", viewBinding.expiresIn.text)
     }
 
-    private fun greenCard(greenCardType: GreenCardType, originType: OriginType = OriginType.Test, expiringSoon: Boolean = false): GreenCard {
+    @Test
+    fun `Title should be specific for EU vaccination card`() {
+        every {
+            credentialUtil.getVaccinationDosesForEuropeanCredentials(any(), any())
+        } returns "dosis 2 van 2"
+        val greenCard = greenCard(GreenCardType.Eu, OriginType.Vaccination)
+        myOverViewGreenCardAdapterUtil.setContent(
+            viewBinding = viewBinding,
+            originStates = listOf(OriginState.Valid(greenCard.origins.first())),
+            greenCards = listOf(greenCard)
+        )
+
+        assertEquals("Vaccinatiebewijs", (viewBinding.title).text)
+    }
+
+    @Test
+    fun `Title should be generic for EU test and recovery`() {
+        val testCard = greenCard(GreenCardType.Eu, OriginType.Test)
+        val recoveryCard = greenCard(GreenCardType.Eu, OriginType.Recovery)
+
+        myOverViewGreenCardAdapterUtil.setContent(
+            viewBinding, listOf(testCard), listOf(OriginState.Valid(testCard.origins.first()))
+        )
+        assertEquals("Mijn bewijs", (viewBinding.title).text)
+
+        // reset
+        viewBinding.title.text = ""
+
+        myOverViewGreenCardAdapterUtil.setContent(
+            viewBinding, listOf(recoveryCard), listOf(OriginState.Valid(testCard.origins.first()))
+        )
+        assertEquals("Mijn bewijs", (viewBinding.title).text)
+    }
+
+    @Test
+    fun `Additional cards of the same type should be shown in the description`() {
+        every {
+            credentialUtil.getVaccinationDosesForEuropeanCredentials(any(), any())
+        } returns "dosis 2 van 2"
+        val greenCard = greenCard(GreenCardType.Eu, OriginType.Vaccination)
+        myOverViewGreenCardAdapterUtil.setContent(
+            viewBinding = viewBinding,
+            originStates = listOf(OriginState.Valid(greenCard.origins.first())),
+            greenCards = listOf(greenCard, greenCard, greenCard)
+        )
+
+        assertEquals(
+            "dosis 2 van 2",
+            (viewBinding.description.getChildAt(0) as TextView).text
+        )
+        assertEquals(
+            "Vaccinatiedatum: 27 juli 2021",
+            (viewBinding.description.getChildAt(1) as TextView).text
+        )
+        assertEquals(
+            "dosis 2 van 2",
+            (viewBinding.description.getChildAt(2) as TextView).text
+        )
+        assertEquals(
+            "Vaccinatiedatum: 27 juli 2021",
+            (viewBinding.description.getChildAt(3) as TextView).text
+        )
+        assertEquals(
+            "dosis 2 van 2",
+            (viewBinding.description.getChildAt(4) as TextView).text
+        )
+        assertEquals(
+            "Vaccinatiedatum: 27 juli 2021",
+            (viewBinding.description.getChildAt(5) as TextView).text
+        )
+    }
+
+    private fun greenCard(
+        greenCardType: GreenCardType,
+        originType: OriginType = OriginType.Test
+    ): GreenCard {
         // 2021-07-27T09:10Z
-        val eventTime = OffsetDateTime.now(Clock.fixed(Instant.ofEpochSecond(1627377000), ZoneId.of("UTC")))
+        val eventTime =
+            OffsetDateTime.now(Clock.fixed(Instant.ofEpochSecond(1627377000), ZoneId.of("UTC")))
         // 2021-07-27T09:11:40Z
-        val validFrom = OffsetDateTime.now(Clock.fixed(Instant.ofEpochSecond(1627377100), ZoneId.of("UTC")))
+        val validFrom =
+            OffsetDateTime.now(Clock.fixed(Instant.ofEpochSecond(1627377100), ZoneId.of("UTC")))
         // 2021-07-28T21:06:20Z
-        val expirationTime = OffsetDateTime.now(Clock.fixed(Instant.ofEpochSecond(1627499200), ZoneId.of("UTC")))
+        val expirationTime =
+            OffsetDateTime.now(Clock.fixed(Instant.ofEpochSecond(1627499200), ZoneId.of("UTC")))
         val credentialEntity = CredentialEntity(
             id = 1,
             greenCardId = 1,

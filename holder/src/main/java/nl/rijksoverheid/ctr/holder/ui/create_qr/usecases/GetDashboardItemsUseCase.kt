@@ -48,13 +48,15 @@ class GetDashboardItemsUseCaseImpl(
         isLoadingNewCredentials: Boolean,
     ): List<DashboardItem> {
         val dashboardItems = mutableListOf<DashboardItem>()
-        val domesticGreenCards = allGreenCards.filter { it.greenCardEntity.type == GreenCardType.Domestic }
-        val internationalGreenCards = allGreenCards.filter { it.greenCardEntity.type == GreenCardType.Eu }
+        val domesticGreenCards =
+            allGreenCards.filter { it.greenCardEntity.type == GreenCardType.Domestic }
+        val internationalGreenCards =
+            allGreenCards.filter { it.greenCardEntity.type == GreenCardType.Eu }
 
         if (dashboardItemUtil.shouldShowHeaderItem(allGreenCards)) {
-            dashboardItems.add(DashboardItem.HeaderItem(
-                text = R.string.my_overview_description
-            ))
+            dashboardItems.add(
+                DashboardItem.HeaderItem(text = R.string.my_overview_description)
+            )
         }
 
         if (dashboardItemUtil.shouldShowClockDeviationItem(allGreenCards)) {
@@ -73,9 +75,9 @@ class GetDashboardItemsUseCaseImpl(
         )
 
         if (dashboardItemUtil.shouldShowPlaceholderItem(allGreenCards)) {
-            dashboardItems.add(DashboardItem.PlaceholderCardItem(
-                greenCardType = GreenCardType.Domestic
-            ))
+            dashboardItems.add(
+                DashboardItem.PlaceholderCardItem(greenCardType = GreenCardType.Domestic)
+            )
         }
 
         dashboardItems.add(
@@ -91,13 +93,15 @@ class GetDashboardItemsUseCaseImpl(
         isLoadingNewCredentials: Boolean,
     ): List<DashboardItem> {
         val dashboardItems = mutableListOf<DashboardItem>()
-        val domesticGreenCards = allGreenCards.filter { it.greenCardEntity.type == GreenCardType.Domestic }
-        val internationalGreenCards = allGreenCards.filter { it.greenCardEntity.type == GreenCardType.Eu }
+        val domesticGreenCards =
+            allGreenCards.filter { it.greenCardEntity.type == GreenCardType.Domestic }
+        val internationalGreenCards =
+            allGreenCards.filter { it.greenCardEntity.type == GreenCardType.Eu }
 
         if (dashboardItemUtil.shouldShowHeaderItem(allGreenCards)) {
-            dashboardItems.add(DashboardItem.HeaderItem(
-                text = R.string.my_overview_description_eu
-            ))
+            dashboardItems.add(
+                DashboardItem.HeaderItem(text = R.string.my_overview_description_eu)
+            )
         }
 
         if (dashboardItemUtil.shouldShowClockDeviationItem(allGreenCards)) {
@@ -116,9 +120,9 @@ class GetDashboardItemsUseCaseImpl(
         )
 
         if (dashboardItemUtil.shouldShowPlaceholderItem(allGreenCards)) {
-            dashboardItems.add(DashboardItem.PlaceholderCardItem(
-                greenCardType = GreenCardType.Eu
-            ))
+            dashboardItems.add(
+                DashboardItem.PlaceholderCardItem(greenCardType = GreenCardType.Eu)
+            )
         }
 
         dashboardItems.add(
@@ -145,7 +149,9 @@ class GetDashboardItemsUseCaseImpl(
                 } else {
                     mapGreenCardsItem(greenCard, isLoadingNewCredentials, databaseSyncerResult)
                 }
-            }.let { if (combineVaccinations) combineEuVaccinationItems(it) else it }.toMutableList()
+            }
+            .let { if (combineVaccinations) dashboardItemUtil.combineEuVaccinationItems(it) else it }
+            .toMutableList()
 
         // If we have valid origins that exists in the other selected type but not in the current one, we show a banner
         val allOriginsForSelectedType = greenCardsForSelectedType.map { it.origins }.flatten()
@@ -184,32 +190,6 @@ class GetDashboardItemsUseCaseImpl(
         }
 
         return items
-    }
-
-    /**
-     * Multiple EU vaccination green card items will be combined into 1.
-     *
-     * @param[items] Items list containing possible multiple vaccination items to combine.
-     * @return Items list with vaccination green card items combined into 1.
-     */
-    private fun combineEuVaccinationItems(items: List<DashboardItem>): List<DashboardItem> {
-        return items
-            .groupBy { it::class }
-            .map { itemTypeToItem ->
-                if (itemTypeToItem.value.first() !is DashboardItem.CardsItem) return itemTypeToItem.value.toMutableList()
-
-                itemTypeToItem.value
-                    .groupBy { (it as DashboardItem.CardsItem).cards.first().greenCard.origins.first().type }
-                    .map {
-                        if (it.key == OriginType.Vaccination) {
-                            listOf(
-                                DashboardItem.CardsItem(it.value.map { greenCardsItem ->
-                                    (greenCardsItem as DashboardItem.CardsItem).cards
-                                }.flatten())
-                            )
-                        } else it.value
-                    }.flatten()
-            }.flatten()
     }
 
     private fun mapGreenCardsItem(
