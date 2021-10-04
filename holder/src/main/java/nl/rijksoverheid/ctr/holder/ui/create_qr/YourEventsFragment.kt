@@ -16,6 +16,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import nl.rijksoverheid.ctr.design.ext.formatDateTime
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
 import nl.rijksoverheid.ctr.design.ext.formatMonth
+import nl.rijksoverheid.ctr.design.utils.BottomSheetData
+import nl.rijksoverheid.ctr.design.utils.BottomSheetDialogUtil
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.BaseFragment
 import nl.rijksoverheid.ctr.holder.HolderFlow
@@ -50,6 +52,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
     private val personalDetailsUtil: PersonalDetailsUtil by inject()
     private val infoScreenUtil: InfoScreenUtil by inject()
     private val dialogUtil: DialogUtil by inject()
+    private val bottomSheetDialogUtil: BottomSheetDialogUtil by inject()
 
     private val remoteProtocol3Util: RemoteProtocol3Util by inject()
     private val remoteEventUtil: RemoteEventUtil by inject()
@@ -562,11 +565,20 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
 
     private fun presentFooter(binding: FragmentYourEventsBinding) {
         binding.somethingWrongButton.setOnClickListener {
-            navigateSafety(
-                YourEventsFragmentDirections.actionShowSomethingWrong(
-                    protocolType = args.type
-                )
-            )
+            bottomSheetDialogUtil.present(childFragmentManager, BottomSheetData.TitleDescription(
+                title = getString(R.string.dialog_negative_test_result_something_wrong_title),
+                description = {
+                    val type = args.type
+                    it.setHtmlText(
+                        htmlText = if (type is YourEventsFragmentType.RemoteProtocol3Type && type.originType is OriginType.Vaccination) {
+                                R.string.dialog_vaccination_something_wrong_description
+                            } else {
+                                R.string.dialog_negative_test_result_something_wrong_description
+                            },
+                        htmlLinksEnabled = true,
+                    )
+                }
+            ))
         }
     }
 
