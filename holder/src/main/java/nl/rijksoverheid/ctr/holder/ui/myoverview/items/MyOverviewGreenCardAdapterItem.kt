@@ -19,7 +19,6 @@ import nl.rijksoverheid.ctr.holder.databinding.ItemMyOverviewGreenCardBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardErrorState
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem.CardsItem.CredentialState.HasCredential
 import org.koin.core.component.KoinComponent
@@ -28,8 +27,7 @@ import org.koin.core.component.inject
 class MyOverviewGreenCardAdapterItem(
     private val cards: List<DashboardItem.CardsItem.CardItem>,
     private val onButtonClick: (greenCard: GreenCard, credentials: List<ByteArray>, credentialExpirationTimeSeconds: Long) -> Unit,
-    private val onRetryClick: () -> Unit = {},
-    private val errorState: DashboardErrorState = DashboardErrorState.None,
+    private val onRetryClick: () -> Unit = {}
 ) :
     BindableItem<ItemMyOverviewGreenCardBinding>(R.layout.item_my_overview_green_card.toLong()),
     KoinComponent {
@@ -137,7 +135,8 @@ class MyOverviewGreenCardAdapterItem(
                     viewBinding.errorText.setHtmlText(
                         htmlText = context.getString(R.string.my_overview_green_card_internet_error),
                         htmlTextColor = ContextCompat.getColor(context, R.color.error),
-                        htmlTextColorLink = ContextCompat.getColor(context, R.color.error))
+                        htmlTextColorLink = ContextCompat.getColor(context, R.color.error)
+                    )
                     viewBinding.errorText.enableCustomLinks(onRetryClick)
                     viewBinding.errorIcon.visibility = View.VISIBLE
                     viewBinding.errorText.visibility = View.VISIBLE
@@ -146,7 +145,8 @@ class MyOverviewGreenCardAdapterItem(
                     viewBinding.errorText.setHtmlText(
                         htmlText = context.getString(R.string.my_overview_green_card_server_error),
                         htmlTextColor = ContextCompat.getColor(context, R.color.error),
-                        htmlTextColorLink = ContextCompat.getColor(context, R.color.error))
+                        htmlTextColorLink = ContextCompat.getColor(context, R.color.error)
+                    )
                     viewBinding.errorText.enableCustomLinks(onRetryClick)
                     viewBinding.errorIcon.visibility = View.VISIBLE
                     viewBinding.errorText.visibility = View.VISIBLE
@@ -155,7 +155,8 @@ class MyOverviewGreenCardAdapterItem(
                     viewBinding.errorText.setHtmlText(
                         htmlText = context.getString(R.string.my_overview_green_card_server_error_after_retry),
                         htmlTextColor = ContextCompat.getColor(context, R.color.error),
-                        htmlTextColorLink = ContextCompat.getColor(context, R.color.error))
+                        htmlTextColorLink = ContextCompat.getColor(context, R.color.error)
+                    )
                     viewBinding.errorText.visibility = View.VISIBLE
                     viewBinding.errorIcon.visibility = View.VISIBLE
                 }
