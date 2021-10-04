@@ -46,10 +46,6 @@
                 app:popEnterAnim="@anim/fragment_close_enter"
                 app:popExitAnim="@anim/fragment_close_exit" />
 
-            <action
-                android:id="@+id/action_show_qr_explanation"
-                app:destination="@id/qr_code_explanation_bottomsheet" />
-
         </fragment>
 
     </navigation>
@@ -109,33 +105,7 @@
             app:argType="string"
             app:nullable="true" />
 
-        <action
-            android:id="@+id/action_show_qr_explanation"
-            app:destination="@id/qr_code_explanation_bottomsheet" />
-
     </fragment>
-
-    <dialog
-        android:id="@+id/qr_code_explanation_bottomsheet"
-        android:name="nl.rijksoverheid.ctr.holder.ui.myoverview.QrCodeExplanationDialogFragment"
-        android:label="QrCodeExplanationDialog"
-        tools:layout="@layout/dialog_qr_explanation">
-
-        <argument
-            android:name="title"
-            app:argType="string" />
-
-        <argument
-            android:name="description"
-            app:argType="string" />
-
-        <argument
-            android:name="footer"
-            app:argType="string"
-            app:nullable="true"
-            android:defaultValue="@null"/>
-
-    </dialog>
 
     <navigation
         android:id="@+id/nav_paper_proof"

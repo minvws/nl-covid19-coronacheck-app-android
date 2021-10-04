@@ -13,6 +13,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import nl.rijksoverheid.ctr.design.utils.BottomSheetData
+import nl.rijksoverheid.ctr.design.utils.BottomSheetDialogUtil
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
@@ -50,6 +52,7 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
     private val personalDetailsUtil: PersonalDetailsUtil by inject()
     private val infoScreenUtil: QrInfoScreenUtil by inject()
     private val dialogUtil: DialogUtil by inject()
+    private val bottomSheetDialogUtil: BottomSheetDialogUtil by inject()
     private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
 
     private val qrCodeHandler = Handler(Looper.getMainLooper())
@@ -127,7 +130,7 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
 
                     setOnMenuItemClickListener {
                         if (it.itemId == R.id.action_show_qr_explanation) {
-                            when (qrCodeData) {
+                            val infoScreen = when (qrCodeData) {
                                 is QrCodeData.Domestic -> {
                                     val personalDetails = personalDetailsUtil.getPersonalDetails(
                                         firstNameInitial = qrCodeData.readDomesticCredential.firstNameInitial,
@@ -136,60 +139,38 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
                                         birthMonth = qrCodeData.readDomesticCredential.birthMonth
                                     )
 
-                                    val infoScreen = infoScreenUtil.getForDomesticQr(
+                                    infoScreenUtil.getForDomesticQr(
                                         personalDetails = personalDetails
-                                    )
-                                    navigateSafety(
-                                        QrCodeFragmentDirections.actionShowQrExplanation(
-                                            title = infoScreen.title,
-                                            description = infoScreen.description,
-                                            footer = infoScreen.footer
-                                        )
                                     )
                                 }
                                 is QrCodeData.European -> {
                                     when (args.data.originType) {
                                         is OriginType.Test -> {
-                                            val infoScreen = infoScreenUtil.getForEuropeanTestQr(
+                                            infoScreenUtil.getForEuropeanTestQr(
                                                 qrCodeData.readEuropeanCredential
-                                            )
-                                            navigateSafety(
-                                                QrCodeFragmentDirections.actionShowQrExplanation(
-                                                    title = infoScreen.title,
-                                                    description = infoScreen.description,
-                                                    footer = infoScreen.footer
-                                                )
                                             )
                                         }
                                         is OriginType.Vaccination -> {
-                                            val infoScreen =
-                                                infoScreenUtil.getForEuropeanVaccinationQr(
+                                            infoScreenUtil.getForEuropeanVaccinationQr(
                                                     qrCodeData.readEuropeanCredential
                                                 )
-                                            navigateSafety(
-                                                QrCodeFragmentDirections.actionShowQrExplanation(
-                                                    title = infoScreen.title,
-                                                    description = infoScreen.description,
-                                                    footer = infoScreen.footer
-                                                )
-                                            )
                                         }
                                         is OriginType.Recovery -> {
-                                            val infoScreen =
-                                                infoScreenUtil.getForEuropeanRecoveryQr(
+                                            infoScreenUtil.getForEuropeanRecoveryQr(
                                                     qrCodeData.readEuropeanCredential
                                                 )
-                                            navigateSafety(
-                                                QrCodeFragmentDirections.actionShowQrExplanation(
-                                                    title = infoScreen.title,
-                                                    description = infoScreen.description,
-                                                    footer = infoScreen.footer
-                                                )
-                                            )
                                         }
                                     }
                                 }
                             }
+
+                            bottomSheetDialogUtil.present(childFragmentManager, BottomSheetData.TitleDescriptionWithFooter(
+                                title = infoScreen.title,
+                                description = {
+                                    it.setHtmlText(infoScreen.description)
+                                },
+                                footerText = infoScreen.footer
+                            ))
                         }
                         true
                     }

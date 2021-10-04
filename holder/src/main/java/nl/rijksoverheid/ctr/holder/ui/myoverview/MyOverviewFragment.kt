@@ -56,9 +56,17 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
     }
 
     private val bottomSheetDialogUtil: BottomSheetDialogUtil by inject()
-    private val dashboardViewModel: DashboardViewModel by sharedViewModelWithOwner(owner = { ViewModelOwner.from(requireParentFragment()) })
+    private val dashboardViewModel: DashboardViewModel by sharedViewModelWithOwner(owner = {
+        ViewModelOwner.from(
+            requireParentFragment()
+        )
+    })
     private val section = Section()
-    private val greenCardType: GreenCardType by lazy { arguments?.getParcelable<GreenCardType>(EXTRA_GREEN_CARD_TYPE) ?: error("EXTRA_GREEN_CARD_TYPE should not be null") }
+    private val greenCardType: GreenCardType by lazy {
+        arguments?.getParcelable<GreenCardType>(
+            EXTRA_GREEN_CARD_TYPE
+        ) ?: error("EXTRA_GREEN_CARD_TYPE should not be null")
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -177,20 +185,24 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                 }
                 is DashboardItem.ClockDeviationItem -> {
                     adapterItems.add(MyOverviewClockDeviationItem(onInfoIconClicked = {
-                        bottomSheetDialogUtil.present(childFragmentManager, BottomSheetData.TitleDescription(
-                            title = getString(R.string.clock_deviation_explanation_title),
-                            description = {
-                                it.setHtmlText(getString(R.string.clock_deviation_explanation_description))
-                                it.enableCustomLinks {
-                                    val intent = Intent(Settings.ACTION_DATE_SETTINGS)
-                                    startActivity(intent)
-                                }
-                            },
-                        ))
+                        bottomSheetDialogUtil.present(
+                            childFragmentManager, BottomSheetData.TitleDescription(
+                                title = getString(R.string.clock_deviation_explanation_title),
+                                description = {
+                                    it.setHtmlText(getString(R.string.clock_deviation_explanation_description))
+                                    it.enableCustomLinks {
+                                        val intent = Intent(Settings.ACTION_DATE_SETTINGS)
+                                        startActivity(intent)
+                                    }
+                                },
+                            )
+                        )
                     }))
                 }
                 is DashboardItem.AddQrButtonItem -> {
-                    (requireParentFragment() as MyOverviewTabsFragment).showAddQrButton(dashboardItem.show)
+                    (requireParentFragment() as MyOverviewTabsFragment).showAddQrButton(
+                        dashboardItem.show
+                    )
                 }
             }
         }
@@ -199,62 +211,63 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
     }
 
     private fun navigateToEuQr(originType: OriginType) {
-        when (originType) {
-            is OriginType.Test -> {
-                navigateSafety(
-                    MyOverviewTabsFragmentDirections.actionShowQrExplanation(
+        bottomSheetDialogUtil.present(childFragmentManager,
+            data = when (originType) {
+                is OriginType.Test -> {
+                    BottomSheetData.TitleDescription(
                         title = getString(R.string.my_overview_green_card_not_valid_title_test),
-                        description = getString(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_test)
+                        description = {
+                            it.setHtmlText(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_test)
+                        }
                     )
-                )
-            }
-            is OriginType.Vaccination -> {
-                navigateSafety(
-                    MyOverviewTabsFragmentDirections.actionShowQrExplanation(
+                }
+                is OriginType.Vaccination -> {
+                    BottomSheetData.TitleDescription(
                         title = getString(R.string.my_overview_green_card_not_valid_title_vaccination),
-                        description = getString(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_vaccination)
+                        description = {
+                            it.setHtmlText(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_vaccination)
+                        }
                     )
-                )
-            }
-            is OriginType.Recovery -> {
-                navigateSafety(
-                    MyOverviewTabsFragmentDirections.actionShowQrExplanation(
+                }
+                is OriginType.Recovery -> {
+                    BottomSheetData.TitleDescription(
                         title = getString(R.string.my_overview_green_card_not_valid_title_recovery),
-                        description = getString(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_recovery)
+                        description = {
+                            it.setHtmlText(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_recovery)
+                        }
                     )
-                )
-            }
-        }
+                }
+            })
     }
 
     private fun navigateToDomesticQr(originType: OriginType) {
-        when (originType) {
-            is OriginType.Test -> {
-                navigateSafety(
-                    MyOverviewTabsFragmentDirections.actionShowQrExplanation(
+        bottomSheetDialogUtil.present(childFragmentManager,
+            data = when (originType) {
+                is OriginType.Test -> {
+                    BottomSheetData.TitleDescription(
                         title = getString(R.string.my_overview_green_card_not_valid_title_test),
-                        description = getString(
-                            R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_test
-                        )
+                        description = {
+                            it.setHtmlText(R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_test)
+                        }
                     )
-                )
-            }
-            is OriginType.Vaccination -> {
-                navigateSafety(
-                    MyOverviewTabsFragmentDirections.actionShowQrExplanation(
+                }
+                is OriginType.Vaccination -> {
+                    BottomSheetData.TitleDescription(
                         title = getString(R.string.my_overview_green_card_not_valid_title_vaccination),
-                        description = getString(R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_vaccination)
+                        description = {
+                            it.setHtmlText(R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_vaccination)
+                        }
                     )
-                )
-            }
-            is OriginType.Recovery -> {
-                navigateSafety(
-                    MyOverviewTabsFragmentDirections.actionShowQrExplanation(
+                }
+                is OriginType.Recovery -> {
+                    BottomSheetData.TitleDescription(
                         title = getString(R.string.my_overview_green_card_not_valid_title_recovery),
-                        description = getString(R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_recovery)
+                        description = {
+                            it.setHtmlText(R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_recovery)
+                        }
                     )
-                )
+                }
             }
-        }
+        )
     }
 }
