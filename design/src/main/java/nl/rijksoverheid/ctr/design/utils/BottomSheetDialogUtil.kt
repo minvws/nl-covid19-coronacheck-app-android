@@ -5,10 +5,10 @@ import androidx.fragment.app.FragmentManager
 import nl.rijksoverheid.ctr.design.ExpandedBottomSheetDialogFragment
 import nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
 
-sealed class BottomSheetData(open val title: String, open val description: (HtmlTextViewWidget) -> Unit) {
-    class TitleDescription(override val title: String, override val description: (HtmlTextViewWidget) -> Unit): BottomSheetData(title, description)
-    class TitleDescriptionWithButton(override val title: String, override val description: (HtmlTextViewWidget) -> Unit, val buttonCallback: (Button) -> Unit): BottomSheetData(title, description)
-    class TitleDescriptionWithFooter(override val title: String, override val description: (HtmlTextViewWidget) -> Unit, val footerText: String): BottomSheetData(title, description)
+sealed class BottomSheetData(open val title: String, open val applyOnDescription: (HtmlTextViewWidget) -> Unit) {
+    class TitleDescription(override val title: String, override val applyOnDescription: (HtmlTextViewWidget) -> Unit): BottomSheetData(title, applyOnDescription)
+    class TitleDescriptionWithButton(override val title: String, override val applyOnDescription: (HtmlTextViewWidget) -> Unit, val applyOnButton: (Button) -> Unit): BottomSheetData(title, applyOnDescription)
+    class TitleDescriptionWithFooter(override val title: String, override val applyOnDescription: (HtmlTextViewWidget) -> Unit, val footerText: String): BottomSheetData(title, applyOnDescription)
 }
 
 /*

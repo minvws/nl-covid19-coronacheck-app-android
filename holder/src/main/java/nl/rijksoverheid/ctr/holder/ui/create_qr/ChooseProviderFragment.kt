@@ -66,10 +66,10 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
         binding.notYetTested.setOnClickListener {
             bottomSheetDialogUtil.present(childFragmentManager, BottomSheetData.TitleDescriptionWithButton(
                 title = getString(R.string.not_yet_tested_title),
-                description = {
-                    it.setHtmlText(getString(R.string.not_yet_tested_description))
+                applyOnDescription = {
+                    it.setHtmlText(R.string.not_yet_tested_description)
                 },
-                buttonCallback = { button ->
+                applyOnButton = { button ->
                     button.text = getString(R.string.not_yet_tested_button)
                     button.setOnClickListener {
                         getString(R.string.url_make_appointment).launchUrl(button.context)

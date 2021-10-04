@@ -188,8 +188,8 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                         bottomSheetDialogUtil.present(
                             childFragmentManager, BottomSheetData.TitleDescription(
                                 title = getString(R.string.clock_deviation_explanation_title),
-                                description = {
-                                    it.setHtmlText(getString(R.string.clock_deviation_explanation_description))
+                                applyOnDescription = {
+                                    it.setHtmlText(R.string.clock_deviation_explanation_description)
                                     it.enableCustomLinks {
                                         val intent = Intent(Settings.ACTION_DATE_SETTINGS)
                                         startActivity(intent)
@@ -216,7 +216,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                 is OriginType.Test -> {
                     BottomSheetData.TitleDescription(
                         title = getString(R.string.my_overview_green_card_not_valid_title_test),
-                        description = {
+                        applyOnDescription = {
                             it.setHtmlText(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_test)
                         }
                     )
@@ -224,7 +224,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                 is OriginType.Vaccination -> {
                     BottomSheetData.TitleDescription(
                         title = getString(R.string.my_overview_green_card_not_valid_title_vaccination),
-                        description = {
+                        applyOnDescription = {
                             it.setHtmlText(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_vaccination)
                         }
                     )
@@ -232,7 +232,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                 is OriginType.Recovery -> {
                     BottomSheetData.TitleDescription(
                         title = getString(R.string.my_overview_green_card_not_valid_title_recovery),
-                        description = {
+                        applyOnDescription = {
                             it.setHtmlText(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_recovery)
                         }
                     )
@@ -246,7 +246,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                 is OriginType.Test -> {
                     BottomSheetData.TitleDescription(
                         title = getString(R.string.my_overview_green_card_not_valid_title_test),
-                        description = {
+                        applyOnDescription = {
                             it.setHtmlText(R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_test)
                         }
                     )
@@ -254,7 +254,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                 is OriginType.Vaccination -> {
                     BottomSheetData.TitleDescription(
                         title = getString(R.string.my_overview_green_card_not_valid_title_vaccination),
-                        description = {
+                        applyOnDescription = {
                             it.setHtmlText(R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_vaccination)
                         }
                     )
@@ -262,7 +262,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                 is OriginType.Recovery -> {
                     BottomSheetData.TitleDescription(
                         title = getString(R.string.my_overview_green_card_not_valid_title_recovery),
-                        description = {
+                        applyOnDescription = {
                             it.setHtmlText(R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_recovery)
                         }
                     )

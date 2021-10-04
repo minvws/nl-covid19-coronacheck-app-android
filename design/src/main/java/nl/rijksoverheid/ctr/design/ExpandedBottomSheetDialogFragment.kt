@@ -59,14 +59,14 @@ open class ExpandedBottomSheetDialogFragment(
 
         binding.title.text = expandedBottomSheetData.title
         binding.description.apply {
-            expandedBottomSheetData.description(this)
+            expandedBottomSheetData.applyOnDescription(this)
         }
         when (expandedBottomSheetData) {
             is BottomSheetData.TitleDescription -> {}
             is BottomSheetData.TitleDescriptionWithButton -> {
                 binding.button.visibility = View.VISIBLE
                 binding.button.apply {
-                    expandedBottomSheetData.buttonCallback(this)
+                    expandedBottomSheetData.applyOnButton(this)
                 }
             }
             is BottomSheetData.TitleDescriptionWithFooter -> {

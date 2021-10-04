@@ -567,7 +567,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         binding.somethingWrongButton.setOnClickListener {
             bottomSheetDialogUtil.present(childFragmentManager, BottomSheetData.TitleDescription(
                 title = getString(R.string.dialog_negative_test_result_something_wrong_title),
-                description = {
+                applyOnDescription = {
                     val type = args.type
                     it.setHtmlText(
                         htmlText = if (type is YourEventsFragmentType.RemoteProtocol3Type && type.originType is OriginType.Vaccination) {

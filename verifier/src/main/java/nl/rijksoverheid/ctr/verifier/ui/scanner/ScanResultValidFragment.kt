@@ -79,7 +79,7 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
         binding.personalDetails.buttonIncorrectData.setOnClickListener {
             bottomSheetDialogUtil.present(childFragmentManager, BottomSheetData.TitleDescription(
                 title = getString(R.string.scan_result_valid_reason_title),
-                description = {
+                applyOnDescription = {
                     it.setHtmlText(R.string.scan_result_valid_reason_description)
                 }
             ))

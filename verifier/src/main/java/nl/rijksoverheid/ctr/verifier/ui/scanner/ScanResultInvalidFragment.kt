@@ -56,7 +56,7 @@ class ScanResultInvalidFragment : Fragment(R.layout.fragment_scan_result_invalid
                 binding.buttonExplanation.setOnClickListener {
                     bottomSheetDialogUtil.present(childFragmentManager, BottomSheetData.TitleDescription(
                         title = getString(R.string.scan_result_invalid_reason_title),
-                        description = {
+                        applyOnDescription = {
                             it.setHtmlText(R.string.scan_result_invalid_reason_description)
                         }
                     ))

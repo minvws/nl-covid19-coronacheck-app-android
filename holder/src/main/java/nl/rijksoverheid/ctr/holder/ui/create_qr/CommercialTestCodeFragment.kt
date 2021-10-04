@@ -197,8 +197,8 @@ import org.koin.androidx.viewmodel.scope.emptyState
         binding.noTokenReceivedBtn.setOnClickListener {
             bottomSheetDialogUtil.present(childFragmentManager, BottomSheetData.TitleDescription(
                 title = getString(R.string.commercial_test_type_no_code_title),
-                description = {
-                    it.setHtmlText(getString(R.string.commercial_test_type_no_code_description))
+                applyOnDescription = {
+                    it.setHtmlText(R.string.commercial_test_type_no_code_description)
                 },
             ))
         }

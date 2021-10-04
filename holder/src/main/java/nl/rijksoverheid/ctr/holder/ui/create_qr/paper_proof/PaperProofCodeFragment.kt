@@ -67,7 +67,7 @@ class PaperProofCodeFragment : Fragment(R.layout.fragment_paper_proof_code) {
         binding.noLetterCombinationBtn.setOnClickListener {
             bottomSheetDialogUtil.present(childFragmentManager, BottomSheetData.TitleDescription(
                 title = getString(R.string.no_letter_combination_dialog_title),
-                description = {
+                applyOnDescription = {
                     it.setHtmlText(R.string.no_letter_combination_dialog_description, true)
                 }
             ))
