@@ -134,10 +134,6 @@
             tools:layout="@layout/fragment_paper_proof_code">
 
             <action
-                android:id="@+id/action_title_description_bottom_sheet"
-                app:destination="@id/nav_title_description_bottom_sheet" />
-
-            <action
                 android:id="@+id/action_paper_proof_consent"
                 app:destination="@id/nav_paper_proof_consent"
                 app:enterAnim="@anim/slide_in_right"
@@ -429,21 +425,6 @@
         android:name="nl.rijksoverheid.ctr.design.menu.about.AboutThisAppFragment"
         android:label="@string/about_this_app"
         tools:layout="@layout/fragment_about_app" />
-
-    <dialog
-        android:id="@+id/nav_title_description_bottom_sheet"
-        android:name="nl.rijksoverheid.ctr.design.fragments.TitleDescriptionBottomSheetFragment"
-        tools:layout="@layout/fragment_title_description_bottom_sheet">
-
-        <argument
-            android:name="title"
-            app:argType="string" />
-
-        <argument
-            android:name="description"
-            app:argType="string" />
-
-    </dialog>
 
     <fragment
         android:id="@+id/nav_error_result"
