@@ -26,7 +26,6 @@ import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.items.YourEventWidget
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.ConfigProvidersUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.InfoScreenUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.RemoteEventUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.RemoteProtocol3Util
@@ -57,9 +56,15 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
 
     private val yourEventsViewModel: YourEventsViewModel by viewModel()
 
-    private val configProvidersUseCase: ConfigProvidersUseCase by inject()
+    override fun onButtonClickWithRetryTitle(): Int {
+        return R.string.my_overview
+    }
 
     override fun onButtonClickWithRetryAction() {
+        navigateSafety(YourEventsFragmentDirections.actionMyOverview())
+    }
+
+    private fun retrieveGreenCards() {
         when (val type = args.type) {
             is YourEventsFragmentType.TestResult2 -> {
                 yourEventsViewModel.saveNegativeTest2(
@@ -91,7 +96,11 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             is YourEventsFragmentType.RemoteProtocol3Type -> {
                 return when (type.originType) {
                     is OriginType.Test -> {
-                        HolderFlow.DigidTest
+                        if (type.fromCommercialTestCode) {
+                            HolderFlow.CommercialTest
+                        } else {
+                            HolderFlow.DigidTest
+                        }
                     }
                     is OriginType.Recovery -> {
                         HolderFlow.Recovery
@@ -547,7 +556,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
 
     private fun handleButton(binding: FragmentYourEventsBinding) {
         binding.bottom.setButtonClick {
-            onButtonClickWithRetryAction()
+            retrieveGreenCards()
         }
     }
 

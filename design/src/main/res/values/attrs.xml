@@ -12,6 +12,8 @@
     </declare-styleable>
     <declare-styleable name="HtmlTextViewWidget">
         <attr name="htmlText" format="string" />
+        <attr name="htmlTextColor" format="color" />
+        <attr name="htmlTextColorLink" format="color" />
         <attr name="enableHtmlLinks" format="boolean" />
         <attr name="listItemMarginMultiplier" format="float" />
         <attr name="headingMarginMultiplier" format="float" />

@@ -13,13 +13,16 @@ import androidx.annotation.DimenRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.card.MaterialCardView
 import com.xwray.groupie.viewbinding.BindableItem
+import nl.rijksoverheid.ctr.design.ext.getThemeColorStateList
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.ItemMyOverviewGreenCardBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardErrorState
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem.CardsItem.CredentialState.HasCredential
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -27,6 +30,7 @@ class MyOverviewGreenCardAdapterItem(
     private val cards: List<DashboardItem.CardsItem.CardItem>,
     private val onButtonClick: (greenCard: GreenCard, credentials: List<ByteArray>, credentialExpirationTimeSeconds: Long) -> Unit,
     private val onRetryClick: () -> Unit = {},
+    private val errorState: DashboardErrorState = DashboardErrorState.None,
 ) :
     BindableItem<ItemMyOverviewGreenCardBinding>(R.layout.item_my_overview_green_card.toLong()),
     KoinComponent {
@@ -83,10 +87,8 @@ class MyOverviewGreenCardAdapterItem(
             description.removeAllViews()
             greenCards.removeViews(1, viewBinding.greenCards.childCount - 1)
             errorText.setHtmlText("")
-            errorTextRetry.setHtmlText("")
             errorIcon.visibility = View.GONE
             errorText.visibility = View.GONE
-            errorTextRetry.visibility = View.GONE
         }
 
         myOverViewGreenCardAdapterUtil.setContent(
@@ -129,24 +131,37 @@ class MyOverviewGreenCardAdapterItem(
         context.resources.getDimensionPixelSize(dimenRes).toFloat()
 
     private fun showError(viewBinding: ItemMyOverviewGreenCardBinding) {
+        val context = viewBinding.root.context
         if (cards.first().credentialState is DashboardItem.CardsItem.CredentialState.NoCredential) {
             when (cards.first().databaseSyncerResult) {
                 is DatabaseSyncerResult.Failed.NetworkError -> {
-                    viewBinding.errorText.setHtmlText(R.string.my_overview_green_card_internet_error)
+                    viewBinding.errorText.setHtmlText(
+                        htmlText = context.getString(R.string.my_overview_green_card_internet_error),
+                        htmlTextColor = ContextCompat.getColor(context, R.color.error),
+                        htmlTextColorLink = ContextCompat.getColor(context, R.color.error))
                     viewBinding.errorText.enableCustomLinks(onRetryClick)
-                    viewBinding.errorTextRetry.setHtmlText("")
                     viewBinding.errorIcon.visibility = View.VISIBLE
                     viewBinding.errorText.visibility = View.VISIBLE
-                    viewBinding.errorTextRetry.visibility = View.GONE
                 }
-                is DatabaseSyncerResult.Failed.ServerError -> {
-                    viewBinding.errorText.setHtmlText(R.string.my_overview_green_card_server_error)
+                is DatabaseSyncerResult.Failed.ServerError.FirstTime -> {
+                    viewBinding.errorText.setHtmlText(
+                        htmlText = context.getString(R.string.my_overview_green_card_server_error),
+                        htmlTextColor = ContextCompat.getColor(context, R.color.error),
+                        htmlTextColorLink = ContextCompat.getColor(context, R.color.error))
                     viewBinding.errorText.enableCustomLinks(onRetryClick)
                     viewBinding.errorIcon.visibility = View.VISIBLE
                     viewBinding.errorText.visibility = View.VISIBLE
-                    viewBinding.errorTextRetry.visibility = View.GONE
+                }
+                is DatabaseSyncerResult.Failed.ServerError.MultipleTimes -> {
+                    viewBinding.errorText.setHtmlText(
+                        htmlText = context.getString(R.string.my_overview_green_card_server_error_after_retry),
+                        htmlTextColor = ContextCompat.getColor(context, R.color.error),
+                        htmlTextColorLink = ContextCompat.getColor(context, R.color.error))
+                    viewBinding.errorText.visibility = View.VISIBLE
+                    viewBinding.errorIcon.visibility = View.VISIBLE
                 }
                 else -> {
+
                 }
             }
         }
