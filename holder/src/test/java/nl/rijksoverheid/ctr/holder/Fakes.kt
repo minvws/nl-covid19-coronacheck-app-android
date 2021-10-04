@@ -557,8 +557,8 @@ fun fakeReadEuropeanCredentialUtil() = object: ReadEuropeanCredentialUtil {
         return ""
     }
 
-    override fun isOverVaccinated(readEuropeanCredential: JSONObject): Boolean {
-        return false
+    override fun getHighestAndTotalDose(readEuropeanCredential: JSONObject): Pair<String, String> {
+        return "1" to "1"
     }
 }
 
