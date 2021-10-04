@@ -219,9 +219,10 @@ import org.koin.androidx.viewmodel.scope.emptyState
                     CommercialTestCodeFragmentDirections.actionYourEvents(
                         type = YourEventsFragmentType.RemoteProtocol3Type(
                             mapOf(result.remoteTestResult to result.signedResponseWithTestResult.rawResponse),
-                            originType = OriginType.Test
+                            originType = OriginType.Test,
+                            fromCommercialTestCode = true
                         ),
-                        toolbarTitle = getString(R.string.commercial_test_type_title)
+                        toolbarTitle = getString(R.string.commercial_test_type_title),
                     )
                 )
             }

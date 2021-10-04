@@ -21,6 +21,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.TestProviderReposit
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
 import nl.rijksoverheid.ctr.holder.ui.myoverview.DashboardViewModel
+import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardSync
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TokenValidatorUtil
 import nl.rijksoverheid.ctr.introduction.IntroductionData
@@ -52,12 +53,12 @@ fun fakeAppConfigViewModel(appStatus: AppStatus = AppStatus.NoActionRequired) =
 
 fun fakeDashboardViewModel() =
     object : DashboardViewModel() {
-        override fun refresh(forceSync: Boolean) {
+        override fun refresh(dashboardSync: DashboardSync) {
 
         }
 
         override fun removeGreenCard(greenCard: GreenCard) {
-            
+
         }
     }
 

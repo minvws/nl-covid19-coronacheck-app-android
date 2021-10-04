@@ -38,9 +38,9 @@
                     android:id="@+id/imageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="@id/title"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/title"
-                    app:layout_constraintBottom_toBottomOf="@id/title"
                     tools:src="@drawable/ic_international_card" />
 
                 <TextView
@@ -111,37 +111,20 @@
 
     <nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
         android:id="@+id/error_text"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
         android:layout_marginBottom="16dp"
+        android:paddingHorizontal="8dp"
         android:textAlignment="textStart"
         android:textAppearance="@style/App.TextAppearance.MaterialComponents.Body2.Secondary"
-        android:textColor="@color/error"
-        android:textColorLink="@color/error"
         android:visibility="invisible"
         app:htmlText="@string/my_overview_green_card_server_error"
+        app:htmlTextColor="@color/error"
+        app:htmlTextColorLink="@color/error"
+        app:layout_constraintEnd_toEndOf="@+id/green_cards"
         app:layout_constraintStart_toEndOf="@id/error_icon"
         app:layout_constraintTop_toBottomOf="@+id/green_cards"
-        app:layout_goneMarginTop="32dp"
-        tools:visibility="visible" />
-
-    <nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
-        android:id="@+id/error_text_retry"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:textAlignment="textStart"
-        android:textAppearance="@style/App.TextAppearance.MaterialComponents.Body2.Secondary"
-        android:textColor="@color/error"
-        android:textColorLink="?android:textColorPrimary"
-        android:visibility="invisible"
-        app:htmlText="@string/my_overview_green_card_server_error_after_retry"
-        app:layout_constraintStart_toStartOf="@id/error_text"
-        app:layout_constraintTop_toBottomOf="@+id/error_text"
         app:layout_goneMarginTop="32dp"
         tools:visibility="visible" />
 

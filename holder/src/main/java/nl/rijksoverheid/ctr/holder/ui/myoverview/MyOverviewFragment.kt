@@ -15,6 +15,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.*
+import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardSync
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeFragmentData
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.ext.sharedViewModelWithOwner
@@ -137,9 +138,9 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                             },
                             onRetryClick = {
                                 dashboardViewModel.refresh(
-                                    forceSync = true
+                                    dashboardSync = DashboardSync.ForceSync
                                 )
-                            },
+                            }
                         )
                     )
                 }

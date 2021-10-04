@@ -1,6 +1,5 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.repositories
 
-import android.net.NetworkRequest
 import android.util.Base64
 import nl.rijksoverheid.ctr.api.factory.NetworkRequestResultFactory
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
