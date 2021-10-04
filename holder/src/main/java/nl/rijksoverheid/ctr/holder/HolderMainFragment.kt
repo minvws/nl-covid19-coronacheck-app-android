@@ -9,11 +9,14 @@
 package nl.rijksoverheid.ctr.holder
 
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.IdRes
 import androidx.annotation.StringRes
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
@@ -170,5 +173,15 @@ class HolderMainFragment : BaseMainFragment(
             .styleTitle(context, R.attr.textAppearanceBody1)
         binding.navView.menu.findItem(R.id.nav_paper_proof)
             .styleTitle(context, R.attr.textAppearanceBody1)
+
+        // resize drawer according to design
+        val width = activity?.resources?.displayMetrics?.widthPixels ?: return
+        val layoutParams = binding.navView.layoutParams as DrawerLayout.LayoutParams
+        layoutParams.width = (drawerWidthFactor * width).toInt()
+        binding.navView.layoutParams = layoutParams
+    }
+
+    companion object {
+        const val drawerWidthFactor = 0.85f
     }
 }
