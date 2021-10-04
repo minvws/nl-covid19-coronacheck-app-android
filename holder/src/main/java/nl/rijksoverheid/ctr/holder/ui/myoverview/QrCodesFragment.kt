@@ -86,6 +86,7 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
 
         setupViewPager()
         applyStyling()
+        setBottomScrollLocked(true)
 
         qrCodeViewModel.qrCodeDataListLiveData.observe(viewLifecycleOwner, ::bindQrCodeDataList)
         qrCodeViewModel.returnAppLivedata.observe(viewLifecycleOwner, ::returnToApp)
@@ -287,7 +288,6 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
         }
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     private fun showOverVaccinatedMessage(vaccination: QrCodeData.European.Vaccination) {
         TransitionManager.beginDelayedTransition(binding.bottomScroll)
         if (vaccination.isOverVaccinated) {
@@ -295,13 +295,28 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
                 R.string.qr_code_over_vaccinated,
                 "${vaccination.ofTotalDoses}/${vaccination.ofTotalDoses}"
             )
-            binding.overVaccinatedText.visibility = View.VISIBLE
-            binding.bottomScroll.fullScroll(NestedScrollView.FOCUS_UP)
-            binding.bottomScroll.setOnTouchListener(null)
+            setBottomScrollLocked(false)
         } else {
+            setBottomScrollLocked(true)
+        }
+    }
+
+    /**
+     * Sets the bottom scroll locked and scrolled to bottom or
+     * or unlocked with over vaccination text visible.
+     *
+     * @param[isLocked] Indicated bottom scroll view should be scrolling locked or unlocked
+     */
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setBottomScrollLocked(isLocked: Boolean) {
+        if (isLocked) {
             binding.overVaccinatedText.visibility = View.INVISIBLE
             binding.bottomScroll.fullScroll(NestedScrollView.FOCUS_DOWN)
             binding.bottomScroll.setOnTouchListener { _, _ -> true }
+        } else {
+            binding.overVaccinatedText.visibility = View.VISIBLE
+            binding.bottomScroll.fullScroll(NestedScrollView.FOCUS_UP)
+            binding.bottomScroll.setOnTouchListener(null)
         }
     }
 
