@@ -6,11 +6,11 @@ import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.transition.AutoTransition
 import android.transition.TransitionManager
 import android.view.View
 import android.view.WindowManager
 import androidx.core.os.bundleOf
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
@@ -268,22 +268,7 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
                             "${vaccination.highestDose}/${vaccination.ofTotalDoses}"
                         )
 
-                        TransitionManager.beginDelayedTransition(
-                            binding.root,
-                            AutoTransition().apply {
-                                addTarget(binding.overVaccinatedText)
-                                addTarget(binding.animation)
-                                excludeTarget(binding.viewPager, true)
-                            })
-                        if (vaccination.isOverVaccinated) {
-                            binding.overVaccinatedText.visibility = View.VISIBLE
-                            binding.overVaccinatedText.text = getString(
-                                R.string.qr_code_over_vaccinated,
-                                "${vaccination.ofTotalDoses}/${vaccination.ofTotalDoses}"
-                            )
-                        } else {
-                            binding.overVaccinatedText.visibility = View.GONE
-                        }
+                        showOverVaccinatedMessage(vaccination)
                     }
                 }
             })
@@ -299,6 +284,24 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
             binding.nextQrButton.setOnClickListener {
                 binding.viewPager.setCurrentItem(binding.viewPager.currentItem + 1, true)
             }
+        }
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun showOverVaccinatedMessage(vaccination: QrCodeData.European.Vaccination) {
+        TransitionManager.beginDelayedTransition(binding.bottomScroll)
+        if (vaccination.isOverVaccinated) {
+            binding.overVaccinatedText.text = getString(
+                R.string.qr_code_over_vaccinated,
+                "${vaccination.ofTotalDoses}/${vaccination.ofTotalDoses}"
+            )
+            binding.overVaccinatedText.visibility = View.VISIBLE
+            binding.bottomScroll.fullScroll(NestedScrollView.FOCUS_UP)
+            binding.bottomScroll.setOnTouchListener(null)
+        } else {
+            binding.overVaccinatedText.visibility = View.INVISIBLE
+            binding.bottomScroll.fullScroll(NestedScrollView.FOCUS_DOWN)
+            binding.bottomScroll.setOnTouchListener { _, _ -> true }
         }
     }
 

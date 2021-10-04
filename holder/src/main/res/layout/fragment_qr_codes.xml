@@ -101,25 +101,42 @@
         tools:text="Return to app"
         tools:visibility="visible" />
 
-    <TextView
-        android:id="@+id/overVaccinatedText"
-        style="@style/TextAppearance.MaterialComponents.Body1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="16dp"
-        android:gravity="center"
-        android:visibility="gone" />
-
-    <nl.rijksoverheid.ctr.holder.ui.myoverview.QrCodeAnimationWidget
-        android:id="@+id/animation"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/bottomScroll"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_gravity="bottom"
-        android:layout_weight="1"
-        android:contentDescription="@null"
-        android:focusable="false"
-        android:importantForAccessibility="no"
-        android:screenReaderFocusable="false" />
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:id="@+id/bottomScrollContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/overVaccinatedText"
+                style="@style/TextAppearance.MaterialComponents.Body1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:visibility="invisible"
+                tools:visibility="visible" />
+
+            <nl.rijksoverheid.ctr.holder.ui.myoverview.QrCodeAnimationWidget
+                android:id="@+id/animation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:contentDescription="@null"
+                android:focusable="false"
+                android:importantForAccessibility="no"
+                android:screenReaderFocusable="false" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
 
 </LinearLayout>
