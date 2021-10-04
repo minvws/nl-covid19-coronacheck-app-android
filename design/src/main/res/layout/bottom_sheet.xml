@@ -16,10 +16,9 @@
             android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/commercial_test_type_no_code_title"
             android:textAppearance="?attr/textAppearanceHeadline5"
             app:layout_constraintBottom_toTopOf="@+id/description"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/close"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0"
@@ -30,11 +29,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?attr/actionBarItemBackground"
-            android:src="@drawable/ic_close"
             android:contentDescription="@string/menu_close"
+            android:src="@drawable/ic_close"
             app:layout_constraintBottom_toBottomOf="@+id/title"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/title" />
+            app:layout_constraintTop_toTopOf="@+id/title"
+            app:layout_constraintVertical_bias="0.0" />
 
         <nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
             android:id="@+id/description"
@@ -42,11 +42,20 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:textAppearance="?attr/textAppearanceBody1"
-            app:htmlText="@string/commercial_test_type_no_code_description"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title" />
+
+        <TextView
+            android:id="@+id/footer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceBody1"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/description" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

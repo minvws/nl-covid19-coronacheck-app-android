@@ -9,7 +9,9 @@ import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import nl.rijksoverheid.ctr.design.utils.BottomSheetDialogUtil
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
+import nl.rijksoverheid.ctr.design.utils.ExpandedBottomSheetData
 import nl.rijksoverheid.ctr.holder.BaseFragment
 import nl.rijksoverheid.ctr.holder.HolderFlow
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
@@ -20,11 +22,9 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.TestResult
 import nl.rijksoverheid.ctr.shared.ext.hideKeyboard
-import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.ext.showKeyboard
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.Flow
-import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import nl.rijksoverheid.ctr.shared.utils.Accessibility
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
@@ -45,6 +45,7 @@ import org.koin.androidx.viewmodel.scope.emptyState
     )
 
     private val dialogUtil: DialogUtil by inject()
+    private val bottomSheetDialogUtil: BottomSheetDialogUtil by inject()
 
     private val navArgs: CommercialTestCodeFragmentArgs by navArgs()
 
@@ -194,10 +195,12 @@ import org.koin.androidx.viewmodel.scope.emptyState
         })
 
         binding.noTokenReceivedBtn.setOnClickListener {
-            navigateSafety(
-                R.id.nav_commercial_test_code,
-                CommercialTestCodeFragmentDirections.actionNoCode()
-            )
+            bottomSheetDialogUtil.present(childFragmentManager, ExpandedBottomSheetData(
+                title = getString(R.string.commercial_test_type_no_code_title),
+                description = {
+                    it.setHtmlText(getString(R.string.commercial_test_type_no_code_description))
+                },
+            ))
         }
     }
 

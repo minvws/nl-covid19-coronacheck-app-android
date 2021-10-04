@@ -5,7 +5,7 @@ import androidx.fragment.app.FragmentManager
 import nl.rijksoverheid.ctr.design.ExpandedBottomSheetDialogFragment
 import nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
 
-data class ExpandedBottomSheetData(val title: String, val description: (HtmlTextViewWidget) -> Unit, val footer: (TextView) -> Unit)
+data class ExpandedBottomSheetData(val title: String, val description: (HtmlTextViewWidget) -> Unit, val footer: (TextView) -> Unit = {})
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
