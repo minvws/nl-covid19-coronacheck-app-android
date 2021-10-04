@@ -11,9 +11,9 @@ package nl.rijksoverheid.ctr.holder.ui.myoverview.items
 import android.view.View
 import androidx.annotation.DimenRes
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import com.google.android.material.card.MaterialCardView
 import com.xwray.groupie.viewbinding.BindableItem
-import nl.rijksoverheid.ctr.design.ext.getThemeColorStateList
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.ItemMyOverviewGreenCardBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
@@ -22,7 +22,6 @@ import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardErrorState
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem.CardsItem.CredentialState.HasCredential
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
