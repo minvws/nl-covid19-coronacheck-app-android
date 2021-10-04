@@ -1,11 +1,15 @@
 package nl.rijksoverheid.ctr.design.utils
 
-import android.widget.TextView
+import android.widget.Button
 import androidx.fragment.app.FragmentManager
 import nl.rijksoverheid.ctr.design.ExpandedBottomSheetDialogFragment
 import nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
 
-data class ExpandedBottomSheetData(val title: String, val description: (HtmlTextViewWidget) -> Unit, val footer: (TextView) -> Unit = {})
+sealed class BottomSheetData(open val title: String, open val description: (HtmlTextViewWidget) -> Unit) {
+    class TitleDescription(override val title: String, override val description: (HtmlTextViewWidget) -> Unit): BottomSheetData(title, description)
+    class TitleDescriptionWithButton(override val title: String, override val description: (HtmlTextViewWidget) -> Unit, val buttonCallback: (Button) -> Unit): BottomSheetData(title, description)
+    class TitleDescriptionWithFooter(override val title: String, override val description: (HtmlTextViewWidget) -> Unit, val footerText: String): BottomSheetData(title, description)
+}
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -17,14 +21,14 @@ data class ExpandedBottomSheetData(val title: String, val description: (HtmlText
 interface BottomSheetDialogUtil {
     fun present(
         fragmentManager: FragmentManager,
-        data: ExpandedBottomSheetData,
+        data: BottomSheetData,
     )
 }
 
 class BottomSheetDialogUtilImpl: BottomSheetDialogUtil {
     override fun present(
         fragmentManager: FragmentManager,
-        data: ExpandedBottomSheetData,
+        data: BottomSheetData,
     ) {
         val bottomSheet = ExpandedBottomSheetDialogFragment(data)
         bottomSheet.show(fragmentManager, "bottomSheetTag")

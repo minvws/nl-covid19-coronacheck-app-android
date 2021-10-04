@@ -50,10 +50,6 @@
                 android:id="@+id/action_show_qr_explanation"
                 app:destination="@id/qr_code_explanation_bottomsheet" />
 
-            <action
-                android:id="@+id/action_show_clock_deviation_explanation"
-                app:destination="@id/clock_deviation_explanation_bottomsheet" />
-
         </fragment>
 
     </navigation>
@@ -91,10 +87,6 @@
         <action
             android:id="@+id/action_about_this_app"
             app:destination="@id/nav_about_this_app" />
-
-        <action
-            android:id="@+id/action_show_clock_deviation_explanation"
-            app:destination="@id/clock_deviation_explanation_bottomsheet" />
 
     </fragment>
 
@@ -144,12 +136,6 @@
             android:defaultValue="@null"/>
 
     </dialog>
-
-    <dialog
-        android:id="@+id/clock_deviation_explanation_bottomsheet"
-        android:name="nl.rijksoverheid.ctr.holder.ui.myoverview.ClockDeviationExplanationDialogFragment"
-        android:label="ClockDeviationExplanation"
-        tools:layout="@layout/dialog_clock_deviation_explanation" />
 
     <navigation
         android:id="@+id/nav_paper_proof"
@@ -298,10 +284,6 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
-
-        <action
-            android:id="@+id/action_not_yet_tested"
-            app:destination="@id/nav_not_yet_tested" />
 
     </fragment>
 
@@ -477,11 +459,6 @@
         android:name="nl.rijksoverheid.ctr.design.menu.about.AboutThisAppFragment"
         android:label="@string/about_this_app"
         tools:layout="@layout/fragment_about_app" />
-
-    <dialog
-        android:id="@+id/nav_not_yet_tested"
-        android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.NotYetTestedFragment"
-        tools:layout="@layout/dialog_not_yet_tested" />
 
     <dialog
         android:id="@+id/nav_title_description_bottom_sheet"

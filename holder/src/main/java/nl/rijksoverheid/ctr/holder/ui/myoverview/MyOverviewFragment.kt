@@ -1,7 +1,9 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview
 
+import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
+import android.provider.Settings
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
@@ -9,6 +11,8 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
 import com.xwray.groupie.viewbinding.BindableItem
+import nl.rijksoverheid.ctr.design.utils.BottomSheetData
+import nl.rijksoverheid.ctr.design.utils.BottomSheetDialogUtil
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMyOverviewBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
@@ -19,6 +23,7 @@ import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardSync
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeFragmentData
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.ext.sharedViewModelWithOwner
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ViewModelOwner
 
 /*
@@ -50,6 +55,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
 
     }
 
+    private val bottomSheetDialogUtil: BottomSheetDialogUtil by inject()
     private val dashboardViewModel: DashboardViewModel by sharedViewModelWithOwner(owner = { ViewModelOwner.from(requireParentFragment()) })
     private val section = Section()
     private val greenCardType: GreenCardType by lazy { arguments?.getParcelable<GreenCardType>(EXTRA_GREEN_CARD_TYPE) ?: error("EXTRA_GREEN_CARD_TYPE should not be null") }
@@ -171,7 +177,16 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                 }
                 is DashboardItem.ClockDeviationItem -> {
                     adapterItems.add(MyOverviewClockDeviationItem(onInfoIconClicked = {
-                        navigateSafety(MyOverviewTabsFragmentDirections.actionShowClockDeviationExplanation())
+                        bottomSheetDialogUtil.present(childFragmentManager, BottomSheetData.TitleDescription(
+                            title = getString(R.string.clock_deviation_explanation_title),
+                            description = {
+                                it.setHtmlText(getString(R.string.clock_deviation_explanation_description))
+                                it.enableCustomLinks {
+                                    val intent = Intent(Settings.ACTION_DATE_SETTINGS)
+                                    startActivity(intent)
+                                }
+                            },
+                        ))
                     }))
                 }
                 is DashboardItem.AddQrButtonItem -> {

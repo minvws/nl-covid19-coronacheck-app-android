@@ -12,7 +12,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import nl.rijksoverheid.ctr.design.databinding.BottomSheetBinding
-import nl.rijksoverheid.ctr.design.utils.ExpandedBottomSheetData
+import nl.rijksoverheid.ctr.design.utils.BottomSheetData
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -22,7 +22,7 @@ import nl.rijksoverheid.ctr.design.utils.ExpandedBottomSheetData
  *
  */
 open class ExpandedBottomSheetDialogFragment(
-    private val expandedBottomSheetData: ExpandedBottomSheetData = ExpandedBottomSheetData("", {}, {})
+    private val expandedBottomSheetData: BottomSheetData = BottomSheetData.TitleDescription("", {})
 ) : BottomSheetDialogFragment() {
 
     override fun onCreateView(
@@ -61,8 +61,17 @@ open class ExpandedBottomSheetDialogFragment(
         binding.description.apply {
             expandedBottomSheetData.description(this)
         }
-        binding.footer.apply {
-            expandedBottomSheetData.footer(this)
+        when (expandedBottomSheetData) {
+            is BottomSheetData.TitleDescription -> {}
+            is BottomSheetData.TitleDescriptionWithButton -> {
+                binding.button.visibility = View.VISIBLE
+                binding.button.apply {
+                    expandedBottomSheetData.buttonCallback(this)
+                }
+            }
+            is BottomSheetData.TitleDescriptionWithFooter -> {
+                binding.footer.text = expandedBottomSheetData.footerText
+            }
         }
     }
 }
