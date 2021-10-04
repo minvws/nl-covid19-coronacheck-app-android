@@ -7,8 +7,9 @@ import android.os.Looper
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import nl.rijksoverheid.ctr.design.utils.BottomSheetData
+import nl.rijksoverheid.ctr.design.utils.BottomSheetDialogUtil
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import nl.rijksoverheid.ctr.verifier.BuildConfig
@@ -27,6 +28,7 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
     private val args: ScanResultValidFragmentArgs by navArgs()
     private val scannerUtil: ScannerUtil by inject()
     private val personalDetailsUtil: PersonalDetailsUtil by inject()
+    private val bottomSheetDialogUtil: BottomSheetDialogUtil by inject()
 
     private val transitionPersonalDetailsHandler = Handler(Looper.getMainLooper())
     private val transitionPersonalDetailsRunnable = Runnable {
@@ -75,7 +77,12 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
         }
 
         binding.personalDetails.buttonIncorrectData.setOnClickListener {
-            navigateSafety(ScanResultValidFragmentDirections.actionShowValidExplanation())
+            bottomSheetDialogUtil.present(childFragmentManager, BottomSheetData.TitleDescription(
+                title = getString(R.string.scan_result_valid_reason_title),
+                description = {
+                    it.setHtmlText(R.string.scan_result_valid_reason_description)
+                }
+            ))
         }
 
         binding.personalDetails.bottom.setButtonClick {
