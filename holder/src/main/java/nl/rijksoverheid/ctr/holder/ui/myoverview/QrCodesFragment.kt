@@ -140,7 +140,10 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
             }
             is QrCodesResult.MultipleQrCodes -> {
                 qrCodePagerAdapter.addData(qrCodesResult.europeanVaccinationQrCodeDataList)
-                setupEuropeanVaccinationQr(qrCodesResult.europeanVaccinationQrCodeDataList)
+                if (binding.qrVaccinationIndicators.visibility == View.GONE) {
+                    // Setup extra viewpager UI only once
+                    setupEuropeanVaccinationQr(qrCodesResult.europeanVaccinationQrCodeDataList)
+                }
             }
         }
 
@@ -244,6 +247,7 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
             binding.viewPager.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
+
                     // Select current indicator
                     binding.qrVaccinationIndicators.updateSelected(position)
 
