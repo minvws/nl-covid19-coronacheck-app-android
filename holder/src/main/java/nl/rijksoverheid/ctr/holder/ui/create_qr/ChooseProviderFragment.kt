@@ -3,6 +3,8 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
+import nl.rijksoverheid.ctr.design.utils.BottomSheetData
+import nl.rijksoverheid.ctr.design.utils.BottomSheetDialogUtil
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderFlow
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
@@ -14,6 +16,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigidResult
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.EventsResult
+import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.ErrorResultFragmentData
 import nl.rijksoverheid.ctr.shared.models.Flow
@@ -31,6 +34,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) {
 
     private val dialogUtil: DialogUtil by inject()
+    private val bottomSheetDialogUtil: BottomSheetDialogUtil by inject()
 
     private val getEventsViewModel: GetEventsViewModel by viewModel()
 
@@ -60,7 +64,18 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
         ) { onButtonClickWithRetryAction() }
 
         binding.notYetTested.setOnClickListener {
-            findNavController().navigate(ChooseProviderFragmentDirections.actionNotYetTested())
+            bottomSheetDialogUtil.present(childFragmentManager, BottomSheetData.TitleDescriptionWithButton(
+                title = getString(R.string.not_yet_tested_title),
+                applyOnDescription = {
+                    it.setHtmlText(R.string.not_yet_tested_description)
+                },
+                applyOnButton = { button ->
+                    button.text = getString(R.string.not_yet_tested_button)
+                    button.setOnClickListener {
+                        getString(R.string.url_make_appointment).launchUrl(button.context)
+                    }
+                },
+            ))
         }
 
         binding.providerCommercial.root.setAsAccessibilityButton()

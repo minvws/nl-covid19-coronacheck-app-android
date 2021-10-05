@@ -11,9 +11,9 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.google.android.material.button.MaterialButton
 import com.schibsted.spain.barista.assertion.BaristaAssertions.assertAny
 import com.schibsted.spain.barista.assertion.BaristaBackgroundAssertions.assertHasBackground
+import com.schibsted.spain.barista.assertion.BaristaVisibilityAssertions.assertContains
 import com.schibsted.spain.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
 import com.schibsted.spain.barista.interaction.BaristaClickInteractions.clickOn
-import com.schibsted.spain.barista.interaction.BaristaScrollInteractions.scrollTo
 import com.schibsted.spain.barista.internal.performActionOnView
 import io.mockk.mockk
 import io.mockk.verify
@@ -58,10 +58,7 @@ class ScanResultInvalidFragmentTest : AutoCloseKoinTest() {
     fun `Invalid result on explanation button click opens explanation dialog`() {
         launchScanResultInvalidFragment(data = ScanResultInvalidData.Error("invalid QR code"))
         performActionOnView(withId(R.id.button_explanation), click())
-        assertEquals(
-            navController.currentDestination?.id,
-            R.id.invalid_explanation_bottomsheet
-        )
+        assertContains(R.string.scan_result_invalid_reason_title)
     }
 
     @Test
