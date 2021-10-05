@@ -20,8 +20,14 @@ class QrCodePagerAdapter: RecyclerView.Adapter<QrCodeViewHolder>() {
     val qrCodeDataList: MutableList<QrCodeData> = mutableListOf()
 
     fun addData(data: List<QrCodeData>) {
+        val hasItems = qrCodeDataList.isNotEmpty()
+        qrCodeDataList.clear()
         qrCodeDataList.addAll(data)
-        notifyItemRangeInserted(0, data.size)
+        if (hasItems) {
+            notifyItemRangeChanged(0, data.size)
+        } else {
+            notifyItemRangeInserted(0, data.size)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QrCodeViewHolder {

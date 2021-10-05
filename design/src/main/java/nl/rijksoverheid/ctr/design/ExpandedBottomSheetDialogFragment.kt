@@ -4,10 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.AccessibilityDelegateCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import com.google.android.material.R
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import nl.rijksoverheid.ctr.design.databinding.BottomSheetBinding
+import nl.rijksoverheid.ctr.design.utils.BottomSheetData
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -16,7 +21,9 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-open class ExpandedBottomSheetDialogFragment : BottomSheetDialogFragment() {
+open class ExpandedBottomSheetDialogFragment(
+    private val expandedBottomSheetData: BottomSheetData = BottomSheetData.TitleDescription("", {})
+) : BottomSheetDialogFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,6 +35,43 @@ open class ExpandedBottomSheetDialogFragment : BottomSheetDialogFragment() {
             val sheetInternal: View = bottomSheetDialog.findViewById(R.id.design_bottom_sheet)!!
             BottomSheetBehavior.from(sheetInternal).state = BottomSheetBehavior.STATE_EXPANDED
         }
-        return super.onCreateView(inflater, container, savedInstanceState)
+        super.onCreateView(inflater, container, savedInstanceState)
+        return BottomSheetBinding.inflate(inflater).root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val binding = BottomSheetBinding.bind(view)
+
+        binding.close.setOnClickListener {
+            dismiss()
+        }
+
+        ViewCompat.setAccessibilityDelegate(binding.close, object : AccessibilityDelegateCompat() {
+            override fun onInitializeAccessibilityNodeInfo(
+                host: View?,
+                info: AccessibilityNodeInfoCompat?
+            ) {
+                info?.setTraversalBefore(binding.description)
+                super.onInitializeAccessibilityNodeInfo(host, info)
+            }
+        })
+
+        binding.title.text = expandedBottomSheetData.title
+        binding.description.apply {
+            expandedBottomSheetData.applyOnDescription(this)
+        }
+        when (expandedBottomSheetData) {
+            is BottomSheetData.TitleDescription -> {}
+            is BottomSheetData.TitleDescriptionWithButton -> {
+                binding.button.visibility = View.VISIBLE
+                binding.button.apply {
+                    expandedBottomSheetData.applyOnButton(this)
+                }
+            }
+            is BottomSheetData.TitleDescriptionWithFooter -> {
+                binding.footer.text = expandedBottomSheetData.footerText
+            }
+        }
     }
 }

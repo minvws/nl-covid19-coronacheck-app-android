@@ -7,7 +7,7 @@ plugins {
 }
 
 def appVersionCode = System.getenv("GITHUB_RUN_NUMBER") != null ? System.getenv("GITHUB_RUN_NUMBER").toInteger() : 1000000
-version = "2.3.3"
+version = "2.4"
 archivesBaseName = "holder-v${version}-${appVersionCode}"
 
 android {
@@ -33,14 +33,14 @@ android {
         buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "true"
         buildConfigField "boolean", "FEATURE_TEST_PROVIDER_API_CHECKS", "true"
         buildConfigField "String", "DIGI_D_REDIRECT_URI", "\"https://coronacheck.nl/app/auth2\""
-        buildConfigField "String", "BASE_API_URL", "\"https://holder-api.coronacheck.nl/v5/\""
+        buildConfigField "String", "BASE_API_URL", "\"https://holder-api.coronacheck.nl/v6/\""
         buildConfigField "String", "DIGI_D_BASE_URL", "\"https://tvs.coronacheck.nl\""
         buildConfigField "String", "DIGI_D_CLIENT_ID", "\"cc_app\""
         buildConfigField "String[]", "CERTIFICATE_PINS",
                 "{" +
                         "\"sha256/lR7gRvqDMW5nhsCMRPE7TKLq0tJkTWMxQ5HAzHCIfQ0=\"" +
                         "}"
-        buildConfigField "String", "CDN_API_URL", "\"https://holder-api-cdn.coronacheck.nl/v5/\""
+        buildConfigField "String", "CDN_API_URL", "\"https://holder-api-cdn.coronacheck.nl/v6/\""
         manifestPlaceholders = [appLabel: "@string/app_name", deepLinkHost: "coronacheck.nl", digidSchema: "coronacheck"]
 
         javaCompileOptions {
@@ -71,7 +71,7 @@ android {
     flavorDimensions "environment"
     productFlavors {
         tst {
-            buildConfigField "String", "BASE_API_URL", "\"https://api-ct.bananenhalen.nl/v5/\""
+            buildConfigField "String", "BASE_API_URL", "\"https://api-ct.bananenhalen.nl/v6/\""
             buildConfigField "String", "DIGI_D_BASE_URL", "\"https://tvs.acc.coronacheck.nl\""
             buildConfigField "String", "DIGI_D_CLIENT_ID", "\"cc_app\""
             buildConfigField "String", "DIGI_D_REDIRECT_URI", "\"coronacheck-dev://auth/login\""
@@ -89,8 +89,8 @@ android {
             apply plugin: 'com.google.firebase.crashlytics'
         }
         acc {
-            buildConfigField "String", "BASE_API_URL", "\"https://holder-api.acc.coronacheck.nl/v5/\""
-            buildConfigField "String", "CDN_API_URL", "\"https://holder-api-cdn.acc.coronacheck.nl/v5/\""
+            buildConfigField "String", "BASE_API_URL", "\"https://holder-api.acc.coronacheck.nl/v6/\""
+            buildConfigField "String", "CDN_API_URL", "\"https://holder-api-cdn.acc.coronacheck.nl/v6/\""
             buildConfigField "String", "DIGI_D_BASE_URL", "\"https://tvs.acc.coronacheck.nl\""
             buildConfigField "String", "DIGI_D_CLIENT_ID", "\"cc_app\""
             buildConfigField "String", "DIGI_D_REDIRECT_URI", "\"https://web.acc.coronacheck.nl/app/auth2\""
