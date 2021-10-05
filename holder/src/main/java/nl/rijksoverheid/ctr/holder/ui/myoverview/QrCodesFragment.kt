@@ -86,7 +86,6 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
 
         setupViewPager()
         applyStyling()
-        setBottomScrollLocked(true)
 
         qrCodeViewModel.qrCodeDataListLiveData.observe(viewLifecycleOwner, ::bindQrCodeDataList)
         qrCodeViewModel.returnAppLivedata.observe(viewLifecycleOwner, ::returnToApp)
@@ -137,17 +136,18 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
     }
 
     private fun bindQrCodeDataList(qrCodesResult: QrCodesResult) {
+        presentQrLoading(false)
+
         when (qrCodesResult) {
             is QrCodesResult.SingleQrCode -> {
                 qrCodePagerAdapter.addData(listOf(qrCodesResult.qrCodeData))
+                Handler(Looper.getMainLooper()).post { setBottomScrollLocked(true) }
             }
             is QrCodesResult.MultipleQrCodes -> {
                 qrCodePagerAdapter.addData(qrCodesResult.europeanVaccinationQrCodeDataList)
                 setupEuropeanVaccinationQr(qrCodesResult.europeanVaccinationQrCodeDataList)
             }
         }
-
-        presentQrLoading(false)
 
         // Nullable so tests don't trip over parentFragment
         (parentFragment?.parentFragment as HolderMainFragment?)?.getToolbar().let { toolbar ->
