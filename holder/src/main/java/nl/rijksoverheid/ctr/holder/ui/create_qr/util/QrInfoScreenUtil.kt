@@ -330,5 +330,5 @@ class QrInfoScreenUtilImpl(
 data class QrInfoScreen(
     val title: String,
     val description: String,
-    val footer: String? = null
+    val footer: String = ""
 )
