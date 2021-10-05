@@ -40,7 +40,7 @@
 
             <action
                 android:id="@+id/action_qr_code"
-                app:destination="@id/nav_qr_code"
+                app:destination="@id/nav_qr_codes"
                 app:enterAnim="@anim/fragment_open_enter"
                 app:exitAnim="@anim/fragment_open_exit"
                 app:popEnterAnim="@anim/fragment_close_enter"
@@ -66,7 +66,7 @@
 
         <action
             android:id="@+id/action_qr_code"
-            app:destination="@id/nav_qr_code"
+            app:destination="@id/nav_qr_codes"
             app:enterAnim="@anim/fragment_open_enter"
             app:exitAnim="@anim/fragment_open_exit"
             app:popEnterAnim="@anim/fragment_close_enter"
@@ -87,10 +87,10 @@
     </fragment>
 
     <fragment
-        android:id="@+id/nav_qr_code"
-        android:name="nl.rijksoverheid.ctr.holder.ui.myoverview.QrCodeFragment"
+        android:id="@+id/nav_qr_codes"
+        android:name="nl.rijksoverheid.ctr.holder.ui.myoverview.QrCodesFragment"
         android:label="{toolbarTitle}"
-        tools:layout="@layout/fragment_qr_code">
+        tools:layout="@layout/fragment_qr_codes">
 
         <argument
             android:name="toolbarTitle"

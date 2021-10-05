@@ -8,21 +8,23 @@ import org.json.JSONObject
 
 sealed class QrCodeData(
     open val bitmap: Bitmap,
-    @RawRes open val animationResource: Int,
-    @DrawableRes open val backgroundResource: Int?
 ) {
 
     data class Domestic(
         override val bitmap: Bitmap,
-        override val animationResource: Int,
-        override val backgroundResource: Int?,
         val readDomesticCredential: ReadDomesticCredential
-    ) : QrCodeData(bitmap, animationResource, backgroundResource)
+    ) : QrCodeData(bitmap)
 
-    data class European(
+    sealed class European(
         override val bitmap: Bitmap,
-        override val animationResource: Int,
-        override val backgroundResource: Int?,
-        val readEuropeanCredential: JSONObject
-    ) : QrCodeData(bitmap, animationResource, backgroundResource)
+        open val readEuropeanCredential: JSONObject
+    ) : QrCodeData(bitmap) {
+
+        data class Vaccination(
+            val dosis: String, override val bitmap: Bitmap, override val readEuropeanCredential: JSONObject
+        ): European(bitmap, readEuropeanCredential)
+
+        data class NonVaccination(override val bitmap: Bitmap, override val readEuropeanCredential: JSONObject) :
+            European(bitmap, readEuropeanCredential)
+    }
 }

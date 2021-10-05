@@ -33,4 +33,6 @@ val utilsModule = module {
     factory<RemoteProtocol3Util> { RemoteProtocol3UtilImpl() }
     factory<RemoteEventUtil> { RemoteEventUtilImpl() }
     factory<DashboardItemUtil> { DashboardItemUtilImpl(get(), get()) }
+    factory<ReadEuropeanCredentialUtil> { ReadEuropeanCredentialUtilImpl(get()) }
+    factory<CountryUtil> { CountryUtilImpl() }
 }

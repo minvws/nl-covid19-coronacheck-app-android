@@ -13,19 +13,22 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.viewpager2.widget.ViewPager2
 import nl.rijksoverheid.ctr.design.utils.BottomSheetData
 import nl.rijksoverheid.ctr.design.utils.BottomSheetDialogUtil
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.databinding.FragmentQrCodeBinding
+import nl.rijksoverheid.ctr.holder.databinding.FragmentQrCodesBinding
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.QrInfoScreenUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeData
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.ExternalReturnAppData
-import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAccessibilityFocus
+import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodesResult
+import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -34,7 +37,6 @@ import java.time.OffsetDateTime
 import java.time.ZoneOffset
 import java.util.concurrent.TimeUnit
 
-
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
  *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
@@ -42,16 +44,17 @@ import java.util.concurrent.TimeUnit
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
+class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
 
-    private var _binding: FragmentQrCodeBinding? = null
+    private var _binding: FragmentQrCodesBinding? = null
     private val binding get() = _binding!!
-    private val args: QrCodeFragmentArgs by navArgs()
+    private val args: QrCodesFragmentArgs by navArgs()
     private val personalDetailsUtil: PersonalDetailsUtil by inject()
     private val infoScreenUtil: QrInfoScreenUtil by inject()
     private val dialogUtil: DialogUtil by inject()
     private val bottomSheetDialogUtil: BottomSheetDialogUtil by inject()
     private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
+    private lateinit var qrCodePagerAdapter: QrCodePagerAdapter
 
     private val qrCodeHandler = Handler(Looper.getMainLooper())
     private val qrCodeRunnable = Runnable {
@@ -59,7 +62,7 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
         checkIfCredentialExpired()
     }
 
-    private val qrCodeViewModel: QrCodeViewModel by viewModel()
+    private val qrCodeViewModel: QrCodesViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,12 +83,31 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
 
         requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
-        _binding = FragmentQrCodeBinding.bind(view)
+        _binding = FragmentQrCodesBinding.bind(view)
 
-        qrCodeViewModel.qrCodeDataLiveData.observe(viewLifecycleOwner, ::bindQrCodeData)
+        setupViewPager()
+        applyStyling()
+
+        qrCodeViewModel.qrCodeDataListLiveData.observe(viewLifecycleOwner, ::bindQrCodeDataList)
         qrCodeViewModel.returnAppLivedata.observe(viewLifecycleOwner, ::returnToApp)
 
         args.returnUri?.let { qrCodeViewModel.onReturnUriGiven(it, args.data.type) }
+    }
+
+    private fun setupViewPager() {
+        qrCodePagerAdapter = QrCodePagerAdapter()
+        binding.viewPager.adapter = qrCodePagerAdapter
+    }
+
+    private fun applyStyling() {
+        when (args.data.type) {
+            is GreenCardType.Domestic -> {
+                binding.animation.setWidget(R.raw.skatefiets2)
+            }
+            is GreenCardType.Eu -> {
+                binding.animation.setWidget(R.raw.moving_walkway)
+            }
+        }
     }
 
     private fun returnToApp(externalReturnAppData: ExternalReturnAppData?) {
@@ -96,7 +118,6 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
                 setOnClickListener { startIntent(externalReturnAppData) }
             } else {
                 visibility = View.GONE
-
             }
         }
     }
@@ -115,9 +136,20 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
         }
     }
 
-    private fun bindQrCodeData(qrCodeData: QrCodeData) {
-        binding.image.setImageBitmap(qrCodeData.bitmap)
-        binding.animation.setWidget(qrCodeData.animationResource, qrCodeData.backgroundResource)
+    private fun bindQrCodeDataList(qrCodesResult: QrCodesResult) {
+        when (qrCodesResult) {
+            is QrCodesResult.SingleQrCode -> {
+                qrCodePagerAdapter.addData(listOf(qrCodesResult.qrCodeData))
+            }
+            is QrCodesResult.MultipleQrCodes -> {
+                qrCodePagerAdapter.addData(qrCodesResult.europeanVaccinationQrCodeDataList)
+                if (binding.qrVaccinationIndicators.visibility == View.GONE) {
+                    // Setup extra viewpager UI only once
+                    setupEuropeanVaccinationQr(qrCodesResult.europeanVaccinationQrCodeDataList)
+                }
+            }
+        }
+
         presentQrLoading(false)
 
         // Nullable so tests don't trip over parentFragment
@@ -127,6 +159,7 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
                     inflateMenu(R.menu.my_qr_toolbar)
 
                     setOnMenuItemClickListener {
+                        val qrCodeData = qrCodePagerAdapter.qrCodeDataList.get(binding.viewPager.currentItem)
                         if (it.itemId == R.id.action_show_qr_explanation) {
                             val infoScreen = when (qrCodeData) {
                                 is QrCodeData.Domestic -> {
@@ -177,20 +210,61 @@ class QrCodeFragment : Fragment(R.layout.fragment_qr_code) {
         }
     }
 
-    private fun presentQrLoading(loading: Boolean) {
-        (parentFragment?.parentFragment as HolderMainFragment).presentLoading(loading)
-        binding.root.visibility = if (loading) View.GONE else View.VISIBLE
-        // Move focus to loading indicator or QR depending on state
-        if (!loading) {
-            binding.image.setAccessibilityFocus()
+    /**
+     * Show extra UI when we are dealing with european vaccination qrs
+     */
+    private fun setupEuropeanVaccinationQr(europeanVaccinations: List<QrCodeData.European.Vaccination>) {
+        // Make extra UI visible to show more information about the QR
+        binding.vaccinationQrsContainer.visibility = View.VISIBLE
+        binding.qrVaccinationDosis.visibility = View.VISIBLE
+        binding.qrVaccinationDosis.text = getString(R.string.qr_code_dosis, europeanVaccinations.first().dosis)
+
+        // If there are more then one vaccinations we update UI based on the selected page
+        if (europeanVaccinations.size > 1) {
+            // Initialize our viewpager indicators
+            binding.qrVaccinationIndicators.visibility = View.VISIBLE
+            binding.qrVaccinationIndicators.initIndicator(europeanVaccinations.size)
+
+            binding.viewPager.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+
+                    // Select current indicator
+                    binding.qrVaccinationIndicators.updateSelected(position)
+
+                    Handler(Looper.getMainLooper()).post {
+                        binding.previousQrButton.visibility = if (position == 0) View.VISIBLE else View.INVISIBLE
+                        binding.nextQrButton.visibility = if (position == europeanVaccinations.size - 1) View.VISIBLE else View.INVISIBLE
+                        binding.qrVaccinationDosis.text = getString(R.string.qr_code_dosis, europeanVaccinations[position].dosis)
+                    }
+                }
+            })
+
+            // Default select the last item
+            binding.viewPager.setCurrentItem(europeanVaccinations.size - 1, false)
+
+            // Make buttons click to scroll through viewpager
+            binding.previousQrButton.setOnClickListener {
+                binding.viewPager.setCurrentItem(binding.viewPager.currentItem - 1, true)
+            }
+
+            binding.nextQrButton.setOnClickListener {
+                binding.viewPager.setCurrentItem(binding.viewPager.currentItem + 1, true)
+            }
         }
     }
 
+    private fun presentQrLoading(loading: Boolean) {
+        (parentFragment?.parentFragment as HolderMainFragment).presentLoading(loading)
+        binding.root.visibility = if (loading) View.GONE else View.VISIBLE
+    }
+
     private fun generateQrCode() {
-        qrCodeViewModel.generateQrCode(
-            type = args.data.type,
+        qrCodeViewModel.generateQrCodes(
+            greenCardType = args.data.type,
+            originType = args.data.originType,
             size = resources.displayMetrics.widthPixels,
-            credential = args.data.credential,
+            credentials = args.data.credentials,
             shouldDisclose = args.data.shouldDisclose
         )
         val refreshMillis =

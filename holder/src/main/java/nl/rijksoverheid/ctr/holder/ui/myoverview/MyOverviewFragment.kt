@@ -124,14 +124,11 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                         )
                     )
                 }
-                is DashboardItem.GreenCardItem -> {
+                is DashboardItem.CardsItem -> {
                     adapterItems.add(
                         MyOverviewGreenCardAdapterItem(
-                            greenCard = dashboardItem.greenCard,
-                            originStates = dashboardItem.originStates,
-                            credentialState = dashboardItem.credentialState,
-                            databaseSyncerResult = dashboardItem.databaseSyncerResult,
-                            onButtonClick = { greenCard, credential ->
+                            cards = dashboardItem.cards,
+                            onButtonClick = { greenCard, credentials, expiration ->
                                 navigateSafety(
                                     MyOverviewFragmentDirections.actionQrCode(
                                         toolbarTitle = when (greenCard.greenCardEntity.type) {
@@ -144,8 +141,8 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                                         },
                                         data = QrCodeFragmentData(
                                             shouldDisclose = greenCard.greenCardEntity.type == GreenCardType.Domestic,
-                                            credential = credential.data,
-                                            credentialExpirationTimeSeconds = credential.expirationTime.toEpochSecond(),
+                                            credentials = credentials,
+                                            credentialExpirationTimeSeconds = expiration,
                                             type = greenCard.greenCardEntity.type,
                                             originType = greenCard.origins.first().type
                                         ),
@@ -157,8 +154,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                                 dashboardViewModel.refresh(
                                     dashboardSync = DashboardSync.ForceSync
                                 )
-                            },
-                            errorState = dashboardViewModel.dashboardErrorState,
+                            }
                         )
                     )
                 }
