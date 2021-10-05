@@ -141,7 +141,11 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
         when (qrCodesResult) {
             is QrCodesResult.SingleQrCode -> {
                 qrCodePagerAdapter.addData(listOf(qrCodesResult.qrCodeData))
-                Handler(Looper.getMainLooper()).post { setBottomScrollLocked(true) }
+                Handler(Looper.getMainLooper()).post {
+                    // Scroll bottom part to bottom to have animation fully in view
+                    binding.bottomScroll.isSmoothScrollingEnabled = false
+                    setBottomScrollLocked(true)
+                }
             }
             is QrCodesResult.MultipleQrCodes -> {
                 qrCodePagerAdapter.addData(qrCodesResult.europeanVaccinationQrCodeDataList)
