@@ -16,7 +16,7 @@ import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAccessibilityFocus
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class QrCodePagerAdapter: RecyclerView.Adapter<QrCodeViewHolder>() {
+class QrCodePagerAdapter : RecyclerView.Adapter<QrCodeViewHolder>() {
     val qrCodeDataList: MutableList<QrCodeData> = mutableListOf()
 
     fun addData(data: List<QrCodeData>) {
@@ -49,6 +49,10 @@ class QrCodeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val binding = ViewQrCodeBinding.bind(itemView)
         binding.image.setImageBitmap(qrCodeData.bitmap)
         binding.image.setAccessibilityFocus()
+        binding.overlayButton.setOnClickListener {
+            binding.overlay.visibility = View.GONE
+        }
+        binding.overlay.visibility =
+            if ((qrCodeData as? QrCodeData.European.Vaccination)?.isHidden == true) View.VISIBLE else View.GONE
     }
 }
-
