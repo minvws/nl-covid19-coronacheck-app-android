@@ -60,6 +60,10 @@ fun fakeDashboardViewModel() =
         override fun removeGreenCard(greenCard: GreenCard) {
 
         }
+
+        override fun dismissGreenCardsSyncedItem() {
+
+        }
     }
 
 fun fakeRemoveExpiredEventsUseCase() = object: RemoveExpiredEventsUseCase {
@@ -307,7 +311,8 @@ fun fakeTestResultAttributesUseCase(
 fun fakePersistenceManager(
     secretKeyJson: String? = "",
     credentials: String? = "",
-    hasSeenCameraRationale: Boolean? = false
+    hasSeenCameraRationale: Boolean? = false,
+    hasDismissedUnsecureDeviceDialog: Boolean = true
 ): PersistenceManager {
     return object : PersistenceManager {
         override fun saveSecretKeyJson(json: String) {
@@ -368,6 +373,14 @@ fun fakePersistenceManager(
 
         override fun setHasDismissedUnsecureDeviceDialog(value: Boolean) {
             
+        }
+
+        override fun hasDismissedSyncedGreenCardsItem(): Boolean {
+            return hasDismissedUnsecureDeviceDialog
+        }
+
+        override fun setHasDismissedSyncedGreenCardsItem(dismissed: Boolean) {
+
         }
     }
 }

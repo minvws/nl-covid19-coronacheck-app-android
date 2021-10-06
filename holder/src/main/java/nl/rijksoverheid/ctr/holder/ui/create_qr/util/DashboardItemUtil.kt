@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
+import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
@@ -22,13 +23,15 @@ interface DashboardItemUtil {
     fun combineEuVaccinationItems(items: List<DashboardItem>): List<DashboardItem>
 
     fun shouldAddSyncGreenCardsItem(allGreenCards: List<GreenCard>): Boolean
+    fun shouldAddGreenCardsSyncedItem(allGreenCards: List<GreenCard>): Boolean
 }
 
 class DashboardItemUtilImpl(
     private val readEuropeanCredentialUtil: ReadEuropeanCredentialUtil,
     private val mobileCoreWrapper: MobileCoreWrapper,
     private val clockDeviationUseCase: ClockDeviationUseCase,
-    private val greenCardUtil: GreenCardUtil
+    private val greenCardUtil: GreenCardUtil,
+    private val persistenceManager: PersistenceManager
 ) : DashboardItemUtil {
 
     override fun shouldShowHeaderItem(allGreenCards: List<GreenCard>) =
@@ -87,5 +90,14 @@ class DashboardItemUtilImpl(
         } else {
             false
         }
+    }
+
+    override fun shouldAddGreenCardsSyncedItem(allGreenCards: List<GreenCard>): Boolean {
+        val euVaccinationGreenCards = allGreenCards.filter { it.greenCardEntity.type is GreenCardType.Eu }.filter { it.origins.any { origin -> origin.type is OriginType.Vaccination } }
+
+        // Only show banner if;
+        // - there are more than one european vaccinations
+        // - the banner has not been dismissed
+        return (euVaccinationGreenCards.size > 1 && !persistenceManager.hasDismissedSyncedGreenCardsItem())
     }
 }

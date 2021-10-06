@@ -26,6 +26,6 @@ val greenCardUseCasesModule = module {
         CreateEuGreenCardUseCaseImpl(get(), get())
     }
     factory<GetDashboardItemsUseCase> {
-        GetDashboardItemsUseCaseImpl(get(), get(), get(), get())
+        GetDashboardItemsUseCaseImpl(get(), get(), get(), get(), get())
     }
 }

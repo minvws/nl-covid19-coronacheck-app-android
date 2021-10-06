@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
@@ -22,6 +23,7 @@ class GetDashboardItemsUseCaseImpl(
     private val credentialUtil: CredentialUtil,
     private val originUtil: OriginUtil,
     private val dashboardItemUtil: DashboardItemUtil,
+    private val persistenceManager: PersistenceManager
 ) : GetDashboardItemsUseCase {
     override suspend fun getItems(
         allGreenCards: List<GreenCard>,
@@ -109,7 +111,14 @@ class GetDashboardItemsUseCaseImpl(
         }
 
         if (dashboardItemUtil.shouldAddSyncGreenCardsItem(allGreenCards)) {
+            // Enable the ability to show GreenCardsSyncedItem (after successful sync)
+            persistenceManager.setHasDismissedSyncedGreenCardsItem(false)
+
             dashboardItems.add(DashboardItem.SyncGreenCardsItem)
+        }
+
+        if (dashboardItemUtil.shouldAddGreenCardsSyncedItem(allGreenCards)) {
+            dashboardItems.add(DashboardItem.GreenCardsSyncedItem)
         }
 
         dashboardItems.addAll(

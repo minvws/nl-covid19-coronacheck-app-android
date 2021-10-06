@@ -26,6 +26,8 @@ interface PersistenceManager {
     fun setJune28FixApplied(applied: Boolean)
     fun hasDismissedUnsecureDeviceDialog(): Boolean
     fun setHasDismissedUnsecureDeviceDialog(value : Boolean)
+    fun hasDismissedSyncedGreenCardsItem(): Boolean
+    fun setHasDismissedSyncedGreenCardsItem(dismissed: Boolean)
 }
 
 class SharedPreferencesPersistenceManager(
@@ -41,6 +43,7 @@ class SharedPreferencesPersistenceManager(
         const val FIX28JUNE_APPLIED = "FIX_28_JUNE_APPLIED"
         const val SELECTED_DASHBOARD_TAB = "SELECTED_DASHBOARD_TAB"
         const val HAS_SEEN_SECURE_DEVICE_DIALOG = "HAS_SEEN_SECURE_DEVICE_DIALOG"
+        const val HAS_DIMISSED_SYNCED_GREEN_CARDS_ITEM = "HAS_DIMISSED_SYNCED_GREEN_CARDS_ITEM"
     }
 
     override fun saveSecretKeyJson(json: String) {
@@ -126,6 +129,18 @@ class SharedPreferencesPersistenceManager(
     override fun setHasDismissedUnsecureDeviceDialog(value : Boolean) {
         val result =
             sharedPreferences.edit().putBoolean(HAS_SEEN_SECURE_DEVICE_DIALOG, value).commit()
+        if (!result) {
+            throw IllegalStateException("Failed to set secure device dialog has been seen in shared preference")
+        }
+    }
+
+    override fun hasDismissedSyncedGreenCardsItem(): Boolean {
+        return sharedPreferences.getBoolean(HAS_DIMISSED_SYNCED_GREEN_CARDS_ITEM, true)
+    }
+
+    override fun setHasDismissedSyncedGreenCardsItem(dismissed: Boolean) {
+        val result =
+            sharedPreferences.edit().putBoolean(HAS_DIMISSED_SYNCED_GREEN_CARDS_ITEM, dismissed).commit()
         if (!result) {
             throw IllegalStateException("Failed to set secure device dialog has been seen in shared preference")
         }

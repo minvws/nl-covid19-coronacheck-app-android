@@ -9,6 +9,7 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
@@ -31,6 +32,7 @@ abstract class DashboardViewModel : ViewModel() {
 
     abstract fun refresh(dashboardSync: DashboardSync = DashboardSync.CheckSync)
     abstract fun removeGreenCard(greenCard: GreenCard)
+    abstract fun dismissGreenCardsSyncedItem()
 
     companion object {
         val RETRY_FAILED_REQUEST_AFTER_SECONDS = if (BuildConfig.FLAVOR == "acc") TimeUnit.SECONDS.toSeconds(10) else TimeUnit.MINUTES.toSeconds(10)
@@ -42,6 +44,7 @@ class DashboardViewModelImpl(
     private val getDashboardItemsUseCase: GetDashboardItemsUseCase,
     private val greenCardRefreshUtil: GreenCardRefreshUtil,
     private val holderDatabaseSyncer: HolderDatabaseSyncer,
+    private val persistenceManager: PersistenceManager
 ): DashboardViewModel() {
 
     private val mutex = Mutex()
@@ -109,6 +112,10 @@ class DashboardViewModelImpl(
         viewModelScope.launch {
             holderDatabase.greenCardDao().delete(greenCard.greenCardEntity)
         }
+    }
+
+    override fun dismissGreenCardsSyncedItem() {
+        persistenceManager.setHasDismissedSyncedGreenCardsItem(true)
     }
 
     private suspend fun refreshDashboardTabItems(

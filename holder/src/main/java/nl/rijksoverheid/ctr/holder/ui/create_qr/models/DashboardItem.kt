@@ -14,6 +14,7 @@ sealed class DashboardItem {
     data class PlaceholderCardItem(val greenCardType: GreenCardType) : DashboardItem()
     object ClockDeviationItem : DashboardItem()
     object SyncGreenCardsItem : DashboardItem()
+    object GreenCardsSyncedItem: DashboardItem()
 
     data class CardsItem(val cards: List<CardItem>) : DashboardItem() {
 
