@@ -1,7 +1,8 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview.models
 
 import io.mockk.mockk
-import org.junit.Assert.*
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class QrCodeDataTest {
@@ -12,19 +13,22 @@ class QrCodeDataTest {
             highestDose = "1",
             ofTotalDoses = "2",
             bitmap = mockk(),
-            readEuropeanCredential = mockk()
+            readEuropeanCredential = mockk(),
+            isHidden = false
         )
         val vaccination2 = QrCodeData.European.Vaccination(
             highestDose = "2",
             ofTotalDoses = "2",
             bitmap = mockk(),
-            readEuropeanCredential = mockk()
+            readEuropeanCredential = mockk(),
+            isHidden = false
         )
         val vaccination3 = QrCodeData.European.Vaccination(
             highestDose = "3",
             ofTotalDoses = "2",
             bitmap = mockk(),
-            readEuropeanCredential = mockk()
+            readEuropeanCredential = mockk(),
+            isHidden = false
         )
 
         assertFalse(vaccination1.isOverVaccinated)
