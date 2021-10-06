@@ -503,9 +503,9 @@ fun fakeGreenCardUtil(
     }
 }
 
-fun fakeCredentialUtil() = object: CredentialUtil {
+fun fakeCredentialUtil(activeCredential: CredentialEntity? = null) = object: CredentialUtil {
     override fun getActiveCredential(entities: List<CredentialEntity>): CredentialEntity? {
-        return null
+        return activeCredential
     }
 
     override fun isExpiring(credentialRenewalDays: Long, credential: CredentialEntity): Boolean {
@@ -552,8 +552,12 @@ fun fakeClockDevationUseCase(
     }
 }
 
-fun fakeReadEuropeanCredentialUtil() = object: ReadEuropeanCredentialUtil {
-    override fun getDosisForVaccination(readEuropeanCredential: JSONObject): String {
+fun fakeReadEuropeanCredentialUtil(dosis: String = "") = object: ReadEuropeanCredentialUtil {
+    override fun getDosis(readEuropeanCredential: JSONObject): String {
+        return dosis
+    }
+
+    override fun getDosisRangeStringForVaccination(readEuropeanCredential: JSONObject): String {
         return ""
     }
 }

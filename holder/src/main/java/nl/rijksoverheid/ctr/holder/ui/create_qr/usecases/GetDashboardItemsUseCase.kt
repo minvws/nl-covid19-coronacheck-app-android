@@ -108,6 +108,10 @@ class GetDashboardItemsUseCaseImpl(
             dashboardItems.add(DashboardItem.ClockDeviationItem)
         }
 
+        if (dashboardItemUtil.shouldAddRefreshInternationalProofsItem(allGreenCards)) {
+            dashboardItems.add(DashboardItem.RefreshInternationalGreenCardsItem)
+        }
+
         dashboardItems.addAll(
             getGreenCardItems(
                 greenCardType = GreenCardType.Eu,

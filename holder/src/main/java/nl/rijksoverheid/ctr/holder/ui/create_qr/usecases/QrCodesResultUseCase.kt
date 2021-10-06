@@ -113,7 +113,7 @@ class QrCodesResultUseCaseImpl(private val qrCodeUseCase: QrCodeUseCase,
                 QrCodeData.European.Vaccination(
                     bitmap = qrCodeBitmap,
                     readEuropeanCredential = readEuropeanCredential,
-                    dosis = readEuropeanCredentialUtil.getDosisForVaccination(readEuropeanCredential)
+                    dosis = readEuropeanCredentialUtil.getDosisRangeStringForVaccination(readEuropeanCredential)
                 )
             }
         )
