@@ -8,11 +8,7 @@
 
 package nl.rijksoverheid.ctr.appconfig.usecases
 
-import androidx.preference.PreferenceManager
-import androidx.test.core.app.ApplicationProvider
 import nl.rijksoverheid.ctr.appconfig.fakeCachedAppConfigUseCase
-import nl.rijksoverheid.ctr.appconfig.persistence.ClockDeviationPersistenceManagerImpl
-import nl.rijksoverheid.ctr.shared.SharedApplication
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -23,16 +19,12 @@ import java.time.Duration
 
 @RunWith(RobolectricTestRunner::class)
 class ClockDeviationUseCaseImplTest {
-    private val clockDeviationPersistenceManager = ClockDeviationPersistenceManagerImpl(
-        PreferenceManager.getDefaultSharedPreferences(ApplicationProvider.getApplicationContext<SharedApplication>())
-    )
     private val defaultClock = Clock.systemUTC()
-
 
     @Test
     fun `Clock deviation usecase returns false if clock is correct`() {
          val clockDeviationUseCase = ClockDeviationUseCaseImpl(
-            clockDeviationPersistenceManager, defaultClock, fakeCachedAppConfigUseCase()
+            defaultClock, fakeCachedAppConfigUseCase()
         )
         clockDeviationUseCase.store(
             serverResponseTimestamp = defaultClock.millis(),
@@ -46,7 +38,7 @@ class ClockDeviationUseCaseImplTest {
     fun `Clock deviation usecase returns true if clock is off by more than threshold in the future`() {
         val deviatedClock = Clock.offset(defaultClock, Duration.ofMinutes(10L))
         val clockDeviationUseCase = ClockDeviationUseCaseImpl(
-            clockDeviationPersistenceManager, deviatedClock, fakeCachedAppConfigUseCase()
+            deviatedClock, fakeCachedAppConfigUseCase()
         )
         clockDeviationUseCase.store(
             serverResponseTimestamp = defaultClock.millis(),
@@ -60,7 +52,7 @@ class ClockDeviationUseCaseImplTest {
     fun `Clock deviation usecase returns true if clock is off by more than threshold in the past`() {
         val deviatedClock = Clock.offset(defaultClock, Duration.ofMinutes(-10L))
         val clockDeviationUseCase = ClockDeviationUseCaseImpl(
-            clockDeviationPersistenceManager, deviatedClock, fakeCachedAppConfigUseCase()
+            deviatedClock, fakeCachedAppConfigUseCase()
         )
         clockDeviationUseCase.store(
             serverResponseTimestamp = defaultClock.millis(),
@@ -74,7 +66,7 @@ class ClockDeviationUseCaseImplTest {
     fun `Clock deviation usecase returns false if clock is off by less than threshold`() {
         val deviatedClock = Clock.offset(defaultClock, Duration.ofSeconds(10L))
         val clockDeviationUseCase = ClockDeviationUseCaseImpl(
-            clockDeviationPersistenceManager, deviatedClock, fakeCachedAppConfigUseCase()
+            deviatedClock, fakeCachedAppConfigUseCase()
         )
         clockDeviationUseCase.store(
             serverResponseTimestamp = defaultClock.millis(),
