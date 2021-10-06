@@ -30,7 +30,6 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.util.QrInfoScreenUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.ExternalReturnAppData
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeData
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodesResult
-import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -191,25 +190,27 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
                                         }
                                         is OriginType.Vaccination -> {
                                             infoScreenUtil.getForEuropeanVaccinationQr(
-                                                    qrCodeData.readEuropeanCredential
-                                                )
+                                                qrCodeData.readEuropeanCredential
+                                            )
                                         }
                                         is OriginType.Recovery -> {
                                             infoScreenUtil.getForEuropeanRecoveryQr(
-                                                    qrCodeData.readEuropeanCredential
-                                                )
+                                                qrCodeData.readEuropeanCredential
+                                            )
                                         }
                                     }
                                 }
                             }
 
-                            bottomSheetDialogUtil.present(childFragmentManager, BottomSheetData.TitleDescriptionWithFooter(
-                                title = infoScreen.title,
-                                applyOnDescription = {
-                                    it.setHtmlText(infoScreen.description)
-                                },
-                                footerText = infoScreen.footer
-                            ))
+                            bottomSheetDialogUtil.present(
+                                childFragmentManager, BottomSheetData.TitleDescriptionWithFooter(
+                                    title = infoScreen.title,
+                                    applyOnDescription = {
+                                        it.setHtmlText(infoScreen.description)
+                                    },
+                                    footerText = infoScreen.footer
+                                )
+                            )
                         }
                         true
                     }
@@ -258,7 +259,7 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
                             "${vaccination.highestDose}/${vaccination.ofTotalDoses}"
                         )
 
-                        showOverVaccinatedMessage(vaccination)
+                        showDoseInfo(vaccination)
                     }
                 }
             })
@@ -277,16 +278,21 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
         }
     }
 
-    private fun showOverVaccinatedMessage(vaccination: QrCodeData.European.Vaccination) {
+    private fun showDoseInfo(vaccination: QrCodeData.European.Vaccination) {
         TransitionManager.beginDelayedTransition(binding.bottomScroll)
-        if (vaccination.isOverVaccinated) {
-            binding.overVaccinatedText.text = getString(
-                R.string.qr_code_over_vaccinated,
-                "${vaccination.ofTotalDoses}/${vaccination.ofTotalDoses}"
-            )
-            setBottomScrollLocked(false)
-        } else {
-            setBottomScrollLocked(true)
+        when {
+            vaccination.isOverVaccinated -> {
+                binding.overVaccinatedText.text = getString(
+                    R.string.qr_code_over_vaccinated,
+                    "${vaccination.ofTotalDoses}/${vaccination.ofTotalDoses}"
+                )
+                setBottomScrollLocked(false)
+            }
+            vaccination.isHidden -> {
+                binding.overVaccinatedText.text = getString(R.string.qr_code_newer_dose_available)
+                setBottomScrollLocked(false)
+            }
+            else -> setBottomScrollLocked(true)
         }
     }
 
