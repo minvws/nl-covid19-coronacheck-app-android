@@ -21,7 +21,7 @@ interface DashboardItemUtil {
      */
     fun combineEuVaccinationItems(items: List<DashboardItem>): List<DashboardItem>
 
-    fun shouldAddRefreshInternationalProofsItem(allGreenCards: List<GreenCard>): Boolean
+    fun shouldAddSyncGreenCardsItem(allGreenCards: List<GreenCard>): Boolean
 }
 
 class DashboardItemUtilImpl(
@@ -66,7 +66,7 @@ class DashboardItemUtilImpl(
             }.flatten()
     }
 
-    override fun shouldAddRefreshInternationalProofsItem(allGreenCards: List<GreenCard>): Boolean {
+    override fun shouldAddSyncGreenCardsItem(allGreenCards: List<GreenCard>): Boolean {
         val euVaccinationGreenCards = allGreenCards.filter { it.greenCardEntity.type is GreenCardType.Eu }.filter { it.origins.any { origin -> origin.type is OriginType.Vaccination } }
 
         // We only show the banner to refresh the green cards if;

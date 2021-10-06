@@ -108,8 +108,8 @@ class GetDashboardItemsUseCaseImpl(
             dashboardItems.add(DashboardItem.ClockDeviationItem)
         }
 
-        if (dashboardItemUtil.shouldAddRefreshInternationalProofsItem(allGreenCards)) {
-            dashboardItems.add(DashboardItem.RefreshInternationalGreenCardsItem)
+        if (dashboardItemUtil.shouldAddSyncGreenCardsItem(allGreenCards)) {
+            dashboardItems.add(DashboardItem.SyncGreenCardsItem)
         }
 
         dashboardItems.addAll(

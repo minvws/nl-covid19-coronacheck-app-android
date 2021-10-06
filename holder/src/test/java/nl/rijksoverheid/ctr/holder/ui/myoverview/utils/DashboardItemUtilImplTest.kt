@@ -166,7 +166,7 @@ class DashboardItemUtilImplTest {
     }
 
     @Test
-    fun `shouldAddRefreshInternationalProofsItem returns true if only one eu vaccination with dosis 2`() {
+    fun `shouldAddSyncGreenCardsItem returns true if only one eu vaccination with dosis 2`() {
         val util = DashboardItemUtilImpl(
             clockDeviationUseCase = fakeClockDevationUseCase(),
             greenCardUtil = fakeGreenCardUtil(
@@ -178,7 +178,7 @@ class DashboardItemUtilImplTest {
             mobileCoreWrapper = fakeMobileCoreWrapper()
         )
 
-        val shouldAddRefreshInternationalProofsItem = util.shouldAddRefreshInternationalProofsItem(
+        val shouldAddSyncGreenCardsItem = util.shouldAddSyncGreenCardsItem(
             allGreenCards = listOf(
                 GreenCard(
                     greenCardEntity = GreenCardEntity(
@@ -208,7 +208,7 @@ class DashboardItemUtilImplTest {
             )
         )
 
-        assertEquals(true, shouldAddRefreshInternationalProofsItem)
+        assertEquals(true, shouldAddSyncGreenCardsItem)
     }
 
     @Test
@@ -224,7 +224,7 @@ class DashboardItemUtilImplTest {
             mobileCoreWrapper = fakeMobileCoreWrapper()
         )
 
-        val shouldAddRefreshInternationalProofsItem = util.shouldAddRefreshInternationalProofsItem(
+        val shouldAddSyncGreenCardsItem = util.shouldAddSyncGreenCardsItem(
             allGreenCards = listOf(
                 GreenCard(
                     greenCardEntity = GreenCardEntity(
@@ -254,7 +254,7 @@ class DashboardItemUtilImplTest {
             )
         )
 
-        assertEquals(false, shouldAddRefreshInternationalProofsItem)
+        assertEquals(false, shouldAddSyncGreenCardsItem)
     }
 
     @Test
@@ -296,11 +296,11 @@ class DashboardItemUtilImplTest {
             mobileCoreWrapper = fakeMobileCoreWrapper()
         )
 
-        val shouldAddRefreshInternationalProofsItem = util.shouldAddRefreshInternationalProofsItem(
+        val shouldAddSyncGreenCardsItem = util.shouldAddSyncGreenCardsItem(
             allGreenCards = listOf(greenCard, greenCard)
         )
 
-        assertEquals(false, shouldAddRefreshInternationalProofsItem)
+        assertEquals(false, shouldAddSyncGreenCardsItem)
     }
 
     private fun createCardItem(originType: OriginType) = CardItem(
