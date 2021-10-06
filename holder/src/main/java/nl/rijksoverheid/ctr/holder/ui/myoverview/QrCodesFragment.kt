@@ -233,8 +233,8 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
                     binding.qrVaccinationIndicators.updateSelected(position)
 
                     Handler(Looper.getMainLooper()).post {
-                        binding.previousQrButton.visibility = if (position == 0) View.VISIBLE else View.INVISIBLE
-                        binding.nextQrButton.visibility = if (position == europeanVaccinations.size - 1) View.VISIBLE else View.INVISIBLE
+                        binding.nextQrButton.visibility = if (position == 0) View.VISIBLE else View.INVISIBLE
+                        binding.previousQrButton.visibility = if (position == europeanVaccinations.size - 1) View.VISIBLE else View.INVISIBLE
                         binding.qrVaccinationDosis.text = getString(R.string.qr_code_dosis, europeanVaccinations[position].dosis)
                     }
                 }
