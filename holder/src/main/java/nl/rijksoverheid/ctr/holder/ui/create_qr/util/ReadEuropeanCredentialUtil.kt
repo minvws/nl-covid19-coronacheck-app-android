@@ -17,6 +17,10 @@ interface ReadEuropeanCredentialUtil {
 class ReadEuropeanCredentialUtilImpl(private val application: Application) :
     ReadEuropeanCredentialUtil {
 
+    private companion object {
+        const val VACCINATION_HIDDEN_AFTER_DAYS = 25L
+    }
+
     override fun getDosesForVaccination(readEuropeanCredential: JSONObject): String {
         val (highestDose, totalDoses) = getHighestAndTotalDose(readEuropeanCredential)
 
@@ -45,7 +49,7 @@ class ReadEuropeanCredentialUtilImpl(private val application: Application) :
             ?.atStartOfDay()
             ?.atOffset(ZoneOffset.UTC)
         return date?.let {
-            it.plusDays(25) < OffsetDateTime.now() && highestDose < totalDoses
+            it.plusDays(VACCINATION_HIDDEN_AFTER_DAYS) < OffsetDateTime.now() && highestDose < totalDoses
         } ?: false
     }
 
