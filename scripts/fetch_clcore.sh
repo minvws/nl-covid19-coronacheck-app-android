@@ -2,7 +2,6 @@ set -eux
 cd ../
 git clone git@github.com:minvws/nl-covid19-coronacheck-mobile-core-private.git tmp-mobilecore
 cd tmp-mobilecore
-git checkout proof-identifier-denylist
 git submodule init
 git submodule update
 go get -d golang.org/x/mobile/cmd/gobind@latest
