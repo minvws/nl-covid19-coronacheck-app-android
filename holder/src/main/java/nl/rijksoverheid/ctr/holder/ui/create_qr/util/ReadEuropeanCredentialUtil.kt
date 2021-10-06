@@ -4,6 +4,7 @@ import android.app.Application
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.shared.ext.getStringOrNull
 import org.json.JSONObject
+import java.time.Clock
 import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -14,8 +15,10 @@ interface ReadEuropeanCredentialUtil {
     fun shouldBeHiddenVaccination(readEuropeanCredential: JSONObject): Boolean
 }
 
-class ReadEuropeanCredentialUtilImpl(private val application: Application) :
-    ReadEuropeanCredentialUtil {
+class ReadEuropeanCredentialUtilImpl(
+    private val application: Application,
+    private val clock: Clock
+) : ReadEuropeanCredentialUtil {
 
     private companion object {
         const val VACCINATION_HIDDEN_AFTER_DAYS = 25L
@@ -49,7 +52,7 @@ class ReadEuropeanCredentialUtilImpl(private val application: Application) :
             ?.atStartOfDay()
             ?.atOffset(ZoneOffset.UTC)
         return date?.let {
-            it.plusDays(VACCINATION_HIDDEN_AFTER_DAYS) < OffsetDateTime.now() && highestDose < totalDoses
+            it.plusDays(VACCINATION_HIDDEN_AFTER_DAYS) < OffsetDateTime.now(clock) && highestDose < totalDoses
         } ?: false
     }
 
