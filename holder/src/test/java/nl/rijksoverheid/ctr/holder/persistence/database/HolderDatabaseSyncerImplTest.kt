@@ -65,7 +65,7 @@ class HolderDatabaseSyncerImplTest {
             syncWithRemote = true
         )
 
-        assertEquals(DatabaseSyncerResult.Success, databaseSyncerResult)
+        assertEquals(DatabaseSyncerResult.Success(), databaseSyncerResult)
     }
 
     @Test
@@ -89,11 +89,11 @@ class HolderDatabaseSyncerImplTest {
             syncWithRemote = true
         )
 
-        assertEquals(DatabaseSyncerResult.Success, databaseSyncerResult)
+        assertEquals(DatabaseSyncerResult.Success(), databaseSyncerResult)
     }
 
     @Test
-    fun `sync returns MissingOrigin if returned origins do not match expected origin`() = runBlocking {
+    fun `sync returns Success with missingOrigin if returned origins do not match expected origin`() = runBlocking {
         coEvery { eventGroupDao.getAll() } answers { events }
 
         val holderDatabaseSyncer = HolderDatabaseSyncerImpl(
@@ -124,7 +124,7 @@ class HolderDatabaseSyncerImplTest {
             syncWithRemote = true
         )
 
-        assertEquals(DatabaseSyncerResult.MissingOrigin, databaseSyncerResult)
+        assertEquals(DatabaseSyncerResult.Success(true), databaseSyncerResult)
     }
 
     @Test
