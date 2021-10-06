@@ -3,12 +3,15 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 import io.mockk.mockk
 import org.json.JSONObject
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 import java.time.Clock
 import java.time.Instant
 import java.time.ZoneId
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
+@RunWith(RobolectricTestRunner::class)
 class ReadEuropeanCredentialUtilImplTest {
 
     private val clock = Clock.fixed(Instant.ofEpochSecond(1609498800), ZoneId.of("UTC")) // 2021-01-01
@@ -16,13 +19,13 @@ class ReadEuropeanCredentialUtilImplTest {
 
     @Test
     fun `Vaccination should be hidden if it's older than 25 days and of lower dose than maximum`() {
-        val notHidden = getVaccinationJson("2020-12-01", dose = "1", ofTotalDoses = "2")
-        val hiddenBecauseOfDate = getVaccinationJson("2021-01-01", dose = "1", ofTotalDoses = "2")
-        val hiddenBecauseOfDose = getVaccinationJson("2020-12-01", dose = "2", ofTotalDoses = "2")
+        val hidden = getVaccinationJson("2020-12-06", dose = "1", ofTotalDoses = "2")
+        val notHiddenBecauseOfDate = getVaccinationJson("2021-01-01", dose = "1", ofTotalDoses = "2")
+        val notHiddenBecauseOfDose = getVaccinationJson("2020-12-01", dose = "2", ofTotalDoses = "2")
 
-        assertFalse(util.shouldBeHiddenVaccination(notHidden))
-        assertTrue(util.shouldBeHiddenVaccination(hiddenBecauseOfDate))
-        assertTrue(util.shouldBeHiddenVaccination(hiddenBecauseOfDose))
+        assertTrue(util.shouldBeHiddenVaccination(hidden))
+        assertFalse(util.shouldBeHiddenVaccination(notHiddenBecauseOfDate))
+        assertFalse(util.shouldBeHiddenVaccination(notHiddenBecauseOfDose))
     }
 
     private fun getVaccinationJson(date: String, dose: String = "2", ofTotalDoses: String = "2") =
@@ -47,9 +50,9 @@ class ReadEuropeanCredentialUtilImplTest {
                     "                \"vp\": \"1119349007\",\n" +
                     "                \"mp\": \"EU\\/1\\/20\\/1528\",\n" +
                     "                \"ma\": \"ORG-100030215\",\n" +
-                    "                \"dn\": \"{$dose}\",\n" +
-                    "                \"sd\": \"{$ofTotalDoses}\",\n" +
-                    "                \"dt\": \"{$date}\",\n" +
+                    "                \"dn\": \"$dose\",\n" +
+                    "                \"sd\": \"$ofTotalDoses\",\n" +
+                    "                \"dt\": \"$date\",\n" +
                     "                \"co\": \"NL\",\n" +
                     "                \"is\": \"Ministry of Health Welfare and Sport\",\n" +
                     "                \"ci\": \"URN:UCI:01:NL:IZES3LGRDVDPVIHYKPOE42#\\/\"\n" +

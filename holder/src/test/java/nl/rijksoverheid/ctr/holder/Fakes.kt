@@ -560,6 +560,10 @@ fun fakeReadEuropeanCredentialUtil() = object: ReadEuropeanCredentialUtil {
     override fun getHighestAndTotalDose(readEuropeanCredential: JSONObject): Pair<String, String> {
         return "1" to "1"
     }
+
+    override fun shouldBeHiddenVaccination(readEuropeanCredential: JSONObject): Boolean {
+        return false
+    }
 }
 
 fun fakeQrCodeUsecase() = object: QrCodeUseCase {
