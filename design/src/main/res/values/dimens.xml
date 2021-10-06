@@ -3,4 +3,5 @@
     <dimen name="bullet_point_span_gap_width">16dp</dimen>
     <dimen name="scroll_view_button_elevation">8dp</dimen>
     <dimen name="view_pager_indicator_bubble_spacing">6dp</dimen>
+    <dimen name="toolbar_elevation">4dp</dimen>
 </resources>
