@@ -70,7 +70,7 @@ class HolderDatabaseSyncerImpl(
                             if (expectedOriginType != null && !remoteGreenCards.getAllOrigins()
                                     .contains(expectedOriginType)
                             ) {
-                                return@withContext DatabaseSyncerResult.MissingOrigin
+                                return@withContext DatabaseSyncerResult.Success(true)
                             }
 
                             // Insert green cards in database
@@ -80,7 +80,7 @@ class HolderDatabaseSyncerImpl(
 
                             when (result) {
                                 is SyncRemoteGreenCardsResult.Success -> {
-                                    return@withContext DatabaseSyncerResult.Success
+                                    return@withContext DatabaseSyncerResult.Success(false)
                                 }
                                 is SyncRemoteGreenCardsResult.Failed -> {
                                     return@withContext DatabaseSyncerResult.Failed.Error(result.errorResult)
@@ -118,7 +118,7 @@ class HolderDatabaseSyncerImpl(
                         }
                     }
                 } else {
-                    previousSyncResult ?: DatabaseSyncerResult.Success
+                    previousSyncResult ?: DatabaseSyncerResult.Success(false)
                 }
             }
         }
@@ -126,8 +126,7 @@ class HolderDatabaseSyncerImpl(
 }
 
 sealed class DatabaseSyncerResult {
-    object Success : DatabaseSyncerResult()
-    object MissingOrigin : DatabaseSyncerResult()
+    data class Success(val missingOrigin: Boolean = false) : DatabaseSyncerResult()
 
     sealed class Failed(open val errorResult: ErrorResult, open val failedAt: OffsetDateTime): DatabaseSyncerResult() {
         data class NetworkError(override val errorResult: ErrorResult, val hasGreenCardsWithoutCredentials: Boolean): Failed(errorResult, OffsetDateTime.now())

@@ -203,7 +203,9 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                 DashboardItem.RefreshInternationalGreenCardsItem -> {
                     adapterItems.add(MyOverviewRefreshInternationalGreenCardsItem(
                         onButtonClick = {
-
+                            navigateSafety(
+                                MyOverviewFragmentDirections.actionSyncGreenCards()
+                            )
                         }
                     ))
                 }

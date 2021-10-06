@@ -12,7 +12,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
 interface GetDashboardItemsUseCase {
     suspend fun getItems(
         allGreenCards: List<GreenCard>,
-        databaseSyncerResult: DatabaseSyncerResult = DatabaseSyncerResult.Success,
+        databaseSyncerResult: DatabaseSyncerResult = DatabaseSyncerResult.Success(),
         isLoadingNewCredentials: Boolean,
     ): DashboardItems
 }
