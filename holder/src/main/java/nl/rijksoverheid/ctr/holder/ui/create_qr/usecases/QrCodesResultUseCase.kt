@@ -7,7 +7,6 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.util.ReadEuropeanCredentialUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeData
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodesResult
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
-import java.time.OffsetDateTime
 
 /**
  * Get all data needed to display QR codes based on data is send from the dashboard
@@ -122,7 +121,7 @@ class QrCodesResultUseCaseImpl(
                     ofTotalDoses = totalDoses,
                     bitmap = qrCodeBitmap,
                     readEuropeanCredential = readEuropeanCredential,
-                    isHidden = readEuropeanCredentialUtil.getDate(readEuropeanCredential)!!.plusDays(25) < OffsetDateTime.now() && highestDose < totalDoses
+                    isHidden = readEuropeanCredentialUtil.shouldBeHiddenVaccination(readEuropeanCredential)
                 )
             }
         )

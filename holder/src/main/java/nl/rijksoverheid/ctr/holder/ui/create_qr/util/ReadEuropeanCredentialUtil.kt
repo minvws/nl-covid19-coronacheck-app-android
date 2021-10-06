@@ -11,7 +11,7 @@ import java.time.ZoneOffset
 interface ReadEuropeanCredentialUtil {
     fun getDosesForVaccination(readEuropeanCredential: JSONObject): String
     fun getHighestAndTotalDose(readEuropeanCredential: JSONObject): Pair<String, String>
-    fun getDate(readEuropeanCredential: JSONObject): OffsetDateTime?
+    fun shouldBeHiddenVaccination(readEuropeanCredential: JSONObject): Boolean
 }
 
 class ReadEuropeanCredentialUtilImpl(private val application: Application) :
@@ -33,20 +33,31 @@ class ReadEuropeanCredentialUtilImpl(private val application: Application) :
     }
 
     override fun getHighestAndTotalDose(readEuropeanCredential: JSONObject): Pair<String, String> {
-        val dcc = readEuropeanCredential.optJSONObject("dcc")
-        val vaccination = dcc?.getJSONArray("v")?.optJSONObject(0)
+        val vaccination = getVaccination(readEuropeanCredential)
+        return getDosesFromVaccination(vaccination)
+    }
+
+
+    override fun shouldBeHiddenVaccination(readEuropeanCredential: JSONObject): Boolean {
+        val vaccination = getVaccination(readEuropeanCredential)
+        val (highestDose, totalDoses) = getDosesFromVaccination(vaccination)
+        val date = LocalDate.parse(vaccination?.getStringOrNull("dt"))
+            ?.atStartOfDay()
+            ?.atOffset(ZoneOffset.UTC)
+        return date?.let {
+            it.plusDays(25) < OffsetDateTime.now() && highestDose < totalDoses
+        } ?: false
+    }
+
+    private fun getDosesFromVaccination(vaccination: JSONObject?): Pair<String, String> {
         val highestDose = vaccination?.getStringOrNull("dn")
         val totalDoses = vaccination?.getStringOrNull("sd")
         return Pair(highestDose ?: "", totalDoses ?: "")
-
-        val date = LocalDate.parse(vaccination?.getStringOrNull("dt"))
-        val offsetDate = date?.atStartOfDay()?.atOffset(ZoneOffset.UTC)
     }
 
-    override fun getDate(readEuropeanCredential: JSONObject): OffsetDateTime? {
+    private fun getVaccination(readEuropeanCredential: JSONObject): JSONObject? {
         val dcc = readEuropeanCredential.optJSONObject("dcc")
         val vaccination = dcc?.getJSONArray("v")?.optJSONObject(0)
-        val date = LocalDate.parse(vaccination?.getStringOrNull("dt"))
-        return date?.atStartOfDay()?.atOffset(ZoneOffset.UTC)
+        return vaccination
     }
 }
