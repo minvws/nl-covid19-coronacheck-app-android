@@ -142,7 +142,7 @@ class SharedPreferencesPersistenceManager(
         val result =
             sharedPreferences.edit().putBoolean(HAS_DIMISSED_SYNCED_GREEN_CARDS_ITEM, dismissed).commit()
         if (!result) {
-            throw IllegalStateException("Failed to set secure device dialog has been seen in shared preference")
+            throw IllegalStateException("Failed to set has dismissed synced green cards item in shared preference")
         }
     }
 }
