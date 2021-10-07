@@ -4,6 +4,7 @@
     <!-- Component Styles -->
     <style name="Widget.App.NavigationView" parent="Widget.MaterialComponents.NavigationView">
         <item name="itemTextColor">@color/white</item>
+        <item name="insetForeground">@color/primary_blue</item>
     </style>
 
     <style name="Widget.App.TextInputLayout" parent="Widget.Design.TextInputLayout">
