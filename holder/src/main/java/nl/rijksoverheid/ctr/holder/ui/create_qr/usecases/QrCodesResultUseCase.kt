@@ -1,9 +1,11 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
+import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CredentialUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.MultipleQrCodesUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.ReadEuropeanCredentialUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeData
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodesResult
@@ -28,7 +30,8 @@ class QrCodesResultUseCaseImpl(
     private val greenCardUtil: GreenCardUtil,
     private val mobileCoreWrapper: MobileCoreWrapper,
     private val readEuropeanCredentialUtil: ReadEuropeanCredentialUtil,
-    private val credentialUtil: CredentialUtil
+    private val credentialUtil: CredentialUtil,
+    private val multipleQrCodesUtil: MultipleQrCodesUtil
 ) : QrCodesResultUseCase {
 
     override suspend fun getQrCodesResult(
@@ -104,29 +107,43 @@ class QrCodesResultUseCaseImpl(
         qrCodeWidth: Int,
         qrCodeHeight: Int
     ): QrCodesResult.MultipleQrCodes {
+        val europeanVaccinationQrCodeDataList = mapToEuropeanVaccinations(
+            credentials, qrCodeWidth, qrCodeHeight, shouldDisclose, greenCardType
+        )
         return QrCodesResult.MultipleQrCodes(
-            credentials.map { credential ->
-                val qrCodeBitmap = qrCodeUseCase.qrCode(
-                    credential = credential,
-                    qrCodeWidth = qrCodeWidth,
-                    qrCodeHeight = qrCodeHeight,
-                    shouldDisclose = shouldDisclose,
-                    errorCorrectionLevel = greenCardUtil.getErrorCorrectionLevel(greenCardType)
-                )
+            europeanVaccinationQrCodeDataList = europeanVaccinationQrCodeDataList,
+            mostRelevantVaccinationIndex = multipleQrCodesUtil.getMostRelevantQrCodeIndex(
+                europeanVaccinationQrCodeDataList
+            )
+        )
+    }
 
-                val readEuropeanCredential = mobileCoreWrapper.readEuropeanCredential(credential)
-                val dose = readEuropeanCredentialUtil.getDose(readEuropeanCredential) ?: ""
-                val totalDoses =
-                    readEuropeanCredentialUtil.getOfTotalDoses(readEuropeanCredential) ?: ""
+    private suspend fun mapToEuropeanVaccinations(
+        credentials: List<ByteArray>,
+        qrCodeWidth: Int,
+        qrCodeHeight: Int,
+        shouldDisclose: Boolean,
+        greenCardType: GreenCardType
+    ) = credentials.map { credential ->
+        val qrCodeBitmap = qrCodeUseCase.qrCode(
+            credential = credential,
+            qrCodeWidth = qrCodeWidth,
+            qrCodeHeight = qrCodeHeight,
+            shouldDisclose = shouldDisclose,
+            errorCorrectionLevel = greenCardUtil.getErrorCorrectionLevel(greenCardType)
+        )
 
-                QrCodeData.European.Vaccination(
-                    dose = dose,
-                    ofTotalDoses = totalDoses,
-                    bitmap = qrCodeBitmap,
-                    readEuropeanCredential = readEuropeanCredential,
-                    isHidden = credentialUtil.vaccinationShouldBeHidden(readEuropeanCredential)
-                )
-            }
+        val readEuropeanCredential = mobileCoreWrapper.readEuropeanCredential(credential)
+        val dose = readEuropeanCredentialUtil.getDose(readEuropeanCredential) ?: ""
+        val totalDoses =
+            readEuropeanCredentialUtil.getOfTotalDoses(readEuropeanCredential) ?: ""
+
+        QrCodeData.European.Vaccination(
+            dose = dose,
+            ofTotalDoses = totalDoses,
+            bitmap = qrCodeBitmap,
+            readEuropeanCredential = readEuropeanCredential,
+            isHidden = credentialUtil.vaccinationShouldBeHidden(readEuropeanCredential)
         )
     }
 

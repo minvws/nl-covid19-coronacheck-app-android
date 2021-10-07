@@ -153,7 +153,10 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
                 qrCodePagerAdapter.addData(qrCodesResult.europeanVaccinationQrCodeDataList)
                 if (binding.qrVaccinationIndicators.visibility == View.GONE) {
                     // Setup extra viewpager UI only once
-                    setupEuropeanVaccinationQr(qrCodesResult.europeanVaccinationQrCodeDataList)
+                    setupEuropeanVaccinationQr(
+                        qrCodesResult.europeanVaccinationQrCodeDataList,
+                        qrCodesResult.mostRelevantVaccinationIndex
+                    )
                 }
             }
         }
@@ -222,7 +225,10 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
     /**
      * Show extra UI when we are dealing with european vaccination qrs
      */
-    private fun setupEuropeanVaccinationQr(europeanVaccinations: List<QrCodeData.European.Vaccination>) {
+    private fun setupEuropeanVaccinationQr(
+        europeanVaccinations: List<QrCodeData.European.Vaccination>,
+        mostRelevantVaccinationIndex: Int
+    ) {
         // Make extra UI visible to show more information about the QR
         binding.vaccinationQrsContainer.visibility = View.VISIBLE
         binding.qrVaccinationDosis.visibility = View.VISIBLE
@@ -262,7 +268,7 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
             })
 
             // Default select the last item
-            binding.viewPager.setCurrentItem(europeanVaccinations.size - 1, false)
+            binding.viewPager.setCurrentItem(mostRelevantVaccinationIndex, false)
 
             // Make buttons click to scroll through viewpager
             binding.previousQrButton.setOnClickListener {
