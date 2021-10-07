@@ -44,8 +44,13 @@ class AppConfigUseCaseImpl(
                 publicKeys = configRepository.getPublicKeys()
             )
 
+            // the final server response timestamp is the timestamp of when the response firstly
+            // generated plus the amount of seconds passed since then (date and age headers respectively)
+            val serverDateMillis = config.headers.getDate("date")?.time ?: clock.millis()
+            val serverAgeSeconds = config.headers["Age"]?.toInt() ?: 0
+            val serverAgeMillis = serverAgeSeconds * 1000
             clockDeviationUseCase.store(
-                serverResponseTimestamp = config.headers.getDate("date")?.time ?: clock.millis(),
+                serverResponseTimestamp = serverDateMillis + serverAgeMillis,
                 localReceivedTimestamp = clock.millis()
             )
 

@@ -246,11 +246,8 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
 
 
                     Handler(Looper.getMainLooper()).post {
-                        binding.previousQrButton.visibility =
-                            if (position == 0) View.VISIBLE else View.INVISIBLE
-
-                        binding.nextQrButton.visibility =
-                            if (position == europeanVaccinations.size - 1) View.VISIBLE else View.INVISIBLE
+                        binding.nextQrButton.visibility = if (position == 0) View.VISIBLE else View.INVISIBLE
+                        binding.previousQrButton.visibility = if (position == europeanVaccinations.size - 1) View.VISIBLE else View.INVISIBLE
 
                         val vaccination = europeanVaccinations[position]
                         binding.qrVaccinationDosis.text = getString(
@@ -259,7 +256,7 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
                         )
 
                         showOverVaccinatedMessage(vaccination)
-                    }
+                                            }
                 }
             })
 

@@ -14,7 +14,6 @@ import nl.rijksoverheid.ctr.appconfig.persistence.*
 import nl.rijksoverheid.ctr.appconfig.repositories.ConfigRepository
 import nl.rijksoverheid.ctr.appconfig.repositories.ConfigRepositoryImpl
 import nl.rijksoverheid.ctr.appconfig.usecases.*
-import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
@@ -57,8 +56,7 @@ fun appConfigModule(cdnUrl: String, path: String, versionCode: Int) = module {
             androidContext().filesDir.path
         )
     }
-    single<ClockDeviationUseCase> { ClockDeviationUseCaseImpl(get(), get(), get()) }
-    factory<ClockDeviationPersistenceManager> { ClockDeviationPersistenceManagerImpl(get()) }
+    single<ClockDeviationUseCase> { ClockDeviationUseCaseImpl(get(), get()) }
     factory<RecommendedUpdatePersistenceManager> { RecommendedUpdatePersistenceManagerImpl(get()) }
 
     single {

@@ -9,14 +9,9 @@
 package nl.rijksoverheid.ctr.holder
 
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.View
 import androidx.activity.OnBackPressedCallback
-import androidx.annotation.IdRes
-import androidx.annotation.StringRes
 import androidx.appcompat.widget.Toolbar
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
@@ -60,7 +55,14 @@ class HolderMainFragment : BaseMainFragment(
             binding.drawerLayout
         )
 
-        binding.toolbar.elevation = 0f
+        val defaultToolbarElevation = resources.getDimension(R.dimen.toolbar_elevation)
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            binding.toolbar.elevation = if (destination.id == R.id.nav_my_overview_tabs) {
+                0f
+            } else {
+                defaultToolbarElevation
+            }
+        }
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
         binding.navView.setupWithNavController(navController)
 
