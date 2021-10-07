@@ -1,7 +1,6 @@
 package nl.rijksoverheid.ctr.holder.persistence
 
 import android.content.SharedPreferences
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -26,6 +25,8 @@ interface PersistenceManager {
     fun setJune28FixApplied(applied: Boolean)
     fun hasDismissedUnsecureDeviceDialog(): Boolean
     fun setHasDismissedUnsecureDeviceDialog(value : Boolean)
+    fun hasDismissedSyncedGreenCardsItem(): Boolean
+    fun setHasDismissedSyncedGreenCardsItem(dismissed: Boolean)
 }
 
 class SharedPreferencesPersistenceManager(
@@ -41,6 +42,7 @@ class SharedPreferencesPersistenceManager(
         const val FIX28JUNE_APPLIED = "FIX_28_JUNE_APPLIED"
         const val SELECTED_DASHBOARD_TAB = "SELECTED_DASHBOARD_TAB"
         const val HAS_SEEN_SECURE_DEVICE_DIALOG = "HAS_SEEN_SECURE_DEVICE_DIALOG"
+        const val HAS_DISMISSED_SYNCED_GREEN_CARDS_ITEM = "HAS_DISMISSED_SYNCED_GREEN_CARDS_ITEM"
     }
 
     override fun saveSecretKeyJson(json: String) {
@@ -128,6 +130,18 @@ class SharedPreferencesPersistenceManager(
             sharedPreferences.edit().putBoolean(HAS_SEEN_SECURE_DEVICE_DIALOG, value).commit()
         if (!result) {
             throw IllegalStateException("Failed to set secure device dialog has been seen in shared preference")
+        }
+    }
+
+    override fun hasDismissedSyncedGreenCardsItem(): Boolean {
+        return sharedPreferences.getBoolean(HAS_DISMISSED_SYNCED_GREEN_CARDS_ITEM, true)
+    }
+
+    override fun setHasDismissedSyncedGreenCardsItem(dismissed: Boolean) {
+        val result =
+            sharedPreferences.edit().putBoolean(HAS_DISMISSED_SYNCED_GREEN_CARDS_ITEM, dismissed).commit()
+        if (!result) {
+            throw IllegalStateException("Failed to set has dismissed synced green cards item in shared preference")
         }
     }
 }

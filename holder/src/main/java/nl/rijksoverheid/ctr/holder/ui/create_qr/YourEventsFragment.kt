@@ -149,20 +149,21 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             EventObserver { databaseSyncerResult ->
                 when (databaseSyncerResult) {
                     is DatabaseSyncerResult.Success -> {
-                        // We have a origin in the database that we expect, so success
-                        navigateSafety(
-                            YourEventsFragmentDirections.actionMyOverview()
-                        )
-                    }
-                    is DatabaseSyncerResult.MissingOrigin -> {
-                        navigateSafety(
-                            YourEventsFragmentDirections.actionCouldNotCreateQr(
-                                toolbarTitle = args.toolbarTitle,
-                                title = getString(R.string.rule_engine_no_origin_title),
-                                description = getString(R.string.rule_engine_no_test_origin_description, args.toolbarTitle.toLowerCase(Locale.getDefault())),
-                                buttonTitle = getString(R.string.back_to_overview)
+                        if (databaseSyncerResult.missingOrigin) {
+                            navigateSafety(
+                                YourEventsFragmentDirections.actionCouldNotCreateQr(
+                                    toolbarTitle = args.toolbarTitle,
+                                    title = getString(R.string.rule_engine_no_origin_title),
+                                    description = getString(R.string.rule_engine_no_test_origin_description, args.toolbarTitle.toLowerCase(Locale.getDefault())),
+                                    buttonTitle = getString(R.string.back_to_overview)
+                                )
                             )
-                        )
+                        } else {
+                            // We have a origin in the database that we expect, so success
+                            navigateSafety(
+                                YourEventsFragmentDirections.actionMyOverview()
+                            )
+                        }
                     }
                     is DatabaseSyncerResult.Failed -> {
                         presentError(

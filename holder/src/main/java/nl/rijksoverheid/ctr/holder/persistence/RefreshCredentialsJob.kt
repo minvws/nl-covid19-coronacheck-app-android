@@ -24,7 +24,7 @@ class RefreshCredentialsJob(
         val syncWithRemote = greenCardRefreshUtil.shouldRefresh()
         return if (syncWithRemote) {
             when (holderDatabaseSyncer.sync(null, true)) {
-                DatabaseSyncerResult.Success -> {
+                is DatabaseSyncerResult.Success -> {
                     Result.success()
                 }
                 else -> Result.retry()

@@ -29,7 +29,7 @@ class GetDashboardItemsUseCaseImplTest: AutoCloseKoinTest() {
     fun `getItems returns correct models when no green cards`() = runBlocking {
         val dashboardItems = usecase.getItems(
             allGreenCards = listOf(),
-            databaseSyncerResult = DatabaseSyncerResult.Success,
+            databaseSyncerResult = DatabaseSyncerResult.Success(),
             isLoadingNewCredentials = false
         )
 
@@ -67,7 +67,7 @@ class GetDashboardItemsUseCaseImplTest: AutoCloseKoinTest() {
 
         val dashboardItems = usecase.getItems(
             allGreenCards = listOf(domesticGreenCard),
-            databaseSyncerResult = DatabaseSyncerResult.Success,
+            databaseSyncerResult = DatabaseSyncerResult.Success(),
             isLoadingNewCredentials = false
         )
 
@@ -107,7 +107,7 @@ class GetDashboardItemsUseCaseImplTest: AutoCloseKoinTest() {
 
         val dashboardItems = usecase.getItems(
             allGreenCards = listOf(internationalGreenCard),
-            databaseSyncerResult = DatabaseSyncerResult.Success,
+            databaseSyncerResult = DatabaseSyncerResult.Success(),
             isLoadingNewCredentials = false
         )
 
@@ -168,7 +168,7 @@ class GetDashboardItemsUseCaseImplTest: AutoCloseKoinTest() {
 
         val dashboardItems = usecase.getItems(
             allGreenCards = listOf(domesticGreenCard, internationalGreenCard),
-            databaseSyncerResult = DatabaseSyncerResult.Success,
+            databaseSyncerResult = DatabaseSyncerResult.Success(),
             isLoadingNewCredentials = false
         )
 
@@ -231,7 +231,7 @@ class GetDashboardItemsUseCaseImplTest: AutoCloseKoinTest() {
 
         val dashboardItems = usecase.getItems(
             allGreenCards = listOf(domesticGreenCard, internationalGreenCard),
-            databaseSyncerResult = DatabaseSyncerResult.Success,
+            databaseSyncerResult = DatabaseSyncerResult.Success(),
             isLoadingNewCredentials = false
         )
 
@@ -273,7 +273,7 @@ class GetDashboardItemsUseCaseImplTest: AutoCloseKoinTest() {
 
         val dashboardItems = usecase.getItems(
             allGreenCards = listOf(domesticGreenCard),
-            databaseSyncerResult = DatabaseSyncerResult.Success,
+            databaseSyncerResult = DatabaseSyncerResult.Success(),
             isLoadingNewCredentials = false
         )
 
@@ -314,7 +314,7 @@ class GetDashboardItemsUseCaseImplTest: AutoCloseKoinTest() {
 
         val dashboardItems = usecase.getItems(
             allGreenCards = listOf(internationalGreenCard),
-            databaseSyncerResult = DatabaseSyncerResult.Success,
+            databaseSyncerResult = DatabaseSyncerResult.Success(),
             isLoadingNewCredentials = false
         )
 

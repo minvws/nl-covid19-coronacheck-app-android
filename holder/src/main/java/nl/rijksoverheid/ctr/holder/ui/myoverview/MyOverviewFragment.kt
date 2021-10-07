@@ -200,6 +200,34 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                         dashboardItem.show
                     )
                 }
+                DashboardItem.SyncGreenCardsItem -> {
+                    adapterItems.add(MyOverviewSyncGreenCardsItem(
+                        onButtonClick = {
+                            navigateSafety(
+                                MyOverviewFragmentDirections.actionSyncGreenCards()
+                            )
+                        }
+                    ))
+                }
+                DashboardItem.GreenCardsSyncedItem -> {
+                    adapterItems.add(MyOverviewGreenCardsSyncedItem(
+                        onButtonClick = {
+                            bottomSheetDialogUtil.present(
+                                childFragmentManager,
+                                BottomSheetData.TitleDescription(
+                                    title = getString(R.string.refreshed_eu_items_title),
+                                    applyOnDescription = {
+                                        it.setHtmlText(getString(R.string.refreshed_eu_items_description))
+                                    }
+                                )
+                            )
+                        },
+                        onCloseClick = {
+                            section.remove(it)
+                            dashboardViewModel.dismissGreenCardsSyncedItem()
+                        }
+                    ))
+                }
             }
         }
 

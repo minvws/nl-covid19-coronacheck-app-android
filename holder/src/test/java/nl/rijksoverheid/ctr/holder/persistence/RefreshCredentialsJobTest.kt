@@ -52,7 +52,7 @@ class RefreshCredentialsJobTest: AutoCloseKoinTest() {
     }
 
     private fun testWorkerFactory(
-        databaseSyncerResult: DatabaseSyncerResult = DatabaseSyncerResult.Success) = HolderWorkerFactory(
+        databaseSyncerResult: DatabaseSyncerResult = DatabaseSyncerResult.Success()) = HolderWorkerFactory(
         greenCardRefreshUtil = object: GreenCardRefreshUtil {
             override suspend fun shouldRefresh(): Boolean = true
             override suspend fun allCredentialsExpired(selectedType: GreenCardType): Boolean {
