@@ -186,7 +186,7 @@ class QrInfoScreenUtilImpl(
                 it.code == vaccination.getStringOrNull("ma")
             }?.name ?: vaccination.getStringOrNull("ma") ?: ""
 
-        val doses = readEuropeanCredentialUtil.getDosesForVaccination(readEuropeanCredential)
+        val doses = readEuropeanCredentialUtil.getDoseRangeStringForVaccination(readEuropeanCredential)
 
         val vaccinationDate = vaccination.getStringOrNull("dt")?.let { vaccinationDate ->
             try {
