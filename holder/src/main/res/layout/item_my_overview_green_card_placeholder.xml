@@ -23,6 +23,7 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button"
         style="?attr/borderlessButtonStyle"
+        android:textColor="@color/link"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="8dp"
