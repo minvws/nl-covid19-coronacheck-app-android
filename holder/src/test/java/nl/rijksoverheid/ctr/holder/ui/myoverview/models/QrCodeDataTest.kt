@@ -10,21 +10,21 @@ class QrCodeDataTest {
     @Test
     fun `European vaccination is over vaccinated when highest dose exceeds total dose`() {
         val vaccination1 = QrCodeData.European.Vaccination(
-            highestDose = "1",
+            dose = "1",
             ofTotalDoses = "2",
             bitmap = mockk(),
             readEuropeanCredential = mockk(),
             isHidden = false
         )
         val vaccination2 = QrCodeData.European.Vaccination(
-            highestDose = "2",
+            dose = "2",
             ofTotalDoses = "2",
             bitmap = mockk(),
             readEuropeanCredential = mockk(),
             isHidden = false
         )
         val vaccination3 = QrCodeData.European.Vaccination(
-            highestDose = "3",
+            dose = "3",
             ofTotalDoses = "2",
             bitmap = mockk(),
             readEuropeanCredential = mockk(),

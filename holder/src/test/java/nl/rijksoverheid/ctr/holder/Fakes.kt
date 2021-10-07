@@ -578,7 +578,7 @@ fun fakeReadEuropeanCredentialUtil(dosis: String = "") = object: ReadEuropeanCre
         return "1" to "1"
     }
 
-    override fun shouldBeHiddenVaccination(readEuropeanCredential: JSONObject): Boolean {
+    override fun vaccinationShouldBeHidden(readEuropeanCredential: JSONObject): Boolean {
         return false
     }
 }

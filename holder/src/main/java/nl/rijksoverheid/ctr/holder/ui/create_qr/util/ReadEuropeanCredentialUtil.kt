@@ -10,9 +10,9 @@ import java.time.OffsetDateTime
 import java.time.ZoneOffset
 
 interface ReadEuropeanCredentialUtil {
-    fun getHighestAndTotalDose(readEuropeanCredential: JSONObject): Pair<String, String>
-    fun shouldBeHiddenVaccination(readEuropeanCredential: JSONObject): Boolean
+    fun vaccinationShouldBeHidden(readEuropeanCredential: JSONObject): Boolean
     fun getDose(readEuropeanCredential: JSONObject): String?
+    fun getOfTotalDoses(readEuropeanCredential: JSONObject): String?
     fun getDoseRangeStringForVaccination(readEuropeanCredential: JSONObject): String
 }
 
@@ -30,43 +30,36 @@ class ReadEuropeanCredentialUtilImpl(
         return vaccination?.getStringOrNull("dn")
     }
 
+    override fun getOfTotalDoses(readEuropeanCredential: JSONObject): String? {
+        val vaccination = getVaccination(readEuropeanCredential)
+        return vaccination?.getStringOrNull("sd")
+    }
+
     override fun getDoseRangeStringForVaccination(readEuropeanCredential: JSONObject): String {
         val vaccination = getVaccination(readEuropeanCredential)
-        val (highestDose, totalDoses) = getDosesFromVaccination(vaccination)
+        val dose = vaccination?.getStringOrNull("dn") ?: ""
+        val totalDoses = vaccination?.getStringOrNull("sd") ?: ""
 
         val doses =
-            if (highestDose.isNotEmpty() && totalDoses.isNotEmpty()) {
+            if (dose.isNotEmpty() && totalDoses.isNotEmpty()) {
                 application.getString(
-                    R.string.your_vaccination_explanation_doses_answer,
-                    highestDose,
-                    totalDoses
+                    R.string.your_vaccination_explanation_doses_answer, dose, totalDoses
                 )
             } else ""
 
         return doses
     }
 
-    override fun getHighestAndTotalDose(readEuropeanCredential: JSONObject): Pair<String, String> {
+    override fun vaccinationShouldBeHidden(readEuropeanCredential: JSONObject): Boolean {
         val vaccination = getVaccination(readEuropeanCredential)
-        return getDosesFromVaccination(vaccination)
-    }
-
-
-    override fun shouldBeHiddenVaccination(readEuropeanCredential: JSONObject): Boolean {
-        val vaccination = getVaccination(readEuropeanCredential)
-        val (highestDose, totalDoses) = getDosesFromVaccination(vaccination)
+        val dose = vaccination?.getStringOrNull("dn") ?: ""
+        val totalDoses = vaccination?.getStringOrNull("sd") ?: ""
         val date = LocalDate.parse(vaccination?.getStringOrNull("dt"))
             ?.atStartOfDay()
             ?.atOffset(ZoneOffset.UTC)
         return date?.let {
-            it.plusDays(VACCINATION_HIDDEN_AFTER_DAYS) < OffsetDateTime.now(clock) && highestDose < totalDoses
+            it.plusDays(VACCINATION_HIDDEN_AFTER_DAYS) < OffsetDateTime.now(clock) && dose < totalDoses
         } ?: false
-    }
-
-    private fun getDosesFromVaccination(vaccination: JSONObject?): Pair<String, String> {
-        val highestDose = vaccination?.getStringOrNull("dn")
-        val totalDoses = vaccination?.getStringOrNull("sd")
-        return Pair(highestDose ?: "", totalDoses ?: "")
     }
 
     private fun getVaccination(readEuropeanCredential: JSONObject): JSONObject? {

@@ -23,9 +23,9 @@ class ReadEuropeanCredentialUtilImplTest {
         val notHiddenBecauseOfDate = getVaccinationJson("2021-01-01", dose = "1", ofTotalDoses = "2")
         val notHiddenBecauseOfDose = getVaccinationJson("2020-12-01", dose = "2", ofTotalDoses = "2")
 
-        assertTrue(util.shouldBeHiddenVaccination(hidden))
-        assertFalse(util.shouldBeHiddenVaccination(notHiddenBecauseOfDate))
-        assertFalse(util.shouldBeHiddenVaccination(notHiddenBecauseOfDose))
+        assertTrue(util.vaccinationShouldBeHidden(hidden))
+        assertFalse(util.vaccinationShouldBeHidden(notHiddenBecauseOfDate))
+        assertFalse(util.vaccinationShouldBeHidden(notHiddenBecauseOfDose))
     }
 
     private fun getVaccinationJson(date: String, dose: String = "2", ofTotalDoses: String = "2") =
