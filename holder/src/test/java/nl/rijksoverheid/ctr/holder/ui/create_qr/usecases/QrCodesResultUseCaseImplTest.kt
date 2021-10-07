@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.holder.*
@@ -18,7 +19,10 @@ class QrCodesResultUseCaseImplTest {
         greenCardUtil = fakeGreenCardUtil(),
         mobileCoreWrapper = fakeMobileCoreWrapper(),
         readEuropeanCredentialUtil = fakeReadEuropeanCredentialUtil(),
-        credentialUtil = mockk(relaxed = true)
+        credentialUtil = mockk(relaxed = true),
+        multipleQrCodesUtil = mockk {
+            every { getMostRelevantQrCodeIndex(any()) } returns 0
+        }
     )
 
     @Test
