@@ -10,20 +10,14 @@ import java.time.OffsetDateTime
 import java.time.ZoneOffset
 
 interface ReadEuropeanCredentialUtil {
-    fun vaccinationShouldBeHidden(readEuropeanCredential: JSONObject): Boolean
     fun getDose(readEuropeanCredential: JSONObject): String?
     fun getOfTotalDoses(readEuropeanCredential: JSONObject): String?
     fun getDoseRangeStringForVaccination(readEuropeanCredential: JSONObject): String
 }
 
 class ReadEuropeanCredentialUtilImpl(
-    private val application: Application,
-    private val clock: Clock
+    private val application: Application
 ) : ReadEuropeanCredentialUtil {
-
-    private companion object {
-        const val VACCINATION_HIDDEN_AFTER_DAYS = 25L
-    }
 
     override fun getDose(readEuropeanCredential: JSONObject): String? {
         val vaccination = getVaccination(readEuropeanCredential)
@@ -48,18 +42,6 @@ class ReadEuropeanCredentialUtilImpl(
             } else ""
 
         return doses
-    }
-
-    override fun vaccinationShouldBeHidden(readEuropeanCredential: JSONObject): Boolean {
-        val vaccination = getVaccination(readEuropeanCredential)
-        val dose = vaccination?.getStringOrNull("dn") ?: ""
-        val totalDoses = vaccination?.getStringOrNull("sd") ?: ""
-        val date = LocalDate.parse(vaccination?.getStringOrNull("dt"))
-            ?.atStartOfDay()
-            ?.atOffset(ZoneOffset.UTC)
-        return date?.let {
-            it.plusDays(VACCINATION_HIDDEN_AFTER_DAYS) < OffsetDateTime.now(clock) && dose < totalDoses
-        } ?: false
     }
 
     private fun getVaccination(readEuropeanCredential: JSONObject): JSONObject? {

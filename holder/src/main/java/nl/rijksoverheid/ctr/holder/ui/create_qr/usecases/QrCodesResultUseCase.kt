@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CredentialUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.ReadEuropeanCredentialUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeData
@@ -26,7 +27,8 @@ class QrCodesResultUseCaseImpl(
     private val qrCodeUseCase: QrCodeUseCase,
     private val greenCardUtil: GreenCardUtil,
     private val mobileCoreWrapper: MobileCoreWrapper,
-    private val readEuropeanCredentialUtil: ReadEuropeanCredentialUtil
+    private val readEuropeanCredentialUtil: ReadEuropeanCredentialUtil,
+    private val credentialUtil: CredentialUtil
 ) : QrCodesResultUseCase {
 
     override suspend fun getQrCodesResult(
@@ -122,7 +124,7 @@ class QrCodesResultUseCaseImpl(
                     ofTotalDoses = totalDoses,
                     bitmap = qrCodeBitmap,
                     readEuropeanCredential = readEuropeanCredential,
-                    isHidden = readEuropeanCredentialUtil.vaccinationShouldBeHidden(readEuropeanCredential)
+                    isHidden = credentialUtil.vaccinationShouldBeHidden(readEuropeanCredential)
                 )
             }
         )
