@@ -41,6 +41,7 @@ data class HolderConfig(
     @Json(name = "androidRecommendedVersion") val holderRecommendedVersion: Int,
     @Json(name = "upgradeRecommendationInterval") val upgradeRecommendationIntervalHours: Int,
     @Json(name = "luhnCheckEnabled") val luhnCheckEnabled: Boolean,
+    @Json(name = "internationalQRRelevancyDays") val internationalQRRelevancyDays: Int,
 ) : AppConfig(
     holderAppDeactivated,
     holderInformationURL,
@@ -81,6 +82,7 @@ data class HolderConfig(
             holderRecommendedVersion: Int = 1025,
             upgradeRecommendationIntervalHours: Int = 24,
             luhnCheckEnabled: Boolean = false,
+            internationalQRRelevancyDays: Int = 28
         ) = HolderConfig(
             holderMinimumVersion = holderMinimumVersion,
             holderAppDeactivated = holderAppDeactivated,
@@ -110,6 +112,7 @@ data class HolderConfig(
             holderRecommendedVersion = holderRecommendedVersion,
             upgradeRecommendationIntervalHours = upgradeRecommendationIntervalHours,
             luhnCheckEnabled = luhnCheckEnabled,
+            internationalQRRelevancyDays = internationalQRRelevancyDays
         )
     }
 }

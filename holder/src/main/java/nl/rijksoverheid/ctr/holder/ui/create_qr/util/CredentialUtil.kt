@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
+import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.CredentialEntity
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.ext.getStringOrNull
@@ -24,12 +25,9 @@ interface CredentialUtil {
 
 class CredentialUtilImpl(
     private val clock: Clock,
-    private val mobileCoreWrapper: MobileCoreWrapper
+    private val mobileCoreWrapper: MobileCoreWrapper,
+    private val appConfigUseCase: CachedAppConfigUseCase
 ) : CredentialUtil {
-
-    private companion object {
-        const val VACCINATION_HIDDEN_AFTER_DAYS = 25L
-    }
 
     override fun getActiveCredential(entities: List<CredentialEntity>): CredentialEntity? {
 
@@ -96,8 +94,10 @@ class CredentialUtilImpl(
         val date = LocalDate.parse(vaccination?.getStringOrNull("dt"))
             ?.atStartOfDay()
             ?.atOffset(ZoneOffset.UTC)
+        val relevancyDays =
+            appConfigUseCase.getCachedAppConfig().internationalQRRelevancyDays.toLong()
         return date?.let {
-            it.plusDays(VACCINATION_HIDDEN_AFTER_DAYS) < OffsetDateTime.now(clock)
+            it.plusDays(relevancyDays) < OffsetDateTime.now(clock)
                     && dose < totalDoses
         } ?: false
     }
