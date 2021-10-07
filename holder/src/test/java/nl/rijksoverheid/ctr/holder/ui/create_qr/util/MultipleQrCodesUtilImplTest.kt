@@ -13,7 +13,7 @@ class MultipleQrCodesUtilImplTest {
         val vaccinations = listOf(
             createVaccination(dose = "1", totalDoses = "1", isHidden = false),
             createVaccination(dose = "3", totalDoses = "3", isHidden = false),
-            createVaccination(dose = "2", totalDoses = "2", isHidden = false),
+            createVaccination(dose = "2", totalDoses = "2", isHidden = false), // most relevant
             createVaccination(dose = "3", totalDoses = "2", isHidden = true)
         )
 
@@ -25,7 +25,7 @@ class MultipleQrCodesUtilImplTest {
         val util = MultipleQrCodesUtilImpl()
         val vaccinations = listOf(
             createVaccination(dose = "1", totalDoses = "1", isHidden = false),
-            createVaccination(dose = "3", totalDoses = "3", isHidden = false),
+            createVaccination(dose = "3", totalDoses = "3", isHidden = false), // most relevant
             createVaccination(dose = "2", totalDoses = "2", isHidden = true),
             createVaccination(dose = "4", totalDoses = "5", isHidden = false)
         )
@@ -39,7 +39,7 @@ class MultipleQrCodesUtilImplTest {
         val vaccinations = listOf(
             createVaccination(dose = "1", totalDoses = "5", isHidden = false),
             createVaccination(dose = "2", totalDoses = "2", isHidden = true),
-            createVaccination(dose = "5", totalDoses = "2", isHidden = false),
+            createVaccination(dose = "5", totalDoses = "2", isHidden = false), // most relevant
             createVaccination(dose = "4", totalDoses = "5", isHidden = false)
         )
 
