@@ -4,10 +4,6 @@ import android.app.Application
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.shared.ext.getStringOrNull
 import org.json.JSONObject
-import java.time.Clock
-import java.time.LocalDate
-import java.time.OffsetDateTime
-import java.time.ZoneOffset
 
 interface ReadEuropeanCredentialUtil {
     fun getDose(readEuropeanCredential: JSONObject): String?
@@ -15,9 +11,8 @@ interface ReadEuropeanCredentialUtil {
     fun getDoseRangeStringForVaccination(readEuropeanCredential: JSONObject): String
 }
 
-class ReadEuropeanCredentialUtilImpl(
-    private val application: Application
-) : ReadEuropeanCredentialUtil {
+class ReadEuropeanCredentialUtilImpl(private val application: Application) :
+    ReadEuropeanCredentialUtil {
 
     override fun getDose(readEuropeanCredential: JSONObject): String? {
         val vaccination = getVaccination(readEuropeanCredential)
