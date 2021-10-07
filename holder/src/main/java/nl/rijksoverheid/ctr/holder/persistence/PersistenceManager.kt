@@ -1,7 +1,6 @@
 package nl.rijksoverheid.ctr.holder.persistence
 
 import android.content.SharedPreferences
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -43,7 +42,7 @@ class SharedPreferencesPersistenceManager(
         const val FIX28JUNE_APPLIED = "FIX_28_JUNE_APPLIED"
         const val SELECTED_DASHBOARD_TAB = "SELECTED_DASHBOARD_TAB"
         const val HAS_SEEN_SECURE_DEVICE_DIALOG = "HAS_SEEN_SECURE_DEVICE_DIALOG"
-        const val HAS_DIMISSED_SYNCED_GREEN_CARDS_ITEM = "HAS_DIMISSED_SYNCED_GREEN_CARDS_ITEM"
+        const val HAS_DISMISSED_SYNCED_GREEN_CARDS_ITEM = "HAS_DISMISSED_SYNCED_GREEN_CARDS_ITEM"
     }
 
     override fun saveSecretKeyJson(json: String) {
@@ -135,12 +134,12 @@ class SharedPreferencesPersistenceManager(
     }
 
     override fun hasDismissedSyncedGreenCardsItem(): Boolean {
-        return sharedPreferences.getBoolean(HAS_DIMISSED_SYNCED_GREEN_CARDS_ITEM, true)
+        return sharedPreferences.getBoolean(HAS_DISMISSED_SYNCED_GREEN_CARDS_ITEM, true)
     }
 
     override fun setHasDismissedSyncedGreenCardsItem(dismissed: Boolean) {
         val result =
-            sharedPreferences.edit().putBoolean(HAS_DIMISSED_SYNCED_GREEN_CARDS_ITEM, dismissed).commit()
+            sharedPreferences.edit().putBoolean(HAS_DISMISSED_SYNCED_GREEN_CARDS_ITEM, dismissed).commit()
         if (!result) {
             throw IllegalStateException("Failed to set has dismissed synced green cards item in shared preference")
         }

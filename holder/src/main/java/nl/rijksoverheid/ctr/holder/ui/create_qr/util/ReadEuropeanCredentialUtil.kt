@@ -6,18 +6,18 @@ import nl.rijksoverheid.ctr.shared.ext.getStringOrNull
 import org.json.JSONObject
 
 interface ReadEuropeanCredentialUtil {
-    fun getDosis(readEuropeanCredential: JSONObject): String?
-    fun getDosisRangeStringForVaccination(readEuropeanCredential: JSONObject): String
+    fun getDose(readEuropeanCredential: JSONObject): String?
+    fun getDoseRangeStringForVaccination(readEuropeanCredential: JSONObject): String
 }
 
 class ReadEuropeanCredentialUtilImpl(private val application: Application): ReadEuropeanCredentialUtil {
-    override fun getDosis(readEuropeanCredential: JSONObject): String? {
+    override fun getDose(readEuropeanCredential: JSONObject): String? {
         val dcc = readEuropeanCredential.optJSONObject("dcc")
         val vaccination = dcc.getJSONArray("v").optJSONObject(0)
         return vaccination.getStringOrNull("dn")
     }
 
-    override fun getDosisRangeStringForVaccination(readEuropeanCredential: JSONObject): String {
+    override fun getDoseRangeStringForVaccination(readEuropeanCredential: JSONObject): String {
         val dcc = readEuropeanCredential.optJSONObject("dcc")
         val vaccination = dcc.getJSONArray("v").optJSONObject(0)
 

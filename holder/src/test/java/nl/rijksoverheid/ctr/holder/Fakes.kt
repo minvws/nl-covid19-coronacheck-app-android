@@ -566,11 +566,11 @@ fun fakeClockDevationUseCase(
 }
 
 fun fakeReadEuropeanCredentialUtil(dosis: String = "") = object: ReadEuropeanCredentialUtil {
-    override fun getDosis(readEuropeanCredential: JSONObject): String {
+    override fun getDose(readEuropeanCredential: JSONObject): String {
         return dosis
     }
 
-    override fun getDosisRangeStringForVaccination(readEuropeanCredential: JSONObject): String {
+    override fun getDoseRangeStringForVaccination(readEuropeanCredential: JSONObject): String {
         return ""
     }
 }

@@ -70,7 +70,7 @@ class HolderDatabaseSyncerImpl(
                             if (expectedOriginType != null && !remoteGreenCards.getAllOrigins()
                                     .contains(expectedOriginType)
                             ) {
-                                return@withContext DatabaseSyncerResult.Success(true)
+                                return@withContext DatabaseSyncerResult.Success(missingOrigin = true)
                             }
 
                             // Insert green cards in database
