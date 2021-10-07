@@ -44,7 +44,7 @@ class GreenCardRefreshUtilImplTest {
     private val firstJanuaryClock = Clock.fixed(Instant.parse("2021-01-01T00:00:00.00Z"), ZoneId.of("UTC"))
 
     private val mobileCoreWrapper: MobileCoreWrapper = mockk(relaxed = true)
-    private val credentialUtil = CredentialUtilImpl(firstJanuaryClock, mobileCoreWrapper)
+    private val credentialUtil = CredentialUtilImpl(firstJanuaryClock, mobileCoreWrapper, mockk())
 
     private val greenCardRefreshUtil = GreenCardRefreshUtilImpl(holderDatabase, cachedAppConfigUseCase, greenCardUtil, firstJanuaryClock, credentialUtil)
     

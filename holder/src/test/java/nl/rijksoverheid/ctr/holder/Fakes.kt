@@ -535,6 +535,10 @@ fun fakeCredentialUtil(activeCredential: CredentialEntity? = null) = object: Cre
     ): String {
         return ""
     }
+
+    override fun vaccinationShouldBeHidden(readEuropeanCredential: JSONObject): Boolean {
+        return false
+    }
 }
 
 fun fakeGetRemoteGreenCardUseCase(result: RemoteGreenCardsResult = RemoteGreenCardsResult.Success(
@@ -568,6 +572,10 @@ fun fakeClockDevationUseCase(
 fun fakeReadEuropeanCredentialUtil(dosis: String = "") = object: ReadEuropeanCredentialUtil {
     override fun getDose(readEuropeanCredential: JSONObject): String {
         return dosis
+    }
+
+    override fun getOfTotalDoses(readEuropeanCredential: JSONObject): String {
+        return "2"
     }
 
     override fun getDoseRangeStringForVaccination(readEuropeanCredential: JSONObject): String {

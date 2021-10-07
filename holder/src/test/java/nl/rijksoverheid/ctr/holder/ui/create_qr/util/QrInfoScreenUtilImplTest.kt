@@ -11,14 +11,13 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 import androidx.test.core.app.ApplicationProvider
 import junit.framework.Assert.assertEquals
 import nl.rijksoverheid.ctr.holder.fakeCachedAppConfigUseCase
-import nl.rijksoverheid.ctr.holder.fakeReadEuropeanCredentialUtil
 import org.json.JSONObject
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
-import java.util.*
+import java.time.Clock
 
 @RunWith(RobolectricTestRunner::class)
 @Config(qualifiers = "nl")
@@ -27,7 +26,9 @@ class QrInfoScreenUtilImplTest : AutoCloseKoinTest() {
     private val infoScreenUtil =
         QrInfoScreenUtilImpl(
             ApplicationProvider.getApplicationContext(),
-            ReadEuropeanCredentialUtilImpl(ApplicationProvider.getApplicationContext()),
+            ReadEuropeanCredentialUtilImpl(
+                ApplicationProvider.getApplicationContext()
+            ),
             CountryUtilImpl(),
             fakeCachedAppConfigUseCase(),
         )
@@ -44,7 +45,10 @@ class QrInfoScreenUtilImplTest : AutoCloseKoinTest() {
             "Ben je in het buitenland of ga je de grens over? Dan zijn er meer gegevens nodig dan in Nederland. Daarom staan in jouw internationale QR-code de volgende gegevens:<br/><br/>Naam / Name:<br/><b>ten Bouwer, Bob</b><br/><br/>Geboortedatum / Date of birth*:<br/><b>18-08-1991</b><br/><br/>Ziekteverwekker / Disease targeted:<br/><b>COVID-19</b><br/><br/>Type test / Type of test:<br/><b>LP6464-4</b><br/><br/>Test naam / Test name:<br/><b></b><br/><br/>Testdatum / Test date*:<br/><b>10-08-2021</b><br/><br/>Testuitslag / Test result:<br/><b>Negatief (geen corona)</b><br/><br/>Testlocatie / Testing centre:<br/><b>Facility approved by the State of The Netherlands</b><br/><br/>Producent / Test manufacturer:<br/><b></b><br/><br/>Getest in / Member state of test:<br/><b>Netherlands</b><br/><br/>Afgever certificaat / Certificate issuer:<br/><b>Ministerie van VWS / Ministry of Health, Welfare and Sport</b><br/><br/>Uniek certificaatnummer / Unique certificate identifier:<br/><b>URN:UCI:01:NL:PJ7JLSZ4KRGX5O2E7OD342#E</b><br/><br/>",
             infoScreen.description
         )
-        assertEquals("*Datum weergegeven in dag-maand-jaar / Date noted in day-month-year.", infoScreen.footer)
+        assertEquals(
+            "*Datum weergegeven in dag-maand-jaar / Date noted in day-month-year.",
+            infoScreen.footer
+        )
     }
 
 }

@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CredentialUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.ReadEuropeanCredentialUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeData
@@ -13,36 +14,41 @@ import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
  */
 interface QrCodesResultUseCase {
     suspend fun getQrCodesResult(
-                              greenCardType: GreenCardType,
-                              originType: OriginType,
-                              credentials: List<ByteArray>,
-                              shouldDisclose: Boolean,
-                              qrCodeWidth: Int,
-                              qrCodeHeight: Int): QrCodesResult
+        greenCardType: GreenCardType,
+        originType: OriginType,
+        credentials: List<ByteArray>,
+        shouldDisclose: Boolean,
+        qrCodeWidth: Int,
+        qrCodeHeight: Int
+    ): QrCodesResult
 }
 
-class QrCodesResultUseCaseImpl(private val qrCodeUseCase: QrCodeUseCase,
-                            private val greenCardUtil: GreenCardUtil,
-                            private val mobileCoreWrapper: MobileCoreWrapper,
-                            private val readEuropeanCredentialUtil: ReadEuropeanCredentialUtil): QrCodesResultUseCase {
+class QrCodesResultUseCaseImpl(
+    private val qrCodeUseCase: QrCodeUseCase,
+    private val greenCardUtil: GreenCardUtil,
+    private val mobileCoreWrapper: MobileCoreWrapper,
+    private val readEuropeanCredentialUtil: ReadEuropeanCredentialUtil,
+    private val credentialUtil: CredentialUtil
+) : QrCodesResultUseCase {
 
     override suspend fun getQrCodesResult(
-                      greenCardType: GreenCardType,
-                      originType: OriginType,
-                      credentials: List<ByteArray>,
-                      shouldDisclose: Boolean,
-                      qrCodeWidth: Int,
-                      qrCodeHeight: Int): QrCodesResult {
+        greenCardType: GreenCardType,
+        originType: OriginType,
+        credentials: List<ByteArray>,
+        shouldDisclose: Boolean,
+        qrCodeWidth: Int,
+        qrCodeHeight: Int
+    ): QrCodesResult {
 
         return when (greenCardType) {
             is GreenCardType.Domestic -> {
-               getQrCodesResultForDomestic(
-                   greenCardType = greenCardType,
-                   credentials = credentials,
-                   shouldDisclose = shouldDisclose,
-                   qrCodeWidth = qrCodeWidth,
-                   qrCodeHeight = qrCodeHeight
-               )
+                getQrCodesResultForDomestic(
+                    greenCardType = greenCardType,
+                    credentials = credentials,
+                    shouldDisclose = shouldDisclose,
+                    qrCodeWidth = qrCodeWidth,
+                    qrCodeHeight = qrCodeHeight
+                )
             }
 
             is GreenCardType.Eu -> {
@@ -109,11 +115,16 @@ class QrCodesResultUseCaseImpl(private val qrCodeUseCase: QrCodeUseCase,
                 )
 
                 val readEuropeanCredential = mobileCoreWrapper.readEuropeanCredential(credential)
+                val dose = readEuropeanCredentialUtil.getDose(readEuropeanCredential) ?: ""
+                val totalDoses =
+                    readEuropeanCredentialUtil.getOfTotalDoses(readEuropeanCredential) ?: ""
 
                 QrCodeData.European.Vaccination(
+                    dose = dose,
+                    ofTotalDoses = totalDoses,
                     bitmap = qrCodeBitmap,
                     readEuropeanCredential = readEuropeanCredential,
-                    dosis = readEuropeanCredentialUtil.getDoseRangeStringForVaccination(readEuropeanCredential)
+                    isHidden = credentialUtil.vaccinationShouldBeHidden(readEuropeanCredential)
                 )
             }
         )

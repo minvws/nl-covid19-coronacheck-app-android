@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
+import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.holder.*
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
@@ -16,7 +17,8 @@ class QrCodesResultUseCaseImplTest {
         qrCodeUseCase = fakeQrCodeUsecase(),
         greenCardUtil = fakeGreenCardUtil(),
         mobileCoreWrapper = fakeMobileCoreWrapper(),
-        readEuropeanCredentialUtil = fakeReadEuropeanCredentialUtil()
+        readEuropeanCredentialUtil = fakeReadEuropeanCredentialUtil(),
+        credentialUtil = mockk(relaxed = true)
     )
 
     @Test
