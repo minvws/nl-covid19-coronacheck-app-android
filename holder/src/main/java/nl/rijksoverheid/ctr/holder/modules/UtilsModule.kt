@@ -35,4 +35,5 @@ val utilsModule = module {
     factory<ReadEuropeanCredentialUtil> { ReadEuropeanCredentialUtilImpl(get()) }
     factory<DashboardItemUtil> { DashboardItemUtilImpl(get(), get(), get(), get(), get()) }
     factory<CountryUtil> { CountryUtilImpl() }
+    factory<MultipleQrCodesUtil> { MultipleQrCodesUtilImpl() }
 }
