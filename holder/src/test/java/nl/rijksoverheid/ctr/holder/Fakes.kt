@@ -312,7 +312,8 @@ fun fakePersistenceManager(
     secretKeyJson: String? = "",
     credentials: String? = "",
     hasSeenCameraRationale: Boolean? = false,
-    hasDismissedUnsecureDeviceDialog: Boolean = true
+    hasDismissedUnsecureDeviceDialog: Boolean = true,
+    showSyncGreenCardsItem: Boolean = true
 ): PersistenceManager {
     return object : PersistenceManager {
         override fun saveSecretKeyJson(json: String) {
@@ -380,6 +381,14 @@ fun fakePersistenceManager(
         }
 
         override fun setHasDismissedSyncedGreenCardsItem(dismissed: Boolean) {
+
+        }
+
+        override fun showSyncGreenCardsItem(): Boolean {
+            return showSyncGreenCardsItem
+        }
+
+        override fun setShowSyncGreenCardsItem(show: Boolean) {
 
         }
     }
