@@ -373,9 +373,7 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
 
         (parentFragment?.parentFragment as HolderMainFragment).presentLoading(false)
 
-        setFragmentResult(
-            MyOverviewFragment.REQUEST_KEY,
-            bundleOf(MyOverviewFragment.EXTRA_BACK_FROM_QR to true)
-        )
+        requireActivity().requestedOrientation =
+            ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
     }
 }
