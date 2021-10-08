@@ -36,8 +36,9 @@ fun MenuItem.styleTitle(context: Context, appearance: Int, heading: Boolean = fa
         Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
     )
 
-    // M has issues setting the font directly through the style so we're setting it manually if needed
-    if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.M && heading) {
+    // Android versions O and earlier have issues setting the font directly through the style
+    // so we're setting it manually if needed
+    if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.O) {
         val fontToUse = if (heading) {
             R.font.montserrat_bold
         } else {
