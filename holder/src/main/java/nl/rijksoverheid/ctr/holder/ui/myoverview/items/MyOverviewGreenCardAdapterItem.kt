@@ -39,6 +39,10 @@ class MyOverviewGreenCardAdapterItem(
 
         setContent(viewBinding = viewBinding)
 
+        initButton(viewBinding)
+    }
+
+    private fun initButton(viewBinding: ItemMyOverviewGreenCardBinding) {
         viewBinding.buttonWithProgressWidgetContainer.setButtonOnClickListener {
             val mainCredentialState = cards.first().credentialState
             if (mainCredentialState is HasCredential) {
@@ -52,6 +56,11 @@ class MyOverviewGreenCardAdapterItem(
                 )
             }
         }
+        viewBinding.buttonWithProgressWidgetContainer.setButtonText(
+            viewBinding.root.context.getString(
+                if (cards.size > 1) R.string.my_overview_results_button else R.string.my_overview_test_result_button
+            )
+        )
     }
 
     private fun applyStyling(viewBinding: ItemMyOverviewGreenCardBinding) {

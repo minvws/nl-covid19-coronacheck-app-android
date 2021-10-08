@@ -42,7 +42,7 @@ class ButtonWithProgressWidget @JvmOverloads constructor(context: Context, attrs
         }
     }
 
-    private fun setButtonText(text: String) {
+    fun setButtonText(text: String) {
         binding.button.text = text
         buttonText = text
     }

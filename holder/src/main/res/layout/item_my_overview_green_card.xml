@@ -89,7 +89,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/expires_in"
-                    app:text="@string/my_overview_test_result_button" />
+                    tools:text="@string/my_overview_test_result_button" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
