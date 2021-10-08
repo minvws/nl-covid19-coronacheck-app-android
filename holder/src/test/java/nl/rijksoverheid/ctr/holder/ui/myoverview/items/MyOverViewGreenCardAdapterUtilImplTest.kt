@@ -72,7 +72,7 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
     fun europeanTest() {
         every { credentialUtil.getTestTypeForEuropeanCredentials(any()) } returns "NAAT"
         val greenCard = greenCard(GreenCardType.Eu)
-        myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(greenCard), listOf(OriginState.Valid(greenCard.origins.first())))
+        myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(AdapterCard(greenCard, listOf(OriginState.Valid(greenCard.origins.first())))))
 
         assertEquals("Testbewijs: PCR (NAAT)", (viewBinding.description.getChildAt(0) as TextView).text)
         assertEquals("Testdatum: dinsdag 27 juli 11:10", (viewBinding.description.getChildAt(1) as TextView).text)
@@ -81,7 +81,7 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
     @Test
     fun domesticTest() {
         val greenCard = greenCard(GreenCardType.Domestic)
-        myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(greenCard), listOf(OriginState.Valid(greenCard.origins.first())))
+        myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(AdapterCard(greenCard, listOf(OriginState.Valid(greenCard.origins.first())))))
 
         assertEquals("Testbewijs:", (viewBinding.description.getChildAt(0) as TextView).text)
         assertEquals("geldig tot woensdag 28 juli 21:06", (viewBinding.description.getChildAt(1) as TextView).text)
@@ -91,7 +91,7 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
     fun europeanVaccination() {
         every { credentialUtil.getVaccinationDosesForEuropeanCredentials(any(), any()) } returns "dosis 2 van 2"
         val greenCard = greenCard(GreenCardType.Eu, OriginType.Vaccination)
-        myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(greenCard), listOf(OriginState.Valid(greenCard.origins.first())))
+        myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(AdapterCard(greenCard, listOf(OriginState.Valid(greenCard.origins.first())))))
 
         assertEquals("dosis 2 van 2", (viewBinding.description.getChildAt(0) as TextView).text)
         assertEquals("Vaccinatiedatum: 27 juli 2021", (viewBinding.description.getChildAt(1) as TextView).text)
@@ -101,7 +101,7 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
     fun europeanVaccinationFuture() {
         every { credentialUtil.getVaccinationDosesForEuropeanCredentials(any(), any()) } returns "dosis 2 van 2"
         val greenCard = greenCard(GreenCardType.Eu, OriginType.Vaccination)
-        myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(greenCard), listOf(OriginState.Valid(greenCard.origins.first())))
+        myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(AdapterCard(greenCard, listOf(OriginState.Valid(greenCard.origins.first())))))
 
         assertEquals("dosis 2 van 2", (viewBinding.description.getChildAt(0) as TextView).text)
         assertEquals("Vaccinatiedatum: 27 juli 2021", (viewBinding.description.getChildAt(1) as TextView).text)
@@ -111,7 +111,7 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
     @Test
     fun domesticVaccination() {
         val greenCard = greenCard(GreenCardType.Domestic, OriginType.Vaccination)
-        myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(greenCard), listOf(OriginState.Valid(greenCard.origins.first())))
+        myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(AdapterCard(greenCard, listOf(OriginState.Valid(greenCard.origins.first())))))
 
         assertEquals("Vaccinatiebewijs:", (viewBinding.description.getChildAt(0) as TextView).text)
         assertEquals("geldig vanaf 27 juli 2021   ", (viewBinding.description.getChildAt(1) as TextView).text)
@@ -121,7 +121,7 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
     @Test
     fun domesticVaccinationFuture() {
         val greenCard = greenCard(GreenCardType.Domestic, OriginType.Vaccination)
-        myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(greenCard), listOf(OriginState.Future(greenCard.origins.first())))
+        myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(AdapterCard(greenCard, listOf(OriginState.Future(greenCard.origins.first())))))
 
         assertEquals("Vaccinatiebewijs:", (viewBinding.description.getChildAt(0) as TextView).text)
         assertEquals("geldig vanaf 27 juli 11:11   ", (viewBinding.description.getChildAt(1) as TextView).text)
@@ -132,7 +132,7 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
     @Test
     fun europeanRecovery() {
         val greenCard = greenCard(GreenCardType.Eu, OriginType.Recovery)
-        myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(greenCard), listOf(OriginState.Valid(greenCard.origins.first())))
+        myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(AdapterCard(greenCard, listOf(OriginState.Valid(greenCard.origins.first())))))
 
         assertEquals("Herstelbewijs:", (viewBinding.description.getChildAt(0) as TextView).text)
         assertEquals("geldig tot 28 jul 2021", (viewBinding.description.getChildAt(1) as TextView).text)
@@ -142,7 +142,7 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
     @Test
     fun europeanRecoveryFuture() {
         val greenCard = greenCard(GreenCardType.Eu, OriginType.Recovery)
-        myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(greenCard), listOf(OriginState.Future(greenCard.origins.first())))
+        myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(AdapterCard(greenCard, listOf(OriginState.Future(greenCard.origins.first())))))
 
         assertEquals("Herstelbewijs:", (viewBinding.description.getChildAt(0) as TextView).text)
         assertEquals("geldig vanaf 27 juli 11:11 t/m 28 juli 2021", (viewBinding.description.getChildAt(1) as TextView).text)
@@ -152,7 +152,7 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
     @Test
     fun domesticRecovery() {
         val greenCard = greenCard(GreenCardType.Domestic, OriginType.Recovery)
-        myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(greenCard), listOf(OriginState.Valid(greenCard.origins.first())))
+        myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(AdapterCard(greenCard, listOf(OriginState.Valid(greenCard.origins.first())))))
 
         assertEquals("Herstelbewijs:", (viewBinding.description.getChildAt(0) as TextView).text)
         assertEquals("geldig tot 28 jul 2021", (viewBinding.description.getChildAt(1) as TextView).text)
@@ -162,7 +162,7 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
     @Test
     fun domesticRecoveryFuture() {
         val greenCard = greenCard(GreenCardType.Domestic, OriginType.Recovery)
-        myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(greenCard), listOf(OriginState.Future(greenCard.origins.first())))
+        myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(AdapterCard(greenCard, listOf(OriginState.Future(greenCard.origins.first())))))
 
         assertEquals("Herstelbewijs:", (viewBinding.description.getChildAt(0) as TextView).text)
         assertEquals("geldig vanaf 27 juli 11:11 t/m 28 juli 2021", (viewBinding.description.getChildAt(1) as TextView).text)
@@ -176,7 +176,7 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
         every { greenCardUtil.getExpireDate(greenCard) } returns greenCard.credentialEntities.first().expirationTime
         val myOverViewGreenCardAdapterUtil = MyOverViewGreenCardAdapterUtilImpl(context, credentialUtil, testResultAdapterItemUtil, greenCardUtil)
 
-        myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(greenCard), listOf(OriginState.Valid(greenCard.origins.first())))
+        myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(AdapterCard(greenCard, listOf(OriginState.Valid(greenCard.origins.first())))))
 
         assertEquals("Testbewijs:", (viewBinding.description.getChildAt(0) as TextView).text)
         assertEquals("geldig tot woensdag 28 juli 21:06", (viewBinding.description.getChildAt(1) as TextView).text)
@@ -192,8 +192,7 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
         val greenCard = greenCard(GreenCardType.Eu, OriginType.Vaccination)
         myOverViewGreenCardAdapterUtil.setContent(
             viewBinding = viewBinding,
-            originStates = listOf(OriginState.Valid(greenCard.origins.first())),
-            greenCards = listOf(greenCard)
+            cards = listOf(AdapterCard(greenCard, listOf(OriginState.Valid(greenCard.origins.first())))),
         )
 
         assertEquals("Vaccinatiebewijs", (viewBinding.title).text)
@@ -205,7 +204,7 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
         val recoveryCard = greenCard(GreenCardType.Eu, OriginType.Recovery)
 
         myOverViewGreenCardAdapterUtil.setContent(
-            viewBinding, listOf(testCard), listOf(OriginState.Valid(testCard.origins.first()))
+            viewBinding, listOf(AdapterCard(testCard, listOf(OriginState.Valid(testCard.origins.first()))))
         )
         assertEquals("Mijn bewijs", (viewBinding.title).text)
 
@@ -213,7 +212,7 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
         viewBinding.title.text = ""
 
         myOverViewGreenCardAdapterUtil.setContent(
-            viewBinding, listOf(recoveryCard), listOf(OriginState.Valid(testCard.origins.first()))
+            viewBinding, listOf(AdapterCard(recoveryCard, listOf(OriginState.Valid(testCard.origins.first()))))
         )
         assertEquals("Mijn bewijs", (viewBinding.title).text)
     }
@@ -226,8 +225,11 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
         val greenCard = greenCard(GreenCardType.Eu, OriginType.Vaccination)
         myOverViewGreenCardAdapterUtil.setContent(
             viewBinding = viewBinding,
-            originStates = listOf(OriginState.Valid(greenCard.origins.first())),
-            greenCards = listOf(greenCard, greenCard, greenCard)
+            cards = listOf(
+                AdapterCard(greenCard, listOf(OriginState.Valid(greenCard.origins.first()))),
+                AdapterCard(greenCard, listOf(OriginState.Valid(greenCard.origins.first()))),
+                AdapterCard(greenCard, listOf(OriginState.Valid(greenCard.origins.first())))
+            ),
         )
 
         assertEquals(
@@ -287,7 +289,7 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
             validFrom = validFrom,
         )
 
-        val greenCard = GreenCard(
+        return GreenCard(
             greenCardEntity = GreenCardEntity(
                 id = 1,
                 walletId = 1,
@@ -296,7 +298,5 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
             origins = listOf(originEntity),
             credentialEntities = listOf(credentialEntity),
         )
-
-        return greenCard
     }
 }

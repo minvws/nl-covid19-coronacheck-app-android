@@ -21,9 +21,12 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem.CardsItem.CredentialState.HasCredential
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
 import nl.rijksoverheid.ctr.shared.ext.getDimensionPixelSize
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+
+data class AdapterCard(val greenCard: GreenCard, val originStates: List<OriginState>)
 
 class MyOverviewGreenCardAdapterItem(
     private val cards: List<DashboardItem.CardsItem.CardItem>,
@@ -101,8 +104,8 @@ class MyOverviewGreenCardAdapterItem(
 
         myOverViewGreenCardAdapterUtil.setContent(
             ViewBindingWrapperImpl(viewBinding),
-            cards.map { it.greenCard },
-            cards.first().originStates,
+            cards.map { AdapterCard(it.greenCard, it.originStates) }
+                .sortedByDescending { it.originStates.first().origin.eventTime },
         )
 
         stackAdditionalCards(viewBinding)
