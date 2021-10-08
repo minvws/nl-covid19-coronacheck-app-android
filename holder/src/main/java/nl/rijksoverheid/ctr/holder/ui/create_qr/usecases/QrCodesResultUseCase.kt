@@ -1,6 +1,5 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
-import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CredentialUtil
@@ -124,27 +123,31 @@ class QrCodesResultUseCaseImpl(
         qrCodeHeight: Int,
         shouldDisclose: Boolean,
         greenCardType: GreenCardType
-    ) = credentials.map { credential ->
-        val qrCodeBitmap = qrCodeUseCase.qrCode(
-            credential = credential,
-            qrCodeWidth = qrCodeWidth,
-            qrCodeHeight = qrCodeHeight,
-            shouldDisclose = shouldDisclose,
-            errorCorrectionLevel = greenCardUtil.getErrorCorrectionLevel(greenCardType)
-        )
+    ): List<QrCodeData.European.Vaccination> {
+        val readEuropeanCredentials =
+            credentials.map { mobileCoreWrapper.readEuropeanCredential(it) }
+        return credentials.mapIndexed { index, credential ->
+            val qrCodeBitmap = qrCodeUseCase.qrCode(
+                credential = credential,
+                qrCodeWidth = qrCodeWidth,
+                qrCodeHeight = qrCodeHeight,
+                shouldDisclose = shouldDisclose,
+                errorCorrectionLevel = greenCardUtil.getErrorCorrectionLevel(greenCardType)
+            )
 
-        val readEuropeanCredential = mobileCoreWrapper.readEuropeanCredential(credential)
-        val dose = readEuropeanCredentialUtil.getDose(readEuropeanCredential) ?: ""
-        val totalDoses =
-            readEuropeanCredentialUtil.getOfTotalDoses(readEuropeanCredential) ?: ""
+            val readEuropeanCredential = readEuropeanCredentials[index]
+            val dose = readEuropeanCredentialUtil.getDose(readEuropeanCredential) ?: ""
+            val totalDoses =
+                readEuropeanCredentialUtil.getOfTotalDoses(readEuropeanCredential) ?: ""
 
-        QrCodeData.European.Vaccination(
-            dose = dose,
-            ofTotalDoses = totalDoses,
-            bitmap = qrCodeBitmap,
-            readEuropeanCredential = readEuropeanCredential,
-            isHidden = credentialUtil.vaccinationShouldBeHidden(readEuropeanCredential)
-        )
+            QrCodeData.European.Vaccination(
+                dose = dose,
+                ofTotalDoses = totalDoses,
+                bitmap = qrCodeBitmap,
+                readEuropeanCredential = readEuropeanCredential,
+                isHidden = credentialUtil.vaccinationShouldBeHidden(readEuropeanCredentials, index)
+            )
+        }
     }
 
     private suspend fun getQrCodesResultForNonVaccination(
