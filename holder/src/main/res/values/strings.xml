@@ -217,6 +217,7 @@
     <string name="qr_explanation_title_domestic">Over mijn Nederlandse QR-code</string>
     <string name="qr_explanation_description_domestic"><![CDATA[In jouw Nederlandse QR-code staan minimale gegevens. In de QR-code staat dat je een geldig bewijs hebt. Niet of je een test of vaccinatie hebt gedaan.<br/><br/>Om zeker te zijn dat de QR-code bij jou hoort staan er enkele gegevens in de QR-code. Het gaat om de eerste letter van je voornaam, de eerste letter van je achternaam, je geboortedag en geboortemaand.<br/><br/>Jouw gegevens*: <b>%1$s</b><br/><br/>*Soms vallen gegevens weg om je privacy te beschermen. Je ziet dan een streepje (-).]]></string>
     <string name="qr_explanation_title_eu">Over mijn internationale QR-code</string>
+    <string name="qr_explanation_title_eu_vaccination">Over dosis %1s</string>
     <string name="qr_explanation_description_eu_vaccination_header">Ben je in het buitenland of ga je de grens over? Dan zijn er meer gegevens nodig dan in Nederland. Daarom staan in jouw internationale QR-code de volgende gegevens:</string>
     <string name="qr_explanation_description_eu_vaccination_name">Naam / Name:</string>
     <string name="qr_explanation_description_eu_vaccination_birth_date">Geboortedatum / Date of birth*:</string>
@@ -293,7 +294,7 @@
     <string name="your_vaccination_explanation_vaccination_date">Vaccinatiedatum:</string>
     <string name="your_vaccination_explanation_vaccination_country">Gevaccineerd in:</string>
     <string name="your_vaccination_explanation_unique_code">Uniek vaccinatienummer:</string>
-    <string name="your_vaccination_explanation_doses_answer">%1$s van %2$s</string>
+    <string name="your_vaccination_explanation_doses_answer">%1$s / %2$s</string>
     <string name="my_overview_not_valid_domestic_but_is_in_eu">Je %1$s is niet geldig in Nederland. Je hebt wel een internationaal bewijs.</string>
     <string name="my_overview_not_valid_eu_but_is_in_domestic">Je %1$s is niet internationaal geldig. Je hebt wel een Nederlands bewijs.</string>
     <string name="type_recovery">herstelbewijs</string>
