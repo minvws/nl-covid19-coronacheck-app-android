@@ -290,7 +290,7 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
                 binding.doseInfo.text = getString(R.string.qr_code_newer_dose_available)
                 binding.doseInfo.visibility = View.VISIBLE
             }
-            else -> binding.doseInfo.visibility = View.INVISIBLE
+            else -> binding.doseInfo.visibility = View.GONE
         }
     }
 
