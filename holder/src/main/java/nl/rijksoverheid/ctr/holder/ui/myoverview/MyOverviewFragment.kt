@@ -157,8 +157,8 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                         originType = dashboardItem.originType,
                         onInfoClick = { greenCardType, originType ->
                             when (greenCardType) {
-                                is GreenCardType.Domestic -> navigateToDomesticQr(originType)
-                                is GreenCardType.Eu -> navigateToEuQr(originType)
+                                is GreenCardType.Domestic -> presentOriginInfoForDomesticQr(originType)
+                                is GreenCardType.Eu -> presentOriginInfoForEuQr(originType)
                             }
                         }
                     ))
@@ -218,7 +218,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
         section.update(adapterItems)
     }
 
-    private fun navigateToEuQr(originType: OriginType) {
+    private fun presentOriginInfoForEuQr(originType: OriginType) {
         bottomSheetDialogUtil.present(childFragmentManager,
             data = when (originType) {
                 is OriginType.Test -> {
@@ -248,34 +248,19 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
             })
     }
 
-    private fun navigateToDomesticQr(originType: OriginType) {
+    private fun presentOriginInfoForDomesticQr(originType: OriginType) {
+        val (title, description) = when (originType) {
+            OriginType.Test -> Pair(getString(R.string.my_overview_green_card_not_valid_title_test), R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_test)
+            OriginType.Vaccination -> Pair(getString(R.string.my_overview_green_card_not_valid_title_vaccination), R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_vaccination)
+            OriginType.Recovery -> Pair(getString(R.string.my_overview_green_card_not_valid_title_recovery), R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_recovery)
+        }
         bottomSheetDialogUtil.present(childFragmentManager,
-            data = when (originType) {
-                is OriginType.Test -> {
-                    BottomSheetData.TitleDescription(
-                        title = getString(R.string.my_overview_green_card_not_valid_title_test),
-                        applyOnDescription = {
-                            it.setHtmlText(R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_test)
-                        }
-                    )
+            BottomSheetData.TitleDescription(
+                title = title,
+                applyOnDescription = {
+                    it.setHtmlText(description, true)
                 }
-                is OriginType.Vaccination -> {
-                    BottomSheetData.TitleDescription(
-                        title = getString(R.string.my_overview_green_card_not_valid_title_vaccination),
-                        applyOnDescription = {
-                            it.setHtmlText(R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_vaccination)
-                        }
-                    )
-                }
-                is OriginType.Recovery -> {
-                    BottomSheetData.TitleDescription(
-                        title = getString(R.string.my_overview_green_card_not_valid_title_recovery),
-                        applyOnDescription = {
-                            it.setHtmlText(R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_recovery)
-                        }
-                    )
-                }
-            }
+            )
         )
     }
 }
