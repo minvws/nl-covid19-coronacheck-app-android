@@ -17,7 +17,11 @@ import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAccessibilityFocus
  *
  */
 class QrCodePagerAdapter : RecyclerView.Adapter<QrCodeViewHolder>() {
+
     val qrCodeDataList: MutableList<QrCodeData> = mutableListOf()
+
+    /** persist index of page where overlay is dismissed to prevent view resetting during recycling*/
+    private val clickedOnOverlayIndex: MutableSet<Int> = mutableSetOf()
 
     fun addData(data: List<QrCodeData>) {
         val hasItems = qrCodeDataList.isNotEmpty()
@@ -36,7 +40,7 @@ class QrCodePagerAdapter : RecyclerView.Adapter<QrCodeViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: QrCodeViewHolder, position: Int) {
-        holder.bind(qrCodeDataList[position])
+        holder.bind(qrCodeDataList[position], position, clickedOnOverlayIndex)
     }
 
     override fun getItemCount(): Int {
@@ -45,14 +49,16 @@ class QrCodePagerAdapter : RecyclerView.Adapter<QrCodeViewHolder>() {
 }
 
 class QrCodeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    fun bind(qrCodeData: QrCodeData) {
+    fun bind(qrCodeData: QrCodeData, position: Int, clickedOnOverlayIndex: MutableSet<Int>) {
         val binding = ViewQrCodeBinding.bind(itemView)
         binding.image.setImageBitmap(qrCodeData.bitmap)
         binding.image.setAccessibilityFocus()
         binding.overlayButton.setOnClickListener {
             binding.overlay.visibility = View.GONE
+            clickedOnOverlayIndex.add(position)
         }
-        binding.overlay.visibility =
-            if ((qrCodeData as? QrCodeData.European.Vaccination)?.isHidden == true) View.VISIBLE else View.GONE
+        val isHidden = (qrCodeData as? QrCodeData.European.Vaccination)?.isHidden == true
+        val hasBeenMadeVisible = clickedOnOverlayIndex.contains(position)
+        binding.overlay.visibility = if (isHidden && !hasBeenMadeVisible) View.VISIBLE else View.GONE
     }
 }
