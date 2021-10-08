@@ -9,6 +9,7 @@
 package nl.rijksoverheid.ctr.shared.ext
 
 import android.view.View
+import androidx.annotation.DimenRes
 
 fun View.setVisible(isVisible: Boolean) {
     visibility =  if (isVisible) {
@@ -17,3 +18,6 @@ fun View.setVisible(isVisible: Boolean) {
         View.INVISIBLE
     }
 }
+
+fun View.getDimensionPixelSize(@DimenRes dimenRes: Int) =
+    context.resources.getDimensionPixelSize(dimenRes)
