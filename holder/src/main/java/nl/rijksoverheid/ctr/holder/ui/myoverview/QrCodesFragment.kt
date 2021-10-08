@@ -143,11 +143,6 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
         when (qrCodesResult) {
             is QrCodesResult.SingleQrCode -> {
                 qrCodePagerAdapter.addData(listOf(qrCodesResult.qrCodeData))
-                Handler(Looper.getMainLooper()).post {
-                    // Scroll bottom part to bottom to have animation fully in view
-                    binding.bottomScroll.isSmoothScrollingEnabled = false
-                    setBottomScrollLocked(true)
-                }
             }
             is QrCodesResult.MultipleQrCodes -> {
                 qrCodePagerAdapter.addData(qrCodesResult.europeanVaccinationQrCodeDataList)
@@ -285,36 +280,17 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
         TransitionManager.beginDelayedTransition(binding.bottomScroll)
         when {
             vaccination.isOverVaccinated -> {
-                binding.overVaccinatedText.text = getString(
+                binding.doseInfo.text = getString(
                     R.string.qr_code_over_vaccinated,
                     "${vaccination.ofTotalDoses}/${vaccination.ofTotalDoses}"
                 )
-                setBottomScrollLocked(false)
+                binding.doseInfo.visibility = View.VISIBLE
             }
             vaccination.isHidden -> {
-                binding.overVaccinatedText.text = getString(R.string.qr_code_newer_dose_available)
-                setBottomScrollLocked(false)
+                binding.doseInfo.text = getString(R.string.qr_code_newer_dose_available)
+                binding.doseInfo.visibility = View.VISIBLE
             }
-            else -> setBottomScrollLocked(true)
-        }
-    }
-
-    /**
-     * Sets the bottom scroll locked and scrolled to bottom or
-     * or unlocked with over vaccination text visible.
-     *
-     * @param[isLocked] Indicated bottom scroll view should be scrolling locked or unlocked
-     */
-    @SuppressLint("ClickableViewAccessibility")
-    private fun setBottomScrollLocked(isLocked: Boolean) {
-        if (isLocked) {
-            binding.overVaccinatedText.visibility = View.INVISIBLE
-            binding.bottomScroll.fullScroll(NestedScrollView.FOCUS_DOWN)
-            binding.bottomScroll.setOnTouchListener { _, _ -> true }
-        } else {
-            binding.overVaccinatedText.visibility = View.VISIBLE
-            binding.bottomScroll.fullScroll(NestedScrollView.FOCUS_UP)
-            binding.bottomScroll.setOnTouchListener(null)
+            else -> binding.doseInfo.visibility = View.INVISIBLE
         }
     }
 
