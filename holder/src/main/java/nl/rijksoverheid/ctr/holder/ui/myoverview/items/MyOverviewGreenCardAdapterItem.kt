@@ -9,9 +9,11 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview.items
 
 import android.view.View
+import android.view.ViewGroup
 import androidx.annotation.DimenRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.marginBottom
 import com.google.android.material.card.MaterialCardView
 import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.holder.R
@@ -121,6 +123,12 @@ class MyOverviewGreenCardAdapterItem(
                     bottomToBottom = viewBinding.testResult.id
                 }
             )
+        }
+
+        // Add extra margin bottom so that correct margins stay intact when stacking cards
+        if (cards.count() > 1) {
+            (viewBinding.root.layoutParams as ViewGroup.MarginLayoutParams).bottomMargin =
+                viewBinding.root.context.resources.getDimensionPixelSize(R.dimen.dashboard_card_additional_translation_y) * cards.count()
         }
     }
 
