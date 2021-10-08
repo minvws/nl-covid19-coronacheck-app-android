@@ -217,6 +217,7 @@
     <string name="qr_explanation_title_domestic">Over mijn Nederlandse QR-code</string>
     <string name="qr_explanation_description_domestic"><![CDATA[In jouw Nederlandse QR-code staan minimale gegevens. In de QR-code staat dat je een geldig bewijs hebt. Niet of je een test of vaccinatie hebt gedaan.<br/><br/>Om zeker te zijn dat de QR-code bij jou hoort staan er enkele gegevens in de QR-code. Het gaat om de eerste letter van je voornaam, de eerste letter van je achternaam, je geboortedag en geboortemaand.<br/><br/>Jouw gegevens*: <b>%1$s</b><br/><br/>*Soms vallen gegevens weg om je privacy te beschermen. Je ziet dan een streepje (-).]]></string>
     <string name="qr_explanation_title_eu">Over mijn internationale QR-code</string>
+    <string name="qr_explanation_title_eu_vaccination">Over dosis %1s</string>
     <string name="qr_explanation_description_eu_vaccination_header">Ben je in het buitenland of ga je de grens over? Dan zijn er meer gegevens nodig dan in Nederland. Daarom staan in jouw internationale QR-code de volgende gegevens:</string>
     <string name="qr_explanation_description_eu_vaccination_name">Naam / Name:</string>
     <string name="qr_explanation_description_eu_vaccination_birth_date">Geboortedatum / Date of birth*:</string>
@@ -293,7 +294,7 @@
     <string name="your_vaccination_explanation_vaccination_date">Vaccinatiedatum:</string>
     <string name="your_vaccination_explanation_vaccination_country">Gevaccineerd in:</string>
     <string name="your_vaccination_explanation_unique_code">Uniek vaccinatienummer:</string>
-    <string name="your_vaccination_explanation_doses_answer">%1$s van %2$s</string>
+    <string name="your_vaccination_explanation_doses_answer">%1$s / %2$s</string>
     <string name="my_overview_not_valid_domestic_but_is_in_eu">Je %1$s is niet geldig in Nederland. Je hebt wel een internationaal bewijs.</string>
     <string name="my_overview_not_valid_eu_but_is_in_domestic">Je %1$s is niet internationaal geldig. Je hebt wel een Nederlands bewijs.</string>
     <string name="type_recovery">herstelbewijs</string>
@@ -302,7 +303,7 @@
     <string name="my_overview_green_card_not_valid_title_vaccination">Over je vaccinatiebewijs</string>
     <string name="my_overview_green_card_not_valid_title_test">Over je testbewijs</string>
     <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_test"><![CDATA[Jouw testbewijs is niet geldig in Nederland. Je hebt wel een internationaal bewijs.<br/><br/>Dit kan komen doordat de geldigheidsduur in Nederland korter is dan in andere landen. Laat je opnieuw testen voor een bewijs dat ook in Nederland geldig is.]]></string>
-    <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_vaccination"><![CDATA[Jouw vaccinatiebewijs is niet geldig in Nederland. Je hebt wel een internationaal bewijs.<br/><br/>Het kan bijvoorbeeld zijn dat je maar één prik hebt gehad. Voeg je tweede vaccinatie toe om een bewijs te maken dat ook in Nederland geldig is. <a href=https://coronacheck.nl/nl/faq/2-4-ik-heb-wel-een-internationale-qr-code-maar-geen-nederlandse/</a> Lees hier meer over de mogelijke oorzaken.</a>]]></string>
+    <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_vaccination"><![CDATA[Jouw vaccinatiebewijs is niet geldig in Nederland. Je hebt wel een internationaal bewijs.<br/><br/>Het kan bijvoorbeeld zijn dat je maar één prik hebt gehad. Voeg je tweede vaccinatie toe om een bewijs te maken dat ook in Nederland geldig is. <a href="https://coronacheck.nl/nl/faq/2-4-ik-heb-wel-een-internationale-qr-code-maar-geen-nederlandse"> Lees hier meer over de mogelijke oorzaken.</a>]]></string>
     <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_test"><![CDATA[Jouw testbewijs is niet internationaal geldig. Je hebt wel een Nederlandse QR-code.<br/><br/>Dit kan bijvoorbeeld komen doordat een testbewijs in Nederland minder lang geldig is dan in het buitenland. Laat je opnieuw testen voor een bewijs dat ook geldig is in Nederland.]]></string>
     <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_vaccination"><![CDATA[Jouw vaccinatiebewijs is niet internationaal geldig. Je hebt wel een Nederlands bewijs.<br/><br/>Dit kan bijvoorbeeld komen doordat jouw type vaccin niet geaccepteerd wordt in het buitenland.]]></string>
     <string name="rule_engine_no_origin_title">We kunnen geen bewijs maken</string>
