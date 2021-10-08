@@ -5,7 +5,6 @@
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-
 package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
 import io.mockk.mockk
