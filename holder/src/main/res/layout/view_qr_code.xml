@@ -67,6 +67,7 @@
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="16dp"
             android:text="@string/qr_code_hidden_button"
+            android:textColor="@color/link"
             app:layout_constraintBottom_toBottomOf="@id/overlayBackground"
             app:layout_constraintEnd_toEndOf="@id/overlayBackground"
             app:layout_constraintStart_toStartOf="@id/overlayBackground"

@@ -248,8 +248,8 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
 
 
                     Handler(Looper.getMainLooper()).post {
-                        binding.nextQrButton.visibility = if (position == 0) View.VISIBLE else View.INVISIBLE
-                        binding.previousQrButton.visibility = if (position == europeanVaccinations.size - 1) View.VISIBLE else View.INVISIBLE
+                        binding.nextQrButton.visibility = if (position == europeanVaccinations.size - 1) View.INVISIBLE else View.VISIBLE
+                        binding.previousQrButton.visibility = if (position == 0) View.INVISIBLE else View.VISIBLE
 
                         val vaccination = europeanVaccinations[position]
                         binding.qrVaccinationDosis.text = getString(
@@ -355,9 +355,7 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
 
         (parentFragment?.parentFragment as HolderMainFragment).presentLoading(false)
 
-        setFragmentResult(
-            MyOverviewFragment.REQUEST_KEY,
-            bundleOf(MyOverviewFragment.EXTRA_BACK_FROM_QR to true)
-        )
+        requireActivity().requestedOrientation =
+            ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
     }
 }

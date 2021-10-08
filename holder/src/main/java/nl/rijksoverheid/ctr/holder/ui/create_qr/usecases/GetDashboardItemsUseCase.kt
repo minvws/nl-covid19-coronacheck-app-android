@@ -50,10 +50,13 @@ class GetDashboardItemsUseCaseImpl(
         isLoadingNewCredentials: Boolean,
     ): List<DashboardItem> {
         val dashboardItems = mutableListOf<DashboardItem>()
-        val domesticGreenCards =
-            allGreenCards.filter { it.greenCardEntity.type == GreenCardType.Domestic }
-        val internationalGreenCards =
-            allGreenCards.filter { it.greenCardEntity.type == GreenCardType.Eu }
+        val domesticGreenCards = allGreenCards.filter { it.greenCardEntity.type == GreenCardType.Domestic }
+
+        // Apply distinctBy here so that for two european green cards we do not get a two banners
+        // saying "the certificate isn't valid in NL"
+        val internationalGreenCards = allGreenCards
+                .filter { it.greenCardEntity.type == GreenCardType.Eu }
+                .distinctBy { it.greenCardEntity.type }
 
         if (dashboardItemUtil.shouldShowHeaderItem(allGreenCards)) {
             dashboardItems.add(

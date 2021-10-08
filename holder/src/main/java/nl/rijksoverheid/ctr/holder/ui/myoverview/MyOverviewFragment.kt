@@ -1,12 +1,10 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview
 
 import android.content.Intent
-import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResultListener
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
@@ -36,8 +34,6 @@ import org.koin.androidx.viewmodel.ViewModelOwner
 class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
 
     companion object {
-        const val REQUEST_KEY = "REQUEST_KEY"
-        const val EXTRA_BACK_FROM_QR = "EXTRA_BACK_FROM_QR"
         const val EXTRA_GREEN_CARD_TYPE = "GREEN_CARD_TYPE"
         const val EXTRA_RETURN_URI = "RETURN_URI"
 
@@ -74,18 +70,6 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
         val binding = FragmentMyOverviewBinding.bind(view)
         initRecyclerView(binding)
         observeItem()
-
-        setFragmentResultListener(
-            REQUEST_KEY
-        ) { requestKey, bundle ->
-            if (requestKey == REQUEST_KEY && bundle.getBoolean(
-                    EXTRA_BACK_FROM_QR
-                )
-            ) {
-                requireActivity().requestedOrientation =
-                    ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
-            }
-        }
     }
 
     private fun observeItem() {
