@@ -9,10 +9,7 @@ import android.os.Looper
 import android.transition.TransitionManager
 import android.view.View
 import android.view.WindowManager
-import androidx.core.os.bundleOf
-import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
@@ -88,11 +85,23 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
 
         setupViewPager()
         applyStyling()
+        dispatchTouchEventDoseInfo()
 
         qrCodeViewModel.qrCodeDataListLiveData.observe(viewLifecycleOwner, ::bindQrCodeDataList)
         qrCodeViewModel.returnAppLivedata.observe(viewLifecycleOwner, ::returnToApp)
 
         args.returnUri?.let { qrCodeViewModel.onReturnUriGiven(it, args.data.type) }
+    }
+
+    /**
+     * Dispatch touch events on the overlapping dose info view to have the animation view mirror itself.
+     */
+    @SuppressLint("ClickableViewAccessibility")
+    private fun dispatchTouchEventDoseInfo() {
+        binding.doseInfo.setOnTouchListener { v, event ->
+            binding.animation.dispatchTouchEvent(event)
+            true
+        }
     }
 
     private fun setupViewPager() {
