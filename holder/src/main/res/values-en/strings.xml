@@ -21,7 +21,7 @@
     <string name="privacy_policy_checkbox_text">I have read the privacy statement and understand how CoronaCheck processes my data.</string>
     <string name="my_overview">My certificates</string>
     <string name="my_overview_description">Visiting a location within the Netherlands? Show both your Dutch QR code and your proof of identity at the entrance of the location you\'re visiting.</string>
-    <string name="my_overview_description_eu"><![CDATA[Are you abroad, or planning to cross the border? Then always use the international QR code below. Please check before leaving which certificate you need. <br /><br /><a href="https://www.netherlandsworldwide.nl/travelling-outside-the-netherlands">Is my certificate valid where I’m heading?</a>]]></string>
+    <string name="my_overview_description_eu"><![CDATA[Are you abroad, or planning to cross the border? Then always use the international QR code below. Please check before leaving which certificate you need. <br /><br /><a href="https://www.netherlandsworldwide.nl/travelling-outside-the-netherlands">Which certificate is needed where I’m heading?</a>]]></string>
     <string name="my_overview_no_qr_description"><![CDATA[You can create a QR code if you\'re vaccinated, if you\'ve had corona or by taking a test at an <a href="https://coronacheck.nl/en/testafspraak-in-app">affiliated test location</a>.]]></string>
     <string name="dialog_error_title">Sorry, something went wrong</string>
     <string name="dialog_error_message">Because of a technical error.</string>
@@ -35,7 +35,7 @@
     <string name="privacy_statement">Privacy statement</string>
     <string name="terms_of_use">Acceptable use policy</string>
     <string name="my_overview_test_result_title">My certificate</string>
-    <string name="my_overview_test_result_international_title">International QR code</string>
+    <string name="my_overview_test_result_international_title">International QR</string>
     <string name="my_overview_test_result_validity">Valid until %1$s</string>
     <string name="my_overview_green_card_vaccination_title">Vaccination certificate</string>
     <string name="accessibility_label_my_overview_test_result_personal_data">Your personal data: %1$s %2$s %3$s %4$s</string>
@@ -339,7 +339,7 @@
     <string name="your_positive_test_description">Are your details correct? Then you can turn your positive test result into a QR code. This is your certificate.</string>
     <string name="positive_test_title">Positive test result</string>
     <string name="get_recovery_title">Retrieve recovery details</string>
-    <string name="get_recovery_description"><![CDATA[Have you had coronavirus? Then you can make a recovery certificate of the positive test result from the GGD. Login with DigiD to retrieve your test result.<br/><br/>Your recovery certificate will be valid 11 days after the positive test result. You also need to be free of symptoms.]]></string>
+    <string name="get_recovery_description"><![CDATA[Have you had coronavirus? Then you can make a recovery certificate of the positive test result. Login with DigiD to retrieve your test result.<br/><br/>Your recovery certificate will be valid 11 days after the positive test result. You also need to be free of symptoms.]]></string>
     <string name="no_positive_test_result_title">No positive test result available</string>
     <string name="no_positive_test_result_description"><![CDATA[There is no positive test result available.<br/><br/>Got tested recently? It can take a few hours until your details are available. Try again later.<br/><br/>Have you been tested more than 180 days ago? Then your test result is no longer valid.]]></string>
     <string name="positive_test_not_valid_title">Positive test result is not valid</string>
@@ -369,7 +369,7 @@
     <string name="qr_explanation_description_eu_recovery_footer">*Date noted in day-month-year.</string>
     <string name="my_overview_green_card_not_valid_title_recovery">About your recovery certificate</string>
     <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_recovery"><![CDATA[Your recovery certificate isn\'t valid in the Netherlands, because the type of test is not accepted.<br/><br/>You’ve only got an international QR code.]]></string>
-    <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_recovery"><![CDATA[Your recovery certificate isn\'t valid internationally. You\'ve only got a Dutch certificate.<br/><br/>The reason is that the type of test is not accepted. An international recovery certificate can only be made with a PCR-test.]]></string>
+    <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_recovery"><![CDATA[Your recovery certificate isn\'t valid internationally. You\'ve only got a Dutch certificate.<br/><br/>The reason could be that the type of test is not accepted. An international recovery certificate can only be made with a PCR test. Read more about the possible causes on the <a href="https://www.coronacheck.nl//en/guidepost">Guidepost.</a>]]></string>
     <string name="my_overview_green_card_server_error"><![CDATA[The app periodically needs a connection to the server to refresh your QR code. We failed to reach the server because of an error. <a href="#">Try again</a>]]></string>
     <string name="my_overview_green_card_server_error_after_retry"><![CDATA[Sorry, we weren’t able to refresh your QR code. Open the app again in 10 minutes.<br/><br/>Still not working? Please call the help desk at 0800-1421 (free) and provide the following error code: A 075]]></string>
     <string name="my_overview_green_card_internet_error"><![CDATA[Connect to the internet to make sure your QR code works again.<br/><a href="#">Try again</a>]]></string>
@@ -464,19 +464,19 @@
     <string name="dialog_device_secure_positive_button">OK</string>
     <string name="qr_code_details">Details</string>
     <string name="qr_code_dosis">Dose %1s</string>
-    <string name="dashboard_item_refresh_eu_vaccinations_text">Je kan je internationale vaccinatiebewijs vernieuwen</string>
-    <string name="dashboard_item_refresh_eu_vaccinations_button">Lees meer</string>
-    <string name="refresh_eu_items_title">Vaccinatiebewijs vernieuwen</string>
-    <string name="refresh_eu_items_description"><![CDATA[Binnen een maand vernieuwen we iedereens vaccinatiebewijs. Daardoor krijg je ook toegang tot QR-codes van eerdere prikken.<br/><br/>Dat is bijvoorbeeld handig voor mensen die ergens heen willen waar hun laatste prik nog niet geldig is.<br/><br/>Je kan je bewijs ook nu alvast vernieuwen als je dat wil.]]></string>
-    <string name="refresh_eu_items_button">Vernieuw bewijs</string>
-    <string name="refresh_eu_items_toolbar_title">Bewijs vernieuwen</string>
-    <string name="dashboard_item_refreshed_eu_vaccinations_text">Jouw vaccinatiebewijs is vernieuwd</string>
-    <string name="dashboard_item_refreshed_eu_vaccinations_button">Lees meer</string>
-    <string name="refreshed_eu_items_title">Over jouw nieuwe vaccinatiebewijs</string>
-    <string name="refreshed_eu_items_description"><![CDATA[Jouw vaccinatiebewijs is vernieuwd. Je kan de QR-codes van eerdere prikken nu vinden in jouw vaccinatiebewijs.<br/><br/>Dat is bijvoorbeeld handig voor mensen die ergens heen willen waar hun laatste prik nog niet geldig is. ]]></string>
-    <string name="qr_code_over_vaccinated">Deze QR is mogelijk niet overal geldig. Je kan dan dosis %1s gebruiken.</string>
-    <string name="qr_code_newer_dose_available">Deze QR-code heb je waarschijnlijk niet nodig, want je hebt een nieuwere dosis.</string>
-    <string name="qr_code_hidden_title">QR-code verborgen</string>
-    <string name="qr_code_hidden_button">Laat toch zien</string>
+    <string name="qr_code_over_vaccinated">This QR code may not be valid everywhere. If that’s the case, you can use dose %1s.</string>
+    <string name="qr_code_newer_dose_available">You probably won\'t need this QR code because you have a more recent dose.</string>
+    <string name="qr_code_hidden_title">QR code hidden</string>
+    <string name="qr_code_hidden_button">Show anyway</string>
     <string name="my_overview_results_button">View QR codes</string>
+    <string name="dashboard_item_refresh_eu_vaccinations_text">You can renew your international vaccination certificate</string>
+    <string name="dashboard_item_refresh_eu_vaccinations_button">Read more</string>
+    <string name="refresh_eu_items_title">Renew vaccination certificate</string>
+    <string name="refresh_eu_items_description"><![CDATA[Soon we will renew everyone\'s vaccination certificate. As a result, you\'ll get access to QR codes of earlier vaccinations.<br/><br/>This can be useful for people who want to go to a place where their latest vaccination is not yet valid.<br/><br/>If you want to, you can also renew your certificate now.]]></string>
+    <string name="refresh_eu_items_button">Renew certificate</string>
+    <string name="refresh_eu_items_toolbar_title">Renew vaccination certificate</string>
+    <string name="dashboard_item_refreshed_eu_vaccinations_text">Your international vaccination certificate has been renewed</string>
+    <string name="dashboard_item_refreshed_eu_vaccinations_button">Read more</string>
+    <string name="refreshed_eu_items_title">Renewed vaccination certificate</string>
+    <string name="refreshed_eu_items_description"><![CDATA[We have renewed everyone\'s vaccination certificate. From now on, you have access to QR codes of earlier vaccinations.<br/><br/>This can be useful for people who want to go to a place where their latest vaccination is not yet valid.<br/><br/><a href="https://coronacheck.nl/en/faq/3-5-waarom-heb-ik-voor-elke-prik-een-internationale-QR-code/">Read more about your renewed vaccination certificate here</a>]]></string>
 </resources>

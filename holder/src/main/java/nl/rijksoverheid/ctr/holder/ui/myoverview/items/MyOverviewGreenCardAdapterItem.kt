@@ -9,7 +9,7 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview.items
 
 import android.view.View
-import androidx.annotation.DimenRes
+import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.google.android.material.card.MaterialCardView
@@ -21,6 +21,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem.CardsItem.CredentialState.HasCredential
+import nl.rijksoverheid.ctr.shared.ext.getDimensionPixelSize
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -90,6 +91,7 @@ class MyOverviewGreenCardAdapterItem(
     private fun setContent(viewBinding: ItemMyOverviewGreenCardBinding) {
         // reset layout
         viewBinding.run {
+            (viewBinding.root.layoutParams as ViewGroup.MarginLayoutParams).bottomMargin = 0
             description.removeAllViews()
             greenCards.removeViews(1, viewBinding.greenCards.childCount - 1)
             errorText.setHtmlText("")
@@ -117,11 +119,11 @@ class MyOverviewGreenCardAdapterItem(
         for (i in 1 until cards.count()) {
             viewBinding.greenCards.addView(
                 MaterialCardView(viewBinding.greenCards.context).apply {
-                    radius = getDimensionPixel(R.dimen.dashboard_card_corner_radius)
-                    cardElevation = getDimensionPixel(R.dimen.dashboard_card_elevation) -
-                            (getDimensionPixel(R.dimen.dashboard_card_additional_lower_elevation) * i)
+                    radius = getDimensionPixelSize(R.dimen.dashboard_card_corner_radius).toFloat()
+                    cardElevation = getDimensionPixelSize(R.dimen.dashboard_card_elevation) -
+                            (getDimensionPixelSize(R.dimen.dashboard_card_additional_lower_elevation) * i).toFloat()
                     translationY =
-                        getDimensionPixel(R.dimen.dashboard_card_additional_translation_y) * i
+                        getDimensionPixelSize(R.dimen.dashboard_card_additional_translation_y).toFloat() * i
                 },
                 ConstraintLayout.LayoutParams(0, 0).apply {
                     topToTop = viewBinding.testResult.id
@@ -131,10 +133,13 @@ class MyOverviewGreenCardAdapterItem(
                 }
             )
         }
-    }
 
-    private fun MaterialCardView.getDimensionPixel(@DimenRes dimenRes: Int) =
-        context.resources.getDimensionPixelSize(dimenRes).toFloat()
+        // Add extra margin bottom so that correct margins stay intact when stacking cards
+        if (cards.count() > 1) {
+            (viewBinding.root.layoutParams as ViewGroup.MarginLayoutParams).bottomMargin =
+                viewBinding.root.getDimensionPixelSize(R.dimen.dashboard_card_additional_translation_y) * cards.count()
+        }
+    }
 
     private fun showError(viewBinding: ItemMyOverviewGreenCardBinding) {
         val context = viewBinding.root.context
