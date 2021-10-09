@@ -27,6 +27,8 @@ interface PersistenceManager {
     fun setHasDismissedUnsecureDeviceDialog(value : Boolean)
     fun hasDismissedSyncedGreenCardsItem(): Boolean
     fun setHasDismissedSyncedGreenCardsItem(dismissed: Boolean)
+    fun showSyncGreenCardsItem(): Boolean
+    fun setShowSyncGreenCardsItem(show: Boolean)
 }
 
 class SharedPreferencesPersistenceManager(
@@ -43,6 +45,7 @@ class SharedPreferencesPersistenceManager(
         const val SELECTED_DASHBOARD_TAB = "SELECTED_DASHBOARD_TAB"
         const val HAS_SEEN_SECURE_DEVICE_DIALOG = "HAS_SEEN_SECURE_DEVICE_DIALOG"
         const val HAS_DISMISSED_SYNCED_GREEN_CARDS_ITEM = "HAS_DISMISSED_SYNCED_GREEN_CARDS_ITEM"
+        const val SHOW_SYNC_GREEN_CARDS_ITEM = "SHOW_SYNC_GREEN_CARDS_ITEM"
     }
 
     override fun saveSecretKeyJson(json: String) {
@@ -142,6 +145,18 @@ class SharedPreferencesPersistenceManager(
             sharedPreferences.edit().putBoolean(HAS_DISMISSED_SYNCED_GREEN_CARDS_ITEM, dismissed).commit()
         if (!result) {
             throw IllegalStateException("Failed to set has dismissed synced green cards item in shared preference")
+        }
+    }
+
+    override fun showSyncGreenCardsItem(): Boolean {
+        return sharedPreferences.getBoolean(SHOW_SYNC_GREEN_CARDS_ITEM, true)
+    }
+
+    override fun setShowSyncGreenCardsItem(show: Boolean) {
+        val result =
+            sharedPreferences.edit().putBoolean(SHOW_SYNC_GREEN_CARDS_ITEM, show).commit()
+        if (!result) {
+            throw IllegalStateException("Failed to set show sync green cards item in shared preference")
         }
     }
 }

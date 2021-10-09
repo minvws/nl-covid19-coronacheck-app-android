@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.holder.HolderStep
+import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.shared.livedata.Event
@@ -25,12 +26,17 @@ abstract class SyncGreenCardsViewModel : ViewModel() {
     abstract fun refresh()
 }
 
-class SyncGreenCardsViewModelImpl(private val holderDatabaseSyncer: HolderDatabaseSyncer): SyncGreenCardsViewModel() {
+class SyncGreenCardsViewModelImpl(
+    private val holderDatabaseSyncer: HolderDatabaseSyncer,
+    private val persistenceManager: PersistenceManager): SyncGreenCardsViewModel() {
     override fun refresh() {
         (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {
             try {
                 val databaseSyncerResult = holderDatabaseSyncer.sync()
+                if (databaseSyncerResult is DatabaseSyncerResult.Success) {
+                    persistenceManager.setShowSyncGreenCardsItem(false)
+                }
                 (databaseSyncerResultLiveData as MutableLiveData).value = Event(databaseSyncerResult)
             } catch (e: Exception) {
                 (databaseSyncerResultLiveData as MutableLiveData).value = Event(

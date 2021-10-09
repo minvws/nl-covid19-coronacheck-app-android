@@ -217,6 +217,7 @@
     <string name="qr_explanation_title_domestic">About my Dutch QR code</string>
     <string name="qr_explanation_description_domestic"><![CDATA[Your Dutch QR code contains minimal data. The QR code says whether or not the QR code is valid. It doesn\'t say whether or not you have a test certificate or vaccination.<br/><br/> The QR code also contains several of your details. This is to make sure the QR code belongs to you. The details consist of the first letter of your first name, the first letter of your last name, your birth month, and your day of birth.<br/><br/>Your details: <b>%1$s</b><br/><br/>*To protect your privacy, some details may disappear. In this case you will see a hyphen (-).]]></string>
     <string name="qr_explanation_title_eu">About my international QR code</string>
+    <string name="qr_explanation_title_eu_vaccination">About dose %1s</string>
     <string name="qr_explanation_description_eu_vaccination_header">Are you abroad, or planning to cross the border? This requires more data. That\'s why the international QR code contains the following details:</string>
     <string name="qr_explanation_description_eu_vaccination_name">Name:</string>
     <string name="qr_explanation_description_eu_vaccination_birth_date">Date of birth*:</string>
@@ -293,7 +294,7 @@
     <string name="your_vaccination_explanation_vaccination_date">Date of vaccination:</string>
     <string name="your_vaccination_explanation_vaccination_country">Member state of vaccination:</string>
     <string name="your_vaccination_explanation_unique_code">Unique vaccination identifier:</string>
-    <string name="your_vaccination_explanation_doses_answer">%1$s of %2$s</string>
+    <string name="your_vaccination_explanation_doses_answer">%1$s / %2$s</string>
     <string name="my_overview_not_valid_domestic_but_is_in_eu">Your %1$s isn\'t valid in the Netherlands. You\'ve only got an international certificate.</string>
     <string name="my_overview_not_valid_eu_but_is_in_domestic">Your %1$s isn\'t valid internationally. You\'ve only got a Dutch certificate.</string>
     <string name="type_recovery">recovery certificate</string>
@@ -302,7 +303,7 @@
     <string name="my_overview_green_card_not_valid_title_vaccination">About your vaccination certificate</string>
     <string name="my_overview_green_card_not_valid_title_test">About your test certificate</string>
     <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_test"><![CDATA[Your test certificate isn\'t valid in the Netherlands. That\'s why only an international certificate was made.<br/><br/>It\'s possible the validity period in the Netherlands is shorter than the validity period in other countries. Get tested again.]]></string>
-    <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_vaccination"><![CDATA[Your vaccination certificate isn\'t valid in the Netherlands. That\'s why only an international certificate was made.<br/>It\'s possible you\'ve only had one injection. Add your second vaccination to get a valid Dutch certificate. <a href=https://coronacheck.nl/en/faq/2-4-ik-heb-wel-een-internationale-qr-code-maar-geen-nederlandse/</a>Read all about the possible causes.</a>]]></string>
+    <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_vaccination"><![CDATA[Your vaccination certificate isn\'t valid in the Netherlands. That\'s why only an international certificate was made.<br/>It\'s possible you\'ve only had one injection. Add your second vaccination to get a valid Dutch certificate. <a href="https://coronacheck.nl/en/faq/2-4-ik-heb-wel-een-internationale-qr-code-maar-geen-nederlandse">Read all about the possible causes.</a>]]></string>
     <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_test"><![CDATA[Your test certificate isn\'t valid internationally. That\'s why only a Dutch certificate was made.<br/><br/>It\'s possible your type of test isn\'t accepted abroad. Get tested again.]]></string>
     <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_vaccination"><![CDATA[Your vaccination certificate isn\'t valid internationally. That\'s why only a Dutch certificate was made.<br/><br/>It\'s possible your type of vaccination isn\'t accepted abroad.]]></string>
     <string name="rule_engine_no_origin_title">We can\'t make a certificate</string>

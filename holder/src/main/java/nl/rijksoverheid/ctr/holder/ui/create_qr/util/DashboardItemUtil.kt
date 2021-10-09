@@ -76,17 +76,18 @@ class DashboardItemUtilImpl(
         // - there is only one european vaccination
         // - that european vaccination has dosis "2"
         // this means you can update to our "multiple dcc" feature which will give you 2 green cards (1/2 and 2/2)
-        if (euVaccinationGreenCards.size == 1) {
+        val hasSecondDose = if (euVaccinationGreenCards.size == 1) {
             val credential = euVaccinationGreenCards.first().credentialEntities.firstOrNull()
-            credential?.let {
-                val readEuropeanCredential = mobileCoreWrapper.readEuropeanCredential(it.data)
+            if (credential == null) {
+                false
+            } else {
+                val readEuropeanCredential = mobileCoreWrapper.readEuropeanCredential(credential.data)
                 val dose = readEuropeanCredentialUtil.getDose(readEuropeanCredential)
-                if (dose == "2") {
-                    return true
-                }
+                dose == "2"
             }
-        }
-        return false
+        } else false
+
+        return hasSecondDose && persistenceManager.showSyncGreenCardsItem()
     }
 
     override fun shouldAddGreenCardsSyncedItem(allGreenCards: List<GreenCard>): Boolean {

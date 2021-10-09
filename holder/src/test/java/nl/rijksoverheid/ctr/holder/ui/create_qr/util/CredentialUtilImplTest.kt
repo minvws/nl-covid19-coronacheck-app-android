@@ -32,7 +32,7 @@ class CredentialUtilImplTest : AutoCloseKoinTest() {
         validFrom = OffsetDateTime.now(),
         expirationTime = expirationTime,
     )
-    
+
     private val mobileCoreWrapper: MobileCoreWrapper = mockk(relaxed = true)
 
     @Test
@@ -145,13 +145,42 @@ class CredentialUtilImplTest : AutoCloseKoinTest() {
         }
         val util = CredentialUtilImpl(clock, mockk(), appConfigUseCase)
 
-        val hidden = getVaccinationJson("2020-12-01", dose = "1", ofTotalDoses = "2")
-        val notHiddenBecauseOfDate = getVaccinationJson("2021-01-01", dose = "1", ofTotalDoses = "2")
-        val notHiddenBecauseOfDose = getVaccinationJson("2020-12-01", dose = "2", ofTotalDoses = "2")
+        val hidden = listOf(getVaccinationJson("2020-12-01", dose = "1", ofTotalDoses = "2"))
+        val notHiddenBecauseOfDate =
+            listOf(getVaccinationJson("2021-01-01", dose = "1", ofTotalDoses = "2"))
+        val notHiddenBecauseOfDose =
+            listOf(getVaccinationJson("2020-12-01", dose = "2", ofTotalDoses = "2"))
 
-        kotlin.test.assertTrue(util.vaccinationShouldBeHidden(hidden))
-        kotlin.test.assertFalse(util.vaccinationShouldBeHidden(notHiddenBecauseOfDate))
-        kotlin.test.assertFalse(util.vaccinationShouldBeHidden(notHiddenBecauseOfDose))
+        kotlin.test.assertTrue(util.vaccinationShouldBeHidden(hidden, 0))
+        kotlin.test.assertFalse(util.vaccinationShouldBeHidden(notHiddenBecauseOfDate, 0))
+        kotlin.test.assertFalse(util.vaccinationShouldBeHidden(notHiddenBecauseOfDose, 0))
+    }
+
+    @Test
+    fun `Hidden vaccination should not be hidden when there is a completed vaccination which is not relevant yet and the upcoming dose is 1 above the hidden one`() {
+        val clock = Clock.fixed(Instant.ofEpochSecond(1609498800), ZoneId.of("UTC")) // 2021-01-01
+        val appConfigUseCase: CachedAppConfigUseCase = mockk {
+            every { getCachedAppConfig() } returns HolderConfig.default(internationalQRRelevancyDays = 28)
+        }
+        val util = CredentialUtilImpl(clock, mockk(), appConfigUseCase)
+
+        val notHidden = listOf(
+            getVaccinationJson("2020-12-01", dose = "1", ofTotalDoses = "2"),
+            getVaccinationJson("2020-12-25", dose = "2", ofTotalDoses = "2")
+        )
+        val hidden = listOf(
+            getVaccinationJson("2020-12-01", dose = "1", ofTotalDoses = "2"),
+            getVaccinationJson("2020-12-02", dose = "2", ofTotalDoses = "2")
+        )
+        val hidden2 = listOf(
+            getVaccinationJson("2020-12-01", dose = "1", ofTotalDoses = "3"),
+            getVaccinationJson("2020-12-02", dose = "2", ofTotalDoses = "3"),
+            getVaccinationJson("2020-12-25", dose = "3", ofTotalDoses = "3")
+        )
+
+        assertFalse(util.vaccinationShouldBeHidden(notHidden, 0))
+        assertTrue(util.vaccinationShouldBeHidden(hidden2, 0))
+        assertTrue(util.vaccinationShouldBeHidden(hidden, 0))
     }
 
     private fun getVaccinationJson(date: String, dose: String = "2", ofTotalDoses: String = "2") =
