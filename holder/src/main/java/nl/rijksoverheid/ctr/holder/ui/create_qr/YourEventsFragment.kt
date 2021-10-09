@@ -11,6 +11,8 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.core.view.forEach
+import androidx.core.view.forEachIndexed
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import nl.rijksoverheid.ctr.design.ext.formatDateTime
@@ -43,7 +45,6 @@ import java.time.OffsetDateTime
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
-import java.util.*
 
 class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
 
@@ -142,6 +143,10 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         yourEventsViewModel.loading.observe(viewLifecycleOwner, EventObserver {
             (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
             binding.bottom.setButtonEnabled(!it)
+            binding.eventsGroup.forEachIndexed { index, _ ->
+                val eventGroup = binding.eventsGroup.getChildAt(index) as YourEventWidget
+                eventGroup.setButtonsEnabled(!it)
+            }
         })
 
         yourEventsViewModel.yourEventsResult.observe(
@@ -154,7 +159,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                                 YourEventsFragmentDirections.actionCouldNotCreateQr(
                                     toolbarTitle = args.toolbarTitle,
                                     title = getString(R.string.rule_engine_no_origin_title),
-                                    description = getString(R.string.rule_engine_no_test_origin_description, args.toolbarTitle.toLowerCase(Locale.getDefault())),
+                                    description = getString(R.string.rule_engine_no_test_origin_description, args.toolbarTitle.lowercase()),
                                     buttonTitle = getString(R.string.back_to_overview)
                                 )
                             )
@@ -625,4 +630,9 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                 ""
             }
         } ?: ""
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        (parentFragment?.parentFragment as HolderMainFragment).presentLoading(false)
+    }
 }
