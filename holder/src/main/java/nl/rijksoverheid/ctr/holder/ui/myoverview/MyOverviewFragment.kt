@@ -201,7 +201,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                                 BottomSheetData.TitleDescription(
                                     title = getString(R.string.refreshed_eu_items_title),
                                     applyOnDescription = {
-                                        it.setHtmlText(getString(R.string.refreshed_eu_items_description))
+                                        it.setHtmlText(getString(R.string.refreshed_eu_items_description), true)
                                     }
                                 )
                             )
