@@ -545,7 +545,7 @@ fun fakeCredentialUtil(activeCredential: CredentialEntity? = null) = object: Cre
         return ""
     }
 
-    override fun vaccinationShouldBeHidden(readEuropeanCredential: JSONObject): Boolean {
+    override fun vaccinationShouldBeHidden(readEuropeanCredential: List<JSONObject>, index: Int): Boolean {
         return false
     }
 }
