@@ -61,7 +61,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
     private val yourEventsViewModel: YourEventsViewModel by viewModel()
 
     override fun onButtonClickWithRetryTitle(): Int {
-        return R.string.my_overview
+        return R.string.dialog_retry
     }
 
     override fun onButtonClickWithRetryAction() {
