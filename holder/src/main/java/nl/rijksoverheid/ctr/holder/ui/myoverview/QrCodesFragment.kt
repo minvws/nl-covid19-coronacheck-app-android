@@ -255,7 +255,6 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
                     // Select current indicator
                     binding.qrVaccinationIndicators.updateSelected(position)
 
-
                     Handler(Looper.getMainLooper()).post {
                         binding.nextQrButton.visibility = if (position == europeanVaccinations.size - 1) View.INVISIBLE else View.VISIBLE
                         binding.previousQrButton.visibility = if (position == 0) View.INVISIBLE else View.VISIBLE
@@ -268,6 +267,9 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
 
                         showDoseInfo(vaccination)
                     }
+
+                    // reset qr overlay state on page change
+                    qrCodePagerAdapter.isOverlayStateReset = true
                 }
             })
 
