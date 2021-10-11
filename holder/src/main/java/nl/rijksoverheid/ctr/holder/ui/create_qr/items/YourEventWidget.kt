@@ -11,6 +11,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.items
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import nl.rijksoverheid.ctr.holder.databinding.ItemYourEventBinding
@@ -25,6 +26,10 @@ class YourEventWidget @JvmOverloads constructor(
     defStyleRes: Int = 0
 ) : ConstraintLayout(context, attrs, defStyle, defStyleRes) {
 
+    private var onClickListener = {
+
+    }
+
     val binding =
         ItemYourEventBinding.inflate(LayoutInflater.from(context), this, true)
 
@@ -33,9 +38,10 @@ class YourEventWidget @JvmOverloads constructor(
         binding.rowSubtitle.setHtmlText(subtitle)
 
         with (binding.testResultsGroup) {
-            setOnClickListener {
+            onClickListener = {
                 infoClickListener.invoke()
             }
+            setOnClickListener { onClickListener.invoke() }
 
             setAccessibilityLabel(String.format("%s. %s.",
                 binding.rowTitle.text,
@@ -44,5 +50,19 @@ class YourEventWidget @JvmOverloads constructor(
             setAsAccessibilityButton(true)
             addAccessibilityAction(AccessibilityNodeInfoCompat.ACTION_CLICK, binding.detailsButton.text)
         }
+    }
+
+    fun setButtonsEnabled(enabled: Boolean) {
+        binding.detailsButton.isEnabled = enabled
+        if (enabled) {
+            binding.testResultsGroup.setOnClickListener { onClickListener.invoke() }
+        } else {
+            binding.testResultsGroup.setOnClickListener {  }
+        }
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        onClickListener = { }
     }
 }
