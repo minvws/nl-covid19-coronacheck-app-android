@@ -331,12 +331,6 @@ class MyOverViewGreenCardAdapterUtilImpl(
             }
         }
 
-        descriptionLayout.addView(
-            textView,
-            LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            ).apply { setMargins(0, 0, 0, 0) }
-        )
+        descriptionLayout.addView(textView)
     }
 }
