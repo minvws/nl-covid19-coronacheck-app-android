@@ -604,6 +604,12 @@ fun fakeQrCodeUsecase() = object: QrCodeUseCase {
     }
 }
 
+fun fakeEventGroupEntityUtil(remoteEventVaccinations: List<RemoteEventVaccination> = listOf()) = object: EventGroupEntityUtil {
+    override suspend fun allVaccinationEvents(eventGroupEntities: List<EventGroupEntity>): List<RemoteEventVaccination> {
+        return remoteEventVaccinations
+    }
+}
+
 val fakeGreenCardEntity = GreenCardEntity(
     id = 0,
     walletId = 1,

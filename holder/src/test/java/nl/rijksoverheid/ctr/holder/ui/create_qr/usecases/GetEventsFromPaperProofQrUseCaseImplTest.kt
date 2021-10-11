@@ -6,6 +6,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventNegativeTest
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventRecovery
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventVaccination
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.RemoteEventUtil
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import org.json.JSONObject
 import org.junit.Test
@@ -20,9 +21,10 @@ import kotlin.test.assertFails
 @RunWith(RobolectricTestRunner::class)
 class GetEventsFromPaperProofQrUseCaseImplTest : AutoCloseKoinTest() {
 
+    private val remoteEventUtil: RemoteEventUtil = mockk(relaxed = true)
     private val mobileCoreWrapper: MobileCoreWrapper = mockk(relaxed = true)
 
-    private val useCase = GetEventsFromPaperProofQrUseCaseImpl(mobileCoreWrapper)
+    private val useCase = GetEventsFromPaperProofQrUseCaseImpl(mobileCoreWrapper, remoteEventUtil)
 
     @Test
     fun `vaccination should be parsed from qr`() {

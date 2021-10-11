@@ -23,7 +23,8 @@ class DashboardItemUtilImplTest {
             greenCardUtil = fakeGreenCardUtil(),
             readEuropeanCredentialUtil = fakeReadEuropeanCredentialUtil(),
             mobileCoreWrapper = fakeMobileCoreWrapper(),
-            persistenceManager = fakePersistenceManager()
+            persistenceManager = fakePersistenceManager(),
+            eventGroupEntityUtil = fakeEventGroupEntityUtil()
         )
 
         val shouldShowHeaderItem = util.shouldShowHeaderItem(
@@ -42,7 +43,8 @@ class DashboardItemUtilImplTest {
             ),
             readEuropeanCredentialUtil = fakeReadEuropeanCredentialUtil(),
             mobileCoreWrapper = fakeMobileCoreWrapper(),
-            persistenceManager = fakePersistenceManager()
+            persistenceManager = fakePersistenceManager(),
+            eventGroupEntityUtil = fakeEventGroupEntityUtil()
         )
 
         val shouldShowHeaderItem = util.shouldShowHeaderItem(
@@ -61,7 +63,8 @@ class DashboardItemUtilImplTest {
             greenCardUtil = fakeGreenCardUtil(),
             readEuropeanCredentialUtil = fakeReadEuropeanCredentialUtil(),
             mobileCoreWrapper = fakeMobileCoreWrapper(),
-            persistenceManager = fakePersistenceManager()
+            persistenceManager = fakePersistenceManager(),
+            eventGroupEntityUtil = fakeEventGroupEntityUtil()
         )
 
         val shouldShowClockDeviationItem = util.shouldShowClockDeviationItem(
@@ -82,7 +85,8 @@ class DashboardItemUtilImplTest {
             ),
             readEuropeanCredentialUtil = fakeReadEuropeanCredentialUtil(),
             mobileCoreWrapper = fakeMobileCoreWrapper(),
-            persistenceManager = fakePersistenceManager()
+            persistenceManager = fakePersistenceManager(),
+            eventGroupEntityUtil = fakeEventGroupEntityUtil()
         )
 
         val shouldShowClockDeviationItem = util.shouldShowClockDeviationItem(
@@ -99,7 +103,8 @@ class DashboardItemUtilImplTest {
             greenCardUtil = fakeGreenCardUtil(),
             readEuropeanCredentialUtil = fakeReadEuropeanCredentialUtil(),
             mobileCoreWrapper = fakeMobileCoreWrapper(),
-            persistenceManager = fakePersistenceManager()
+            persistenceManager = fakePersistenceManager(),
+            eventGroupEntityUtil = fakeEventGroupEntityUtil()
         )
 
         val shouldShowHeaderItem = util.shouldShowPlaceholderItem(
@@ -118,7 +123,8 @@ class DashboardItemUtilImplTest {
             ),
             readEuropeanCredentialUtil = fakeReadEuropeanCredentialUtil(),
             mobileCoreWrapper = fakeMobileCoreWrapper(),
-            persistenceManager = fakePersistenceManager()
+            persistenceManager = fakePersistenceManager(),
+            eventGroupEntityUtil = fakeEventGroupEntityUtil()
         )
 
         val shouldShowHeaderItem = util.shouldShowPlaceholderItem(
@@ -135,7 +141,8 @@ class DashboardItemUtilImplTest {
             greenCardUtil = fakeGreenCardUtil(),
             readEuropeanCredentialUtil = fakeReadEuropeanCredentialUtil(),
             mobileCoreWrapper = fakeMobileCoreWrapper(),
-            persistenceManager = fakePersistenceManager()
+            persistenceManager = fakePersistenceManager(),
+            eventGroupEntityUtil = fakeEventGroupEntityUtil()
         )
 
         val shouldAddQrButtonItem = util.shouldAddQrButtonItem(
@@ -147,7 +154,7 @@ class DashboardItemUtilImplTest {
 
     @Test
     fun `multiple vaccination card items should be combined into 1`() {
-        val util = DashboardItemUtilImpl(mockk(), mockk(), mockk(), mockk(), mockk())
+        val util = DashboardItemUtilImpl(mockk(), mockk(), mockk(), mockk(), mockk(), mockk())
 
         val card1 = createCardItem(OriginType.Vaccination)
         val card2 = createCardItem(OriginType.Vaccination)
@@ -170,296 +177,6 @@ class DashboardItemUtilImplTest {
         assertEquals((combinedItems[2] as CardsItem).cards[0], card1)
         assertEquals((combinedItems[2] as CardsItem).cards[1], card2)
         assertEquals((combinedItems[2] as CardsItem).cards[2], card3)
-    }
-
-    @Test
-    fun `shouldAddSyncGreenCardsItem returns true if only one eu vaccination with dosis 2 and flag set to true`() {
-        val util = DashboardItemUtilImpl(
-            clockDeviationUseCase = fakeClockDevationUseCase(),
-            greenCardUtil = fakeGreenCardUtil(
-                isExpired = true
-            ),
-            readEuropeanCredentialUtil = fakeReadEuropeanCredentialUtil(
-                dosis = "2"
-            ),
-            mobileCoreWrapper = fakeMobileCoreWrapper(),
-            persistenceManager = fakePersistenceManager(
-                showSyncGreenCardsItem = true
-            )
-        )
-
-        val shouldAddSyncGreenCardsItem = util.shouldAddSyncGreenCardsItem(
-            allGreenCards = listOf(
-                GreenCard(
-                    greenCardEntity = GreenCardEntity(
-                        id = 0,
-                        walletId = 0,
-                        type = GreenCardType.Eu
-                    ),
-                    origins = listOf(
-                        OriginEntity(
-                            id = 0,
-                            greenCardId = 0,
-                            type = OriginType.Vaccination,
-                            eventTime = OffsetDateTime.now(),
-                            expirationTime = OffsetDateTime.now(),
-                            validFrom = OffsetDateTime.now()
-                        )
-                    ),
-                    credentialEntities = listOf(CredentialEntity(
-                        id = 0,
-                        greenCardId = 0,
-                        data = "".toByteArray(),
-                        credentialVersion = 0,
-                        validFrom = OffsetDateTime.now(),
-                        expirationTime = OffsetDateTime.now()
-                    ))
-                )
-            )
-        )
-
-        assertEquals(true, shouldAddSyncGreenCardsItem)
-    }
-
-    @Test
-    fun `shouldAddSyncGreenCardsItem returns false if only one eu vaccination with dosis 2 and flag set to false`() {
-        val util = DashboardItemUtilImpl(
-            clockDeviationUseCase = fakeClockDevationUseCase(),
-            greenCardUtil = fakeGreenCardUtil(
-                isExpired = true
-            ),
-            readEuropeanCredentialUtil = fakeReadEuropeanCredentialUtil(
-                dosis = "2"
-            ),
-            mobileCoreWrapper = fakeMobileCoreWrapper(),
-            persistenceManager = fakePersistenceManager(
-                showSyncGreenCardsItem = false
-            )
-        )
-
-        val shouldAddSyncGreenCardsItem = util.shouldAddSyncGreenCardsItem(
-            allGreenCards = listOf(
-                GreenCard(
-                    greenCardEntity = GreenCardEntity(
-                        id = 0,
-                        walletId = 0,
-                        type = GreenCardType.Eu
-                    ),
-                    origins = listOf(
-                        OriginEntity(
-                            id = 0,
-                            greenCardId = 0,
-                            type = OriginType.Vaccination,
-                            eventTime = OffsetDateTime.now(),
-                            expirationTime = OffsetDateTime.now(),
-                            validFrom = OffsetDateTime.now()
-                        )
-                    ),
-                    credentialEntities = listOf(CredentialEntity(
-                        id = 0,
-                        greenCardId = 0,
-                        data = "".toByteArray(),
-                        credentialVersion = 0,
-                        validFrom = OffsetDateTime.now(),
-                        expirationTime = OffsetDateTime.now()
-                    ))
-                )
-            )
-        )
-
-        assertEquals(false, shouldAddSyncGreenCardsItem)
-    }
-
-    @Test
-    fun `shouldAddSyncGreenCardsItem returns false if only one eu vaccination with dosis 1`() {
-        val util = DashboardItemUtilImpl(
-            clockDeviationUseCase = fakeClockDevationUseCase(),
-            greenCardUtil = fakeGreenCardUtil(
-                isExpired = true
-            ),
-            readEuropeanCredentialUtil = fakeReadEuropeanCredentialUtil(
-                dosis = "1"
-            ),
-            mobileCoreWrapper = fakeMobileCoreWrapper(),
-            persistenceManager = fakePersistenceManager()
-        )
-
-        val shouldAddSyncGreenCardsItem = util.shouldAddSyncGreenCardsItem(
-            allGreenCards = listOf(
-                GreenCard(
-                    greenCardEntity = GreenCardEntity(
-                        id = 0,
-                        walletId = 0,
-                        type = GreenCardType.Eu
-                    ),
-                    origins = listOf(
-                        OriginEntity(
-                            id = 0,
-                            greenCardId = 0,
-                            type = OriginType.Vaccination,
-                            eventTime = OffsetDateTime.now(),
-                            expirationTime = OffsetDateTime.now(),
-                            validFrom = OffsetDateTime.now()
-                        )
-                    ),
-                    credentialEntities = listOf( CredentialEntity(
-                        id = 0,
-                        greenCardId = 0,
-                        data = "".toByteArray(),
-                        credentialVersion = 0,
-                        validFrom = OffsetDateTime.now(),
-                        expirationTime = OffsetDateTime.now()
-                    ))
-                )
-            )
-        )
-
-        assertEquals(false, shouldAddSyncGreenCardsItem)
-    }
-
-    @Test
-    fun `shouldAddSyncGreenCardsItem returns false if multiple eu vaccinations`() {
-        val greenCard = GreenCard(
-            greenCardEntity = GreenCardEntity(
-                id = 0,
-                walletId = 0,
-                type = GreenCardType.Eu
-            ),
-            origins = listOf(
-                OriginEntity(
-                    id = 0,
-                    greenCardId = 0,
-                    type = OriginType.Vaccination,
-                    eventTime = OffsetDateTime.now(),
-                    expirationTime = OffsetDateTime.now(),
-                    validFrom = OffsetDateTime.now()
-                )
-            ),
-            credentialEntities = listOf(CredentialEntity(
-                id = 0,
-                greenCardId = 0,
-                data = "".toByteArray(),
-                credentialVersion = 0,
-                validFrom = OffsetDateTime.now(),
-                expirationTime = OffsetDateTime.now()
-            ))
-        )
-
-        val util = DashboardItemUtilImpl(
-            clockDeviationUseCase = fakeClockDevationUseCase(),
-            greenCardUtil = fakeGreenCardUtil(
-                isExpired = true
-            ),
-            readEuropeanCredentialUtil = fakeReadEuropeanCredentialUtil(
-                dosis = "2"
-            ),
-            mobileCoreWrapper = fakeMobileCoreWrapper(),
-            persistenceManager = fakePersistenceManager()
-        )
-
-        val shouldAddSyncGreenCardsItem = util.shouldAddSyncGreenCardsItem(
-            allGreenCards = listOf(greenCard, greenCard)
-        )
-
-        assertEquals(false, shouldAddSyncGreenCardsItem)
-    }
-
-    @Test
-    fun `shouldAddGreenCardsSyncedItem returns false if multiple eu vaccinations and local flag set to true`() {
-        val greenCard = GreenCard(
-            greenCardEntity = GreenCardEntity(
-                id = 0,
-                walletId = 0,
-                type = GreenCardType.Eu
-            ),
-            origins = listOf(
-                OriginEntity(
-                    id = 0,
-                    greenCardId = 0,
-                    type = OriginType.Vaccination,
-                    eventTime = OffsetDateTime.now(),
-                    expirationTime = OffsetDateTime.now(),
-                    validFrom = OffsetDateTime.now()
-                )
-            ),
-            credentialEntities = listOf(CredentialEntity(
-                id = 0,
-                greenCardId = 0,
-                data = "".toByteArray(),
-                credentialVersion = 0,
-                validFrom = OffsetDateTime.now(),
-                expirationTime = OffsetDateTime.now()
-            ))
-        )
-
-        val util = DashboardItemUtilImpl(
-            clockDeviationUseCase = fakeClockDevationUseCase(),
-            greenCardUtil = fakeGreenCardUtil(
-                isExpired = true
-            ),
-            readEuropeanCredentialUtil = fakeReadEuropeanCredentialUtil(
-                dosis = "2"
-            ),
-            mobileCoreWrapper = fakeMobileCoreWrapper(),
-            persistenceManager = fakePersistenceManager(
-                hasDismissedUnsecureDeviceDialog = true
-            )
-        )
-
-        val shouldAddGreenCardsSyncedItem = util.shouldAddGreenCardsSyncedItem(
-            allGreenCards = listOf(greenCard, greenCard)
-        )
-
-        assertEquals(false, shouldAddGreenCardsSyncedItem)
-    }
-
-    @Test
-    fun `shouldAddGreenCardsSyncedItem returns true if multiple eu vaccinations and local flag set to false`() {
-        val greenCard = GreenCard(
-            greenCardEntity = GreenCardEntity(
-                id = 0,
-                walletId = 0,
-                type = GreenCardType.Eu
-            ),
-            origins = listOf(
-                OriginEntity(
-                    id = 0,
-                    greenCardId = 0,
-                    type = OriginType.Vaccination,
-                    eventTime = OffsetDateTime.now(),
-                    expirationTime = OffsetDateTime.now(),
-                    validFrom = OffsetDateTime.now()
-                )
-            ),
-            credentialEntities = listOf(CredentialEntity(
-                id = 0,
-                greenCardId = 0,
-                data = "".toByteArray(),
-                credentialVersion = 0,
-                validFrom = OffsetDateTime.now(),
-                expirationTime = OffsetDateTime.now()
-            ))
-        )
-
-        val util = DashboardItemUtilImpl(
-            clockDeviationUseCase = fakeClockDevationUseCase(),
-            greenCardUtil = fakeGreenCardUtil(
-                isExpired = true
-            ),
-            readEuropeanCredentialUtil = fakeReadEuropeanCredentialUtil(
-                dosis = "2"
-            ),
-            mobileCoreWrapper = fakeMobileCoreWrapper(),
-            persistenceManager = fakePersistenceManager(
-                hasDismissedUnsecureDeviceDialog = false
-            )
-        )
-
-        val shouldAddGreenCardsSyncedItem = util.shouldAddGreenCardsSyncedItem(
-            allGreenCards = listOf(greenCard, greenCard)
-        )
-
-        assertEquals(true, shouldAddGreenCardsSyncedItem)
     }
 
     private fun createCardItem(originType: OriginType) = CardItem(

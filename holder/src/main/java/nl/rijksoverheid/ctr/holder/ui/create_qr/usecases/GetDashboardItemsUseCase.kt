@@ -3,15 +3,18 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItems
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
+import timber.log.Timber
 
 interface GetDashboardItemsUseCase {
     suspend fun getItems(
+        allEventGroupEntities: List<EventGroupEntity>,
         allGreenCards: List<GreenCard>,
         databaseSyncerResult: DatabaseSyncerResult = DatabaseSyncerResult.Success(),
         isLoadingNewCredentials: Boolean,
@@ -26,6 +29,7 @@ class GetDashboardItemsUseCaseImpl(
     private val persistenceManager: PersistenceManager
 ) : GetDashboardItemsUseCase {
     override suspend fun getItems(
+        allEventGroupEntities: List<EventGroupEntity>,
         allGreenCards: List<GreenCard>,
         databaseSyncerResult: DatabaseSyncerResult,
         isLoadingNewCredentials: Boolean
@@ -39,7 +43,8 @@ class GetDashboardItemsUseCaseImpl(
             internationalItems = getInternationalItems(
                 allGreenCards = allGreenCards,
                 databaseSyncerResult = databaseSyncerResult,
-                isLoadingNewCredentials = isLoadingNewCredentials
+                isLoadingNewCredentials = isLoadingNewCredentials,
+                allEventGroupEntities = allEventGroupEntities
             )
         )
     }
@@ -92,7 +97,8 @@ class GetDashboardItemsUseCaseImpl(
         return dashboardItems
     }
 
-    private fun getInternationalItems(
+    private suspend fun getInternationalItems(
+        allEventGroupEntities: List<EventGroupEntity>,
         allGreenCards: List<GreenCard>,
         databaseSyncerResult: DatabaseSyncerResult,
         isLoadingNewCredentials: Boolean,
@@ -113,10 +119,9 @@ class GetDashboardItemsUseCaseImpl(
             dashboardItems.add(DashboardItem.ClockDeviationItem)
         }
 
-        if (dashboardItemUtil.shouldAddSyncGreenCardsItem(allGreenCards)) {
+        if (dashboardItemUtil.shouldAddSyncGreenCardsItem(allEventGroupEntities, allGreenCards)) {
             // Enable the ability to show GreenCardsSyncedItem (after successful sync)
             persistenceManager.setHasDismissedSyncedGreenCardsItem(false)
-
             dashboardItems.add(DashboardItem.SyncGreenCardsItem)
         }
 
