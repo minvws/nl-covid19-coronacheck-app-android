@@ -97,7 +97,8 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                 is DashboardItem.HeaderItem -> {
                     adapterItems.add(
                         MyOverviewHeaderAdapterItem(
-                            text = dashboardItem.text
+                            text = dashboardItem.text,
+                            showButton = greenCardType == GreenCardType.Eu,
                         )
                     )
                 }
