@@ -15,22 +15,27 @@ class EventGroupEntityUtilImpl(
     private val remoteEventUtil: RemoteEventUtil
 ): EventGroupEntityUtil {
     override suspend fun allVaccinationEvents(eventGroupEntities: List<EventGroupEntity>): List<RemoteEventVaccination> {
-        val dccRemoteEvents = eventGroupEntities
-            .filter { it.providerIdentifier == RemoteConfigProviders.EventProvider.PROVIDER_IDENTIFIER_DCC }
-            .map {
-                val credential = JSONObject(String(it.jsonData)).optString("credential")
-                val readEuropeanCredential = mobileCoreWrapper.readEuropeanCredential(credential.toByteArray())
-                val dcc = readEuropeanCredential.optJSONObject("dcc")
-                remoteEventUtil.getRemoteEventFromDcc(dcc)
-            }
-            .filterIsInstance<RemoteEventVaccination>()
+        try {
+            val dccRemoteEvents = eventGroupEntities
+                .filter { it.providerIdentifier == RemoteConfigProviders.EventProvider.PROVIDER_IDENTIFIER_DCC }
+                .map {
+                    val credential = JSONObject(String(it.jsonData)).optString("credential")
+                    val readEuropeanCredential = mobileCoreWrapper.readEuropeanCredential(credential.toByteArray())
+                    val dcc = readEuropeanCredential.optJSONObject("dcc")
+                    remoteEventUtil.getRemoteEventFromDcc(dcc)
+                }
+                .filterIsInstance<RemoteEventVaccination>()
 
-        val nonDccRemoteEvents = eventGroupEntities
-            .filter { it.providerIdentifier != RemoteConfigProviders.EventProvider.PROVIDER_IDENTIFIER_DCC }
-            .map { remoteEventUtil.getRemoteEventsFromNonDcc(it) }
-            .flatten()
-            .filterIsInstance<RemoteEventVaccination>()
+            val nonDccRemoteEvents = eventGroupEntities
+                .filter { it.providerIdentifier != RemoteConfigProviders.EventProvider.PROVIDER_IDENTIFIER_DCC }
+                .map { remoteEventUtil.getRemoteEventsFromNonDcc(it) }
+                .flatten()
+                .filterIsInstance<RemoteEventVaccination>()
 
-        return nonDccRemoteEvents.plus(dccRemoteEvents)
+            return nonDccRemoteEvents.plus(dccRemoteEvents)
+        } catch (e: Exception) {
+            // If something is wrong with getting this data, make sure the app does not crash
+            return listOf()
+        }
     }
 }
