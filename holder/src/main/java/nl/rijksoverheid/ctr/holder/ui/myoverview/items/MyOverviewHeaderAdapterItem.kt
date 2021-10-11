@@ -15,18 +15,21 @@ import nl.rijksoverheid.ctr.holder.databinding.ItemMyOverviewHeaderBinding
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class MyOverviewHeaderAdapterItem(@StringRes private val text: Int, private val showButton: Boolean) :
+data class ButtonInfo(@StringRes val text: Int, @StringRes val link: Int)
+
+class MyOverviewHeaderAdapterItem(@StringRes private val text: Int, private val buttonInfo: ButtonInfo?) :
     BindableItem<ItemMyOverviewHeaderBinding>(R.layout.item_my_overview_header.toLong()) {
     override fun bind(viewBinding: ItemMyOverviewHeaderBinding, position: Int) {
         viewBinding.text.setHtmlText(text, htmlLinksEnabled = true)
         viewBinding.button.run {
-            if (showButton) {
+            if (buttonInfo != null) {
                 visibility = View.VISIBLE
+                setText(buttonInfo.text)
                 setOnClickListener {
                     context.startActivity(
                         Intent(
                             Intent.ACTION_VIEW,
-                            Uri.parse(viewBinding.root.context.getString(R.string.my_overview_description_eu_button_link))
+                            Uri.parse(viewBinding.root.context.getString(buttonInfo.link))
                         )
                     )
                 }

@@ -98,7 +98,11 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                     adapterItems.add(
                         MyOverviewHeaderAdapterItem(
                             text = dashboardItem.text,
-                            showButton = greenCardType == GreenCardType.Eu,
+                            buttonInfo =  if (greenCardType == GreenCardType.Eu) {
+                                ButtonInfo(R.string.my_overview_description_eu_button_text, R.string.my_overview_description_eu_button_link)
+                            } else {
+                                null
+                            },
                         )
                     )
                 }
