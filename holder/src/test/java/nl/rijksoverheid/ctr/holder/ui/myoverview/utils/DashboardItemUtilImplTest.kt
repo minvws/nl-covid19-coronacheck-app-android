@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview.utils
 
 import io.mockk.mockk
+import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.holder.*
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
@@ -8,6 +9,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem.GreenCardEx
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem.CardsItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem.CardsItem.CardItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem.HeaderItem
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventVaccination
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.DashboardItemUtilImpl
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -163,6 +165,150 @@ class DashboardItemUtilImplTest {
         assertEquals((combinedItems[2] as CardsItem).cards[0], card1)
         assertEquals((combinedItems[2] as CardsItem).cards[1], card2)
         assertEquals((combinedItems[2] as CardsItem).cards[2], card3)
+    }
+
+    @Test
+    fun `shouldAddSyncGreenCardsItem returns false if no vaccination events`() = runBlocking {
+        val util = DashboardItemUtilImpl(
+            clockDeviationUseCase = fakeClockDevationUseCase(),
+            greenCardUtil = fakeGreenCardUtil(),
+            persistenceManager = fakePersistenceManager(),
+            eventGroupEntityUtil = fakeEventGroupEntityUtil(
+                remoteEventVaccinations = listOf()
+            )
+        )
+
+        val shouldAddSyncGreenCardsItem = util.shouldAddSyncGreenCardsItem(
+            allGreenCards = listOf(),
+            allEventGroupEntities = listOf()
+        )
+
+        assertEquals(false, shouldAddSyncGreenCardsItem)
+    }
+
+    @Test
+    fun `shouldAddSyncGreenCardsItem returns false if there is a single vaccination event`() = runBlocking {
+        val util = DashboardItemUtilImpl(
+            clockDeviationUseCase = fakeClockDevationUseCase(),
+            greenCardUtil = fakeGreenCardUtil(),
+            persistenceManager = fakePersistenceManager(),
+            eventGroupEntityUtil = fakeEventGroupEntityUtil(
+                remoteEventVaccinations = listOf(
+                    RemoteEventVaccination(
+                        type = "",
+                        unique = "",
+                        vaccination = fakeRemoteEventVaccination
+                    )
+                )
+            )
+        )
+
+        val shouldAddSyncGreenCardsItem = util.shouldAddSyncGreenCardsItem(
+            allGreenCards = listOf(),
+            allEventGroupEntities = listOf()
+        )
+
+        assertEquals(false, shouldAddSyncGreenCardsItem)
+    }
+
+    @Test
+    fun `shouldAddSyncGreenCardsItem returns true if there are multiple vaccination events and one european green card`() = runBlocking {
+        val util = DashboardItemUtilImpl(
+            clockDeviationUseCase = fakeClockDevationUseCase(),
+            greenCardUtil = fakeGreenCardUtil(),
+            persistenceManager = fakePersistenceManager(),
+            eventGroupEntityUtil = fakeEventGroupEntityUtil(
+                remoteEventVaccinations = listOf(
+                    RemoteEventVaccination(
+                        type = "",
+                        unique = "",
+                        vaccination = fakeRemoteEventVaccination
+                    ),
+                    RemoteEventVaccination(
+                        type = "",
+                        unique = "",
+                        vaccination = fakeRemoteEventVaccination
+                    )
+                )
+            )
+        )
+
+        val shouldAddSyncGreenCardsItem = util.shouldAddSyncGreenCardsItem(
+            allGreenCards = listOf(fakeEuropeanVaccinationGreenCard),
+            allEventGroupEntities = listOf()
+        )
+
+        assertEquals(true, shouldAddSyncGreenCardsItem)
+    }
+
+    @Test
+    fun `shouldAddSyncGreenCardsItem returns false if there are multiple vaccination events and two european green card`() = runBlocking {
+        val util = DashboardItemUtilImpl(
+            clockDeviationUseCase = fakeClockDevationUseCase(),
+            greenCardUtil = fakeGreenCardUtil(),
+            persistenceManager = fakePersistenceManager(),
+            eventGroupEntityUtil = fakeEventGroupEntityUtil(
+                remoteEventVaccinations = listOf(
+                    RemoteEventVaccination(
+                        type = "",
+                        unique = "",
+                        vaccination = fakeRemoteEventVaccination
+                    ),
+                    RemoteEventVaccination(
+                        type = "",
+                        unique = "",
+                        vaccination = fakeRemoteEventVaccination
+                    )
+                )
+            )
+        )
+
+        val shouldAddSyncGreenCardsItem = util.shouldAddSyncGreenCardsItem(
+            allGreenCards = listOf(fakeEuropeanVaccinationGreenCard, fakeEuropeanVaccinationGreenCard),
+            allEventGroupEntities = listOf()
+        )
+
+        assertEquals(false, shouldAddSyncGreenCardsItem)
+    }
+
+    @Test
+    fun `shouldAddGreenCardsSyncedItem returns false if multiple eu vaccinations and local flag set to true`() {
+        val util = DashboardItemUtilImpl(
+            clockDeviationUseCase = fakeClockDevationUseCase(),
+            greenCardUtil = fakeGreenCardUtil(
+                isExpired = true
+            ),
+            persistenceManager = fakePersistenceManager(
+                hasDismissedUnsecureDeviceDialog = true
+            ),
+            eventGroupEntityUtil = fakeEventGroupEntityUtil()
+        )
+
+        val shouldAddGreenCardsSyncedItem = util.shouldAddGreenCardsSyncedItem(
+            allGreenCards = listOf(fakeEuropeanVaccinationGreenCard, fakeEuropeanVaccinationGreenCard)
+        )
+
+        assertEquals(false, shouldAddGreenCardsSyncedItem)
+    }
+
+    @Test
+    fun `shouldAddGreenCardsSyncedItem returns true if multiple eu vaccinations and local flag set to false`() {
+        val util = DashboardItemUtilImpl(
+            clockDeviationUseCase = fakeClockDevationUseCase(),
+            greenCardUtil = fakeGreenCardUtil(
+                isExpired = true
+            ),
+            persistenceManager = fakePersistenceManager(
+                hasDismissedUnsecureDeviceDialog = false
+            ),
+            eventGroupEntityUtil = fakeEventGroupEntityUtil()
+        )
+
+        val shouldAddGreenCardsSyncedItem = util.shouldAddGreenCardsSyncedItem(
+            allGreenCards = listOf(fakeEuropeanVaccinationGreenCard, fakeEuropeanVaccinationGreenCard)
+        )
+
+        assertEquals(true, shouldAddGreenCardsSyncedItem)
     }
 
     private fun createCardItem(originType: OriginType) = CardItem(

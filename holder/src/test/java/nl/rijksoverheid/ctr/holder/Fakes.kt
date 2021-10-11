@@ -34,6 +34,7 @@ import nl.rijksoverheid.ctr.shared.models.*
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import nl.rijksoverheid.ctr.shared.utils.TestResultUtil
 import org.json.JSONObject
+import java.time.LocalDate
 import java.time.OffsetDateTime
 
 /*
@@ -620,6 +621,46 @@ val fakeGreenCard = GreenCard(
     greenCardEntity = fakeGreenCardEntity,
     origins = listOf(),
     credentialEntities = listOf()
+)
+
+val fakeRemoteEventVaccination = RemoteEventVaccination.Vaccination(
+    date = LocalDate.now(),
+    hpkCode = "",
+    type = "",
+    brand = "",
+    completedByMedicalStatement = false,
+    completedByPersonalStatement = false,
+    completionReason = "",
+    doseNumber = "",
+    totalDoses = "",
+    country = "",
+    manufacturer = ""
+)
+
+val fakeEuropeanVaccinationGreenCard = GreenCard(
+    greenCardEntity = GreenCardEntity(
+        id = 0,
+        walletId = 0,
+        type = GreenCardType.Eu
+    ),
+    origins = listOf(
+        OriginEntity(
+            id = 0,
+            greenCardId = 0,
+            type = OriginType.Vaccination,
+            eventTime = OffsetDateTime.now(),
+            expirationTime = OffsetDateTime.now(),
+            validFrom = OffsetDateTime.now()
+        )
+    ),
+    credentialEntities = listOf(CredentialEntity(
+        id = 0,
+        greenCardId = 0,
+        data = "".toByteArray(),
+        credentialVersion = 0,
+        validFrom = OffsetDateTime.now(),
+        expirationTime = OffsetDateTime.now()
+    ))
 )
 
 
