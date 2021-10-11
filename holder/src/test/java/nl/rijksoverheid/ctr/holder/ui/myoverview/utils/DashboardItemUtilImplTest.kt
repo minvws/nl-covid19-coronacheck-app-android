@@ -21,8 +21,6 @@ class DashboardItemUtilImplTest {
         val util = DashboardItemUtilImpl(
             clockDeviationUseCase = fakeClockDevationUseCase(),
             greenCardUtil = fakeGreenCardUtil(),
-            readEuropeanCredentialUtil = fakeReadEuropeanCredentialUtil(),
-            mobileCoreWrapper = fakeMobileCoreWrapper(),
             persistenceManager = fakePersistenceManager(),
             eventGroupEntityUtil = fakeEventGroupEntityUtil()
         )
@@ -41,8 +39,6 @@ class DashboardItemUtilImplTest {
             greenCardUtil = fakeGreenCardUtil(
                 isExpired = false
             ),
-            readEuropeanCredentialUtil = fakeReadEuropeanCredentialUtil(),
-            mobileCoreWrapper = fakeMobileCoreWrapper(),
             persistenceManager = fakePersistenceManager(),
             eventGroupEntityUtil = fakeEventGroupEntityUtil()
         )
@@ -61,8 +57,6 @@ class DashboardItemUtilImplTest {
                 hasDeviation = true
             ),
             greenCardUtil = fakeGreenCardUtil(),
-            readEuropeanCredentialUtil = fakeReadEuropeanCredentialUtil(),
-            mobileCoreWrapper = fakeMobileCoreWrapper(),
             persistenceManager = fakePersistenceManager(),
             eventGroupEntityUtil = fakeEventGroupEntityUtil()
         )
@@ -83,8 +77,6 @@ class DashboardItemUtilImplTest {
             greenCardUtil = fakeGreenCardUtil(
                 isExpired = false
             ),
-            readEuropeanCredentialUtil = fakeReadEuropeanCredentialUtil(),
-            mobileCoreWrapper = fakeMobileCoreWrapper(),
             persistenceManager = fakePersistenceManager(),
             eventGroupEntityUtil = fakeEventGroupEntityUtil()
         )
@@ -101,8 +93,6 @@ class DashboardItemUtilImplTest {
         val util = DashboardItemUtilImpl(
             clockDeviationUseCase = fakeClockDevationUseCase(),
             greenCardUtil = fakeGreenCardUtil(),
-            readEuropeanCredentialUtil = fakeReadEuropeanCredentialUtil(),
-            mobileCoreWrapper = fakeMobileCoreWrapper(),
             persistenceManager = fakePersistenceManager(),
             eventGroupEntityUtil = fakeEventGroupEntityUtil()
         )
@@ -121,8 +111,6 @@ class DashboardItemUtilImplTest {
             greenCardUtil = fakeGreenCardUtil(
                 isExpired = true
             ),
-            readEuropeanCredentialUtil = fakeReadEuropeanCredentialUtil(),
-            mobileCoreWrapper = fakeMobileCoreWrapper(),
             persistenceManager = fakePersistenceManager(),
             eventGroupEntityUtil = fakeEventGroupEntityUtil()
         )
@@ -139,8 +127,6 @@ class DashboardItemUtilImplTest {
         val util = DashboardItemUtilImpl(
             clockDeviationUseCase = fakeClockDevationUseCase(),
             greenCardUtil = fakeGreenCardUtil(),
-            readEuropeanCredentialUtil = fakeReadEuropeanCredentialUtil(),
-            mobileCoreWrapper = fakeMobileCoreWrapper(),
             persistenceManager = fakePersistenceManager(),
             eventGroupEntityUtil = fakeEventGroupEntityUtil()
         )
@@ -154,7 +140,7 @@ class DashboardItemUtilImplTest {
 
     @Test
     fun `multiple vaccination card items should be combined into 1`() {
-        val util = DashboardItemUtilImpl(mockk(), mockk(), mockk(), mockk(), mockk(), mockk())
+        val util = DashboardItemUtilImpl(mockk(), mockk(), mockk(), mockk())
 
         val card1 = createCardItem(OriginType.Vaccination)
         val card2 = createCardItem(OriginType.Vaccination)
