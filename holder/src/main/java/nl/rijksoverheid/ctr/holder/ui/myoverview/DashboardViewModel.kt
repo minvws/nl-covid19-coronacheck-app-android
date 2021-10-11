@@ -28,8 +28,6 @@ abstract class DashboardViewModel : ViewModel() {
     open val dashboardTabItemsLiveData: LiveData<List<DashboardTabItem>> = MutableLiveData()
     open val databaseSyncerResultLiveData: LiveData<Event<DatabaseSyncerResult>> = MutableLiveData()
 
-    var dashboardErrorState: DashboardErrorState = DashboardErrorState.None
-
     abstract fun refresh(dashboardSync: DashboardSync = DashboardSync.CheckSync)
     abstract fun removeGreenCard(greenCard: GreenCard)
     abstract fun dismissGreenCardsSyncedItem()

@@ -60,15 +60,17 @@ class MyOverviewGreenCardAdapterItem(
                 )
             }
         }
+    }
+
+    private fun applyStyling(viewBinding: ItemMyOverviewGreenCardBinding) {
+        val context = viewBinding.root.context
+
         viewBinding.buttonWithProgressWidgetContainer.setButtonText(
             viewBinding.root.context.getString(
                 if (cards.size > 1) R.string.my_overview_results_button else R.string.my_overview_test_result_button
             )
         )
-    }
 
-    private fun applyStyling(viewBinding: ItemMyOverviewGreenCardBinding) {
-        val context = viewBinding.root.context
         when (cards.first().greenCard.greenCardEntity.type) {
             is GreenCardType.Eu -> {
                 viewBinding.buttonWithProgressWidgetContainer.setEnabledButtonColor(R.color.primary_blue)
