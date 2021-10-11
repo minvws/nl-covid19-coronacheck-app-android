@@ -606,8 +606,48 @@ fun fakeQrCodeUsecase() = object: QrCodeUseCase {
 }
 
 fun fakeEventGroupEntityUtil(remoteEventVaccinations: List<RemoteEventVaccination> = listOf()) = object: EventGroupEntityUtil {
-    override suspend fun allVaccinationEvents(eventGroupEntities: List<EventGroupEntity>): List<RemoteEventVaccination> {
-        return remoteEventVaccinations
+    override suspend fun amountOfVaccinationEvents(eventGroupEntities: List<EventGroupEntity>): Int {
+        return remoteEventVaccinations.size
+    }
+}
+
+fun fakeRemoteEventUtil(
+    getRemoteEventsFromNonDcc: List<RemoteEvent> = listOf()) = object: RemoteEventUtil {
+    override fun getHolderFromDcc(dcc: JSONObject): RemoteProtocol3.Holder {
+        return RemoteProtocol3.Holder(
+            infix = "",
+            firstName = "",
+            lastName = "",
+            birthDate = ""
+        )
+    }
+
+    override fun removeDuplicateEvents(remoteEvents: List<RemoteEvent>): List<RemoteEvent> {
+        return listOf()
+    }
+
+    override fun getRemoteEventFromDcc(dcc: JSONObject): RemoteEvent {
+        return RemoteEventVaccination(
+            type = "",
+            unique = "",
+            vaccination = fakeRemoteEventVaccination
+        )
+    }
+
+    override fun getRemoteVaccinationFromDcc(dcc: JSONObject): RemoteEventVaccination? {
+        return null
+    }
+
+    override fun getRemoteRecoveryFromDcc(dcc: JSONObject): RemoteEventRecovery? {
+        return null
+    }
+
+    override fun getRemoteTestFromDcc(dcc: JSONObject): RemoteEventNegativeTest? {
+        return null
+    }
+
+    override fun getRemoteEventsFromNonDcc(eventGroupEntity: EventGroupEntity): List<RemoteEvent> {
+        return getRemoteEventsFromNonDcc
     }
 }
 

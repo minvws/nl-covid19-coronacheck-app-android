@@ -73,8 +73,8 @@ class DashboardItemUtilImpl(
     override suspend fun shouldAddSyncGreenCardsItem(
         allEventGroupEntities: List<EventGroupEntity>,
         allGreenCards: List<GreenCard>): Boolean {
-        val allVaccinationEvents = eventGroupEntityUtil.allVaccinationEvents(allEventGroupEntities)
-        return if (allVaccinationEvents.size in 0..1) {
+        val amountOfVaccinationEvents = eventGroupEntityUtil.amountOfVaccinationEvents(allEventGroupEntities)
+        return if (amountOfVaccinationEvents in 0..1) {
             // If we only have a single vaccination event (e.g. hkvi) we'll never get more cards
             false
         } else {

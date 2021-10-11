@@ -36,5 +36,5 @@ val utilsModule = module {
     factory<DashboardItemUtil> { DashboardItemUtilImpl(get(), get(), get(), get()) }
     factory<CountryUtil> { CountryUtilImpl() }
     factory<MultipleQrCodesUtil> { MultipleQrCodesUtilImpl() }
-    factory<EventGroupEntityUtil> { EventGroupEntityUtilImpl(get(), get()) }
+    factory<EventGroupEntityUtil> { EventGroupEntityUtilImpl(get()) }
 }
