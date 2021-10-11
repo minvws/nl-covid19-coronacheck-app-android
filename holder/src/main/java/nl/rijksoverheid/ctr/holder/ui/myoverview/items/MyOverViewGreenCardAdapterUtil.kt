@@ -3,7 +3,6 @@ package nl.rijksoverheid.ctr.holder.ui.myoverview.items
 import android.content.Context
 import android.view.View
 import android.widget.LinearLayout
-import android.widget.Space
 import android.widget.TextView
 import nl.rijksoverheid.ctr.design.ext.formatDateTime
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthTime
@@ -29,8 +28,7 @@ import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TestResultAdapterItemUtil
 interface MyOverViewGreenCardAdapterUtil {
     fun setContent(
         viewBinding: ViewBindingWrapper,
-        greenCards: List<GreenCard>,
-        originStates: List<OriginState>
+        cards: List<AdapterCard>,
     )
 }
 
@@ -43,15 +41,15 @@ class MyOverViewGreenCardAdapterUtilImpl(
 
     override fun setContent(
         viewBinding: ViewBindingWrapper,
-        greenCards: List<GreenCard>,
-        originStates: List<OriginState>
+        cards: List<AdapterCard>,
     ) {
-        val greenCardType = greenCards.first().greenCardEntity.type
-        greenCards.forEach {
+        val greenCardType = cards.first().greenCard.greenCardEntity.type
+        cards.forEach { card ->
+            val it = card.greenCard
             when (it.greenCardEntity.type) {
                 is GreenCardType.Eu -> {
                     // European card only has one origin
-                    val originState = originStates.first()
+                    val originState = card.originStates.first()
                     val origin = originState.origin
                     when (origin.type) {
                         is OriginType.Test -> {
@@ -78,7 +76,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
                 is GreenCardType.Domestic -> {
                     viewBinding.title.text =
                         context.getString(R.string.my_overview_test_result_title)
-                    originStates
+                    card.originStates
                         .sortedBy { state -> state.origin.type.order }
                         .forEach { originState ->
                             val origin = originState.origin
@@ -123,9 +121,10 @@ class MyOverViewGreenCardAdapterUtilImpl(
             }
         }
 
+        val originStates = cards.first().originStates
         val becomesValidAutomatically = originStates.size == 1 &&
                 originStates.first() is OriginState.Future &&
-                shouldShowTimeSubtitle(originStates.first(), greenCards.first().greenCardEntity.type)
+                shouldShowTimeSubtitle(originStates.first(), cards.first().greenCard.greenCardEntity.type)
         if (becomesValidAutomatically) {
             viewBinding.expiresIn.visibility = View.VISIBLE
             viewBinding.expiresIn.text = context.getString(R.string.qr_card_validity_future)
