@@ -30,7 +30,8 @@ class GetDashboardItemsUseCaseImplTest: AutoCloseKoinTest() {
         val dashboardItems = usecase.getItems(
             allGreenCards = listOf(),
             databaseSyncerResult = DatabaseSyncerResult.Success(),
-            isLoadingNewCredentials = false
+            isLoadingNewCredentials = false,
+            allEventGroupEntities = listOf()
         )
 
         assertEquals(dashboardItems.domesticItems.size, 2)
@@ -68,7 +69,8 @@ class GetDashboardItemsUseCaseImplTest: AutoCloseKoinTest() {
         val dashboardItems = usecase.getItems(
             allGreenCards = listOf(domesticGreenCard),
             databaseSyncerResult = DatabaseSyncerResult.Success(),
-            isLoadingNewCredentials = false
+            isLoadingNewCredentials = false,
+            allEventGroupEntities = listOf()
         )
 
         assertEquals(dashboardItems.domesticItems.size, 3)
@@ -108,7 +110,8 @@ class GetDashboardItemsUseCaseImplTest: AutoCloseKoinTest() {
         val dashboardItems = usecase.getItems(
             allGreenCards = listOf(internationalGreenCard),
             databaseSyncerResult = DatabaseSyncerResult.Success(),
-            isLoadingNewCredentials = false
+            isLoadingNewCredentials = false,
+            allEventGroupEntities = listOf()
         )
 
         assertEquals(dashboardItems.domesticItems.size, 3)
@@ -169,7 +172,8 @@ class GetDashboardItemsUseCaseImplTest: AutoCloseKoinTest() {
         val dashboardItems = usecase.getItems(
             allGreenCards = listOf(domesticGreenCard, internationalGreenCard),
             databaseSyncerResult = DatabaseSyncerResult.Success(),
-            isLoadingNewCredentials = false
+            isLoadingNewCredentials = false,
+            allEventGroupEntities = listOf()
         )
 
         assertEquals(dashboardItems.domesticItems.size, 3)
@@ -232,7 +236,8 @@ class GetDashboardItemsUseCaseImplTest: AutoCloseKoinTest() {
         val dashboardItems = usecase.getItems(
             allGreenCards = listOf(domesticGreenCard, internationalGreenCard),
             databaseSyncerResult = DatabaseSyncerResult.Success(),
-            isLoadingNewCredentials = false
+            isLoadingNewCredentials = false,
+            allEventGroupEntities = listOf()
         )
 
         assertEquals(dashboardItems.domesticItems.size, 4)
@@ -274,7 +279,8 @@ class GetDashboardItemsUseCaseImplTest: AutoCloseKoinTest() {
         val dashboardItems = usecase.getItems(
             allGreenCards = listOf(domesticGreenCard),
             databaseSyncerResult = DatabaseSyncerResult.Success(),
-            isLoadingNewCredentials = false
+            isLoadingNewCredentials = false,
+            allEventGroupEntities = listOf()
         )
 
         assertEquals(dashboardItems.domesticItems.size, 4)
@@ -315,7 +321,8 @@ class GetDashboardItemsUseCaseImplTest: AutoCloseKoinTest() {
         val dashboardItems = usecase.getItems(
             allGreenCards = listOf(internationalGreenCard),
             databaseSyncerResult = DatabaseSyncerResult.Success(),
-            isLoadingNewCredentials = false
+            isLoadingNewCredentials = false,
+            allEventGroupEntities = listOf()
         )
 
         assertEquals(dashboardItems.domesticItems.size, 3)

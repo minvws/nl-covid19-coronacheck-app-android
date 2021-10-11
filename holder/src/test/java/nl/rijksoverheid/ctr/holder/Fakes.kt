@@ -34,6 +34,7 @@ import nl.rijksoverheid.ctr.shared.models.*
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import nl.rijksoverheid.ctr.shared.utils.TestResultUtil
 import org.json.JSONObject
+import java.time.LocalDate
 import java.time.OffsetDateTime
 
 /*
@@ -604,6 +605,52 @@ fun fakeQrCodeUsecase() = object: QrCodeUseCase {
     }
 }
 
+fun fakeEventGroupEntityUtil(remoteEventVaccinations: List<RemoteEventVaccination> = listOf()) = object: EventGroupEntityUtil {
+    override suspend fun amountOfVaccinationEvents(eventGroupEntities: List<EventGroupEntity>): Int {
+        return remoteEventVaccinations.size
+    }
+}
+
+fun fakeRemoteEventUtil(
+    getRemoteEventsFromNonDcc: List<RemoteEvent> = listOf()) = object: RemoteEventUtil {
+    override fun getHolderFromDcc(dcc: JSONObject): RemoteProtocol3.Holder {
+        return RemoteProtocol3.Holder(
+            infix = "",
+            firstName = "",
+            lastName = "",
+            birthDate = ""
+        )
+    }
+
+    override fun removeDuplicateEvents(remoteEvents: List<RemoteEvent>): List<RemoteEvent> {
+        return listOf()
+    }
+
+    override fun getRemoteEventFromDcc(dcc: JSONObject): RemoteEvent {
+        return RemoteEventVaccination(
+            type = "",
+            unique = "",
+            vaccination = fakeRemoteEventVaccination
+        )
+    }
+
+    override fun getRemoteVaccinationFromDcc(dcc: JSONObject): RemoteEventVaccination? {
+        return null
+    }
+
+    override fun getRemoteRecoveryFromDcc(dcc: JSONObject): RemoteEventRecovery? {
+        return null
+    }
+
+    override fun getRemoteTestFromDcc(dcc: JSONObject): RemoteEventNegativeTest? {
+        return null
+    }
+
+    override fun getRemoteEventsFromNonDcc(eventGroupEntity: EventGroupEntity): List<RemoteEvent> {
+        return getRemoteEventsFromNonDcc
+    }
+}
+
 val fakeGreenCardEntity = GreenCardEntity(
     id = 0,
     walletId = 1,
@@ -614,6 +661,46 @@ val fakeGreenCard = GreenCard(
     greenCardEntity = fakeGreenCardEntity,
     origins = listOf(),
     credentialEntities = listOf()
+)
+
+val fakeRemoteEventVaccination = RemoteEventVaccination.Vaccination(
+    date = LocalDate.now(),
+    hpkCode = "",
+    type = "",
+    brand = "",
+    completedByMedicalStatement = false,
+    completedByPersonalStatement = false,
+    completionReason = "",
+    doseNumber = "",
+    totalDoses = "",
+    country = "",
+    manufacturer = ""
+)
+
+val fakeEuropeanVaccinationGreenCard = GreenCard(
+    greenCardEntity = GreenCardEntity(
+        id = 0,
+        walletId = 0,
+        type = GreenCardType.Eu
+    ),
+    origins = listOf(
+        OriginEntity(
+            id = 0,
+            greenCardId = 0,
+            type = OriginType.Vaccination,
+            eventTime = OffsetDateTime.now(),
+            expirationTime = OffsetDateTime.now(),
+            validFrom = OffsetDateTime.now()
+        )
+    ),
+    credentialEntities = listOf(CredentialEntity(
+        id = 0,
+        greenCardId = 0,
+        data = "".toByteArray(),
+        credentialVersion = 0,
+        validFrom = OffsetDateTime.now(),
+        expirationTime = OffsetDateTime.now()
+    ))
 )
 
 

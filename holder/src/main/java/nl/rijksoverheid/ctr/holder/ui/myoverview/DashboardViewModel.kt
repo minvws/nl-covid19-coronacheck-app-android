@@ -13,6 +13,7 @@ import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardErrorState
@@ -79,12 +80,14 @@ class DashboardViewModelImpl(
                 }
 
                 val allGreenCards = holderDatabase.greenCardDao().getAll()
+                val allEventGroupEntities = holderDatabase.eventGroupDao().getAll()
 
                 refreshDashboardTabItems(
                     allGreenCards = allGreenCards,
                     databaseSyncerResult = databaseSyncerResultLiveData.value?.peekContent()
                         ?: DatabaseSyncerResult.Success(),
-                    isLoadingNewCredentials = shouldLoadNewCredentials
+                    isLoadingNewCredentials = shouldLoadNewCredentials,
+                    allEventGroupEntities = allEventGroupEntities
                 )
 
                 val databaseSyncerResult = holderDatabaseSyncer.sync(
@@ -98,6 +101,7 @@ class DashboardViewModelImpl(
                 if (shouldLoadNewCredentials) {
                     refreshDashboardTabItems(
                         allGreenCards = allGreenCards,
+                        allEventGroupEntities = allEventGroupEntities,
                         databaseSyncerResult = databaseSyncerResult,
                         isLoadingNewCredentials = false
                     )
@@ -117,6 +121,7 @@ class DashboardViewModelImpl(
     }
 
     private suspend fun refreshDashboardTabItems(
+        allEventGroupEntities: List<EventGroupEntity>,
         allGreenCards: List<GreenCard>,
         databaseSyncerResult: DatabaseSyncerResult,
         isLoadingNewCredentials: Boolean
@@ -124,7 +129,8 @@ class DashboardViewModelImpl(
         val items = getDashboardItemsUseCase.getItems(
             allGreenCards = allGreenCards,
             databaseSyncerResult = databaseSyncerResult,
-            isLoadingNewCredentials = isLoadingNewCredentials
+            isLoadingNewCredentials = isLoadingNewCredentials,
+            allEventGroupEntities = allEventGroupEntities
         )
 
         val domesticItem = DashboardTabItem(

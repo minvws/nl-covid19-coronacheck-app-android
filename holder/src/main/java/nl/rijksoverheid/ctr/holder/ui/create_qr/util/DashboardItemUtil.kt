@@ -2,11 +2,11 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
-import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 
 interface DashboardItemUtil {
     fun shouldShowHeaderItem(allGreenCards: List<GreenCard>): Boolean
@@ -22,16 +22,17 @@ interface DashboardItemUtil {
      */
     fun combineEuVaccinationItems(items: List<DashboardItem>): List<DashboardItem>
 
-    fun shouldAddSyncGreenCardsItem(allGreenCards: List<GreenCard>): Boolean
+    suspend fun shouldAddSyncGreenCardsItem(
+        allEventGroupEntities: List<EventGroupEntity>,
+        allGreenCards: List<GreenCard>): Boolean
     fun shouldAddGreenCardsSyncedItem(allGreenCards: List<GreenCard>): Boolean
 }
 
 class DashboardItemUtilImpl(
-    private val readEuropeanCredentialUtil: ReadEuropeanCredentialUtil,
-    private val mobileCoreWrapper: MobileCoreWrapper,
     private val clockDeviationUseCase: ClockDeviationUseCase,
     private val greenCardUtil: GreenCardUtil,
-    private val persistenceManager: PersistenceManager
+    private val persistenceManager: PersistenceManager,
+    private val eventGroupEntityUtil: EventGroupEntityUtil
 ) : DashboardItemUtil {
 
     override fun shouldShowHeaderItem(allGreenCards: List<GreenCard>) =
@@ -69,25 +70,21 @@ class DashboardItemUtilImpl(
             }.flatten()
     }
 
-    override fun shouldAddSyncGreenCardsItem(allGreenCards: List<GreenCard>): Boolean {
-        val euVaccinationGreenCards = allGreenCards.filter { it.greenCardEntity.type is GreenCardType.Eu }.filter { it.origins.any { origin -> origin.type is OriginType.Vaccination } }
-
-        // We only show the banner to refresh the green cards if;
-        // - there is only one european vaccination
-        // - that european vaccination has dosis "2"
-        // this means you can update to our "multiple dcc" feature which will give you 2 green cards (1/2 and 2/2)
-        val hasSecondDose = if (euVaccinationGreenCards.size == 1) {
-            val credential = euVaccinationGreenCards.first().credentialEntities.firstOrNull()
-            if (credential == null) {
-                false
-            } else {
-                val readEuropeanCredential = mobileCoreWrapper.readEuropeanCredential(credential.data)
-                val dose = readEuropeanCredentialUtil.getDose(readEuropeanCredential)
-                dose == "2"
-            }
-        } else false
-
-        return hasSecondDose && persistenceManager.showSyncGreenCardsItem()
+    override suspend fun shouldAddSyncGreenCardsItem(
+        allEventGroupEntities: List<EventGroupEntity>,
+        allGreenCards: List<GreenCard>): Boolean {
+        val amountOfVaccinationEvents = eventGroupEntityUtil.amountOfVaccinationEvents(allEventGroupEntities)
+        return if (amountOfVaccinationEvents in 0..1) {
+            // If we only have a single vaccination event (e.g. hkvi) we'll never get more cards
+            false
+        } else {
+            // there are more than 1 vaccination events. If this
+            // isn't reflected by
+            // our current set of greencards, show the banner to offer
+            // people an upgrade.
+            val euVaccinationGreenCards = allGreenCards.filter { it.greenCardEntity.type is GreenCardType.Eu }.filter { it.origins.any { origin -> origin.type is OriginType.Vaccination } }
+            euVaccinationGreenCards.size == 1
+        }
     }
 
     override fun shouldAddGreenCardsSyncedItem(allGreenCards: List<GreenCard>): Boolean {
