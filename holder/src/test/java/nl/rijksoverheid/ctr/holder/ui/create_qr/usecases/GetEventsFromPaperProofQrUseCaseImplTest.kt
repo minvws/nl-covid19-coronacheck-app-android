@@ -12,6 +12,7 @@ import org.json.JSONObject
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest
+import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
 import java.time.LocalDate
 import java.time.OffsetDateTime
@@ -21,7 +22,7 @@ import kotlin.test.assertFails
 @RunWith(RobolectricTestRunner::class)
 class GetEventsFromPaperProofQrUseCaseImplTest : AutoCloseKoinTest() {
 
-    private val remoteEventUtil: RemoteEventUtil = mockk(relaxed = true)
+    private val remoteEventUtil: RemoteEventUtil by inject()
     private val mobileCoreWrapper: MobileCoreWrapper = mockk(relaxed = true)
 
     private val useCase = GetEventsFromPaperProofQrUseCaseImpl(mobileCoreWrapper, remoteEventUtil)
