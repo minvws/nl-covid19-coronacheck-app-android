@@ -124,7 +124,10 @@ class MyOverViewGreenCardAdapterUtilImpl(
         val originStates = cards.first().originStates
         val becomesValidAutomatically = originStates.size == 1 &&
                 originStates.first() is OriginState.Future &&
-                shouldShowTimeSubtitle(originStates.first(), cards.first().greenCard.greenCardEntity.type)
+                shouldShowTimeSubtitle(
+                    originStates.first(),
+                    cards.first().greenCard.greenCardEntity.type
+                )
         if (becomesValidAutomatically) {
             viewBinding.expiresIn.visibility = View.VISIBLE
             viewBinding.expiresIn.text = context.getString(R.string.qr_card_validity_future)
@@ -275,6 +278,14 @@ class MyOverViewGreenCardAdapterUtilImpl(
             TextView(context).apply {
                 setTextAppearance(R.style.App_TextAppearance_MaterialComponents_Body1)
                 text = title
+            },
+            LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply {
+                val topMargin =
+                    context.resources.getDimensionPixelSize(R.dimen.green_card_item_proof_spacing)
+                setMargins(0, topMargin, 0, 0)
             }
         )
     }
@@ -325,12 +336,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
             LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
-            ).apply {
-                setMargins(
-                    0, 0, 0,
-                    context.resources.getDimensionPixelSize(R.dimen.green_card_item_proof_spacing)
-                )
-            }
+            ).apply { setMargins(0, 0, 0, 0) }
         )
     }
 }
