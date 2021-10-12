@@ -189,9 +189,9 @@
     <string name="create_qr_explanation_menu_title_alternative">Add a QR code</string>
     <string name="qr_code_type_title">What kind of certificate would you like to add?</string>
     <string name="qr_code_type_description">Indicate what kind of certificate you would like to add. You can have multiple certificates.</string>
-    <string name="qr_code_type_negative_test_title">A test certificate</string>
+    <string name="qr_code_type_negative_test_title">Test certificate</string>
     <string name="qr_code_type_negative_test_description">The test proves I do not have coronavirus</string>
-    <string name="qr_code_type_vaccination_title">A vaccination certificate</string>
+    <string name="qr_code_type_vaccination_title">Vaccination certificate</string>
     <string name="qr_code_type_vaccination_description">I\'ve had my injection or injections</string>
     <string name="get_vaccination_title">Retrieve vaccination details</string>
     <string name="get_vaccination_description"><![CDATA[Were you vaccinated? Login with DigiD. Details regarding your vaccination will be retrieved automatically.<br/><br/>]]></string>
@@ -219,7 +219,7 @@
     <string name="qr_explanation_title_domestic">About my Dutch QR code</string>
     <string name="qr_explanation_description_domestic"><![CDATA[Your Dutch QR code contains minimal data. The QR code says whether or not the QR code is valid. It doesn\'t say whether or not you have a test certificate or vaccination.<br/><br/> The QR code also contains several of your details. This is to make sure the QR code belongs to you. The details consist of the first letter of your first name, the first letter of your last name, your birth month, and your day of birth.<br/><br/>Your details: <b>%1$s</b><br/><br/>*To protect your privacy, some details may disappear. In this case you will see a hyphen (-).]]></string>
     <string name="qr_explanation_title_eu">About my international QR code</string>
-    <string name="qr_explanation_title_eu_vaccination">About dose %1s</string>
+    <string name="qr_explanation_title_eu_vaccination">About your dose %1s</string>
     <string name="qr_explanation_description_eu_vaccination_header">Are you abroad, or planning to cross the border? This requires more data. That\'s why the international QR code contains the following details:</string>
     <string name="qr_explanation_description_eu_vaccination_name">Name:</string>
     <string name="qr_explanation_description_eu_vaccination_birth_date">Date of birth*:</string>
@@ -259,7 +259,7 @@
     <string name="qr_card_validity_future_days">automatically becomes valid in %1$s days</string>
     <string name="qr_card_validity_future_day">automatically becomes valid in %1$s day</string>
     <string name="qr_card_validity_future_hours">automatically becomes valid in %1$s hours</string>
-    <string name="qr_card_vaccination_doses">dose %1$s of %2$s</string>
+    <string name="qr_card_vaccination_doses">Dose %1$s/%2$s</string>
     <string name="your_test_result_explanation_toolbar_title">What was retrieved?</string>
     <string name="your_test_result_explanation_description"><![CDATA[The following details were retrieved at the test location:<br\><br\>Your details: <b>%1$s<b/><br/>Test type: <b>%2$s</b><br/>Test date: <b>%3$s</b><br/>Test result: <b>%4$s</b><br/>Unique test identifier: <b>%5$s</b>]]></string>
     <string name="your_test_result_explanation_negative_test_result">Negative (no coronavirus)</string>
@@ -347,7 +347,7 @@
     <string name="no_positive_test_result_description"><![CDATA[There is no positive test result available.<br/><br/>Got tested recently? It can take a few hours until your details are available. Try again later.<br/><br/>Have you been tested more than 180 days ago? Then your test result is no longer valid.]]></string>
     <string name="positive_test_not_valid_title">Positive test result is not valid</string>
     <string name="positive_test_not_valid_description">Have you been tested more than 180 days ago? Then your test result is no longer valid. In this case, you cannot create a recovery certificate.</string>
-    <string name="qr_code_type_recovery_title">A recovery certificate</string>
+    <string name="qr_code_type_recovery_title">Recovery certificate</string>
     <string name="qr_code_type_recovery_description">The test proves I have had coronavirus</string>
     <string name="your_test_result_explanation_positive_test_result">positive (corona)</string>
     <string name="recovery_explanation_description_header">The following details were retrieved at the test location:</string>
@@ -467,7 +467,7 @@
     <string name="dialog_device_secure_positive_button">OK</string>
     <string name="qr_code_details">Details</string>
     <string name="qr_code_dosis">Dose %1s</string>
-    <string name="qr_code_over_vaccinated">This QR code may not be valid everywhere. If that’s the case, you can use dose %1s.</string>
+    <string name="qr_code_over_vaccinated">This QR code is not yet valid everywhere. In which case, use one of a previous dose.</string>
     <string name="qr_code_newer_dose_available">You probably won\'t need this QR code because you have a more recent dose.</string>
     <string name="qr_code_hidden_title">QR code hidden</string>
     <string name="qr_code_hidden_button">Show anyway</string>
