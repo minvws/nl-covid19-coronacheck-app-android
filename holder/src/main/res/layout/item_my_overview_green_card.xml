@@ -19,7 +19,7 @@
         android:clipChildren="false">
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/test_result"
+            android:id="@+id/proof_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="16dp"
@@ -93,7 +93,7 @@
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/test_result_2"
+            android:id="@+id/proof_2"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_below="@id/test_result"
@@ -103,10 +103,10 @@
             tools:layout_height="@dimen/dashboard_card_additional_card_height"/>
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/test_result_3"
+            android:id="@+id/proof_3"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_below="@id/test_result_2"
+            android:layout_below="@id/proof_2"
             android:layout_marginTop="-40dp"
             app:cardCornerRadius="16dp"
             app:cardElevation="6dp"

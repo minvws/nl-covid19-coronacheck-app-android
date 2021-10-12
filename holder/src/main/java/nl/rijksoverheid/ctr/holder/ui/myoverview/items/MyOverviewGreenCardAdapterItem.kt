@@ -10,9 +10,7 @@ package nl.rijksoverheid.ctr.holder.ui.myoverview.items
 
 import android.view.View
 import android.view.ViewGroup
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
-import com.google.android.material.card.MaterialCardView
 import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.ItemMyOverviewGreenCardBinding
@@ -22,7 +20,6 @@ import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem.CardsItem.CredentialState.HasCredential
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
-import nl.rijksoverheid.ctr.shared.ext.getDimensionPixelSize
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -40,9 +37,7 @@ class MyOverviewGreenCardAdapterItem(
 
     override fun bind(viewBinding: ItemMyOverviewGreenCardBinding, position: Int) {
         applyStyling(viewBinding = viewBinding)
-
         setContent(viewBinding = viewBinding)
-
         initButton(viewBinding)
     }
 
@@ -96,8 +91,8 @@ class MyOverviewGreenCardAdapterItem(
     private fun setContent(viewBinding: ItemMyOverviewGreenCardBinding) {
         // reset layout
         viewBinding.run {
-            (testResult2.layoutParams as ViewGroup.MarginLayoutParams).height = 0
-            (testResult3.layoutParams as ViewGroup.MarginLayoutParams).height = 0
+            (proof2.layoutParams as ViewGroup.MarginLayoutParams).height = 0
+            (proof3.layoutParams as ViewGroup.MarginLayoutParams).height = 0
             description.removeAllViews()
             errorContainer.visibility = View.GONE
         }
@@ -121,11 +116,11 @@ class MyOverviewGreenCardAdapterItem(
     private fun stackAdditionalCards(viewBinding: ItemMyOverviewGreenCardBinding) {
         viewBinding.apply {
             if (cards.size >= 2) {
-                (testResult2.layoutParams as ViewGroup.MarginLayoutParams).height = viewBinding.root.context.resources.getDimensionPixelSize(R.dimen.dashboard_card_additional_card_height)
+                (proof2.layoutParams as ViewGroup.MarginLayoutParams).height = viewBinding.root.context.resources.getDimensionPixelSize(R.dimen.dashboard_card_additional_card_height)
             }
 
             if (cards.size >= 3) {
-                (testResult3.layoutParams as ViewGroup.MarginLayoutParams).height = viewBinding.root.context.resources.getDimensionPixelSize(R.dimen.dashboard_card_additional_card_height)
+                (proof3.layoutParams as ViewGroup.MarginLayoutParams).height = viewBinding.root.context.resources.getDimensionPixelSize(R.dimen.dashboard_card_additional_card_height)
             }
         }
     }
