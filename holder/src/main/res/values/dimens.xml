@@ -4,8 +4,5 @@
     <dimen name="test_button_corner_radius">10dp</dimen>
     <dimen name="test_provider_title_without_subtitle_padding">8dp</dimen>
     <dimen name="green_card_item_proof_spacing">24dp</dimen>
-    <dimen name="dashboard_card_corner_radius">16dp</dimen>
-    <dimen name="dashboard_card_elevation">8dp</dimen>
-    <dimen name="dashboard_card_additional_lower_elevation">1dp</dimen>
-    <dimen name="dashboard_card_additional_translation_y">10dp</dimen>
+    <dimen name="dashboard_card_additional_card_height">50dp</dimen>
 </resources>

@@ -96,12 +96,10 @@ class MyOverviewGreenCardAdapterItem(
     private fun setContent(viewBinding: ItemMyOverviewGreenCardBinding) {
         // reset layout
         viewBinding.run {
-            (viewBinding.root.layoutParams as ViewGroup.MarginLayoutParams).bottomMargin = 0
+            (testResult2.layoutParams as ViewGroup.MarginLayoutParams).height = 0
+            (testResult3.layoutParams as ViewGroup.MarginLayoutParams).height = 0
             description.removeAllViews()
-            greenCards.removeViews(1, viewBinding.greenCards.childCount - 1)
-            errorText.setHtmlText("")
-            errorIcon.visibility = View.GONE
-            errorText.visibility = View.GONE
+            errorContainer.visibility = View.GONE
         }
 
         myOverViewGreenCardAdapterUtil.setContent(
@@ -121,28 +119,14 @@ class MyOverviewGreenCardAdapterItem(
      * @param[viewBinding] view binding containing binding of parent view group of green cards
      */
     private fun stackAdditionalCards(viewBinding: ItemMyOverviewGreenCardBinding) {
-        for (i in 1 until cards.count()) {
-            viewBinding.greenCards.addView(
-                MaterialCardView(viewBinding.greenCards.context).apply {
-                    radius = getDimensionPixelSize(R.dimen.dashboard_card_corner_radius).toFloat()
-                    cardElevation = getDimensionPixelSize(R.dimen.dashboard_card_elevation) -
-                            (getDimensionPixelSize(R.dimen.dashboard_card_additional_lower_elevation) * i).toFloat()
-                    translationY =
-                        getDimensionPixelSize(R.dimen.dashboard_card_additional_translation_y).toFloat() * i
-                },
-                ConstraintLayout.LayoutParams(0, 0).apply {
-                    topToTop = viewBinding.testResult.id
-                    startToStart = viewBinding.testResult.id
-                    endToEnd = viewBinding.testResult.id
-                    bottomToBottom = viewBinding.testResult.id
-                }
-            )
-        }
+        viewBinding.apply {
+            if (cards.size >= 2) {
+                (testResult2.layoutParams as ViewGroup.MarginLayoutParams).height = viewBinding.root.context.resources.getDimensionPixelSize(R.dimen.dashboard_card_additional_card_height)
+            }
 
-        // Add extra margin bottom so that correct margins stay intact when stacking cards
-        if (cards.count() > 1) {
-            (viewBinding.root.layoutParams as ViewGroup.MarginLayoutParams).bottomMargin =
-                viewBinding.root.getDimensionPixelSize(R.dimen.dashboard_card_additional_translation_y) * cards.count()
+            if (cards.size >= 3) {
+                (testResult3.layoutParams as ViewGroup.MarginLayoutParams).height = viewBinding.root.context.resources.getDimensionPixelSize(R.dimen.dashboard_card_additional_card_height)
+            }
         }
     }
 
@@ -157,8 +141,7 @@ class MyOverviewGreenCardAdapterItem(
                         htmlTextColorLink = ContextCompat.getColor(context, R.color.error)
                     )
                     viewBinding.errorText.enableCustomLinks(onRetryClick)
-                    viewBinding.errorIcon.visibility = View.VISIBLE
-                    viewBinding.errorText.visibility = View.VISIBLE
+                    viewBinding.errorContainer.visibility = View.VISIBLE
                 }
                 is DatabaseSyncerResult.Failed.ServerError.FirstTime -> {
                     viewBinding.errorText.setHtmlText(
@@ -167,8 +150,7 @@ class MyOverviewGreenCardAdapterItem(
                         htmlTextColorLink = ContextCompat.getColor(context, R.color.error)
                     )
                     viewBinding.errorText.enableCustomLinks(onRetryClick)
-                    viewBinding.errorIcon.visibility = View.VISIBLE
-                    viewBinding.errorText.visibility = View.VISIBLE
+                    viewBinding.errorContainer.visibility = View.VISIBLE
                 }
                 is DatabaseSyncerResult.Failed.ServerError.MultipleTimes -> {
                     viewBinding.errorText.setHtmlText(
@@ -176,8 +158,7 @@ class MyOverviewGreenCardAdapterItem(
                         htmlTextColor = ContextCompat.getColor(context, R.color.error),
                         htmlTextColorLink = ContextCompat.getColor(context, R.color.error)
                     )
-                    viewBinding.errorText.visibility = View.VISIBLE
-                    viewBinding.errorIcon.visibility = View.VISIBLE
+                    viewBinding.errorContainer.visibility = View.VISIBLE
                 }
                 else -> {
 
