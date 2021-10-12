@@ -39,7 +39,6 @@
     <string name="my_overview_test_result_title">Mijn bewijs</string>
     <string name="my_overview_test_result_international_title">Internationale QR</string>
     <string name="my_overview_test_result_validity">Geldig tot %1$s</string>
-    <string name="my_overview_green_card_vaccination_title">Vaccinatiebewijs</string>
     <string name="accessibility_label_my_overview_test_result_personal_data">Jouw persoonsgegevens: %1$s %2$s %3$s %4$s</string>
     <string name="accessibility_label_selected">Geselecteerd</string>
     <string name="accessibility_label_not_selected">Niet geselecteerd</string>
@@ -251,6 +250,7 @@
     <string name="qr_card_expired">De QR-code is verlopen.</string>
     <string name="qr_card_vaccination_title_domestic">Vaccinatiebewijs:</string>
     <string name="qr_card_test_domestic">Testbewijs:</string>
+    <string name="qr_card_test_eu">Type test:</string>
     <string name="qr_card_recovery_title_domestic">Herstelbewijs:</string>
     <string name="qr_card_vaccination_title_eu">Vaccinatiedatum:</string>
     <string name="qr_card_test_title_eu">Testdatum:</string>
@@ -439,7 +439,7 @@
     <string name="my_overview_clock_deviation_description">Controleer de tijd van je telefoon. Mogelijk staat het niet goed ingesteld.</string>
     <string name="clock_deviation_explanation_title">Controleer de tijd van je telefoon</string>
     <string name="clock_deviation_explanation_description"><![CDATA[De tijd van jouw telefoon lijkt niet te kloppen. Het kan bijvoorbeeld zijn dat je telefoon een paar minuten voor loopt. Om de CoronaCheck-app goed te kunnen gebruiken is het belangrijk dat de tijd juist staat ingesteld.<br/><br/><a href="#">Ga naar de instellingen</a> van jouw telefoon en zet de datum en tijd op ‘automatisch instellen’.]]></string>
-    <string name="domestic_qr_code_title">Nederlandse QR-code</string>
+    <string name="domestic_qr_code_title">Nederlandse QR</string>
     <string name="app_status_update_recommended_title">Wil je de app updaten?</string>
     <string name="app_status_update_recommended_message">Er is een nieuwe versie van de app beschikbaar.</string>
     <string name="app_status_update_recommended_dismiss_action">Nee, doe ik later</string>
@@ -481,5 +481,5 @@
     <string name="dashboard_item_refreshed_eu_vaccinations_text">Jouw vaccinatiebewijs is vernieuwd</string>
     <string name="dashboard_item_refreshed_eu_vaccinations_button">Lees meer</string>
     <string name="refreshed_eu_items_title">Vernieuwd vaccinatiebewijs</string>
-    <string name="refreshed_eu_items_description"><![CDATA[We hebben voor iedereen het vaccinatiebewijs vernieuwd. Je hebt nu ook toegang tot QR-codes van eerdere prikken.<br/><br/>Dat is bijvoorbeeld handig voor mensen die ergens heen willen waar hun laatste prik nog niet geldig is.<br/><br/><a href="https://coronacheck.nl/nl/faq/3-5-waarom-heb-ik-voor-elke-prik-een-internationale-QR-code/">Lees hier meer over je vernieuwde vaccinatiebewijs.</a>]]></string>
+    <string name="refreshed_eu_items_description"><![CDATA[We hebben voor iedereen het vaccinatiebewijs vernieuwd. Je hebt nu ook toegang tot QR-codes van eerdere prikken.<br/><br/>Dat is bijvoorbeeld handig voor mensen die ergens heen willen waar hun laatste prik nog niet geldig is.<br/><br/><a href="https://coronacheck.nl/nl/faq/3-5-waarom-heb-ik-voor-elke-prik-een-internationale-QR-code/">Lees hier meer over je vernieuwde vaccinatiebewijs</a>.]]></string>
 </resources>

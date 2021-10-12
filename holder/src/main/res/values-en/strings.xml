@@ -39,7 +39,6 @@
     <string name="my_overview_test_result_title">My certificate</string>
     <string name="my_overview_test_result_international_title">International QR</string>
     <string name="my_overview_test_result_validity">Valid until %1$s</string>
-    <string name="my_overview_green_card_vaccination_title">Vaccination certificate</string>
     <string name="accessibility_label_my_overview_test_result_personal_data">Your personal data: %1$s %2$s %3$s %4$s</string>
     <string name="accessibility_label_selected">Selected</string>
     <string name="accessibility_label_not_selected">Not selected</string>
@@ -251,6 +250,7 @@
     <string name="qr_card_expired">Your QR code has expired.</string>
     <string name="qr_card_vaccination_title_domestic">Vaccination certificate:</string>
     <string name="qr_card_test_domestic">Test certificate:</string>
+    <string name="qr_card_test_eu">Test type:</string>
     <string name="qr_card_recovery_title_domestic">Recovery certificate:</string>
     <string name="qr_card_vaccination_title_eu">Vaccination date:</string>
     <string name="qr_card_test_title_eu">Test date:</string>
@@ -439,7 +439,7 @@
     <string name="my_overview_clock_deviation_description">Please check your phone’s time settings. These settings may be incorrect.</string>
     <string name="clock_deviation_explanation_title">Please check your phone’s time settings</string>
     <string name="clock_deviation_explanation_description"><![CDATA[Your phone’s time settings may be incorrect. Your phone may be a few minutes ahead. To make the best use of the CoronaCheck app, it is important that the time is set correctly.<br/><br/><a href="#">Go to settings</a> on your phone and set date and time to ‘set automatically’.]]></string>
-    <string name="domestic_qr_code_title">Dutch QR code</string>
+    <string name="domestic_qr_code_title">Dutch QR</string>
     <string name="app_status_update_recommended_title">Want to update the app?</string>
     <string name="app_status_update_recommended_message">There\'s a new version of the app available.</string>
     <string name="app_status_update_recommended_dismiss_action">No, I\'ll do it later</string>
@@ -467,7 +467,7 @@
     <string name="dialog_device_secure_positive_button">OK</string>
     <string name="qr_code_details">Details</string>
     <string name="qr_code_dosis">Dose %1s</string>
-    <string name="qr_code_over_vaccinated">This QR code is not yet valid everywhere. In which case, use one of a previous dose.</string>
+    <string name="qr_code_over_vaccinated">This QR code is not yet valid everywhere. In which case, use one from a previous dose.</string>
     <string name="qr_code_newer_dose_available">You probably won\'t need this QR code because you have a more recent dose.</string>
     <string name="qr_code_hidden_title">QR code hidden</string>
     <string name="qr_code_hidden_button">Show anyway</string>
@@ -481,5 +481,5 @@
     <string name="dashboard_item_refreshed_eu_vaccinations_text">Your international vaccination certificate has been renewed</string>
     <string name="dashboard_item_refreshed_eu_vaccinations_button">Read more</string>
     <string name="refreshed_eu_items_title">Renewed vaccination certificate</string>
-    <string name="refreshed_eu_items_description"><![CDATA[We have renewed everyone\'s vaccination certificate. From now on, you have access to QR codes of earlier vaccinations.<br/><br/>This can be useful for people who want to go to a place where their latest vaccination is not yet valid.<br/><br/><a href="https://coronacheck.nl/en/faq/3-5-waarom-heb-ik-voor-elke-prik-een-internationale-QR-code/">Read more about your renewed vaccination certificate here</a>]]></string>
+    <string name="refreshed_eu_items_description"><![CDATA[We have renewed everyone\'s vaccination certificate. From now on, you have access to QR codes of earlier vaccinations.<br/><br/>This can be useful for people who want to go to a place where their latest vaccination is not yet valid.<br/><br/><a href="https://coronacheck.nl/en/faq/3-5-waarom-heb-ik-voor-elke-prik-een-internationale-QR-code/">Read more about your renewed vaccination certificate here</a>.]]></string>
 </resources>
