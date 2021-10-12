@@ -292,9 +292,7 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
         when {
             vaccination.isOverVaccinated -> {
                 binding.doseInfo.text = getString(
-                    R.string.qr_code_over_vaccinated,
-                    "${vaccination.ofTotalDoses}/${vaccination.ofTotalDoses}"
-                )
+                    R.string.qr_code_over_vaccinated)
                 binding.doseInfo.visibility = View.VISIBLE
             }
             vaccination.isHidden -> {
