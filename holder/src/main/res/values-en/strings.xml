@@ -467,7 +467,7 @@
     <string name="dialog_device_secure_positive_button">OK</string>
     <string name="qr_code_details">Details</string>
     <string name="qr_code_dosis">Dose %1s</string>
-    <string name="qr_code_over_vaccinated">This QR code is not yet valid everywhere. In which case, use one of a previous dose.</string>
+    <string name="qr_code_over_vaccinated">This QR code is not yet valid everywhere. In which case, use one from a previous dose.</string>
     <string name="qr_code_newer_dose_available">You probably won\'t need this QR code because you have a more recent dose.</string>
     <string name="qr_code_hidden_title">QR code hidden</string>
     <string name="qr_code_hidden_button">Show anyway</string>
