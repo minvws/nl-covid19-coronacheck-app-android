@@ -21,7 +21,7 @@
     <string name="privacy_policy_checkbox_text">I have read the privacy statement and understand how CoronaCheck processes my data.</string>
     <string name="my_overview">My certificates</string>
     <string name="my_overview_description">Visiting a location within the Netherlands? Show both your Dutch QR code and your proof of identity at the entrance of the location you\'re visiting.</string>
-    <string name="my_overview_description_eu"><![CDATA[Are you abroad, or planning to cross the border? Then always use the international QR code below. Please check before leaving which certificate you need. <br /><br /><a href="https://www.netherlandsworldwide.nl/travelling-outside-the-netherlands">Which certificate is needed where I’m heading?</a>]]></string>
+    <string name="my_overview_description_eu"><![CDATA[Are you abroad, or planning to cross the border? Then always use the international QR code below. Please check before leaving which certificate you need.]]></string>
     <string name="my_overview_description_eu_button_text">Which certificate is needed where I’m heading?</string>
     <string name="my_overview_description_eu_button_link">https://www.netherlandsworldwide.nl/travelling-outside-the-netherlands</string>
     <string name="my_overview_no_qr_description"><![CDATA[You can create a QR code if you\'re vaccinated, if you\'ve had corona or by taking a test at an <a href="https://coronacheck.nl/en/testafspraak-in-app">affiliated test location</a>.]]></string>
