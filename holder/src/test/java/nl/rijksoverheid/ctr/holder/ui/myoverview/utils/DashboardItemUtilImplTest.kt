@@ -197,7 +197,7 @@ class DashboardItemUtilImplTest {
                     RemoteEventVaccination(
                         type = "",
                         unique = "",
-                        vaccination = fakeRemoteEventVaccination
+                        vaccination = fakeRemoteEventVaccination()
                     )
                 )
             )
@@ -222,12 +222,12 @@ class DashboardItemUtilImplTest {
                     RemoteEventVaccination(
                         type = "",
                         unique = "",
-                        vaccination = fakeRemoteEventVaccination
+                        vaccination = fakeRemoteEventVaccination()
                     ),
                     RemoteEventVaccination(
                         type = "",
                         unique = "",
-                        vaccination = fakeRemoteEventVaccination
+                        vaccination = fakeRemoteEventVaccination()
                     )
                 )
             )
@@ -252,12 +252,12 @@ class DashboardItemUtilImplTest {
                     RemoteEventVaccination(
                         type = "",
                         unique = "",
-                        vaccination = fakeRemoteEventVaccination
+                        vaccination = fakeRemoteEventVaccination()
                     ),
                     RemoteEventVaccination(
                         type = "",
                         unique = "",
-                        vaccination = fakeRemoteEventVaccination
+                        vaccination = fakeRemoteEventVaccination()
                     )
                 )
             )

@@ -8,6 +8,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventVaccination
 import org.junit.Assert.assertEquals
 import org.junit.Test
+import java.time.LocalDate
 import java.time.OffsetDateTime
 
 class EventGroupEntityUtilImplTest {
@@ -26,19 +27,19 @@ class EventGroupEntityUtilImplTest {
     }
 
     @Test
-    fun `allVaccinationEvents returns 4 events if 2 ZZZ vaccination event groups with 2 events each`() = runBlocking {
+    fun `allVaccinationEvents returns 2 events if 2 ZZZ vaccination event groups with 2 events each with the same dates`() = runBlocking {
         val util = EventGroupEntityUtilImpl(
             remoteEventUtil = fakeRemoteEventUtil(
                 getRemoteEventsFromNonDcc = listOf(
                     RemoteEventVaccination(
                         type = "",
                         unique = "",
-                        vaccination = fakeRemoteEventVaccination
+                        vaccination = fakeRemoteEventVaccination(LocalDate.now().plusDays(1))
                     ),
                     RemoteEventVaccination(
                         type = "",
                         unique = "",
-                        vaccination = fakeRemoteEventVaccination
+                        vaccination = fakeRemoteEventVaccination(LocalDate.now().plusDays(2))
                     )
                 )
             )
@@ -73,23 +74,23 @@ class EventGroupEntityUtilImplTest {
             )
         )
 
-        assertEquals(4, amount)
+        assertEquals(2, amount)
     }
 
     @Test
-    fun `allVaccinationEvents returns 5 events if 2 ZZZ vaccination event groups with 2 events each and 1 DCC event`() = runBlocking {
+    fun `allVaccinationEvents returns 3 events if 2 ZZZ vaccination event groups with 2 events with the same dates each and 1 DCC event`() = runBlocking {
         val util = EventGroupEntityUtilImpl(
             remoteEventUtil = fakeRemoteEventUtil(
                 getRemoteEventsFromNonDcc = listOf(
                     RemoteEventVaccination(
                         type = "",
                         unique = "",
-                        vaccination = fakeRemoteEventVaccination
+                        vaccination = fakeRemoteEventVaccination(LocalDate.now().plusDays(1))
                     ),
                     RemoteEventVaccination(
                         type = "",
                         unique = "",
-                        vaccination = fakeRemoteEventVaccination
+                        vaccination = fakeRemoteEventVaccination(LocalDate.now().plusDays(2))
                     )
                 )
             )
@@ -132,6 +133,6 @@ class EventGroupEntityUtilImplTest {
             )
         )
 
-        assertEquals(5, amount)
+        assertEquals(3, amount)
     }
 }
