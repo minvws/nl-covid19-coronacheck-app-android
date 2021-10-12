@@ -481,5 +481,5 @@
     <string name="dashboard_item_refreshed_eu_vaccinations_text">Your international vaccination certificate has been renewed</string>
     <string name="dashboard_item_refreshed_eu_vaccinations_button">Read more</string>
     <string name="refreshed_eu_items_title">Renewed vaccination certificate</string>
-    <string name="refreshed_eu_items_description"><![CDATA[We have renewed everyone\'s vaccination certificate. From now on, you have access to QR codes of earlier vaccinations.<br/><br/>This can be useful for people who want to go to a place where their latest vaccination is not yet valid.<br/><br/><a href="https://coronacheck.nl/en/faq/3-5-waarom-heb-ik-voor-elke-prik-een-internationale-QR-code/">Read more about your renewed vaccination certificate here</a>]]></string>
+    <string name="refreshed_eu_items_description"><![CDATA[We have renewed everyone\'s vaccination certificate. From now on, you have access to QR codes of earlier vaccinations.<br/><br/>This can be useful for people who want to go to a place where their latest vaccination is not yet valid.<br/><br/><a href="https://coronacheck.nl/en/faq/3-5-waarom-heb-ik-voor-elke-prik-een-internationale-QR-code/">Read more about your renewed vaccination certificate here</a>.]]></string>
 </resources>
