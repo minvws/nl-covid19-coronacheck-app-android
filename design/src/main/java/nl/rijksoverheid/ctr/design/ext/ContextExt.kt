@@ -8,6 +8,7 @@ import android.view.ContextThemeWrapper
 import android.view.accessibility.AccessibilityManager
 import androidx.annotation.AttrRes
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
 import nl.rijksoverheid.ctr.design.R
 
 /*
@@ -35,10 +36,17 @@ fun Context.isScreenReaderOn(): Boolean {
     return false
 }
 
-fun Context.getThemeColor(@AttrRes attribute: Int): ColorStateList = TypedValue().let {
+fun Context.getThemeColorStateList(@AttrRes attribute: Int): ColorStateList = TypedValue().let {
     theme.resolveAttribute(
         attribute,
         it,
         true
     ); AppCompatResources.getColorStateList(this, it.resourceId)
+}
+
+fun Context.getAttrColor(@AttrRes id: Int): Int {
+    val resolvedAttr = TypedValue()
+    this.theme.resolveAttribute(id, resolvedAttr, true)
+    val colorRes = resolvedAttr.run { if (resourceId != 0) resourceId else data }
+    return ContextCompat.getColor(this, colorRes)
 }

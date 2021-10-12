@@ -29,7 +29,7 @@ class GetDashboardItemsUseCaseImplTest: AutoCloseKoinTest() {
     fun `getItems returns correct models when no green cards`() = runBlocking {
         val dashboardItems = usecase.getItems(
             allGreenCards = listOf(),
-            databaseSyncerResult = DatabaseSyncerResult.Success,
+            databaseSyncerResult = DatabaseSyncerResult.Success(),
             isLoadingNewCredentials = false
         )
 
@@ -67,13 +67,13 @@ class GetDashboardItemsUseCaseImplTest: AutoCloseKoinTest() {
 
         val dashboardItems = usecase.getItems(
             allGreenCards = listOf(domesticGreenCard),
-            databaseSyncerResult = DatabaseSyncerResult.Success,
+            databaseSyncerResult = DatabaseSyncerResult.Success(),
             isLoadingNewCredentials = false
         )
 
         assertEquals(dashboardItems.domesticItems.size, 3)
         assertTrue(dashboardItems.domesticItems[0] is DashboardItem.HeaderItem)
-        assertTrue(dashboardItems.domesticItems[1] is DashboardItem.GreenCardItem)
+        assertTrue(dashboardItems.domesticItems[1] is DashboardItem.CardsItem)
         assertTrue(dashboardItems.domesticItems[2] is DashboardItem.AddQrButtonItem)
 
         assertEquals(dashboardItems.internationalItems.size, 3)
@@ -107,18 +107,18 @@ class GetDashboardItemsUseCaseImplTest: AutoCloseKoinTest() {
 
         val dashboardItems = usecase.getItems(
             allGreenCards = listOf(internationalGreenCard),
-            databaseSyncerResult = DatabaseSyncerResult.Success,
+            databaseSyncerResult = DatabaseSyncerResult.Success(),
             isLoadingNewCredentials = false
         )
 
         assertEquals(dashboardItems.domesticItems.size, 3)
         assertTrue(dashboardItems.internationalItems[0] is DashboardItem.HeaderItem)
-        assertTrue(dashboardItems.internationalItems[1] is DashboardItem.GreenCardItem)
+        assertTrue(dashboardItems.internationalItems[1] is DashboardItem.CardsItem)
         assertTrue(dashboardItems.internationalItems[2] is DashboardItem.AddQrButtonItem)
 
         assertEquals(dashboardItems.internationalItems.size, 3)
         assertTrue(dashboardItems.internationalItems[0] is DashboardItem.HeaderItem)
-        assertTrue(dashboardItems.internationalItems[1] is DashboardItem.GreenCardItem)
+        assertTrue(dashboardItems.internationalItems[1] is DashboardItem.CardsItem)
         assertTrue(dashboardItems.internationalItems[2] is DashboardItem.AddQrButtonItem)
     }
 
@@ -168,18 +168,18 @@ class GetDashboardItemsUseCaseImplTest: AutoCloseKoinTest() {
 
         val dashboardItems = usecase.getItems(
             allGreenCards = listOf(domesticGreenCard, internationalGreenCard),
-            databaseSyncerResult = DatabaseSyncerResult.Success,
+            databaseSyncerResult = DatabaseSyncerResult.Success(),
             isLoadingNewCredentials = false
         )
 
         assertEquals(dashboardItems.domesticItems.size, 3)
         assertTrue(dashboardItems.domesticItems[0] is DashboardItem.HeaderItem)
-        assertTrue(dashboardItems.domesticItems[1] is DashboardItem.GreenCardItem)
+        assertTrue(dashboardItems.domesticItems[1] is DashboardItem.CardsItem)
         assertTrue(dashboardItems.domesticItems[2] is DashboardItem.AddQrButtonItem)
 
         assertEquals(dashboardItems.internationalItems.size, 3)
         assertTrue(dashboardItems.internationalItems[0] is DashboardItem.HeaderItem)
-        assertTrue(dashboardItems.internationalItems[1] is DashboardItem.GreenCardItem)
+        assertTrue(dashboardItems.internationalItems[1] is DashboardItem.CardsItem)
         assertTrue(dashboardItems.internationalItems[2] is DashboardItem.AddQrButtonItem)
     }
 
@@ -231,20 +231,20 @@ class GetDashboardItemsUseCaseImplTest: AutoCloseKoinTest() {
 
         val dashboardItems = usecase.getItems(
             allGreenCards = listOf(domesticGreenCard, internationalGreenCard),
-            databaseSyncerResult = DatabaseSyncerResult.Success,
+            databaseSyncerResult = DatabaseSyncerResult.Success(),
             isLoadingNewCredentials = false
         )
 
         assertEquals(dashboardItems.domesticItems.size, 4)
         assertTrue(dashboardItems.domesticItems[0] is DashboardItem.HeaderItem)
         assertTrue(dashboardItems.domesticItems[1] is DashboardItem.ClockDeviationItem)
-        assertTrue(dashboardItems.domesticItems[2] is DashboardItem.GreenCardItem)
+        assertTrue(dashboardItems.domesticItems[2] is DashboardItem.CardsItem)
         assertTrue(dashboardItems.domesticItems[3] is DashboardItem.AddQrButtonItem)
 
         assertEquals(dashboardItems.internationalItems.size, 4)
         assertTrue(dashboardItems.internationalItems[0] is DashboardItem.HeaderItem)
         assertTrue(dashboardItems.internationalItems[1] is DashboardItem.ClockDeviationItem)
-        assertTrue(dashboardItems.internationalItems[2] is DashboardItem.GreenCardItem)
+        assertTrue(dashboardItems.internationalItems[2] is DashboardItem.CardsItem)
         assertTrue(dashboardItems.internationalItems[3] is DashboardItem.AddQrButtonItem)
     }
 
@@ -273,7 +273,7 @@ class GetDashboardItemsUseCaseImplTest: AutoCloseKoinTest() {
 
         val dashboardItems = usecase.getItems(
             allGreenCards = listOf(domesticGreenCard),
-            databaseSyncerResult = DatabaseSyncerResult.Success,
+            databaseSyncerResult = DatabaseSyncerResult.Success(),
             isLoadingNewCredentials = false
         )
 
@@ -314,7 +314,7 @@ class GetDashboardItemsUseCaseImplTest: AutoCloseKoinTest() {
 
         val dashboardItems = usecase.getItems(
             allGreenCards = listOf(internationalGreenCard),
-            databaseSyncerResult = DatabaseSyncerResult.Success,
+            databaseSyncerResult = DatabaseSyncerResult.Success(),
             isLoadingNewCredentials = false
         )
 

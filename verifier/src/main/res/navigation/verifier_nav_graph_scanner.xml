@@ -55,10 +55,6 @@
             app:popUpTo="@id/nav_main"
             app:popUpToInclusive="true" />
 
-        <action
-            android:id="@+id/action_show_invalid_explanation"
-            app:destination="@id/invalid_explanation_bottomsheet" />
-
     </fragment>
 
     <fragment
@@ -80,23 +76,7 @@
             app:popUpTo="@id/nav_main"
             app:popUpToInclusive="true" />
 
-        <action
-            android:id="@+id/action_show_valid_explanation"
-            app:destination="@id/valid_explanation_bottomsheet" />
-
     </fragment>
-
-    <dialog
-        android:id="@+id/valid_explanation_bottomsheet"
-        android:name="nl.rijksoverheid.ctr.verifier.ui.scanner.ScanResultValidExplanationDialogFragment"
-        android:label="ScanResultValidExplanationDialogFragment"
-        tools:layout="@layout/fragment_scan_result_valid_reason" />
-
-    <dialog
-        android:id="@+id/invalid_explanation_bottomsheet"
-        android:name="nl.rijksoverheid.ctr.verifier.ui.scanner.ScanResultInvalidExplanationDialogFragment"
-        android:label="ScanResultInvalidExplanationDialogFragment"
-        tools:layout="@layout/fragment_scan_result_invalid_reason" />
 
     <fragment
         android:id="@+id/nav_scan_instructions_with_toolbar"

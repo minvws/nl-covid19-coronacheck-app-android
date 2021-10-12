@@ -14,6 +14,7 @@ import nl.rijksoverheid.ctr.appconfig.persistence.*
 import nl.rijksoverheid.ctr.appconfig.repositories.ConfigRepository
 import nl.rijksoverheid.ctr.appconfig.repositories.ConfigRepositoryImpl
 import nl.rijksoverheid.ctr.appconfig.usecases.*
+import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -26,7 +27,7 @@ import retrofit2.Retrofit
  * @param path Path for the config api, for example "holder" to fetch the config from <baseurl>/holder/config
  * @param versionCode version code
  */
-fun appConfigModule(path: String, versionCode: Int) = module {
+fun appConfigModule(cdnUrl: String, path: String, versionCode: Int) = module {
     factory<ConfigRepository> { ConfigRepositoryImpl(get()) }
     factory<AppConfigUseCase> { AppConfigUseCaseImpl(get(), get(), get(), get()) }
     factory<AppStatusUseCase> {
@@ -55,14 +56,13 @@ fun appConfigModule(path: String, versionCode: Int) = module {
             androidContext().filesDir.path
         )
     }
-    single<ClockDeviationUseCase> { ClockDeviationUseCaseImpl(get(), get(), get()) }
-    factory<ClockDeviationPersistenceManager> { ClockDeviationPersistenceManagerImpl(get()) }
+    single<ClockDeviationUseCase> { ClockDeviationUseCaseImpl(get(), get()) }
     factory<RecommendedUpdatePersistenceManager> { RecommendedUpdatePersistenceManagerImpl(get()) }
 
     single {
         val okHttpClient = get<OkHttpClient>(OkHttpClient::class).newBuilder().build()
         val retrofit = get<Retrofit>(Retrofit::class)
-        val baseUrl = retrofit.baseUrl().newBuilder().addPathSegments("$path/").build()
+        val baseUrl = cdnUrl.toHttpUrl().newBuilder().addPathSegments("$path/").build()
         retrofit.newBuilder().baseUrl(baseUrl).client(okHttpClient).build()
             .create(AppConfigApi::class.java)
     }

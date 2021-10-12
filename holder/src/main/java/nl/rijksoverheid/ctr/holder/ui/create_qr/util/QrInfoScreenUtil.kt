@@ -9,9 +9,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
 import android.app.Application
 import android.os.Build
-import android.os.Parcelable
 import android.text.TextUtils
-import kotlinx.parcelize.Parcelize
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYearNumerical
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
@@ -25,20 +23,16 @@ import java.time.format.DateTimeParseException
 import java.util.*
 
 interface QrInfoScreenUtil {
-
     fun getForDomesticQr(personalDetails: PersonalDetails): QrInfoScreen
-
     fun getForEuropeanTestQr(readEuropeanCredential: JSONObject): QrInfoScreen
-
     fun getForEuropeanVaccinationQr(readEuropeanCredential: JSONObject): QrInfoScreen
-
     fun getForEuropeanRecoveryQr(readEuropeanCredential: JSONObject): QrInfoScreen
-
-    fun getCountry(countryCode: String?, currentLocale: Locale?): String
 }
 
 class QrInfoScreenUtilImpl(
     private val application: Application,
+    private val readEuropeanCredentialUtil: ReadEuropeanCredentialUtil,
+    private val countryUtil: CountryUtil,
     cachedAppConfigUseCase: CachedAppConfigUseCase
 ) : QrInfoScreenUtil {
 
@@ -102,7 +96,7 @@ class QrInfoScreenUtilImpl(
                 it.code == test.getStringOrNull("ma")
             }?.name ?: test.getStringOrNull("ma") ?: ""
 
-        val testCountry = getCountry(test.getStringOrNull("co"), getCurrentLocale())
+        val testCountry = countryUtil.getCountry(test.getStringOrNull("co"), getCurrentLocale())
 
         val issuerValue = test.getStringOrNull("is")
         val issuer = if (issuerValue == issuerVWS) {
@@ -153,32 +147,9 @@ class QrInfoScreenUtilImpl(
         application.resources.configuration.locale
     }
 
-    override fun getCountry(
-        countryCode: String?,
-        currentLocale: Locale?
-    ): String = if (countryCode != null) {
-        val localeIsNL = currentLocale?.country == "NL"
-        val countryIsNL = countryCode == "NL"
-        val countryNameInDutch = Locale("", countryCode).getDisplayCountry(Locale("nl"))
-        val countryNameInEnglish = Locale("", countryCode).getDisplayCountry(Locale("en"))
-
-        // GetDisplayCountry returns country for "NL" as "Netherlands" instead of "The Netherlands"
-        if (localeIsNL && countryIsNL) {
-            "$countryNameInDutch / The $countryNameInEnglish"
-        } else if (localeIsNL) {
-            "$countryNameInDutch / $countryNameInEnglish"
-        } else {
-            countryNameInEnglish
-        }
-    } else {
-        ""
-    }
-
     override fun getForEuropeanVaccinationQr(readEuropeanCredential: JSONObject): QrInfoScreen {
         val dcc = readEuropeanCredential.optJSONObject("dcc")
         val vaccination = dcc.getJSONArray("v").optJSONObject(0)
-
-        val title = application.getString(R.string.qr_explanation_title_eu)
 
         val fullName = "${dcc.optJSONObject("nam").getStringOrNull("fn")}, ${
             dcc.optJSONObject("nam").getStringOrNull("gn")
@@ -213,14 +184,7 @@ class QrInfoScreenUtilImpl(
                 it.code == vaccination.getStringOrNull("ma")
             }?.name ?: vaccination.getStringOrNull("ma") ?: ""
 
-        val doses =
-            if (vaccination.getStringOrNull("dn") != null && vaccination.getStringOrNull("sd") != null) {
-                application.getString(
-                    R.string.your_vaccination_explanation_doses_answer,
-                    vaccination.getStringOrNull("dn"),
-                    vaccination.getStringOrNull("sd")
-                )
-            } else ""
+        val doses = readEuropeanCredentialUtil.getDoseRangeStringForVaccination(readEuropeanCredential)
 
         val vaccinationDate = vaccination.getStringOrNull("dt")?.let { vaccinationDate ->
             try {
@@ -232,7 +196,7 @@ class QrInfoScreenUtilImpl(
         } ?: ""
 
         val countryCode = vaccination.getStringOrNull("co")
-        val vaccinationCountry = getCountry(countryCode, getCurrentLocale())
+        val vaccinationCountry = countryUtil.getCountry(countryCode, getCurrentLocale())
 
         val issuerValue = vaccination.getStringOrNull("is")
         val issuer = if (issuerValue == issuerVWS) {
@@ -242,6 +206,8 @@ class QrInfoScreenUtilImpl(
         }
 
         val uniqueCode = vaccination.getStringOrNull("ci")
+
+        val title = application.getString(R.string.qr_explanation_title_eu_vaccination, doses)
 
         return QrInfoScreen(
             title = title,
@@ -303,7 +269,7 @@ class QrInfoScreenUtilImpl(
             }
         } ?: ""
 
-        val country = getCountry(recovery.getStringOrNull("co"), getCurrentLocale())
+        val country = countryUtil.getCountry(recovery.getStringOrNull("co"), getCurrentLocale())
 
         val producer = recovery.getStringOrNull("is")
 
@@ -364,5 +330,5 @@ class QrInfoScreenUtilImpl(
 data class QrInfoScreen(
     val title: String,
     val description: String,
-    val footer: String? = null
+    val footer: String = ""
 )

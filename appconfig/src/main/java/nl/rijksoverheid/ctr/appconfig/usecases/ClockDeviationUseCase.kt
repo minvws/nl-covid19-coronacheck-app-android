@@ -12,7 +12,6 @@ import android.os.SystemClock
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
-import nl.rijksoverheid.ctr.appconfig.persistence.ClockDeviationPersistenceManager
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import java.time.Clock
 import kotlin.math.abs
@@ -27,7 +26,6 @@ abstract class ClockDeviationUseCase {
 const val SECOND_IN_MS = 1000
 
 class ClockDeviationUseCaseImpl(
-    private val clockDeviationPersistenceManager: ClockDeviationPersistenceManager,
     private val clock: Clock,
     private val cachedAppConfigUseCase: CachedAppConfigUseCase
 ) : ClockDeviationUseCase() {
@@ -59,7 +57,6 @@ class ClockDeviationUseCaseImpl(
 
         val hasDeviation =
             (abs(systemUptimeDelta + responseTimeDelta) / SECOND_IN_MS) >= thresholdInSeconds
-        clockDeviationPersistenceManager.saveDeviationState(hasDeviation)
         return hasDeviation
     }
 }

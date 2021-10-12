@@ -5,183 +5,126 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="16dp">
+    android:layout_marginTop="16dp"
+    android:clipChildren="false"
+    android:clipToPadding="false">
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/test_result"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/green_cards"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="16dp"
-        android:layout_marginHorizontal="16dp"
-        app:cardElevation="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/test_result"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:padding="24dp"
-            android:clipToPadding="false">
+            android:layout_marginHorizontal="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:src="@drawable/illustration_hand_qr_nl"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/type_title"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:text="@string/validity_type_dutch_title"
-                android:textAppearance="?attr/textAppearanceBody1"
-                android:textColor="@color/primary_blue"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@+id/imageView"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/my_overview_test_result_title"
-                android:textAppearance="?attr/textAppearanceHeadline6"
-                app:layout_constraintEnd_toEndOf="@+id/type_title"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/type_title" />
-
-            <TextView
-                android:id="@+id/proof1_title"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:textAppearance="@style/App.TextAppearance.MaterialComponents.Body1"
-                app:layout_constraintTop_toBottomOf="@+id/title"
-                tools:text="Geldigheid #1" />
+                android:clipToPadding="false"
+                android:padding="24dp">
 
-            <TextView
-                android:id="@+id/proof1_subtitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/App.TextAppearance.MaterialComponents.Body1"
-                app:layout_constraintTop_toBottomOf="@+id/proof1_title"
-                tools:text="Geldig tot en met 7 februari 2022" />
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="@id/title"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/title"
+                    tools:src="@drawable/ic_international_card" />
 
-            <TextView
-                android:id="@+id/proof2_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:textAppearance="@style/App.TextAppearance.MaterialComponents.Body1"
-                app:layout_constraintTop_toBottomOf="@+id/proof1_subtitle"
-                tools:text="Geldigheid #2" />
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    app:layout_constraintEnd_toStartOf="@id/imageView"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="@string/my_overview_test_result_title" />
 
-            <TextView
-                android:id="@+id/proof2_subtitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/App.TextAppearance.MaterialComponents.Body1"
-                app:layout_constraintTop_toBottomOf="@+id/proof2_title"
-                tools:text="Geldig tot en met 7 februari 2022" />
+                <LinearLayout
+                    android:id="@+id/description"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/title" />
 
-            <TextView
-                android:id="@+id/proof3_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:textAppearance="@style/App.TextAppearance.MaterialComponents.Body1"
-                app:layout_constraintTop_toBottomOf="@+id/proof2_subtitle"
-                tools:text="Geldigheid #2" />
+                <TextView
+                    android:id="@+id/expires_in"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    android:textAppearance="?attr/textAppearanceBody1"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toTopOf="@id/buttonWithProgressWidgetContainer"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/description"
+                    tools:text="Verloopt in 5 uur 59 min"
+                    tools:visibility="visible" />
 
-            <TextView
-                android:id="@+id/proof3_subtitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/App.TextAppearance.MaterialComponents.Body1"
-                app:layout_constraintTop_toBottomOf="@+id/proof3_title"
-                tools:text="Geldig tot en met 7 februari 2022" />
+                <nl.rijksoverheid.ctr.design.views.ButtonWithProgressWidget
+                    android:id="@+id/buttonWithProgressWidgetContainer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constrainedWidth="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/expires_in"
+                    tools:text="@string/my_overview_test_result_button" />
 
-            <TextView
-                android:id="@+id/expires_in"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:textAppearance="?attr/textAppearanceBody1"
-                android:textStyle="bold"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/proof3_subtitle"
-                tools:text="Verloopt in 5 uur 59 min"
-                tools:visibility="visible" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <nl.rijksoverheid.ctr.design.views.ButtonWithProgressWidget
-                android:id="@+id/buttonWithProgressWidgetContainer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                app:layout_constrainedWidth="true"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/expires_in"
-                app:text="@string/my_overview_test_result_button" />
+        </com.google.android.material.card.MaterialCardView>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </com.google.android.material.card.MaterialCardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
         android:id="@+id/error_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/ic_info"
         android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/test_result"
-        app:layout_constraintStart_toStartOf="@id/test_result"
-        android:visibility="invisible"
+        android:background="@drawable/ic_info"
         android:backgroundTint="@color/error"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="@id/green_cards"
+        app:layout_constraintTop_toBottomOf="@+id/green_cards"
         tools:visibility="visible" />
 
     <nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
         android:id="@+id/error_text"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/App.TextAppearance.MaterialComponents.Body2.Secondary"
-        android:layout_marginStart="2dp"
-        android:layout_marginEnd="32dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
+        android:paddingHorizontal="8dp"
         android:textAlignment="textStart"
-        android:textColor="@color/error"
-        android:textColorLink="@color/error"
+        android:textAppearance="@style/App.TextAppearance.MaterialComponents.Body2.Secondary"
+        android:visibility="invisible"
         app:htmlText="@string/my_overview_green_card_server_error"
-        app:layout_constraintTop_toBottomOf="@+id/test_result"
+        app:htmlTextColor="@color/error"
+        app:htmlTextColorLink="@color/error"
+        app:layout_constraintEnd_toEndOf="@+id/green_cards"
         app:layout_constraintStart_toEndOf="@id/error_icon"
-        android:visibility="invisible"
-        app:layout_goneMarginTop="32dp"
-        tools:visibility="visible" />
-
-    <nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
-        android:id="@+id/error_text_retry"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/App.TextAppearance.MaterialComponents.Body2.Secondary"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:textAlignment="textStart"
-        android:textColor="@color/error"
-        android:textColorLink="?android:textColorPrimary"
-        app:htmlText="@string/my_overview_green_card_server_error_after_retry"
-        app:layout_constraintTop_toBottomOf="@+id/error_text"
-        app:layout_constraintStart_toStartOf="@id/error_text"
-        android:visibility="invisible"
+        app:layout_constraintTop_toBottomOf="@+id/green_cards"
         app:layout_goneMarginTop="32dp"
         tools:visibility="visible" />
 

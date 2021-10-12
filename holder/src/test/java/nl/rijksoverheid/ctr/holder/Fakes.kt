@@ -1,7 +1,9 @@
 package nl.rijksoverheid.ctr.holder
 
+import android.graphics.Bitmap
 import androidx.lifecycle.MutableLiveData
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
+import io.mockk.mockk
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
@@ -19,6 +21,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.TestProviderReposit
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
 import nl.rijksoverheid.ctr.holder.ui.myoverview.DashboardViewModel
+import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardSync
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TokenValidatorUtil
 import nl.rijksoverheid.ctr.introduction.IntroductionData
@@ -50,12 +53,16 @@ fun fakeAppConfigViewModel(appStatus: AppStatus = AppStatus.NoActionRequired) =
 
 fun fakeDashboardViewModel() =
     object : DashboardViewModel() {
-        override fun refresh(forceSync: Boolean) {
+        override fun refresh(dashboardSync: DashboardSync) {
 
         }
 
         override fun removeGreenCard(greenCard: GreenCard) {
-            
+
+        }
+
+        override fun dismissGreenCardsSyncedItem() {
+
         }
     }
 
@@ -304,7 +311,9 @@ fun fakeTestResultAttributesUseCase(
 fun fakePersistenceManager(
     secretKeyJson: String? = "",
     credentials: String? = "",
-    hasSeenCameraRationale: Boolean? = false
+    hasSeenCameraRationale: Boolean? = false,
+    hasDismissedUnsecureDeviceDialog: Boolean = true,
+    showSyncGreenCardsItem: Boolean = true
 ): PersistenceManager {
     return object : PersistenceManager {
         override fun saveSecretKeyJson(json: String) {
@@ -365,6 +374,22 @@ fun fakePersistenceManager(
 
         override fun setHasDismissedUnsecureDeviceDialog(value: Boolean) {
             
+        }
+
+        override fun hasDismissedSyncedGreenCardsItem(): Boolean {
+            return hasDismissedUnsecureDeviceDialog
+        }
+
+        override fun setHasDismissedSyncedGreenCardsItem(dismissed: Boolean) {
+
+        }
+
+        override fun showSyncGreenCardsItem(): Boolean {
+            return showSyncGreenCardsItem
+        }
+
+        override fun setShowSyncGreenCardsItem(show: Boolean) {
+
         }
     }
 }
@@ -500,9 +525,9 @@ fun fakeGreenCardUtil(
     }
 }
 
-fun fakeCredentialUtil() = object: CredentialUtil {
+fun fakeCredentialUtil(activeCredential: CredentialEntity? = null) = object: CredentialUtil {
     override fun getActiveCredential(entities: List<CredentialEntity>): CredentialEntity? {
-        return null
+        return activeCredential
     }
 
     override fun isExpiring(credentialRenewalDays: Long, credential: CredentialEntity): Boolean {
@@ -518,6 +543,10 @@ fun fakeCredentialUtil() = object: CredentialUtil {
         getString: (String, String) -> String
     ): String {
         return ""
+    }
+
+    override fun vaccinationShouldBeHidden(readEuropeanCredential: List<JSONObject>, index: Int): Boolean {
+        return false
     }
 }
 
@@ -546,6 +575,32 @@ fun fakeClockDevationUseCase(
 
     override fun hasDeviation(): Boolean {
         return hasDeviation
+    }
+}
+
+fun fakeReadEuropeanCredentialUtil(dosis: String = "") = object: ReadEuropeanCredentialUtil {
+    override fun getDose(readEuropeanCredential: JSONObject): String {
+        return dosis
+    }
+
+    override fun getOfTotalDoses(readEuropeanCredential: JSONObject): String {
+        return "2"
+    }
+
+    override fun getDoseRangeStringForVaccination(readEuropeanCredential: JSONObject): String {
+        return ""
+    }
+}
+
+fun fakeQrCodeUsecase() = object: QrCodeUseCase {
+    override suspend fun qrCode(
+        credential: ByteArray,
+        shouldDisclose: Boolean,
+        qrCodeWidth: Int,
+        qrCodeHeight: Int,
+        errorCorrectionLevel: ErrorCorrectionLevel
+    ): Bitmap {
+        return mockk()
     }
 }
 

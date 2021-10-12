@@ -40,19 +40,19 @@
 
             <action
                 android:id="@+id/action_qr_code"
-                app:destination="@id/nav_qr_code"
+                app:destination="@id/nav_qr_codes"
                 app:enterAnim="@anim/fragment_open_enter"
                 app:exitAnim="@anim/fragment_open_exit"
                 app:popEnterAnim="@anim/fragment_close_enter"
                 app:popExitAnim="@anim/fragment_close_exit" />
 
             <action
-                android:id="@+id/action_show_qr_explanation"
-                app:destination="@id/qr_code_explanation_bottomsheet" />
-
-            <action
-                android:id="@+id/action_show_clock_deviation_explanation"
-                app:destination="@id/clock_deviation_explanation_bottomsheet" />
+                android:id="@+id/action_sync_green_cards"
+                app:destination="@id/nav_sync_green_cards"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right" />
 
         </fragment>
 
@@ -74,7 +74,7 @@
 
         <action
             android:id="@+id/action_qr_code"
-            app:destination="@id/nav_qr_code"
+            app:destination="@id/nav_qr_codes"
             app:enterAnim="@anim/fragment_open_enter"
             app:exitAnim="@anim/fragment_open_exit"
             app:popEnterAnim="@anim/fragment_close_enter"
@@ -89,20 +89,50 @@
             app:popExitAnim="@anim/slide_out_right" />
 
         <action
-            android:id="@+id/action_about_this_app"
-            app:destination="@id/nav_about_this_app" />
+            android:id="@+id/action_sync_green_cards"
+            app:destination="@id/nav_sync_green_cards"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
 
         <action
-            android:id="@+id/action_show_clock_deviation_explanation"
-            app:destination="@id/clock_deviation_explanation_bottomsheet" />
+            android:id="@+id/action_about_this_app"
+            app:destination="@id/nav_about_this_app" />
 
     </fragment>
 
     <fragment
-        android:id="@+id/nav_qr_code"
-        android:name="nl.rijksoverheid.ctr.holder.ui.myoverview.QrCodeFragment"
+        android:id="@+id/nav_sync_green_cards"
+        android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.SyncGreenCardsFragment"
+        android:label="@string/refresh_eu_items_toolbar_title"
+        tools:layout="@layout/fragment_sync_green_cards">
+
+        <action
+            android:id="@+id/action_my_overview"
+            app:destination="@id/nav_graph_overview"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit"
+            app:popUpTo="@id/nav_graph_overview"
+            app:popUpToInclusive="true" />
+
+        <action
+            android:id="@+id/action_could_not_create_qr"
+            app:destination="@id/nav_could_not_create_qr"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_qr_codes"
+        android:name="nl.rijksoverheid.ctr.holder.ui.myoverview.QrCodesFragment"
         android:label="{toolbarTitle}"
-        tools:layout="@layout/fragment_qr_code">
+        tools:layout="@layout/fragment_qr_codes">
 
         <argument
             android:name="toolbarTitle"
@@ -117,39 +147,7 @@
             app:argType="string"
             app:nullable="true" />
 
-        <action
-            android:id="@+id/action_show_qr_explanation"
-            app:destination="@id/qr_code_explanation_bottomsheet" />
-
     </fragment>
-
-    <dialog
-        android:id="@+id/qr_code_explanation_bottomsheet"
-        android:name="nl.rijksoverheid.ctr.holder.ui.myoverview.QrCodeExplanationDialogFragment"
-        android:label="QrCodeExplanationDialog"
-        tools:layout="@layout/dialog_qr_explanation">
-
-        <argument
-            android:name="title"
-            app:argType="string" />
-
-        <argument
-            android:name="description"
-            app:argType="string" />
-
-        <argument
-            android:name="footer"
-            app:argType="string"
-            app:nullable="true"
-            android:defaultValue="@null"/>
-
-    </dialog>
-
-    <dialog
-        android:id="@+id/clock_deviation_explanation_bottomsheet"
-        android:name="nl.rijksoverheid.ctr.holder.ui.myoverview.ClockDeviationExplanationDialogFragment"
-        android:label="ClockDeviationExplanation"
-        tools:layout="@layout/dialog_clock_deviation_explanation" />
 
     <navigation
         android:id="@+id/nav_paper_proof"
@@ -176,10 +174,6 @@
             android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.PaperProofCodeFragment"
             android:label="@string/add_paper_proof"
             tools:layout="@layout/fragment_paper_proof_code">
-
-            <action
-                android:id="@+id/action_title_description_bottom_sheet"
-                app:destination="@id/nav_title_description_bottom_sheet" />
 
             <action
                 android:id="@+id/action_paper_proof_consent"
@@ -299,10 +293,6 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
 
-        <action
-            android:id="@+id/action_not_yet_tested"
-            app:destination="@id/nav_not_yet_tested" />
-
     </fragment>
 
     <fragment
@@ -349,17 +339,6 @@
 
     </fragment>
 
-    <dialog
-        android:id="@+id/nav_your_events_test_result_something_wrong"
-        android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.YourEventsTestResultSomethingWrongDialogFragment"
-        tools:layout="@layout/dialog_your_events_result_something_wrong">
-
-        <argument
-            android:name="protocolType"
-            app:argType="nl.rijksoverheid.ctr.holder.ui.create_qr.YourEventsFragmentType" />
-
-    </dialog>
-
     <fragment
         android:id="@+id/nav_your_events"
         android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.YourEventsFragment"
@@ -391,10 +370,6 @@
             app:popExitAnim="@anim/fragment_close_exit"
             app:popUpTo="@id/nav_graph_overview"
             app:popUpToInclusive="true" />
-
-        <action
-            android:id="@+id/action_show_something_wrong"
-            app:destination="@id/nav_your_events_test_result_something_wrong" />
 
         <action
             android:id="@+id/action_could_not_create_qr"
@@ -436,16 +411,7 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
 
-        <action
-            android:id="@+id/action_no_code"
-            app:destination="@id/nav_no_code" />
-
     </fragment>
-
-    <dialog
-        android:id="@+id/nav_no_code"
-        android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.NoCodeExplanationDialogFragment"
-        tools:layout="@layout/dialog_no_code_explanation" />
 
     <fragment
         android:id="@+id/nav_could_not_create_qr"
@@ -486,26 +452,6 @@
         android:name="nl.rijksoverheid.ctr.design.menu.about.AboutThisAppFragment"
         android:label="@string/about_this_app"
         tools:layout="@layout/fragment_about_app" />
-
-    <dialog
-        android:id="@+id/nav_not_yet_tested"
-        android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.NotYetTestedFragment"
-        tools:layout="@layout/dialog_not_yet_tested" />
-
-    <dialog
-        android:id="@+id/nav_title_description_bottom_sheet"
-        android:name="nl.rijksoverheid.ctr.design.fragments.TitleDescriptionBottomSheetFragment"
-        tools:layout="@layout/fragment_title_description_bottom_sheet">
-
-        <argument
-            android:name="title"
-            app:argType="string" />
-
-        <argument
-            android:name="description"
-            app:argType="string" />
-
-    </dialog>
 
     <fragment
         android:id="@+id/nav_error_result"

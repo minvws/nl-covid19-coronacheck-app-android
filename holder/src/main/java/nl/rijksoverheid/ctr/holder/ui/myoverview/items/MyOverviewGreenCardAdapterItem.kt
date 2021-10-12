@@ -9,29 +9,29 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview.items
 
 import android.view.View
+import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import com.google.android.material.card.MaterialCardView
 import com.xwray.groupie.viewbinding.BindableItem
-import nl.rijksoverheid.ctr.design.ext.enableCustomLinks
-import nl.rijksoverheid.ctr.design.ext.getThemeColor
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.ItemMyOverviewGreenCardBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.CredentialEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.MyOverviewItem
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem.CardsItem.CredentialState.HasCredential
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
+import nl.rijksoverheid.ctr.shared.ext.getDimensionPixelSize
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
+data class AdapterCard(val greenCard: GreenCard, val originStates: List<OriginState>)
+
 class MyOverviewGreenCardAdapterItem(
-    private val greenCard: GreenCard,
-    private val originStates: List<OriginState>,
-    private val credentialState: DashboardItem.GreenCardItem.CredentialState,
-    private val databaseSyncerResult: DatabaseSyncerResult = DatabaseSyncerResult.Success,
-    private val onButtonClick: (greenCard: GreenCard, credential: CredentialEntity) -> Unit,
-    private val onRetryClick: () -> Unit = {},
+    private val cards: List<DashboardItem.CardsItem.CardItem>,
+    private val onButtonClick: (greenCard: GreenCard, credentials: List<ByteArray>, credentialExpirationTimeSeconds: Long) -> Unit,
+    private val onRetryClick: () -> Unit = {}
 ) :
     BindableItem<ItemMyOverviewGreenCardBinding>(R.layout.item_my_overview_green_card.toLong()),
     KoinComponent {
@@ -39,96 +39,148 @@ class MyOverviewGreenCardAdapterItem(
     private val myOverViewGreenCardAdapterUtil: MyOverViewGreenCardAdapterUtil by inject()
 
     override fun bind(viewBinding: ItemMyOverviewGreenCardBinding, position: Int) {
-        applyStyling(
-            viewBinding = viewBinding
-        )
+        applyStyling(viewBinding = viewBinding)
 
-        setContent(
-            viewBinding = viewBinding
-        )
+        setContent(viewBinding = viewBinding)
 
+        initButton(viewBinding)
+    }
+
+    private fun initButton(viewBinding: ItemMyOverviewGreenCardBinding) {
         viewBinding.buttonWithProgressWidgetContainer.setButtonOnClickListener {
-            if (credentialState is DashboardItem.GreenCardItem.CredentialState.HasCredential) {
-                onButtonClick.invoke(greenCard, credentialState.credential)
+            val mainCredentialState = cards.first().credentialState
+            if (mainCredentialState is HasCredential) {
+                val credentials = cards.mapNotNull {
+                    (it.credentialState as? HasCredential)?.credential?.data
+                }
+                onButtonClick.invoke(
+                    cards.first().greenCard,
+                    credentials,
+                    mainCredentialState.credential.expirationTime.toEpochSecond()
+                )
             }
         }
     }
 
     private fun applyStyling(viewBinding: ItemMyOverviewGreenCardBinding) {
         val context = viewBinding.root.context
-        when (greenCard.greenCardEntity.type) {
+
+        viewBinding.buttonWithProgressWidgetContainer.setButtonText(
+            viewBinding.root.context.getString(
+                if (cards.size > 1) R.string.my_overview_results_button else R.string.my_overview_test_result_button
+            )
+        )
+
+        when (cards.first().greenCard.greenCardEntity.type) {
             is GreenCardType.Eu -> {
-                viewBinding.typeTitle.apply {
-                    text = context.getString(R.string.validity_type_european_title)
-                    setTextColor(ContextCompat.getColor(context, R.color.primary_blue))
-                }
                 viewBinding.buttonWithProgressWidgetContainer.setEnabledButtonColor(R.color.primary_blue)
                 viewBinding.imageView.setImageResource(R.drawable.ic_international_card)
             }
             is GreenCardType.Domestic -> {
-                viewBinding.typeTitle.apply {
-                    text = context.getString(R.string.validity_type_dutch_title)
-                    setTextColor(ContextCompat.getColor(context, R.color.primary_blue))
-                }
                 viewBinding.buttonWithProgressWidgetContainer.setEnabledButtonColor(R.color.primary_blue)
                 viewBinding.imageView.setImageResource(R.drawable.ic_dutch_card)
             }
         }
 
-        if (credentialState is DashboardItem.GreenCardItem.CredentialState.LoadingCredential) {
+        if (cards.first().credentialState is DashboardItem.CardsItem.CredentialState.LoadingCredential) {
             viewBinding.buttonWithProgressWidgetContainer.setAccessibilityText(context.getString(R.string.my_overview_test_result_button_indicator_accessibility_description))
             viewBinding.buttonWithProgressWidgetContainer.loading()
         } else {
             viewBinding.buttonWithProgressWidgetContainer.idle(
-                isEnabled = credentialState is DashboardItem.GreenCardItem.CredentialState.HasCredential
+                isEnabled = cards.first().credentialState is HasCredential
             )
         }
 
     }
 
     private fun setContent(viewBinding: ItemMyOverviewGreenCardBinding) {
-        val context = viewBinding.root.context
+        // reset layout
+        viewBinding.run {
+            (viewBinding.root.layoutParams as ViewGroup.MarginLayoutParams).bottomMargin = 0
+            description.removeAllViews()
+            greenCards.removeViews(1, viewBinding.greenCards.childCount - 1)
+            errorText.setHtmlText("")
+            errorIcon.visibility = View.GONE
+            errorText.visibility = View.GONE
+        }
 
-        viewBinding.proof1Title.visibility = View.GONE
-        viewBinding.proof1Subtitle.visibility = View.GONE
-        viewBinding.proof2Title.visibility = View.GONE
-        viewBinding.proof2Subtitle.visibility = View.GONE
-        viewBinding.proof3Title.visibility = View.GONE
-        viewBinding.proof3Subtitle.visibility = View.GONE
-        viewBinding.proof1Subtitle.setTextColor(context.getThemeColor(android.R.attr.textColorPrimary))
-        viewBinding.proof2Subtitle.setTextColor(context.getThemeColor(android.R.attr.textColorPrimary))
-        viewBinding.proof3Subtitle.setTextColor(context.getThemeColor(android.R.attr.textColorPrimary))
-        viewBinding.errorText.setHtmlText("")
-        viewBinding.errorTextRetry.setHtmlText("")
-        viewBinding.errorIcon.visibility = View.GONE
-        viewBinding.errorText.visibility = View.GONE
-        viewBinding.errorTextRetry.visibility = View.GONE
+        myOverViewGreenCardAdapterUtil.setContent(
+            ViewBindingWrapperImpl(viewBinding),
+            cards.map { AdapterCard(it.greenCard, it.originStates) }
+                .sortedByDescending { it.originStates.first().origin.eventTime },
+        )
 
-        myOverViewGreenCardAdapterUtil.setContent(greenCard, originStates, ViewBindingWrapperImpl(viewBinding))
+        stackAdditionalCards(viewBinding)
 
         showError(viewBinding)
     }
 
-    private fun showError(viewBinding: ItemMyOverviewGreenCardBinding) {
-        if (credentialState is DashboardItem.GreenCardItem.CredentialState.NoCredential) {
-            val context = viewBinding.errorText.context
-            when (databaseSyncerResult) {
-                is DatabaseSyncerResult.Failed.NetworkError -> {
-                    viewBinding.errorText.setHtmlText(R.string.my_overview_green_card_internet_error)
-                    viewBinding.errorText.enableCustomLinks(onRetryClick)
-                    viewBinding.errorTextRetry.setHtmlText("")
-                    viewBinding.errorIcon.visibility = View.VISIBLE
-                    viewBinding.errorText.visibility = View.VISIBLE
-                    viewBinding.errorTextRetry.visibility = View.GONE
+    /**
+     * Show a border of extra cards when item has additional items of the same type
+     *
+     * @param[viewBinding] view binding containing binding of parent view group of green cards
+     */
+    private fun stackAdditionalCards(viewBinding: ItemMyOverviewGreenCardBinding) {
+        for (i in 1 until cards.count()) {
+            viewBinding.greenCards.addView(
+                MaterialCardView(viewBinding.greenCards.context).apply {
+                    radius = getDimensionPixelSize(R.dimen.dashboard_card_corner_radius).toFloat()
+                    cardElevation = getDimensionPixelSize(R.dimen.dashboard_card_elevation) -
+                            (getDimensionPixelSize(R.dimen.dashboard_card_additional_lower_elevation) * i).toFloat()
+                    translationY =
+                        getDimensionPixelSize(R.dimen.dashboard_card_additional_translation_y).toFloat() * i
+                },
+                ConstraintLayout.LayoutParams(0, 0).apply {
+                    topToTop = viewBinding.testResult.id
+                    startToStart = viewBinding.testResult.id
+                    endToEnd = viewBinding.testResult.id
+                    bottomToBottom = viewBinding.testResult.id
                 }
-                is DatabaseSyncerResult.Failed.ServerError -> {
-                    viewBinding.errorText.setHtmlText(R.string.my_overview_green_card_server_error)
+            )
+        }
+
+        // Add extra margin bottom so that correct margins stay intact when stacking cards
+        if (cards.count() > 1) {
+            (viewBinding.root.layoutParams as ViewGroup.MarginLayoutParams).bottomMargin =
+                viewBinding.root.getDimensionPixelSize(R.dimen.dashboard_card_additional_translation_y) * cards.count()
+        }
+    }
+
+    private fun showError(viewBinding: ItemMyOverviewGreenCardBinding) {
+        val context = viewBinding.root.context
+        if (cards.first().credentialState is DashboardItem.CardsItem.CredentialState.NoCredential) {
+            when (cards.first().databaseSyncerResult) {
+                is DatabaseSyncerResult.Failed.NetworkError -> {
+                    viewBinding.errorText.setHtmlText(
+                        htmlText = context.getString(R.string.my_overview_green_card_internet_error),
+                        htmlTextColor = ContextCompat.getColor(context, R.color.error),
+                        htmlTextColorLink = ContextCompat.getColor(context, R.color.error)
+                    )
                     viewBinding.errorText.enableCustomLinks(onRetryClick)
                     viewBinding.errorIcon.visibility = View.VISIBLE
                     viewBinding.errorText.visibility = View.VISIBLE
-                    viewBinding.errorTextRetry.visibility = View.GONE
+                }
+                is DatabaseSyncerResult.Failed.ServerError.FirstTime -> {
+                    viewBinding.errorText.setHtmlText(
+                        htmlText = context.getString(R.string.my_overview_green_card_server_error),
+                        htmlTextColor = ContextCompat.getColor(context, R.color.error),
+                        htmlTextColorLink = ContextCompat.getColor(context, R.color.error)
+                    )
+                    viewBinding.errorText.enableCustomLinks(onRetryClick)
+                    viewBinding.errorIcon.visibility = View.VISIBLE
+                    viewBinding.errorText.visibility = View.VISIBLE
+                }
+                is DatabaseSyncerResult.Failed.ServerError.MultipleTimes -> {
+                    viewBinding.errorText.setHtmlText(
+                        htmlText = context.getString(R.string.my_overview_green_card_server_error_after_retry),
+                        htmlTextColor = ContextCompat.getColor(context, R.color.error),
+                        htmlTextColorLink = ContextCompat.getColor(context, R.color.error)
+                    )
+                    viewBinding.errorText.visibility = View.VISIBLE
+                    viewBinding.errorIcon.visibility = View.VISIBLE
                 }
                 else -> {
+
                 }
             }
         }

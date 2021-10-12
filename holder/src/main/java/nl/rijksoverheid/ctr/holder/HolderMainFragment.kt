@@ -11,8 +11,6 @@ package nl.rijksoverheid.ctr.holder
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
-import androidx.annotation.IdRes
-import androidx.annotation.StringRes
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -57,7 +55,14 @@ class HolderMainFragment : BaseMainFragment(
             binding.drawerLayout
         )
 
-        binding.toolbar.elevation = 0f
+        val defaultToolbarElevation = resources.getDimension(R.dimen.toolbar_elevation)
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            binding.toolbar.elevation = if (destination.id == R.id.nav_my_overview_tabs) {
+                0f
+            } else {
+                defaultToolbarElevation
+            }
+        }
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
         binding.navView.setupWithNavController(navController)
 
@@ -157,11 +162,11 @@ class HolderMainFragment : BaseMainFragment(
     private fun navigationDrawerStyling() {
         val context = binding.navView.context
         binding.navView.menu.findItem(R.id.nav_graph_overview)
-            .styleTitle(context, R.attr.textAppearanceHeadline6)
+            .styleTitle(context, R.attr.textAppearanceHeadline6, heading = true)
         binding.navView.menu.findItem(R.id.nav_settings)
-            .styleTitle(context, R.attr.textAppearanceHeadline6)
+            .styleTitle(context, R.attr.textAppearanceHeadline6, heading = true)
         binding.navView.menu.findItem(R.id.nav_qr_code_type)
-            .styleTitle(context, R.attr.textAppearanceHeadline6)
+            .styleTitle(context, R.attr.textAppearanceHeadline6, heading = true)
         binding.navView.menu.findItem(R.id.nav_about_this_app)
             .styleTitle(context, R.attr.textAppearanceBody1)
         binding.navView.menu.findItem(R.id.nav_frequently_asked_questions)
@@ -170,5 +175,15 @@ class HolderMainFragment : BaseMainFragment(
             .styleTitle(context, R.attr.textAppearanceBody1)
         binding.navView.menu.findItem(R.id.nav_paper_proof)
             .styleTitle(context, R.attr.textAppearanceBody1)
+
+        // resize drawer according to design
+        val width = activity?.resources?.displayMetrics?.widthPixels ?: return
+        val layoutParams = binding.navView.layoutParams as DrawerLayout.LayoutParams
+        layoutParams.width = (drawerWidthFactor * width).toInt()
+        binding.navView.layoutParams = layoutParams
+    }
+
+    companion object {
+        const val drawerWidthFactor = 0.85f
     }
 }

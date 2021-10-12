@@ -7,7 +7,7 @@ plugins {
 }
 
 def appVersionCode = System.getenv("GITHUB_RUN_NUMBER") != null ? System.getenv("GITHUB_RUN_NUMBER").toInteger() : 1000000
-version = "2.3.1"
+version = "2.4.0"
 archivesBaseName = "verifier-v${version}-${appVersionCode}"
 
 android {
@@ -32,11 +32,12 @@ android {
         buildConfigField "String", "SIGNATURE_CERTIFICATE_CN_MATCH", '".coronatester.nl"'
         buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "true"
         buildConfigField "boolean", "FEATURE_TEST_PROVIDER_API_CHECKS", "true"
-        buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.coronacheck.nl/v5/\""
+        buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.coronacheck.nl/v6/\""
         buildConfigField "String[]", "CERTIFICATE_PINS",
                 "{" +
                         "\"sha256/lR7gRvqDMW5nhsCMRPE7TKLq0tJkTWMxQ5HAzHCIfQ0=\"" +
                         "}"
+        buildConfigField "String", "CDN_API_URL", "\"https://verifier-api-cdn.coronacheck.nl/v6/\""
     }
 
     signingConfigs {
@@ -63,7 +64,7 @@ android {
             versionNameSuffix "-test"
             applicationIdSuffix ".test"
             manifestPlaceholders = [appLabel: "@string/app_name_test"]
-            buildConfigField "String", "BASE_API_URL", "\"https://api-ct.bananenhalen.nl/v5/\""
+            buildConfigField "String", "BASE_API_URL", "\"https://api-ct.bananenhalen.nl/v6/\""
             buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "false"
             buildConfigField "boolean", "FEATURE_TEST_PROVIDER_API_CHECKS", "false"
             buildConfigField "String[]", "CERTIFICATE_PINS",
@@ -78,7 +79,8 @@ android {
             versionNameSuffix "-acc"
             applicationIdSuffix ".acc"
             manifestPlaceholders = [appLabel: "@string/app_name_acc"]
-            buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.acc.coronacheck.nl/v5/\""
+            buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.acc.coronacheck.nl/v6/\""
+            buildConfigField "String", "CDN_API_URL", "\"https://verifier-api-cdn.acc.coronacheck.nl/v6/\""
             buildConfigField "String[]", "CERTIFICATE_PINS",
                     "{" +
                             "\"sha256/lR7gRvqDMW5nhsCMRPE7TKLq0tJkTWMxQ5HAzHCIfQ0=\"" +
@@ -138,4 +140,3 @@ dependencies {
 
     debugImplementation "androidx.fragment:fragment-testing:$fragment_version"
 }
-

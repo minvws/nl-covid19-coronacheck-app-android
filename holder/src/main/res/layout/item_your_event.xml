@@ -47,7 +47,7 @@
         app:layout_constraintTop_toBottomOf="@+id/row_title"
         tools:text="Dinsdag 2 februari 14:06" />
 
-    <com.google.android.material.textview.MaterialTextView
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/detailsButton"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="0dp"
@@ -58,7 +58,6 @@
         android:includeFontPadding="false"
         android:minWidth="0dp"
         android:text="@string/your_events_details_button"
-        android:textColor="@color/primary_blue"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/row_subtitle" />
 

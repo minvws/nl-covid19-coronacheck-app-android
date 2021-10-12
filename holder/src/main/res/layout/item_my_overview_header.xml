@@ -15,10 +15,24 @@
         android:textAppearance="?attr/textAppearanceBody1"
         android:textColorLink="@color/link"
         app:enableHtmlLinks="true"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="@string/my_overview_no_qr_description" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button"
+        style="?attr/borderlessButtonStyle"
+        android:text="@string/my_overview_description_eu_button_text"
+        android:textColor="@color/link"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:paddingHorizontal="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text"
+        android:visibility="visible"
+        android:textAlignment="textStart" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

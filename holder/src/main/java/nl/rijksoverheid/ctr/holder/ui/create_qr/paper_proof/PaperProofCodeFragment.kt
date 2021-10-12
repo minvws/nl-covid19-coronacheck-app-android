@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import nl.rijksoverheid.ctr.design.utils.BottomSheetData
+import nl.rijksoverheid.ctr.design.utils.BottomSheetDialogUtil
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentPaperProofCodeBinding
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.PaperProofCodeResult
@@ -11,10 +13,13 @@ import nl.rijksoverheid.ctr.shared.ext.hideKeyboard
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.ext.showKeyboard
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
 import org.koin.androidx.viewmodel.scope.emptyState
 
 class PaperProofCodeFragment : Fragment(R.layout.fragment_paper_proof_code) {
+
+    private val bottomSheetDialogUtil: BottomSheetDialogUtil by inject()
 
     private val viewModel: PaperProofCodeViewModel by stateViewModel(
         state = emptyState(),
@@ -43,10 +48,14 @@ class PaperProofCodeFragment : Fragment(R.layout.fragment_paper_proof_code) {
                 is PaperProofCodeResult.NotSixCharacters -> {
                     binding.codeInput.error =
                         getString(R.string.add_paper_proof_input_not_6_chars)
+                    binding.codeInput.isErrorEnabled = true
+                    binding.codeInput.setErrorIconDrawable(R.drawable.ic_error)
                 }
                 is PaperProofCodeResult.Invalid -> {
                     binding.codeInput.error =
                         getString(R.string.add_paper_proof_input_invalid)
+                    binding.codeInput.isErrorEnabled = true
+                    binding.codeInput.setErrorIconDrawable(R.drawable.ic_error)
                 }
             }
         })
@@ -56,9 +65,11 @@ class PaperProofCodeFragment : Fragment(R.layout.fragment_paper_proof_code) {
         }
 
         binding.noLetterCombinationBtn.setOnClickListener {
-            navigateSafety(PaperProofCodeFragmentDirections.actionTitleDescriptionBottomSheet(
+            bottomSheetDialogUtil.present(childFragmentManager, BottomSheetData.TitleDescription(
                 title = getString(R.string.no_letter_combination_dialog_title),
-                description = getString(R.string.no_letter_combination_dialog_description)
+                applyOnDescription = {
+                    it.setHtmlText(R.string.no_letter_combination_dialog_description, true)
+                }
             ))
         }
 
