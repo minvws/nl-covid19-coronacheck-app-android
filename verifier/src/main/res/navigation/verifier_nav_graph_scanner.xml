@@ -10,6 +10,14 @@
         android:name="nl.rijksoverheid.ctr.verifier.ui.scanner.VerifierQrScannerFragment"
         tools:layout="@layout/fragment_scanner">
 
+        <deepLink app:uri=".*/app/scan?returnUri={returnUri}" />
+
+        <argument
+            android:name="returnUri"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+
         <action
             android:id="@+id/action_scan_result_valid"
             app:destination="@id/nav_scan_result_valid"
