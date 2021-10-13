@@ -471,6 +471,8 @@
     <string name="qr_code_newer_dose_available">Deze QR-code heb je waarschijnlijk niet nodig, want je hebt een nieuwere dosis.</string>
     <string name="qr_code_hidden_title">QR-code verborgen</string>
     <string name="qr_code_hidden_button">Laat toch zien</string>
+    <string name="qr_code_previous_button">Vorige QR-code</string>
+    <string name="qr_code_next_button">Volgende QR-code</string>
     <string name="my_overview_results_button">Bekijk QR-codes</string>
     <string name="dashboard_item_refresh_eu_vaccinations_text">Je kan je internationale vaccinatiebewijs vernieuwen</string>
     <string name="dashboard_item_refresh_eu_vaccinations_button">Lees meer</string>

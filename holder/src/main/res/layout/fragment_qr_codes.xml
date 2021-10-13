@@ -44,7 +44,8 @@
                 app:layout_constraintHorizontal_chainStyle="spread_inside"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/qrVaccinationDosis"
-                tools:visibility="visible" />
+                tools:visibility="visible"
+                android:contentDescription="@string/qr_code_previous_button" />
 
             <TextView
                 android:id="@+id/qrVaccinationDosis"
@@ -72,7 +73,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/qrVaccinationDosis"
                 app:layout_constraintTop_toTopOf="@+id/qrVaccinationDosis"
-                tools:visibility="visible" />
+                tools:visibility="visible"
+                android:contentDescription="@string/qr_code_next_button" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
