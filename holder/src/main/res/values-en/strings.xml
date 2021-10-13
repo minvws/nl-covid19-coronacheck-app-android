@@ -471,6 +471,8 @@
     <string name="qr_code_newer_dose_available">You probably won\'t need this QR code because you have a more recent dose.</string>
     <string name="qr_code_hidden_title">QR code hidden</string>
     <string name="qr_code_hidden_button">Show anyway</string>
+    <string name="qr_code_previous_button">Previous QR code</string>
+    <string name="qr_code_next_button">Next QR code</string>
     <string name="my_overview_results_button">View QR codes</string>
     <string name="dashboard_item_refresh_eu_vaccinations_text">You can renew your international vaccination certificate</string>
     <string name="dashboard_item_refresh_eu_vaccinations_button">Read more</string>
