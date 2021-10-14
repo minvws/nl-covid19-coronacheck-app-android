@@ -3,14 +3,22 @@ package nl.rijksoverheid.ctr.shared.utils
 import android.accessibilityservice.AccessibilityServiceInfo
 import android.content.Context
 import android.view.View
+import android.view.ViewGroup
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityManager
 import android.widget.Button
+import android.widget.TextView
+import androidx.appcompat.view.menu.ActionMenuItemView
+import androidx.appcompat.widget.AppCompatCheckedTextView
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.view.AccessibilityDelegateCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.accessibility.AccessibilityEventCompat
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
+import androidx.core.view.children
+import com.google.android.material.navigation.NavigationView
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -214,5 +222,55 @@ object Accessibility {
      */
     fun View.setAccessibilityLabel(label: CharSequence): View {
         return label(this, label)
+    }
+
+    /**
+     * Helper method to retrieve all children of a view
+     */
+    fun children(view: View): List<View> {
+        val children = ArrayList<View>()
+        if (view !is ViewGroup) {
+            children.add(view)
+        } else if (view.childCount > 0) {
+            for (index in 0 until view.childCount) {
+                val child = view.getChildAt(index)
+                children.addAll(children(child))
+            }
+        }
+        return children
+    }
+
+    /**
+     * Helper method to mark the Toolbar's title as accessibility heading
+     */
+    fun Toolbar.addAccessibilityForTitle() {
+        this.children.filterIsInstance(TextView::class.java).firstOrNull()?.let { textView ->
+            ViewCompat.setAccessibilityHeading(textView, true)
+        }
+    }
+
+    /**
+     * Helper method to mark the Toolbar's menu items as accessibility button
+     */
+    fun Toolbar.addAccessbilityForMenuItems() {
+        children(this).forEach { view ->
+            if (view is ActionMenuItemView || view is AppCompatImageView) {
+                button(view, true)
+            }
+        }
+    }
+
+    /**
+     * Helper method mark the NavigationView's items as accessibility button
+     */
+    fun NavigationView.addAccessibilityForItems() {
+        children(this).filterIsInstance<AppCompatCheckedTextView>().forEach { view ->
+            accessibilityDelegate(view) { _, info ->
+                info.isSelected = view.isChecked
+                info.isCheckable = false
+                info.isChecked = false
+                info.className = Button::class.java.name
+            }
+        }
     }
 }

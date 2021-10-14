@@ -9,8 +9,8 @@
 package nl.rijksoverheid.ctr.design
 
 import android.content.res.Configuration
-import android.view.WindowManager
 import android.widget.ImageView
+import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -20,6 +20,9 @@ import com.google.android.material.navigation.NavigationView
 import nl.rijksoverheid.ctr.design.databinding.MenuHeaderBinding
 import nl.rijksoverheid.ctr.shared.AccessibilityConstants
 import nl.rijksoverheid.ctr.shared.utils.Accessibility
+import nl.rijksoverheid.ctr.shared.utils.Accessibility.addAccessbilityForMenuItems
+import nl.rijksoverheid.ctr.shared.utils.Accessibility.addAccessibilityForItems
+import nl.rijksoverheid.ctr.shared.utils.Accessibility.addAccessibilityForTitle
 
 /**
  * Base activity that adjust the navigation menu for system bar insets and handles custom destination logic
@@ -37,6 +40,7 @@ abstract class BaseMainFragment(
         val navController = navHostFragment?.navController
         val drawer: DrawerLayout? = requireView().findViewById(R.id.drawer_layout)
         val navView: NavigationView? = requireView().findViewById(R.id.nav_view)
+        val toolbar: Toolbar? = requireView().findViewById(R.id.toolbar)
 
         if (drawer != null && navView != null && navController != null) {
             // Listen on the root view so that we can inset the navView even if the insets are consumed
@@ -93,5 +97,16 @@ abstract class BaseMainFragment(
                 }
             })
         }
+
+        // Improve Toolbar accessibility
+        toolbar?.postDelayed( {
+            toolbar.addAccessibilityForTitle()
+            toolbar.addAccessbilityForMenuItems()
+        }, AccessibilityConstants.ACCESSIBILITY_DELEGATE_DELAY)
+
+        // Improve NavigationView accessibility
+        navView?.postDelayed({
+            navView.addAccessibilityForItems()
+        }, AccessibilityConstants.ACCESSIBILITY_DELEGATE_DELAY)
     }
 }
