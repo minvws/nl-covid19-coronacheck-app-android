@@ -45,7 +45,7 @@ class YourEventWidget @JvmOverloads constructor(
 
             setAccessibilityLabel(String.format("%s. %s.",
                 binding.rowTitle.text,
-                binding.rowSubtitle.text
+                binding.rowSubtitle.spannable
             ))
             setAsAccessibilityButton(true)
             addAccessibilityAction(AccessibilityNodeInfoCompat.ACTION_CLICK, binding.detailsButton.text)
