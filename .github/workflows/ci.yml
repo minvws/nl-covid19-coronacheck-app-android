@@ -94,13 +94,6 @@ jobs:
 
       - name: Install firebase-cli
         run: npm install -g firebase-tools
-      # - name: Distribute holder test variant
-      #   run: |
-      #     firebase appdistribution:distribute `ls apks/holder/build/outputs/apk/tst/release/holder-*.apk` \
-      #     --app 1:168257592968:android:cbb6d05f4163e39026493d \
-      #     --token $FIREBASE_TOKEN \
-      #     --groups testers
-
       - name: Distribute holder acc variant
         run: |
           firebase appdistribution:distribute `ls apks/holder/build/outputs/apk/acc/release/holder-*.apk` \
@@ -114,14 +107,7 @@ jobs:
           --app 1:168257592968:android:aaa5afb416536fdb26493d \
           --token $FIREBASE_TOKEN \
           --groups testers
-
-      # - name: Distribute verifier test variant
-      #   run: |
-      #     firebase appdistribution:distribute `ls apks/verifier/build/outputs/apk/tst/release/verifier-*.apk` \
-      #     --app 1:168257592968:android:ed609f228437d86f26493d \
-      #     --token $FIREBASE_TOKEN \
-      #     --groups testers
-
+          
       - name: Distribute verifier acc variant
         run: |
           firebase appdistribution:distribute `ls apks/verifier/build/outputs/apk/acc/release/verifier-*.apk` \
