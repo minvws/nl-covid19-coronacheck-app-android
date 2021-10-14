@@ -59,21 +59,6 @@ android {
 
     flavorDimensions "environment"
     productFlavors {
-        tst {
-            dimension "environment"
-            versionNameSuffix "-test"
-            applicationIdSuffix ".test"
-            manifestPlaceholders = [appLabel: "@string/app_name_test"]
-            buildConfigField "String", "BASE_API_URL", "\"https://api-ct.bananenhalen.nl/v6/\""
-            buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "false"
-            buildConfigField "boolean", "FEATURE_TEST_PROVIDER_API_CHECKS", "false"
-            buildConfigField "String[]", "CERTIFICATE_PINS",
-                    "{" +
-                            "\"sha256/C5+lpZ7tcVwmwQIMcRtPbsQtWLABXhQzejna0wHFr8M=\"" +
-                            "}"
-            apply plugin: 'com.google.gms.google-services'
-            apply plugin: 'com.google.firebase.crashlytics'
-        }
         acc {
             dimension "environment"
             versionNameSuffix "-acc"
@@ -87,10 +72,16 @@ android {
                             "}"
             apply plugin: 'com.google.gms.google-services'
             apply plugin: 'com.google.firebase.crashlytics'
+            matchingFallbacks = ['mlkit']
         }
         prod {
             dimension "environment"
             manifestPlaceholders = [appLabel: "@string/app_name"]
+            matchingFallbacks = ['mlkit']
+        }
+        fdroidProd {
+            dimension "environment"
+            matchingFallbacks = ['zxing']
         }
     }
     compileOptions {
@@ -135,7 +126,6 @@ dependencies {
 
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$desugar_jdk_version"
 
-    tstImplementation "com.google.firebase:firebase-crashlytics-ktx:$crashlytics_version"
     accImplementation "com.google.firebase:firebase-crashlytics-ktx:$crashlytics_version"
 
     debugImplementation "androidx.fragment:fragment-testing:$fragment_version"
