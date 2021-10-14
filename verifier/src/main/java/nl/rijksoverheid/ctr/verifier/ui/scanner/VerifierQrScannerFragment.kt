@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.StringRes
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.google.mlkit.vision.barcode.Barcode
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.qrscanner.QrCodeScannerFragment
@@ -26,8 +27,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class VerifierQrScannerFragment : QrCodeScannerFragment() {
 
     private val scannerViewModel: ScannerViewModel by viewModel()
-
     private val dialogUtil: DialogUtil by inject()
+    private val args: VerifierQrScannerFragmentArgs by navArgs()
 
     override fun onQrScanned(content: String) {
         scannerViewModel.validate(
