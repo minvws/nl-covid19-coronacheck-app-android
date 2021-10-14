@@ -108,6 +108,9 @@ android {
         prod {
             dimension "environment"
         }
+        fdroidProd {
+            dimension "environment"
+        }
     }
 
     compileOptions {
