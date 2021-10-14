@@ -88,7 +88,7 @@ android {
             apply plugin: 'com.google.firebase.crashlytics'
             matchingFallbacks = ['mlkit']
         }
-        froidAcc {
+        fdroidAcc {
             buildConfigField "String", "BASE_API_URL", "\"https://holder-api.acc.coronacheck.nl/v6/\""
             buildConfigField "String", "CDN_API_URL", "\"https://holder-api-cdn.acc.coronacheck.nl/v6/\""
             buildConfigField "String", "DIGI_D_BASE_URL", "\"https://tvs.acc.coronacheck.nl\""
