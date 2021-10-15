@@ -7,18 +7,11 @@ import android.view.ViewGroup
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityManager
 import android.widget.Button
-import android.widget.TextView
-import androidx.appcompat.view.menu.ActionMenuItemView
-import androidx.appcompat.widget.AppCompatCheckedTextView
-import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.view.AccessibilityDelegateCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.accessibility.AccessibilityEventCompat
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
-import androidx.core.view.children
-import com.google.android.material.navigation.NavigationView
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
