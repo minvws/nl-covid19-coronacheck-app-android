@@ -2,9 +2,7 @@ package nl.rijksoverheid.ctr.design.views
 
 import android.content.Context
 import android.util.AttributeSet
-import androidx.appcompat.view.menu.ActionMenuItemView
 import androidx.appcompat.widget.ActionMenuView
-import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.view.children
 import nl.rijksoverheid.ctr.design.R
@@ -35,9 +33,7 @@ class Toolbar @JvmOverloads constructor(
         // Mark menu items as button
         children.filterIsInstance(ActionMenuView::class.java)
                 .firstOrNull()?.let { menu ->
-            menu.children.filter { view ->
-                view is ActionMenuItemView || view is AppCompatImageView
-            }.forEach { view ->
+            menu.children.forEach { view ->
                 Accessibility.button(view, true)
             }
         }
