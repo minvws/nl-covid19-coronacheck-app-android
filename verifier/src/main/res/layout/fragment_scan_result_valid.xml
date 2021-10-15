@@ -8,7 +8,7 @@
     android:fitsSystemWindows="true"
     tools:background="@color/secondary_green">
 
-    <androidx.appcompat.widget.Toolbar
+    <nl.rijksoverheid.ctr.design.views.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

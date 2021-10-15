@@ -239,38 +239,4 @@ object Accessibility {
         }
         return children
     }
-
-    /**
-     * Helper method to mark the Toolbar's title as accessibility heading
-     */
-    fun Toolbar.addAccessibilityForTitle() {
-        this.children.filterIsInstance(TextView::class.java).firstOrNull()?.let { textView ->
-            ViewCompat.setAccessibilityHeading(textView, true)
-        }
-    }
-
-    /**
-     * Helper method to mark the Toolbar's menu items as accessibility button
-     */
-    fun Toolbar.addAccessbilityForMenuItems() {
-        children(this).forEach { view ->
-            if (view is ActionMenuItemView || view is AppCompatImageView) {
-                button(view, true)
-            }
-        }
-    }
-
-    /**
-     * Helper method mark the NavigationView's items as accessibility button
-     */
-    fun NavigationView.addAccessibilityForItems() {
-        children(this).filterIsInstance<AppCompatCheckedTextView>().forEach { view ->
-            accessibilityDelegate(view) { _, info ->
-                info.isSelected = view.isChecked
-                info.isCheckable = false
-                info.isChecked = false
-                info.className = Button::class.java.name
-            }
-        }
-    }
 }
