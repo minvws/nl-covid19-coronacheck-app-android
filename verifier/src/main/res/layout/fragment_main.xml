@@ -51,7 +51,21 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:theme="@style/ThemeOverlay.App.NavigationView"
-        app:itemMaxLines="3"
-        app:menu="@menu/navigation_drawer" />
+        app:itemMaxLines="3">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/TextAppearance.MaterialComponents.Headline6"
+                android:text="@string/scan_qr_title" />
+
+        </LinearLayout>
+
+    </com.google.android.material.navigation.NavigationView>
 
 </androidx.drawerlayout.widget.DrawerLayout>
