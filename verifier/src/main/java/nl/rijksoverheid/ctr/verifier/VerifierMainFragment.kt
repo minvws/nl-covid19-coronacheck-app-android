@@ -51,7 +51,7 @@ class VerifierMainFragment :
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
         binding.navView.setupWithNavController(navController)
 
-//        navigationDrawerStyling()
+        navigationDrawerStyling()
 
         binding.navView.setNavigationItemSelectedListener { item ->
             when (item.itemId) {
@@ -94,8 +94,8 @@ class VerifierMainFragment :
         }
 
         // Add close button to menu if user has screenreader enabled
-//        binding.navView.menu.findItem(R.id.nav_close_menu).isVisible =
-//            requireActivity().isScreenReaderOn()
+        binding.navView.menu.findItem(R.id.nav_close_menu).isVisible =
+            requireActivity().isScreenReaderOn()
 
         // Close Navigation Drawer when pressing back if it's open
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object :
