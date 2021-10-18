@@ -630,7 +630,7 @@ fun fakeRemoteEventUtil(
         return RemoteEventVaccination(
             type = "",
             unique = "",
-            vaccination = fakeRemoteEventVaccination
+            vaccination = fakeRemoteEventVaccination()
         )
     }
 
@@ -663,8 +663,8 @@ val fakeGreenCard = GreenCard(
     credentialEntities = listOf()
 )
 
-val fakeRemoteEventVaccination = RemoteEventVaccination.Vaccination(
-    date = LocalDate.now(),
+fun fakeRemoteEventVaccination(date: LocalDate = LocalDate.now()) = RemoteEventVaccination.Vaccination(
+    date = date,
     hpkCode = "",
     type = "",
     brand = "",

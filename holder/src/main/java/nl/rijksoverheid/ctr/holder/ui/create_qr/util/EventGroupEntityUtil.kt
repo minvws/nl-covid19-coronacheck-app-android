@@ -34,6 +34,7 @@ class EventGroupEntityUtilImpl(
                 .map { remoteEventUtil.getRemoteEventsFromNonDcc(it) }
                 .flatten()
                 .filterIsInstance<RemoteEventVaccination>()
+                .distinctBy { it.vaccination?.date }
                 .toList()
 
             return dccVaccinationEvents.size + nonDccVaccinationEvents.size

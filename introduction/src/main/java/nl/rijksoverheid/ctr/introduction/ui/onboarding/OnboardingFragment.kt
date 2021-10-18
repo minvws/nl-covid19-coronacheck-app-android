@@ -110,6 +110,7 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 binding.toolbar.visibility = if (position == 0) View.GONE else View.VISIBLE
+                binding.logo.isFocusable = (position == 0)
                 binding.indicators.updateSelected(position)
 
                 binding.indicators.contentDescription = getString(

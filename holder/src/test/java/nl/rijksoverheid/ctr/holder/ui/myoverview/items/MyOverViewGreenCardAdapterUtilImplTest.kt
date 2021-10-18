@@ -74,7 +74,7 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
         val greenCard = greenCard(GreenCardType.Eu)
         myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(AdapterCard(greenCard, listOf(OriginState.Valid(greenCard.origins.first())))))
 
-        assertEquals("Testbewijs: PCR (NAAT)", (viewBinding.description.getChildAt(0) as TextView).text)
+        assertEquals("Type test: PCR (NAAT)", (viewBinding.description.getChildAt(0) as TextView).text)
         assertEquals("Testdatum: dinsdag 27 juli 11:10", (viewBinding.description.getChildAt(1) as TextView).text)
     }
 
@@ -134,7 +134,6 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
         val greenCard = greenCard(GreenCardType.Eu, OriginType.Recovery)
         myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(AdapterCard(greenCard, listOf(OriginState.Valid(greenCard.origins.first())))))
 
-        assertEquals("Herstelbewijs:", (viewBinding.description.getChildAt(0) as TextView).text)
         assertEquals("geldig tot 28 jul 2021", (viewBinding.description.getChildAt(1) as TextView).text)
         assertEquals(View.GONE, viewBinding.expiresIn.visibility)
     }
@@ -144,7 +143,6 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
         val greenCard = greenCard(GreenCardType.Eu, OriginType.Recovery)
         myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(AdapterCard(greenCard, listOf(OriginState.Future(greenCard.origins.first())))))
 
-        assertEquals("Herstelbewijs:", (viewBinding.description.getChildAt(0) as TextView).text)
         assertEquals("geldig vanaf 27 juli 11:11 t/m 28 juli 2021", (viewBinding.description.getChildAt(1) as TextView).text)
         assertEquals(View.VISIBLE, viewBinding.expiresIn.visibility)
     }
@@ -199,22 +197,23 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `Title should be generic for EU test and recovery`() {
+    fun `Title should be specific for EU test`() {
         val testCard = greenCard(GreenCardType.Eu, OriginType.Test)
-        val recoveryCard = greenCard(GreenCardType.Eu, OriginType.Recovery)
 
         myOverViewGreenCardAdapterUtil.setContent(
             viewBinding, listOf(AdapterCard(testCard, listOf(OriginState.Valid(testCard.origins.first()))))
         )
-        assertEquals("Mijn bewijs", (viewBinding.title).text)
+        assertEquals("Testbewijs", (viewBinding.title).text)
+    }
 
-        // reset
-        viewBinding.title.text = ""
+    @Test
+    fun `Title should be specific for EU recovery`() {
+        val recoveryCard = greenCard(GreenCardType.Eu, OriginType.Recovery)
 
         myOverViewGreenCardAdapterUtil.setContent(
-            viewBinding, listOf(AdapterCard(recoveryCard, listOf(OriginState.Valid(testCard.origins.first()))))
+            viewBinding, listOf(AdapterCard(recoveryCard, listOf(OriginState.Valid(recoveryCard.origins.first()))))
         )
-        assertEquals("Mijn bewijs", (viewBinding.title).text)
+        assertEquals("Herstelbewijs", (viewBinding.title).text)
     }
 
     @Test
