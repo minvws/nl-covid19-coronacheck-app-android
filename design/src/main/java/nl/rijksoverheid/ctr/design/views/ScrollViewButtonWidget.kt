@@ -41,14 +41,12 @@ class ScrollViewButtonWidget @JvmOverloads constructor(
             0, 0
         ).apply {
             try {
-                val buttonText = getText(R.styleable.ScrollViewButtonWidget_buttonText)
-                buttonText?.let {
-                    setButtonText(buttonText.toString())
+                getText(R.styleable.ScrollViewButtonWidget_buttonText)?.let {
+                    setButtonText(it.toString())
                 }
 
-                val secondaryButtonText = getText(R.styleable.ScrollViewButtonWidget_secondaryButtonText)
-                secondaryButtonText?.let {
-                    setSecondaryButtonText(buttonText.toString())
+                getText(R.styleable.ScrollViewButtonWidget_secondaryButtonText)?.let {
+                    setSecondaryButtonText(it.toString())
                 }
 
                 setButtonEnabled(

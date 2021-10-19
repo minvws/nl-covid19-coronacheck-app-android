@@ -76,18 +76,6 @@
                 app:layout_constraintStart_toEndOf="@id/personal_details_birthdate"
                 app:layout_constraintTop_toTopOf="@id/personal_details_birthdate" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/button_incorrect_data"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:paddingStart="0dp"
-                android:text="@string/scan_result_valid_incorrect_data"
-                android:textColor="@color/link"
-                app:layout_constraintStart_toStartOf="@+id/personal_details_birthdate"
-                app:layout_constraintTop_toBottomOf="@+id/personal_details_birthdate" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>

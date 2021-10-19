@@ -70,14 +70,8 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
     override fun onResume() {
         super.onResume()
         val autoCloseDuration =
-            if (BuildConfig.FLAVOR == "tst") TimeUnit.SECONDS.toMillis(10) else TimeUnit.MINUTES.toMillis(
-                3
-            )
+            if (BuildConfig.FLAVOR == "tst") TimeUnit.SECONDS.toMillis(10) else TimeUnit.MILLISECONDS.toMillis(800)
         autoCloseHandler.postDelayed(autoCloseRunnable, autoCloseDuration)
-//        transitionPersonalDetailsHandler.postDelayed(
-//            transitionPersonalDetailsRunnable,
-//            TimeUnit.MILLISECONDS.toMillis(800)
-//        )
     }
 
     override fun onDestroyView() {

@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.design.utils.BottomSheetData
 import nl.rijksoverheid.ctr.design.utils.BottomSheetDialogUtil
+import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanResultValidPersonalDetailsBinding
@@ -37,10 +38,18 @@ class ScanResultPersonalDetailsFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         _binding = FragmentScanResultValidPersonalDetailsBinding.bind(view)
+        bindButtons()
+        presentPersonalDetails()
+    }
 
-        binding.buttonIncorrectData.setOnClickListener {
+    private fun bindButtons() {
+        binding.bottom.setButtonClick {
+            findNavControllerSafety()?.navigate(
+                ScanResultPersonalDetailsFragmentDirections.actionNavScanResultValid(args.validData)
+            )
+        }
+        binding.bottom.setSecondaryButtonClick {
             bottomSheetDialogUtil.present(childFragmentManager, BottomSheetData.TitleDescription(
                 title = getString(R.string.scan_result_valid_reason_title),
                 applyOnDescription = {
@@ -48,12 +57,7 @@ class ScanResultPersonalDetailsFragment :
                 }
             ))
         }
-
-        binding.bottom.setButtonClick {
-            scannerUtil.launchScanner(requireActivity())
-        }
-
-        presentPersonalDetails()
+        binding.toolbar.setNavigationOnClickListener { findNavControllerSafety()?.popBackStack() }
     }
 
     private fun presentPersonalDetails() {
