@@ -2,8 +2,8 @@ package nl.rijksoverheid.ctr.design.views
 
 import android.content.Context
 import android.util.AttributeSet
+import android.widget.TextView
 import androidx.appcompat.widget.ActionMenuView
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.view.children
 import nl.rijksoverheid.ctr.design.R
 import nl.rijksoverheid.ctr.shared.utils.Accessibility
@@ -21,7 +21,7 @@ class Toolbar @JvmOverloads constructor(
         super.setTitle(title)
 
         // Mark title as heading
-        children.filterIsInstance(AppCompatTextView::class.java)
+        children.filterIsInstance(TextView::class.java)
                 .firstOrNull()?.let { textView ->
             Accessibility.heading(textView, true)
         }

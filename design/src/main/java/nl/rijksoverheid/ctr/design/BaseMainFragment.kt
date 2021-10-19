@@ -20,6 +20,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.navigation.NavigationView
 import nl.rijksoverheid.ctr.design.databinding.MenuHeaderBinding
 import nl.rijksoverheid.ctr.shared.AccessibilityConstants
+import nl.rijksoverheid.ctr.shared.ext.children
 import nl.rijksoverheid.ctr.shared.utils.Accessibility
 
 /**
@@ -97,7 +98,7 @@ abstract class BaseMainFragment(
 
         // Improve NavigationView accessibility
         navView?.postDelayed({
-            Accessibility.children(navView).filterIsInstance<AppCompatCheckedTextView>().forEach { view ->
+            navView.children().filterIsInstance<AppCompatCheckedTextView>().forEach { view ->
                 Accessibility.accessibilityDelegate(view) { _, info ->
                     info.isSelected = view.isChecked
                     info.isCheckable = false

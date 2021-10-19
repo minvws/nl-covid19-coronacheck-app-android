@@ -12,6 +12,7 @@ import androidx.core.view.AccessibilityDelegateCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.accessibility.AccessibilityEventCompat
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
+import androidx.core.view.forEach
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -215,21 +216,5 @@ object Accessibility {
      */
     fun View.setAccessibilityLabel(label: CharSequence): View {
         return label(this, label)
-    }
-
-    /**
-     * Helper method to retrieve all children of a view
-     */
-    fun children(view: View): List<View> {
-        val children = ArrayList<View>()
-        if (view !is ViewGroup) {
-            children.add(view)
-        } else if (view.childCount > 0) {
-            for (index in 0 until view.childCount) {
-                val child = view.getChildAt(index)
-                children.addAll(children(child))
-            }
-        }
-        return children
     }
 }
