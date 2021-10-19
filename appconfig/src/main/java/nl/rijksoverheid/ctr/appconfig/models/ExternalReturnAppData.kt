@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.holder.ui.myoverview.models
+package nl.rijksoverheid.ctr.appconfig.models
 
 import android.content.Intent
 
