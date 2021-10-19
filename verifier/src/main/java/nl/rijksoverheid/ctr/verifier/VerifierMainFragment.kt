@@ -120,6 +120,8 @@ class VerifierMainFragment :
         val context = binding.navView.context
         binding.navView.menu.findItem(R.id.nav_scan_qr)
             .styleTitle(context, R.attr.textAppearanceHeadline6)
+        binding.navView.menu.findItem(R.id.nav_scan_instructions)
+            .styleTitle(context, R.attr.textAppearanceHeadline6)
         binding.navView.menu.findItem(R.id.nav_support)
             .styleTitle(context, R.attr.textAppearanceBody1)
         binding.navView.menu.findItem(R.id.nav_about_this_app)

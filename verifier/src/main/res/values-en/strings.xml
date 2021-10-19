@@ -125,4 +125,5 @@
     <string name="scan_result_valid_incorrect_data">Are the details incorrect?</string>
     <string name="scan_qr_instructions_button">What should I pay attention to?</string>
     <string name="scan_instructions_skip">Skip</string>
+    <string name="scan_instructions_menu_title">Hoe het werkt</string>
 </resources>
