@@ -30,7 +30,7 @@
 
                 <data
                     android:host="${deepLinkHost}"
-                    android:path="/app/scan"
+                    android:path="/verifier/scan"
                     android:scheme="https" />
             </intent-filter>
         </activity>
