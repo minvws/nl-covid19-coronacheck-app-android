@@ -11,5 +11,6 @@ package nl.rijksoverheid.ctr.shared
 import java.util.concurrent.TimeUnit
 
 object AccessibilityConstants {
-    val ACCESSIBILITY_FOCUS_DELAY = TimeUnit.SECONDS.toMillis(1) / 2 // 500ms
+    val ACCESSIBILITY_FOCUS_DELAY = TimeUnit.MILLISECONDS.toMillis(500)
+    val ACCESSIBILITY_DELEGATE_DELAY = TimeUnit.MILLISECONDS.toMillis(100)
 }

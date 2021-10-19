@@ -9,8 +9,9 @@
 package nl.rijksoverheid.ctr.design
 
 import android.content.res.Configuration
-import android.view.WindowManager
+import android.widget.Button
 import android.widget.ImageView
+import androidx.appcompat.widget.AppCompatCheckedTextView
 import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -19,6 +20,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.navigation.NavigationView
 import nl.rijksoverheid.ctr.design.databinding.MenuHeaderBinding
 import nl.rijksoverheid.ctr.shared.AccessibilityConstants
+import nl.rijksoverheid.ctr.shared.ext.children
 import nl.rijksoverheid.ctr.shared.utils.Accessibility
 
 /**
@@ -93,5 +95,17 @@ abstract class BaseMainFragment(
                 }
             })
         }
+
+        // Improve NavigationView accessibility
+        navView?.postDelayed({
+            navView.children().filterIsInstance<AppCompatCheckedTextView>().forEach { view ->
+                Accessibility.accessibilityDelegate(view) { _, info ->
+                    info.isSelected = view.isChecked
+                    info.isCheckable = false
+                    info.isChecked = false
+                    info.className = Button::class.java.name
+                }
+            }
+        }, AccessibilityConstants.ACCESSIBILITY_DELEGATE_DELAY)
     }
 }

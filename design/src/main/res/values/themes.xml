@@ -46,8 +46,8 @@
         <item name="textAppearanceBody1">
             @style/App.TextAppearance.MaterialComponents.Body1.Montserrat.Secondary
         </item>
-        <item name="android:textColorSecondary">@color/white_80</item>
-        <item name="android:listDivider">@android:color/transparent</item>
+        <item name="android:textColorSecondary">@color/white</item>
+        <item name="android:listDivider">@drawable/menu_divider</item>
     </style>
 
     <style name="ThemeOverlay.AppTheme.Inverted" parent="">

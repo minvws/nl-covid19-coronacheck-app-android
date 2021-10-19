@@ -9,7 +9,9 @@
 package nl.rijksoverheid.ctr.shared.ext
 
 import android.view.View
+import android.view.ViewGroup
 import androidx.annotation.DimenRes
+import androidx.core.view.forEach
 
 fun View.setVisible(isVisible: Boolean) {
     visibility =  if (isVisible) {
@@ -21,3 +23,18 @@ fun View.setVisible(isVisible: Boolean) {
 
 fun View.getDimensionPixelSize(@DimenRes dimenRes: Int) =
     context.resources.getDimensionPixelSize(dimenRes)
+
+
+/**
+ * Helper method to retrieve all children of a view
+ * @return List which contains all child views
+ */
+fun View.children(): List<View> {
+    val children = arrayListOf<View>()
+    if (this is ViewGroup) {
+        this.forEach { child ->
+            children.addAll(child.children())
+        }
+    }
+    return children
+}

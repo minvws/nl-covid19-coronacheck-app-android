@@ -125,4 +125,5 @@
     <string name="scan_result_valid_incorrect_data">Kloppen de gegevens niet?</string>
     <string name="scan_qr_instructions_button">Waar moet ik op letten?</string>
     <string name="scan_instructions_skip">Sla over</string>
+    <string name="scan_instructions_menu_title">Hoe het werkt</string>
 </resources>
