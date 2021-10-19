@@ -73,7 +73,7 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
             when (it) {
                 is VerifiedQrResultState.Valid -> {
                     findNavController().navigate(
-                        VerifierQrScannerFragmentDirections.actionScanResultValid(
+                        VerifierQrScannerFragmentDirections.actionScanResultPersonalDetails(
                             validData = ScanResultValidData.Valid(
                                 verifiedQr = it.verifiedQr
                             )
@@ -82,7 +82,7 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
                 }
                 is VerifiedQrResultState.Demo -> {
                     findNavController().navigate(
-                        VerifierQrScannerFragmentDirections.actionScanResultValid(
+                        VerifierQrScannerFragmentDirections.actionScanResultPersonalDetails(
                             validData = ScanResultValidData.Demo(
                                 verifiedQr = it.verifiedQr
                             )
