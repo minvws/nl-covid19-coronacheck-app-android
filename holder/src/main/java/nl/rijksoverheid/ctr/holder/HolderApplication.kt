@@ -55,7 +55,7 @@ open class HolderApplication : SharedApplication(), Configuration.Provider {
         repositoriesModule,
         qrsModule,
         appModule,
-        errorsModule,
+        errorsModule(BuildConfig.FLAVOR),
         retrofitModule(BuildConfig.BASE_API_URL),
         responsesModule,
         qrScannerModule

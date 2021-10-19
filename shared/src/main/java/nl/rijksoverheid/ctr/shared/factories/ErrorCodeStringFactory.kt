@@ -23,11 +23,16 @@ interface ErrorCodeStringFactory {
     fun get(flow: Flow, errorResults: List<ErrorResult>): String
 }
 
-class ErrorCodeStringFactoryImpl: ErrorCodeStringFactory {
+class ErrorCodeStringFactoryImpl(private val isPlayStoreBuild: Boolean = true): ErrorCodeStringFactory {
+
     override fun get(flow: Flow, errorResults: List<ErrorResult>): String {
         val errorStringBuilders = errorResults.map {
             val stringBuilder = StringBuilder()
-            stringBuilder.append("A")
+            stringBuilder.append(if (isPlayStoreBuild) {
+                "A"
+            } else {
+                "F"
+            })
             stringBuilder.append(" ${flow.code}")
             stringBuilder.append("${errorResults.first().getCurrentStep().code}")
 
