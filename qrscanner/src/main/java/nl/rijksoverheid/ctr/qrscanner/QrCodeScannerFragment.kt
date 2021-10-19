@@ -15,7 +15,9 @@ import android.content.pm.PackageManager
 import android.graphics.Paint
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.view.MotionEvent
 import android.view.View
+import android.view.ViewTreeObserver
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
@@ -224,6 +226,7 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
                 cameraSelector,
                 cameraPreview
             ).also { camera ->
+                previewView.focusOnTouch(camera.cameraControl)
                 // If device supports flash, enable flash functionality
                 if (camera.cameraInfo.hasFlashUnit()) {
                     binding.toolbar.menu.findItem(R.id.flash)?.let { flashItem ->
