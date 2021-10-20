@@ -439,7 +439,7 @@
     <string name="my_overview_clock_deviation_description">Check your phone\'s time settings. They might be incorrect.</string>
     <string name="clock_deviation_explanation_title">Please check your phone’s time settings</string>
     <string name="clock_deviation_explanation_description"><![CDATA[Your phone’s time settings may be incorrect. Your phone may be a few minutes ahead. To make the best use of the CoronaCheck app, it is important that the time is set correctly.<br/><br/><a href="#">Go to settings</a> on your phone and set date and time to ‘set automatically’.]]></string>
-    <string name="domestic_qr_code_title">Dutch QR code</string>
+    <string name="domestic_qr_code_title">Dutch QR</string>
     <string name="app_status_update_recommended_title">Want to update the app?</string>
     <string name="app_status_update_recommended_message">There\'s a new version of the app available.</string>
     <string name="app_status_update_recommended_dismiss_action">No, I\'ll do it later</string>
