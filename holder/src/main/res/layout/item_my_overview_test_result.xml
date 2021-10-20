@@ -7,6 +7,7 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="16dp"
     android:layout_marginTop="32dp"
+    android:focusable="true"
     app:cardCornerRadius="16dp"
     app:cardElevation="8dp"
     app:layout_constraintEnd_toEndOf="parent"
@@ -15,7 +16,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:focusable="true">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -33,7 +35,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
+        <nl.rijksoverheid.ctr.design.views.AccessibilityHeaderWidget
             android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -41,6 +43,7 @@
             android:layout_marginTop="24dp"
             android:text="@string/my_overview_test_result_title"
             android:textAppearance="?attr/textAppearanceHeadline6"
+            android:focusable="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
