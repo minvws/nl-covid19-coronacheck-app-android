@@ -7,7 +7,6 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="16dp"
     android:layout_marginTop="32dp"
-    android:focusable="true"
     app:cardCornerRadius="16dp"
     app:cardElevation="8dp"
     app:layout_constraintEnd_toEndOf="parent"
