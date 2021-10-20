@@ -41,7 +41,7 @@
                     app:layout_constraintTop_toTopOf="@id/title"
                     tools:src="@drawable/ic_international_card" />
 
-                <TextView
+                <nl.rijksoverheid.ctr.design.views.AccessibilityHeaderWidget
                     android:id="@+id/title"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
