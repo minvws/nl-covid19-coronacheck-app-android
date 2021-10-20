@@ -49,7 +49,8 @@ data class HolderConfig(
     configTTL,
     providerIdentifiers,
     holderRecommendedVersion,
-    upgradeRecommendationIntervalHours
+    upgradeRecommendationIntervalHours,
+    holderClockDeviationThresholdSeconds
 ) {
 
     companion object {
