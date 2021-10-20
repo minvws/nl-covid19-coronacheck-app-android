@@ -14,7 +14,9 @@ import kotlinx.parcelize.Parcelize
 data class AboutThisAppData(
     val versionName: String,
     val versionCode: String,
-    val readMoreItems: List<ReadMoreItem> = listOf()
+    val readMoreItems: List<ReadMoreItem> = listOf(),
+    val configVersionHash : String,
+    val configVersionTimestamp : Long
 ) : Parcelable {
 
     @Parcelize
