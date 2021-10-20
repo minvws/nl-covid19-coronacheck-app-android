@@ -13,7 +13,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/ic_close"
-        app:title="Controleer identiteitsbewijs" />
+        app:title="@string/scan_result_id_toolbar_title" />
 
     <ScrollView
         android:id="@+id/scroll"
@@ -85,8 +85,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:attachToScrollView="@+id/scroll"
-        app:buttonText="Gegevens kloppen"
-        app:secondaryButtonText="Er klopt iets niets"
+        app:buttonText="@string/scan_result_valid_id_confirm_button"
+        app:secondaryButtonText="@string/scan_result_valid_something_wrong_button"
         app:cardElevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

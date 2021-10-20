@@ -126,4 +126,9 @@
     <string name="scan_qr_instructions_button">Waar moet ik op letten?</string>
     <string name="scan_instructions_skip">Sla over</string>
     <string name="scan_instructions_menu_title">Hoe het werkt</string>
+    <string name="scan_result_something_wrong">Er klopt iets niets</string>
+    <string name="scan_result_something_wrong_finished_check_button">Er klopt iets niets</string>
+    <string name="scan_result_valid_id_confirmed_button">Gegevens kloppen</string>
+    <string name="scan_result_id_toolbar_title">Controleer identiteitsbewijs</string>
+    <string name="scan_result_mandatory_id_check">De identiteitscontrole is verplicht</string>
 </resources>
