@@ -87,4 +87,14 @@ class CachedAppConfigUseCaseImplTest {
 
         assertEquals(cachedAppConfigUseCase.getCachedAppConfig(), HolderConfig.default())
     }
+
+    @Test
+    fun `check if config hash is returned as 7 character value`() {
+        every { appConfigStorageManager.getFileAsBufferedSource(any()) } returns null
+
+        val cachedAppConfigUseCase =
+            CachedAppConfigUseCaseImpl(appConfigStorageManager, "", moshi, false)
+
+        assertEquals(cachedAppConfigUseCase.getCachedAppConfigHash().length, 7)
+    }
 }

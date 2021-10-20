@@ -154,6 +154,10 @@ fun fakeCachedAppConfigUseCase(
     override fun getCachedAppConfig(): AppConfig {
         return appConfig
     }
+
+    override fun getCachedAppConfigHash(): String {
+        return ""
+    }
 }
 
 fun fakeMobileCoreWrapper(): MobileCoreWrapper {

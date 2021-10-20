@@ -98,6 +98,7 @@
     <string name="personal_details_month_nov">NOV</string>
     <string name="personal_details_month_dec">DEC</string>
     <string name="app_version">App versie: %1$s (%2$s)</string>
+    <string name="config_version">Configuratie %1$s, %2$s</string>
     <string name="back">Terug</string>
     <string name="onboarding_page_indicator_label">Pagina %1$s van %2$s</string>
     <string name="menu_close">Sluiten</string>

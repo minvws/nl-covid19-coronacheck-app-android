@@ -19,6 +19,8 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
+import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
+import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.design.BaseMainFragment
 import nl.rijksoverheid.ctr.design.ext.styleTitle
 import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppData
@@ -26,6 +28,7 @@ import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppFragment
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMainBinding
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAccessibilityFocus
+import org.koin.android.ext.android.inject
 
 class HolderMainFragment : BaseMainFragment(
     R.layout.fragment_main, setOf(
@@ -39,6 +42,8 @@ class HolderMainFragment : BaseMainFragment(
     private val binding get() = _binding!!
     private var _navController : NavController? = null
     private val navController get() = _navController!!
+    private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
+    private val appConfigPersistenceManager : AppConfigPersistenceManager by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -106,7 +111,9 @@ class HolderMainFragment : BaseMainFragment(
                                         text = getString(R.string.about_this_app_colofon),
                                         url = getString(R.string.about_this_app_colofon_url),
                                     ),
-                                )
+                                ),
+                                configVersionHash = cachedAppConfigUseCase.getCachedAppConfigHash(),
+                                configVersionTimestamp = appConfigPersistenceManager.getAppConfigLastFetchedSeconds()
                             )
                         )
                     )

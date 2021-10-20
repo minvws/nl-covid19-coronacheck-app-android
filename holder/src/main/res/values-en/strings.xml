@@ -143,6 +143,7 @@
     <string name="personal_details_month_nov">NOV</string>
     <string name="personal_details_month_dec">DEC</string>
     <string name="app_version">App version: %1$s (%2$s)</string>
+    <string name="config_version">Configuration %1$s, %2$s</string>
     <string name="my_overview_existing_qr_title">Show QR code at the entrance</string>
     <string name="my_overview_existing_qr_date">Valid until %1$s</string>
     <string name="your_negative_test_results_tooltip">You can only use test results no older than %1$s hour(s) to make a QR code.</string>

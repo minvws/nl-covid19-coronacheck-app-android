@@ -20,8 +20,11 @@ import nl.rijksoverheid.ctr.design.BuildConfig
 import nl.rijksoverheid.ctr.design.R
 import nl.rijksoverheid.ctr.design.databinding.AboutThisAppRowBinding
 import nl.rijksoverheid.ctr.design.databinding.FragmentAboutAppBinding
+import nl.rijksoverheid.ctr.design.ext.formatDayMonthTime
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAsAccessibilityButton
+import java.time.Instant
+import java.time.ZoneOffset
 
 class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
 
@@ -64,6 +67,12 @@ class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
             R.string.app_version,
             aboutThisAppData.versionName,
             aboutThisAppData.versionCode
+        )
+
+        binding.configVersion.text = getString(
+            R.string.config_version,
+            aboutThisAppData.configVersionHash,
+            Instant.ofEpochSecond(aboutThisAppData.configVersionTimestamp).atOffset(ZoneOffset.UTC).formatDayMonthTime(requireContext())
         )
 
         // On test and acceptance builds show button to trigger deeplink to scanner
