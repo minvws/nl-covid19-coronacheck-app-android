@@ -76,6 +76,17 @@
                 app:layout_constraintStart_toEndOf="@id/personal_details_birthdate"
                 app:layout_constraintTop_toTopOf="@id/personal_details_birthdate" />
 
+            <TextView
+                style="@style/App.TextAppearance.MaterialComponents.Body2.Secondary"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:gravity="center"
+                android:text="@string/scan_result_mandatory_id_check"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/personal_details_birthmonth" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
@@ -86,11 +97,11 @@
         android:layout_height="wrap_content"
         app:attachToScrollView="@+id/scroll"
         app:buttonText="@string/scan_result_valid_id_confirmed_button"
-        app:secondaryButtonText="@string/scan_result_something_wrong"
         app:cardElevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scroll" />
+        app:layout_constraintTop_toBottomOf="@+id/scroll"
+        app:secondaryButtonText="@string/scan_result_something_wrong" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
