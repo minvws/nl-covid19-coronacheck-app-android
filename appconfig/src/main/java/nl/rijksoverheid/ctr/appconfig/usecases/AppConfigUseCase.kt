@@ -28,6 +28,7 @@ import java.time.OffsetDateTime
 
 interface AppConfigUseCase {
     suspend fun get(): ConfigResult
+    fun canRefresh(cachedAppConfigUseCase: CachedAppConfigUseCase): Boolean
 }
 
 class AppConfigUseCaseImpl(
@@ -54,6 +55,7 @@ class AppConfigUseCaseImpl(
                 localReceivedTimestamp = clock.millis()
             )
 
+            println("GIO config fetched and stored")
             appConfigPersistenceManager.saveAppConfigLastFetchedSeconds(
                 OffsetDateTime.now(clock).toEpochSecond()
             )
@@ -63,5 +65,17 @@ class AppConfigUseCaseImpl(
         } catch (e: HttpException) {
             ConfigResult.Error
         }
+    }
+
+    /**
+     * never refresh more than once per configMinimumInterval (1 hour on prod)
+     * in order not to track users by network requests
+     */
+    override fun canRefresh(cachedAppConfigUseCase: CachedAppConfigUseCase): Boolean {
+        val lastTimeRefreshed = appConfigPersistenceManager.getAppConfigLastFetchedSeconds()
+        val minimumRefreshInterval = cachedAppConfigUseCase.getCachedAppConfig().configMinimumIntervalSeconds
+        val nowSeconds = OffsetDateTime.now(clock).toEpochSecond()
+
+        return nowSeconds - lastTimeRefreshed > minimumRefreshInterval
     }
 }

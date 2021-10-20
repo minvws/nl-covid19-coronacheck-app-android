@@ -23,6 +23,7 @@ abstract class AppConfig(
     val informationURL: String,
     val minimumVersion: Int,
     val configTtlSeconds: Int,
+    val configMinimumIntervalSeconds: Int,
     val providers: List<Code>,
     val recommendedVersion: Int,
     val recommendedUpgradeIntervalHours: Int
