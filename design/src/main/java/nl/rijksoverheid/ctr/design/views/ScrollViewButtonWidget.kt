@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.widget.ScrollView
+import androidx.annotation.DrawableRes
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import nl.rijksoverheid.ctr.design.R
 import nl.rijksoverheid.ctr.design.databinding.WidgetScrollViewButtonBinding
 
@@ -61,6 +63,22 @@ class ScrollViewButtonWidget @JvmOverloads constructor(
             } finally {
                 recycle()
             }
+        }
+    }
+
+    fun setIcon(@DrawableRes drawable: Int) {
+        binding.button.run {
+            setCompoundDrawablesWithIntrinsicBounds(
+                null, null, ContextCompat.getDrawable(context, drawable), null
+            )
+            compoundDrawablePadding =
+                resources.getDimensionPixelSize(R.dimen.deeplink_exit_icon_padding)
+            setPadding(
+                paddingLeft,
+                resources.getDimensionPixelSize(R.dimen.deeplink_button_padding_vertical),
+                resources.getDimensionPixelSize(R.dimen.deeplink_button_padding_end),
+                resources.getDimensionPixelSize(R.dimen.deeplink_button_padding_vertical),
+            )
         }
     }
 

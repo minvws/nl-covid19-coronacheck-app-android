@@ -64,18 +64,22 @@ class ScanResultPersonalDetailsFragment :
     }
 
     private fun bindButtons() {
-        binding.bottom.setButtonClick {
-            findNavControllerSafety()?.navigate(
-                ScanResultPersonalDetailsFragmentDirections.actionNavScanResultValid(args.validData)
-            )
-        }
-        binding.bottom.setSecondaryButtonClick {
-            bottomSheetDialogUtil.present(childFragmentManager, BottomSheetData.TitleDescription(
-                title = getString(R.string.scan_result_valid_reason_title),
-                applyOnDescription = {
-                    it.setHtmlText(R.string.scan_result_valid_reason_description)
-                }
-            ))
+        binding.bottom.run {
+            setButtonClick {
+                findNavControllerSafety()?.navigate(
+                    ScanResultPersonalDetailsFragmentDirections.actionNavScanResultValid(args.validData)
+                )
+            }
+            setSecondaryButtonClick {
+                bottomSheetDialogUtil.present(childFragmentManager,
+                    BottomSheetData.TitleDescription(
+                        title = getString(R.string.scan_result_valid_reason_title),
+                        applyOnDescription = {
+                            it.setHtmlText(R.string.scan_result_valid_reason_description)
+                        }
+                    ))
+            }
+            if (args.validData.externalReturnAppData != null) setIcon(R.drawable.ic_deeplink)
         }
         binding.toolbar.setNavigationOnClickListener { findNavControllerSafety()?.popBackStack() }
     }

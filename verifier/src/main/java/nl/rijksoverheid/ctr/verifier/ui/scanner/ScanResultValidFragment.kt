@@ -65,18 +65,16 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
 
     override fun onResume() {
         super.onResume()
-        val autoCloseDuration =
-            if (BuildConfig.FLAVOR == "tst") TimeUnit.SECONDS.toMillis(10) else TimeUnit.MILLISECONDS.toMillis(
-                800
-            )
+        val autoCloseDurationMilli =
+            if (BuildConfig.FLAVOR == "tst") TimeUnit.SECONDS.toMillis(10) else 800
         args.validData.externalReturnAppData?.let {
             try {
                 startActivity(it.intent)
                 activity?.finishAffinity()
             } catch (exception: ActivityNotFoundException) {
-                autoCloseHandler.postDelayed(autoCloseRunnable, autoCloseDuration)
+                autoCloseHandler.postDelayed(autoCloseRunnable, autoCloseDurationMilli)
             }
-        } ?: autoCloseHandler.postDelayed(autoCloseRunnable, autoCloseDuration)
+        } ?: autoCloseHandler.postDelayed(autoCloseRunnable, autoCloseDurationMilli)
     }
 
     override fun onDestroyView() {
