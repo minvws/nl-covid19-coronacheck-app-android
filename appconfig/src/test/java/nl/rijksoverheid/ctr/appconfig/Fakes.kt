@@ -4,6 +4,7 @@ import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
+import java.security.MessageDigest
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -41,7 +42,11 @@ fun fakeCachedAppConfigUseCase(
     }
 
     override fun getCachedAppConfigHash(): String {
-        return ""
+        val bytes = getCachedAppConfig().toString().toByteArray()
+        val md = MessageDigest.getInstance("SHA-256")
+        val digest = md.digest(bytes)
+        // Return first 7 characters of hash
+        return digest.fold("", { str, it -> str + "%02x".format(it) }).subSequence(0,7).toString()
     }
 }
 
