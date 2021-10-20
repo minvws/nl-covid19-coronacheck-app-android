@@ -216,7 +216,7 @@
     <string name="validity_type_european_title">International</string>
     <string name="validity_type_dutch_title">The Netherlands</string>
     <string name="qr_explanation_title_domestic">About my Dutch QR code</string>
-    <string name="qr_explanation_description_domestic"><![CDATA[Your Dutch QR code contains minimal data. The QR code says whether or not the QR code is valid. It doesn\'t say whether or not you have a test certificate or vaccination.<br/><br/> The QR code also contains several of your details. This is to make sure the QR code belongs to you. The details consist of the first letter of your first name, the first letter of your last name, your birth month, and your day of birth.<br/><br/>Your details: <b>%1$s</b><br/><br/>*To protect your privacy, some details may disappear. In this case you will see a hyphen (-).]]></string>
+    <string name="qr_explanation_description_domestic"><![CDATA[Your Dutch QR code contains minimal information. While it states that your certificate is valid, it doesn\'t specify if you\'ve been tested or vaccinated.<br/><br/>The QR code also contains the first letter of your first and last name and your date and month of birth. This is to make sure the QR code belongs to you.<br/><br/>Your information*: <b>%1$s</b><br/><br/>* Information can sometimes disappear to protect your privacy. In that case, you will see a dash (_).]]></string>
     <string name="qr_explanation_title_eu">About my international QR code</string>
     <string name="qr_explanation_title_eu_vaccination">About your dose %1s</string>
     <string name="qr_explanation_description_eu_vaccination_header">Are you abroad, or planning to cross the border? This requires more data. That\'s why the international QR code contains the following details:</string>
@@ -436,10 +436,10 @@
     <string name="new_in_app_tabs_title">A Dutch and an international tab</string>
     <string name="new_in_app_tabs_description">From now on you can easily switch between your Dutch and international certificate. At the top of the screen, you’ll find a tab named ‘the Netherlands’ and a tab named ‘International’. Are you travelling abroad? Use the certificates found under ‘International’.</string>
     <string name="your_events_and">and</string>
-    <string name="my_overview_clock_deviation_description">Please check your phone’s time settings. These settings may be incorrect.</string>
+    <string name="my_overview_clock_deviation_description">Check your phone\'s time settings. They might be incorrect.</string>
     <string name="clock_deviation_explanation_title">Please check your phone’s time settings</string>
     <string name="clock_deviation_explanation_description"><![CDATA[Your phone’s time settings may be incorrect. Your phone may be a few minutes ahead. To make the best use of the CoronaCheck app, it is important that the time is set correctly.<br/><br/><a href="#">Go to settings</a> on your phone and set date and time to ‘set automatically’.]]></string>
-    <string name="domestic_qr_code_title">Dutch QR</string>
+    <string name="domestic_qr_code_title">Dutch QR code</string>
     <string name="app_status_update_recommended_title">Want to update the app?</string>
     <string name="app_status_update_recommended_message">There\'s a new version of the app available.</string>
     <string name="app_status_update_recommended_dismiss_action">No, I\'ll do it later</string>
