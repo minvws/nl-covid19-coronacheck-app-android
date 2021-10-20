@@ -9,10 +9,14 @@
 package nl.rijksoverheid.ctr.design.menu.about
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.Button
 import androidx.fragment.app.Fragment
+import nl.rijksoverheid.ctr.design.BuildConfig
 import nl.rijksoverheid.ctr.design.R
 import nl.rijksoverheid.ctr.design.databinding.AboutThisAppRowBinding
 import nl.rijksoverheid.ctr.design.databinding.FragmentAboutAppBinding
@@ -61,5 +65,19 @@ class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
             aboutThisAppData.versionName,
             aboutThisAppData.versionCode
         )
+
+        // On test and acceptance builds show button to trigger deeplink to scanner
+        if (BuildConfig.DEBUG || context?.packageName == "nl.rijksoverheid.ctr.holder.acc") {
+            bindScannerDeeplinkButton(binding.deeplinkScannerButton)
+        }
+    }
+
+    private fun bindScannerDeeplinkButton(deeplinkScannerButton: Button) {
+        deeplinkScannerButton.visibility = View.VISIBLE
+        val link =
+            "https://web.acc.coronacheck.nl/verifier/scan?returnUri=https://web.acc.coronacheck.nl/app/open?returnUri=scanner-test"
+        deeplinkScannerButton.setOnClickListener {
+            startActivity(Intent(Intent.ACTION_VIEW).apply { data = Uri.parse(link) })
+        }
     }
 }
