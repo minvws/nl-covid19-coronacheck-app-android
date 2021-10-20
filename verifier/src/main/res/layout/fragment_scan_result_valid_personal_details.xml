@@ -13,7 +13,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/ic_close"
-        app:title="@string/scan_result_id_toolbar_title" />
+        app:title="@string/scan_result_valid_personal_details_title" />
 
     <ScrollView
         android:id="@+id/scroll"
