@@ -71,13 +71,9 @@ class ScanResultPersonalDetailsFragment :
                 )
             }
             setSecondaryButtonClick {
-                bottomSheetDialogUtil.present(childFragmentManager,
-                    BottomSheetData.TitleDescription(
-                        title = getString(R.string.scan_result_valid_reason_title),
-                        applyOnDescription = {
-                            it.setHtmlText(R.string.scan_result_valid_reason_description)
-                        }
-                    ))
+                findNavControllerSafety()?.navigate(
+                    ScanResultPersonalDetailsFragmentDirections.actionNavDetailsWrong()
+                )
             }
             if (args.validData.externalReturnAppData != null) setIcon(R.drawable.ic_deeplink)
         }

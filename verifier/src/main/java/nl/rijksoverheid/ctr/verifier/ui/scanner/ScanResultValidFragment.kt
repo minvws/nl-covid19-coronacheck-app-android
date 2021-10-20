@@ -27,7 +27,7 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
     private val autoCloseRunnable = Runnable {
         navigateSafety(
             R.id.nav_scan_result_valid,
-            ScanResultValidFragmentDirections.actionNavMain()
+            ScanResultValidFragmentDirections.actionNavQrScanner()
         )
     }
 
@@ -38,7 +38,7 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
         _binding = FragmentScanResultValidBinding.bind(view)
 
         binding.toolbar.setNavigationOnClickListener {
-            navigateSafety(ScanResultValidFragmentDirections.actionNavMain())
+            navigateSafety(ScanResultValidFragmentDirections.actionNavQrScanner())
         }
 
         when (args.validData) {
