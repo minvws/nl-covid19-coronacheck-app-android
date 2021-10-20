@@ -32,7 +32,8 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
 
     override fun onQrScanned(content: String) {
         scannerViewModel.validate(
-            qrContent = content
+            qrContent = content,
+            returnUri = args.returnUri
         )
     }
 
@@ -69,13 +70,15 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
             binding.progress.visibility = if (it) View.VISIBLE else View.GONE
         })
 
-        scannerViewModel.verifiedQrResultStateLiveData.observe(viewLifecycleOwner, EventObserver {
-            when (it) {
+        scannerViewModel.qrResultLiveData.observe(viewLifecycleOwner, EventObserver {
+            val (qrResultState, externalReturnAppData) = it
+            when (qrResultState) {
                 is VerifiedQrResultState.Valid -> {
                     findNavController().navigate(
                         VerifierQrScannerFragmentDirections.actionScanResultPersonalDetails(
                             validData = ScanResultValidData.Valid(
-                                verifiedQr = it.verifiedQr
+                                verifiedQr = qrResultState.verifiedQr,
+                                externalReturnAppData = externalReturnAppData
                             )
                         )
                     )
@@ -84,7 +87,8 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
                     findNavController().navigate(
                         VerifierQrScannerFragmentDirections.actionScanResultPersonalDetails(
                             validData = ScanResultValidData.Demo(
-                                verifiedQr = it.verifiedQr
+                                verifiedQr = qrResultState.verifiedQr,
+                                externalReturnAppData = externalReturnAppData
                             )
                         )
                     )
@@ -93,7 +97,7 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
                     findNavController().navigate(
                         VerifierQrScannerFragmentDirections.actionScanResultInvalid(
                             invalidData = ScanResultInvalidData.Error(
-                                error = it.error
+                                error = qrResultState.error
                             )
                         )
                     )

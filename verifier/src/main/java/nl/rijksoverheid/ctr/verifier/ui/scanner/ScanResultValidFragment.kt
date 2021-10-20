@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.verifier.ui.scanner
 
 import android.annotation.SuppressLint
+import android.content.ActivityNotFoundException
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -8,16 +9,11 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
-import nl.rijksoverheid.ctr.design.utils.BottomSheetData
-import nl.rijksoverheid.ctr.design.utils.BottomSheetDialogUtil
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
-import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import nl.rijksoverheid.ctr.verifier.BuildConfig
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanResultValidBinding
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultValidData
-import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
-import org.koin.android.ext.android.inject
 import java.util.concurrent.TimeUnit
 
 class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
@@ -70,8 +66,17 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
     override fun onResume() {
         super.onResume()
         val autoCloseDuration =
-            if (BuildConfig.FLAVOR == "tst") TimeUnit.SECONDS.toMillis(10) else TimeUnit.MILLISECONDS.toMillis(800)
-        autoCloseHandler.postDelayed(autoCloseRunnable, autoCloseDuration)
+            if (BuildConfig.FLAVOR == "tst") TimeUnit.SECONDS.toMillis(10) else TimeUnit.MILLISECONDS.toMillis(
+                800
+            )
+        args.validData.externalReturnAppData?.let {
+            try {
+                startActivity(it.intent)
+                activity?.finishAffinity()
+            } catch (exception: ActivityNotFoundException) {
+                autoCloseHandler.postDelayed(autoCloseRunnable, autoCloseDuration)
+            }
+        } ?: autoCloseHandler.postDelayed(autoCloseRunnable, autoCloseDuration)
     }
 
     override fun onDestroyView() {

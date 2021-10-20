@@ -83,8 +83,9 @@ fun fakeScanQrViewModel(
 fun fakeScannerViewModel(
     verifiedQrResultState: VerifiedQrResultState
 ) = object : ScannerViewModel() {
-    override fun validate(qrContent: String) {
-        verifiedQrResultStateLiveData.value = Event(verifiedQrResultState)
+
+    override fun validate(qrContent: String, returnUri: String?) {
+        qrResultLiveData.value = Event(verifiedQrResultState to null)
     }
 }
 

@@ -42,7 +42,7 @@ class ScannerViewModelImplTest {
         val viewModel = ScannerViewModelImpl(testResultValidUseCase = fakeTestResultValidUseCase())
 
         viewModel.loadingLiveData.observeForever(loadingMockedObserver)
-        viewModel.verifiedQrResultStateLiveData.observeForever(validatedQrObserver)
+        viewModel.qrResultLiveData.observeForever(validatedQrObserver)
 
         viewModel.validate("")
 
