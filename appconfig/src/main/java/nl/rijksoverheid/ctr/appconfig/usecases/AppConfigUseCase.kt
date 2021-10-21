@@ -55,7 +55,6 @@ class AppConfigUseCaseImpl(
                 localReceivedTimestamp = clock.millis()
             )
 
-            println("GIO config fetched and stored")
             appConfigPersistenceManager.saveAppConfigLastFetchedSeconds(
                 OffsetDateTime.now(clock).toEpochSecond()
             )
