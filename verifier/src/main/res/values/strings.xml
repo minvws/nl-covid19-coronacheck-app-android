@@ -97,6 +97,7 @@
     <string name="personal_details_month_nov">NOV</string>
     <string name="personal_details_month_dec">DEC</string>
     <string name="app_version">App versie: %1$s (%2$s)</string>
+    <string name="config_version">Configuratie %1$s, %2$s</string>
     <string name="back">Terug</string>
     <string name="onboarding_page_indicator_label">Pagina %1$s van %2$s</string>
     <string name="menu_close">Sluiten</string>
@@ -126,4 +127,8 @@
     <string name="scan_qr_instructions_button">Waar moet ik op letten?</string>
     <string name="scan_instructions_skip">Sla over</string>
     <string name="scan_instructions_menu_title">Hoe het werkt</string>
+    <string name="clockdeviation_card_message">Controleer de tijd van je telefoon. Mogelijk staat deze niet goed ingesteld.</string>
+    <string name="clockdeviation_card_button">Lees meer</string>
+    <string name="clockdeviation_page_title">Controleer de tijd van je telefoon</string>
+    <string name="clockdeviation_page_message"><![CDATA[Om de CoronaCheck Scanner-app goed te kunnen gebruiken, is het belangrijk dat de tijd op je telefoon goed staat ingesteld. Loopt je telefoon bijvoorbeeld een paar minuten voor? Dan kan er een fout ontstaan tijdens de controle van een coronabewijs.<br/><br/><a href="#">Ga naar de instellingen</a> van jouw telefoon en zet de datum en tijd op \'automatisch instellen\'.]]></string>
 </resources>

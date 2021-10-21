@@ -20,6 +20,8 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
+import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
+import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.design.BaseMainFragment
 import nl.rijksoverheid.ctr.design.ext.isScreenReaderOn
 import nl.rijksoverheid.ctr.design.ext.styleTitle
@@ -44,6 +46,8 @@ class VerifierMainFragment :
     private val appConfigViewModel: AppConfigViewModel by sharedViewModel()
     private val introductionViewModel: IntroductionViewModel by sharedViewModel()
     private val mobileCoreWrapper: MobileCoreWrapper by inject()
+    private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
+    private val appConfigPersistenceManager : AppConfigPersistenceManager by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -145,7 +149,9 @@ class VerifierMainFragment :
                                     text = getString(R.string.about_this_app_colofon),
                                     url = getString(R.string.about_this_app_colofon_url),
                                 ),
-                            )
+                            ),
+                            configVersionHash = cachedAppConfigUseCase.getCachedAppConfigHash(),
+                            configVersionTimestamp = appConfigPersistenceManager.getAppConfigLastFetchedSeconds()
                         )
                     )
                 )

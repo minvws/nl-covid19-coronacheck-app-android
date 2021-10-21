@@ -97,6 +97,7 @@
     <string name="personal_details_month_nov">NOV</string>
     <string name="personal_details_month_dec">DEC</string>
     <string name="app_version">App version: %1$s (%2$s)</string>
+    <string name="config_version">Configuration %1$s, %2$s</string>
     <string name="back">Back</string>
     <string name="onboarding_page_indicator_label">Page %1$s of %2$s</string>
     <string name="menu_close">Close</string>
@@ -126,4 +127,8 @@
     <string name="scan_qr_instructions_button">What should I pay attention to?</string>
     <string name="scan_instructions_skip">Skip</string>
     <string name="scan_instructions_menu_title">Hoe het werkt</string>
+    <string name="clockdeviation_card_message">Check your phone\'s time settings. They might be incorrect.</string>
+    <string name="clockdeviation_card_button">Read more</string>
+    <string name="clockdeviation_page_title">Check your phone\'s time settings</string>
+    <string name="clockdeviation_page_message"><![CDATA[In order to properly use the CoronaCheck Scanner app, it is important that the time on your phone is set correctly. For example, if the clock on your phone is a few minutes ahead, an error might occur while verifying a coronavirus pass.<br/><br/><a href="#">Go to your phone\'s settings</a> and set Date & Time to \'set automatically\'.]]></string>
 </resources>
