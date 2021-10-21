@@ -50,14 +50,6 @@ android {
         }
     }
 
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
-        }
-    }
-
     flavorDimensions "environment"
     productFlavors {
         acc {
@@ -85,6 +77,15 @@ android {
             matchingFallbacks = ['zxing']
         }
     }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            productFlavors.prod.signingConfig signingConfigs.release
+        }
+    }
+
     compileOptions {
         coreLibraryDesugaringEnabled true
     }
