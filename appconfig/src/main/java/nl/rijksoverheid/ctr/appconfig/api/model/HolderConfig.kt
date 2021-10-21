@@ -50,7 +50,7 @@ data class HolderConfig(
     providerIdentifiers,
     holderRecommendedVersion,
     upgradeRecommendationIntervalHours,
-    holderDeeplinkDomains
+    holderDeeplinkDomains,
     holderClockDeviationThresholdSeconds
 ) {
 

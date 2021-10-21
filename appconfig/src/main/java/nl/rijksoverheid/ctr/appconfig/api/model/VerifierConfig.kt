@@ -31,8 +31,8 @@ class VerifierConfig(
     configTTL,
     emptyList(),
     verifierRecommendedVersion,
-    verifierDeeplinkDomains
     upgradeRecommendationIntervalHours,
+    verifierDeeplinkDomains,
     verifierClockDeviationThresholdSeconds
 ) {
     companion object {
@@ -58,7 +58,7 @@ class VerifierConfig(
             verifierInformationURL = verifierInformationURL,
             verifierRecommendedVersion = verifierRecommendedVersion,
             upgradeRecommendationIntervalHours = upgradeRecommendationIntervalHours,
-            verifierDeeplinkDomains = returnApps
+            verifierDeeplinkDomains = returnApps,
             verifierClockDeviationThresholdSeconds = verifierClockDeviationThresholdSeconds
         )
     }
