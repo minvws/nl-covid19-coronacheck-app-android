@@ -7,7 +7,7 @@ plugins {
 }
 
 def appVersionCode = System.getenv("GITHUB_RUN_NUMBER") != null ? System.getenv("GITHUB_RUN_NUMBER").toInteger() : 1000000
-version = "2.4.1"
+version = "2.5.0"
 archivesBaseName = "verifier-v${version}-${appVersionCode}"
 
 android {
