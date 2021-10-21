@@ -33,8 +33,10 @@ interface MobileCoreWrapper {
     fun generateHolderSk(): String
     fun createDomesticCredentials(createCredentials: ByteArray): List<DomesticCredential>
     fun readEuropeanCredential(credential: ByteArray): JSONObject
+
     // returns error message, if initializing failed
     fun initializeHolder(configFilesPath: String): String?
+
     // returns error message, if initializing failed
     fun initializeVerifier(configFilesPath: String): String?
     fun verify(credential: ByteArray): VerificationResult
@@ -57,7 +59,10 @@ class MobileCoreWrapperImpl(private val moshi: Moshi) : MobileCoreWrapper {
     }
 
     @Throws(CreateCommitmentMessageException::class)
-    override fun createCommitmentMessage(secretKey: ByteArray, prepareIssueMessage: ByteArray): String {
+    override fun createCommitmentMessage(
+        secretKey: ByteArray,
+        prepareIssueMessage: ByteArray
+    ): String {
         val result = Mobilecore.createCommitmentMessage(
             secretKey,
             prepareIssueMessage

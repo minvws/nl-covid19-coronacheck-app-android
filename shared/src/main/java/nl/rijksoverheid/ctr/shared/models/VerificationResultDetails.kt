@@ -12,8 +12,7 @@ data class VerificationResultDetails(
     val isSpecimen: String,
     val credentialVersion: String,
     val issuerCountryCode: String
-) :
-    Parcelable {
+) : Parcelable {
     fun isInternationalDCC(): Boolean {
         return issuerCountryCode.isNotEmpty() && issuerCountryCode != "NL"
     }

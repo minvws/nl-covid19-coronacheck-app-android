@@ -8,5 +8,4 @@ data class VerificationResult(
     val status: Long,
     val details: VerificationResultDetails,
     val error: String
-) :
-    Parcelable
+) : Parcelable
