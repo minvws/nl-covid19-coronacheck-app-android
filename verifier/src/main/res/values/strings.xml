@@ -24,7 +24,7 @@
     <string name="dialog_error_title">Technische fout</string>
     <string name="dialog_error_message">Excuus, er is een technische fout opgetreden</string>
     <string name="ok">Ok</string>
-    <string name="scan_qr_title">Scan QR-code</string>
+    <string name="scan_qr_title">Scan QR-codes</string>
     <string name="support">Support</string>
     <string name="about_this_app">Over deze app</string>
     <string name="give_us_feedback">Geef ons feedback</string>
@@ -129,9 +129,9 @@
     <string name="scan_instructions_skip">Sla over</string>
     <string name="scan_instructions_menu_title">Hoe het werkt</string>
     <string name="scan_result_something_wrong">Er klopt iets niets</string>
-    <string name="scan_result_something_wrong_finished_check_button">Controle afgerond</string>
+    <string name="scan_result_something_wrong_finished_check_button">Scan volgende</string>
     <string name="scan_result_valid_id_confirmed_button">Gegevens kloppen</string>
-    <string name="scan_result_mandatory_id_check">De identiteitscontrole is verplicht</string>
+    <string name="scan_result_mandatory_id_check">Let op: identiteitscontrole is verplicht</string>
     <string name="scan_result_valid_international_scanned">%1$s\nInternationaal bewijs gescand</string>
     <string name="clockdeviation_card_message">Controleer de tijd van je telefoon. Mogelijk staat deze niet goed ingesteld.</string>
     <string name="clockdeviation_card_button">Lees meer</string>
