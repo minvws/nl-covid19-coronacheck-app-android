@@ -10,13 +10,13 @@
         android:name="nl.rijksoverheid.ctr.verifier.ui.scanner.VerifierQrScannerFragment"
         tools:layout="@layout/fragment_scanner">
 
-        <action
-            android:id="@+id/action_scan_result_valid"
-            app:destination="@id/nav_scan_result_valid"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:exitAnim="@anim/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit" />
+        <deepLink app:uri=".*/verifier/scan?returnUri={returnUri}" />
+
+        <argument
+            android:name="returnUri"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
 
         <action
             android:id="@+id/action_scan_result_invalid"
@@ -29,6 +29,14 @@
         <action
             android:id="@+id/action_scan_instructions"
             app:destination="@id/nav_scan_instructions_with_toolbar"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
+
+        <action
+            android:id="@+id/action_scan_result_personal_details"
+            app:destination="@id/nav_scan_result_personal_details"
             app:enterAnim="@anim/fragment_open_enter"
             app:exitAnim="@anim/fragment_open_exit"
             app:popEnterAnim="@anim/fragment_close_enter"
@@ -67,6 +75,27 @@
             app:argType="nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultValidData" />
 
         <action
+            android:id="@+id/action_nav_qr_scanner"
+            app:destination="@id/nav_qr_scanner"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit"
+            app:popUpTo="@id/nav_qr_scanner"
+            app:popUpToInclusive="true" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_scan_result_personal_details"
+        android:name="nl.rijksoverheid.ctr.verifier.ui.scanner.ScanResultPersonalDetailsFragment"
+        tools:layout="@layout/fragment_scan_result_valid_personal_details">
+
+        <argument
+            android:name="validData"
+            app:argType="nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultValidData" />
+
+        <action
             android:id="@+id/action_nav_main"
             app:destination="@id/nav_main"
             app:enterAnim="@anim/fragment_open_enter"
@@ -76,6 +105,21 @@
             app:popUpTo="@id/nav_main"
             app:popUpToInclusive="true" />
 
+        <action
+            android:id="@+id/action_nav_scan_result_valid"
+            app:destination="@id/nav_scan_result_valid"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
+        <action
+            android:id="@+id/action_nav_details_wrong"
+            app:destination="@id/nav_scan_result_personal_details_wrong"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
+
     </fragment>
 
     <fragment
@@ -83,5 +127,21 @@
         android:name="nl.rijksoverheid.ctr.verifier.ui.instructions.ScanInstructionsWithToolbarFragment"
         android:label="@string/scan_instructions"
         tools:layout="@layout/fragment_scan_instructions" />
+
+    <fragment
+        android:id="@+id/nav_scan_result_personal_details_wrong"
+        android:name="nl.rijksoverheid.ctr.verifier.ui.scanner.ScanResultPersonalDetailsWrongFragment"
+        android:label="@string/scan_result_something_wrong">
+
+        <action
+            android:id="@+id/action_nav_qr_scanner"
+            app:destination="@id/nav_qr_scanner"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit"
+            app:popUpTo="@id/nav_qr_scanner"
+            app:popUpToInclusive="true" />
+    </fragment>
 
 </navigation>

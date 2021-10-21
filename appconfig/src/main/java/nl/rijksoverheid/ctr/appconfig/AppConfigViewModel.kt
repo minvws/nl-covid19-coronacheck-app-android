@@ -45,6 +45,9 @@ class AppConfigViewModelImpl(
     private val mutex = Mutex()
 
     override fun refresh(mobileCoreWrapper: MobileCoreWrapper) {
+        if (!appConfigUseCase.canRefresh(cachedAppConfigUseCase)) {
+            return
+        }
         viewModelScope.launch {
             // allow only one config/public keys refresh at a time
             // cause we store them writing to files and a parallel

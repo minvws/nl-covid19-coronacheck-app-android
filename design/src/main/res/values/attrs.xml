@@ -20,6 +20,7 @@
     </declare-styleable>
     <declare-styleable name="ScrollViewButtonWidget">
         <attr name="buttonText" format="string" />
+        <attr name="secondaryButtonText" format="string" />
         <attr name="buttonEnabled" format="boolean" />
         <attr name="attachToScrollView" format="reference" />
     </declare-styleable>

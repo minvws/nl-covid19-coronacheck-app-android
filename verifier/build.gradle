@@ -7,7 +7,7 @@ plugins {
 }
 
 def appVersionCode = System.getenv("GITHUB_RUN_NUMBER") != null ? System.getenv("GITHUB_RUN_NUMBER").toInteger() : 1000000
-version = "2.4.0"
+version = "2.5.0"
 archivesBaseName = "verifier-v${version}-${appVersionCode}"
 
 android {
@@ -38,6 +38,7 @@ android {
                         "\"sha256/lR7gRvqDMW5nhsCMRPE7TKLq0tJkTWMxQ5HAzHCIfQ0=\"" +
                         "}"
         buildConfigField "String", "CDN_API_URL", "\"https://verifier-api-cdn.coronacheck.nl/v6/\""
+        manifestPlaceholders = [appLabel: "@string/app_name", deepLinkHost: "coronacheck.nl"]
     }
 
     signingConfigs {
@@ -72,11 +73,11 @@ android {
                             "}"
             apply plugin: 'com.google.gms.google-services'
             apply plugin: 'com.google.firebase.crashlytics'
+            manifestPlaceholders = [appLabel: "@string/app_name_acc", deepLinkHost: "web.acc.coronacheck.nl"]
             matchingFallbacks = ['mlkit']
         }
         prod {
             dimension "environment"
-            manifestPlaceholders = [appLabel: "@string/app_name"]
             matchingFallbacks = ['mlkit']
         }
         fdroidProd {

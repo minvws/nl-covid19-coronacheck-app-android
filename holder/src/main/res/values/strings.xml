@@ -143,6 +143,7 @@
     <string name="personal_details_month_nov">NOV</string>
     <string name="personal_details_month_dec">DEC</string>
     <string name="app_version">App versie: %1$s (%2$s)</string>
+    <string name="config_version">Configuratie %1$s, %2$s</string>
     <string name="my_overview_existing_qr_title">Laat QR-code zien bij ingang</string>
     <string name="my_overview_existing_qr_date">Geldig tot %1$s</string>
     <string name="your_negative_test_results_tooltip">Alleen testuitslagen die niet ouder zijn dan %1$s uur kun je gebruiken om een QR-code te maken.</string>
@@ -216,7 +217,7 @@
     <string name="validity_type_european_title">Internationaal</string>
     <string name="validity_type_dutch_title">Nederland</string>
     <string name="qr_explanation_title_domestic">Over mijn Nederlandse QR-code</string>
-    <string name="qr_explanation_description_domestic"><![CDATA[In jouw Nederlandse QR-code staan minimale gegevens. In de QR-code staat dat je een geldig bewijs hebt. Niet of je een test of vaccinatie hebt gedaan.<br/><br/>Om zeker te zijn dat de QR-code bij jou hoort staan er enkele gegevens in de QR-code. Het gaat om de eerste letter van je voornaam, de eerste letter van je achternaam, je geboortedag en geboortemaand.<br/><br/>Jouw gegevens*: <b>%1$s</b><br/><br/>*Soms vallen gegevens weg om je privacy te beschermen. Je ziet dan een streepje (-).]]></string>
+    <string name="qr_explanation_description_domestic"><![CDATA[In jouw Nederlandse QR-code staan minimale gegevens. Er staat wel dat je een geldig bewijs hebt, maar niet of je een test hebt gedaan of gevaccineerd bent.<br/><br/>In de QR-code staat ook de eerste letter van je voornaam en van je achternaam, je geboortedag en geboortemaand. Dit is om zeker te zijn dat de QR-code bij jou hoort.<br/><br/>Jouw gegevens*: <b>%1$s</b><br/><br/>* Soms vallen gegevens weg om je privacy te beschermen. Je ziet dan een streepje (_).]]></string>
     <string name="qr_explanation_title_eu">Over mijn internationale QR-code</string>
     <string name="qr_explanation_title_eu_vaccination">Over je dosis %1s</string>
     <string name="qr_explanation_description_eu_vaccination_header">Ben je in het buitenland of ga je de grens over? Dan zijn er meer gegevens nodig dan in Nederland. Daarom staan in jouw internationale QR-code de volgende gegevens:</string>
@@ -436,7 +437,7 @@
     <string name="new_in_app_tabs_title">Een Nederlands en internationaal tabblad</string>
     <string name="new_in_app_tabs_description">Je kunt nu makkelijker wisselen tussen je Nederlandse en internationale bewijs. Bovenin het scherm vind je een tabblad ‘Nederland’ en een tabblad ‘Internationaal’. Ga je de grens over? Gebruik dan de bewijzen onder ‘Internationaal’.</string>
     <string name="your_events_and">en</string>
-    <string name="my_overview_clock_deviation_description">Controleer de tijd van je telefoon. Mogelijk staat het niet goed ingesteld.</string>
+    <string name="my_overview_clock_deviation_description">Controleer de tijd van je telefoon. Mogelijk staat deze niet goed ingesteld.</string>
     <string name="clock_deviation_explanation_title">Controleer de tijd van je telefoon</string>
     <string name="clock_deviation_explanation_description"><![CDATA[De tijd van jouw telefoon lijkt niet te kloppen. Het kan bijvoorbeeld zijn dat je telefoon een paar minuten voor loopt. Om de CoronaCheck-app goed te kunnen gebruiken is het belangrijk dat de tijd juist staat ingesteld.<br/><br/><a href="#">Ga naar de instellingen</a> van jouw telefoon en zet de datum en tijd op ‘automatisch instellen’.]]></string>
     <string name="domestic_qr_code_title">Nederlandse QR</string>

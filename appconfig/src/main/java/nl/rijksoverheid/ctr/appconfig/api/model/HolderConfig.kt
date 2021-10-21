@@ -23,6 +23,7 @@ data class HolderConfig(
     @Json(name = "domesticCredentialValidity") val domesticCredentialValidity: Int,
     @Json(name = "credentialRenewalDays") val credentialRenewalDays: Int,
     @Json(name = "configTTL") val configTTL: Int,
+    @Json(name = "configMinimumIntervalSeconds") val configMinimumInterval: Int,
     @Json(name = "maxValidityHours") val maxValidityHours: Int,
     @Json(name = "vaccinationEventValidity") val vaccinationEventValidity: Int,
     @Json(name = "euLaunchDate") val euLaunchDate: String,
@@ -35,7 +36,7 @@ data class HolderConfig(
     @Json(name = "nlTestTypes") val nlTestTypes: List<Code>,
     @Json(name = "providerIdentifiers") val providerIdentifiers: List<Code>,
     @Json(name = "ggdEnabled") val ggdEnabled: Boolean,
-    @Json(name = "universalLinkDomains") val deeplinkDomains: List<Url>,
+    @Json(name = "universalLinkDomains") val holderDeeplinkDomains: List<Url>,
     @Json(name = "domesticQRRefreshSeconds") val domesticQRRefreshSeconds: Int,
     @Json(name = "clockDeviationThresholdSeconds") val holderClockDeviationThresholdSeconds: Int,
     @Json(name = "androidRecommendedVersion") val holderRecommendedVersion: Int,
@@ -47,9 +48,12 @@ data class HolderConfig(
     holderInformationURL,
     holderMinimumVersion,
     configTTL,
+    configMinimumInterval,
     providerIdentifiers,
     holderRecommendedVersion,
-    upgradeRecommendationIntervalHours
+    upgradeRecommendationIntervalHours,
+    holderDeeplinkDomains,
+    holderClockDeviationThresholdSeconds
 ) {
 
     companion object {
@@ -64,6 +68,7 @@ data class HolderConfig(
             domesticCredentialValidity: Int = 24,
             credentialRenewalDays: Int = 5,
             configTTL: Int = 259200,
+            configMinimumInterval: Int = 3600,
             maxValidityHours: Int = 40,
             vaccinationEventValidity: Int = 14600,
             euLaunchDate: String = "2021-07-01T00:00:00Z",
@@ -94,6 +99,7 @@ data class HolderConfig(
             domesticCredentialValidity = domesticCredentialValidity,
             credentialRenewalDays = credentialRenewalDays,
             configTTL = configTTL,
+            configMinimumInterval = configMinimumInterval,
             maxValidityHours = maxValidityHours,
             vaccinationEventValidity = vaccinationEventValidity,
             euLaunchDate = euLaunchDate,
@@ -106,7 +112,7 @@ data class HolderConfig(
             nlTestTypes = nlTestTypes,
             providerIdentifiers = providerIdentifiers,
             ggdEnabled = ggdEnabled,
-            deeplinkDomains = returnApps,
+            holderDeeplinkDomains = returnApps,
             domesticQRRefreshSeconds = domesticQRRefreshSeconds,
             holderClockDeviationThresholdSeconds = holderClockDeviationThresholdSeconds,
             holderRecommendedVersion = holderRecommendedVersion,

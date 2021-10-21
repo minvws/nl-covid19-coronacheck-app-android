@@ -7,9 +7,9 @@ import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.QrCodesResultUseCase
-import nl.rijksoverheid.ctr.holder.ui.myoverview.models.ExternalReturnAppData
+import nl.rijksoverheid.ctr.appconfig.models.ExternalReturnAppData
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodesResult
-import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.ReturnToExternalAppUseCase
+import nl.rijksoverheid.ctr.appconfig.usecases.ReturnToExternalAppUseCase
 
 abstract class QrCodesViewModel : ViewModel() {
     val qrCodeDataListLiveData = MutableLiveData<QrCodesResult>()
@@ -53,6 +53,8 @@ class QrCodesViewModelImpl(
     }
 
     override fun onReturnUriGiven(uri: String, type: GreenCardType) {
-        returnAppLivedata.postValue(returnToExternalAppUseCase.get(uri, type))
+        if (type == GreenCardType.Domestic) {
+            returnAppLivedata.postValue(returnToExternalAppUseCase.get(uri))
+        }
     }
 }

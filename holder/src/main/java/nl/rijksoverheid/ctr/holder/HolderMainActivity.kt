@@ -40,7 +40,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class HolderMainActivity : AppCompatActivity() {
 
     private val introductionViewModel: IntroductionViewModel by viewModel()
-    private val appStatusViewModel: AppConfigViewModel by viewModel()
+    private val appConfigViewModel: AppConfigViewModel by viewModel()
     private val deviceRootedViewModel: DeviceRootedViewModel by viewModel()
     private val deviceSecureViewModel: DeviceSecureViewModel by viewModel()
     private val dialogUtil: DialogUtil by inject()
@@ -70,7 +70,7 @@ class HolderMainActivity : AppCompatActivity() {
             )
         })
 
-        appStatusViewModel.appStatusLiveData.observe(this, EventObserver {
+        appConfigViewModel.appStatusLiveData.observe(this, EventObserver {
             handleAppStatus(it, navController)
         })
 
@@ -130,7 +130,7 @@ class HolderMainActivity : AppCompatActivity() {
         super.onStart()
         // Only get app config on every app foreground when introduction is finished
         if (introductionViewModel.getIntroductionStatus() is IntroductionStatus.IntroductionFinished) {
-            appStatusViewModel.refresh(mobileCoreWrapper)
+            appConfigViewModel.refresh(mobileCoreWrapper)
         }
     }
 

@@ -4,10 +4,10 @@
     <string name="app_name_acc">Scanner (Acc)</string>
     <string name="app_name">Scanner</string>
     <string name="onboarding_title">Onboarding</string>
-    <string name="onboarding_screen_1_title">Alleen toegang met een bewijs</string>
-    <string name="onboarding_screen_1_description">Voor toegang tot sommige activiteiten of locaties moeten bezoekers zich laten testen of vaccineren. Laat de persoon bij de ingang een coronabewijs zien? Dan krijgt hij of zij toegang.</string>
+    <string name="onboarding_screen_1_title">Alleen toegang met bewijs</string>
+    <string name="onboarding_screen_1_description">Voor toegang tot sommige activiteiten of plekken moeten bezoekers een vaccinatiebewijs, testbewijs of herstelbewijs laten zien.</string>
     <string name="onboarding_screen_2_title">Scan QR-code voor toegang</string>
-    <string name="onboarding_screen_2_description">Bezoekers maken eerst een bewijs van een vaccinatie, een negatieve testuitslag of als zij corona hebben gehad en hersteld zijn. Het bewijs is een QR-code. Met deze app check jij de QR-codes en zie je wie toegang mag krijgen.</string>
+    <string name="onboarding_screen_2_description">Bezoekers maken eerst hun bewijs in de vorm van een QR-code. Met deze app check jij de QR-codes en zie je wie toegang mag krijgen.</string>
     <string name="onboarding_screen_3_title">Controle van identiteitsbewijs</string>
     <string name="onboarding_screen_3_description">Groen scherm? Vraag de bezoeker een identiteitsbewijs te laten zien. Controleer of de gegevens op jouw scherm hetzelfde zijn als op het identiteitsbewijs. Check? Dan kan de bezoeker naar binnen.</string>
     <string name="onboarding_screen_4_title">Voor wie is de scanner?</string>
@@ -32,19 +32,19 @@
     <string name="scan_qr_description">Scan de QR-codes van jouw bezoekers. Is de QR-code geldig en zijn de gegevens hetzelfde als op het identiteitsbewijs? Dan kun je de bezoeker toegang geven.</string>
     <string name="scan_qr_button">Start scannen</string>
     <string name="scan_result_demo_title">Demo QR-code gescand</string>
-    <string name="scan_result_valid_title">Geldige QR-code</string>
+    <string name="scan_result_valid_title">Controle klaar</string>
     <string name="scan_result_valid_last_name">Achternaam</string>
     <string name="scan_result_valid_first_name">Voornaam</string>
     <string name="scan_result_valid_birth_day">Geboortedag</string>
     <string name="scan_result_valid_birth_month">Geboortemaand</string>
-    <string name="scan_result_valid_personal_details_title">Controleer gegevens</string>
+    <string name="scan_result_valid_personal_details_title">Controleer identiteitsbewijs</string>
     <string name="scan_result_european_nl_invalid_title">Dit is een internationale QR-code</string>
     <string name="scan_result_european_nl_invalid_subtitle">Dit is geen geldig bewijs in Nederland. Vraag de bezoeker een Nederlandse QR-code te laten zien.</string>
     <string name="scan_result_invalid_title">Geen geldige QR-code</string>
     <string name="scan_result_invalid_subtitle"><![CDATA[De bezoeker heeft geen geldig coronabewijs.<br/><a href=\"#\"><b>Lees mogelijke oorzaken</b></a>]]></string>
     <string name="scan_result_invalid_button">Scan volgende</string>
     <string name="scan_result_invalid_reason_title">Wat kan ik doen?</string>
-    <string name="scan_result_invalid_reason_description"><![CDATA[Een rood scherm betekent dat de QR-code niet aan Nederlandse eisen voldoet.<br\><br\><b>Dit kun je doen</b><br\><br/><ol><li>Controleer of de tijd op de telefoon van de bezoeker goed staat ingesteld. Zorg dat de datum en tijd op ‘automatisch instellen’ staan. </li><li>Controleer of de bezoeker een origineel bewijs laat zien. Een screenshot van een bewijs kan voor problemen zorgen.</li><li>Vraag de bezoeker om de app volledig af te sluiten en opnieuw op te starten. Scan daarna opnieuw de QR-code.</li></ol><br\><br/><b>Blijft het scherm rood?</b><br/>Vraag de bezoeker contact op te nemen met de helpdesk van CoronaCheck.<br\><br\><b>Zonder groen scherm mag de bezoeker niet toegelaten worden.</b>]]></string>
+    <string name="scan_result_invalid_reason_description"><![CDATA[Een rood scherm betekent dat de QR-code niet aan Nederlandse eisen voldoet.<br\><br\><b>Dit kun je doen</b><br\><br/><ol><li>Controleer of de tijd op de telefoon van de bezoeker en die van jou goed staan ingesteld. Zorg dat de datum en tijd op ‘automatisch instellen’ staan. </li><li>Controleer of de bezoeker een origineel bewijs laat zien. Een screenshot van een bewijs kan voor problemen zorgen.</li><li>Vraag de bezoeker om de app volledig af te sluiten en opnieuw op te starten. Scan daarna opnieuw de QR-code.</li></ol><br\><br/><b>Blijft het scherm rood?</b><br/>Vraag de bezoeker contact op te nemen met de helpdesk van CoronaCheck.<br\><br\><b>Zonder groen scherm met vinkje mag de bezoeker niet toegelaten worden.</b>]]></string>
     <string name="scan_result_unknown_qr_dialog_title">Deze QR-code bevat geen coronabewijs</string>
     <string name="scan_result_unknown_qr_dialog_message">Vraag de bezoeker een QR-code van een coronabewijs te laten zien.</string>
     <string name="scan_result_european_in_nl_dialog_title">Vraag naar de Nederlandse QR-code</string>
@@ -55,14 +55,15 @@
     <string name="scan_instructions">Over scannen</string>
     <string name="scan_instructions_1_title">Scan de QR-code</string>
     <string name="scan_instructions_1_description">Vraag de bezoeker naar een QR-code in de CoronaCheck-app of op papier. Een toerist kan een QR-code in een buitenlandse app of op papier tonen. Scan de QR-code met de camera van je telefoon.</string>
-    <string name="scan_instructions_2_title">Controleer altijd de gegevens</string>
-    <string name="scan_instructions_2_description">Groen scherm? Controleer of de gegevens op jouw scherm hetzelfde zijn als die op het identiteitsbewijs van de bezoeker. Zo weet je zeker dat de QR-code van de bezoeker is.</string>
+    <string name="scan_instructions_2_title">"Controleer het identiteitsbewijs
+"</string>
+    <string name="scan_instructions_2_description">Controleer bij bezoekers vanaf 14 jaar altijd of de gegevens op jouw scherm hetzelfde zijn als die op het identiteitsbewijs van de bezoeker. Zo weet je zeker dat de QR-code van de bezoeker is.</string>
     <string name="scan_instructions_3_image">Soms vallen gegevens weg</string>
     <string name="scan_instructions_3_title">Soms vallen gegevens weg</string>
     <string name="scan_instructions_3_description">Dat gebeurt om de privacy van de bezoeker te beschermen. Je ziet dan een streepje (-) staan. Controleer in dat geval alleen de gegevens die je wel ziet.</string>
     <string name="scan_instructions_4_image">Persoon houdt een telefoon vast met een rood scherm en een zwart kruis.</string>
     <string name="scan_instructions_4_title">Rood scherm, wat nu?</string>
-    <string name="scan_instructions_4_description"><![CDATA[Bij een rood scherm krijg je uitleg om de bezoeker te helpen. Blijft het scherm rood? Dan kun je de bezoeker geen toegang geven.]]></string>
+    <string name="scan_instructions_4_description"><![CDATA[Bij een rood scherm met kruis krijg je uitleg om de bezoeker te helpen. Blijft het scherm rood? Dan mag je de bezoeker geen toegang geven.]]></string>
     <string name="privacy_statement">Gebruikersvoorwaarden</string>
     <string name="scanner_custom_title">Scan QR-Code</string>
     <string name="scanner_custom_message">"Waar moet ik op letten?"</string>
@@ -97,6 +98,7 @@
     <string name="personal_details_month_nov">NOV</string>
     <string name="personal_details_month_dec">DEC</string>
     <string name="app_version">App versie: %1$s (%2$s)</string>
+    <string name="config_version">Configuratie %1$s, %2$s</string>
     <string name="back">Terug</string>
     <string name="onboarding_page_indicator_label">Pagina %1$s van %2$s</string>
     <string name="menu_close">Sluiten</string>
@@ -125,4 +127,14 @@
     <string name="scan_result_valid_incorrect_data">Kloppen de gegevens niet?</string>
     <string name="scan_qr_instructions_button">Waar moet ik op letten?</string>
     <string name="scan_instructions_skip">Sla over</string>
+    <string name="scan_instructions_menu_title">Hoe het werkt</string>
+    <string name="scan_result_something_wrong">Er klopt iets niets</string>
+    <string name="scan_result_something_wrong_finished_check_button">Controle afgerond</string>
+    <string name="scan_result_valid_id_confirmed_button">Gegevens kloppen</string>
+    <string name="scan_result_mandatory_id_check">De identiteitscontrole is verplicht</string>
+    <string name="scan_result_valid_international_scanned">%1$s\nInternationaal bewijs gescand</string>
+    <string name="clockdeviation_card_message">Controleer de tijd van je telefoon. Mogelijk staat deze niet goed ingesteld.</string>
+    <string name="clockdeviation_card_button">Lees meer</string>
+    <string name="clockdeviation_page_title">Controleer de tijd van je telefoon</string>
+    <string name="clockdeviation_page_message"><![CDATA[Om de CoronaCheck Scanner-app goed te kunnen gebruiken, is het belangrijk dat de tijd op je telefoon goed staat ingesteld. Loopt je telefoon bijvoorbeeld een paar minuten voor? Dan kan er een fout ontstaan tijdens de controle van een coronabewijs.<br/><br/><a href="#">Ga naar de instellingen</a> van jouw telefoon en zet de datum en tijd op \'automatisch instellen\'.]]></string>
 </resources>
