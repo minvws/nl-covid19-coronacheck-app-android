@@ -23,6 +23,7 @@ class VerifierConfig(
     @Json(name = "androidRecommendedVersion") val verifierRecommendedVersion: Int,
     @Json(name = "upgradeRecommendationInterval") val upgradeRecommendationIntervalHours: Int,
     @Json(name = "universalLinkDomains") val verifierDeeplinkDomains: List<Url>,
+    @Json(name = "clockDeviationThresholdSeconds") val verifierClockDeviationThresholdSeconds: Int,
 ) : AppConfig(
     verifierAppDeactivated,
     verifierInformationURL,
@@ -30,8 +31,9 @@ class VerifierConfig(
     configTTL,
     emptyList(),
     verifierRecommendedVersion,
-    upgradeRecommendationIntervalHours,
     verifierDeeplinkDomains
+    upgradeRecommendationIntervalHours,
+    verifierClockDeviationThresholdSeconds
 ) {
     companion object {
         fun default(
@@ -45,6 +47,7 @@ class VerifierConfig(
             verifierRecommendedVersion: Int = 1275,
             upgradeRecommendationIntervalHours: Int = 24,
             returnApps: List<Url> = listOf(),
+            verifierClockDeviationThresholdSeconds: Int = 30,
         ) = VerifierConfig(
             verifierMinimumVersion = verifierMinimumVersion,
             verifierMinimumVersionMessage = verifierMinimumVersionMessage,
@@ -56,6 +59,7 @@ class VerifierConfig(
             verifierRecommendedVersion = verifierRecommendedVersion,
             upgradeRecommendationIntervalHours = upgradeRecommendationIntervalHours,
             verifierDeeplinkDomains = returnApps
+            verifierClockDeviationThresholdSeconds = verifierClockDeviationThresholdSeconds
         )
     }
 }

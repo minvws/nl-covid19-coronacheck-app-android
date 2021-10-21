@@ -51,6 +51,7 @@ data class HolderConfig(
     holderRecommendedVersion,
     upgradeRecommendationIntervalHours,
     holderDeeplinkDomains
+    holderClockDeviationThresholdSeconds
 ) {
 
     companion object {
