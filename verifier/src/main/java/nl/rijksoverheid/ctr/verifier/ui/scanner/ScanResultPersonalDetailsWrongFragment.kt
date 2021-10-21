@@ -14,6 +14,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
+import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanResultPersonalDetailsWrongBinding
 
@@ -25,7 +26,7 @@ class ScanResultPersonalDetailsWrongFragment :
         FragmentScanResultPersonalDetailsWrongBinding.bind(view).run {
             toolbar.setNavigationOnClickListener { findNavControllerSafety()?.popBackStack() }
             button.setOnClickListener {
-                findNavControllerSafety()?.navigate(
+                navigateSafety(
                     ScanResultPersonalDetailsWrongFragmentDirections.actionNavQrScanner()
                 )
             }
