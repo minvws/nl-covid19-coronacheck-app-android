@@ -13,12 +13,16 @@ package nl.rijksoverheid.ctr.verifier.ui.scanner
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.AbsoluteSizeSpan
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.design.utils.BottomSheetData
 import nl.rijksoverheid.ctr.design.utils.BottomSheetDialogUtil
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
+import nl.rijksoverheid.ctr.shared.ext.flagEmoji
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import nl.rijksoverheid.ctr.verifier.BuildConfig
@@ -93,16 +97,16 @@ class ScanResultPersonalDetailsFragment :
         binding.personalDetailsFirstname.setContent(personalDetails.firstNameInitial)
         binding.personalDetailsBirthmonth.setContent(personalDetails.birthMonth)
         binding.personalDetailsBirthdate.setContent(personalDetails.birthDay)
-        if (testResultAttributes.issuerCountryCode.isNotEmpty()) {
+        if (testResultAttributes.isInternationalDCC()) {
             binding.internationalDescription.visibility = View.VISIBLE
-            binding.internationalDescription.text = getString(R.string.scan_result_valid_international_scanned, Locale("", testResultAttributes.issuerCountryCode).flagEmoji)
+            val text = getString(R.string.scan_result_valid_international_scanned, Locale("", testResultAttributes.issuerCountryCode).flagEmoji)
+            binding.internationalDescription.text = increasedSizeFlagEmoji(text)
         }
     }
 
-    val Locale.flagEmoji: String
-    get() {
-        val firstLetter = Character.codePointAt(country, 0) - 0x41 + 0x1F1E6
-        val secondLetter = Character.codePointAt(country, 1) - 0x41 + 0x1F1E6
-        return String(Character.toChars(firstLetter)) + String(Character.toChars(secondLetter))
+    private fun increasedSizeFlagEmoji(textWithEmoji: String): SpannableString {
+        val flagSpannableString = SpannableString(textWithEmoji)
+        flagSpannableString.setSpan(AbsoluteSizeSpan(28, true), 0, 4, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        return flagSpannableString
     }
 }
