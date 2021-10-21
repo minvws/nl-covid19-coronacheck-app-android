@@ -3,7 +3,7 @@ package nl.rijksoverheid.ctr.verifier.ui.scanner.models
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import nl.rijksoverheid.ctr.appconfig.models.ExternalReturnAppData
-import nl.rijksoverheid.ctr.shared.VerificationResult
+import nl.rijksoverheid.ctr.shared.models.VerificationResult
 
 sealed class ScanResultValidData(
     open val verifiedQr: VerificationResult,
