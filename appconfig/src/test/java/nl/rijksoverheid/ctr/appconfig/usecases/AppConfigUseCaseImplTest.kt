@@ -16,7 +16,6 @@ import nl.rijksoverheid.ctr.appconfig.api.AppConfigApi
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.models.ConfigResult
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
-import nl.rijksoverheid.ctr.appconfig.repositories.ConfigRepository
 import nl.rijksoverheid.ctr.appconfig.repositories.ConfigRepositoryImpl
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody
@@ -44,7 +43,7 @@ class AppConfigUseCaseImplTest {
     private val clockDeviationUseCase = mockk<ClockDeviationUseCaseImpl>(relaxed = true)
 
     private val cachedAppConfigUseCase = mockk<CachedAppConfigUseCase>().apply {
-        every { getCachedAppConfig() } returns object: AppConfig(true, "", 1, 3600, 100, emptyList(), 1, 1) {}
+        every { getCachedAppConfig() } returns object: AppConfig(true, "", 1, 3600, 100, emptyList(), 1, 1, 30) {}
     }
 
     @Test
