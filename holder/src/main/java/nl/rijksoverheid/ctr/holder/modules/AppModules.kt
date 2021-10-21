@@ -7,8 +7,8 @@ import nl.rijksoverheid.ctr.holder.persistence.database.migration.TestResultsMig
 import nl.rijksoverheid.ctr.holder.persistence.database.migration.TestResultsMigrationManagerImpl
 import nl.rijksoverheid.ctr.holder.ui.device_secure.DeviceSecureUseCase
 import nl.rijksoverheid.ctr.holder.ui.device_secure.DeviceSecureUseCaseImpl
-import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.ReturnToExternalAppUseCase
-import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.ReturnToExternalAppUseCaseImpl
+import nl.rijksoverheid.ctr.appconfig.usecases.ReturnToExternalAppUseCase
+import nl.rijksoverheid.ctr.appconfig.usecases.ReturnToExternalAppUseCaseImpl
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 

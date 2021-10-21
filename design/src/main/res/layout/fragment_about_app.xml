@@ -79,6 +79,22 @@
             app:layout_constraintTop_toBottomOf="@+id/app_version"
             tools:text="Configuration ABC123, 13-10-2021 00:00" />
 
+        <!--On test and acceptance builds show button to trigger deeplink to scanner-->
+        <Button
+            android:id="@+id/deeplink_scanner_button"
+            style="?attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginTop="8dp"
+            android:text="deeplink to scanner"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/config_version"
+            tools:ignore="HardcodedText" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

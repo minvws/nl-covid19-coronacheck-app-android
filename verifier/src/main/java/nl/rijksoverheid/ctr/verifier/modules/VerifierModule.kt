@@ -10,6 +10,8 @@ package nl.rijksoverheid.ctr.verifier.modules
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import nl.rijksoverheid.ctr.appconfig.usecases.ReturnToExternalAppUseCase
+import nl.rijksoverheid.ctr.appconfig.usecases.ReturnToExternalAppUseCaseImpl
 import nl.rijksoverheid.ctr.introduction.ui.new_terms.models.NewTerms
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 import nl.rijksoverheid.ctr.verifier.persistance.SharedPreferencesPersistenceManager
@@ -50,13 +52,14 @@ fun verifierModule(path: String) = module {
     factory<TestResultValidUseCase> {
         TestResultValidUseCaseImpl(get())
     }
+    factory<ReturnToExternalAppUseCase> { ReturnToExternalAppUseCaseImpl(get()) }
 
     // Utils
     factory<ScannerUtil> { ScannerUtilImpl() }
 
     // ViewModels
     viewModel<ScanQrViewModel> { ScanQrViewModelImpl(get()) }
-    viewModel<ScannerViewModel> { ScannerViewModelImpl(get()) }
+    viewModel<ScannerViewModel> { ScannerViewModelImpl(get(), get()) }
 
     single {
         get<Moshi.Builder>(Moshi.Builder::class)

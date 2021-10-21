@@ -27,6 +27,7 @@ abstract class AppConfig(
     val providers: List<Code>,
     val recommendedVersion: Int,
     val recommendedUpgradeIntervalHours: Int,
+    val deeplinkDomains: List<Url>,
     val clockDeviationThresholdSeconds: Int,
 ) : JSON() {
 
@@ -40,8 +41,8 @@ abstract class AppConfig(
     )
 
     @JsonClass(generateAdapter = true)
-    data class Code(val code: String, val name: String): JSON()
+    data class Code(val code: String, val name: String) : JSON()
 
     @JsonClass(generateAdapter = true)
-    data class Url(val url: String, val name: String): JSON()
+    data class Url(val url: String, val name: String) : JSON()
 }

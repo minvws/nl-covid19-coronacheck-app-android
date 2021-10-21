@@ -36,7 +36,7 @@ data class HolderConfig(
     @Json(name = "nlTestTypes") val nlTestTypes: List<Code>,
     @Json(name = "providerIdentifiers") val providerIdentifiers: List<Code>,
     @Json(name = "ggdEnabled") val ggdEnabled: Boolean,
-    @Json(name = "universalLinkDomains") val deeplinkDomains: List<Url>,
+    @Json(name = "universalLinkDomains") val holderDeeplinkDomains: List<Url>,
     @Json(name = "domesticQRRefreshSeconds") val domesticQRRefreshSeconds: Int,
     @Json(name = "clockDeviationThresholdSeconds") val holderClockDeviationThresholdSeconds: Int,
     @Json(name = "androidRecommendedVersion") val holderRecommendedVersion: Int,
@@ -52,6 +52,7 @@ data class HolderConfig(
     providerIdentifiers,
     holderRecommendedVersion,
     upgradeRecommendationIntervalHours,
+    holderDeeplinkDomains,
     holderClockDeviationThresholdSeconds
 ) {
 
@@ -111,7 +112,7 @@ data class HolderConfig(
             nlTestTypes = nlTestTypes,
             providerIdentifiers = providerIdentifiers,
             ggdEnabled = ggdEnabled,
-            deeplinkDomains = returnApps,
+            holderDeeplinkDomains = returnApps,
             domesticQRRefreshSeconds = domesticQRRefreshSeconds,
             holderClockDeviationThresholdSeconds = holderClockDeviationThresholdSeconds,
             holderRecommendedVersion = holderRecommendedVersion,

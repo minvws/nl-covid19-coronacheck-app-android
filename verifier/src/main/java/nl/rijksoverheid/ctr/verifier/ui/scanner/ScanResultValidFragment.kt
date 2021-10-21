@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.verifier.ui.scanner
 
 import android.annotation.SuppressLint
+import android.content.ActivityNotFoundException
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -8,16 +9,11 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
-import nl.rijksoverheid.ctr.design.utils.BottomSheetData
-import nl.rijksoverheid.ctr.design.utils.BottomSheetDialogUtil
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
-import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import nl.rijksoverheid.ctr.verifier.BuildConfig
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanResultValidBinding
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultValidData
-import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
-import org.koin.android.ext.android.inject
 import java.util.concurrent.TimeUnit
 
 class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
@@ -26,22 +22,12 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
     private val binding get() = _binding!!
 
     private val args: ScanResultValidFragmentArgs by navArgs()
-    private val scannerUtil: ScannerUtil by inject()
-    private val personalDetailsUtil: PersonalDetailsUtil by inject()
-    private val bottomSheetDialogUtil: BottomSheetDialogUtil by inject()
-
-    private val transitionPersonalDetailsHandler = Handler(Looper.getMainLooper())
-    private val transitionPersonalDetailsRunnable = Runnable {
-        binding.personalDetails.root.alpha = 0f
-        binding.personalDetails.root.animate().alpha(1f).setDuration(500).start()
-        presentPersonalDetails()
-    }
 
     private val autoCloseHandler = Handler(Looper.getMainLooper())
     private val autoCloseRunnable = Runnable {
         navigateSafety(
             R.id.nav_scan_result_valid,
-            ScanResultValidFragmentDirections.actionNavMain()
+            ScanResultValidFragmentDirections.actionNavQrScanner()
         )
     }
 
@@ -52,7 +38,7 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
         _binding = FragmentScanResultValidBinding.bind(view)
 
         binding.toolbar.setNavigationOnClickListener {
-            navigateSafety(ScanResultValidFragmentDirections.actionNavMain())
+            navigateSafety(ScanResultValidFragmentDirections.actionNavQrScanner())
         }
 
         when (args.validData) {
@@ -75,63 +61,25 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
                 )
             }
         }
-
-        binding.personalDetails.buttonIncorrectData.setOnClickListener {
-            bottomSheetDialogUtil.present(childFragmentManager, BottomSheetData.TitleDescription(
-                title = getString(R.string.scan_result_valid_reason_title),
-                applyOnDescription = {
-                    it.setHtmlText(R.string.scan_result_valid_reason_description)
-                }
-            ))
-        }
-
-        binding.personalDetails.bottom.setButtonClick {
-            scannerUtil.launchScanner(requireActivity())
-        }
-
-        // If you touch the screen before personal details screen animation started, immediately show personal details screen without animating
-        binding.root.setOnClickListener {
-            binding.personalDetails.root.alpha = 1f
-            binding.personalDetails.root.animate().cancel()
-            transitionPersonalDetailsHandler.removeCallbacks(transitionPersonalDetailsRunnable)
-            presentPersonalDetails()
-        }
-    }
-
-    private fun presentPersonalDetails() {
-        binding.personalDetails.root.visibility = View.VISIBLE
-        binding.screenHeader.visibility = View.VISIBLE
-        val testResultAttributes = args.validData.verifiedQr.details
-        val personalDetails = personalDetailsUtil.getPersonalDetails(
-            testResultAttributes.firstNameInitial,
-            testResultAttributes.lastNameInitial,
-            testResultAttributes.birthDay,
-            testResultAttributes.birthMonth,
-            includeBirthMonthNumber = true
-        )
-        binding.personalDetails.personalDetailsLastname.setContent(personalDetails.lastNameInitial)
-        binding.personalDetails.personalDetailsFirstname.setContent(personalDetails.firstNameInitial)
-        binding.personalDetails.personalDetailsBirthmonth.setContent(personalDetails.birthMonth)
-        binding.personalDetails.personalDetailsBirthdate.setContent(personalDetails.birthDay)
     }
 
     override fun onResume() {
         super.onResume()
-        val autoCloseDuration =
-            if (BuildConfig.FLAVOR == "tst") TimeUnit.SECONDS.toMillis(10) else TimeUnit.MINUTES.toMillis(
-                3
-            )
-        autoCloseHandler.postDelayed(autoCloseRunnable, autoCloseDuration)
-        transitionPersonalDetailsHandler.postDelayed(
-            transitionPersonalDetailsRunnable,
-            TimeUnit.MILLISECONDS.toMillis(800)
-        )
+        val autoCloseDurationMilli =
+            if (BuildConfig.FLAVOR == "tst") TimeUnit.SECONDS.toMillis(10) else 800
+        args.validData.externalReturnAppData?.let {
+            try {
+                startActivity(it.intent)
+                activity?.finishAffinity()
+            } catch (exception: ActivityNotFoundException) {
+                autoCloseHandler.postDelayed(autoCloseRunnable, autoCloseDurationMilli)
+            }
+        } ?: autoCloseHandler.postDelayed(autoCloseRunnable, autoCloseDurationMilli)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
         autoCloseHandler.removeCallbacks(autoCloseRunnable)
-        transitionPersonalDetailsHandler.removeCallbacks(transitionPersonalDetailsRunnable)
     }
 }
