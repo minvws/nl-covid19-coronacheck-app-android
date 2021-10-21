@@ -34,7 +34,6 @@ class ScanResultPersonalDetailsFragment :
     private var _binding: FragmentScanResultValidPersonalDetailsBinding? = null
     private val binding get() = _binding!!
 
-    private val bottomSheetDialogUtil: BottomSheetDialogUtil by inject()
     private val personalDetailsUtil: PersonalDetailsUtil by inject()
 
     private val args: ScanResultPersonalDetailsFragmentArgs by navArgs()
@@ -67,18 +66,14 @@ class ScanResultPersonalDetailsFragment :
     private fun bindButtons() {
         binding.bottom.run {
             setButtonClick {
-                findNavControllerSafety()?.navigate(
+                navigateSafety(
                     ScanResultPersonalDetailsFragmentDirections.actionNavScanResultValid(args.validData)
                 )
             }
             setSecondaryButtonClick {
-                bottomSheetDialogUtil.present(childFragmentManager,
-                    BottomSheetData.TitleDescription(
-                        title = getString(R.string.scan_result_valid_reason_title),
-                        applyOnDescription = {
-                            it.setHtmlText(R.string.scan_result_valid_reason_description)
-                        }
-                    ))
+                navigateSafety(
+                    ScanResultPersonalDetailsFragmentDirections.actionNavDetailsWrong()
+                )
             }
             if (args.validData.externalReturnAppData != null) setIcon(R.drawable.ic_deeplink)
         }
