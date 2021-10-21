@@ -113,7 +113,7 @@ fun fakeVerifiedQr(
         isNLDCC -> Mobilecore.VERIFICATION_FAILED_IS_NL_DCC
         else -> Mobilecore.VERIFICATION_SUCCESS
     },
-    details = VerificationResultDetails(birthDay, birthMonth, firstNameInitial, lastNameInitial, isSpecimen, "2"),
+    details = VerificationResultDetails(birthDay, birthMonth, firstNameInitial, lastNameInitial, isSpecimen, "2", ""),
     error = if (error) {
         "error"
     } else {

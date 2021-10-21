@@ -77,15 +77,26 @@
                 app:layout_constraintTop_toTopOf="@id/personal_details_birthdate" />
 
             <TextView
-                style="@style/App.TextAppearance.MaterialComponents.Body2.Secondary"
+                android:id="@+id/international_description"
+                android:visibility="gone"
+                style="@style/App.TextAppearance.MaterialComponents.Body2.Montserrat.Secondary"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:gravity="center"
-                android:text="@string/scan_result_mandatory_id_check"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/personal_details_birthmonth" />
+
+            <TextView
+                style="@style/App.TextAppearance.MaterialComponents.Body2.Secondary"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/scan_result_mandatory_id_check"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/international_description" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -37,7 +37,7 @@ interface MobileCoreWrapper {
     fun verify(credential: ByteArray): VerificationResult
 }
 
-@Parcelize data class VerificationResultDetails(val birthDay: String, val birthMonth: String, val firstNameInitial: String, val lastNameInitial: String, val isSpecimen: String, val credentialVersion: String): Parcelable
+@Parcelize data class VerificationResultDetails(val birthDay: String, val birthMonth: String, val firstNameInitial: String, val lastNameInitial: String, val isSpecimen: String, val credentialVersion: String, val issuerCountryCode: String): Parcelable
 @Parcelize data class VerificationResult(val status: Long, val details: VerificationResultDetails, val error: String): Parcelable
 
 class MobileCoreWrapperImpl(private val moshi: Moshi) : MobileCoreWrapper {
@@ -126,6 +126,7 @@ class MobileCoreWrapperImpl(private val moshi: Moshi) : MobileCoreWrapper {
                 lastNameInitial = result.details?.lastNameInitial ?: "",
                 isSpecimen = result.details?.isSpecimen ?: "",
                 credentialVersion = result.details?.credentialVersion ?: "",
+                issuerCountryCode = result.details?.issuerCountryCode ?: "",
             ),
             error = result.error
         )
