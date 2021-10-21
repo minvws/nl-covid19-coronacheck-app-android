@@ -25,6 +25,7 @@ import nl.rijksoverheid.ctr.verifier.BuildConfig
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanResultValidPersonalDetailsBinding
 import org.koin.android.ext.android.inject
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 class ScanResultPersonalDetailsFragment :
@@ -97,5 +98,16 @@ class ScanResultPersonalDetailsFragment :
         binding.personalDetailsFirstname.setContent(personalDetails.firstNameInitial)
         binding.personalDetailsBirthmonth.setContent(personalDetails.birthMonth)
         binding.personalDetailsBirthdate.setContent(personalDetails.birthDay)
+        if (testResultAttributes.issuerCountryCode.isNotEmpty()) {
+            binding.internationalDescription.visibility = View.VISIBLE
+            binding.internationalDescription.text = getString(R.string.scan_result_valid_international_scanned, Locale("", testResultAttributes.issuerCountryCode).flagEmoji)
+        }
+    }
+
+    val Locale.flagEmoji: String
+    get() {
+        val firstLetter = Character.codePointAt(country, 0) - 0x41 + 0x1F1E6
+        val secondLetter = Character.codePointAt(country, 1) - 0x41 + 0x1F1E6
+        return String(Character.toChars(firstLetter)) + String(Character.toChars(secondLetter))
     }
 }

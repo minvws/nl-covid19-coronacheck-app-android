@@ -114,4 +114,10 @@
         <item name="android:textColor">?android:textColorSecondary</item>
     </style>
 
+    <style name="App.TextAppearance.MaterialComponents.Body2.Montserrat.Secondary" parent="android:TextAppearance">
+        <item name="android:fontFamily">@font/montserrat_semibold</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
+    </style>
+
 </resources>
