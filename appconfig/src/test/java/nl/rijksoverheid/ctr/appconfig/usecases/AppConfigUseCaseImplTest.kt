@@ -43,7 +43,8 @@ class AppConfigUseCaseImplTest {
     private val clockDeviationUseCase = mockk<ClockDeviationUseCaseImpl>(relaxed = true)
 
     private val cachedAppConfigUseCase = mockk<CachedAppConfigUseCase>().apply {
-        every { getCachedAppConfig() } returns object: AppConfig(true, "", 1, 3600, 100, emptyList(), 1, 1, 30) {}
+        every { getCachedAppConfig() } returns object :
+            AppConfig(true, "", 1, 3600, 100, emptyList(), 1, 1, listOf(), 30) {}
     }
 
     @Test
