@@ -24,7 +24,7 @@
     <string name="dialog_error_title">Technische fout</string>
     <string name="dialog_error_message">Excuus, er is een technische fout opgetreden</string>
     <string name="ok">Ok</string>
-    <string name="scan_qr_title">Scan QR-code</string>
+    <string name="scan_qr_title">Scan QR-codes</string>
     <string name="support">Support</string>
     <string name="about_this_app">Over deze app</string>
     <string name="give_us_feedback">Geef ons feedback</string>
