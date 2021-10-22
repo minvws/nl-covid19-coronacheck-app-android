@@ -133,6 +133,11 @@
         android:name="nl.rijksoverheid.ctr.verifier.ui.scanner.ScanResultPersonalDetailsWrongFragment"
         android:label="@string/scan_result_something_wrong">
 
+        <argument
+            android:name="externalReturnAppData"
+            app:nullable="true"
+            app:argType="nl.rijksoverheid.ctr.appconfig.models.ExternalReturnAppData" />
+
         <action
             android:id="@+id/action_nav_qr_scanner"
             app:destination="@id/nav_qr_scanner"

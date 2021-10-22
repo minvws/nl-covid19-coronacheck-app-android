@@ -19,8 +19,6 @@ import android.text.style.AbsoluteSizeSpan
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
-import nl.rijksoverheid.ctr.design.utils.BottomSheetData
-import nl.rijksoverheid.ctr.design.utils.BottomSheetDialogUtil
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.flagEmoji
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
@@ -76,7 +74,8 @@ class ScanResultPersonalDetailsFragment :
             }
             setSecondaryButtonClick {
                 navigateSafety(
-                    ScanResultPersonalDetailsFragmentDirections.actionNavDetailsWrong()
+                    ScanResultPersonalDetailsFragmentDirections
+                        .actionNavDetailsWrong(args.validData.externalReturnAppData)
                 )
             }
             if (args.validData.externalReturnAppData != null) setIcon(R.drawable.ic_deeplink)
@@ -99,14 +98,19 @@ class ScanResultPersonalDetailsFragment :
         binding.personalDetailsBirthdate.setContent(personalDetails.birthDay)
         if (testResultAttributes.isInternationalDCC()) {
             binding.internationalDescription.visibility = View.VISIBLE
-            val text = getString(R.string.scan_result_valid_international_scanned, Locale("", testResultAttributes.issuerCountryCode).flagEmoji)
+            val text = getString(
+                R.string.scan_result_valid_international_scanned,
+                Locale("", testResultAttributes.issuerCountryCode).flagEmoji
+            )
             binding.internationalDescription.text = increasedSizeFlagEmoji(text)
         }
     }
 
     private fun increasedSizeFlagEmoji(textWithEmoji: String): SpannableString {
         val flagSpannableString = SpannableString(textWithEmoji)
-        flagSpannableString.setSpan(AbsoluteSizeSpan(28, true), 0, 4, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        flagSpannableString.setSpan(
+            AbsoluteSizeSpan(28, true), 0, 4, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
         return flagSpannableString
     }
 }
