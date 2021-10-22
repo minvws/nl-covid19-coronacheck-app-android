@@ -17,7 +17,7 @@ jobs:
         with:
           java-version: 11
       - name: Show java version
-        run: java -version
+        run: printenv
 
       - name: Validate checksum gradle wrapper
         uses: gradle/wrapper-validation-action@v1
