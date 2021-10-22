@@ -65,7 +65,7 @@ class CachedAppConfigUseCaseImpl constructor(
     }
 
     override fun getCachedAppConfigHash(): String {
-        val bytes = getCachedAppConfig().toString().toByteArray()
+        val bytes = getCachedAppConfig().toJson(moshi).toByteArray()
         val md = MessageDigest.getInstance("SHA-256")
         val digest = md.digest(bytes)
         // Return first 7 characters of hash
