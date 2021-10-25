@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.verifier.ui.scanner
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -66,6 +67,14 @@ class ScanResultInvalidFragment : Fragment(R.layout.fragment_scan_result_invalid
 
         binding.buttonNext.setOnClickListener {
             scannerUtil.launchScanner(requireActivity())
+        }
+
+        // scroll all the way down on landscape
+        // so the user notices what can be done
+        if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            binding.scroll.post {
+                binding.scroll.fullScroll(View.FOCUS_DOWN)
+            }
         }
     }
 
