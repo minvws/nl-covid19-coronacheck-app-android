@@ -17,6 +17,7 @@ import retrofit2.HttpException
 import java.io.IOException
 import java.time.Clock
 import java.time.OffsetDateTime
+import kotlin.math.abs
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -75,6 +76,7 @@ class AppConfigUseCaseImpl(
         val minimumRefreshInterval = cachedAppConfigUseCase.getCachedAppConfig().configMinimumIntervalSeconds
         val nowSeconds = OffsetDateTime.now(clock).toEpochSecond()
 
-        return nowSeconds - lastTimeRefreshed > minimumRefreshInterval
+        // Check absolute value to handle clock deviations
+        return abs(nowSeconds - lastTimeRefreshed) > minimumRefreshInterval
     }
 }
