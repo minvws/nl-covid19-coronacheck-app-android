@@ -1,14 +1,17 @@
 package nl.rijksoverheid.ctr.design.utils
 
+import android.os.Bundle
+import android.os.Parcelable
 import android.widget.Button
 import androidx.fragment.app.FragmentManager
+import kotlinx.parcelize.Parcelize
 import nl.rijksoverheid.ctr.design.ExpandedBottomSheetDialogFragment
 import nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
 
-sealed class BottomSheetData(open val title: String, open val applyOnDescription: (HtmlTextViewWidget) -> Unit) {
-    class TitleDescription(override val title: String, override val applyOnDescription: (HtmlTextViewWidget) -> Unit): BottomSheetData(title, applyOnDescription)
-    class TitleDescriptionWithButton(override val title: String, override val applyOnDescription: (HtmlTextViewWidget) -> Unit, val applyOnButton: (Button) -> Unit): BottomSheetData(title, applyOnDescription)
-    class TitleDescriptionWithFooter(override val title: String, override val applyOnDescription: (HtmlTextViewWidget) -> Unit, val footerText: String): BottomSheetData(title, applyOnDescription)
+sealed class BottomSheetData(open val title: String, open val applyOnDescription: (HtmlTextViewWidget) -> Unit): Parcelable {
+    @Parcelize class TitleDescription(override val title: String, override val applyOnDescription: (HtmlTextViewWidget) -> Unit): BottomSheetData(title, applyOnDescription)
+    @Parcelize class TitleDescriptionWithButton(override val title: String, override val applyOnDescription: (HtmlTextViewWidget) -> Unit, val applyOnButton: (Button) -> Unit): BottomSheetData(title, applyOnDescription)
+    @Parcelize class TitleDescriptionWithFooter(override val title: String, override val applyOnDescription: (HtmlTextViewWidget) -> Unit, val footerText: String): BottomSheetData(title, applyOnDescription)
 }
 
 /*
@@ -30,7 +33,11 @@ class BottomSheetDialogUtilImpl: BottomSheetDialogUtil {
         fragmentManager: FragmentManager,
         data: BottomSheetData,
     ) {
-        val bottomSheet = ExpandedBottomSheetDialogFragment(data)
+        val bottomSheet = ExpandedBottomSheetDialogFragment().apply {
+            arguments = Bundle().apply {
+                putParcelable(ExpandedBottomSheetDialogFragment.dataKey, data)
+            }
+        }
         bottomSheet.show(fragmentManager, "bottomSheetTag")
     }
 }

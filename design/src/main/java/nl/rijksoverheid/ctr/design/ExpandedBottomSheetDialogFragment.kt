@@ -21,9 +21,7 @@ import nl.rijksoverheid.ctr.design.utils.BottomSheetData
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-open class ExpandedBottomSheetDialogFragment(
-    private val expandedBottomSheetData: BottomSheetData = BottomSheetData.TitleDescription("", {})
-) : BottomSheetDialogFragment() {
+open class ExpandedBottomSheetDialogFragment() : BottomSheetDialogFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,6 +55,7 @@ open class ExpandedBottomSheetDialogFragment(
             }
         })
 
+        val expandedBottomSheetData = arguments?.get(dataKey) as? BottomSheetData ?: return
         binding.title.text = expandedBottomSheetData.title
         binding.description.apply {
             expandedBottomSheetData.applyOnDescription(this)
@@ -73,5 +72,9 @@ open class ExpandedBottomSheetDialogFragment(
                 binding.footer.text = expandedBottomSheetData.footerText
             }
         }
+    }
+
+    companion object {
+        const val dataKey = "expandedBottomSheetData"
     }
 }
