@@ -9,5 +9,6 @@ sealed class ScanResultInvalidData : Parcelable {
     data class Invalid(val verifiedQr: VerificationResult) : ScanResultInvalidData(), Parcelable
 
     @Parcelize
-    data class Error(val error: String): ScanResultInvalidData(), Parcelable
+    data class Error(val error: String, val returnUri: String?) :
+        ScanResultInvalidData(), Parcelable
 }

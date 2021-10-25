@@ -40,11 +40,10 @@ import org.robolectric.RobolectricTestRunner
 class ScanResultInvalidFragmentTest : AutoCloseKoinTest() {
 
     private lateinit var navController: TestNavHostController
-    private val scannerUtil: ScannerUtil = mockk(relaxed = true)
 
     @Test
     fun `Screen shows correct content`() {
-        launchScanResultInvalidFragment(data = ScanResultInvalidData.Error("invalid QR code"))
+        launchScanResultInvalidFragment(data = ScanResultInvalidData.Error("invalid QR code", null))
         assertHasBackground(R.id.root, R.color.red)
         assertDisplayed(R.id.title, R.string.scan_result_invalid_title)
         assertAny<MaterialButton>(R.id.button_explanation) {
@@ -56,7 +55,7 @@ class ScanResultInvalidFragmentTest : AutoCloseKoinTest() {
 
     @Test
     fun `Invalid result on explanation button click opens explanation dialog`() {
-        launchScanResultInvalidFragment(data = ScanResultInvalidData.Error("invalid QR code"))
+        launchScanResultInvalidFragment(data = ScanResultInvalidData.Error("invalid QR code", null))
         performActionOnView(withId(R.id.button_explanation), click())
         assertContains(R.string.scan_result_invalid_reason_title)
     }
@@ -72,7 +71,7 @@ class ScanResultInvalidFragmentTest : AutoCloseKoinTest() {
     fun `Clicking scan again button opens scanner`() {
         launchScanResultInvalidFragment()
         clickOn(R.id.button_next)
-        verify { scannerUtil.launchScanner(any()) }
+        assertEquals(navController.currentDestination?.id, R.id.nav_qr_scanner)
     }
 
 
@@ -81,14 +80,6 @@ class ScanResultInvalidFragmentTest : AutoCloseKoinTest() {
             fakeVerifiedQr()
         )
     ) {
-        loadKoinModules(
-            module(override = true) {
-                factory {
-                    scannerUtil
-                }
-            }
-        )
-
         navController = TestNavHostController(
             ApplicationProvider.getApplicationContext()
         ).also {
