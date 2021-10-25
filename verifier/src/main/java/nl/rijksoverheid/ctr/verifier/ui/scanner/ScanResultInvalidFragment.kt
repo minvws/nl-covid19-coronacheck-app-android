@@ -26,7 +26,6 @@ import java.util.concurrent.TimeUnit
  */
 class ScanResultInvalidFragment : Fragment(R.layout.fragment_scan_result_invalid) {
 
-    private val scannerUtil: ScannerUtil by inject()
     private val bottomSheetDialogUtil: BottomSheetDialogUtil by inject()
 
     private val autoCloseHandler = Handler(Looper.getMainLooper())
