@@ -22,7 +22,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/ic_close"
+        app:navigationIcon="@drawable/ic_back"
         app:title="@string/scan_result_something_wrong" />
 
     <ScrollView
