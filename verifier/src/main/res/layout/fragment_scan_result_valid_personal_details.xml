@@ -110,6 +110,7 @@
         app:attachToScrollView="@+id/scroll"
         app:buttonText="@string/scan_result_valid_id_confirmed_button"
         app:cardElevation="0dp"
+        android:paddingHorizontal="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
