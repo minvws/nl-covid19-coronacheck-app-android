@@ -188,6 +188,7 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        clearToolbar()
         _binding = null
     }
 
