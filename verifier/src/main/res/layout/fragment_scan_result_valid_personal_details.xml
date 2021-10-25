@@ -79,7 +79,7 @@
             <TextView
                 android:id="@+id/international_description"
                 android:visibility="gone"
-                style="@style/App.TextAppearance.MaterialComponents.Body2.Montserrat.Secondary"
+                style="@style/App.TextAppearance.MaterialComponents.Headline.Secondary"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
