@@ -60,7 +60,9 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
                 }
             ))
         }
+        // Handle clock deviation view
         observeServerTimeSynced(binding)
+        showDeviationViewIfNeeded(binding)
     }
 
     /**
@@ -69,8 +71,12 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
      */
     private fun observeServerTimeSynced(binding: FragmentScanQrBinding) {
         clockDeviationUseCase.serverTimeSyncedLiveData.observe(viewLifecycleOwner, EventObserver {
-            binding.clockdeviationView.root.isGone = !clockDeviationUseCase.hasDeviation()
+            showDeviationViewIfNeeded(binding)
         })
+    }
+
+    private fun showDeviationViewIfNeeded(binding: FragmentScanQrBinding){
+        binding.clockdeviationView.root.isGone = !clockDeviationUseCase.hasDeviation()
     }
 }
 
