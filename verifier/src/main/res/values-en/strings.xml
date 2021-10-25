@@ -131,7 +131,7 @@
     <string name="scan_result_something_wrong_finished_check_button">Scan next</string>
     <string name="scan_result_valid_id_confirmed_button">Details are correct</string>
     <string name="scan_result_mandatory_id_check">Please note: ID check is mandatory</string>
-    <string name="scan_result_valid_international_scanned">%1$s\nScanned international certificate</string>
+    <string name="scan_result_valid_international_scanned">%1$s\nInternational certificate</string>
     <string name="clockdeviation_card_message">Check your phone\'s time settings. They might be incorrect.</string>
     <string name="clockdeviation_card_button">Read more</string>
     <string name="clockdeviation_page_title">Check your phone\'s time settings</string>
