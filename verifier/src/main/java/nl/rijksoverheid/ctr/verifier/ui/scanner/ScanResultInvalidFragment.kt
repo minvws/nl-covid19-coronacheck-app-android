@@ -26,16 +26,11 @@ import java.util.concurrent.TimeUnit
  *
  */
 class ScanResultInvalidFragment : Fragment(R.layout.fragment_scan_result_invalid) {
-    
-    private val scannerUtil: ScannerUtil by inject()
+
     private val bottomSheetDialogUtil: BottomSheetDialogUtil by inject()
 
     private val autoCloseHandler = Handler(Looper.getMainLooper())
-    private val autoCloseRunnable = Runnable {
-        navigateSafety(R.id.nav_scan_result_invalid,
-            ScanResultInvalidFragmentDirections.actionNavMain()
-        )
-    }
+    private val autoCloseRunnable = Runnable { navigateToScanner() }
 
     private val args: ScanResultInvalidFragmentArgs by navArgs()
 
@@ -44,9 +39,7 @@ class ScanResultInvalidFragment : Fragment(R.layout.fragment_scan_result_invalid
 
         val binding = FragmentScanResultInvalidBinding.bind(view)
 
-        binding.toolbar.setNavigationOnClickListener {
-            navigateSafety(ScanResultInvalidFragmentDirections.actionNavMain())
-        }
+        binding.toolbar.setNavigationOnClickListener { navigateToScanner() }
 
         when (args.invalidData) {
             is ScanResultInvalidData.Invalid -> {
@@ -55,19 +48,18 @@ class ScanResultInvalidFragment : Fragment(R.layout.fragment_scan_result_invalid
             }
             is ScanResultInvalidData.Error -> {
                 binding.buttonExplanation.setOnClickListener {
-                    bottomSheetDialogUtil.present(childFragmentManager, BottomSheetData.TitleDescription(
-                        title = getString(R.string.scan_result_invalid_reason_title),
-                        applyOnDescription = {
-                            it.setHtmlText(R.string.scan_result_invalid_reason_description)
-                        }
-                    ))
+                    bottomSheetDialogUtil.present(childFragmentManager,
+                        BottomSheetData.TitleDescription(
+                            title = getString(R.string.scan_result_invalid_reason_title),
+                            applyOnDescription = {
+                                it.setHtmlText(R.string.scan_result_invalid_reason_description)
+                            }
+                        ))
                 }
             }
         }
 
-        binding.buttonNext.setOnClickListener {
-            scannerUtil.launchScanner(requireActivity())
-        }
+        binding.buttonNext.setOnClickListener { navigateToScanner() }
 
         // scroll all the way down on landscape
         // so the user notices what can be done
@@ -76,6 +68,15 @@ class ScanResultInvalidFragment : Fragment(R.layout.fragment_scan_result_invalid
                 binding.scroll.fullScroll(View.FOCUS_DOWN)
             }
         }
+    }
+
+    private fun navigateToScanner() {
+        navigateSafety(
+            R.id.nav_scan_result_invalid,
+            ScanResultInvalidFragmentDirections.actionNavQrScanner(
+                returnUri = (args.invalidData as? ScanResultInvalidData.Error)?.returnUri
+            )
+        )
     }
 
     override fun onResume() {
