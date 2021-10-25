@@ -97,7 +97,8 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
                     findNavController().navigate(
                         VerifierQrScannerFragmentDirections.actionScanResultInvalid(
                             invalidData = ScanResultInvalidData.Error(
-                                error = qrResultState.error
+                                error = qrResultState.error,
+                                returnUri = args.returnUri
                             )
                         )
                     )
