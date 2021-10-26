@@ -12,7 +12,7 @@ import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isInvisible
 import nl.rijksoverheid.ctr.verifier.R
-import nl.rijksoverheid.ctr.verifier.databinding.WidgetScrollViewButtonBinding
+import nl.rijksoverheid.ctr.verifier.databinding.VerifierWidgetScrollViewButtonBinding
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -21,19 +21,19 @@ import nl.rijksoverheid.ctr.verifier.databinding.WidgetScrollViewButtonBinding
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class ScrollViewButtonWidget @JvmOverloads constructor(
+class VerifierScrollViewButtonWidget @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : CardView(context, attrs, defStyleAttr) {
 
-    private val binding: WidgetScrollViewButtonBinding
+    private val binding: VerifierWidgetScrollViewButtonBinding
 
     private var attachToScrollViewId: Int? = null
     private var scrollViewGlobalLayoutListener: ViewTreeObserver.OnGlobalLayoutListener? = null
 
     init {
         elevation = 0f
-        WidgetScrollViewButtonBinding.inflate(LayoutInflater.from(context), this)
-        binding = WidgetScrollViewButtonBinding.bind(this)
+        VerifierWidgetScrollViewButtonBinding.inflate(LayoutInflater.from(context), this)
+        binding = VerifierWidgetScrollViewButtonBinding.bind(this)
         binding.root.setBackgroundColor(ContextCompat.getColor(context, R.color.red))
 
         context.theme.obtainStyledAttributes(
