@@ -60,6 +60,7 @@ jobs:
           gomobile bind -target android -o mobilecore.aar github.com/minvws/nl-covid19-coronacheck-mobile-core
           cd ..
           cp mobilecore-src/mobilecore.aar mobilecore/
+          ls mobilecore/
       - name: Test
         run: ./gradlew testDebug testAccDebug lint
       - name: Write key store
