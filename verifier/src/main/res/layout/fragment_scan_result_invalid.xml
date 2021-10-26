@@ -70,7 +70,7 @@
 
         </ScrollView>
 
-        <nl.rijksoverheid.ctr.verifier.ui.views.VerifierScrollViewButtonWidget
+        <nl.rijksoverheid.ctr.design.views.ScrollViewButtonWidget
             android:id="@+id/bottom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

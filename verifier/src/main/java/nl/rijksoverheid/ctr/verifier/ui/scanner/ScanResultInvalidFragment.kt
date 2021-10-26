@@ -5,10 +5,13 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
+import nl.rijksoverheid.ctr.design.ext.getThemeColorStateList
 import nl.rijksoverheid.ctr.design.utils.BottomSheetData
 import nl.rijksoverheid.ctr.design.utils.BottomSheetDialogUtil
+import nl.rijksoverheid.ctr.shared.ext.getDimensionPixelSize
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.verifier.BuildConfig
 import nl.rijksoverheid.ctr.verifier.R
@@ -40,10 +43,32 @@ class ScanResultInvalidFragment : Fragment(R.layout.fragment_scan_result_invalid
 
         binding.toolbar.setNavigationOnClickListener { navigateToScanner() }
 
+        binding.bottom.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.red))
+        binding.bottom.customiseButton {
+            it.run {
+                setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+                backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.surface)
+            }
+        }
+        binding.bottom.customiseSecondaryButton {
+            it.run {
+                setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+                strokeColor = ContextCompat.getColorStateList(requireContext(), R.color.surface)
+                setPadding(
+                    getDimensionPixelSize(R.dimen.long_button_title_padding_horizontal),
+                    paddingTop,
+                    getDimensionPixelSize(R.dimen.long_button_title_padding_horizontal),
+                    paddingBottom,
+                )
+            }
+        }
+
         when (args.invalidData) {
             is ScanResultInvalidData.Invalid -> {
                 binding.title.text = getString(R.string.scan_result_european_nl_invalid_title)
-                binding.bottom.hideSecondaryButton()
+                binding.bottom.customiseSecondaryButton {
+                    it.visibility = View.INVISIBLE
+                }
             }
             is ScanResultInvalidData.Error -> {
                 binding.bottom.setSecondaryButtonClick {
