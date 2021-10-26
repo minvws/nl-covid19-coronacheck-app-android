@@ -71,6 +71,20 @@ android {
             manifestPlaceholders = [appLabel: "@string/app_name_acc", deepLinkHost: "web.acc.coronacheck.nl"]
             matchingFallbacks = ['mlkit']
         }
+        fdroidAcc {
+            dimension "environment"
+            versionNameSuffix "-acc"
+            applicationIdSuffix ".acc"
+            manifestPlaceholders = [appLabel: "@string/app_name_acc"]
+            buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.acc.coronacheck.nl/v6/\""
+            buildConfigField "String", "CDN_API_URL", "\"https://verifier-api-cdn.acc.coronacheck.nl/v6/\""
+            buildConfigField "String[]", "CERTIFICATE_PINS",
+                    "{" +
+                            "\"sha256/lR7gRvqDMW5nhsCMRPE7TKLq0tJkTWMxQ5HAzHCIfQ0=\"" +
+                            "}"
+            manifestPlaceholders = [appLabel: "@string/app_name_acc", deepLinkHost: "web.acc.coronacheck.nl"]
+            matchingFallbacks = ['zxing']
+        }
         prod {
             dimension "environment"
             matchingFallbacks = ['mlkit']

@@ -88,7 +88,7 @@ android {
             buildConfigField "String", "CDN_API_URL", "\"https://holder-api-cdn.acc.coronacheck.nl/v6/\""
             buildConfigField "String", "DIGI_D_BASE_URL", "\"https://tvs.acc.coronacheck.nl\""
             buildConfigField "String", "DIGI_D_CLIENT_ID", "\"cc_app\""
-            buildConfigField "String", "DIGI_D_REDIRECT_URI", "\"https://web.acc.coronacheck.nl/app/auth2\""
+            buildConfigField "String", "DIGI_D_REDIRECT_URI", "\"coronacheck-acc://auth/login\""
             buildConfigField "String[]", "CERTIFICATE_PINS",
                     "{" +
                             "\"sha256/lR7gRvqDMW5nhsCMRPE7TKLq0tJkTWMxQ5HAzHCIfQ0=\"" +
@@ -106,6 +106,7 @@ android {
             matchingFallbacks = ['mlkit']
         }
         fdroidProd {
+            buildConfigField "String", "DIGI_D_REDIRECT_URI", "\"coronacheck://auth/login\""
             dimension "environment"
             matchingFallbacks = ['zxing']
         }
