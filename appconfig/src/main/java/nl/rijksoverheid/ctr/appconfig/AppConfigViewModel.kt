@@ -28,7 +28,7 @@ import nl.rijksoverheid.ctr.shared.livedata.Event
 abstract class AppConfigViewModel : ViewModel() {
     val appStatusLiveData = MutableLiveData<Event<AppStatus>>()
 
-    abstract fun refresh(mobileCoreWrapper: MobileCoreWrapper)
+    abstract fun refresh(mobileCoreWrapper: MobileCoreWrapper, force : Boolean = false)
 }
 
 class AppConfigViewModelImpl(
@@ -44,8 +44,8 @@ class AppConfigViewModelImpl(
 
     private val mutex = Mutex()
 
-    override fun refresh(mobileCoreWrapper: MobileCoreWrapper) {
-        if (!appConfigUseCase.canRefresh(cachedAppConfigUseCase)) {
+    override fun refresh(mobileCoreWrapper: MobileCoreWrapper, force: Boolean) {
+        if (!force && !appConfigUseCase.canRefresh(cachedAppConfigUseCase)) {
             return
         }
         viewModelScope.launch {
