@@ -1,0 +1,21 @@
+NB: this is the FOSS version for F-Droid, which removes non-free images and proprietary dependencies, and uses zxing to scan barcodes instead.
+
+CoronaCheck Scanner is the official Dutch declaration scanner developed by the Ministry of Health, Welfare and Sport. This digital tool verifies if people are vaccinated or tested on coronavirus. This way other countries and certain locations in the Netherlands are able to welcome visitors.
+
+How does the app work?
+
+- Ask a visitor to show their coronavirus pass
+At the entrance (or at the border) the visitor has to prove they have been vaccinated, already had coronavirus or did not have coronavirus at the time of testing. The coronavirus pass is available in the CoronaCheck app - in the form of a QR code. This code can be scanned from a safe distance.
+
+- Scan the QR code for access
+This app scans the visitor’s QR code. A green screen allows access or passage. The QR code needs to be scanned within 40 hours after testing. In case of vaccination a QR code is valid for 1 year.
+
+- Check if the QR code is valid
+A green screen means the QR code is valid: the visitor has been vaccinated, already had coronavirus or has tested negative within the last 40 hours and did not have coronavirus at the time of testing. If you get a red screen, the visitor does not have valid negative test results.
+
+This is how the app processes data:
+* Visitor data is not saved in a central location
+* Visitor location data is not used or saved
+* You're only allowed to use the visitor's details to check the certificate
+
+Privacy policy: https://coronacheck.nl/nl/gebruikersvoorwaarden
