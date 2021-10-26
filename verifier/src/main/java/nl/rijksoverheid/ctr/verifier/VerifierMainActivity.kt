@@ -44,6 +44,11 @@ class VerifierMainActivity : AppCompatActivity() {
         setProductionFlags()
 
         observeStatuses()
+
+        // Force retrieval of config once on startup for clock deviation checks
+        if (introductionViewModel.getIntroductionStatus() is IntroductionStatus.IntroductionFinished) {
+            appStatusViewModel.refresh(mobileCoreWrapper, force = true)
+        }
     }
 
     private fun observeStatuses() {
@@ -64,7 +69,7 @@ class VerifierMainActivity : AppCompatActivity() {
         appStatus: AppStatus,
         navController: NavController
     ) {
-        if ( appStatus is AppStatus.UpdateRecommended) {
+        if (appStatus is AppStatus.UpdateRecommended) {
             showRecommendedUpdateDialog()
             return
         }
