@@ -47,7 +47,8 @@ class VerifierMainFragment :
     private val introductionViewModel: IntroductionViewModel by sharedViewModel()
     private val mobileCoreWrapper: MobileCoreWrapper by inject()
     private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
-    private val appConfigPersistenceManager : AppConfigPersistenceManager by inject()
+    private val appConfigPersistenceManager: AppConfigPersistenceManager by inject()
+    private var isFreshStart: Boolean = true // track if this is a fresh start of the app
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -93,10 +94,15 @@ class VerifierMainFragment :
         _navController = navHostFragment.navController
 
         // verifier can stay active for a long time, so it is not sufficient
-        // to try to refresh the config only every time the app resumes
+        // to try to refresh the config only every time the app resumes.
+        // We do track if the app was recently (re)started to avoid double config calls
         navController.addOnDestinationChangedListener { _, _, _ ->
             if (introductionViewModel.getIntroductionStatus() is IntroductionStatus.IntroductionFinished) {
-                appConfigViewModel.refresh(mobileCoreWrapper)
+                if (!isFreshStart) {
+                    appConfigViewModel.refresh(mobileCoreWrapper)
+                } else {
+                    isFreshStart = false
+                }
             }
         }
 

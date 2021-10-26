@@ -34,6 +34,7 @@ class VerifierMainActivity : AppCompatActivity() {
     private val mobileCoreWrapper: MobileCoreWrapper by inject()
     private val dialogUtil: DialogUtil by inject()
     private val intentUtil: IntentUtil by inject()
+    private var isFreshStart: Boolean = true // track if this is a fresh start of the app
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
@@ -47,7 +48,7 @@ class VerifierMainActivity : AppCompatActivity() {
 
         // Force retrieval of config once on startup for clock deviation checks
         if (introductionViewModel.getIntroductionStatus() is IntroductionStatus.IntroductionFinished) {
-            appStatusViewModel.refresh(mobileCoreWrapper, force = true)
+            appStatusViewModel.refresh(mobileCoreWrapper, force = isFreshStart)
         }
     }
 
@@ -107,9 +108,13 @@ class VerifierMainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        // Only get app config on every app foreground when introduction is finished
-        if (introductionViewModel.getIntroductionStatus() is IntroductionStatus.IntroductionFinished) {
+        // Only get app config on every app foreground when introduction is finished and the app has already started
+        if (introductionViewModel.getIntroductionStatus() is IntroductionStatus.IntroductionFinished && !isFreshStart) {
             appStatusViewModel.refresh(mobileCoreWrapper)
+        }
+
+        if (isFreshStart) {
+            isFreshStart = false
         }
     }
 }
