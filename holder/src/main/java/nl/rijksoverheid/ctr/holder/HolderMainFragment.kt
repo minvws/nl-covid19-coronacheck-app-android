@@ -29,6 +29,7 @@ import nl.rijksoverheid.ctr.holder.databinding.FragmentMainBinding
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAccessibilityFocus
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class HolderMainFragment : BaseMainFragment(
     R.layout.fragment_main, setOf(
@@ -40,10 +41,11 @@ class HolderMainFragment : BaseMainFragment(
 
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
-    private var _navController : NavController? = null
+    private var _navController: NavController? = null
     private val navController get() = _navController!!
     private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
-    private val appConfigPersistenceManager : AppConfigPersistenceManager by inject()
+    private val appConfigPersistenceManager: AppConfigPersistenceManager by inject()
+    private val holderMainActivityViewModel: HolderMainActivityViewModel by sharedViewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -111,9 +113,9 @@ class HolderMainFragment : BaseMainFragment(
                                         text = getString(R.string.about_this_app_colofon),
                                         url = getString(R.string.about_this_app_colofon_url),
                                     ),
-                                    AboutThisAppData.Url(
-                                        text = getString(R.string.about_this_app_colofon),
-                                        url = getString(R.string.about_this_app_colofon_url),
+                                    AboutThisAppData.ClearAppData(
+                                        text = getString(R.string.about_this_clear_data),
+                                        onItemClicked = holderMainActivityViewModel::onClearAppData
                                     ),
                                 ),
                                 configVersionHash = cachedAppConfigUseCase.getCachedAppConfigHash(),
@@ -164,7 +166,7 @@ class HolderMainFragment : BaseMainFragment(
         return binding.toolbar
     }
 
-    fun resetMenuItemListener(){
+    fun resetMenuItemListener() {
         binding.toolbar.setOnMenuItemClickListener {
             NavigationUI.onNavDestinationSelected(it, navController)
         }
