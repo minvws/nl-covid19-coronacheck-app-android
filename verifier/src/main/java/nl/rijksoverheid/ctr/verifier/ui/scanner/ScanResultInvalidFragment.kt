@@ -14,7 +14,6 @@ import nl.rijksoverheid.ctr.verifier.BuildConfig
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanResultInvalidBinding
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultInvalidData
-import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
 import org.koin.android.ext.android.inject
 import java.util.concurrent.TimeUnit
 
@@ -44,10 +43,10 @@ class ScanResultInvalidFragment : Fragment(R.layout.fragment_scan_result_invalid
         when (args.invalidData) {
             is ScanResultInvalidData.Invalid -> {
                 binding.title.text = getString(R.string.scan_result_european_nl_invalid_title)
-                binding.buttonExplanation.visibility = View.INVISIBLE
+                binding.bottom.hideSecondaryButton()
             }
             is ScanResultInvalidData.Error -> {
-                binding.buttonExplanation.setOnClickListener {
+                binding.bottom.setSecondaryButtonClick {
                     bottomSheetDialogUtil.present(childFragmentManager,
                         BottomSheetData.TitleDescription(
                             title = getString(R.string.scan_result_invalid_reason_title),
@@ -59,7 +58,7 @@ class ScanResultInvalidFragment : Fragment(R.layout.fragment_scan_result_invalid
             }
         }
 
-        binding.buttonNext.setOnClickListener { navigateToScanner() }
+        binding.bottom.setButtonClick { navigateToScanner() }
 
         // scroll all the way down on landscape
         // so the user notices what can be done
