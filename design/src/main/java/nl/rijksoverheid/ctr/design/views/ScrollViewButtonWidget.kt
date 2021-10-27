@@ -6,10 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
+import android.widget.Button
 import android.widget.ScrollView
 import androidx.annotation.DrawableRes
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
+import com.google.android.material.button.MaterialButton
 import nl.rijksoverheid.ctr.design.R
 import nl.rijksoverheid.ctr.design.databinding.WidgetScrollViewButtonBinding
 
@@ -133,6 +135,14 @@ class ScrollViewButtonWidget @JvmOverloads constructor(
 
     fun setButtonEnabled(isEnabled: Boolean) {
         binding.button.isEnabled = isEnabled
+    }
+
+    fun customiseButton(block: (Button) -> Unit) {
+        binding.button.run(block)
+    }
+
+    fun customiseSecondaryButton(block: (MaterialButton) -> Unit) {
+        binding.secondaryButton.run(block)
     }
 
 }
