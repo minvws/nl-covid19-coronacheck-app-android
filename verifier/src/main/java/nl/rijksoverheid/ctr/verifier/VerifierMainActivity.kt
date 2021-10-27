@@ -32,14 +32,14 @@ class VerifierMainActivity : AppCompatActivity() {
 
     private val introductionViewModel: IntroductionViewModel by viewModel()
     private val appConfigViewModel: AppConfigViewModel by viewModel()
+    private val scanQrViewModel: ScanQrViewModel by viewModel()
     private val mobileCoreWrapper: MobileCoreWrapper by inject()
     private val dialogUtil: DialogUtil by inject()
     private val intentUtil: IntentUtil by inject()
-    private var isFreshStart: Boolean = true // track if this is a fresh start of the app
 
-    private var returnUri: String? = null
+    private var isFreshStart: Boolean = true // track if this is a fresh start of the app
+    private var returnUri: String? = null // return uri to external app given as argument from deeplink
     private var hasHandledDeeplink: Boolean = false
-    private val scanQrViewModel: ScanQrViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
