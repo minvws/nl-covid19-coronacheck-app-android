@@ -23,7 +23,7 @@ class GetDashboardItemsUseCaseImpl(
     private val greenCardUtil: GreenCardUtil,
     private val credentialUtil: CredentialUtil,
     private val originUtil: OriginUtil,
-    private val dashboardItemUtil: DashboardItemUtilD,
+    private val dashboardItemUtil: DashboardItemUtil,
     private val persistenceManager: PersistenceManager
 ) : GetDashboardItemsUseCase {
     override suspend fun getItems(
