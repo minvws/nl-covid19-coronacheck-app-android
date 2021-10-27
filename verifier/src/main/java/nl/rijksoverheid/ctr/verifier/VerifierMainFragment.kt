@@ -16,6 +16,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
@@ -32,6 +33,7 @@ import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentMainBinding
+import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
@@ -48,7 +50,12 @@ class VerifierMainFragment :
     private val mobileCoreWrapper: MobileCoreWrapper by inject()
     private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
     private val appConfigPersistenceManager: AppConfigPersistenceManager by inject()
+    private val scannerUtil: ScannerUtil by inject()
+
     private var isFreshStart: Boolean = true // track if this is a fresh start of the app
+    private var hasHandledDeeplink: Boolean = false
+
+    private val args: VerifierMainFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -102,6 +109,10 @@ class VerifierMainFragment :
                     appConfigViewModel.refresh(mobileCoreWrapper)
                 } else {
                     isFreshStart = false
+                }
+                if (args.returnUri != null && !hasHandledDeeplink) {
+                    scannerUtil.launchScanner(requireActivity(), args.returnUri)
+                    hasHandledDeeplink = true
                 }
             }
         }
