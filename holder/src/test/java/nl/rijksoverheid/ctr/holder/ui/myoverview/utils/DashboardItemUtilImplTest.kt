@@ -19,23 +19,7 @@ import kotlin.test.assertTrue
 class DashboardItemUtilImplTest {
 
     @Test
-    fun `shouldShowHeaderItem returns true if has green cards`() {
-        val util = DashboardItemUtilImpl(
-            clockDeviationUseCase = fakeClockDevationUseCase(),
-            greenCardUtil = fakeGreenCardUtil(),
-            persistenceManager = fakePersistenceManager(),
-            eventGroupEntityUtil = fakeEventGroupEntityUtil()
-        )
-
-        val shouldShowHeaderItem = util.shouldShowHeaderItem(
-            allGreenCards = listOf(fakeGreenCard)
-        )
-
-        assertEquals(true, shouldShowHeaderItem)
-    }
-
-    @Test
-    fun `shouldShowHeaderItem returns true if not all green cards expired`() {
+    fun `getHeaderItemText returns correct text if domestic and has green cards`() {
         val util = DashboardItemUtilImpl(
             clockDeviationUseCase = fakeClockDevationUseCase(),
             greenCardUtil = fakeGreenCardUtil(
@@ -45,11 +29,69 @@ class DashboardItemUtilImplTest {
             eventGroupEntityUtil = fakeEventGroupEntityUtil()
         )
 
-        val shouldShowHeaderItem = util.shouldShowHeaderItem(
+        val headerText = util.getHeaderItemText(
+            greenCardType = GreenCardType.Domestic,
             allGreenCards = listOf(fakeGreenCard)
         )
 
-        assertEquals(true, shouldShowHeaderItem)
+        assertEquals(R.string.my_overview_description, headerText)
+    }
+
+    @Test
+    fun `getHeaderItemText returns correct text if domestic and has no green cards`() {
+        val util = DashboardItemUtilImpl(
+            clockDeviationUseCase = fakeClockDevationUseCase(),
+            greenCardUtil = fakeGreenCardUtil(
+                isExpired = false
+            ),
+            persistenceManager = fakePersistenceManager(),
+            eventGroupEntityUtil = fakeEventGroupEntityUtil()
+        )
+
+        val headerText = util.getHeaderItemText(
+            greenCardType = GreenCardType.Domestic,
+            allGreenCards = listOf()
+        )
+
+        assertEquals(R.string.my_overview_qr_placeholder_description, headerText)
+    }
+
+    @Test
+    fun `getHeaderItemText returns correct text if eu and has green cards`() {
+        val util = DashboardItemUtilImpl(
+            clockDeviationUseCase = fakeClockDevationUseCase(),
+            greenCardUtil = fakeGreenCardUtil(
+                isExpired = false
+            ),
+            persistenceManager = fakePersistenceManager(),
+            eventGroupEntityUtil = fakeEventGroupEntityUtil()
+        )
+
+        val headerText = util.getHeaderItemText(
+            greenCardType = GreenCardType.Eu,
+            allGreenCards = listOf(fakeGreenCard)
+        )
+
+        assertEquals(R.string.my_overview_description_eu, headerText)
+    }
+
+    @Test
+    fun `getHeaderItemText returns correct text if eu and has no green cards`() {
+        val util = DashboardItemUtilImpl(
+            clockDeviationUseCase = fakeClockDevationUseCase(),
+            greenCardUtil = fakeGreenCardUtil(
+                isExpired = false
+            ),
+            persistenceManager = fakePersistenceManager(),
+            eventGroupEntityUtil = fakeEventGroupEntityUtil()
+        )
+
+        val headerText = util.getHeaderItemText(
+            greenCardType = GreenCardType.Eu,
+            allGreenCards = listOf()
+        )
+
+        assertEquals(R.string.my_overview_qr_placeholder_description_eu, headerText)
     }
 
     @Test
