@@ -77,6 +77,23 @@
             app:nullable="true" />
     </action>
 
+    <action
+        android:id="@+id/action_scan_instructions"
+        app:destination="@id/scan_instructions_nav"
+        app:enterAnim="@anim/fragment_open_enter"
+        app:exitAnim="@anim/fragment_open_exit"
+        app:popEnterAnim="@anim/fragment_close_enter"
+        app:popExitAnim="@anim/fragment_close_exit"
+        app:popUpTo="@id/nav_scanner">
+
+        <argument
+            android:name="returnUri"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+    </action>
+
     <include app:graph="@navigation/verifier_nav_graph_scanner" />
+    <include app:graph="@navigation/verifier_nav_graph_scan_instructions" />
 
 </navigation>

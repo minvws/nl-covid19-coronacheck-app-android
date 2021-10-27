@@ -18,7 +18,7 @@ import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.utils.IntentUtil
 import nl.rijksoverheid.ctr.verifier.databinding.ActivityMainBinding
-import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
+import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrViewModel
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -38,9 +38,9 @@ class VerifierMainActivity : AppCompatActivity() {
     private val intentUtil: IntentUtil by inject()
     private var isFreshStart: Boolean = true // track if this is a fresh start of the app
 
-    private val scannerUtil: ScannerUtil by inject()
     private var returnUri: String? = null
     private var hasHandledDeeplink: Boolean = false
+    private val scanQrViewModel: ScanQrViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
@@ -81,6 +81,7 @@ class VerifierMainActivity : AppCompatActivity() {
                     destination: NavDestination,
                     arguments: Bundle?
                 ) {
+                    // Persist deeplink return uri in case it's not used immediately because of onboarding
                     if (destination.id == R.id.nav_main) {
                         arguments?.getString("returnUri")?.let { returnUri = it }
                     }
@@ -90,15 +91,26 @@ class VerifierMainActivity : AppCompatActivity() {
                         } else {
                             isFreshStart = false
                         }
-                        if (returnUri != null && !hasHandledDeeplink) {
-                            hasHandledDeeplink = true
-                            navController.navigate(RootNavDirections.actionScanner(returnUri))
-                        }
+
+                        navigateDeeplink(navController)
                     }
                 }
 
             }
         )
+    }
+
+    private fun navigateDeeplink(navController: NavController) {
+        if (returnUri != null && !hasHandledDeeplink) {
+            hasHandledDeeplink = true
+            navController.navigate(
+                if (scanQrViewModel.hasSeenScanInstructions()) {
+                    RootNavDirections.actionScanner(returnUri)
+                } else {
+                    RootNavDirections.actionScanInstructions(returnUri)
+                }
+            )
+        }
     }
 
     private fun handleAppStatus(
