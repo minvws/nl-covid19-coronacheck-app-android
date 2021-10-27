@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr
 
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.design.utils.BottomSheetData
 import nl.rijksoverheid.ctr.design.utils.BottomSheetDialogUtil
@@ -38,12 +39,15 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
 
     private val getEventsViewModel: GetEventsViewModel by viewModel()
 
+    private val flow: MutableLiveData<HolderFlow> = MutableLiveData(HolderFlow.CommercialTest)
+
     override fun onButtonClickWithRetryAction() {
+        flow.value = HolderFlow.DigidTest
         loginWithDigiD()
     }
 
     override fun getFlow(): Flow {
-        return HolderFlow.CommercialTest
+        return flow.value ?: HolderFlow.CommercialTest
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -54,6 +58,7 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
             R.string.choose_provider_commercial_title,
             null
         ) {
+            flow.value = HolderFlow.CommercialTest
             findNavController().navigate(ChooseProviderFragmentDirections.actionCommercialTestCode())
         }
 

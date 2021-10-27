@@ -64,7 +64,7 @@ import org.koin.androidx.viewmodel.scope.emptyState
 
         binding.uniqueCodeText.filters = arrayOf(InputFilter.AllCaps())
         binding.uniqueCodeText.addTextChangedListener {
-            viewModel.testCode = it?.toString()?.toUpperCase() ?: ""
+            viewModel.testCode = it?.toString()?.uppercase() ?: ""
         }
 
         binding.verificationCodeText.addTextChangedListener {
