@@ -485,4 +485,9 @@
     <string name="dashboard_item_refreshed_eu_vaccinations_button">Read more</string>
     <string name="refreshed_eu_items_title">Renewed vaccination certificate</string>
     <string name="refreshed_eu_items_description"><![CDATA[We have renewed everyone\'s vaccination certificate. From now on, you have access to QR codes of earlier vaccinations.<br/><br/>This can be useful for people who want to go to a place where their latest vaccination is not yet valid.<br/><br/><a href="https://coronacheck.nl/en/faq/3-5-waarom-heb-ik-voor-elke-prik-een-internationale-QR-code/">Read more about your renewed vaccination certificate here</a>.]]></string>
+    <string name="extend_domestic_recovery_green_card_text">Je kan je Nederlandse herstelbewijs verlengen</string>
+    <string name="recover_domestic_recovery_green_card_text">Je kan je Nederlandse herstelbewijs herstellen</string>
+    <string name="extended_domestic_recovery_green_card_text">Je Nederlandse herstelbewijs is verlengd</string>
+    <string name="recovered_domestic_recovery_green_card_text">Je Nederlandse herstelbewijs is teruggehaald</string>
+    <string name="my_overview_info_card_button_read_more">Lees meer</string>
 </resources>

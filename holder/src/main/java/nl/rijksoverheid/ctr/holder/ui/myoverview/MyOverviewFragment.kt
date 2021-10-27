@@ -189,31 +189,57 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                         dashboardItem.show
                     )
                 }
-                DashboardItem.SyncGreenCardsItem -> {
-                    adapterItems.add(MyOverviewSyncGreenCardsItem(
+                is DashboardItem.InfoItem -> {
+                    adapterItems.add(MyOverviewInfoCardItem(
+                        infoItem = dashboardItem,
                         onButtonClick = {
-                            navigateSafety(
-                                MyOverviewFragmentDirections.actionSyncGreenCards()
-                            )
-                        }
-                    ))
-                }
-                DashboardItem.GreenCardsSyncedItem -> {
-                    adapterItems.add(MyOverviewGreenCardsSyncedItem(
-                        onButtonClick = {
-                            bottomSheetDialogUtil.present(
-                                childFragmentManager,
-                                BottomSheetData.TitleDescription(
-                                    title = getString(R.string.refreshed_eu_items_title),
-                                    applyOnDescription = {
-                                        it.setHtmlText(getString(R.string.refreshed_eu_items_description), true)
-                                    }
-                                )
-                            )
+                            when (it) {
+                                is DashboardItem.InfoItem.Dismissible.ExtendedDomesticRecovery -> {
+
+                                }
+                                is DashboardItem.InfoItem.Dismissible.RecoveredDomesticRecovery -> {
+
+                                }
+                                is DashboardItem.InfoItem.Dismissible.RefreshedEuVaccinations -> {
+                                    bottomSheetDialogUtil.present(
+                                        childFragmentManager,
+                                        BottomSheetData.TitleDescription(
+                                            title = getString(R.string.refreshed_eu_items_title),
+                                            applyOnDescription = { htmlTextViewWidget ->
+                                                htmlTextViewWidget.setHtmlText(getString(R.string.refreshed_eu_items_description), true)
+                                            }
+                                        )
+                                    )
+                                }
+                                is DashboardItem.InfoItem.NonDismissible.ExtendDomesticRecovery -> {
+
+                                }
+                                is DashboardItem.InfoItem.NonDismissible.RecoverDomesticRecovery -> {
+
+                                }
+                                is DashboardItem.InfoItem.NonDismissible.RefreshEuVaccinations -> {
+                                    navigateSafety(
+                                        MyOverviewFragmentDirections.actionSyncGreenCards()
+                                    )
+                                }
+                            }
                         },
-                        onCloseClick = {
-                            section.remove(it)
-                            dashboardViewModel.dismissGreenCardsSyncedItem()
+                        onDismiss = { infoCardItem, infoItem ->
+                            // Remove section from adapter
+                            section.remove(infoCardItem)
+
+                            // Clear preference so it doesn't show again
+                            when (infoItem) {
+                                is DashboardItem.InfoItem.Dismissible.RefreshedEuVaccinations -> {
+                                    dashboardViewModel.dismissGreenCardsSyncedItem()
+                                }
+                                is DashboardItem.InfoItem.Dismissible.RecoveredDomesticRecovery -> {
+
+                                }
+                                is DashboardItem.InfoItem.Dismissible.ExtendedDomesticRecovery -> {
+
+                                }
+                            }
                         }
                     ))
                 }

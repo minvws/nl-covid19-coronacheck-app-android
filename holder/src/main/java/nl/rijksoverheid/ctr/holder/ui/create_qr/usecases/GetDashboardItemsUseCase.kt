@@ -23,7 +23,7 @@ class GetDashboardItemsUseCaseImpl(
     private val greenCardUtil: GreenCardUtil,
     private val credentialUtil: CredentialUtil,
     private val originUtil: OriginUtil,
-    private val dashboardItemUtil: DashboardItemUtil,
+    private val dashboardItemUtil: DashboardItemUtilD,
     private val persistenceManager: PersistenceManager
 ) : GetDashboardItemsUseCase {
     override suspend fun getItems(
@@ -126,11 +126,11 @@ class GetDashboardItemsUseCaseImpl(
         if (dashboardItemUtil.shouldAddSyncGreenCardsItem(allEventGroupEntities, allGreenCards)) {
             // Enable the ability to show GreenCardsSyncedItem (after successful sync)
             persistenceManager.setHasDismissedSyncedGreenCardsItem(false)
-            dashboardItems.add(DashboardItem.SyncGreenCardsItem)
+            dashboardItems.add(DashboardItem.InfoItem.NonDismissible.RefreshEuVaccinations)
         }
 
         if (dashboardItemUtil.shouldAddGreenCardsSyncedItem(allGreenCards)) {
-            dashboardItems.add(DashboardItem.GreenCardsSyncedItem)
+            dashboardItems.add(DashboardItem.InfoItem.Dismissible.RefreshedEuVaccinations)
         }
 
         dashboardItems.addAll(
