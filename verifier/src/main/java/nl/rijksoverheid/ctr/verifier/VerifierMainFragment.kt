@@ -45,17 +45,8 @@ class VerifierMainFragment :
     private var _navController: NavController? = null
     private val navController get() = _navController!!
 
-    private val appConfigViewModel: AppConfigViewModel by sharedViewModel()
-    private val introductionViewModel: IntroductionViewModel by sharedViewModel()
-    private val mobileCoreWrapper: MobileCoreWrapper by inject()
     private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
     private val appConfigPersistenceManager: AppConfigPersistenceManager by inject()
-    private val scannerUtil: ScannerUtil by inject()
-
-    private var isFreshStart: Boolean = true // track if this is a fresh start of the app
-    private var hasHandledDeeplink: Boolean = false
-
-    private val args: VerifierMainFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -99,23 +90,6 @@ class VerifierMainFragment :
         val navHostFragment =
             childFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         _navController = navHostFragment.navController
-
-        // verifier can stay active for a long time, so it is not sufficient
-        // to try to refresh the config only every time the app resumes.
-        // We do track if the app was recently (re)started to avoid double config calls
-        navController.addOnDestinationChangedListener { _, _, _ ->
-            if (introductionViewModel.getIntroductionStatus() is IntroductionStatus.IntroductionFinished) {
-                if (!isFreshStart) {
-                    appConfigViewModel.refresh(mobileCoreWrapper)
-                } else {
-                    isFreshStart = false
-                }
-                if (args.returnUri != null && !hasHandledDeeplink) {
-                    scannerUtil.launchScanner(requireActivity(), args.returnUri)
-                    hasHandledDeeplink = true
-                }
-            }
-        }
 
         val appBarConfiguration = AppBarConfiguration(
             topLevelDestinations,

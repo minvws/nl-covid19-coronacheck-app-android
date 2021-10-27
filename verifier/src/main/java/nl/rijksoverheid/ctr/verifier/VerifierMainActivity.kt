@@ -17,6 +17,7 @@ import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.utils.IntentUtil
 import nl.rijksoverheid.ctr.verifier.databinding.ActivityMainBinding
+import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -30,11 +31,15 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class VerifierMainActivity : AppCompatActivity() {
 
     private val introductionViewModel: IntroductionViewModel by viewModel()
-    private val appStatusViewModel: AppConfigViewModel by viewModel()
+    private val appConfigViewModel: AppConfigViewModel by viewModel()
     private val mobileCoreWrapper: MobileCoreWrapper by inject()
     private val dialogUtil: DialogUtil by inject()
     private val intentUtil: IntentUtil by inject()
     private var isFreshStart: Boolean = true // track if this is a fresh start of the app
+
+    private val scannerUtil: ScannerUtil by inject()
+    private var returnUri: String? = null
+    private var hasHandledDeeplink: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
@@ -48,7 +53,7 @@ class VerifierMainActivity : AppCompatActivity() {
 
         // Force retrieval of config once on startup for clock deviation checks
         if (introductionViewModel.getIntroductionStatus() is IntroductionStatus.IntroductionFinished) {
-            appStatusViewModel.refresh(mobileCoreWrapper, force = isFreshStart)
+            appConfigViewModel.refresh(mobileCoreWrapper, force = isFreshStart)
         }
     }
 
@@ -61,9 +66,29 @@ class VerifierMainActivity : AppCompatActivity() {
             navController.navigate(R.id.action_introduction, IntroductionFragment.getBundle(it))
         })
 
-        appStatusViewModel.appStatusLiveData.observe(this, EventObserver {
+        appConfigViewModel.appStatusLiveData.observe(this, EventObserver {
             handleAppStatus(it, navController)
         })
+
+        // verifier can stay active for a long time, so it is not sufficient
+        // to try to refresh the config only every time the app resumes.
+        // We do track if the app was recently (re)started to avoid double config calls
+        navController.addOnDestinationChangedListener { _, destination, bundle ->
+            if (destination.id == R.id.nav_main && !hasHandledDeeplink) {
+                returnUri = bundle?.getString("returnUri")
+            }
+            if (introductionViewModel.getIntroductionStatus() is IntroductionStatus.IntroductionFinished) {
+                if (!isFreshStart) {
+                    appConfigViewModel.refresh(mobileCoreWrapper)
+                } else {
+                    isFreshStart = false
+                }
+                if (returnUri != null && !hasHandledDeeplink) {
+                    navController.navigate(RootNavDirections.actionScanner(returnUri))
+                    hasHandledDeeplink = true
+                }
+            }
+        }
     }
 
     private fun handleAppStatus(
@@ -110,7 +135,7 @@ class VerifierMainActivity : AppCompatActivity() {
         super.onStart()
         // Only get app config on every app foreground when introduction is finished and the app has already started
         if (introductionViewModel.getIntroductionStatus() is IntroductionStatus.IntroductionFinished && !isFreshStart) {
-            appStatusViewModel.refresh(mobileCoreWrapper)
+            appConfigViewModel.refresh(mobileCoreWrapper)
         }
 
         if (isFreshStart) {
