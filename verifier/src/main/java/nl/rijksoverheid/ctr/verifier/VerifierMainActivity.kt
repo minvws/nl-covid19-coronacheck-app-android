@@ -5,6 +5,7 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.AppStatusFragment
@@ -73,22 +74,31 @@ class VerifierMainActivity : AppCompatActivity() {
         // verifier can stay active for a long time, so it is not sufficient
         // to try to refresh the config only every time the app resumes.
         // We do track if the app was recently (re)started to avoid double config calls
-        navController.addOnDestinationChangedListener { _, destination, bundle ->
-            if (destination.id == R.id.nav_main && !hasHandledDeeplink) {
-                returnUri = bundle?.getString("returnUri")
-            }
-            if (introductionViewModel.getIntroductionStatus() is IntroductionStatus.IntroductionFinished) {
-                if (!isFreshStart) {
-                    appConfigViewModel.refresh(mobileCoreWrapper)
-                } else {
-                    isFreshStart = false
+        navController.addOnDestinationChangedListener(
+            object : NavController.OnDestinationChangedListener {
+                override fun onDestinationChanged(
+                    controller: NavController,
+                    destination: NavDestination,
+                    arguments: Bundle?
+                ) {
+                    if (destination.id == R.id.nav_main) {
+                        arguments?.getString("returnUri")?.let { returnUri = it }
+                    }
+                    if (introductionViewModel.getIntroductionStatus() is IntroductionStatus.IntroductionFinished) {
+                        if (!isFreshStart) {
+                            appConfigViewModel.refresh(mobileCoreWrapper)
+                        } else {
+                            isFreshStart = false
+                        }
+                        if (returnUri != null && !hasHandledDeeplink) {
+                            hasHandledDeeplink = true
+                            navController.navigate(RootNavDirections.actionScanner(returnUri))
+                        }
+                    }
                 }
-                if (returnUri != null && !hasHandledDeeplink) {
-                    navController.navigate(RootNavDirections.actionScanner(returnUri))
-                    hasHandledDeeplink = true
-                }
+
             }
-        }
+        )
     }
 
     private fun handleAppStatus(
