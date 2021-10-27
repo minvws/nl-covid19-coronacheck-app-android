@@ -15,30 +15,46 @@ import retrofit2.Response
 import java.net.SocketTimeoutException
 import kotlin.test.assertEquals
 
-class GetEventProvidersWithTokensUseCaseImplTest {
+/*
+ *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+ *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+ *
+ *   SPDX-License-Identifier: EUPL-1.2
+ *
+ */
 
-    private val eventProvider1 = RemoteConfigProviders.EventProvider(
-        name = "event_provider_1",
-        providerIdentifier = "event_provider_1",
-        unomiUrl = "event_provider_1_url",
-        eventUrl = "eventUrl",
-        cms = "".toByteArray(),
-        tls = "".toByteArray()
-    )
+val eventProvider1 = RemoteConfigProviders.EventProvider(
+    name = "event_provider_1",
+    providerIdentifier = "event_provider_1",
+    unomiUrl = "event_provider_1_url",
+    eventUrl = "eventUrl",
+    cms = "".toByteArray(),
+    tls = "".toByteArray(),
+    usage = listOf("pt",
+        "nt",
+        "r",
+        "v"),
+)
+
+val eventProvider2 = RemoteConfigProviders.EventProvider(
+    name = "event_provider_2",
+    providerIdentifier = "event_provider_2",
+    unomiUrl = "event_provider_2_url",
+    eventUrl = "eventUrl",
+    cms = "".toByteArray(),
+    tls = "".toByteArray(),
+    usage = listOf("pt",
+        "nt",
+        "r",
+        "v"),
+)
+
+class GetEventProvidersWithTokensUseCaseImplTest {
 
     private val tokenProvider1 = RemoteAccessTokens.Token(
         providerIdentifier = "event_provider_1",
         unomi = "event_provider_1_unomi_token",
         event = "event_provider_1_event_token"
-    )
-
-    private val eventProvider2 = RemoteConfigProviders.EventProvider(
-        name = "event_provider_2",
-        providerIdentifier = "event_provider_2",
-        unomiUrl = "event_provider_2_url",
-        eventUrl = "eventUrl",
-        cms = "".toByteArray(),
-        tls = "".toByteArray()
     )
 
     private val tokenProvider2 = RemoteAccessTokens.Token(
