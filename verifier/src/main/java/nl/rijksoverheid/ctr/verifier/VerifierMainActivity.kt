@@ -5,7 +5,6 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.navigation.NavController
-import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.AppStatusFragment
@@ -74,30 +73,21 @@ class VerifierMainActivity : AppCompatActivity() {
         // verifier can stay active for a long time, so it is not sufficient
         // to try to refresh the config only every time the app resumes.
         // We do track if the app was recently (re)started to avoid double config calls
-        navController.addOnDestinationChangedListener(
-            object : NavController.OnDestinationChangedListener {
-                override fun onDestinationChanged(
-                    controller: NavController,
-                    destination: NavDestination,
-                    arguments: Bundle?
-                ) {
-                    // Persist deeplink return uri in case it's not used immediately because of onboarding
-                    if (destination.id == R.id.nav_main) {
-                        arguments?.getString("returnUri")?.let { returnUri = it }
-                    }
-                    if (introductionViewModel.getIntroductionStatus() is IntroductionStatus.IntroductionFinished) {
-                        if (!isFreshStart) {
-                            appConfigViewModel.refresh(mobileCoreWrapper)
-                        } else {
-                            isFreshStart = false
-                        }
-
-                        navigateDeeplink(navController)
-                    }
+        navController.addOnDestinationChangedListener { _, destination, arguments ->
+            // Persist deeplink return uri in case it's not used immediately because of onboarding
+            if (destination.id == R.id.nav_main) {
+                arguments?.getString("returnUri")?.let { returnUri = it }
+            }
+            if (introductionViewModel.getIntroductionStatus() is IntroductionStatus.IntroductionFinished) {
+                if (!isFreshStart) {
+                    appConfigViewModel.refresh(mobileCoreWrapper)
+                } else {
+                    isFreshStart = false
                 }
 
+                navigateDeeplink(navController)
             }
-        )
+        }
     }
 
     private fun navigateDeeplink(navController: NavController) {

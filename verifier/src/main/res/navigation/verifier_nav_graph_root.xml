@@ -84,7 +84,8 @@
         app:exitAnim="@anim/fragment_open_exit"
         app:popEnterAnim="@anim/fragment_close_enter"
         app:popExitAnim="@anim/fragment_close_exit"
-        app:popUpTo="@id/nav_scanner">
+        app:popUpTo="@id/root_nav"
+        app:popUpToInclusive="true">
 
         <argument
             android:name="returnUri"
