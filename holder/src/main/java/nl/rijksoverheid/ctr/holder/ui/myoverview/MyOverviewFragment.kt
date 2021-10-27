@@ -202,6 +202,21 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                         }
                     ))
                 }
+                DashboardItem.ConfigWarningItem -> {
+                    adapterItems.add(MyOverviewConfigFreshnessWarningItem(
+                        onButtonClick = {
+                            bottomSheetDialogUtil.present(
+                                childFragmentManager,
+                                BottomSheetData.TitleDescription(
+                                    title = getString(R.string.refreshed_eu_items_title),
+                                    applyOnDescription = {
+                                        it.setHtmlText(getString(R.string.refreshed_eu_items_description), true)
+                                    }
+                                )
+                            )
+                        }
+                    ))
+                }
             }
         }
 
