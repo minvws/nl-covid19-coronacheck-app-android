@@ -38,7 +38,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-wrapper
       - name: Build mobilecore.aar
-        if: github.repository_owner == 'minvws'
+        if: github.repository_owner != 'minvws'
         run: |
           mkdir -p ../tmp-go
           pushd ../tmp-go
@@ -60,7 +60,6 @@ jobs:
           gomobile bind -target android -o mobilecore.aar github.com/minvws/nl-covid19-coronacheck-mobile-core
           cd ..
           cp mobilecore-src/mobilecore.aar mobilecore/
-          ls mobilecore/
       - name: Test
         run: ./gradlew testDebug testAccDebug lint
       - name: Write key store
