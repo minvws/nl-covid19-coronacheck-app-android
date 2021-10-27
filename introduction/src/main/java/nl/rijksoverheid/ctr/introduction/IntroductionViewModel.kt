@@ -21,8 +21,6 @@ abstract class IntroductionViewModel : ViewModel() {
     abstract fun getIntroductionStatus(): IntroductionStatus
     abstract fun saveIntroductionFinished(introductionData: IntroductionData)
     abstract fun saveNewFeaturesFinished(newFeaturesVersion: Int)
-    abstract fun setUri(uri: String?)
-    abstract fun getUri(): String?
 }
 
 class IntroductionViewModelImpl(
@@ -30,17 +28,6 @@ class IntroductionViewModelImpl(
     private val introductionStatusUseCase: IntroductionStatusUseCase
 ) :
     IntroductionViewModel() {
-
-    private var returnUri: String? = null
-    private var hasHandledDeeplink: Boolean = false
-
-    override fun setUri(uri: String?) {
-        returnUri = uri
-    }
-
-    override fun getUri(): String? {
-        return returnUri
-    }
 
     init {
         introductionStatusUseCase.get().takeIf { it != IntroductionStatus.IntroductionFinished.NoActionRequired }?.let {
