@@ -4,17 +4,20 @@ import android.database.sqlite.SQLiteConstraintException
 import com.squareup.moshi.JsonDataException
 import com.squareup.moshi.JsonEncodingException
 import nl.rijksoverheid.ctr.shared.exceptions.CreateCommitmentMessageException
+import nl.rijksoverheid.ctr.shared.exceptions.NoProvidersException
 import nl.rijksoverheid.ctr.shared.exceptions.OpenIdAuthorizationException
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.Flow
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import retrofit2.HttpException
-import java.lang.StringBuilder
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import java.nio.charset.CharacterCodingException
-import javax.net.ssl.*
+import javax.net.ssl.SSLHandshakeException
+import javax.net.ssl.SSLKeyException
+import javax.net.ssl.SSLPeerUnverifiedException
+import javax.net.ssl.SSLProtocolException
 
 /**
  * Generates a String that we can show in the app to point out want went wrong where
@@ -23,7 +26,7 @@ interface ErrorCodeStringFactory {
     fun get(flow: Flow, errorResults: List<ErrorResult>): String
 }
 
-class ErrorCodeStringFactoryImpl: ErrorCodeStringFactory {
+class ErrorCodeStringFactoryImpl : ErrorCodeStringFactory {
     override fun get(flow: Flow, errorResults: List<ErrorResult>): String {
         val errorStringBuilders = errorResults.map {
             val stringBuilder = StringBuilder()
@@ -54,6 +57,7 @@ class ErrorCodeStringFactoryImpl: ErrorCodeStringFactory {
                 is SocketTimeoutException -> "004"
                 is UnknownHostException -> "002"
                 is ConnectException -> "005"
+                is NoProvidersException -> exception.errorCode
                 else -> throw it.getException()
             }
 
