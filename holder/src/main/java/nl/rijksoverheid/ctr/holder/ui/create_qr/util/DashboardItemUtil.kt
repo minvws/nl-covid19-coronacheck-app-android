@@ -27,6 +27,11 @@ interface DashboardItemUtil {
         allEventGroupEntities: List<EventGroupEntity>,
         allGreenCards: List<GreenCard>): Boolean
     fun shouldAddGreenCardsSyncedItem(allGreenCards: List<GreenCard>): Boolean
+
+    fun shouldShowExtendDomesticRecoveryItem(): Boolean
+    fun shouldShowRecoverDomesticRecoveryItem(): Boolean
+    fun shouldShowExtendedDomesticRecoveryItem(): Boolean
+    fun shouldShowRecoveredDomesticRecoveryItem(): Boolean
 }
 
 class DashboardItemUtilImpl(
@@ -112,5 +117,21 @@ class DashboardItemUtilImpl(
         // - there are more than one european vaccinations
         // - the banner has not been dismissed
         return (euVaccinationGreenCards.size > 1 && !persistenceManager.hasDismissedSyncedGreenCardsItem())
+    }
+
+    override fun shouldShowExtendDomesticRecoveryItem(): Boolean {
+        return persistenceManager.getShowExtendDomesticRecoveryInfoCard()
+    }
+
+    override fun shouldShowRecoverDomesticRecoveryItem(): Boolean {
+        return persistenceManager.getShowRecoverDomesticRecoveryInfoCard()
+    }
+
+    override fun shouldShowExtendedDomesticRecoveryItem(): Boolean {
+        return !persistenceManager.getHasDismissedExtendedDomesticRecoveryInfoCard()
+    }
+
+    override fun shouldShowRecoveredDomesticRecoveryItem(): Boolean {
+        return !persistenceManager.getHasDismissedRecoveredDomesticRecoveryInfoCard()
     }
 }

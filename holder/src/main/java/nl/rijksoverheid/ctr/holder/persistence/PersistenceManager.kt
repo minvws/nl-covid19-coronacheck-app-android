@@ -33,12 +33,12 @@ interface PersistenceManager {
     fun getShouldCheckRecoveryGreenCardRevisedValidity(): Boolean
     fun setShowExtendDomesticRecoveryInfoCard(show: Boolean)
     fun getShowExtendDomesticRecoveryInfoCard(): Boolean
-    fun setShowRenewDomesticRecoveryInfoCard(show: Boolean)
-    fun getShowRenewDomesticRecoveryInfoCard(): Boolean
+    fun setShowRecoverDomesticRecoveryInfoCard(show: Boolean)
+    fun getShowRecoverDomesticRecoveryInfoCard(): Boolean
     fun setHasDismissedExtendedDomesticRecoveryInfoCard(dismissed: Boolean)
     fun getHasDismissedExtendedDomesticRecoveryInfoCard(): Boolean
-    fun setHasDismissedRenewedDomesticRecoveryInfoCard(dismissed: Boolean)
-    fun getHasDismissedRenewedDomesticRecoveryInfoCard(): Boolean
+    fun setHasDismissedRecoveredDomesticRecoveryInfoCard(dismissed: Boolean)
+    fun getHasDismissedRecoveredDomesticRecoveryInfoCard(): Boolean
 }
 
 class SharedPreferencesPersistenceManager(
@@ -58,9 +58,9 @@ class SharedPreferencesPersistenceManager(
         const val SHOW_SYNC_GREEN_CARDS_ITEM = "SHOW_SYNC_GREEN_CARDS_ITEM"
         const val SHOULD_CHECK_RECOVERY_GREEN_CARD_REVISED_VALIDITY = "SHOULD_CHECK_RECOVERY_GREEN_CARD_REVISED_VALIDITY"
         const val SHOW_EXTEND_DOMESTIC_RECOVERY_INFO_CARD = "SHOW_EXTEND_DOMESTIC_RECOVERY_INFO_CARD"
-        const val SHOW_RENEW_DOMESTIC_RECOVERY_INFO_CARD = "SHOW_RENEW_DOMESTIC_RECOVERY_INFO_CARD"
+        const val SHOW_RECOVER_DOMESTIC_RECOVERY_INFO_CARD = "SHOW_RECOVERED_DOMESTIC_RECOVERY_INFO_CARD"
         const val HAS_DISMISSED_EXTENDED_DOMESTIC_RECOVERY_INFO_CARD = "HAS_DISMISSED_EXTENDED_DOMESTIC_RECOVERY_INFO_CARD"
-        const val HAS_DISMISSED_RENEWED_DOMESTIC_RECOVERY_INFO_CARD = "HAS_DISMISSED_RENEWED_DOMESTIC_RECOVERY_INFO_CARD"
+        const val HAS_DISMISSED_RECOVERED_DOMESTIC_RECOVERY_INFO_CARD = "HAS_DISMISSED_RECOVERED_DOMESTIC_RECOVERY_INFO_CARD"
     }
 
     override fun saveSecretKeyJson(json: String) {
@@ -155,12 +155,12 @@ class SharedPreferencesPersistenceManager(
         return sharedPreferences.getBoolean(SHOW_EXTEND_DOMESTIC_RECOVERY_INFO_CARD, false)
     }
 
-    override fun setShowRenewDomesticRecoveryInfoCard(show: Boolean) {
-        sharedPreferences.edit().putBoolean(SHOW_RENEW_DOMESTIC_RECOVERY_INFO_CARD, show).commit()
+    override fun setShowRecoverDomesticRecoveryInfoCard(show: Boolean) {
+        sharedPreferences.edit().putBoolean(SHOW_RECOVER_DOMESTIC_RECOVERY_INFO_CARD, show).commit()
     }
 
-    override fun getShowRenewDomesticRecoveryInfoCard(): Boolean {
-        return sharedPreferences.getBoolean(SHOW_RENEW_DOMESTIC_RECOVERY_INFO_CARD, false)
+    override fun getShowRecoverDomesticRecoveryInfoCard(): Boolean {
+        return sharedPreferences.getBoolean(SHOW_RECOVER_DOMESTIC_RECOVERY_INFO_CARD, false)
     }
 
     override fun setHasDismissedExtendedDomesticRecoveryInfoCard(dismissed: Boolean) {
@@ -171,11 +171,11 @@ class SharedPreferencesPersistenceManager(
         return sharedPreferences.getBoolean(HAS_DISMISSED_EXTENDED_DOMESTIC_RECOVERY_INFO_CARD, true)
     }
 
-    override fun setHasDismissedRenewedDomesticRecoveryInfoCard(dismissed: Boolean) {
-        sharedPreferences.edit().putBoolean(HAS_DISMISSED_RENEWED_DOMESTIC_RECOVERY_INFO_CARD, dismissed).commit()
+    override fun setHasDismissedRecoveredDomesticRecoveryInfoCard(dismissed: Boolean) {
+        sharedPreferences.edit().putBoolean(HAS_DISMISSED_RECOVERED_DOMESTIC_RECOVERY_INFO_CARD, dismissed).commit()
     }
 
-    override fun getHasDismissedRenewedDomesticRecoveryInfoCard(): Boolean {
-        return sharedPreferences.getBoolean(HAS_DISMISSED_RENEWED_DOMESTIC_RECOVERY_INFO_CARD, true)
+    override fun getHasDismissedRecoveredDomesticRecoveryInfoCard(): Boolean {
+        return sharedPreferences.getBoolean(HAS_DISMISSED_RECOVERED_DOMESTIC_RECOVERY_INFO_CARD, true)
     }
 }
