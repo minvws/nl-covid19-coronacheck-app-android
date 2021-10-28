@@ -230,6 +230,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                                 is DashboardItem.InfoItem.NonDismissible.ExtendDomesticRecovery -> {
                                     navigateSafety(
                                         MyOverviewFragmentDirections.actionSyncGreenCards(
+                                            toolbarTitle = getString(R.string.extend_domestic_recovery_green_card_toolbar_title),
                                             title = getString(R.string.extend_domestic_recovery_green_card_title),
                                             description = getString(R.string.extend_domestic_recovery_green_card_description),
                                             button = getString(R.string.extend_domestic_recovery_green_card_button)
@@ -239,6 +240,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                                 is DashboardItem.InfoItem.NonDismissible.RecoverDomesticRecovery -> {
                                     navigateSafety(
                                         MyOverviewFragmentDirections.actionSyncGreenCards(
+                                            toolbarTitle = getString(R.string.recover_domestic_recovery_green_card_toolbar_title),
                                             title = getString(R.string.recover_domestic_recovery_green_card_title),
                                             description = getString(R.string.recover_domestic_recovery_green_card_description),
                                             button = getString(R.string.recovery_domestic_recovery_green_card_button)
@@ -248,6 +250,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                                 is DashboardItem.InfoItem.NonDismissible.RefreshEuVaccinations -> {
                                     navigateSafety(
                                         MyOverviewFragmentDirections.actionSyncGreenCards(
+                                            toolbarTitle = getString(R.string.refresh_eu_items_button),
                                             title = getString(R.string.refresh_eu_items_title),
                                             description = getString(R.string.refresh_eu_items_description),
                                             button = getString(R.string.refresh_eu_items_button)
