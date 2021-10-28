@@ -61,11 +61,14 @@ class GetDashboardItemsUseCaseImpl(
                 .filter { it.greenCardEntity.type == GreenCardType.Eu }
                 .distinctBy { it.greenCardEntity.type }
 
-        if (dashboardItemUtil.shouldShowHeaderItem(allGreenCards)) {
-            dashboardItems.add(
-                DashboardItem.HeaderItem(text = R.string.my_overview_description)
-            )
-        }
+        val headerText = dashboardItemUtil.getHeaderItemText(
+            greenCardType = GreenCardType.Domestic,
+            allGreenCards = allGreenCards
+        )
+
+        dashboardItems.add(
+            DashboardItem.HeaderItem(text = headerText)
+        )
 
         if (dashboardItemUtil.shouldShowClockDeviationItem(allGreenCards)) {
             dashboardItems.add(DashboardItem.ClockDeviationItem)
@@ -107,11 +110,14 @@ class GetDashboardItemsUseCaseImpl(
         val internationalGreenCards =
             allGreenCards.filter { it.greenCardEntity.type == GreenCardType.Eu }
 
-        if (dashboardItemUtil.shouldShowHeaderItem(allGreenCards)) {
-            dashboardItems.add(
-                DashboardItem.HeaderItem(text = R.string.my_overview_description_eu)
-            )
-        }
+        val headerText = dashboardItemUtil.getHeaderItemText(
+            greenCardType = GreenCardType.Eu,
+            allGreenCards = allGreenCards
+        )
+
+        dashboardItems.add(
+            DashboardItem.HeaderItem(text = headerText)
+        )
 
         if (dashboardItemUtil.shouldShowClockDeviationItem(allGreenCards)) {
             dashboardItems.add(DashboardItem.ClockDeviationItem)

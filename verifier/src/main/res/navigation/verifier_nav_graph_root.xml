@@ -8,7 +8,16 @@
     <fragment
         android:id="@+id/nav_main"
         android:name="nl.rijksoverheid.ctr.verifier.VerifierMainFragment"
-        tools:layout="@layout/fragment_main" />
+        tools:layout="@layout/fragment_main">
+
+        <deepLink app:uri=".*/verifier/scan?returnUri={returnUri}" />
+
+        <argument
+            android:name="returnUri"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
 
     <action
         android:id="@+id/action_introduction"

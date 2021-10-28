@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
+import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
@@ -9,7 +10,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 
 interface DashboardItemUtil {
-    fun shouldShowHeaderItem(allGreenCards: List<GreenCard>): Boolean
+    fun getHeaderItemText(greenCardType: GreenCardType, allGreenCards: List<GreenCard>): Int
     fun shouldShowClockDeviationItem(allGreenCards: List<GreenCard>): Boolean
     fun shouldShowPlaceholderItem(allGreenCards: List<GreenCard>): Boolean
     fun shouldAddQrButtonItem(allGreenCards: List<GreenCard>): Boolean
@@ -35,8 +36,25 @@ class DashboardItemUtilImpl(
     private val eventGroupEntityUtil: EventGroupEntityUtil
 ) : DashboardItemUtil {
 
-    override fun shouldShowHeaderItem(allGreenCards: List<GreenCard>) =
-        allGreenCards.isNotEmpty() || !allGreenCards.all { greenCardUtil.isExpired(it) }
+    override fun getHeaderItemText(greenCardType: GreenCardType, allGreenCards: List<GreenCard>): Int {
+        val hasGreenCards = allGreenCards.isNotEmpty() && !allGreenCards.all { greenCardUtil.isExpired(it) }
+        return when (greenCardType) {
+            is GreenCardType.Domestic -> {
+                if (hasGreenCards) {
+                    R.string.my_overview_description
+                } else {
+                    R.string.my_overview_qr_placeholder_description
+                }
+            }
+            is GreenCardType.Eu -> {
+                if (hasGreenCards) {
+                    R.string.my_overview_description_eu
+                } else {
+                    R.string.my_overview_qr_placeholder_description_eu
+                }
+            }
+        }
+    }
 
     override fun shouldShowClockDeviationItem(allGreenCards: List<GreenCard>) =
         clockDeviationUseCase.hasDeviation() && (allGreenCards.isNotEmpty() ||
