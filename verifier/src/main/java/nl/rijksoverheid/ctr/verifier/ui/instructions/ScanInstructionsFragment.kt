@@ -42,8 +42,6 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
     private var _binding: FragmentScanInstructionsBinding? = null
     private val binding get() = _binding!!
 
-    private val args: ScanInstructionsFragmentArgs by navArgs()
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -77,7 +75,7 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
                 // Instructions have been opened, set as seen
                 scanQrViewModel.setScanInstructionsSeen()
                 findNavController().popBackStack(R.id.nav_scan_qr, false)
-                scannerUtil.launchScanner(requireActivity(), args.returnUri)
+                scannerUtil.launchScanner(requireActivity())
             } else {
                 binding.viewPager.currentItem = currentItem + 1
             }
