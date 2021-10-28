@@ -46,6 +46,7 @@ class HolderMainActivity : AppCompatActivity() {
     private val dialogUtil: DialogUtil by inject()
     private val mobileCoreWrapper: MobileCoreWrapper by inject()
     private val intentUtil: IntentUtil by inject()
+    private var isFreshStart: Boolean = true // track if this is a fresh start of the app
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
@@ -130,7 +131,8 @@ class HolderMainActivity : AppCompatActivity() {
         super.onStart()
         // Only get app config on every app foreground when introduction is finished
         if (introductionViewModel.getIntroductionStatus() is IntroductionStatus.IntroductionFinished) {
-            appConfigViewModel.refresh(mobileCoreWrapper)
+            appConfigViewModel.refresh(mobileCoreWrapper, isFreshStart)
+            isFreshStart = false
         }
     }
 

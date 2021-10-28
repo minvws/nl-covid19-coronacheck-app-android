@@ -98,11 +98,14 @@ class ScanResultPersonalDetailsFragment :
         binding.personalDetailsBirthdate.setContent(personalDetails.birthDay)
         if (testResultAttributes.isInternationalDCC()) {
             binding.internationalDescription.visibility = View.VISIBLE
+            val dccLocale = Locale("", testResultAttributes.issuerCountryCode)
             val text = getString(
                 R.string.scan_result_valid_international_scanned,
-                Locale("", testResultAttributes.issuerCountryCode).flagEmoji
+                dccLocale.flagEmoji
             )
-            binding.internationalDescription.text = increasedSizeFlagEmoji(text)
+            if (dccLocale.flagEmoji.isNotEmpty()) {
+                binding.internationalDescription.text = increasedSizeFlagEmoji(text)
+            }
         }
     }
 
