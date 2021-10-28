@@ -54,7 +54,7 @@ class VerifierMainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        if (introductionViewModel.getIntroductionStatus() is IntroductionStatus.IntroductionFinished) {
+        if (isIntroductionFinished()) {
             if (isFreshStart) {
                 // Force retrieval of config once on startup for clock deviation checks
                 appConfigViewModel.refresh(mobileCoreWrapper, force = true)
@@ -79,30 +79,29 @@ class VerifierMainActivity : AppCompatActivity() {
             handleAppStatus(it, navController)
         })
 
-        // verifier can stay active for a long time, so it is not sufficient
-        // to try to refresh the config only every time the app resumes.
-        // We do track if the app was recently (re)started to avoid double config calls
         navController.addOnDestinationChangedListener { _, destination, arguments ->
             // Persist deeplink return uri in case it's not used immediately because of onboarding
             if (destination.id == R.id.nav_main) {
                 arguments?.getString("returnUri")?.let { returnUri = it }
             }
-            if (introductionViewModel.getIntroductionStatus() is IntroductionStatus.IntroductionFinished) {
-                if (!isFreshStart) {
-                    appConfigViewModel.refresh(mobileCoreWrapper)
-                } else {
-                    isFreshStart = false
-                }
+            navigateDeeplink(navController)
 
-                navigateDeeplink(navController)
+            // verifier can stay active for a long time, so it is not sufficient
+            // to try to refresh the config only every time the app resumes.
+            // We do track if the app was recently (re)started to avoid double config calls
+            if (!isFreshStart && isIntroductionFinished()) {
+                appConfigViewModel.refresh(mobileCoreWrapper)
+            } else {
+                isFreshStart = false
             }
         }
     }
 
     private fun navigateDeeplink(navController: NavController) {
-        if (returnUri != null && !hasHandledDeeplink) {
+        if (returnUri != null && !hasHandledDeeplink && isIntroductionFinished()) {
             hasHandledDeeplink = true
             navController.navigate(
+                // Show scan instructions before scanner when it's not shown before
                 if (scanQrViewModel.hasSeenScanInstructions()) {
                     RootNavDirections.actionScanner(returnUri)
                 } else {
@@ -111,6 +110,9 @@ class VerifierMainActivity : AppCompatActivity() {
             )
         }
     }
+
+    private fun isIntroductionFinished() =
+        introductionViewModel.getIntroductionStatus() is IntroductionStatus.IntroductionFinished
 
     private fun handleAppStatus(
         appStatus: AppStatus,
