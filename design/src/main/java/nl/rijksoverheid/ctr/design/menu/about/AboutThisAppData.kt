@@ -25,6 +25,5 @@ data class AboutThisAppData(
     data class Url(override val text: String, val url: String) : AboutThisAppItem(text)
 
     @Parcelize
-    data class ClearAppData(override val text: String, val onItemClicked: () -> Unit) :
-        AboutThisAppItem(text)
+    data class ClearAppData(override val text: String) : AboutThisAppItem(text)
 }

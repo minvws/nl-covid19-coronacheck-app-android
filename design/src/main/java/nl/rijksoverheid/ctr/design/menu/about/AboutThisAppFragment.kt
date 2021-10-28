@@ -59,10 +59,7 @@ class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
             view.root.contentDescription = item.text
 
             view.root.setOnClickListener {
-                when (item) {
-                    is AboutThisAppData.Url -> item.url.launchUrl(requireContext())
-                    is AboutThisAppData.ClearAppData -> item.onItemClicked.invoke()
-                }
+                item.url.launchUrl(requireContext())
             }
         }
 
@@ -75,8 +72,7 @@ class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
         binding.configVersion.text = getString(
             R.string.config_version,
             aboutThisAppData.configVersionHash,
-            Instant.ofEpochSecond(aboutThisAppData.configVersionTimestamp).atOffset(ZoneOffset.UTC)
-                .formatDayMonthTime(requireContext())
+            Instant.ofEpochSecond(aboutThisAppData.configVersionTimestamp).atOffset(ZoneOffset.UTC).formatDayMonthTime(requireContext())
         )
 
         // On test and acceptance builds show button to trigger deeplink to scanner

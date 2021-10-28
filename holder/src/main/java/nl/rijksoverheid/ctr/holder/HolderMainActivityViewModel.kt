@@ -20,7 +20,6 @@ abstract class HolderMainActivityViewModel: ViewModel() {
 
     abstract fun sendEvents(events: Map<RemoteProtocol3, ByteArray>)
     abstract fun sendValidatePaperProofInvalid(result: ValidatePaperProofResult.Invalid)
-    abstract fun onClearAppData()
 }
 
 class HolderMainActivityViewModelImpl: HolderMainActivityViewModel() {
@@ -31,9 +30,5 @@ class HolderMainActivityViewModelImpl: HolderMainActivityViewModel() {
 
     override fun sendValidatePaperProofInvalid(result: ValidatePaperProofResult.Invalid) {
         (validatePaperProofError as MutableLiveData).postValue(Event(result))
-    }
-
-    override fun onClearAppData() {
-
     }
 }
