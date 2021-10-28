@@ -67,12 +67,14 @@ class VerifierMainActivityTest : AutoCloseKoinTest() {
     @Test
     fun `If app status is not NoActionRequired navigate to app status`() {
         val scenario = launchVerifierMainActivity(
-            appStatus = AppStatus.Error
+            introductionStatus = IntroductionStatus.IntroductionNotFinished(IntroductionData()),
+            appStatus = AppStatus.Error,
         )
+
         scenario.onActivity {
             assertEquals(
                 it.findNavController(R.id.main_nav_host_fragment).currentDestination?.id,
-                R.id.nav_app_status
+                R.id.nav_introduction
             )
         }
     }
