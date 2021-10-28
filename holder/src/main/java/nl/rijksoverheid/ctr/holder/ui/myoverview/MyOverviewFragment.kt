@@ -208,9 +208,9 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                             bottomSheetDialogUtil.present(
                                 childFragmentManager,
                                 BottomSheetData.TitleDescription(
-                                    title = getString(R.string.refreshed_eu_items_title),
+                                    title = getString(R.string.config_warning_page_title),
                                     applyOnDescription = {
-                                        it.setHtmlText(getString(R.string.refreshed_eu_items_description), true)
+                                        it.setHtmlText(getString(R.string.config_warning_page_message), true)
                                     }
                                 )
                             )
