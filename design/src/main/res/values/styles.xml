@@ -120,4 +120,14 @@
         <item name="android:textColor">?android:textColorSecondary</item>
     </style>
 
+    <style name="App.TextAppearance.Menu.Primary" parent="App.TextAppearance.MaterialComponents.Body2">
+        <item name="android:fontFamily">@font/montserrat_bold</item>
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="App.TextAppearance.Menu.Secondary" parent="App.TextAppearance.MaterialComponents.Body2">
+        <item name="android:fontFamily">@font/montserrat_semibold</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
 </resources>

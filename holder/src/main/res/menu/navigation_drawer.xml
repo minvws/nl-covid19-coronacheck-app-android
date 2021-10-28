@@ -13,6 +13,11 @@
             android:checkable="false"
             android:title="@string/choose_provider_toolbar" />
 
+        <item
+            android:id="@+id/nav_frequently_asked_questions"
+            android:checkable="false"
+            android:title="@string/frequently_asked_questions" />
+
         <!-- TODO: Implement settings -->
         <item
             android:id="@+id/nav_settings"
@@ -27,11 +32,6 @@
             android:id="@+id/nav_paper_proof"
             android:checkable="false"
             android:title="@string/add_paper_proof" />
-
-        <item
-            android:id="@+id/nav_frequently_asked_questions"
-            android:checkable="false"
-            android:title="@string/frequently_asked_questions" />
 
         <item
             android:id="@+id/nav_about_this_app"
