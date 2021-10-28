@@ -78,7 +78,7 @@ class HolderDatabaseSyncerImpl(
                             // If the extend domestic recovery info card has been shown, never show it again after a successful sync
                             // Start showing the info card that says you have extended
                             if (persistenceManager.getShowExtendDomesticRecoveryInfoCard()) {
-                                persistenceManager.setShowRecoverDomesticRecoveryInfoCard(false)
+                                persistenceManager.setShowExtendDomesticRecoveryInfoCard(false)
                                 persistenceManager.setHasDismissedExtendedDomesticRecoveryInfoCard(false)
                             }
 
