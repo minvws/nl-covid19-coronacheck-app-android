@@ -112,7 +112,7 @@ class HolderMainFragment : BaseMainFragment(
                                         url = getString(R.string.about_this_app_colofon_url),
                                     ),
                                     AboutThisAppData.ClearAppData(
-                                        text = getString(R.string.about_this_app_clear_data)
+                                        text = getString(R.string.about_this_clear_data)
                                     ),
                                 ),
                                 configVersionHash = cachedAppConfigUseCase.getCachedAppConfigHash(),
