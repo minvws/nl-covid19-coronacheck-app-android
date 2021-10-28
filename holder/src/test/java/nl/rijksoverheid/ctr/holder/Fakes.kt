@@ -392,6 +392,46 @@ fun fakePersistenceManager(
         override fun setShowSyncGreenCardsItem(show: Boolean) {
 
         }
+
+        override fun setShouldCheckRecoveryGreenCardRevisedValidity(check: Boolean) {
+
+        }
+
+        override fun getShouldCheckRecoveryGreenCardRevisedValidity(): Boolean {
+            return true
+        }
+
+        override fun setShowExtendDomesticRecoveryInfoCard(show: Boolean) {
+
+        }
+
+        override fun getShowExtendDomesticRecoveryInfoCard(): Boolean {
+            return true
+        }
+
+        override fun setShowRecoverDomesticRecoveryInfoCard(show: Boolean) {
+
+        }
+
+        override fun getShowRecoverDomesticRecoveryInfoCard(): Boolean {
+            return true
+        }
+
+        override fun setHasDismissedExtendedDomesticRecoveryInfoCard(dismissed: Boolean) {
+
+        }
+
+        override fun getHasDismissedExtendedDomesticRecoveryInfoCard(): Boolean {
+            return true
+        }
+
+        override fun setHasDismissedRecoveredDomesticRecoveryInfoCard(dismissed: Boolean) {
+
+        }
+
+        override fun getHasDismissedRecoveredDomesticRecoveryInfoCard(): Boolean {
+            return true
+        }
     }
 }
 

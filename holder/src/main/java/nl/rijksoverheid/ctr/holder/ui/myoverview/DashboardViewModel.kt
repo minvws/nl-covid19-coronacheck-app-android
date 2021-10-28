@@ -16,6 +16,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.CheckNewRecoveryValidityUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetDashboardItemsUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardRefreshUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardSync
@@ -42,7 +43,8 @@ class DashboardViewModelImpl(
     private val getDashboardItemsUseCase: GetDashboardItemsUseCase,
     private val greenCardRefreshUtil: GreenCardRefreshUtil,
     private val holderDatabaseSyncer: HolderDatabaseSyncer,
-    private val persistenceManager: PersistenceManager
+    private val persistenceManager: PersistenceManager,
+    private val checkNewRecoveryValidityUseCase: CheckNewRecoveryValidityUseCase
 ): DashboardViewModel() {
 
     private val mutex = Mutex()
@@ -53,6 +55,8 @@ class DashboardViewModelImpl(
     override fun refresh(dashboardSync: DashboardSync) {
         viewModelScope.launch {
             mutex.withLock {
+                checkNewRecoveryValidityUseCase.check()
+
                 val previousSyncResult = databaseSyncerResultLiveData.value?.peekContent()
                 val hasDoneRefreshCall = previousSyncResult != null
 
