@@ -47,7 +47,7 @@ data class HolderConfig(
     @Json(name = "upgradeRecommendationInterval") val upgradeRecommendationIntervalHours: Int,
     @Json(name = "luhnCheckEnabled") val luhnCheckEnabled: Boolean,
     @Json(name = "internationalQRRelevancyDays") val internationalQRRelevancyDays: Int,
-    @Json(name = "recoveryGreencardRevisedValidityLaunchDate") val recoveryGreenCardRevisedValidityLaunchDate: OffsetDateTime,
+    @Json(name = "recoveryGreencardRevisedValidityLaunchDate") val recoveryGreenCardRevisedValidityLaunchDate: String,
 ) : AppConfig(
     holderAppDeactivated,
     holderInformationURL,
@@ -124,7 +124,7 @@ data class HolderConfig(
             upgradeRecommendationIntervalHours = upgradeRecommendationIntervalHours,
             luhnCheckEnabled = luhnCheckEnabled,
             internationalQRRelevancyDays = internationalQRRelevancyDays,
-            recoveryGreenCardRevisedValidityLaunchDate = OffsetDateTime.ofInstant(Instant.ofEpochMilli(0), ZoneOffset.UTC)
+            recoveryGreenCardRevisedValidityLaunchDate = "1970-01-01T00:00:00Z"
         )
     }
 }

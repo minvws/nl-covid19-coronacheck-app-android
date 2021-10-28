@@ -8,8 +8,11 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.RemoveExpiredEventsUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginUtil
+import timber.log.Timber
 import java.time.Clock
+import java.time.Instant
 import java.time.OffsetDateTime
+import java.time.ZoneId
 
 /**
  * Backend switched from recovery green card 180 days validity to 365 days validity
@@ -29,7 +32,8 @@ class CheckNewRecoveryValidityUseCaseImpl(
     private val originUtil: OriginUtil): CheckNewRecoveryValidityUseCase {
 
     override suspend fun check() {
-        val recoveryGreencardRevisedValidityLaunchDate = cachedAppConfigUseCase.getCachedAppConfig().recoveryGreenCardRevisedValidityLaunchDate
+        val recoveryGreencardRevisedValidityLaunchDateString = cachedAppConfigUseCase.getCachedAppConfig().recoveryGreenCardRevisedValidityLaunchDate
+        val recoveryGreencardRevisedValidityLaunchDate = OffsetDateTime.ofInstant(Instant.parse(recoveryGreencardRevisedValidityLaunchDateString), ZoneId.of("UTC"))
 
         // Only start checking if local flag is set to true and the launch date is after the current date
         if (persistenceManager.getShouldCheckRecoveryGreenCardRevisedValidity() && recoveryGreencardRevisedValidityLaunchDate.isAfter(
