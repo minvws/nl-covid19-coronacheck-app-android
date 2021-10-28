@@ -15,6 +15,7 @@ import android.widget.ScrollView
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
 import nl.rijksoverheid.ctr.introduction.IntroductionData
 import nl.rijksoverheid.ctr.introduction.ui.onboarding.OnboardingPagerAdapter
@@ -40,6 +41,8 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
     private val scanQrViewModel: ScanQrViewModel by viewModel()
     private var _binding: FragmentScanInstructionsBinding? = null
     private val binding get() = _binding!!
+
+    private val args: ScanInstructionsFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -74,7 +77,7 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
                 // Instructions have been opened, set as seen
                 scanQrViewModel.setScanInstructionsSeen()
                 findNavController().popBackStack(R.id.nav_scan_qr, false)
-                scannerUtil.launchScanner(requireActivity())
+                scannerUtil.launchScanner(requireActivity(), args.returnUri)
             } else {
                 binding.viewPager.currentItem = currentItem + 1
             }

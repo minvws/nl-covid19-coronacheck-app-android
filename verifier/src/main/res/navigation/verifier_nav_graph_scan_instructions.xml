@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+  ~   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+  ~
+  ~   SPDX-License-Identifier: EUPL-1.2
+  ~
+  -->
+
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scan_instructions_nav"
+    app:startDestination="@+id/nav_scan_instructions">
+
+    <fragment
+        android:id="@+id/nav_scan_instructions"
+        android:name="nl.rijksoverheid.ctr.verifier.ui.instructions.ScanInstructionsFragment"
+        android:label="@string/scan_instructions"
+        tools:layout="@layout/fragment_scan_instructions">
+
+        <argument
+            android:name="returnUri"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
+
+</navigation>
