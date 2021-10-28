@@ -50,10 +50,19 @@ class VerifierMainActivity : AppCompatActivity() {
         setProductionFlags()
 
         observeStatuses()
+    }
 
-        // Force retrieval of config once on startup for clock deviation checks
+    override fun onStart() {
+        super.onStart()
         if (introductionViewModel.getIntroductionStatus() is IntroductionStatus.IntroductionFinished) {
-            appConfigViewModel.refresh(mobileCoreWrapper, force = isFreshStart)
+            if (isFreshStart) {
+                // Force retrieval of config once on startup for clock deviation checks
+                appConfigViewModel.refresh(mobileCoreWrapper, force = true)
+            } else {
+                // Only get app config on every app foreground when introduction is finished and the app has already started
+                appConfigViewModel.refresh(mobileCoreWrapper)
+            }
+            isFreshStart = false
         }
     }
 
@@ -140,18 +149,6 @@ class VerifierMainActivity : AppCompatActivity() {
                 WindowManager.LayoutParams.FLAG_SECURE,
                 WindowManager.LayoutParams.FLAG_SECURE
             )
-        }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        // Only get app config on every app foreground when introduction is finished and the app has already started
-        if (introductionViewModel.getIntroductionStatus() is IntroductionStatus.IntroductionFinished && !isFreshStart) {
-            appConfigViewModel.refresh(mobileCoreWrapper)
-        }
-
-        if (isFreshStart) {
-            isFreshStart = false
         }
     }
 }
