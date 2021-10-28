@@ -92,7 +92,8 @@ class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
     private fun showClearAppDataDialog() {
         dialogUtil.presentDialog(
             context = requireContext(),
-            title = R.string.app_version
+            title = R.string.about_this_app_clear_data_title,
+
         )
     }
 
