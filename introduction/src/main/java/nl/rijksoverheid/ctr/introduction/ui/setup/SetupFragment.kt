@@ -43,7 +43,7 @@ class SetupFragment : Fragment(R.layout.fragment_setup) {
 
     override fun onStart() {
         super.onStart()
-        appStatusViewModel.refresh(mobileCoreWrapper)
+        appStatusViewModel.refresh(mobileCoreWrapper, true)
     }
 
     private fun setObservers() {
