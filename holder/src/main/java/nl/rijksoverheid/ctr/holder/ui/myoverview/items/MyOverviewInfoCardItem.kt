@@ -40,16 +40,16 @@ class MyOverviewInfoCardItem(
                 viewBinding.text.setText(R.string.dashboard_item_refresh_eu_vaccinations_text)
             }
             is DashboardItem.InfoItem.NonDismissible.ExtendDomesticRecovery -> {
-                viewBinding.text.setText(R.string.extend_domestic_recovery_green_card_text)
+                viewBinding.text.setText(R.string.extend_domestic_recovery_green_card_info_card_text)
             }
             is DashboardItem.InfoItem.NonDismissible.RecoverDomesticRecovery -> {
-                viewBinding.text.setText(R.string.recover_domestic_recovery_green_card_text)
+                viewBinding.text.setText(R.string.recover_domestic_recovery_green_card_info_card_text)
             }
             is DashboardItem.InfoItem.Dismissible.ExtendedDomesticRecovery -> {
-                viewBinding.text.setText(R.string.extended_domestic_recovery_green_card_text)
+                viewBinding.text.setText(R.string.extended_domestic_recovery_green_card_info_card_text)
             }
             is DashboardItem.InfoItem.Dismissible.RecoveredDomesticRecovery -> {
-                viewBinding.text.setText(R.string.recovered_domestic_recovery_green_card_text)
+                viewBinding.text.setText(R.string.recovered_domestic_recovery_green_card_info_card_text)
             }
             is DashboardItem.InfoItem.Dismissible.RefreshedEuVaccinations -> {
                 viewBinding.text.setText(R.string.dashboard_item_refreshed_eu_vaccinations_text)

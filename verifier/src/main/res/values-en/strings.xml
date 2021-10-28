@@ -55,7 +55,7 @@
     <string name="scan_instructions">About scanning</string>
     <string name="scan_instructions_1_title">Scan the QR code</string>
     <string name="scan_instructions_1_description">Ask the visitor to show a QR code in the CoronaCheck app or on paper. A tourist may show a QR code in a foreign app, or on paper. Scan the visitor\'s QR code with your phone camera.</string>
-    <string name="scan_instructions_2_title">Check the proof of identity</string>
+    <string name="scan_instructions_2_title">"Check the proof of identity"</string>
     <string name="scan_instructions_2_description">For visitors aged 14 and over, always verify if the details on your screen are the same as those on the visitor\'s identity document. This way you can ensure the QR code belongs to the visitor.</string>
     <string name="scan_instructions_3_image">Sometimes not all details are shown</string>
     <string name="scan_instructions_3_title">Sometimes not all details are shown</string>

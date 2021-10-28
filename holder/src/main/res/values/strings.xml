@@ -485,9 +485,23 @@
     <string name="dashboard_item_refreshed_eu_vaccinations_button">Lees meer</string>
     <string name="refreshed_eu_items_title">Vernieuwd vaccinatiebewijs</string>
     <string name="refreshed_eu_items_description"><![CDATA[We hebben voor iedereen het vaccinatiebewijs vernieuwd. Je hebt nu ook toegang tot QR-codes van eerdere prikken.<br/><br/>Dat is bijvoorbeeld handig voor mensen die ergens heen willen waar hun laatste prik nog niet geldig is.<br/><br/><a href="https://coronacheck.nl/nl/faq/3-5-waarom-heb-ik-voor-elke-prik-een-internationale-QR-code/">Lees hier meer over je vernieuwde vaccinatiebewijs</a>.]]></string>
-    <string name="extend_domestic_recovery_green_card_text">Je kan je Nederlandse herstelbewijs verlengen</string>
-    <string name="recover_domestic_recovery_green_card_text">Je kan je Nederlandse herstelbewijs herstellen</string>
-    <string name="extended_domestic_recovery_green_card_text">Je Nederlandse herstelbewijs is verlengd</string>
-    <string name="recovered_domestic_recovery_green_card_text">Je Nederlandse herstelbewijs is teruggehaald</string>
+    <string name="config_warning_card_message">Maak binnenkort verbinding met het internet</string>
+    <string name="config_warning_card_button">Lees meer</string>
+    <string name="config_warning_page_title">Maak verbinding met het internet</string>
+    <string name="config_warning_page_message">De app heeft af en toe internet nodig om de juiste gegevens te tonen. Maak regelmatig verbinding om problemen te voorkomen. Zonder internetverbinding werkt jouw app nog tot %1s. Daarna kun je de app weer gebruiken wanneer je internet hebt.</string>
+    <string name="extend_domestic_recovery_green_card_info_card_text">Je kan je Nederlandse herstelbewijs verlengen</string>
+    <string name="recover_domestic_recovery_green_card_info_card_text">Je kan je Nederlandse herstelbewijs herstellen</string>
+    <string name="extended_domestic_recovery_green_card_info_card_text">Je Nederlandse herstelbewijs is verlengd</string>
+    <string name="recovered_domestic_recovery_green_card_info_card_text">Je Nederlandse herstelbewijs is teruggehaald</string>
+    <string name="extend_domestic_recovery_green_card_title">Herstelbewijs verlengen</string>
+    <string name="extend_domestic_recovery_green_card_description"><![CDATA[Binnenkort verlengen we voor iedereen het herstelbewijs. Hierdoor word je herstelbewijs een jaar geldig vanaf het moment dat je positief bent getest.<br/><br/>Je kan je bewijs ook nu alvast verlengen als je dat wil.]]></string>
+    <string name="extend_domestic_recovery_green_card_button">Verleng bewijs</string>
+    <string name="recover_domestic_recovery_green_card_title">Nederlands herstelbewijs langer geldig</string>
+    <string name="recover_domestic_recovery_green_card_description"><![CDATA[Binnenkort verlengen we voor iedereen het herstelbewijs. Hierdoor word je herstelbewijs een jaar geldig vanaf het moment dat je positief bent getest.<br/><br/>Jouw herstelbewijs was verlopen, maar is nu weer geldig. Je kan je bewijs alvast weer toevoegen als je dat wil.]]></string>
+    <string name="recovery_domestic_recovery_green_card_button">Verleng bewijs</string>
+    <string name="extended_domestic_recovery_green_card_bottomsheet_title">Nederlands herstelbewijs aangepast</string>
+    <string name="extended_domestic_recovery_green_card_bottomsheet_description">De regelgeving rond coronabewijzen is aangepast. De geldigheid van je Nederlandse herstelbewijs verlengd.</string>
+    <string name="recovered_domestic_recovery_green_card_bottomsheet_title">Nederlands herstelbewijs aangepast</string>
+    <string name="recovered_domestic_recovery_green_card_bottomsheet_description">De regelgeving rond coronabewijzen is aangepast. De geldigheid van je Nederlandse herstelbewijs verlengd.</string>
     <string name="my_overview_info_card_button_read_more">Lees meer</string>
 </resources>
