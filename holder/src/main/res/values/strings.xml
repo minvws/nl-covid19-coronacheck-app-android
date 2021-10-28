@@ -345,7 +345,7 @@
     <string name="get_recovery_title">Gegevens van je herstel ophalen</string>
     <string name="get_recovery_description"><![CDATA[Heb je corona gehad? Dan kun je van de positieve testuitslag een herstelbewijs maken. Log in met DigiD om een testuitslag op te halen.<br/><br/>Je herstelbewijs wordt 11 dagen na de positieve testuitslag geldig. Je moet dan ook vrij zijn van klachten.]]></string>
     <string name="no_positive_test_result_title">Geen positieve testuitslag beschikbaar</string>
-    <string name="no_positive_test_result_description"><![CDATA[Er is geen positieve testuitslag beschikbaar.<br/><br/>Ben je net getest? Het kan een paar uur duren voordat je jouw positieve testuitslag terugziet. Probeer het later nog eens.<br/><br/>Ben je langer dan 180 dagen geleden positief getest? Dan is de testuitslag niet meer geldig.]]></string>
+    <string name="no_positive_test_result_description"><![CDATA[Ben je net getest? Het kan een paar uur  duren voordat jouw positieve testuitslag beschikbaar is. Probeer het later nog eens.<br/><br/>Kijk voor meer informatie op de <a href="https://www.coronacheck.nl/wegwijzer">Wegwijzer</a>.]]></string>
     <string name="positive_test_not_valid_title">Positieve testuitslag niet meer geldig</string>
     <string name="positive_test_not_valid_description">Ben je langer dan 180 dagen geleden getest? Dan is je testuitslag niet meer geldig. Je kunt dan geen herstelbewijs maken.</string>
     <string name="qr_code_type_recovery_title">Herstelbewijs</string>
@@ -475,14 +475,35 @@
     <string name="qr_code_previous_button">Vorige QR-code</string>
     <string name="qr_code_next_button">Volgende QR-code</string>
     <string name="my_overview_results_button">Bekijk QR-codes</string>
-    <string name="dashboard_item_refresh_eu_vaccinations_text">Je kan je internationale vaccinatiebewijs vernieuwen</string>
+    <string name="dashboard_item_refresh_eu_vaccinations_text">Je kunt je internationale vaccinatiebewijs vernieuwen</string>
     <string name="dashboard_item_refresh_eu_vaccinations_button">Lees meer</string>
     <string name="refresh_eu_items_title">Vaccinatiebewijs vernieuwen</string>
-    <string name="refresh_eu_items_description"><![CDATA[Binnenkort vernieuwen we voor iedereen het vaccinatiebewijs. Daardoor krijg je ook toegang tot QR-codes van eerdere prikken.<br/><br/>Dat is bijvoorbeeld handig voor mensen die ergens heen willen waar hun laatste prik nog niet geldig is.<br/><br/>Je kan je bewijs ook nu alvast vernieuwen als je dat wil.]]></string>
+    <string name="refresh_eu_items_description"><![CDATA[Binnenkort vernieuwen we voor iedereen het vaccinatiebewijs. Daardoor krijg je ook toegang tot QR-codes van eerdere prikken.<br/><br/>Dat is bijvoorbeeld handig voor mensen die ergens heen willen waar hun laatste prik nog niet geldig is.<br/><br/>Je kunt je bewijs ook nu alvast vernieuwen als je dat wilt.]]></string>
     <string name="refresh_eu_items_button">Vernieuw bewijs</string>
     <string name="refresh_eu_items_toolbar_title">Bewijs vernieuwen</string>
     <string name="dashboard_item_refreshed_eu_vaccinations_text">Jouw vaccinatiebewijs is vernieuwd</string>
     <string name="dashboard_item_refreshed_eu_vaccinations_button">Lees meer</string>
     <string name="refreshed_eu_items_title">Vernieuwd vaccinatiebewijs</string>
     <string name="refreshed_eu_items_description"><![CDATA[We hebben voor iedereen het vaccinatiebewijs vernieuwd. Je hebt nu ook toegang tot QR-codes van eerdere prikken.<br/><br/>Dat is bijvoorbeeld handig voor mensen die ergens heen willen waar hun laatste prik nog niet geldig is.<br/><br/><a href="https://coronacheck.nl/nl/faq/3-5-waarom-heb-ik-voor-elke-prik-een-internationale-QR-code/">Lees hier meer over je vernieuwde vaccinatiebewijs</a>.]]></string>
+    <string name="config_warning_card_message">Maak binnenkort verbinding met het internet</string>
+    <string name="config_warning_card_button">Lees meer</string>
+    <string name="config_warning_page_title">Maak verbinding met het internet</string>
+    <string name="config_warning_page_message">De CoronaCheck app heeft af en toe internet nodig om te blijven werken. Zonder internetverbinding werkt jouw app nog tot %1s. Open de app zodra je internet hebt. Dan doet deze het gewoon weer.&lt;br/&gt;&lt;br/&gt;Maak regelmatig verbinding om problemen te voorkomen.</string>
+    <string name="extend_domestic_recovery_green_card_info_card_text">Je kunt je Nederlandse herstelbewijs verlengen</string>
+    <string name="recover_domestic_recovery_green_card_info_card_text">Je kunt je verlopen Nederlandse herstelbewijs terugzetten</string>
+    <string name="extended_domestic_recovery_green_card_info_card_text">Je Nederlandse herstelbewijs is verlengd</string>
+    <string name="recovered_domestic_recovery_green_card_info_card_text">Je Nederlandse herstelbewijs is teruggezet</string>
+    <string name="extend_domestic_recovery_green_card_title">Herstelbewijs verlengen</string>
+    <string name="extend_domestic_recovery_green_card_description"><![CDATA[Binnenkort verlengen we voor iedereen het herstelbewijs. Hierdoor word je herstelbewijs een jaar geldig vanaf het moment dat je positief bent getest.<br/><br/>Je kunt je bewijs ook nu alvast verlengen als je dat wilt.]]></string>
+    <string name="extend_domestic_recovery_green_card_button">Verleng bewijs</string>
+    <string name="recover_domestic_recovery_green_card_title">Herstelbewijs terugzetten</string>
+    <string name="recover_domestic_recovery_green_card_description"><![CDATA[Binnenkort zetten we jouw verlopen herstelbewijs terug, omdat de geldigheid van Nederlandse herstelbewijzen wordt verlengd. Daardoor wordt je bewijs een jaar geldig vanaf het moment dat je positief bent getest.<br/><br/>Je kunt je bewijs ook nu alvast terugzetten als je dat wilt.]]></string>
+    <string name="recovery_domestic_recovery_green_card_button">Verleng bewijs</string>
+    <string name="extended_domestic_recovery_green_card_bottomsheet_title">Verlengd herstelbewijs</string>
+    <string name="extended_domestic_recovery_green_card_bottomsheet_description">De geldigheid van Nederlandse herstelbewijzen is verlengd. Daardoor is je bewijs nu een jaar geldig vanaf het moment dat je positief bent getest.</string>
+    <string name="recovered_domestic_recovery_green_card_bottomsheet_title">Teruggezet herstelbewijs</string>
+    <string name="recovered_domestic_recovery_green_card_bottomsheet_description">We hebben je verlopen bewijs teruggezet, omdat de geldigheid van Nederlandse herstelbewijzen is verlengd. Een bewijs is nu een jaar geldig vanaf het moment dat je positief bent getest.</string>
+    <string name="my_overview_info_card_button_read_more">Lees meer</string>
+    <string name="dialog_no_browser_title">No browser found</string>
+    <string name="dialog_no_browser_message">You need an active browser to view the content of %1s</string>
 </resources>

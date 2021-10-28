@@ -8,9 +8,11 @@
 
 package nl.rijksoverheid.ctr.holder
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.WindowManager
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -25,6 +27,7 @@ import nl.rijksoverheid.ctr.introduction.IntroductionFragment
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
+import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.utils.IntentUtil
 import org.koin.android.ext.android.inject
@@ -148,4 +151,21 @@ class HolderMainActivity : AppCompatActivity() {
         navController.setGraph(R.navigation.holder_nav_graph_root)
         navController.handleDeepLink(intent)
     }
+
+    fun launchUrl(url: String) {
+        url.launchUrl(this) {
+            dialogUtil.presentDialog(
+                context = this,
+                title = R.string.dialog_no_browser_title,
+                message = getString(R.string.dialog_no_browser_message, url),
+                positiveButtonText = R.string.ok,
+                positiveButtonCallback = {},
+            )
+        }
+    }
+}
+
+fun Context.launchUrl(url: String) {
+    val holderMainActivity = this as? HolderMainActivity
+    holderMainActivity?.launchUrl(url)
 }
