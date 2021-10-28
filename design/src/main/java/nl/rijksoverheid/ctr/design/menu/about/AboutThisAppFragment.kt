@@ -9,6 +9,8 @@
 package nl.rijksoverheid.ctr.design.menu.about
 
 import android.annotation.SuppressLint
+import android.app.ActivityManager
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -27,6 +29,7 @@ import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAsAccessibilityButton
 import org.koin.android.ext.android.inject
 import java.time.Instant
 import java.time.ZoneOffset
+
 
 class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
 
@@ -93,8 +96,15 @@ class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
         dialogUtil.presentDialog(
             context = requireContext(),
             title = R.string.about_this_app_clear_data_title,
-
+            message = resources.getString(R.string.about_this_app_clear_data_description),
+            negativeButtonText = R.string.about_this_app_clear_data_cancel,
+            positiveButtonText = R.string.about_this_app_clear_data_confirm,
+            positiveButtonCallback = ::clearAppData
         )
+    }
+
+    private fun clearAppData() {
+        (context?.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager).clearApplicationUserData()
     }
 
     private fun bindScannerDeeplinkButton(deeplinkScannerButton: Button) {

@@ -486,6 +486,7 @@
     <string name="dashboard_item_refreshed_eu_vaccinations_button">Lees meer</string>
     <string name="refreshed_eu_items_title">Vernieuwd vaccinatiebewijs</string>
     <string name="refreshed_eu_items_description"><![CDATA[We hebben voor iedereen het vaccinatiebewijs vernieuwd. Je hebt nu ook toegang tot QR-codes van eerdere prikken.<br/><br/>Dat is bijvoorbeeld handig voor mensen die ergens heen willen waar hun laatste prik nog niet geldig is.<br/><br/><a href="https://coronacheck.nl/nl/faq/3-5-waarom-heb-ik-voor-elke-prik-een-internationale-QR-code/">Lees hier meer over je vernieuwde vaccinatiebewijs</a>.]]></string>
+    <string name="about_this_app_clear_data">Gegevens wissen</string>
     <string name="about_this_app_clear_data_title">Alle gegevens wissen?</string>
     <string name="about_this_app_clear_data_description">Bij het wissen worden alle gegevens en bewijzen uit de app verwijderd en wordt de app afgesloten.</string>
     <string name="about_this_app_clear_data_cancel">annuleer</string>
