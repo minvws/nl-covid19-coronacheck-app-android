@@ -31,7 +31,9 @@ abstract class DashboardViewModel : ViewModel() {
 
     abstract fun refresh(dashboardSync: DashboardSync = DashboardSync.CheckSync)
     abstract fun removeGreenCard(greenCard: GreenCard)
-    abstract fun dismissGreenCardsSyncedItem()
+    abstract fun dismissRefreshedEuVaccinationsInfoCard()
+    abstract fun dismissRecoveredDomesticRecoveryInfoCard()
+    abstract fun dismissExtendedDomesticRecoveryInfoCard()
 
     companion object {
         val RETRY_FAILED_REQUEST_AFTER_SECONDS = if (BuildConfig.FLAVOR == "acc") TimeUnit.SECONDS.toSeconds(10) else TimeUnit.MINUTES.toSeconds(10)
@@ -119,8 +121,16 @@ class DashboardViewModelImpl(
         }
     }
 
-    override fun dismissGreenCardsSyncedItem() {
+    override fun dismissRefreshedEuVaccinationsInfoCard() {
         persistenceManager.setHasDismissedSyncedGreenCardsItem(true)
+    }
+
+    override fun dismissRecoveredDomesticRecoveryInfoCard() {
+        persistenceManager.setHasDismissedRecoveredDomesticRecoveryInfoCard(true)
+    }
+
+    override fun dismissExtendedDomesticRecoveryInfoCard() {
+        persistenceManager.setHasDismissedExtendedDomesticRecoveryInfoCard(true)
     }
 
     private suspend fun refreshDashboardTabItems(

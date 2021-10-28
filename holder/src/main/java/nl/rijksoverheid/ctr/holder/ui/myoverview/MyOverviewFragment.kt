@@ -195,10 +195,26 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                         onButtonClick = {
                             when (it) {
                                 is DashboardItem.InfoItem.Dismissible.ExtendedDomesticRecovery -> {
-
+                                    bottomSheetDialogUtil.present(
+                                        childFragmentManager,
+                                        BottomSheetData.TitleDescription(
+                                            title = getString(R.string.extended_domestic_recovery_green_card_bottomsheet_title),
+                                            applyOnDescription = { htmlTextViewWidget ->
+                                                htmlTextViewWidget.setHtmlText(getString(R.string.extended_domestic_recovery_green_card_bottomsheet_description), true)
+                                            }
+                                        )
+                                    )
                                 }
                                 is DashboardItem.InfoItem.Dismissible.RecoveredDomesticRecovery -> {
-
+                                    bottomSheetDialogUtil.present(
+                                        childFragmentManager,
+                                        BottomSheetData.TitleDescription(
+                                            title = getString(R.string.recovered_domestic_recovery_green_card_bottomsheet_title),
+                                            applyOnDescription = { htmlTextViewWidget ->
+                                                htmlTextViewWidget.setHtmlText(getString(R.string.recovered_domestic_recovery_green_card_bottomsheet_description), true)
+                                            }
+                                        )
+                                    )
                                 }
                                 is DashboardItem.InfoItem.Dismissible.RefreshedEuVaccinations -> {
                                     bottomSheetDialogUtil.present(
@@ -247,13 +263,13 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                             // Clear preference so it doesn't show again
                             when (infoItem) {
                                 is DashboardItem.InfoItem.Dismissible.RefreshedEuVaccinations -> {
-                                    dashboardViewModel.dismissGreenCardsSyncedItem()
+                                    dashboardViewModel.dismissRefreshedEuVaccinationsInfoCard()
                                 }
                                 is DashboardItem.InfoItem.Dismissible.RecoveredDomesticRecovery -> {
-
+                                    dashboardViewModel.dismissRecoveredDomesticRecoveryInfoCard()
                                 }
                                 is DashboardItem.InfoItem.Dismissible.ExtendedDomesticRecovery -> {
-
+                                    dashboardViewModel.dismissExtendedDomesticRecoveryInfoCard()
                                 }
                             }
                         }
