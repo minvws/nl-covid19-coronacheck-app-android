@@ -10,6 +10,7 @@ import android.view.View.VISIBLE
 import android.widget.TextView
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
@@ -156,7 +157,7 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
     }
 
     private fun observeAppConfig() {
-        appConfigViewModel.appStatusLiveData.observe(viewLifecycleOwner, EventObserver {
+        appConfigViewModel.appStatusLiveData.observe(viewLifecycleOwner, {
             dashboardViewModel.refresh()
         })
     }

@@ -75,7 +75,7 @@ class VerifierMainActivity : AppCompatActivity() {
             navController.navigate(R.id.action_introduction, IntroductionFragment.getBundle(it))
         })
 
-        appConfigViewModel.appStatusLiveData.observe(this, EventObserver {
+        appConfigViewModel.appStatusLiveData.observe(this, {
             handleAppStatus(it, navController)
         })
 
