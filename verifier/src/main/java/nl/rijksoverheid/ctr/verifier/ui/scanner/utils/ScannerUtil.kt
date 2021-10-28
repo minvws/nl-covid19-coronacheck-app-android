@@ -13,13 +13,13 @@ import nl.rijksoverheid.ctr.verifier.RootNavDirections
  *
  */
 interface ScannerUtil {
-    fun launchScanner(activity: Activity, returnUri: String? = null)
+    fun launchScanner(activity: Activity)
 }
 
 class ScannerUtilImpl : ScannerUtil {
 
-    override fun launchScanner(activity: Activity, returnUri: String?) {
+    override fun launchScanner(activity: Activity) {
         Navigation.findNavController(activity, R.id.main_nav_host_fragment)
-            .navigate(RootNavDirections.actionScanner(returnUri))
+            .navigate(RootNavDirections.actionScanner())
     }
 }
