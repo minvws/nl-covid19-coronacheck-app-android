@@ -21,12 +21,16 @@ import nl.rijksoverheid.ctr.design.R
 import nl.rijksoverheid.ctr.design.databinding.AboutThisAppRowBinding
 import nl.rijksoverheid.ctr.design.databinding.FragmentAboutAppBinding
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthTime
+import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAsAccessibilityButton
+import org.koin.android.ext.android.inject
 import java.time.Instant
 import java.time.ZoneOffset
 
 class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
+
+    private val dialogUtil: DialogUtil by inject()
 
     companion object {
         private const val EXTRA_ABOUT_THIS_APP_DATA = "EXTRA_ABOUT_THIS_APP_DATA"
@@ -59,7 +63,10 @@ class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
             view.root.contentDescription = item.text
 
             view.root.setOnClickListener {
-                item.url.launchUrl(requireContext())
+                when (item) {
+                    is AboutThisAppData.Url -> item.url.launchUrl(requireContext())
+                    is AboutThisAppData.ClearAppData -> showClearAppDataDialog()
+                }
             }
         }
 
@@ -72,13 +79,21 @@ class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
         binding.configVersion.text = getString(
             R.string.config_version,
             aboutThisAppData.configVersionHash,
-            Instant.ofEpochSecond(aboutThisAppData.configVersionTimestamp).atOffset(ZoneOffset.UTC).formatDayMonthTime(requireContext())
+            Instant.ofEpochSecond(aboutThisAppData.configVersionTimestamp).atOffset(ZoneOffset.UTC)
+                .formatDayMonthTime(requireContext())
         )
 
         // On test and acceptance builds show button to trigger deeplink to scanner
         if (BuildConfig.DEBUG || context?.packageName == "nl.rijksoverheid.ctr.holder.acc") {
             bindScannerDeeplinkButton(binding.deeplinkScannerButton)
         }
+    }
+
+    private fun showClearAppDataDialog() {
+        dialogUtil.presentDialog(
+            context = requireContext(),
+            title = R.string.app_version
+        )
     }
 
     private fun bindScannerDeeplinkButton(deeplinkScannerButton: Button) {

@@ -18,6 +18,10 @@
     <item name="toolbar" type="id" />
     <item name="menu_close" type="string" />
     <item name="about_this_app_read_more" type="id" />
+    <item name="about_this_app_clear_data_title" type="id" />
+    <item name="about_this_app_clear_data_description" type="id" />
+    <item name="about_this_app_clear_data_cancel" type="id" />
+    <item name="about_this_app_clear_data_confirm" type="id" />
     <item name="accessibility_label_selected" type="string" />
     <item name="accessibility_label_not_selected" type="string" />
 </resources>
