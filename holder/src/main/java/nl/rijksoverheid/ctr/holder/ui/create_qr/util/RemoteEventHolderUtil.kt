@@ -77,7 +77,7 @@ class RemoteEventHolderUtilImpl(
 
     private fun nameIsNotMatching(stored: String?, incoming: String?): Boolean {
         if (stored == null || incoming == null) {
-            return false
+            return true
         }
         val storedNameInitial = stored.firstOrNull { it.isLetter() } ?: return false
         val incomingNameInitial = incoming.firstOrNull { it.isLetter() } ?: return false
