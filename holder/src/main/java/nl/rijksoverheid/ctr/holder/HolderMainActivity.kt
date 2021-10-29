@@ -157,7 +157,8 @@ class HolderMainActivity : AppCompatActivity() {
             dialogUtil.presentDialog(
                 context = this,
                 title = R.string.dialog_no_browser_title,
-                message = getString(R.string.dialog_no_browser_message, url),
+                // remove the https prefix to make it more eye friendsly
+                message = getString(R.string.dialog_no_browser_message, url).replace("https://", ""),
                 positiveButtonText = R.string.ok,
                 positiveButtonCallback = {},
             )

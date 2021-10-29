@@ -504,6 +504,6 @@
     <string name="recovered_domestic_recovery_green_card_bottomsheet_title">Teruggezet herstelbewijs</string>
     <string name="recovered_domestic_recovery_green_card_bottomsheet_description">We hebben je verlopen bewijs teruggezet, omdat de geldigheid van Nederlandse herstelbewijzen is verlengd. Een bewijs is nu een jaar geldig vanaf het moment dat je positief bent getest.</string>
     <string name="my_overview_info_card_button_read_more">Lees meer</string>
-    <string name="dialog_no_browser_title">No browser found</string>
-    <string name="dialog_no_browser_message">You need an active browser to view the content of %1s</string>
+    <string name="dialog_no_browser_title">Geen browser beschikbaar</string>
+    <string name="dialog_no_browser_message">Er is op deze telefoon geen browser gevonden waar %1s mee geopend kan worden. Download een browser in de Play Store.</string>
 </resources>
