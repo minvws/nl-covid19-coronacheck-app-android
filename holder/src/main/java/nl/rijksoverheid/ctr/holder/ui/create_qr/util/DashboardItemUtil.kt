@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
+import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigFreshnessUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
@@ -32,13 +33,16 @@ interface DashboardItemUtil {
     fun shouldShowRecoverDomesticRecoveryItem(): Boolean
     fun shouldShowExtendedDomesticRecoveryItem(): Boolean
     fun shouldShowRecoveredDomesticRecoveryItem(): Boolean
+    fun shouldShowConfigFreshnessWarning(): Boolean
+    fun getConfigFreshnessMaxValidity() : Long
 }
 
 class DashboardItemUtilImpl(
     private val clockDeviationUseCase: ClockDeviationUseCase,
     private val greenCardUtil: GreenCardUtil,
     private val persistenceManager: PersistenceManager,
-    private val eventGroupEntityUtil: EventGroupEntityUtil
+    private val eventGroupEntityUtil: EventGroupEntityUtil,
+    private val appConfigFreshnessUseCase: AppConfigFreshnessUseCase
 ) : DashboardItemUtil {
 
     override fun getHeaderItemText(greenCardType: GreenCardType, allGreenCards: List<GreenCard>): Int {
@@ -133,5 +137,14 @@ class DashboardItemUtilImpl(
 
     override fun shouldShowRecoveredDomesticRecoveryItem(): Boolean {
         return !persistenceManager.getHasDismissedRecoveredDomesticRecoveryInfoCard()
+    }
+
+    override fun shouldShowConfigFreshnessWarning(): Boolean {
+        // return true if config is older than 10 days && less than 28 days
+       return appConfigFreshnessUseCase.shouldShowConfigFreshnessWarning()
+    }
+
+    override fun getConfigFreshnessMaxValidity(): Long {
+        return appConfigFreshnessUseCase.getAppConfigMaxValidityTimestamp()
     }
 }

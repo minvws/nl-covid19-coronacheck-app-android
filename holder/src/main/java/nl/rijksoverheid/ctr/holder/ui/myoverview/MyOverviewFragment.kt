@@ -100,8 +100,11 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                     adapterItems.add(
                         MyOverviewHeaderAdapterItem(
                             text = dashboardItem.text,
-                            buttonInfo =  if (greenCardType == GreenCardType.Eu) {
-                                ButtonInfo(R.string.my_overview_description_eu_button_text, R.string.my_overview_description_eu_button_link)
+                            buttonInfo = if (greenCardType == GreenCardType.Eu) {
+                                ButtonInfo(
+                                    R.string.my_overview_description_eu_button_text,
+                                    R.string.my_overview_description_eu_button_link
+                                )
                             } else {
                                 null
                             },
@@ -164,7 +167,9 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                         originType = dashboardItem.originType,
                         onInfoClick = { greenCardType, originType ->
                             when (greenCardType) {
-                                is GreenCardType.Domestic -> presentOriginInfoForDomesticQr(originType)
+                                is GreenCardType.Domestic -> presentOriginInfoForDomesticQr(
+                                    originType
+                                )
                                 is GreenCardType.Eu -> presentOriginInfoForEuQr(originType)
                             }
                         }
@@ -198,21 +203,10 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                             myOverviewFragmentInfoItemHandlerUtil.handleButtonClick(this, it)
                         },
                         onDismiss = { infoCardItem, infoItem ->
-                            myOverviewFragmentInfoItemHandlerUtil.handleDismiss(this, infoCardItem, infoItem)
-                        }
-                    ))
-                }
-                DashboardItem.ConfigWarningItem -> {
-                    adapterItems.add(MyOverviewConfigFreshnessWarningItem(
-                        onButtonClick = {
-                            bottomSheetDialogUtil.present(
-                                childFragmentManager,
-                                BottomSheetData.TitleDescription(
-                                    title = getString(R.string.config_warning_page_title),
-                                    applyOnDescription = {
-                                        it.setHtmlText(getString(R.string.config_warning_page_message), true)
-                                    }
-                                )
+                            myOverviewFragmentInfoItemHandlerUtil.handleDismiss(
+                                this,
+                                infoCardItem,
+                                infoItem
                             )
                         }
                     ))
@@ -255,9 +249,18 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
 
     private fun presentOriginInfoForDomesticQr(originType: OriginType) {
         val (title, description) = when (originType) {
-            OriginType.Test -> Pair(getString(R.string.my_overview_green_card_not_valid_title_test), R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_test)
-            OriginType.Vaccination -> Pair(getString(R.string.my_overview_green_card_not_valid_title_vaccination), R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_vaccination)
-            OriginType.Recovery -> Pair(getString(R.string.my_overview_green_card_not_valid_title_recovery), R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_recovery)
+            OriginType.Test -> Pair(
+                getString(R.string.my_overview_green_card_not_valid_title_test),
+                R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_test
+            )
+            OriginType.Vaccination -> Pair(
+                getString(R.string.my_overview_green_card_not_valid_title_vaccination),
+                R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_vaccination
+            )
+            OriginType.Recovery -> Pair(
+                getString(R.string.my_overview_green_card_not_valid_title_recovery),
+                R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_recovery
+            )
         }
         bottomSheetDialogUtil.present(childFragmentManager,
             BottomSheetData.TitleDescription(

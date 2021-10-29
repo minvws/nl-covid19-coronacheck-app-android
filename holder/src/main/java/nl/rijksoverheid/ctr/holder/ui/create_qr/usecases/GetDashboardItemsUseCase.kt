@@ -1,6 +1,5 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
-import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
@@ -53,13 +52,14 @@ class GetDashboardItemsUseCaseImpl(
         isLoadingNewCredentials: Boolean,
     ): List<DashboardItem> {
         val dashboardItems = mutableListOf<DashboardItem>()
-        val domesticGreenCards = allGreenCards.filter { it.greenCardEntity.type == GreenCardType.Domestic }
+        val domesticGreenCards =
+            allGreenCards.filter { it.greenCardEntity.type == GreenCardType.Domestic }
 
         // Apply distinctBy here so that for two european green cards we do not get a two banners
         // saying "the certificate isn't valid in NL"
         val internationalGreenCards = allGreenCards
-                .filter { it.greenCardEntity.type == GreenCardType.Eu }
-                .distinctBy { it.greenCardEntity.type }
+            .filter { it.greenCardEntity.type == GreenCardType.Eu }
+            .distinctBy { it.greenCardEntity.type }
 
         val headerText = dashboardItemUtil.getHeaderItemText(
             greenCardType = GreenCardType.Domestic,
@@ -88,6 +88,14 @@ class GetDashboardItemsUseCaseImpl(
 
         if (dashboardItemUtil.shouldShowExtendedDomesticRecoveryItem()) {
             dashboardItems.add(DashboardItem.InfoItem.Dismissible.ExtendedDomesticRecovery)
+        }
+
+        if (dashboardItemUtil.shouldShowConfigFreshnessWarning()) {
+            dashboardItems.add(
+                DashboardItem.InfoItem.NonDismissible.ConfigFreshnessWarning(
+                    maxValidityDate = dashboardItemUtil.getConfigFreshnessMaxValidity()
+                )
+            )
         }
 
         dashboardItems.addAll(
@@ -147,6 +155,14 @@ class GetDashboardItemsUseCaseImpl(
 
         if (dashboardItemUtil.shouldAddGreenCardsSyncedItem(allGreenCards)) {
             dashboardItems.add(DashboardItem.InfoItem.Dismissible.RefreshedEuVaccinations)
+        }
+
+        if (dashboardItemUtil.shouldShowConfigFreshnessWarning()) {
+            dashboardItems.add(
+                DashboardItem.InfoItem.NonDismissible.ConfigFreshnessWarning(
+                    maxValidityDate = dashboardItemUtil.getConfigFreshnessMaxValidity()
+                )
+            )
         }
 
         dashboardItems.addAll(
