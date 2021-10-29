@@ -505,8 +505,8 @@
     <string name="recovered_domestic_recovery_green_card_bottomsheet_title">Restored recovery certificate</string>
     <string name="recovered_domestic_recovery_green_card_bottomsheet_description">We have restored your expired certificate, because the validity of Dutch recovery certificates has been extended. From now on, a certificate is valid for one year after the moment of positive testing.</string>
     <string name="my_overview_info_card_button_read_more">Read more</string>
-    <string name="dialog_no_browser_title">No browser found</string>
-    <string name="dialog_no_browser_message">You need an active browser to view the content of %1s</string>
+    <string name="dialog_no_browser_title">No browser available</string>
+    <string name="dialog_no_browser_message">There was no browser found on this phone that can open %1s. Download a browser in the Play Store.</string>
     <string name="about_this_app_clear_data_title">Clear all data?</string>
     <string name="about_this_app_clear_data_description">Clearing will delete all data and certificates from the app and will close the app. You can simply restart it afterwards.</string>
     <string name="about_this_app_clear_data_cancel">cancel</string>
