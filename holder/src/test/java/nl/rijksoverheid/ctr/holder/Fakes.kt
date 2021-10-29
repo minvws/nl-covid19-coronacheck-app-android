@@ -6,7 +6,10 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 import io.mockk.mockk
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
+import nl.rijksoverheid.ctr.appconfig.fakeAppConfigPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
+import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigFreshnessUseCase
+import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigFreshnessUseCaseImpl
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
@@ -34,8 +37,7 @@ import nl.rijksoverheid.ctr.shared.models.*
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import nl.rijksoverheid.ctr.shared.utils.TestResultUtil
 import org.json.JSONObject
-import java.time.LocalDate
-import java.time.OffsetDateTime
+import java.time.*
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -751,6 +753,25 @@ val fakeEuropeanVaccinationGreenCard = GreenCard(
         expirationTime = OffsetDateTime.now()
     ))
 )
+
+fun fakeAppConfigFreshnessUseCase(shouldShowWarning : Boolean = false) = object:
+   AppConfigFreshnessUseCase {
+    override fun getAppConfigLastFetchedSeconds(): Long {
+        return 0
+    }
+
+    override fun getAppConfigMaxValidityTimestamp(): Long {
+        return 0
+    }
+
+    override fun shouldShowConfigFreshnessWarning(): Boolean {
+        return shouldShowWarning
+    }
+
+
+}
+
+
 
 
 
