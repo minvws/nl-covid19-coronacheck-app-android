@@ -19,6 +19,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.*
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardSync
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeFragmentData
+import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.MyOverviewFragmentInfoItemHandlerUtil
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.ext.sharedViewModelWithOwner
 import org.koin.android.ext.android.inject
@@ -52,12 +53,13 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
     }
 
     private val bottomSheetDialogUtil: BottomSheetDialogUtil by inject()
-    private val dashboardViewModel: DashboardViewModel by sharedViewModelWithOwner(owner = {
+    private val myOverviewFragmentInfoItemHandlerUtil: MyOverviewFragmentInfoItemHandlerUtil by inject()
+    val dashboardViewModel: DashboardViewModel by sharedViewModelWithOwner(owner = {
         ViewModelOwner.from(
             requireParentFragment()
         )
     })
-    private val section = Section()
+    val section = Section()
     private val greenCardType: GreenCardType by lazy {
         arguments?.getParcelable<GreenCardType>(
             EXTRA_GREEN_CARD_TYPE
@@ -193,88 +195,10 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                     adapterItems.add(MyOverviewInfoCardItem(
                         infoItem = dashboardItem,
                         onButtonClick = {
-                            when (it) {
-                                is DashboardItem.InfoItem.Dismissible.ExtendedDomesticRecovery -> {
-                                    bottomSheetDialogUtil.present(
-                                        childFragmentManager,
-                                        BottomSheetData.TitleDescription(
-                                            title = getString(R.string.extended_domestic_recovery_green_card_bottomsheet_title),
-                                            applyOnDescription = { htmlTextViewWidget ->
-                                                htmlTextViewWidget.setHtmlText(getString(R.string.extended_domestic_recovery_green_card_bottomsheet_description), true)
-                                            }
-                                        )
-                                    )
-                                }
-                                is DashboardItem.InfoItem.Dismissible.RecoveredDomesticRecovery -> {
-                                    bottomSheetDialogUtil.present(
-                                        childFragmentManager,
-                                        BottomSheetData.TitleDescription(
-                                            title = getString(R.string.recovered_domestic_recovery_green_card_bottomsheet_title),
-                                            applyOnDescription = { htmlTextViewWidget ->
-                                                htmlTextViewWidget.setHtmlText(getString(R.string.recovered_domestic_recovery_green_card_bottomsheet_description), true)
-                                            }
-                                        )
-                                    )
-                                }
-                                is DashboardItem.InfoItem.Dismissible.RefreshedEuVaccinations -> {
-                                    bottomSheetDialogUtil.present(
-                                        childFragmentManager,
-                                        BottomSheetData.TitleDescription(
-                                            title = getString(R.string.refreshed_eu_items_title),
-                                            applyOnDescription = { htmlTextViewWidget ->
-                                                htmlTextViewWidget.setHtmlText(getString(R.string.refreshed_eu_items_description), true)
-                                            }
-                                        )
-                                    )
-                                }
-                                is DashboardItem.InfoItem.NonDismissible.ExtendDomesticRecovery -> {
-                                    navigateSafety(
-                                        MyOverviewFragmentDirections.actionSyncGreenCards(
-                                            toolbarTitle = getString(R.string.extend_domestic_recovery_green_card_toolbar_title),
-                                            title = getString(R.string.extend_domestic_recovery_green_card_title),
-                                            description = getString(R.string.extend_domestic_recovery_green_card_description),
-                                            button = getString(R.string.extend_domestic_recovery_green_card_button)
-                                        )
-                                    )
-                                }
-                                is DashboardItem.InfoItem.NonDismissible.RecoverDomesticRecovery -> {
-                                    navigateSafety(
-                                        MyOverviewFragmentDirections.actionSyncGreenCards(
-                                            toolbarTitle = getString(R.string.recover_domestic_recovery_green_card_toolbar_title),
-                                            title = getString(R.string.recover_domestic_recovery_green_card_title),
-                                            description = getString(R.string.recover_domestic_recovery_green_card_description),
-                                            button = getString(R.string.recovery_domestic_recovery_green_card_button)
-                                        )
-                                    )
-                                }
-                                is DashboardItem.InfoItem.NonDismissible.RefreshEuVaccinations -> {
-                                    navigateSafety(
-                                        MyOverviewFragmentDirections.actionSyncGreenCards(
-                                            toolbarTitle = getString(R.string.refresh_eu_items_button),
-                                            title = getString(R.string.refresh_eu_items_title),
-                                            description = getString(R.string.refresh_eu_items_description),
-                                            button = getString(R.string.refresh_eu_items_button)
-                                        )
-                                    )
-                                }
-                            }
+                            myOverviewFragmentInfoItemHandlerUtil.handleButtonClick(this, it)
                         },
                         onDismiss = { infoCardItem, infoItem ->
-                            // Remove section from adapter
-                            section.remove(infoCardItem)
-
-                            // Clear preference so it doesn't show again
-                            when (infoItem) {
-                                is DashboardItem.InfoItem.Dismissible.RefreshedEuVaccinations -> {
-                                    dashboardViewModel.dismissRefreshedEuVaccinationsInfoCard()
-                                }
-                                is DashboardItem.InfoItem.Dismissible.RecoveredDomesticRecovery -> {
-                                    dashboardViewModel.dismissRecoveredDomesticRecoveryInfoCard()
-                                }
-                                is DashboardItem.InfoItem.Dismissible.ExtendedDomesticRecovery -> {
-                                    dashboardViewModel.dismissExtendedDomesticRecoveryInfoCard()
-                                }
-                            }
+                            myOverviewFragmentInfoItemHandlerUtil.handleDismiss(this, infoCardItem, infoItem)
                         }
                     ))
                 }
