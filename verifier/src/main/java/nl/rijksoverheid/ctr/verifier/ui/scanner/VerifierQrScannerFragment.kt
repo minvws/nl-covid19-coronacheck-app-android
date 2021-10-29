@@ -40,7 +40,7 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
     override fun getCopy(): Copy {
         return Copy(
             title = getString(R.string.scanner_custom_title),
-            message = getString(R.string.scanner_custom_message),
+            message = getString(R.string.scan_qr_instructions_button),
             onMessageClicked = {
                 findNavController().navigate(
                     VerifierQrScannerFragmentDirections.actionScanInstructions()

@@ -55,8 +55,7 @@
     <string name="scan_instructions">Over scannen</string>
     <string name="scan_instructions_1_title">Scan de QR-code</string>
     <string name="scan_instructions_1_description">Vraag de bezoeker naar een QR-code in de CoronaCheck-app of op papier. Een toerist kan een QR-code in een buitenlandse app of op papier tonen. Scan de QR-code met de camera van je telefoon.</string>
-    <string name="scan_instructions_2_title">"Controleer het identiteitsbewijs
-"</string>
+    <string name="scan_instructions_2_title">Controleer het identiteitsbewijs</string>
     <string name="scan_instructions_2_description">Controleer bij bezoekers vanaf 14 jaar altijd of de gegevens op jouw scherm hetzelfde zijn als die op het identiteitsbewijs van de bezoeker. Zo weet je zeker dat de QR-code van de bezoeker is.</string>
     <string name="scan_instructions_3_image">Soms vallen gegevens weg</string>
     <string name="scan_instructions_3_title">Soms vallen gegevens weg</string>
@@ -66,7 +65,6 @@
     <string name="scan_instructions_4_description"><![CDATA[Bij een rood scherm met kruis krijg je uitleg om de bezoeker te helpen. Blijft het scherm rood? Dan mag je de bezoeker geen toegang geven.]]></string>
     <string name="privacy_statement">Gebruikersvoorwaarden</string>
     <string name="scanner_custom_title">Scan QR-code</string>
-    <string name="scanner_custom_message">"Waar moet ik op letten?"</string>
     <string name="camera_rationale_dialog_title">Scanner wil toegang tot je camera</string>
     <string name="camera_rationale_dialog_description">Zo kan de app QR-codes scannen</string>
     <string name="scanner_zebra_footer">Liever laserscannen?\nGebruik de gele toetsen op je toestel.</string>

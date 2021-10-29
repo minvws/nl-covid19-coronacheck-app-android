@@ -345,9 +345,9 @@
     <string name="get_recovery_title">Retrieve recovery details</string>
     <string name="get_recovery_description"><![CDATA[Have you had coronavirus? Then you can make a recovery certificate of the positive test result. Login with DigiD to retrieve your test result.<br/><br/>Your recovery certificate will be valid 11 days after the positive test result. You also need to be free of symptoms.]]></string>
     <string name="no_positive_test_result_title">No positive test result available</string>
-    <string name="no_positive_test_result_description"><![CDATA[There is no positive test result available.<br/><br/>Got tested recently? It can take a few hours until your details are available. Try again later.<br/><br/>Have you been tested more than 180 days ago? Then your test result is no longer valid.]]></string>
-    <string name="positive_test_not_valid_title">Positive test result is not valid</string>
-    <string name="positive_test_not_valid_description">Have you been tested more than 180 days ago? Then your test result is no longer valid. In this case, you cannot create a recovery certificate.</string>
+    <string name="no_positive_test_result_description"><![CDATA[Were you just tested? It can take a few hours before your positive test result is available. Please try again later.<br/><br/>Find more information on the <a href="https://www.coronacheck.nl/en/guidepost">Guidepost</a>.]]></string>
+    <string name="positive_test_not_valid_title">Positive test result no longer valid</string>
+    <string name="positive_test_not_valid_description">You were tested positive for coronavirus too long ago. Therefore, your test result is no longer valid. Unfortunately, you cannot create a recovery certificate.&lt;br/&gt;&lt;br/&gt;Find more information on the <a href="https://www.coronacheck.nl/en/guidepost">Guidepost</a>.</string>
     <string name="qr_code_type_recovery_title">Recovery certificate</string>
     <string name="qr_code_type_recovery_description">The test proves I have had coronavirus</string>
     <string name="your_test_result_explanation_positive_test_result">positive (corona)</string>
@@ -358,8 +358,8 @@
     <string name="recovery_explanation_description_valid_from">Valid from:</string>
     <string name="recovery_explanation_description_valid_until">Valid until:</string>
     <string name="recovery_explanation_description_unique_test_identifier">Unique test identifier:</string>
-    <string name="positive_test_no_longer_valid_title">Positive test result is not valid</string>
-    <string name="positive_test_no_longer_valid_description"><![CDATA[Have you been tested more than 180 days ago? Then your test result is no longer valid. In this case, you cannot create a recovery certificate.]]></string>
+    <string name="positive_test_no_longer_valid_title">Positive test result no longer valid</string>
+    <string name="positive_test_no_longer_valid_description"><![CDATA[You were tested positive for coronavirus too long ago. Therefore, your test result is no longer valid. Unfortunately, you cannot create a recovery certificate.<br/><br/>Find more information on the <a href="https://www.coronacheck.nl/en/guidepost">Guidepost</a>.]]></string>
     <string name="qr_explanation_description_eu_recovery_header">Are you abroad, or planning to cross the border? This requires more data. That\'s why the international QR code contains the following details:</string>
     <string name="qr_explanation_description_eu_recovery_name">Name:</string>
     <string name="qr_explanation_description_eu_recovery_birth_date">Date of birth*:</string>
@@ -485,25 +485,31 @@
     <string name="dashboard_item_refreshed_eu_vaccinations_button">Read more</string>
     <string name="refreshed_eu_items_title">Renewed vaccination certificate</string>
     <string name="refreshed_eu_items_description"><![CDATA[We have renewed everyone\'s vaccination certificate. From now on, you have access to QR codes of earlier vaccinations.<br/><br/>This can be useful for people who want to go to a place where their latest vaccination is not yet valid.<br/><br/><a href="https://coronacheck.nl/en/faq/3-5-waarom-heb-ik-voor-elke-prik-een-internationale-QR-code/">Read more about your renewed vaccination certificate here</a>.]]></string>
-    <string name="config_warning_card_message">Maak binnenkort verbinding met het internet</string>
-    <string name="config_warning_card_button">Lees meer</string>
-    <string name="config_warning_page_title">Maak verbinding met het internet</string>
-    <string name="config_warning_page_message">De app heeft af en toe internet nodig om de juiste gegevens te tonen. Maak regelmatig verbinding om problemen te voorkomen. Zonder internetverbinding werkt jouw app nog tot %1s. Daarna kun je de app weer gebruiken wanneer je internet hebt.</string>
-    <string name="extend_domestic_recovery_green_card_info_card_text">Je kan je Nederlandse herstelbewijs verlengen</string>
-    <string name="recover_domestic_recovery_green_card_info_card_text">Je kan je Nederlandse herstelbewijs herstellen</string>
-    <string name="extended_domestic_recovery_green_card_info_card_text">Je Nederlandse herstelbewijs is verlengd</string>
-    <string name="recovered_domestic_recovery_green_card_info_card_text">Je Nederlandse herstelbewijs is teruggehaald</string>
-    <string name="extend_domestic_recovery_green_card_title">Herstelbewijs verlengen</string>
-    <string name="extend_domestic_recovery_green_card_description"><![CDATA[Binnenkort verlengen we voor iedereen het herstelbewijs. Hierdoor word je herstelbewijs een jaar geldig vanaf het moment dat je positief bent getest.<br/><br/>Je kan je bewijs ook nu alvast verlengen als je dat wil.]]></string>
-    <string name="extend_domestic_recovery_green_card_button">Verleng bewijs</string>
-    <string name="recover_domestic_recovery_green_card_title">Nederlands herstelbewijs langer geldig</string>
-    <string name="recover_domestic_recovery_green_card_description"><![CDATA[Binnenkort verlengen we voor iedereen het herstelbewijs. Hierdoor word je herstelbewijs een jaar geldig vanaf het moment dat je positief bent getest.<br/><br/>Jouw herstelbewijs was verlopen, maar is nu weer geldig. Je kan je bewijs alvast weer toevoegen als je dat wil.]]></string>
-    <string name="recovery_domestic_recovery_green_card_button">Verleng bewijs</string>
-    <string name="extended_domestic_recovery_green_card_bottomsheet_title">Nederlands herstelbewijs aangepast</string>
-    <string name="extended_domestic_recovery_green_card_bottomsheet_description">De regelgeving rond coronabewijzen is aangepast. De geldigheid van je Nederlandse herstelbewijs verlengd.</string>
-    <string name="recovered_domestic_recovery_green_card_bottomsheet_title">Nederlands herstelbewijs aangepast</string>
-    <string name="recovered_domestic_recovery_green_card_bottomsheet_description">De regelgeving rond coronabewijzen is aangepast. De geldigheid van je Nederlandse herstelbewijs verlengd.</string>
-    <string name="my_overview_info_card_button_read_more">Lees meer</string>
+    <string name="config_warning_card_message">Please connect to the internet soon</string>
+    <string name="config_warning_card_button">Read more</string>
+    <string name="config_warning_page_title">Please connect to the internet</string>
+    <string name="config_warning_page_message">Every now and then, the CoronaCheck app needs an internet connection to keep working. Without internet, your app will keep working until %1s. Open the app once you have an internet connection. It will automatically work again.&lt;br/&gt;&lt;br/&gt;Please connect regularly to prevent any problems.</string>
+    <string name="extend_domestic_recovery_green_card_info_card_text">You can extend your Dutch recovery certificate</string>
+    <string name="recover_domestic_recovery_green_card_info_card_text">You can restore your expired Dutch recovery certificate</string>
+    <string name="extended_domestic_recovery_green_card_info_card_text">Your Dutch recovery certificate has been extended</string>
+    <string name="recovered_domestic_recovery_green_card_info_card_text">Your Dutch recovery certificate has been restored</string>
+    <string name="extend_domestic_recovery_green_card_title">Extend recovery certificate</string>
+    <string name="extend_domestic_recovery_green_card_description"><![CDATA[We will extend everyone\'s expired recovery certificates soon. As a result, your certificate will be valid for one year after the moment of positive testing.<br/><br/>You can also extend your certificate right now if you want to.]]></string>
+    <string name="extend_domestic_recovery_green_card_button">Extend certificate</string>
+    <string name="recover_domestic_recovery_green_card_title">Restore recovery certificate</string>
+    <string name="recover_domestic_recovery_green_card_description"><![CDATA[We will restore your expired recovery certificate soon, because the validity of Dutch recovery certificates will be extended. As a result, your certificate will be valid for one year after the moment of positive testing.<br/><br/>You can also restore your certificate right now if you want to.]]></string>
+    <string name="recovery_domestic_recovery_green_card_button">Extend certificate</string>
+    <string name="extended_domestic_recovery_green_card_bottomsheet_title">Extended recovery certificate</string>
+    <string name="extended_domestic_recovery_green_card_bottomsheet_description">The validity of Dutch recovery certificates has been extended. As a result, your certificate is now valid for one year after the moment of positive testing.</string>
+    <string name="recovered_domestic_recovery_green_card_bottomsheet_title">Restored recovery certificate</string>
+    <string name="recovered_domestic_recovery_green_card_bottomsheet_description">We have restored your expired certificate, because the validity of Dutch recovery certificates has been extended. From now on, a certificate is valid for one year after the moment of positive testing.</string>
+    <string name="my_overview_info_card_button_read_more">Read more</string>
+    <string name="dialog_no_browser_title">No browser available</string>
+    <string name="dialog_no_browser_message">There was no browser found on this phone that can open %1s. Download a browser in the Play Store.</string>
+    <string name="about_this_app_clear_data_title">Clear all data?</string>
+    <string name="about_this_app_clear_data_description">Clearing will delete all data and certificates from the app and will close the app. You can simply restart it afterwards.</string>
+    <string name="about_this_app_clear_data_cancel">cancel</string>
+    <string name="about_this_app_clear_data_confirm">clear data</string>
     <string name="extend_domestic_recovery_green_card_toolbar_title">Bewijs verlengen</string>
     <string name="recover_domestic_recovery_green_card_toolbar_title">Bewijs terugzetten</string>
 </resources>
