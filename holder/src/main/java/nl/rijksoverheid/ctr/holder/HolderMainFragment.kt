@@ -40,10 +40,10 @@ class HolderMainFragment : BaseMainFragment(
 
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
-    private var _navController : NavController? = null
+    private var _navController: NavController? = null
     private val navController get() = _navController!!
     private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
-    private val appConfigPersistenceManager : AppConfigPersistenceManager by inject()
+    private val appConfigPersistenceManager: AppConfigPersistenceManager by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -163,7 +163,7 @@ class HolderMainFragment : BaseMainFragment(
         return binding.toolbar
     }
 
-    fun resetMenuItemListener(){
+    fun resetMenuItemListener() {
         binding.toolbar.setOnMenuItemClickListener {
             NavigationUI.onNavDestinationSelected(it, navController)
         }
@@ -172,19 +172,19 @@ class HolderMainFragment : BaseMainFragment(
     private fun navigationDrawerStyling() {
         val context = binding.navView.context
         binding.navView.menu.findItem(R.id.nav_graph_overview)
-            .styleTitle(context, R.attr.textAppearanceHeadline6, heading = true)
+            .styleTitle(context, R.attr.textAppearanceHeadline4, heading = true)
         binding.navView.menu.findItem(R.id.nav_settings)
-            .styleTitle(context, R.attr.textAppearanceHeadline6, heading = true)
+            .styleTitle(context, R.attr.textAppearanceHeadline4, heading = true)
         binding.navView.menu.findItem(R.id.nav_qr_code_type)
-            .styleTitle(context, R.attr.textAppearanceHeadline6, heading = true)
-        binding.navView.menu.findItem(R.id.nav_about_this_app)
-            .styleTitle(context, R.attr.textAppearanceBody1)
+            .styleTitle(context, R.attr.textAppearanceHeadline4, heading = true)
         binding.navView.menu.findItem(R.id.nav_frequently_asked_questions)
-            .styleTitle(context, R.attr.textAppearanceBody1)
+            .styleTitle(context, R.attr.textAppearanceHeadline4, heading = true)
+        binding.navView.menu.findItem(R.id.nav_about_this_app)
+            .styleTitle(context, R.attr.textAppearanceHeadline3)
         binding.navView.menu.findItem(R.id.nav_terms_of_use)
-            .styleTitle(context, R.attr.textAppearanceBody1)
+            .styleTitle(context, R.attr.textAppearanceHeadline3)
         binding.navView.menu.findItem(R.id.nav_paper_proof)
-            .styleTitle(context, R.attr.textAppearanceBody1)
+            .styleTitle(context, R.attr.textAppearanceHeadline3)
 
         // resize drawer according to design
         val width = activity?.resources?.displayMetrics?.widthPixels ?: return
