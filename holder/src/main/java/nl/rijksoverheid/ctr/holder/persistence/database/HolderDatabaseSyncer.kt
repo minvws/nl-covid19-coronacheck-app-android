@@ -4,6 +4,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
+import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
@@ -37,7 +38,8 @@ class HolderDatabaseSyncerImpl(
     private val greenCardUtil: GreenCardUtil,
     private val getRemoteGreenCardsUseCase: GetRemoteGreenCardsUseCase,
     private val syncRemoteGreenCardsUseCase: SyncRemoteGreenCardsUseCase,
-    private val removeExpiredEventsUseCase: RemoveExpiredEventsUseCase
+    private val removeExpiredEventsUseCase: RemoveExpiredEventsUseCase,
+    private val persistenceManager: PersistenceManager
 ) : HolderDatabaseSyncer {
 
     private val mutex = Mutex()
@@ -65,6 +67,20 @@ class HolderDatabaseSyncerImpl(
                     when (remoteGreenCardsResult) {
                         is RemoteGreenCardsResult.Success -> {
                             val remoteGreenCards = remoteGreenCardsResult.remoteGreenCards
+
+                            // If the recover domestic recovery info card has been shown, never show it again after a successful sync
+                            // Start showing the info card that says you have recovered
+                            if (persistenceManager.getShowRecoverDomesticRecoveryInfoCard()) {
+                                persistenceManager.setShowRecoverDomesticRecoveryInfoCard(false)
+                                persistenceManager.setHasDismissedRecoveredDomesticRecoveryInfoCard(false)
+                            }
+
+                            // If the extend domestic recovery info card has been shown, never show it again after a successful sync
+                            // Start showing the info card that says you have extended
+                            if (persistenceManager.getShowExtendDomesticRecoveryInfoCard()) {
+                                persistenceManager.setShowExtendDomesticRecoveryInfoCard(false)
+                                persistenceManager.setHasDismissedExtendedDomesticRecoveryInfoCard(false)
+                            }
 
                             // If we expect the remote green cards to have a certain origin
                             if (expectedOriginType != null && !remoteGreenCards.getAllOrigins()

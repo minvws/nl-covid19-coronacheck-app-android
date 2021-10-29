@@ -74,6 +74,22 @@ class GetDashboardItemsUseCaseImpl(
             dashboardItems.add(DashboardItem.ClockDeviationItem)
         }
 
+        if (dashboardItemUtil.shouldShowExtendDomesticRecoveryItem()) {
+            dashboardItems.add(DashboardItem.InfoItem.NonDismissible.ExtendDomesticRecovery)
+        }
+
+        if (dashboardItemUtil.shouldShowRecoverDomesticRecoveryItem()) {
+            dashboardItems.add(DashboardItem.InfoItem.NonDismissible.RecoverDomesticRecovery)
+        }
+
+        if (dashboardItemUtil.shouldShowRecoveredDomesticRecoveryItem()) {
+            dashboardItems.add(DashboardItem.InfoItem.Dismissible.RecoveredDomesticRecovery)
+        }
+
+        if (dashboardItemUtil.shouldShowExtendedDomesticRecoveryItem()) {
+            dashboardItems.add(DashboardItem.InfoItem.Dismissible.ExtendedDomesticRecovery)
+        }
+
         dashboardItems.addAll(
             getGreenCardItems(
                 greenCardType = GreenCardType.Domestic,
@@ -126,11 +142,11 @@ class GetDashboardItemsUseCaseImpl(
         if (dashboardItemUtil.shouldAddSyncGreenCardsItem(allEventGroupEntities, allGreenCards)) {
             // Enable the ability to show GreenCardsSyncedItem (after successful sync)
             persistenceManager.setHasDismissedSyncedGreenCardsItem(false)
-            dashboardItems.add(DashboardItem.SyncGreenCardsItem)
+            dashboardItems.add(DashboardItem.InfoItem.NonDismissible.RefreshEuVaccinations)
         }
 
         if (dashboardItemUtil.shouldAddGreenCardsSyncedItem(allGreenCards)) {
-            dashboardItems.add(DashboardItem.GreenCardsSyncedItem)
+            dashboardItems.add(DashboardItem.InfoItem.Dismissible.RefreshedEuVaccinations)
         }
 
         dashboardItems.addAll(

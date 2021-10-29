@@ -2,6 +2,8 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr
 
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.StringRes
+import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.holder.BaseFragment
 import nl.rijksoverheid.ctr.holder.HolderFlow
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
@@ -23,6 +25,7 @@ import java.util.*
  */
 class SyncGreenCardsFragment: BaseFragment(R.layout.fragment_sync_green_cards) {
 
+    private val args: SyncGreenCardsFragmentArgs by navArgs()
     private val syncGreenCardsViewModel: SyncGreenCardsViewModel by viewModel()
 
     override fun onButtonClickWithRetryAction() {
@@ -34,6 +37,10 @@ class SyncGreenCardsFragment: BaseFragment(R.layout.fragment_sync_green_cards) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentSyncGreenCardsBinding.bind(view)
+        binding.title.text = args.title
+        binding.description.setHtmlText(args.description)
+        binding.bottom.setButtonText(args.button)
+
         binding.bottom.setButtonClick {
             onButtonClickWithRetryAction()
         }

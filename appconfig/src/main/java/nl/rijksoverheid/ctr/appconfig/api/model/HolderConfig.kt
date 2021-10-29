@@ -2,6 +2,10 @@ package nl.rijksoverheid.ctr.appconfig.api.model
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import java.time.Instant
+import java.time.OffsetDateTime
+import java.time.ZoneId
+import java.time.ZoneOffset
 
 
 /*
@@ -43,6 +47,7 @@ data class HolderConfig(
     @Json(name = "upgradeRecommendationInterval") val upgradeRecommendationIntervalHours: Int,
     @Json(name = "luhnCheckEnabled") val luhnCheckEnabled: Boolean,
     @Json(name = "internationalQRRelevancyDays") val internationalQRRelevancyDays: Int,
+    @Json(name = "recoveryGreencardRevisedValidityLaunchDate") val recoveryGreenCardRevisedValidityLaunchDate: String,
 ) : AppConfig(
     holderAppDeactivated,
     holderInformationURL,
@@ -118,7 +123,8 @@ data class HolderConfig(
             holderRecommendedVersion = holderRecommendedVersion,
             upgradeRecommendationIntervalHours = upgradeRecommendationIntervalHours,
             luhnCheckEnabled = luhnCheckEnabled,
-            internationalQRRelevancyDays = internationalQRRelevancyDays
+            internationalQRRelevancyDays = internationalQRRelevancyDays,
+            recoveryGreenCardRevisedValidityLaunchDate = "1970-01-01T00:00:00Z"
         )
     }
 }
