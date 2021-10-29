@@ -16,16 +16,17 @@
         <TextView
             android:id="@+id/text"
             android:layout_width="0dp"
-            android:layout_marginEnd="16dp"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="24dp"
-            android:layout_marginTop="22dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            app:layout_goneMarginEnd="24dp"
             android:textAppearance="?attr/textAppearanceBody1"
-            tools:text="@string/dashboard_item_refreshed_eu_vaccinations_text"
-            app:layout_constraintBottom_toTopOf="@id/button"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toStartOf="@+id/close"
+            tools:text="@string/dashboard_item_refreshed_eu_vaccinations_text" />
 
         <Button
             android:id="@+id/button"
@@ -35,7 +36,7 @@
             android:layout_marginTop="4dp"
             android:text="@string/my_overview_info_card_button_read_more"
             android:minWidth="0dp"
-            android:layout_marginHorizontal="18dp"
+            android:layout_marginHorizontal="16dp"
             android:layout_marginBottom="8dp"
             android:textColor="@color/link"
             app:layout_constraintHorizontal_bias="0"
@@ -52,9 +53,9 @@
             android:contentDescription="@string/menu_close"
             android:src="@drawable/ic_close"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/text"
-            app:layout_constraintEnd_toEndOf="@id/text"
-            app:layout_constraintTop_toTopOf="@id/text"
+            android:padding="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0"
             tools:visibility="visible"/>
 
