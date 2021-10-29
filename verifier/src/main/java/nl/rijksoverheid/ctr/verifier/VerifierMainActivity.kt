@@ -30,11 +30,15 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class VerifierMainActivity : AppCompatActivity() {
 
     private val introductionViewModel: IntroductionViewModel by viewModel()
-    private val appStatusViewModel: AppConfigViewModel by viewModel()
+    private val appConfigViewModel: AppConfigViewModel by viewModel()
     private val mobileCoreWrapper: MobileCoreWrapper by inject()
     private val dialogUtil: DialogUtil by inject()
     private val intentUtil: IntentUtil by inject()
+
     private var isFreshStart: Boolean = true // track if this is a fresh start of the app
+
+    var returnUri: String? = null // return uri to external app given as argument from deeplink
+    private var hasHandledDeeplink: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
@@ -45,10 +49,19 @@ class VerifierMainActivity : AppCompatActivity() {
         setProductionFlags()
 
         observeStatuses()
+    }
 
-        // Force retrieval of config once on startup for clock deviation checks
-        if (introductionViewModel.getIntroductionStatus() is IntroductionStatus.IntroductionFinished) {
-            appStatusViewModel.refresh(mobileCoreWrapper, force = isFreshStart)
+    override fun onStart() {
+        super.onStart()
+        if (isIntroductionFinished()) {
+            if (isFreshStart) {
+                // Force retrieval of config once on startup for clock deviation checks
+                appConfigViewModel.refresh(mobileCoreWrapper, force = true)
+            } else {
+                // Only get app config on every app foreground when introduction is finished and the app has already started
+                appConfigViewModel.refresh(mobileCoreWrapper)
+            }
+            isFreshStart = false
         }
     }
 
@@ -61,10 +74,37 @@ class VerifierMainActivity : AppCompatActivity() {
             navController.navigate(R.id.action_introduction, IntroductionFragment.getBundle(it))
         })
 
-        appStatusViewModel.appStatusLiveData.observe(this, EventObserver {
+        appConfigViewModel.appStatusLiveData.observe(this, EventObserver {
             handleAppStatus(it, navController)
         })
+
+        navController.addOnDestinationChangedListener { _, destination, arguments ->
+            if (destination.id == R.id.nav_main) {
+                // Persist deeplink return uri in case it's not used immediately because of onboarding
+                arguments?.getString("returnUri")?.let { returnUri = it }
+                navigateDeeplink(navController)
+            }
+
+            // verifier can stay active for a long time, so it is not sufficient
+            // to try to refresh the config only every time the app resumes.
+            // We do track if the app was recently (re)started to avoid double config calls
+            if (!isFreshStart && isIntroductionFinished()) {
+                appConfigViewModel.refresh(mobileCoreWrapper)
+            } else {
+                isFreshStart = false
+            }
+        }
     }
+
+    private fun navigateDeeplink(navController: NavController) {
+        if (returnUri != null && !hasHandledDeeplink && isIntroductionFinished()) {
+            navController.navigate(RootNavDirections.actionScanner())
+        }
+        hasHandledDeeplink = true
+    }
+
+    private fun isIntroductionFinished() =
+        introductionViewModel.getIntroductionStatus() is IntroductionStatus.IntroductionFinished
 
     private fun handleAppStatus(
         appStatus: AppStatus,
@@ -103,18 +143,6 @@ class VerifierMainActivity : AppCompatActivity() {
                 WindowManager.LayoutParams.FLAG_SECURE,
                 WindowManager.LayoutParams.FLAG_SECURE
             )
-        }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        // Only get app config on every app foreground when introduction is finished and the app has already started
-        if (introductionViewModel.getIntroductionStatus() is IntroductionStatus.IntroductionFinished && !isFreshStart) {
-            appStatusViewModel.refresh(mobileCoreWrapper)
-        }
-
-        if (isFreshStart) {
-            isFreshStart = false
         }
     }
 }

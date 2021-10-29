@@ -40,7 +40,7 @@ class ScanResultInvalidFragmentTest : AutoCloseKoinTest() {
 
     @Test
     fun `Screen shows correct content`() {
-        launchScanResultInvalidFragment(data = ScanResultInvalidData.Error("invalid QR code", null))
+        launchScanResultInvalidFragment(data = ScanResultInvalidData.Error("invalid QR code"))
         assertHasBackground(R.id.root, R.color.red)
         scrollTo(R.id.title)
         assertDisplayed(R.id.title, R.string.scan_result_invalid_title)
@@ -53,7 +53,7 @@ class ScanResultInvalidFragmentTest : AutoCloseKoinTest() {
 
     @Test
     fun `Invalid result on explanation button click opens explanation dialog`() {
-        launchScanResultInvalidFragment(data = ScanResultInvalidData.Error("invalid QR code", null))
+        launchScanResultInvalidFragment(data = ScanResultInvalidData.Error("invalid QR code"))
         performActionOnView(withId(R.id.secondaryButton), click())
         assertContains(R.string.scan_result_invalid_reason_title)
     }

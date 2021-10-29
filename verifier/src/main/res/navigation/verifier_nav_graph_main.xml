@@ -38,12 +38,13 @@
         android:label="@string/about_this_app"
         tools:layout="@layout/fragment_about_app" />
 
+    <include app:graph="@navigation/verifier_nav_graph_scanner" />
+
     <fragment
         android:id="@+id/nav_scan_instructions"
         android:name="nl.rijksoverheid.ctr.verifier.ui.instructions.ScanInstructionsFragment"
         android:label="@string/scan_instructions"
-        tools:layout="@layout/fragment_scan_instructions" />
-
-    <include app:graph="@navigation/verifier_nav_graph_scanner" />
+        tools:layout="@layout/fragment_scan_instructions">
+    </fragment>
 
 </navigation>
