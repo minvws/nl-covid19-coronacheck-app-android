@@ -17,7 +17,6 @@ import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.utils.IntentUtil
 import nl.rijksoverheid.ctr.verifier.databinding.ActivityMainBinding
-import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrViewModel
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -32,13 +31,13 @@ class VerifierMainActivity : AppCompatActivity() {
 
     private val introductionViewModel: IntroductionViewModel by viewModel()
     private val appConfigViewModel: AppConfigViewModel by viewModel()
-    private val scanQrViewModel: ScanQrViewModel by viewModel()
     private val mobileCoreWrapper: MobileCoreWrapper by inject()
     private val dialogUtil: DialogUtil by inject()
     private val intentUtil: IntentUtil by inject()
 
     private var isFreshStart: Boolean = true // track if this is a fresh start of the app
-    private var returnUri: String? = null // return uri to external app given as argument from deeplink
+
+    var returnUri: String? = null // return uri to external app given as argument from deeplink
     private var hasHandledDeeplink: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,11 +79,11 @@ class VerifierMainActivity : AppCompatActivity() {
         })
 
         navController.addOnDestinationChangedListener { _, destination, arguments ->
-            // Persist deeplink return uri in case it's not used immediately because of onboarding
             if (destination.id == R.id.nav_main) {
+                // Persist deeplink return uri in case it's not used immediately because of onboarding
                 arguments?.getString("returnUri")?.let { returnUri = it }
+                navigateDeeplink(navController)
             }
-            navigateDeeplink(navController)
 
             // verifier can stay active for a long time, so it is not sufficient
             // to try to refresh the config only every time the app resumes.
@@ -99,16 +98,9 @@ class VerifierMainActivity : AppCompatActivity() {
 
     private fun navigateDeeplink(navController: NavController) {
         if (returnUri != null && !hasHandledDeeplink && isIntroductionFinished()) {
-            hasHandledDeeplink = true
-            navController.navigate(
-                // Show scan instructions before scanner when it's not shown before
-                if (scanQrViewModel.hasSeenScanInstructions()) {
-                    RootNavDirections.actionScanner(returnUri)
-                } else {
-                    RootNavDirections.actionScanInstructions(returnUri)
-                }
-            )
+            navController.navigate(RootNavDirections.actionScanner())
         }
+        hasHandledDeeplink = true
     }
 
     private fun isIntroductionFinished() =

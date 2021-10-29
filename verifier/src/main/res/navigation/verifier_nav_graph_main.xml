@@ -20,7 +20,7 @@
 
         <action
             android:id="@+id/action_scan_instructions"
-            app:destination="@id/scan_instructions_nav"
+            app:destination="@id/nav_scan_instructions"
             app:enterAnim="@anim/fragment_open_enter"
             app:exitAnim="@anim/fragment_open_exit"
             app:popEnterAnim="@anim/fragment_close_enter"
@@ -40,6 +40,11 @@
 
     <include app:graph="@navigation/verifier_nav_graph_scanner" />
 
-    <include app:graph="@navigation/verifier_nav_graph_scan_instructions" />
+    <fragment
+        android:id="@+id/nav_scan_instructions"
+        android:name="nl.rijksoverheid.ctr.verifier.ui.instructions.ScanInstructionsFragment"
+        android:label="@string/scan_instructions"
+        tools:layout="@layout/fragment_scan_instructions">
+    </fragment>
 
 </navigation>
