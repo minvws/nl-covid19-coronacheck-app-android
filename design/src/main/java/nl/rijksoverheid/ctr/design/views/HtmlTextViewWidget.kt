@@ -53,6 +53,10 @@ class HtmlTextViewWidget @JvmOverloads constructor(
     var text: String? = null
         private set
 
+    // Reflects the parsed HTML text shown in the subviews. Can only be set internally.
+    var spannable: Spannable? = null
+        private set
+
     /**
      * Checks if any attributes were passed by XML, and if so, calls the relevant methods.
      */
@@ -111,10 +115,11 @@ class HtmlTextViewWidget @JvmOverloads constructor(
         if (htmlText.isEmpty()) {
             return
         }
-        text = htmlText
+        this.text = htmlText
 
         // Step 1: Parse the given String into a Spannable
         val spannable = getSpannableFromHtml(htmlText)
+        this.spannable = spannable
 
         // Step 2: Separate the Spannable on each linebreak
         val parts = listOf(spannable) // spannable.separated("\n") --> NOTE: disabled for now

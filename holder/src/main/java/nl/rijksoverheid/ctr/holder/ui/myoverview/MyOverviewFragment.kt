@@ -19,6 +19,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.*
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardSync
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeFragmentData
+import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.MyOverviewFragmentInfoItemHandlerUtil
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.ext.sharedViewModelWithOwner
 import org.koin.android.ext.android.inject
@@ -52,12 +53,13 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
     }
 
     private val bottomSheetDialogUtil: BottomSheetDialogUtil by inject()
-    private val dashboardViewModel: DashboardViewModel by sharedViewModelWithOwner(owner = {
+    private val myOverviewFragmentInfoItemHandlerUtil: MyOverviewFragmentInfoItemHandlerUtil by inject()
+    val dashboardViewModel: DashboardViewModel by sharedViewModelWithOwner(owner = {
         ViewModelOwner.from(
             requireParentFragment()
         )
     })
-    private val section = Section()
+    val section = Section()
     private val greenCardType: GreenCardType by lazy {
         arguments?.getParcelable<GreenCardType>(
             EXTRA_GREEN_CARD_TYPE
@@ -97,7 +99,12 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                 is DashboardItem.HeaderItem -> {
                     adapterItems.add(
                         MyOverviewHeaderAdapterItem(
-                            text = dashboardItem.text
+                            text = dashboardItem.text,
+                            buttonInfo =  if (greenCardType == GreenCardType.Eu) {
+                                ButtonInfo(R.string.my_overview_description_eu_button_text, R.string.my_overview_description_eu_button_link)
+                            } else {
+                                null
+                            },
                         )
                     )
                 }
@@ -157,8 +164,8 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                         originType = dashboardItem.originType,
                         onInfoClick = { greenCardType, originType ->
                             when (greenCardType) {
-                                is GreenCardType.Domestic -> navigateToDomesticQr(originType)
-                                is GreenCardType.Eu -> navigateToEuQr(originType)
+                                is GreenCardType.Domestic -> presentOriginInfoForDomesticQr(originType)
+                                is GreenCardType.Eu -> presentOriginInfoForEuQr(originType)
                             }
                         }
                     ))
@@ -184,31 +191,14 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                         dashboardItem.show
                     )
                 }
-                DashboardItem.SyncGreenCardsItem -> {
-                    adapterItems.add(MyOverviewSyncGreenCardsItem(
+                is DashboardItem.InfoItem -> {
+                    adapterItems.add(MyOverviewInfoCardItem(
+                        infoItem = dashboardItem,
                         onButtonClick = {
-                            navigateSafety(
-                                MyOverviewFragmentDirections.actionSyncGreenCards()
-                            )
-                        }
-                    ))
-                }
-                DashboardItem.GreenCardsSyncedItem -> {
-                    adapterItems.add(MyOverviewGreenCardsSyncedItem(
-                        onButtonClick = {
-                            bottomSheetDialogUtil.present(
-                                childFragmentManager,
-                                BottomSheetData.TitleDescription(
-                                    title = getString(R.string.refreshed_eu_items_title),
-                                    applyOnDescription = {
-                                        it.setHtmlText(getString(R.string.refreshed_eu_items_description))
-                                    }
-                                )
-                            )
+                            myOverviewFragmentInfoItemHandlerUtil.handleButtonClick(this, it)
                         },
-                        onCloseClick = {
-                            section.remove(it)
-                            dashboardViewModel.dismissGreenCardsSyncedItem()
+                        onDismiss = { infoCardItem, infoItem ->
+                            myOverviewFragmentInfoItemHandlerUtil.handleDismiss(this, infoCardItem, infoItem)
                         }
                     ))
                 }
@@ -218,7 +208,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
         section.update(adapterItems)
     }
 
-    private fun navigateToEuQr(originType: OriginType) {
+    private fun presentOriginInfoForEuQr(originType: OriginType) {
         bottomSheetDialogUtil.present(childFragmentManager,
             data = when (originType) {
                 is OriginType.Test -> {
@@ -248,34 +238,19 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
             })
     }
 
-    private fun navigateToDomesticQr(originType: OriginType) {
+    private fun presentOriginInfoForDomesticQr(originType: OriginType) {
+        val (title, description) = when (originType) {
+            OriginType.Test -> Pair(getString(R.string.my_overview_green_card_not_valid_title_test), R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_test)
+            OriginType.Vaccination -> Pair(getString(R.string.my_overview_green_card_not_valid_title_vaccination), R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_vaccination)
+            OriginType.Recovery -> Pair(getString(R.string.my_overview_green_card_not_valid_title_recovery), R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_recovery)
+        }
         bottomSheetDialogUtil.present(childFragmentManager,
-            data = when (originType) {
-                is OriginType.Test -> {
-                    BottomSheetData.TitleDescription(
-                        title = getString(R.string.my_overview_green_card_not_valid_title_test),
-                        applyOnDescription = {
-                            it.setHtmlText(R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_test)
-                        }
-                    )
+            BottomSheetData.TitleDescription(
+                title = title,
+                applyOnDescription = {
+                    it.setHtmlText(description, true)
                 }
-                is OriginType.Vaccination -> {
-                    BottomSheetData.TitleDescription(
-                        title = getString(R.string.my_overview_green_card_not_valid_title_vaccination),
-                        applyOnDescription = {
-                            it.setHtmlText(R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_vaccination)
-                        }
-                    )
-                }
-                is OriginType.Recovery -> {
-                    BottomSheetData.TitleDescription(
-                        title = getString(R.string.my_overview_green_card_not_valid_title_recovery),
-                        applyOnDescription = {
-                            it.setHtmlText(R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_recovery)
-                        }
-                    )
-                }
-            }
+            )
         )
     }
 }

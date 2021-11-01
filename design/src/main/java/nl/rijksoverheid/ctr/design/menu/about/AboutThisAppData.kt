@@ -14,9 +14,16 @@ import kotlinx.parcelize.Parcelize
 data class AboutThisAppData(
     val versionName: String,
     val versionCode: String,
-    val readMoreItems: List<ReadMoreItem> = listOf()
+    val readMoreItems: List<AboutThisAppItem> = listOf(),
+    val configVersionHash: String,
+    val configVersionTimestamp: Long
 ) : Parcelable {
 
+    sealed class AboutThisAppItem(open val text: String) : Parcelable
+
     @Parcelize
-    data class ReadMoreItem(val text: String, val url: String) : Parcelable
+    data class Url(override val text: String, val url: String) : AboutThisAppItem(text)
+
+    @Parcelize
+    data class ClearAppData(override val text: String) : AboutThisAppItem(text)
 }

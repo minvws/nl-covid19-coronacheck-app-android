@@ -29,8 +29,7 @@ import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TestResultAdapterItemUtil
 interface MyOverViewGreenCardAdapterUtil {
     fun setContent(
         viewBinding: ViewBindingWrapper,
-        greenCards: List<GreenCard>,
-        originStates: List<OriginState>
+        cards: List<AdapterCard>,
     )
 }
 
@@ -43,42 +42,42 @@ class MyOverViewGreenCardAdapterUtilImpl(
 
     override fun setContent(
         viewBinding: ViewBindingWrapper,
-        greenCards: List<GreenCard>,
-        originStates: List<OriginState>
+        cards: List<AdapterCard>,
     ) {
-        val greenCardType = greenCards.first().greenCardEntity.type
-        greenCards.forEach {
+        val greenCardType = cards.first().greenCard.greenCardEntity.type
+        cards.forEach { card ->
+            val it = card.greenCard
             when (it.greenCardEntity.type) {
                 is GreenCardType.Eu -> {
                     // European card only has one origin
-                    val originState = originStates.first()
+                    val originState = card.originStates.first()
                     val origin = originState.origin
                     when (origin.type) {
                         is OriginType.Test -> {
                             viewBinding.title.text =
-                                context.getString(R.string.my_overview_test_result_title)
+                                context.getString(R.string.qr_code_type_negative_test_title)
                             setEuTestOrigin(
                                 viewBinding, it, originState, greenCardType, origin
                             )
                         }
                         is OriginType.Vaccination -> {
                             viewBinding.title.text =
-                                context.getString(R.string.my_overview_green_card_vaccination_title)
+                                context.getString(R.string.qr_code_type_vaccination_title)
                             setEuVaccinationOrigin(
                                 viewBinding, it, originState, greenCardType, origin
                             )
                         }
                         is OriginType.Recovery -> {
                             viewBinding.title.text =
-                                context.getString(R.string.my_overview_test_result_title)
-                            setRecoveryOrigin(viewBinding, originState, greenCardType, origin)
+                                context.getString(R.string.qr_code_type_recovery_title)
+                            setEuRecoveryOrigin(viewBinding, originState, greenCardType, origin)
                         }
                     }
                 }
                 is GreenCardType.Domestic -> {
                     viewBinding.title.text =
                         context.getString(R.string.my_overview_test_result_title)
-                    originStates
+                    card.originStates
                         .sortedBy { state -> state.origin.type.order }
                         .forEach { originState ->
                             val origin = originState.origin
@@ -123,9 +122,13 @@ class MyOverViewGreenCardAdapterUtilImpl(
             }
         }
 
+        val originStates = cards.first().originStates
         val becomesValidAutomatically = originStates.size == 1 &&
                 originStates.first() is OriginState.Future &&
-                shouldShowTimeSubtitle(originStates.first(), greenCards.first().greenCardEntity.type)
+                shouldShowTimeSubtitle(
+                    originStates.first(),
+                    cards.first().greenCard.greenCardEntity.type
+                )
         if (becomesValidAutomatically) {
             viewBinding.expiresIn.visibility = View.VISIBLE
             viewBinding.expiresIn.text = context.getString(R.string.qr_card_validity_future)
@@ -199,6 +202,30 @@ class MyOverViewGreenCardAdapterUtilImpl(
         )
     }
 
+    private fun setEuRecoveryOrigin(
+        viewBinding: ViewBindingWrapper,
+        originState: OriginState,
+        greenCardType: GreenCardType,
+        origin: OriginEntity
+    ) {
+        // EU recovery description has no title so we put only the space in between for correct alignment
+        viewBinding.description.addView(
+            Space(context), LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                context.resources.getDimensionPixelSize(R.dimen.green_card_item_proof_spacing)
+            )
+        )
+        setOriginSubtitle(
+            descriptionLayout = viewBinding.description,
+            originState = originState,
+            showTime = shouldShowTimeSubtitle(originState, greenCardType),
+            subtitle = context.getString(
+                R.string.qr_card_validity_valid,
+                origin.expirationTime.toLocalDate().formatDayShortMonthYear()
+            ),
+        )
+    }
+
     private fun setEuVaccinationOrigin(
         viewBinding: ViewBindingWrapper,
         greenCard: GreenCard,
@@ -243,7 +270,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
     ) {
         setOriginTitle(
             descriptionLayout = viewBinding.description,
-            title = "${context.getString(R.string.qr_card_test_domestic)} PCR (${
+            title = "${context.getString(R.string.qr_card_test_eu)} PCR (${
                 credentialUtil.getTestTypeForEuropeanCredentials(
                     greenCard.credentialEntities
                 )
@@ -276,6 +303,14 @@ class MyOverViewGreenCardAdapterUtilImpl(
             TextView(context).apply {
                 setTextAppearance(R.style.App_TextAppearance_MaterialComponents_Body1)
                 text = title
+            },
+            LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply {
+                val topMargin =
+                    context.resources.getDimensionPixelSize(R.dimen.green_card_item_proof_spacing)
+                setMargins(0, topMargin, 0, 0)
             }
         )
     }
@@ -321,17 +356,6 @@ class MyOverViewGreenCardAdapterUtilImpl(
             }
         }
 
-        descriptionLayout.addView(
-            textView,
-            LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            ).apply {
-                setMargins(
-                    0, 0, 0,
-                    context.resources.getDimensionPixelSize(R.dimen.green_card_item_proof_spacing)
-                )
-            }
-        )
+        descriptionLayout.addView(textView)
     }
 }

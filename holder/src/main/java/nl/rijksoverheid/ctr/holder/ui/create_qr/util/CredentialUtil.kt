@@ -16,11 +16,12 @@ interface CredentialUtil {
     fun isExpiring(credentialRenewalDays: Long, credential: CredentialEntity): Boolean
     fun getTestTypeForEuropeanCredentials(entities: List<CredentialEntity>): String
     fun getVaccinationDosesForEuropeanCredentials(
-        entities: List<CredentialEntity>,
-        getString: (String, String) -> String
+        entities: List<CredentialEntity>, getString: (String, String) -> String
     ): String
 
-    fun vaccinationShouldBeHidden(readEuropeanCredential: JSONObject): Boolean
+    fun vaccinationShouldBeHidden(
+        readEuropeanCredentials: List<JSONObject>, indexOfVaccination: Int
+    ): Boolean
 }
 
 class CredentialUtilImpl(
@@ -86,19 +87,47 @@ class CredentialUtilImpl(
         }
     }
 
-    override fun vaccinationShouldBeHidden(readEuropeanCredential: JSONObject): Boolean {
-        val dcc = readEuropeanCredential.optJSONObject("dcc")
-        val vaccination = dcc?.getJSONArray("v")?.optJSONObject(0)
+    override fun vaccinationShouldBeHidden(
+        readEuropeanCredentials: List<JSONObject>,
+        indexOfVaccination: Int
+    ): Boolean {
+        val vaccinations = readEuropeanCredentials.map {
+            it.optJSONObject("dcc")?.getJSONArray("v")?.optJSONObject(0)
+        }
+        val (dose, totalDoses) = getDoses(vaccinations[indexOfVaccination])
+        return getDateWhenRelevant(vaccinations[indexOfVaccination])?.let {
+            it < OffsetDateTime.now(clock)
+                    && dose < totalDoses
+                    && !hasCompletedButNotRelevantVaccination(vaccinations, dose)
+        } ?: false
+    }
+
+    private fun hasCompletedButNotRelevantVaccination(
+        vaccinations: List<JSONObject?>,
+        doseOfHiddenVaccination: Int
+    ): Boolean {
+        return vaccinations.any { vaccination ->
+            val (dose, totalDoses) = getDoses(vaccination)
+            getDateWhenRelevant(vaccination)?.let {
+                it > OffsetDateTime.now(clock)
+                        && dose == totalDoses
+                        && dose == doseOfHiddenVaccination + 1
+            } ?: false
+        }
+    }
+
+    private fun getDoses(vaccination: JSONObject?): Pair<Int, Int> {
         val dose = vaccination?.getStringOrNull("dn") ?: ""
         val totalDoses = vaccination?.getStringOrNull("sd") ?: ""
+        return Pair(dose.toInt(), totalDoses.toInt())
+    }
+
+    private fun getDateWhenRelevant(vaccination: JSONObject?): OffsetDateTime? {
         val date = LocalDate.parse(vaccination?.getStringOrNull("dt"))
             ?.atStartOfDay()
             ?.atOffset(ZoneOffset.UTC)
         val relevancyDays =
             appConfigUseCase.getCachedAppConfig().internationalQRRelevancyDays.toLong()
-        return date?.let {
-            it.plusDays(relevancyDays) < OffsetDateTime.now(clock)
-                    && dose < totalDoses
-        } ?: false
+        return date?.plusDays(relevancyDays)
     }
 }

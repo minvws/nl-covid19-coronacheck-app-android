@@ -17,11 +17,22 @@ import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAccessibilityFocus
  *
  */
 class QrCodePagerAdapter : RecyclerView.Adapter<QrCodeViewHolder>() {
+
     val qrCodeDataList: MutableList<QrCodeData> = mutableListOf()
+
+    var isOverlayStateReset: Boolean = true
+        set(value) {
+            field = value
+            if (value) resetOverlays.forEach { it.invoke() }
+        }
+
+    /** functions to each view holder to reset the overlay state */
+    private var resetOverlays: MutableList<(() -> Unit)> = mutableListOf()
 
     fun addData(data: List<QrCodeData>) {
         val hasItems = qrCodeDataList.isNotEmpty()
         qrCodeDataList.clear()
+        resetOverlays.clear()
         qrCodeDataList.addAll(data)
         if (hasItems) {
             notifyItemRangeChanged(0, data.size)
@@ -36,7 +47,8 @@ class QrCodePagerAdapter : RecyclerView.Adapter<QrCodeViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: QrCodeViewHolder, position: Int) {
-        holder.bind(qrCodeDataList[position])
+        holder.bind(qrCodeDataList[position], isOverlayStateReset) { isOverlayStateReset = false }
+        resetOverlays.add { holder.resetOverlay(qrCodeDataList[position]) }
     }
 
     override fun getItemCount(): Int {
@@ -45,14 +57,29 @@ class QrCodePagerAdapter : RecyclerView.Adapter<QrCodeViewHolder>() {
 }
 
 class QrCodeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    fun bind(qrCodeData: QrCodeData) {
-        val binding = ViewQrCodeBinding.bind(itemView)
+
+    private val binding = ViewQrCodeBinding.bind(itemView)
+
+    fun bind(
+        qrCodeData: QrCodeData,
+        isOverlayStateReset: Boolean,
+        onOverlayButtonClicked: () -> Unit
+    ) {
         binding.image.setImageBitmap(qrCodeData.bitmap)
         binding.image.setAccessibilityFocus()
         binding.overlayButton.setOnClickListener {
             binding.overlay.visibility = View.GONE
+            onOverlayButtonClicked.invoke()
         }
-        binding.overlay.visibility =
-            if ((qrCodeData as? QrCodeData.European.Vaccination)?.isHidden == true) View.VISIBLE else View.GONE
+        if (isOverlayStateReset) {
+            binding.overlay.visibility = if (isHidden(qrCodeData)) View.VISIBLE else View.GONE
+        }
     }
+
+    fun resetOverlay(qrCodeData: QrCodeData) {
+        binding.overlay.visibility = if (isHidden(qrCodeData)) View.VISIBLE else View.GONE
+    }
+
+    private fun isHidden(qrCodeData: QrCodeData) =
+        (qrCodeData as? QrCodeData.European.Vaccination)?.isHidden == true
 }

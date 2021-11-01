@@ -1,5 +1,7 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
+import com.squareup.moshi.Moshi
+import io.mockk.mockk
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventVaccination
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
@@ -13,7 +15,8 @@ import java.time.ZoneId
 
 class RemoteEventUtilImplTest {
 
-    private val util = RemoteEventUtilImpl()
+    private val moshi: Moshi = mockk(relaxed = true)
+    private val util = RemoteEventUtilImpl(moshi)
     private val clock1 = Clock.fixed(Instant.parse("2021-06-01T00:00:00.00Z"), ZoneId.of("UTC"))
 
     @Test

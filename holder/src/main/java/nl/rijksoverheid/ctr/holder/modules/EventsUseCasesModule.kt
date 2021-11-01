@@ -38,7 +38,7 @@ val eventsUseCasesModule = module {
     }
 
     factory<GetEventsFromPaperProofQrUseCase> {
-        GetEventsFromPaperProofQrUseCaseImpl(get())
+        GetEventsFromPaperProofQrUseCaseImpl(get(), get())
     }
 
     factory<RemoveExpiredEventsUseCase> {

@@ -8,9 +8,11 @@
 
 package nl.rijksoverheid.ctr.holder
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.WindowManager
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -25,6 +27,7 @@ import nl.rijksoverheid.ctr.introduction.IntroductionFragment
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
+import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.utils.IntentUtil
 import org.koin.android.ext.android.inject
@@ -40,12 +43,13 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class HolderMainActivity : AppCompatActivity() {
 
     private val introductionViewModel: IntroductionViewModel by viewModel()
-    private val appStatusViewModel: AppConfigViewModel by viewModel()
+    private val appConfigViewModel: AppConfigViewModel by viewModel()
     private val deviceRootedViewModel: DeviceRootedViewModel by viewModel()
     private val deviceSecureViewModel: DeviceSecureViewModel by viewModel()
     private val dialogUtil: DialogUtil by inject()
     private val mobileCoreWrapper: MobileCoreWrapper by inject()
     private val intentUtil: IntentUtil by inject()
+    private var isFreshStart: Boolean = true // track if this is a fresh start of the app
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
@@ -70,7 +74,7 @@ class HolderMainActivity : AppCompatActivity() {
             )
         })
 
-        appStatusViewModel.appStatusLiveData.observe(this, EventObserver {
+        appConfigViewModel.appStatusLiveData.observe(this, {
             handleAppStatus(it, navController)
         })
 
@@ -130,7 +134,8 @@ class HolderMainActivity : AppCompatActivity() {
         super.onStart()
         // Only get app config on every app foreground when introduction is finished
         if (introductionViewModel.getIntroductionStatus() is IntroductionStatus.IntroductionFinished) {
-            appStatusViewModel.refresh(mobileCoreWrapper)
+            appConfigViewModel.refresh(mobileCoreWrapper, isFreshStart)
+            isFreshStart = false
         }
     }
 
@@ -146,4 +151,22 @@ class HolderMainActivity : AppCompatActivity() {
         navController.setGraph(R.navigation.holder_nav_graph_root)
         navController.handleDeepLink(intent)
     }
+
+    fun launchUrl(url: String) {
+        url.launchUrl(this) {
+            dialogUtil.presentDialog(
+                context = this,
+                title = R.string.dialog_no_browser_title,
+                // remove the https prefix to make it more eye friendsly
+                message = getString(R.string.dialog_no_browser_message, url).replace("https://", ""),
+                positiveButtonText = R.string.ok,
+                positiveButtonCallback = {},
+            )
+        }
+    }
+}
+
+fun Context.launchUrl(url: String) {
+    val holderMainActivity = this as? HolderMainActivity
+    holderMainActivity?.launchUrl(url)
 }

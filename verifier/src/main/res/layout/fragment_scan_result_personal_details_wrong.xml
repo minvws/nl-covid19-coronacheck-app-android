@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ /*
+  ~  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+  ~  *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+  ~  *
+  ~  *   SPDX-License-Identifier: EUPL-1.2
+  ~  *
+  ~  */
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_back"
+        app:title="@string/scan_result_something_wrong" />
+
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="40dp"
+            app:htmlText="@string/scan_result_valid_reason_description" />
+    </ScrollView>
+
+    <nl.rijksoverheid.ctr.design.views.ScrollViewButtonWidget
+        android:id="@+id/bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:attachToScrollView="@+id/scroll"
+        app:buttonText="@string/scan_result_something_wrong_finished_check_button"
+        app:cardElevation="0dp" />
+</LinearLayout>

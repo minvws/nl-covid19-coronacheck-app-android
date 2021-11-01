@@ -27,6 +27,18 @@ interface PersistenceManager {
     fun setHasDismissedUnsecureDeviceDialog(value : Boolean)
     fun hasDismissedSyncedGreenCardsItem(): Boolean
     fun setHasDismissedSyncedGreenCardsItem(dismissed: Boolean)
+    fun showSyncGreenCardsItem(): Boolean
+    fun setShowSyncGreenCardsItem(show: Boolean)
+    fun setShouldCheckRecoveryGreenCardRevisedValidity(check: Boolean)
+    fun getShouldCheckRecoveryGreenCardRevisedValidity(): Boolean
+    fun setShowExtendDomesticRecoveryInfoCard(show: Boolean)
+    fun getShowExtendDomesticRecoveryInfoCard(): Boolean
+    fun setShowRecoverDomesticRecoveryInfoCard(show: Boolean)
+    fun getShowRecoverDomesticRecoveryInfoCard(): Boolean
+    fun setHasDismissedExtendedDomesticRecoveryInfoCard(dismissed: Boolean)
+    fun getHasDismissedExtendedDomesticRecoveryInfoCard(): Boolean
+    fun setHasDismissedRecoveredDomesticRecoveryInfoCard(dismissed: Boolean)
+    fun getHasDismissedRecoveredDomesticRecoveryInfoCard(): Boolean
 }
 
 class SharedPreferencesPersistenceManager(
@@ -43,13 +55,16 @@ class SharedPreferencesPersistenceManager(
         const val SELECTED_DASHBOARD_TAB = "SELECTED_DASHBOARD_TAB"
         const val HAS_SEEN_SECURE_DEVICE_DIALOG = "HAS_SEEN_SECURE_DEVICE_DIALOG"
         const val HAS_DISMISSED_SYNCED_GREEN_CARDS_ITEM = "HAS_DISMISSED_SYNCED_GREEN_CARDS_ITEM"
+        const val SHOW_SYNC_GREEN_CARDS_ITEM = "SHOW_SYNC_GREEN_CARDS_ITEM"
+        const val SHOULD_CHECK_RECOVERY_GREEN_CARD_REVISED_VALIDITY = "SHOULD_CHECK_RECOVERY_GREEN_CARD_REVISED_VALIDITY"
+        const val SHOW_EXTEND_DOMESTIC_RECOVERY_INFO_CARD = "SHOW_EXTEND_DOMESTIC_RECOVERY_INFO_CARD"
+        const val SHOW_RECOVER_DOMESTIC_RECOVERY_INFO_CARD = "SHOW_RECOVERED_DOMESTIC_RECOVERY_INFO_CARD"
+        const val HAS_DISMISSED_EXTENDED_DOMESTIC_RECOVERY_INFO_CARD = "HAS_DISMISSED_EXTENDED_DOMESTIC_RECOVERY_INFO_CARD"
+        const val HAS_DISMISSED_RECOVERED_DOMESTIC_RECOVERY_INFO_CARD = "HAS_DISMISSED_RECOVERED_DOMESTIC_RECOVERY_INFO_CARD"
     }
 
     override fun saveSecretKeyJson(json: String) {
-        val result = sharedPreferences.edit().putString(SECRET_KEY_JSON, json).commit()
-        if (!result) {
-            throw IllegalStateException("Failed to save secret key in shared preference")
-        }
+        sharedPreferences.edit().putString(SECRET_KEY_JSON, json).commit()
     }
 
     override fun getSecretKeyJson(): String? {
@@ -57,10 +72,7 @@ class SharedPreferencesPersistenceManager(
     }
 
     override fun saveCredentials(credentials: String) {
-        val result = sharedPreferences.edit().putString(CREDENTIALS, credentials).commit()
-        if (!result) {
-            throw IllegalStateException("Failed to save credentials in shared preference")
-        }
+        sharedPreferences.edit().putString(CREDENTIALS, credentials).commit()
     }
 
     override fun getCredentials(): String? {
@@ -68,10 +80,7 @@ class SharedPreferencesPersistenceManager(
     }
 
     override fun deleteCredentials() {
-        val result = sharedPreferences.edit().remove(CREDENTIALS).commit()
-        if (!result) {
-            throw IllegalStateException("Failed to delete credentials in shared preference")
-        }
+        sharedPreferences.edit().remove(CREDENTIALS).commit()
     }
 
     override fun hasSeenCameraRationale(): Boolean {
@@ -79,11 +88,7 @@ class SharedPreferencesPersistenceManager(
     }
 
     override fun setHasSeenCameraRationale(hasSeen: Boolean) {
-        val result =
-            sharedPreferences.edit().putBoolean(HAS_SEEN_CAMERA_RATIONALE, hasSeen).commit()
-        if (!result) {
-            throw IllegalStateException("Failed to set camera rationale has been seen in shared preference")
-        }
+        sharedPreferences.edit().putBoolean(HAS_SEEN_CAMERA_RATIONALE, hasSeen).commit()
     }
 
     override fun hasDismissedRootedDeviceDialog(): Boolean {
@@ -91,11 +96,7 @@ class SharedPreferencesPersistenceManager(
     }
 
     override fun setHasDismissedRootedDeviceDialog() {
-        val result =
-            sharedPreferences.edit().putBoolean(HAS_SEEN_ROOTED_DEVICE_DIALOG, true).commit()
-        if (!result) {
-            throw IllegalStateException("Failed to set rooted device dialog has been seen in shared preference")
-        }
+        sharedPreferences.edit().putBoolean(HAS_SEEN_ROOTED_DEVICE_DIALOG, true).commit()
     }
 
     override fun getSelectedDashboardTab(): Int {
@@ -103,10 +104,7 @@ class SharedPreferencesPersistenceManager(
     }
 
     override fun setSelectedDashboardTab(position: Int) {
-        val result = sharedPreferences.edit().putInt(SELECTED_DASHBOARD_TAB, position).commit()
-        if (!result) {
-            throw IllegalStateException("Failed to set selected dashboard tab in shared preference")
-        }
+        sharedPreferences.edit().putInt(SELECTED_DASHBOARD_TAB, position).commit()
     }
 
     override fun hasAppliedJune28Fix(): Boolean {
@@ -114,11 +112,7 @@ class SharedPreferencesPersistenceManager(
     }
 
     override fun setJune28FixApplied(applied: Boolean) {
-        val result =
-            sharedPreferences.edit().putBoolean(FIX28JUNE_APPLIED, applied).commit()
-        if (!result) {
-            throw IllegalStateException("Failed to set that the june 28 fix has been applied in shared preferences")
-        }
+        sharedPreferences.edit().putBoolean(FIX28JUNE_APPLIED, applied).commit()
     }
 
     override fun hasDismissedUnsecureDeviceDialog(): Boolean {
@@ -126,11 +120,7 @@ class SharedPreferencesPersistenceManager(
     }
 
     override fun setHasDismissedUnsecureDeviceDialog(value : Boolean) {
-        val result =
-            sharedPreferences.edit().putBoolean(HAS_SEEN_SECURE_DEVICE_DIALOG, value).commit()
-        if (!result) {
-            throw IllegalStateException("Failed to set secure device dialog has been seen in shared preference")
-        }
+        sharedPreferences.edit().putBoolean(HAS_SEEN_SECURE_DEVICE_DIALOG, value).commit()
     }
 
     override fun hasDismissedSyncedGreenCardsItem(): Boolean {
@@ -138,10 +128,54 @@ class SharedPreferencesPersistenceManager(
     }
 
     override fun setHasDismissedSyncedGreenCardsItem(dismissed: Boolean) {
-        val result =
-            sharedPreferences.edit().putBoolean(HAS_DISMISSED_SYNCED_GREEN_CARDS_ITEM, dismissed).commit()
-        if (!result) {
-            throw IllegalStateException("Failed to set has dismissed synced green cards item in shared preference")
-        }
+        sharedPreferences.edit().putBoolean(HAS_DISMISSED_SYNCED_GREEN_CARDS_ITEM, dismissed).commit()
+    }
+
+    override fun showSyncGreenCardsItem(): Boolean {
+        return sharedPreferences.getBoolean(SHOW_SYNC_GREEN_CARDS_ITEM, true)
+    }
+
+    override fun setShowSyncGreenCardsItem(show: Boolean) {
+        sharedPreferences.edit().putBoolean(SHOW_SYNC_GREEN_CARDS_ITEM, show).commit()
+    }
+
+    override fun setShouldCheckRecoveryGreenCardRevisedValidity(check: Boolean) {
+        sharedPreferences.edit().putBoolean(SHOULD_CHECK_RECOVERY_GREEN_CARD_REVISED_VALIDITY, check).commit()
+    }
+
+    override fun getShouldCheckRecoveryGreenCardRevisedValidity(): Boolean {
+        return sharedPreferences.getBoolean(SHOULD_CHECK_RECOVERY_GREEN_CARD_REVISED_VALIDITY, true)
+    }
+
+    override fun setShowExtendDomesticRecoveryInfoCard(show: Boolean) {
+        sharedPreferences.edit().putBoolean(SHOW_EXTEND_DOMESTIC_RECOVERY_INFO_CARD, show).commit()
+    }
+
+    override fun getShowExtendDomesticRecoveryInfoCard(): Boolean {
+        return sharedPreferences.getBoolean(SHOW_EXTEND_DOMESTIC_RECOVERY_INFO_CARD, false)
+    }
+
+    override fun setShowRecoverDomesticRecoveryInfoCard(show: Boolean) {
+        sharedPreferences.edit().putBoolean(SHOW_RECOVER_DOMESTIC_RECOVERY_INFO_CARD, show).commit()
+    }
+
+    override fun getShowRecoverDomesticRecoveryInfoCard(): Boolean {
+        return sharedPreferences.getBoolean(SHOW_RECOVER_DOMESTIC_RECOVERY_INFO_CARD, false)
+    }
+
+    override fun setHasDismissedExtendedDomesticRecoveryInfoCard(dismissed: Boolean) {
+        sharedPreferences.edit().putBoolean(HAS_DISMISSED_EXTENDED_DOMESTIC_RECOVERY_INFO_CARD, dismissed).commit()
+    }
+
+    override fun getHasDismissedExtendedDomesticRecoveryInfoCard(): Boolean {
+        return sharedPreferences.getBoolean(HAS_DISMISSED_EXTENDED_DOMESTIC_RECOVERY_INFO_CARD, true)
+    }
+
+    override fun setHasDismissedRecoveredDomesticRecoveryInfoCard(dismissed: Boolean) {
+        sharedPreferences.edit().putBoolean(HAS_DISMISSED_RECOVERED_DOMESTIC_RECOVERY_INFO_CARD, dismissed).commit()
+    }
+
+    override fun getHasDismissedRecoveredDomesticRecoveryInfoCard(): Boolean {
+        return sharedPreferences.getBoolean(HAS_DISMISSED_RECOVERED_DOMESTIC_RECOVERY_INFO_CARD, true)
     }
 }

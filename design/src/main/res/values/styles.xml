@@ -35,14 +35,24 @@
         <item name="cornerRadius">26dp</item>
     </style>
 
-    <style name="Widget.App.Button.Outlined" parent="Widget.App.Button">
+    <style name="Widget.App.Button.Outlined" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:textColor">?colorOnSurface</item>
-        <item name="android:strokeColor">?colorOnSurface</item>
-        <item name="backgroundTint">@android:color/transparent</item>
+        <item name="strokeColor">?colorOnSurface</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetLeft">0dp</item>
+        <item name="android:insetRight">0dp</item>
+        <item name="android:paddingTop">16dp</item>
+        <item name="android:paddingBottom">16dp</item>
+        <item name="android:paddingStart">56dp</item>
+        <item name="android:paddingEnd">56dp</item>
+        <item name="cornerRadius">26dp</item>
+        <item name="background">@android:color/transparent</item>
         <item name="android:elevation">0dp</item>
         <item name="elevation">0dp</item>
         <item name="strokeWidth">1dp</item>
-        <item name="android:stateListAnimator">@null</item>
     </style>
 
     <style name="Widget.App.Button.Small" parent="Widget.App.Button">
@@ -102,6 +112,22 @@
         <item name="android:fontFamily">@font/montserrat_semibold</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">?android:textColorSecondary</item>
+    </style>
+
+    <style name="App.TextAppearance.MaterialComponents.Headline.Secondary" parent="TextAppearance.AppCompat.Body2">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
+    </style>
+
+    <style name="App.TextAppearance.MaterialComponents.Headline4.Montserrat" parent="App.TextAppearance.MaterialComponents.Body2">
+        <item name="android:fontFamily">@font/montserrat_bold</item>
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="App.TextAppearance.MaterialComponents.Headline3.Montserrat" parent="App.TextAppearance.MaterialComponents.Body2">
+        <item name="android:fontFamily">@font/montserrat_semibold</item>
+        <item name="android:textSize">15sp</item>
     </style>
 
 </resources>

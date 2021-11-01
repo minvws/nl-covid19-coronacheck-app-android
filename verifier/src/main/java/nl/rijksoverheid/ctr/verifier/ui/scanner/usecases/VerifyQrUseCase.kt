@@ -3,7 +3,7 @@ package nl.rijksoverheid.ctr.verifier.ui.scanner.usecases
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
-import nl.rijksoverheid.ctr.shared.VerificationResult
+import nl.rijksoverheid.ctr.shared.models.VerificationResult
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

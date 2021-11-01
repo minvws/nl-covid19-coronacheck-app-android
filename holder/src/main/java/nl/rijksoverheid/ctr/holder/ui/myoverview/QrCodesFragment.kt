@@ -24,7 +24,7 @@ import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.QrInfoScreenUtil
-import nl.rijksoverheid.ctr.holder.ui.myoverview.models.ExternalReturnAppData
+import nl.rijksoverheid.ctr.appconfig.models.ExternalReturnAppData
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeData
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodesResult
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
@@ -255,7 +255,6 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
                     // Select current indicator
                     binding.qrVaccinationIndicators.updateSelected(position)
 
-
                     Handler(Looper.getMainLooper()).post {
                         binding.nextQrButton.visibility = if (position == europeanVaccinations.size - 1) View.INVISIBLE else View.VISIBLE
                         binding.previousQrButton.visibility = if (position == 0) View.INVISIBLE else View.VISIBLE
@@ -268,6 +267,9 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
 
                         showDoseInfo(vaccination)
                     }
+
+                    // reset qr overlay state on page change
+                    qrCodePagerAdapter.isOverlayStateReset = true
                 }
             })
 
@@ -290,9 +292,7 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
         when {
             vaccination.isOverVaccinated -> {
                 binding.doseInfo.text = getString(
-                    R.string.qr_code_over_vaccinated,
-                    "${vaccination.ofTotalDoses}/${vaccination.ofTotalDoses}"
-                )
+                    R.string.qr_code_over_vaccinated)
                 binding.doseInfo.visibility = View.VISIBLE
             }
             vaccination.isHidden -> {

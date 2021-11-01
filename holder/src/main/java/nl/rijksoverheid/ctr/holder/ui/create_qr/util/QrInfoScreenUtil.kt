@@ -151,8 +151,6 @@ class QrInfoScreenUtilImpl(
         val dcc = readEuropeanCredential.optJSONObject("dcc")
         val vaccination = dcc.getJSONArray("v").optJSONObject(0)
 
-        val title = application.getString(R.string.qr_explanation_title_eu)
-
         val fullName = "${dcc.optJSONObject("nam").getStringOrNull("fn")}, ${
             dcc.optJSONObject("nam").getStringOrNull("gn")
         }"
@@ -208,6 +206,8 @@ class QrInfoScreenUtilImpl(
         }
 
         val uniqueCode = vaccination.getStringOrNull("ci")
+
+        val title = application.getString(R.string.qr_explanation_title_eu_vaccination, doses)
 
         return QrInfoScreen(
             title = title,

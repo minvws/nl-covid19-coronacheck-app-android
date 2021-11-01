@@ -43,11 +43,11 @@ class SetupFragment : Fragment(R.layout.fragment_setup) {
 
     override fun onStart() {
         super.onStart()
-        appStatusViewModel.refresh(mobileCoreWrapper)
+        appStatusViewModel.refresh(mobileCoreWrapper, true)
     }
 
     private fun setObservers() {
-        appStatusViewModel.appStatusLiveData.observe(viewLifecycleOwner, EventObserver {
+        appStatusViewModel.appStatusLiveData.observe(viewLifecycleOwner, {
             when (it) {
                 is AppStatus.UpdateRecommended -> showRecommendedUpdateDialog()
                 is AppStatus.NoActionRequired -> navigateToOnboarding()

@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.appconfig
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
@@ -36,7 +37,9 @@ class AppConfigViewModelTest {
 
     private val filesDirPath = "/files"
 
-    private val appConfigUseCase: AppConfigUseCase = mockk(relaxed = true)
+    private val appConfigUseCase = mockk<AppConfigUseCase>(relaxed = true).apply {
+        every { canRefresh(any()) } returns true
+    }
     private val appStatusUseCase: AppStatusUseCase = mockk(relaxed = true)
     private val persistConfigUseCase: PersistConfigUseCase = mockk(relaxed = true)
     private val appConfigStorageManager: AppConfigStorageManager = mockk(relaxed = true)
@@ -122,7 +125,7 @@ class AppConfigViewModelTest {
         val viewModel = appConfigViewModel()
         viewModel.refresh(mobileCoreWrapper)
 
-        Assert.assertEquals(viewModel.appStatusLiveData.value?.peekContent(), AppStatus.Error)
+        Assert.assertEquals(viewModel.appStatusLiveData.value, AppStatus.Error)
     }
 
     @Test
@@ -146,6 +149,6 @@ class AppConfigViewModelTest {
         val viewModel = appConfigViewModel(true)
         viewModel.refresh(mobileCoreWrapper)
 
-        Assert.assertEquals(viewModel.appStatusLiveData.value?.peekContent(), AppStatus.Error)
+        Assert.assertEquals(viewModel.appStatusLiveData.value, AppStatus.Error)
     }
 }

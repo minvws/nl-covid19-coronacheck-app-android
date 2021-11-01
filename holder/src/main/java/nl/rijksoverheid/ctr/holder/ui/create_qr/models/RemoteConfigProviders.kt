@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.models
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -52,10 +53,17 @@ data class RemoteConfigProviders(
         @Json(name = "unomi_url") val unomiUrl: String,
         @Json(name = "event_url") val eventUrl: String,
         val cms: ByteArray,
-        val tls: ByteArray
+        val tls: ByteArray,
+        val usage: List<String>,
     ) {
+        fun supports(originType: OriginType): Boolean {
+            return when (originType) {
+                OriginType.Recovery -> usage.contains("r")
+                OriginType.Test -> usage.contains("nt") || usage.contains("pt")
+                OriginType.Vaccination -> usage.contains("v")
+            }
+        }
         companion object {
-            const val PROVIDER_IDENTIFIER_GGD = "ggd"
             const val PROVIDER_IDENTIFIER_DCC = "dcc"
         }
 

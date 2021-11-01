@@ -12,6 +12,8 @@ import nl.rijksoverheid.ctr.introduction.R
 import nl.rijksoverheid.ctr.introduction.databinding.FragmentPrivacyConsentBinding
 import nl.rijksoverheid.ctr.introduction.databinding.ItemPrivacyConsentBinding
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
+import nl.rijksoverheid.ctr.shared.utils.Accessibility
+import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAccessibilityFocus
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /*
@@ -68,6 +70,10 @@ class PrivacyConsentFragment : Fragment(R.layout.fragment_privacy_consent) {
             introductionViewModel.saveIntroductionFinished(args.introductionData)
             requireActivity().findNavControllerSafety(R.id.main_nav_host_fragment)
                 ?.navigate(R.id.action_main)
+        }
+
+        if (Accessibility.touchExploration(context)) {
+            binding.toolbar.setAccessibilityFocus()
         }
     }
 }

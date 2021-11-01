@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?android:windowBackground">
+    android:fitsSystemWindows="true">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_close"
+        app:title="@string/scan_result_valid_personal_details_title" />
 
     <ScrollView
         android:id="@+id/scroll"
@@ -15,7 +24,7 @@
         app:layout_constraintBottom_toTopOf="@+id/bottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -32,7 +41,7 @@
                 app:header="@string/scan_result_valid_last_name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"  />
+                app:layout_constraintTop_toTopOf="parent" />
 
 
             <nl.rijksoverheid.ctr.verifier.ui.views.PersonalDetailItemWidget
@@ -67,17 +76,28 @@
                 app:layout_constraintStart_toEndOf="@id/personal_details_birthdate"
                 app:layout_constraintTop_toTopOf="@id/personal_details_birthdate" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/button_incorrect_data"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/international_description"
+                android:visibility="gone"
+                style="@style/App.TextAppearance.MaterialComponents.Headline.Secondary"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:paddingStart="0dp"
-                android:text="@string/scan_result_valid_incorrect_data"
-                android:textColor="@color/link"
-                app:layout_constraintStart_toStartOf="@+id/personal_details_birthdate"
-                app:layout_constraintTop_toBottomOf="@+id/personal_details_birthdate" />
+                android:layout_marginTop="24dp"
+                android:gravity="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/personal_details_birthmonth" />
+
+            <TextView
+                style="@style/App.TextAppearance.MaterialComponents.Body2.Secondary"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/scan_result_mandatory_id_check"
+                app:layout_goneMarginTop="24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/international_description" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -88,11 +108,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:attachToScrollView="@+id/scroll"
-        app:buttonText="@string/scan_result_invalid_button"
+        app:buttonText="@string/scan_result_valid_id_confirmed_button"
         app:cardElevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scroll" />
+        app:layout_constraintTop_toBottomOf="@+id/scroll"
+        app:secondaryButtonText="@string/scan_result_something_wrong" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,16 +8,19 @@
 
 package nl.rijksoverheid.ctr.shared
 
-import android.os.Parcelable
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
-import kotlinx.parcelize.Parcelize
 import mobilecore.Mobilecore
 import nl.rijksoverheid.ctr.shared.exceptions.CreateCommitmentMessageException
-import nl.rijksoverheid.ctr.shared.ext.*
+import nl.rijksoverheid.ctr.shared.ext.successJsonObject
+import nl.rijksoverheid.ctr.shared.ext.successString
+import nl.rijksoverheid.ctr.shared.ext.toObject
+import nl.rijksoverheid.ctr.shared.ext.verify
 import nl.rijksoverheid.ctr.shared.models.DomesticCredential
 import nl.rijksoverheid.ctr.shared.models.ReadDomesticCredential
+import nl.rijksoverheid.ctr.shared.models.VerificationResult
+import nl.rijksoverheid.ctr.shared.models.VerificationResultDetails
 import org.json.JSONObject
 import java.lang.reflect.Type
 
@@ -30,15 +33,14 @@ interface MobileCoreWrapper {
     fun generateHolderSk(): String
     fun createDomesticCredentials(createCredentials: ByteArray): List<DomesticCredential>
     fun readEuropeanCredential(credential: ByteArray): JSONObject
+
     // returns error message, if initializing failed
     fun initializeHolder(configFilesPath: String): String?
+
     // returns error message, if initializing failed
     fun initializeVerifier(configFilesPath: String): String?
     fun verify(credential: ByteArray): VerificationResult
 }
-
-@Parcelize data class VerificationResultDetails(val birthDay: String, val birthMonth: String, val firstNameInitial: String, val lastNameInitial: String, val isSpecimen: String, val credentialVersion: String): Parcelable
-@Parcelize data class VerificationResult(val status: Long, val details: VerificationResultDetails, val error: String): Parcelable
 
 class MobileCoreWrapperImpl(private val moshi: Moshi) : MobileCoreWrapper {
 
@@ -57,7 +59,10 @@ class MobileCoreWrapperImpl(private val moshi: Moshi) : MobileCoreWrapper {
     }
 
     @Throws(CreateCommitmentMessageException::class)
-    override fun createCommitmentMessage(secretKey: ByteArray, prepareIssueMessage: ByteArray): String {
+    override fun createCommitmentMessage(
+        secretKey: ByteArray,
+        prepareIssueMessage: ByteArray
+    ): String {
         val result = Mobilecore.createCommitmentMessage(
             secretKey,
             prepareIssueMessage
@@ -126,6 +131,7 @@ class MobileCoreWrapperImpl(private val moshi: Moshi) : MobileCoreWrapper {
                 lastNameInitial = result.details?.lastNameInitial ?: "",
                 isSpecimen = result.details?.isSpecimen ?: "",
                 credentialVersion = result.details?.credentialVersion ?: "",
+                issuerCountryCode = result.details?.issuerCountryCode ?: "",
             ),
             error = result.error
         )
