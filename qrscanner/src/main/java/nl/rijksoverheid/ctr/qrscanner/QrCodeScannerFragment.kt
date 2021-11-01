@@ -226,7 +226,14 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
             ).also { camera ->
                 // If device supports flash, enable flash functionality
                 if (camera.cameraInfo.hasFlashUnit()) {
-                    binding.toolbar.menu.findItem(R.id.flash).isVisible = true
+                    binding.toolbar.menu.findItem(R.id.flash)?.let { flashItem ->
+                        flashItem.isVisible = true
+                        MenuItemCompat.setContentDescription(
+                            flashItem,
+                            resources.getString(R.string.accessibility_flash_on)
+                        )
+                    }
+
                     binding.toolbar.setOnMenuItemClickListener { item ->
                         when (item.itemId) {
                             R.id.flash -> {
