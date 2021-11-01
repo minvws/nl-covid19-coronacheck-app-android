@@ -13,6 +13,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import java.time.Clock
+import java.time.Duration
 import kotlin.math.abs
 
 abstract class ClockDeviationUseCase {
@@ -20,6 +21,7 @@ abstract class ClockDeviationUseCase {
 
     abstract fun store(serverResponseTimestamp: Long, localReceivedTimestamp: Long)
     abstract fun hasDeviation(): Boolean
+    abstract fun getAdjustedClock(clock: Clock): Clock
 }
 
 const val SECOND_IN_MS = 1000
@@ -55,5 +57,12 @@ class ClockDeviationUseCaseImpl(
             cachedAppConfigUseCase.getCachedAppConfig().clockDeviationThresholdSeconds
 
         return (abs(systemUptimeDelta + responseTimeDelta) / SECOND_IN_MS) >= thresholdInSeconds
+    }
+
+    override fun getAdjustedClock(clock: Clock): Clock {
+        return Clock.offset(
+            clock,
+            Duration.ofMillis(localServerResponseTimeStamp - localResponseReceivedTimeStamp)
+        )
     }
 }
