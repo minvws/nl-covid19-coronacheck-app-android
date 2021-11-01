@@ -7,6 +7,7 @@ import io.mockk.mockk
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
+import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigFreshnessUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
@@ -28,7 +29,6 @@ import nl.rijksoverheid.ctr.introduction.IntroductionData
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
-import nl.rijksoverheid.ctr.shared.models.VerificationResult
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.*
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
@@ -751,6 +751,25 @@ val fakeEuropeanVaccinationGreenCard = GreenCard(
         expirationTime = OffsetDateTime.now()
     ))
 )
+
+fun fakeAppConfigFreshnessUseCase(shouldShowWarning : Boolean = false) = object:
+   AppConfigFreshnessUseCase {
+    override fun getAppConfigLastFetchedSeconds(): Long {
+        return 0
+    }
+
+    override fun getAppConfigMaxValidityTimestamp(): Long {
+        return 0
+    }
+
+    override fun shouldShowConfigFreshnessWarning(): Boolean {
+        return shouldShowWarning
+    }
+
+
+}
+
+
 
 
 

@@ -45,6 +45,9 @@ class MyOverviewInfoCardItem(
             is DashboardItem.InfoItem.NonDismissible.RecoverDomesticRecovery -> {
                 viewBinding.text.setText(R.string.recover_domestic_recovery_green_card_info_card_text)
             }
+            is DashboardItem.InfoItem.NonDismissible.ConfigFreshnessWarning -> {
+                viewBinding.text.setText(R.string.config_warning_card_message)
+            }
             is DashboardItem.InfoItem.Dismissible.ExtendedDomesticRecovery -> {
                 viewBinding.text.setText(R.string.extended_domestic_recovery_green_card_info_card_text)
             }

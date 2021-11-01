@@ -48,6 +48,7 @@ data class HolderConfig(
     @Json(name = "luhnCheckEnabled") val luhnCheckEnabled: Boolean,
     @Json(name = "internationalQRRelevancyDays") val internationalQRRelevancyDays: Int,
     @Json(name = "recoveryGreencardRevisedValidityLaunchDate") val recoveryGreenCardRevisedValidityLaunchDate: String,
+    @Json(name = "configAlmostOutOfDateWarningSeconds") val holderConfigAlmostOutOfDateWarningSeconds : Int
 ) : AppConfig(
     holderAppDeactivated,
     holderInformationURL,
@@ -58,7 +59,8 @@ data class HolderConfig(
     holderRecommendedVersion,
     upgradeRecommendationIntervalHours,
     holderDeeplinkDomains,
-    holderClockDeviationThresholdSeconds
+    holderClockDeviationThresholdSeconds,
+    holderConfigAlmostOutOfDateWarningSeconds
 ) {
 
     companion object {
@@ -92,7 +94,8 @@ data class HolderConfig(
             holderRecommendedVersion: Int = 1025,
             upgradeRecommendationIntervalHours: Int = 24,
             luhnCheckEnabled: Boolean = false,
-            internationalQRRelevancyDays: Int = 28
+            internationalQRRelevancyDays: Int = 28,
+            holderConfigAlmostOutOfDateWarningSeconds: Int = 300
         ) = HolderConfig(
             holderMinimumVersion = holderMinimumVersion,
             holderAppDeactivated = holderAppDeactivated,
@@ -124,7 +127,8 @@ data class HolderConfig(
             upgradeRecommendationIntervalHours = upgradeRecommendationIntervalHours,
             luhnCheckEnabled = luhnCheckEnabled,
             internationalQRRelevancyDays = internationalQRRelevancyDays,
-            recoveryGreenCardRevisedValidityLaunchDate = "1970-01-01T00:00:00Z"
+            recoveryGreenCardRevisedValidityLaunchDate = "1970-01-01T00:00:00Z",
+            holderConfigAlmostOutOfDateWarningSeconds = holderConfigAlmostOutOfDateWarningSeconds
         )
     }
 }
