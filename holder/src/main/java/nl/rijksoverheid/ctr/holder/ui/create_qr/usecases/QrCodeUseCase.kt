@@ -8,6 +8,7 @@ import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.QrCodeUtil
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
+import java.time.Clock
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -24,6 +25,7 @@ class QrCodeUseCaseImpl(
     private val persistenceManager: PersistenceManager,
     private val qrCodeUtil: QrCodeUtil,
     private val mobileCoreWrapper: MobileCoreWrapper,
+    private val clock: Clock
 ) : QrCodeUseCase {
 
     override suspend fun qrCode(
@@ -39,7 +41,8 @@ class QrCodeUseCaseImpl(
 
             val qrCodeContent = if (shouldDisclose) mobileCoreWrapper.disclose(
                 secretKey.toByteArray(),
-                credential
+                credential,
+                clock.millis()
             ) else String(credential)
 
             qrCodeUtil.createQrCode(
