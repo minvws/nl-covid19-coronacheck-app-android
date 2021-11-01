@@ -374,7 +374,7 @@
     <string name="qr_explanation_description_eu_recovery_footer">*Datum weergegeven in dag-maand-jaar / Date noted in day-month-year.</string>
     <string name="my_overview_green_card_not_valid_title_recovery">Over je herstelbewijs</string>
     <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_recovery"><![CDATA[Jouw herstelbewijs is niet geldig in Nederland. Je hebt wel een internationaal bewijs.<br/><br/>Dit komt doordat het type test niet voldoet in Nederland.]]></string>
-    <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_recovery"><![CDATA[Je herstelbewijs is niet internationaal geldig. Je hebt wel een Nederlands bewijs.<br/><br/>Dit kan bijvoorbeeld komen doordat je type test niet voldoet. Alleen van een PCR-test kan een internationaal bewijs gemaakt worden. Lees meer over de mogelijke oorzaken op de <a href="https://www.coronacheck.nl/wegwijzer">Wegwijzer.</a>]]></string>
+    <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_recovery"><![CDATA[Je herstelbewijs is niet internationaal geldig. Je hebt wel een Nederlands bewijs.<br/><br/>Dit kan bijvoorbeeld komen doordat je type test niet voldoet, of doordat deze niet meer geldig is in het buitenland. Alleen van een PCR-test die minder dan 180 dagen oud is kan een internationaal herstelbewijs gemaakt worden. Lees meer over de mogelijke oorzaken op de <a href="https://www.coronacheck.nl/wegwijzer">Wegwijzer.</a>]]></string>
     <string name="my_overview_green_card_server_error"><![CDATA[De app heeft af en toe verbinding met de server nodig om je QR-code te vernieuwen. Dat is niet gelukt door een fout op de server. <a href="#">Probeer opnieuw</a>]]></string>
     <string name="my_overview_green_card_server_error_after_retry"><![CDATA[Sorry, het is niet gelukt de QR-code te vernieuwen. Open de app opnieuw over 10 minuten.<br/><br/>Helpt dat niet? Bel dan de helpdesk op 0800-1421 (gratis) en geef de foutcode (A 075) door.]]></string>
     <string name="my_overview_green_card_internet_error"><![CDATA[Maak verbinding met het internet om je QR-code weer te gebruiken.<br/><a href="#">Probeer opnieuw</a>]]></string>
@@ -507,10 +507,13 @@
     <string name="my_overview_info_card_button_read_more">Lees meer</string>
     <string name="extend_domestic_recovery_green_card_toolbar_title">Bewijs verlengen</string>
     <string name="recover_domestic_recovery_green_card_toolbar_title">Bewijs terugzetten</string>
-    <string name="dialog_no_browser_title">Geen browser beschikbaar</string>
-    <string name="dialog_no_browser_message">Er is op deze telefoon geen browser gevonden waar %1s mee geopend kan worden. Download een browser in de Play Store.</string>
+    <string name="dialog_no_browser_title">Geen browser gevonden</string>
+    <string name="dialog_no_browser_message">Er is op deze telefoon geen internetbrowser gevonden waarmee %1s geopend kan worden. Download een browser om de link te kunnen openen.</string>
     <string name="about_this_app_clear_data_title">Alle gegevens wissen?</string>
-    <string name="about_this_app_clear_data_description">Bij het wissen worden alle gegevens en bewijzen uit de app verwijderd en wordt de app afgesloten.</string>
-    <string name="about_this_app_clear_data_cancel">annuleer</string>
-    <string name="about_this_app_clear_data_confirm">wis gegevens</string>
+    <string name="about_this_app_clear_data_description">Bij het wissen worden alle gegevens en bewijzen uit de app verwijderd en wordt de app afgesloten. Je kunt de app daarna gewoon weer opstarten.</string>
+    <string name="about_this_app_clear_data_cancel">Annuleer</string>
+    <string name="about_this_app_clear_data_confirm">Wis gegevens</string>
+    <string name="accessibility_flash_off">Zet de zaklamp uit.</string>
+    <string name="accessibility_flash_on">Zet de zaklamp aan.</string>
+    <string name="recover_domestic_recovery_green_card_button">Bewijs terugzetten</string>
 </resources>
