@@ -40,7 +40,7 @@ class AppConfigFreshnessUseCaseImpl(
         // return true if config is older than 10 days && less than 28 days
         val lastFetched = getAppConfigLastFetchedSeconds()
         return lastFetched < OffsetDateTime.now(clock)
-            .minusSeconds(cachedAppConfigUseCase.getCachedAppConfig().configMinimumIntervalSeconds.toLong())
+            .minusSeconds(cachedAppConfigUseCase.getCachedAppConfig().configAlmostOutOfDateWarningSeconds.toLong())
             .toEpochSecond() && lastFetched > OffsetDateTime.now(clock).minusSeconds(cachedAppConfigUseCase.getCachedAppConfig().configTtlSeconds.toLong())
             .toEpochSecond()
     }

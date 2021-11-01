@@ -25,6 +25,7 @@ class VerifierConfig(
     @Json(name = "upgradeRecommendationInterval") val upgradeRecommendationIntervalHours: Int,
     @Json(name = "universalLinkDomains") val verifierDeeplinkDomains: List<Url>,
     @Json(name = "clockDeviationThresholdSeconds") val verifierClockDeviationThresholdSeconds: Int,
+    @Json(name = "configAlmostOutOfDateWarningSeconds") val verifierConfigAlmostOutOfDateWarningSeconds : Int
 ) : AppConfig(
     verifierAppDeactivated,
     verifierInformationURL,
@@ -35,7 +36,8 @@ class VerifierConfig(
     verifierRecommendedVersion,
     upgradeRecommendationIntervalHours,
     verifierDeeplinkDomains,
-    verifierClockDeviationThresholdSeconds
+    verifierClockDeviationThresholdSeconds,
+    verifierConfigAlmostOutOfDateWarningSeconds
 ) {
     companion object {
         fun default(
@@ -51,6 +53,7 @@ class VerifierConfig(
             upgradeRecommendationIntervalHours: Int = 24,
             returnApps: List<Url> = listOf(),
             verifierClockDeviationThresholdSeconds: Int = 30,
+            verifierConfigAlmostOutOfDateWarningSeconds: Int = 300
         ) = VerifierConfig(
             verifierMinimumVersion = verifierMinimumVersion,
             verifierMinimumVersionMessage = verifierMinimumVersionMessage,
@@ -63,7 +66,8 @@ class VerifierConfig(
             verifierRecommendedVersion = verifierRecommendedVersion,
             upgradeRecommendationIntervalHours = upgradeRecommendationIntervalHours,
             verifierDeeplinkDomains = returnApps,
-            verifierClockDeviationThresholdSeconds = verifierClockDeviationThresholdSeconds
+            verifierClockDeviationThresholdSeconds = verifierClockDeviationThresholdSeconds,
+            verifierConfigAlmostOutOfDateWarningSeconds = verifierConfigAlmostOutOfDateWarningSeconds
         )
     }
 }
