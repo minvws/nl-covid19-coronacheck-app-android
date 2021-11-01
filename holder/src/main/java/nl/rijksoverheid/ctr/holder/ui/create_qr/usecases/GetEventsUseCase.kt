@@ -1,8 +1,10 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
+import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.RemoteEventUtil
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 
@@ -31,7 +33,9 @@ class GetEventsUseCaseImpl(
     private val configProvidersUseCase: ConfigProvidersUseCase,
     private val coronaCheckRepository: CoronaCheckRepository,
     private val getEventProvidersWithTokensUseCase: GetEventProvidersWithTokensUseCase,
-    private val getRemoteEventsUseCase: GetRemoteEventsUseCase
+    private val getRemoteEventsUseCase: GetRemoteEventsUseCase,
+    private val remoteEventUtil: RemoteEventUtil,
+    private val cachedAppConfigUseCase: CachedAppConfigUseCase
 ) : GetEventsUseCase {
 
     override suspend fun getEvents(
@@ -93,8 +97,8 @@ class GetEventsUseCaseImpl(
             if (eventSuccessResults.isNotEmpty()) {
                 // If we have success responses
                 val signedModels = eventSuccessResults.map { it.signedModel }
-                val hasEvents = signedModels.map { it.model }
-                    .any { it.events?.isNotEmpty() ?: false }
+                val allEvents = signedModels.map { it.model }.mapNotNull { it.events }.flatten()
+                val hasEvents = allEvents.isNotEmpty()
 
                 if (!hasEvents) {
                     // But we do not have any events
@@ -109,6 +113,23 @@ class GetEventsUseCaseImpl(
                         errorResults = errorResults
                     )
                 } else {
+                    val recoveryEvent = allEvents.filterIsInstance(RemoteEventRecovery::class.java).firstOrNull()
+                    val positiveTestEvent = allEvents.filterIsInstance(RemoteEventPositiveTest::class.java).firstOrNull()
+
+                    recoveryEvent?.let {
+                        // If we have a recovery event that is expired, it means we cannot create a recovery proof
+                        if (remoteEventUtil.isRecoveryEventExpired(it)) {
+                            return EventsResult.CannotCreateRecovery(cachedAppConfigUseCase.getCachedAppConfig().recoveryEventValidityDays)
+                        }
+                    }
+
+                    positiveTestEvent?.let {
+                        // If we have a positive test event that is expired, it means we cannot create a recovery proof
+                        if (remoteEventUtil.isPositiveTestEventExpired(it)) {
+                            return EventsResult.CannotCreateRecovery(cachedAppConfigUseCase.getCachedAppConfig().recoveryEventValidityDays)
+                        }
+                    }
+
                     // We do have events
                     EventsResult.Success(
                         signedModels = signedModels,

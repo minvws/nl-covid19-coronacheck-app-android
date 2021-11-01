@@ -30,10 +30,9 @@ val utilsModule = module {
     factory<TokenValidatorUtil> { TokenValidatorUtilImpl() }
     factory<CredentialUtil> { CredentialUtilImpl(Clock.systemUTC(), get(), get()) }
     factory<OriginUtil> { OriginUtilImpl(Clock.systemUTC()) }
-    factory<RemoteEventRecoveryUtil> { RemoteEventRecoveryUtilImpl(get()) }
     factory<RemoteEventHolderUtil> { RemoteEventHolderUtilImpl(get(), get()) }
     factory<RemoteProtocol3Util> { RemoteProtocol3UtilImpl() }
-    factory<RemoteEventUtil> { RemoteEventUtilImpl(get()) }
+    factory<RemoteEventUtil> { RemoteEventUtilImpl(get(), get(), get()) }
     factory<ReadEuropeanCredentialUtil> { ReadEuropeanCredentialUtilImpl(get()) }
     factory<DashboardItemUtil> { DashboardItemUtilImpl(get(), get(), get(), get()) }
     factory<CountryUtil> { CountryUtilImpl() }
