@@ -41,7 +41,7 @@ class AppConfigFreshnessUseCaseImpl(
         val lastFetched = getAppConfigLastFetchedSeconds()
         return lastFetched < OffsetDateTime.now(clock)
             .minusSeconds(cachedAppConfigUseCase.getCachedAppConfig().configMinimumIntervalSeconds.toLong())
-            .toEpochSecond() && lastFetched > OffsetDateTime.now(clock).minusDays(28)
+            .toEpochSecond() && lastFetched > OffsetDateTime.now(clock).minusSeconds(cachedAppConfigUseCase.getCachedAppConfig().configTtlSeconds.toLong())
             .toEpochSecond()
     }
 
