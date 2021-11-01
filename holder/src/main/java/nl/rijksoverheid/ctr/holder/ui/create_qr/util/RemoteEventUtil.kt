@@ -2,11 +2,13 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
 import android.util.Base64
 import com.squareup.moshi.Moshi
+import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.shared.ext.getStringOrNull
 import org.json.JSONException
 import org.json.JSONObject
+import java.time.Clock
 import java.time.LocalDate
 import java.time.OffsetDateTime
 
@@ -18,9 +20,14 @@ interface RemoteEventUtil {
     fun getRemoteRecoveryFromDcc(dcc: JSONObject): RemoteEventRecovery?
     fun getRemoteTestFromDcc(dcc: JSONObject): RemoteEventNegativeTest?
     fun getRemoteEventsFromNonDcc(eventGroupEntity: EventGroupEntity): List<RemoteEvent>
+    fun isRecoveryEventExpired(remoteEventRecovery: RemoteEventRecovery): Boolean
+    fun isPositiveTestEventExpired(remoteEventPositiveTest: RemoteEventPositiveTest): Boolean
 }
 
-class RemoteEventUtilImpl(private val moshi: Moshi): RemoteEventUtil {
+class RemoteEventUtilImpl(
+    private val clock: Clock,
+    private val moshi: Moshi,
+    private val cachedAppConfigUseCase: CachedAppConfigUseCase): RemoteEventUtil {
 
     /**
      * Only remove duplicate events for vaccination events
@@ -112,6 +119,14 @@ class RemoteEventUtilImpl(private val moshi: Moshi): RemoteEventUtil {
             .fromJson(String(eventGroupEntity.jsonData))?.payload
         val decodedPayload = String(Base64.decode(payload, Base64.DEFAULT))
         return moshi.adapter(RemoteProtocol3::class.java).fromJson(decodedPayload)?.events ?: listOf()
+    }
+
+    override fun isRecoveryEventExpired(remoteEventRecovery: RemoteEventRecovery): Boolean {
+        return OffsetDateTime.now(clock).minusDays(cachedAppConfigUseCase.getCachedAppConfig().recoveryEventValidityDays.toLong()) >= remoteEventRecovery.getDate()
+    }
+
+    override fun isPositiveTestEventExpired(remoteEventPositiveTest: RemoteEventPositiveTest): Boolean {
+        return OffsetDateTime.now(clock).minusDays(cachedAppConfigUseCase.getCachedAppConfig().recoveryEventValidityDays.toLong()) >= remoteEventPositiveTest.getDate()
     }
 
     private fun getEventByType(dcc: JSONObject, key: String) = try {

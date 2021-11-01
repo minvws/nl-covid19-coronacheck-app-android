@@ -21,7 +21,10 @@ sealed class EventsResult {
         val eventProviders: List<EventProvider>,
     ) :
         EventsResult()
+
     data class HasNoEvents(val missingEvents: Boolean, val errorResults: List<ErrorResult> = emptyList()) : EventsResult()
+
+    data class CannotCreateRecovery(val validityDays: Int): EventsResult()
 
     data class Error constructor(val errorResults: List<ErrorResult>): EventsResult() {
         constructor(errorResult: ErrorResult): this(listOf(errorResult))

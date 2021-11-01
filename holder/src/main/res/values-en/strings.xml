@@ -249,7 +249,7 @@
     <string name="qr_explanation_description_eu_test_certificate_identifier">Unique certificate identifier:</string>
     <string name="qr_explanation_description_eu_test_footer">*Date noted in day-month-year.</string>
     <string name="qr_explanation_icon_label">About your QR code</string>
-    <string name="qr_card_expired">Your QR code has expired.</string>
+    <string name="qr_card_expired">Your certificate has expired.</string>
     <string name="qr_card_vaccination_title_domestic">Vaccination certificate:</string>
     <string name="qr_card_test_domestic">Test certificate:</string>
     <string name="qr_card_test_eu">Test type:</string>
@@ -347,8 +347,6 @@
     <string name="get_recovery_description"><![CDATA[Have you had coronavirus? Then you can make a recovery certificate of the positive test result. Login with DigiD to retrieve your test result.<br/><br/>Your recovery certificate will be valid 11 days after the positive test result. You also need to be free of symptoms.]]></string>
     <string name="no_positive_test_result_title">No positive test result available</string>
     <string name="no_positive_test_result_description"><![CDATA[Were you just tested? It can take a few hours before your positive test result is available. Please try again later.<br/><br/>Find more information on the <a href="https://www.coronacheck.nl/en/guidepost">Guidepost</a>.]]></string>
-    <string name="positive_test_not_valid_title">Positive test result no longer valid</string>
-    <string name="positive_test_not_valid_description">You were tested positive for coronavirus too long ago. Therefore, your test result is no longer valid. Unfortunately, you cannot create a recovery certificate.&lt;br/&gt;&lt;br/&gt;Find more information on the <a href="https://www.coronacheck.nl/en/guidepost">Guidepost</a>.</string>
     <string name="qr_code_type_recovery_title">Recovery certificate</string>
     <string name="qr_code_type_recovery_description">The test proves I have had coronavirus</string>
     <string name="your_test_result_explanation_positive_test_result">positive (corona)</string>
@@ -359,8 +357,6 @@
     <string name="recovery_explanation_description_valid_from">Valid from:</string>
     <string name="recovery_explanation_description_valid_until">Valid until:</string>
     <string name="recovery_explanation_description_unique_test_identifier">Unique test identifier:</string>
-    <string name="positive_test_no_longer_valid_title">Positive test result no longer valid</string>
-    <string name="positive_test_no_longer_valid_description"><![CDATA[You were tested positive for coronavirus too long ago. Therefore, your test result is no longer valid. Unfortunately, you cannot create a recovery certificate.<br/><br/>Find more information on the <a href="https://www.coronacheck.nl/en/guidepost">Guidepost</a>.]]></string>
     <string name="qr_explanation_description_eu_recovery_header">Are you abroad, or planning to cross the border? This requires more data. That\'s why the international QR code contains the following details:</string>
     <string name="qr_explanation_description_eu_recovery_name">Name:</string>
     <string name="qr_explanation_description_eu_recovery_birth_date">Date of birth*:</string>
@@ -516,4 +512,6 @@
     <string name="accessibility_flash_off">Turn the flashlight off.</string>
     <string name="accessibility_flash_on">Turn the flashlight on.</string>
     <string name="recover_domestic_recovery_green_card_button">Extend certificate</string>
+    <string name="cannot_create_recovery_proof_title">Positive test result no longer valid</string>
+    <string name="cannot_create_recovery_proof_description"><![CDATA[It has been more than %1s days since you tested positive for coronavirus. Therefore, your test result is no longer valid. Unfortunately, you cannot create a recovery certificate.<br/><br/>Find more information on the <a href="https://www.coronacheck.nl//en/guidepost">Guidepost.</a>]]></string>
 </resources>
