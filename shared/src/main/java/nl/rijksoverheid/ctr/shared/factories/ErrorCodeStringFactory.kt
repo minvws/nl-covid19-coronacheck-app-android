@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.shared.factories
 
+import android.content.ActivityNotFoundException
 import android.database.sqlite.SQLiteConstraintException
 import com.squareup.moshi.JsonDataException
 import com.squareup.moshi.JsonEncodingException
@@ -58,6 +59,7 @@ class ErrorCodeStringFactoryImpl : ErrorCodeStringFactory {
                 is UnknownHostException -> "002"
                 is ConnectException -> "005"
                 is NoProvidersException -> exception.errorCode
+                is ActivityNotFoundException -> "070-14"
                 else -> throw it.getException()
             }
 

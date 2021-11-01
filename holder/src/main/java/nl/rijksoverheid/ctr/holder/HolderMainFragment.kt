@@ -26,7 +26,6 @@ import nl.rijksoverheid.ctr.design.ext.styleTitle
 import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppData
 import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppFragment
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMainBinding
-import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAccessibilityFocus
 import org.koin.android.ext.android.inject
 
@@ -90,7 +89,7 @@ class HolderMainFragment : BaseMainFragment(
         binding.navView.setNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_frequently_asked_questions -> {
-                    getString(R.string.url_faq).launchUrl(requireActivity())
+                    context?.launchUrl(getString(R.string.url_faq))
                 }
                 R.id.nav_about_this_app -> {
                     navController.navigate(

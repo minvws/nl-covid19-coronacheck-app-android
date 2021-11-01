@@ -9,14 +9,14 @@ import nl.rijksoverheid.ctr.holder.HolderFlow
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentGetEventsBinding
+import nl.rijksoverheid.ctr.holder.launchUrl
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigiDFragment
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigidResult
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.EventProvider
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.EventsResult
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.EventsResult
-import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.ErrorResultFragmentData
@@ -185,7 +185,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
         }
 
         binding.noDigidButton.setOnClickListener {
-            getString(R.string.no_digid_url).launchUrl(requireContext())
+            context?.launchUrl(getString(R.string.no_digid_url))
         }
     }
 
