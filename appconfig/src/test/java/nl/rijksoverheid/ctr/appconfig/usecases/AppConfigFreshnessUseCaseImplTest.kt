@@ -10,6 +10,7 @@ package nl.rijksoverheid.ctr.appconfig.usecases
 
 import junit.framework.Assert.assertFalse
 import junit.framework.Assert.assertTrue
+import nl.rijksoverheid.ctr.appconfig.fakeAppConfig
 import nl.rijksoverheid.ctr.appconfig.fakeAppConfigPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.fakeCachedAppConfigUseCase
 import org.junit.Test
@@ -27,7 +28,7 @@ class AppConfigFreshnessUseCaseImplTest {
         val appConfigFreshnessUseCase = AppConfigFreshnessUseCaseImpl(
             fakeAppConfigPersistenceManager(lastFetchedSeconds = defaultClock.millis() / 1000),
             defaultClock,
-            fakeCachedAppConfigUseCase()
+            fakeCachedAppConfigUseCase(appConfig = fakeAppConfig(configTtlSeconds = 2419200))
         )
         assertFalse(appConfigFreshnessUseCase.shouldShowConfigFreshnessWarning())
     }
@@ -41,7 +42,7 @@ class AppConfigFreshnessUseCaseImplTest {
                     defaultClock,
                     Duration.ofSeconds(-3601)
                 ).millis() / 1000
-            ), defaultClock, fakeCachedAppConfigUseCase()
+            ), defaultClock, fakeCachedAppConfigUseCase(appConfig = fakeAppConfig(configTtlSeconds = 2419200))
         )
         assertTrue(appConfigFreshnessUseCase.shouldShowConfigFreshnessWarning())
     }
@@ -55,7 +56,7 @@ class AppConfigFreshnessUseCaseImplTest {
                     defaultClock,
                     Duration.ofSeconds(-3599)
                 ).millis() / 1000
-            ), defaultClock, fakeCachedAppConfigUseCase()
+            ), defaultClock, fakeCachedAppConfigUseCase(appConfig = fakeAppConfig(configTtlSeconds = 2419200))
         )
         assertFalse(appConfigFreshnessUseCase.shouldShowConfigFreshnessWarning())
     }
