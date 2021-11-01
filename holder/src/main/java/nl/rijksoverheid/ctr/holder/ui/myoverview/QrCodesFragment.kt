@@ -46,6 +46,9 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
 
     private var _binding: FragmentQrCodesBinding? = null
     private val binding get() = _binding!!
+    private fun safeBindingBlock(block: (binding: FragmentQrCodesBinding) -> Unit) {
+        _binding?.run(block)
+    }
     private val args: QrCodesFragmentArgs by navArgs()
     private val personalDetailsUtil: PersonalDetailsUtil by inject()
     private val infoScreenUtil: QrInfoScreenUtil by inject()
@@ -255,17 +258,8 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
                     // Select current indicator
                     binding.qrVaccinationIndicators.updateSelected(position)
 
-                    Handler(Looper.getMainLooper()).post {
-                        binding.nextQrButton.visibility = if (position == europeanVaccinations.size - 1) View.INVISIBLE else View.VISIBLE
-                        binding.previousQrButton.visibility = if (position == 0) View.INVISIBLE else View.VISIBLE
-
-                        val vaccination = europeanVaccinations[position]
-                        binding.qrVaccinationDosis.text = getString(
-                            R.string.qr_code_dosis,
-                            "${vaccination.dose}/${vaccination.ofTotalDoses}"
-                        )
-
-                        showDoseInfo(vaccination)
+                    binding.root.post {
+                        onPageSelectedPostAction(position, europeanVaccinations)
                     }
 
                     // reset qr overlay state on page change
@@ -284,6 +278,21 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
             binding.nextQrButton.setOnClickListener {
                 binding.viewPager.setCurrentItem(binding.viewPager.currentItem + 1, true)
             }
+        }
+    }
+
+    private fun onPageSelectedPostAction(position: Int, europeanVaccinations: List<QrCodeData.European.Vaccination>) {
+        safeBindingBlock { binding ->
+            binding.nextQrButton.visibility = if (position == europeanVaccinations.size - 1) View.INVISIBLE else View.VISIBLE
+            binding.previousQrButton.visibility = if (position == 0) View.INVISIBLE else View.VISIBLE
+
+            val vaccination = europeanVaccinations[position]
+            binding.qrVaccinationDosis.text = getString(
+                R.string.qr_code_dosis,
+                "${vaccination.dose}/${vaccination.ofTotalDoses}"
+            )
+
+            showDoseInfo(vaccination)
         }
     }
 
