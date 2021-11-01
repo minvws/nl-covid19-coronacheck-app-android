@@ -105,7 +105,7 @@
     <fragment
         android:id="@+id/nav_sync_green_cards"
         android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.SyncGreenCardsFragment"
-        android:label="@string/refresh_eu_items_toolbar_title"
+        android:label="{toolbarTitle}"
         tools:layout="@layout/fragment_sync_green_cards">
 
         <action
@@ -125,6 +125,22 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+
+        <argument
+            android:name="toolbarTitle"
+            app:argType="string" />
+
+        <argument
+            android:name="title"
+            app:argType="string" />
+
+        <argument
+            android:name="description"
+            app:argType="string" />
+
+        <argument
+            android:name="button"
+            app:argType="string" />
 
     </fragment>
 

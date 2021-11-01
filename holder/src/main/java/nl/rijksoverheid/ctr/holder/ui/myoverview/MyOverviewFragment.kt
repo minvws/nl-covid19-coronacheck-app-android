@@ -19,6 +19,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.*
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardSync
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeFragmentData
+import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.MyOverviewFragmentInfoItemHandlerUtil
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.ext.sharedViewModelWithOwner
 import org.koin.android.ext.android.inject
@@ -52,12 +53,13 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
     }
 
     private val bottomSheetDialogUtil: BottomSheetDialogUtil by inject()
-    private val dashboardViewModel: DashboardViewModel by sharedViewModelWithOwner(owner = {
+    private val myOverviewFragmentInfoItemHandlerUtil: MyOverviewFragmentInfoItemHandlerUtil by inject()
+    val dashboardViewModel: DashboardViewModel by sharedViewModelWithOwner(owner = {
         ViewModelOwner.from(
             requireParentFragment()
         )
     })
-    private val section = Section()
+    val section = Section()
     private val greenCardType: GreenCardType by lazy {
         arguments?.getParcelable<GreenCardType>(
             EXTRA_GREEN_CARD_TYPE
@@ -189,31 +191,14 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                         dashboardItem.show
                     )
                 }
-                DashboardItem.SyncGreenCardsItem -> {
-                    adapterItems.add(MyOverviewSyncGreenCardsItem(
+                is DashboardItem.InfoItem -> {
+                    adapterItems.add(MyOverviewInfoCardItem(
+                        infoItem = dashboardItem,
                         onButtonClick = {
-                            navigateSafety(
-                                MyOverviewFragmentDirections.actionSyncGreenCards()
-                            )
-                        }
-                    ))
-                }
-                DashboardItem.GreenCardsSyncedItem -> {
-                    adapterItems.add(MyOverviewGreenCardsSyncedItem(
-                        onButtonClick = {
-                            bottomSheetDialogUtil.present(
-                                childFragmentManager,
-                                BottomSheetData.TitleDescription(
-                                    title = getString(R.string.refreshed_eu_items_title),
-                                    applyOnDescription = {
-                                        it.setHtmlText(getString(R.string.refreshed_eu_items_description), true)
-                                    }
-                                )
-                            )
+                            myOverviewFragmentInfoItemHandlerUtil.handleButtonClick(this, it)
                         },
-                        onCloseClick = {
-                            section.remove(it)
-                            dashboardViewModel.dismissGreenCardsSyncedItem()
+                        onDismiss = { infoCardItem, infoItem ->
+                            myOverviewFragmentInfoItemHandlerUtil.handleDismiss(this, infoCardItem, infoItem)
                         }
                     ))
                 }

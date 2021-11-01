@@ -65,7 +65,6 @@
     <string name="scan_instructions_4_description"><![CDATA[In case of a red screen with a cross, you will get information to assist the visitor. If the screen stays red, you cannot grant the visitor access.]]></string>
     <string name="privacy_statement">Acceptable use policy</string>
     <string name="scanner_custom_title">Scan QR code</string>
-    <string name="scanner_custom_message">"What should I pay attention to?"</string>
     <string name="camera_rationale_dialog_title">Scanner wants to access your camera</string>
     <string name="camera_rationale_dialog_description">So the app can scan QR codes</string>
     <string name="scanner_zebra_footer">Prefer laser scanning?\n\nUse the yellow buttons on your device.</string>

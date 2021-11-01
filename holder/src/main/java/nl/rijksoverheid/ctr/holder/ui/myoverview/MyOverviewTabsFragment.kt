@@ -10,10 +10,12 @@ import android.view.View.VISIBLE
 import android.widget.TextView
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
@@ -26,6 +28,7 @@ import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardTabItem
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.concurrent.TimeUnit
 
@@ -45,6 +48,7 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
     private val dialogUtil: DialogUtil by inject()
     private val persistenceManager: PersistenceManager by inject()
     private val clockDeviationUseCase: ClockDeviationUseCase by inject()
+    private val appConfigViewModel: AppConfigViewModel by sharedViewModel()
 
     private val refreshHandler = Handler(Looper.getMainLooper())
     private val refreshRunnable = Runnable {
@@ -60,6 +64,7 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
         observeServerTimeSynced()
         observeItems(adapter)
         observeSyncErrors()
+        observeAppConfig()
     }
 
     fun showAddQrButton(show: Boolean) {
@@ -149,6 +154,12 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
                 }
             }
         )
+    }
+
+    private fun observeAppConfig() {
+        appConfigViewModel.appStatusLiveData.observe(viewLifecycleOwner, {
+            dashboardViewModel.refresh()
+        })
     }
 
     private fun refresh(dashboardSync: DashboardSync = DashboardSync.CheckSync) {

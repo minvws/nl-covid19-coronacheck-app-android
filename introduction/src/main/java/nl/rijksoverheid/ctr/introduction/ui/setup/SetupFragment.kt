@@ -47,7 +47,7 @@ class SetupFragment : Fragment(R.layout.fragment_setup) {
     }
 
     private fun setObservers() {
-        appStatusViewModel.appStatusLiveData.observe(viewLifecycleOwner, EventObserver {
+        appStatusViewModel.appStatusLiveData.observe(viewLifecycleOwner, {
             when (it) {
                 is AppStatus.UpdateRecommended -> showRecommendedUpdateDialog()
                 is AppStatus.NoActionRequired -> navigateToOnboarding()

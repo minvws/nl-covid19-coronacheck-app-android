@@ -48,7 +48,7 @@ import java.time.OffsetDateTime
 fun fakeAppConfigViewModel(appStatus: AppStatus = AppStatus.NoActionRequired) =
     object : AppConfigViewModel() {
         override fun refresh(mobileCoreWrapper: MobileCoreWrapper, force: Boolean) {
-            appStatusLiveData.value = Event(appStatus)
+            appStatusLiveData.value = appStatus
         }
     }
 
@@ -62,9 +62,18 @@ fun fakeDashboardViewModel() =
 
         }
 
-        override fun dismissGreenCardsSyncedItem() {
+        override fun dismissRefreshedEuVaccinationsInfoCard() {
 
         }
+
+        override fun dismissRecoveredDomesticRecoveryInfoCard() {
+
+        }
+
+        override fun dismissExtendedDomesticRecoveryInfoCard() {
+
+        }
+
     }
 
 fun fakeRemoveExpiredEventsUseCase() = object: RemoveExpiredEventsUseCase {
@@ -391,6 +400,46 @@ fun fakePersistenceManager(
 
         override fun setShowSyncGreenCardsItem(show: Boolean) {
 
+        }
+
+        override fun setShouldCheckRecoveryGreenCardRevisedValidity(check: Boolean) {
+
+        }
+
+        override fun getShouldCheckRecoveryGreenCardRevisedValidity(): Boolean {
+            return true
+        }
+
+        override fun setShowExtendDomesticRecoveryInfoCard(show: Boolean) {
+
+        }
+
+        override fun getShowExtendDomesticRecoveryInfoCard(): Boolean {
+            return true
+        }
+
+        override fun setShowRecoverDomesticRecoveryInfoCard(show: Boolean) {
+
+        }
+
+        override fun getShowRecoverDomesticRecoveryInfoCard(): Boolean {
+            return true
+        }
+
+        override fun setHasDismissedExtendedDomesticRecoveryInfoCard(dismissed: Boolean) {
+
+        }
+
+        override fun getHasDismissedExtendedDomesticRecoveryInfoCard(): Boolean {
+            return true
+        }
+
+        override fun setHasDismissedRecoveredDomesticRecoveryInfoCard(dismissed: Boolean) {
+
+        }
+
+        override fun getHasDismissedRecoveredDomesticRecoveryInfoCard(): Boolean {
+            return true
         }
     }
 }

@@ -57,7 +57,8 @@ class HolderDatabaseSyncerImplTest {
                 )
             ),
             syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(),
-            removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase()
+            removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
+            persistenceManager = fakePersistenceManager()
         )
 
         val databaseSyncerResult = holderDatabaseSyncer.sync(
@@ -81,7 +82,8 @@ class HolderDatabaseSyncerImplTest {
                 )
             ),
             syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(),
-            removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase()
+            removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
+            persistenceManager = fakePersistenceManager()
         )
 
         val databaseSyncerResult = holderDatabaseSyncer.sync(
@@ -116,7 +118,8 @@ class HolderDatabaseSyncerImplTest {
                 )
             ),
             syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(),
-            removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase()
+            removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
+            persistenceManager = fakePersistenceManager()
         )
 
         val databaseSyncerResult = holderDatabaseSyncer.sync(
@@ -140,7 +143,8 @@ class HolderDatabaseSyncerImplTest {
             syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(
                 result = SyncRemoteGreenCardsResult.Success
             ),
-            removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase()
+            removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
+            persistenceManager = fakePersistenceManager()
         )
 
         val databaseSyncerResult = holderDatabaseSyncer.sync(
@@ -168,7 +172,8 @@ class HolderDatabaseSyncerImplTest {
             syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(
                 result = SyncRemoteGreenCardsResult.Success
             ),
-            removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase()
+            removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
+            persistenceManager = fakePersistenceManager()
         )
 
         val databaseSyncerResult = holderDatabaseSyncer.sync(
@@ -192,7 +197,8 @@ class HolderDatabaseSyncerImplTest {
             syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(
                 result = SyncRemoteGreenCardsResult.Success
             ),
-            removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase()
+            removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
+            persistenceManager = fakePersistenceManager()
         )
 
         val databaseSyncerResult = holderDatabaseSyncer.sync(
@@ -229,7 +235,8 @@ class HolderDatabaseSyncerImplTest {
             syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(
                 result = SyncRemoteGreenCardsResult.Failed(AppErrorResult(Step(1), IllegalStateException("Some error")))
             ),
-            removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase()
+            removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
+            persistenceManager = fakePersistenceManager()
         )
 
         val databaseSyncerResult = holderDatabaseSyncer.sync(

@@ -511,4 +511,6 @@
     <string name="about_this_app_clear_data_description">Clearing will delete all data and certificates from the app and will close the app. You can simply restart it afterwards.</string>
     <string name="about_this_app_clear_data_cancel">cancel</string>
     <string name="about_this_app_clear_data_confirm">clear data</string>
+    <string name="extend_domestic_recovery_green_card_toolbar_title">Bewijs verlengen</string>
+    <string name="recover_domestic_recovery_green_card_toolbar_title">Bewijs terugzetten</string>
 </resources>
