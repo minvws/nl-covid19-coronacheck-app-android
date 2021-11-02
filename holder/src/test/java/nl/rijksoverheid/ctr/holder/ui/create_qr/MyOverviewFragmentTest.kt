@@ -66,6 +66,26 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
         )
     }
 
+    @Test
+    fun `placeholder item`() {
+        startFragment(
+            DashboardTabItem(
+                title = R.string.travel_button_domestic,
+                greenCardType = GreenCardType.Domestic,
+                items = listOf(
+                    DashboardItem.PlaceholderCardItem(GreenCardType.Domestic)
+                )
+            )
+        )
+
+        assertDisplayedAtPosition(
+            listId = R.id.recyclerView,
+            position = 0,
+            targetViewId = R.id.title,
+            textId = R.string.my_overview_qr_placeholder_header
+        )
+    }
+
     private fun startFragment(tabItem: DashboardTabItem): FragmentScenario<MyOverviewTabsFragment> {
         loadKoinModules(
             module(override = true) {
