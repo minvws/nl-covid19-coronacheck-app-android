@@ -1,6 +1,8 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.cardview.widget.CardView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
 import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragmentInContainer
@@ -8,7 +10,15 @@ import androidx.lifecycle.ViewModelStore
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
-import com.schibsted.spain.barista.assertion.BaristaListAssertions.assertDisplayedAtPosition
+import androidx.test.espresso.ViewAssertion
+import androidx.test.espresso.action.ViewActions
+import androidx.test.espresso.matcher.ViewMatchers
+import com.google.android.material.card.MaterialCardView
+import com.schibsted.spain.barista.assertion.BaristaListAssertions.assertCustomAssertionAtPosition
+import com.schibsted.spain.barista.assertion.BaristaListAssertions.assertListItemCount
+import com.schibsted.spain.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
+import com.schibsted.spain.barista.assertion.BaristaVisibilityAssertions.assertNotDisplayed
+import com.schibsted.spain.barista.internal.performActionOnView
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.fakeAppConfigViewModel
@@ -25,6 +35,7 @@ import org.koin.core.context.loadKoinModules
 import org.koin.dsl.module
 import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
+import kotlin.test.assertTrue
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -58,11 +69,13 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
             )
         )
 
-        assertDisplayedAtPosition(
+        assertCustomAssertionAtPosition(
             listId = R.id.recyclerView,
             position = 0,
-            targetViewId = R.id.text,
-            textId = R.string.my_overview_description
+            targetViewId = R.id.dashboardItemHeaderRoot,
+            viewAssertion = ViewAssertion { view, _ ->
+                assertTrue { view is ConstraintLayout }
+            }
         )
     }
 
@@ -78,12 +91,89 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
             )
         )
 
-        assertDisplayedAtPosition(
+        assertCustomAssertionAtPosition(
             listId = R.id.recyclerView,
             position = 0,
-            targetViewId = R.id.title,
-            textId = R.string.my_overview_qr_placeholder_header
+            targetViewId = R.id.dashboardItemPlaceholderRoot,
+            viewAssertion = ViewAssertion { view, _ ->
+                assertTrue { view is MaterialCardView }
+            }
         )
+    }
+
+    @Test
+    fun `clock deviation item`() {
+        startFragment(
+            DashboardTabItem(
+                title = R.string.travel_button_domestic,
+                greenCardType = GreenCardType.Domestic,
+                items = listOf(
+                    DashboardItem.ClockDeviationItem
+                )
+            )
+        )
+
+        assertCustomAssertionAtPosition(
+            listId = R.id.recyclerView,
+            position = 0,
+            targetViewId = R.id.dashboardItemClockDeviation,
+            viewAssertion = ViewAssertion { view, _ ->
+                assertTrue { view is CardView }
+            }
+        )
+    }
+
+    @Test
+    fun `info non dismissable item`() {
+        startFragment(
+            DashboardTabItem(
+                title = R.string.travel_button_domestic,
+                greenCardType = GreenCardType.Domestic,
+                items = listOf(
+                    DashboardItem.InfoItem.NonDismissible.ExtendDomesticRecovery
+                )
+            )
+        )
+
+        assertCustomAssertionAtPosition(
+            listId = R.id.recyclerView,
+            position = 0,
+            targetViewId = R.id.dashboardItemInfoRoot,
+            viewAssertion = ViewAssertion { view, _ ->
+                assertTrue { view is CardView }
+            }
+        )
+        assertNotDisplayed(R.id.close)
+    }
+
+    @Test
+    fun `info dismissable item`() {
+        startFragment(
+            DashboardTabItem(
+                title = R.string.travel_button_domestic,
+                greenCardType = GreenCardType.Domestic,
+                items = listOf(
+                    DashboardItem.InfoItem.Dismissible.ExtendedDomesticRecovery
+                )
+            )
+        )
+
+        // assert card is displayed
+        assertCustomAssertionAtPosition(
+            listId = R.id.recyclerView,
+            position = 0,
+            targetViewId = R.id.dashboardItemInfoRoot,
+            viewAssertion = ViewAssertion { view, _ ->
+                assertTrue { view is CardView }
+            }
+        )
+        assertDisplayed(R.id.close)
+
+        // dismiss card
+        performActionOnView(ViewMatchers.withId(R.id.close), ViewActions.click())
+
+        // assert card is dismissed
+        assertListItemCount(listId = R.id.recyclerView, expectedItemCount = 0)
     }
 
     private fun startFragment(tabItem: DashboardTabItem): FragmentScenario<MyOverviewTabsFragment> {
