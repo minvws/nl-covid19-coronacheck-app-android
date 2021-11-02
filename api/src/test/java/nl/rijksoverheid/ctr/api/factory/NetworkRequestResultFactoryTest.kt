@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.api.factory
 
+import android.net.ConnectivityManager
 import com.squareup.moshi.JsonClass
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.runBlocking
@@ -202,6 +203,10 @@ class NetworkRequestResultFactoryTest {
 
             override fun isNetworkAvailable(): Boolean {
                 return isNetworkAvailable
+            }
+
+            override fun getConnectivityManager(): ConnectivityManager {
+                TODO("Not yet implemented")
             }
         }
     }

@@ -33,15 +33,15 @@ class AppConfigFreshnessUseCaseImpl(
         return OffsetDateTime.ofInstant(
             Instant.ofEpochSecond(getAppConfigLastFetchedSeconds()),
             ZoneOffset.UTC
-        ).plusDays(28).toEpochSecond()
+        ).plusSeconds(cachedAppConfigUseCase.getCachedAppConfig().configTtlSeconds.toLong())
+            .toEpochSecond()
     }
 
     override fun shouldShowConfigFreshnessWarning(): Boolean {
-        // return true if config is older than 10 days && less than 28 days
+        // return true if config is older than 10 days && less than 28 days, or when the configTTL has expired
         val lastFetched = getAppConfigLastFetchedSeconds()
-        return lastFetched < OffsetDateTime.now(clock)
+        return lastFetched > 0 && lastFetched < OffsetDateTime.now(clock)
             .minusSeconds(cachedAppConfigUseCase.getCachedAppConfig().configAlmostOutOfDateWarningSeconds.toLong())
-            .toEpochSecond() && lastFetched > OffsetDateTime.now(clock).minusSeconds(cachedAppConfigUseCase.getCachedAppConfig().configTtlSeconds.toLong())
             .toEpochSecond()
     }
 

@@ -34,7 +34,7 @@ class AppConfigFreshnessUseCaseImplTest {
     }
 
     @Test
-    fun `shouldShowConfigWarning returns true if config older than specified config value but less than 28 days`() {
+    fun `shouldShowConfigWarning returns true if config older than specified config value`() {
         // Config has default value of 300 seconds at time of writing
         val appConfigFreshnessUseCase = AppConfigFreshnessUseCaseImpl(
             fakeAppConfigPersistenceManager(
@@ -60,18 +60,4 @@ class AppConfigFreshnessUseCaseImplTest {
         )
         assertFalse(appConfigFreshnessUseCase.shouldShowConfigFreshnessWarning())
     }
-
-    @Test
-    fun `shouldShowConfigWarning returns false if config older than 28 days`() {
-        val appConfigFreshnessUseCase = AppConfigFreshnessUseCaseImpl(
-            fakeAppConfigPersistenceManager(
-                lastFetchedSeconds = Clock.offset(
-                    defaultClock,
-                    Duration.ofDays(-29)
-                ).millis() / 1000
-            ), defaultClock, fakeCachedAppConfigUseCase()
-        )
-        assertFalse(appConfigFreshnessUseCase.shouldShowConfigFreshnessWarning())
-    }
-
 }
