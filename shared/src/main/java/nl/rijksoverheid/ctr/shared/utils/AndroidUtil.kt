@@ -22,6 +22,7 @@ interface AndroidUtil {
     fun getMasterKeyAlias(): String
     fun isFirstInstall(): Boolean
     fun isNetworkAvailable(): Boolean
+    fun getConnectivityManager() : ConnectivityManager
 }
 
 class AndroidUtilImpl(private val context: Context) : AndroidUtil {
@@ -74,4 +75,9 @@ class AndroidUtilImpl(private val context: Context) : AndroidUtil {
             else -> false
         }
     }
+
+    override fun getConnectivityManager(): ConnectivityManager {
+        return context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    }
+
 }
