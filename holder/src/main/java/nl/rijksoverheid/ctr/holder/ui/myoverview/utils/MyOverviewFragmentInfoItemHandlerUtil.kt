@@ -85,7 +85,7 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
                         toolbarTitle = myOverviewFragment.getString(R.string.recover_domestic_recovery_green_card_toolbar_title),
                         title = myOverviewFragment.getString(R.string.recover_domestic_recovery_green_card_title),
                         description = myOverviewFragment.getString(R.string.recover_domestic_recovery_green_card_description),
-                        button = myOverviewFragment.getString(R.string.recovery_domestic_recovery_green_card_button)
+                        button = myOverviewFragment.getString(R.string.recover_domestic_recovery_green_card_button)
                     )
                 )
             }
