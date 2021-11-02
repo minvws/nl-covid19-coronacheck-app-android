@@ -11,6 +11,7 @@ import com.xwray.groupie.Section
 import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.design.utils.BottomSheetData
 import nl.rijksoverheid.ctr.design.utils.BottomSheetDialogUtil
+import nl.rijksoverheid.ctr.design.utils.DescriptionData
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMyOverviewBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
@@ -180,13 +181,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                         bottomSheetDialogUtil.present(
                             childFragmentManager, BottomSheetData.TitleDescription(
                                 title = getString(R.string.clock_deviation_explanation_title),
-                                applyOnDescription = {
-                                    it.setHtmlText(R.string.clock_deviation_explanation_description)
-                                    it.enableCustomLinks {
-                                        val intent = Intent(Settings.ACTION_DATE_SETTINGS)
-                                        startActivity(intent)
-                                    }
-                                },
+                                descriptionData = DescriptionData(R.string.clock_deviation_explanation_description, customLinkIntent = Intent(Settings.ACTION_DATE_SETTINGS)),
                             )
                         )
                     }))
@@ -223,25 +218,19 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                 is OriginType.Test -> {
                     BottomSheetData.TitleDescription(
                         title = getString(R.string.my_overview_green_card_not_valid_title_test),
-                        applyOnDescription = {
-                            it.setHtmlText(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_test)
-                        }
+                        descriptionData = DescriptionData(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_test),
                     )
                 }
                 is OriginType.Vaccination -> {
                     BottomSheetData.TitleDescription(
                         title = getString(R.string.my_overview_green_card_not_valid_title_vaccination),
-                        applyOnDescription = {
-                            it.setHtmlText(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_vaccination)
-                        }
+                        descriptionData = DescriptionData(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_vaccination),
                     )
                 }
                 is OriginType.Recovery -> {
                     BottomSheetData.TitleDescription(
                         title = getString(R.string.my_overview_green_card_not_valid_title_recovery),
-                        applyOnDescription = {
-                            it.setHtmlText(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_recovery)
-                        }
+                        descriptionData = DescriptionData(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_recovery),
                     )
                 }
             })
@@ -265,9 +254,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
         bottomSheetDialogUtil.present(childFragmentManager,
             BottomSheetData.TitleDescription(
                 title = title,
-                applyOnDescription = {
-                    it.setHtmlText(description, true)
-                }
+                descriptionData = DescriptionData(description, htmlLinksEnabled = true),
             )
         )
     }

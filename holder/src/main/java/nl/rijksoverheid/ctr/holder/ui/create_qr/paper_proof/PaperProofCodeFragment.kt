@@ -6,6 +6,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.design.utils.BottomSheetData
 import nl.rijksoverheid.ctr.design.utils.BottomSheetDialogUtil
+import nl.rijksoverheid.ctr.design.utils.DescriptionData
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentPaperProofCodeBinding
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.PaperProofCodeResult
@@ -67,9 +68,7 @@ class PaperProofCodeFragment : Fragment(R.layout.fragment_paper_proof_code) {
         binding.noLetterCombinationBtn.setOnClickListener {
             bottomSheetDialogUtil.present(childFragmentManager, BottomSheetData.TitleDescription(
                 title = getString(R.string.no_letter_combination_dialog_title),
-                applyOnDescription = {
-                    it.setHtmlText(R.string.no_letter_combination_dialog_description, true)
-                }
+                descriptionData = DescriptionData(R.string.no_letter_combination_dialog_description, htmlLinksEnabled = true),
             ))
         }
 
