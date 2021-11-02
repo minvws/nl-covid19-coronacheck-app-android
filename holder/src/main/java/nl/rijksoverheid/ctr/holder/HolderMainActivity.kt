@@ -52,8 +52,7 @@ class HolderMainActivity : AppCompatActivity() {
     private val mobileCoreWrapper: MobileCoreWrapper by inject()
     private val intentUtil: IntentUtil by inject()
     private var isFreshStart: Boolean = true // track if this is a fresh start of the app
-    private val connectivityManager =
-        getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    private lateinit var connectivityManager : ConnectivityManager
     private val connectivityChangeCallback =
         object : ConnectivityManager.NetworkCallback() {
             override fun onAvailable(network: Network) {
@@ -77,6 +76,8 @@ class HolderMainActivity : AppCompatActivity() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
+
+        connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
         introductionViewModel.introductionStatusLiveData.observe(this, EventObserver {
             navController.navigate(
