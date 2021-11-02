@@ -52,6 +52,14 @@ class HolderMainActivity : AppCompatActivity() {
     private val mobileCoreWrapper: MobileCoreWrapper by inject()
     private val intentUtil: IntentUtil by inject()
     private var isFreshStart: Boolean = true // track if this is a fresh start of the app
+    private val connectivityManager =
+        getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    private val connectivityChangeCallback =
+        object : ConnectivityManager.NetworkCallback() {
+            override fun onAvailable(network: Network) {
+                appConfigViewModel.refresh(mobileCoreWrapper)
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
@@ -110,20 +118,7 @@ class HolderMainActivity : AppCompatActivity() {
             }
         })
 
-        // Add connectivity change listener. If a network is detected try to refresh the config
-        val connectivityManager =
-            getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        connectivityManager.let {
-            // Blank filter, any network will do
-            val networkChangeFilter = NetworkRequest.Builder().build()
-            connectivityManager.registerNetworkCallback(
-                networkChangeFilter,
-                object : ConnectivityManager.NetworkCallback() {
-                    override fun onAvailable(network: Network) {
-                        appConfigViewModel.refresh(mobileCoreWrapper)
-                    }
-                })
-        }
+
     }
 
     private fun handleAppStatus(
@@ -158,6 +153,23 @@ class HolderMainActivity : AppCompatActivity() {
             appConfigViewModel.refresh(mobileCoreWrapper, isFreshStart)
             isFreshStart = false
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Add connectivity change listener. If a network is detected try to refresh the config
+        connectivityManager.let {
+            // Blank filter, any network will do
+            val networkChangeFilter = NetworkRequest.Builder().build()
+            connectivityManager.registerNetworkCallback(
+                networkChangeFilter, connectivityChangeCallback
+            )
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        connectivityManager.unregisterNetworkCallback(connectivityChangeCallback)
     }
 
     override fun onNewIntent(intent: Intent?) {
