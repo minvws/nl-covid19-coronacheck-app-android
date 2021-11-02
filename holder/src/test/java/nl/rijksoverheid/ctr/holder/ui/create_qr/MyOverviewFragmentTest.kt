@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelStore
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
+import com.schibsted.spain.barista.assertion.BaristaListAssertions.assertDisplayedAtPosition
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.fakeAppConfigViewModel
@@ -46,30 +47,30 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
     val rule = InstantTaskExecutorRule()
 
     @Test
-    fun `clock deviation`() {
-        val scenario = startFragment()
+    fun `header item`() {
+        startFragment(
+            DashboardTabItem(
+                title = R.string.travel_button_domestic,
+                greenCardType = GreenCardType.Domestic,
+                items = listOf(
+                    DashboardItem.HeaderItem(text = R.string.my_overview_description)
+                )
+            )
+        )
+
+        assertDisplayedAtPosition(
+            listId = R.id.recyclerView,
+            position = 0,
+            targetViewId = R.id.text,
+            textId = R.string.my_overview_description
+        )
     }
 
-
-    private fun startFragment(): FragmentScenario<MyOverviewTabsFragment> {
+    private fun startFragment(tabItem: DashboardTabItem): FragmentScenario<MyOverviewTabsFragment> {
         loadKoinModules(
             module(override = true) {
-                viewModel {
-                    fakeAppConfigViewModel(
-                        appStatus = AppStatus.NoActionRequired
-                    )
-                }
-                viewModel {
-                    fakeDashboardViewModel(
-                        listOf(
-                            DashboardTabItem(
-                                title = R.string.dashboard_item_refresh_eu_vaccinations_text,
-                                greenCardType = GreenCardType.Domestic,
-                                items = listOf(DashboardItem.ClockDeviationItem)
-                            )
-                        )
-                    )
-                }
+                viewModel { fakeAppConfigViewModel(appStatus = AppStatus.NoActionRequired) }
+                viewModel { fakeDashboardViewModel(listOf(tabItem)) }
             })
         val fragmentArgs = bundleOf(
             "returnUri" to "test",
