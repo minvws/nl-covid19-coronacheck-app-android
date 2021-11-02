@@ -110,7 +110,7 @@
     <string name="no_negative_test_result_description"><![CDATA[No negative test result available.]]></string>
     <string name="test_result_not_known_title">Test result not yet known</string>
     <string name="test_result_not_known_description"><![CDATA[Please try again later.<br/><br/>If you have any questions, contact your test location.]]></string>
-    <string name="about_this_app_description"><![CDATA[CoronaCheck is created to reopen society step by step. This way, the Netherlands can head out more often and travel abroad.<br/><br/>CoronaCheck creates a coronavirus pass from your vaccination, your negative test result or if you\'ve had corona and are recovered. A coronavirus pass consists of two QR codes: one for the Netherlands and one for other countries (the EU Digital COVID Certificate).]]></string>
+    <string name="about_this_app_description"><![CDATA[CoronaCheck is created to reopen society step by step. This way, we can head out more often and travel abroad.<br/><br/>CoronaCheck creates a coronavirus pass from your vaccination, negative test result or if you\'ve had coronavirus and are recovered. Your coronavirus pass has a QR code. Have it scanned for access to places or activities in The Netherlands, or to travel internationally (the EU Digital COVID Certificate).]]></string>
     <string name="test_result_already_signed_title">Test result already retrieved</string>
     <string name="test_result_already_signed_description"><![CDATA[Your test result has already been retrieved. And it\'s already been made into a QR code.<br/><br/>Is this not correct? Contact the test location.]]></string>
     <string name="item_test_result_expired"><![CDATA[Your QR code has expired.<br\><br/>Get tested again.]]></string>
@@ -370,7 +370,7 @@
     <string name="qr_explanation_description_eu_recovery_footer">*Date noted in day-month-year.</string>
     <string name="my_overview_green_card_not_valid_title_recovery">About your recovery certificate</string>
     <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_recovery"><![CDATA[Your recovery certificate isn\'t valid in the Netherlands, because the type of test is not accepted.<br/><br/>You’ve only got an international QR code.]]></string>
-    <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_recovery"><![CDATA[Your recovery certificate isn\'t valid internationally. You\'ve only got a Dutch certificate.<br/><br/>The reason could be that the type of test is not accepted, or that the test is no longer valid abroad. An international recovery certificate can only be made with a PCR-test that is less than 180 days old. Read more about the possible causes on the <a href="https://www.coronacheck.nl//en/guidepost">Guidepost.</a>]]></string>
+    <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_recovery"><![CDATA[Your recovery certificate isn\'t valid internationally. You\'ve only got a Dutch certificate.<br/><br/>The reason could be that the type of test is not accepted, or that the test is no longer valid abroad. An international recovery certificate can only be made with a PCR-test that is less than 180 days old. Read more about the possible causes on the <a href="https://www.coronacheck.nl//en/guidepost">Guidepost</a>.]]></string>
     <string name="my_overview_green_card_server_error"><![CDATA[The app periodically needs a connection to the server to refresh your QR code. We failed to reach the server because of an error. <a href="#">Try again</a>]]></string>
     <string name="my_overview_green_card_server_error_after_retry"><![CDATA[Sorry, we weren’t able to refresh your QR code. Open the app again in 10 minutes.<br/><br/>Still not working? Please call the help desk at 0800-1421 (free) and provide the following error code: A 075]]></string>
     <string name="my_overview_green_card_internet_error"><![CDATA[Connect to the internet to make sure your QR code works again.<br/><a href="#">Try again</a>]]></string>
@@ -387,15 +387,15 @@
     <string name="my_overview_add_qr_button">Add certificate</string>
     <string name="add_paper_proof">Add paper certificate</string>
     <string name="add_paper_proof_title">Your letter combination</string>
-    <string name="add_paper_proof_description">Please enter the letter combination. You’ve received this from your healthcare provider, together with the paper certificate.</string>
+    <string name="add_paper_proof_description">Please enter the letter combination. You’ve received this together with the paper certificate.</string>
     <string name="add_paper_proof_input_header">Letter combination</string>
     <string name="add_paper_proof_input_hint">E.g. FLBRXQ</string>
     <string name="add_paper_proof_input_invalid">This letter combination doesn\'t exist</string>
     <string name="add_paper_proof_input_not_6_chars">Enter the 6-letter combination.</string>
     <string name="add_paper_proof_no_letter_combination_button">No letter combination?</string>
     <string name="no_letter_combination_dialog_title">No letter combination?</string>
-    <string name="no_letter_combination_dialog_description"><![CDATA[Then you won’t be able to add your certificate to the app this way.<br/>You’ve only received a letter combination if you requested your paper coronavirus pass <a href="http://coronatest.nl/en">at the healthcare provider</a> who vaccinated or tested you.<br/><br/><b>Did you print your certificate yourself?</b> Please add your certificate to the app via the menu. Go to “Add certificate” and log in using your DigiD.]]></string>
-    <string name="add_paper_proof_explanation_description"><![CDATA[Have you requested your paper coronavirus pass <b>at the healthcare provider</b> who vaccinated or tested you? Then you can add it here in the app.]]></string>
+    <string name="no_letter_combination_dialog_description"><![CDATA[Then you won’t be able to add your certificate to the app this way.<br/>You’ve only received a letter combination if you requested your paper coronavirus pass at your healthcare provider, or if you received it by post.<br/><br/><b>Did you print your certificate yourself?</b> Please add your certificate to the app via the menu. Go to “Add certificate” and log in using your DigiD.]]></string>
+    <string name="add_paper_proof_explanation_description"><![CDATA[Have you <b>requested your paper coronavirus pass at your healthcare provider,</b> or <b>have you received it by post?</b> Then you can add it here in the app.]]></string>
     <string name="add_paper_proof_explanation_highlight"><![CDATA[<b>Did you print your certificate yourself?</b><br/> Please add your certificate to the app via the menu. Go to “Add certificate” and log in using your DigiD.]]></string>
     <string name="add_paper_proof_consent_title">Only scan the international QR code</string>
     <string name="add_paper_proof_consent_description"><![CDATA[The international QR code contains enough information to create both a Dutch certificate and an international certificate. Therefore please <b>only scan the international QR code</b> using your smartphone camera.<br/><br/><b>You will receive the following:</b><br/><br/><ul><li>A Dutch certificate</li><li>An international certificate</li></ul>]]></string>
@@ -491,7 +491,7 @@
     <string name="extended_domestic_recovery_green_card_info_card_text">Your Dutch recovery certificate has been extended</string>
     <string name="recovered_domestic_recovery_green_card_info_card_text">Your Dutch recovery certificate has been restored</string>
     <string name="extend_domestic_recovery_green_card_title">Extend recovery certificate</string>
-    <string name="extend_domestic_recovery_green_card_description"><![CDATA[We will extend everyone\'s expired recovery certificates soon. As a result, your certificate will be valid for one year after the moment of positive testing.<br/><br/>You can also extend your certificate right now if you want to.]]></string>
+    <string name="extend_domestic_recovery_green_card_description"><![CDATA[We will extend everyone\'s recovery certificates soon. As a result, your certificate will be valid for one year after the moment of positive testing.<br/><br/>You can also extend your certificate right now if you want to.]]></string>
     <string name="extend_domestic_recovery_green_card_button">Extend certificate</string>
     <string name="recover_domestic_recovery_green_card_title">Restore recovery certificate</string>
     <string name="recover_domestic_recovery_green_card_description"><![CDATA[We will restore your expired recovery certificate soon, because the validity of Dutch recovery certificates will be extended. As a result, your certificate will be valid for one year after the moment of positive testing.<br/><br/>You can also restore your certificate right now if you want to.]]></string>
@@ -513,5 +513,5 @@
     <string name="accessibility_flash_on">Turn the flashlight on.</string>
     <string name="recover_domestic_recovery_green_card_button">Extend certificate</string>
     <string name="cannot_create_recovery_proof_title">Positive test result no longer valid</string>
-    <string name="cannot_create_recovery_proof_description"><![CDATA[It has been more than %1s days since you tested positive for coronavirus. Therefore, your test result is no longer valid. Unfortunately, you cannot create a recovery certificate.<br/><br/>Find more information on the <a href="https://www.coronacheck.nl//en/guidepost">Guidepost.</a>]]></string>
+    <string name="cannot_create_recovery_proof_description"><![CDATA[It has been more than %1s days since you tested positive for coronavirus. Therefore, your test result is no longer valid. Unfortunately, you cannot create a recovery certificate.<br/><br/>Find more information on the <a href="https://www.coronacheck.nl//en/guidepost">Guidepost</a>.]]></string>
 </resources>
