@@ -155,6 +155,7 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
         when (qrCodesResult) {
             is QrCodesResult.SingleQrCode -> {
                 qrCodePagerAdapter.addData(listOf(qrCodesResult.qrCodeData))
+                binding.vaccinationQrsContainer.visibility = View.GONE
             }
             is QrCodesResult.MultipleQrCodes -> {
                 qrCodePagerAdapter.addData(qrCodesResult.europeanVaccinationQrCodeDataList)
