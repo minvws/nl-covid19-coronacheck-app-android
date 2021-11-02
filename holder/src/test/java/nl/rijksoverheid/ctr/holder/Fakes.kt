@@ -34,6 +34,7 @@ import nl.rijksoverheid.ctr.shared.models.*
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import nl.rijksoverheid.ctr.shared.utils.TestResultUtil
 import org.json.JSONObject
+import java.time.Clock
 import java.time.LocalDate
 import java.time.OffsetDateTime
 
@@ -458,7 +459,7 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
             return ""
         }
 
-        override fun disclose(secretKey: ByteArray, credential: ByteArray): String {
+        override fun disclose(secretKey: ByteArray, credential: ByteArray, currentTimeMillis: Long): String {
             return ""
         }
 
@@ -626,6 +627,8 @@ fun fakeClockDevationUseCase(
     override fun hasDeviation(): Boolean {
         return hasDeviation
     }
+
+    override fun getAdjustedClock(clock: Clock): Clock = Clock.systemDefaultZone()
 }
 
 fun fakeReadEuropeanCredentialUtil(dosis: String = "") = object: ReadEuropeanCredentialUtil {

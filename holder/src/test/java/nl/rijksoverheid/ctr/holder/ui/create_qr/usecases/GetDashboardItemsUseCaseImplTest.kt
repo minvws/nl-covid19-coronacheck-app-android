@@ -18,6 +18,7 @@ import org.koin.dsl.module
 import org.koin.test.AutoCloseKoinTest
 import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
+import java.time.Clock
 import java.time.OffsetDateTime
 
 @RunWith(RobolectricTestRunner::class)
@@ -349,6 +350,8 @@ class GetDashboardItemsUseCaseImplTest: AutoCloseKoinTest() {
                 override fun hasDeviation(): Boolean {
                     return hasDeviation
                 }
+
+                override fun getAdjustedClock(clock: Clock): Clock = Clock.systemDefaultZone()
             }
         }
     }
