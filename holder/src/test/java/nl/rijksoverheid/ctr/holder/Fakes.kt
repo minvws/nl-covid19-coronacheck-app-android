@@ -22,13 +22,13 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
 import nl.rijksoverheid.ctr.holder.ui.myoverview.DashboardViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardSync
+import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardTabItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TokenValidatorUtil
 import nl.rijksoverheid.ctr.introduction.IntroductionData
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
-import nl.rijksoverheid.ctr.shared.models.VerificationResult
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.*
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
@@ -52,10 +52,11 @@ fun fakeAppConfigViewModel(appStatus: AppStatus = AppStatus.NoActionRequired) =
         }
     }
 
-fun fakeDashboardViewModel() =
+fun fakeDashboardViewModel(tabItems: List<DashboardTabItem> = emptyList()) =
     object : DashboardViewModel() {
         override fun refresh(dashboardSync: DashboardSync) {
-
+            (dashboardTabItemsLiveData as MutableLiveData<List<DashboardTabItem>>)
+                .postValue(tabItems)
         }
 
         override fun removeGreenCard(greenCard: GreenCard) {
@@ -76,7 +77,7 @@ fun fakeDashboardViewModel() =
 
     }
 
-fun fakeRemoveExpiredEventsUseCase() = object: RemoveExpiredEventsUseCase {
+fun fakeRemoveExpiredEventsUseCase() = object : RemoveExpiredEventsUseCase {
     override suspend fun execute(events: List<EventGroupEntity>) {
 
     }
@@ -383,7 +384,7 @@ fun fakePersistenceManager(
         }
 
         override fun setHasDismissedUnsecureDeviceDialog(value: Boolean) {
-            
+
         }
 
         override fun hasDismissedSyncedGreenCardsItem(): Boolean {
@@ -514,7 +515,11 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
 }
 
 fun fakeEventProviderRepository(
-    unomi: ((url: String) -> NetworkRequestResult<RemoteUnomi>) = { NetworkRequestResult.Success(RemoteUnomi("", "", false)) },
+    unomi: ((url: String) -> NetworkRequestResult<RemoteUnomi>) = {
+        NetworkRequestResult.Success(
+            RemoteUnomi("", "", false)
+        )
+    },
     events: ((url: String) -> NetworkRequestResult<SignedResponseWithModel<RemoteProtocol3>>) = {
         NetworkRequestResult.Success(
             SignedResponseWithModel(
@@ -553,7 +558,7 @@ fun fakeGreenCardUtil(
     errorCorrectionLevel: ErrorCorrectionLevel = ErrorCorrectionLevel.H,
     isExpiring: Boolean = false,
     hasNoActiveCredentials: Boolean = false
-) = object: GreenCardUtil {
+) = object : GreenCardUtil {
     override fun isExpired(greenCard: GreenCard): Boolean {
         return isExpired
     }
@@ -575,7 +580,7 @@ fun fakeGreenCardUtil(
     }
 }
 
-fun fakeCredentialUtil(activeCredential: CredentialEntity? = null) = object: CredentialUtil {
+fun fakeCredentialUtil(activeCredential: CredentialEntity? = null) = object : CredentialUtil {
     override fun getActiveCredential(entities: List<CredentialEntity>): CredentialEntity? {
         return activeCredential
     }
@@ -595,14 +600,19 @@ fun fakeCredentialUtil(activeCredential: CredentialEntity? = null) = object: Cre
         return ""
     }
 
-    override fun vaccinationShouldBeHidden(readEuropeanCredential: List<JSONObject>, index: Int): Boolean {
+    override fun vaccinationShouldBeHidden(
+        readEuropeanCredential: List<JSONObject>,
+        index: Int
+    ): Boolean {
         return false
     }
 }
 
-fun fakeGetRemoteGreenCardUseCase(result: RemoteGreenCardsResult = RemoteGreenCardsResult.Success(
-    RemoteGreenCards(null, null)
-)) = object: GetRemoteGreenCardsUseCase {
+fun fakeGetRemoteGreenCardUseCase(
+    result: RemoteGreenCardsResult = RemoteGreenCardsResult.Success(
+        RemoteGreenCards(null, null)
+    )
+) = object : GetRemoteGreenCardsUseCase {
     override suspend fun get(events: List<EventGroupEntity>): RemoteGreenCardsResult {
         return result
     }
@@ -610,7 +620,7 @@ fun fakeGetRemoteGreenCardUseCase(result: RemoteGreenCardsResult = RemoteGreenCa
 
 fun fakeSyncRemoteGreenCardUseCase(
     result: SyncRemoteGreenCardsResult = SyncRemoteGreenCardsResult.Success,
-) = object: SyncRemoteGreenCardsUseCase {
+) = object : SyncRemoteGreenCardsUseCase {
     override suspend fun execute(remoteGreenCards: RemoteGreenCards): SyncRemoteGreenCardsResult {
         return result
     }
@@ -618,7 +628,7 @@ fun fakeSyncRemoteGreenCardUseCase(
 
 fun fakeClockDevationUseCase(
     hasDeviation: Boolean = false
-) = object: ClockDeviationUseCase() {
+) = object : ClockDeviationUseCase() {
     override fun store(serverResponseTimestamp: Long, localReceivedTimestamp: Long) {
 
     }
@@ -628,7 +638,7 @@ fun fakeClockDevationUseCase(
     }
 }
 
-fun fakeReadEuropeanCredentialUtil(dosis: String = "") = object: ReadEuropeanCredentialUtil {
+fun fakeReadEuropeanCredentialUtil(dosis: String = "") = object : ReadEuropeanCredentialUtil {
     override fun getDose(readEuropeanCredential: JSONObject): String {
         return dosis
     }
@@ -642,7 +652,7 @@ fun fakeReadEuropeanCredentialUtil(dosis: String = "") = object: ReadEuropeanCre
     }
 }
 
-fun fakeQrCodeUsecase() = object: QrCodeUseCase {
+fun fakeQrCodeUsecase() = object : QrCodeUseCase {
     override suspend fun qrCode(
         credential: ByteArray,
         shouldDisclose: Boolean,
@@ -654,14 +664,16 @@ fun fakeQrCodeUsecase() = object: QrCodeUseCase {
     }
 }
 
-fun fakeEventGroupEntityUtil(remoteEventVaccinations: List<RemoteEventVaccination> = listOf()) = object: EventGroupEntityUtil {
-    override suspend fun amountOfVaccinationEvents(eventGroupEntities: List<EventGroupEntity>): Int {
-        return remoteEventVaccinations.size
+fun fakeEventGroupEntityUtil(remoteEventVaccinations: List<RemoteEventVaccination> = listOf()) =
+    object : EventGroupEntityUtil {
+        override suspend fun amountOfVaccinationEvents(eventGroupEntities: List<EventGroupEntity>): Int {
+            return remoteEventVaccinations.size
+        }
     }
-}
 
 fun fakeRemoteEventUtil(
-    getRemoteEventsFromNonDcc: List<RemoteEvent> = listOf()) = object: RemoteEventUtil {
+    getRemoteEventsFromNonDcc: List<RemoteEvent> = listOf()
+) = object : RemoteEventUtil {
     override fun getHolderFromDcc(dcc: JSONObject): RemoteProtocol3.Holder {
         return RemoteProtocol3.Holder(
             infix = "",
@@ -712,19 +724,20 @@ val fakeGreenCard = GreenCard(
     credentialEntities = listOf()
 )
 
-fun fakeRemoteEventVaccination(date: LocalDate = LocalDate.now()) = RemoteEventVaccination.Vaccination(
-    date = date,
-    hpkCode = "",
-    type = "",
-    brand = "",
-    completedByMedicalStatement = false,
-    completedByPersonalStatement = false,
-    completionReason = "",
-    doseNumber = "",
-    totalDoses = "",
-    country = "",
-    manufacturer = ""
-)
+fun fakeRemoteEventVaccination(date: LocalDate = LocalDate.now()) =
+    RemoteEventVaccination.Vaccination(
+        date = date,
+        hpkCode = "",
+        type = "",
+        brand = "",
+        completedByMedicalStatement = false,
+        completedByPersonalStatement = false,
+        completionReason = "",
+        doseNumber = "",
+        totalDoses = "",
+        country = "",
+        manufacturer = ""
+    )
 
 val fakeEuropeanVaccinationGreenCard = GreenCard(
     greenCardEntity = GreenCardEntity(
@@ -742,14 +755,16 @@ val fakeEuropeanVaccinationGreenCard = GreenCard(
             validFrom = OffsetDateTime.now()
         )
     ),
-    credentialEntities = listOf(CredentialEntity(
-        id = 0,
-        greenCardId = 0,
-        data = "".toByteArray(),
-        credentialVersion = 0,
-        validFrom = OffsetDateTime.now(),
-        expirationTime = OffsetDateTime.now()
-    ))
+    credentialEntities = listOf(
+        CredentialEntity(
+            id = 0,
+            greenCardId = 0,
+            data = "".toByteArray(),
+            credentialVersion = 0,
+            validFrom = OffsetDateTime.now(),
+            expirationTime = OffsetDateTime.now()
+        )
+    )
 )
 
 

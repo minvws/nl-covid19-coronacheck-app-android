@@ -23,12 +23,11 @@ import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.PersistConfigUseCase
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.ext.ClmobileVerifyException
-import nl.rijksoverheid.ctr.shared.livedata.Event
 
 abstract class AppConfigViewModel : ViewModel() {
-    val appStatusLiveData = MutableLiveData<AppStatus>()
+    open val appStatusLiveData = MutableLiveData<AppStatus>()
 
-    abstract fun refresh(mobileCoreWrapper: MobileCoreWrapper, force : Boolean = false)
+    abstract fun refresh(mobileCoreWrapper: MobileCoreWrapper, force: Boolean = false)
 }
 
 class AppConfigViewModelImpl(
