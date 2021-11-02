@@ -192,9 +192,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                     }))
                 }
                 is DashboardItem.AddQrButtonItem -> {
-                    (requireParentFragment() as MyOverviewTabsFragment).showAddQrButton(
-                        dashboardItem.show
-                    )
+                    // Handled by MyOverviewTabsFragment
                 }
                 is DashboardItem.InfoItem -> {
                     adapterItems.add(MyOverviewInfoCardItem(
