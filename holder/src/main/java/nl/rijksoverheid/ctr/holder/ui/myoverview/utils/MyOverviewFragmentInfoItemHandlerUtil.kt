@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.holder.ui.myoverview.utils
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthTime
 import nl.rijksoverheid.ctr.design.utils.BottomSheetData
 import nl.rijksoverheid.ctr.design.utils.BottomSheetDialogUtil
+import nl.rijksoverheid.ctr.design.utils.DescriptionData
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewFragment
@@ -46,12 +47,7 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
                     myOverviewFragment.childFragmentManager,
                     BottomSheetData.TitleDescription(
                         title = myOverviewFragment.getString(R.string.extended_domestic_recovery_green_card_bottomsheet_title),
-                        applyOnDescription = { htmlTextViewWidget ->
-                            htmlTextViewWidget.setHtmlText(
-                                myOverviewFragment.getString(R.string.extended_domestic_recovery_green_card_bottomsheet_description),
-                                true
-                            )
-                        }
+                        descriptionData = DescriptionData(R.string.extended_domestic_recovery_green_card_bottomsheet_description, htmlLinksEnabled = true),
                     )
                 )
             }
@@ -60,12 +56,7 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
                     myOverviewFragment.childFragmentManager,
                     BottomSheetData.TitleDescription(
                         title = myOverviewFragment.getString(R.string.recovered_domestic_recovery_green_card_bottomsheet_title),
-                        applyOnDescription = { htmlTextViewWidget ->
-                            htmlTextViewWidget.setHtmlText(
-                                myOverviewFragment.getString(R.string.recovered_domestic_recovery_green_card_bottomsheet_description),
-                                true
-                            )
-                        }
+                        descriptionData = DescriptionData(R.string.recovered_domestic_recovery_green_card_bottomsheet_description),
                     )
                 )
             }
@@ -74,12 +65,7 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
                     myOverviewFragment.childFragmentManager,
                     BottomSheetData.TitleDescription(
                         title = myOverviewFragment.getString(R.string.refreshed_eu_items_title),
-                        applyOnDescription = { htmlTextViewWidget ->
-                            htmlTextViewWidget.setHtmlText(
-                                myOverviewFragment.getString(R.string.refreshed_eu_items_description),
-                                true
-                            )
-                        }
+                        descriptionData = DescriptionData(R.string.refreshed_eu_items_description, htmlLinksEnabled = true),
                     )
                 )
             }
@@ -118,17 +104,14 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
                     myOverviewFragment.childFragmentManager,
                     BottomSheetData.TitleDescription(
                         title = myOverviewFragment.getString(R.string.config_warning_page_title),
-                        applyOnDescription = {
-                            it.setHtmlText(
-                                myOverviewFragment.getString(
-                                    R.string.config_warning_page_message,
-                                    OffsetDateTime.ofInstant(
-                                        Instant.ofEpochSecond(infoItem.maxValidityDate),
-                                        ZoneOffset.UTC
-                                    ).formatDayMonthTime(myOverviewFragment.requireContext())
-                                ), true
-                            )
-                        }
+                        descriptionData = DescriptionData(htmlTextString = myOverviewFragment.getString(
+                            R.string.config_warning_page_message,
+                            OffsetDateTime.ofInstant(
+                                Instant.ofEpochSecond(infoItem.maxValidityDate),
+                                ZoneOffset.UTC
+                            ).formatDayMonthTime(myOverviewFragment.requireContext())
+                        ),
+                        htmlLinksEnabled = true)
                     )
                 )
 
