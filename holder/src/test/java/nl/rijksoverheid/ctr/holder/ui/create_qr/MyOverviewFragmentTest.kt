@@ -61,7 +61,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
     val rule = InstantTaskExecutorRule()
 
     @Test
-    fun `header item`() {
+    fun `Header should be displayed when dashboard header item is presented`() {
         startFragment(
             DashboardTabItem(
                 title = R.string.travel_button_domestic,
@@ -83,7 +83,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `placeholder item`() {
+    fun `Placeholder card should be displayed when placeholder item is presented`() {
         startFragment(
             DashboardTabItem(
                 title = R.string.travel_button_domestic,
@@ -105,7 +105,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `clock deviation item`() {
+    fun `Clock deviation card should be displayed when clock deviation item is presented`() {
         startFragment(
             DashboardTabItem(
                 title = R.string.travel_button_domestic,
@@ -127,7 +127,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `info non dismissable item`() {
+    fun `Non dismissable info card should be displayed when non dismissable item is presented`() {
         startFragment(
             DashboardTabItem(
                 title = R.string.travel_button_domestic,
@@ -150,7 +150,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `info dismissable item`() {
+    fun `Info card should be displayed when dismissable item is presented and it can be dismissed`() {
         startFragment(
             DashboardTabItem(
                 title = R.string.travel_button_domestic,
@@ -180,7 +180,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `card item`() {
+    fun `A single card should be displayed when 1 card item is presented`() {
         startFragment(
             DashboardTabItem(
                 title = R.string.travel_button_domestic,
@@ -226,7 +226,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
         )
     }
 
-    fun `card item multiple`() {
+    fun `Multiple cards should be displayed when the cards item has multiple cards`() {
         startFragment(
             DashboardTabItem(
                 title = R.string.travel_button_domestic,
@@ -277,7 +277,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `expired item`() {
+    fun `Expired card should be displayed when expired item is presented and can be dismissed`() {
         startFragment(
             DashboardTabItem(
                 title = R.string.travel_button_domestic,
@@ -306,7 +306,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `origin info item`() {
+    fun `Origin card should be displayed when origin item is presented`() {
         startFragment(
             DashboardTabItem(
                 title = R.string.travel_button_domestic,
@@ -325,6 +325,21 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                 assertTrue { view is CardView }
             }
         )
+    }
+
+    @Test
+    fun `Add qr button should be visible when its item is presented`() {
+        startFragment(
+            DashboardTabItem(
+                title = R.string.travel_button_domestic,
+                greenCardType = GreenCardType.Domestic,
+                items = listOf(
+                    DashboardItem.AddQrButtonItem(true)
+                )
+            )
+        )
+
+        assertDisplayed(R.id.addQrButton)
     }
 
     private fun startFragment(tabItem: DashboardTabItem): FragmentScenario<MyOverviewTabsFragment> {
