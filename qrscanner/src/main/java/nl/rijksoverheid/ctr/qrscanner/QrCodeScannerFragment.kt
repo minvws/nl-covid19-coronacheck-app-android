@@ -226,7 +226,11 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
                 cameraSelector,
                 cameraPreview
             ).also { camera ->
-                previewView.focusOnTouch(camera.cameraControl)
+                try {
+                    previewView.focusOnTouch(camera.cameraControl)
+                } catch (exception: Exception) {
+                    Timber.e(exception)
+                }
                 // If device supports flash, enable flash functionality
                 if (camera.cameraInfo.hasFlashUnit()) {
                     binding.toolbar.menu.findItem(R.id.flash)?.let { flashItem ->
