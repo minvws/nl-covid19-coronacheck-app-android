@@ -511,7 +511,7 @@
     <string name="about_this_app_clear_data_confirm">Clear data</string>
     <string name="accessibility_flash_off">Turn the flashlight off.</string>
     <string name="accessibility_flash_on">Turn the flashlight on.</string>
-    <string name="recover_domestic_recovery_green_card_button">Extend certificate</string>
+    <string name="recover_domestic_recovery_green_card_button">Restore certificate</string>
     <string name="cannot_create_recovery_proof_title">Positive test result no longer valid</string>
     <string name="cannot_create_recovery_proof_description"><![CDATA[It has been more than %1s days since you tested positive for coronavirus. Therefore, your test result is no longer valid. Unfortunately, you cannot create a recovery certificate.<br/><br/>Find more information on the <a href="https://www.coronacheck.nl//en/guidepost">Guidepost</a>.]]></string>
 </resources>
