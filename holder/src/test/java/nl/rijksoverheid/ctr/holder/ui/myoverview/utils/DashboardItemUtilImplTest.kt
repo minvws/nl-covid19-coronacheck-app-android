@@ -19,37 +19,83 @@ import kotlin.test.assertTrue
 class DashboardItemUtilImplTest {
 
     @Test
-    fun `shouldShowHeaderItem returns true if has green cards`() {
-        val util = DashboardItemUtilImpl(
-            clockDeviationUseCase = fakeClockDevationUseCase(),
-            greenCardUtil = fakeGreenCardUtil(),
-            persistenceManager = fakePersistenceManager(),
-            eventGroupEntityUtil = fakeEventGroupEntityUtil()
-        )
-
-        val shouldShowHeaderItem = util.shouldShowHeaderItem(
-            allGreenCards = listOf(fakeGreenCard)
-        )
-
-        assertEquals(true, shouldShowHeaderItem)
-    }
-
-    @Test
-    fun `shouldShowHeaderItem returns true if not all green cards expired`() {
+    fun `getHeaderItemText returns correct text if domestic and has green cards`() {
         val util = DashboardItemUtilImpl(
             clockDeviationUseCase = fakeClockDevationUseCase(),
             greenCardUtil = fakeGreenCardUtil(
                 isExpired = false
             ),
             persistenceManager = fakePersistenceManager(),
-            eventGroupEntityUtil = fakeEventGroupEntityUtil()
+            eventGroupEntityUtil = fakeEventGroupEntityUtil(),
+            appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase()
         )
 
-        val shouldShowHeaderItem = util.shouldShowHeaderItem(
+        val headerText = util.getHeaderItemText(
+            greenCardType = GreenCardType.Domestic,
             allGreenCards = listOf(fakeGreenCard)
         )
 
-        assertEquals(true, shouldShowHeaderItem)
+        assertEquals(R.string.my_overview_description, headerText)
+    }
+
+    @Test
+    fun `getHeaderItemText returns correct text if domestic and has no green cards`() {
+        val util = DashboardItemUtilImpl(
+            clockDeviationUseCase = fakeClockDevationUseCase(),
+            greenCardUtil = fakeGreenCardUtil(
+                isExpired = false
+            ),
+            persistenceManager = fakePersistenceManager(),
+            eventGroupEntityUtil = fakeEventGroupEntityUtil(),
+            appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase()
+        )
+
+        val headerText = util.getHeaderItemText(
+            greenCardType = GreenCardType.Domestic,
+            allGreenCards = listOf()
+        )
+
+        assertEquals(R.string.my_overview_qr_placeholder_description, headerText)
+    }
+
+    @Test
+    fun `getHeaderItemText returns correct text if eu and has green cards`() {
+        val util = DashboardItemUtilImpl(
+            clockDeviationUseCase = fakeClockDevationUseCase(),
+            greenCardUtil = fakeGreenCardUtil(
+                isExpired = false
+            ),
+            persistenceManager = fakePersistenceManager(),
+            eventGroupEntityUtil = fakeEventGroupEntityUtil(),
+            appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase()
+        )
+
+        val headerText = util.getHeaderItemText(
+            greenCardType = GreenCardType.Eu,
+            allGreenCards = listOf(fakeGreenCard)
+        )
+
+        assertEquals(R.string.my_overview_description_eu, headerText)
+    }
+
+    @Test
+    fun `getHeaderItemText returns correct text if eu and has no green cards`() {
+        val util = DashboardItemUtilImpl(
+            clockDeviationUseCase = fakeClockDevationUseCase(),
+            greenCardUtil = fakeGreenCardUtil(
+                isExpired = false
+            ),
+            persistenceManager = fakePersistenceManager(),
+            eventGroupEntityUtil = fakeEventGroupEntityUtil(),
+            appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase()
+        )
+
+        val headerText = util.getHeaderItemText(
+            greenCardType = GreenCardType.Eu,
+            allGreenCards = listOf()
+        )
+
+        assertEquals(R.string.my_overview_qr_placeholder_description_eu, headerText)
     }
 
     @Test
@@ -60,7 +106,8 @@ class DashboardItemUtilImplTest {
             ),
             greenCardUtil = fakeGreenCardUtil(),
             persistenceManager = fakePersistenceManager(),
-            eventGroupEntityUtil = fakeEventGroupEntityUtil()
+            eventGroupEntityUtil = fakeEventGroupEntityUtil(),
+            appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase()
         )
 
         val shouldShowClockDeviationItem = util.shouldShowClockDeviationItem(
@@ -80,7 +127,8 @@ class DashboardItemUtilImplTest {
                 isExpired = false
             ),
             persistenceManager = fakePersistenceManager(),
-            eventGroupEntityUtil = fakeEventGroupEntityUtil()
+            eventGroupEntityUtil = fakeEventGroupEntityUtil(),
+            appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase()
         )
 
         val shouldShowClockDeviationItem = util.shouldShowClockDeviationItem(
@@ -96,7 +144,8 @@ class DashboardItemUtilImplTest {
             clockDeviationUseCase = fakeClockDevationUseCase(),
             greenCardUtil = fakeGreenCardUtil(),
             persistenceManager = fakePersistenceManager(),
-            eventGroupEntityUtil = fakeEventGroupEntityUtil()
+            eventGroupEntityUtil = fakeEventGroupEntityUtil(),
+            appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase()
         )
 
         val shouldShowHeaderItem = util.shouldShowPlaceholderItem(
@@ -114,7 +163,8 @@ class DashboardItemUtilImplTest {
                 isExpired = true
             ),
             persistenceManager = fakePersistenceManager(),
-            eventGroupEntityUtil = fakeEventGroupEntityUtil()
+            eventGroupEntityUtil = fakeEventGroupEntityUtil(),
+            appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase()
         )
 
         val shouldShowHeaderItem = util.shouldShowPlaceholderItem(
@@ -130,7 +180,8 @@ class DashboardItemUtilImplTest {
             clockDeviationUseCase = fakeClockDevationUseCase(),
             greenCardUtil = fakeGreenCardUtil(),
             persistenceManager = fakePersistenceManager(),
-            eventGroupEntityUtil = fakeEventGroupEntityUtil()
+            eventGroupEntityUtil = fakeEventGroupEntityUtil(),
+            appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase()
         )
 
         val shouldAddQrButtonItem = util.shouldAddQrButtonItem(
@@ -142,7 +193,7 @@ class DashboardItemUtilImplTest {
 
     @Test
     fun `multiple vaccination card items should be combined into 1`() {
-        val util = DashboardItemUtilImpl(mockk(), mockk(), mockk(), mockk())
+        val util = DashboardItemUtilImpl(mockk(), mockk(), mockk(), mockk(),mockk())
 
         val card1 = createCardItem(OriginType.Vaccination)
         val card2 = createCardItem(OriginType.Vaccination)
@@ -175,7 +226,8 @@ class DashboardItemUtilImplTest {
             persistenceManager = fakePersistenceManager(),
             eventGroupEntityUtil = fakeEventGroupEntityUtil(
                 remoteEventVaccinations = listOf()
-            )
+            ),
+            appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase()
         )
 
         val shouldAddSyncGreenCardsItem = util.shouldAddSyncGreenCardsItem(
@@ -200,7 +252,8 @@ class DashboardItemUtilImplTest {
                         vaccination = fakeRemoteEventVaccination()
                     )
                 )
-            )
+            ),
+            appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase()
         )
 
         val shouldAddSyncGreenCardsItem = util.shouldAddSyncGreenCardsItem(
@@ -230,7 +283,8 @@ class DashboardItemUtilImplTest {
                         vaccination = fakeRemoteEventVaccination()
                     )
                 )
-            )
+            ),
+            appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase()
         )
 
         val shouldAddSyncGreenCardsItem = util.shouldAddSyncGreenCardsItem(
@@ -260,7 +314,8 @@ class DashboardItemUtilImplTest {
                         vaccination = fakeRemoteEventVaccination()
                     )
                 )
-            )
+            ),
+            appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase()
         )
 
         val shouldAddSyncGreenCardsItem = util.shouldAddSyncGreenCardsItem(
@@ -281,7 +336,8 @@ class DashboardItemUtilImplTest {
             persistenceManager = fakePersistenceManager(
                 hasDismissedUnsecureDeviceDialog = true
             ),
-            eventGroupEntityUtil = fakeEventGroupEntityUtil()
+            eventGroupEntityUtil = fakeEventGroupEntityUtil(),
+            appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase()
         )
 
         val shouldAddGreenCardsSyncedItem = util.shouldAddGreenCardsSyncedItem(
@@ -301,7 +357,8 @@ class DashboardItemUtilImplTest {
             persistenceManager = fakePersistenceManager(
                 hasDismissedUnsecureDeviceDialog = false
             ),
-            eventGroupEntityUtil = fakeEventGroupEntityUtil()
+            eventGroupEntityUtil = fakeEventGroupEntityUtil(),
+            appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase()
         )
 
         val shouldAddGreenCardsSyncedItem = util.shouldAddGreenCardsSyncedItem(

@@ -125,7 +125,7 @@ class AppConfigViewModelTest {
         val viewModel = appConfigViewModel()
         viewModel.refresh(mobileCoreWrapper)
 
-        Assert.assertEquals(viewModel.appStatusLiveData.value?.peekContent(), AppStatus.Error)
+        Assert.assertEquals(viewModel.appStatusLiveData.value, AppStatus.Error)
     }
 
     @Test
@@ -149,6 +149,6 @@ class AppConfigViewModelTest {
         val viewModel = appConfigViewModel(true)
         viewModel.refresh(mobileCoreWrapper)
 
-        Assert.assertEquals(viewModel.appStatusLiveData.value?.peekContent(), AppStatus.Error)
+        Assert.assertEquals(viewModel.appStatusLiveData.value, AppStatus.Error)
     }
 }

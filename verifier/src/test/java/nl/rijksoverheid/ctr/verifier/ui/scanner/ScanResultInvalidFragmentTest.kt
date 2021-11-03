@@ -14,18 +14,15 @@ import com.schibsted.spain.barista.assertion.BaristaBackgroundAssertions.assertH
 import com.schibsted.spain.barista.assertion.BaristaVisibilityAssertions.assertContains
 import com.schibsted.spain.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
 import com.schibsted.spain.barista.interaction.BaristaClickInteractions.clickOn
+import com.schibsted.spain.barista.interaction.BaristaScrollInteractions
+import com.schibsted.spain.barista.interaction.BaristaScrollInteractions.scrollTo
 import com.schibsted.spain.barista.internal.performActionOnView
-import io.mockk.mockk
-import io.mockk.verify
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.fakeVerifiedQr
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultInvalidData
-import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.koin.core.context.loadKoinModules
-import org.koin.dsl.module
 import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
 
@@ -40,14 +37,14 @@ import org.robolectric.RobolectricTestRunner
 class ScanResultInvalidFragmentTest : AutoCloseKoinTest() {
 
     private lateinit var navController: TestNavHostController
-    private val scannerUtil: ScannerUtil = mockk(relaxed = true)
 
     @Test
     fun `Screen shows correct content`() {
         launchScanResultInvalidFragment(data = ScanResultInvalidData.Error("invalid QR code"))
         assertHasBackground(R.id.root, R.color.red)
+        scrollTo(R.id.title)
         assertDisplayed(R.id.title, R.string.scan_result_invalid_title)
-        assertAny<MaterialButton>(R.id.button_explanation) {
+        assertAny<MaterialButton>(R.id.secondaryButton) {
             it.text == InstrumentationRegistry.getInstrumentation().context.getString(
                 R.string.scan_result_invalid_explanation_button
             )
@@ -57,7 +54,7 @@ class ScanResultInvalidFragmentTest : AutoCloseKoinTest() {
     @Test
     fun `Invalid result on explanation button click opens explanation dialog`() {
         launchScanResultInvalidFragment(data = ScanResultInvalidData.Error("invalid QR code"))
-        performActionOnView(withId(R.id.button_explanation), click())
+        performActionOnView(withId(R.id.secondaryButton), click())
         assertContains(R.string.scan_result_invalid_reason_title)
     }
 
@@ -65,14 +62,15 @@ class ScanResultInvalidFragmentTest : AutoCloseKoinTest() {
     fun `DCC QR issued in NL shows correct error message`() {
         launchScanResultInvalidFragment(data = ScanResultInvalidData.Invalid(verifiedQr = fakeVerifiedQr()))
         assertHasBackground(R.id.root, R.color.red)
+        scrollTo(R.id.title)
         assertDisplayed(R.id.title, R.string.scan_result_european_nl_invalid_title)
     }
 
     @Test
     fun `Clicking scan again button opens scanner`() {
         launchScanResultInvalidFragment()
-        clickOn(R.id.button_next)
-        verify { scannerUtil.launchScanner(any()) }
+        clickOn(R.id.button)
+        assertEquals(navController.currentDestination?.id, R.id.nav_qr_scanner)
     }
 
 
@@ -81,14 +79,6 @@ class ScanResultInvalidFragmentTest : AutoCloseKoinTest() {
             fakeVerifiedQr()
         )
     ) {
-        loadKoinModules(
-            module(override = true) {
-                factory {
-                    scannerUtil
-                }
-            }
-        )
-
         navController = TestNavHostController(
             ApplicationProvider.getApplicationContext()
         ).also {

@@ -15,6 +15,7 @@ import android.widget.ScrollView
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
 import nl.rijksoverheid.ctr.introduction.IntroductionData
 import nl.rijksoverheid.ctr.introduction.ui.onboarding.OnboardingPagerAdapter
@@ -188,6 +189,7 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        clearToolbar()
         _binding = null
     }
 

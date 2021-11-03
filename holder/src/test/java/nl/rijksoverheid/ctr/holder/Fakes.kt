@@ -7,6 +7,7 @@ import io.mockk.mockk
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
+import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigFreshnessUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
@@ -28,7 +29,6 @@ import nl.rijksoverheid.ctr.introduction.IntroductionData
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
-import nl.rijksoverheid.ctr.shared.models.VerificationResult
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.*
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
@@ -47,8 +47,8 @@ import java.time.OffsetDateTime
 
 fun fakeAppConfigViewModel(appStatus: AppStatus = AppStatus.NoActionRequired) =
     object : AppConfigViewModel() {
-        override fun refresh(mobileCoreWrapper: MobileCoreWrapper) {
-            appStatusLiveData.value = Event(appStatus)
+        override fun refresh(mobileCoreWrapper: MobileCoreWrapper, force: Boolean) {
+            appStatusLiveData.value = appStatus
         }
     }
 
@@ -62,9 +62,18 @@ fun fakeDashboardViewModel() =
 
         }
 
-        override fun dismissGreenCardsSyncedItem() {
+        override fun dismissRefreshedEuVaccinationsInfoCard() {
 
         }
+
+        override fun dismissRecoveredDomesticRecoveryInfoCard() {
+
+        }
+
+        override fun dismissExtendedDomesticRecoveryInfoCard() {
+
+        }
+
     }
 
 fun fakeRemoveExpiredEventsUseCase() = object: RemoveExpiredEventsUseCase {
@@ -392,6 +401,46 @@ fun fakePersistenceManager(
         override fun setShowSyncGreenCardsItem(show: Boolean) {
 
         }
+
+        override fun setShouldCheckRecoveryGreenCardRevisedValidity(check: Boolean) {
+
+        }
+
+        override fun getShouldCheckRecoveryGreenCardRevisedValidity(): Boolean {
+            return true
+        }
+
+        override fun setShowExtendDomesticRecoveryInfoCard(show: Boolean) {
+
+        }
+
+        override fun getShowExtendDomesticRecoveryInfoCard(): Boolean {
+            return true
+        }
+
+        override fun setShowRecoverDomesticRecoveryInfoCard(show: Boolean) {
+
+        }
+
+        override fun getShowRecoverDomesticRecoveryInfoCard(): Boolean {
+            return true
+        }
+
+        override fun setHasDismissedExtendedDomesticRecoveryInfoCard(dismissed: Boolean) {
+
+        }
+
+        override fun getHasDismissedExtendedDomesticRecoveryInfoCard(): Boolean {
+            return true
+        }
+
+        override fun setHasDismissedRecoveredDomesticRecoveryInfoCard(dismissed: Boolean) {
+
+        }
+
+        override fun getHasDismissedRecoveredDomesticRecoveryInfoCard(): Boolean {
+            return true
+        }
     }
 }
 
@@ -649,6 +698,14 @@ fun fakeRemoteEventUtil(
     override fun getRemoteEventsFromNonDcc(eventGroupEntity: EventGroupEntity): List<RemoteEvent> {
         return getRemoteEventsFromNonDcc
     }
+
+    override fun isRecoveryEventExpired(remoteEventRecovery: RemoteEventRecovery): Boolean {
+        return false
+    }
+
+    override fun isPositiveTestEventExpired(remoteEventPositiveTest: RemoteEventPositiveTest): Boolean {
+        return false
+    }
 }
 
 val fakeGreenCardEntity = GreenCardEntity(
@@ -702,6 +759,25 @@ val fakeEuropeanVaccinationGreenCard = GreenCard(
         expirationTime = OffsetDateTime.now()
     ))
 )
+
+fun fakeAppConfigFreshnessUseCase(shouldShowWarning : Boolean = false) = object:
+   AppConfigFreshnessUseCase {
+    override fun getAppConfigLastFetchedSeconds(): Long {
+        return 0
+    }
+
+    override fun getAppConfigMaxValidityTimestamp(): Long {
+        return 0
+    }
+
+    override fun shouldShowConfigFreshnessWarning(): Boolean {
+        return shouldShowWarning
+    }
+
+
+}
+
+
 
 
 

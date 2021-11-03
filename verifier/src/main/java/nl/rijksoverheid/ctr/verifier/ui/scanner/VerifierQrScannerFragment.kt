@@ -10,6 +10,7 @@ import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.qrscanner.QrCodeScannerFragment
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.verifier.R
+import nl.rijksoverheid.ctr.verifier.VerifierMainActivity
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultInvalidData
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultValidData
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.VerifiedQrResultState
@@ -27,19 +28,21 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
 
     private val scannerViewModel: ScannerViewModel by viewModel()
     private val dialogUtil: DialogUtil by inject()
-    private val args: VerifierQrScannerFragmentArgs by navArgs()
+
+    private val returnUri: String?
+        get() = (activity as? VerifierMainActivity)?.returnUri
 
     override fun onQrScanned(content: String) {
         scannerViewModel.validate(
             qrContent = content,
-            returnUri = args.returnUri
+            returnUri = returnUri
         )
     }
 
     override fun getCopy(): Copy {
         return Copy(
             title = getString(R.string.scanner_custom_title),
-            message = getString(R.string.scanner_custom_message),
+            message = getString(R.string.scan_qr_instructions_button),
             onMessageClicked = {
                 findNavController().navigate(
                     VerifierQrScannerFragmentDirections.actionScanInstructions()

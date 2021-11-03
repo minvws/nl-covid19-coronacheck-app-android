@@ -10,6 +10,14 @@ import nl.rijksoverheid.ctr.shared.ext.filterNotNullValues
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 
+/*
+ *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+ *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+ *
+ *   SPDX-License-Identifier: EUPL-1.2
+ *
+ */
+
 /**
  * Get all event providers that have events for the [OriginType]
  */
@@ -50,7 +58,7 @@ class GetEventProvidersWithTokensUseCaseImpl(
 
         // If we want to only target specific providers ids we filter others out
         val targetEventProvidersWithTokens = allEventProvidersWithTokens.filter {
-            targetProviderIds?.contains(it.key.providerIdentifier.toLowerCase()) ?: true
+            targetProviderIds?.contains(it.key.providerIdentifier.lowercase()) ?: true
         }
 
         // Return a list of event providers that have events

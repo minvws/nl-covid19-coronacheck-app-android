@@ -26,7 +26,6 @@ import nl.rijksoverheid.ctr.design.ext.styleTitle
 import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppData
 import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppFragment
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMainBinding
-import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAccessibilityFocus
 import org.koin.android.ext.android.inject
 
@@ -40,10 +39,10 @@ class HolderMainFragment : BaseMainFragment(
 
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
-    private var _navController : NavController? = null
+    private var _navController: NavController? = null
     private val navController get() = _navController!!
     private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
-    private val appConfigPersistenceManager : AppConfigPersistenceManager by inject()
+    private val appConfigPersistenceManager: AppConfigPersistenceManager by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -90,7 +89,7 @@ class HolderMainFragment : BaseMainFragment(
         binding.navView.setNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_frequently_asked_questions -> {
-                    getString(R.string.url_faq).launchUrl(requireActivity())
+                    context?.launchUrl(getString(R.string.url_faq))
                 }
                 R.id.nav_about_this_app -> {
                     navController.navigate(
@@ -99,17 +98,20 @@ class HolderMainFragment : BaseMainFragment(
                                 versionName = BuildConfig.VERSION_NAME,
                                 versionCode = BuildConfig.VERSION_CODE.toString(),
                                 readMoreItems = listOf(
-                                    AboutThisAppData.ReadMoreItem(
+                                    AboutThisAppData.Url(
                                         text = getString(R.string.privacy_statement),
                                         url = getString(R.string.url_privacy_statement),
                                     ),
-                                    AboutThisAppData.ReadMoreItem(
+                                    AboutThisAppData.Url(
                                         text = getString(R.string.about_this_app_accessibility),
                                         url = getString(R.string.url_accessibility),
                                     ),
-                                    AboutThisAppData.ReadMoreItem(
+                                    AboutThisAppData.Url(
                                         text = getString(R.string.about_this_app_colofon),
                                         url = getString(R.string.about_this_app_colofon_url),
+                                    ),
+                                    AboutThisAppData.ClearAppData(
+                                        text = getString(R.string.about_this_clear_data)
                                     ),
                                 ),
                                 configVersionHash = cachedAppConfigUseCase.getCachedAppConfigHash(),
@@ -160,7 +162,7 @@ class HolderMainFragment : BaseMainFragment(
         return binding.toolbar
     }
 
-    fun resetMenuItemListener(){
+    fun resetMenuItemListener() {
         binding.toolbar.setOnMenuItemClickListener {
             NavigationUI.onNavDestinationSelected(it, navController)
         }
@@ -169,19 +171,19 @@ class HolderMainFragment : BaseMainFragment(
     private fun navigationDrawerStyling() {
         val context = binding.navView.context
         binding.navView.menu.findItem(R.id.nav_graph_overview)
-            .styleTitle(context, R.attr.textAppearanceHeadline6, heading = true)
+            .styleTitle(context, R.attr.textAppearanceHeadline4, heading = true)
         binding.navView.menu.findItem(R.id.nav_settings)
-            .styleTitle(context, R.attr.textAppearanceHeadline6, heading = true)
+            .styleTitle(context, R.attr.textAppearanceHeadline4, heading = true)
         binding.navView.menu.findItem(R.id.nav_qr_code_type)
-            .styleTitle(context, R.attr.textAppearanceHeadline6, heading = true)
-        binding.navView.menu.findItem(R.id.nav_about_this_app)
-            .styleTitle(context, R.attr.textAppearanceBody1)
+            .styleTitle(context, R.attr.textAppearanceHeadline4, heading = true)
         binding.navView.menu.findItem(R.id.nav_frequently_asked_questions)
-            .styleTitle(context, R.attr.textAppearanceBody1)
+            .styleTitle(context, R.attr.textAppearanceHeadline4, heading = true)
+        binding.navView.menu.findItem(R.id.nav_about_this_app)
+            .styleTitle(context, R.attr.textAppearanceHeadline3)
         binding.navView.menu.findItem(R.id.nav_terms_of_use)
-            .styleTitle(context, R.attr.textAppearanceBody1)
+            .styleTitle(context, R.attr.textAppearanceHeadline3)
         binding.navView.menu.findItem(R.id.nav_paper_proof)
-            .styleTitle(context, R.attr.textAppearanceBody1)
+            .styleTitle(context, R.attr.textAppearanceHeadline3)
 
         // resize drawer according to design
         val width = activity?.resources?.displayMetrics?.widthPixels ?: return

@@ -22,10 +22,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/ic_close"
+        app:navigationIcon="@drawable/ic_back"
         app:title="@string/scan_result_something_wrong" />
 
     <ScrollView
+        android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
@@ -38,12 +39,11 @@
             app:htmlText="@string/scan_result_valid_reason_description" />
     </ScrollView>
 
-    <Button
-        android:id="@+id/button"
-        style="@style/Widget.App.Button"
-        android:layout_width="wrap_content"
+    <nl.rijksoverheid.ctr.design.views.ScrollViewButtonWidget
+        android:id="@+id/bottom"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="16dp"
-        android:text="@string/scan_result_something_wrong_finished_check_button" />
+        app:attachToScrollView="@+id/scroll"
+        app:buttonText="@string/scan_result_something_wrong_finished_check_button"
+        app:cardElevation="0dp" />
 </LinearLayout>

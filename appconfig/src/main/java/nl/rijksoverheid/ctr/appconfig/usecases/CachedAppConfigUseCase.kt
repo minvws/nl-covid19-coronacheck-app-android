@@ -65,7 +65,12 @@ class CachedAppConfigUseCaseImpl constructor(
     }
 
     override fun getCachedAppConfigHash(): String {
-        val bytes = getCachedAppConfig().toString().toByteArray()
+        val json = try {
+            appConfigStorageManager.getFileAsBufferedSource(configFile)?.readUtf8()?.replace("\\/", "/") ?: return ""
+        } catch (exc: Exception) {
+            return ""
+        }
+        val bytes = json.toByteArray()
         val md = MessageDigest.getInstance("SHA-256")
         val digest = md.digest(bytes)
         // Return first 7 characters of hash

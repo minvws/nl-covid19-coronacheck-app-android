@@ -7,12 +7,6 @@
  */
 package nl.rijksoverheid.ctr.holder.ui.create_qr.models
 
-sealed class DashboardErrorState {
-    object None: DashboardErrorState()
-    object RetryErrorState: DashboardErrorState()
-    object HelpdeskErrorState: DashboardErrorState()
-}
-
 data class DashboardItems(
     val domesticItems: List<DashboardItem>,
     val internationalItems: List<DashboardItem>

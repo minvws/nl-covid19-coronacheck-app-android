@@ -38,8 +38,8 @@ import java.time.OffsetDateTime
 
 fun fakeAppConfigViewModel(appStatus: AppStatus = AppStatus.NoActionRequired) =
     object : AppConfigViewModel() {
-        override fun refresh(mobileCoreWrapper: MobileCoreWrapper) {
-            appStatusLiveData.value = Event(appStatus)
+        override fun refresh(mobileCoreWrapper: MobileCoreWrapper, force: Boolean) {
+            appStatusLiveData.value = appStatus
         }
     }
 

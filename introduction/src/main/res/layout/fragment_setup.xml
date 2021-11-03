@@ -7,8 +7,10 @@
     android:theme="@style/ThemeOverlay.AppTheme.Splash">
 
     <ImageView
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
+        app:layout_constraintWidth_percent="0.72"
         android:layout_height="wrap_content"
+        android:scaleType="fitEnd"
         android:src="@drawable/illustration_splash_banner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

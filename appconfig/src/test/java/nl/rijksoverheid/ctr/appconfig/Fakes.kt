@@ -65,8 +65,8 @@ fun fakeAppConfig(
     euLaunchDate = "",
     credentialRenewalDays = 0,
     domesticCredentialValidity = 0,
-    testEventValidity = 0,
-    recoveryEventValidity = 0,
+    testEventValidityHours = 0,
+    recoveryEventValidityDays = 0,
     temporarilyDisabled = false,
     requireUpdateBefore = 0,
     ggdEnabled = true

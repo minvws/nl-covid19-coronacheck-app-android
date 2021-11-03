@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.design.utils.BottomSheetData
 import nl.rijksoverheid.ctr.design.utils.BottomSheetDialogUtil
+import nl.rijksoverheid.ctr.design.utils.DescriptionData
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.verifier.R
@@ -51,16 +52,12 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
         binding.clockdeviationView.clockdeviationButton.setOnClickListener {
             bottomSheetDialogUtil.present(childFragmentManager, BottomSheetData.TitleDescription(
                 title = getString(R.string.clockdeviation_page_title),
-                applyOnDescription = {
-                    it.setHtmlText(R.string.clockdeviation_page_message)
-                    it.enableCustomLinks {
-                        val intent = Intent(Settings.ACTION_DATE_SETTINGS)
-                        startActivity(intent)
-                    }
-                }
+                descriptionData = DescriptionData(R.string.clockdeviation_page_message, customLinkIntent = Intent(Settings.ACTION_DATE_SETTINGS)),
             ))
         }
+        // Handle clock deviation view
         observeServerTimeSynced(binding)
+        showDeviationViewIfNeeded(binding)
     }
 
     /**
@@ -69,8 +66,12 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
      */
     private fun observeServerTimeSynced(binding: FragmentScanQrBinding) {
         clockDeviationUseCase.serverTimeSyncedLiveData.observe(viewLifecycleOwner, EventObserver {
-            binding.clockdeviationView.root.isGone = !clockDeviationUseCase.hasDeviation()
+            showDeviationViewIfNeeded(binding)
         })
+    }
+
+    private fun showDeviationViewIfNeeded(binding: FragmentScanQrBinding){
+        binding.clockdeviationView.root.isGone = !clockDeviationUseCase.hasDeviation()
     }
 }
 

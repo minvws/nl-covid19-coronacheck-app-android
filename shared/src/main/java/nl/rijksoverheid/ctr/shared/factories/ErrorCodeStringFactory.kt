@@ -23,7 +23,7 @@ interface ErrorCodeStringFactory {
     fun get(flow: Flow, errorResults: List<ErrorResult>): String
 }
 
-class ErrorCodeStringFactoryImpl(private val isPlayStoreBuild: Boolean = true): ErrorCodeStringFactory {
+class ErrorCodeStringFactoryImpl(private val isPlayStoreBuild: Boolean = true) : ErrorCodeStringFactory {
 
     override fun get(flow: Flow, errorResults: List<ErrorResult>): String {
         val errorStringBuilders = errorResults.map {
@@ -59,6 +59,8 @@ class ErrorCodeStringFactoryImpl(private val isPlayStoreBuild: Boolean = true): 
                 is SocketTimeoutException -> "004"
                 is UnknownHostException -> "002"
                 is ConnectException -> "005"
+                is NoProvidersException -> exception.errorCode
+                is ActivityNotFoundException -> "070-14"
                 else -> throw it.getException()
             }
 
