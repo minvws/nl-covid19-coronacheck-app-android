@@ -1,9 +1,11 @@
 package nl.rijksoverheid.ctr.shared.factories
 
+import android.content.ActivityNotFoundException
 import android.database.sqlite.SQLiteConstraintException
 import com.squareup.moshi.JsonDataException
 import com.squareup.moshi.JsonEncodingException
 import nl.rijksoverheid.ctr.shared.exceptions.CreateCommitmentMessageException
+import nl.rijksoverheid.ctr.shared.exceptions.NoProvidersException
 import nl.rijksoverheid.ctr.shared.exceptions.OpenIdAuthorizationException
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.Flow
@@ -36,12 +38,16 @@ class ErrorCodeStringFactoryImpl(private val isPlayStoreBuild: Boolean = true) :
             stringBuilder.append(" ${flow.code}")
             stringBuilder.append("${errorResults.first().getCurrentStep().code}")
 
-            if (it is NetworkRequestResult.Failed.ProviderHttpError) {
-                stringBuilder.append(" ${it.provider}")
-            } else if (it is NetworkRequestResult.Failed.ProviderError) {
-                stringBuilder.append(" ${it.provider}")
-            } else {
-                stringBuilder.append(" 000")
+            when (it) {
+                is NetworkRequestResult.Failed.ProviderHttpError -> {
+                    stringBuilder.append(" ${it.provider}")
+                }
+                is NetworkRequestResult.Failed.ProviderError -> {
+                    stringBuilder.append(" ${it.provider}")
+                }
+                else -> {
+                    stringBuilder.append(" 000")
+                }
             }
 
             val exceptionErrorCode = when (val exception = it.getException()) {
