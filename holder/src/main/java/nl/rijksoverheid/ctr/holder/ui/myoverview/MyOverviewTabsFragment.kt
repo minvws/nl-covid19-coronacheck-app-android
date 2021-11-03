@@ -23,6 +23,7 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentTabsMyOverviewBinding
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardSync
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardTabItem
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
@@ -30,6 +31,7 @@ import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 /*
@@ -67,17 +69,6 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
         observeAppConfig()
     }
 
-    fun showAddQrButton(show: Boolean) {
-        binding.addQrButton.visibility = if (show) VISIBLE else GONE
-        if (show) {
-            binding.addQrButton.setOnClickListener {
-                navigateSafety(
-                    MyOverviewFragmentDirections.actionQrType()
-                )
-            }
-        }
-    }
-
     private fun setupViewPager(adapter: DashboardPagerAdapter) {
         binding.viewPager.adapter = adapter
     }
@@ -95,15 +86,15 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
     }
 
     private fun observeItems(adapter: DashboardPagerAdapter) {
-        dashboardViewModel.dashboardTabItemsLiveData.observe(viewLifecycleOwner, {
+        dashboardViewModel.dashboardTabItemsLiveData.observe(viewLifecycleOwner, { dashboardTabItems ->
 
             // Add pager items only once
             if (adapter.itemCount == 0) {
-                adapter.setItems(it)
+                adapter.setItems(dashboardTabItems)
 
                 setupTabs(
                     binding = binding,
-                    items = it
+                    items = dashboardTabItems
                 )
 
                 // Default select the item that we had selected last
@@ -116,6 +107,17 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
                         persistenceManager.setSelectedDashboardTab(position)
                     }
                 })
+            }
+
+            // This button needs to be shown in this view instead of MyOverviewFragment (which is a single item in the viewpager)
+            val showAddQrButton = dashboardTabItems.first().items.any { it is DashboardItem.AddQrButtonItem && it.show }
+            binding.addQrButton.visibility = if (showAddQrButton) VISIBLE else GONE
+            if (showAddQrButton) {
+                binding.addQrButton.setOnClickListener {
+                    navigateSafety(
+                        MyOverviewFragmentDirections.actionQrType()
+                    )
+                }
             }
         })
     }

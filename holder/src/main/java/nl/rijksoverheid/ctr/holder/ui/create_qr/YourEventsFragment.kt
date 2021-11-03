@@ -11,7 +11,6 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
-import androidx.core.view.forEach
 import androidx.core.view.forEachIndexed
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -20,6 +19,7 @@ import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
 import nl.rijksoverheid.ctr.design.ext.formatMonth
 import nl.rijksoverheid.ctr.design.utils.BottomSheetData
 import nl.rijksoverheid.ctr.design.utils.BottomSheetDialogUtil
+import nl.rijksoverheid.ctr.design.utils.DescriptionData
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.BaseFragment
 import nl.rijksoverheid.ctr.holder.HolderFlow
@@ -571,19 +571,17 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
 
     private fun presentFooter(binding: FragmentYourEventsBinding) {
         binding.somethingWrongButton.setOnClickListener {
+            val type = args.type
             bottomSheetDialogUtil.present(childFragmentManager, BottomSheetData.TitleDescription(
                 title = getString(R.string.dialog_negative_test_result_something_wrong_title),
-                applyOnDescription = {
-                    val type = args.type
-                    it.setHtmlText(
-                        htmlText = if (type is YourEventsFragmentType.RemoteProtocol3Type && type.originType is OriginType.Vaccination) {
-                                R.string.dialog_vaccination_something_wrong_description
-                            } else {
-                                R.string.dialog_negative_test_result_something_wrong_description
-                            },
-                        htmlLinksEnabled = true,
-                    )
-                }
+                descriptionData = DescriptionData(
+                    htmlText = if (type is YourEventsFragmentType.RemoteProtocol3Type && type.originType is OriginType.Vaccination) {
+                        R.string.dialog_vaccination_something_wrong_description
+                    } else {
+                        R.string.dialog_negative_test_result_something_wrong_description
+                    },
+                    htmlLinksEnabled = true,
+                )
             ))
         }
     }

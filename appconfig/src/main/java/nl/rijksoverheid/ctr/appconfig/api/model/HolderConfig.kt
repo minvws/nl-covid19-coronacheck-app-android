@@ -22,14 +22,14 @@ data class HolderConfig(
     @Json(name = "informationURL") val holderInformationURL: String,
     @Json(name = "requireUpdateBefore") val requireUpdateBefore: Int,
     @Json(name = "temporarilyDisabled") val temporarilyDisabled: Boolean,
-    @Json(name = "recoveryEventValidity") val recoveryEventValidity: Int,
-    @Json(name = "testEventValidity") val testEventValidity: Int,
+    @Json(name = "recoveryEventValidityDays") val recoveryEventValidityDays: Int,
+    @Json(name = "testEventValidityHours") val testEventValidityHours: Int,
     @Json(name = "domesticCredentialValidity") val domesticCredentialValidity: Int,
     @Json(name = "credentialRenewalDays") val credentialRenewalDays: Int,
     @Json(name = "configTTL") val configTTL: Int,
     @Json(name = "configMinimumIntervalSeconds") val configMinimumInterval: Int,
     @Json(name = "maxValidityHours") val maxValidityHours: Int,
-    @Json(name = "vaccinationEventValidity") val vaccinationEventValidity: Int,
+    @Json(name = "vaccinationEventValidityDays") val vaccinationEventValidityDays: Int,
     @Json(name = "euLaunchDate") val euLaunchDate: String,
     @Json(name = "hpkCodes") val hpkCodes: List<HpkCode>,
     @Json(name = "euBrands") val euBrands: List<Code>,
@@ -48,6 +48,7 @@ data class HolderConfig(
     @Json(name = "luhnCheckEnabled") val luhnCheckEnabled: Boolean,
     @Json(name = "internationalQRRelevancyDays") val internationalQRRelevancyDays: Int,
     @Json(name = "recoveryGreencardRevisedValidityLaunchDate") val recoveryGreenCardRevisedValidityLaunchDate: String,
+    @Json(name = "configAlmostOutOfDateWarningSeconds") val holderConfigAlmostOutOfDateWarningSeconds : Int
 ) : AppConfig(
     holderAppDeactivated,
     holderInformationURL,
@@ -58,7 +59,8 @@ data class HolderConfig(
     holderRecommendedVersion,
     upgradeRecommendationIntervalHours,
     holderDeeplinkDomains,
-    holderClockDeviationThresholdSeconds
+    holderClockDeviationThresholdSeconds,
+    holderConfigAlmostOutOfDateWarningSeconds
 ) {
 
     companion object {
@@ -68,14 +70,14 @@ data class HolderConfig(
             holderInformationURL: String = "https://coronacheck.nl",
             requireUpdateBefore: Int = 1620781181,
             temporarilyDisabled: Boolean = false,
-            recoveryEventValidity: Int = 7300,
-            testEventValidity: Int = 40,
+            recoveryEventValidityDays: Int = 365,
+            testEventValidityHours: Int = 40,
             domesticCredentialValidity: Int = 24,
             credentialRenewalDays: Int = 5,
             configTTL: Int = 259200,
             configMinimumInterval: Int = 3600,
             maxValidityHours: Int = 40,
-            vaccinationEventValidity: Int = 14600,
+            vaccinationEventValidityDays: Int = 730,
             euLaunchDate: String = "2021-07-01T00:00:00Z",
             hpkCodes: List<HpkCode> = listOf(),
             euBrands: List<Code> = listOf(),
@@ -92,21 +94,22 @@ data class HolderConfig(
             holderRecommendedVersion: Int = 1025,
             upgradeRecommendationIntervalHours: Int = 24,
             luhnCheckEnabled: Boolean = false,
-            internationalQRRelevancyDays: Int = 28
+            internationalQRRelevancyDays: Int = 28,
+            holderConfigAlmostOutOfDateWarningSeconds: Int = 300
         ) = HolderConfig(
             holderMinimumVersion = holderMinimumVersion,
             holderAppDeactivated = holderAppDeactivated,
             holderInformationURL = holderInformationURL,
             requireUpdateBefore = requireUpdateBefore,
             temporarilyDisabled = temporarilyDisabled,
-            recoveryEventValidity = recoveryEventValidity,
-            testEventValidity = testEventValidity,
+            recoveryEventValidityDays = recoveryEventValidityDays,
+            testEventValidityHours = testEventValidityHours,
             domesticCredentialValidity = domesticCredentialValidity,
             credentialRenewalDays = credentialRenewalDays,
             configTTL = configTTL,
             configMinimumInterval = configMinimumInterval,
             maxValidityHours = maxValidityHours,
-            vaccinationEventValidity = vaccinationEventValidity,
+            vaccinationEventValidityDays = vaccinationEventValidityDays,
             euLaunchDate = euLaunchDate,
             hpkCodes = hpkCodes,
             euBrands = euBrands,
@@ -124,7 +127,8 @@ data class HolderConfig(
             upgradeRecommendationIntervalHours = upgradeRecommendationIntervalHours,
             luhnCheckEnabled = luhnCheckEnabled,
             internationalQRRelevancyDays = internationalQRRelevancyDays,
-            recoveryGreenCardRevisedValidityLaunchDate = "1970-01-01T00:00:00Z"
+            recoveryGreenCardRevisedValidityLaunchDate = "1970-01-01T00:00:00Z",
+            holderConfigAlmostOutOfDateWarningSeconds = holderConfigAlmostOutOfDateWarningSeconds
         )
     }
 }

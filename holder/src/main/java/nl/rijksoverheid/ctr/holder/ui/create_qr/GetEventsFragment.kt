@@ -13,10 +13,7 @@ import nl.rijksoverheid.ctr.holder.launchUrl
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigiDFragment
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigidResult
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.EventProvider
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.EventsResult
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.ErrorResultFragmentData
@@ -117,6 +114,16 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                             )
                         )
                     }
+                }
+                is EventsResult.CannotCreateRecovery -> {
+                    presentError(
+                        data = ErrorResultFragmentData(
+                            title = getString(R.string.cannot_create_recovery_proof_title),
+                            description = getString(R.string.cannot_create_recovery_proof_description, it.validityDays.toString()),
+                            buttonTitle = getString(R.string.back_to_overview),
+                            ErrorResultFragmentData.ButtonAction.Destination(R.id.action_my_overview),
+                        )
+                    )
                 }
                 is EventsResult.Error -> {
                     when {

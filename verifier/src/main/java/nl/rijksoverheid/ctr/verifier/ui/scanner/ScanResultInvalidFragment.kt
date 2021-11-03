@@ -8,9 +8,9 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
-import nl.rijksoverheid.ctr.design.ext.getThemeColorStateList
 import nl.rijksoverheid.ctr.design.utils.BottomSheetData
 import nl.rijksoverheid.ctr.design.utils.BottomSheetDialogUtil
+import nl.rijksoverheid.ctr.design.utils.DescriptionData
 import nl.rijksoverheid.ctr.shared.ext.getDimensionPixelSize
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.verifier.BuildConfig
@@ -75,9 +75,7 @@ class ScanResultInvalidFragment : Fragment(R.layout.fragment_scan_result_invalid
                     bottomSheetDialogUtil.present(childFragmentManager,
                         BottomSheetData.TitleDescription(
                             title = getString(R.string.scan_result_invalid_reason_title),
-                            applyOnDescription = {
-                                it.setHtmlText(R.string.scan_result_invalid_reason_description)
-                            }
+                            descriptionData = DescriptionData(R.string.scan_result_invalid_reason_description),
                         ))
                 }
             }

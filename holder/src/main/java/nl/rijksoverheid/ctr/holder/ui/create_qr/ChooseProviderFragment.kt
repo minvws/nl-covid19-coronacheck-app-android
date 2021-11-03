@@ -4,14 +4,11 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
-import nl.rijksoverheid.ctr.design.utils.BottomSheetData
-import nl.rijksoverheid.ctr.design.utils.BottomSheetDialogUtil
-import nl.rijksoverheid.ctr.design.utils.DialogUtil
+import nl.rijksoverheid.ctr.design.utils.*
 import nl.rijksoverheid.ctr.holder.HolderFlow
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentChooseProviderBinding
-import nl.rijksoverheid.ctr.holder.launchUrl
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigiDFragment
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigidResult
@@ -71,15 +68,8 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
         binding.notYetTested.setOnClickListener {
             bottomSheetDialogUtil.present(childFragmentManager, BottomSheetData.TitleDescriptionWithButton(
                 title = getString(R.string.not_yet_tested_title),
-                applyOnDescription = {
-                    it.setHtmlText(R.string.not_yet_tested_description)
-                },
-                applyOnButton = { button ->
-                    button.text = getString(R.string.not_yet_tested_button)
-                    button.setOnClickListener {
-                        button.context.launchUrl(getString(R.string.url_make_appointment))
-                    }
-                },
+                descriptionData = DescriptionData(R.string.not_yet_tested_description),
+                buttonData = ButtonData(getString(R.string.not_yet_tested_button), getString(R.string.url_make_appointment)),
             ))
         }
 

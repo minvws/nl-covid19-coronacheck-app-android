@@ -7,6 +7,7 @@ import io.mockk.mockk
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
+import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigFreshnessUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
@@ -710,6 +711,14 @@ fun fakeRemoteEventUtil(
     override fun getRemoteEventsFromNonDcc(eventGroupEntity: EventGroupEntity): List<RemoteEvent> {
         return getRemoteEventsFromNonDcc
     }
+
+    override fun isRecoveryEventExpired(remoteEventRecovery: RemoteEventRecovery): Boolean {
+        return false
+    }
+
+    override fun isPositiveTestEventExpired(remoteEventPositiveTest: RemoteEventPositiveTest): Boolean {
+        return false
+    }
 }
 
 val fakeGreenCardEntity = GreenCardEntity(
@@ -766,6 +775,25 @@ val fakeEuropeanVaccinationGreenCard = GreenCard(
         )
     )
 )
+
+fun fakeAppConfigFreshnessUseCase(shouldShowWarning : Boolean = false) = object:
+   AppConfigFreshnessUseCase {
+    override fun getAppConfigLastFetchedSeconds(): Long {
+        return 0
+    }
+
+    override fun getAppConfigMaxValidityTimestamp(): Long {
+        return 0
+    }
+
+    override fun shouldShowConfigFreshnessWarning(): Boolean {
+        return shouldShowWarning
+    }
+
+
+}
+
+
 
 
 

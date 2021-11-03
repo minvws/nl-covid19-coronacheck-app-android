@@ -11,6 +11,7 @@ import com.xwray.groupie.Section
 import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.design.utils.BottomSheetData
 import nl.rijksoverheid.ctr.design.utils.BottomSheetDialogUtil
+import nl.rijksoverheid.ctr.design.utils.DescriptionData
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMyOverviewBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
@@ -100,8 +101,11 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                     adapterItems.add(
                         MyOverviewHeaderAdapterItem(
                             text = dashboardItem.text,
-                            buttonInfo =  if (greenCardType == GreenCardType.Eu) {
-                                ButtonInfo(R.string.my_overview_description_eu_button_text, R.string.my_overview_description_eu_button_link)
+                            buttonInfo = if (greenCardType == GreenCardType.Eu) {
+                                ButtonInfo(
+                                    R.string.my_overview_description_eu_button_text,
+                                    R.string.my_overview_description_eu_button_link
+                                )
                             } else {
                                 null
                             },
@@ -164,7 +168,9 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                         originType = dashboardItem.originType,
                         onInfoClick = { greenCardType, originType ->
                             when (greenCardType) {
-                                is GreenCardType.Domestic -> presentOriginInfoForDomesticQr(originType)
+                                is GreenCardType.Domestic -> presentOriginInfoForDomesticQr(
+                                    originType
+                                )
                                 is GreenCardType.Eu -> presentOriginInfoForEuQr(originType)
                             }
                         }
@@ -175,21 +181,13 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                         bottomSheetDialogUtil.present(
                             childFragmentManager, BottomSheetData.TitleDescription(
                                 title = getString(R.string.clock_deviation_explanation_title),
-                                applyOnDescription = {
-                                    it.setHtmlText(R.string.clock_deviation_explanation_description)
-                                    it.enableCustomLinks {
-                                        val intent = Intent(Settings.ACTION_DATE_SETTINGS)
-                                        startActivity(intent)
-                                    }
-                                },
+                                descriptionData = DescriptionData(R.string.clock_deviation_explanation_description, customLinkIntent = Intent(Settings.ACTION_DATE_SETTINGS)),
                             )
                         )
                     }))
                 }
                 is DashboardItem.AddQrButtonItem -> {
-                    (requireParentFragment() as MyOverviewTabsFragment).showAddQrButton(
-                        dashboardItem.show
-                    )
+                    // Handled by MyOverviewTabsFragment
                 }
                 is DashboardItem.InfoItem -> {
                     adapterItems.add(MyOverviewInfoCardItem(
@@ -198,7 +196,11 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                             myOverviewFragmentInfoItemHandlerUtil.handleButtonClick(this, it)
                         },
                         onDismiss = { infoCardItem, infoItem ->
-                            myOverviewFragmentInfoItemHandlerUtil.handleDismiss(this, infoCardItem, infoItem)
+                            myOverviewFragmentInfoItemHandlerUtil.handleDismiss(
+                                this,
+                                infoCardItem,
+                                infoItem
+                            )
                         }
                     ))
                 }
@@ -214,25 +216,19 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                 is OriginType.Test -> {
                     BottomSheetData.TitleDescription(
                         title = getString(R.string.my_overview_green_card_not_valid_title_test),
-                        applyOnDescription = {
-                            it.setHtmlText(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_test)
-                        }
+                        descriptionData = DescriptionData(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_test),
                     )
                 }
                 is OriginType.Vaccination -> {
                     BottomSheetData.TitleDescription(
                         title = getString(R.string.my_overview_green_card_not_valid_title_vaccination),
-                        applyOnDescription = {
-                            it.setHtmlText(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_vaccination)
-                        }
+                        descriptionData = DescriptionData(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_vaccination),
                     )
                 }
                 is OriginType.Recovery -> {
                     BottomSheetData.TitleDescription(
                         title = getString(R.string.my_overview_green_card_not_valid_title_recovery),
-                        applyOnDescription = {
-                            it.setHtmlText(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_recovery)
-                        }
+                        descriptionData = DescriptionData(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_recovery),
                     )
                 }
             })
@@ -240,16 +236,23 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
 
     private fun presentOriginInfoForDomesticQr(originType: OriginType) {
         val (title, description) = when (originType) {
-            OriginType.Test -> Pair(getString(R.string.my_overview_green_card_not_valid_title_test), R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_test)
-            OriginType.Vaccination -> Pair(getString(R.string.my_overview_green_card_not_valid_title_vaccination), R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_vaccination)
-            OriginType.Recovery -> Pair(getString(R.string.my_overview_green_card_not_valid_title_recovery), R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_recovery)
+            OriginType.Test -> Pair(
+                getString(R.string.my_overview_green_card_not_valid_title_test),
+                R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_test
+            )
+            OriginType.Vaccination -> Pair(
+                getString(R.string.my_overview_green_card_not_valid_title_vaccination),
+                R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_vaccination
+            )
+            OriginType.Recovery -> Pair(
+                getString(R.string.my_overview_green_card_not_valid_title_recovery),
+                R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_recovery
+            )
         }
         bottomSheetDialogUtil.present(childFragmentManager,
             BottomSheetData.TitleDescription(
                 title = title,
-                applyOnDescription = {
-                    it.setHtmlText(description, true)
-                }
+                descriptionData = DescriptionData(description, htmlLinksEnabled = true),
             )
         )
     }

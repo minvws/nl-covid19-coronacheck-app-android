@@ -57,6 +57,7 @@ fun appConfigModule(cdnUrl: String, path: String, versionCode: Int) = module {
         )
     }
     single<ClockDeviationUseCase> { ClockDeviationUseCaseImpl(get(), get()) }
+    single<AppConfigFreshnessUseCase> { AppConfigFreshnessUseCaseImpl(get(), get(), get())}
     factory<RecommendedUpdatePersistenceManager> { RecommendedUpdatePersistenceManagerImpl(get()) }
 
     single {
