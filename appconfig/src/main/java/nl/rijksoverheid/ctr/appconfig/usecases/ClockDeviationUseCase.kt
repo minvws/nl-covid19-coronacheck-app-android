@@ -47,22 +47,32 @@ class ClockDeviationUseCaseImpl(
             return false
         }
 
+        val thresholdInSeconds =
+            cachedAppConfigUseCase.getCachedAppConfig().clockDeviationThresholdSeconds
+
+        return (abs(calculateServerTimeOffsetMillis()) / SECOND_IN_MS) >= thresholdInSeconds
+    }
+
+    /**
+     * Gets the calculated offset from server time
+     * A negative offset means the device clock is behind, a positive offset means the device is ahead
+     * @return the offset in millis
+     */
+    private fun calculateServerTimeOffsetMillis(): Long {
         val currentLocalUptime = SystemClock.elapsedRealtime()
         val localTime = clock.instant().toEpochMilli()
         val currentSystemStartDatetime = localTime - currentLocalUptime
         val responseSystemStartDatetime = localResponseReceivedTimeStamp - localUptimeAtResponse
         val responseTimeDelta = localResponseReceivedTimeStamp - localServerResponseTimeStamp
         val systemUptimeDelta = currentSystemStartDatetime - responseSystemStartDatetime
-        val thresholdInSeconds =
-            cachedAppConfigUseCase.getCachedAppConfig().clockDeviationThresholdSeconds
 
-        return (abs(systemUptimeDelta + responseTimeDelta) / SECOND_IN_MS) >= thresholdInSeconds
+        return systemUptimeDelta + responseTimeDelta
     }
 
     override fun getAdjustedClock(clock: Clock): Clock {
         return Clock.offset(
             clock,
-            Duration.ofMillis(localServerResponseTimeStamp - localResponseReceivedTimeStamp)
+            Duration.ofMillis(-calculateServerTimeOffsetMillis())
         )
     }
 }
