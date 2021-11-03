@@ -23,7 +23,10 @@ import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.fakeAppConfigViewModel
 import nl.rijksoverheid.ctr.holder.fakeDashboardViewModel
+import nl.rijksoverheid.ctr.holder.fakeGreenCard
+import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewTabsFragment
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardTabItem
@@ -174,6 +177,154 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
 
         // assert card is dismissed
         assertListItemCount(listId = R.id.recyclerView, expectedItemCount = 0)
+    }
+
+    @Test
+    fun `card item`() {
+        startFragment(
+            DashboardTabItem(
+                title = R.string.travel_button_domestic,
+                greenCardType = GreenCardType.Domestic,
+                items = listOf(
+                    DashboardItem.CardsItem(
+                        listOf(
+                            DashboardItem.CardsItem.CardItem(
+                                greenCard = fakeGreenCard,
+                                originStates = listOf(),
+                                credentialState = DashboardItem.CardsItem.CredentialState.NoCredential,
+                                databaseSyncerResult = DatabaseSyncerResult.Success()
+                            )
+                        )
+                    )
+                )
+            )
+        )
+
+        assertCustomAssertionAtPosition(
+            listId = R.id.recyclerView,
+            position = 0,
+            targetViewId = R.id.proof_1,
+            viewAssertion = ViewAssertion { view, _ ->
+                assertTrue { view is MaterialCardView }
+            }
+        )
+        assertCustomAssertionAtPosition(
+            listId = R.id.recyclerView,
+            position = 0,
+            targetViewId = R.id.proof_2,
+            viewAssertion = ViewAssertion { view, _ ->
+                assertTrue { view.height == 0 }
+            }
+        )
+        assertCustomAssertionAtPosition(
+            listId = R.id.recyclerView,
+            position = 0,
+            targetViewId = R.id.proof_3,
+            viewAssertion = ViewAssertion { view, _ ->
+                assertTrue { view.height == 0 }
+            }
+        )
+    }
+
+    fun `card item multiple`() {
+        startFragment(
+            DashboardTabItem(
+                title = R.string.travel_button_domestic,
+                greenCardType = GreenCardType.Domestic,
+                items = listOf(
+                    DashboardItem.CardsItem(
+                        listOf(
+                            DashboardItem.CardsItem.CardItem(
+                                greenCard = fakeGreenCard,
+                                originStates = listOf(),
+                                credentialState = DashboardItem.CardsItem.CredentialState.NoCredential,
+                                databaseSyncerResult = DatabaseSyncerResult.Success()
+                            ),
+                            DashboardItem.CardsItem.CardItem(
+                                greenCard = fakeGreenCard,
+                                originStates = listOf(),
+                                credentialState = DashboardItem.CardsItem.CredentialState.NoCredential,
+                                databaseSyncerResult = DatabaseSyncerResult.Success()
+                            ),
+                            DashboardItem.CardsItem.CardItem(
+                                greenCard = fakeGreenCard,
+                                originStates = listOf(),
+                                credentialState = DashboardItem.CardsItem.CredentialState.NoCredential,
+                                databaseSyncerResult = DatabaseSyncerResult.Success()
+                            )
+                        )
+                    )
+                )
+            )
+        )
+
+        assertCustomAssertionAtPosition(
+            listId = R.id.recyclerView,
+            position = 0,
+            targetViewId = R.id.proof_2,
+            viewAssertion = ViewAssertion { view, _ ->
+                assertTrue { view.height > 0 }
+            }
+        )
+        assertCustomAssertionAtPosition(
+            listId = R.id.recyclerView,
+            position = 0,
+            targetViewId = R.id.proof_3,
+            viewAssertion = ViewAssertion { view, _ ->
+                assertTrue { view.height > 0 }
+            }
+        )
+    }
+
+    @Test
+    fun `expired item`() {
+        startFragment(
+            DashboardTabItem(
+                title = R.string.travel_button_domestic,
+                greenCardType = GreenCardType.Domestic,
+                items = listOf(
+                    DashboardItem.GreenCardExpiredItem(fakeGreenCard)
+                )
+            )
+        )
+
+        // assert display of card
+        assertCustomAssertionAtPosition(
+            listId = R.id.recyclerView,
+            position = 0,
+            targetViewId = R.id.dashboardItemExpiredRoot,
+            viewAssertion = ViewAssertion { view, _ ->
+                assertTrue { view is CardView }
+            }
+        )
+
+        // dismiss card
+        performActionOnView(ViewMatchers.withId(R.id.close), ViewActions.click())
+
+        // assert card is dismissed
+        assertListItemCount(listId = R.id.recyclerView, expectedItemCount = 0)
+    }
+
+    @Test
+    fun `origin info item`() {
+        startFragment(
+            DashboardTabItem(
+                title = R.string.travel_button_domestic,
+                greenCardType = GreenCardType.Domestic,
+                items = listOf(
+                    DashboardItem.OriginInfoItem(GreenCardType.Domestic, OriginType.Vaccination)
+                )
+            )
+        )
+
+        assertCustomAssertionAtPosition(
+            listId = R.id.recyclerView,
+            position = 0,
+            targetViewId = R.id.dashboardItemOriginRoot,
+            viewAssertion = ViewAssertion { view, _ ->
+                assertTrue { view is CardView }
+            }
+        )
     }
 
     private fun startFragment(tabItem: DashboardTabItem): FragmentScenario<MyOverviewTabsFragment> {
