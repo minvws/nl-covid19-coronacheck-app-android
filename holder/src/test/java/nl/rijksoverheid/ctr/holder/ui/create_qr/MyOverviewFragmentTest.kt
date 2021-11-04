@@ -348,32 +348,6 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `Clicking a green card should navigate to qr code`() {
-        startFragment(
-            DashboardTabItem(
-                title = R.string.travel_button_domestic,
-                greenCardType = GreenCardType.Domestic,
-                items = listOf(
-                    DashboardItem.CardsItem(
-                        listOf(
-                            DashboardItem.CardsItem.CardItem(
-                                greenCard = fakeGreenCard,
-                                originStates = listOf(),
-                                credentialState = DashboardItem.CardsItem.CredentialState.NoCredential,
-                                databaseSyncerResult = DatabaseSyncerResult.Success()
-                            )
-                        )
-                    )
-                )
-            )
-        )
-
-        performActionOnView(ViewMatchers.withId(R.id.proof_1), ViewActions.click())
-
-        Assert.assertEquals(navController.currentDestination?.id, R.id.nav_qr_codes)
-    }
-
-    @Test
     fun `Clicking Add qr button should navigate to qr code type`() {
         startFragment(
             DashboardTabItem(
