@@ -13,5 +13,6 @@ import nl.rijksoverheid.ctr.zebrascanner.ZebraManagerImpl
 import org.koin.dsl.module
 
 val qrScannerModule = module {
+    factory<QrCodeProcessor> { QrCodeProcessorImpl() }
     factory<ZebraManager> { ZebraManagerImpl(get()) }
 }

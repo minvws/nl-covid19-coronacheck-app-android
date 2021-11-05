@@ -1,0 +1,22 @@
+NB: this is the FOSS version for F-Droid, which removes non-free images and proprietary dependencies, and uses zxing to scan barcodes instead.
+
+CoronaCheck is de officiële bewijs-app van Nederland, ontwikkeld door het Ministerie van Volksgezondheid, Welzijn en Sport. Het is een digitaal hulpmiddel om toegang te krijgen tot bepaalde locaties of activiteiten in Nederland. Ook kun je met behulp van de app reizen naar andere landen. Dat kan als je gevaccineerd bent, op het moment van de test geen corona had of kunt bewijzen dat je eerder al corona hebt gehad.
+
+Hoe werkt de app?
+
+Belangrijk: maak eerst een afspraak voor een vaccinatie of voor een coronatest.
+
+- Haal je vaccinatie of testuitslag op in de app
+Als de uitslag van jouw coronatest bekend is, haal je de testuitslag op in de app. Je vult daarvoor een ophaalcode in of haalt je gegevens op met DigiD. Je vaccinatiegegevens kun je in de app ophalen met DigiD.
+
+- Maak van je vaccinatie of testuitslag een QR-code
+De app maakt van jouw positieve / negatieve testuitslag of vaccinatie een QR-code.
+
+- Laat jouw QR-code zien bij de ingang
+Je kunt jouw QR-code laten scannen bij de ingang van bepaalde locaties. Dit is ook verplicht voor doorgang in andere landen als je gaat reizen. Zo bewijs je dat je gevaccineerd bent, al corona gehad hebt of geen corona had op het moment van de test.
+
+QR-codes voor Nederland en internationaal
+
+De app maakt twee QR-codes: één voor Nederland en één internationale. Beide QR-codes vind je in de app. Reis je buiten Nederland? Gebruik dan je internationale QR-code.
+
+Privacybeleid: https://coronacheck.nl/nl/privacy
