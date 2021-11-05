@@ -30,6 +30,9 @@ sealed class DashboardItem {
         }
 
         object ClockDeviationItem : InfoItem()
+
+        data class GreenCardExpiredItem(val greenCard: GreenCard) : InfoItem()
+
     }
 
     data class CardsItem(val cards: List<CardItem>) : DashboardItem() {

@@ -26,7 +26,7 @@ interface MyOverviewFragmentInfoItemHandlerUtil {
     fun handleDismiss(
         myOverviewFragment: MyOverviewFragment,
         infoCardItem: MyOverviewInfoCardItem,
-        infoItem: DashboardItem.InfoItem.Dismissible
+        infoItem: DashboardItem.InfoItem
     )
 }
 
@@ -125,7 +125,7 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
     override fun handleDismiss(
         myOverviewFragment: MyOverviewFragment,
         infoCardItem: MyOverviewInfoCardItem,
-        infoItem: DashboardItem.InfoItem.Dismissible
+        infoItem: DashboardItem.InfoItem
     ) {
         // Remove section from adapter
         myOverviewFragment.section.remove(infoCardItem)
@@ -140,6 +140,9 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
             }
             is DashboardItem.InfoItem.Dismissible.ExtendedDomesticRecovery -> {
                 myOverviewFragment.dashboardViewModel.dismissExtendedDomesticRecoveryInfoCard()
+            }
+            is DashboardItem.InfoItem.GreenCardExpiredItem -> {
+                myOverviewFragment.dashboardViewModel.removeGreenCard(infoItem.greenCard)
             }
         }
     }

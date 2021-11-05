@@ -5,7 +5,6 @@ import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.holder.*
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem.GreenCardExpiredItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem.CardsItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem.CardsItem.CardItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem.HeaderItem
@@ -205,7 +204,6 @@ class DashboardItemUtilImplTest {
             CardsItem(listOf(card1)),
             CardsItem(listOf(createCardItem(OriginType.Recovery))),
             CardsItem(listOf(card2)),
-            GreenCardExpiredItem(mockk()),
             CardsItem(listOf(card3))
         )
 

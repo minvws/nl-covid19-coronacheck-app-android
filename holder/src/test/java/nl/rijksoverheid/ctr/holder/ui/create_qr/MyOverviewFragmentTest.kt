@@ -277,34 +277,34 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
         )
     }
 
-    @Test
-    fun `Expired card should be displayed when expired item is presented and can be dismissed`() {
-        startFragment(
-            DashboardTabItem(
-                title = R.string.travel_button_domestic,
-                greenCardType = GreenCardType.Domestic,
-                items = listOf(
-                    DashboardItem.GreenCardExpiredItem(fakeGreenCard)
-                )
-            )
-        )
-
-        // assert display of card
-        assertCustomAssertionAtPosition(
-            listId = R.id.recyclerView,
-            position = 0,
-            targetViewId = R.id.dashboardItemExpiredRoot,
-            viewAssertion = ViewAssertion { view, _ ->
-                assertTrue { view is CardView }
-            }
-        )
-
-        // dismiss card
-        performActionOnView(ViewMatchers.withId(R.id.close), ViewActions.click())
-
-        // assert card is dismissed
-        assertListItemCount(listId = R.id.recyclerView, expectedItemCount = 0)
-    }
+//    @Test
+//    fun `Expired card should be displayed when expired item is presented and can be dismissed`() {
+//        startFragment(
+//            DashboardTabItem(
+//                title = R.string.travel_button_domestic,
+//                greenCardType = GreenCardType.Domestic,
+//                items = listOf(
+//                    DashboardItem.GreenCardExpiredItem(fakeGreenCard)
+//                )
+//            )
+//        )
+//
+//        // assert display of card
+//        assertCustomAssertionAtPosition(
+//            listId = R.id.recyclerView,
+//            position = 0,
+//            targetViewId = R.id.dashboardItemExpiredRoot,
+//            viewAssertion = ViewAssertion { view, _ ->
+//                assertTrue { view is CardView }
+//            }
+//        )
+//
+//        // dismiss card
+//        performActionOnView(ViewMatchers.withId(R.id.close), ViewActions.click())
+//
+//        // assert card is dismissed
+//        assertListItemCount(listId = R.id.recyclerView, expectedItemCount = 0)
+//    }
 
     @Test
     fun `Origin card should be displayed when origin item is presented`() {

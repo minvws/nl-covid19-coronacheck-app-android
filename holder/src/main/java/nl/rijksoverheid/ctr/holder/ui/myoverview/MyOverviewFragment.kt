@@ -76,11 +76,11 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
     }
 
     private fun observeItem() {
-        dashboardViewModel.dashboardTabItemsLiveData.observe(viewLifecycleOwner, {
+        dashboardViewModel.dashboardTabItemsLiveData.observe(viewLifecycleOwner) {
             setItems(
                 myDashboardItems = it.first { items -> items.greenCardType == greenCardType }.items
             )
-        })
+        }
     }
 
     private fun initRecyclerView(binding: FragmentMyOverviewBinding) {
@@ -153,12 +153,11 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                         )
                     )
                 }
-                is DashboardItem.GreenCardExpiredItem -> {
-                    adapterItems.add(MyOverviewGreenCardExpiredAdapterItem(
-                        greenCard = dashboardItem.greenCard,
-                        onDismissClick = { item, greenCard ->
-                            section.remove(item)
-                            dashboardViewModel.removeGreenCard(greenCard)
+                is DashboardItem.InfoItem.GreenCardExpiredItem -> {
+                    adapterItems.add(MyOverviewInfoCardItem(
+                        infoItem = dashboardItem as DashboardItem.InfoItem,
+                        onButtonClick = {
+                            myOverviewFragmentInfoItemHandlerUtil.handleButtonClick(this, it)
                         }
                     ))
                 }

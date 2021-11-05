@@ -202,7 +202,7 @@ class GetDashboardItemsUseCaseImpl(
         val items = greenCardsForSelectedType
             .map { greenCard ->
                 if (greenCardUtil.isExpired(greenCard)) {
-                    DashboardItem.GreenCardExpiredItem(greenCard = greenCard)
+                    DashboardItem.InfoItem.GreenCardExpiredItem(greenCard = greenCard)
                 } else {
                     mapGreenCardsItem(greenCard, isLoadingNewCredentials, databaseSyncerResult)
                 }
