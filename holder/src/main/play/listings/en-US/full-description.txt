@@ -1,0 +1,22 @@
+NB: this is the FOSS version for F-Droid, which removes non-free images and proprietary dependencies, and uses zxing to scan barcodes instead.
+
+CoronaCheck is the official Dutch declaration app developed by the Ministry of Health, Welfare and Sport. This digital tool allows access to certain locations in the Netherlands. You can also travel internationally using the app. But only if you've been vaccinated, didn’t have coronavirus at the time of testing or if you’ve had coronavirus.
+
+How does the app work?
+
+Important: first book an appointment for a vaccination or for a corona test.
+
+- Retrieve your vaccination or test results with the app
+When your test results are available, you retrieve them with the app by entering the code provided by the test location. You can also retrieve a vaccination record in the app.
+
+- Convert your vaccination record or test result into a QR code
+The app converts your vaccination record or positive / negative test results into a QR code.
+
+- Show your QR code at the entrance
+You can have your QR code scanned at the entrance to certain locations. This is also mandatory for access to other countries. This proves you've been vaccinated, you’ve already had coronavirus or didn’t have coronavirus at the time of testing.
+
+QR codes for the Netherlands and international
+
+This app generates a QR code for the Netherlands and one for other countries. You can find both QR codes in the app. Travelling outside of the Netherlands? Then use your international QR code.
+
+Privacy policy: https://coronacheck.nl/nl/privacy

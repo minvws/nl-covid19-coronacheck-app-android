@@ -14,12 +14,12 @@ import org.koin.dsl.module
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-val errorsModule = module {
+fun errorsModule(flavor: String) = module {
     factory {
         NetworkRequestResultFactory(get(named("ResponseError")), get())
     }
 
     factory<ErrorCodeStringFactory> {
-        ErrorCodeStringFactoryImpl()
+        ErrorCodeStringFactoryImpl(!flavor.contains("fdroid"))
     }
 }

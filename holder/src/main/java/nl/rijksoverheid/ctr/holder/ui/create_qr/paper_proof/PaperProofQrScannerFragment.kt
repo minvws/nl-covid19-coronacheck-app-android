@@ -2,15 +2,12 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof
 
 import android.os.Bundle
 import android.view.View
-import com.google.mlkit.vision.barcode.Barcode
-import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderMainActivityViewModel
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.ValidatePaperProofResult
 import nl.rijksoverheid.ctr.qrscanner.QrCodeScannerFragment
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -42,12 +39,6 @@ class PaperProofQrScannerFragment : QrCodeScannerFragment() {
                 okayButtonText = getString(R.string.ok)
             )
         )
-    }
-
-    override fun getBarcodeFormats(): List<Int> {
-        val formats = mutableListOf<Int>()
-        formats.add(Barcode.FORMAT_QR_CODE)
-        return formats
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

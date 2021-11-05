@@ -9,7 +9,6 @@ import com.google.mlkit.vision.barcode.Barcode
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.qrscanner.QrCodeScannerFragment
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
-import nl.rijksoverheid.ctr.verifier.BuildConfig
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.VerifierMainActivity
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultInvalidData
@@ -55,15 +54,6 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
                 okayButtonText = getString(R.string.ok)
             )
         )
-    }
-
-    override fun getBarcodeFormats(): List<Int> {
-        val formats = mutableListOf<Int>()
-        formats.add(Barcode.FORMAT_QR_CODE)
-        if (BuildConfig.FLAVOR == "tst") {
-            formats.add(Barcode.FORMAT_AZTEC)
-        }
-        return formats
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
