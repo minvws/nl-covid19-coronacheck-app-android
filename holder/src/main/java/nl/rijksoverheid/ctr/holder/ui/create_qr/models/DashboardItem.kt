@@ -11,9 +11,11 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
 sealed class DashboardItem {
 
     data class HeaderItem(@StringRes val text: Int) : DashboardItem()
+
     data class PlaceholderCardItem(val greenCardType: GreenCardType) : DashboardItem()
-    object ClockDeviationItem : DashboardItem()
+
     sealed class InfoItem : DashboardItem() {
+
         sealed class NonDismissible : InfoItem() {
             object RefreshEuVaccinations : NonDismissible()
             object ExtendDomesticRecovery : NonDismissible()
@@ -26,6 +28,8 @@ sealed class DashboardItem {
             object ExtendedDomesticRecovery : Dismissible()
             object RecoveredDomesticRecovery : Dismissible()
         }
+
+        object ClockDeviationItem : InfoItem()
     }
 
     data class CardsItem(val cards: List<CardItem>) : DashboardItem() {
@@ -45,6 +49,7 @@ sealed class DashboardItem {
     }
 
     data class GreenCardExpiredItem(val greenCard: GreenCard) : DashboardItem()
+
     data class OriginInfoItem(val greenCardType: GreenCardType, val originType: OriginType) :
         DashboardItem()
 

@@ -71,7 +71,7 @@ class GetDashboardItemsUseCaseImpl(
         )
 
         if (dashboardItemUtil.shouldShowClockDeviationItem(allGreenCards)) {
-            dashboardItems.add(DashboardItem.ClockDeviationItem)
+            dashboardItems.add(DashboardItem.InfoItem.ClockDeviationItem)
         }
 
         if (dashboardItemUtil.shouldShowExtendDomesticRecoveryItem()) {
@@ -144,7 +144,7 @@ class GetDashboardItemsUseCaseImpl(
         )
 
         if (dashboardItemUtil.shouldShowClockDeviationItem(allGreenCards)) {
-            dashboardItems.add(DashboardItem.ClockDeviationItem)
+            dashboardItems.add(DashboardItem.InfoItem.ClockDeviationItem)
         }
 
         if (dashboardItemUtil.shouldAddSyncGreenCardsItem(allEventGroupEntities, allGreenCards)) {

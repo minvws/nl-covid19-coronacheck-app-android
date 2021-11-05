@@ -176,22 +176,30 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                         }
                     ))
                 }
-                is DashboardItem.ClockDeviationItem -> {
-                    adapterItems.add(MyOverviewClockDeviationItem(onInfoIconClicked = {
-                        bottomSheetDialogUtil.present(
-                            childFragmentManager, BottomSheetData.TitleDescription(
-                                title = getString(R.string.clock_deviation_explanation_title),
-                                descriptionData = DescriptionData(R.string.clock_deviation_explanation_description, customLinkIntent = Intent(Settings.ACTION_DATE_SETTINGS)),
-                            )
-                        )
-                    }))
+                is DashboardItem.InfoItem.ClockDeviationItem -> {
+                    adapterItems.add(
+                        MyOverviewInfoCardItem(
+                            infoItem = dashboardItem as DashboardItem.InfoItem,
+                            onButtonClick = {
+                                bottomSheetDialogUtil.present(
+                                    childFragmentManager, BottomSheetData.TitleDescription(
+                                        title = getString(R.string.clock_deviation_explanation_title),
+                                        descriptionData = DescriptionData(
+                                            R.string.clock_deviation_explanation_description,
+                                            customLinkIntent = Intent(Settings.ACTION_DATE_SETTINGS)
+                                        ),
+                                    )
+                                )
+                            })
+                    )
                 }
                 is DashboardItem.AddQrButtonItem -> {
                     // Handled by MyOverviewTabsFragment
                 }
-                is DashboardItem.InfoItem -> {
+                is DashboardItem.InfoItem.Dismissible,
+                is DashboardItem.InfoItem.NonDismissible -> {
                     adapterItems.add(MyOverviewInfoCardItem(
-                        infoItem = dashboardItem,
+                        infoItem = dashboardItem as DashboardItem.InfoItem,
                         onButtonClick = {
                             myOverviewFragmentInfoItemHandlerUtil.handleButtonClick(this, it)
                         },
@@ -211,7 +219,8 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
     }
 
     private fun presentOriginInfoForEuQr(originType: OriginType) {
-        bottomSheetDialogUtil.present(childFragmentManager,
+        bottomSheetDialogUtil.present(
+            childFragmentManager,
             data = when (originType) {
                 is OriginType.Test -> {
                     BottomSheetData.TitleDescription(
@@ -231,7 +240,8 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                         descriptionData = DescriptionData(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_recovery),
                     )
                 }
-            })
+            }
+        )
     }
 
     private fun presentOriginInfoForDomesticQr(originType: OriginType) {
@@ -249,7 +259,8 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                 R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_recovery
             )
         }
-        bottomSheetDialogUtil.present(childFragmentManager,
+        bottomSheetDialogUtil.present(
+            childFragmentManager,
             BottomSheetData.TitleDescription(
                 title = title,
                 descriptionData = DescriptionData(description, htmlLinksEnabled = true),

@@ -16,13 +16,14 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 class MyOverviewInfoCardItem(
     private val infoItem: DashboardItem.InfoItem,
     private val onButtonClick: (infoItem: DashboardItem.InfoItem) -> Unit,
-    private val onDismiss: (infoCardItem: MyOverviewInfoCardItem, infoItem: DashboardItem.InfoItem.Dismissible) -> Unit
+    private val onDismiss: (infoCardItem: MyOverviewInfoCardItem, infoItem: DashboardItem.InfoItem.Dismissible) -> Unit = { _, _ -> }
 ) :
     BindableItem<ItemMyOverviewInfoCardBinding>(R.layout.item_my_overview_info_card.toLong()) {
 
     override fun bind(viewBinding: ItemMyOverviewInfoCardBinding, position: Int) {
         when (infoItem) {
-            is DashboardItem.InfoItem.NonDismissible -> {
+            is DashboardItem.InfoItem.NonDismissible,
+            is DashboardItem.InfoItem.ClockDeviationItem -> {
                 // Non dismissible item does not have a close button
                 viewBinding.close.visibility = View.GONE
             }
@@ -56,6 +57,9 @@ class MyOverviewInfoCardItem(
             }
             is DashboardItem.InfoItem.Dismissible.RefreshedEuVaccinations -> {
                 viewBinding.text.setText(R.string.dashboard_item_refreshed_eu_vaccinations_text)
+            }
+            is DashboardItem.InfoItem.ClockDeviationItem -> {
+                viewBinding.text.setText(R.string.my_overview_clock_deviation_description)
             }
         }
 

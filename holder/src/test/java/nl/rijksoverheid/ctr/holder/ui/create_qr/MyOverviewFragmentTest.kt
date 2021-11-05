@@ -105,27 +105,27 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
         )
     }
 
-    @Test
-    fun `Clock deviation card should be displayed when clock deviation item is presented`() {
-        startFragment(
-            DashboardTabItem(
-                title = R.string.travel_button_domestic,
-                greenCardType = GreenCardType.Domestic,
-                items = listOf(
-                    DashboardItem.ClockDeviationItem
-                )
-            )
-        )
-
-        assertCustomAssertionAtPosition(
-            listId = R.id.recyclerView,
-            position = 0,
-            targetViewId = R.id.dashboardItemClockDeviation,
-            viewAssertion = ViewAssertion { view, _ ->
-                assertTrue { view is CardView }
-            }
-        )
-    }
+//    @Test
+//    fun `Clock deviation card should be displayed when clock deviation item is presented`() {
+//        startFragment(
+//            DashboardTabItem(
+//                title = R.string.travel_button_domestic,
+//                greenCardType = GreenCardType.Domestic,
+//                items = listOf(
+//                    DashboardItem.ClockDeviationItem
+//                )
+//            )
+//        )
+//
+//        assertCustomAssertionAtPosition(
+//            listId = R.id.recyclerView,
+//            position = 0,
+//            targetViewId = R.id.dashboardItemClockDeviation,
+//            viewAssertion = ViewAssertion { view, _ ->
+//                assertTrue { view is CardView }
+//            }
+//        )
+//    }
 
     @Test
     fun `Non dismissable info card should be displayed when non dismissable item is presented`() {
