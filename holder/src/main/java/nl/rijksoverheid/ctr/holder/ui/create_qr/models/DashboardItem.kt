@@ -51,8 +51,6 @@ sealed class DashboardItem {
         )
     }
 
-    data class GreenCardExpiredItem(val greenCard: GreenCard) : DashboardItem()
-
     data class OriginInfoItem(val greenCardType: GreenCardType, val originType: OriginType) :
         DashboardItem()
 
