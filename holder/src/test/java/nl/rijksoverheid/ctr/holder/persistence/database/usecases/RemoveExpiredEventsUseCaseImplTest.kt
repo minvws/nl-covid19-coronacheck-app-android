@@ -30,9 +30,9 @@ class RemoveExpiredEventsUseCaseImplTest {
 
     private val cachedAppConfigUseCase = fakeCachedAppConfigUseCase(
         appConfig = HolderConfig.default(
-            vaccinationEventValidity = TimeUnit.DAYS.toHours(10).toInt(),
-            testEventValidity = TimeUnit.DAYS.toHours(20).toInt(),
-            recoveryEventValidity = TimeUnit.DAYS.toHours(30).toInt()
+            vaccinationEventValidityDays = 10,
+            testEventValidityHours = TimeUnit.DAYS.toHours(20).toInt(),
+            recoveryEventValidityDays = 30
         )
     )
 

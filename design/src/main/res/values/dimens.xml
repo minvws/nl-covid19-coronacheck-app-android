@@ -4,4 +4,8 @@
     <dimen name="scroll_view_button_elevation">8dp</dimen>
     <dimen name="view_pager_indicator_bubble_spacing">6dp</dimen>
     <dimen name="toolbar_elevation">4dp</dimen>
+    <dimen name="deeplink_exit_icon_padding">8dp</dimen>
+    <dimen name="deeplink_button_padding_end">36dp</dimen>
+    <dimen name="deeplink_button_padding_vertical">14dp</dimen>
+    <dimen name="design_navigation_separator_vertical_padding">16dp</dimen>
 </resources>

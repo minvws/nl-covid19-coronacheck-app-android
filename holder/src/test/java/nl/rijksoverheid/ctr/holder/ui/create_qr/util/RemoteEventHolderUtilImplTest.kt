@@ -193,6 +193,21 @@ class RemoteEventHolderUtilImplTest: AutoCloseKoinTest() {
         assertTrue(remoteUtil.conflicting(storedHolders, incomingHolders))
     }
 
+    @Test
+    fun `two holders, with one having null name, are conflicting`() {
+        val storedHolders = listOf(
+            RemoteProtocol3.Holder("De", "jan", null, "1982-06-26")
+        )
+
+        val incomingHolders = listOf(
+            RemoteProtocol3.Holder("De", "jan", "pijter", "1982-06-25")
+        )
+
+        val remoteUtil = RemoteEventHolderUtilImpl(moshi, mockk())
+
+        assertTrue(remoteUtil.conflicting(storedHolders, incomingHolders))
+    }
+
     private fun getHolderExample(
         firstName: String = "jan",
         lastName: String = "rijter"

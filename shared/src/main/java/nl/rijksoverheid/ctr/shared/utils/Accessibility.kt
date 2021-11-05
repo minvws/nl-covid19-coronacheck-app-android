@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.shared.utils
 import android.accessibilityservice.AccessibilityServiceInfo
 import android.content.Context
 import android.view.View
+import android.view.ViewGroup
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityManager
 import android.widget.Button
@@ -11,6 +12,7 @@ import androidx.core.view.AccessibilityDelegateCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.accessibility.AccessibilityEventCompat
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
+import androidx.core.view.forEach
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

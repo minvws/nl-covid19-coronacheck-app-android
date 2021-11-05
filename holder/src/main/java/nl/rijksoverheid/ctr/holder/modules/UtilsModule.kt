@@ -3,6 +3,8 @@ package nl.rijksoverheid.ctr.holder.modules
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverViewGreenCardAdapterUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverViewGreenCardAdapterUtilImpl
+import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.MyOverviewFragmentInfoItemHandlerUtil
+import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.MyOverviewFragmentInfoItemHandlerUtilImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TokenValidatorUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TokenValidatorUtilImpl
 import org.koin.android.ext.koin.androidContext
@@ -28,12 +30,13 @@ val utilsModule = module {
     factory<TokenValidatorUtil> { TokenValidatorUtilImpl() }
     factory<CredentialUtil> { CredentialUtilImpl(Clock.systemUTC(), get(), get()) }
     factory<OriginUtil> { OriginUtilImpl(Clock.systemUTC()) }
-    factory<RemoteEventRecoveryUtil> { RemoteEventRecoveryUtilImpl(get()) }
     factory<RemoteEventHolderUtil> { RemoteEventHolderUtilImpl(get(), get()) }
     factory<RemoteProtocol3Util> { RemoteProtocol3UtilImpl() }
-    factory<RemoteEventUtil> { RemoteEventUtilImpl() }
+    factory<RemoteEventUtil> { RemoteEventUtilImpl(get(), get(), get()) }
     factory<ReadEuropeanCredentialUtil> { ReadEuropeanCredentialUtilImpl(get()) }
     factory<DashboardItemUtil> { DashboardItemUtilImpl(get(), get(), get(), get(), get()) }
     factory<CountryUtil> { CountryUtilImpl() }
     factory<MultipleQrCodesUtil> { MultipleQrCodesUtilImpl() }
+    factory<EventGroupEntityUtil> { EventGroupEntityUtilImpl(get()) }
+    factory<MyOverviewFragmentInfoItemHandlerUtil> { MyOverviewFragmentInfoItemHandlerUtilImpl(get()) }
 }

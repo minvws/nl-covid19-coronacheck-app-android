@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.design.utils.BottomSheetData
 import nl.rijksoverheid.ctr.design.utils.BottomSheetDialogUtil
+import nl.rijksoverheid.ctr.design.utils.DescriptionData
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.BaseFragment
 import nl.rijksoverheid.ctr.holder.HolderFlow
@@ -64,7 +65,7 @@ import org.koin.androidx.viewmodel.scope.emptyState
 
         binding.uniqueCodeText.filters = arrayOf(InputFilter.AllCaps())
         binding.uniqueCodeText.addTextChangedListener {
-            viewModel.testCode = it?.toString()?.toUpperCase() ?: ""
+            viewModel.testCode = it?.toString()?.uppercase() ?: ""
         }
 
         binding.verificationCodeText.addTextChangedListener {
@@ -197,9 +198,7 @@ import org.koin.androidx.viewmodel.scope.emptyState
         binding.noTokenReceivedBtn.setOnClickListener {
             bottomSheetDialogUtil.present(childFragmentManager, BottomSheetData.TitleDescription(
                 title = getString(R.string.commercial_test_type_no_code_title),
-                applyOnDescription = {
-                    it.setHtmlText(R.string.commercial_test_type_no_code_description)
-                },
+                descriptionData = DescriptionData(R.string.commercial_test_type_no_code_description),
             ))
         }
     }

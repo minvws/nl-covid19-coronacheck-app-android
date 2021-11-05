@@ -8,7 +8,11 @@
 
 package nl.rijksoverheid.ctr.holder
 
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.Network
+import android.net.NetworkRequest
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
@@ -25,7 +29,9 @@ import nl.rijksoverheid.ctr.introduction.IntroductionFragment
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
+import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
+import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 import nl.rijksoverheid.ctr.shared.utils.IntentUtil
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -40,12 +46,21 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class HolderMainActivity : AppCompatActivity() {
 
     private val introductionViewModel: IntroductionViewModel by viewModel()
-    private val appStatusViewModel: AppConfigViewModel by viewModel()
+    private val appConfigViewModel: AppConfigViewModel by viewModel()
     private val deviceRootedViewModel: DeviceRootedViewModel by viewModel()
     private val deviceSecureViewModel: DeviceSecureViewModel by viewModel()
     private val dialogUtil: DialogUtil by inject()
     private val mobileCoreWrapper: MobileCoreWrapper by inject()
     private val intentUtil: IntentUtil by inject()
+    private var isFreshStart: Boolean = true // track if this is a fresh start of the app
+    private val androidUtil: AndroidUtil by inject()
+    private val connectivityChangeCallback =
+        object : ConnectivityManager.NetworkCallback() {
+            override fun onAvailable(network: Network) {
+                appConfigViewModel.refresh(mobileCoreWrapper)
+            }
+        }
+    private val networkChangeFilter = NetworkRequest.Builder().build() // blank filter for all networks
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
@@ -53,7 +68,7 @@ class HolderMainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        if (BuildConfig.FLAVOR == "prod") {
+        if (BuildConfig.FLAVOR.lowercase().contains("prod")) {
             window.setFlags(
                 WindowManager.LayoutParams.FLAG_SECURE,
                 WindowManager.LayoutParams.FLAG_SECURE
@@ -70,7 +85,7 @@ class HolderMainActivity : AppCompatActivity() {
             )
         })
 
-        appStatusViewModel.appStatusLiveData.observe(this, EventObserver {
+        appConfigViewModel.appStatusLiveData.observe(this, {
             handleAppStatus(it, navController)
         })
 
@@ -95,10 +110,16 @@ class HolderMainActivity : AppCompatActivity() {
                     message = getString(R.string.dialog_device_secure_warning_description),
                     positiveButtonText = R.string.dialog_device_secure_positive_button,
                     positiveButtonCallback = { },
-                    onDismissCallback = { deviceSecureViewModel.setHasDismissedUnsecureDeviceDialog(true) }
+                    onDismissCallback = {
+                        deviceSecureViewModel.setHasDismissedUnsecureDeviceDialog(
+                            true
+                        )
+                    }
                 )
             }
         })
+
+
     }
 
     private fun handleAppStatus(
@@ -130,8 +151,23 @@ class HolderMainActivity : AppCompatActivity() {
         super.onStart()
         // Only get app config on every app foreground when introduction is finished
         if (introductionViewModel.getIntroductionStatus() is IntroductionStatus.IntroductionFinished) {
-            appStatusViewModel.refresh(mobileCoreWrapper)
+            appConfigViewModel.refresh(mobileCoreWrapper, isFreshStart)
+            isFreshStart = false
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Add connectivity change listener. If a network is detected try to refresh the config
+        androidUtil.getConnectivityManager().registerNetworkCallback(
+            networkChangeFilter, connectivityChangeCallback
+        )
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+        androidUtil.getConnectivityManager().unregisterNetworkCallback(connectivityChangeCallback)
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -146,4 +182,25 @@ class HolderMainActivity : AppCompatActivity() {
         navController.setGraph(R.navigation.holder_nav_graph_root)
         navController.handleDeepLink(intent)
     }
+
+    fun launchUrl(url: String) {
+        url.launchUrl(this) {
+            dialogUtil.presentDialog(
+                context = this,
+                title = R.string.dialog_no_browser_title,
+                // remove the https prefix to make it more eye friendsly
+                message = getString(R.string.dialog_no_browser_message, url).replace(
+                    "https://",
+                    ""
+                ),
+                positiveButtonText = R.string.ok,
+                positiveButtonCallback = {},
+            )
+        }
+    }
+}
+
+fun Context.launchUrl(url: String) {
+    val holderMainActivity = this as? HolderMainActivity
+    holderMainActivity?.launchUrl(url)
 }

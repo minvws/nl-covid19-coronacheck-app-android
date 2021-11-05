@@ -10,7 +10,7 @@ package nl.rijksoverheid.ctr.verifier.ui.scanner.models
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
-import nl.rijksoverheid.ctr.shared.VerificationResult
+import nl.rijksoverheid.ctr.shared.models.VerificationResult
 
 sealed class VerifiedQrResultState : Parcelable {
     @Parcelize

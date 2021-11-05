@@ -13,6 +13,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import nl.rijksoverheid.ctr.design.databinding.BottomSheetBinding
 import nl.rijksoverheid.ctr.design.utils.BottomSheetData
+import nl.rijksoverheid.ctr.shared.ext.launchUrl
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -21,9 +22,7 @@ import nl.rijksoverheid.ctr.design.utils.BottomSheetData
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-open class ExpandedBottomSheetDialogFragment(
-    private val expandedBottomSheetData: BottomSheetData = BottomSheetData.TitleDescription("", {})
-) : BottomSheetDialogFragment() {
+open class ExpandedBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,21 +56,33 @@ open class ExpandedBottomSheetDialogFragment(
             }
         })
 
+        val expandedBottomSheetData = arguments?.get(dataKey) as? BottomSheetData ?: return
         binding.title.text = expandedBottomSheetData.title
         binding.description.apply {
-            expandedBottomSheetData.applyOnDescription(this)
+            expandedBottomSheetData.descriptionData.run {
+                htmlText?.let {
+                    setHtmlText(it, htmlLinksEnabled) }
+                htmlTextString?.let {
+                    setHtmlText(it, htmlLinksEnabled) }
+                customLinkIntent?.let { enableCustomLinks { context.startActivity(it) } }
+            }
         }
         when (expandedBottomSheetData) {
             is BottomSheetData.TitleDescription -> {}
             is BottomSheetData.TitleDescriptionWithButton -> {
                 binding.button.visibility = View.VISIBLE
                 binding.button.apply {
-                    expandedBottomSheetData.applyOnButton(this)
+                    text = expandedBottomSheetData.buttonData.text
+                    setOnClickListener { expandedBottomSheetData.buttonData.link.launchUrl(context) }
                 }
             }
             is BottomSheetData.TitleDescriptionWithFooter -> {
                 binding.footer.text = expandedBottomSheetData.footerText
             }
         }
+    }
+
+    companion object {
+        const val dataKey = "expandedBottomSheetData"
     }
 }

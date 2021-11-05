@@ -9,6 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.setMain
+import nl.rijksoverheid.ctr.appconfig.models.ExternalReturnAppData
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.verifier.fakeTestResultValidUseCase
 import nl.rijksoverheid.ctr.verifier.fakeVerifiedQr
@@ -30,7 +31,8 @@ class ScannerViewModelImplTest {
     val rule = InstantTaskExecutorRule()
 
     private val loadingMockedObserver: Observer<Event<Boolean>> = mockk(relaxed = true)
-    private val validatedQrObserver: Observer<Event<VerifiedQrResultState>> = mockk(relaxed = true)
+    private val validatedQrObserver: Observer<Event<Pair<VerifiedQrResultState, ExternalReturnAppData?>>> =
+        mockk(relaxed = true)
 
     @Before
     fun setup() {
@@ -39,12 +41,13 @@ class ScannerViewModelImplTest {
 
     @Test
     fun `Validating test result delegates to correct livedatas`() = runBlocking {
-        val viewModel = ScannerViewModelImpl(testResultValidUseCase = fakeTestResultValidUseCase())
+        val viewModel =
+            ScannerViewModelImpl(testResultValidUseCase = fakeTestResultValidUseCase(), mockk(relaxed = true))
 
         viewModel.loadingLiveData.observeForever(loadingMockedObserver)
-        viewModel.verifiedQrResultStateLiveData.observeForever(validatedQrObserver)
+        viewModel.qrResultLiveData.observeForever(validatedQrObserver)
 
-        viewModel.validate("")
+        viewModel.validate("", null)
 
         verifyOrder {
             loadingMockedObserver.onChanged(Event(true))
@@ -54,9 +57,7 @@ class ScannerViewModelImplTest {
         verify {
             validatedQrObserver.onChanged(
                 Event(
-                    VerifiedQrResultState.Valid(
-                        verifiedQr = fakeVerifiedQr()
-                    )
+                    VerifiedQrResultState.Valid(verifiedQr = fakeVerifiedQr()) to null
                 )
             )
         }

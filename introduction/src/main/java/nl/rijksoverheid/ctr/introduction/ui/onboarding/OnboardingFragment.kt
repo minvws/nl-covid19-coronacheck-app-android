@@ -13,6 +13,7 @@ import nl.rijksoverheid.ctr.introduction.R
 import nl.rijksoverheid.ctr.introduction.databinding.FragmentOnboardingBinding
 import nl.rijksoverheid.ctr.shared.ext.getNavigationIconView
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
+import nl.rijksoverheid.ctr.shared.utils.Accessibility
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAccessibilityFocus
 
 /*
@@ -71,6 +72,10 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
                 binding.toolbar.getNavigationIconView()?.setAccessibilityFocus()
             }
         }
+
+        if (Accessibility.touchExploration(context)) {
+            binding.toolbar.setAccessibilityFocus()
+        }
     }
 
     private fun setBackPressListener(binding: FragmentOnboardingBinding) {
@@ -110,6 +115,7 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 binding.toolbar.visibility = if (position == 0) View.GONE else View.VISIBLE
+                binding.logo.isFocusable = (position == 0)
                 binding.indicators.updateSelected(position)
 
                 binding.indicators.contentDescription = getString(

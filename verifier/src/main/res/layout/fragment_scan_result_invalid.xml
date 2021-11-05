@@ -15,7 +15,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.appcompat.widget.Toolbar
+        <nl.rijksoverheid.ctr.design.views.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -30,7 +30,8 @@
             android:layout_height="0dp"
             android:clipToPadding="false"
             android:fillViewport="true"
-            app:layout_constraintBottom_toTopOf="@+id/button_next"
+            android:id="@+id/scroll"
+            app:layout_constraintBottom_toTopOf="@+id/bottom"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar">
@@ -69,34 +70,18 @@
 
         </ScrollView>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/button_explanation"
-            style="@style/Widget.App.Button.Outlined"
-            android:layout_width="wrap_content"
+        <nl.rijksoverheid.ctr.design.views.ScrollViewButtonWidget
+            android:id="@+id/bottom"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginBottom="24dp"
-            app:layout_constraintBottom_toTopOf="@id/button_next"
-            android:text="@string/scan_result_invalid_explanation_button"
-            app:layout_constrainedWidth="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/button_next"
-            style="@style/Widget.App.Button.Surface"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="16dp"
-            android:text="@string/scan_result_invalid_button"
-            app:layout_constrainedWidth="true"
+            app:attachToScrollView="@+id/scroll"
+            app:buttonText="@string/scan_result_invalid_button"
+            app:cardElevation="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/button_explanation"
-            app:layout_constraintStart_toStartOf="@id/button_explanation"
-            app:layout_constraintVertical_bias="1" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/scroll"
+            app:secondaryButtonText="@string/scan_result_invalid_explanation_button" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

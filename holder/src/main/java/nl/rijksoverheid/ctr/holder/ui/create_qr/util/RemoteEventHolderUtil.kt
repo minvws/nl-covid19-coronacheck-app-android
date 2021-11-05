@@ -54,17 +54,20 @@ class RemoteEventHolderUtilImpl(
         incomingEventHolders: List<RemoteProtocol3.Holder>
     ): Boolean {
         storedEventHolders.forEach { storedEventHolder ->
-            val storedBirthDay = birthDay(storedEventHolder.birthDate!!)
+            // if any of the stored or the new data is null
+            // then we cannot really compare, just go on and
+            // let the user store his new card
+            val storedBirthDay = birthDay(storedEventHolder.birthDate ?: return false)
             val storedBirthMonth = birthMonth(storedEventHolder.birthDate)
-            val storedFirstName = storedEventHolder.firstName!!
-            val storedLastName = storedEventHolder.lastName!!
+            val storedFirstName = storedEventHolder.firstName
+            val storedLastName = storedEventHolder.lastName
             incomingEventHolders.forEach { incomingEventHolder ->
-                val incomingBirthDay = birthDay(incomingEventHolder.birthDate!!)
+                val incomingBirthDay = birthDay(incomingEventHolder.birthDate ?: return false)
                 val incomingBirthMonth = birthMonth(incomingEventHolder.birthDate)
                 val birthDateIsNotMatching =
                     storedBirthDay != incomingBirthDay || storedBirthMonth != incomingBirthMonth
-                val incomingFirstName = incomingEventHolder.firstName!!
-                val incomingLastName = incomingEventHolder.lastName!!
+                val incomingFirstName = incomingEventHolder.firstName
+                val incomingLastName = incomingEventHolder.lastName
                 val nameIsNotMatching = nameIsNotMatching(storedFirstName, incomingFirstName) && nameIsNotMatching(storedLastName, incomingLastName)
                 return birthDateIsNotMatching || nameIsNotMatching
             }
@@ -72,7 +75,10 @@ class RemoteEventHolderUtilImpl(
         return false
     }
 
-    private fun nameIsNotMatching(stored: String, incoming: String): Boolean {
+    private fun nameIsNotMatching(stored: String?, incoming: String?): Boolean {
+        if (stored == null || incoming == null) {
+            return true
+        }
         val storedNameInitial = stored.firstOrNull { it.isLetter() } ?: return false
         val incomingNameInitial = incoming.firstOrNull { it.isLetter() } ?: return false
 

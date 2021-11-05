@@ -17,6 +17,7 @@ import retrofit2.HttpException
 import java.io.IOException
 import java.time.Clock
 import java.time.OffsetDateTime
+import kotlin.math.abs
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -28,6 +29,7 @@ import java.time.OffsetDateTime
 
 interface AppConfigUseCase {
     suspend fun get(): ConfigResult
+    fun canRefresh(cachedAppConfigUseCase: CachedAppConfigUseCase): Boolean
 }
 
 class AppConfigUseCaseImpl(
@@ -63,5 +65,18 @@ class AppConfigUseCaseImpl(
         } catch (e: HttpException) {
             ConfigResult.Error
         }
+    }
+
+    /**
+     * never refresh more than once per configMinimumInterval (1 hour on prod)
+     * in order not to track users by network requests
+     */
+    override fun canRefresh(cachedAppConfigUseCase: CachedAppConfigUseCase): Boolean {
+        val lastTimeRefreshed = appConfigPersistenceManager.getAppConfigLastFetchedSeconds()
+        val minimumRefreshInterval = cachedAppConfigUseCase.getCachedAppConfig().configMinimumIntervalSeconds
+        val nowSeconds = OffsetDateTime.now(clock).toEpochSecond()
+
+        // Check absolute value to handle clock deviations
+        return abs(nowSeconds - lastTimeRefreshed) > minimumRefreshInterval
     }
 }

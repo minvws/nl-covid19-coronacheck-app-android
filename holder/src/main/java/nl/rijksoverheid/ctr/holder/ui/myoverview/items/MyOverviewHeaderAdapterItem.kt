@@ -1,12 +1,11 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview.items
 
-import android.content.Intent
-import android.net.Uri
 import android.view.View
 import androidx.annotation.StringRes
 import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.ItemMyOverviewHeaderBinding
+import nl.rijksoverheid.ctr.holder.launchUrl
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -26,12 +25,7 @@ class MyOverviewHeaderAdapterItem(@StringRes private val text: Int, private val 
                 visibility = View.VISIBLE
                 setText(buttonInfo.text)
                 setOnClickListener {
-                    context.startActivity(
-                        Intent(
-                            Intent.ACTION_VIEW,
-                            Uri.parse(viewBinding.root.context.getString(buttonInfo.link))
-                        )
-                    )
+                    context.launchUrl(context.getString(buttonInfo.link))
                 }
             } else {
                 visibility = View.GONE

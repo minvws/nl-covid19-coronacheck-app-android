@@ -4,9 +4,12 @@ import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.holder.HolderStep
+import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.RemoteEventUtil
+import nl.rijksoverheid.ctr.shared.exceptions.NoProvidersException
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert.assertEquals
@@ -15,20 +18,31 @@ import org.junit.Test
 import retrofit2.HttpException
 import retrofit2.Response
 
+/*
+ *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+ *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+ *
+ *   SPDX-License-Identifier: EUPL-1.2
+ *
+ */
 class GetEventsUseCaseImplTest {
     private val configProvidersUseCase: ConfigProvidersUseCase =  mockk()
     private val coronaCheckRepository: CoronaCheckRepository =  mockk()
     private val getEventProvidersWithTokensUseCase: GetEventProvidersWithTokensUseCase =  mockk()
     private val getRemoteEventsUseCase: GetRemoteEventsUseCase =  mockk()
+    private val remoteEventUtil: RemoteEventUtil = mockk()
+    private val cachedAppConfigUseCase: CachedAppConfigUseCase = mockk()
 
     private val eventsError = mockk<NetworkRequestResult.Failed.Error>()
     private val jwt = "jwt"
     private val originType = OriginType.Test
-    private val targetProviderIds = listOf(RemoteConfigProviders.EventProvider.PROVIDER_IDENTIFIER_GGD)
+
+    private val remoteEventProviders = listOf(eventProvider1, eventProvider2)
+    val eventProviders = remoteEventProviders.map { EventProvider(it.providerIdentifier, it.name) }
 
     private suspend fun getEvents(): EventsResult {
-        val getEventsUseCase = GetEventsUseCaseImpl(configProvidersUseCase, coronaCheckRepository, getEventProvidersWithTokensUseCase, getRemoteEventsUseCase)
-        return getEventsUseCase.getEvents(jwt, originType, targetProviderIds)
+        val getEventsUseCase = GetEventsUseCaseImpl(configProvidersUseCase, coronaCheckRepository, getEventProvidersWithTokensUseCase, getRemoteEventsUseCase, remoteEventUtil, cachedAppConfigUseCase)
+        return getEventsUseCase.getEvents(jwt, originType)
     }
     
     @Test
@@ -44,7 +58,7 @@ class GetEventsUseCaseImplTest {
 
     @Test
     fun `given access tokens call returns error then getEvents returns EventsResultError`() = runBlocking {
-        coEvery { configProvidersUseCase.eventProviders() } returns EventProvidersResult.Success(mockk())
+        coEvery { configProvidersUseCase.eventProviders() } returns EventProvidersResult.Success(remoteEventProviders)
         coEvery { coronaCheckRepository.accessTokens("jwt") } returns mockk<NetworkRequestResult.Failed.Error>()
 
         val eventsResult = getEvents()
@@ -54,7 +68,7 @@ class GetEventsUseCaseImplTest {
 
     @Test
     fun `given unomi call returns error then getEvents returns EventsResultError`() = runBlocking {
-        coEvery { configProvidersUseCase.eventProviders() } returns EventProvidersResult.Success(mockk())
+        coEvery { configProvidersUseCase.eventProviders() } returns EventProvidersResult.Success(remoteEventProviders)
         val remoteAccessTokens = RemoteAccessTokens(listOf())
         val tokensResult = NetworkRequestResult.Success(remoteAccessTokens)
         coEvery { coronaCheckRepository.accessTokens("jwt") } returns tokensResult
@@ -72,7 +86,7 @@ class GetEventsUseCaseImplTest {
 
     @Test
     fun `given unomi call returns no events then getEvents returns EventsResultHasNoEvents`() = runBlocking {
-        coEvery { configProvidersUseCase.eventProviders() } returns EventProvidersResult.Success(mockk())
+        coEvery { configProvidersUseCase.eventProviders() } returns EventProvidersResult.Success(remoteEventProviders)
         val remoteAccessTokens = RemoteAccessTokens(listOf())
         val tokensResult = NetworkRequestResult.Success(remoteAccessTokens)
         coEvery { coronaCheckRepository.accessTokens("jwt") } returns tokensResult
@@ -99,12 +113,12 @@ class GetEventsUseCaseImplTest {
         coEvery { getRemoteEventsUseCase.getRemoteEvents(provider2, any(), any()) } returns RemoteEventsResult.Success(signedModel2)
 
         coEvery { configProvidersUseCase.eventProviders() } returns EventProvidersResult.Success(
-            emptyList())
+            listOf(provider1, provider2))
 
         val eventsResult = getEvents()
 
         assertEquals(
-            EventsResult.Success(listOf(signedModel1, signedModel2), false, emptyList()),
+            EventsResult.Success(listOf(signedModel1, signedModel2), false, eventProviders),
             eventsResult
         )
     }
@@ -120,12 +134,12 @@ class GetEventsUseCaseImplTest {
         coEvery { getRemoteEventsUseCase.getRemoteEvents(provider2, any(), any()) } returns RemoteEventsResult.Error(httpError)
 
         coEvery { configProvidersUseCase.eventProviders() } returns EventProvidersResult.Success(
-            emptyList())
+            listOf(eventProvider1, eventProvider2))
 
         val eventsResult = getEvents()
 
         assertEquals(
-            EventsResult.Success(listOf(signedModel1), true, emptyList()),
+            EventsResult.Success(listOf(signedModel1), true, eventProviders),
             eventsResult
         )
     }
@@ -164,6 +178,20 @@ class GetEventsUseCaseImplTest {
             eventsResult
         )
     }
+
+    @Test
+    fun `given configProviders with no matching provider identifiers, when getEvents, then returns no provider error`() = runBlocking {
+        val eventProvider = eventProvider1.copy(usage = listOf(""))
+        coEvery { configProvidersUseCase.eventProviders() } returns EventProvidersResult.Success(listOf(eventProvider))
+        val remoteAccessTokens = RemoteAccessTokens(listOf())
+        val tokensResult = NetworkRequestResult.Success(remoteAccessTokens)
+        coEvery { coronaCheckRepository.accessTokens("jwt") } returns tokensResult
+
+        val eventsResult = getEvents()
+
+        val exception = (eventsResult as EventsResult.Error).errorResults.first().getException()
+        assertTrue(exception is NoProvidersException.Test)
+    }
     
     private fun httpError(): NetworkRequestResult.Failed {
         val httpException = HttpException(
@@ -177,7 +205,7 @@ class GetEventsUseCaseImplTest {
     }
 
     private suspend fun mockProvidersResult(): Pair<RemoteConfigProviders.EventProvider, RemoteConfigProviders.EventProvider> {
-        coEvery { configProvidersUseCase.eventProviders() } returns EventProvidersResult.Success(mockk())
+        coEvery { configProvidersUseCase.eventProviders() } returns EventProvidersResult.Success(remoteEventProviders)
         val token1 = mockk<RemoteAccessTokens.Token>()
         val token2 = mockk<RemoteAccessTokens.Token>()
         val remoteAccessTokens: RemoteAccessTokens = mockk<RemoteAccessTokens>().apply {
@@ -185,11 +213,9 @@ class GetEventsUseCaseImplTest {
         }
         val tokensResult = NetworkRequestResult.Success(remoteAccessTokens)
         coEvery { coronaCheckRepository.accessTokens("jwt") } returns tokensResult
-        val provider1 = mockk<RemoteConfigProviders.EventProvider>()
-        val provider2 = mockk<RemoteConfigProviders.EventProvider>()
 
-        coEvery { getEventProvidersWithTokensUseCase.get(any(), any(), any(), any()) } returns listOf(EventProviderWithTokenResult.Success(provider1, token1), EventProviderWithTokenResult.Success(provider2, token2))
+        coEvery { getEventProvidersWithTokensUseCase.get(any(), any(), any(), any()) } returns listOf(EventProviderWithTokenResult.Success(eventProvider1, token1), EventProviderWithTokenResult.Success(eventProvider2, token2))
 
-        return Pair(provider1, provider2)
+        return Pair(eventProvider1, eventProvider2)
     }
 }

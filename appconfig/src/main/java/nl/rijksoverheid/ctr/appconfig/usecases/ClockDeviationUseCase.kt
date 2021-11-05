@@ -11,7 +11,6 @@ package nl.rijksoverheid.ctr.appconfig.usecases
 import android.os.SystemClock
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import java.time.Clock
 import kotlin.math.abs
@@ -53,10 +52,8 @@ class ClockDeviationUseCaseImpl(
         val responseTimeDelta = localResponseReceivedTimeStamp - localServerResponseTimeStamp
         val systemUptimeDelta = currentSystemStartDatetime - responseSystemStartDatetime
         val thresholdInSeconds =
-            (cachedAppConfigUseCase.getCachedAppConfig() as HolderConfig).holderClockDeviationThresholdSeconds
+            cachedAppConfigUseCase.getCachedAppConfig().clockDeviationThresholdSeconds
 
-        val hasDeviation =
-            (abs(systemUptimeDelta + responseTimeDelta) / SECOND_IN_MS) >= thresholdInSeconds
-        return hasDeviation
+        return (abs(systemUptimeDelta + responseTimeDelta) / SECOND_IN_MS) >= thresholdInSeconds
     }
 }

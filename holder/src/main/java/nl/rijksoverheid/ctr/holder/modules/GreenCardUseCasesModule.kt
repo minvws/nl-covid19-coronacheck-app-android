@@ -1,6 +1,8 @@
 package nl.rijksoverheid.ctr.holder.modules
 
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.*
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.CheckNewRecoveryValidityUseCase
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.CheckNewRecoveryValidityUseCaseImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetDashboardItemsUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetDashboardItemsUseCaseImpl
 import org.koin.dsl.module
@@ -13,6 +15,9 @@ import org.koin.dsl.module
  *
  */
 val greenCardUseCasesModule = module {
+    factory<CheckNewRecoveryValidityUseCase> {
+        CheckNewRecoveryValidityUseCaseImpl(get(), get(), get(), get(), get(), get())
+    }
     factory<GetRemoteGreenCardsUseCase> {
         GetRemoteGreenCardsUseCaseImpl(get(), get(), get())
     }

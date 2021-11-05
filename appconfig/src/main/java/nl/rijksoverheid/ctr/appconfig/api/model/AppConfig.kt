@@ -23,9 +23,13 @@ abstract class AppConfig(
     val informationURL: String,
     val minimumVersion: Int,
     val configTtlSeconds: Int,
+    val configMinimumIntervalSeconds: Int,
     val providers: List<Code>,
     val recommendedVersion: Int,
-    val recommendedUpgradeIntervalHours: Int
+    val recommendedUpgradeIntervalHours: Int,
+    val deeplinkDomains: List<Url>,
+    val clockDeviationThresholdSeconds: Int,
+    val configAlmostOutOfDateWarningSeconds : Int,
 ) : JSON() {
 
     @JsonClass(generateAdapter = true)
@@ -38,8 +42,8 @@ abstract class AppConfig(
     )
 
     @JsonClass(generateAdapter = true)
-    data class Code(val code: String, val name: String): JSON()
+    data class Code(val code: String, val name: String) : JSON()
 
     @JsonClass(generateAdapter = true)
-    data class Url(val url: String, val name: String): JSON()
+    data class Url(val url: String, val name: String) : JSON()
 }

@@ -8,7 +8,7 @@
     android:fitsSystemWindows="true"
     tools:background="@color/secondary_green">
 
-    <androidx.appcompat.widget.Toolbar
+    <nl.rijksoverheid.ctr.design.views.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -54,16 +54,5 @@
         app:layout_constraintEnd_toEndOf="@+id/image"
         app:layout_constraintStart_toStartOf="@+id/image"
         app:layout_constraintTop_toBottomOf="@+id/image" />
-
-    <include
-        android:id="@+id/personal_details"
-        layout="@layout/view_scan_result_valid_personal_details"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

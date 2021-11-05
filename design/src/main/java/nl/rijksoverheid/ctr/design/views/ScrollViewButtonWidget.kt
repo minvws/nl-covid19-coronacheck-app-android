@@ -3,10 +3,15 @@ package nl.rijksoverheid.ctr.design.views
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
+import android.widget.Button
 import android.widget.ScrollView
+import androidx.annotation.DrawableRes
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
+import com.google.android.material.button.MaterialButton
 import nl.rijksoverheid.ctr.design.R
 import nl.rijksoverheid.ctr.design.databinding.WidgetScrollViewButtonBinding
 
@@ -24,12 +29,15 @@ class ScrollViewButtonWidget @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : CardView(context, attrs, defStyleAttr) {
 
+    private val binding: WidgetScrollViewButtonBinding
+
     private var attachToScrollViewId: Int? = null
     private var scrollViewGlobalLayoutListener: ViewTreeObserver.OnGlobalLayoutListener? = null
 
     init {
         elevation = 0f
         WidgetScrollViewButtonBinding.inflate(LayoutInflater.from(context), this)
+        binding = WidgetScrollViewButtonBinding.bind(this)
 
         context.theme.obtainStyledAttributes(
             attrs,
@@ -37,9 +45,12 @@ class ScrollViewButtonWidget @JvmOverloads constructor(
             0, 0
         ).apply {
             try {
-                val buttonText = getText(R.styleable.ScrollViewButtonWidget_buttonText)
-                buttonText?.let {
-                    setButtonText(buttonText.toString())
+                getText(R.styleable.ScrollViewButtonWidget_buttonText)?.let {
+                    setButtonText(it.toString())
+                }
+
+                getText(R.styleable.ScrollViewButtonWidget_secondaryButtonText)?.let {
+                    setSecondaryButtonText(it.toString())
                 }
 
                 setButtonEnabled(
@@ -54,6 +65,22 @@ class ScrollViewButtonWidget @JvmOverloads constructor(
             } finally {
                 recycle()
             }
+        }
+    }
+
+    fun setIcon(@DrawableRes drawable: Int) {
+        binding.button.run {
+            setCompoundDrawablesWithIntrinsicBounds(
+                null, null, ContextCompat.getDrawable(context, drawable), null
+            )
+            compoundDrawablePadding =
+                resources.getDimensionPixelSize(R.dimen.deeplink_exit_icon_padding)
+            setPadding(
+                paddingLeft,
+                resources.getDimensionPixelSize(R.dimen.deeplink_button_padding_vertical),
+                resources.getDimensionPixelSize(R.dimen.deeplink_button_padding_end),
+                resources.getDimensionPixelSize(R.dimen.deeplink_button_padding_vertical),
+            )
         }
     }
 
@@ -86,20 +113,36 @@ class ScrollViewButtonWidget @JvmOverloads constructor(
     }
 
     fun setButtonText(text: String) {
-        val binding = WidgetScrollViewButtonBinding.bind(this)
         binding.button.text = text
     }
 
+    private fun setSecondaryButtonText(text: String) {
+        binding.secondaryButton.text = text
+        binding.secondaryButton.visibility = View.VISIBLE
+    }
+
     fun setButtonClick(onClick: () -> Unit) {
-        val binding = WidgetScrollViewButtonBinding.bind(this)
         binding.button.setOnClickListener {
             onClick.invoke()
         }
     }
 
+    fun setSecondaryButtonClick(onClick: () -> Unit) {
+        binding.secondaryButton.setOnClickListener {
+            onClick.invoke()
+        }
+    }
+
     fun setButtonEnabled(isEnabled: Boolean) {
-        val binding = WidgetScrollViewButtonBinding.bind(this)
         binding.button.isEnabled = isEnabled
+    }
+
+    fun customiseButton(block: (Button) -> Unit) {
+        binding.button.run(block)
+    }
+
+    fun customiseSecondaryButton(block: (MaterialButton) -> Unit) {
+        binding.secondaryButton.run(block)
     }
 
 }

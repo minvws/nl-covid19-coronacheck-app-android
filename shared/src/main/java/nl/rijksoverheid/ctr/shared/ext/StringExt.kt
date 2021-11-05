@@ -22,14 +22,18 @@ inline fun <reified O> String.toObject(moshi: Moshi): O {
         ?: throw Exception("Failed to create object from json string")
 }
 
-fun String.launchUrl(context: Context) {
+fun String.launchUrl(context: Context, noBrowserBlock: () -> Unit = {}) {
     try {
         CustomTabsIntent.Builder().build().also {
             it.launchUrl(context, Uri.parse(this))
         }
     } catch (exception: ActivityNotFoundException) {
         // if chrome app is disabled or not there, try an alternative
-        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(this)))
+        try {
+            context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(this)))
+        } catch (exception: ActivityNotFoundException) {
+            noBrowserBlock()
+        }
     }
 }
 

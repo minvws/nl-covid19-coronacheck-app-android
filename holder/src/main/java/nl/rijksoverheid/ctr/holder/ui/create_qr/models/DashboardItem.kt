@@ -13,8 +13,20 @@ sealed class DashboardItem {
     data class HeaderItem(@StringRes val text: Int) : DashboardItem()
     data class PlaceholderCardItem(val greenCardType: GreenCardType) : DashboardItem()
     object ClockDeviationItem : DashboardItem()
-    object SyncGreenCardsItem : DashboardItem()
-    object GreenCardsSyncedItem: DashboardItem()
+    sealed class InfoItem : DashboardItem() {
+        sealed class NonDismissible : InfoItem() {
+            object RefreshEuVaccinations : NonDismissible()
+            object ExtendDomesticRecovery : NonDismissible()
+            object RecoverDomesticRecovery : NonDismissible()
+            data class ConfigFreshnessWarning(val maxValidityDate: Long) : NonDismissible()
+        }
+
+        sealed class Dismissible : InfoItem() {
+            object RefreshedEuVaccinations : Dismissible()
+            object ExtendedDomesticRecovery : Dismissible()
+            object RecoveredDomesticRecovery : Dismissible()
+        }
+    }
 
     data class CardsItem(val cards: List<CardItem>) : DashboardItem() {
 
@@ -33,6 +45,8 @@ sealed class DashboardItem {
     }
 
     data class GreenCardExpiredItem(val greenCard: GreenCard) : DashboardItem()
-    data class OriginInfoItem(val greenCardType: GreenCardType, val originType: OriginType) : DashboardItem()
+    data class OriginInfoItem(val greenCardType: GreenCardType, val originType: OriginType) :
+        DashboardItem()
+
     data class AddQrButtonItem(val show: Boolean) : DashboardItem()
 }

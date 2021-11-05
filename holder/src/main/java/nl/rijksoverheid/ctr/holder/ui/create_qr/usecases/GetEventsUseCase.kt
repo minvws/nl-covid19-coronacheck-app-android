@@ -1,9 +1,10 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
-import nl.rijksoverheid.ctr.holder.HolderStep
+import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.RemoteEventUtil
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 
@@ -25,21 +26,21 @@ import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
  */
 interface GetEventsUseCase {
     suspend fun getEvents(jwt: String,
-                          originType: OriginType,
-                          targetProviderIds: List<String>? = null): EventsResult
+                          originType: OriginType,): EventsResult
 }
 
 class GetEventsUseCaseImpl(
     private val configProvidersUseCase: ConfigProvidersUseCase,
     private val coronaCheckRepository: CoronaCheckRepository,
     private val getEventProvidersWithTokensUseCase: GetEventProvidersWithTokensUseCase,
-    private val getRemoteEventsUseCase: GetRemoteEventsUseCase
+    private val getRemoteEventsUseCase: GetRemoteEventsUseCase,
+    private val remoteEventUtil: RemoteEventUtil,
+    private val cachedAppConfigUseCase: CachedAppConfigUseCase
 ) : GetEventsUseCase {
 
     override suspend fun getEvents(
         jwt: String,
         originType: OriginType,
-        targetProviderIds: List<String>?
     ): EventsResult {
         // Fetch event providers
         val eventProvidersResult = configProvidersUseCase.eventProviders()
@@ -52,12 +53,22 @@ class GetEventsUseCaseImpl(
                 }
             }
         }
+
+        val eventProviders = eventProvidersResult.eventProviders
+        val targetProviderIds = eventProviders.filter {
+            it.supports(originType)
+        }.map { it.providerIdentifier.lowercase() }
+
+        if (targetProviderIds.isEmpty()) {
+            return EventsResult.Error.noProvidersError(originType)
+        }
+
         // Fetch event providers that have events for us
         val eventProviderWithTokensResults = getEventProvidersWithTokensUseCase.get(
-            eventProviders = eventProvidersResult.eventProviders,
+            eventProviders = eventProviders,
             tokens = tokens.tokens,
             originType = originType,
-            targetProviderIds = targetProviderIds
+            targetProviderIds = targetProviderIds,
         )
 
         val eventProvidersWithTokensSuccessResults =
@@ -86,8 +97,8 @@ class GetEventsUseCaseImpl(
             if (eventSuccessResults.isNotEmpty()) {
                 // If we have success responses
                 val signedModels = eventSuccessResults.map { it.signedModel }
-                val hasEvents = signedModels.map { it.model }
-                    .any { it.events?.isNotEmpty() ?: false }
+                val allEvents = signedModels.map { it.model }.mapNotNull { it.events }.flatten()
+                val hasEvents = allEvents.isNotEmpty()
 
                 if (!hasEvents) {
                     // But we do not have any events
@@ -102,6 +113,23 @@ class GetEventsUseCaseImpl(
                         errorResults = errorResults
                     )
                 } else {
+                    val recoveryEvent = allEvents.filterIsInstance(RemoteEventRecovery::class.java).firstOrNull()
+                    val positiveTestEvent = allEvents.filterIsInstance(RemoteEventPositiveTest::class.java).firstOrNull()
+
+                    recoveryEvent?.let {
+                        // If we have a recovery event that is expired, it means we cannot create a recovery proof
+                        if (remoteEventUtil.isRecoveryEventExpired(it)) {
+                            return EventsResult.CannotCreateRecovery(cachedAppConfigUseCase.getCachedAppConfig().recoveryEventValidityDays)
+                        }
+                    }
+
+                    positiveTestEvent?.let {
+                        // If we have a positive test event that is expired, it means we cannot create a recovery proof
+                        if (remoteEventUtil.isPositiveTestEventExpired(it)) {
+                            return EventsResult.CannotCreateRecovery(cachedAppConfigUseCase.getCachedAppConfig().recoveryEventValidityDays)
+                        }
+                    }
+
                     // We do have events
                     EventsResult.Success(
                         signedModels = signedModels,
@@ -126,45 +154,3 @@ class GetEventsUseCaseImpl(
     }
 }
 
-sealed class EventsResult {
-    data class Success (
-        val signedModels: List<SignedResponseWithModel<RemoteProtocol3>>,
-        val missingEvents: Boolean,
-        val eventProviders: List<EventProvider>,
-    ) :
-        EventsResult()
-    data class HasNoEvents(val missingEvents: Boolean, val errorResults: List<ErrorResult> = emptyList()) : EventsResult()
-
-    data class Error constructor(val errorResults: List<ErrorResult>): EventsResult() {
-        constructor(errorResult: ErrorResult): this(listOf(errorResult))
-
-        fun accessTokenSessionExpiredError(): Boolean {
-            val accessTokenCallError = errorResults.find { it.getCurrentStep() == HolderStep.AccessTokensNetworkRequest }
-            accessTokenCallError?.let {
-                return hasErrorCode(it, 99708)
-            }
-            return false
-        }
-
-        fun accessTokenNoBsn(): Boolean {
-            val accessTokenCallError = errorResults.find { it.getCurrentStep() == HolderStep.AccessTokensNetworkRequest }
-            accessTokenCallError?.let {
-                return hasErrorCode(it, 99782)
-            }
-            return false
-        }
-
-        private fun hasErrorCode(errorResult: ErrorResult, expectedErrorCode: Int): Boolean {
-            return if (errorResult is NetworkRequestResult.Failed.CoronaCheckWithErrorResponseHttpError) {
-                errorResult.getCode() == expectedErrorCode
-            } else {
-                false
-            }
-        }
-
-        fun unomiOrEventErrors(): Boolean {
-            val unomiOrEventErrors = errorResults.find { it.getCurrentStep() == HolderStep.UnomiNetworkRequest || it.getCurrentStep() == HolderStep.EventNetworkRequest }
-            return unomiOrEventErrors != null
-        }
-    }
-}

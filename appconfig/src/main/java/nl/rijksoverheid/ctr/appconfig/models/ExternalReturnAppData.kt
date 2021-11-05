@@ -1,6 +1,8 @@
-package nl.rijksoverheid.ctr.holder.ui.myoverview.models
+package nl.rijksoverheid.ctr.appconfig.models
 
 import android.content.Intent
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -9,7 +11,8 @@ import android.content.Intent
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
+@Parcelize
 data class ExternalReturnAppData(
     val appName: String,
     val intent: Intent
-)
+) : Parcelable

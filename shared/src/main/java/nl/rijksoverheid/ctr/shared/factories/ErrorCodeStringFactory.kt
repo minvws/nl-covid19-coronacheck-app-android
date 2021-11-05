@@ -1,9 +1,11 @@
 package nl.rijksoverheid.ctr.shared.factories
 
+import android.content.ActivityNotFoundException
 import android.database.sqlite.SQLiteConstraintException
 import com.squareup.moshi.JsonDataException
 import com.squareup.moshi.JsonEncodingException
 import nl.rijksoverheid.ctr.shared.exceptions.CreateCommitmentMessageException
+import nl.rijksoverheid.ctr.shared.exceptions.NoProvidersException
 import nl.rijksoverheid.ctr.shared.exceptions.OpenIdAuthorizationException
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.Flow
@@ -23,20 +25,29 @@ interface ErrorCodeStringFactory {
     fun get(flow: Flow, errorResults: List<ErrorResult>): String
 }
 
-class ErrorCodeStringFactoryImpl: ErrorCodeStringFactory {
+class ErrorCodeStringFactoryImpl(private val isPlayStoreBuild: Boolean = true) : ErrorCodeStringFactory {
+
     override fun get(flow: Flow, errorResults: List<ErrorResult>): String {
         val errorStringBuilders = errorResults.map {
             val stringBuilder = StringBuilder()
-            stringBuilder.append("A")
+            stringBuilder.append(if (isPlayStoreBuild) {
+                "A"
+            } else {
+                "F"
+            })
             stringBuilder.append(" ${flow.code}")
             stringBuilder.append("${errorResults.first().getCurrentStep().code}")
 
-            if (it is NetworkRequestResult.Failed.ProviderHttpError) {
-                stringBuilder.append(" ${it.provider}")
-            } else if (it is NetworkRequestResult.Failed.ProviderError) {
-                stringBuilder.append(" ${it.provider}")
-            } else {
-                stringBuilder.append(" 000")
+            when (it) {
+                is NetworkRequestResult.Failed.ProviderHttpError -> {
+                    stringBuilder.append(" ${it.provider}")
+                }
+                is NetworkRequestResult.Failed.ProviderError -> {
+                    stringBuilder.append(" ${it.provider}")
+                }
+                else -> {
+                    stringBuilder.append(" 000")
+                }
             }
 
             val exceptionErrorCode = when (val exception = it.getException()) {
@@ -54,6 +65,8 @@ class ErrorCodeStringFactoryImpl: ErrorCodeStringFactory {
                 is SocketTimeoutException -> "004"
                 is UnknownHostException -> "002"
                 is ConnectException -> "005"
+                is NoProvidersException -> exception.errorCode
+                is ActivityNotFoundException -> "070-14"
                 else -> throw it.getException()
             }
 

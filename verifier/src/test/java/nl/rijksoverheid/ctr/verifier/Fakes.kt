@@ -11,8 +11,8 @@ import nl.rijksoverheid.ctr.introduction.IntroductionData
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
-import nl.rijksoverheid.ctr.shared.VerificationResult
-import nl.rijksoverheid.ctr.shared.VerificationResultDetails
+import nl.rijksoverheid.ctr.shared.models.VerificationResult
+import nl.rijksoverheid.ctr.shared.models.VerificationResultDetails
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.DomesticCredential
 import nl.rijksoverheid.ctr.shared.models.ReadDomesticCredential
@@ -38,8 +38,8 @@ import java.time.OffsetDateTime
 
 fun fakeAppConfigViewModel(appStatus: AppStatus = AppStatus.NoActionRequired) =
     object : AppConfigViewModel() {
-        override fun refresh(mobileCoreWrapper: MobileCoreWrapper) {
-            appStatusLiveData.value = Event(appStatus)
+        override fun refresh(mobileCoreWrapper: MobileCoreWrapper, force: Boolean) {
+            appStatusLiveData.value = appStatus
         }
     }
 
@@ -83,8 +83,9 @@ fun fakeScanQrViewModel(
 fun fakeScannerViewModel(
     verifiedQrResultState: VerifiedQrResultState
 ) = object : ScannerViewModel() {
-    override fun validate(qrContent: String) {
-        verifiedQrResultStateLiveData.value = Event(verifiedQrResultState)
+
+    override fun validate(qrContent: String, returnUri: String?) {
+        qrResultLiveData.value = Event(verifiedQrResultState to null)
     }
 }
 
@@ -112,7 +113,7 @@ fun fakeVerifiedQr(
         isNLDCC -> Mobilecore.VERIFICATION_FAILED_IS_NL_DCC
         else -> Mobilecore.VERIFICATION_SUCCESS
     },
-    details = VerificationResultDetails(birthDay, birthMonth, firstNameInitial, lastNameInitial, isSpecimen, "2"),
+    details = VerificationResultDetails(birthDay, birthMonth, firstNameInitial, lastNameInitial, isSpecimen, "2", ""),
     error = if (error) {
         "error"
     } else {
@@ -152,6 +153,10 @@ fun fakeCachedAppConfigUseCase(
 
     override fun getCachedAppConfig(): AppConfig {
         return appConfig
+    }
+
+    override fun getCachedAppConfigHash(): String {
+        return ""
     }
 }
 

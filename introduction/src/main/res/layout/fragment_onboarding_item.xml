@@ -27,7 +27,7 @@
             app:lottie_loop="true"
             tools:layout_height="200dp" />
 
-        <TextView
+        <nl.rijksoverheid.ctr.design.views.AccessibilityHeaderWidget
             android:id="@+id/step"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

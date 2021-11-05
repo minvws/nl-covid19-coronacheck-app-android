@@ -18,18 +18,26 @@ class VerifierConfig(
     @Json(name = "playStoreURL") val playStoreURL: String,
     @Json(name = "appDeactivated") val verifierAppDeactivated: Boolean,
     @Json(name = "configTTL") val configTTL: Int,
+    @Json(name = "configMinimumIntervalSeconds") val configMinimumInterval: Int,
     @Json(name = "maxValidityHours") val maxValidityHours: Int,
     @Json(name = "informationURL") val verifierInformationURL: String,
     @Json(name = "androidRecommendedVersion") val verifierRecommendedVersion: Int,
     @Json(name = "upgradeRecommendationInterval") val upgradeRecommendationIntervalHours: Int,
+    @Json(name = "universalLinkDomains") val verifierDeeplinkDomains: List<Url>,
+    @Json(name = "clockDeviationThresholdSeconds") val verifierClockDeviationThresholdSeconds: Int,
+    @Json(name = "configAlmostOutOfDateWarningSeconds") val verifierConfigAlmostOutOfDateWarningSeconds : Int
 ) : AppConfig(
     verifierAppDeactivated,
     verifierInformationURL,
     verifierMinimumVersion,
     configTTL,
+    configMinimumInterval,
     emptyList(),
     verifierRecommendedVersion,
-    upgradeRecommendationIntervalHours
+    upgradeRecommendationIntervalHours,
+    verifierDeeplinkDomains,
+    verifierClockDeviationThresholdSeconds,
+    verifierConfigAlmostOutOfDateWarningSeconds
 ) {
     companion object {
         fun default(
@@ -38,20 +46,28 @@ class VerifierConfig(
             playStoreURL: String = "https://play.google.com/store/apps/details?id=nl.rijksoverheid.ctr.verifier",
             verifierAppDeactivated: Boolean = false,
             configTTL: Int = 3600,
+            configMinimumInterval: Int = 3600,
             maxValidityHours: Int = 40,
             verifierInformationURL: String = "https://coronacheck.nl",
             verifierRecommendedVersion: Int = 1275,
-            upgradeRecommendationIntervalHours: Int = 24
+            upgradeRecommendationIntervalHours: Int = 24,
+            returnApps: List<Url> = listOf(),
+            verifierClockDeviationThresholdSeconds: Int = 30,
+            verifierConfigAlmostOutOfDateWarningSeconds: Int = 300
         ) = VerifierConfig(
             verifierMinimumVersion = verifierMinimumVersion,
             verifierMinimumVersionMessage = verifierMinimumVersionMessage,
             playStoreURL = playStoreURL,
             verifierAppDeactivated = verifierAppDeactivated,
             configTTL = configTTL,
+            configMinimumInterval = configMinimumInterval,
             maxValidityHours = maxValidityHours,
             verifierInformationURL = verifierInformationURL,
             verifierRecommendedVersion = verifierRecommendedVersion,
-            upgradeRecommendationIntervalHours = upgradeRecommendationIntervalHours
+            upgradeRecommendationIntervalHours = upgradeRecommendationIntervalHours,
+            verifierDeeplinkDomains = returnApps,
+            verifierClockDeviationThresholdSeconds = verifierClockDeviationThresholdSeconds,
+            verifierConfigAlmostOutOfDateWarningSeconds = verifierConfigAlmostOutOfDateWarningSeconds
         )
     }
 }

@@ -7,6 +7,11 @@
             android:id="@+id/nav_scan_qr"
             android:checkable="false"
             android:title="@string/scan_qr_title" />
+
+        <item
+            android:id="@+id/nav_scan_instructions"
+            android:checkable="false"
+            android:title="@string/scan_instructions_menu_title" />
     </group>
     <group
         android:id="@+id/info"

@@ -1,10 +1,9 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
-import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItems
@@ -12,6 +11,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
 
 interface GetDashboardItemsUseCase {
     suspend fun getItems(
+        allEventGroupEntities: List<EventGroupEntity>,
         allGreenCards: List<GreenCard>,
         databaseSyncerResult: DatabaseSyncerResult = DatabaseSyncerResult.Success(),
         isLoadingNewCredentials: Boolean,
@@ -26,6 +26,7 @@ class GetDashboardItemsUseCaseImpl(
     private val persistenceManager: PersistenceManager
 ) : GetDashboardItemsUseCase {
     override suspend fun getItems(
+        allEventGroupEntities: List<EventGroupEntity>,
         allGreenCards: List<GreenCard>,
         databaseSyncerResult: DatabaseSyncerResult,
         isLoadingNewCredentials: Boolean
@@ -39,7 +40,8 @@ class GetDashboardItemsUseCaseImpl(
             internationalItems = getInternationalItems(
                 allGreenCards = allGreenCards,
                 databaseSyncerResult = databaseSyncerResult,
-                isLoadingNewCredentials = isLoadingNewCredentials
+                isLoadingNewCredentials = isLoadingNewCredentials,
+                allEventGroupEntities = allEventGroupEntities
             )
         )
     }
@@ -50,22 +52,50 @@ class GetDashboardItemsUseCaseImpl(
         isLoadingNewCredentials: Boolean,
     ): List<DashboardItem> {
         val dashboardItems = mutableListOf<DashboardItem>()
-        val domesticGreenCards = allGreenCards.filter { it.greenCardEntity.type == GreenCardType.Domestic }
+        val domesticGreenCards =
+            allGreenCards.filter { it.greenCardEntity.type == GreenCardType.Domestic }
 
         // Apply distinctBy here so that for two european green cards we do not get a two banners
         // saying "the certificate isn't valid in NL"
         val internationalGreenCards = allGreenCards
-                .filter { it.greenCardEntity.type == GreenCardType.Eu }
-                .distinctBy { it.greenCardEntity.type }
+            .filter { it.greenCardEntity.type == GreenCardType.Eu }
+            .distinctBy { it.greenCardEntity.type }
 
-        if (dashboardItemUtil.shouldShowHeaderItem(allGreenCards)) {
-            dashboardItems.add(
-                DashboardItem.HeaderItem(text = R.string.my_overview_description)
-            )
-        }
+        val headerText = dashboardItemUtil.getHeaderItemText(
+            greenCardType = GreenCardType.Domestic,
+            allGreenCards = allGreenCards
+        )
+
+        dashboardItems.add(
+            DashboardItem.HeaderItem(text = headerText)
+        )
 
         if (dashboardItemUtil.shouldShowClockDeviationItem(allGreenCards)) {
             dashboardItems.add(DashboardItem.ClockDeviationItem)
+        }
+
+        if (dashboardItemUtil.shouldShowExtendDomesticRecoveryItem()) {
+            dashboardItems.add(DashboardItem.InfoItem.NonDismissible.ExtendDomesticRecovery)
+        }
+
+        if (dashboardItemUtil.shouldShowRecoverDomesticRecoveryItem()) {
+            dashboardItems.add(DashboardItem.InfoItem.NonDismissible.RecoverDomesticRecovery)
+        }
+
+        if (dashboardItemUtil.shouldShowRecoveredDomesticRecoveryItem()) {
+            dashboardItems.add(DashboardItem.InfoItem.Dismissible.RecoveredDomesticRecovery)
+        }
+
+        if (dashboardItemUtil.shouldShowExtendedDomesticRecoveryItem()) {
+            dashboardItems.add(DashboardItem.InfoItem.Dismissible.ExtendedDomesticRecovery)
+        }
+
+        if (dashboardItemUtil.shouldShowConfigFreshnessWarning()) {
+            dashboardItems.add(
+                DashboardItem.InfoItem.NonDismissible.ConfigFreshnessWarning(
+                    maxValidityDate = dashboardItemUtil.getConfigFreshnessMaxValidity()
+                )
+            )
         }
 
         dashboardItems.addAll(
@@ -92,7 +122,8 @@ class GetDashboardItemsUseCaseImpl(
         return dashboardItems
     }
 
-    private fun getInternationalItems(
+    private suspend fun getInternationalItems(
+        allEventGroupEntities: List<EventGroupEntity>,
         allGreenCards: List<GreenCard>,
         databaseSyncerResult: DatabaseSyncerResult,
         isLoadingNewCredentials: Boolean,
@@ -103,25 +134,35 @@ class GetDashboardItemsUseCaseImpl(
         val internationalGreenCards =
             allGreenCards.filter { it.greenCardEntity.type == GreenCardType.Eu }
 
-        if (dashboardItemUtil.shouldShowHeaderItem(allGreenCards)) {
-            dashboardItems.add(
-                DashboardItem.HeaderItem(text = R.string.my_overview_description_eu)
-            )
-        }
+        val headerText = dashboardItemUtil.getHeaderItemText(
+            greenCardType = GreenCardType.Eu,
+            allGreenCards = allGreenCards
+        )
+
+        dashboardItems.add(
+            DashboardItem.HeaderItem(text = headerText)
+        )
 
         if (dashboardItemUtil.shouldShowClockDeviationItem(allGreenCards)) {
             dashboardItems.add(DashboardItem.ClockDeviationItem)
         }
 
-        if (dashboardItemUtil.shouldAddSyncGreenCardsItem(allGreenCards)) {
+        if (dashboardItemUtil.shouldAddSyncGreenCardsItem(allEventGroupEntities, allGreenCards)) {
             // Enable the ability to show GreenCardsSyncedItem (after successful sync)
             persistenceManager.setHasDismissedSyncedGreenCardsItem(false)
-
-            dashboardItems.add(DashboardItem.SyncGreenCardsItem)
+            dashboardItems.add(DashboardItem.InfoItem.NonDismissible.RefreshEuVaccinations)
         }
 
         if (dashboardItemUtil.shouldAddGreenCardsSyncedItem(allGreenCards)) {
-            dashboardItems.add(DashboardItem.GreenCardsSyncedItem)
+            dashboardItems.add(DashboardItem.InfoItem.Dismissible.RefreshedEuVaccinations)
+        }
+
+        if (dashboardItemUtil.shouldShowConfigFreshnessWarning()) {
+            dashboardItems.add(
+                DashboardItem.InfoItem.NonDismissible.ConfigFreshnessWarning(
+                    maxValidityDate = dashboardItemUtil.getConfigFreshnessMaxValidity()
+                )
+            )
         }
 
         dashboardItems.addAll(

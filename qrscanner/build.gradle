@@ -38,6 +38,16 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    flavorDimensions "environment"
+    productFlavors {
+        mlkit {
+            dimension "environment"
+        }
+        zxing {
+            dimension "environment"
+        }
+    }
 }
 
 dependencies {
@@ -45,7 +55,6 @@ dependencies {
     api project(":qrscanner:zebrasupport")
 
     implementation "androidx.appcompat:appcompat:${appcompat_version}"
-    implementation "com.google.mlkit:barcode-scanning:${mlkit_barcode_version}"
     implementation "androidx.core:core-ktx:${androidx_version}"
     implementation "androidx.appcompat:appcompat:${appcompat_version}"
     implementation "androidx.constraintlayout:constraintlayout:${constraintlayout_version}"
@@ -59,4 +68,7 @@ dependencies {
     implementation "androidx.camera:camera-camera2:${camerax_version}"
     implementation "androidx.camera:camera-lifecycle:${camerax_version}"
     implementation "androidx.camera:camera-view:${camerax_view_version}"
+
+    mlkitImplementation "com.google.mlkit:barcode-scanning:${mlkit_barcode_version}"
+    zxingImplementation "com.google.zxing:core:$zxing_core_version"
 }

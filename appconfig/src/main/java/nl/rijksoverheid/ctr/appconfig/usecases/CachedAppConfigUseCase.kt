@@ -7,6 +7,7 @@ import nl.rijksoverheid.ctr.appconfig.api.model.VerifierConfig
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
 import nl.rijksoverheid.ctr.shared.ext.toObject
 import java.io.File
+import java.security.MessageDigest
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -19,6 +20,7 @@ import java.io.File
 interface CachedAppConfigUseCase {
     fun isCachedAppConfigValid(): Boolean
     fun getCachedAppConfig(): AppConfig
+    fun getCachedAppConfigHash() : String
 }
 
 class CachedAppConfigUseCaseImpl constructor(
@@ -60,5 +62,18 @@ class CachedAppConfigUseCaseImpl constructor(
         } catch (exc: Exception) {
             defaultConfig
         }
+    }
+
+    override fun getCachedAppConfigHash(): String {
+        val json = try {
+            appConfigStorageManager.getFileAsBufferedSource(configFile)?.readUtf8()?.replace("\\/", "/") ?: return ""
+        } catch (exc: Exception) {
+            return ""
+        }
+        val bytes = json.toByteArray()
+        val md = MessageDigest.getInstance("SHA-256")
+        val digest = md.digest(bytes)
+        // Return first 7 characters of hash
+        return digest.fold("", { str, it -> str + "%02x".format(it) }).subSequence(0,7).toString()
     }
 }

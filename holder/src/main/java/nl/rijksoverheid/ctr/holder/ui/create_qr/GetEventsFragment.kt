@@ -9,19 +9,15 @@ import nl.rijksoverheid.ctr.holder.HolderFlow
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentGetEventsBinding
+import nl.rijksoverheid.ctr.holder.launchUrl
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigiDFragment
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigidResult
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.EventProvider
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.EventsResult
-import nl.rijksoverheid.ctr.shared.ext.launchUrl
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.ErrorResultFragmentData
 import nl.rijksoverheid.ctr.shared.models.Flow
-import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -119,6 +115,16 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                         )
                     }
                 }
+                is EventsResult.CannotCreateRecovery -> {
+                    presentError(
+                        data = ErrorResultFragmentData(
+                            title = getString(R.string.cannot_create_recovery_proof_title),
+                            description = getString(R.string.cannot_create_recovery_proof_description, it.validityDays.toString()),
+                            buttonTitle = getString(R.string.back_to_overview),
+                            ErrorResultFragmentData.ButtonAction.Destination(R.id.action_my_overview),
+                        )
+                    )
+                }
                 is EventsResult.Error -> {
                     when {
                         it.accessTokenSessionExpiredError() -> {
@@ -186,7 +192,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
         }
 
         binding.noDigidButton.setOnClickListener {
-            getString(R.string.no_digid_url).launchUrl(requireContext())
+            context?.launchUrl(getString(R.string.no_digid_url))
         }
     }
 

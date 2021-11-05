@@ -6,6 +6,8 @@ import io.mockk.mockk
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.VerifierConfig
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.ResponseBody.Companion.toResponseBody
 import okio.BufferedSource
 import org.junit.Assert.*
 import org.junit.Test
@@ -86,5 +88,15 @@ class CachedAppConfigUseCaseImplTest {
             CachedAppConfigUseCaseImpl(appConfigStorageManager, "", moshi, false)
 
         assertEquals(cachedAppConfigUseCase.getCachedAppConfig(), HolderConfig.default())
+    }
+
+    @Test
+    fun `given a config payload, check if config hash is correct`() {
+        every { appConfigStorageManager.getFileAsBufferedSource(any()) } returns "{\"androidMinimumVersion\":1,\"androidRecommendedVersion\":2046,\"androidMinimumVersionMessage\":\"Om de app te gebruiken heb je de laatste versie uit de store nodig.\",\"playStoreURL\":\"https:\\/\\/play.google.com\\/store\\/apps\\/details?id=nl.rijksoverheid.ctr.verifier\",\"iosMinimumVersion\":\"1.0.0\",\"iosRecommendedVersion\":\"2.2.0\",\"iosMinimumVersionMessage\":\"Om de app te gebruiken heb je de laatste versie uit de store nodig.\",\"iosAppStoreURL\":\"https:\\/\\/apps.apple.com\\/nl\\/app\\/scanner-voor-coronacheck\\/id1549842661\",\"appDeactivated\":false,\"configTTL\":300,\"configMinimumIntervalSeconds\":60,\"upgradeRecommendationInterval\":24,\"maxValidityHours\":40,\"clockDeviationThresholdSeconds\":30,\"informationURL\":\"https:\\/\\/coronacheck.nl\",\"defaultEvent\":\"cce4158f-582f-49c0-9d4d-611ce3866999\",\"universalLinkDomains\":[{\"url\":\"web.acc.coronacheck.nl\",\"name\":\"CoronaCheck app\"}],\"domesticVerificationRules\":{\"qrValidForSeconds\":60,\"proofIdentifierDenylist\":{\"STFNx7A24ZI1u5WDX8X9BA==\":true}},\"europeanVerificationRules\":{\"testAllowedTypes\":[\"LP217198-3\",\"LP6464-4\"],\"testValidityHours\":25,\"vaccinationValidityDelayBasedOnVaccinationDate\":true,\"vaccinationValidityDelayIntoForceDate\":\"2021-07-06\",\"vaccinationValidityDelayDays\":14,\"vaccinationJanssenValidityDelayDays\":28,\"vaccinationJanssenValidityDelayIntoForceDate\":\"2021-07-24\",\"vaccineAllowedProducts\":[\"EU\\/1\\/20\\/1528\",\"EU\\/1\\/20\\/1507\",\"EU\\/1\\/21\\/1529\",\"EU\\/1\\/20\\/1525\",\"Covishield\",\"BBIBP-CorV\",\"CoronaVac\"],\"recoveryValidFromDays\":11,\"recoveryValidUntilDays\":180,\"proofIdentifierDenylist\":{\"7EXmXBhfyBZJgt1dki0cfQ==\":true}}}".toResponseBody("application/json".toMediaType()).source()
+
+        val cachedAppConfigUseCase =
+            CachedAppConfigUseCaseImpl(appConfigStorageManager, "", moshi, false)
+
+        assertEquals("5f253c8", cachedAppConfigUseCase.getCachedAppConfigHash())
     }
 }

@@ -24,7 +24,8 @@ import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.QrInfoScreenUtil
-import nl.rijksoverheid.ctr.holder.ui.myoverview.models.ExternalReturnAppData
+import nl.rijksoverheid.ctr.appconfig.models.ExternalReturnAppData
+import nl.rijksoverheid.ctr.design.utils.DescriptionData
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeData
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodesResult
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
@@ -46,6 +47,9 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
 
     private var _binding: FragmentQrCodesBinding? = null
     private val binding get() = _binding!!
+    private fun safeBindingBlock(block: (binding: FragmentQrCodesBinding) -> Unit) {
+        _binding?.run(block)
+    }
     private val args: QrCodesFragmentArgs by navArgs()
     private val personalDetailsUtil: PersonalDetailsUtil by inject()
     private val infoScreenUtil: QrInfoScreenUtil by inject()
@@ -64,7 +68,7 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (BuildConfig.FLAVOR == "prod") {
+        if (BuildConfig.FLAVOR.lowercase().contains("prod")) {
             requireActivity().window.setFlags(
                 WindowManager.LayoutParams.FLAG_SECURE,
                 WindowManager.LayoutParams.FLAG_SECURE
@@ -152,6 +156,7 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
         when (qrCodesResult) {
             is QrCodesResult.SingleQrCode -> {
                 qrCodePagerAdapter.addData(listOf(qrCodesResult.qrCodeData))
+                binding.vaccinationQrsContainer.visibility = View.GONE
             }
             is QrCodesResult.MultipleQrCodes -> {
                 qrCodePagerAdapter.addData(qrCodesResult.europeanVaccinationQrCodeDataList)
@@ -212,9 +217,7 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
                             bottomSheetDialogUtil.present(
                                 childFragmentManager, BottomSheetData.TitleDescriptionWithFooter(
                                     title = infoScreen.title,
-                                    applyOnDescription = {
-                                        it.setHtmlText(infoScreen.description)
-                                    },
+                                    descriptionData = DescriptionData(htmlTextString = infoScreen.description),
                                     footerText = infoScreen.footer
                                 )
                             )
@@ -255,17 +258,8 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
                     // Select current indicator
                     binding.qrVaccinationIndicators.updateSelected(position)
 
-                    Handler(Looper.getMainLooper()).post {
-                        binding.nextQrButton.visibility = if (position == europeanVaccinations.size - 1) View.INVISIBLE else View.VISIBLE
-                        binding.previousQrButton.visibility = if (position == 0) View.INVISIBLE else View.VISIBLE
-
-                        val vaccination = europeanVaccinations[position]
-                        binding.qrVaccinationDosis.text = getString(
-                            R.string.qr_code_dosis,
-                            "${vaccination.dose}/${vaccination.ofTotalDoses}"
-                        )
-
-                        showDoseInfo(vaccination)
+                    binding.root.post {
+                        onPageSelectedPostAction(position, europeanVaccinations)
                     }
 
                     // reset qr overlay state on page change
@@ -287,14 +281,27 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
         }
     }
 
+    private fun onPageSelectedPostAction(position: Int, europeanVaccinations: List<QrCodeData.European.Vaccination>) {
+        safeBindingBlock { binding ->
+            binding.nextQrButton.visibility = if (position == europeanVaccinations.size - 1) View.INVISIBLE else View.VISIBLE
+            binding.previousQrButton.visibility = if (position == 0) View.INVISIBLE else View.VISIBLE
+
+            val vaccination = europeanVaccinations[position]
+            binding.qrVaccinationDosis.text = getString(
+                R.string.qr_code_dosis,
+                "${vaccination.dose}/${vaccination.ofTotalDoses}"
+            )
+
+            showDoseInfo(vaccination)
+        }
+    }
+
     private fun showDoseInfo(vaccination: QrCodeData.European.Vaccination) {
         TransitionManager.beginDelayedTransition(binding.bottomScroll)
         when {
             vaccination.isOverVaccinated -> {
                 binding.doseInfo.text = getString(
-                    R.string.qr_code_over_vaccinated,
-                    "${vaccination.ofTotalDoses}/${vaccination.ofTotalDoses}"
-                )
+                    R.string.qr_code_over_vaccinated)
                 binding.doseInfo.visibility = View.VISIBLE
             }
             vaccination.isHidden -> {

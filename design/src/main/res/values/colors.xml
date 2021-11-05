@@ -9,6 +9,7 @@
     <color name="link">#007AFF</color>
     <color name="black">#383836</color>
     <color name="white">#FFFFFF</color>
+    <color name="white_50">#80FFFFFF</color>
     <color name="white_60">#99FFFFFF</color>
     <color name="white_80">#CCFFFFFF</color>
     <color name="message_container">#F2F7FF</color>

@@ -14,9 +14,14 @@
     <item name="launch_screen" type="drawable" />
     <item name="about_this_app_description" type="string" />
     <item name="app_version" type="string" />
+    <item name="config_version" type="string" />
     <item name="toolbar" type="id" />
     <item name="menu_close" type="string" />
     <item name="about_this_app_read_more" type="id" />
+    <item name="about_this_app_clear_data_title" type="string" />
+    <item name="about_this_app_clear_data_description" type="string" />
+    <item name="about_this_app_clear_data_cancel" type="string" />
+    <item name="about_this_app_clear_data_confirm" type="string" />
     <item name="accessibility_label_selected" type="string" />
     <item name="accessibility_label_not_selected" type="string" />
 </resources>
