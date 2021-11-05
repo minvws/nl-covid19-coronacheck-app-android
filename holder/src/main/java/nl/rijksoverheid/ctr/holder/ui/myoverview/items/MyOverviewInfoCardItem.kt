@@ -16,7 +16,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 class MyOverviewInfoCardItem(
     private val infoItem: DashboardItem.InfoItem,
     private val onButtonClick: (infoItem: DashboardItem.InfoItem) -> Unit,
-    private val onDismiss: (infoCardItem: MyOverviewInfoCardItem, infoItem: DashboardItem.InfoItem.Dismissible) -> Unit = { _, _ -> }
+    private val onDismiss: (infoCardItem: MyOverviewInfoCardItem, infoItem: DashboardItem.InfoItem) -> Unit = { _, _ -> }
 ) :
     BindableItem<ItemMyOverviewInfoCardBinding>(R.layout.item_my_overview_info_card.toLong()) {
 
@@ -27,7 +27,8 @@ class MyOverviewInfoCardItem(
                 // Non dismissible item does not have a close button
                 viewBinding.close.visibility = View.GONE
             }
-            is DashboardItem.InfoItem.Dismissible -> {
+            is DashboardItem.InfoItem.Dismissible,
+            is DashboardItem.InfoItem.GreenCardExpiredItem -> {
                 // Non dismissible item has a close button with callback
                 viewBinding.close.visibility = View.VISIBLE
                 viewBinding.close.setOnClickListener {
@@ -60,6 +61,9 @@ class MyOverviewInfoCardItem(
             }
             is DashboardItem.InfoItem.ClockDeviationItem -> {
                 viewBinding.text.setText(R.string.my_overview_clock_deviation_description)
+            }
+            is DashboardItem.InfoItem.GreenCardExpiredItem -> {
+                viewBinding.text.setText(R.string.qr_card_expired)
             }
         }
 
