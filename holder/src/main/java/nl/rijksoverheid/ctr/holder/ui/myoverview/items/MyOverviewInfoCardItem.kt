@@ -24,49 +24,48 @@ class MyOverviewInfoCardItem(
     BindableItem<ItemMyOverviewInfoCardBinding>(R.layout.item_my_overview_info_card.toLong()) {
 
     override fun bind(viewBinding: ItemMyOverviewInfoCardBinding, position: Int) {
-        when (infoItem) {
-            is DashboardItem.InfoItem.NonDismissible -> {
-                // Non dismissible item does not have a close button
-                viewBinding.close.visibility = View.GONE
+        if (infoItem.isDismissable) {
+            // dismissible item has a close button with callback
+            viewBinding.close.visibility = View.VISIBLE
+            viewBinding.close.setOnClickListener {
+                onDismiss.invoke(this, infoItem)
             }
-            is DashboardItem.InfoItem.Dismissible -> {
-                // Non dismissible item has a close button with callback
-                viewBinding.close.visibility = View.VISIBLE
-                viewBinding.close.setOnClickListener {
-                    onDismiss.invoke(this, infoItem)
-                }
-            }
+        } else {
+            // Non dismissible item does not have a close button
+            viewBinding.close.visibility = View.GONE
         }
 
+        viewBinding.button.visibility = if (infoItem.hasReadMore) View.VISIBLE else View.GONE
+
         when (infoItem) {
-            is DashboardItem.InfoItem.NonDismissible.RefreshEuVaccinations -> {
+            is DashboardItem.InfoItem.RefreshEuVaccinations -> {
                 viewBinding.text.setText(R.string.dashboard_item_refresh_eu_vaccinations_text)
             }
-            is DashboardItem.InfoItem.NonDismissible.ExtendDomesticRecovery -> {
+            is DashboardItem.InfoItem.ExtendDomesticRecovery -> {
                 viewBinding.text.setText(R.string.extend_domestic_recovery_green_card_info_card_text)
             }
-            is DashboardItem.InfoItem.NonDismissible.RecoverDomesticRecovery -> {
+            is DashboardItem.InfoItem.RecoverDomesticRecovery -> {
                 viewBinding.text.setText(R.string.recover_domestic_recovery_green_card_info_card_text)
             }
-            is DashboardItem.InfoItem.NonDismissible.ConfigFreshnessWarning -> {
+            is DashboardItem.InfoItem.ConfigFreshnessWarning -> {
                 viewBinding.text.setText(R.string.config_warning_card_message)
             }
-            is DashboardItem.InfoItem.Dismissible.ExtendedDomesticRecovery -> {
+            is DashboardItem.InfoItem.ExtendedDomesticRecovery -> {
                 viewBinding.text.setText(R.string.extended_domestic_recovery_green_card_info_card_text)
             }
-            is DashboardItem.InfoItem.Dismissible.RecoveredDomesticRecovery -> {
+            is DashboardItem.InfoItem.RecoveredDomesticRecovery -> {
                 viewBinding.text.setText(R.string.recovered_domestic_recovery_green_card_info_card_text)
             }
-            is DashboardItem.InfoItem.Dismissible.RefreshedEuVaccinations -> {
+            is DashboardItem.InfoItem.RefreshedEuVaccinations -> {
                 viewBinding.text.setText(R.string.dashboard_item_refreshed_eu_vaccinations_text)
             }
-            is DashboardItem.InfoItem.NonDismissible.ClockDeviationItem -> {
+            is DashboardItem.InfoItem.ClockDeviationItem -> {
                 viewBinding.text.setText(R.string.my_overview_clock_deviation_description)
             }
-            is DashboardItem.InfoItem.Dismissible.GreenCardExpiredItem -> {
+            is DashboardItem.InfoItem.GreenCardExpiredItem -> {
                 viewBinding.text.setText(R.string.qr_card_expired)
             }
-            is DashboardItem.InfoItem.NonDismissible.OriginInfoItem -> {
+            is DashboardItem.InfoItem.OriginInfoItem -> {
                 viewBinding.text.text =
                     getOriginInfoText(infoItem, viewBinding.dashboardItemInfoRoot.context)
             }
@@ -78,7 +77,7 @@ class MyOverviewInfoCardItem(
     }
 
     private fun getOriginInfoText(
-        infoItem: DashboardItem.InfoItem.NonDismissible.OriginInfoItem,
+        infoItem: DashboardItem.InfoItem.OriginInfoItem,
         context: Context
     ): String {
         val originString = when (infoItem.originType) {

@@ -102,8 +102,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                 is DashboardItem.AddQrButtonItem -> {
                     // Handled by MyOverviewTabsFragment
                 }
-                is DashboardItem.InfoItem.Dismissible,
-                is DashboardItem.InfoItem.NonDismissible -> addInfoCard(adapterItems, dashboardItem)
+                is DashboardItem.InfoItem -> addInfoCard(adapterItems, dashboardItem)
             }
         }
 

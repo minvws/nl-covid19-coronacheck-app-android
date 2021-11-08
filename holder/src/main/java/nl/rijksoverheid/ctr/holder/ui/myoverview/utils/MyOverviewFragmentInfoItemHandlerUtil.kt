@@ -46,7 +46,7 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
         infoItem: DashboardItem.InfoItem
     ) {
         when (infoItem) {
-            is DashboardItem.InfoItem.Dismissible.ExtendedDomesticRecovery -> {
+            is DashboardItem.InfoItem.ExtendedDomesticRecovery -> {
                 bottomSheetDialogUtil.present(
                     myOverviewFragment.childFragmentManager,
                     BottomSheetData.TitleDescription(
@@ -58,7 +58,7 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
                     )
                 )
             }
-            is DashboardItem.InfoItem.Dismissible.RecoveredDomesticRecovery -> {
+            is DashboardItem.InfoItem.RecoveredDomesticRecovery -> {
                 bottomSheetDialogUtil.present(
                     myOverviewFragment.childFragmentManager,
                     BottomSheetData.TitleDescription(
@@ -67,7 +67,7 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
                     )
                 )
             }
-            is DashboardItem.InfoItem.Dismissible.RefreshedEuVaccinations -> {
+            is DashboardItem.InfoItem.RefreshedEuVaccinations -> {
                 bottomSheetDialogUtil.present(
                     myOverviewFragment.childFragmentManager,
                     BottomSheetData.TitleDescription(
@@ -79,7 +79,7 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
                     )
                 )
             }
-            is DashboardItem.InfoItem.NonDismissible.ExtendDomesticRecovery -> {
+            is DashboardItem.InfoItem.ExtendDomesticRecovery -> {
                 myOverviewFragment.navigateSafety(
                     MyOverviewFragmentDirections.actionSyncGreenCards(
                         toolbarTitle = myOverviewFragment.getString(R.string.extend_domestic_recovery_green_card_toolbar_title),
@@ -89,7 +89,7 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
                     )
                 )
             }
-            is DashboardItem.InfoItem.NonDismissible.RecoverDomesticRecovery -> {
+            is DashboardItem.InfoItem.RecoverDomesticRecovery -> {
                 myOverviewFragment.navigateSafety(
                     MyOverviewFragmentDirections.actionSyncGreenCards(
                         toolbarTitle = myOverviewFragment.getString(R.string.recover_domestic_recovery_green_card_toolbar_title),
@@ -99,7 +99,7 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
                     )
                 )
             }
-            is DashboardItem.InfoItem.NonDismissible.RefreshEuVaccinations -> {
+            is DashboardItem.InfoItem.RefreshEuVaccinations -> {
                 myOverviewFragment.navigateSafety(
                     MyOverviewFragmentDirections.actionSyncGreenCards(
                         toolbarTitle = myOverviewFragment.getString(R.string.refresh_eu_items_button),
@@ -109,7 +109,7 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
                     )
                 )
             }
-            is DashboardItem.InfoItem.NonDismissible.ConfigFreshnessWarning -> {
+            is DashboardItem.InfoItem.ConfigFreshnessWarning -> {
                 bottomSheetDialogUtil.present(
                     myOverviewFragment.childFragmentManager,
                     BottomSheetData.TitleDescription(
@@ -127,12 +127,15 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
                     )
                 )
             }
-            is DashboardItem.InfoItem.NonDismissible.ClockDeviationItem -> addClockDeviation(
+            is DashboardItem.InfoItem.ClockDeviationItem -> addClockDeviation(
                 myOverviewFragment
             )
-            is DashboardItem.InfoItem.NonDismissible.OriginInfoItem -> addOriginInfo(
+            is DashboardItem.InfoItem.OriginInfoItem -> addOriginInfo(
                 myOverviewFragment, infoItem
             )
+            is DashboardItem.InfoItem.GreenCardExpiredItem -> {
+                // NO OP, button is hidden
+            }
         }
     }
 
@@ -152,7 +155,7 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
 
     private fun addOriginInfo(
         myOverviewFragment: MyOverviewFragment,
-        item: DashboardItem.InfoItem.NonDismissible.OriginInfoItem
+        item: DashboardItem.InfoItem.OriginInfoItem
     ) {
         when (item.greenCardType) {
             is GreenCardType.Domestic -> presentOriginInfoForDomesticQr(
@@ -233,17 +236,25 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
 
         // Clear preference so it doesn't show again
         when (infoItem) {
-            is DashboardItem.InfoItem.Dismissible.RefreshedEuVaccinations -> {
+            is DashboardItem.InfoItem.RefreshedEuVaccinations -> {
                 myOverviewFragment.dashboardViewModel.dismissRefreshedEuVaccinationsInfoCard()
             }
-            is DashboardItem.InfoItem.Dismissible.RecoveredDomesticRecovery -> {
+            is DashboardItem.InfoItem.RecoveredDomesticRecovery -> {
                 myOverviewFragment.dashboardViewModel.dismissRecoveredDomesticRecoveryInfoCard()
             }
-            is DashboardItem.InfoItem.Dismissible.ExtendedDomesticRecovery -> {
+            is DashboardItem.InfoItem.ExtendedDomesticRecovery -> {
                 myOverviewFragment.dashboardViewModel.dismissExtendedDomesticRecoveryInfoCard()
             }
-            is DashboardItem.InfoItem.Dismissible.GreenCardExpiredItem -> {
+            is DashboardItem.InfoItem.GreenCardExpiredItem -> {
                 myOverviewFragment.dashboardViewModel.removeGreenCard(infoItem.greenCard)
+            }
+            is DashboardItem.InfoItem.ClockDeviationItem,
+            is DashboardItem.InfoItem.ConfigFreshnessWarning,
+            is DashboardItem.InfoItem.ExtendDomesticRecovery,
+            is DashboardItem.InfoItem.OriginInfoItem,
+            is DashboardItem.InfoItem.RecoverDomesticRecovery,
+            is DashboardItem.InfoItem.RefreshEuVaccinations -> {
+                // NO OP, items can't be dismissed
             }
         }
     }
