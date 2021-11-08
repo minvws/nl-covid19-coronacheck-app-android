@@ -223,7 +223,7 @@ class GetDashboardItemsUseCaseImpl(
             if (!allValidOriginsForSelectedType.map { it.type }
                     .contains(originForUnselectedType.type)) {
                 items.add(
-                    DashboardItem.OriginInfoItem(
+                    DashboardItem.InfoItem.OriginInfoItem(
                         greenCardType = greenCardType,
                         originType = originForUnselectedType.type
                     )
@@ -237,7 +237,7 @@ class GetDashboardItemsUseCaseImpl(
                 is DashboardItem.CardsItem -> {
                     it.cards.first().originStates.first().origin.type.order
                 }
-                is DashboardItem.OriginInfoItem -> {
+                is DashboardItem.InfoItem.OriginInfoItem -> {
                     it.originType.order
                 }
                 else -> {

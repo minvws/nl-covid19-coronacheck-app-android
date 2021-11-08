@@ -33,6 +33,8 @@ sealed class DashboardItem {
 
         data class GreenCardExpiredItem(val greenCard: GreenCard) : InfoItem()
 
+        data class OriginInfoItem(val greenCardType: GreenCardType, val originType: OriginType) :
+            InfoItem()
     }
 
     data class CardsItem(val cards: List<CardItem>) : DashboardItem() {
@@ -50,9 +52,6 @@ sealed class DashboardItem {
             val databaseSyncerResult: DatabaseSyncerResult
         )
     }
-
-    data class OriginInfoItem(val greenCardType: GreenCardType, val originType: OriginType) :
-        DashboardItem()
 
     data class AddQrButtonItem(val show: Boolean) : DashboardItem()
 }

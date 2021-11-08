@@ -161,16 +161,17 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                         }
                     ))
                 }
-                is DashboardItem.OriginInfoItem -> {
-                    adapterItems.add(MyOverviewOriginInfoAdapterItem(
-                        greenCardType = dashboardItem.greenCardType,
-                        originType = dashboardItem.originType,
-                        onInfoClick = { greenCardType, originType ->
+                is DashboardItem.InfoItem.OriginInfoItem -> {
+                    adapterItems.add(MyOverviewInfoCardItem(
+                        infoItem = dashboardItem as DashboardItem.InfoItem,
+                        onButtonClick = {
                             when (greenCardType) {
                                 is GreenCardType.Domestic -> presentOriginInfoForDomesticQr(
-                                    originType
+                                    dashboardItem.originType
                                 )
-                                is GreenCardType.Eu -> presentOriginInfoForEuQr(originType)
+                                is GreenCardType.Eu -> presentOriginInfoForEuQr(
+                                    dashboardItem.originType
+                                )
                             }
                         }
                     ))
