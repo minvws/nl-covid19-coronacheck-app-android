@@ -28,7 +28,8 @@ sealed class DashboardItem {
         object RecoverDomesticRecovery :
             InfoItem(isDismissable = false, hasReadMore = true)
 
-        data class ConfigFreshnessWarning(val maxValidityDate: Long) : InfoItem(false, true)
+        data class ConfigFreshnessWarning(val maxValidityDate: Long) :
+            InfoItem(isDismissable = false, hasReadMore = true)
 
         object RefreshedEuVaccinations : InfoItem(isDismissable = true, hasReadMore = true)
 
