@@ -14,6 +14,7 @@ import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 abstract class ScanQrViewModel : ViewModel() {
     abstract fun hasSeenScanInstructions() : Boolean
     abstract fun setScanInstructionsSeen()
+    abstract fun getNextScannerScreenState(): NextScannerScreenState
 }
 
 class ScanQrViewModelImpl(
@@ -26,6 +27,16 @@ class ScanQrViewModelImpl(
     override fun setScanInstructionsSeen() {
         if (!hasSeenScanInstructions()) {
             persistenceManager.setScanInstructionsSeen()
+        }
+    }
+
+    override fun getNextScannerScreenState(): NextScannerScreenState {
+        return if (!hasSeenScanInstructions()) {
+            NextScannerScreenState.Instructions
+        } else if (!persistenceManager.isRiskModeSelectionSet()) {
+            NextScannerScreenState.RiskModeSelection
+        } else {
+            NextScannerScreenState.Scanner
         }
     }
 }

@@ -10,12 +10,15 @@ import android.content.SharedPreferences
  *
  */
 interface PersistenceManager {
-    fun getScanInstructionsSeen(): Boolean
     fun setScanInstructionsSeen()
+    fun getScanInstructionsSeen(): Boolean
     fun saveSecretKeyJson(json: String)
     fun getSecretKeyJson(): String?
     fun saveLocalTestResultJson(localTestResultJson: String)
     fun getLocalTestResultJson(): String?
+    fun setHighRiskModeSelected(highRisk: Boolean)
+    fun getHighRiskModeSelected(): Boolean
+    fun isRiskModeSelectionSet(): Boolean
 }
 
 class SharedPreferencesPersistenceManager(private val sharedPreferences: SharedPreferences) :
@@ -25,14 +28,15 @@ class SharedPreferencesPersistenceManager(private val sharedPreferences: SharedP
         const val SCAN_INSTRUCTIONS_SEEN = "SCAN_INSTRUCTIONS_SEEN"
         const val SECRET_KEY_JSON = "SECRET_KEY_JSON"
         const val LOCAL_TEST_RESULT = "LOCAL_TEST_RESULT"
-    }
-
-    override fun getScanInstructionsSeen(): Boolean {
-        return sharedPreferences.getBoolean(SCAN_INSTRUCTIONS_SEEN, false)
+        const val RISK_MODE_SET = "RISK_MODE_SET"
     }
 
     override fun setScanInstructionsSeen() {
         sharedPreferences.edit().putBoolean(SCAN_INSTRUCTIONS_SEEN, true).apply()
+    }
+
+    override fun getScanInstructionsSeen(): Boolean {
+        return sharedPreferences.getBoolean(SCAN_INSTRUCTIONS_SEEN, false)
     }
 
     override fun saveSecretKeyJson(json: String) {
@@ -49,5 +53,17 @@ class SharedPreferencesPersistenceManager(private val sharedPreferences: SharedP
 
     override fun getLocalTestResultJson(): String? {
         return sharedPreferences.getString(LOCAL_TEST_RESULT, null)
+    }
+
+    override fun setHighRiskModeSelected(highRisk: Boolean) {
+        sharedPreferences.edit().putBoolean(RISK_MODE_SET, true).apply()
+    }
+
+    override fun getHighRiskModeSelected(): Boolean {
+        return sharedPreferences.getBoolean(RISK_MODE_SET, false)
+    }
+
+    override fun isRiskModeSelectionSet(): Boolean {
+        return sharedPreferences.contains(RISK_MODE_SET)
     }
 }

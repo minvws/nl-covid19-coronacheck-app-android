@@ -7,8 +7,11 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentModeSelectBinding
+import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
+import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrViewModel
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 /*
@@ -21,6 +24,7 @@ import org.koin.android.ext.android.inject
 class SelectModeFragment: Fragment(R.layout.fragment_mode_select) {
 
     private val scannerUtil: ScannerUtil by inject()
+    private val persistenceManager: PersistenceManager by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -36,6 +40,7 @@ class SelectModeFragment: Fragment(R.layout.fragment_mode_select) {
             binding.startScanningButton.visibility = VISIBLE
             binding.startScanningButton.setOnClickListener {
                 scannerUtil.launchScanner(requireActivity())
+//                persistenceManager.setHighRiskModeSelected()
             }
         }
 

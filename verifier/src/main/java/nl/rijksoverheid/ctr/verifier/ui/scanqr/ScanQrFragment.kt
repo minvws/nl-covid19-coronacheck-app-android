@@ -42,10 +42,10 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
         }
 
         binding.bottom.setButtonClick {
-            if (!scanQrViewModel.hasSeenScanInstructions()) {
-                findNavController().navigate(ScanQrFragmentDirections.actionScanInstructions())
-            } else {
-                scannerUtil.launchScanner(requireActivity())
+            when (scanQrViewModel.getNextScannerScreenState()) {
+                NextScannerScreenState.Instructions -> findNavController().navigate(ScanQrFragmentDirections.actionScanInstructions())
+                NextScannerScreenState.RiskModeSelection -> scannerUtil.launchModeSelection(requireActivity())
+                NextScannerScreenState.Scanner -> scannerUtil.launchScanner(requireActivity())
             }
         }
 
