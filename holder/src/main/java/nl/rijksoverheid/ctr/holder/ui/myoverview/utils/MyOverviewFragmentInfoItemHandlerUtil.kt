@@ -46,100 +46,122 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
         infoItem: DashboardItem.InfoItem
     ) {
         when (infoItem) {
-            is DashboardItem.InfoItem.ExtendedDomesticRecovery -> {
-                bottomSheetDialogUtil.present(
-                    myOverviewFragment.childFragmentManager,
-                    BottomSheetData.TitleDescription(
-                        title = myOverviewFragment.getString(R.string.extended_domestic_recovery_green_card_bottomsheet_title),
-                        descriptionData = DescriptionData(
-                            R.string.extended_domestic_recovery_green_card_bottomsheet_description,
-                            htmlLinksEnabled = true
-                        ),
-                    )
-                )
-            }
-            is DashboardItem.InfoItem.RecoveredDomesticRecovery -> {
-                bottomSheetDialogUtil.present(
-                    myOverviewFragment.childFragmentManager,
-                    BottomSheetData.TitleDescription(
-                        title = myOverviewFragment.getString(R.string.recovered_domestic_recovery_green_card_bottomsheet_title),
-                        descriptionData = DescriptionData(R.string.recovered_domestic_recovery_green_card_bottomsheet_description),
-                    )
-                )
-            }
-            is DashboardItem.InfoItem.RefreshedEuVaccinations -> {
-                bottomSheetDialogUtil.present(
-                    myOverviewFragment.childFragmentManager,
-                    BottomSheetData.TitleDescription(
-                        title = myOverviewFragment.getString(R.string.refreshed_eu_items_title),
-                        descriptionData = DescriptionData(
-                            R.string.refreshed_eu_items_description,
-                            htmlLinksEnabled = true
-                        ),
-                    )
-                )
-            }
-            is DashboardItem.InfoItem.ExtendDomesticRecovery -> {
-                myOverviewFragment.navigateSafety(
-                    MyOverviewFragmentDirections.actionSyncGreenCards(
-                        toolbarTitle = myOverviewFragment.getString(R.string.extend_domestic_recovery_green_card_toolbar_title),
-                        title = myOverviewFragment.getString(R.string.extend_domestic_recovery_green_card_title),
-                        description = myOverviewFragment.getString(R.string.extend_domestic_recovery_green_card_description),
-                        button = myOverviewFragment.getString(R.string.extend_domestic_recovery_green_card_button)
-                    )
-                )
-            }
-            is DashboardItem.InfoItem.RecoverDomesticRecovery -> {
-                myOverviewFragment.navigateSafety(
-                    MyOverviewFragmentDirections.actionSyncGreenCards(
-                        toolbarTitle = myOverviewFragment.getString(R.string.recover_domestic_recovery_green_card_toolbar_title),
-                        title = myOverviewFragment.getString(R.string.recover_domestic_recovery_green_card_title),
-                        description = myOverviewFragment.getString(R.string.recover_domestic_recovery_green_card_description),
-                        button = myOverviewFragment.getString(R.string.recover_domestic_recovery_green_card_button)
-                    )
-                )
-            }
-            is DashboardItem.InfoItem.RefreshEuVaccinations -> {
-                myOverviewFragment.navigateSafety(
-                    MyOverviewFragmentDirections.actionSyncGreenCards(
-                        toolbarTitle = myOverviewFragment.getString(R.string.refresh_eu_items_button),
-                        title = myOverviewFragment.getString(R.string.refresh_eu_items_title),
-                        description = myOverviewFragment.getString(R.string.refresh_eu_items_description),
-                        button = myOverviewFragment.getString(R.string.refresh_eu_items_button)
-                    )
-                )
-            }
-            is DashboardItem.InfoItem.ConfigFreshnessWarning -> {
-                bottomSheetDialogUtil.present(
-                    myOverviewFragment.childFragmentManager,
-                    BottomSheetData.TitleDescription(
-                        title = myOverviewFragment.getString(R.string.config_warning_page_title),
-                        descriptionData = DescriptionData(
-                            htmlTextString = myOverviewFragment.getString(
-                                R.string.config_warning_page_message,
-                                OffsetDateTime.ofInstant(
-                                    Instant.ofEpochSecond(infoItem.maxValidityDate),
-                                    ZoneOffset.UTC
-                                ).formatDayMonthTime(myOverviewFragment.requireContext())
-                            ),
-                            htmlLinksEnabled = true
-                        )
-                    )
-                )
-            }
-            is DashboardItem.InfoItem.ClockDeviationItem -> addClockDeviation(
-                myOverviewFragment
-            )
-            is DashboardItem.InfoItem.OriginInfoItem -> addOriginInfo(
-                myOverviewFragment, infoItem
-            )
+            is DashboardItem.InfoItem.ExtendedDomesticRecovery ->
+                onExtendedDomesticRecoveryClicked(myOverviewFragment)
+            is DashboardItem.InfoItem.RecoveredDomesticRecovery ->
+                onRecoveredDomesticRecoveryClicked(myOverviewFragment)
+            is DashboardItem.InfoItem.RefreshedEuVaccinations ->
+                onRefreshedEuVaccinationsClicked(myOverviewFragment)
+            is DashboardItem.InfoItem.ExtendDomesticRecovery ->
+                onExtendDomesticRecoveryClicked(myOverviewFragment)
+            is DashboardItem.InfoItem.RecoverDomesticRecovery ->
+                onRecoverDomesticRecoveryClicked(myOverviewFragment)
+            is DashboardItem.InfoItem.RefreshEuVaccinations ->
+                onRefreshVaccinationsClicked(myOverviewFragment)
+            is DashboardItem.InfoItem.ConfigFreshnessWarning ->
+                onConfigRefreshClicked(myOverviewFragment, infoItem)
+            is DashboardItem.InfoItem.ClockDeviationItem ->
+                onClockDeviationClicked(myOverviewFragment)
+            is DashboardItem.InfoItem.OriginInfoItem ->
+                onOriginInfoClicked(myOverviewFragment, infoItem)
             is DashboardItem.InfoItem.GreenCardExpiredItem -> {
                 // NO OP, button is hidden
             }
         }
     }
 
-    private fun addClockDeviation(
+    private fun onExtendedDomesticRecoveryClicked(myOverviewFragment: MyOverviewFragment) {
+        bottomSheetDialogUtil.present(
+            myOverviewFragment.childFragmentManager,
+            BottomSheetData.TitleDescription(
+                title = myOverviewFragment.getString(R.string.extended_domestic_recovery_green_card_bottomsheet_title),
+                descriptionData = DescriptionData(
+                    R.string.extended_domestic_recovery_green_card_bottomsheet_description,
+                    htmlLinksEnabled = true
+                ),
+            )
+        )
+    }
+
+    private fun onRecoveredDomesticRecoveryClicked(myOverviewFragment: MyOverviewFragment) {
+        bottomSheetDialogUtil.present(
+            myOverviewFragment.childFragmentManager,
+            BottomSheetData.TitleDescription(
+                title = myOverviewFragment.getString(R.string.recovered_domestic_recovery_green_card_bottomsheet_title),
+                descriptionData = DescriptionData(R.string.recovered_domestic_recovery_green_card_bottomsheet_description),
+            )
+        )
+    }
+
+    private fun onRefreshedEuVaccinationsClicked(myOverviewFragment: MyOverviewFragment) {
+        bottomSheetDialogUtil.present(
+            myOverviewFragment.childFragmentManager,
+            BottomSheetData.TitleDescription(
+                title = myOverviewFragment.getString(R.string.refreshed_eu_items_title),
+                descriptionData = DescriptionData(
+                    R.string.refreshed_eu_items_description,
+                    htmlLinksEnabled = true
+                ),
+            )
+        )
+    }
+
+    private fun onExtendDomesticRecoveryClicked(myOverviewFragment: MyOverviewFragment) {
+        myOverviewFragment.navigateSafety(
+            MyOverviewFragmentDirections.actionSyncGreenCards(
+                toolbarTitle = myOverviewFragment.getString(R.string.extend_domestic_recovery_green_card_toolbar_title),
+                title = myOverviewFragment.getString(R.string.extend_domestic_recovery_green_card_title),
+                description = myOverviewFragment.getString(R.string.extend_domestic_recovery_green_card_description),
+                button = myOverviewFragment.getString(R.string.extend_domestic_recovery_green_card_button)
+            )
+        )
+    }
+
+    private fun onRecoverDomesticRecoveryClicked(myOverviewFragment: MyOverviewFragment) {
+        myOverviewFragment.navigateSafety(
+            MyOverviewFragmentDirections.actionSyncGreenCards(
+                toolbarTitle = myOverviewFragment.getString(R.string.recover_domestic_recovery_green_card_toolbar_title),
+                title = myOverviewFragment.getString(R.string.recover_domestic_recovery_green_card_title),
+                description = myOverviewFragment.getString(R.string.recover_domestic_recovery_green_card_description),
+                button = myOverviewFragment.getString(R.string.recover_domestic_recovery_green_card_button)
+            )
+        )
+    }
+
+    private fun onRefreshVaccinationsClicked(myOverviewFragment: MyOverviewFragment) {
+        myOverviewFragment.navigateSafety(
+            MyOverviewFragmentDirections.actionSyncGreenCards(
+                toolbarTitle = myOverviewFragment.getString(R.string.refresh_eu_items_button),
+                title = myOverviewFragment.getString(R.string.refresh_eu_items_title),
+                description = myOverviewFragment.getString(R.string.refresh_eu_items_description),
+                button = myOverviewFragment.getString(R.string.refresh_eu_items_button)
+            )
+        )
+    }
+
+    private fun onConfigRefreshClicked(
+        myOverviewFragment: MyOverviewFragment,
+        infoItem: DashboardItem.InfoItem.ConfigFreshnessWarning
+    ) {
+        bottomSheetDialogUtil.present(
+            myOverviewFragment.childFragmentManager,
+            BottomSheetData.TitleDescription(
+                title = myOverviewFragment.getString(R.string.config_warning_page_title),
+                descriptionData = DescriptionData(
+                    htmlTextString = myOverviewFragment.getString(
+                        R.string.config_warning_page_message,
+                        OffsetDateTime.ofInstant(
+                            Instant.ofEpochSecond(infoItem.maxValidityDate),
+                            ZoneOffset.UTC
+                        ).formatDayMonthTime(myOverviewFragment.requireContext())
+                    ),
+                    htmlLinksEnabled = true
+                )
+            )
+        )
+    }
+
+    private fun onClockDeviationClicked(
         myOverviewFragment: MyOverviewFragment
     ) {
         bottomSheetDialogUtil.present(
@@ -153,7 +175,7 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
         )
     }
 
-    private fun addOriginInfo(
+    private fun onOriginInfoClicked(
         myOverviewFragment: MyOverviewFragment,
         item: DashboardItem.InfoItem.OriginInfoItem
     ) {
