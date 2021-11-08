@@ -1,10 +1,14 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview.utils
 
+import android.content.Intent
+import android.provider.Settings
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthTime
 import nl.rijksoverheid.ctr.design.utils.BottomSheetData
 import nl.rijksoverheid.ctr.design.utils.BottomSheetDialogUtil
 import nl.rijksoverheid.ctr.design.utils.DescriptionData
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewFragment
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewFragmentDirections
@@ -47,7 +51,10 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
                     myOverviewFragment.childFragmentManager,
                     BottomSheetData.TitleDescription(
                         title = myOverviewFragment.getString(R.string.extended_domestic_recovery_green_card_bottomsheet_title),
-                        descriptionData = DescriptionData(R.string.extended_domestic_recovery_green_card_bottomsheet_description, htmlLinksEnabled = true),
+                        descriptionData = DescriptionData(
+                            R.string.extended_domestic_recovery_green_card_bottomsheet_description,
+                            htmlLinksEnabled = true
+                        ),
                     )
                 )
             }
@@ -65,7 +72,10 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
                     myOverviewFragment.childFragmentManager,
                     BottomSheetData.TitleDescription(
                         title = myOverviewFragment.getString(R.string.refreshed_eu_items_title),
-                        descriptionData = DescriptionData(R.string.refreshed_eu_items_description, htmlLinksEnabled = true),
+                        descriptionData = DescriptionData(
+                            R.string.refreshed_eu_items_description,
+                            htmlLinksEnabled = true
+                        ),
                     )
                 )
             }
@@ -104,19 +114,110 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
                     myOverviewFragment.childFragmentManager,
                     BottomSheetData.TitleDescription(
                         title = myOverviewFragment.getString(R.string.config_warning_page_title),
-                        descriptionData = DescriptionData(htmlTextString = myOverviewFragment.getString(
-                            R.string.config_warning_page_message,
-                            OffsetDateTime.ofInstant(
-                                Instant.ofEpochSecond(infoItem.maxValidityDate),
-                                ZoneOffset.UTC
-                            ).formatDayMonthTime(myOverviewFragment.requireContext())
-                        ),
-                        htmlLinksEnabled = true)
+                        descriptionData = DescriptionData(
+                            htmlTextString = myOverviewFragment.getString(
+                                R.string.config_warning_page_message,
+                                OffsetDateTime.ofInstant(
+                                    Instant.ofEpochSecond(infoItem.maxValidityDate),
+                                    ZoneOffset.UTC
+                                ).formatDayMonthTime(myOverviewFragment.requireContext())
+                            ),
+                            htmlLinksEnabled = true
+                        )
                     )
                 )
-
             }
+            is DashboardItem.InfoItem.NonDismissible.ClockDeviationItem -> addClockDeviation(
+                myOverviewFragment
+            )
+            is DashboardItem.InfoItem.NonDismissible.OriginInfoItem -> addOriginInfo(
+                myOverviewFragment, infoItem
+            )
         }
+    }
+
+    private fun addClockDeviation(
+        myOverviewFragment: MyOverviewFragment
+    ) {
+        bottomSheetDialogUtil.present(
+            myOverviewFragment.childFragmentManager, BottomSheetData.TitleDescription(
+                title = myOverviewFragment.getString(R.string.clock_deviation_explanation_title),
+                descriptionData = DescriptionData(
+                    R.string.clock_deviation_explanation_description,
+                    customLinkIntent = Intent(Settings.ACTION_DATE_SETTINGS)
+                ),
+            )
+        )
+    }
+
+    private fun addOriginInfo(
+        myOverviewFragment: MyOverviewFragment,
+        item: DashboardItem.InfoItem.NonDismissible.OriginInfoItem
+    ) {
+        when (item.greenCardType) {
+            is GreenCardType.Domestic -> presentOriginInfoForDomesticQr(
+                item.originType, myOverviewFragment
+            )
+            is GreenCardType.Eu -> presentOriginInfoForEuQr(
+                item.originType, myOverviewFragment
+            )
+        }
+    }
+
+    private fun presentOriginInfoForEuQr(
+        originType: OriginType,
+        myOverviewFragment: MyOverviewFragment
+    ) {
+        bottomSheetDialogUtil.present(
+            myOverviewFragment.childFragmentManager,
+            data = when (originType) {
+                is OriginType.Test -> {
+                    BottomSheetData.TitleDescription(
+                        title = myOverviewFragment.getString(R.string.my_overview_green_card_not_valid_title_test),
+                        descriptionData = DescriptionData(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_test),
+                    )
+                }
+                is OriginType.Vaccination -> {
+                    BottomSheetData.TitleDescription(
+                        title = myOverviewFragment.getString(R.string.my_overview_green_card_not_valid_title_vaccination),
+                        descriptionData = DescriptionData(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_vaccination),
+                    )
+                }
+                is OriginType.Recovery -> {
+                    BottomSheetData.TitleDescription(
+                        title = myOverviewFragment.getString(R.string.my_overview_green_card_not_valid_title_recovery),
+                        descriptionData = DescriptionData(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_recovery),
+                    )
+                }
+            }
+        )
+    }
+
+    private fun presentOriginInfoForDomesticQr(
+        originType: OriginType,
+        myOverviewFragment: MyOverviewFragment
+    ) {
+        val (title, description) = when (originType) {
+            OriginType.Test -> Pair(
+                myOverviewFragment.getString(R.string.my_overview_green_card_not_valid_title_test),
+                R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_test
+            )
+            OriginType.Vaccination -> Pair(
+                myOverviewFragment.getString(R.string.my_overview_green_card_not_valid_title_vaccination),
+                R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_vaccination
+            )
+            OriginType.Recovery -> Pair(
+                myOverviewFragment.getString(R.string.my_overview_green_card_not_valid_title_recovery),
+                R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_recovery
+            )
+        }
+        bottomSheetDialogUtil.present(
+            myOverviewFragment.childFragmentManager,
+            BottomSheetData.TitleDescription(
+                title = title,
+                descriptionData = DescriptionData(description, htmlLinksEnabled = true),
+            )
+        )
     }
 
     /**
@@ -141,7 +242,7 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
             is DashboardItem.InfoItem.Dismissible.ExtendedDomesticRecovery -> {
                 myOverviewFragment.dashboardViewModel.dismissExtendedDomesticRecoveryInfoCard()
             }
-            is DashboardItem.InfoItem.GreenCardExpiredItem -> {
+            is DashboardItem.InfoItem.Dismissible.GreenCardExpiredItem -> {
                 myOverviewFragment.dashboardViewModel.removeGreenCard(infoItem.greenCard)
             }
         }

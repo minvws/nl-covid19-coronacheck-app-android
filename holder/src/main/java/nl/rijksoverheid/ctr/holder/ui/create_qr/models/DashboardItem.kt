@@ -21,20 +21,17 @@ sealed class DashboardItem {
             object ExtendDomesticRecovery : NonDismissible()
             object RecoverDomesticRecovery : NonDismissible()
             data class ConfigFreshnessWarning(val maxValidityDate: Long) : NonDismissible()
+            data class OriginInfoItem(val greenCardType: GreenCardType, val originType: OriginType) :
+                NonDismissible()
+            object ClockDeviationItem : NonDismissible()
         }
 
         sealed class Dismissible : InfoItem() {
             object RefreshedEuVaccinations : Dismissible()
             object ExtendedDomesticRecovery : Dismissible()
             object RecoveredDomesticRecovery : Dismissible()
+            data class GreenCardExpiredItem(val greenCard: GreenCard) : Dismissible()
         }
-
-        object ClockDeviationItem : InfoItem()
-
-        data class GreenCardExpiredItem(val greenCard: GreenCard) : InfoItem()
-
-        data class OriginInfoItem(val greenCardType: GreenCardType, val originType: OriginType) :
-            InfoItem()
     }
 
     data class CardsItem(val cards: List<CardItem>) : DashboardItem() {

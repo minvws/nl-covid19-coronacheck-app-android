@@ -25,14 +25,11 @@ class MyOverviewInfoCardItem(
 
     override fun bind(viewBinding: ItemMyOverviewInfoCardBinding, position: Int) {
         when (infoItem) {
-            is DashboardItem.InfoItem.NonDismissible,
-            is DashboardItem.InfoItem.ClockDeviationItem,
-            is DashboardItem.InfoItem.OriginInfoItem -> {
+            is DashboardItem.InfoItem.NonDismissible -> {
                 // Non dismissible item does not have a close button
                 viewBinding.close.visibility = View.GONE
             }
-            is DashboardItem.InfoItem.Dismissible,
-            is DashboardItem.InfoItem.GreenCardExpiredItem -> {
+            is DashboardItem.InfoItem.Dismissible -> {
                 // Non dismissible item has a close button with callback
                 viewBinding.close.visibility = View.VISIBLE
                 viewBinding.close.setOnClickListener {
@@ -63,13 +60,13 @@ class MyOverviewInfoCardItem(
             is DashboardItem.InfoItem.Dismissible.RefreshedEuVaccinations -> {
                 viewBinding.text.setText(R.string.dashboard_item_refreshed_eu_vaccinations_text)
             }
-            is DashboardItem.InfoItem.ClockDeviationItem -> {
+            is DashboardItem.InfoItem.NonDismissible.ClockDeviationItem -> {
                 viewBinding.text.setText(R.string.my_overview_clock_deviation_description)
             }
-            is DashboardItem.InfoItem.GreenCardExpiredItem -> {
+            is DashboardItem.InfoItem.Dismissible.GreenCardExpiredItem -> {
                 viewBinding.text.setText(R.string.qr_card_expired)
             }
-            is DashboardItem.InfoItem.OriginInfoItem -> {
+            is DashboardItem.InfoItem.NonDismissible.OriginInfoItem -> {
                 viewBinding.text.text =
                     getOriginInfoText(infoItem, viewBinding.dashboardItemInfoRoot.context)
             }
@@ -81,7 +78,7 @@ class MyOverviewInfoCardItem(
     }
 
     private fun getOriginInfoText(
-        infoItem: DashboardItem.InfoItem.OriginInfoItem,
+        infoItem: DashboardItem.InfoItem.NonDismissible.OriginInfoItem,
         context: Context
     ): String {
         val originString = when (infoItem.originType) {

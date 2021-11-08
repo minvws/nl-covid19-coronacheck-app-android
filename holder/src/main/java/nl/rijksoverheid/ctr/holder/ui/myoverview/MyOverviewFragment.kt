@@ -53,7 +53,6 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
 
     }
 
-    private val bottomSheetDialogUtil: BottomSheetDialogUtil by inject()
     private val myOverviewFragmentInfoItemHandlerUtil: MyOverviewFragmentInfoItemHandlerUtil by inject()
     val dashboardViewModel: DashboardViewModel by sharedViewModelWithOwner(owner = {
         ViewModelOwner.from(
@@ -100,15 +99,6 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                 is DashboardItem.HeaderItem -> addHeader(adapterItems, dashboardItem)
                 is DashboardItem.PlaceholderCardItem -> addPlaceHolder(adapterItems, dashboardItem)
                 is DashboardItem.CardsItem -> addCards(adapterItems, dashboardItem)
-                is DashboardItem.InfoItem.GreenCardExpiredItem -> addExpired(
-                    adapterItems, dashboardItem
-                )
-                is DashboardItem.InfoItem.OriginInfoItem -> addOriginInfo(
-                    adapterItems, dashboardItem
-                )
-                is DashboardItem.InfoItem.ClockDeviationItem -> addClockDeviation(
-                    adapterItems, dashboardItem
-                )
                 is DashboardItem.AddQrButtonItem -> {
                     // Handled by MyOverviewTabsFragment
                 }
@@ -135,58 +125,6 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                     infoCardItem,
                     infoItem
                 )
-            }
-        ))
-    }
-
-    private fun addClockDeviation(
-        adapterItems: MutableList<BindableItem<*>>,
-        dashboardItem: DashboardItem
-    ) {
-        adapterItems.add(
-            MyOverviewInfoCardItem(
-                infoItem = dashboardItem as DashboardItem.InfoItem,
-                onButtonClick = {
-                    bottomSheetDialogUtil.present(
-                        childFragmentManager, BottomSheetData.TitleDescription(
-                            title = getString(R.string.clock_deviation_explanation_title),
-                            descriptionData = DescriptionData(
-                                R.string.clock_deviation_explanation_description,
-                                customLinkIntent = Intent(Settings.ACTION_DATE_SETTINGS)
-                            ),
-                        )
-                    )
-                })
-        )
-    }
-
-    private fun addOriginInfo(
-        adapterItems: MutableList<BindableItem<*>>,
-        dashboardItem: DashboardItem.InfoItem.OriginInfoItem
-    ) {
-        adapterItems.add(MyOverviewInfoCardItem(
-            infoItem = dashboardItem as DashboardItem.InfoItem,
-            onButtonClick = {
-                when (greenCardType) {
-                    is GreenCardType.Domestic -> presentOriginInfoForDomesticQr(
-                        dashboardItem.originType
-                    )
-                    is GreenCardType.Eu -> presentOriginInfoForEuQr(
-                        dashboardItem.originType
-                    )
-                }
-            }
-        ))
-    }
-
-    private fun addExpired(
-        adapterItems: MutableList<BindableItem<*>>,
-        dashboardItem: DashboardItem
-    ) {
-        adapterItems.add(MyOverviewInfoCardItem(
-            infoItem = dashboardItem as DashboardItem.InfoItem,
-            onButtonClick = {
-                myOverviewFragmentInfoItemHandlerUtil.handleButtonClick(this, it)
             }
         ))
     }
@@ -255,56 +193,6 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                 } else {
                     null
                 },
-            )
-        )
-    }
-
-    private fun presentOriginInfoForEuQr(originType: OriginType) {
-        bottomSheetDialogUtil.present(
-            childFragmentManager,
-            data = when (originType) {
-                is OriginType.Test -> {
-                    BottomSheetData.TitleDescription(
-                        title = getString(R.string.my_overview_green_card_not_valid_title_test),
-                        descriptionData = DescriptionData(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_test),
-                    )
-                }
-                is OriginType.Vaccination -> {
-                    BottomSheetData.TitleDescription(
-                        title = getString(R.string.my_overview_green_card_not_valid_title_vaccination),
-                        descriptionData = DescriptionData(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_vaccination),
-                    )
-                }
-                is OriginType.Recovery -> {
-                    BottomSheetData.TitleDescription(
-                        title = getString(R.string.my_overview_green_card_not_valid_title_recovery),
-                        descriptionData = DescriptionData(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_recovery),
-                    )
-                }
-            }
-        )
-    }
-
-    private fun presentOriginInfoForDomesticQr(originType: OriginType) {
-        val (title, description) = when (originType) {
-            OriginType.Test -> Pair(
-                getString(R.string.my_overview_green_card_not_valid_title_test),
-                R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_test
-            )
-            OriginType.Vaccination -> Pair(
-                getString(R.string.my_overview_green_card_not_valid_title_vaccination),
-                R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_vaccination
-            )
-            OriginType.Recovery -> Pair(
-                getString(R.string.my_overview_green_card_not_valid_title_recovery),
-                R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_recovery
-            )
-        }
-        bottomSheetDialogUtil.present(
-            childFragmentManager,
-            BottomSheetData.TitleDescription(
-                title = title,
-                descriptionData = DescriptionData(description, htmlLinksEnabled = true),
             )
         )
     }

@@ -71,7 +71,7 @@ class GetDashboardItemsUseCaseImpl(
         )
 
         if (dashboardItemUtil.shouldShowClockDeviationItem(allGreenCards)) {
-            dashboardItems.add(DashboardItem.InfoItem.ClockDeviationItem)
+            dashboardItems.add(DashboardItem.InfoItem.NonDismissible.ClockDeviationItem)
         }
 
         if (dashboardItemUtil.shouldShowExtendDomesticRecoveryItem()) {
@@ -144,7 +144,7 @@ class GetDashboardItemsUseCaseImpl(
         )
 
         if (dashboardItemUtil.shouldShowClockDeviationItem(allGreenCards)) {
-            dashboardItems.add(DashboardItem.InfoItem.ClockDeviationItem)
+            dashboardItems.add(DashboardItem.InfoItem.NonDismissible.ClockDeviationItem)
         }
 
         if (dashboardItemUtil.shouldAddSyncGreenCardsItem(allEventGroupEntities, allGreenCards)) {
@@ -202,7 +202,7 @@ class GetDashboardItemsUseCaseImpl(
         val items = greenCardsForSelectedType
             .map { greenCard ->
                 if (greenCardUtil.isExpired(greenCard)) {
-                    DashboardItem.InfoItem.GreenCardExpiredItem(greenCard = greenCard)
+                    DashboardItem.InfoItem.Dismissible.GreenCardExpiredItem(greenCard = greenCard)
                 } else {
                     mapGreenCardsItem(greenCard, isLoadingNewCredentials, databaseSyncerResult)
                 }
@@ -223,7 +223,7 @@ class GetDashboardItemsUseCaseImpl(
             if (!allValidOriginsForSelectedType.map { it.type }
                     .contains(originForUnselectedType.type)) {
                 items.add(
-                    DashboardItem.InfoItem.OriginInfoItem(
+                    DashboardItem.InfoItem.NonDismissible.OriginInfoItem(
                         greenCardType = greenCardType,
                         originType = originForUnselectedType.type
                     )
@@ -237,7 +237,7 @@ class GetDashboardItemsUseCaseImpl(
                 is DashboardItem.CardsItem -> {
                     it.cards.first().originStates.first().origin.type.order
                 }
-                is DashboardItem.InfoItem.OriginInfoItem -> {
+                is DashboardItem.InfoItem.NonDismissible.OriginInfoItem -> {
                     it.originType.order
                 }
                 else -> {
