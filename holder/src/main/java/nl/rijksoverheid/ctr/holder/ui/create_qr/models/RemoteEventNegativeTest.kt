@@ -10,10 +10,10 @@ import java.time.OffsetDateTime
 @JsonClass(generateAdapter = true)
 data class RemoteEventNegativeTest(
     override val type: String?,
-    val unique: String?,
+    override val unique: String?,
     val isSpecimen: Boolean?,
     @Json(name = "negativetest") val negativeTest: NegativeTest?
-) : Parcelable, RemoteEvent(type) {
+) : Parcelable, RemoteEvent(unique, type) {
 
     @Parcelize
     @JsonClass(generateAdapter = true)

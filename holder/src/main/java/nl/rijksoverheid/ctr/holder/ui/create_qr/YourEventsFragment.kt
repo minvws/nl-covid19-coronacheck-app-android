@@ -413,12 +413,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         val eventWidget = YourEventWidget(requireContext()).apply {
             setContent(
                 title = getVaccinationEventTitle(isDccEvent, currentEvent),
-                subtitle = resources.getString(
-                    R.string.your_vaccination_row_subtitle,
-                    fullName,
-                    birthDate,
-                    providerIdentifiers,
-                ),
+                subtitle = getVaccinationEventSubtitle(isDccEvent, providerIdentifiers, fullName, birthDate),
                 infoClickListener = {
                     navigateSafety(
                         YourEventsFragmentDirections.actionShowExplanation(
@@ -449,6 +444,25 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         resources.getString(
             R.string.retrieved_vaccination_title,
             currentEvent.vaccination?.date?.formatMonth(),
+        )
+    }
+
+    private fun YourEventWidget.getVaccinationEventSubtitle(
+        isDccEvent: Boolean,
+        providerIdentifiers: String,
+        fullName: String,
+        birthDate: String,
+    ) = if (isDccEvent) {
+        resources.getString(
+            R.string.your_vaccination_dcc_row_subtitle,
+            fullName,
+            birthDate)
+        } else {
+        resources.getString(
+            R.string.your_vaccination_row_subtitle,
+            fullName,
+            birthDate,
+            providerIdentifiers
         )
     }
 
