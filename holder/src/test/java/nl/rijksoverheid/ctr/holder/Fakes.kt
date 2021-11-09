@@ -53,7 +53,7 @@ fun fakeAppConfigViewModel(appStatus: AppStatus = AppStatus.NoActionRequired) =
         }
     }
 
-fun fakeDashboardViewModel(tabItems: List<DashboardTabItem> = emptyList()) =
+fun fakeDashboardViewModel(tabItems: List<DashboardTabItem> = listOf(fakeDashboardTabItem)) =
     object : DashboardViewModel() {
         override fun refresh(dashboardSync: DashboardSync) {
             (dashboardTabItemsLiveData as MutableLiveData<List<DashboardTabItem>>)
@@ -776,8 +776,8 @@ val fakeEuropeanVaccinationGreenCard = GreenCard(
     )
 )
 
-fun fakeAppConfigFreshnessUseCase(shouldShowWarning : Boolean = false) = object:
-   AppConfigFreshnessUseCase {
+fun fakeAppConfigFreshnessUseCase(shouldShowWarning: Boolean = false) = object :
+    AppConfigFreshnessUseCase {
     override fun getAppConfigLastFetchedSeconds(): Long {
         return 0
     }
@@ -789,9 +789,13 @@ fun fakeAppConfigFreshnessUseCase(shouldShowWarning : Boolean = false) = object:
     override fun shouldShowConfigFreshnessWarning(): Boolean {
         return shouldShowWarning
     }
-
-
 }
+
+val fakeDashboardTabItem = DashboardTabItem(
+    title = R.string.travel_button_domestic,
+    greenCardType = GreenCardType.Domestic,
+    items = listOf()
+)
 
 
 
