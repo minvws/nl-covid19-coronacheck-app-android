@@ -16,7 +16,7 @@ import kotlin.coroutines.suspendCoroutine
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class AuthenticationRepository {
+class DigidAuthenticationRepository {
 
     suspend fun authResponse(
         activityResultLauncher: ActivityResultLauncher<Intent>,

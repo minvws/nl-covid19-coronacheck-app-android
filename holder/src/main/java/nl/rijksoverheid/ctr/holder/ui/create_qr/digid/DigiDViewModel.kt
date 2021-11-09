@@ -12,7 +12,7 @@ import net.openid.appauth.AuthorizationException
 import net.openid.appauth.AuthorizationResponse
 import net.openid.appauth.AuthorizationService
 import nl.rijksoverheid.ctr.holder.HolderStep.DigidNetworkRequest
-import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.AuthenticationRepository
+import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.DigidAuthenticationRepository
 import nl.rijksoverheid.ctr.shared.exceptions.OpenIdAuthorizationException
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
@@ -28,9 +28,8 @@ import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
  *
  */
 class DigiDViewModel(
-    private val authenticationRepository: AuthenticationRepository,
-    private val androidUtil: AndroidUtil
-) : ViewModel() {
+    private val digidAuthenticationRepository: DigidAuthenticationRepository,
+    private val androidUtil: AndroidUtil) : ViewModel() {
 
     private companion object {
         const val USER_CANCELLED_FLOW_CODE = 1
@@ -52,7 +51,7 @@ class DigiDViewModel(
         (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {
             try {
-                authenticationRepository.authResponse(activityResultLauncher, authService)
+                digidAuthenticationRepository.authResponse(activityResultLauncher, authService)
             } catch (e: Exception) {
                 postExceptionResult(e)
             }
@@ -133,7 +132,8 @@ class DigiDViewModel(
         authResponse: AuthorizationResponse
     ) {
         try {
-            val jwt = authenticationRepository.jwt(authService, authResponse)
+            val jwt =
+                digidAuthenticationRepository.jwt(authService, authResponse)
             this.jwt = jwt
             digidResultLiveData.postValue(Event(DigidResult.Success(jwt)))
         } catch (e: Exception) {
