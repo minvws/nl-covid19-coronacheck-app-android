@@ -39,6 +39,7 @@
             android:minWidth="0dp"
             android:layout_marginHorizontal="16dp"
             android:layout_marginBottom="8dp"
+            app:layout_goneMarginBottom="24dp"
             android:textColor="@color/link"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="parent"
