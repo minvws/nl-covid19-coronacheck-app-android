@@ -45,7 +45,6 @@ class SelectModeFragment: Fragment(R.layout.fragment_mode_select) {
 
     private fun setupToolbar(binding: FragmentModeSelectBinding) {
         binding.toolbar.visibility = VISIBLE
-        setTitleTwoLines(binding.toolbar)
 
         binding.toolbar.setNavigationOnClickListener {
             findNavController().popBackStack()
@@ -54,13 +53,7 @@ class SelectModeFragment: Fragment(R.layout.fragment_mode_select) {
         binding.startScanningButton.setOnClickListener {
             scannerUtil.launchScanner(requireActivity())
         }
-    }
-
-    private fun setTitleTwoLines(toolbar: Toolbar) {
-        val titleTextView = toolbar.children.firstOrNull() {
-            it is AppCompatTextView && it.text == getString(R.string.risk_mode_selection_title)
-        } as? AppCompatTextView
-        titleTextView?.isSingleLine = false
+        binding.header.visibility = VISIBLE
     }
 
     private fun setupRadioGroup(binding: FragmentModeSelectBinding) {
