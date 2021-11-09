@@ -3,8 +3,13 @@ package nl.rijksoverheid.ctr.verifier.ui.mode
 import android.os.Bundle
 import android.view.View
 import android.view.View.VISIBLE
+import android.widget.TextView
+import androidx.appcompat.widget.AppCompatTextView
+import androidx.appcompat.widget.Toolbar
+import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import nl.rijksoverheid.ctr.shared.ext.children
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentModeSelectBinding
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
@@ -33,7 +38,8 @@ class SelectModeFragment: Fragment(R.layout.fragment_mode_select) {
 
         if (arguments?.getBoolean(addToolbarArgument) == true) {
             binding.toolbar.visibility = VISIBLE
-            binding.toolbar.title = "Voordat je begint"
+            setTitleTwoLines(binding.toolbar)
+
             binding.toolbar.setNavigationOnClickListener {
                 findNavController().popBackStack()
             }
@@ -44,6 +50,13 @@ class SelectModeFragment: Fragment(R.layout.fragment_mode_select) {
             }
         }
 
+    }
+
+    private fun setTitleTwoLines(toolbar: Toolbar) {
+        val titleTextView = toolbar.children.firstOrNull() {
+            it is AppCompatTextView && it.text == getString(R.string.risk_mode_selection_title)
+        } as? AppCompatTextView
+        titleTextView?.isSingleLine = false
     }
 
     companion object {

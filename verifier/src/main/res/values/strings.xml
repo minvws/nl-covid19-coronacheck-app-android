@@ -138,4 +138,11 @@
     <string name="privacy_policy_checkbox_error">Ga akkoord om verder te kunnen</string>
     <string name="scan_instructions_5_title">Rood scherm, wat nu?</string>
     <string name="scan_instructions_5_description">Kleurt je scherm rood met een kruis? Dan krijg je uitleg om de bezoeker te helpen. Blijft het scherm rood? Dan mag je de bezoeker geen toegang geven.</string>
+    <string name="risk_mode_selection_title">Wat is het risico niveau van jouw locatie?</string>
+    <string name="risk_mode_selection_subtitle">Geef aan of je op een hoog of laag risico plek gaat scannen. Je kunt later eventueel in het menu je instelling aanpassen.</string>
+    <string name="risk_mode_selection_high_risk_title">Hoog risico</string>
+    <string name="risk_mode_selection_high_risk_subtitle">Bijvoorbeeld een bar, nachtclub of plek waar veel mensen dichtbij elkaar komen</string>
+    <string name="risk_mode_selection_low_risk_title">Laag risico</string>
+    <string name="risk_mode_selection_low_risk_subtitle">Bijvoorbeeld een museum, dierentuin of winkel, koffiehuis</string>
+    <string name="risk_mode_selection_explanation_button">Ik weet het niet zeker</string>
 </resources>

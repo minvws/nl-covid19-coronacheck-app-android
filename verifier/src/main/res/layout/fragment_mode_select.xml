@@ -6,8 +6,9 @@
     android:theme="@style/AppTheme"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.appcompat.widget.Toolbar
+    <nl.rijksoverheid.ctr.design.views.Toolbar
         android:id="@+id/toolbar"
+        app:title="@string/risk_mode_selection_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
@@ -24,57 +25,70 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:paddingHorizontal="18dp"
+        android:layout_marginTop="24dp"
         android:textColor="@color/black"
         style="@style/App.TextAppearance.MaterialComponents.Body2.Secondary"
-        android:text="Is de plek waar jij scant een hoog of laag risico plek?" />
+        android:text="@string/risk_mode_selection_subtitle" />
 
     <RadioGroup
         android:id="@+id/modeRadioGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:paddingHorizontal="20dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="@id/subHeader"
         app:layout_constraintTop_toBottomOf="@+id/subHeader">
-
-        <com.google.android.material.radiobutton.MaterialRadioButton
-            android:id="@+id/lowRisk"
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:text="Laag risico" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="32dp"
-            style="@style/App.TextAppearance.MaterialComponents.Body2.Secondary"
-            android:text="Bijvoorbeeld een museum, dierentuin of winkel, koffiehuis" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginVertical="10dp"
+            android:layout_marginVertical="20dp"
+            android:background="#3C3C434A" />
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/lowRisk"
+            android:layout_width="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:paddingHorizontal="8dp"
+            android:layout_height="20dp"
+            android:text="@string/risk_mode_selection_low_risk_title" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:paddingHorizontal="56dp"
+            style="@style/App.TextAppearance.MaterialComponents.Body2.Secondary"
+            android:text="@string/risk_mode_selection_low_risk_subtitle" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="20dp"
             android:background="#3C3C434A" />
 
         <com.google.android.material.radiobutton.MaterialRadioButton
             android:id="@+id/highRisk"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
-            android:text="Hoog risico" />
+            android:layout_marginHorizontal="16dp"
+            android:paddingHorizontal="8dp"
+            android:text="@string/risk_mode_selection_high_risk_title" />
 
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
             style="@style/App.TextAppearance.MaterialComponents.Body2.Secondary"
-            android:paddingHorizontal="32dp"
-            android:text="Bijvoorbeeld een bar, nachtclub of een festival z x y " />
+            android:paddingHorizontal="56dp"
+            android:text="@string/risk_mode_selection_high_risk_subtitle" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginVertical="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
             android:background="#3C3C434A" />
 
     </RadioGroup>
@@ -82,9 +96,10 @@
     <com.google.android.material.button.MaterialButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
         android:textSize="12sp"
         android:textColor="@color/link"
-        android:text="Ik weet het niet zeker"
+        android:text="@string/risk_mode_selection_explanation_button"
         style="@style/Widget.App.Button.Toggle"
         app:layout_constraintTop_toBottomOf="@id/modeRadioGroup"
         app:layout_constraintStart_toStartOf="@id/modeRadioGroup" />
