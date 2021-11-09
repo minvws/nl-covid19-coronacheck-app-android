@@ -210,7 +210,7 @@ class DashboardItemUtilImplTest {
         val combinedItems = util.combineEuVaccinationItems(items)
 
         // Total size of list smaller because of combined vaccination items
-        assertTrue(combinedItems.size == 5)
+        assertTrue(combinedItems.size == 4)
         assertEquals((combinedItems[2] as CardsItem).cards[0], card1)
         assertEquals((combinedItems[2] as CardsItem).cards[1], card2)
         assertEquals((combinedItems[2] as CardsItem).cards[2], card3)
