@@ -34,8 +34,8 @@ class CheckNewRecoveryValidityUseCaseImpl(
         val recoveryGreencardRevisedValidityLaunchDateString = cachedAppConfigUseCase.getCachedAppConfig().recoveryGreenCardRevisedValidityLaunchDate
         val recoveryGreencardRevisedValidityLaunchDate = OffsetDateTime.ofInstant(Instant.parse(recoveryGreencardRevisedValidityLaunchDateString), ZoneId.of("UTC"))
 
-        // Only start checking if local flag is set to true and the launch date is after the current date
-        if (persistenceManager.getShouldCheckRecoveryGreenCardRevisedValidity() && recoveryGreencardRevisedValidityLaunchDate.isAfter(
+        // Only start checking if local flag is set to true and the launch date is in the past
+        if (persistenceManager.getShouldCheckRecoveryGreenCardRevisedValidity() && recoveryGreencardRevisedValidityLaunchDate.isBefore(
                 OffsetDateTime.now(clock))) {
 
             val allEvents = holderDatabase.eventGroupDao().getAll()
