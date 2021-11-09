@@ -13,6 +13,7 @@ import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.VerifierMainFragment
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanInstructionsBinding
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
+import nl.rijksoverheid.ctr.verifier.ui.scanqr.NextScannerScreenState
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrViewModel
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -64,7 +65,11 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
                 // Instructions have been opened, set as seen
                 scanQrViewModel.setScanInstructionsSeen()
                 findNavController().popBackStack(R.id.nav_scan_qr, false)
-                scannerUtil.launchModeSelection(requireActivity())
+                if (scanQrViewModel.getNextScannerScreenState() == NextScannerScreenState.Scanner) {
+                    scannerUtil.launchScanner(requireActivity())
+                } else {
+                    scannerUtil.launchModeSelection(requireActivity())
+                }
             } else {
                 binding.viewPager.currentItem = currentItem + 1
             }
@@ -119,7 +124,11 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
 
                 if (position == adapter.itemCount - 1) {
                     clearToolbar()
-                    binding.button.text = getString(R.string.scan_qr_button)
+                    binding.button.text = getString(if (scanQrViewModel.getNextScannerScreenState() == NextScannerScreenState.Scanner) {
+                        R.string.scan_qr_button
+                    } else {
+                        R.string.onboarding_next
+                    })
                 } else {
                     setupToolbarMenu()
                     binding.button.text = getString(R.string.onboarding_next)
