@@ -4,6 +4,7 @@ import nl.rijksoverheid.ctr.holder.HolderMainActivityViewModel
 import nl.rijksoverheid.ctr.holder.HolderMainActivityViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigiDViewModel
+import nl.rijksoverheid.ctr.holder.ui.create_qr.mijncn.MijnCnViewModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.PaperProofCodeViewModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.PaperProofCodeViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.PaperProofQrScannerViewModel
@@ -28,6 +29,7 @@ val viewModels = module {
     viewModel<HolderMainActivityViewModel> { HolderMainActivityViewModelImpl() }
     viewModel<CommercialTestCodeViewModel> { CommercialTestCodeViewModelImpl(get(), get()) }
     viewModel { DigiDViewModel(get(), get()) }
+    viewModel { MijnCnViewModel(get(), get()) }
     viewModel { TokenQrViewModel(get()) }
     viewModel<DeviceRootedViewModel> { DeviceRootedViewModelImpl(get(), get()) }
     viewModel<DeviceSecureViewModel> { DeviceSecureViewModelImpl(get(), get()) }

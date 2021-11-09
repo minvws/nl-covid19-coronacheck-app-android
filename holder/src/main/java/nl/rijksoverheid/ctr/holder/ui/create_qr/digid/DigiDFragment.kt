@@ -7,10 +7,12 @@ import net.openid.appauth.browser.BrowserAllowList
 import net.openid.appauth.browser.BrowserSelector
 import net.openid.appauth.browser.VersionRange
 import net.openid.appauth.browser.VersionedBrowserMatcher
-import nl.rijksoverheid.ctr.holder.BaseFragment
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
+import nl.rijksoverheid.ctr.holder.BaseFragment
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.holder.ui.create_qr.mijncn.MijnCnViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 
@@ -23,8 +25,21 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
  */
 abstract class DigiDFragment(contentLayoutId: Int) : BaseFragment(contentLayoutId) {
 
+    protected val mijnCnViewModel: MijnCnViewModel by viewModel()
     protected val digidViewModel: DigiDViewModel by sharedViewModel()
     private val authService by lazy {
+        val appAuthConfig = AppAuthConfiguration.Builder()
+            .setBrowserMatcher(BrowserAllowList(*getSupportedBrowsers()))
+            .build()
+        AuthorizationService(requireActivity(), appAuthConfig)
+    }
+
+    private val loginResultMijnCn =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            digidViewModel.handleActivityResult(it, authService)
+        }
+
+    private val authServiceMijnCn by lazy {
         val appAuthConfig = AppAuthConfiguration.Builder()
             .setBrowserMatcher(BrowserAllowList(*getSupportedBrowsers()))
             .build()
@@ -38,6 +53,10 @@ abstract class DigiDFragment(contentLayoutId: Int) : BaseFragment(contentLayoutI
 
     fun loginWithDigiD() {
         digidViewModel.login(loginResult, authService)
+    }
+
+    fun loginWithMijnCN() {
+        mijnCnViewModel.login(loginResultMijnCn, authServiceMijnCn)
     }
 
     /**

@@ -220,7 +220,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
             onButtonClickWithRetryAction()
         }
         binding.noDigidButton.setOnClickListener {
-            context?.launchUrl(getString(R.string.no_digid_url))
+            navigateSafety(GetEventsFragmentDirections.actionNoDigid())
         }
     }
 

@@ -39,6 +39,10 @@ android {
         buildConfigField "String", "BASE_API_URL", "\"https://holder-api.coronacheck.nl/v6/\""
         buildConfigField "String", "DIGI_D_BASE_URL", "\"https://tvs.coronacheck.nl\""
         buildConfigField "String", "DIGI_D_CLIENT_ID", "\"cc_app\""
+
+        buildConfigField "String", "MIJNCN_REDIRECT_URI", "\"https://coronacheck.nl/app/auth2\""
+        buildConfigField "String", "MIJNCN_BASEURL", "\"https://emax.coronacheck.nl\""
+
         buildConfigField "String[]", "CERTIFICATE_PINS",
                 "{" +
                         "\"sha256/lR7gRvqDMW5nhsCMRPE7TKLq0tJkTWMxQ5HAzHCIfQ0=\"" +
@@ -71,6 +75,9 @@ android {
             buildConfigField "String", "DIGI_D_BASE_URL", "\"https://tvs.acc.coronacheck.nl\""
             buildConfigField "String", "DIGI_D_CLIENT_ID", "\"cc_app\""
             buildConfigField "String", "DIGI_D_REDIRECT_URI", "\"https://web.acc.coronacheck.nl/app/auth2\""
+
+            buildConfigField "String", "MIJNCN_REDIRECT_URI", "\"https://web.acc.coronacheck.nl/app/auth2\""
+            buildConfigField "String", "MIJNCN_BASEURL", "\"https://emax.acc.coronacheck.nl\""
             buildConfigField "String[]", "CERTIFICATE_PINS",
                     "{" +
                             "\"sha256/lR7gRvqDMW5nhsCMRPE7TKLq0tJkTWMxQ5HAzHCIfQ0=\"" +
