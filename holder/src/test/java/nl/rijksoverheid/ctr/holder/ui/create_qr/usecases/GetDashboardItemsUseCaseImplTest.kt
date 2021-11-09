@@ -82,7 +82,7 @@ class GetDashboardItemsUseCaseImplTest: AutoCloseKoinTest() {
 
         assertEquals(dashboardItems.internationalItems.size, 3)
         assertTrue(dashboardItems.domesticItems[0] is DashboardItem.HeaderItem)
-        assertTrue(dashboardItems.internationalItems[1] is DashboardItem.OriginInfoItem)
+        assertTrue(dashboardItems.internationalItems[1] is DashboardItem.InfoItem.OriginInfoItem)
         assertTrue(dashboardItems.internationalItems[2] is DashboardItem.AddQrButtonItem)
     }
 

@@ -134,7 +134,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                 title = R.string.travel_button_domestic,
                 greenCardType = GreenCardType.Domestic,
                 items = listOf(
-                    DashboardItem.InfoItem.NonDismissible.ExtendDomesticRecovery
+                    DashboardItem.InfoItem.ExtendDomesticRecovery
                 )
             )
         )
@@ -157,7 +157,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                 title = R.string.travel_button_domestic,
                 greenCardType = GreenCardType.Domestic,
                 items = listOf(
-                    DashboardItem.InfoItem.Dismissible.ExtendedDomesticRecovery
+                    DashboardItem.InfoItem.ExtendedDomesticRecovery
                 )
             )
         )
@@ -306,27 +306,27 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
 //        assertListItemCount(listId = R.id.recyclerView, expectedItemCount = 0)
 //    }
 
-    @Test
-    fun `Origin card should be displayed when origin item is presented`() {
-        startFragment(
-            DashboardTabItem(
-                title = R.string.travel_button_domestic,
-                greenCardType = GreenCardType.Domestic,
-                items = listOf(
-                    DashboardItem.OriginInfoItem(GreenCardType.Domestic, OriginType.Vaccination)
-                )
-            )
-        )
-
-        assertCustomAssertionAtPosition(
-            listId = R.id.recyclerView,
-            position = 0,
-            targetViewId = R.id.dashboardItemOriginRoot,
-            viewAssertion = ViewAssertion { view, _ ->
-                assertTrue { view is CardView }
-            }
-        )
-    }
+//    @Test
+//    fun `Origin card should be displayed when origin item is presented`() {
+//        startFragment(
+//            DashboardTabItem(
+//                title = R.string.travel_button_domestic,
+//                greenCardType = GreenCardType.Domestic,
+//                items = listOf(
+//                    DashboardItem.InfoItem.OriginInfoItem(GreenCardType.Domestic, OriginType.Vaccination)
+//                )
+//            )
+//        )
+//
+//        assertCustomAssertionAtPosition(
+//            listId = R.id.recyclerView,
+//            position = 0,
+//            targetViewId = R.id.dashboardItemOriginRoot,
+//            viewAssertion = ViewAssertion { view, _ ->
+//                assertTrue { view is CardView }
+//            }
+//        )
+//    }
 
     @Test
     fun `Add qr button should be visible when its item is presented`() {
