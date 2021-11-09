@@ -99,6 +99,8 @@ class VerifierMainFragment :
             .styleTitle(context, R.attr.textAppearanceHeadline6)
         binding.navView.menu.findItem(R.id.nav_scan_instructions)
             .styleTitle(context, R.attr.textAppearanceHeadline6)
+        binding.navView.menu.findItem(R.id.nav_mode_select)
+                .styleTitle(context, R.attr.textAppearanceHeadline6)
         binding.navView.menu.findItem(R.id.nav_support)
             .styleTitle(context, R.attr.textAppearanceBody1)
         binding.navView.menu.findItem(R.id.nav_about_this_app)

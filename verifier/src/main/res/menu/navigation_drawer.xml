@@ -12,15 +12,15 @@
             android:id="@+id/nav_scan_instructions"
             android:checkable="false"
             android:title="@string/scan_instructions_menu_title" />
-    </group>
-    <group
-        android:id="@+id/info"
-        android:checkableBehavior="single">
 
         <item
             android:id="@+id/nav_mode_select"
             android:checkable="false"
-            android:title="Risico instelling" />
+            android:title="@string/risk_mode_menu_title" />
+    </group>
+    <group
+        android:id="@+id/info"
+        android:checkableBehavior="single">
 
         <item
             android:id="@+id/nav_support"

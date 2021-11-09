@@ -55,8 +55,8 @@ class SharedPreferencesPersistenceManager(private val sharedPreferences: SharedP
         return sharedPreferences.getString(LOCAL_TEST_RESULT, null)
     }
 
-    override fun setHighRiskModeSelected(highRisk: Boolean) {
-        sharedPreferences.edit().putBoolean(RISK_MODE_SET, true).apply()
+    override fun setHighRiskModeSelected(isHighRisk: Boolean) {
+        sharedPreferences.edit().putBoolean(RISK_MODE_SET, isHighRisk).apply()
     }
 
     override fun getHighRiskModeSelected(): Boolean {

@@ -145,4 +145,7 @@
     <string name="risk_mode_selection_low_risk_title">Laag risico</string>
     <string name="risk_mode_selection_low_risk_subtitle">Bijvoorbeeld een museum, dierentuin of winkel, koffiehuis</string>
     <string name="risk_mode_selection_explanation_button">Ik weet het niet zeker</string>
+    <string name="risk_mode_valid_high_risk_location">Hoog risico locatie</string>
+    <string name="risk_mode_menu_title">Risico instelling</string>
+    <string name="risk_mode_selection_subtitle_from_menu">Geef aan of je op een hoog of laag risico plek gaat scannen.</string>
 </resources>
