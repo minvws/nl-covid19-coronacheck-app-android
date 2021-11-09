@@ -105,27 +105,29 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
         )
     }
 
-//    @Test
-//    fun `Clock deviation card should be displayed when clock deviation item is presented`() {
-//        startFragment(
-//            DashboardTabItem(
-//                title = R.string.travel_button_domestic,
-//                greenCardType = GreenCardType.Domestic,
-//                items = listOf(
-//                    DashboardItem.ClockDeviationItem
-//                )
-//            )
-//        )
-//
-//        assertCustomAssertionAtPosition(
-//            listId = R.id.recyclerView,
-//            position = 0,
-//            targetViewId = R.id.dashboardItemClockDeviation,
-//            viewAssertion = ViewAssertion { view, _ ->
-//                assertTrue { view is CardView }
-//            }
-//        )
-//    }
+    @Test
+    fun `Clock deviation card should be displayed with a read more and without close button`() {
+        startFragment(
+            DashboardTabItem(
+                title = R.string.travel_button_domestic,
+                greenCardType = GreenCardType.Domestic,
+                items = listOf(
+                    DashboardItem.InfoItem.ClockDeviationItem
+                )
+            )
+        )
+
+        assertCustomAssertionAtPosition(
+            listId = R.id.recyclerView,
+            position = 0,
+            targetViewId = R.id.dashboardItemInfoRoot,
+            viewAssertion = ViewAssertion { view, _ ->
+                assertTrue { view is CardView }
+            }
+        )
+        assertNotDisplayed(R.id.close)
+        assertDisplayed(R.id.button)
+    }
 
     @Test
     fun `Non dismissable info card should be displayed when non dismissable item is presented`() {
@@ -277,56 +279,59 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
         )
     }
 
-//    @Test
-//    fun `Expired card should be displayed when expired item is presented and can be dismissed`() {
-//        startFragment(
-//            DashboardTabItem(
-//                title = R.string.travel_button_domestic,
-//                greenCardType = GreenCardType.Domestic,
-//                items = listOf(
-//                    DashboardItem.GreenCardExpiredItem(fakeGreenCard)
-//                )
-//            )
-//        )
-//
-//        // assert display of card
-//        assertCustomAssertionAtPosition(
-//            listId = R.id.recyclerView,
-//            position = 0,
-//            targetViewId = R.id.dashboardItemExpiredRoot,
-//            viewAssertion = ViewAssertion { view, _ ->
-//                assertTrue { view is CardView }
-//            }
-//        )
-//
-//        // dismiss card
-//        performActionOnView(ViewMatchers.withId(R.id.close), ViewActions.click())
-//
-//        // assert card is dismissed
-//        assertListItemCount(listId = R.id.recyclerView, expectedItemCount = 0)
-//    }
+    @Test
+    fun `Expired card no read more and can be dismissed`() {
+        startFragment(
+            DashboardTabItem(
+                title = R.string.travel_button_domestic,
+                greenCardType = GreenCardType.Domestic,
+                items = listOf(
+                    DashboardItem.InfoItem.GreenCardExpiredItem(fakeGreenCard)
+                )
+            )
+        )
 
-//    @Test
-//    fun `Origin card should be displayed when origin item is presented`() {
-//        startFragment(
-//            DashboardTabItem(
-//                title = R.string.travel_button_domestic,
-//                greenCardType = GreenCardType.Domestic,
-//                items = listOf(
-//                    DashboardItem.InfoItem.OriginInfoItem(GreenCardType.Domestic, OriginType.Vaccination)
-//                )
-//            )
-//        )
-//
-//        assertCustomAssertionAtPosition(
-//            listId = R.id.recyclerView,
-//            position = 0,
-//            targetViewId = R.id.dashboardItemOriginRoot,
-//            viewAssertion = ViewAssertion { view, _ ->
-//                assertTrue { view is CardView }
-//            }
-//        )
-//    }
+        // assert display of card
+        assertCustomAssertionAtPosition(
+            listId = R.id.recyclerView,
+            position = 0,
+            targetViewId = R.id.dashboardItemInfoRoot,
+            viewAssertion = ViewAssertion { view, _ ->
+                assertTrue { view is CardView }
+            }
+        )
+        assertNotDisplayed(R.id.button)
+
+        // dismiss card
+        performActionOnView(ViewMatchers.withId(R.id.close), ViewActions.click())
+
+        // assert card is dismissed
+        assertListItemCount(listId = R.id.recyclerView, expectedItemCount = 0)
+    }
+
+    @Test
+    fun `Origin card cannot be dismissed and should have a read more`() {
+        startFragment(
+            DashboardTabItem(
+                title = R.string.travel_button_domestic,
+                greenCardType = GreenCardType.Domestic,
+                items = listOf(
+                    DashboardItem.InfoItem.OriginInfoItem(GreenCardType.Domestic, OriginType.Vaccination)
+                )
+            )
+        )
+
+        assertCustomAssertionAtPosition(
+            listId = R.id.recyclerView,
+            position = 0,
+            targetViewId = R.id.dashboardItemInfoRoot,
+            viewAssertion = ViewAssertion { view, _ ->
+                assertTrue { view is CardView }
+            }
+        )
+        assertNotDisplayed(R.id.close)
+        assertDisplayed(R.id.button)
+    }
 
     @Test
     fun `Add qr button should be visible when its item is presented`() {
