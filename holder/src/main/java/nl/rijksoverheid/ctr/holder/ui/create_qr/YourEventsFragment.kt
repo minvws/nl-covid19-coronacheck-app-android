@@ -16,11 +16,10 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import nl.rijksoverheid.ctr.design.ext.formatDateTime
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
-import nl.rijksoverheid.ctr.design.ext.formatMonth
-import nl.rijksoverheid.ctr.design.utils.BottomSheetData
-import nl.rijksoverheid.ctr.design.utils.BottomSheetDialogUtil
-import nl.rijksoverheid.ctr.design.utils.DescriptionData
+import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
+import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
+import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.holder.BaseFragment
 import nl.rijksoverheid.ctr.holder.HolderFlow
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
@@ -55,7 +54,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
     private val personalDetailsUtil: PersonalDetailsUtil by inject()
     private val infoScreenUtil: InfoScreenUtil by inject()
     private val dialogUtil: DialogUtil by inject()
-    private val bottomSheetDialogUtil: BottomSheetDialogUtil by inject()
+    private val infoFragmentUtil: InfoFragmentUtil by inject()
 
     private val remoteProtocol3Util: RemoteProtocol3Util by inject()
     private val remoteEventUtil: RemoteEventUtil by inject()
@@ -557,7 +556,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
     private fun presentFooter(binding: FragmentYourEventsBinding) {
         binding.somethingWrongButton.setOnClickListener {
             val type = args.type
-            bottomSheetDialogUtil.present(childFragmentManager, BottomSheetData.TitleDescription(
+            infoFragmentUtil.presentAsBottomSheet(childFragmentManager, InfoFragmentData.TitleDescription(
                 title = getString(R.string.dialog_negative_test_result_something_wrong_title),
                 descriptionData = DescriptionData(
                     htmlText = if (type is YourEventsFragmentType.RemoteProtocol3Type && type.originType is OriginType.Vaccination) {

@@ -8,9 +8,9 @@ import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
-import nl.rijksoverheid.ctr.design.utils.BottomSheetData
-import nl.rijksoverheid.ctr.design.utils.BottomSheetDialogUtil
-import nl.rijksoverheid.ctr.design.utils.DescriptionData
+import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
+import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
+import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.verifier.R
@@ -31,7 +31,7 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
     private val scanQrViewModel: ScanQrViewModel by viewModel()
     private val scannerUtil: ScannerUtil by inject()
     private val clockDeviationUseCase: ClockDeviationUseCase by inject()
-    private val bottomSheetDialogUtil: BottomSheetDialogUtil by inject()
+    private val infoFragmentUtil: InfoFragmentUtil by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -50,7 +50,7 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
         }
 
         binding.clockdeviationView.clockdeviationButton.setOnClickListener {
-            bottomSheetDialogUtil.present(childFragmentManager, BottomSheetData.TitleDescription(
+            infoFragmentUtil.presentAsBottomSheet(childFragmentManager, InfoFragmentData.TitleDescription(
                 title = getString(R.string.clockdeviation_page_title),
                 descriptionData = DescriptionData(R.string.clockdeviation_page_message, customLinkIntent = Intent(Settings.ACTION_DATE_SETTINGS)),
             ))

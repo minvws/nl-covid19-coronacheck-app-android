@@ -4,6 +4,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
+import nl.rijksoverheid.ctr.design.fragments.info.ButtonData
+import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
+import nl.rijksoverheid.ctr.design.fragments.info.InfoFragment
+import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
 import nl.rijksoverheid.ctr.design.utils.*
 import nl.rijksoverheid.ctr.holder.HolderFlow
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
@@ -32,7 +36,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) {
 
     private val dialogUtil: DialogUtil by inject()
-    private val bottomSheetDialogUtil: BottomSheetDialogUtil by inject()
+    private val infoFragmentUtil: InfoFragmentUtil by inject()
 
     private val getEventsViewModel: GetEventsViewModel by viewModel()
 
@@ -50,7 +54,7 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentChooseProviderBinding.bind(view)
-
+        
         binding.providerCommercial.bind(
             R.string.choose_provider_commercial_title,
             null
@@ -66,10 +70,10 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
         ) { onButtonClickWithRetryAction() }
 
         binding.notYetTested.setOnClickListener {
-            bottomSheetDialogUtil.present(childFragmentManager, BottomSheetData.TitleDescriptionWithButton(
+            infoFragmentUtil.presentAsBottomSheet(childFragmentManager, InfoFragmentData.TitleDescriptionWithButton(
                 title = getString(R.string.not_yet_tested_title),
                 descriptionData = DescriptionData(R.string.not_yet_tested_description),
-                buttonData = ButtonData(getString(R.string.not_yet_tested_button), getString(R.string.url_make_appointment)),
+                buttonData = ButtonData.LinkButton(getString(R.string.not_yet_tested_button), getString(R.string.url_make_appointment)),
             ))
         }
 

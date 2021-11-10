@@ -9,9 +9,9 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
 import com.xwray.groupie.viewbinding.BindableItem
-import nl.rijksoverheid.ctr.design.utils.BottomSheetData
-import nl.rijksoverheid.ctr.design.utils.BottomSheetDialogUtil
-import nl.rijksoverheid.ctr.design.utils.DescriptionData
+import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
+import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
+import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMyOverviewBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
@@ -53,7 +53,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
 
     }
 
-    private val bottomSheetDialogUtil: BottomSheetDialogUtil by inject()
+    private val infoFragmentUtil: InfoFragmentUtil by inject()
     private val myOverviewFragmentInfoItemHandlerUtil: MyOverviewFragmentInfoItemHandlerUtil by inject()
     val dashboardViewModel: DashboardViewModel by sharedViewModelWithOwner(owner = {
         ViewModelOwner.from(
@@ -178,8 +178,8 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                 }
                 is DashboardItem.ClockDeviationItem -> {
                     adapterItems.add(MyOverviewClockDeviationItem(onInfoIconClicked = {
-                        bottomSheetDialogUtil.present(
-                            childFragmentManager, BottomSheetData.TitleDescription(
+                        infoFragmentUtil.presentAsBottomSheet(
+                            childFragmentManager, InfoFragmentData.TitleDescription(
                                 title = getString(R.string.clock_deviation_explanation_title),
                                 descriptionData = DescriptionData(R.string.clock_deviation_explanation_description, customLinkIntent = Intent(Settings.ACTION_DATE_SETTINGS)),
                             )
@@ -211,22 +211,22 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
     }
 
     private fun presentOriginInfoForEuQr(originType: OriginType) {
-        bottomSheetDialogUtil.present(childFragmentManager,
+        infoFragmentUtil.presentAsBottomSheet(childFragmentManager,
             data = when (originType) {
                 is OriginType.Test -> {
-                    BottomSheetData.TitleDescription(
+                    InfoFragmentData.TitleDescription(
                         title = getString(R.string.my_overview_green_card_not_valid_title_test),
                         descriptionData = DescriptionData(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_test),
                     )
                 }
                 is OriginType.Vaccination -> {
-                    BottomSheetData.TitleDescription(
+                    InfoFragmentData.TitleDescription(
                         title = getString(R.string.my_overview_green_card_not_valid_title_vaccination),
                         descriptionData = DescriptionData(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_vaccination),
                     )
                 }
                 is OriginType.Recovery -> {
-                    BottomSheetData.TitleDescription(
+                    InfoFragmentData.TitleDescription(
                         title = getString(R.string.my_overview_green_card_not_valid_title_recovery),
                         descriptionData = DescriptionData(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_recovery),
                     )
@@ -249,8 +249,8 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                 R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_recovery
             )
         }
-        bottomSheetDialogUtil.present(childFragmentManager,
-            BottomSheetData.TitleDescription(
+        infoFragmentUtil.presentAsBottomSheet(childFragmentManager,
+            InfoFragmentData.TitleDescription(
                 title = title,
                 descriptionData = DescriptionData(description, htmlLinksEnabled = true),
             )
