@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import nl.rijksoverheid.ctr.design.utils.BottomSheetData
-import nl.rijksoverheid.ctr.design.utils.BottomSheetDialogUtil
-import nl.rijksoverheid.ctr.design.utils.DescriptionData
+import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
+import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
+import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentPaperProofCodeBinding
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.PaperProofCodeResult
@@ -20,7 +20,7 @@ import org.koin.androidx.viewmodel.scope.emptyState
 
 class PaperProofCodeFragment : Fragment(R.layout.fragment_paper_proof_code) {
 
-    private val bottomSheetDialogUtil: BottomSheetDialogUtil by inject()
+    private val infoFragmentUtil: InfoFragmentUtil by inject()
 
     private val viewModel: PaperProofCodeViewModel by stateViewModel(
         state = emptyState(),
@@ -66,7 +66,7 @@ class PaperProofCodeFragment : Fragment(R.layout.fragment_paper_proof_code) {
         }
 
         binding.noLetterCombinationBtn.setOnClickListener {
-            bottomSheetDialogUtil.present(childFragmentManager, BottomSheetData.TitleDescription(
+            infoFragmentUtil.presentAsBottomSheet(childFragmentManager, InfoFragmentData.TitleDescription(
                 title = getString(R.string.no_letter_combination_dialog_title),
                 descriptionData = DescriptionData(R.string.no_letter_combination_dialog_description, htmlLinksEnabled = true),
             ))

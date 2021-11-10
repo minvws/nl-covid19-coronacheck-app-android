@@ -1,9 +1,9 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview.utils
 
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthTime
-import nl.rijksoverheid.ctr.design.utils.BottomSheetData
-import nl.rijksoverheid.ctr.design.utils.BottomSheetDialogUtil
-import nl.rijksoverheid.ctr.design.utils.DescriptionData
+import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
+import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
+import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewFragment
@@ -31,7 +31,7 @@ interface MyOverviewFragmentInfoItemHandlerUtil {
 }
 
 class MyOverviewFragmentInfoItemHandlerUtilImpl(
-    private val bottomSheetDialogUtil: BottomSheetDialogUtil
+    private val infoFragmentUtil: InfoFragmentUtil
 ) : MyOverviewFragmentInfoItemHandlerUtil {
 
     /**
@@ -43,27 +43,27 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
     ) {
         when (infoItem) {
             is DashboardItem.InfoItem.Dismissible.ExtendedDomesticRecovery -> {
-                bottomSheetDialogUtil.present(
+                infoFragmentUtil.presentAsBottomSheet(
                     myOverviewFragment.childFragmentManager,
-                    BottomSheetData.TitleDescription(
+                    InfoFragmentData.TitleDescription(
                         title = myOverviewFragment.getString(R.string.extended_domestic_recovery_green_card_bottomsheet_title),
                         descriptionData = DescriptionData(R.string.extended_domestic_recovery_green_card_bottomsheet_description, htmlLinksEnabled = true),
                     )
                 )
             }
             is DashboardItem.InfoItem.Dismissible.RecoveredDomesticRecovery -> {
-                bottomSheetDialogUtil.present(
+                infoFragmentUtil.presentAsBottomSheet(
                     myOverviewFragment.childFragmentManager,
-                    BottomSheetData.TitleDescription(
+                    InfoFragmentData.TitleDescription(
                         title = myOverviewFragment.getString(R.string.recovered_domestic_recovery_green_card_bottomsheet_title),
                         descriptionData = DescriptionData(R.string.recovered_domestic_recovery_green_card_bottomsheet_description),
                     )
                 )
             }
             is DashboardItem.InfoItem.Dismissible.RefreshedEuVaccinations -> {
-                bottomSheetDialogUtil.present(
+                infoFragmentUtil.presentAsBottomSheet(
                     myOverviewFragment.childFragmentManager,
-                    BottomSheetData.TitleDescription(
+                    InfoFragmentData.TitleDescription(
                         title = myOverviewFragment.getString(R.string.refreshed_eu_items_title),
                         descriptionData = DescriptionData(R.string.refreshed_eu_items_description, htmlLinksEnabled = true),
                     )
@@ -100,9 +100,9 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
                 )
             }
             is DashboardItem.InfoItem.NonDismissible.ConfigFreshnessWarning -> {
-                bottomSheetDialogUtil.present(
+                infoFragmentUtil.presentAsBottomSheet(
                     myOverviewFragment.childFragmentManager,
-                    BottomSheetData.TitleDescription(
+                    InfoFragmentData.TitleDescription(
                         title = myOverviewFragment.getString(R.string.config_warning_page_title),
                         descriptionData = DescriptionData(htmlTextString = myOverviewFragment.getString(
                             R.string.config_warning_page_message,
