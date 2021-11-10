@@ -65,7 +65,7 @@ data class RemoteConfigProviders(
         }
         companion object {
             const val PROVIDER_IDENTIFIER_DCC = "dcc"
-            const val PROVIDER_IDENTIFIER_DCC_WITH_UNIQUE = "dcc_[unique]"
+            const val PROVIDER_IDENTIFIER_DCC_SUFFIX = "dcc_[unique]"
         }
 
         override fun equals(other: Any?): Boolean {
