@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.design
+package nl.rijksoverheid.ctr.design.fragments.info
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,8 +11,8 @@ import com.google.android.material.R
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import nl.rijksoverheid.ctr.design.databinding.BottomSheetBinding
-import nl.rijksoverheid.ctr.design.utils.BottomSheetData
+import nl.rijksoverheid.ctr.design.databinding.FragmentInfoBottomsheetBinding
+import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 
 /*
@@ -22,7 +22,7 @@ import nl.rijksoverheid.ctr.shared.ext.launchUrl
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-open class ExpandedBottomSheetDialogFragment : BottomSheetDialogFragment() {
+open class InfoBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,12 +35,12 @@ open class ExpandedBottomSheetDialogFragment : BottomSheetDialogFragment() {
             BottomSheetBehavior.from(sheetInternal).state = BottomSheetBehavior.STATE_EXPANDED
         }
         super.onCreateView(inflater, container, savedInstanceState)
-        return BottomSheetBinding.inflate(inflater).root
+        return FragmentInfoBottomsheetBinding.inflate(inflater).root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val binding = BottomSheetBinding.bind(view)
+        val binding = FragmentInfoBottomsheetBinding.bind(view)
 
         binding.close.setOnClickListener {
             dismiss()
@@ -56,7 +56,7 @@ open class ExpandedBottomSheetDialogFragment : BottomSheetDialogFragment() {
             }
         })
 
-        val expandedBottomSheetData = arguments?.get(dataKey) as? BottomSheetData ?: return
+        val expandedBottomSheetData = arguments?.get(InfoFragmentUtil.EXTRA_INFO_FRAGMENT_DATA) as? InfoFragmentData ?: return
         binding.title.text = expandedBottomSheetData.title
         binding.description.apply {
             expandedBottomSheetData.descriptionData.run {
@@ -68,21 +68,24 @@ open class ExpandedBottomSheetDialogFragment : BottomSheetDialogFragment() {
             }
         }
         when (expandedBottomSheetData) {
-            is BottomSheetData.TitleDescription -> {}
-            is BottomSheetData.TitleDescriptionWithButton -> {
+            is InfoFragmentData.TitleDescription -> {}
+            is InfoFragmentData.TitleDescriptionWithButton -> {
                 binding.button.visibility = View.VISIBLE
                 binding.button.apply {
-                    text = expandedBottomSheetData.buttonData.text
-                    setOnClickListener { expandedBottomSheetData.buttonData.link.launchUrl(context) }
+                    val buttonData = expandedBottomSheetData.buttonData
+                    if (buttonData is ButtonData.LinkButton) {
+                        text = buttonData.text
+                        setOnClickListener { buttonData.link.launchUrl(context) }
+                    }
                 }
             }
-            is BottomSheetData.TitleDescriptionWithFooter -> {
+            is InfoFragmentData.TitleDescriptionWithFooter -> {
                 binding.footer.text = expandedBottomSheetData.footerText
             }
         }
     }
 
     companion object {
-        const val dataKey = "expandedBottomSheetData"
+        const val dataKey = "infoFragmentData"
     }
 }

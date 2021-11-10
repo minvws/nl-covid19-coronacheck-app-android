@@ -515,4 +515,12 @@
     <string name="cannot_create_recovery_proof_title">Positive test result no longer valid</string>
     <string name="cannot_create_recovery_proof_description"><![CDATA[It has been more than %1s days since you tested positive for coronavirus. Therefore, your test result is no longer valid. Unfortunately, you cannot create a recovery certificate.<br/><br/>Find more information on the <a href="https://www.coronacheck.nl//en/guidepost">Guidepost</a>.]]></string>
     <string name="your_vaccination_dcc_row_subtitle"><![CDATA[Name: %1$s<br/>Date of birth: %2$s]]></string>
+    <string name="add_paper_proof_explanation_healthcare_item_title">Gekregen van een zorgverlener</string>
+    <string name="add_paper_proof_explanation_healthcare_item_subtitle">Bijvoorbeeld je huisarts of je zorginstelling heeft dit voor je geprint</string>
+    <string name="add_paper_proof_explanation_mail_item_title">Opgestuurd per post</string>
+    <string name="add_paper_proof_explanation_mail_item_subtitle">De overheid heeft je het bewijs opgestuurd per post</string>
+    <string name="add_paper_proof_explanation_self_printed_button">Zelf je bewijs uitgeprint?</string>
+    <string name="add_paper_proof_self_printed_toolbar_title">Zelf je bewijs uitgeprint?</string>
+    <string name="add_paper_proof_self_printed_description"><![CDATA[Dan is het niet mogelijk om jouw bewijs op deze manier aan de app toe te voegen.<br/><br/>Je kunt wel je bewijs toevoegen aan de app met behulp van DigiD. Ga naar ‘Bewijs toevoegen’ in het menu. Kies je bewijs en haal je gegevens op door in te loggen met DigiD.]]></string>
+    <string name="add_paper_proof_self_printed_goto_add_proof_button">Naar bewijs toevoegen</string>
 </resources>

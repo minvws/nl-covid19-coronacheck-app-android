@@ -3,9 +3,9 @@ package nl.rijksoverheid.ctr.holder.ui.myoverview.utils
 import android.content.Intent
 import android.provider.Settings
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthTime
-import nl.rijksoverheid.ctr.design.utils.BottomSheetData
-import nl.rijksoverheid.ctr.design.utils.BottomSheetDialogUtil
-import nl.rijksoverheid.ctr.design.utils.DescriptionData
+import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
+import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
+import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
@@ -35,7 +35,7 @@ interface MyOverviewFragmentInfoItemHandlerUtil {
 }
 
 class MyOverviewFragmentInfoItemHandlerUtilImpl(
-    private val bottomSheetDialogUtil: BottomSheetDialogUtil
+    private val infoFragmentUtil: InfoFragmentUtil
 ) : MyOverviewFragmentInfoItemHandlerUtil {
 
     /**

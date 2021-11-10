@@ -9,10 +9,10 @@ import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import nl.rijksoverheid.ctr.design.utils.BottomSheetData
-import nl.rijksoverheid.ctr.design.utils.BottomSheetDialogUtil
-import nl.rijksoverheid.ctr.design.utils.DescriptionData
+import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
+import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
+import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.holder.BaseFragment
 import nl.rijksoverheid.ctr.holder.HolderFlow
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
@@ -46,7 +46,7 @@ import org.koin.androidx.viewmodel.scope.emptyState
     )
 
     private val dialogUtil: DialogUtil by inject()
-    private val bottomSheetDialogUtil: BottomSheetDialogUtil by inject()
+    private val infoFragmentUtil: InfoFragmentUtil by inject()
 
     private val navArgs: CommercialTestCodeFragmentArgs by navArgs()
 
@@ -196,7 +196,7 @@ import org.koin.androidx.viewmodel.scope.emptyState
         })
 
         binding.noTokenReceivedBtn.setOnClickListener {
-            bottomSheetDialogUtil.present(childFragmentManager, BottomSheetData.TitleDescription(
+            infoFragmentUtil.presentAsBottomSheet(childFragmentManager, InfoFragmentData.TitleDescription(
                 title = getString(R.string.commercial_test_type_no_code_title),
                 descriptionData = DescriptionData(R.string.commercial_test_type_no_code_description),
             ))
