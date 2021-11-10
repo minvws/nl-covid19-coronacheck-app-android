@@ -28,11 +28,12 @@ interface RemoteEventHolderUtil {
 
 class RemoteEventHolderUtilImpl(
     private val moshi: Moshi,
-    private val getEventsFromPaperProofQrUseCase: GetEventsFromPaperProofQrUseCase
+    private val getEventsFromPaperProofQrUseCase: GetEventsFromPaperProofQrUseCase,
+    private val remoteEventUtil: RemoteEventUtil
 ) : RemoteEventHolderUtil {
     override fun holder(data: ByteArray, providerIdentifier: String): RemoteProtocol3.Holder? {
         val remoteEvent =
-            if (providerIdentifier == RemoteConfigProviders.EventProvider.PROVIDER_IDENTIFIER_DCC) {
+            if (remoteEventUtil.isDccEvent(providerIdentifier)) {
                 val qr = JSONObject(String(data)).optString("credential")
                 getEventsFromPaperProofQrUseCase.get(qr)
             } else {

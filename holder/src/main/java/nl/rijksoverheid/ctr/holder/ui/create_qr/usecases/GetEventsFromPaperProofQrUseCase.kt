@@ -6,7 +6,6 @@ import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import org.json.JSONException
 
 interface GetEventsFromPaperProofQrUseCase {
-
     fun get(qrCode: String): RemoteProtocol3
 }
 
@@ -23,8 +22,20 @@ class GetEventsFromPaperProofQrUseCaseImpl(
         val holder = remoteEventUtil.getHolderFromDcc(dcc!!)
         val event = remoteEventUtil.getRemoteEventFromDcc(dcc)
 
+        val providerIdentifier = when (event) {
+            is RemoteEventVaccination -> {
+                // For hkvi vaccination events we want to be able to save multiple events (for example you get 2 papers, one with your first vaccination and another with your second)
+                // The database prevents us from doing so because it has uniques on both providerIdentifier and type
+                // For hkvi vaccinations we add the unique to the provider identifier so it gets saved as well
+                RemoteConfigProviders.EventProvider.PROVIDER_IDENTIFIER_DCC_SUFFIX.replace("[unique]", event.unique ?: "")
+            }
+            else -> {
+                RemoteConfigProviders.EventProvider.PROVIDER_IDENTIFIER_DCC
+            }
+        }
+
         return RemoteProtocol3(
-            providerIdentifier = RemoteConfigProviders.EventProvider.PROVIDER_IDENTIFIER_DCC,
+            providerIdentifier = providerIdentifier,
             protocolVersion = "3.0",
             status = RemoteProtocol.Status.COMPLETE,
             holder = holder,
