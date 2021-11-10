@@ -15,37 +15,37 @@ sealed class DashboardItem {
     data class PlaceholderCardItem(val greenCardType: GreenCardType) : DashboardItem()
 
     sealed class InfoItem(
-        val isDismissable: Boolean,
+        val isDismissible: Boolean,
         val hasReadMore: Boolean
     ) : DashboardItem() {
 
         object RefreshEuVaccinations :
-            InfoItem(isDismissable = false, hasReadMore = true)
+            InfoItem(isDismissible = false, hasReadMore = true)
 
         object ExtendDomesticRecovery :
-            InfoItem(isDismissable = false, hasReadMore = true)
+            InfoItem(isDismissible = false, hasReadMore = true)
 
         object RecoverDomesticRecovery :
-            InfoItem(isDismissable = false, hasReadMore = true)
+            InfoItem(isDismissible = false, hasReadMore = true)
 
         data class ConfigFreshnessWarning(val maxValidityDate: Long) :
-            InfoItem(isDismissable = false, hasReadMore = true)
+            InfoItem(isDismissible = false, hasReadMore = true)
 
-        object RefreshedEuVaccinations : InfoItem(isDismissable = true, hasReadMore = true)
+        object RefreshedEuVaccinations : InfoItem(isDismissible = true, hasReadMore = true)
 
-        object ExtendedDomesticRecovery : InfoItem(isDismissable = true, hasReadMore = true)
+        object ExtendedDomesticRecovery : InfoItem(isDismissible = true, hasReadMore = true)
 
-        object RecoveredDomesticRecovery : InfoItem(isDismissable = true, hasReadMore = true)
+        object RecoveredDomesticRecovery : InfoItem(isDismissible = true, hasReadMore = true)
 
         data class OriginInfoItem(
             val greenCardType: GreenCardType,
             val originType: OriginType,
-        ) : InfoItem(isDismissable = false, hasReadMore = true)
+        ) : InfoItem(isDismissible = false, hasReadMore = true)
 
-        object ClockDeviationItem : InfoItem(isDismissable = false, hasReadMore = true)
+        object ClockDeviationItem : InfoItem(isDismissible = false, hasReadMore = true)
 
         data class GreenCardExpiredItem(val greenCard: GreenCard) :
-            InfoItem(isDismissable = true, hasReadMore = false)
+            InfoItem(isDismissible = true, hasReadMore = false)
     }
 
     data class CardsItem(val cards: List<CardItem>) : DashboardItem() {

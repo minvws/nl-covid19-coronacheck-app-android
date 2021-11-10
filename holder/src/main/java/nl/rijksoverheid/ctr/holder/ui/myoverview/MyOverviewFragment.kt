@@ -111,10 +111,10 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
 
     private fun addInfoCard(
         adapterItems: MutableList<BindableItem<*>>,
-        dashboardItem: DashboardItem
+        dashboardItem: DashboardItem.InfoItem
     ) {
         adapterItems.add(MyOverviewInfoCardItem(
-            infoItem = dashboardItem as DashboardItem.InfoItem,
+            infoItem = dashboardItem,
             onButtonClick = {
                 myOverviewFragmentInfoItemHandlerUtil.handleButtonClick(this, it)
             },

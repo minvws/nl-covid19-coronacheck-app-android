@@ -24,7 +24,7 @@ class MyOverviewInfoCardItem(
     BindableItem<ItemMyOverviewInfoCardBinding>(R.layout.item_my_overview_info_card.toLong()) {
 
     override fun bind(viewBinding: ItemMyOverviewInfoCardBinding, position: Int) {
-        if (infoItem.isDismissable) {
+        if (infoItem.isDismissible) {
             // dismissible item has a close button with callback
             viewBinding.close.visibility = View.VISIBLE
             viewBinding.close.setOnClickListener {

@@ -130,7 +130,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `Non dismissable info card should be displayed when non dismissable item is presented`() {
+    fun `Non dismissible info card should be displayed when non dismissible item is presented`() {
         startFragment(
             DashboardTabItem(
                 title = R.string.travel_button_domestic,
@@ -153,7 +153,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `Info card should be displayed when dismissable item is presented and it can be dismissed`() {
+    fun `Info card should be displayed when dismissible item is presented and it can be dismissed`() {
         startFragment(
             DashboardTabItem(
                 title = R.string.travel_button_domestic,
