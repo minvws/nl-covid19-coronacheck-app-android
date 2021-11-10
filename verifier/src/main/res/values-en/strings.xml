@@ -148,4 +148,6 @@
     <string name="risk_mode_valid_high_risk_location">Hoog risico locatie</string>
     <string name="risk_mode_menu_title">Risico instelling</string>
     <string name="risk_mode_selection_subtitle_from_menu">Geef aan of je op een hoog of laag risico plek gaat scannen.</string>
+    <string name="risk_mode_new_feature_title">Risico instelling: laag en hoog risico</string>
+    <string name="risk_mode_new_feature_subtitle">Geef aan of je op een hoog of laag risico plek gaat scannen. Je kunt het niveau later eventueel nog aanpassen.</string>
 </resources>
