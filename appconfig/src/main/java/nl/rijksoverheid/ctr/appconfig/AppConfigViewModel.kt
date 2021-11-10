@@ -25,7 +25,7 @@ import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.ext.ClmobileVerifyException
 
 abstract class AppConfigViewModel : ViewModel() {
-    open val appStatusLiveData = MutableLiveData<AppStatus>()
+    val appStatusLiveData = MutableLiveData<AppStatus>()
 
     abstract fun refresh(mobileCoreWrapper: MobileCoreWrapper, force: Boolean = false)
 }
