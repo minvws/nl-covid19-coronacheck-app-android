@@ -10,6 +10,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentModeSelectBinding
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
@@ -47,10 +48,11 @@ class SelectModeFragment: Fragment(R.layout.fragment_mode_select) {
         binding.toolbar.visibility = VISIBLE
 
         binding.toolbar.setNavigationOnClickListener {
-            findNavController().popBackStack()
+            findNavControllerSafety()?.popBackStack()
         }
         binding.startScanningButton.visibility = VISIBLE
         binding.startScanningButton.setOnClickListener {
+            findNavControllerSafety()?.popBackStack()
             scannerUtil.launchScanner(requireActivity())
         }
         binding.header.visibility = VISIBLE

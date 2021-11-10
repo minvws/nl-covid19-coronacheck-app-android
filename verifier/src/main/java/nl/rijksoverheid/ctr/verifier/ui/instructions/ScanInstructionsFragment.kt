@@ -6,9 +6,9 @@ import android.view.View
 import android.widget.ScrollView
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
-import nl.rijksoverheid.ctr.introduction.ui.onboarding.OnboardingPagerAdapter
+import nl.rijksoverheid.ctr.introduction.ui.onboarding.OnboardingPagerAdapter c
+import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.VerifierMainFragment
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanInstructionsBinding
@@ -64,12 +64,7 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
                 clearToolbar()
                 // Instructions have been opened, set as seen
                 scanQrViewModel.setScanInstructionsSeen()
-                findNavController().popBackStack(R.id.nav_scan_qr, false)
-                if (scanQrViewModel.getNextScannerScreenState() == NextScannerScreenState.Scanner) {
-                    scannerUtil.launchScanner(requireActivity())
-                } else {
-                    scannerUtil.launchModeSelection(requireActivity())
-                }
+                closeInstructionsAndOpenNextScreen()
             } else {
                 binding.viewPager.currentItem = currentItem + 1
             }
@@ -78,13 +73,22 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
         setupToolbarMenu()
     }
 
+    private fun closeInstructionsAndOpenNextScreen() {
+        findNavControllerSafety()?.popBackStack()
+        if (scanQrViewModel.getNextScannerScreenState() == NextScannerScreenState.Scanner) {
+            scannerUtil.launchScanner(requireActivity())
+        } else {
+            scannerUtil.launchModeSelection(requireActivity())
+        }
+    }
+
     private fun setBackPressListener(binding: FragmentScanInstructionsBinding) {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object :
             OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 val currentItem = binding.viewPager.currentItem
                 if (currentItem == 0) {
-                    findNavController().popBackStack()
+                    findNavControllerSafety()?.popBackStack()
                     clearToolbar()
                     // Instructions have been opened, set as seen
                     scanQrViewModel.setScanInstructionsSeen()
@@ -163,9 +167,7 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
                                     clearToolbar()
                                     // Instructions have been opened, set as seen
                                     scanQrViewModel.setScanInstructionsSeen()
-                                    if (isAdded) {
-                                        scannerUtil.launchScanner(requireActivity())
-                                    }
+                                    closeInstructionsAndOpenNextScreen()
                                 }
                             }
                             true
