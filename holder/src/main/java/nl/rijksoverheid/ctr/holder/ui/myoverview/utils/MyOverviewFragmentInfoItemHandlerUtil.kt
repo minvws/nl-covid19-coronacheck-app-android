@@ -71,9 +71,9 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
     }
 
     private fun onExtendedDomesticRecoveryClicked(myOverviewFragment: MyOverviewFragment) {
-        bottomSheetDialogUtil.present(
+        infoFragmentUtil.presentAsBottomSheet(
             myOverviewFragment.childFragmentManager,
-            BottomSheetData.TitleDescription(
+            InfoFragmentData.TitleDescription(
                 title = myOverviewFragment.getString(R.string.extended_domestic_recovery_green_card_bottomsheet_title),
                 descriptionData = DescriptionData(
                     R.string.extended_domestic_recovery_green_card_bottomsheet_description,
@@ -84,9 +84,9 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
     }
 
     private fun onRecoveredDomesticRecoveryClicked(myOverviewFragment: MyOverviewFragment) {
-        bottomSheetDialogUtil.present(
+        infoFragmentUtil.presentAsBottomSheet(
             myOverviewFragment.childFragmentManager,
-            BottomSheetData.TitleDescription(
+            InfoFragmentData.TitleDescription(
                 title = myOverviewFragment.getString(R.string.recovered_domestic_recovery_green_card_bottomsheet_title),
                 descriptionData = DescriptionData(R.string.recovered_domestic_recovery_green_card_bottomsheet_description),
             )
@@ -94,9 +94,9 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
     }
 
     private fun onRefreshedEuVaccinationsClicked(myOverviewFragment: MyOverviewFragment) {
-        bottomSheetDialogUtil.present(
+        infoFragmentUtil.presentAsBottomSheet(
             myOverviewFragment.childFragmentManager,
-            BottomSheetData.TitleDescription(
+            InfoFragmentData.TitleDescription(
                 title = myOverviewFragment.getString(R.string.refreshed_eu_items_title),
                 descriptionData = DescriptionData(
                     R.string.refreshed_eu_items_description,
@@ -143,9 +143,9 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
         myOverviewFragment: MyOverviewFragment,
         infoItem: DashboardItem.InfoItem.ConfigFreshnessWarning
     ) {
-        bottomSheetDialogUtil.present(
+        infoFragmentUtil.presentAsBottomSheet(
             myOverviewFragment.childFragmentManager,
-            BottomSheetData.TitleDescription(
+            InfoFragmentData.TitleDescription(
                 title = myOverviewFragment.getString(R.string.config_warning_page_title),
                 descriptionData = DescriptionData(
                     htmlTextString = myOverviewFragment.getString(
@@ -164,8 +164,8 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
     private fun onClockDeviationClicked(
         myOverviewFragment: MyOverviewFragment
     ) {
-        bottomSheetDialogUtil.present(
-            myOverviewFragment.childFragmentManager, BottomSheetData.TitleDescription(
+        infoFragmentUtil.presentAsBottomSheet(
+            myOverviewFragment.childFragmentManager, InfoFragmentData.TitleDescription(
                 title = myOverviewFragment.getString(R.string.clock_deviation_explanation_title),
                 descriptionData = DescriptionData(
                     R.string.clock_deviation_explanation_description,
@@ -193,23 +193,23 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
         originType: OriginType,
         myOverviewFragment: MyOverviewFragment
     ) {
-        bottomSheetDialogUtil.present(
+        infoFragmentUtil.presentAsBottomSheet(
             myOverviewFragment.childFragmentManager,
             data = when (originType) {
                 is OriginType.Test -> {
-                    BottomSheetData.TitleDescription(
+                    InfoFragmentData.TitleDescription(
                         title = myOverviewFragment.getString(R.string.my_overview_green_card_not_valid_title_test),
                         descriptionData = DescriptionData(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_test),
                     )
                 }
                 is OriginType.Vaccination -> {
-                    BottomSheetData.TitleDescription(
+                    InfoFragmentData.TitleDescription(
                         title = myOverviewFragment.getString(R.string.my_overview_green_card_not_valid_title_vaccination),
                         descriptionData = DescriptionData(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_vaccination),
                     )
                 }
                 is OriginType.Recovery -> {
-                    BottomSheetData.TitleDescription(
+                    InfoFragmentData.TitleDescription(
                         title = myOverviewFragment.getString(R.string.my_overview_green_card_not_valid_title_recovery),
                         descriptionData = DescriptionData(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_recovery),
                     )
@@ -236,9 +236,9 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
                 R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_recovery
             )
         }
-        bottomSheetDialogUtil.present(
+        infoFragmentUtil.presentAsBottomSheet(
             myOverviewFragment.childFragmentManager,
-            BottomSheetData.TitleDescription(
+            InfoFragmentData.TitleDescription(
                 title = title,
                 descriptionData = DescriptionData(description, htmlLinksEnabled = true),
             )

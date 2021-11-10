@@ -1,21 +1,15 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview
 
-import android.content.Intent
 import android.os.Bundle
-import android.provider.Settings
 import android.view.View
 import androidx.fragment.app.Fragment
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
 import com.xwray.groupie.viewbinding.BindableItem
-import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
-import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
-import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMyOverviewBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.*
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardSync
@@ -53,7 +47,6 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
 
     }
 
-    private val infoFragmentUtil: InfoFragmentUtil by inject()
     private val myOverviewFragmentInfoItemHandlerUtil: MyOverviewFragmentInfoItemHandlerUtil by inject()
     val dashboardViewModel: DashboardViewModel by sharedViewModelWithOwner(owner = {
         ViewModelOwner.from(
