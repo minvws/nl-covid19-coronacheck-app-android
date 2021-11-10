@@ -29,6 +29,8 @@ import nl.rijksoverheid.ctr.holder.databinding.FragmentYourEventsBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.items.YourEventWidget
+import nl.rijksoverheid.ctr.holder.ui.create_qr.items.getVaccinationEventSubtitle
+import nl.rijksoverheid.ctr.holder.ui.create_qr.items.getVaccinationEventTitle
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.InfoScreenUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.RemoteEventUtil
@@ -433,37 +435,6 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             )
         }
         binding.eventsGroup.addView(eventWidget)
-    }
-
-    private fun YourEventWidget.getVaccinationEventTitle(
-        isDccEvent: Boolean,
-        currentEvent: RemoteEventVaccination
-    ) = if (isDccEvent) {
-        resources.getString(R.string.retrieved_vaccination_dcc_title)
-    } else {
-        resources.getString(
-            R.string.retrieved_vaccination_title,
-            currentEvent.vaccination?.date?.formatMonth(),
-        )
-    }
-
-    private fun YourEventWidget.getVaccinationEventSubtitle(
-        isDccEvent: Boolean,
-        providerIdentifiers: String,
-        fullName: String,
-        birthDate: String,
-    ) = if (isDccEvent) {
-        resources.getString(
-            R.string.your_vaccination_dcc_row_subtitle,
-            fullName,
-            birthDate)
-        } else {
-        resources.getString(
-            R.string.your_vaccination_row_subtitle,
-            fullName,
-            birthDate,
-            providerIdentifiers
-        )
     }
 
     private fun presentNegativeTestEvent(
