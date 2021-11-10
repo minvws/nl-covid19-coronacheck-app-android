@@ -673,8 +673,11 @@ fun fakeEventGroupEntityUtil(remoteEventVaccinations: List<RemoteEventVaccinatio
     }
 
 fun fakeRemoteEventUtil(
-    getRemoteEventsFromNonDcc: List<RemoteEvent> = listOf()
-) = object : RemoteEventUtil {
+    getRemoteEventsFromNonDcc: List<RemoteEvent> = listOf()) = object: RemoteEventUtil {
+    override fun isDccEvent(providerIdentifier: String): Boolean {
+        return false
+    }
+
     override fun getHolderFromDcc(dcc: JSONObject): RemoteProtocol3.Holder {
         return RemoteProtocol3.Holder(
             infix = "",

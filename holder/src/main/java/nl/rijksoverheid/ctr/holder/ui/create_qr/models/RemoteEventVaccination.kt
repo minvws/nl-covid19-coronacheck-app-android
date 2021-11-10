@@ -19,9 +19,9 @@ import java.time.ZoneOffset
 @JsonClass(generateAdapter = true)
 data class RemoteEventVaccination(
     override val type: String?,
-    val unique: String?,
+    override val unique: String?,
     @Json(name = "vaccination") val vaccination: Vaccination?
-) : Parcelable, RemoteEvent(type) {
+) : Parcelable, RemoteEvent(unique, type) {
 
     @Parcelize
     @JsonClass(generateAdapter = true)

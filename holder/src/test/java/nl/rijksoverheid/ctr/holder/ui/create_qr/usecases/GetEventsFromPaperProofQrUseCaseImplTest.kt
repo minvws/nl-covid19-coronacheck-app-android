@@ -39,7 +39,7 @@ class GetEventsFromPaperProofQrUseCaseImplTest : AutoCloseKoinTest() {
         } returns credential
 
         with(useCase.get(vaccinationQr)) {
-            assertEquals(providerIdentifier, "dcc")
+            assertEquals(providerIdentifier, "dcc_URN:UCI:01:NL:IZES3LGRDVDPVIHYKPOE42#/")
             assertEquals(protocolVersion, "3.0")
             assertEquals(status, RemoteProtocol.Status.COMPLETE)
             assertEquals(holder!!.infix, "")
