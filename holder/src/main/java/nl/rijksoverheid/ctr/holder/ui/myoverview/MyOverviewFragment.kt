@@ -1,21 +1,15 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview
 
-import android.content.Intent
 import android.os.Bundle
-import android.provider.Settings
 import android.view.View
 import androidx.fragment.app.Fragment
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
 import com.xwray.groupie.viewbinding.BindableItem
-import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
-import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
-import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMyOverviewBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.*
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardSync
@@ -53,7 +47,6 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
 
     }
 
-    private val infoFragmentUtil: InfoFragmentUtil by inject()
     private val myOverviewFragmentInfoItemHandlerUtil: MyOverviewFragmentInfoItemHandlerUtil by inject()
     val dashboardViewModel: DashboardViewModel by sharedViewModelWithOwner(owner = {
         ViewModelOwner.from(
@@ -76,11 +69,11 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
     }
 
     private fun observeItem() {
-        dashboardViewModel.dashboardTabItemsLiveData.observe(viewLifecycleOwner, {
+        dashboardViewModel.dashboardTabItemsLiveData.observe(viewLifecycleOwner) {
             setItems(
                 myDashboardItems = it.first { items -> items.greenCardType == greenCardType }.items
             )
-        })
+        }
     }
 
     private fun initRecyclerView(binding: FragmentMyOverviewBinding) {
@@ -97,162 +90,102 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
         val adapterItems = mutableListOf<BindableItem<*>>()
         myDashboardItems.forEach { dashboardItem ->
             when (dashboardItem) {
-                is DashboardItem.HeaderItem -> {
-                    adapterItems.add(
-                        MyOverviewHeaderAdapterItem(
-                            text = dashboardItem.text,
-                            buttonInfo = if (greenCardType == GreenCardType.Eu) {
-                                ButtonInfo(
-                                    R.string.my_overview_description_eu_button_text,
-                                    R.string.my_overview_description_eu_button_link
-                                )
-                            } else {
-                                null
-                            },
-                        )
-                    )
-                }
-                is DashboardItem.PlaceholderCardItem -> {
-                    adapterItems.add(
-                        MyOverviewGreenCardPlaceholderItem(
-                            greenCardType = dashboardItem.greenCardType
-                        )
-                    )
-                }
-                is DashboardItem.CardsItem -> {
-                    adapterItems.add(
-                        MyOverviewGreenCardAdapterItem(
-                            cards = dashboardItem.cards,
-                            onButtonClick = { greenCard, credentials, expiration ->
-                                navigateSafety(
-                                    MyOverviewFragmentDirections.actionQrCode(
-                                        toolbarTitle = when (greenCard.greenCardEntity.type) {
-                                            is GreenCardType.Domestic -> {
-                                                getString(R.string.domestic_qr_code_title)
-                                            }
-                                            is GreenCardType.Eu -> {
-                                                getString(R.string.my_overview_test_result_international_title)
-                                            }
-                                        },
-                                        data = QrCodeFragmentData(
-                                            shouldDisclose = greenCard.greenCardEntity.type == GreenCardType.Domestic,
-                                            credentials = credentials,
-                                            credentialExpirationTimeSeconds = expiration,
-                                            type = greenCard.greenCardEntity.type,
-                                            originType = greenCard.origins.first().type
-                                        ),
-                                        returnUri = arguments?.getString(EXTRA_RETURN_URI)
-                                    )
-                                )
-                            },
-                            onRetryClick = {
-                                dashboardViewModel.refresh(
-                                    dashboardSync = DashboardSync.ForceSync
-                                )
-                            }
-                        )
-                    )
-                }
-                is DashboardItem.GreenCardExpiredItem -> {
-                    adapterItems.add(MyOverviewGreenCardExpiredAdapterItem(
-                        greenCard = dashboardItem.greenCard,
-                        onDismissClick = { item, greenCard ->
-                            section.remove(item)
-                            dashboardViewModel.removeGreenCard(greenCard)
-                        }
-                    ))
-                }
-                is DashboardItem.OriginInfoItem -> {
-                    adapterItems.add(MyOverviewOriginInfoAdapterItem(
-                        greenCardType = dashboardItem.greenCardType,
-                        originType = dashboardItem.originType,
-                        onInfoClick = { greenCardType, originType ->
-                            when (greenCardType) {
-                                is GreenCardType.Domestic -> presentOriginInfoForDomesticQr(
-                                    originType
-                                )
-                                is GreenCardType.Eu -> presentOriginInfoForEuQr(originType)
-                            }
-                        }
-                    ))
-                }
-                is DashboardItem.ClockDeviationItem -> {
-                    adapterItems.add(MyOverviewClockDeviationItem(onInfoIconClicked = {
-                        infoFragmentUtil.presentAsBottomSheet(
-                            childFragmentManager, InfoFragmentData.TitleDescription(
-                                title = getString(R.string.clock_deviation_explanation_title),
-                                descriptionData = DescriptionData(R.string.clock_deviation_explanation_description, customLinkIntent = Intent(Settings.ACTION_DATE_SETTINGS)),
-                            )
-                        )
-                    }))
-                }
+                is DashboardItem.HeaderItem -> addHeader(adapterItems, dashboardItem)
+                is DashboardItem.PlaceholderCardItem -> addPlaceHolder(adapterItems, dashboardItem)
+                is DashboardItem.CardsItem -> addCards(adapterItems, dashboardItem)
                 is DashboardItem.AddQrButtonItem -> {
                     // Handled by MyOverviewTabsFragment
                 }
-                is DashboardItem.InfoItem -> {
-                    adapterItems.add(MyOverviewInfoCardItem(
-                        infoItem = dashboardItem,
-                        onButtonClick = {
-                            myOverviewFragmentInfoItemHandlerUtil.handleButtonClick(this, it)
-                        },
-                        onDismiss = { infoCardItem, infoItem ->
-                            myOverviewFragmentInfoItemHandlerUtil.handleDismiss(
-                                this,
-                                infoCardItem,
-                                infoItem
-                            )
-                        }
-                    ))
-                }
+                is DashboardItem.InfoItem -> addInfoCard(adapterItems, dashboardItem)
             }
         }
 
         section.update(adapterItems)
     }
 
-    private fun presentOriginInfoForEuQr(originType: OriginType) {
-        infoFragmentUtil.presentAsBottomSheet(childFragmentManager,
-            data = when (originType) {
-                is OriginType.Test -> {
-                    InfoFragmentData.TitleDescription(
-                        title = getString(R.string.my_overview_green_card_not_valid_title_test),
-                        descriptionData = DescriptionData(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_test),
-                    )
-                }
-                is OriginType.Vaccination -> {
-                    InfoFragmentData.TitleDescription(
-                        title = getString(R.string.my_overview_green_card_not_valid_title_vaccination),
-                        descriptionData = DescriptionData(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_vaccination),
-                    )
-                }
-                is OriginType.Recovery -> {
-                    InfoFragmentData.TitleDescription(
-                        title = getString(R.string.my_overview_green_card_not_valid_title_recovery),
-                        descriptionData = DescriptionData(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_recovery),
-                    )
-                }
-            })
+    private fun addInfoCard(
+        adapterItems: MutableList<BindableItem<*>>,
+        dashboardItem: DashboardItem.InfoItem
+    ) {
+        adapterItems.add(MyOverviewInfoCardItem(
+            infoItem = dashboardItem,
+            onButtonClick = {
+                myOverviewFragmentInfoItemHandlerUtil.handleButtonClick(this, it)
+            },
+            onDismiss = { infoCardItem, infoItem ->
+                myOverviewFragmentInfoItemHandlerUtil.handleDismiss(
+                    this,
+                    infoCardItem,
+                    infoItem
+                )
+            }
+        ))
     }
 
-    private fun presentOriginInfoForDomesticQr(originType: OriginType) {
-        val (title, description) = when (originType) {
-            OriginType.Test -> Pair(
-                getString(R.string.my_overview_green_card_not_valid_title_test),
-                R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_test
+    private fun addCards(
+        adapterItems: MutableList<BindableItem<*>>,
+        dashboardItem: DashboardItem.CardsItem
+    ) {
+        adapterItems.add(
+            MyOverviewGreenCardAdapterItem(
+                cards = dashboardItem.cards,
+                onButtonClick = { greenCard, credentials, expiration ->
+                    navigateSafety(
+                        MyOverviewFragmentDirections.actionQrCode(
+                            toolbarTitle = when (greenCard.greenCardEntity.type) {
+                                is GreenCardType.Domestic -> {
+                                    getString(R.string.domestic_qr_code_title)
+                                }
+                                is GreenCardType.Eu -> {
+                                    getString(R.string.my_overview_test_result_international_title)
+                                }
+                            },
+                            data = QrCodeFragmentData(
+                                shouldDisclose = greenCard.greenCardEntity.type == GreenCardType.Domestic,
+                                credentials = credentials,
+                                credentialExpirationTimeSeconds = expiration,
+                                type = greenCard.greenCardEntity.type,
+                                originType = greenCard.origins.first().type
+                            ),
+                            returnUri = arguments?.getString(EXTRA_RETURN_URI)
+                        )
+                    )
+                },
+                onRetryClick = {
+                    dashboardViewModel.refresh(
+                        dashboardSync = DashboardSync.ForceSync
+                    )
+                }
             )
-            OriginType.Vaccination -> Pair(
-                getString(R.string.my_overview_green_card_not_valid_title_vaccination),
-                R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_vaccination
+        )
+    }
+
+    private fun addPlaceHolder(
+        adapterItems: MutableList<BindableItem<*>>,
+        dashboardItem: DashboardItem.PlaceholderCardItem
+    ) {
+        adapterItems.add(
+            MyOverviewGreenCardPlaceholderItem(
+                greenCardType = dashboardItem.greenCardType
             )
-            OriginType.Recovery -> Pair(
-                getString(R.string.my_overview_green_card_not_valid_title_recovery),
-                R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_recovery
-            )
-        }
-        infoFragmentUtil.presentAsBottomSheet(childFragmentManager,
-            InfoFragmentData.TitleDescription(
-                title = title,
-                descriptionData = DescriptionData(description, htmlLinksEnabled = true),
+        )
+    }
+
+    private fun addHeader(
+        adapterItems: MutableList<BindableItem<*>>,
+        dashboardItem: DashboardItem.HeaderItem
+    ) {
+        adapterItems.add(
+            MyOverviewHeaderAdapterItem(
+                text = dashboardItem.text,
+                buttonInfo = if (greenCardType == GreenCardType.Eu) {
+                    ButtonInfo(
+                        R.string.my_overview_description_eu_button_text,
+                        R.string.my_overview_description_eu_button_link
+                    )
+                } else {
+                    null
+                },
             )
         )
     }

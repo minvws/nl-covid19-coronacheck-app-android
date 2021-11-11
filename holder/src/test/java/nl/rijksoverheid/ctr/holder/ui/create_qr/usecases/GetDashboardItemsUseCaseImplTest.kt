@@ -82,7 +82,7 @@ class GetDashboardItemsUseCaseImplTest: AutoCloseKoinTest() {
 
         assertEquals(dashboardItems.internationalItems.size, 3)
         assertTrue(dashboardItems.domesticItems[0] is DashboardItem.HeaderItem)
-        assertTrue(dashboardItems.internationalItems[1] is DashboardItem.OriginInfoItem)
+        assertTrue(dashboardItems.internationalItems[1] is DashboardItem.InfoItem.OriginInfoItem)
         assertTrue(dashboardItems.internationalItems[2] is DashboardItem.AddQrButtonItem)
     }
 
@@ -244,13 +244,13 @@ class GetDashboardItemsUseCaseImplTest: AutoCloseKoinTest() {
 
         assertEquals(dashboardItems.domesticItems.size, 4)
         assertTrue(dashboardItems.domesticItems[0] is DashboardItem.HeaderItem)
-        assertTrue(dashboardItems.domesticItems[1] is DashboardItem.ClockDeviationItem)
+        assertTrue(dashboardItems.domesticItems[1] is DashboardItem.InfoItem.ClockDeviationItem)
         assertTrue(dashboardItems.domesticItems[2] is DashboardItem.CardsItem)
         assertTrue(dashboardItems.domesticItems[3] is DashboardItem.AddQrButtonItem)
 
         assertEquals(dashboardItems.internationalItems.size, 4)
         assertTrue(dashboardItems.internationalItems[0] is DashboardItem.HeaderItem)
-        assertTrue(dashboardItems.internationalItems[1] is DashboardItem.ClockDeviationItem)
+        assertTrue(dashboardItems.internationalItems[1] is DashboardItem.InfoItem.ClockDeviationItem)
         assertTrue(dashboardItems.internationalItems[2] is DashboardItem.CardsItem)
         assertTrue(dashboardItems.internationalItems[3] is DashboardItem.AddQrButtonItem)
     }
@@ -287,7 +287,7 @@ class GetDashboardItemsUseCaseImplTest: AutoCloseKoinTest() {
 
         assertEquals(dashboardItems.domesticItems.size, 4)
         assertTrue(dashboardItems.domesticItems[0] is DashboardItem.HeaderItem)
-        assertTrue(dashboardItems.domesticItems[1] is DashboardItem.GreenCardExpiredItem)
+        assertTrue(dashboardItems.domesticItems[1] is DashboardItem.InfoItem.GreenCardExpiredItem)
         assertTrue(dashboardItems.domesticItems[2] is DashboardItem.PlaceholderCardItem)
         assertTrue(dashboardItems.domesticItems[3] is DashboardItem.AddQrButtonItem)
 
@@ -334,7 +334,7 @@ class GetDashboardItemsUseCaseImplTest: AutoCloseKoinTest() {
 
         assertEquals(dashboardItems.internationalItems.size, 4)
         assertTrue(dashboardItems.internationalItems[0] is DashboardItem.HeaderItem)
-        assertTrue(dashboardItems.internationalItems[1] is DashboardItem.GreenCardExpiredItem)
+        assertTrue(dashboardItems.internationalItems[1] is DashboardItem.InfoItem.GreenCardExpiredItem)
         assertTrue(dashboardItems.internationalItems[2] is DashboardItem.PlaceholderCardItem)
         assertTrue(dashboardItems.internationalItems[3] is DashboardItem.AddQrButtonItem)
     }

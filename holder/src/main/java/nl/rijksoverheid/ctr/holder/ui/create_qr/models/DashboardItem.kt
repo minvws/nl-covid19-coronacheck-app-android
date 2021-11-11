@@ -11,21 +11,41 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
 sealed class DashboardItem {
 
     data class HeaderItem(@StringRes val text: Int) : DashboardItem()
-    data class PlaceholderCardItem(val greenCardType: GreenCardType) : DashboardItem()
-    object ClockDeviationItem : DashboardItem()
-    sealed class InfoItem : DashboardItem() {
-        sealed class NonDismissible : InfoItem() {
-            object RefreshEuVaccinations : NonDismissible()
-            object ExtendDomesticRecovery : NonDismissible()
-            object RecoverDomesticRecovery : NonDismissible()
-            data class ConfigFreshnessWarning(val maxValidityDate: Long) : NonDismissible()
-        }
 
-        sealed class Dismissible : InfoItem() {
-            object RefreshedEuVaccinations : Dismissible()
-            object ExtendedDomesticRecovery : Dismissible()
-            object RecoveredDomesticRecovery : Dismissible()
-        }
+    data class PlaceholderCardItem(val greenCardType: GreenCardType) : DashboardItem()
+
+    sealed class InfoItem(
+        val isDismissible: Boolean,
+        val hasReadMore: Boolean
+    ) : DashboardItem() {
+
+        object RefreshEuVaccinations :
+            InfoItem(isDismissible = false, hasReadMore = true)
+
+        object ExtendDomesticRecovery :
+            InfoItem(isDismissible = false, hasReadMore = true)
+
+        object RecoverDomesticRecovery :
+            InfoItem(isDismissible = false, hasReadMore = true)
+
+        data class ConfigFreshnessWarning(val maxValidityDate: Long) :
+            InfoItem(isDismissible = false, hasReadMore = true)
+
+        object RefreshedEuVaccinations : InfoItem(isDismissible = true, hasReadMore = true)
+
+        object ExtendedDomesticRecovery : InfoItem(isDismissible = true, hasReadMore = true)
+
+        object RecoveredDomesticRecovery : InfoItem(isDismissible = true, hasReadMore = true)
+
+        data class OriginInfoItem(
+            val greenCardType: GreenCardType,
+            val originType: OriginType,
+        ) : InfoItem(isDismissible = false, hasReadMore = true)
+
+        object ClockDeviationItem : InfoItem(isDismissible = false, hasReadMore = true)
+
+        data class GreenCardExpiredItem(val greenCard: GreenCard) :
+            InfoItem(isDismissible = true, hasReadMore = false)
     }
 
     data class CardsItem(val cards: List<CardItem>) : DashboardItem() {
@@ -43,10 +63,6 @@ sealed class DashboardItem {
             val databaseSyncerResult: DatabaseSyncerResult
         )
     }
-
-    data class GreenCardExpiredItem(val greenCard: GreenCard) : DashboardItem()
-    data class OriginInfoItem(val greenCardType: GreenCardType, val originType: OriginType) :
-        DashboardItem()
 
     data class AddQrButtonItem(val show: Boolean) : DashboardItem()
 }
