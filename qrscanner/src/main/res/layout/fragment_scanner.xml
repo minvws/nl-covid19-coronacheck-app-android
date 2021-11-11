@@ -68,7 +68,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
+            <com.google.android.material.button.MaterialButton
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:backgroundTint="@color/white_button_color_selector"
                 android:id="@+id/scanner_footer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
