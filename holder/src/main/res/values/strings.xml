@@ -401,7 +401,7 @@
     <string name="add_paper_proof_explanation_mail_item_title">Opgestuurd per post</string>
     <string name="add_paper_proof_explanation_mail_item_subtitle">De overheid heeft je het bewijs opgestuurd per post</string>
     <string name="add_paper_proof_explanation_self_printed_button">Zelf je bewijs uitgeprint?</string>
-    <string name="add_paper_proof_self_printed_toolbar_title">Zelf je bewijs uitgeprint?</string>
+    <string name="add_paper_proof_self_printed_title">Zelf je bewijs uitgeprint?</string>
     <string name="add_paper_proof_self_printed_description"><![CDATA[Dan is het niet mogelijk om jouw bewijs op deze manier aan de app toe te voegen.<br/><br/>Je kunt wel je bewijs toevoegen aan de app met behulp van DigiD. Ga naar ‘Bewijs toevoegen’ in het menu. Kies je bewijs en haal je gegevens op door in te loggen met DigiD.]]></string>
     <string name="add_paper_proof_self_printed_goto_add_proof_button">Naar bewijs toevoegen</string>
     <string name="add_paper_proof_explanation_highlight"><![CDATA[<b>Zelf je bewijs uitgeprint?</b><br/> Voeg je bewijs dan toe in de app via het menu. Ga naar ‘Bewijs toevoegen’ en log in met DigiD.]]></string>

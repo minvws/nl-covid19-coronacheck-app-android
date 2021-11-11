@@ -13,7 +13,7 @@ sealed class ButtonData(open val text: String): Parcelable {
     data class LinkButton(override val text: String, val link: String): ButtonData(text), Parcelable
 
     @Parcelize
-    data class NavigationButton(override val text: String, @IdRes val navigationId: Int): ButtonData(text), Parcelable
+    data class NavigationButton(override val text: String, @IdRes val navigationActionId: Int): ButtonData(text), Parcelable
 }
 
 sealed class InfoFragmentData(open val title: String, open val descriptionData: DescriptionData):
