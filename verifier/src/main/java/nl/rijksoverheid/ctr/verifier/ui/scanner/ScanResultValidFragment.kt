@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
+import nl.rijksoverheid.ctr.shared.utils.Accessibility
 import nl.rijksoverheid.ctr.verifier.BuildConfig
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanResultValidBinding
@@ -41,26 +42,23 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
             navigateSafety(ScanResultValidFragmentDirections.actionNavQrScanner())
         }
 
-        when (args.validData) {
+        val (stringId, colorId) = when (args.validData) {
             is ScanResultValidData.Demo -> {
-                binding.title.text = getString(R.string.scan_result_demo_title)
-                binding.root.setBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.grey_2
-                    )
-                )
+                Pair(R.string.scan_result_demo_title, R.color.grey_2)
             }
             is ScanResultValidData.Valid -> {
-                binding.title.text = getString(R.string.scan_result_valid_title)
-                binding.root.setBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.secondary_green
-                    )
-                )
+                Pair(R.string.scan_result_valid_title, R.color.secondary_green)
             }
         }
+        val string = getString(stringId)
+        binding.title.text = string
+        binding.root.setBackgroundColor(
+                ContextCompat.getColor(
+                        requireContext(),
+                        colorId
+                )
+        )
+        Accessibility.announce(requireContext(), string)
     }
 
     override fun onResume() {
