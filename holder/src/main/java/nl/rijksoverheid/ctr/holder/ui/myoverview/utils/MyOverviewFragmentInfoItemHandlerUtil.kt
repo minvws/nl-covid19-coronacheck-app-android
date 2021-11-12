@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.holder.ui.myoverview.utils
 
 import android.content.Intent
 import android.provider.Settings
+import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthTime
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
@@ -13,6 +14,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewFragment
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewFragmentDirections
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewInfoCardItem
+import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import java.time.Instant
 import java.time.OffsetDateTime
@@ -179,14 +181,17 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
         myOverviewFragment: MyOverviewFragment,
         item: DashboardItem.InfoItem.OriginInfoItem
     ) {
-        when (item.greenCardType) {
-            is GreenCardType.Domestic -> presentOriginInfoForDomesticQr(
-                item.originType, myOverviewFragment
-            )
-            is GreenCardType.Eu -> presentOriginInfoForEuQr(
-                item.originType, myOverviewFragment
-            )
-        }
+        myOverviewFragment.findNavController().navigate(
+            R.id.action_no_dutch_certificate
+        )
+//        when (item.greenCardType) {
+//            is GreenCardType.Domestic -> presentOriginInfoForDomesticQr(
+//                item.originType, myOverviewFragment
+//            )
+//            is GreenCardType.Eu -> presentOriginInfoForEuQr(
+//                item.originType, myOverviewFragment
+//            )
+//        }
     }
 
     private fun presentOriginInfoForEuQr(
