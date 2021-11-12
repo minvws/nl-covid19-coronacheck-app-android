@@ -169,10 +169,20 @@ class MyOverViewGreenCardAdapterUtilImpl(
                 title = context.getString(R.string.qr_card_vaccination_title_domestic),
             )
         } else {
-            setOriginTitle(
-                descriptionLayout = viewBinding.description,
-                title = context.getString(R.string.qr_card_vaccination_title_domestic_with_dosis, origin.doseNumber.toString()),
-            )
+            when (origin.doseNumber) {
+                1 -> {
+                    setOriginTitle(
+                        descriptionLayout = viewBinding.description,
+                        title = context.getString(R.string.qr_card_vaccination_title_domestic_with_dosis),
+                    )
+                }
+                else -> {
+                    setOriginTitle(
+                        descriptionLayout = viewBinding.description,
+                        title = context.getString(R.string.qr_card_vaccination_title_domestic_with_doses, origin.doseNumber.toString()),
+                    )
+                }
+            }
         }
 
         setOriginSubtitle(
