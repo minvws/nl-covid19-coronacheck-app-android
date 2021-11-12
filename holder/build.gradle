@@ -170,7 +170,7 @@ dependencies {
     }
     testImplementation "androidx.test:runner:$androix_test_version"
     testImplementation "com.squareup.okhttp3:mockwebserver"
-    testImplementation("com.schibsted.spain:barista:$barista_version") {
+    testImplementation("com.adevinta.android:barista:$barista_version") {
         exclude group: "org.jetbrains.kotlin"
     }
     testImplementation "androidx.navigation:navigation-testing:$navigation_version"
@@ -188,6 +188,4 @@ dependencies {
 
     // Needed in order for room to work with Apple Sillicon M1
     kapt "org.xerial:sqlite-jdbc:$sqlite_jdbc"
-
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
 }
