@@ -1,7 +1,9 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
+import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.CredentialEntity
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventVaccination
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.ext.getStringOrNull
 import org.json.JSONArray
@@ -27,8 +29,11 @@ interface CredentialUtil {
 class CredentialUtilImpl(
     private val clock: Clock,
     private val mobileCoreWrapper: MobileCoreWrapper,
-    private val appConfigUseCase: CachedAppConfigUseCase
+    private val appConfigUseCase: CachedAppConfigUseCase,
+    private val cachedAppConfigUseCase: CachedAppConfigUseCase
 ) : CredentialUtil {
+
+    private val holderConfig = cachedAppConfigUseCase.getCachedAppConfig()
 
     override fun getActiveCredential(entities: List<CredentialEntity>): CredentialEntity? {
 
@@ -59,12 +64,10 @@ class CredentialUtilImpl(
         val data = mobileCoreWrapper.readEuropeanCredential(entities.first().data)
 
         return try {
-            val type = ((((data["dcc"] as JSONObject)["t"] as JSONArray)[0]) as JSONObject)["tt"]
-            when (type) {
-                "LP6464-4" -> "NAAT"
-                "LP217198-3" -> "RAT"
-                else -> ""
-            }
+            val type = ((((data["dcc"] as JSONObject)["t"] as JSONArray)[0]) as JSONObject)["tt"] as String
+            holderConfig.euTestTypes.firstOrNull {
+                it.code == type
+            }?.name ?: type
         } catch (exception: Exception) {
             exception.printStackTrace()
             ""
