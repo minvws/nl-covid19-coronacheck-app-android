@@ -236,6 +236,7 @@ class GetDashboardItemsUseCaseImpl(
                     }
                 )
             }
+
         }
 
         // Always order by origin type
