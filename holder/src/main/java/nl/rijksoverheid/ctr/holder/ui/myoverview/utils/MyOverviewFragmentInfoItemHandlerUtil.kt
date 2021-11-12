@@ -13,6 +13,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewFragment
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewFragmentDirections
+import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewTabsFragmentDirections
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewInfoCardItem
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
@@ -69,7 +70,13 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
             is DashboardItem.InfoItem.GreenCardExpiredItem -> {
                 // NO OP, button is hidden
             }
+            is DashboardItem.InfoItem.IncompleteDutchVaccinationItem ->
+                onIncompleteDutchVaccinationItemClicked(myOverviewFragment)
         }
+    }
+
+    private fun onIncompleteDutchVaccinationItemClicked(myOverviewFragment: MyOverviewFragment) {
+        myOverviewFragment.navigateSafety(MyOverviewTabsFragmentDirections.actionNoDutchCertificate())
     }
 
     private fun onExtendedDomesticRecoveryClicked(myOverviewFragment: MyOverviewFragment) {
@@ -181,17 +188,14 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
         myOverviewFragment: MyOverviewFragment,
         item: DashboardItem.InfoItem.OriginInfoItem
     ) {
-        myOverviewFragment.findNavController().navigate(
-            R.id.action_no_dutch_certificate
-        )
-//        when (item.greenCardType) {
-//            is GreenCardType.Domestic -> presentOriginInfoForDomesticQr(
-//                item.originType, myOverviewFragment
-//            )
-//            is GreenCardType.Eu -> presentOriginInfoForEuQr(
-//                item.originType, myOverviewFragment
-//            )
-//        }
+        when (item.greenCardType) {
+            is GreenCardType.Domestic -> presentOriginInfoForDomesticQr(
+                item.originType, myOverviewFragment
+            )
+            is GreenCardType.Eu -> presentOriginInfoForEuQr(
+                item.originType, myOverviewFragment
+            )
+        }
     }
 
     private fun presentOriginInfoForEuQr(

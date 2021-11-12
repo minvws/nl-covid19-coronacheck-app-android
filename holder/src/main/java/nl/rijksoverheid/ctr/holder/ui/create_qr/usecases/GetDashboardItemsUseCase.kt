@@ -222,11 +222,18 @@ class GetDashboardItemsUseCaseImpl(
         allValidOriginsForUnselectedType.forEach { originForUnselectedType ->
             if (!allValidOriginsForSelectedType.map { it.type }
                     .contains(originForUnselectedType.type)) {
+
                 items.add(
-                    DashboardItem.InfoItem.OriginInfoItem(
-                        greenCardType = greenCardType,
-                        originType = originForUnselectedType.type
-                    )
+                    if (greenCardType == GreenCardType.Domestic
+                        && dashboardItemUtil.shouldShowIncompleteDutchVaccinationItem(greenCardsForSelectedType, greenCardsForUnselectedType)
+                    ) {
+                        DashboardItem.InfoItem.IncompleteDutchVaccinationItem
+                    } else {
+                        DashboardItem.InfoItem.OriginInfoItem(
+                            greenCardType = greenCardType,
+                            originType = originForUnselectedType.type
+                        )
+                    }
                 )
             }
         }

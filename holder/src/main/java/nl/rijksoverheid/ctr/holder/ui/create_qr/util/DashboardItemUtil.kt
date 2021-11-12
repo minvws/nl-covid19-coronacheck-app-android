@@ -34,7 +34,11 @@ interface DashboardItemUtil {
     fun shouldShowExtendedDomesticRecoveryItem(): Boolean
     fun shouldShowRecoveredDomesticRecoveryItem(): Boolean
     fun shouldShowConfigFreshnessWarning(): Boolean
-    fun getConfigFreshnessMaxValidity() : Long
+    fun getConfigFreshnessMaxValidity(): Long
+    fun shouldShowIncompleteDutchVaccinationItem(
+        domesticGreenCards: List<GreenCard>,
+        euGreenCards: List<GreenCard>,
+    ): Boolean
 }
 
 class DashboardItemUtilImpl(
@@ -146,5 +150,16 @@ class DashboardItemUtilImpl(
 
     override fun getConfigFreshnessMaxValidity(): Long {
         return appConfigFreshnessUseCase.getAppConfigMaxValidityTimestamp()
+    }
+
+    override fun shouldShowIncompleteDutchVaccinationItem(
+        domesticGreenCards: List<GreenCard>,
+        euGreenCards: List<GreenCard>,
+    ): Boolean {
+        // if a user has a european vaccination certificate but not dutch one,
+        // we inform him that he can get a dutch one by either retrieving a
+        // second vaccination result or a positive test result
+        return domesticGreenCards.none { it.origins.any { it.type == OriginType.Vaccination } }
+                && euGreenCards.any { it.origins.any { it.type == OriginType.Vaccination } }
     }
 }

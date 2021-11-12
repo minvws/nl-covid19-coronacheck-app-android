@@ -36,8 +36,6 @@ class NoDutchVaccinationFragment : Fragment(R.layout.fragment_no_dutch_vaccinati
             navigate(OriginType.Test)
         }
 
-        binding.noDutchCertificateExplanationMore
-
         return binding.root
     }
 
