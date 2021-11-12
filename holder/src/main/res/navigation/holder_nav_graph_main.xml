@@ -188,7 +188,7 @@
         <fragment
             android:id="@+id/nav_paper_proof_code"
             android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.PaperProofCodeFragment"
-            android:label="@string/add_paper_proof"
+            android:label="@string/add_paper_proof_title"
             tools:layout="@layout/fragment_paper_proof_code">
 
             <action
@@ -204,7 +204,7 @@
         <fragment
             android:id="@+id/nav_paper_proof_consent"
             android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.PaperProofConsentFragment"
-            android:label="@string/add_paper_proof"
+            android:label="@string/add_paper_proof_title"
             tools:layout="@layout/fragment_paper_proof_consent">
 
             <action

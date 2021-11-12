@@ -28,7 +28,7 @@ val utilsModule = module {
         )
     }
     factory<TokenValidatorUtil> { TokenValidatorUtilImpl() }
-    factory<CredentialUtil> { CredentialUtilImpl(Clock.systemUTC(), get(), get()) }
+    factory<CredentialUtil> { CredentialUtilImpl(Clock.systemUTC(), get(), get(), get()) }
     factory<OriginUtil> { OriginUtilImpl(Clock.systemUTC()) }
     factory<RemoteEventHolderUtil> { RemoteEventHolderUtilImpl(get(), get(), get()) }
     factory<RemoteProtocol3Util> { RemoteProtocol3UtilImpl() }

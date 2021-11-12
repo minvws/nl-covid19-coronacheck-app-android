@@ -277,11 +277,11 @@ class MyOverViewGreenCardAdapterUtilImpl(
     ) {
         setOriginTitle(
             descriptionLayout = viewBinding.description,
-            title = "${context.getString(R.string.qr_card_test_eu)} PCR (${
+            title = "${context.getString(R.string.qr_card_test_eu)} ${
                 credentialUtil.getTestTypeForEuropeanCredentials(
                     greenCard.credentialEntities
                 )
-            })",
+            }",
         )
 
         setOriginSubtitle(
