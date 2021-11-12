@@ -251,6 +251,7 @@
     <string name="qr_explanation_icon_label">Uitleg over QR-code</string>
     <string name="qr_card_expired">Je bewijs is verlopen.</string>
     <string name="qr_card_vaccination_title_domestic">Vaccinatiebewijs:</string>
+    <string name="qr_card_vaccination_title_domestic_with_dosis">Vaccinatiebewijs (%1$s doses):</string>
     <string name="qr_card_test_domestic">Testbewijs:</string>
     <string name="qr_card_test_eu">Type test:</string>
     <string name="qr_card_recovery_title_domestic">Herstelbewijs:</string>
