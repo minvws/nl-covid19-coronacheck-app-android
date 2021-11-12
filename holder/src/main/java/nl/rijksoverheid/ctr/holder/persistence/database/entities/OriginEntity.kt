@@ -28,5 +28,6 @@ data class OriginEntity(
     val type: OriginType,
     val eventTime: OffsetDateTime,
     val expirationTime: OffsetDateTime,
-    val validFrom: OffsetDateTime
+    val validFrom: OffsetDateTime,
+    val doseNumber: Int? = null // Only exists for type Vaccination and GreenCardType Domestic
 )
