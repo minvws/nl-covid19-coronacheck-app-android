@@ -2,14 +2,11 @@ package nl.rijksoverheid.ctr.design.fragments.info
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.view.AccessibilityDelegateCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.design.R
 import nl.rijksoverheid.ctr.design.databinding.FragmentInfoBinding
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
+import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 
 class InfoFragment : Fragment(R.layout.fragment_info) {
@@ -35,9 +32,9 @@ class InfoFragment : Fragment(R.layout.fragment_info) {
                 binding.button.visibility = View.VISIBLE
                 binding.button.apply {
                     val buttonData = infoFragmentData.buttonData
-                    if (buttonData is ButtonData.LinkButton) {
+                    if (buttonData is ButtonData.NavigationButton) {
                         text = buttonData.text
-                        setOnClickListener { buttonData.link.launchUrl(context) }
+                        setOnClickListener { findNavControllerSafety()?.navigate(buttonData.navigationActionId) }
                     }
                 }
             }

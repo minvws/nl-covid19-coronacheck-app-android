@@ -188,7 +188,7 @@
         <fragment
             android:id="@+id/nav_paper_proof_code"
             android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.PaperProofCodeFragment"
-            android:label="@string/add_paper_proof"
+            android:label="@string/add_paper_proof_title"
             tools:layout="@layout/fragment_paper_proof_code">
 
             <action
@@ -204,7 +204,7 @@
         <fragment
             android:id="@+id/nav_paper_proof_consent"
             android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.PaperProofConsentFragment"
-            android:label="@string/add_paper_proof"
+            android:label="@string/add_paper_proof_title"
             tools:layout="@layout/fragment_paper_proof_consent">
 
             <action
@@ -519,6 +519,16 @@
         app:exitAnim="@anim/slide_out_left"
         app:popEnterAnim="@anim/slide_in_left"
         app:popExitAnim="@anim/slide_out_right" />
+
+    <action
+        android:id="@+id/action_qr_type"
+        app:destination="@id/nav_qr_code_type"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        app:popUpTo="@id/nav_graph_overview"
+        app:popUpToInclusive="true" />
 
 
     <fragment

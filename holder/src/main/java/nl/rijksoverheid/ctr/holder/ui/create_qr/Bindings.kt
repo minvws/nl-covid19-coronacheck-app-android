@@ -5,6 +5,8 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.IncludeContentButtonBinding
+import nl.rijksoverheid.ctr.holder.databinding.ItemPaperProofExplanationBinding
+import nl.rijksoverheid.ctr.holder.databinding.ItemYourEventBinding
 import nl.rijksoverheid.ctr.shared.utils.Accessibility
 
 /*
@@ -42,4 +44,14 @@ fun IncludeContentButtonBinding.bind(
     root.setOnClickListener {
         onClick()
     }
+}
+
+fun ItemPaperProofExplanationBinding.bind(
+    @DrawableRes icon: Int,
+    @StringRes title: Int,
+    @StringRes subtitle: Int
+) {
+    iconView.setImageResource(icon)
+    titleView.setText(title)
+    subtitleView.setText(subtitle)
 }
