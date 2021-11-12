@@ -38,7 +38,7 @@ class CredentialUtilImplTest : AutoCloseKoinTest() {
     @Test
     fun `getActiveCredential returns active credential with highest expiration time`() {
         val clock = Clock.fixed(Instant.ofEpochSecond(50), ZoneId.of("UTC"))
-        val credentialUtil = CredentialUtilImpl(clock, mobileCoreWrapper, mockk())
+        val credentialUtil = CredentialUtilImpl(clock, mobileCoreWrapper, mockk(), mockk(relaxed = true))
 
         val credential1 = CredentialEntity(
             id = 0,
@@ -68,7 +68,7 @@ class CredentialUtilImplTest : AutoCloseKoinTest() {
     @Test
     fun `getActiveCredential returns no active credential if not in window`() {
         val clock = Clock.fixed(Instant.ofEpochSecond(50), ZoneId.of("UTC"))
-        val credentialUtil = CredentialUtilImpl(clock, mobileCoreWrapper, mockk())
+        val credentialUtil = CredentialUtilImpl(clock, mobileCoreWrapper, mockk(), mockk(relaxed = true))
 
         val credential1 = CredentialEntity(
             id = 0,
@@ -105,7 +105,7 @@ class CredentialUtilImplTest : AutoCloseKoinTest() {
             )
         )
 
-        val credentialUtil = CredentialUtilImpl(clock, mobileCoreWrapper, mockk())
+        val credentialUtil = CredentialUtilImpl(clock, mobileCoreWrapper, mockk(), mockk(relaxed = true))
         assertTrue(credentialUtil.isExpiring(5L, credentialEntity))
     }
 
@@ -119,7 +119,7 @@ class CredentialUtilImplTest : AutoCloseKoinTest() {
             )
         )
 
-        val credentialUtil = CredentialUtilImpl(clock, mobileCoreWrapper, mockk())
+        val credentialUtil = CredentialUtilImpl(clock, mobileCoreWrapper, mockk(), mockk(relaxed = true))
         assertFalse(credentialUtil.isExpiring(5L, credentialEntity))
     }
 
@@ -133,7 +133,7 @@ class CredentialUtilImplTest : AutoCloseKoinTest() {
             )
         )
 
-        val credentialUtil = CredentialUtilImpl(clock, mobileCoreWrapper, mockk())
+        val credentialUtil = CredentialUtilImpl(clock, mobileCoreWrapper, mockk(), mockk(relaxed = true))
         assertTrue(credentialUtil.isExpiring(5L, credentialEntity))
     }
 
@@ -143,7 +143,7 @@ class CredentialUtilImplTest : AutoCloseKoinTest() {
         val appConfigUseCase: CachedAppConfigUseCase = mockk {
             every { getCachedAppConfig() } returns HolderConfig.default(internationalQRRelevancyDays = 28)
         }
-        val util = CredentialUtilImpl(clock, mockk(), appConfigUseCase)
+        val util = CredentialUtilImpl(clock, mockk(), appConfigUseCase, mockk(relaxed = true))
 
         val hidden = listOf(getVaccinationJson("2020-12-01", dose = "1", ofTotalDoses = "2"))
         val notHiddenBecauseOfDate =
@@ -162,7 +162,7 @@ class CredentialUtilImplTest : AutoCloseKoinTest() {
         val appConfigUseCase: CachedAppConfigUseCase = mockk {
             every { getCachedAppConfig() } returns HolderConfig.default(internationalQRRelevancyDays = 28)
         }
-        val util = CredentialUtilImpl(clock, mockk(), appConfigUseCase)
+        val util = CredentialUtilImpl(clock, mockk(), appConfigUseCase, mockk(relaxed = true))
 
         val notHidden = listOf(
             getVaccinationJson("2020-12-01", dose = "1", ofTotalDoses = "2"),
