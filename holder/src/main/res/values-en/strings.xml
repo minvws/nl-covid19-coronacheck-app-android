@@ -399,6 +399,7 @@
     <string name="add_paper_proof_explanation_highlight"><![CDATA[<b>Did you print your certificate yourself?</b><br/> Please add your certificate to the app via the menu. Go to “Add certificate” and log in using your DigiD.]]></string>
     <string name="add_paper_proof_consent_title">Only scan the international QR code</string>
     <string name="add_paper_proof_consent_description"><![CDATA[The international QR code contains enough information to create both a Dutch certificate and an international certificate. Therefore please <b>only scan the international QR code</b> using your smartphone camera.<br/><br/><b>You will receive the following:</b><br/><br/><ul><li>A Dutch certificate</li><li>An international certificate</li></ul>]]></string>
+    <string name="add_paper_proof_consent_help_button">Waarom alleen internationaal?</string>
     <string name="add_paper_proof_qr_scanner_text">Point your phone at the QR code on the international certificate</string>
     <string name="add_paper_proof_qr_error_dutch_qr_code_dialog_title">Scan the international QR code</string>
     <string name="add_paper_proof_qr_error_dutch_qr_code_dialog_description">Scan the QR code on your international certificate. You don\'t have to scan the Dutch QR code.</string>
@@ -523,4 +524,6 @@
     <string name="add_paper_proof_self_printed_title">Zelf je bewijs uitgeprint?</string>
     <string name="add_paper_proof_self_printed_description"><![CDATA[Dan is het niet mogelijk om jouw bewijs op deze manier aan de app toe te voegen.<br/><br/>Je kunt wel je bewijs toevoegen aan de app met behulp van DigiD. Ga naar ‘Bewijs toevoegen’ in het menu. Kies je bewijs en haal je gegevens op door in te loggen met DigiD.]]></string>
     <string name="add_paper_proof_self_printed_goto_add_proof_button">Naar bewijs toevoegen</string>
+    <string name="add_paper_proof_why_only_international_title">Waarom alleen internationaal?</string>
+    <string name="add_paper_proof_why_only_international_description">In de internationale QR-codes staan genoeg gegevens om ook een Nederlands bewijs te maken.</string>
 </resources>
