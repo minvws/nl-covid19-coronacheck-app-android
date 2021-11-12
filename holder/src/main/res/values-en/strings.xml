@@ -529,7 +529,7 @@
     <string name="no_dutch_certificate_info_card_text">You don\'t have a Dutch vaccination certificate</string>
     <string name="no_dutch_certificate_title">No Dutch vaccination certificate</string>
     <string name="no_dutch_certificate_introduction">You don\'t have a Dutch vaccination certificate. To obtain this, you have to either be fully vaccinated, or have recovered from coronavirus before you received your first vaccination.</string>
-    <string name="no_dutch_certificate_second_vaccine_explanation"><![CDATA[<b>Had your second vaccination?</b><br/>Please retrieve your vaccination details again. You will receive a Dutch certificate.]]></string>
+    <string name="no_dutch_certificate_second_vaccine_explanation"><![CDATA[<br/><b>Had your second vaccination?</b><br/>Please retrieve your vaccination details again. You will receive a Dutch certificate.]]></string>
     <string name="no_dutch_certificate_retrieve_vaccination_button">Retrieve my vaccinations</string>
     <string name="no_dutch_certificate_positive_text_explanation"><![CDATA[<b>Had coronavirus before your first vaccination?</b><br/>Retrieve your positive test result. You will also receive a Dutch certificate then.]]></string>
     <string name="no_dutch_certificate_retrieve_test_button">Retrieve my test result</string>
