@@ -155,20 +155,29 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             EventObserver { databaseSyncerResult ->
                 when (databaseSyncerResult) {
                     is DatabaseSyncerResult.Success -> {
-                        if (databaseSyncerResult.missingOrigin) {
-                            navigateSafety(
-                                YourEventsFragmentDirections.actionCouldNotCreateQr(
-                                    toolbarTitle = args.toolbarTitle,
-                                    title = getString(R.string.rule_engine_no_origin_title),
-                                    description = getString(R.string.rule_engine_no_test_origin_description, args.toolbarTitle.lowercase()),
-                                    buttonTitle = getString(R.string.back_to_overview)
+                        when {
+                            databaseSyncerResult.missingOrigin -> {
+                                navigateSafety(
+                                    YourEventsFragmentDirections.actionCouldNotCreateQr(
+                                        toolbarTitle = args.toolbarTitle,
+                                        title = getString(R.string.rule_engine_no_origin_title),
+                                        description = getString(
+                                            R.string.rule_engine_no_test_origin_description,
+                                            args.toolbarTitle.lowercase()
+                                        ),
+                                        buttonTitle = getString(R.string.back_to_overview)
+                                    )
                                 )
-                            )
-                        } else {
-                            // We have a origin in the database that we expect, so success
-                            navigateSafety(
-                                YourEventsFragmentDirections.actionMyOverview()
-                            )
+                            }
+                            databaseSyncerResult.isIncompleteDomesticVaccination -> {
+                                navigateSafety(YourEventsFragmentDirections.actionInternationalCertificateCreated())
+                            }
+                            else -> {
+                                // We have a origin in the database that we expect, so success
+                                navigateSafety(
+                                    YourEventsFragmentDirections.actionMyOverview()
+                                )
+                            }
                         }
                     }
                     is DatabaseSyncerResult.Failed -> {
@@ -302,9 +311,17 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
 
         groupedEvents.forEach { protocolGroupedEvent ->
             val holder = protocolGroupedEvent.value.firstOrNull()?.holder
-            val providerIdentifiers = protocolGroupedEvent.value.map { it.providerIdentifier }.map { getProviderName(it) }
+            val providerIdentifiers =
+                protocolGroupedEvent.value.map { it.providerIdentifier }
+                    .map { getProviderName(it) }
             val allSameEvents = protocolGroupedEvent.value.map { it.remoteEvent }
-            val allEventsInformation = protocolGroupedEvent.value.map { RemoteEventInformation(it.providerIdentifier, holder, it.remoteEvent) }
+            val allEventsInformation = protocolGroupedEvent.value.map {
+                RemoteEventInformation(
+                    it.providerIdentifier,
+                    holder,
+                    it.remoteEvent
+                )
+            }
             remoteEventUtil.removeDuplicateEvents(allSameEvents).forEach { remoteEvent ->
                 when (remoteEvent) {
                     is RemoteEventVaccination -> {
@@ -414,13 +431,19 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         val eventWidget = YourEventWidget(requireContext()).apply {
             setContent(
                 title = getVaccinationEventTitle(isDccEvent, currentEvent),
-                subtitle = getVaccinationEventSubtitle(isDccEvent, providerIdentifiers, fullName, birthDate),
+                subtitle = getVaccinationEventSubtitle(
+                    isDccEvent,
+                    providerIdentifiers,
+                    fullName,
+                    birthDate
+                ),
                 infoClickListener = {
                     navigateSafety(
                         YourEventsFragmentDirections.actionShowExplanation(
                             toolbarTitle = infoScreen.title,
                             data = allEventsInformation.map {
-                                val vaccinationEvent = it.remoteEvent as RemoteEventVaccination
+                                val vaccinationEvent =
+                                    it.remoteEvent as RemoteEventVaccination
                                 infoScreenUtil.getForVaccination(
                                     event = vaccinationEvent,
                                     fullName = fullName,
@@ -442,7 +465,8 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         birthDate: String,
         event: RemoteEventNegativeTest
     ) {
-        val testDate = event.negativeTest?.sampleDate?.formatDateTime(requireContext()) ?: ""
+        val testDate =
+            event.negativeTest?.sampleDate?.formatDateTime(requireContext()) ?: ""
 
         val infoScreen = infoScreenUtil.getForNegativeTest(
             event = event,
@@ -479,7 +503,8 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         birthDate: String,
         event: RemoteEventPositiveTest
     ) {
-        val testDate = event.positiveTest?.sampleDate?.formatDateTime(requireContext()) ?: ""
+        val testDate =
+            event.positiveTest?.sampleDate?.formatDateTime(requireContext()) ?: ""
 
         val infoScreen = infoScreenUtil.getForPositiveTest(
             event = event,
@@ -556,17 +581,19 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
     private fun presentFooter(binding: FragmentYourEventsBinding) {
         binding.somethingWrongButton.setOnClickListener {
             val type = args.type
-            infoFragmentUtil.presentAsBottomSheet(childFragmentManager, InfoFragmentData.TitleDescription(
-                title = getString(R.string.dialog_negative_test_result_something_wrong_title),
-                descriptionData = DescriptionData(
-                    htmlText = if (type is YourEventsFragmentType.RemoteProtocol3Type && type.originType is OriginType.Vaccination) {
-                        R.string.dialog_vaccination_something_wrong_description
-                    } else {
-                        R.string.dialog_negative_test_result_something_wrong_description
-                    },
-                    htmlLinksEnabled = true,
+            infoFragmentUtil.presentAsBottomSheet(
+                childFragmentManager, InfoFragmentData.TitleDescription(
+                    title = getString(R.string.dialog_negative_test_result_something_wrong_title),
+                    descriptionData = DescriptionData(
+                        htmlText = if (type is YourEventsFragmentType.RemoteProtocol3Type && type.originType is OriginType.Vaccination) {
+                            R.string.dialog_vaccination_something_wrong_description
+                        } else {
+                            R.string.dialog_negative_test_result_something_wrong_description
+                        },
+                        htmlLinksEnabled = true,
+                    )
                 )
-            ))
+            )
         }
     }
 
