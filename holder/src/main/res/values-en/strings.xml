@@ -524,6 +524,8 @@
     <string name="add_paper_proof_self_printed_title">Zelf je bewijs uitgeprint?</string>
     <string name="add_paper_proof_self_printed_description"><![CDATA[Dan is het niet mogelijk om jouw bewijs op deze manier aan de app toe te voegen.<br/><br/>Je kunt wel je bewijs toevoegen aan de app met behulp van DigiD. Ga naar ‘Bewijs toevoegen’ in het menu. Kies je bewijs en haal je gegevens op door in te loggen met DigiD.]]></string>
     <string name="add_paper_proof_self_printed_goto_add_proof_button">Naar bewijs toevoegen</string>
+    <string name="qr_card_vaccination_title_domestic_with_dosis">Vaccinatiebewijs (1 dosis):</string>
+    <string name="qr_card_vaccination_title_domestic_with_doses">Vaccinatiebewijs (%1$s doses):</string>
     <string name="add_paper_proof_why_only_international_title">Waarom alleen internationaal?</string>
     <string name="add_paper_proof_why_only_international_description">In de internationale QR-codes staan genoeg gegevens om ook een Nederlands bewijs te maken.</string>
     <string name="international_certificate_created_description"><![CDATA[You don\'t have a Dutch vaccination certificate. To obtain this, you have to either be fully vaccinated, or have recovered from coronavirus before you received your first vaccination.<br><br><b>Still have to get a second vaccination?</b><br>Please add a vaccination certificate again after getting your vaccination. You will also receive a Dutch certificate then.<br><br><b>Had coronavirus before your first vaccination?</b>Retrieve your positive test result. You will also receive a Dutch certificate then.]]></string>

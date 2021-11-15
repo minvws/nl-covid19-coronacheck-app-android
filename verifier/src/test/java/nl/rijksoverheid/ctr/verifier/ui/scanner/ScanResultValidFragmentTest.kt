@@ -5,10 +5,8 @@ import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
-import com.schibsted.spain.barista.assertion.BaristaBackgroundAssertions.assertHasBackground
-import com.schibsted.spain.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
-import com.schibsted.spain.barista.assertion.BaristaVisibilityAssertions.assertNotDisplayed
-import com.schibsted.spain.barista.interaction.BaristaSleepInteractions
+import com.adevinta.android.barista.assertion.BaristaBackgroundAssertions.assertHasBackground
+import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
 import io.mockk.mockk
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.fakeVerifiedQr
