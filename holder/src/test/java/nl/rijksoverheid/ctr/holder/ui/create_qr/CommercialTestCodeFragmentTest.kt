@@ -14,9 +14,12 @@ import androidx.lifecycle.ViewModelStore
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
-import com.schibsted.spain.barista.assertion.BaristaEnabledAssertions.assertEnabled
-import com.schibsted.spain.barista.assertion.BaristaHintAssertions.assertHint
-import com.schibsted.spain.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
+import com.adevinta.android.barista.assertion.BaristaEnabledAssertions
+import com.adevinta.android.barista.assertion.BaristaEnabledAssertions.assertEnabled
+import com.adevinta.android.barista.assertion.BaristaHintAssertions
+import com.adevinta.android.barista.assertion.BaristaHintAssertions.assertHint
+import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions
+import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.fakeCommercialTestResultViewModel
 import org.junit.Test

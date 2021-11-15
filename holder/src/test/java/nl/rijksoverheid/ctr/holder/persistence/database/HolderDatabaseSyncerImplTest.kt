@@ -108,7 +108,7 @@ class HolderDatabaseSyncerImplTest {
                                 eventTime = OffsetDateTime.now(),
                                 expirationTime = OffsetDateTime.now(),
                                 validFrom = OffsetDateTime.now(),
-                                doseNumber = 1
+                                doseNumber = 1,
                             )),
                             createCredentialMessages = "".toByteArray()
                         ),

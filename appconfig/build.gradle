@@ -62,7 +62,7 @@ dependencies {
         exclude group: 'org.bouncycastle'
     }
     testImplementation "androidx.test:runner:$androix_test_version"
-    testImplementation("com.schibsted.spain:barista:$barista_version") {
+    testImplementation("com.adevinta.android:barista:$barista_version") {
         exclude group: "org.jetbrains.kotlin"
     }
 }

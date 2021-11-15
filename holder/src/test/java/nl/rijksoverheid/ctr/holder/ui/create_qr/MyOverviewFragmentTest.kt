@@ -13,12 +13,12 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.ViewAssertion
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.matcher.ViewMatchers
+import com.adevinta.android.barista.assertion.BaristaListAssertions.assertCustomAssertionAtPosition
+import com.adevinta.android.barista.assertion.BaristaListAssertions.assertListItemCount
+import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
+import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertNotDisplayed
+import com.adevinta.android.barista.internal.performActionOnView
 import com.google.android.material.card.MaterialCardView
-import com.schibsted.spain.barista.assertion.BaristaListAssertions.assertCustomAssertionAtPosition
-import com.schibsted.spain.barista.assertion.BaristaListAssertions.assertListItemCount
-import com.schibsted.spain.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
-import com.schibsted.spain.barista.assertion.BaristaVisibilityAssertions.assertNotDisplayed
-import com.schibsted.spain.barista.internal.performActionOnView
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.fakeAppConfigViewModel
