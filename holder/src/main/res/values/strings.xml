@@ -407,8 +407,9 @@
     <string name="add_paper_proof_self_printed_goto_add_proof_button">Naar bewijs toevoegen</string>
     <string name="add_paper_proof_explanation_highlight"><![CDATA[<b>Zelf je bewijs uitgeprint?</b><br/> Voeg je bewijs dan toe in de app via het menu. Ga naar ‘Bewijs toevoegen’ en log in met DigiD.]]></string>
     <string name="add_paper_proof_consent_title">Scan alleen de internationale QR-code</string>
-    <string name="add_paper_proof_consent_description"><![CDATA[Scan met de camera van je telefoon alleen de internationale QR-code van je papieren bewijs.]]></string>    <string name="add_paper_proof_qr_scanner_text">Richt je telefoon op de QR-code op je internationale bewijs</string>
+    <string name="add_paper_proof_consent_description"><![CDATA[In de internationale QR-code staan genoeg gegevens om zowel een Nederlands als een internationaal bewijs te maken. Scan daarom met de camera van je telefoon <b>alleen je internationale QR-code</b>.<br/><br/><b>Dit krijg je:</b><br/><br/><ul><li>Een Nederlands bewijs</li><li>Een internationaal bewijs</li></ul>]]></string>
     <string name="add_paper_proof_consent_help_button">Waarom alleen internationaal?</string>
+    <string name="add_paper_proof_qr_scanner_text">Richt je telefoon op de QR-code op je internationale bewijs</string>
     <string name="add_paper_proof_qr_error_dutch_qr_code_dialog_title">Scan de internationale QR-code</string>
     <string name="add_paper_proof_qr_error_dutch_qr_code_dialog_description">Scan de QR-code op je internationale bewijs. Je hoeft de Nederlandse QR-code niet te scannen.</string>
     <string name="add_paper_proof_qr_error_invalid_qr_dialog_title">Ongeldige QR-code</string>
