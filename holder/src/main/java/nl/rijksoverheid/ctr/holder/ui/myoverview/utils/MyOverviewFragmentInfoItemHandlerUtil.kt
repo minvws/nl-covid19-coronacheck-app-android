@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.holder.ui.myoverview.utils
 
 import android.content.Intent
 import android.provider.Settings
+import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthTime
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
@@ -12,7 +13,9 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewFragment
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewFragmentDirections
+import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewTabsFragmentDirections
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewInfoCardItem
+import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import java.time.Instant
 import java.time.OffsetDateTime
@@ -67,7 +70,13 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
             is DashboardItem.InfoItem.GreenCardExpiredItem -> {
                 // NO OP, button is hidden
             }
+            is DashboardItem.InfoItem.MissingDutchVaccinationItem ->
+                onMissingDutchVaccinationItemClicked(myOverviewFragment)
         }
+    }
+
+    private fun onMissingDutchVaccinationItemClicked(myOverviewFragment: MyOverviewFragment) {
+        myOverviewFragment.navigateSafety(MyOverviewTabsFragmentDirections.actionMissingDutchCertificate())
     }
 
     private fun onExtendedDomesticRecoveryClicked(myOverviewFragment: MyOverviewFragment) {
