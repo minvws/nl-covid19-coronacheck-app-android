@@ -31,21 +31,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
-                android:text="Only an international certificate was created"
+                android:text="@string/international_certificate_created_title"
                 android:textAppearance="@style/App.TextAppearance.MaterialComponents.Headline5.Montserrat" />
 
             <nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:htmlText="joe" />
+                app:htmlText="@string/international_certificate_created_description" />
 
             <Button
                 android:id="@+id/retrieveTestButton"
                 style="?attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:paddingHorizontal="0dp"
-                android:text="retrieve my test result"
+                android:text="@string/international_certificate_created_retrieve_test_button"
                 android:textColor="@color/link"
                 android:textStyle="bold" />
 
@@ -58,6 +59,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:attachToScrollView="@+id/scroll"
-        app:buttonText="to my certificates" />
+        app:buttonText="@string/international_certificate_created_to_certificates_button" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

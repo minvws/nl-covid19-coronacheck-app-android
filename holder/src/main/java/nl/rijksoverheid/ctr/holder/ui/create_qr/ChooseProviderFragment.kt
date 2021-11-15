@@ -177,6 +177,9 @@ class ChooseProviderFragment : DigiDFragment(R.layout.fragment_choose_provider) 
                 }
             }
         })
+
+        flow.value = HolderFlow.DigidTest
+        reLogin()
     }
 
     private fun navigateToYourEvents(signedEvents: List<SignedResponseWithModel<RemoteProtocol3>>) {

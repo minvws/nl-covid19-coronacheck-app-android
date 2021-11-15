@@ -41,6 +41,8 @@ class DigiDViewModel(
     val loading: LiveData<Event<Boolean>> = MutableLiveData()
     val digidResultLiveData = MutableLiveData<Event<DigidResult>>()
 
+    private var jwt: String? = null
+
     fun login(
         activityResultLauncher: ActivityResultLauncher<Intent>,
         authService: AuthorizationService
@@ -54,6 +56,10 @@ class DigiDViewModel(
             }
             loading.value = Event(false)
         }
+    }
+
+    fun reLogin() {
+        jwt?.let { digidResultLiveData.postValue(Event(DigidResult.Success(it))) }
     }
 
     fun handleActivityResult(activityResult: ActivityResult, authService: AuthorizationService) {
@@ -117,8 +123,8 @@ class DigiDViewModel(
         authResponse: AuthorizationResponse
     ) {
         try {
-            val jwt =
-                authenticationRepository.jwt(authService, authResponse)
+            val jwt = authenticationRepository.jwt(authService, authResponse)
+            this.jwt = jwt
             digidResultLiveData.postValue(Event(DigidResult.Success(jwt)))
         } catch (e: Exception) {
             postExceptionResult(e)

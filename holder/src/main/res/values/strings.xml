@@ -526,4 +526,8 @@
     <string name="cannot_create_recovery_proof_title">Positieve testuitslag niet meer geldig</string>
     <string name="cannot_create_recovery_proof_description"><![CDATA[Het is langer dan %1s dagen geleden dat je positief getest bent op corona. Daarom is je testuitslag niet meer geldig. Je kunt helaas geen herstelbewijs maken.<br/><br/>Lees meer op de <a href="https://www.coronacheck.nl/wegwijzer">Wegwijzer</a>.]]></string>
     <string name="your_vaccination_dcc_row_subtitle"><![CDATA[Naam: %1$s<br/>Geboortedatum: %2$s]]></string>
+    <string name="international_certificate_created_description"><![CDATA[You don\'t have a Dutch vaccination certificate. To obtain this, you have to either be fully vaccinated, or have recovered from coronavirus before you received your first vaccination.<br><br><b>Still have to get a second vaccination?</b><br>Please add a vaccination certificate again after getting your vaccination. You will also receive a Dutch certificate then.<br><br><b>Had coronavirus before your first vaccination?</b>Retrieve your positive test result. You will also receive a Dutch certificate then.]]></string>
+    <string name="international_certificate_created_title">Only an international certificate was created</string>
+    <string name="international_certificate_created_retrieve_test_button">retrieve my test result</string>
+    <string name="international_certificate_created_to_certificates_button">to my certificates</string>
 </resources>

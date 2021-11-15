@@ -11,6 +11,7 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.holder.BaseFragment
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -23,7 +24,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  */
 abstract class DigiDFragment(contentLayoutId: Int) : BaseFragment(contentLayoutId) {
 
-    protected val digidViewModel: DigiDViewModel by viewModel()
+    protected val digidViewModel: DigiDViewModel by sharedViewModel()
     private val authService by lazy {
         val appAuthConfig = AppAuthConfiguration.Builder()
             .setBrowserMatcher(BrowserAllowList(*getSupportedBrowsers()))
@@ -38,6 +39,10 @@ abstract class DigiDFragment(contentLayoutId: Int) : BaseFragment(contentLayoutI
 
     fun loginWithDigiD() {
         digidViewModel.login(loginResult, authService)
+    }
+
+    fun reLogin() {
+        digidViewModel.reLogin()
     }
 
     protected fun getErrorCodes(errorResults: List<ErrorResult>): String {
