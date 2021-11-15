@@ -534,7 +534,7 @@
     <fragment
         android:id="@+id/nav_international_certificate_created"
         android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.InternationalCertificateCreatedFragment"
-        android:label="Certificate created">
+        android:label="@string/international_certificate_created_toolbar_title">
 
         <action
             android:id="@+id/action_nav_choose_provider"
