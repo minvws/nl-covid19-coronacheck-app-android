@@ -346,7 +346,7 @@
     <string name="get_recovery_title">Retrieve recovery details</string>
     <string name="get_recovery_description"><![CDATA[Have you had coronavirus? Then you can make a recovery certificate of the positive test result. Login with DigiD to retrieve your test result.<br/><br/>Your recovery certificate will be valid 11 days after the positive test result. You also need to be free of symptoms.]]></string>
     <string name="no_positive_test_result_title">No positive test result available</string>
-    <string name="no_positive_test_result_description"><![CDATA[Were you just tested? It can take a few hours before your positive test result is available. Please try again later.<br/><br/>Find more information on the <a href="https://www.coronacheck.nl/en/guidepost">Guidepost</a>.]]></string>
+    <string name="no_positive_test_result_description"><![CDATA[Have you just been tested? It may take a few hours before your result is available. Please try again later.<br><br>Were you tested longer ago? Please contact your test location to verify if your details were entered into the system correctly.]]></string>
     <string name="qr_code_type_recovery_title">Recovery certificate</string>
     <string name="qr_code_type_recovery_description">The test proves I have had coronavirus</string>
     <string name="your_test_result_explanation_positive_test_result">positive (corona)</string>
