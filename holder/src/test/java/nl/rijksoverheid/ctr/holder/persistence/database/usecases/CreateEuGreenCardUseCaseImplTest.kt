@@ -62,7 +62,8 @@ class CreateEuGreenCardUseCaseImplTest : AutoCloseKoinTest() {
                     type = OriginType.Vaccination,
                     eventTime = firstJanuaryDate,
                     expirationTime = firstJanuaryDate,
-                    validFrom = firstJanuaryDate
+                    validFrom = firstJanuaryDate,
+                    doseNumber = 1
                 )
             ),
             credential = credentialJson.toString()

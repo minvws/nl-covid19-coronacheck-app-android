@@ -109,7 +109,8 @@ class HolderDatabaseSyncerImplTest {
                                 type = OriginType.Vaccination,
                                 eventTime = OffsetDateTime.now(),
                                 expirationTime = OffsetDateTime.now(),
-                                validFrom = OffsetDateTime.now()
+                                validFrom = OffsetDateTime.now(),
+                                doseNumber = 1,
                             )),
                             createCredentialMessages = "".toByteArray()
                         ),
@@ -224,7 +225,8 @@ class HolderDatabaseSyncerImplTest {
                                 type = OriginType.Test,
                                 eventTime = OffsetDateTime.now(),
                                 expirationTime = OffsetDateTime.now(),
-                                validFrom = OffsetDateTime.now()
+                                validFrom = OffsetDateTime.now(),
+                                doseNumber = 1
                             )),
                             createCredentialMessages = "".toByteArray()
                         ),
@@ -254,7 +256,8 @@ class HolderDatabaseSyncerImplTest {
                     type = originType,
                     eventTime = OffsetDateTime.now(),
                     expirationTime = OffsetDateTime.now(),
-                    validFrom = OffsetDateTime.now()
+                    validFrom = OffsetDateTime.now(),
+                    doseNumber = 1
                 )),
                 createCredentialMessages = "".toByteArray()
             ),
