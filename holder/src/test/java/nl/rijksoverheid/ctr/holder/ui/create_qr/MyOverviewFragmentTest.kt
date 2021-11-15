@@ -62,20 +62,6 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
     val rule = InstantTaskExecutorRule()
 
     @Test
-    fun test() {
-        startFragment(
-            DashboardTabItem(
-                title = R.string.travel_button_domestic,
-                greenCardType = GreenCardType.Domestic,
-                items = listOf(
-                    DashboardItem.HeaderItem(text = R.string.my_overview_description)
-                )
-            )
-        )
-        Assert.assertEquals(true, true)
-    }
-
-    @Test
     fun `Header should be displayed when dashboard header item is presented`() {
         startFragment(
             DashboardTabItem(
