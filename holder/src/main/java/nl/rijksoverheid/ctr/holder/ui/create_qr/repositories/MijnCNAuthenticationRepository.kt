@@ -4,7 +4,13 @@ import android.content.Intent
 import android.net.Uri
 import androidx.activity.result.ActivityResultLauncher
 import net.openid.appauth.*
+import nl.rijksoverheid.ctr.api.factory.NetworkRequestResultFactory
 import nl.rijksoverheid.ctr.holder.BuildConfig
+import nl.rijksoverheid.ctr.holder.HolderStep
+import nl.rijksoverheid.ctr.holder.ui.create_qr.api.TestProviderApiClient
+import nl.rijksoverheid.ctr.holder.ui.create_qr.mijncn.MijnCNTokenResponse
+import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
+import org.json.JSONObject
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
@@ -16,7 +22,10 @@ import kotlin.coroutines.suspendCoroutine
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class MijnCNAuthenticationRepository {
+class MijnCNAuthenticationRepository(
+    private val testProviderApiClient: TestProviderApiClient,
+    private val networkRequestResultFactory: NetworkRequestResultFactory
+) {
 
     suspend fun authResponse(
         activityResultLauncher: ActivityResultLauncher<Intent>,
@@ -45,7 +54,7 @@ class MijnCNAuthenticationRepository {
             serviceConfiguration,
             BuildConfig.DIGI_D_CLIENT_ID,
             ResponseTypeValues.CODE,
-            Uri.parse(BuildConfig.DIGI_D_REDIRECT_URI)
+            Uri.parse(BuildConfig.MIJNCN_REDIRECT_URI)
         ).setScope("openid email profile").build()
     }
 
@@ -53,15 +62,38 @@ class MijnCNAuthenticationRepository {
         authService: AuthorizationService,
         authResponse: AuthorizationResponse
     ): String {
+        val request = authResponse.createTokenExchangeRequest()
+        val res = retrieveAccessToken(request)
         return suspendCoroutine { continuation ->
-            authService.performTokenRequest(authResponse.createTokenExchangeRequest()) { resp, error ->
-                val jwt = resp?.idToken
-                when {
-                    jwt != null -> continuation.resume(jwt)
-                    error != null -> continuation.resumeWithException(error)
-                    else -> continuation.resumeWithException(Exception("Could not get jwt"))
-                }
+            when (res) {
+                is NetworkRequestResult.Success -> continuation.resume(res.response.id_token)
+                is NetworkRequestResult.Failed -> continuation.resumeWithException(Exception("We failed"))
             }
+
+//            authService.performTokenRequest(authResponse.createTokenExchangeRequest()) { resp, error ->
+//                val jwt = resp?.idToken
+//                when {
+//                    jwt != null -> continuation.resume(jwt)
+//                    error != null -> continuation.resumeWithException(error)
+//                    else -> continuation.resumeWithException(Exception("Could not get jwt"))
+//                }
+//            }
         }
     }
+
+    suspend fun retrieveAccessToken(tokenRequest: TokenRequest): NetworkRequestResult<MijnCNTokenResponse> {
+        val result =
+            networkRequestResultFactory.createResult(HolderStep.AccessTokensNetworkRequest) {
+                testProviderApiClient.getAccessToken(
+                    url = tokenRequest.configuration.tokenEndpoint.toString(),
+                    code = tokenRequest.authorizationCode ?: "",
+                    grantType = tokenRequest.grantType,
+                    redirectUri = BuildConfig.MIJNCN_REDIRECT_URI,
+                    codeVerifier = tokenRequest.codeVerifier ?: "",
+                    clientId = tokenRequest.clientId
+                )
+            }
+        return result
+    }
+
 }

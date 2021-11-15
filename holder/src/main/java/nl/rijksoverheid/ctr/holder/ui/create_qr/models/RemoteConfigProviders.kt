@@ -14,7 +14,8 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 @JsonClass(generateAdapter = true)
 data class RemoteConfigProviders(
     @Json(name = "corona_test_providers") val testProviders: List<TestProvider>,
-    @Json(name = "event_providers") val eventProviders: List<EventProvider>
+    @Json(name = "event_providers") val eventProviders: List<EventProvider>,
+    @Json(name = "event_providers_bes") val eventProvidersBes: List<EventProvider>
 ) {
 
     @JsonClass(generateAdapter = true)

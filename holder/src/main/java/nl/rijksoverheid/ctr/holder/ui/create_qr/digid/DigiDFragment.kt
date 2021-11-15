@@ -36,7 +36,7 @@ abstract class DigiDFragment(contentLayoutId: Int) : BaseFragment(contentLayoutI
 
     private val loginResultMijnCn =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            digidViewModel.handleActivityResult(it, authService)
+            mijnCnViewModel.handleActivityResult(it, authService)
         }
 
     private val authServiceMijnCn by lazy {

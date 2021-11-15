@@ -505,7 +505,7 @@
 
     <fragment
         android:id="@+id/nav_nodigid"
-        android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.digid.NoDigidFragment"
+        android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.digid.NoDigiDFragment"
         android:label="@string/choose_provider_toolbar"
         tools:layout="@layout/fragment_no_digid" />
 

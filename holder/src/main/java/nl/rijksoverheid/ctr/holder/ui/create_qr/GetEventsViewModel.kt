@@ -8,6 +8,7 @@ import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.EventsResult
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetEventsUseCase
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetMijnCnEventsUsecase
 import nl.rijksoverheid.ctr.shared.livedata.Event
 
 /*
@@ -24,27 +25,37 @@ abstract class GetEventsViewModel : ViewModel() {
     abstract fun getEvents(
         jwt: String,
         originType: OriginType,
-        withIncompleteVaccination: Boolean = false
+        withIncompleteVaccination: Boolean = false,
+        mijnCN : Boolean = false
     )
 }
 
 class GetEventsViewModelImpl(
-    private val eventUseCase: GetEventsUseCase
+    private val eventUseCase: GetEventsUseCase,
+    private val mijnCnEventsUsecase: GetMijnCnEventsUsecase
 ) : GetEventsViewModel() {
 
     override fun getEvents(
         jwt: String,
         originType: OriginType,
-        withIncompleteVaccination: Boolean
+        withIncompleteVaccination: Boolean,
+        mijnCN : Boolean
     ) {
         (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {
             try {
-                val events = eventUseCase.getEvents(
-                    jwt = jwt,
-                    originType = originType,
-                    withIncompleteVaccination = withIncompleteVaccination
-                )
+                val events = if(!mijnCN) {
+                    eventUseCase.getEvents(
+                        jwt = jwt,
+                        originType = originType,
+                        withIncompleteVaccination = withIncompleteVaccination
+                    )
+                } else {
+                    mijnCnEventsUsecase.getEvents(
+                        jwt = jwt,
+                        originType = originType
+                    )
+                }
 
                 (eventsResult as MutableLiveData).value = Event(events)
             } finally {

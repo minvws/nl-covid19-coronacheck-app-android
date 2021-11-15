@@ -13,7 +13,7 @@ import org.koin.dsl.module
  */
 val repositoriesModule = module {
     single { DigidAuthenticationRepository() }
-    single { MijnCNAuthenticationRepository() }
+    single { MijnCNAuthenticationRepository(get(), get()) }
     factory<CoronaCheckRepository> {
         CoronaCheckRepositoryImpl(
             get(),

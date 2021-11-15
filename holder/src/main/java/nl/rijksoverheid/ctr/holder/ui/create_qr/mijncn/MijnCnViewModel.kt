@@ -13,7 +13,6 @@ import net.openid.appauth.AuthorizationResponse
 import net.openid.appauth.AuthorizationService
 import nl.rijksoverheid.ctr.holder.HolderStep.DigidNetworkRequest
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigidResult
-import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.DigidAuthenticationRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.MijnCNAuthenticationRepository
 import nl.rijksoverheid.ctr.shared.exceptions.OpenIdAuthorizationException
 import nl.rijksoverheid.ctr.shared.livedata.Event
@@ -41,7 +40,7 @@ class MijnCnViewModel(
     }
 
     val loading: LiveData<Event<Boolean>> = MutableLiveData()
-    val digidResultLiveData = MutableLiveData<Event<DigidResult>>()
+    val mijnCnResultLiveData = MutableLiveData<Event<DigidResult>>()
 
     fun login(
         activityResultLauncher: ActivityResultLauncher<Intent>,
@@ -70,7 +69,7 @@ class MijnCnViewModel(
                     else -> postAuthNullResult()
                 }
             } else {
-                digidResultLiveData.postValue(Event(DigidResult.Cancelled))
+                mijnCnResultLiveData.postValue(Event(DigidResult.Cancelled))
             }
         }
     }
@@ -82,7 +81,7 @@ class MijnCnViewModel(
             isServerBusy(authError) -> getServerBusyResult(authError)
             else -> DigidResult.Failed(Error(DigidNetworkRequest, mapToOpenIdException(authError)))
         }
-        digidResultLiveData.postValue(Event(digidResult))
+        mijnCnResultLiveData.postValue(Event(digidResult))
     }
 
     private fun mapToOpenIdException(authError: AuthorizationException) =
@@ -121,7 +120,7 @@ class MijnCnViewModel(
         try {
             val jwt =
                 mijnCNAuthenticationRepository.jwt(authService, authResponse)
-            digidResultLiveData.postValue(Event(DigidResult.Success(jwt)))
+            mijnCnResultLiveData.postValue(Event(DigidResult.Success(jwt)))
         } catch (e: Exception) {
             postExceptionResult(e)
         }
@@ -131,14 +130,14 @@ class MijnCnViewModel(
         if (e is AuthorizationException) {
             postAuthErrorResult(e)
         } else {
-            digidResultLiveData.postValue(
+            mijnCnResultLiveData.postValue(
                 Event(DigidResult.Failed(Error(DigidNetworkRequest, e)))
             )
         }
     }
 
     private fun postAuthNullResult() {
-        digidResultLiveData.postValue(
+        mijnCnResultLiveData.postValue(
             Event(DigidResult.Failed(Error(DigidNetworkRequest, NullPointerException())))
         )
     }
