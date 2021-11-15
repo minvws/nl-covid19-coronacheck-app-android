@@ -35,7 +35,7 @@ interface DashboardItemUtil {
     fun shouldShowRecoveredDomesticRecoveryItem(): Boolean
     fun shouldShowConfigFreshnessWarning(): Boolean
     fun getConfigFreshnessMaxValidity(): Long
-    fun shouldShowIncompleteDutchVaccinationItem(
+    fun shouldShowMissingDutchVaccinationItem(
         domesticGreenCards: List<GreenCard>,
         euGreenCards: List<GreenCard>,
     ): Boolean
@@ -152,7 +152,7 @@ class DashboardItemUtilImpl(
         return appConfigFreshnessUseCase.getAppConfigMaxValidityTimestamp()
     }
 
-    override fun shouldShowIncompleteDutchVaccinationItem(
+    override fun shouldShowMissingDutchVaccinationItem(
         domesticGreenCards: List<GreenCard>,
         euGreenCards: List<GreenCard>,
     ): Boolean {

@@ -55,8 +55,8 @@
                 app:popExitAnim="@anim/slide_out_right" />
 
             <action
-                android:id="@+id/action_no_dutch_certificate"
-                app:destination="@+id/no_dutch_certificate"
+                android:id="@+id/action_missing_dutch_certificate"
+                app:destination="@+id/missing_dutch_certificate"
                 app:enterAnim="@anim/slide_in_right"
                 app:exitAnim="@anim/slide_out_left"
                 app:popEnterAnim="@anim/slide_in_left"
@@ -513,9 +513,9 @@
     </fragment>
 
     <fragment
-        android:id="@+id/no_dutch_certificate"
-        android:name="nl.rijksoverheid.ctr.holder.ui.myoverview.NoDutchVaccinationFragment"
-        tools:layout="@layout/fragment_no_dutch_vaccination_certificate">
+        android:id="@+id/missing_dutch_certificate"
+        android:name="nl.rijksoverheid.ctr.holder.ui.myoverview.MissingDutchVaccinationFragment"
+        tools:layout="@layout/fragment_missing_dutch_vaccination_certificate">
 
         <action
             android:id="@+id/action_get_events"

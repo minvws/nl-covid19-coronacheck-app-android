@@ -225,9 +225,9 @@ class GetDashboardItemsUseCaseImpl(
 
                 items.add(
                     if (greenCardType == GreenCardType.Domestic
-                        && dashboardItemUtil.shouldShowIncompleteDutchVaccinationItem(greenCardsForSelectedType, greenCardsForUnselectedType)
+                        && dashboardItemUtil.shouldShowMissingDutchVaccinationItem(greenCardsForSelectedType, greenCardsForUnselectedType)
                     ) {
-                        DashboardItem.InfoItem.IncompleteDutchVaccinationItem
+                        DashboardItem.InfoItem.MissingDutchVaccinationItem
                     } else {
                         DashboardItem.InfoItem.OriginInfoItem(
                             greenCardType = greenCardType,

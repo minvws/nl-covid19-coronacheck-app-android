@@ -368,39 +368,39 @@ class DashboardItemUtilImplTest {
     }
 
     @Test
-    fun `shouldShowIncompleteDutchVaccinationItem returns true if no nl vaccination card and there is a eu vaccination card`() {
+    fun `shouldShowMissingDutchVaccinationItem returns true if no nl vaccination card and there is a eu vaccination card`() {
         val util = dashboardItemUtil()
 
-        val shouldShowIncompleteDutchVaccinationItem = util.shouldShowIncompleteDutchVaccinationItem(
+        val shouldShowMissingDutchVaccinationItem = util.shouldShowMissingDutchVaccinationItem(
             domesticGreenCards = listOf(fakeDomesticTestGreenCard),
             euGreenCards = listOf(fakeEuropeanVaccinationGreenCard),
         )
 
-        assertTrue(shouldShowIncompleteDutchVaccinationItem)
+        assertTrue(shouldShowMissingDutchVaccinationItem)
     }
 
     @Test
-    fun `shouldShowIncompleteDutchVaccinationItem returns false if there is a nl vaccination card`() {
+    fun `shouldShowMissingDutchVaccinationItem returns false if there is a nl vaccination card`() {
         val util = dashboardItemUtil()
 
-        val shouldShowIncompleteDutchVaccinationItem = util.shouldShowIncompleteDutchVaccinationItem(
+        val shouldShowMissingDutchVaccinationItem = util.shouldShowMissingDutchVaccinationItem(
             domesticGreenCards = listOf(fakeDomesticVaccinationGreenCard),
             euGreenCards = listOf(fakeEuropeanVaccinationGreenCard),
         )
 
-        assertFalse(shouldShowIncompleteDutchVaccinationItem)
+        assertFalse(shouldShowMissingDutchVaccinationItem)
     }
 
     @Test
-    fun `shouldShowIncompleteDutchVaccinationItem returns false if there is no eu vaccination card`() {
+    fun `shouldShowMissingDutchVaccinationItem returns false if there is no eu vaccination card`() {
         val util = dashboardItemUtil()
 
-        val shouldShowIncompleteDutchVaccinationItem = util.shouldShowIncompleteDutchVaccinationItem(
+        val shouldShowMissingDutchVaccinationItem = util.shouldShowMissingDutchVaccinationItem(
             domesticGreenCards = listOf(fakeDomesticTestGreenCard),
             euGreenCards = listOf(fakeEuropeanVaccinationTestCard),
         )
 
-        assertFalse(shouldShowIncompleteDutchVaccinationItem)
+        assertFalse(shouldShowMissingDutchVaccinationItem)
     }
 
     private fun createCardItem(originType: OriginType) = CardItem(

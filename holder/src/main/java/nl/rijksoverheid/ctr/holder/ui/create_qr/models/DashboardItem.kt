@@ -42,7 +42,7 @@ sealed class DashboardItem {
             val originType: OriginType,
         ) : InfoItem(isDismissible = false, hasReadMore = true)
 
-        object IncompleteDutchVaccinationItem : InfoItem(isDismissible = false, hasReadMore = true)
+        object MissingDutchVaccinationItem : InfoItem(isDismissible = false, hasReadMore = true)
 
         object ClockDeviationItem : InfoItem(isDismissible = false, hasReadMore = true)
 

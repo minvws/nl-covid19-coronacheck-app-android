@@ -526,12 +526,12 @@
     <string name="cannot_create_recovery_proof_title">Positieve testuitslag niet meer geldig</string>
     <string name="cannot_create_recovery_proof_description"><![CDATA[Het is langer dan %1s dagen geleden dat je positief getest bent op corona. Daarom is je testuitslag niet meer geldig. Je kunt helaas geen herstelbewijs maken.<br/><br/>Lees meer op de <a href="https://www.coronacheck.nl/wegwijzer">Wegwijzer</a>.]]></string>
     <string name="your_vaccination_dcc_row_subtitle"><![CDATA[Naam: %1$s<br/>Geboortedatum: %2$s]]></string>
-    <string name="no_dutch_certificate_info_card_text">Je hebt geen Nederlands vaccinatiebewijs</string>
-    <string name="no_dutch_certificate_title">Geen Nederlands vaccinatiebewijs</string>
-    <string name="no_dutch_certificate_introduction">Je hebt geen Nederlands vaccinatiebewijs. Hiervoor moet je volledig gevaccineerd zijn, of hersteld van corona vóór je eerste prik.</string>
-    <string name="no_dutch_certificate_second_vaccine_explanation"><![CDATA[<br/><b>Tweede prik gehad?</b><br/>Haal opnieuw je vaccinaties op. Je krijgt dan een Nederlands bewijs.]]></string>
-    <string name="no_dutch_certificate_retrieve_vaccination_button">Haal mijn vaccinaties op</string>
-    <string name="no_dutch_certificate_positive_text_explanation"><![CDATA[<br/><b>Corona gehad voor je eerste prik?</b><br/>Haal je positieve testuitslag op. Je krijgt dan een Nederlands bewijs.]]></string>
-    <string name="no_dutch_certificate_retrieve_test_button">Haal mijn testuitslag op</string>
-    <string name="no_dutch_certificate_explanation_more"><![CDATA[<br/><b>Meer weten?</b><br/>Bekijk de  <a href="https://coronacheck.nl/nl/faq/2-4-ik-heb-wel-een-internationale-qr-code-maar-geen-nederlandse/">meestgestelde vragen</a> voor andere mogelijke oorzaken dat je geen Nederlands bewijs hebt.]]></string>
+    <string name="missing_dutch_certificate_info_card_text">Je hebt geen Nederlands vaccinatiebewijs</string>
+    <string name="missing_dutch_certificate_title">Geen Nederlands vaccinatiebewijs</string>
+    <string name="missing_dutch_certificate_introduction">Je hebt geen Nederlands vaccinatiebewijs. Hiervoor moet je volledig gevaccineerd zijn, of hersteld van corona vóór je eerste prik.</string>
+    <string name="missing_dutch_certificate_second_vaccine_explanation"><![CDATA[<br/><b>Tweede prik gehad?</b><br/>Haal opnieuw je vaccinaties op. Je krijgt dan een Nederlands bewijs.]]></string>
+    <string name="missing_dutch_certificate_retrieve_vaccination_button">Haal mijn vaccinaties op</string>
+    <string name="missing_dutch_certificate_positive_text_explanation"><![CDATA[<br/><b>Corona gehad voor je eerste prik?</b><br/>Haal je positieve testuitslag op. Je krijgt dan een Nederlands bewijs.]]></string>
+    <string name="missing_dutch_certificate_retrieve_test_button">Haal mijn testuitslag op</string>
+    <string name="missing_dutch_certificate_explanation_more"><![CDATA[<br/><b>Meer weten?</b><br/>Bekijk de  <a href="https://coronacheck.nl/nl/faq/2-4-ik-heb-wel-een-internationale-qr-code-maar-geen-nederlandse/">meestgestelde vragen</a> voor andere mogelijke oorzaken dat je geen Nederlands bewijs hebt.]]></string>
 </resources>

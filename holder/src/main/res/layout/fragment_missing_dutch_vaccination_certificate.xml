@@ -15,13 +15,13 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="24dp"
-            android:text="@string/no_dutch_certificate_title"
+            android:text="@string/missing_dutch_certificate_title"
             android:textAppearance="@style/App.TextAppearance.MaterialComponents.Headline5.Montserrat" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/no_dutch_certificate_introduction"
+            android:text="@string/missing_dutch_certificate_introduction"
             android:textAppearance="@style/App.TextAppearance.MaterialComponents.Body1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -29,7 +29,7 @@
         <nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:htmlText="@string/no_dutch_certificate_second_vaccine_explanation" />
+            app:htmlText="@string/missing_dutch_certificate_second_vaccine_explanation" />
 
         <Button
             android:id="@+id/vaccination_button"
@@ -37,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingHorizontal="0dp"
-            android:text="@string/no_dutch_certificate_retrieve_vaccination_button"
+            android:text="@string/missing_dutch_certificate_retrieve_vaccination_button"
             android:textColor="@color/link"
             android:textStyle="bold" />
 
@@ -45,7 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
-            app:htmlText="@string/no_dutch_certificate_positive_text_explanation" />
+            app:htmlText="@string/missing_dutch_certificate_positive_text_explanation" />
 
         <Button
             android:id="@+id/test_button"
@@ -53,17 +53,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingHorizontal="0dp"
-            android:text="@string/no_dutch_certificate_retrieve_test_button"
+            android:text="@string/missing_dutch_certificate_retrieve_test_button"
             android:textColor="@color/link"
             android:textStyle="bold" />
 
         <nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
-            android:id="@+id/no_dutch_certificate_explanation_more"
+            android:id="@+id/missing_dutch_certificate_explanation_more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:enableHtmlLinks="true"
             android:layout_marginTop="32dp"
-            app:htmlText="@string/no_dutch_certificate_explanation_more"
+            app:htmlText="@string/missing_dutch_certificate_explanation_more"
             app:htmlTextColorLink="@color/link" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>

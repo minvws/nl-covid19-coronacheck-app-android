@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.databinding.FragmentNoDutchVaccinationCertificateBinding
+import nl.rijksoverheid.ctr.holder.databinding.FragmentMissingDutchVaccinationCertificateBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 
@@ -18,7 +18,7 @@ import nl.rijksoverheid.ctr.shared.ext.navigateSafety
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class NoDutchVaccinationFragment : Fragment(R.layout.fragment_no_dutch_vaccination_certificate) {
+class MissingDutchVaccinationFragment : Fragment(R.layout.fragment_missing_dutch_vaccination_certificate) {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -26,7 +26,7 @@ class NoDutchVaccinationFragment : Fragment(R.layout.fragment_no_dutch_vaccinati
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
 
-        val binding = FragmentNoDutchVaccinationCertificateBinding.inflate(inflater)
+        val binding = FragmentMissingDutchVaccinationCertificateBinding.inflate(inflater)
 
         binding.vaccinationButton.setOnClickListener {
             navigate(OriginType.Vaccination)
@@ -40,6 +40,6 @@ class NoDutchVaccinationFragment : Fragment(R.layout.fragment_no_dutch_vaccinati
     }
 
     private fun navigate(originType: OriginType) {
-        navigateSafety(NoDutchVaccinationFragmentDirections.actionGetEvents(originType))
+        navigateSafety(MissingDutchVaccinationFragmentDirections.actionGetEvents(originType))
     }
 }

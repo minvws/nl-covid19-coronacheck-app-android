@@ -69,8 +69,8 @@ class MyOverviewInfoCardItem(
                 viewBinding.text.text =
                     getOriginInfoText(infoItem, viewBinding.dashboardItemInfoRoot.context)
             }
-            is DashboardItem.InfoItem.IncompleteDutchVaccinationItem -> {
-                viewBinding.text.text = viewBinding.text.context.getString(R.string.no_dutch_certificate_info_card_text)
+            is DashboardItem.InfoItem.MissingDutchVaccinationItem -> {
+                viewBinding.text.text = viewBinding.text.context.getString(R.string.missing_dutch_certificate_info_card_text)
             }
         }
 

@@ -119,7 +119,7 @@ class GetDashboardItemsUseCaseImplTest: AutoCloseKoinTest() {
 
         assertEquals(dashboardItems.domesticItems.size, 3)
         assertTrue(dashboardItems.domesticItems[0] is DashboardItem.HeaderItem)
-        assertTrue(dashboardItems.domesticItems[1] is DashboardItem.InfoItem.IncompleteDutchVaccinationItem)
+        assertTrue(dashboardItems.domesticItems[1] is DashboardItem.InfoItem.MissingDutchVaccinationItem)
         assertTrue(dashboardItems.domesticItems[2] is DashboardItem.AddQrButtonItem)
 
         assertEquals(dashboardItems.internationalItems.size, 3)
@@ -454,7 +454,7 @@ class GetDashboardItemsUseCaseImplTest: AutoCloseKoinTest() {
 
                 override fun getConfigFreshnessMaxValidity() = OffsetDateTime.now().toEpochSecond()
 
-                override fun shouldShowIncompleteDutchVaccinationItem(
+                override fun shouldShowMissingDutchVaccinationItem(
                     domesticGreenCards: List<GreenCard>,
                     euGreenCards: List<GreenCard>
                 ) = true

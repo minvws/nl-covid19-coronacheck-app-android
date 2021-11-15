@@ -70,13 +70,13 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
             is DashboardItem.InfoItem.GreenCardExpiredItem -> {
                 // NO OP, button is hidden
             }
-            is DashboardItem.InfoItem.IncompleteDutchVaccinationItem ->
-                onIncompleteDutchVaccinationItemClicked(myOverviewFragment)
+            is DashboardItem.InfoItem.MissingDutchVaccinationItem ->
+                onMissingDutchVaccinationItemClicked(myOverviewFragment)
         }
     }
 
-    private fun onIncompleteDutchVaccinationItemClicked(myOverviewFragment: MyOverviewFragment) {
-        myOverviewFragment.navigateSafety(MyOverviewTabsFragmentDirections.actionNoDutchCertificate())
+    private fun onMissingDutchVaccinationItemClicked(myOverviewFragment: MyOverviewFragment) {
+        myOverviewFragment.navigateSafety(MyOverviewTabsFragmentDirections.actionMissingDutchCertificate())
     }
 
     private fun onExtendedDomesticRecoveryClicked(myOverviewFragment: MyOverviewFragment) {
