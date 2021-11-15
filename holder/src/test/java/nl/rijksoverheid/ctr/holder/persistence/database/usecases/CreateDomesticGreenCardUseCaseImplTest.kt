@@ -47,21 +47,21 @@ class CreateDomesticGreenCardUseCaseImplTest: AutoCloseKoinTest() {
                     eventTime = firstJanuaryDate,
                     expirationTime = firstJanuaryDate,
                     validFrom = firstJanuaryDate,
-                    doseNumber = 0
+                    doseNumber = null
                 ),
                 RemoteGreenCards.Origin(
                     type = OriginType.Test,
                     eventTime = firstJanuaryDate,
                     expirationTime = firstJanuaryDate,
                     validFrom = firstJanuaryDate,
-                    doseNumber = 0
+                    doseNumber = null
                 ),
                 RemoteGreenCards.Origin(
                     type = OriginType.Recovery,
                     eventTime = firstJanuaryDate,
                     expirationTime = firstJanuaryDate,
                     validFrom = firstJanuaryDate,
-                    doseNumber = 0
+                    doseNumber = null
                 )
             ),
             createCredentialMessages = "".toByteArray()
