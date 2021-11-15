@@ -531,7 +531,6 @@
     <string name="international_certificate_created_title">Only an international certificate was created</string>
     <string name="international_certificate_created_toolbar_title">certificate created</string>
     <string name="international_certificate_created_retrieve_test_button">retrieve my test result</string>
-    <string name="international_certificate_created_to_certificates_button">to my certificates</string>
     <string name="missing_dutch_certificate_info_card_text">You don\'t have a Dutch vaccination certificate</string>
     <string name="missing_dutch_certificate_title">No Dutch vaccination certificate</string>
     <string name="missing_dutch_certificate_introduction">You don\'t have a Dutch vaccination certificate. To obtain this, you have to either be fully vaccinated, or have recovered from coronavirus before you received your first vaccination.</string>
@@ -540,4 +539,14 @@
     <string name="missing_dutch_certificate_positive_text_explanation"><![CDATA[<b>Had coronavirus before your first vaccination?</b><br/>Retrieve your positive test result. You will also receive a Dutch certificate then.]]></string>
     <string name="missing_dutch_certificate_retrieve_test_button">Retrieve my test result</string>
     <string name="missing_dutch_certificate_explanation_more"><![CDATA[<b>Want to know more?</b><br/>Read <a href="https://coronacheck.nl/en/faq/2-4-ik-heb-wel-een-internationale-qr-code-maar-geen-nederlandse/">the frequently asked questions</a> for other possible reasons why you don\'t have a Dutch certificate.]]></string>
+    <string name="certificate_created_toolbar_title">Bewijs gemaakt</string>
+    <string name="certificate_created_vaccination_recovery_title">Vaccinatiebewijs en herstelbewijs gemaakt</string>
+    <string name="certificate_created_vaccination_recovery_description"><![CDATA[Er is een Nederlands vaccinatiebewijs gemaakt.<br><br>Je positieve test is minder dan X dagen geleden afgenomen. Daarom is er ook een herstelbewijs gemaakt.]]></string>
+    <string name="certificate_created_recovery_title">Alleen een herstelbewijs gemaakt</string>
+    <string name="certificate_created_recovery_description"><![CDATA[Je bent positief getest ná je eerste vaccinatie. Daardoor is je testuitslag niet geschikt om een Nederlands vaccinatiebewijs van te maken. Er is wel een herstelbewijs gemaakt.<br><br>Kijk voor meer informatie bij de meestgestelde vragen.]]></string>
+    <string name="certificate_created_recovery_unsuitable_title">Positive test result is not suitable</string>
+    <string name="certificate_created_recovery_unsuitable_description"><![CDATA[Je bent positief getest ná je eerste vaccinatie. Daardoor is je testuitslag niet geschikt om een Nederlands bewijs van te maken.<br><br>Kijk voor meer informatie bij de meestgestelde vragen.]]></string>
+    <string name="retrieve_test_result_toolbar_title">Retrieve test result</string>
+    <string name="retrieve_test_result_title">Retrieve details about your positive test</string>
+    <string name="retrieve_test_result_description">Log in with DigiD. Details about your positive test will be retrieved automatically.</string>
 </resources>

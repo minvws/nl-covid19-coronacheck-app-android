@@ -59,6 +59,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:attachToScrollView="@+id/scroll"
-        app:buttonText="@string/international_certificate_created_to_certificates_button" />
+        app:buttonText="@string/back_to_overview" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>
