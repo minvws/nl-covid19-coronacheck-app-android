@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.StringRes
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
-import com.google.mlkit.vision.barcode.Barcode
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.qrscanner.QrCodeScannerFragment
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
@@ -30,13 +28,10 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
     private val scannerViewModel: ScannerViewModel by viewModel()
     private val dialogUtil: DialogUtil by inject()
 
-    private val returnUri: String?
-        get() = (activity as? VerifierMainActivity)?.returnUri
-
     override fun onQrScanned(content: String) {
         scannerViewModel.validate(
             qrContent = content,
-            returnUri = returnUri
+            returnUri = arguments?.getString("returnUri"),
         )
     }
 
@@ -106,6 +101,13 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
                 )
             }
         })
+
+        // consume return uri if open via a deep link
+        // and reset it in order not to mess with other navigation logic
+        (activity as? VerifierMainActivity)?.returnUri?.let {
+            arguments?.putString("returnUri", it)
+            (activity as? VerifierMainActivity)?.returnUri = null
+        }
     }
 
     private fun presentDialog(@StringRes title: Int, message: String) {

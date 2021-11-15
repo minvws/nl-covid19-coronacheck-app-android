@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.verifier.ui.scanqr
 
+import android.os.Bundle
 import androidx.lifecycle.ViewModel
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 

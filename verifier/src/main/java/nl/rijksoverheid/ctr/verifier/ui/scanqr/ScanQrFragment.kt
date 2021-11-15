@@ -14,6 +14,7 @@ import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.verifier.R
+import nl.rijksoverheid.ctr.verifier.VerifierMainActivity
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanQrBinding
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
 import org.koin.android.ext.android.inject
@@ -42,11 +43,7 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
         }
 
         binding.bottom.setButtonClick {
-            when (scanQrViewModel.getNextScannerScreenState()) {
-                NextScannerScreenState.Instructions -> findNavController().navigate(ScanQrFragmentDirections.actionScanInstructions())
-                NextScannerScreenState.RiskModeSelection -> scannerUtil.launchModeSelection(requireActivity())
-                NextScannerScreenState.Scanner -> scannerUtil.launchScanner(requireActivity())
-            }
+            goToNextScreen()
         }
 
         binding.clockdeviationView.clockdeviationButton.setOnClickListener {
@@ -58,6 +55,22 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
         // Handle clock deviation view
         observeServerTimeSynced(binding)
         showDeviationViewIfNeeded(binding)
+
+        checkPendingDeeplink()
+    }
+
+    private fun checkPendingDeeplink() {
+        (activity as? VerifierMainActivity)?.returnUri?.let {
+            goToNextScreen()
+        }
+    }
+
+    private fun goToNextScreen() {
+        when (scanQrViewModel.getNextScannerScreenState()) {
+            NextScannerScreenState.Instructions -> findNavController().navigate(ScanQrFragmentDirections.actionScanInstructions())
+            NextScannerScreenState.RiskModeSelection -> scannerUtil.launchModeSelection(requireActivity())
+            NextScannerScreenState.Scanner -> scannerUtil.launchScanner(requireActivity())
+        }
     }
 
     /**

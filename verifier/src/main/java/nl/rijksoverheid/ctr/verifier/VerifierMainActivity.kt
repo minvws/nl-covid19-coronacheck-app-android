@@ -98,7 +98,11 @@ class VerifierMainActivity : AppCompatActivity() {
 
     private fun navigateDeeplink(navController: NavController) {
         if (returnUri != null && !hasHandledDeeplink && isIntroductionFinished()) {
-            navController.navigate(RootNavDirections.actionScanner())
+            // If there is an unhandled scanner deeplink, go to [ScanQrFragment]
+            // which is aware of the risk mode and the scanner instructions, which
+            // need to be set and displayed first before opening the scanner for the
+            // the first time.
+            navController.navigate(R.id.action_scan_qr)
         }
         hasHandledDeeplink = true
     }

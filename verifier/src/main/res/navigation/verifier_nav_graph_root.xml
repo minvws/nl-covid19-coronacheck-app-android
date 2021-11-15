@@ -70,6 +70,15 @@
         app:popExitAnim="@anim/fragment_close_exit"
         app:popUpTo="@id/nav_scanner" />
 
+    <action
+        android:id="@+id/action_scan_qr"
+        app:destination="@id/main_nav"
+        app:enterAnim="@anim/fragment_open_enter"
+        app:exitAnim="@anim/fragment_open_exit"
+        app:popEnterAnim="@anim/fragment_close_enter"
+        app:popExitAnim="@anim/fragment_close_exit"
+        app:popUpTo="@id/main_nav" />
+
     <argument android:name="addToolbar"
         app:argType="boolean"
         android:defaultValue="false" />
@@ -89,5 +98,6 @@
         app:popExitAnim="@anim/fragment_close_exit" />
 
     <include app:graph="@navigation/verifier_nav_graph_scanner" />
+    <include app:graph="@navigation/verifier_nav_graph_main" />
 
 </navigation>
