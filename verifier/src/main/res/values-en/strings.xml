@@ -136,5 +136,6 @@
     <string name="clockdeviation_page_title">Check your phone\'s time settings</string>
     <string name="clockdeviation_page_message"><![CDATA[In order to properly use the CoronaCheck Scanner app, it is important that the time on your phone is set correctly. For example, if the clock on your phone is a few minutes ahead, an error might occur while verifying a coronavirus pass.<br/><br/><a href="#">Go to your phone\'s settings</a> and set Date & Time to \'set automatically\'.]]></string>
     <string name="privacy_policy_checkbox_error">To continue, please agree</string>
+    <string name="scan_instructions_5_title">Red screen - what happens now?</string>
     <string name="scan_instructions_5_description">In case of a red screen with a cross, you will get information to assist the visitor. If the screen stays red, you cannot grant the visitor access.</string>
 </resources>
