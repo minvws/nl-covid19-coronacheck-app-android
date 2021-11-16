@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.verifier.ui.scanner
 
 import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -11,6 +12,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.utils.Accessibility
+import nl.rijksoverheid.ctr.shared.ext.setStatusBarTextColorBlack
+import nl.rijksoverheid.ctr.shared.ext.setStatusBarTextColorWhite
 import nl.rijksoverheid.ctr.verifier.BuildConfig
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanResultValidBinding
@@ -33,6 +36,7 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
 
     private val autoCloseHandler = Handler(Looper.getMainLooper())
     private val autoCloseRunnable = Runnable {
+        binding.root.setStatusBarTextColorBlack()
         navigateSafety(
             R.id.nav_scan_result_valid,
             ScanResultValidFragmentDirections.actionNavQrScanner()
@@ -62,13 +66,19 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
             is ScanResultValidData.Valid -> {
                 binding.title.text = getString(R.string.scan_result_valid_title)
                 if (isHighRiskMode) {
-                    binding.subtitle.visibility = View.VISIBLE
+                    val whiteColor = ContextCompat.getColor(requireContext(), R.color.white)
+                    val whiteColorStateList = ColorStateList.valueOf(whiteColor)
+                    binding.image.imageTintList = whiteColorStateList
+                    binding.title.setTextColor(whiteColorStateList)
+                    binding.title.text = getString(R.string.risk_mode_valid_high_risk_location)
+                    binding.toolbar.navigationIcon?.setTintList(whiteColorStateList)
+                    binding.root.setStatusBarTextColorWhite()
                 }
                 binding.root.setBackgroundColor(
                     ContextCompat.getColor(
                         requireContext(),
                         if (isHighRiskMode) {
-                            R.color.secondary_blue
+                            R.color.primary_blue
                         } else {
                             R.color.secondary_green
                         }

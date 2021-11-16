@@ -1,10 +1,15 @@
 package nl.rijksoverheid.ctr.verifier.ui.scanqr
 
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.provider.Settings
+import android.util.TypedValue
 import android.view.View
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
+import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
@@ -44,6 +49,10 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
 
         binding.bottom.setButtonClick {
             goToNextScreen()
+        }
+
+        binding.bottom.customiseSecondaryButton {
+            RiskModeButtonLayout.style(it)
         }
 
         binding.clockdeviationView.clockdeviationButton.setOnClickListener {
