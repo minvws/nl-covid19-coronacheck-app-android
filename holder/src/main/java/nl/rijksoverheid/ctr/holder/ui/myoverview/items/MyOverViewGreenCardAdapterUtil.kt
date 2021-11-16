@@ -173,7 +173,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
                 1 -> {
                     setOriginTitle(
                         descriptionLayout = viewBinding.description,
-                        title = context.getString(R.string.qr_card_vaccination_title_domestic_with_dosis),
+                        title = context.getString(R.string.qr_card_vaccination_title_domestic_with_dosis, origin.doseNumber.toString()),
                     )
                 }
                 else -> {

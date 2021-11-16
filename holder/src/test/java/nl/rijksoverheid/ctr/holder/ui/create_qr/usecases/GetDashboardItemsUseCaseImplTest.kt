@@ -458,6 +458,11 @@ class GetDashboardItemsUseCaseImplTest: AutoCloseKoinTest() {
                     domesticGreenCards: List<GreenCard>,
                     euGreenCards: List<GreenCard>
                 ) = true
+
+                override fun shouldShowCoronaMelderItem(
+                    greenCards: List<GreenCard>,
+                    databaseSyncerResult: DatabaseSyncerResult
+                ): Boolean = false
             }
         }
     }
