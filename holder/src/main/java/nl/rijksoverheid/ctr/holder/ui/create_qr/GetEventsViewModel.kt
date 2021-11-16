@@ -19,7 +19,6 @@ import nl.rijksoverheid.ctr.shared.livedata.Event
  */
 abstract class GetEventsViewModel : ViewModel() {
     val loading: LiveData<Event<Boolean>> = MutableLiveData()
-    val fullScreenLoading: LiveData<Event<Boolean>> = MutableLiveData()
     val eventsResult: LiveData<Event<EventsResult>> = MutableLiveData()
 
     abstract fun getEvents(
@@ -27,8 +26,6 @@ abstract class GetEventsViewModel : ViewModel() {
         originType: OriginType,
         withIncompleteVaccination: Boolean = false
     )
-
-    abstract fun onCompleteVaccinationWithRecovery()
 }
 
 class GetEventsViewModelImpl(
@@ -52,12 +49,7 @@ class GetEventsViewModelImpl(
                 (eventsResult as MutableLiveData).value = Event(events)
             } finally {
                 loading.value = Event(false)
-                (fullScreenLoading as MutableLiveData).value = Event(false)
             }
         }
-    }
-
-    override fun onCompleteVaccinationWithRecovery() {
-        (fullScreenLoading as MutableLiveData).value = Event(true)
     }
 }
