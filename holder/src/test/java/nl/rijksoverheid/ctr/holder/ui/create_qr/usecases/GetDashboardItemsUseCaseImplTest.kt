@@ -74,10 +74,11 @@ class GetDashboardItemsUseCaseImplTest: AutoCloseKoinTest() {
             allEventGroupEntities = listOf()
         )
 
-        assertEquals(dashboardItems.domesticItems.size, 3)
+        assertEquals(dashboardItems.domesticItems.size, 4)
         assertTrue(dashboardItems.domesticItems[0] is DashboardItem.HeaderItem)
         assertTrue(dashboardItems.domesticItems[1] is DashboardItem.CardsItem)
-        assertTrue(dashboardItems.domesticItems[2] is DashboardItem.AddQrButtonItem)
+        assertTrue(dashboardItems.domesticItems[2] is DashboardItem.CoronaMelderItem)
+        assertTrue(dashboardItems.domesticItems[3] is DashboardItem.AddQrButtonItem)
 
         assertEquals(dashboardItems.internationalItems.size, 3)
         assertTrue(dashboardItems.internationalItems[0] is DashboardItem.HeaderItem)
@@ -243,15 +244,17 @@ class GetDashboardItemsUseCaseImplTest: AutoCloseKoinTest() {
             allEventGroupEntities = listOf()
         )
 
-        assertEquals(dashboardItems.domesticItems.size, 3)
+        assertEquals(dashboardItems.domesticItems.size, 4)
         assertTrue(dashboardItems.domesticItems[0] is DashboardItem.HeaderItem)
         assertTrue(dashboardItems.domesticItems[1] is DashboardItem.CardsItem)
-        assertTrue(dashboardItems.domesticItems[2] is DashboardItem.AddQrButtonItem)
+        assertTrue(dashboardItems.domesticItems[2] is DashboardItem.CoronaMelderItem)
+        assertTrue(dashboardItems.domesticItems[3] is DashboardItem.AddQrButtonItem)
 
-        assertEquals(dashboardItems.internationalItems.size, 3)
+        assertEquals(dashboardItems.internationalItems.size, 4)
         assertTrue(dashboardItems.internationalItems[0] is DashboardItem.HeaderItem)
         assertTrue(dashboardItems.internationalItems[1] is DashboardItem.CardsItem)
-        assertTrue(dashboardItems.internationalItems[2] is DashboardItem.AddQrButtonItem)
+        assertTrue(dashboardItems.internationalItems[2] is DashboardItem.CoronaMelderItem)
+        assertTrue(dashboardItems.internationalItems[3] is DashboardItem.AddQrButtonItem)
     }
 
     @Test
@@ -307,17 +310,19 @@ class GetDashboardItemsUseCaseImplTest: AutoCloseKoinTest() {
             allEventGroupEntities = listOf()
         )
 
-        assertEquals(dashboardItems.domesticItems.size, 4)
+        assertEquals(dashboardItems.domesticItems.size, 5)
         assertTrue(dashboardItems.domesticItems[0] is DashboardItem.HeaderItem)
         assertTrue(dashboardItems.domesticItems[1] is DashboardItem.InfoItem.ClockDeviationItem)
         assertTrue(dashboardItems.domesticItems[2] is DashboardItem.CardsItem)
-        assertTrue(dashboardItems.domesticItems[3] is DashboardItem.AddQrButtonItem)
+        assertTrue(dashboardItems.domesticItems[3] is DashboardItem.CoronaMelderItem)
+        assertTrue(dashboardItems.domesticItems[4] is DashboardItem.AddQrButtonItem)
 
-        assertEquals(dashboardItems.internationalItems.size, 4)
+        assertEquals(dashboardItems.internationalItems.size, 5)
         assertTrue(dashboardItems.internationalItems[0] is DashboardItem.HeaderItem)
         assertTrue(dashboardItems.internationalItems[1] is DashboardItem.InfoItem.ClockDeviationItem)
         assertTrue(dashboardItems.internationalItems[2] is DashboardItem.CardsItem)
-        assertTrue(dashboardItems.internationalItems[3] is DashboardItem.AddQrButtonItem)
+        assertTrue(dashboardItems.internationalItems[3] is DashboardItem.CoronaMelderItem)
+        assertTrue(dashboardItems.internationalItems[4] is DashboardItem.AddQrButtonItem)
     }
 
     @Test
