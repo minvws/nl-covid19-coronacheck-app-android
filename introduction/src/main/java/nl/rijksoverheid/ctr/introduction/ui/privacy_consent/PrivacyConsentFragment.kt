@@ -1,9 +1,14 @@
 package nl.rijksoverheid.ctr.introduction.ui.privacy_consent
 
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.SpannableStringBuilder
+import android.text.style.BackgroundColorSpan
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -59,21 +64,36 @@ class PrivacyConsentFragment : Fragment(R.layout.fragment_privacy_consent) {
 
         if (args.introductionData.hideConsent) {
             binding.checkboxContainer.visibility = View.GONE
-            binding.bottom.setButtonEnabled(true)
         }
 
         binding.checkbox.setOnCheckedChangeListener { _, isChecked ->
-            binding.bottom.setButtonEnabled(isChecked)
+            if (isChecked) {
+                resetErrorState(binding)
+            }
         }
 
         binding.bottom.setButtonClick {
-            introductionViewModel.saveIntroductionFinished(args.introductionData)
-            requireActivity().findNavControllerSafety(R.id.main_nav_host_fragment)
-                ?.navigate(R.id.action_main)
+            if (args.introductionData.hideConsent || binding.checkbox.isChecked) {
+                introductionViewModel.saveIntroductionFinished(args.introductionData)
+                requireActivity().findNavControllerSafety(R.id.main_nav_host_fragment)
+                    ?.navigate(R.id.action_main)
+            } else {
+                showError(binding)
+            }
         }
 
         if (Accessibility.touchExploration(context)) {
             binding.toolbar.setAccessibilityFocus()
         }
+    }
+
+    private fun showError(binding: FragmentPrivacyConsentBinding) {
+        binding.checkboxContainer.background = ContextCompat.getDrawable(requireContext(), R.drawable.shape_privacy_policy_checkbox_background_error)
+        binding.errorContainer.visibility = View.VISIBLE
+    }
+
+    private fun resetErrorState(binding: FragmentPrivacyConsentBinding) {
+        binding.checkboxContainer.background = ContextCompat.getDrawable(requireContext(), R.drawable.shape_privacy_policy_checkbox_background)
+        binding.errorContainer.visibility = View.GONE
     }
 }

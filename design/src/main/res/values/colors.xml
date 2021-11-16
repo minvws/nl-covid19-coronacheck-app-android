@@ -23,4 +23,5 @@
     <color name="darkened_blue">#002D88</color>
     <color name="light_blue">#EFF7F9</color>
     <color name="blue_5_percent">#F3F5FE</color>
+    <color name="error_5_percent">#FBF3F2</color>
 </resources>
