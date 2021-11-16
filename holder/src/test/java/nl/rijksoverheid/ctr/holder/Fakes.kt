@@ -241,6 +241,10 @@ fun fakeConfigProviderUseCase(
             return EventProvidersResult.Success(eventProviders)
         }
 
+        override suspend fun eventProvidersBES(): EventProvidersResult {
+            return EventProvidersResult.Success(eventProviders)
+        }
+
         override suspend fun testProviders(): TestProvidersResult {
             return TestProvidersResult.Success(testProviders)
         }
@@ -248,7 +252,7 @@ fun fakeConfigProviderUseCase(
 }
 
 fun fakeCoronaCheckRepository(
-    testProviders: RemoteConfigProviders = RemoteConfigProviders(listOf(), listOf()),
+    testProviders: RemoteConfigProviders = RemoteConfigProviders(listOf(), listOf(), listOf()),
     testIsmResult: TestIsmResult = TestIsmResult.Success(""),
     testIsmExceptionCallback: (() -> Unit)? = null,
     remoteNonce: RemoteNonce = RemoteNonce("", ""),
