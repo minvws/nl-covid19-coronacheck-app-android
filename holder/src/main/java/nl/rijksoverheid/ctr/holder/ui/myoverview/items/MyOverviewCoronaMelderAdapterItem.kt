@@ -5,6 +5,13 @@ import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.ItemMyOverviewCoronamelderBinding
 
+/*
+ *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+ *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+ *
+ *   SPDX-License-Identifier: EUPL-1.2
+ *
+ */
 class MyOverviewCoronaMelderAdapterItem: BindableItem<ItemMyOverviewCoronamelderBinding>(R.layout.item_my_overview_coronamelder.toLong()) {
     override fun bind(viewBinding: ItemMyOverviewCoronamelderBinding, position: Int) {
 
