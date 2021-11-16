@@ -63,6 +63,8 @@
     <string name="scan_instructions_4_image">Persoon houdt een telefoon vast met een rood scherm en een zwart kruis.</string>
     <string name="scan_instructions_4_title">Rood scherm, wat nu?</string>
     <string name="scan_instructions_4_description"><![CDATA[Bij een rood scherm met kruis krijg je uitleg om de bezoeker te helpen. Blijft het scherm rood? Dan mag je de bezoeker geen toegang geven.]]></string>
+    <string name="scan_instructions_5_title">Rood scherm, wat nu?</string>
+    <string name="scan_instructions_5_description"><![CDATA[Bij een rood scherm met kruis krijg je uitleg om de bezoeker te helpen. Blijft het scherm rood? Dan mag je de bezoeker geen toegang geven.]]></string>
     <string name="privacy_statement">Gebruikersvoorwaarden</string>
     <string name="scanner_custom_title">Scan QR-code</string>
     <string name="camera_rationale_dialog_title">Scanner wil toegang tot je camera</string>

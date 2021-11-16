@@ -1,11 +1,3 @@
-/*
- *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
- *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
- *
- *   SPDX-License-Identifier: EUPL-1.2
- *
- */
-
 package nl.rijksoverheid.ctr.verifier.ui.instructions
 
 import android.annotation.SuppressLint
@@ -15,11 +7,8 @@ import android.widget.ScrollView
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
-import nl.rijksoverheid.ctr.introduction.IntroductionData
 import nl.rijksoverheid.ctr.introduction.ui.onboarding.OnboardingPagerAdapter
-import nl.rijksoverheid.ctr.introduction.ui.onboarding.models.OnboardingItem
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.VerifierMainFragment
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanInstructionsBinding
@@ -51,10 +40,10 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
             OnboardingPagerAdapter(
                 childFragmentManager,
                 lifecycle,
-                getExplanationData().onboardingItems
+                instructionsExplanationData.onboardingItems
             )
 
-        if (getExplanationData().onboardingItems.isNotEmpty()) {
+        if (instructionsExplanationData.onboardingItems.isNotEmpty()) {
             binding.indicators.initIndicator(adapter.itemCount)
             initViewPager(binding, adapter, savedInstanceState?.getInt(indicatorPositionKey))
         }
@@ -113,7 +102,7 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
         adapter: OnboardingPagerAdapter,
         startingItem: Int? = null,
     ) {
-        binding.viewPager.offscreenPageLimit = getExplanationData().onboardingItems.size
+        binding.viewPager.offscreenPageLimit = instructionsExplanationData.onboardingItems.size
         binding.viewPager.adapter = adapter
         binding.viewPager.registerOnPageChangeCallback(object :
             ViewPager2.OnPageChangeCallback() {
@@ -178,12 +167,10 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
         }
     }
 
-    private fun clearToolbar(){
+    private fun clearToolbar() {
         // Remove added toolbar item(s) so they don't show up in other screens
         (parentFragment?.parentFragment as? VerifierMainFragment).let {
-            it?.let {
-                it.getToolbar().menu.clear()
-            }
+            it?.getToolbar()?.menu?.clear()
         }
     }
 
@@ -195,36 +182,5 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
 
     companion object {
         private const val indicatorPositionKey = "indicator_position_key"
-    }
-
-    private fun getExplanationData(): IntroductionData {
-        return IntroductionData(
-            onboardingItems = listOf(
-                OnboardingItem(
-                    animationResource = R.raw.scaninstructions_1,
-                    titleResource = R.string.scan_instructions_1_title,
-                    description = R.string.scan_instructions_1_description,
-                    position = 1
-                ),
-                OnboardingItem(
-                    animationResource = R.raw.scaninstructions_2,
-                    titleResource = R.string.scan_instructions_2_title,
-                    description = R.string.scan_instructions_2_description,
-                    position = 2
-                ),
-                OnboardingItem(
-                    animationResource = R.raw.scaninstructions_3,
-                    titleResource = R.string.scan_instructions_3_title,
-                    description = R.string.scan_instructions_3_description,
-                    position = 3
-                ),
-                OnboardingItem(
-                    animationResource = R.raw.scaninstructions_4,
-                    titleResource = R.string.scan_instructions_4_title,
-                    description = R.string.scan_instructions_4_description,
-                    position = 4
-                ),
-            )
-        )
     }
 }
