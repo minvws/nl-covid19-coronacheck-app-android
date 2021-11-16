@@ -751,17 +751,17 @@ fun fakeRemoteEventVaccination(date: LocalDate = LocalDate.now()) =
         manufacturer = ""
     )
 
-val fakeEuropeanVaccinationGreenCard = GreenCard(
+fun fakeGreenCard(greenCardType: GreenCardType, originType: OriginType) = GreenCard(
     greenCardEntity = GreenCardEntity(
         id = 0,
         walletId = 0,
-        type = GreenCardType.Eu
+        type = greenCardType
     ),
     origins = listOf(
         OriginEntity(
             id = 0,
             greenCardId = 0,
-            type = OriginType.Vaccination,
+            type = originType,
             eventTime = OffsetDateTime.now(),
             expirationTime = OffsetDateTime.now(),
             validFrom = OffsetDateTime.now()
@@ -778,6 +778,12 @@ val fakeEuropeanVaccinationGreenCard = GreenCard(
         )
     )
 )
+
+val fakeDomesticVaccinationGreenCard = fakeGreenCard(GreenCardType.Eu, OriginType.Vaccination)
+val fakeDomesticTestGreenCard = fakeGreenCard(GreenCardType.Eu, OriginType.Test)
+
+val fakeEuropeanVaccinationGreenCard = fakeGreenCard(GreenCardType.Eu, OriginType.Vaccination)
+val fakeEuropeanVaccinationTestCard = fakeGreenCard(GreenCardType.Eu, OriginType.Test)
 
 fun fakeAppConfigFreshnessUseCase(shouldShowWarning: Boolean = false) = object :
     AppConfigFreshnessUseCase {

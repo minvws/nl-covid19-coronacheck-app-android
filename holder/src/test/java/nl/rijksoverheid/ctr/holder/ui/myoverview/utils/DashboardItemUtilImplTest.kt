@@ -11,6 +11,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem.HeaderItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventVaccination
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.DashboardItemUtilImpl
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Test
 import java.time.OffsetDateTime
 import kotlin.test.assertTrue
@@ -366,6 +367,42 @@ class DashboardItemUtilImplTest {
         assertEquals(true, shouldAddGreenCardsSyncedItem)
     }
 
+    @Test
+    fun `shouldShowMissingDutchVaccinationItem returns true if no nl vaccination card and there is a eu vaccination card`() {
+        val util = dashboardItemUtil()
+
+        val shouldShowMissingDutchVaccinationItem = util.shouldShowMissingDutchVaccinationItem(
+            domesticGreenCards = listOf(fakeDomesticTestGreenCard),
+            euGreenCards = listOf(fakeEuropeanVaccinationGreenCard),
+        )
+
+        assertTrue(shouldShowMissingDutchVaccinationItem)
+    }
+
+    @Test
+    fun `shouldShowMissingDutchVaccinationItem returns false if there is a nl vaccination card`() {
+        val util = dashboardItemUtil()
+
+        val shouldShowMissingDutchVaccinationItem = util.shouldShowMissingDutchVaccinationItem(
+            domesticGreenCards = listOf(fakeDomesticVaccinationGreenCard),
+            euGreenCards = listOf(fakeEuropeanVaccinationGreenCard),
+        )
+
+        assertFalse(shouldShowMissingDutchVaccinationItem)
+    }
+
+    @Test
+    fun `shouldShowMissingDutchVaccinationItem returns false if there is no eu vaccination card`() {
+        val util = dashboardItemUtil()
+
+        val shouldShowMissingDutchVaccinationItem = util.shouldShowMissingDutchVaccinationItem(
+            domesticGreenCards = listOf(fakeDomesticTestGreenCard),
+            euGreenCards = listOf(fakeEuropeanVaccinationTestCard),
+        )
+
+        assertFalse(shouldShowMissingDutchVaccinationItem)
+    }
+
     private fun createCardItem(originType: OriginType) = CardItem(
         greenCard = GreenCard(
             greenCardEntity = fakeGreenCardEntity,
@@ -383,5 +420,17 @@ class DashboardItemUtilImplTest {
         originStates = listOf(),
         credentialState = CardsItem.CredentialState.HasCredential(mockk()),
         databaseSyncerResult = mockk()
+    )
+
+    private fun dashboardItemUtil() = DashboardItemUtilImpl(
+        clockDeviationUseCase = fakeClockDevationUseCase(),
+        greenCardUtil = fakeGreenCardUtil(
+            isExpired = true
+        ),
+        persistenceManager = fakePersistenceManager(
+            hasDismissedUnsecureDeviceDialog = false
+        ),
+        eventGroupEntityUtil = fakeEventGroupEntityUtil(),
+        appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase()
     )
 }
