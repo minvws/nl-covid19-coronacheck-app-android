@@ -507,7 +507,16 @@
         android:id="@+id/nav_nodigid"
         android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.digid.NoDigiDFragment"
         android:label="@string/choose_provider_toolbar"
-        tools:layout="@layout/fragment_no_digid" />
+        tools:layout="@layout/fragment_no_digid">
+        <action
+            android:id="@+id/action_your_events"
+            app:destination="@id/nav_your_events"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
 
 
     <fragment

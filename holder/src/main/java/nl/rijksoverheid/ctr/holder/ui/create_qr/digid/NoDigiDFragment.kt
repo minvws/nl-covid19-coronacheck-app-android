@@ -18,10 +18,12 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentNoDigidBinding
 import nl.rijksoverheid.ctr.holder.launchUrl
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.holder.ui.create_qr.GetEventsFragmentDirections
-import nl.rijksoverheid.ctr.holder.ui.create_qr.GetEventsViewModel
-import nl.rijksoverheid.ctr.holder.ui.create_qr.bind
+import nl.rijksoverheid.ctr.holder.ui.create_qr.*
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.EventProvider
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.EventsResult
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
+import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.ErrorResultFragmentData
 import nl.rijksoverheid.ctr.shared.models.Flow
@@ -112,6 +114,10 @@ class NoDigiDFragment : DigiDFragment(R.layout.fragment_no_digid) {
                         )
                     } else {
                         Timber.d("We got events!")
+                        navigateToYourEvents(
+                            signedEvents = it.signedModels,
+                            eventProviders = it.eventProviders,
+                        )
                     }
                 }
                 is EventsResult.HasNoEvents -> {
@@ -181,6 +187,50 @@ class NoDigiDFragment : DigiDFragment(R.layout.fragment_no_digid) {
             }
         })
 
+    }
+
+
+    private fun navigateToYourEvents(
+        signedEvents: List<SignedResponseWithModel<RemoteProtocol3>>,
+        eventProviders: List<EventProvider> = emptyList(),
+    ) {
+        navigateSafety(
+            NoDigiDFragmentDirections.actionYourEvents(
+                type = YourEventsFragmentType.RemoteProtocol3Type(
+                    remoteEvents = signedEvents.map { signedModel -> signedModel.model to signedModel.rawResponse }
+                        .toMap(),
+                    originType = OriginType.Vaccination,
+                    eventProviders = eventProviders,
+                ),
+                toolbarTitle = getCopyForOriginType(OriginType.Vaccination).toolbarTitle
+            )
+        )
+    }
+
+    private fun getCopyForOriginType(originType: OriginType): GetEventsFragmentCopy {
+        when (originType) {
+            is OriginType.Test -> {
+                TODO("This logic is currently in ChooseProviderFragment but should be migrated here")
+            }
+            is OriginType.Vaccination -> {
+                return GetEventsFragmentCopy(
+                    title = getString(R.string.get_vaccination_title),
+                    description = getString(R.string.get_vaccination_description),
+                    toolbarTitle = getString(R.string.your_vaccination_result_toolbar_title),
+                    hasNoEventsTitle = getString(R.string.no_vaccinations_title),
+                    hasNoEventsDescription = getString(R.string.no_vaccinations_description)
+                )
+            }
+            is OriginType.Recovery -> {
+                return GetEventsFragmentCopy(
+                    title = getString(R.string.get_recovery_title),
+                    description = getString(R.string.get_recovery_description),
+                    toolbarTitle = getString(R.string.your_positive_test_toolbar_title),
+                    hasNoEventsTitle = getString(R.string.no_positive_test_result_title),
+                    hasNoEventsDescription = getString(R.string.no_positive_test_result_description)
+                )
+            }
+        }
     }
 
 

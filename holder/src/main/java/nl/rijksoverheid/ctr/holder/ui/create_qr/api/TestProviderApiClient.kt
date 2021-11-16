@@ -40,6 +40,7 @@ interface TestProviderApiClient {
 
     @POST
     @SignedRequest
+    @Headers("User-Agent: ")
     suspend fun getEvents(
         @Url url: String,
         @Header("Authorization") authorization: String,
