@@ -7,7 +7,7 @@ import android.widget.ScrollView
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
-import nl.rijksoverheid.ctr.introduction.ui.onboarding.OnboardingPagerAdapter c
+import nl.rijksoverheid.ctr.introduction.ui.onboarding.OnboardingPagerAdapter
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.VerifierMainFragment

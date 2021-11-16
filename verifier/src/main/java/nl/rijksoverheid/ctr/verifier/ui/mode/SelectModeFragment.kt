@@ -5,11 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import androidx.appcompat.widget.AppCompatTextView
-import androidx.appcompat.widget.Toolbar
-import androidx.core.view.children
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentModeSelectBinding
@@ -30,7 +26,7 @@ class SelectModeFragment: Fragment(R.layout.fragment_mode_select) {
     private val scannerUtil: ScannerUtil by inject()
     private val persistenceManager: PersistenceManager by inject()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val binding = FragmentModeSelectBinding.inflate(inflater)
 
         if (arguments?.getBoolean(addToolbarArgument) == true) {
@@ -72,6 +68,13 @@ class SelectModeFragment: Fragment(R.layout.fragment_mode_select) {
         binding.modeRadioGroup.setOnCheckedChangeListener { _, checkedId ->
             val highRiskModeSelected = checkedId == binding.highRisk.id
             persistenceManager.setHighRiskModeSelected(highRiskModeSelected)
+        }
+
+        binding.subtitle3g.setOnClickListener {
+            binding.modeRadioGroup.check(R.id.lowRisk)
+        }
+        binding.subtitle2g.setOnClickListener {
+            binding.modeRadioGroup.check(R.id.highRisk)
         }
     }
 
