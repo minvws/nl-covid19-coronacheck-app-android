@@ -186,7 +186,6 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
         })
 
         digidViewModel.digidResultLiveData.observe(viewLifecycleOwner, EventObserver {
-            binding.root.visibility = View.VISIBLE
             when (it) {
                 is DigidResult.Success -> {
                     getEventsViewModel.getEvents(
@@ -208,7 +207,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                     )
                 }
                 DigidResult.SessionExpired -> {
-
+                    binding.root.visibility = View.VISIBLE
                 }
             }
         })
