@@ -4,8 +4,8 @@
     <string name="app_name_acc">Scanner (Acc)</string>
     <string name="app_name">Scanner</string>
     <string name="onboarding_title">Onboarding</string>
-    <string name="onboarding_screen_1_title">Alleen toegang met bewijs</string>
-    <string name="onboarding_screen_1_description">Voor toegang tot sommige activiteiten of plekken moeten bezoekers een vaccinatiebewijs, testbewijs of herstelbewijs laten zien.</string>
+    <string name="onboarding_screen_1_title">Jouw locatie veilig open</string>
+    <string name="onboarding_screen_1_description">Met deze app controleer je het coronabewijs van je bezoekers. Zo kun je jouw locatie veilig open houden.</string>
     <string name="onboarding_screen_2_title">Scan QR-code voor toegang</string>
     <string name="onboarding_screen_2_description">Bezoekers maken eerst hun bewijs in de vorm van een QR-code. Met deze app check jij de QR-codes en zie je wie toegang mag krijgen.</string>
     <string name="onboarding_screen_3_title">Verplichte controle identiteitsbewijs</string>
@@ -21,7 +21,6 @@
     <string name="privacy_policy_2"><![CDATA[Je mag gegevens van de bezoeker alleen gebruiken voor <b>controle van het bewijs</b>]]></string>
     <string name="privacy_policy_3"><![CDATA[Gegevens van de bezoeker worden <b>nergens centraal opgeslagen</b>]]></string>
     <string name="privacy_policy_checkbox_text">Ik heb de gebruikersvoorwaarden gelezen en ga hiermee akkoord</string>
-    <string name="privacy_policy_checkbox_error">Zonder akkoord kan je niet verder</string>
     <string name="dialog_error_title">Technische fout</string>
     <string name="dialog_error_message">Excuus, er is een technische fout opgetreden</string>
     <string name="ok">Ok</string>
@@ -62,10 +61,8 @@
     <string name="scan_instructions_3_title">Soms vallen gegevens weg</string>
     <string name="scan_instructions_3_description">Dat doen we om de privacy van de bezoeker te beschermen. Je ziet dan een streepje (-) staan. Controleer in dat geval alleen de gegevens die je wel ziet.</string>
     <string name="scan_instructions_4_image">Persoon houdt een telefoon vast met een rood scherm en een zwart kruis.</string>
-    <string name="scan_instructions_4_title">Rood scherm, wat nu?</string>
-    <string name="scan_instructions_4_description"><![CDATA[Bij een rood scherm met kruis krijg je uitleg om de bezoeker te helpen. Blijft het scherm rood? Dan mag je de bezoeker geen toegang geven.]]></string>
-    <string name="scan_instructions_5_title">Rood scherm, wat nu?</string>
-    <string name="scan_instructions_5_description"><![CDATA[Bij een rood scherm met kruis krijg je uitleg om de bezoeker te helpen. Blijft het scherm rood? Dan mag je de bezoeker geen toegang geven.]]></string>
+    <string name="scan_instructions_4_title">Groen scherm = toegang</string>
+    <string name="scan_instructions_4_description"><![CDATA[Kleurt je scherm groen met een vinkje? Dan is de QR-code geldig en kloppen de gegevens met het identiteitsbewijs. Je mag de bezoeker toegang geven.]]></string>
     <string name="privacy_statement">Gebruikersvoorwaarden</string>
     <string name="scanner_custom_title">Scan QR-code</string>
     <string name="camera_rationale_dialog_title">Scanner wil toegang tot je camera</string>
@@ -138,4 +135,7 @@
     <string name="clockdeviation_card_button">Lees meer</string>
     <string name="clockdeviation_page_title">Controleer de tijd van je telefoon</string>
     <string name="clockdeviation_page_message"><![CDATA[Om de CoronaCheck Scanner-app goed te kunnen gebruiken, is het belangrijk dat de tijd op je telefoon goed staat ingesteld. Loopt je telefoon bijvoorbeeld een paar minuten voor? Dan kan er een fout ontstaan tijdens de controle van een coronabewijs.<br/><br/><a href="#">Ga naar de instellingen</a> van je telefoon en zet de datum en tijd op \'automatisch instellen\'.]]></string>
+    <string name="privacy_policy_checkbox_error">Ga akkoord om verder te kunnen</string>
+    <string name="scan_instructions_5_title">Rood scherm, wat nu?</string>
+    <string name="scan_instructions_5_description">Kleurt je scherm rood met een kruis? Dan krijg je uitleg om de bezoeker te helpen. Blijft het scherm rood? Dan mag je de bezoeker geen toegang geven.</string>
 </resources>

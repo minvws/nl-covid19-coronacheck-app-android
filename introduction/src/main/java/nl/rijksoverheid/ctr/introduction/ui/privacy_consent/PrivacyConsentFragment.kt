@@ -1,10 +1,6 @@
 package nl.rijksoverheid.ctr.introduction.ui.privacy_consent
 
 import android.os.Bundle
-import android.text.SpannableString
-import android.text.SpannableStringBuilder
-import android.text.style.BackgroundColorSpan
-import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
