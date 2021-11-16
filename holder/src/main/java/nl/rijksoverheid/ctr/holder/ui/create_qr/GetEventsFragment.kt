@@ -147,6 +147,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                 is EventsResult.Error -> {
                     when {
                         it.accessTokenSessionExpiredError() -> {
+                            onTokenExpired()
                             presentError(
                                 data = ErrorResultFragmentData(
                                     title = getString(R.string.error_access_tokens_session_expired_title),
@@ -206,7 +207,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                         positiveButtonCallback = {}
                     )
                 }
-                DigidResult.SessionExpired -> {
+                DigidResult.TokenUnavailable -> {
                     binding.root.visibility = View.VISIBLE
                 }
             }

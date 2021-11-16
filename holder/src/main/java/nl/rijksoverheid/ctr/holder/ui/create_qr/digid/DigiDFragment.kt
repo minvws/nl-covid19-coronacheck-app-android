@@ -44,6 +44,10 @@ abstract class DigiDFragment(contentLayoutId: Int) : BaseFragment(contentLayoutI
         digidViewModel.loginAgain()
     }
 
+    fun onTokenExpired() {
+        digidViewModel.onTokenExpired()
+    }
+
     protected fun getErrorCodes(errorResults: List<ErrorResult>): String {
         return errorCodeStringFactory.get(
             flow = getFlow(),
