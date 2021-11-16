@@ -21,6 +21,7 @@
     <string name="privacy_policy_2"><![CDATA[You\'re only allowed to use this data to <b>check the certificate</b>]]></string>
     <string name="privacy_policy_3"><![CDATA[The visitor\'s data is <b>not centrally stored anywhere</b>]]></string>
     <string name="privacy_policy_checkbox_text">I\'ve read and agree to the acceptable use policy.</string>
+    <string name="privacy_policy_checkbox_error">You need to accept the use policy to continue</string>
     <string name="dialog_error_title">Technical error</string>
     <string name="dialog_error_message">Sorry, there was a technical error</string>
     <string name="ok">OK</string>

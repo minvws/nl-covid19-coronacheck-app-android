@@ -21,6 +21,7 @@
     <string name="privacy_policy_2"><![CDATA[Je mag gegevens van de bezoeker alleen gebruiken voor <b>controle van het bewijs</b>]]></string>
     <string name="privacy_policy_3"><![CDATA[Gegevens van de bezoeker worden <b>nergens centraal opgeslagen</b>]]></string>
     <string name="privacy_policy_checkbox_text">Ik heb de gebruikersvoorwaarden gelezen en ga hiermee akkoord</string>
+    <string name="privacy_policy_checkbox_error">Zonder akkoord kan je niet verder</string>
     <string name="dialog_error_title">Technische fout</string>
     <string name="dialog_error_message">Excuus, er is een technische fout opgetreden</string>
     <string name="ok">Ok</string>
