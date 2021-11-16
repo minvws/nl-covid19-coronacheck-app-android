@@ -29,7 +29,8 @@ import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
  */
 class DigiDViewModel(
     private val authenticationRepository: AuthenticationRepository,
-    private val androidUtil: AndroidUtil) : ViewModel() {
+    private val androidUtil: AndroidUtil
+) : ViewModel() {
 
     private companion object {
         const val USER_CANCELLED_FLOW_CODE = 1
@@ -58,8 +59,9 @@ class DigiDViewModel(
         }
     }
 
-    fun reLogin() {
-        jwt?.let { digidResultLiveData.postValue(Event(DigidResult.Success(it))) }
+    fun loginAgain() {
+        val event = jwt?.let { DigidResult.Success(it) } ?: DigidResult.SessionExpired
+        digidResultLiveData.postValue(Event(event))
     }
 
     fun handleActivityResult(activityResult: ActivityResult, authService: AuthorizationService) {
@@ -101,7 +103,10 @@ class DigiDViewModel(
             DigidResult.Failed(NetworkRequestResult.Failed.ClientNetworkError(DigidNetworkRequest))
         } else {
             DigidResult.Failed(
-                NetworkRequestResult.Failed.ServerNetworkError(DigidNetworkRequest, mapToOpenIdException(authError))
+                NetworkRequestResult.Failed.ServerNetworkError(
+                    DigidNetworkRequest,
+                    mapToOpenIdException(authError)
+                )
             )
         }
     }

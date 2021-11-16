@@ -2,8 +2,12 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.EventProvider
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.EventsResult
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventPositiveTest
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventRecovery
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
+import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.EventProviderRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.RemoteEventUtil
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
@@ -25,8 +29,11 @@ import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
  * - map result to success or error states
  */
 interface GetEventsUseCase {
-    suspend fun getEvents(jwt: String,
-                          originType: OriginType,): EventsResult
+    suspend fun getEvents(
+        jwt: String,
+        originType: OriginType,
+        withIncompleteVaccination: Boolean
+    ): EventsResult
 }
 
 class GetEventsUseCaseImpl(
@@ -41,6 +48,7 @@ class GetEventsUseCaseImpl(
     override suspend fun getEvents(
         jwt: String,
         originType: OriginType,
+        withIncompleteVaccination: Boolean
     ): EventsResult {
         // Fetch event providers
         val eventProvidersResult = configProvidersUseCase.eventProviders()
@@ -49,7 +57,10 @@ class GetEventsUseCaseImpl(
             is EventProvidersResult.Success -> {
                 when (val tokensResult = coronaCheckRepository.accessTokens(jwt)) {
                     is NetworkRequestResult.Failed -> return EventsResult.Error(tokensResult)
-                    is NetworkRequestResult.Success -> Pair(tokensResult.response, eventProvidersResult.eventProviders)
+                    is NetworkRequestResult.Success -> Pair(
+                        tokensResult.response,
+                        eventProvidersResult.eventProviders
+                    )
                 }
             }
         }
@@ -63,12 +74,14 @@ class GetEventsUseCaseImpl(
             return EventsResult.Error.noProvidersError(originType)
         }
 
+        val filter = EventProviderRepository.getFilter(originType, withIncompleteVaccination)
+
         // Fetch event providers that have events for us
         val eventProviderWithTokensResults = getEventProvidersWithTokensUseCase.get(
             eventProviders = eventProviders,
             tokens = tokens.tokens,
-            originType = originType,
-            targetProviderIds = targetProviderIds,
+            filter = filter,
+            targetProviderIds = targetProviderIds
         )
 
         val eventProvidersWithTokensSuccessResults =
@@ -82,7 +95,7 @@ class GetEventsUseCaseImpl(
                 getRemoteEventsUseCase.getRemoteEvents(
                     eventProvider = it.eventProvider,
                     token = it.token,
-                    originType = originType
+                    filter = filter
                 )
             }
 
@@ -102,7 +115,8 @@ class GetEventsUseCaseImpl(
 
                 if (!hasEvents) {
                     // But we do not have any events
-                    val missingEvents = eventProvidersWithTokensErrorResults.isNotEmpty() || eventFailureResults.isNotEmpty()
+                    val missingEvents =
+                        eventProvidersWithTokensErrorResults.isNotEmpty() || eventFailureResults.isNotEmpty()
                     val errorResults: List<ErrorResult> = if (missingEvents) {
                         eventProvidersWithTokensErrorResults.map { it.errorResult } + eventFailureResults.map { it.errorResult }
                     } else {
@@ -113,8 +127,11 @@ class GetEventsUseCaseImpl(
                         errorResults = errorResults
                     )
                 } else {
-                    val recoveryEvent = allEvents.filterIsInstance(RemoteEventRecovery::class.java).firstOrNull()
-                    val positiveTestEvent = allEvents.filterIsInstance(RemoteEventPositiveTest::class.java).firstOrNull()
+                    val recoveryEvent =
+                        allEvents.filterIsInstance(RemoteEventRecovery::class.java).firstOrNull()
+                    val positiveTestEvent =
+                        allEvents.filterIsInstance(RemoteEventPositiveTest::class.java)
+                            .firstOrNull()
 
                     recoveryEvent?.let {
                         // If we have a recovery event that is expired, it means we cannot create a recovery proof
@@ -134,7 +151,12 @@ class GetEventsUseCaseImpl(
                     EventsResult.Success(
                         signedModels = signedModels,
                         missingEvents = eventProvidersWithTokensErrorResults.isNotEmpty() || eventFailureResults.isNotEmpty(),
-                        eventProviders = remoteEventProviders.map { EventProvider(it.providerIdentifier, it.name) }
+                        eventProviders = remoteEventProviders.map {
+                            EventProvider(
+                                it.providerIdentifier,
+                                it.name
+                            )
+                        }
                     )
                 }
             } else {

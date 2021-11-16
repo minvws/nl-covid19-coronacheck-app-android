@@ -7,12 +7,11 @@ import net.openid.appauth.browser.BrowserAllowList
 import net.openid.appauth.browser.BrowserSelector
 import net.openid.appauth.browser.VersionRange
 import net.openid.appauth.browser.VersionedBrowserMatcher
-import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.holder.BaseFragment
+import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 /*
@@ -41,8 +40,8 @@ abstract class DigiDFragment(contentLayoutId: Int) : BaseFragment(contentLayoutI
         digidViewModel.login(loginResult, authService)
     }
 
-    fun reLogin() {
-        digidViewModel.reLogin()
+    fun loginAgainWithDigiD() {
+        digidViewModel.loginAgain()
     }
 
     protected fun getErrorCodes(errorResults: List<ErrorResult>): String {

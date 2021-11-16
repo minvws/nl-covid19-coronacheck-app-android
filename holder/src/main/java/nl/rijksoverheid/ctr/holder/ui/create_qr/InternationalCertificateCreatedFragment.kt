@@ -15,21 +15,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.databinding.FragmentCouldNotCreateQrBinding
 import nl.rijksoverheid.ctr.holder.databinding.FragmentInternationalCertificateCreatedBinding
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 
 
-class InternationalCertificateCreatedFragment : Fragment(R.layout.fragment_international_certificate_created) {
+class InternationalCertificateCreatedFragment :
+    Fragment(R.layout.fragment_international_certificate_created) {
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return FragmentInternationalCertificateCreatedBinding.inflate(inflater, container, false).root
+        return FragmentInternationalCertificateCreatedBinding.inflate(
+            inflater, container, false
+        ).root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -38,8 +40,13 @@ class InternationalCertificateCreatedFragment : Fragment(R.layout.fragment_inter
         binding.bottom.setButtonClick {
             navigateSafety(InternationalCertificateCreatedFragmentDirections.actionMyOverview())
         }
-       binding.retrieveTestButton.setOnClickListener {
-           navigateSafety(InternationalCertificateCreatedFragmentDirections.actionNavChooseProvider())
-       }
+        binding.retrieveTestButton.setOnClickListener {
+            navigateSafety(
+                InternationalCertificateCreatedFragmentDirections.actionGetEvents(
+                    originType = OriginType.Recovery,
+                    afterIncompleteVaccination = true
+                )
+            )
+        }
     }
 }

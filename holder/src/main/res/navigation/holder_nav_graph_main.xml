@@ -321,6 +321,11 @@
             android:name="originType"
             app:argType="nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType" />
 
+        <argument
+            android:name="afterIncompleteVaccination"
+            app:argType="boolean"
+            android:defaultValue="false" />
+
         <action
             android:id="@+id/action_your_events"
             app:destination="@id/nav_your_events"
@@ -537,8 +542,8 @@
         android:label="@string/international_certificate_created_toolbar_title">
 
         <action
-            android:id="@+id/action_nav_choose_provider"
-            app:destination="@id/nav_choose_provider"
+            android:id="@+id/action_get_events"
+            app:destination="@id/nav_get_events"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"

@@ -26,24 +26,25 @@ interface GetEventProvidersWithTokensUseCase {
     /**
      * @param eventProviders A list of all the event providers
      * @param tokens A list of all tokens
-     * @param originType The type of events you want to fetch
+     * @param filter events to filter by type
      */
     suspend fun get(
         eventProviders: List<RemoteConfigProviders.EventProvider>,
         tokens: List<RemoteAccessTokens.Token>,
-        originType: OriginType,
-        targetProviderIds: List<String>? = null): List<EventProviderWithTokenResult>
+        filter: String,
+        targetProviderIds: List<String>? = null,
+    ): List<EventProviderWithTokenResult>
 }
 
 class GetEventProvidersWithTokensUseCaseImpl(
     private val eventProviderRepository: EventProviderRepository
-): GetEventProvidersWithTokensUseCase {
+) : GetEventProvidersWithTokensUseCase {
 
     @SuppressLint("DefaultLocale")
     override suspend fun get(
         eventProviders: List<RemoteConfigProviders.EventProvider>,
         tokens: List<RemoteAccessTokens.Token>,
-        originType: OriginType,
+        filter: String,
         targetProviderIds: List<String>?
     ): List<EventProviderWithTokenResult> {
 
@@ -69,7 +70,7 @@ class GetEventProvidersWithTokensUseCaseImpl(
             val unomiResult = eventProviderRepository.getUnomi(
                 url = eventProvider.unomiUrl,
                 token = token.unomi,
-                filter = EventProviderRepository.getFilter(originType),
+                filter = filter,
                 signingCertificateBytes = eventProvider.cms,
                 provider = eventProvider.providerIdentifier,
             )
@@ -99,5 +100,5 @@ sealed class EventProviderWithTokenResult {
         val token: RemoteAccessTokens.Token
     ) : EventProviderWithTokenResult()
 
-    data class Error(val errorResult: ErrorResult): EventProviderWithTokenResult()
+    data class Error(val errorResult: ErrorResult) : EventProviderWithTokenResult()
 }
