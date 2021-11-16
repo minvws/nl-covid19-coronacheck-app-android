@@ -4,6 +4,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.models.VerificationResult
+import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -24,7 +25,8 @@ interface VerifyQrUseCase {
 }
 
 class VerifyQrUseCaseImpl(
-    private val mobileCoreWrapper: MobileCoreWrapper
+    private val mobileCoreWrapper: MobileCoreWrapper,
+    private val persistenceManager: PersistenceManager,
 ) : VerifyQrUseCase {
 
     override suspend fun get(
@@ -32,7 +34,7 @@ class VerifyQrUseCaseImpl(
     ): VerifyQrUseCase.VerifyQrResult = withContext(Dispatchers.IO) {
         try {
             VerifyQrUseCase.VerifyQrResult.Success(
-                mobileCoreWrapper.verify(content.toByteArray())
+                mobileCoreWrapper.verify(content.toByteArray(), persistenceManager.getHighRiskModeSelected())
             )
         } catch (e: Exception) {
             VerifyQrUseCase.VerifyQrResult.Failed(e.toString())

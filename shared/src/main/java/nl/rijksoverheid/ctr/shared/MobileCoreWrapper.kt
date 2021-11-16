@@ -39,7 +39,7 @@ interface MobileCoreWrapper {
 
     // returns error message, if initializing failed
     fun initializeVerifier(configFilesPath: String): String?
-    fun verify(credential: ByteArray): VerificationResult
+    fun verify(credential: ByteArray, policy2G: Boolean): VerificationResult
 }
 
 class MobileCoreWrapperImpl(private val moshi: Moshi) : MobileCoreWrapper {
@@ -121,8 +121,13 @@ class MobileCoreWrapperImpl(private val moshi: Moshi) : MobileCoreWrapper {
         }
     }
 
-    override fun verify(credential: ByteArray): VerificationResult {
-        val result = Mobilecore.verify(credential)
+    override fun verify(credential: ByteArray, policy2G: Boolean): VerificationResult {
+        val verificationPolicy = if (policy2G) {
+            Mobilecore.VERIFICATION_POLICY_2G
+        } else {
+            Mobilecore.VERIFICATION_POLICY_3G
+        }
+        val result = Mobilecore.verify(credential, verificationPolicy)
         return VerificationResult(
             status = result.status,
             details = VerificationResultDetails(

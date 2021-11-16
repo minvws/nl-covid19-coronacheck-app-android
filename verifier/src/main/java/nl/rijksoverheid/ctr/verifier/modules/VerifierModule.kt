@@ -47,7 +47,7 @@ fun verifierModule(path: String) = module {
 
     // Use cases
     factory<VerifyQrUseCase> {
-        VerifyQrUseCaseImpl(get())
+        VerifyQrUseCaseImpl(get(), get())
     }
     factory<TestResultValidUseCase> {
         TestResultValidUseCaseImpl(get())
