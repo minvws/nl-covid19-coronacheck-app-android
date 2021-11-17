@@ -23,21 +23,6 @@ val verifierIntroductionModule = module {
                     R.string.onboarding_screen_1_title,
                     R.string.onboarding_screen_1_description
                 ),
-                OnboardingItem(
-                    R.drawable.illustration_onboarding_2,
-                    R.string.onboarding_screen_2_title,
-                    R.string.onboarding_screen_2_description,
-                ),
-                OnboardingItem(
-                    R.drawable.illustration_onboarding_3,
-                    R.string.onboarding_screen_3_title,
-                    R.string.onboarding_screen_3_description,
-                ),
-                OnboardingItem(
-                    R.drawable.illustration_onboarding_4,
-                    R.string.onboarding_screen_4_title,
-                    R.string.onboarding_screen_4_description
-                )
             ),
             privacyPolicyItems = listOf(
                 PrivacyPolicyItem(
