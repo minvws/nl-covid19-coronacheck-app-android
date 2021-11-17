@@ -155,7 +155,7 @@ class HolderDatabaseSyncerImpl(
     }
 
     private fun isIncompleteDomesticVaccination(remoteGreenCards: RemoteGreenCards) =
-        remoteGreenCards.domesticGreencard?.origins?.none { it.type == OriginType.Vaccination } ?: false
+        remoteGreenCards.domesticGreencard?.origins?.none { it.type == OriginType.Vaccination } ?: true
                 && (remoteGreenCards.euGreencards?.any { greenCard -> greenCard.origins.any { it.type == OriginType.Vaccination } } == true)
 }
 
