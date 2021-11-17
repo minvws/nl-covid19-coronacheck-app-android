@@ -6,6 +6,8 @@ import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
+import nl.rijksoverheid.ctr.holder.persistence.database.models.CombinedVaccinationRecoveryResult
+import nl.rijksoverheid.ctr.holder.persistence.database.models.CombinedVaccinationRecoveryResult.*
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteGreenCards
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
@@ -69,8 +71,24 @@ class HolderDatabaseSyncerImpl(
                     when (remoteGreenCardsResult) {
                         is RemoteGreenCardsResult.Success -> {
                             val remoteGreenCards = remoteGreenCardsResult.remoteGreenCards
-                            val isIncompleteVaccination =
-                                isIncompleteDomesticVaccination(remoteGreenCards)
+                            val combinedVaccinationRecovery =
+                                when {
+                                    isIncompleteDomesticVaccination(
+                                        events,
+                                        remoteGreenCards
+                                    ) -> IncompleteDomesticVaccination
+                                    isCombinedVaccinationRecovery(
+                                        events,
+                                        remoteGreenCards
+                                    ) -> CombinedVaccinationRecovery
+                                    isOnlyVaccination(events, remoteGreenCards) -> OnlyVaccination
+                                    isOnlyRecovery(events, remoteGreenCards) -> OnlyRecovery
+                                    isIncompleteDomesticVaccinationWithRecovery(
+                                        events,
+                                        remoteGreenCards
+                                    ) -> IncompleteDomesticVaccinationWithRecovery
+                                    else -> NotApplicable
+                                }
 
                             // If the recover domestic recovery info card has been shown, never show it again after a successful sync
                             // Start showing the info card that says you have recovered
@@ -96,7 +114,7 @@ class HolderDatabaseSyncerImpl(
                             ) {
                                 return@withContext DatabaseSyncerResult.Success(
                                     missingOrigin = true,
-                                    isIncompleteVaccination
+                                    combinedVaccinationRecovery
                                 )
                             }
 
@@ -109,7 +127,7 @@ class HolderDatabaseSyncerImpl(
                                 is SyncRemoteGreenCardsResult.Success -> {
                                     return@withContext DatabaseSyncerResult.Success(
                                         false,
-                                        isIncompleteVaccination
+                                        combinedVaccinationRecovery
                                     )
                                 }
                                 is SyncRemoteGreenCardsResult.Failed -> {
@@ -154,15 +172,61 @@ class HolderDatabaseSyncerImpl(
         }
     }
 
-    private fun isIncompleteDomesticVaccination(remoteGreenCards: RemoteGreenCards) =
-        remoteGreenCards.domesticGreencard?.origins?.none { it.type == OriginType.Vaccination } ?: true
-                && remoteGreenCards.euGreencards?.any { greenCard -> greenCard.origins.any { it.type == OriginType.Vaccination } } == true
+    private fun isIncompleteDomesticVaccinationWithRecovery(
+        events: List<EventGroupEntity>,
+        remoteGreenCards: RemoteGreenCards
+    ): Boolean {
+        return hasVaccinationAndRecoveryEvents(events)
+                && hasOnlyInternationalVaccinationCertificates(remoteGreenCards)
+    }
+
+    private fun isOnlyRecovery(
+        events: List<EventGroupEntity>,
+        remoteGreenCards: RemoteGreenCards
+    ): Boolean {
+        return hasVaccinationAndRecoveryEvents(events) &&
+                remoteGreenCards.domesticGreencard?.origins?.none { it.type == OriginType.Vaccination } ?: true &&
+                remoteGreenCards.domesticGreencard?.origins?.any { it.type == OriginType.Recovery } ?: false
+    }
+
+    private fun isOnlyVaccination(
+        events: List<EventGroupEntity>,
+        remoteGreenCards: RemoteGreenCards
+    ): Boolean {
+        return hasVaccinationAndRecoveryEvents(events) &&
+                remoteGreenCards.domesticGreencard?.origins?.any { it.type == OriginType.Vaccination } ?: false &&
+                remoteGreenCards.domesticGreencard?.origins?.none { it.type == OriginType.Recovery } ?: true
+    }
+
+    private fun isCombinedVaccinationRecovery(
+        events: List<EventGroupEntity>,
+        remoteGreenCards: RemoteGreenCards
+    ): Boolean {
+        return hasVaccinationAndRecoveryEvents(events) &&
+                remoteGreenCards.domesticGreencard?.origins?.any { it.type == OriginType.Vaccination } ?: false &&
+                remoteGreenCards.domesticGreencard?.origins?.any { it.type == OriginType.Recovery } ?: false
+    }
+
+    private fun hasVaccinationAndRecoveryEvents(events: List<EventGroupEntity>) =
+        events.any { it.type == OriginType.Vaccination } && events.any { it.type == OriginType.Recovery }
+
+    private fun isIncompleteDomesticVaccination(
+        events: List<EventGroupEntity>,
+        remoteGreenCards: RemoteGreenCards
+    ): Boolean {
+        return events.all { it.type == OriginType.Vaccination } &&
+                hasOnlyInternationalVaccinationCertificates(remoteGreenCards)
+    }
+
+    private fun hasOnlyInternationalVaccinationCertificates(remoteGreenCards: RemoteGreenCards) =
+        (remoteGreenCards.domesticGreencard?.origins?.none { it.type == OriginType.Vaccination } ?: true &&
+                remoteGreenCards.euGreencards?.any { greenCard -> greenCard.origins.any { it.type == OriginType.Vaccination } } == true)
 }
 
 sealed class DatabaseSyncerResult {
     data class Success(
         val missingOrigin: Boolean = false,
-        val isIncompleteDomesticVaccination: Boolean = false
+        val combinedVaccinationRecovery: CombinedVaccinationRecoveryResult = NotApplicable
     ) : DatabaseSyncerResult()
 
     sealed class Failed(open val errorResult: ErrorResult, open val failedAt: OffsetDateTime) :

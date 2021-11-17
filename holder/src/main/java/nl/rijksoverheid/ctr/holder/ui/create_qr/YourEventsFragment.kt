@@ -27,6 +27,7 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentYourEventsBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.holder.persistence.database.models.CombinedVaccinationRecoveryResult
 import nl.rijksoverheid.ctr.holder.ui.create_qr.items.YourEventWidget
 import nl.rijksoverheid.ctr.holder.ui.create_qr.items.getVaccinationEventSubtitle
 import nl.rijksoverheid.ctr.holder.ui.create_qr.items.getVaccinationEventTitle
@@ -169,14 +170,57 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                                     )
                                 )
                             }
-                            databaseSyncerResult.isIncompleteDomesticVaccination -> {
-                                navigateSafety(YourEventsFragmentDirections.actionInternationalCertificateCreated())
-                            }
                             else -> {
-                                // We have a origin in the database that we expect, so success
-                                navigateSafety(
-                                    YourEventsFragmentDirections.actionMyOverview()
-                                )
+                                when (databaseSyncerResult.combinedVaccinationRecovery) {
+                                    CombinedVaccinationRecoveryResult.CombinedVaccinationRecovery -> {
+                                        navigateSafety(
+                                            YourEventsFragmentDirections.actionInternationalCertificateCreated(
+                                                toolbarTitle = getString(R.string.international_certificate_created_toolbar_title),
+                                                title = getString(R.string.certificate_created_vaccination_recovery_title),
+                                                description = getString(R.string.certificate_created_vaccination_recovery_description)
+                                            )
+                                        )
+                                    }
+                                    CombinedVaccinationRecoveryResult.IncompleteDomesticVaccination -> {
+                                        navigateSafety(
+                                            YourEventsFragmentDirections.actionInternationalCertificateCreated(
+                                                toolbarTitle = getString(R.string.international_certificate_created_toolbar_title),
+                                                title = getString(R.string.international_certificate_created_title),
+                                                description = getString(R.string.international_certificate_created_description),
+                                                shouldShowRetrieveTestButton = true
+                                            )
+                                        )                                    }
+                                    CombinedVaccinationRecoveryResult.IncompleteDomesticVaccinationWithRecovery -> {
+                                        navigateSafety(
+                                            YourEventsFragmentDirections.actionInternationalCertificateCreated(
+                                                toolbarTitle = getString(R.string.international_certificate_created_toolbar_title),
+                                                title = getString(R.string.certificate_created_recovery_unsuitable_title),
+                                                description = getString(R.string.certificate_created_recovery_unsuitable_description)
+                                            )
+                                        )                                    }
+                                    CombinedVaccinationRecoveryResult.OnlyRecovery -> {
+                                        navigateSafety(
+                                            YourEventsFragmentDirections.actionInternationalCertificateCreated(
+                                                toolbarTitle = getString(R.string.international_certificate_created_toolbar_title),
+                                                title = getString(R.string.certificate_created_recovery_title),
+                                                description = getString(R.string.certificate_created_recovery_description)
+                                            )
+                                        )                                    }
+                                    CombinedVaccinationRecoveryResult.OnlyVaccination -> {
+                                        navigateSafety(
+                                            YourEventsFragmentDirections.actionInternationalCertificateCreated(
+                                                toolbarTitle = getString(R.string.international_certificate_created_toolbar_title),
+                                                title = getString(R.string.certificate_created_vaccination_title),
+                                                description = getString(R.string.certificate_created_vaccination_description)
+                                            )
+                                        )                                    }
+                                    CombinedVaccinationRecoveryResult.NotApplicable -> {
+                                        // We have a origin in the database that we expect, so success
+                                        navigateSafety(
+                                            YourEventsFragmentDirections.actionMyOverview()
+                                        )
+                                    }
+                                }
                             }
                         }
                     }

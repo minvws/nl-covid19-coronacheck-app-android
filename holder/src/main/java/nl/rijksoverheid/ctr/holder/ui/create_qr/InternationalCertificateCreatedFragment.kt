@@ -15,6 +15,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentInternationalCertificateCreatedBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
@@ -23,6 +24,8 @@ import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 
 class InternationalCertificateCreatedFragment :
     Fragment(R.layout.fragment_international_certificate_created) {
+
+    private val args: InternationalCertificateCreatedFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,6 +50,12 @@ class InternationalCertificateCreatedFragment :
                     afterIncompleteVaccination = true
                 )
             )
+        }
+        with(args) {
+            binding.title.text = title
+            binding.description.setHtmlText(description, htmlLinksEnabled = true)
+            binding.retrieveTestButton.visibility =
+                if (shouldShowRetrieveTestButton) View.VISIBLE else View.GONE
         }
     }
 }
