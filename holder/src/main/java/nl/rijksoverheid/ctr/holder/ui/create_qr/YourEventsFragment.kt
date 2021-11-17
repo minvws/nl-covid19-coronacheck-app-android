@@ -197,9 +197,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                             replaceCertificateDialog(type.remoteEvents, type.originType)
                         } else {
                             yourEventsViewModel.saveRemoteProtocol3Events(
-                                type.remoteEvents,
-                                type.originType,
-                                false
+                                type.remoteEvents, type.originType, false
                             )
                         }
                     }
@@ -208,9 +206,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                             replaceCertificateDialog(type.remoteEvents, type.originType)
                         } else {
                             yourEventsViewModel.saveRemoteProtocol3Events(
-                                type.remoteEvents,
-                                type.originType,
-                                false
+                                type.remoteEvents, type.originType, false
                             )
                         }
                     }
@@ -316,11 +312,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     .map { getProviderName(it) }
             val allSameEvents = protocolGroupedEvent.value.map { it.remoteEvent }
             val allEventsInformation = protocolGroupedEvent.value.map {
-                RemoteEventInformation(
-                    it.providerIdentifier,
-                    holder,
-                    it.remoteEvent
-                )
+                RemoteEventInformation(it.providerIdentifier, holder, it.remoteEvent)
             }
             remoteEventUtil.removeDuplicateEvents(allSameEvents).forEach { remoteEvent ->
                 when (remoteEvent) {
