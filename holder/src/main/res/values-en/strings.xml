@@ -195,12 +195,12 @@
     <string name="qr_code_type_vaccination_title">Vaccination certificate</string>
     <string name="qr_code_type_vaccination_description">I\'ve had my injection or injections</string>
     <string name="get_vaccination_title">Retrieve vaccination details</string>
-    <string name="get_vaccination_description"><![CDATA[Were you vaccinated? Login with DigiD. Details regarding your vaccination will be retrieved automatically.<br/><br/>]]></string>
-    <string name="get_vaccination_button">Log in with your DigiD</string>
+    <string name="get_vaccination_description"><![CDATA[Are the details correct? If the details about your vaccination are correct, you can create a certificate.<br/><br/>]]></string>
+    <string name="get_vaccination_button">Log in with DigiD</string>
     <string name="get_vaccination_no_digid_button">I don\'t have DigiD</string>
     <string name="your_retrieved_vaccinations_title">Your retrieved vaccinations</string>
     <string name="your_retrieved_vaccinations_description">You can make a QR code of your vaccination. This is your certificate.</string>
-    <string name="your_vaccination_result_toolbar_title">Your retrieved vaccinations</string>
+    <string name="your_vaccination_result_toolbar_title">Your vaccinations</string>
     <string name="your_retrieved_vaccinations_toolbar">Retrieve details of your vaccination</string>
     <string name="retrieved_vaccination_title">Vaccination %1$s</string>
     <string name="retrieved_vaccination_dcc_title">Vaccination certificate</string>
@@ -213,7 +213,7 @@
     <string name="travel_fragment_description">Always use your Dutch QR code within the Netherlands. Travelling outside the Netherlands? Then use your international QR code.</string>
     <string name="travel_fragment_footer">The Dutch QR code only contains your initials, your birth month, and your day of birth.</string>
     <string name="travel_fragment_footer_eu">The international QR code contains the following details: your name, date of birth, and information about the vaccine.</string>
-    <string name="dialog_negative_test_result_something_wrong_title">Something is wrong</string>
+    <string name="dialog_negative_test_result_something_wrong_title">Is something wrong?</string>
     <string name="dialog_negative_test_result_something_wrong_description"><![CDATA[Are these details incorrect? Please contact your test location. They can edit your details.]]></string>
     <string name="validity_type_european_title">International</string>
     <string name="validity_type_dutch_title">The Netherlands</string>
@@ -278,14 +278,14 @@
     <string name="your_test_result_explanation_description_unique_identifier">Unique test identifier:</string>
     <string name="your_negative_test_3.0_results_row_subtitle"><![CDATA[Test date: %1$s<br/>Name: %2$s<br/>Date of birth: %3$s]]></string>
     <string name="your_vaccination_row_subtitle"><![CDATA[Name: %1$s<br/>Date of birth: %2$s<br/>Data retrieved from: %3$s]]></string>
-    <string name="your_vaccination_explanation_toolbar_title">What was retrieved?</string>
+    <string name="your_vaccination_explanation_toolbar_title">Details</string>
     <string name="your_vaccination_explanation_description"><![CDATA[<p>The following details of your vaccination were retrieved:<br/><br/>Name: <b>%1$s</b><br/>Date of birth*: <b>%2$s</b><br/><br/>Disease targeted: <b>%3$s</b><br/>Vaccine: <b>%4$s</b><br/>Vaccine medicinal product: <b>%5$s</b><br/>Vaccine manufacturer: <b>%6$s</b><br/>Number in series of doses: <b>%7$s</b><br/>Is this the last dose of your vaccination? <b>%8$s</b><br/>Date of vaccination*: <b>%9$s</b><br/>Member state of vaccination: <b>%10$s</b><br/>Unique certificate identifier: <b>%11$s</b>]]></string>
     <string name="your_vaccination_explanation_last_dose_yes">yes</string>
     <string name="your_vaccination_explanation_last_dose_yes_recovery">yes (I\'ve had coronavirus earlier)</string>
     <string name="your_vaccination_explanation_last_dose_yes_prior_event">yes (I have been vaccinated elsewhere)</string>
     <string name="your_vaccination_explanation_last_dose_no">no</string>
     <string name="your_vaccination_explanation_last_dose_unknown">unknown</string>
-    <string name="your_vaccination_explanation_header">The following details of your vaccination were retrieved by %1$s:</string>
+    <string name="your_vaccination_explanation_header">These details about your vaccination were retrieved from %1$s:</string>
     <string name="your_vaccination_explanation_name">Name:</string>
     <string name="your_vaccination_explanation_birthday">Date of birth:</string>
     <string name="your_vaccination_explanation_covid_19">Disease targeted:</string>
@@ -332,7 +332,7 @@
     <string name="coronacheck_error_description">Contact our helpdesk and give them error code (%1$s) or try again later.</string>
     <string name="missing_events_title">Details possibly incomplete</string>
     <string name="missing_events_description">Due to increased traffic or an outage at one of the parties, some details may be missing. Please try again later.</string>
-    <string name="dialog_vaccination_something_wrong_description"><![CDATA[Are these details incorrect? Please contact the healthcare provider who vaccinated you. They can edit your details.]]></string>
+    <string name="dialog_vaccination_something_wrong_description"><![CDATA[Please contact the care provider who vaccinated you. This can be the GGD, your general practitioner, or a doctor belonging to a healthcare facility. They can help you change these details.]]></string>
     <string name="dialog_title_no_internet">Connect to the internet</string>
     <string name="dialog_update_credentials_no_internet">"The QR code sometimes needs an internet connection. Without an internet connection, your QR code can be used for 3 more days. When you’re connected, you’ll be able to use the QR code again for a longer period of time."</string>
     <string name="dialog_credentials_expired_no_internet">You need an internet connection to regain access to your QR code.</string>
@@ -399,7 +399,6 @@
     <string name="add_paper_proof_explanation_highlight"><![CDATA[<b>Did you print your certificate yourself?</b><br/> Please add your certificate to the app via the menu. Go to “Add certificate” and log in using your DigiD.]]></string>
     <string name="add_paper_proof_consent_title">Only scan the international QR code</string>
     <string name="add_paper_proof_consent_description"><![CDATA[The international QR code contains enough information to create both a Dutch certificate and an international certificate. Therefore please <b>only scan the international QR code</b> using your smartphone camera.<br/><br/><b>You will receive the following:</b><br/><br/><ul><li>A Dutch certificate</li><li>An international certificate</li></ul>]]></string>
-    <string name="add_paper_proof_consent_help_button">Waarom alleen internationaal?</string>
     <string name="add_paper_proof_qr_scanner_text">Point your phone at the QR code on the international certificate</string>
     <string name="add_paper_proof_qr_error_dutch_qr_code_dialog_title">Scan the international QR code</string>
     <string name="add_paper_proof_qr_error_dutch_qr_code_dialog_description">Scan the QR code on your international certificate. You don\'t have to scan the Dutch QR code.</string>
@@ -516,22 +515,10 @@
     <string name="cannot_create_recovery_proof_title">Positive test result no longer valid</string>
     <string name="cannot_create_recovery_proof_description"><![CDATA[It has been more than %1s days since you tested positive for coronavirus. Therefore, your test result is no longer valid. Unfortunately, you cannot create a recovery certificate.<br/><br/>Find more information on the <a href="https://www.coronacheck.nl//en/guidepost">Guidepost</a>.]]></string>
     <string name="your_vaccination_dcc_row_subtitle"><![CDATA[Name: %1$s<br/>Date of birth: %2$s]]></string>
-    <string name="add_paper_proof_explanation_healthcare_item_title">Gekregen van een zorgverlener</string>
-    <string name="add_paper_proof_explanation_healthcare_item_subtitle">Bijvoorbeeld je huisarts of je zorginstelling heeft dit voor je geprint</string>
-    <string name="add_paper_proof_explanation_mail_item_title">Opgestuurd per post</string>
-    <string name="add_paper_proof_explanation_mail_item_subtitle">De overheid heeft je het bewijs opgestuurd per post</string>
-    <string name="add_paper_proof_explanation_self_printed_button">Zelf je bewijs uitgeprint?</string>
-    <string name="add_paper_proof_self_printed_title">Zelf je bewijs uitgeprint?</string>
-    <string name="add_paper_proof_self_printed_description"><![CDATA[Dan is het niet mogelijk om jouw bewijs op deze manier aan de app toe te voegen.<br/><br/>Je kunt wel je bewijs toevoegen aan de app met behulp van DigiD. Ga naar ‘Bewijs toevoegen’ in het menu. Kies je bewijs en haal je gegevens op door in te loggen met DigiD.]]></string>
-    <string name="add_paper_proof_self_printed_goto_add_proof_button">Naar bewijs toevoegen</string>
-    <string name="qr_card_vaccination_title_domestic_with_dosis">Vaccinatiebewijs (1 dosis):</string>
-    <string name="qr_card_vaccination_title_domestic_with_doses">Vaccinatiebewijs (%1$s doses):</string>
-    <string name="add_paper_proof_why_only_international_title">Waarom alleen internationaal?</string>
-    <string name="add_paper_proof_why_only_international_description">In de internationale QR-codes staan genoeg gegevens om ook een Nederlands bewijs te maken.</string>
     <string name="international_certificate_created_description"><![CDATA[You don\'t have a Dutch vaccination certificate. To obtain this, you have to either be fully vaccinated, or have recovered from coronavirus before you received your first vaccination.<br><br><b>Still have to get a second vaccination?</b><br>Please add a vaccination certificate again after getting your vaccination. You will also receive a Dutch certificate then.<br><br><b>Had coronavirus before your first vaccination?</b>Retrieve your positive test result. You will also receive a Dutch certificate then.]]></string>
     <string name="international_certificate_created_title">Only an international certificate was created</string>
-    <string name="international_certificate_created_toolbar_title">certificate created</string>
-    <string name="international_certificate_created_retrieve_test_button">retrieve my test result</string>
+    <string name="international_certificate_created_toolbar_title">Certificate created</string>
+    <string name="international_certificate_created_retrieve_test_button">Retrieve my test result</string>
     <string name="missing_dutch_certificate_info_card_text">You don\'t have a Dutch vaccination certificate</string>
     <string name="missing_dutch_certificate_title">No Dutch vaccination certificate</string>
     <string name="missing_dutch_certificate_introduction">You don\'t have a Dutch vaccination certificate. To obtain this, you have to either be fully vaccinated, or have recovered from coronavirus before you received your first vaccination.</string>
@@ -540,14 +527,28 @@
     <string name="missing_dutch_certificate_positive_text_explanation"><![CDATA[<b>Had coronavirus before your first vaccination?</b><br/>Retrieve your positive test result. You will also receive a Dutch certificate then.]]></string>
     <string name="missing_dutch_certificate_retrieve_test_button">Retrieve my test result</string>
     <string name="missing_dutch_certificate_explanation_more"><![CDATA[<b>Want to know more?</b><br/>Read <a href="https://coronacheck.nl/en/faq/2-4-ik-heb-wel-een-internationale-qr-code-maar-geen-nederlandse/">the frequently asked questions</a> for other possible reasons why you don\'t have a Dutch certificate.]]></string>
+    <string name="certificate_created_recovery_unsuitable_title">Positive test result is not suitable</string>
+    <string name="retrieve_test_result_toolbar_title">Retrieve test result</string>
+    <string name="retrieve_test_result_title">Retrieve details about your positive test</string>
+    <string name="retrieve_test_result_description">Log in with DigiD. Details about your positive test will be retrieved automatically.</string>
+    <string name="qr_card_vaccination_title_domestic_with_doses">Vaccinatiebewijs (%1$s doses):</string>
+    <string name="add_paper_proof_why_only_international_title">Waarom alleen internationaal?</string>
+    <string name="add_paper_proof_why_only_international_description">In de internationale QR-codes staan genoeg gegevens om ook een Nederlands bewijs te maken.</string>
     <string name="certificate_created_toolbar_title">Bewijs gemaakt</string>
     <string name="certificate_created_vaccination_recovery_title">Vaccinatiebewijs en herstelbewijs gemaakt</string>
     <string name="certificate_created_vaccination_recovery_description"><![CDATA[Er is een Nederlands vaccinatiebewijs gemaakt.<br><br>Je positieve test is minder dan X dagen geleden afgenomen. Daarom is er ook een herstelbewijs gemaakt.]]></string>
     <string name="certificate_created_recovery_title">Alleen een herstelbewijs gemaakt</string>
     <string name="certificate_created_recovery_description"><![CDATA[Je bent positief getest ná je eerste vaccinatie. Daardoor is je testuitslag niet geschikt om een Nederlands vaccinatiebewijs van te maken. Er is wel een herstelbewijs gemaakt.<br><br>Kijk voor meer informatie bij de meestgestelde vragen.]]></string>
-    <string name="certificate_created_recovery_unsuitable_title">Positive test result is not suitable</string>
     <string name="certificate_created_recovery_unsuitable_description"><![CDATA[Je bent positief getest ná je eerste vaccinatie. Daardoor is je testuitslag niet geschikt om een Nederlands bewijs van te maken.<br><br>Kijk voor meer informatie bij de meestgestelde vragen.]]></string>
-    <string name="retrieve_test_result_toolbar_title">Retrieve test result</string>
-    <string name="retrieve_test_result_title">Retrieve details about your positive test</string>
-    <string name="retrieve_test_result_description">Log in with DigiD. Details about your positive test will be retrieved automatically.</string>
+    <string name="dashboard_coronamelder_tip"><![CDATA[<b>Tip:</b> Voorkom verspreiding, <a href="https://coronamelder.nl/app">gebruik ook CoronaMelder</a>]]></string>
+    <string name="add_paper_proof_explanation_healthcare_item_title">Gekregen van een zorgverlener</string>
+    <string name="add_paper_proof_explanation_healthcare_item_subtitle">Bijvoorbeeld je huisarts of je zorginstelling heeft dit voor je geprint</string>
+    <string name="add_paper_proof_explanation_mail_item_title">Opgestuurd per post</string>
+    <string name="add_paper_proof_explanation_mail_item_subtitle">De overheid heeft je het bewijs opgestuurd per post</string>
+    <string name="add_paper_proof_explanation_self_printed_button">Zelf je bewijs uitgeprint?</string>
+    <string name="add_paper_proof_self_printed_title">Zelf je bewijs uitgeprint?</string>
+    <string name="add_paper_proof_self_printed_description"><![CDATA[Dan is het niet mogelijk om jouw bewijs op deze manier aan de app toe te voegen.<br/><br/>Je kunt wel je bewijs toevoegen aan de app met behulp van DigiD. Ga naar ‘Bewijs toevoegen’ in het menu. Kies je bewijs en haal je gegevens op door in te loggen met DigiD.]]></string>
+    <string name="add_paper_proof_self_printed_goto_add_proof_button">Naar bewijs toevoegen</string>
+    <string name="add_paper_proof_consent_help_button">Waarom alleen internationaal?</string>
+    <string name="qr_card_vaccination_title_domestic_with_dosis">Vaccinatiebewijs (%1$s doses):</string>
 </resources>
