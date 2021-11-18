@@ -97,6 +97,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                     // Handled by MyOverviewTabsFragment
                 }
                 is DashboardItem.InfoItem -> addInfoCard(adapterItems, dashboardItem)
+                is DashboardItem.CoronaMelderItem -> adapterItems.add(MyOverviewCoronaMelderAdapterItem())
             }
         }
 

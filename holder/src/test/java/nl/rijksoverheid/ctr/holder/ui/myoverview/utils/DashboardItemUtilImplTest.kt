@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.holder.ui.myoverview.utils
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.holder.*
+import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem.CardsItem
@@ -10,9 +11,11 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem.CardsItem.C
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem.HeaderItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventVaccination
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.DashboardItemUtilImpl
+import nl.rijksoverheid.ctr.shared.models.AppErrorResult
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Test
+import java.lang.IllegalStateException
 import java.time.OffsetDateTime
 import kotlin.test.assertTrue
 
@@ -403,6 +406,60 @@ class DashboardItemUtilImplTest {
         assertFalse(shouldShowMissingDutchVaccinationItem)
     }
 
+    @Test
+    fun `shouldShowCoronaMelderItem returns false if there are no green cards`() {
+        val util = dashboardItemUtil()
+
+        val shouldShowCoronaMelderItem = util.shouldShowCoronaMelderItem(
+            greenCards = listOf(),
+            databaseSyncerResult = DatabaseSyncerResult.Success()
+        )
+
+        assertFalse(shouldShowCoronaMelderItem)
+    }
+
+    @Test
+    fun `shouldShowCoronaMelderItem returns false if all green cards expired`() {
+        val util = dashboardItemUtil(
+            isExpired = true
+        )
+
+        val shouldShowCoronaMelderItem = util.shouldShowCoronaMelderItem(
+            greenCards = listOf(fakeDomesticVaccinationGreenCard),
+            databaseSyncerResult = DatabaseSyncerResult.Success()
+        )
+
+        assertFalse(shouldShowCoronaMelderItem)
+    }
+
+    @Test
+    fun `shouldShowCoronaMelderItem returns false if green cards but with error DatabaseSyncerResult`() {
+        val util = dashboardItemUtil(
+            isExpired = false
+        )
+
+        val shouldShowCoronaMelderItem = util.shouldShowCoronaMelderItem(
+            greenCards = listOf(fakeDomesticVaccinationGreenCard),
+            databaseSyncerResult = DatabaseSyncerResult.Failed.Error(AppErrorResult(HolderStep.GetCredentialsNetworkRequest, IllegalStateException()))
+        )
+
+        assertFalse(shouldShowCoronaMelderItem)
+    }
+
+    @Test
+    fun `shouldShowCoronaMelderItem returns true if green cards`() {
+        val util = dashboardItemUtil(
+            isExpired = false
+        )
+
+        val shouldShowCoronaMelderItem = util.shouldShowCoronaMelderItem(
+            greenCards = listOf(fakeDomesticVaccinationGreenCard),
+            databaseSyncerResult = DatabaseSyncerResult.Success()
+        )
+
+        assertTrue(shouldShowCoronaMelderItem)
+    }
+
     private fun createCardItem(originType: OriginType) = CardItem(
         greenCard = GreenCard(
             greenCardEntity = fakeGreenCardEntity,
@@ -422,10 +479,10 @@ class DashboardItemUtilImplTest {
         databaseSyncerResult = mockk()
     )
 
-    private fun dashboardItemUtil() = DashboardItemUtilImpl(
+    private fun dashboardItemUtil(isExpired: Boolean = false) = DashboardItemUtilImpl(
         clockDeviationUseCase = fakeClockDevationUseCase(),
         greenCardUtil = fakeGreenCardUtil(
-            isExpired = true
+            isExpired = isExpired
         ),
         persistenceManager = fakePersistenceManager(
             hasDismissedUnsecureDeviceDialog = false

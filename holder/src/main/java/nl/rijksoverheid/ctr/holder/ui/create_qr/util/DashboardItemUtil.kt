@@ -4,6 +4,7 @@ import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigFreshnessUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
+import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
@@ -38,6 +39,10 @@ interface DashboardItemUtil {
     fun shouldShowMissingDutchVaccinationItem(
         domesticGreenCards: List<GreenCard>,
         euGreenCards: List<GreenCard>,
+    ): Boolean
+    fun shouldShowCoronaMelderItem(
+        greenCards: List<GreenCard>,
+        databaseSyncerResult: DatabaseSyncerResult
     ): Boolean
 }
 
@@ -161,5 +166,14 @@ class DashboardItemUtilImpl(
         // second vaccination result or a positive test result
         return domesticGreenCards.none { it.origins.any { it.type == OriginType.Vaccination } }
                 && euGreenCards.any { it.origins.any { it.type == OriginType.Vaccination } }
+    }
+
+    override fun shouldShowCoronaMelderItem(
+        greenCards: List<GreenCard>,
+        databaseSyncerResult: DatabaseSyncerResult
+    ): Boolean {
+        return greenCards.isNotEmpty()
+                && !greenCards.all { greenCardUtil.isExpired(it) }
+                && databaseSyncerResult is DatabaseSyncerResult.Success
     }
 }
