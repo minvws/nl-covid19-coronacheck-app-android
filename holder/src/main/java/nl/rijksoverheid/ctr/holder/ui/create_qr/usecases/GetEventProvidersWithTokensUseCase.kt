@@ -27,6 +27,7 @@ interface GetEventProvidersWithTokensUseCase {
      * @param eventProviders A list of all the event providers
      * @param tokens A list of all tokens
      * @param filter events to filter by type
+     * @param targetProviderIds used to filter on specific target providers
      */
     suspend fun get(
         eventProviders: List<RemoteConfigProviders.EventProvider>,
