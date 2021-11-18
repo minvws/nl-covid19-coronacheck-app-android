@@ -18,7 +18,8 @@ import nl.rijksoverheid.ctr.shared.ext.navigateSafety
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class MissingDutchVaccinationFragment : Fragment(R.layout.fragment_missing_dutch_vaccination_certificate) {
+class MissingDutchVaccinationFragment :
+    Fragment(R.layout.fragment_missing_dutch_vaccination_certificate) {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -33,13 +34,18 @@ class MissingDutchVaccinationFragment : Fragment(R.layout.fragment_missing_dutch
         }
 
         binding.testButton.setOnClickListener {
-            navigate(OriginType.Test)
+            navigate(OriginType.Recovery, afterIncompleteVaccination = true)
         }
 
         return binding.root
     }
 
-    private fun navigate(originType: OriginType) {
-        navigateSafety(MissingDutchVaccinationFragmentDirections.actionGetEvents(originType))
+    private fun navigate(originType: OriginType, afterIncompleteVaccination: Boolean = false) {
+        navigateSafety(
+            MissingDutchVaccinationFragmentDirections.actionGetEvents(
+                originType,
+                afterIncompleteVaccination
+            )
+        )
     }
 }

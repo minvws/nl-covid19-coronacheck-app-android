@@ -21,37 +21,30 @@ abstract class GetEventsViewModel : ViewModel() {
     val loading: LiveData<Event<Boolean>> = MutableLiveData()
     val eventsResult: LiveData<Event<EventsResult>> = MutableLiveData()
 
-    abstract fun getEvents(jwt: String, originType: OriginType)
+    abstract fun getEvents(
+        jwt: String,
+        originType: OriginType,
+        withIncompleteVaccination: Boolean = false
+    )
 }
 
 class GetEventsViewModelImpl(
     private val eventUseCase: GetEventsUseCase
 ) : GetEventsViewModel() {
 
-    override fun getEvents(jwt: String, originType: OriginType) {
+    override fun getEvents(
+        jwt: String,
+        originType: OriginType,
+        withIncompleteVaccination: Boolean
+    ) {
         (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {
             try {
-                val events = when (originType) {
-                    is OriginType.Test -> {
-                        eventUseCase.getEvents(
-                            jwt = jwt,
-                            originType = originType,
-                        )
-                    }
-                    is OriginType.Vaccination -> {
-                        eventUseCase.getEvents(
-                            jwt = jwt,
-                            originType = originType
-                        )
-                    }
-                    is OriginType.Recovery -> {
-                        eventUseCase.getEvents(
-                            jwt = jwt,
-                            originType = originType,
-                        )
-                    }
-                }
+                val events = eventUseCase.getEvents(
+                    jwt = jwt,
+                    originType = originType,
+                    withIncompleteVaccination = withIncompleteVaccination
+                )
 
                 (eventsResult as MutableLiveData).value = Event(events)
             } finally {

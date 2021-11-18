@@ -13,7 +13,10 @@ import nl.rijksoverheid.ctr.holder.launchUrl
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigiDFragment
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigidResult
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.EventProvider
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.EventsResult
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.ErrorResultFragmentData
@@ -41,7 +44,9 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
 
     override fun getFlow(): Flow {
         return when (args.originType) {
-            OriginType.Recovery -> HolderFlow.Recovery
+            OriginType.Recovery -> {
+                if (args.afterIncompleteVaccination) HolderFlow.Recovery else HolderFlow.PositiveTest
+            }
             OriginType.Test -> HolderFlow.DigidTest
             OriginType.Vaccination -> HolderFlow.Vaccination
         }
@@ -49,13 +54,21 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         val binding = FragmentGetEventsBinding.bind(view)
-
         val copy = getCopyForOriginType()
-        binding.title.text = copy.title
-        binding.description.setHtmlText(copy.description, htmlLinksEnabled = true)
+        setBindings(binding, copy)
+        setObservers(binding, copy)
 
+        if (args.originType == OriginType.Recovery && args.afterIncompleteVaccination) {
+            binding.root.visibility = View.GONE
+            loginAgainWithDigiD()
+        }
+    }
+
+    private fun setObservers(
+        binding: FragmentGetEventsBinding,
+        copy: GetEventsFragmentCopy
+    ) {
         digidViewModel.loading.observe(viewLifecycleOwner, EventObserver {
             binding.button.isEnabled = !it
             (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
@@ -95,7 +108,10 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                         presentError(
                             data = ErrorResultFragmentData(
                                 title = getString(R.string.error_get_events_no_events_title),
-                                description = getString(R.string.error_get_events_http_error_description, getErrorCodes(it.errorResults)),
+                                description = getString(
+                                    R.string.error_get_events_http_error_description,
+                                    getErrorCodes(it.errorResults)
+                                ),
                                 buttonTitle = getString(R.string.back_to_overview),
                                 ErrorResultFragmentData.ButtonAction.Destination(R.id.action_my_overview),
                                 urlData = ErrorResultFragmentData.UrlData(
@@ -119,7 +135,10 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                     presentError(
                         data = ErrorResultFragmentData(
                             title = getString(R.string.cannot_create_recovery_proof_title),
-                            description = getString(R.string.cannot_create_recovery_proof_description, it.validityDays.toString()),
+                            description = getString(
+                                R.string.cannot_create_recovery_proof_description,
+                                it.validityDays.toString()
+                            ),
                             buttonTitle = getString(R.string.back_to_overview),
                             ErrorResultFragmentData.ButtonAction.Destination(R.id.action_my_overview),
                         )
@@ -128,6 +147,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                 is EventsResult.Error -> {
                     when {
                         it.accessTokenSessionExpiredError() -> {
+                            onTokenExpired()
                             presentError(
                                 data = ErrorResultFragmentData(
                                     title = getString(R.string.error_access_tokens_session_expired_title),
@@ -143,18 +163,20 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                                     title = getString(R.string.error_access_tokens_no_bsn_title),
                                     description = getString(R.string.error_access_tokens_no_bsn_description),
                                     buttonTitle = getString(R.string.back_to_overview),
-                                    buttonAction = ErrorResultFragmentData.ButtonAction.Destination(R.id.action_my_overview)
+                                    buttonAction = ErrorResultFragmentData.ButtonAction.Destination(
+                                        R.id.action_my_overview
+                                    )
                                 )
                             )
                         }
                         it.unomiOrEventErrors() -> {
-                                presentError(
-                                    it.errorResults.first(),
-                                    getString(
-                                        R.string.error_get_events_http_error_description,
-                                        getErrorCodes(it.errorResults)
-                                    )
+                            presentError(
+                                it.errorResults.first(),
+                                getString(
+                                    R.string.error_get_events_http_error_description,
+                                    getErrorCodes(it.errorResults)
                                 )
+                            )
                         }
                         else -> {
                             presentError(it.errorResults.first())
@@ -169,13 +191,14 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                 is DigidResult.Success -> {
                     getEventsViewModel.getEvents(
                         it.jwt,
-                        args.originType
+                        args.originType,
+                        args.afterIncompleteVaccination
                     )
                 }
                 is DigidResult.Failed -> {
                     presentError(it.errorResult)
                 }
-                DigidResult.Cancelled -> {
+                is DigidResult.Cancelled -> {
                     dialogUtil.presentDialog(
                         context = requireContext(),
                         title = R.string.digid_login_cancelled_title,
@@ -184,13 +207,22 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                         positiveButtonCallback = {}
                     )
                 }
+                DigidResult.TokenUnavailable -> {
+                    binding.root.visibility = View.VISIBLE
+                }
             }
         })
+    }
 
+    private fun setBindings(
+        binding: FragmentGetEventsBinding,
+        copy: GetEventsFragmentCopy
+    ) {
+        binding.title.text = copy.title
+        binding.description.setHtmlText(copy.description, htmlLinksEnabled = true)
         binding.button.setOnClickListener {
             onButtonClickWithRetryAction()
         }
-
         binding.noDigidButton.setOnClickListener {
             context?.launchUrl(getString(R.string.no_digid_url))
         }
@@ -212,9 +244,15 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
             }
             is OriginType.Recovery -> {
                 return GetEventsFragmentCopy(
-                    title = getString(R.string.get_recovery_title),
-                    description = getString(R.string.get_recovery_description),
-                    toolbarTitle = getString(R.string.your_positive_test_toolbar_title),
+                    title = getString(
+                        if (args.afterIncompleteVaccination) R.string.retrieve_test_result_title else R.string.get_recovery_title
+                    ),
+                    description = getString(
+                        if (args.afterIncompleteVaccination) R.string.retrieve_test_result_description else R.string.get_recovery_description
+                    ),
+                    toolbarTitle = getString(
+                        if (args.afterIncompleteVaccination) R.string.retrieve_test_result_toolbar_title else R.string.your_positive_test_toolbar_title
+                    ),
                     hasNoEventsTitle = getString(R.string.no_positive_test_result_title),
                     hasNoEventsDescription = getString(R.string.no_positive_test_result_description)
                 )
