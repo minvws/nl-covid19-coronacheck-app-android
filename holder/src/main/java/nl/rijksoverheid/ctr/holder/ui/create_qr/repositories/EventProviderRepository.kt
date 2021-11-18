@@ -28,6 +28,7 @@ interface EventProviderRepository {
                     "vaccination"
                 }
                 is OriginType.Recovery -> {
+                    // Only fetch positive tests when completing an incomplete 1/X vaccination into a 1/1
                     if (withIncompleteVaccination) {
                         "positivetest"
                     } else {
