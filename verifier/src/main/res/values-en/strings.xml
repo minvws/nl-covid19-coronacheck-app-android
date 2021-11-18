@@ -4,8 +4,8 @@
     <string name="app_name_acc">Scanner (Acc)</string>
     <string name="app_name">Scanner</string>
     <string name="onboarding_title">Onboarding</string>
-    <string name="onboarding_screen_1_title">Access only with certificate</string>
-    <string name="onboarding_screen_1_description">Visitors of certain locations must show a vaccination certificate, test certificate, or recovery certificate to enter.</string>
+    <string name="onboarding_screen_1_title">Safely opening your location</string>
+    <string name="onboarding_screen_1_description">You can use this app to check your visitors\' coronavirus passes. This way your location can stay open safely.</string>
     <string name="onboarding_screen_2_title">Scan QR code for access</string>
     <string name="onboarding_screen_2_description">Visitors first make a QR code of their certificate. With this app, you can check the QR codes and see who is allowed to enter.</string>
     <string name="onboarding_screen_3_title">Mandatory ID check</string>
@@ -24,12 +24,12 @@
     <string name="dialog_error_title">Technical error</string>
     <string name="dialog_error_message">Sorry, there was a technical error</string>
     <string name="ok">OK</string>
-    <string name="scan_qr_title">Scan QR codes</string>
+    <string name="scan_qr_title">Scan your visitors\' QR codes</string>
     <string name="support">Support</string>
     <string name="about_this_app">About this app</string>
     <string name="give_us_feedback">Give us feedback</string>
     <string name="scan_qr_header">Get started</string>
-    <string name="scan_qr_description">Scan the QR codes of your visitors. Is the QR code valid and do the details match the proof of identity? You\'re allowed to give access to the visitor.</string>
+    <string name="scan_qr_description">Is the QR code valid, and are the details the same as on the proof of identity? Then you can grant the visitor access.</string>
     <string name="scan_qr_button">Start scanning</string>
     <string name="scan_result_demo_title">Demo QR code scanned</string>
     <string name="scan_result_valid_title">Check done</string>
@@ -54,15 +54,15 @@
     <string name="about_this_app_description">CoronaCheck Scanner is created so that certain locations and activities can open their doors again. Think for example of football matches and concerts. Visitors create a coronavirus pass of a vaccination, a negative test result or if they\'ve had corona and are recovered. With this app, only visitors with a coronavirus pass gain access. This way, the Netherlands can head out more often.</string>
     <string name="scan_instructions">About scanning</string>
     <string name="scan_instructions_1_title">Scan the QR code</string>
-    <string name="scan_instructions_1_description">Ask the visitor to show a QR code in the CoronaCheck app or on paper. A tourist may show a QR code in a foreign app, or on paper. Scan the visitor\'s QR code with your phone camera.</string>
+    <string name="scan_instructions_1_description">Use your phone\'s camera to scan visitors\' QR codes, in the CoronaCheck app or on paper. Tourists can show their QR code in a foreign app or on paper.</string>
     <string name="scan_instructions_2_title">Check the proof of identity</string>
-    <string name="scan_instructions_2_description">For visitors aged 14 and over, always verify if the details on your screen are the same as those on the visitor\'s identity document. This way you can ensure the QR code belongs to the visitor.</string>
+    <string name="scan_instructions_2_description">For visitors aged 14 and over, always check if the details on your screen are the same as on the visitor\'s proof of identity. This way, you can ensure the QR code belongs to the visitor.</string>
     <string name="scan_instructions_3_image">Sometimes not all details are shown</string>
     <string name="scan_instructions_3_title">Sometimes not all details are shown</string>
-    <string name="scan_instructions_3_description">This is done to protect the visitor’s privacy. You will see a hyphen (-). In this case, verify only the details you’re seeing.</string>
+    <string name="scan_instructions_3_description">Details can be left out to protect the visitor\'s privacy. You will see a hyphen (-) instead. In this case, only check the details that are visible.</string>
     <string name="scan_instructions_4_image">Person is holding a phone with a red screen and a black cross.</string>
-    <string name="scan_instructions_4_title">Groen scherm = toegang</string>
-    <string name="scan_instructions_4_description"><![CDATA[Kleurt je scherm groen met een vinkje? Dan is de QR-code geldig en kloppen de gegevens met het identiteitsbewijs. Je mag de bezoeker toegang geven.]]></string>
+    <string name="scan_instructions_4_title">Green screen = access</string>
+    <string name="scan_instructions_4_description"><![CDATA[Does your screen turn green and show a checkmark? In that case, the QR code is valid and the details are the same as on the proof of identity. You can grant the visitor access.]]></string>
     <string name="privacy_statement">Acceptable use policy</string>
     <string name="scanner_custom_title">Scan QR code</string>
     <string name="camera_rationale_dialog_title">Scanner wants to access your camera</string>
@@ -136,6 +136,6 @@
     <string name="clockdeviation_page_title">Check your phone\'s time settings</string>
     <string name="clockdeviation_page_message"><![CDATA[In order to properly use the CoronaCheck Scanner app, it is important that the time on your phone is set correctly. For example, if the clock on your phone is a few minutes ahead, an error might occur while verifying a coronavirus pass.<br/><br/><a href="#">Go to your phone\'s settings</a> and set Date & Time to \'set automatically\'.]]></string>
     <string name="privacy_policy_checkbox_error">To continue, please agree</string>
-    <string name="scan_instructions_5_description">In case of a red screen with a cross, you will get information to assist the visitor. If the screen stays red, you cannot grant the visitor access.</string>
-    <string name="scan_instructions_5_title">Rood scherm, wat nu?</string>
+    <string name="scan_instructions_5_title">Red screen - what happens next?</string>
+    <string name="scan_instructions_5_description">Does your screen turn red and show a cross? In that case, you\'ll receive information to assist the visitor. If the screen stays red, you cannot grant the visitor access.</string>
 </resources>
