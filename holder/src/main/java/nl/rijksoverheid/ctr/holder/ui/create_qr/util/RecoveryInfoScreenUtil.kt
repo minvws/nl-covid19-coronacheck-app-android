@@ -19,7 +19,8 @@ interface RecoveryInfoScreenUtil {
         event: RemoteEventRecovery,
         testDate: String,
         fullName: String,
-        birthDate: String
+        birthDate: String,
+        isPaperProof: Boolean
     ): InfoScreen
 }
 
@@ -31,15 +32,22 @@ class RecoveryInfoScreenUtilImpl(
         event: RemoteEventRecovery,
         testDate: String,
         fullName: String,
-        birthDate: String
+        birthDate: String,
+        isPaperProof: Boolean
     ): InfoScreen {
 
         val validFromDate = event.recovery?.validFrom?.formatDayMonthYear() ?: ""
         val validUntilDate = event.recovery?.validUntil?.formatDayMonthYear() ?: ""
 
-        val title = resources.getString(R.string.your_test_result_explanation_toolbar_title)
+        val title = if (isPaperProof) resources.getString(R.string.your_vaccination_explanation_toolbar_title) else resources.getString(R.string.your_test_result_explanation_toolbar_title)
+        val header = if (isPaperProof) {
+            resources.getString(R.string.paper_proof_event_explanation_header)
+        } else {
+            resources.getString(R.string.recovery_explanation_description_header)
+        }
+
         val description = (TextUtils.concat(
-            resources.getString(R.string.recovery_explanation_description_header),
+            header,
             "<br/><br/>",
             createdLine(
                 resources.getString(R.string.recovery_explanation_description_name),
@@ -66,6 +74,7 @@ class RecoveryInfoScreenUtilImpl(
                 resources.getString(R.string.recovery_explanation_description_unique_test_identifier),
                 event.unique
             ),
+            if (isPaperProof) "<br/>${resources.getString(R.string.paper_proof_event_explanation_footer)}" else ""
         ) as String)
 
         return InfoScreen(

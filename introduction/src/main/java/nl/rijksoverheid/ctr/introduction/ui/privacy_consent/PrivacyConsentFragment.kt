@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.introduction.ui.privacy_consent
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -86,10 +87,16 @@ class PrivacyConsentFragment : Fragment(R.layout.fragment_privacy_consent) {
     private fun showError(binding: FragmentPrivacyConsentBinding) {
         binding.checkboxContainer.background = ContextCompat.getDrawable(requireContext(), R.drawable.shape_privacy_policy_checkbox_background_error)
         binding.errorContainer.visibility = View.VISIBLE
+        binding.checkbox.buttonTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.error))
+        Accessibility.announce(context, getString(R.string.privacy_policy_checkbox_error))
+        binding.scroll.post {
+            binding.scroll.fullScroll(View.FOCUS_DOWN)
+        }
     }
 
     private fun resetErrorState(binding: FragmentPrivacyConsentBinding) {
         binding.checkboxContainer.background = ContextCompat.getDrawable(requireContext(), R.drawable.shape_privacy_policy_checkbox_background)
         binding.errorContainer.visibility = View.GONE
+        binding.checkbox.buttonTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.primary_blue))
     }
 }
