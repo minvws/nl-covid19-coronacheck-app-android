@@ -203,7 +203,7 @@
     <string name="your_vaccination_result_toolbar_title">Jouw vaccinaties</string>
     <string name="your_retrieved_vaccinations_toolbar">Gegevens van je vaccinatie ophalen</string>
     <string name="retrieved_vaccination_title">Vaccinatie %1$s</string>
-    <string name="retrieved_vaccination_dcc_title">Vaccinatiebewijs</string>
+    <string name="retrieved_vaccination_dcc_title">Vaccinatiebewijs dosis %1$s/%2$s</string>
     <string name="travel_toggle_europe">Ik reis internationaal</string>
     <string name="travel_toggle_domestic">Ik ben in Nederland</string>
     <string name="travel_toggle_change_domestic">Aanpassen naar NL</string>
@@ -551,4 +551,6 @@
     <string name="retrieve_test_result_title">Gegevens van je positieve test ophalen</string>
     <string name="retrieve_test_result_description">Log in met DigiD. De gegevens van je positieve test worden dan automatisch opgehaald.</string>
     <string name="dashboard_coronamelder_tip"><![CDATA[<b>Tip:</b> Voorkom verspreiding, <a href="https://coronamelder.nl/app">gebruik ook CoronaMelder</a>]]></string>
+    <string name="paper_proof_event_explanation_header">Deze gegevens staan in je papieren bewijs:</string>
+    <string name="paper_proof_event_explanation_footer"><![CDATA[<b>Kloppen er gegevens niet?:</b><br/>Neem contact op met de zorgverlener waar je bent gevaccineerd of getest. Dat kan de GGD, je huisarts of arts van een andere zorginstelling zijn. Zij kunnen je helpen je gegevens aan te passen.]]></string>
 </resources>

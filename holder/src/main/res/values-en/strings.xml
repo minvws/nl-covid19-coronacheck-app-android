@@ -203,7 +203,7 @@
     <string name="your_vaccination_result_toolbar_title">Your vaccinations</string>
     <string name="your_retrieved_vaccinations_toolbar">Retrieve details of your vaccination</string>
     <string name="retrieved_vaccination_title">Vaccination %1$s</string>
-    <string name="retrieved_vaccination_dcc_title">Vaccination certificate</string>
+    <string name="retrieved_vaccination_dcc_title">Vaccination certificate dose %1$s/%2$s</string>
     <string name="travel_toggle_europe">I\'m travelling internationally</string>
     <string name="travel_toggle_domestic">I\'m in the Netherlands</string>
     <string name="travel_toggle_change_domestic">Change to NL</string>
@@ -551,4 +551,6 @@
     <string name="certificate_created_recovery_unsuitable_description"><![CDATA[Je bent positief getest ná je eerste vaccinatie. Daardoor is je testuitslag niet geschikt om een Nederlands bewijs van te maken.<br><br>Kijk voor meer informatie bij de meestgestelde vragen.]]></string>
     <string name="dashboard_coronamelder_tip"><![CDATA[<b>Tip:</b> Voorkom verspreiding, <a href="https://coronamelder.nl/app">gebruik ook CoronaMelder</a>]]></string>
     <string name="qr_card_vaccination_title_domestic_with_dosis">Vaccinatiebewijs (%1$s doses):</string>
+    <string name="paper_proof_event_explanation_header">These details are in your paper certificate:</string>
+    <string name="paper_proof_event_explanation_footer"><![CDATA[<b>Are your details incorrect?:</b><br/>Please contact the healthcare provider who vaccinated or tested you. This can be the GGD, your general practitioner or doctor. They can help you change these details.]]></string>
 </resources>
