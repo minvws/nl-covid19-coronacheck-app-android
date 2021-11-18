@@ -118,8 +118,6 @@ class HolderMainActivity : AppCompatActivity() {
                 )
             }
         })
-
-
     }
 
     private fun handleAppStatus(
