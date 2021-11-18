@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<!--
+  ~  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+  ~   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+  ~
+  ~   SPDX-License-Identifier: EUPL-1.2
+  ~
+  -->
+<resources xmlns:tools="http://schemas.android.com/tools">
     <item name="app_setup_text" type="string" />
     <item name="privacy_policy_title" type="string" />
     <item name="privacy_policy_description" type="string" />
@@ -25,4 +32,6 @@
     <item name="app_status_update_recommended_message" type="string" />
     <item name="app_status_update_recommended_action" type="string" />
     <item name="app_status_update_recommended_dismiss_action" type="string" />
+    <item name="ic_info" type="drawable" />
+    <item name="privacy_policy_checkbox_error" type="string" />
 </resources>

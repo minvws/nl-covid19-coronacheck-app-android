@@ -79,7 +79,7 @@
                 android:background="@drawable/shape_privacy_policy_checkbox_background"
                 android:paddingHorizontal="24dp"
                 android:paddingVertical="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/error_container"
                 app:layout_constraintEnd_toEndOf="@+id/title"
                 app:layout_constraintStart_toStartOf="@+id/title"
                 app:layout_constraintTop_toBottomOf="@+id/items"
@@ -89,12 +89,45 @@
                     android:id="@+id/checkbox"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/shape_privacy_policy_checkbox_background"
+                    android:background="@android:color/transparent"
                     android:paddingHorizontal="16dp"
                     android:text="@string/privacy_policy_checkbox_text"
                     android:textAppearance="?attr/textAppearanceBody1" />
 
             </FrameLayout>
+
+            <LinearLayout
+                android:id="@+id/error_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/checkbox_container"
+                app:layout_constraintStart_toStartOf="@id/checkbox_container"
+                app:layout_constraintEnd_toEndOf="@id/checkbox_container"
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:visibility="visible">
+
+                <ImageView
+                    android:id="@+id/error_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_info"
+                    android:backgroundTint="@color/error" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/error_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="8dp"
+                    android:textAlignment="textStart"
+                    android:textAppearance="@style/App.TextAppearance.MaterialComponents.Body2.Secondary"
+                    android:text="@string/privacy_policy_checkbox_error"
+                    android:textSize="14sp"
+                    android:textColor="@color/error" />
+
+            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -105,7 +138,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:attachToScrollView="@id/scroll"
-        app:buttonEnabled="false"
         app:buttonText="@string/onboarding_finish"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

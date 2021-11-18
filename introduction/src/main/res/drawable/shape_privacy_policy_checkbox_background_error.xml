@@ -7,6 +7,6 @@
   ~
   -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="@color/blue_5_percent" />
+    <solid android:color="@color/error_5_percent" />
     <corners android:radius="12dp" />
 </shape>

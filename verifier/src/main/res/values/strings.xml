@@ -135,7 +135,7 @@
     <string name="clockdeviation_card_button">Lees meer</string>
     <string name="clockdeviation_page_title">Controleer de tijd van je telefoon</string>
     <string name="clockdeviation_page_message"><![CDATA[Om de CoronaCheck Scanner-app goed te kunnen gebruiken, is het belangrijk dat de tijd op je telefoon goed staat ingesteld. Loopt je telefoon bijvoorbeeld een paar minuten voor? Dan kan er een fout ontstaan tijdens de controle van een coronabewijs.<br/><br/><a href="#">Ga naar de instellingen</a> van je telefoon en zet de datum en tijd op \'automatisch instellen\'.]]></string>
-    <string name="privacy_policy_checkbox_error">Zonder akkoord kan je niet verder</string>
+    <string name="privacy_policy_checkbox_error">Ga akkoord om verder te kunnen</string>
     <string name="scan_instructions_5_title">Rood scherm, wat nu?</string>
     <string name="scan_instructions_5_description">Kleurt je scherm rood met een kruis? Dan krijg je uitleg om de bezoeker te helpen. Blijft het scherm rood? Dan mag je de bezoeker geen toegang geven.</string>
 </resources>
