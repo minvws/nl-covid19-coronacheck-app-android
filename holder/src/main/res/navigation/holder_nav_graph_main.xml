@@ -409,8 +409,8 @@
             app:popExitAnim="@anim/slide_out_right" />
 
         <action
-            android:id="@+id/action_international_certificate_created"
-            app:destination="@id/nav_international_certificate_created"
+            android:id="@+id/action_certificate_created"
+            app:destination="@id/nav_certificate_created"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
@@ -560,8 +560,8 @@
 
 
     <fragment
-        android:id="@+id/nav_international_certificate_created"
-        android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.InternationalCertificateCreatedFragment"
+        android:id="@+id/nav_certificate_created"
+        android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.CertificateCreatedFragment"
         android:label="{toolbarTitle}">
 
         <argument
