@@ -6,9 +6,9 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventVaccination
 
 fun YourEventWidget.getVaccinationEventTitle(
     isDccEvent: Boolean,
-    currentEvent: RemoteEventVaccination
+    currentEvent: RemoteEventVaccination,
 ) = if (isDccEvent) {
-    resources.getString(R.string.retrieved_vaccination_dcc_title)
+    resources.getString(R.string.retrieved_vaccination_dcc_title, currentEvent.vaccination?.doseNumber ?: "", currentEvent.vaccination?.totalDoses ?: "")
 } else {
     resources.getString(
         R.string.retrieved_vaccination_title,
