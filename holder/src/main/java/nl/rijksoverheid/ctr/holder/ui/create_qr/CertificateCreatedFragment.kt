@@ -27,15 +27,6 @@ class CertificateCreatedFragment :
 
     private val args: CertificateCreatedFragmentArgs by navArgs()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return FragmentCertificateCreatedBinding.inflate(
-            inflater, container, false
-        ).root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
