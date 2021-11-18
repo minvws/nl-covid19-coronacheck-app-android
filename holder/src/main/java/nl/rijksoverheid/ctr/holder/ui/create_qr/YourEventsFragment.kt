@@ -215,10 +215,17 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     YourEventsFragmentDirections.actionCertificateCreated(
                         toolbarTitle = getString(R.string.international_certificate_created_toolbar_title),
                         title = getString(R.string.certificate_created_vaccination_recovery_title),
-                        description = getString(
-                            R.string.certificate_created_vaccination_recovery_description,
-                            databaseSyncerResult.domesticVaccinationRecovery.recoveryValidityDays.toString()
-                        )
+                        description = if (args.afterIncompleteVaccination) {
+                            getString(
+                                R.string.certificate_created_vaccination_recovery_description,
+                                databaseSyncerResult.domesticVaccinationRecovery.recoveryValidityDays.toString()
+                            )
+                        } else {
+                            getString(
+                                R.string.certificate_created_vaccination_recovery_description,
+                                databaseSyncerResult.domesticVaccinationRecovery.recoveryValidityDays.toString()
+                            )
+                        }
                     )
                 )
             }
