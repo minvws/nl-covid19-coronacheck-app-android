@@ -16,19 +16,21 @@ package nl.rijksoverheid.ctr.holder.persistence.database.models
 sealed class DomesticVaccinationRecoveryCombination {
 
     /** A combined certificate after signing vaccination together with recovery events */
-    object CombinedVaccinationRecovery: DomesticVaccinationRecoveryCombination()
+    data class CombinedVaccinationRecovery(val recoveryValidityDays: Int) :
+        DomesticVaccinationRecoveryCombination()
 
     /** A vaccination certificate after signing vaccination together with recovery events */
-    object OnlyVaccination: DomesticVaccinationRecoveryCombination()
+    data class OnlyVaccination(val recoveryValidityDays: Int) :
+        DomesticVaccinationRecoveryCombination()
 
     /** A recovery certificate after signing vaccination together with recovery events */
-    object OnlyRecovery: DomesticVaccinationRecoveryCombination()
+    object OnlyRecovery : DomesticVaccinationRecoveryCombination()
 
     /** No domestic certificate after signing vaccination together with recovery events */
-    object NoneWithRecovery: DomesticVaccinationRecoveryCombination()
+    object NoneWithRecovery : DomesticVaccinationRecoveryCombination()
 
     /** No domestic certificate after signing ONLY vaccination events (no recovery events) */
-    object NoneWithoutRecovery: DomesticVaccinationRecoveryCombination()
+    object NoneWithoutRecovery : DomesticVaccinationRecoveryCombination()
 
-    object NotApplicable: DomesticVaccinationRecoveryCombination()
+    object NotApplicable : DomesticVaccinationRecoveryCombination()
 }

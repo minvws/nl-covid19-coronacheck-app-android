@@ -1,5 +1,7 @@
 package nl.rijksoverheid.ctr.holder.modules
 
+import nl.rijksoverheid.ctr.holder.persistence.database.util.DomesticVaccinationRecoveryCombinationUtil
+import nl.rijksoverheid.ctr.holder.persistence.database.util.DomesticVaccinationRecoveryCombinationUtilImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverViewGreenCardAdapterUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverViewGreenCardAdapterUtilImpl
@@ -39,4 +41,7 @@ val utilsModule = module {
     factory<MultipleQrCodesUtil> { MultipleQrCodesUtilImpl() }
     factory<EventGroupEntityUtil> { EventGroupEntityUtilImpl(get()) }
     factory<MyOverviewFragmentInfoItemHandlerUtil> { MyOverviewFragmentInfoItemHandlerUtilImpl(get()) }
+    factory<DomesticVaccinationRecoveryCombinationUtil> {
+        DomesticVaccinationRecoveryCombinationUtilImpl(get())
+    }
 }
