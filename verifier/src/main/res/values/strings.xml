@@ -24,12 +24,12 @@
     <string name="dialog_error_title">Technische fout</string>
     <string name="dialog_error_message">Excuus, er is een technische fout opgetreden</string>
     <string name="ok">Ok</string>
-    <string name="scan_qr_title">Scan QR-codes</string>
+    <string name="scan_qr_title">Scan de QR-codes van je bezoekers</string>
     <string name="support">Support</string>
     <string name="about_this_app">Over deze app</string>
     <string name="give_us_feedback">Geef ons feedback</string>
     <string name="scan_qr_header">Aan de slag</string>
-    <string name="scan_qr_description">Scan de QR-codes van jouw bezoekers. Is de QR-code geldig en zijn de gegevens hetzelfde als op het identiteitsbewijs? Dan kun je de bezoeker toegang geven.</string>
+    <string name="scan_qr_description">Is de QR-code geldig en zijn de gegevens hetzelfde als op het identiteitsbewijs? Dan mag je de bezoeker toegang geven.</string>
     <string name="scan_qr_button">Start scannen</string>
     <string name="scan_result_demo_title">Demo QR-code gescand</string>
     <string name="scan_result_valid_title">Controle klaar</string>
@@ -54,12 +54,12 @@
     <string name="about_this_app_description">CoronaCheck Scanner is ontwikkeld zodat bepaalde locaties en activiteiten hun deuren kunnen openen. Denk bijvoorbeeld aan voetbalwedstrijden en concerten. Bezoekers maken een coronabewijs van een vaccinatie, een negatieve testuitslag of als zij corona hebben gehad en hersteld zijn. Met behulp van deze app krijgen alleen bezoekers met zo’n coronabewijs toegang. Zo kunnen steeds meer plekken bezocht worden.</string>
     <string name="scan_instructions">Over scannen</string>
     <string name="scan_instructions_1_title">Scan de QR-code</string>
-    <string name="scan_instructions_1_description">Vraag de bezoeker naar een QR-code in de CoronaCheck-app of op papier. Een toerist kan een QR-code in een buitenlandse app of op papier tonen. Scan de QR-code met de camera van je telefoon.</string>
+    <string name="scan_instructions_1_description">Scan met de camera van je telefoon de QR-codes van bezoekers in de CoronaCheck-app of op papier. Toeristen kunnen een QR-code in een buitenlandse app of op papier tonen.</string>
     <string name="scan_instructions_2_title">Controleer het identiteitsbewijs</string>
-    <string name="scan_instructions_2_description">Controleer bij bezoekers vanaf 14 jaar altijd of de gegevens op jouw scherm hetzelfde zijn als die op het identiteitsbewijs van de bezoeker. Zo weet je zeker dat de QR-code van de bezoeker is.</string>
+    <string name="scan_instructions_2_description">Controleer bij bezoekers vanaf 14 jaar altijd of de gegevens op jouw scherm hetzelfde zijn als die op het identiteitsbewijs van de bezoeker. Zo weet je zeker dat de QR-code van die bezoeker is.</string>
     <string name="scan_instructions_3_image">Soms vallen gegevens weg</string>
     <string name="scan_instructions_3_title">Soms vallen gegevens weg</string>
-    <string name="scan_instructions_3_description">Dat doen we om de privacy van de bezoeker te beschermen. Je ziet dan een streepje (-) staan. Controleer in dat geval alleen de gegevens die je wel ziet.</string>
+    <string name="scan_instructions_3_description">Gegevens kunnen wegvallen om de privacy van de bezoeker te beschermen. Je ziet dan een streepje (-) staan. Controleer in dat geval alleen de gegevens die je wel ziet.</string>
     <string name="scan_instructions_4_image">Persoon houdt een telefoon vast met een rood scherm en een zwart kruis.</string>
     <string name="scan_instructions_4_title">Groen scherm = toegang</string>
     <string name="scan_instructions_4_description"><![CDATA[Kleurt je scherm groen met een vinkje? Dan is de QR-code geldig en kloppen de gegevens met het identiteitsbewijs. Je mag de bezoeker toegang geven.]]></string>
