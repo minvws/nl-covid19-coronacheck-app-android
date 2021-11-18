@@ -417,7 +417,8 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             event = currentEvent,
             fullName = fullName,
             birthDate = birthDate,
-            providerIdentifier = allEventsInformation.first().providerIdentifier
+            providerIdentifier = allEventsInformation.first().providerIdentifier,
+            isPaperProof = args.type is YourEventsFragmentType.DCC
         )
 
         val eventWidget = YourEventWidget(requireContext()).apply {
@@ -441,6 +442,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                                     fullName = fullName,
                                     birthDate = birthDate,
                                     providerIdentifier = getProviderName(it.providerIdentifier),
+                                    isPaperProof = args.type is YourEventsFragmentType.DCC
                                 )
                             }.toTypedArray()
                         )
@@ -464,7 +466,8 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             event = event,
             fullName = fullName,
             testDate = testDate,
-            birthDate = birthDate
+            birthDate = birthDate,
+            isPaperProof = args.type is YourEventsFragmentType.DCC
         )
 
         val eventWidget = YourEventWidget(requireContext()).apply {
@@ -539,7 +542,8 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             event = event,
             fullName = fullName,
             testDate = testDate,
-            birthDate = birthDate
+            birthDate = birthDate,
+            isPaperProof = args.type is YourEventsFragmentType.DCC
         )
 
         val eventWidget = YourEventWidget(requireContext()).apply {

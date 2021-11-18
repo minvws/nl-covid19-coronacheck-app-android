@@ -24,7 +24,8 @@ interface InfoScreenUtil {
         event: RemoteEventNegativeTest,
         fullName: String,
         testDate: String,
-        birthDate: String
+        birthDate: String,
+        isPaperProof: Boolean
     ): InfoScreen
 
     fun getForVaccination(
@@ -32,6 +33,7 @@ interface InfoScreenUtil {
         fullName: String,
         birthDate: String,
         providerIdentifier: String,
+        isPaperProof: Boolean
     ): InfoScreen
 
     fun getForPositiveTest(
@@ -45,7 +47,8 @@ interface InfoScreenUtil {
         event: RemoteEventRecovery,
         testDate: String,
         fullName: String,
-        birthDate: String
+        birthDate: String,
+        isPaperProof: Boolean
     ): InfoScreen
 }
 
@@ -65,8 +68,9 @@ class InfoScreenUtilImpl(
         event: RemoteEventNegativeTest,
         fullName: String,
         testDate: String,
-        birthDate: String
-    ) = testInfoScreenUtil.getForNegativeTest(event, fullName, testDate, birthDate)
+        birthDate: String,
+        isPaperProof: Boolean
+    ) = testInfoScreenUtil.getForNegativeTest(event, fullName, testDate, birthDate, isPaperProof)
 
 
     override fun getForVaccination(
@@ -74,7 +78,8 @@ class InfoScreenUtilImpl(
         fullName: String,
         birthDate: String,
         providerIdentifier: String,
-    ) = vaccinationInfoScreenUtil.getForVaccination(event, fullName, birthDate, providerIdentifier)
+        isPaperProof: Boolean
+    ) = vaccinationInfoScreenUtil.getForVaccination(event, fullName, birthDate, providerIdentifier, isPaperProof)
 
     override fun getForPositiveTest(
         event: RemoteEventPositiveTest,
@@ -87,8 +92,9 @@ class InfoScreenUtilImpl(
         event: RemoteEventRecovery,
         testDate: String,
         fullName: String,
-        birthDate: String
-    ) = recoveryInfoScreenUtil.getForRecovery(event, testDate, fullName, birthDate)
+        birthDate: String,
+        isPaperProof: Boolean
+    ) = recoveryInfoScreenUtil.getForRecovery(event, testDate, fullName, birthDate, isPaperProof)
 }
 
 @Parcelize
