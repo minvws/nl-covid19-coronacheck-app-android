@@ -554,4 +554,5 @@
     <string name="certificate_created_vaccination_title">Vaccination certificate instead of recovery certificate</string>
     <string name="certificate_created_vaccination_description"><![CDATA[You were tested positive for coronavirus longer than %1s days ago. That is why your test result is no longer valid for creating a recovery certificate.<br><br>Because you were tested positive before your first vaccination, one shot means you’re fully vaccinated. Therefore, a full vaccination certificate has been created instead.<br><br>For more information, please check the <a href="https://coronacheck.nl/en/guidepost"> Guidepost</a>.]]></string>
     <string name="no_certificate_created_toolbar_title">No certificate created</string>
+    <string name="certificate_created_recovery_after_vaccination_description"><![CDATA[A recovery certificate has been created.<br><br>Because you were tested positive before your first vaccination, one shot means you\'re fully vaccinated. Therefore, a full vaccination certificate has been created as well.]]></string>
 </resources>

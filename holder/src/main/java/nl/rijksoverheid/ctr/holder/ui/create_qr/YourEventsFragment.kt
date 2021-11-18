@@ -221,10 +221,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                                 databaseSyncerResult.domesticVaccinationRecovery.recoveryValidityDays.toString()
                             )
                         } else {
-                            getString(
-                                R.string.certificate_created_vaccination_recovery_description,
-                                databaseSyncerResult.domesticVaccinationRecovery.recoveryValidityDays.toString()
-                            )
+                            getString(R.string.certificate_created_recovery_after_vaccination_description)
                         }
                     )
                 )

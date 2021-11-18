@@ -554,4 +554,5 @@
     <string name="certificate_created_vaccination_title">Geen herstelbewijs, wel een vaccinatiebewijs</string>
     <string name="certificate_created_vaccination_description"><![CDATA[Het is langer dan %1s dagen geleden dat je positief getest bent op corona. Daardoor is je testuitslag niet meer geldig om een herstelbewijs van te maken.<br><br>Omdat je positief getest bent vóór je eerste prik, ben je met één prik volledig gevaccineerd. Daarom is er wel een volledig vaccinatiebewijs gemaakt.<br><br>Kijk voor meer informatie op de <a href="https://www.coronacheck.nl/wegwijzer">Wegwijzer</a>.]]></string>
     <string name="no_certificate_created_toolbar_title">Geen bewijs gemaakt</string>
+    <string name="certificate_created_recovery_after_vaccination_description"><![CDATA[Er is een herstelbewijs gemaakt.<br><br>Omdat je positieve getest bent vóór je eerste prik, ben je met één prik volledig gevaccineerd. Daarom is er ook een volledig vaccinatiebewijs gemaakt.]]></string>
 </resources>
