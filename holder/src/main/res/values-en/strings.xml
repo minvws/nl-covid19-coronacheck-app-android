@@ -539,6 +539,7 @@
     <string name="missing_dutch_certificate_retrieve_test_button">Retrieve my test result</string>
     <string name="missing_dutch_certificate_explanation_more"><![CDATA[<b>Want to know more?</b><br/>Read <a href="https://coronacheck.nl/en/faq/2-4-ik-heb-wel-een-internationale-qr-code-maar-geen-nederlandse/">the frequently asked questions</a> for other possible reasons.]]></string>
     <string name="certificate_created_toolbar_title">Certificate created</string>
+    <string name="certificate_created_vaccination_recovery_title">Created vaccination and recovery certificates</string>
     <string name="certificate_created_vaccination_recovery_description"><![CDATA[A Dutch vaccination certificate has been created.<br><br>You tested positive less than %1s days ago. Therefore a recovery certificate has also been created.]]></string>
     <string name="certificate_created_recovery_title">Created only a recovery certificate</string>
     <string name="certificate_created_recovery_description"><![CDATA[You tested positive after your first vaccination. Your test result is therefore not suitable for creating a Dutch vaccination certificate. However, a recovery certificate has been created.<br><br>Check the <a href="https://coronacheck.nl/en/faq/2-4-ik-heb-wel-een-internationale-qr-code-maar-geen-nederlandse/">the frequently asked questions</a> for more information.]]></string>
@@ -546,12 +547,11 @@
     <string name="retrieve_test_result_toolbar_title">Retrieve test result</string>
     <string name="retrieve_test_result_title">Retrieve details about your positive test</string>
     <string name="retrieve_test_result_description">Log in with DigiD. Details about your positive test will be retrieved automatically.</string>
+    <string name="dashboard_coronamelder_tip"><![CDATA[<b>Tip:</b> Prevent the spread of coronavirus, <a href="https://coronamelder.nl/app">use CoronaMelder too</a>.]]></string>
     <string name="certificate_created_vaccination_title">Vaccination certificate instead of recovery certificate</string>
-    <string name="certificate_created_vaccination_description"><![CDATA[You were tested positive for coronavirus longer than %1s days ago. That is why your test result is no longer valid for creating a recovery certificate.<br><br>Because you were tested positive before your first vaccination, one shot means you’re fully vaccinated. Therefore, a full vaccination certificate has been created instead.<br><br>For more information, please check the Guidepost.]]></string>
+    <string name="certificate_created_vaccination_description"><![CDATA[You were tested positive for coronavirus longer than %1s days ago. That is why your test result is no longer valid for creating a recovery certificate.<br><br>Because you were tested positive before your first vaccination, one shot means you’re fully vaccinated. Therefore, a full vaccination certificate has been created instead.<br><br>For more information, please check the <a href="https://coronacheck.nl/en/guidepost"> Guidepost</a>.]]></string>
     <string name="no_certificate_created_toolbar_title">No certificate created</string>
-    <string name="certificate_created_recovery_unsuitable_description"><![CDATA[Je bent positief getest ná je eerste vaccinatie. Daardoor is je testuitslag niet geschikt om een Nederlands bewijs van te maken.<br><br>Kijk voor meer informatie bij de <a href="https://coronacheck.nl/nl/faq/2-4-ik-heb-wel-een-internationale-qr-code-maar-geen-nederlandse/">meestgestelde vragen</a>.]]></string>
-    <string name="certificate_created_vaccination_recovery_title">Vaccinatiebewijs en herstelbewijs gemaakt</string>
-    <string name="dashboard_coronamelder_tip"><![CDATA[<b>Tip:</b> Voorkom verspreiding, <a href="https://coronamelder.nl/app">gebruik ook CoronaMelder</a>]]></string>
-    <string name="qr_card_vaccination_title_domestic_with_dosis">Vaccinatiebewijs (%1$s doses):</string>
     <string name="qr_card_vaccination_title_domestic_with_doses">Vaccinatiebewijs (%1$s doses):</string>
+    <string name="certificate_created_recovery_unsuitable_description"><![CDATA[Je bent positief getest ná je eerste vaccinatie. Daardoor is je testuitslag niet geschikt om een Nederlands bewijs van te maken.<br><br>Kijk voor meer informatie bij de <a href="https://coronacheck.nl/nl/faq/2-4-ik-heb-wel-een-internationale-qr-code-maar-geen-nederlandse/">meestgestelde vragen</a>.]]></string>
+    <string name="qr_card_vaccination_title_domestic_with_dosis">Vaccinatiebewijs (%1$s doses):</string>
 </resources>
