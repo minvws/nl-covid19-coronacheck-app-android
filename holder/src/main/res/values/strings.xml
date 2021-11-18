@@ -282,7 +282,7 @@
     <string name="your_vaccination_explanation_description"><![CDATA[Deze gegevens van je vaccinatie zijn opgehaald:<br/><br/>Naam: <b>%1$s</b><br/>Geboortedatum: <b>%2$s</b><br/><br/>Ziekteverwekker: <b>%3$s</b><br/>Vaccin: <b>%4$s</b><br/>Vaccin type: <b>%5$s</b><br/>Producent: <b>%6$s</b><br/>Doses: <b>%7$s</b><br/>Is dit de laatste dosis van je vaccinatie? <b>%8$s</b><br/> Vaccinatiedatum: <b>%9$s</b><br/>Gevaccineerd in: <b>%10$s</b><br/>Uniek certificaatnummer: <b>%11$s</b>]]></string>
     <string name="your_vaccination_explanation_last_dose_yes">ja</string>
     <string name="your_vaccination_explanation_last_dose_yes_recovery">ja (eerder corona gehad)</string>
-    <string name="your_vaccination_explanation_last_dose_yes_prior_event">ja (ergens anders corona gehad)</string>
+    <string name="your_vaccination_explanation_last_dose_yes_prior_event">ja (ergens anders gevaccineerd)</string>
     <string name="your_vaccination_explanation_last_dose_no">nee</string>
     <string name="your_vaccination_explanation_last_dose_unknown">niet bekend</string>
     <string name="your_vaccination_explanation_header">Deze gegevens van je vaccinatie zijn opgehaald bij %1$s:</string>
