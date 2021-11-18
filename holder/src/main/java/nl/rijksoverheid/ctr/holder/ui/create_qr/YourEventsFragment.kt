@@ -27,7 +27,7 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentYourEventsBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.holder.persistence.database.models.CombinedVaccinationRecoveryResult
+import nl.rijksoverheid.ctr.holder.persistence.database.models.DomesticVaccinationRecoveryCombination
 import nl.rijksoverheid.ctr.holder.ui.create_qr.items.YourEventWidget
 import nl.rijksoverheid.ctr.holder.ui.create_qr.items.getVaccinationEventSubtitle
 import nl.rijksoverheid.ctr.holder.ui.create_qr.items.getVaccinationEventTitle
@@ -209,8 +209,8 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
     }
 
     private fun navigateToCertificateCreated(databaseSyncerResult: DatabaseSyncerResult.Success) {
-        when (databaseSyncerResult.combinedVaccinationRecovery) {
-            CombinedVaccinationRecoveryResult.CombinedVaccinationRecovery -> {
+        when (databaseSyncerResult.domesticVaccinationRecovery) {
+            DomesticVaccinationRecoveryCombination.CombinedVaccinationRecovery -> {
                 navigateSafety(
                     YourEventsFragmentDirections.actionCertificateCreated(
                         toolbarTitle = getString(R.string.international_certificate_created_toolbar_title),
@@ -219,7 +219,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     )
                 )
             }
-            CombinedVaccinationRecoveryResult.IncompleteDomesticVaccination -> {
+            DomesticVaccinationRecoveryCombination.NoneWithoutRecovery -> {
                 navigateSafety(
                     YourEventsFragmentDirections.actionCertificateCreated(
                         toolbarTitle = getString(R.string.international_certificate_created_toolbar_title),
@@ -229,7 +229,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     )
                 )
             }
-            CombinedVaccinationRecoveryResult.IncompleteDomesticVaccinationWithRecovery -> {
+            DomesticVaccinationRecoveryCombination.NoneWithRecovery -> {
                 navigateSafety(
                     YourEventsFragmentDirections.actionCertificateCreated(
                         toolbarTitle = getString(R.string.no_certificate_created_toolbar_title),
@@ -238,7 +238,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     )
                 )
             }
-            CombinedVaccinationRecoveryResult.OnlyRecovery -> {
+            DomesticVaccinationRecoveryCombination.OnlyRecovery -> {
                 navigateSafety(
                     YourEventsFragmentDirections.actionCertificateCreated(
                         toolbarTitle = getString(R.string.international_certificate_created_toolbar_title),
@@ -247,7 +247,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     )
                 )
             }
-            CombinedVaccinationRecoveryResult.OnlyVaccination -> {
+            DomesticVaccinationRecoveryCombination.OnlyVaccination -> {
                 navigateSafety(
                     YourEventsFragmentDirections.actionCertificateCreated(
                         toolbarTitle = getString(R.string.international_certificate_created_toolbar_title),
@@ -256,7 +256,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     )
                 )
             }
-            CombinedVaccinationRecoveryResult.NotApplicable -> {
+            DomesticVaccinationRecoveryCombination.NotApplicable -> {
                 // We have a origin in the database that we expect, so success
                 navigateSafety(
                     YourEventsFragmentDirections.actionMyOverview()

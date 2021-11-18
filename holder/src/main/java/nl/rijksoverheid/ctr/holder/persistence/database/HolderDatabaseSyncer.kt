@@ -6,8 +6,8 @@ import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
-import nl.rijksoverheid.ctr.holder.persistence.database.models.CombinedVaccinationRecoveryResult
-import nl.rijksoverheid.ctr.holder.persistence.database.models.CombinedVaccinationRecoveryResult.*
+import nl.rijksoverheid.ctr.holder.persistence.database.models.DomesticVaccinationRecoveryCombination
+import nl.rijksoverheid.ctr.holder.persistence.database.models.DomesticVaccinationRecoveryCombination.*
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteGreenCards
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
@@ -76,7 +76,7 @@ class HolderDatabaseSyncerImpl(
                                     isIncompleteDomesticVaccination(
                                         events,
                                         remoteGreenCards
-                                    ) -> IncompleteDomesticVaccination
+                                    ) -> NoneWithoutRecovery
                                     isCombinedVaccinationRecovery(
                                         events,
                                         remoteGreenCards
@@ -86,7 +86,7 @@ class HolderDatabaseSyncerImpl(
                                     isIncompleteDomesticVaccinationWithRecovery(
                                         events,
                                         remoteGreenCards
-                                    ) -> IncompleteDomesticVaccinationWithRecovery
+                                    ) -> NoneWithRecovery
                                     else -> NotApplicable
                                 }
 
@@ -226,7 +226,7 @@ class HolderDatabaseSyncerImpl(
 sealed class DatabaseSyncerResult {
     data class Success(
         val missingOrigin: Boolean = false,
-        val combinedVaccinationRecovery: CombinedVaccinationRecoveryResult = NotApplicable
+        val domesticVaccinationRecovery: DomesticVaccinationRecoveryCombination = NotApplicable
     ) : DatabaseSyncerResult()
 
     sealed class Failed(open val errorResult: ErrorResult, open val failedAt: OffsetDateTime) :
