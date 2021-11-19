@@ -331,8 +331,8 @@
 
         <argument
             android:name="afterIncompleteVaccination"
-            app:argType="boolean"
-            android:defaultValue="false" />
+            android:defaultValue="false"
+            app:argType="boolean" />
 
         <action
             android:id="@+id/action_your_events"
@@ -382,6 +382,11 @@
             android:name="type"
             app:argType="nl.rijksoverheid.ctr.holder.ui.create_qr.YourEventsFragmentType" />
 
+        <argument
+            android:name="afterIncompleteVaccination"
+            android:defaultValue="false"
+            app:argType="boolean" />
+
         <action
             android:id="@+id/action_show_explanation"
             app:destination="@id/nav_your_event_explanation"
@@ -409,8 +414,8 @@
             app:popExitAnim="@anim/slide_out_right" />
 
         <action
-            android:id="@+id/action_international_certificate_created"
-            app:destination="@id/nav_international_certificate_created"
+            android:id="@+id/action_certificate_created"
+            app:destination="@id/nav_certificate_created"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
@@ -560,9 +565,26 @@
 
 
     <fragment
-        android:id="@+id/nav_international_certificate_created"
-        android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.InternationalCertificateCreatedFragment"
-        android:label="@string/international_certificate_created_toolbar_title">
+        android:id="@+id/nav_certificate_created"
+        android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.CertificateCreatedFragment"
+        android:label="{toolbarTitle}">
+
+        <argument
+            android:name="toolbarTitle"
+            app:argType="string" />
+
+        <argument
+            android:name="title"
+            app:argType="string" />
+
+        <argument
+            android:name="description"
+            app:argType="string" />
+
+        <argument
+            android:name="shouldShowRetrieveTestButton"
+            android:defaultValue="false"
+            app:argType="boolean" />
 
         <action
             android:id="@+id/action_get_events"

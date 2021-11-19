@@ -424,7 +424,7 @@
     <string name="add_paper_proof_consent_button">Start scannen</string>
     <string name="add_paper_proof_no_camera_error_header">Bewijs toevoegen kan niet op jouw telefoon</string>
     <string name="add_paper_proof_no_camera_error_description"><![CDATA[Jouw telefoon heeft geen camerafunctie. Daardoor kan je het papieren bewijs niet scannen en toevoegen op jouw telefoon.<br><br>Gebruik het papieren bewijs dat je van de zorgverlener hebt gekregen]]></string>
-    <string name="your_dcc_event_description">Als deze gegevens kloppen kun je een bewijs maken.</string>
+    <string name="your_dcc_event_description">Met deze gegevens kun je een bewijs maken.</string>
     <string name="your_dcc_event_toolbar_title">Gescande gegevens</string>
     <string name="your_events_block_back_dialog_title">Weet je zeker dat je wilt stoppen?</string>
     <string name="your_events_block_back_dialog_description">Je kunt later opnieuw proberen deze QR-code in de app te zetten.</string>
@@ -544,13 +544,18 @@
     <string name="certificate_created_vaccination_recovery_title">Vaccinatiebewijs en herstelbewijs gemaakt</string>
     <string name="certificate_created_vaccination_recovery_description"><![CDATA[Er is een Nederlands vaccinatiebewijs gemaakt.<br><br>Je positieve test is minder dan %1s dagen geleden afgenomen. Daarom is er ook een herstelbewijs gemaakt.]]></string>
     <string name="certificate_created_recovery_title">Alleen een herstelbewijs gemaakt</string>
-    <string name="certificate_created_recovery_description"><![CDATA[Je bent positief getest ná je eerste vaccinatie. Daardoor is je testuitslag niet geschikt om een Nederlands vaccinatiebewijs van te maken. Er is wel een herstelbewijs gemaakt.<br><br>Kijk voor meer informatie bij de meestgestelde vragen.]]></string>
+    <string name="certificate_created_recovery_description"><![CDATA[Je bent positief getest ná je eerste vaccinatie. Daardoor is je testuitslag niet geschikt om een Nederlands vaccinatiebewijs van te maken. Er is wel een herstelbewijs gemaakt.<br><br>Kijk voor meer informatie bij de <a href="https://coronacheck.nl/nl/faq/2-4-ik-heb-wel-een-internationale-qr-code-maar-geen-nederlandse/">meestgestelde vragen</a>.]]></string>
     <string name="certificate_created_recovery_unsuitable_title">Positieve testuitslag is niet geschikt</string>
-    <string name="certificate_created_recovery_unsuitable_description"><![CDATA[Je bent positief getest ná je eerste vaccinatie. Daardoor is je testuitslag niet geschikt om een Nederlands bewijs van te maken.<br><br>Kijk voor meer informatie bij de meestgestelde vragen.]]></string>
+    <string name="certificate_created_recovery_unsuitable_description"><![CDATA[Je bent positief getest ná je eerste vaccinatie. Daardoor is je testuitslag niet geschikt om een Nederlands vaccinatiebewijs van te maken. Er is wel een herstelbewijs gemaakt.<br><br>Kijk voor meer informatie bij de <a href="https://coronacheck.nl/nl/faq/2-4-ik-heb-wel-een-internationale-qr-code-maar-geen-nederlandse/">meestgestelde vragen</a>.]]></string>
     <string name="retrieve_test_result_toolbar_title">Testuitslag ophalen</string>
     <string name="retrieve_test_result_title">Gegevens van je positieve test ophalen</string>
     <string name="retrieve_test_result_description">Log in met DigiD. De gegevens van je positieve test worden dan automatisch opgehaald.</string>
-    <string name="dashboard_coronamelder_tip"><![CDATA[<b>Tip:</b> Voorkom verspreiding, <a href="https://coronamelder.nl/app">gebruik ook CoronaMelder</a>]]></string>
+    <string name="dashboard_coronamelder_tip"><![CDATA[<b>Tip:</b> Voorkom verspreiding van het coronavirus, <a href="https://coronamelder.nl/app">gebruik ook CoronaMelder</a>.]]></string>
+    <string name="certificate_created_vaccination_title">Geen herstelbewijs, wel een vaccinatiebewijs</string>
+    <string name="certificate_created_vaccination_description"><![CDATA[Het is langer dan %1s dagen geleden dat je positief getest bent op corona. Daardoor is je testuitslag niet meer geldig om een herstelbewijs van te maken.<br><br>Omdat je positief getest bent vóór je eerste prik, ben je met één prik volledig gevaccineerd. Daarom is er wel een volledig vaccinatiebewijs gemaakt.<br><br>Kijk voor meer informatie op de <a href="https://www.coronacheck.nl/wegwijzer">Wegwijzer</a>.]]></string>
+    <string name="no_certificate_created_toolbar_title">Geen bewijs gemaakt</string>
+    <string name="certificate_created_recovery_after_vaccination_description"><![CDATA[Er is een herstelbewijs gemaakt.<br><br>Omdat je positieve getest bent vóór je eerste prik, ben je met één prik volledig gevaccineerd. Daarom is er ook een volledig vaccinatiebewijs gemaakt.]]></string>
     <string name="paper_proof_event_explanation_header">Deze gegevens staan in je papieren bewijs:</string>
     <string name="paper_proof_event_explanation_footer"><![CDATA[<b>Kloppen er gegevens niet?:</b><br/>Neem contact op met de zorgverlener waar je bent gevaccineerd of getest. Dat kan de GGD, je huisarts of arts van een andere zorginstelling zijn. Zij kunnen je helpen je gegevens aan te passen.]]></string>
+    <string name="certificate_created_recovery_after_vaccination_title">Herstelbewijs en vaccinatiebewijs gemaakt</string>
 </resources>
