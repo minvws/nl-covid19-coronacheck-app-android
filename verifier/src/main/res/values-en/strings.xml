@@ -24,11 +24,11 @@
     <string name="dialog_error_title">Technical error</string>
     <string name="dialog_error_message">Sorry, there was a technical error</string>
     <string name="ok">OK</string>
-    <string name="scan_qr_title">Scan your visitors\' QR codes</string>
+    <string name="scan_qr_title">Scan QR codes</string>
     <string name="support">Support</string>
     <string name="about_this_app">About this app</string>
     <string name="give_us_feedback">Give us feedback</string>
-    <string name="scan_qr_header">Get started</string>
+    <string name="scan_qr_header">Scan your visitors\' QR codes</string>
     <string name="scan_qr_description">Is the QR code valid, and are the details the same as on the proof of identity? Then you can grant the visitor access.</string>
     <string name="scan_qr_button">Start scanning</string>
     <string name="scan_result_demo_title">Demo QR code scanned</string>
