@@ -50,6 +50,8 @@ sealed class DashboardItem {
             InfoItem(isDismissible = true, hasReadMore = false)
     }
 
+    object CoronaMelderItem : DashboardItem()
+
     data class CardsItem(val cards: List<CardItem>) : DashboardItem() {
 
         sealed class CredentialState {

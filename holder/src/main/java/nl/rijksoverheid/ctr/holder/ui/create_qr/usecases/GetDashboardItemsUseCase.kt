@@ -115,6 +115,12 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
+        if (dashboardItemUtil.shouldShowCoronaMelderItem(domesticGreenCards, databaseSyncerResult)) {
+            dashboardItems.add(
+                DashboardItem.CoronaMelderItem
+            )
+        }
+
         dashboardItems.add(
             DashboardItem.AddQrButtonItem(dashboardItemUtil.shouldAddQrButtonItem(allGreenCards))
         )
@@ -179,6 +185,12 @@ class GetDashboardItemsUseCaseImpl(
         if (dashboardItemUtil.shouldShowPlaceholderItem(allGreenCards)) {
             dashboardItems.add(
                 DashboardItem.PlaceholderCardItem(greenCardType = GreenCardType.Eu)
+            )
+        }
+
+        if (dashboardItemUtil.shouldShowCoronaMelderItem(internationalGreenCards, databaseSyncerResult)) {
+            dashboardItems.add(
+                DashboardItem.CoronaMelderItem
             )
         }
 

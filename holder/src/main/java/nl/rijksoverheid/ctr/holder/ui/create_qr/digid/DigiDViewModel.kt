@@ -29,7 +29,8 @@ import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
  */
 class DigiDViewModel(
     private val authenticationRepository: AuthenticationRepository,
-    private val androidUtil: AndroidUtil) : ViewModel() {
+    private val androidUtil: AndroidUtil
+) : ViewModel() {
 
     private companion object {
         const val USER_CANCELLED_FLOW_CODE = 1
@@ -40,6 +41,9 @@ class DigiDViewModel(
 
     val loading: LiveData<Event<Boolean>> = MutableLiveData()
     val digidResultLiveData = MutableLiveData<Event<DigidResult>>()
+
+    /** stored token to fetch different type of events in the same session */
+    private var jwt: String? = null
 
     fun login(
         activityResultLauncher: ActivityResultLauncher<Intent>,
@@ -54,6 +58,15 @@ class DigiDViewModel(
             }
             loading.value = Event(false)
         }
+    }
+
+    /**
+     * Login again with a token received with a previous login
+     */
+    fun loginAgain() {
+        val result = jwt?.let { DigidResult.Success(it) } ?: DigidResult.TokenUnavailable
+        digidResultLiveData.postValue(Event(result))
+        jwt = null // login again only once, consecutive logins should request new access token
     }
 
     fun handleActivityResult(activityResult: ActivityResult, authService: AuthorizationService) {
@@ -95,7 +108,10 @@ class DigiDViewModel(
             DigidResult.Failed(NetworkRequestResult.Failed.ClientNetworkError(DigidNetworkRequest))
         } else {
             DigidResult.Failed(
-                NetworkRequestResult.Failed.ServerNetworkError(DigidNetworkRequest, mapToOpenIdException(authError))
+                NetworkRequestResult.Failed.ServerNetworkError(
+                    DigidNetworkRequest,
+                    mapToOpenIdException(authError)
+                )
             )
         }
     }
@@ -117,8 +133,8 @@ class DigiDViewModel(
         authResponse: AuthorizationResponse
     ) {
         try {
-            val jwt =
-                authenticationRepository.jwt(authService, authResponse)
+            val jwt = authenticationRepository.jwt(authService, authResponse)
+            this.jwt = jwt
             digidResultLiveData.postValue(Event(DigidResult.Success(jwt)))
         } catch (e: Exception) {
             postExceptionResult(e)
@@ -139,5 +155,9 @@ class DigiDViewModel(
         digidResultLiveData.postValue(
             Event(DigidResult.Failed(Error(DigidNetworkRequest, NullPointerException())))
         )
+    }
+
+    fun onTokenExpired() {
+        jwt = null
     }
 }

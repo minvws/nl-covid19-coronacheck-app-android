@@ -194,8 +194,8 @@
     <string name="qr_code_type_negative_test_description">Uit de test blijkt dat ik geen corona heb</string>
     <string name="qr_code_type_vaccination_title">Vaccinatiebewijs</string>
     <string name="qr_code_type_vaccination_description">Ik heb mijn prik of prikken gehad</string>
-    <string name="get_vaccination_title">Gegevens van je vaccinatie ophalen</string>
-    <string name="get_vaccination_description"><![CDATA[Ben je gevaccineerd? Log in met DigiD. De gegevens van je vaccinatie worden dan automatisch opgehaald.<br/><br/>]]></string>
+    <string name="get_vaccination_title">Vaccinatiegegevens ophalen</string>
+    <string name="get_vaccination_description"><![CDATA[Kloppen de gegevens? Als de gegevens van je vaccinatie kloppen kun je een bewijs maken.<br/><br/>]]></string>
     <string name="get_vaccination_button">Log in met DigiD</string>
     <string name="get_vaccination_no_digid_button">Ik heb geen DigiD</string>
     <string name="your_retrieved_vaccinations_title">Jouw opgehaalde vaccinaties</string>
@@ -203,7 +203,7 @@
     <string name="your_vaccination_result_toolbar_title">Jouw vaccinaties</string>
     <string name="your_retrieved_vaccinations_toolbar">Gegevens van je vaccinatie ophalen</string>
     <string name="retrieved_vaccination_title">Vaccinatie %1$s</string>
-    <string name="retrieved_vaccination_dcc_title">Vaccinatiebewijs</string>
+    <string name="retrieved_vaccination_dcc_title">Vaccinatiebewijs dosis %1$s/%2$s</string>
     <string name="travel_toggle_europe">Ik reis internationaal</string>
     <string name="travel_toggle_domestic">Ik ben in Nederland</string>
     <string name="travel_toggle_change_domestic">Aanpassen naar NL</string>
@@ -213,7 +213,7 @@
     <string name="travel_fragment_description">Gebruik binnen Nederland altijd je Nederlandse QR-code. Reis je buiten Nederland? Gebruik dan je internationale QR-code.</string>
     <string name="travel_fragment_footer">In je Nederlandse QR-code staan alleen je initialen en je geboortedag en maand.</string>
     <string name="travel_fragment_footer_eu">In de internationale QR-code staan de volgende gegevens: o.a. je naam, geboortedatum en informatie over het vaccin.</string>
-    <string name="dialog_negative_test_result_something_wrong_title">Er klopt iets niet</string>
+    <string name="dialog_negative_test_result_something_wrong_title">Klopt er iets niet?</string>
     <string name="dialog_negative_test_result_something_wrong_description"><![CDATA[Kloppen er gegevens niet? Neem contact op met je testlocatie. Zij kunnen de gegevens aanpassen.]]></string>
     <string name="validity_type_european_title">Internationaal</string>
     <string name="validity_type_dutch_title">Nederland</string>
@@ -251,8 +251,7 @@
     <string name="qr_explanation_icon_label">Uitleg over QR-code</string>
     <string name="qr_card_expired">Je bewijs is verlopen.</string>
     <string name="qr_card_vaccination_title_domestic">Vaccinatiebewijs:</string>
-    <string name="qr_card_vaccination_title_domestic_with_dosis">Vaccinatiebewijs (1 dosis):</string>
-    <string name="qr_card_vaccination_title_domestic_with_doses">Vaccinatiebewijs (%1$s doses):</string>
+    <string name="qr_card_vaccination_title_domestic_with_dosis">Vaccinatiebewijs (%1$s doses):</string>
     <string name="qr_card_test_domestic">Testbewijs:</string>
     <string name="qr_card_test_eu">Type test:</string>
     <string name="qr_card_recovery_title_domestic">Herstelbewijs:</string>
@@ -280,11 +279,11 @@
     <string name="your_test_result_explanation_description_unique_identifier">Uniek testnummer:</string>
     <string name="your_negative_test_3.0_results_row_subtitle"><![CDATA[Testdatum: %1$s<br/>Naam: %2$s<br/>Geboortedatum: %3$s]]></string>
     <string name="your_vaccination_row_subtitle"><![CDATA[Naam: %1$s<br/>Geboortedatum: %2$s<br/>Gegevens opgehaald bij: %3$s]]></string>
-    <string name="your_vaccination_explanation_toolbar_title">Wat is er opgehaald?</string>
+    <string name="your_vaccination_explanation_toolbar_title">Details</string>
     <string name="your_vaccination_explanation_description"><![CDATA[Deze gegevens van je vaccinatie zijn opgehaald:<br/><br/>Naam: <b>%1$s</b><br/>Geboortedatum: <b>%2$s</b><br/><br/>Ziekteverwekker: <b>%3$s</b><br/>Vaccin: <b>%4$s</b><br/>Vaccin type: <b>%5$s</b><br/>Producent: <b>%6$s</b><br/>Doses: <b>%7$s</b><br/>Is dit de laatste dosis van je vaccinatie? <b>%8$s</b><br/> Vaccinatiedatum: <b>%9$s</b><br/>Gevaccineerd in: <b>%10$s</b><br/>Uniek certificaatnummer: <b>%11$s</b>]]></string>
     <string name="your_vaccination_explanation_last_dose_yes">ja</string>
     <string name="your_vaccination_explanation_last_dose_yes_recovery">ja (eerder corona gehad)</string>
-    <string name="your_vaccination_explanation_last_dose_yes_prior_event">ja (ergens anders corona gehad)</string>
+    <string name="your_vaccination_explanation_last_dose_yes_prior_event">ja (ergens anders gevaccineerd)</string>
     <string name="your_vaccination_explanation_last_dose_no">nee</string>
     <string name="your_vaccination_explanation_last_dose_unknown">niet bekend</string>
     <string name="your_vaccination_explanation_header">Deze gegevens van je vaccinatie zijn opgehaald bij %1$s:</string>
@@ -334,7 +333,7 @@
     <string name="coronacheck_error_description">Neem contact op met onze helpdesk en geef de foutcode (%1$s) door. Of probeer het later opnieuw.</string>
     <string name="missing_events_title">Gegevens mogelijk niet compleet</string>
     <string name="missing_events_description">Door drukte of een storing bij een van de partijen kunnen er gegevens missen. Probeer het eventueel later nog een keer.</string>
-    <string name="dialog_vaccination_something_wrong_description"><![CDATA[Kloppen er gegevens niet? Neem contact op met de zorgverlener waar je bent gevaccineerd. Zij kunnen de gegevens aanpassen.]]></string>
+    <string name="dialog_vaccination_something_wrong_description"><![CDATA[Neem contact op met de zorgverlener waar je bent gevaccineerd. Dat kan de GGD, je huisarts of arts van een zorginstelling zijn. Zij kunnen je helpen je gegevens aan te passen.]]></string>
     <string name="dialog_title_no_internet">Maak verbinding met het internet</string>
     <string name="dialog_update_credentials_no_internet">"De QR-code heeft af en toe internet nodig. Zonder internetverbinding kan je jouw QR-code nog 3 dagen gebruiken. Ook daarna kun je de QR-code weer gebruiken wanneer je internet hebt. "</string>
     <string name="dialog_credentials_expired_no_internet">Om toegang tot je QR-codes te houden heb je internet nodig. Maak nu verbinding.</string>
@@ -343,16 +342,16 @@
     <string name="new_in_app_screen_1_title">Bewijs van herstel</string>
     <string name="new_in_app_screen_1_description">Vanaf nu kun je via deze app ook een herstelbewijs maken. Dat is een bewijs van een positieve testuitslag. Daarmee laat je zien dat je corona hebt gehad. Zo krijg je toegang tot bepaalde locaties en activiteiten. Ook kun je er internationaal mee reizen.</string>
     <string name="your_positive_test_toolbar_title">Jouw positieve test</string>
-    <string name="your_positive_test_description">Kloppen je gegevens? Dan kun je van je positieve testuitslag een QR-code maken. Dat is jouw bewijs.</string>
+    <string name="your_positive_test_description">Kloppen je gegevens? Als de gegevens van je test kloppen kun je een bewijs maken.</string>
     <string name="positive_test_title">Positieve testuitslag</string>
     <string name="get_recovery_title">Gegevens van je herstel ophalen</string>
     <string name="get_recovery_description"><![CDATA[Heb je corona gehad? Dan kun je van de positieve testuitslag een herstelbewijs maken. Log in met DigiD om een testuitslag op te halen.<br/><br/>Je herstelbewijs wordt 11 dagen na de positieve testuitslag geldig. Je moet dan ook vrij zijn van klachten.]]></string>
     <string name="no_positive_test_result_title">Geen positieve testuitslag beschikbaar</string>
-    <string name="no_positive_test_result_description"><![CDATA[Ben je net getest? Het kan een paar uur  duren voordat jouw positieve testuitslag beschikbaar is. Probeer het later nog eens.<br/><br/>Kijk voor meer informatie op de <a href="https://www.coronacheck.nl/wegwijzer">Wegwijzer</a>.]]></string>
+    <string name="no_positive_test_result_description"><![CDATA[Ben je net getest? Het kan een paar uur  duren voordat je uitslag beschikbaar is. Probeer het later nog eens.<br/><br/>Al even geleden getest? Neem dan contact op met je testlocatie om te controleren of je gegevens goed in het systeem staan.]]></string>
     <string name="qr_code_type_recovery_title">Herstelbewijs</string>
     <string name="qr_code_type_recovery_description">Uit de test blijkt dat ik corona heb gehad</string>
     <string name="your_test_result_explanation_positive_test_result">positief (corona)</string>
-    <string name="recovery_explanation_description_header">De volgende gegevens zijn opgehaald:</string>
+    <string name="recovery_explanation_description_header">De volgende gegevens zijn opgehaald bij de testlocatie:</string>
     <string name="recovery_explanation_description_name">Naam:</string>
     <string name="recovery_explanation_description_birth_date">Geboortedatum:</string>
     <string name="recovery_explanation_description_test_date">Testdatum:</string>
@@ -396,45 +395,43 @@
     <string name="add_paper_proof_input_not_6_chars">Vul de 6-letterige combinatie in</string>
     <string name="add_paper_proof_no_letter_combination_button">Geen lettercombinatie?</string>
     <string name="no_letter_combination_dialog_title">Geen lettercombinatie?</string>
-    <string name="no_letter_combination_dialog_description"><![CDATA[Dan is het niet mogelijk om jouw bewijs op deze manier aan de app toe te voegen.<br/><br/>Je hebt alleen een lettercombinatie gekregen als je jouw papieren coronabewijs hebt aangevraagd bij jouw zorgverlener, of opgestuurd hebt gekregen per post.<br/><br/><b>Heb je het papieren bewijs zelf geprint?</b><br/>Voeg je bewijs dan toe in de app via het menu. Ga naar ‘Bewijs toevoegen’ in het menu. Kies je bewijs en haal je gegevens op door in te loggen met DigiD.]]></string>
-    <string name="add_paper_proof_explanation_description"><![CDATA[Je kunt een papieren bewijs aan de app toevoegen als je hem op de volgende manier hebt gekregen:]]></string>
-    <string name="add_paper_proof_explanation_healthcare_item_title">Gekregen van een zorgverlener</string>
-    <string name="add_paper_proof_explanation_healthcare_item_subtitle">Bijvoorbeeld je huisarts of je zorginstelling heeft dit voor je geprint</string>
+    <string name="no_letter_combination_dialog_description"><![CDATA[Het is dan niet mogelijk om je bewijzen op deze manier aan de app toe te voegen.<br/>Je hebt alleen een lettercombinatie als je jouw papieren bewijzen hebt aangevraagd bij je zorgverlener, of opgestuurd hebt gekregen per post.<br/><br/><b>Heb je zelf je bewijs geprint?</b>Je kunt dan je bewijzen toevoegen aan de app met behulp van DigiD.]]></string>
+    <string name="add_paper_proof_explanation_description"><![CDATA[Je kunt papieren bewijzen toevoegen aan de app als je die op de volgende manier hebt gekregen:]]></string>
+    <string name="add_paper_proof_explanation_healthcare_item_title">Van je zorgverlener</string>
+    <string name="add_paper_proof_explanation_healthcare_item_subtitle">Je huisarts of andere zorgverlener heeft je bewijzen voor je geprint</string>
     <string name="add_paper_proof_explanation_mail_item_title">Opgestuurd per post</string>
-    <string name="add_paper_proof_explanation_mail_item_subtitle">De overheid heeft je het bewijs opgestuurd per post</string>
+    <string name="add_paper_proof_explanation_mail_item_subtitle">De overheid heeft je bewijzen voor je geprint en opgestuurd per post</string>
     <string name="add_paper_proof_explanation_self_printed_button">Zelf je bewijs uitgeprint?</string>
     <string name="add_paper_proof_self_printed_title">Zelf je bewijs uitgeprint?</string>
-    <string name="add_paper_proof_self_printed_description"><![CDATA[Dan is het niet mogelijk om jouw bewijs op deze manier aan de app toe te voegen.<br/><br/>Je kunt wel je bewijs toevoegen aan de app met behulp van DigiD. Ga naar ‘Bewijs toevoegen’ in het menu. Kies je bewijs en haal je gegevens op door in te loggen met DigiD.]]></string>
-    <string name="add_paper_proof_self_printed_goto_add_proof_button">Naar bewijs toevoegen</string>
+    <string name="add_paper_proof_self_printed_description"><![CDATA[Het is dan niet mogelijk om je bewijzen op deze manier aan de app toe te voegen.<br/><br/>Je kunt wel bewijzen toevoegen aan de app met behulp van DigiD.]]></string>
+    <string name="add_paper_proof_self_printed_goto_add_proof_button">Voeg bewijs toe via DigiD</string>
     <string name="add_paper_proof_explanation_highlight"><![CDATA[<b>Zelf je bewijs uitgeprint?</b><br/> Voeg je bewijs dan toe in de app via het menu. Ga naar ‘Bewijs toevoegen’ en log in met DigiD.]]></string>
-    <string name="add_paper_proof_consent_title">Scan alleen de internationale QR-code</string>
-    <string name="add_paper_proof_consent_description"><![CDATA[Scan met de camera van je telefoon alleen de internationale QR-code van je papieren bewijs.]]></string>
+    <string name="add_paper_proof_consent_title">Scan je internationale QR-code</string>
+    <string name="add_paper_proof_consent_description"><![CDATA[Scan met de camera van je telefoon alleen de <b>internationale QR-code</b> op je papieren bewijs.<br/><br/>Heb je meerdere internationale QR-codes? Doorloop deze stappen straks opnieuw voor elke QR-code die je in de app wilt hebben.]]></string>
     <string name="add_paper_proof_consent_help_button">Waarom alleen internationaal?</string>
     <string name="add_paper_proof_qr_scanner_text">Richt je telefoon op de QR-code op je internationale bewijs</string>
-    <string name="add_paper_proof_qr_error_dutch_qr_code_dialog_title">Scan de internationale QR-code</string>
+    <string name="add_paper_proof_qr_error_dutch_qr_code_dialog_title">Scan je internationale QR-code</string>
     <string name="add_paper_proof_qr_error_dutch_qr_code_dialog_description">Scan de QR-code op je internationale bewijs. Je hoeft de Nederlandse QR-code niet te scannen.</string>
     <string name="add_paper_proof_qr_error_invalid_qr_dialog_title">Ongeldige QR-code</string>
-    <string name="add_paper_proof_qr_error_invalid_qr_dialog_description">Scan de QR-code op je internationale bewijs. Je hoeft de Nederlandse QR-code niet te scannen.</string>
+    <string name="add_paper_proof_qr_error_invalid_qr_dialog_description">Deze QR-code is niet geldig. Scan de QR-code op je internationale bewijs.</string>
     <string name="add_paper_proof_expired_paper_proof_title">Dit papieren bewijs is verlopen</string>
     <string name="add_paper_proof_expired_paper_proof_description"><![CDATA[Dit papieren bewijs is niet meer geldig. Dit kan verschillende oorzaken hebben:<ul><li>Je vaccinatie of herstel is nog geldig, maar het papieren bewijs niet. Vraag een nieuw papieren coronabewijs aan bij de zorgverlener waar je bent gevaccineerd of getest.</li><li>Je vaccinatie of herstel is verlopen.</li></ul>]]></string>
     <string name="add_paper_proof_limit_reached_paper_proof_title">Te vaak geprobeerd</string>
-    <string name="add_paper_proof_limit_reached_paper_proof_description"><![CDATA[Voor de veiligheid kan je deze QR-code tijdelijk niet meer in de app zetten.<br/><br/>Je kunt het over 24 uur weer proberen.]]></string>
+    <string name="add_paper_proof_limit_reached_paper_proof_description"><![CDATA[Voor de veiligheid kun je deze QR-code tijdelijk niet meer in de app zetten.<br/><br/>Je kunt het over 24 uur weer proberen.]]></string>
     <string name="add_paper_proof_invalid_combination_title">Geen geldige combinatie</string>
     <string name="add_paper_proof_invalid_combination_">Deze lettercombinatie en QR-code horen niet bij elkaar.</string>
     <string name="add_paper_proof_qr_scanner_title">Scan QR-code</string>
-    <string name="add_paper_proof_consent_button">Scan QR-code</string>
+    <string name="add_paper_proof_consent_button">Start scannen</string>
     <string name="add_paper_proof_no_camera_error_header">Bewijs toevoegen kan niet op jouw telefoon</string>
-    <string name="add_paper_proof_why_only_international_title">Waarom alleen internationaal?</string>
-    <string name="add_paper_proof_why_only_international_description">In de internationale QR-codes staan genoeg gegevens om ook een Nederlands bewijs te maken.</string>
     <string name="add_paper_proof_no_camera_error_description"><![CDATA[Jouw telefoon heeft geen camerafunctie. Daardoor kan je het papieren bewijs niet scannen en toevoegen op jouw telefoon.<br><br>Gebruik het papieren bewijs dat je van de zorgverlener hebt gekregen]]></string>
-    <string name="your_dcc_event_description">Met de gegevens die zijn opgehaald kun je een QR-code maken. Dat is jouw bewijs.</string>
+    <string name="your_dcc_event_description">Met deze gegevens kun je een bewijs maken.</string>
     <string name="your_dcc_event_toolbar_title">Gescande gegevens</string>
     <string name="your_events_block_back_dialog_title">Weet je zeker dat je wilt stoppen?</string>
     <string name="your_events_block_back_dialog_description">Je kunt later opnieuw proberen deze QR-code in de app te zetten.</string>
     <string name="your_events_block_back_dialog_positive_button">Ja, stop</string>
     <string name="your_events_block_back_dialog_negative_button">Nee, ga verder</string>
     <string name="your_events_replace_dialog_title">Wil je je bewijs vervangen?</string>
-    <string name="your_events_replace_dialog_message">Je hebt eerder een bewijs gemaakt. De gegevens daarvan zijn anders dan de gegevens die net zijn opgehaald. Daarom kan je het bewijs alleen vervangen.</string>
+    <string name="your_events_replace_dialog_message">Je hebt al eerder een bewijs gemaakt. De gegevens daarvan zijn anders dan de gegevens die net zijn opgehaald. Daarom kun je het bewijs alleen vervangen.</string>
     <string name="your_events_replace_dialog_negative_button">Nee, stop</string>
     <string name="your_events_replace_dialog_positive_button">Ja, vervang</string>
     <string name="your_events_details_button">Details</string>
@@ -528,6 +525,13 @@
     <string name="cannot_create_recovery_proof_title">Positieve testuitslag niet meer geldig</string>
     <string name="cannot_create_recovery_proof_description"><![CDATA[Het is langer dan %1s dagen geleden dat je positief getest bent op corona. Daarom is je testuitslag niet meer geldig. Je kunt helaas geen herstelbewijs maken.<br/><br/>Lees meer op de <a href="https://www.coronacheck.nl/wegwijzer">Wegwijzer</a>.]]></string>
     <string name="your_vaccination_dcc_row_subtitle"><![CDATA[Naam: %1$s<br/>Geboortedatum: %2$s]]></string>
+    <string name="qr_card_vaccination_title_domestic_with_doses">Vaccinatiebewijs (%1$s doses):</string>
+    <string name="add_paper_proof_why_only_international_title">Waarom alleen internationaal?</string>
+    <string name="add_paper_proof_why_only_international_description">Met de gegevens in internationale QR-codes kan ook direct een Nederlands bewijs gemaakt worden. Zo hoef je ze niet allebei te scannen.</string>
+    <string name="international_certificate_created_description"><![CDATA[Je hebt geen Nederlands vaccinatiebewijs. Hiervoor moet je volledig gevaccineerd zijn, of hersteld van corona vóór je eerste prik.<br><br><b>Krijg je nog een tweede prik?</b><br>Voeg opnieuw een vaccinatiebewijs toe nadat je prik is gezet. Je krijgt dan ook een Nederlands bewijs.<br><br><b>Corona gehad voor je eerste prik?</b><br>Haal je positieve testuitslag op. Je krijgt dan ook een Nederlands bewijs.]]></string>
+    <string name="international_certificate_created_title">Er is alleen een internationaal bewijs gemaakt</string>
+    <string name="international_certificate_created_toolbar_title">Bewijs gemaakt</string>
+    <string name="international_certificate_created_retrieve_test_button">Haal mijn testuitslag op</string>
     <string name="missing_dutch_certificate_info_card_text">Je hebt geen Nederlands vaccinatiebewijs</string>
     <string name="missing_dutch_certificate_title">Geen Nederlands vaccinatiebewijs</string>
     <string name="missing_dutch_certificate_introduction">Je hebt geen Nederlands vaccinatiebewijs. Hiervoor moet je volledig gevaccineerd zijn, of hersteld van corona vóór je eerste prik.</string>
@@ -535,5 +539,23 @@
     <string name="missing_dutch_certificate_retrieve_vaccination_button">Haal mijn vaccinaties op</string>
     <string name="missing_dutch_certificate_positive_text_explanation"><![CDATA[<br/><b>Corona gehad voor je eerste prik?</b><br/>Haal je positieve testuitslag op. Je krijgt dan een Nederlands bewijs.]]></string>
     <string name="missing_dutch_certificate_retrieve_test_button">Haal mijn testuitslag op</string>
-    <string name="missing_dutch_certificate_explanation_more"><![CDATA[<br/><b>Meer weten?</b><br/>Bekijk de  <a href="https://coronacheck.nl/nl/faq/2-4-ik-heb-wel-een-internationale-qr-code-maar-geen-nederlandse/">meestgestelde vragen</a> voor andere mogelijke oorzaken dat je geen Nederlands bewijs hebt.]]></string>
+    <string name="missing_dutch_certificate_explanation_more"><![CDATA[<br/><b>Meer weten?</b><br/>Bekijk de  <a href="https://coronacheck.nl/nl/faq/2-4-ik-heb-wel-een-internationale-qr-code-maar-geen-nederlandse/">meestgestelde vragen</a> voor andere mogelijke oorzaken.]]></string>
+    <string name="certificate_created_toolbar_title">Bewijs gemaakt</string>
+    <string name="certificate_created_vaccination_recovery_title">Vaccinatiebewijs en herstelbewijs gemaakt</string>
+    <string name="certificate_created_vaccination_recovery_description"><![CDATA[Er is een Nederlands vaccinatiebewijs gemaakt.<br><br>Je positieve test is minder dan %1s dagen geleden afgenomen. Daarom is er ook een herstelbewijs gemaakt.]]></string>
+    <string name="certificate_created_recovery_title">Alleen een herstelbewijs gemaakt</string>
+    <string name="certificate_created_recovery_description"><![CDATA[Je bent positief getest ná je eerste vaccinatie. Daardoor is je testuitslag niet geschikt om een Nederlands vaccinatiebewijs van te maken. Er is wel een herstelbewijs gemaakt.<br><br>Kijk voor meer informatie bij de <a href="https://coronacheck.nl/nl/faq/2-4-ik-heb-wel-een-internationale-qr-code-maar-geen-nederlandse/">meestgestelde vragen</a>.]]></string>
+    <string name="certificate_created_recovery_unsuitable_title">Positieve testuitslag is niet geschikt</string>
+    <string name="certificate_created_recovery_unsuitable_description"><![CDATA[Je bent positief getest ná je eerste vaccinatie. Daardoor is je testuitslag niet geschikt om een Nederlands vaccinatiebewijs van te maken. Er is wel een herstelbewijs gemaakt.<br><br>Kijk voor meer informatie bij de <a href="https://coronacheck.nl/nl/faq/2-4-ik-heb-wel-een-internationale-qr-code-maar-geen-nederlandse/">meestgestelde vragen</a>.]]></string>
+    <string name="retrieve_test_result_toolbar_title">Testuitslag ophalen</string>
+    <string name="retrieve_test_result_title">Gegevens van je positieve test ophalen</string>
+    <string name="retrieve_test_result_description">Log in met DigiD. De gegevens van je positieve test worden dan automatisch opgehaald.</string>
+    <string name="dashboard_coronamelder_tip"><![CDATA[<b>Tip:</b> Voorkom verspreiding van het coronavirus, <a href="https://coronamelder.nl/app">gebruik ook CoronaMelder</a>.]]></string>
+    <string name="certificate_created_vaccination_title">Geen herstelbewijs, wel een vaccinatiebewijs</string>
+    <string name="certificate_created_vaccination_description"><![CDATA[Het is langer dan %1s dagen geleden dat je positief getest bent op corona. Daardoor is je testuitslag niet meer geldig om een herstelbewijs van te maken.<br><br>Omdat je positief getest bent vóór je eerste prik, ben je met één prik volledig gevaccineerd. Daarom is er wel een volledig vaccinatiebewijs gemaakt.<br><br>Kijk voor meer informatie op de <a href="https://www.coronacheck.nl/wegwijzer">Wegwijzer</a>.]]></string>
+    <string name="no_certificate_created_toolbar_title">Geen bewijs gemaakt</string>
+    <string name="certificate_created_recovery_after_vaccination_description"><![CDATA[Er is een herstelbewijs gemaakt.<br><br>Omdat je positieve getest bent vóór je eerste prik, ben je met één prik volledig gevaccineerd. Daarom is er ook een volledig vaccinatiebewijs gemaakt.]]></string>
+    <string name="paper_proof_event_explanation_header">Deze gegevens staan in je papieren bewijs:</string>
+    <string name="paper_proof_event_explanation_footer"><![CDATA[<b>Kloppen er gegevens niet?:</b><br/>Neem contact op met de zorgverlener waar je bent gevaccineerd of getest. Dat kan de GGD, je huisarts of arts van een andere zorginstelling zijn. Zij kunnen je helpen je gegevens aan te passen.]]></string>
+    <string name="certificate_created_recovery_after_vaccination_title">Herstelbewijs en vaccinatiebewijs gemaakt</string>
 </resources>
