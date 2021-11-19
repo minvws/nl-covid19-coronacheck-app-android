@@ -557,4 +557,5 @@
     <string name="certificate_created_recovery_after_vaccination_description"><![CDATA[A recovery certificate has been created.<br><br>Because you were tested positive before your first vaccination, one shot means you\'re fully vaccinated. Therefore, a full vaccination certificate has been created as well.]]></string>
     <string name="paper_proof_event_explanation_header">These details are in your paper certificate:</string>
     <string name="paper_proof_event_explanation_footer"><![CDATA[<b>Are your details incorrect?:</b><br/>Please contact the healthcare provider who vaccinated or tested you. This can be the GGD, your general practitioner or doctor. They can help you change these details.]]></string>
+    <string name="certificate_created_recovery_after_vaccination_title">Recovery and vaccination certificates created</string>
 </resources>
