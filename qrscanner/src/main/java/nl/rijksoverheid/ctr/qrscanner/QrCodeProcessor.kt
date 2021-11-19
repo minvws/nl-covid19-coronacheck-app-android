@@ -6,7 +6,6 @@ import nl.rijksoverheid.ctr.qrscanner.databinding.FragmentScannerBinding
 
 interface QrCodeProcessor {
     fun process(
-        isAdded: Boolean,
         binding: FragmentScannerBinding,
         cameraProvider: ProcessCameraProvider,
         cameraFrame: ImageProxy,

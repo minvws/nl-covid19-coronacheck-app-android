@@ -42,6 +42,9 @@ android {
                         "}"
         buildConfigField "String", "CDN_API_URL", "\"https://verifier-api-cdn.coronacheck.nl/v6/\""
         manifestPlaceholders = [appLabel: "@string/app_name", deepLinkHost: "coronacheck.nl"]
+        ndk {
+            debugSymbolLevel "FULL"
+        }
     }
 
     signingConfigs {
@@ -106,6 +109,10 @@ android {
 
     compileOptions {
         coreLibraryDesugaringEnabled true
+    }
+
+    packagingOptions {
+        doNotStrip '**/*.so'
     }
 }
 
