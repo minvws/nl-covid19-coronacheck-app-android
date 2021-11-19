@@ -10,7 +10,6 @@ import android.widget.Button
 import android.widget.ScrollView
 import androidx.annotation.DrawableRes
 import androidx.cardview.widget.CardView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.google.android.material.button.MaterialButton
 import nl.rijksoverheid.ctr.design.R
