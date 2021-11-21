@@ -241,7 +241,7 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
         binding.qrVaccinationDosis.visibility = View.VISIBLE
         binding.qrVaccinationDosis.text = getString(
             R.string.qr_code_dosis,
-            "${europeanVaccinations.first().dose}/${europeanVaccinations.first().ofTotalDoses}"
+            "${europeanVaccinations.first().dose}/${europeanVaccinations.size}"
         )
 
         // If there are more then one vaccinations we update UI based on the selected page
@@ -289,7 +289,7 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
             val vaccination = europeanVaccinations[position]
             binding.qrVaccinationDosis.text = getString(
                 R.string.qr_code_dosis,
-                "${vaccination.dose}/${vaccination.ofTotalDoses}"
+                "${vaccination.dose}/${europeanVaccinations.size}"
             )
 
             showDoseInfo(vaccination)
