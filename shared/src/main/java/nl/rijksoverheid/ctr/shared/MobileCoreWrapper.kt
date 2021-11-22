@@ -74,7 +74,7 @@ class MobileCoreWrapperImpl(private val moshi: Moshi) : MobileCoreWrapper {
     }
 
     override fun disclose(secretKey: ByteArray, credential: ByteArray, currentTimeMillis: Long): String {
-        return Mobilecore.disclose(
+        return Mobilecore.discloseWithTime(
             secretKey,
             credential,
             currentTimeMillis / 1000L
