@@ -42,7 +42,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/privacy_policy_title"
                 android:textAppearance="?attr/textAppearanceHeadline5"
-                app:layout_constraintBottom_toTopOf="@+id/description"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -66,11 +65,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/title"
                 app:layout_constraintStart_toStartOf="@+id/title"
-                app:layout_constraintTop_toBottomOf="@+id/description"
-                app:layout_constraintVertical_bias="0" />
+                app:layout_constraintTop_toBottomOf="@+id/description" />
 
             <FrameLayout
                 android:id="@+id/checkbox_container"
@@ -80,7 +77,6 @@
                 android:background="@drawable/shape_privacy_policy_checkbox_background"
                 android:paddingHorizontal="24dp"
                 android:paddingVertical="16dp"
-                app:layout_constraintBottom_toTopOf="@id/error_container"
                 app:layout_constraintEnd_toEndOf="@+id/title"
                 app:layout_constraintStart_toStartOf="@+id/title"
                 app:layout_constraintTop_toBottomOf="@+id/items"
