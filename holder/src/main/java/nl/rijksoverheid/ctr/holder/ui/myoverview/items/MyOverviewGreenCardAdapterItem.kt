@@ -11,6 +11,7 @@ package nl.rijksoverheid.ctr.holder.ui.myoverview.items
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.ItemMyOverviewGreenCardBinding
@@ -86,6 +87,8 @@ class MyOverviewGreenCardAdapterItem(
             )
         }
 
+        // Mark title of the cards as heading for accessibility
+        ViewCompat.setAccessibilityHeading(viewBinding.title, true)
     }
 
     private fun setContent(viewBinding: ItemMyOverviewGreenCardBinding) {
