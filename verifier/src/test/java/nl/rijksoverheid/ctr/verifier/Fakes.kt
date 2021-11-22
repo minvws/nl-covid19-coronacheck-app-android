@@ -21,6 +21,7 @@ import nl.rijksoverheid.ctr.verifier.ui.scanner.ScannerViewModel
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.VerifiedQrResultState
 import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.TestResultValidUseCase
 import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.VerifyQrUseCase
+import nl.rijksoverheid.ctr.verifier.ui.scanqr.NextScannerScreenState
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrViewModel
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody
@@ -77,6 +78,10 @@ fun fakeScanQrViewModel(
     }
 
     override fun setScanInstructionsSeen() {
+    }
+
+    override fun getNextScannerScreenState(): NextScannerScreenState {
+        TODO("Not yet implemented")
     }
 }
 
