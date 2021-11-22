@@ -9,6 +9,7 @@
 package nl.rijksoverheid.ctr.appconfig.usecases
 
 import nl.rijksoverheid.ctr.appconfig.fakeCachedAppConfigUseCase
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -16,10 +17,16 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import java.time.Clock
 import java.time.Duration
+import java.time.Instant
+import java.time.ZoneId
 
 @RunWith(RobolectricTestRunner::class)
 class ClockDeviationUseCaseImplTest {
     private val defaultClock = Clock.systemUTC()
+    private val fixedClock = Clock.fixed(
+        Instant.parse("2021-11-02T18:00:00.00Z"),
+        ZoneId.systemDefault()
+    )
 
     @Test
     fun `Clock deviation usecase returns false if clock is correct`() {
@@ -74,5 +81,21 @@ class ClockDeviationUseCaseImplTest {
         )
         val hasDeviation = clockDeviationUseCase.hasDeviation()
         assertFalse(hasDeviation)
+    }
+
+    @Test
+    fun `Clock deviation usecase returns adjusted clock`() {
+        // device clock is 10 seconds ahead of server time
+        val deviceClock = Clock.offset(fixedClock, Duration.ofSeconds(10L))
+        val clockDeviationUseCase = ClockDeviationUseCaseImpl(
+            deviceClock, fakeCachedAppConfigUseCase()
+        )
+        clockDeviationUseCase.store(
+            serverResponseTimestamp = fixedClock.millis(),
+            localReceivedTimestamp = deviceClock.millis()
+        )
+
+        val adjustedClock = clockDeviationUseCase.getAdjustedClock(deviceClock)
+        assertEquals(fixedClock.instant(), adjustedClock.instant())
     }
 }
