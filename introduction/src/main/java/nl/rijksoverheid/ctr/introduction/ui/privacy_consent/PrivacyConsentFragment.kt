@@ -2,9 +2,7 @@ package nl.rijksoverheid.ctr.introduction.ui.privacy_consent
 
 import android.content.res.ColorStateList
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -29,16 +27,6 @@ class PrivacyConsentFragment : Fragment(R.layout.fragment_privacy_consent) {
 
     private val args: PrivacyConsentFragmentArgs by navArgs()
     private val introductionViewModel: IntroductionViewModel by viewModel()
-    private lateinit var binding: FragmentPrivacyConsentBinding
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentPrivacyConsentBinding.inflate(inflater)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
