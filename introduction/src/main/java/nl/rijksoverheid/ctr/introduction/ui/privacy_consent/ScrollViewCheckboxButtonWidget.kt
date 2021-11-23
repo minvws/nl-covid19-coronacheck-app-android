@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.introduction.ui.privacy_consent
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.widget.ScrollView
@@ -18,13 +19,13 @@ import nl.rijksoverheid.ctr.introduction.databinding.WidgetScrollViewCheckboxBut
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class ScrollViewCheckboxButtonWidget@JvmOverloads constructor(
+class ScrollViewCheckboxButtonWidget @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : CardView(context, attrs, defStyleAttr) {
 
     private val binding: WidgetScrollViewCheckboxButtonBinding
 
-    private var attachToScrollViewId: Int? = null
+    private val attachToScrollViewId: Int
     private var scrollViewGlobalLayoutListener: ViewTreeObserver.OnGlobalLayoutListener? = null
 
     init {
@@ -49,9 +50,9 @@ class ScrollViewCheckboxButtonWidget@JvmOverloads constructor(
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
 
-        attachToScrollViewId?.let {
+        if (attachToScrollViewId != View.NO_ID) {
             val parentLayout = parent as ViewGroup
-            val scrollView = parentLayout.findViewById<ScrollView>(it)
+            val scrollView = parentLayout.findViewById<ScrollView>(attachToScrollViewId)
             scrollViewGlobalLayoutListener = ViewTreeObserver.OnGlobalLayoutListener {
                 cardElevation = if (scrollView?.canScrollVertically(1) == true) {
                     resources.getDimensionPixelSize(R.dimen.scroll_view_button_elevation)
@@ -67,9 +68,9 @@ class ScrollViewCheckboxButtonWidget@JvmOverloads constructor(
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
 
-        attachToScrollViewId?.let {
+        if (attachToScrollViewId != View.NO_ID) {
             val parentLayout = parent as ViewGroup
-            val scrollView = parentLayout.findViewById<ScrollView>(it)
+            val scrollView = parentLayout.findViewById<ScrollView>(attachToScrollViewId)
             scrollView.viewTreeObserver.removeOnGlobalLayoutListener(scrollViewGlobalLayoutListener)
         }
     }
