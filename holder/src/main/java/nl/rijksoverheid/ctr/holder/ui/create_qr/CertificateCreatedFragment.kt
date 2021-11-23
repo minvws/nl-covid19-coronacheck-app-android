@@ -38,7 +38,8 @@ class CertificateCreatedFragment :
             navigateSafety(
                 CertificateCreatedFragmentDirections.actionGetEvents(
                     originType = OriginType.Recovery,
-                    afterIncompleteVaccination = true
+                    afterIncompleteVaccination = true,
+                    toolbarTitle = resources.getString(R.string.retrieve_test_result_toolbar_title)
                 )
             )
         }

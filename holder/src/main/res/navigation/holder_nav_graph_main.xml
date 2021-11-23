@@ -322,7 +322,7 @@
     <fragment
         android:id="@+id/nav_get_events"
         android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.GetEventsFragment"
-        android:label="@string/choose_provider_toolbar"
+        android:label="{toolbarTitle}"
         tools:layout="@layout/fragment_get_events">
 
         <argument
@@ -333,6 +333,10 @@
             android:name="afterIncompleteVaccination"
             android:defaultValue="false"
             app:argType="boolean" />
+
+        <argument
+            android:name="toolbarTitle"
+            app:argType="string"/>
 
         <action
             android:id="@+id/action_your_events"

@@ -43,8 +43,11 @@ class MissingDutchVaccinationFragment :
     private fun navigate(originType: OriginType, afterIncompleteVaccination: Boolean = false) {
         navigateSafety(
             MissingDutchVaccinationFragmentDirections.actionGetEvents(
-                originType,
-                afterIncompleteVaccination
+                originType = originType,
+                afterIncompleteVaccination = afterIncompleteVaccination,
+                toolbarTitle = resources.getString(
+                    if (afterIncompleteVaccination) R.string.retrieve_test_result_toolbar_title else R.string.choose_provider_toolbar
+                )
             )
         )
     }

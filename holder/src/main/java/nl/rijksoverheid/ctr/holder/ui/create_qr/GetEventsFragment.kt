@@ -61,8 +61,14 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
 
         if (args.originType == OriginType.Recovery && args.afterIncompleteVaccination) {
             binding.root.visibility = View.GONE
+            binding.fullscreenLoading.visibility = View.VISIBLE
             loginAgainWithDigiD()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        (parentFragment?.parentFragment as HolderMainFragment).presentLoading(false)
     }
 
     private fun setObservers(
@@ -76,7 +82,9 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
 
         getEventsViewModel.loading.observe(viewLifecycleOwner, EventObserver {
             binding.button.isEnabled = !it
-            (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
+            if (!args.afterIncompleteVaccination) {
+                (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
+            }
         })
 
         getEventsViewModel.eventsResult.observe(viewLifecycleOwner, EventObserver {
@@ -209,6 +217,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                 }
                 DigidResult.TokenUnavailable -> {
                     binding.root.visibility = View.VISIBLE
+                    binding.fullscreenLoading.visibility = View.GONE
                 }
             }
         })
@@ -250,9 +259,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                     description = getString(
                         if (args.afterIncompleteVaccination) R.string.retrieve_test_result_description else R.string.get_recovery_description
                     ),
-                    toolbarTitle = getString(
-                        if (args.afterIncompleteVaccination) R.string.retrieve_test_result_toolbar_title else R.string.your_positive_test_toolbar_title
-                    ),
+                    toolbarTitle = getString(R.string.your_positive_test_toolbar_title),
                     hasNoEventsTitle = getString(R.string.no_positive_test_result_title),
                     hasNoEventsDescription = getString(R.string.no_positive_test_result_description)
                 )
