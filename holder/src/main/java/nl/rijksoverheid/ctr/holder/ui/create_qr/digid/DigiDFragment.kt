@@ -52,7 +52,7 @@ abstract class DigiDFragment(contentLayoutId: Int) : BaseFragment(contentLayoutI
      * Remove persisted access token on expiration
      */
     fun onTokenExpired() {
-        digidViewModel.onTokenExpired()
+        digidViewModel.clearAccessToken()
     }
 
     protected fun getErrorCodes(errorResults: List<ErrorResult>): String {

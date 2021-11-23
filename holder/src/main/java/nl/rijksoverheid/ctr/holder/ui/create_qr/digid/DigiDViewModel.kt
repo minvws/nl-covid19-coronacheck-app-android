@@ -157,7 +157,7 @@ class DigiDViewModel(
         )
     }
 
-    fun onTokenExpired() {
+    fun clearAccessToken() {
         jwt = null
     }
 }
