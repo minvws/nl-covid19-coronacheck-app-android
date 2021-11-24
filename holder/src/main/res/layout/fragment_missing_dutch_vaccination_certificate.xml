@@ -38,8 +38,7 @@
             android:layout_height="wrap_content"
             android:paddingHorizontal="0dp"
             android:text="@string/missing_dutch_certificate_retrieve_vaccination_button"
-            android:textColor="@color/link"
-            android:textStyle="bold" />
+            android:textColor="@color/link" />
 
         <nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
             android:layout_width="wrap_content"
@@ -54,8 +53,7 @@
             android:layout_height="wrap_content"
             android:paddingHorizontal="0dp"
             android:text="@string/missing_dutch_certificate_retrieve_test_button"
-            android:textColor="@color/link"
-            android:textStyle="bold" />
+            android:textColor="@color/link" />
 
         <nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
             android:id="@+id/missing_dutch_certificate_explanation_more"
