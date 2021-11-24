@@ -49,8 +49,7 @@
                 android:layout_marginTop="16dp"
                 android:paddingHorizontal="0dp"
                 android:text="@string/international_certificate_created_retrieve_test_button"
-                android:textColor="@color/link"
-                android:textStyle="bold" />
+                android:textColor="@color/link" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
