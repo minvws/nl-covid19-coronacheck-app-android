@@ -9,6 +9,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.api.RemoteCouplingStatusJsonAdap
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.RemoteTestStatusJsonAdapter
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.shared.models.CoronaCheckErrorResponse
+import nl.rijksoverheid.ctr.shared.models.MijnCnErrorResponse
 import okhttp3.ResponseBody
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -35,6 +36,12 @@ val responsesModule = module {
     single<Converter<ResponseBody, CoronaCheckErrorResponse>>(named("ResponseError")) {
         get<Retrofit>(Retrofit::class).responseBodyConverter(
             CoronaCheckErrorResponse::class.java, emptyArray()
+        )
+    }
+
+    single<Converter<ResponseBody, MijnCnErrorResponse>>(named("MijnCnResponseError")) {
+        get<Retrofit>(Retrofit::class).responseBodyConverter(
+            MijnCnErrorResponse::class.java, emptyArray()
         )
     }
 

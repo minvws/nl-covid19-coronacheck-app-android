@@ -81,7 +81,7 @@ class MijnCNAuthenticationRepository(
         }
     }
 
-    suspend fun retrieveAccessToken(tokenRequest: TokenRequest): NetworkRequestResult<MijnCNTokenResponse> {
+    private suspend fun retrieveAccessToken(tokenRequest: TokenRequest): NetworkRequestResult<MijnCNTokenResponse> {
         val result =
             networkRequestResultFactory.createResult(HolderStep.AccessTokensNetworkRequest) {
                 testProviderApiClient.getAccessToken(

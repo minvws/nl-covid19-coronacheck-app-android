@@ -16,7 +16,7 @@ import org.koin.dsl.module
  */
 fun errorsModule(flavor: String) = module {
     factory {
-        NetworkRequestResultFactory(get(named("ResponseError")), get())
+        NetworkRequestResultFactory(get(named("ResponseError")), get(), get(named("MijnCnResponseError")))
     }
 
     factory<ErrorCodeStringFactory> {

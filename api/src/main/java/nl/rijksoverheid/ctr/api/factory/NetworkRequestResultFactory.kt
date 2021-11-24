@@ -1,8 +1,6 @@
 package nl.rijksoverheid.ctr.api.factory
 
-import nl.rijksoverheid.ctr.shared.models.CoronaCheckErrorResponse
-import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
-import nl.rijksoverheid.ctr.shared.models.Step
+import nl.rijksoverheid.ctr.shared.models.*
 import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 import okhttp3.ResponseBody
 import retrofit2.Converter
@@ -17,7 +15,8 @@ import java.net.UnknownHostException
  */
 class NetworkRequestResultFactory(
     private val errorResponseBodyConverter: Converter<ResponseBody, CoronaCheckErrorResponse>,
-    private val androidUtil: AndroidUtil
+    private val androidUtil: AndroidUtil,
+    private val mijnCnErrorResponseBodyConverter: Converter<ResponseBody, MijnCnErrorResponse>,
 ) {
 
     suspend fun <R : Any> createResult(
@@ -43,7 +42,32 @@ class NetworkRequestResultFactory(
 
                 provider?.let {
                     // If this is a call to a provider we return a ProviderHttpError
-                    return NetworkRequestResult.Failed.ProviderHttpError(step, httpException, it)
+                    when (it) {
+                        "BES" -> {
+                            // BES provider returns errors differently from other providers, handle these accordingly
+                            // Check if there is a error body
+                            val errorBody = httpException.response()?.errorBody()
+                                ?: return NetworkRequestResult.Failed.CoronaCheckHttpError(step, httpException)
+
+                            // Check if the error body is a [MijnCnErrorResponse]
+                            val errorResponse = mijnCnErrorResponseBodyConverter.convert(errorBody)
+                                ?: return NetworkRequestResult.Failed.CoronaCheckHttpError(step, httpException)
+
+                            return NetworkRequestResult.Failed.CoronaCheckWithErrorResponseHttpError(
+                                step,
+                                httpException,
+                                CoronaCheckErrorResponse(errorResponse.model.error, errorResponse.model.code)
+                            )
+                        }
+                        else -> {
+                            return NetworkRequestResult.Failed.ProviderHttpError(
+                                step,
+                                httpException,
+                                it
+                            )
+                        }
+                    }
+
                 }
 
                 // Check if there is a error body
