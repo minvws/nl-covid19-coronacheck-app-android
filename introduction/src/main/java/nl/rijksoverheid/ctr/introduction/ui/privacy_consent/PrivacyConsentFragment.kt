@@ -11,6 +11,7 @@ import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.R
 import nl.rijksoverheid.ctr.introduction.databinding.FragmentPrivacyConsentBinding
 import nl.rijksoverheid.ctr.introduction.databinding.ItemPrivacyConsentBinding
+import nl.rijksoverheid.ctr.introduction.databinding.WidgetScrollViewCheckboxButtonBinding
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.utils.Accessibility
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAccessibilityFocus
@@ -47,23 +48,25 @@ class PrivacyConsentFragment : Fragment(R.layout.fragment_privacy_consent) {
             viewBinding.description.setHtmlText(item.textResource,htmlLinksEnabled = false)
         }
 
+        val checkboxButtonBinding = WidgetScrollViewCheckboxButtonBinding.bind(binding.root)
+
         if (args.introductionData.hideConsent) {
-            binding.checkboxContainer.visibility = View.GONE
+            checkboxButtonBinding.checkboxContainer.visibility = View.GONE
         }
 
-        binding.checkbox.setOnCheckedChangeListener { _, isChecked ->
+        checkboxButtonBinding.checkbox.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                resetErrorState(binding)
+                resetErrorState(checkboxButtonBinding)
             }
         }
 
-        binding.bottom.setButtonClick {
-            if (args.introductionData.hideConsent || binding.checkbox.isChecked) {
+        checkboxButtonBinding.button.setOnClickListener {
+            if (args.introductionData.hideConsent || checkboxButtonBinding.checkbox.isChecked) {
                 introductionViewModel.saveIntroductionFinished(args.introductionData)
                 requireActivity().findNavControllerSafety(R.id.main_nav_host_fragment)
                     ?.navigate(R.id.action_main)
             } else {
-                showError(binding)
+                showError(checkboxButtonBinding)
             }
         }
 
@@ -72,17 +75,14 @@ class PrivacyConsentFragment : Fragment(R.layout.fragment_privacy_consent) {
         }
     }
 
-    private fun showError(binding: FragmentPrivacyConsentBinding) {
+    private fun showError(binding: WidgetScrollViewCheckboxButtonBinding) {
         binding.checkboxContainer.background = ContextCompat.getDrawable(requireContext(), R.drawable.shape_privacy_policy_checkbox_background_error)
         binding.errorContainer.visibility = View.VISIBLE
         binding.checkbox.buttonTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.error))
         Accessibility.announce(context, getString(R.string.privacy_policy_checkbox_error))
-        binding.scroll.post {
-            binding.scroll.fullScroll(View.FOCUS_DOWN)
-        }
     }
 
-    private fun resetErrorState(binding: FragmentPrivacyConsentBinding) {
+    private fun resetErrorState(binding: WidgetScrollViewCheckboxButtonBinding) {
         binding.checkboxContainer.background = ContextCompat.getDrawable(requireContext(), R.drawable.shape_privacy_policy_checkbox_background)
         binding.errorContainer.visibility = View.GONE
         binding.checkbox.buttonTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.primary_blue))
