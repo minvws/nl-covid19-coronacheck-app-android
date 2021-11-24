@@ -8,6 +8,7 @@ import android.text.Spanned
 import android.text.style.BulletSpan
 import android.util.AttributeSet
 import android.util.Log
+import android.util.TypedValue
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -78,6 +79,7 @@ class HtmlTextViewWidget @JvmOverloads constructor(
                         paragraphMarginMultiplier = getFloat(R.styleable.HtmlTextViewWidget_enableHtmlLinks, PARAGRAPH_MARGIN_MULTIPLIER),
                         headingMarginMultiplier = getFloat(R.styleable.HtmlTextViewWidget_enableHtmlLinks, HEADING_MARGIN_MULTIPLIER),
                         listItemMarginMultiplier = getFloat(R.styleable.HtmlTextViewWidget_enableHtmlLinks, LIST_ITEM_MARGIN_MULTIPLIER),
+                        textSize = getDimension(R.styleable.HtmlTextViewWidget_textSize, -1f),
                     )
                 }
             } finally {
@@ -108,7 +110,8 @@ class HtmlTextViewWidget @JvmOverloads constructor(
         htmlTextColorLink: Int = textColorLink,
         paragraphMarginMultiplier: Float = PARAGRAPH_MARGIN_MULTIPLIER,
         headingMarginMultiplier: Float = HEADING_MARGIN_MULTIPLIER,
-        listItemMarginMultiplier: Float = LIST_ITEM_MARGIN_MULTIPLIER
+        listItemMarginMultiplier: Float = LIST_ITEM_MARGIN_MULTIPLIER,
+        textSize: Float = -1f,
     ) {
         removeAllViews()
 
@@ -127,7 +130,7 @@ class HtmlTextViewWidget @JvmOverloads constructor(
         // Step 3: Add a HtmlTextView for each part of the Spannable
         parts.forEachIndexed { index, part ->
             val textView = HtmlTextView(context)
-            textView.setTextColor(htmlTextColor)
+            textView.setTextColor(context.getColor(R.color.secondary_text))
             textView.setLinkTextColor(htmlTextColorLink)
             textView.text = part
 
@@ -141,6 +144,10 @@ class HtmlTextViewWidget @JvmOverloads constructor(
                 textView.isFocusable = false
                 textView.isFocusableInTouchMode = false
                 textView.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
+            }
+
+            if (textSize > 0) {
+                textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
             }
 
             addView(textView)

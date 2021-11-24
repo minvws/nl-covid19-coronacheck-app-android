@@ -16,5 +16,7 @@
     android:layout_marginTop="24dp"
     android:textAppearance="?attr/textAppearanceBody1"
     android:textColorLink="@color/link"
+    app:textSize="14sp"
+    app:htmlTextColor="@color/secondary_text"
     app:enableHtmlLinks="true"
     app:htmlText="@string/dashboard_coronamelder_tip"/>
