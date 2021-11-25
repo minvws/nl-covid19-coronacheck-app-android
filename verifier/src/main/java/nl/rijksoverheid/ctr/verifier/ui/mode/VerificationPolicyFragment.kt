@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.verifier.R
-import nl.rijksoverheid.ctr.verifier.databinding.FragmentModeSelectBinding
+import nl.rijksoverheid.ctr.verifier.databinding.FragmentVerificationPolicyBinding
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
 import org.koin.android.ext.android.inject
@@ -21,13 +21,13 @@ import org.koin.android.ext.android.inject
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class SelectModeFragment: Fragment(R.layout.fragment_mode_select) {
+class VerificationPolicyFragment: Fragment(R.layout.fragment_verification_policy) {
 
     private val scannerUtil: ScannerUtil by inject()
     private val persistenceManager: PersistenceManager by inject()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        val binding = FragmentModeSelectBinding.inflate(inflater)
+        val binding = FragmentVerificationPolicyBinding.inflate(inflater)
 
         if (arguments?.getBoolean(addToolbarArgument) == true) {
             setupToolbar(binding)
@@ -40,7 +40,7 @@ class SelectModeFragment: Fragment(R.layout.fragment_mode_select) {
         return binding.root
     }
 
-    private fun setupToolbar(binding: FragmentModeSelectBinding) {
+    private fun setupToolbar(binding: FragmentVerificationPolicyBinding) {
         binding.toolbar.visibility = VISIBLE
 
         binding.toolbar.setNavigationOnClickListener {
@@ -54,7 +54,7 @@ class SelectModeFragment: Fragment(R.layout.fragment_mode_select) {
         binding.header.visibility = VISIBLE
     }
 
-    private fun setupRadioGroup(binding: FragmentModeSelectBinding) {
+    private fun setupRadioGroup(binding: FragmentVerificationPolicyBinding) {
         if (persistenceManager.isRiskModeSelectionSet()) {
             binding.modeRadioGroup.check(if (persistenceManager.getHighRiskModeSelected()) {
                 binding.highRisk.id

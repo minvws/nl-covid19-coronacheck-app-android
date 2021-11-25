@@ -34,9 +34,9 @@
 
     <fragment
         android:id="@+id/nav_mode_select"
-        android:name="nl.rijksoverheid.ctr.verifier.ui.mode.SelectModeFragment"
+        android:name="nl.rijksoverheid.ctr.verifier.ui.mode.VerificationPolicyFragment"
         android:label="Risico instelling"
-        tools:layout="@layout/fragment_mode_select" />
+        tools:layout="@layout/fragment_verification_policy" />
 
     <action
         android:id="@+id/action_about_this_app"
