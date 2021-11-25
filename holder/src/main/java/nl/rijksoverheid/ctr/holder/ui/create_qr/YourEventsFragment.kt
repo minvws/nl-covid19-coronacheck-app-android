@@ -639,21 +639,24 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
     }
 
     private fun presentFooter(binding: FragmentYourEventsBinding) {
-        binding.somethingWrongButton.setOnClickListener {
-            val type = args.type
-            infoFragmentUtil.presentAsBottomSheet(
-                childFragmentManager, InfoFragmentData.TitleDescription(
-                    title = getString(R.string.dialog_negative_test_result_something_wrong_title),
-                    descriptionData = DescriptionData(
-                        htmlText = if (type is YourEventsFragmentType.RemoteProtocol3Type && type.originType is OriginType.Vaccination) {
-                            R.string.dialog_vaccination_something_wrong_description
-                        } else {
-                            R.string.dialog_negative_test_result_something_wrong_description
-                        },
-                        htmlLinksEnabled = true,
+        binding.somethingWrongButton.run {
+            visibility = if (args.type is YourEventsFragmentType.DCC) View.GONE else View.VISIBLE
+            setOnClickListener {
+                val type = args.type
+                infoFragmentUtil.presentAsBottomSheet(
+                    childFragmentManager, InfoFragmentData.TitleDescription(
+                        title = getString(R.string.dialog_negative_test_result_something_wrong_title),
+                        descriptionData = DescriptionData(
+                            htmlText = if (type is YourEventsFragmentType.RemoteProtocol3Type && type.originType is OriginType.Vaccination) {
+                                R.string.dialog_vaccination_something_wrong_description
+                            } else {
+                                R.string.dialog_negative_test_result_something_wrong_description
+                            },
+                            htmlLinksEnabled = true,
+                        )
                     )
                 )
-            )
+            }
         }
     }
 
