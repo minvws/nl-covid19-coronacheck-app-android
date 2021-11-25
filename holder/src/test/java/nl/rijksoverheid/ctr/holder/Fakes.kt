@@ -38,6 +38,7 @@ import org.json.JSONObject
 import java.time.Clock
 import java.time.LocalDate
 import java.time.OffsetDateTime
+import java.time.ZoneOffset
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -461,7 +462,11 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
             return ""
         }
 
-        override fun disclose(secretKey: ByteArray, credential: ByteArray, currentTimeMillis: Long): String {
+        override fun disclose(
+            secretKey: ByteArray,
+            credential: ByteArray,
+            currentTimeMillis: Long
+        ): String {
             return ""
         }
 
@@ -676,7 +681,8 @@ fun fakeEventGroupEntityUtil(remoteEventVaccinations: List<RemoteEventVaccinatio
     }
 
 fun fakeRemoteEventUtil(
-    getRemoteEventsFromNonDcc: List<RemoteEvent> = listOf()) = object: RemoteEventUtil {
+    getRemoteEventsFromNonDcc: List<RemoteEvent> = listOf()
+) = object : RemoteEventUtil {
     override fun isDccEvent(providerIdentifier: String): Boolean {
         return false
     }
@@ -809,6 +815,45 @@ val fakeDashboardTabItem = DashboardTabItem(
     items = listOf()
 )
 
+fun fakeEventGroupEntity(
+    id: Int = 0,
+    walletId: Int = 1,
+    providerIdentifier: String = "",
+    type: OriginType = OriginType.Vaccination,
+    maxIssuedAt: OffsetDateTime = OffsetDateTime.of(
+        2000, 1, 1, 1, 1, 1, 1, ZoneOffset.ofTotalSeconds(0)
+    ),
+    jsonData: ByteArray = ByteArray(1)
+) = EventGroupEntity(id, walletId, providerIdentifier, type, maxIssuedAt, jsonData)
+
+fun fakeRemoteGreenCards(
+    domesticGreencard: RemoteGreenCards.DomesticGreenCard? = fakeDomesticGreenCard(),
+    euGreencards: List<RemoteGreenCards.EuGreenCard>? = listOf(fakeEuGreenCard())
+) = RemoteGreenCards(domesticGreencard, euGreencards)
+
+fun fakeDomesticGreenCard(
+    origins: List<RemoteGreenCards.Origin> = listOf(fakeOrigin()),
+    createCredentialMessages: ByteArray = ByteArray(1)
+) = RemoteGreenCards.DomesticGreenCard(origins, createCredentialMessages)
+
+fun fakeEuGreenCard(
+    origins: List<RemoteGreenCards.Origin> = listOf(fakeOrigin()),
+    credential: String = "credential"
+) = RemoteGreenCards.EuGreenCard(origins, credential)
+
+fun fakeOrigin(
+    type: OriginType = OriginType.Vaccination,
+    eventTime: OffsetDateTime = OffsetDateTime.of(
+        2000, 1, 1, 1, 1, 1, 1, ZoneOffset.ofTotalSeconds(0)
+    ),
+    expirationTime: OffsetDateTime = OffsetDateTime.of(
+        2000, 1, 1, 1, 1, 1, 1, ZoneOffset.ofTotalSeconds(0)
+    ),
+    validFrom: OffsetDateTime = OffsetDateTime.of(
+        2000, 1, 1, 1, 1, 1, 1, ZoneOffset.ofTotalSeconds(0)
+    ),
+    doseNumber: Int? = 1
+) = RemoteGreenCards.Origin(type, eventTime, expirationTime, validFrom, doseNumber)
 
 
 
