@@ -170,7 +170,13 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                                     )
                                 )
                             }
-                            else -> navigateToCertificateCreated(databaseSyncerResult)
+                            else -> {
+                                if (args.type is YourEventsFragmentType.DCC) {
+                                    navigateSafety(YourEventsFragmentDirections.actionMyOverview())
+                                } else {
+                                    navigateToCertificateCreated(databaseSyncerResult)
+                                }
+                            }
                         }
                     }
                     is DatabaseSyncerResult.Failed -> {
