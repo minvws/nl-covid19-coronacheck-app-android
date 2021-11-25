@@ -161,10 +161,14 @@ class NoDigiDFragment : DigiDFragment(R.layout.fragment_no_digid) {
                             )
                         }
                         it.isMijnCnMissingDataErrors() -> {
+                            val errorCodeString = errorCodeStringFactory.get(
+                                flow = getFlow(),
+                                errorResults = listOf(it.errorResults.first())
+                            )
                             presentError(
                                 data = ErrorResultFragmentData(
-                                    title = getString(R.string.error_access_tokens_no_bsn_title),
-                                    description = getString(R.string.error_access_tokens_no_bsn_description),
+                                    title = getString(R.string.event_provider_error_title),
+                                    description = getString(R.string.mijncn_error_missing_data_description, errorCodeString),
                                     buttonTitle = getString(R.string.back_to_overview),
                                     buttonAction = ErrorResultFragmentData.ButtonAction.Destination(R.id.action_my_overview)
                                 )
