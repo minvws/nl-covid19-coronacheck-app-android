@@ -52,7 +52,8 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
     @Test
     fun `First time clicking start scan first opens scan instructions`() {
         launchScanQrFragment(
-            hasSeenScanInstructions = false
+            hasSeenScanInstructions = false,
+            nextScannerScreenState = NextScannerScreenState.Instructions
         )
         clickOn(R.id.button)
         assertEquals(navController.currentDestination?.id, R.id.nav_scan_instructions)
@@ -62,14 +63,15 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
      * Camera qr code scanner is bypassed in test
      */
     @Test
-    fun `Clicking start scan opens scanner`() {
+    fun `Given instructions seen and policy set, Clicking start scan opens scanner`() {
         launchScanQrFragment()
         clickOn(R.id.button)
         verify { scannerUtil.launchScanner(any()) }
     }
 
     private fun launchScanQrFragment(
-        hasSeenScanInstructions: Boolean = true
+        hasSeenScanInstructions: Boolean = true,
+        nextScannerScreenState: NextScannerScreenState = NextScannerScreenState.Scanner,
     ) {
         loadKoinModules(
             module(override = true) {
@@ -83,7 +85,8 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
 
                 viewModel {
                     fakeScanQrViewModel(
-                        scanInstructionsSeen = hasSeenScanInstructions
+                        scanInstructionsSeen = hasSeenScanInstructions,
+                        nextScannerScreenState = nextScannerScreenState,
                     )
                 }
             }

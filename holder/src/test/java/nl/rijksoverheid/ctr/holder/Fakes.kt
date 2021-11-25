@@ -496,7 +496,7 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
 
         override fun initializeVerifier(configFilesPath: String) = ""
 
-        override fun verify(credential: ByteArray): VerificationResult {
+        override fun verify(credential: ByteArray, policy2G: Boolean): VerificationResult {
             TODO("Not yet implemented")
         }
 

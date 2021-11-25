@@ -71,7 +71,8 @@ fun fakeIntroductionViewModel(
 }
 
 fun fakeScanQrViewModel(
-    scanInstructionsSeen: Boolean
+    scanInstructionsSeen: Boolean,
+    nextScannerScreenState: NextScannerScreenState = NextScannerScreenState.Scanner,
 ) = object : ScanQrViewModel() {
     override fun hasSeenScanInstructions(): Boolean {
         return scanInstructionsSeen
@@ -81,7 +82,7 @@ fun fakeScanQrViewModel(
     }
 
     override fun getNextScannerScreenState(): NextScannerScreenState {
-        TODO("Not yet implemented")
+        return nextScannerScreenState
     }
 }
 
@@ -199,7 +200,7 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
 
         override fun initializeVerifier(configFilesPath: String) = ""
 
-        override fun verify(credential: ByteArray): VerificationResult {
+        override fun verify(credential: ByteArray, policy2G: Boolean): VerificationResult {
             TODO("Not yet implemented")
         }
 
