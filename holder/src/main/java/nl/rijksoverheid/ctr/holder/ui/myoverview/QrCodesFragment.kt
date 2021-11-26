@@ -217,7 +217,7 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
                             infoFragmentUtil.presentAsBottomSheet(
                                 childFragmentManager, InfoFragmentData.TitleDescriptionWithFooter(
                                     title = infoScreen.title,
-                                    descriptionData = DescriptionData(htmlTextString = infoScreen.description),
+                                    descriptionData = DescriptionData(htmlTextString = infoScreen.description, htmlTextColor = R.color.primary_text),
                                     footerText = infoScreen.footer
                                 )
                             )
