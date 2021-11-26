@@ -560,6 +560,6 @@
     <string name="certificate_created_recovery_after_vaccination_title">Recovery and vaccination certificates created</string>
     <string name="rule_engine_no_test_origin_description_scanned_qr_code">scanned QR code</string>
     <string name="rule_engine_no_test_origin_description_negative_test">negative test result</string>
-    <string name="rule_engine_no_test_origin_description__vaccination">vaccination</string>
+    <string name="rule_engine_no_test_origin_description_vaccination">vaccination</string>
     <string name="rule_engine_no_test_origin_description_positive_test">positive test result</string>
 </resources>

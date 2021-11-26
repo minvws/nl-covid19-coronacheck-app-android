@@ -560,6 +560,6 @@
     <string name="certificate_created_recovery_after_vaccination_title">Herstelbewijs en vaccinatiebewijs gemaakt</string>
     <string name="rule_engine_no_test_origin_description_scanned_qr_code">gescande QR-code</string>
     <string name="rule_engine_no_test_origin_description_negative_test">negatieve testuitslag</string>
-    <string name="rule_engine_no_test_origin_description__vaccination">vaccinatie</string>
+    <string name="rule_engine_no_test_origin_description_vaccination">vaccinatie</string>
     <string name="rule_engine_no_test_origin_description_positive_test">positieve testuitslag</string>
 </resources>

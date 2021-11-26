@@ -231,7 +231,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                         getString(R.string.rule_engine_no_test_origin_description_positive_test)
                     }
                     is OriginType.Vaccination -> {
-                        getString(R.string.rule_engine_no_test_origin_description__vaccination)
+                        getString(R.string.rule_engine_no_test_origin_description_vaccination)
                     }
                 }
             }
