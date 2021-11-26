@@ -56,19 +56,27 @@ open class InfoBottomSheetDialogFragment : BottomSheetDialogFragment() {
             }
         })
 
-        val expandedBottomSheetData = arguments?.get(InfoFragmentUtil.EXTRA_INFO_FRAGMENT_DATA) as? InfoFragmentData ?: return
+        val expandedBottomSheetData =
+            arguments?.get(InfoFragmentUtil.EXTRA_INFO_FRAGMENT_DATA) as? InfoFragmentData ?: return
         binding.title.text = expandedBottomSheetData.title
         binding.description.apply {
             expandedBottomSheetData.descriptionData.run {
                 htmlText?.let {
-                    setHtmlText(it, htmlLinksEnabled) }
+                    setHtmlText(it, htmlLinksEnabled)
+                }
                 htmlTextString?.let {
-                    setHtmlText(it, htmlLinksEnabled) }
+                    setHtmlText(
+                        htmlText = it,
+                        htmlLinksEnabled = htmlLinksEnabled,
+                        htmlTextColor = htmlTextColor,
+                    )
+                }
                 customLinkIntent?.let { enableCustomLinks { context.startActivity(it) } }
             }
         }
         when (expandedBottomSheetData) {
-            is InfoFragmentData.TitleDescription -> {}
+            is InfoFragmentData.TitleDescription -> {
+            }
             is InfoFragmentData.TitleDescriptionWithButton -> {
                 binding.button.visibility = View.VISIBLE
                 binding.button.apply {
