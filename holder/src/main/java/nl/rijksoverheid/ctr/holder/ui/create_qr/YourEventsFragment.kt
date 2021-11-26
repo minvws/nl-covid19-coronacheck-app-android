@@ -164,7 +164,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                                         title = getString(R.string.rule_engine_no_origin_title),
                                         description = getString(
                                             R.string.rule_engine_no_test_origin_description,
-                                            args.toolbarTitle.lowercase()
+                                            getNoOriginTypeCopy()
                                         ),
                                         buttonTitle = getString(R.string.back_to_overview)
                                     )
@@ -212,6 +212,30 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                 }
             }
         )
+    }
+
+    private fun getNoOriginTypeCopy(): String {
+        return when (val type = args.type) {
+            is YourEventsFragmentType.TestResult2 -> {
+                getString(R.string.rule_engine_no_test_origin_description_negative_test)
+            }
+            is YourEventsFragmentType.DCC -> {
+                getString(R.string.rule_engine_no_test_origin_description_scanned_qr_code)
+            }
+            is YourEventsFragmentType.RemoteProtocol3Type -> {
+                return when (type.originType) {
+                    is OriginType.Test -> {
+                        getString(R.string.rule_engine_no_test_origin_description_negative_test)
+                    }
+                    is OriginType.Recovery -> {
+                        getString(R.string.rule_engine_no_test_origin_description_positive_test)
+                    }
+                    is OriginType.Vaccination -> {
+                        getString(R.string.rule_engine_no_test_origin_description_vaccination)
+                    }
+                }
+            }
+        }
     }
 
     private fun navigateToCertificateCreated(databaseSyncerResult: DatabaseSyncerResult.Success) {
