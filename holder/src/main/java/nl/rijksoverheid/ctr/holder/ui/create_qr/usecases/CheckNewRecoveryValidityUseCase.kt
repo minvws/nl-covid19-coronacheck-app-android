@@ -6,6 +6,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.RemoveExpiredEventsUseCase
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteConfigProviders.EventProvider.Companion.PROVIDER_IDENTIFIER_DCC
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginUtil
 import java.time.Clock
@@ -44,7 +45,8 @@ class CheckNewRecoveryValidityUseCaseImpl(
             removeExpiredEventsUseCase.execute(allEvents)
 
             // Check if we have a valid recovery event stored, if so it means we are eligible to upgrade our validity
-            val hasRecoveryEvent = allEvents.any { it.type is OriginType.Recovery }
+            // Hotfix: hkvi scans aren’t eligible because the underlying document expires after 180 days
+            val hasRecoveryEvent = allEvents.any { it.type is OriginType.Recovery && it.providerIdentifier != PROVIDER_IDENTIFIER_DCC }
 
             // Get our domestic green card (which have multiple origins)
             val domesticGreenCard = holderDatabase
