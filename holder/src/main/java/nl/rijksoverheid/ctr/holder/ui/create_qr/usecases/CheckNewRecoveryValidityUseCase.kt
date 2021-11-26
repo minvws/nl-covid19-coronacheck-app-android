@@ -21,6 +21,7 @@ import java.time.ZoneId
  */
 interface CheckNewRecoveryValidityUseCase {
     suspend fun check()
+    suspend fun checkIfNeedToReAllowRecoveryExtensionCheck()
 }
 
 class CheckNewRecoveryValidityUseCaseImpl(
@@ -71,6 +72,28 @@ class CheckNewRecoveryValidityUseCaseImpl(
 
             // Make sure this check only gets executed once
             persistenceManager.setShouldCheckRecoveryGreenCardRevisedValidity(false)
+        }
+    }
+
+    /**
+     * If the user has upgraded to 2.5.1, we have done the check already, so he will see
+     * the banner to extend his recovery. We need to allow the check again, in order to
+     * prevent showing the banner for the recovery paper certificates.
+     */
+    override suspend fun checkIfNeedToReAllowRecoveryExtensionCheck() {
+        if (persistenceManager.getShouldCheckRecoveryGreenCardRevisedValidity()) {
+            return
+        }
+        val allEvents = holderDatabase.eventGroupDao().getAll()
+
+        removeExpiredEventsUseCase.execute(allEvents)
+
+        val hasPaperRecoveryEvent = allEvents.any { it.type is OriginType.Recovery && it.providerIdentifier == PROVIDER_IDENTIFIER_DCC }
+
+        if (hasPaperRecoveryEvent) {
+            persistenceManager.setShowExtendDomesticRecoveryInfoCard(false)
+            persistenceManager.setShowRecoverDomesticRecoveryInfoCard(false)
+            persistenceManager.setShouldCheckRecoveryGreenCardRevisedValidity(true)
         }
     }
 }
