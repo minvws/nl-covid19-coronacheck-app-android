@@ -312,7 +312,7 @@
     <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_test"><![CDATA[Jouw testbewijs is niet internationaal geldig. Je hebt wel een Nederlandse QR-code.<br/><br/>Dit kan bijvoorbeeld komen doordat een testbewijs in Nederland minder lang geldig is dan in het buitenland. Laat je opnieuw testen voor een bewijs dat ook geldig is in Nederland.]]></string>
     <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_vaccination"><![CDATA[Jouw vaccinatiebewijs is niet internationaal geldig. Je hebt wel een Nederlands bewijs.<br/><br/>Dit kan bijvoorbeeld komen doordat jouw type vaccin niet geaccepteerd wordt in het buitenland.]]></string>
     <string name="rule_engine_no_origin_title">We kunnen geen bewijs maken</string>
-    <string name="rule_engine_no_test_origin_description"><![CDATA[Op dit moment kunnen we geen bewijs maken van %1$s. Dit kan verschillende oorzaken hebben. Lees meer op de <a href="https://www.coronacheck.nl/wegwijzer">Wegwijzer.</a>]]></string>
+    <string name="rule_engine_no_test_origin_description"><![CDATA[Op dit moment kunnen we geen bewijs maken van jouw %1$s. Dit kan verschillende oorzaken hebben. Lees meer op de <a href="https://www.coronacheck.nl/wegwijzer">Wegwijzer.</a>]]></string>
     <string name="back_to_overview">Naar mijn bewijzen</string>
     <string name="no_vaccinations_title">Geen vaccinaties beschikbaar</string>
     <string name="no_vaccinations_description"><![CDATA[Er zijn geen gegevens over je vaccinatie(s) beschikbaar. Dit kan verschillende oorzaken hebben. Kijk voor meer informatie op de  <a href="https://www.coronacheck.nl/wegwijzer">Wegwijzer</a>.<br/><br/>Ben je kortgeleden gevaccineerd? Dan kan het even duren tot de gegevens beschikbaar zijn.]]></string>
@@ -558,4 +558,8 @@
     <string name="paper_proof_event_explanation_header">Deze gegevens staan in je papieren bewijs:</string>
     <string name="paper_proof_event_explanation_footer"><![CDATA[<b>Kloppen er gegevens niet?</b><br/>Neem contact op met de zorgverlener waar je bent gevaccineerd of getest. Dat kan de GGD, je huisarts of arts van een andere zorginstelling zijn. Zij kunnen je helpen je gegevens aan te passen.]]></string>
     <string name="certificate_created_recovery_after_vaccination_title">Herstelbewijs en vaccinatiebewijs gemaakt</string>
+    <string name="rule_engine_no_test_origin_description_scanned_qr_code">gescande QR-code</string>
+    <string name="rule_engine_no_test_origin_description_negative_test">negatieve testuitslag</string>
+    <string name="rule_engine_no_test_origin_description__vaccination">vaccinatie</string>
+    <string name="rule_engine_no_test_origin_description_positive_test">positieve testuitslag</string>
 </resources>
