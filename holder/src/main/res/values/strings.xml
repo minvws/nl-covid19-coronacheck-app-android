@@ -351,7 +351,7 @@
     <string name="qr_code_type_recovery_title">Herstelbewijs</string>
     <string name="qr_code_type_recovery_description">Uit de test blijkt dat ik corona heb gehad</string>
     <string name="your_test_result_explanation_positive_test_result">positief (corona)</string>
-    <string name="recovery_explanation_description_header">De volgende gegevens zijn opgehaald:</string>
+    <string name="recovery_explanation_description_header">De volgende gegevens zijn opgehaald bij de testlocatie:</string>
     <string name="recovery_explanation_description_name">Naam:</string>
     <string name="recovery_explanation_description_birth_date">Geboortedatum:</string>
     <string name="recovery_explanation_description_test_date">Testdatum:</string>
