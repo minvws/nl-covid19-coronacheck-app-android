@@ -71,7 +71,7 @@
     <string name="commercial_test_type_no_code_received_title">Didn’t receive a verification code?</string>
     <string name="commercial_test_type_no_code_description"><![CDATA[The test location gives you a retrieval code with numbers and letters.<br/><br/>Didn\'t get a code? Or did you lose it? Contact the test location.<br/><br/>You may need to get tested again.]]></string>
     <string name="commercial_test_code_title">Retrieve test result</string>
-    <string name="commercial_test_code_description">Enter your code. The test location sent it to you.</string>
+    <string name="commercial_test_code_description">Enter your retrieval code. You received it from your test location.</string>
     <string name="commercial_test_unique_code_header">Retrieval code</string>
     <string name="commercial_test_unique_code_hint">E.g.: BRB-YYYYYYYYYY-Z2</string>
     <string name="commercial_test_verification_code_header">Verification code</string>
@@ -351,7 +351,7 @@
     <string name="qr_code_type_recovery_title">Recovery certificate</string>
     <string name="qr_code_type_recovery_description">The test proves I have had coronavirus</string>
     <string name="your_test_result_explanation_positive_test_result">positive (corona)</string>
-    <string name="recovery_explanation_description_header">The following details were retrieved:</string>
+    <string name="recovery_explanation_description_header">The following details were retrieved at the test location:</string>
     <string name="recovery_explanation_description_name">Name:</string>
     <string name="recovery_explanation_description_birth_date">Date of birth:</string>
     <string name="recovery_explanation_description_test_date">Test date:</string>
@@ -427,7 +427,7 @@
     <string name="your_dcc_event_description">You can create a certificate with these details.</string>
     <string name="your_dcc_event_toolbar_title">Scanned details</string>
     <string name="your_events_block_back_dialog_title">Are you sure you want to go back?</string>
-    <string name="your_events_block_back_dialog_description">Doing so will stop the process of adding of a certificate.</string>
+    <string name="your_events_block_back_dialog_description">Doing so will stop the process of adding a certificate.</string>
     <string name="your_events_block_back_dialog_positive_button">Yes, go back</string>
     <string name="your_events_block_back_dialog_negative_button">No, continue</string>
     <string name="your_events_replace_dialog_title">Want to replace your certificate?</string>
