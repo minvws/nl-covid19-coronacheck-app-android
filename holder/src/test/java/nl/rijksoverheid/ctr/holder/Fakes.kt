@@ -723,14 +723,6 @@ fun fakeRemoteEventUtil(
     override fun getRemoteEventsFromNonDcc(eventGroupEntity: EventGroupEntity): List<RemoteEvent> {
         return getRemoteEventsFromNonDcc
     }
-
-    override fun isRecoveryEventExpired(remoteEventRecovery: RemoteEventRecovery): Boolean {
-        return false
-    }
-
-    override fun isPositiveTestEventExpired(remoteEventPositiveTest: RemoteEventPositiveTest): Boolean {
-        return false
-    }
 }
 
 val fakeGreenCardEntity = GreenCardEntity(
