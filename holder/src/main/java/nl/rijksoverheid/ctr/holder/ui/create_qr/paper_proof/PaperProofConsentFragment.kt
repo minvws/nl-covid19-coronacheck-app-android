@@ -6,7 +6,10 @@ import androidx.core.os.bundleOf
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
+import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
+import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.holder.*
 import nl.rijksoverheid.ctr.holder.databinding.FragmentPaperProofConsentBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
@@ -21,6 +24,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 class PaperProofConsentFragment: BaseFragment(R.layout.fragment_paper_proof_consent) {
 
     private val dialogUtil: DialogUtil by inject()
+    private val infoFragmentUtil: InfoFragmentUtil by inject()
 
     private val args: PaperProofConsentFragmentArgs by navArgs()
     private val holderMainActivityViewModel: HolderMainActivityViewModel by sharedViewModel()
@@ -34,6 +38,16 @@ class PaperProofConsentFragment: BaseFragment(R.layout.fragment_paper_proof_cons
         super.onViewCreated(view, savedInstanceState)
 
         val binding = FragmentPaperProofConsentBinding.bind(view)
+        binding.button.setOnClickListener {
+            infoFragmentUtil.presentAsBottomSheet(
+                fragmentManager = childFragmentManager,
+                data = InfoFragmentData.TitleDescription(
+                    title = getString(R.string.add_paper_proof_why_only_international_title),
+                    descriptionData = DescriptionData(htmlTextString = getString(R.string.add_paper_proof_why_only_international_description))
+                )
+            )
+        }
+
         binding.bottom.setButtonClick {
             onButtonClickWithRetryAction()
         }

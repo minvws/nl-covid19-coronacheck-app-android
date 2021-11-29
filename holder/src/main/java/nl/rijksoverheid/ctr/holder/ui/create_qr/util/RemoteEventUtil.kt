@@ -13,6 +13,7 @@ import java.time.LocalDate
 import java.time.OffsetDateTime
 
 interface RemoteEventUtil {
+    fun isDccEvent(providerIdentifier: String): Boolean
     fun getHolderFromDcc(dcc: JSONObject): RemoteProtocol3.Holder
     fun removeDuplicateEvents(remoteEvents: List<RemoteEvent>): List<RemoteEvent>
     fun getRemoteEventFromDcc(dcc: JSONObject): RemoteEvent
@@ -38,6 +39,10 @@ class RemoteEventUtilImpl(
         } else {
             remoteEvents
         }
+    }
+
+    override fun isDccEvent(providerIdentifier: String): Boolean {
+        return providerIdentifier.contains(RemoteConfigProviders.EventProvider.PROVIDER_IDENTIFIER_DCC)
     }
 
     @Throws(NullPointerException::class)

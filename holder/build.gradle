@@ -10,7 +10,7 @@ def appVersionCode =  1000000
 if (System.getenv("GITHUB_REPOSITORY_OWNER") == "minvws") {
     appVersionCode = System.getenv("GITHUB_RUN_NUMBER") != null ? System.getenv("GITHUB_RUN_NUMBER").toInteger() : 1000000
 }
-version = "2.5"
+version = "2.6"
 archivesBaseName = "holder-v${version}-${appVersionCode}"
 
 android {
@@ -116,6 +116,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            productFlavors.acc.signingConfig signingConfigs.release
             productFlavors.prod.signingConfig signingConfigs.release
         }
     }
@@ -170,7 +171,7 @@ dependencies {
     }
     testImplementation "androidx.test:runner:$androix_test_version"
     testImplementation "com.squareup.okhttp3:mockwebserver"
-    testImplementation("com.schibsted.spain:barista:$barista_version") {
+    testImplementation("com.adevinta.android:barista:$barista_version") {
         exclude group: "org.jetbrains.kotlin"
     }
     testImplementation "androidx.navigation:navigation-testing:$navigation_version"
@@ -188,6 +189,4 @@ dependencies {
 
     // Needed in order for room to work with Apple Sillicon M1
     kapt "org.xerial:sqlite-jdbc:$sqlite_jdbc"
-
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
 }

@@ -29,7 +29,7 @@ abstract class CommercialTestCodeViewModel : ViewModel() {
     val viewState: LiveData<ViewState> = MutableLiveData(ViewState())
 }
 
-open class CommercialTestCodeViewModelImpl(
+class CommercialTestCodeViewModelImpl(
     private val savedStateHandle: SavedStateHandle,
     private val testResultUseCase: TestResultUseCase
 ) : CommercialTestCodeViewModel() {

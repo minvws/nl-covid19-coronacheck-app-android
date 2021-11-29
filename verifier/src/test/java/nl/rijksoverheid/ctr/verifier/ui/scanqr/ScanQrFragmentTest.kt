@@ -7,7 +7,8 @@ import androidx.navigation.testing.TestNavHostController
 import androidx.preference.PreferenceManager
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.platform.app.InstrumentationRegistry
-import com.schibsted.spain.barista.interaction.BaristaClickInteractions.clickOn
+import com.adevinta.android.barista.interaction.BaristaClickInteractions
+import com.adevinta.android.barista.interaction.BaristaClickInteractions.clickOn
 import io.mockk.mockk
 import io.mockk.verify
 import nl.rijksoverheid.ctr.verifier.R

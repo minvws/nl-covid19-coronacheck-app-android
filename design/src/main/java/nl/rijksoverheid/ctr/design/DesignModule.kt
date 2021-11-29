@@ -1,9 +1,6 @@
 package nl.rijksoverheid.ctr.design
 
-import nl.rijksoverheid.ctr.design.utils.BottomSheetDialogUtil
-import nl.rijksoverheid.ctr.design.utils.BottomSheetDialogUtilImpl
-import nl.rijksoverheid.ctr.design.utils.DialogUtil
-import nl.rijksoverheid.ctr.design.utils.DialogUtilImpl
+import nl.rijksoverheid.ctr.design.utils.*
 import org.koin.dsl.module
 
 /*
@@ -15,5 +12,5 @@ import org.koin.dsl.module
  */
 val designModule = module {
     factory<DialogUtil> { DialogUtilImpl() }
-    factory<BottomSheetDialogUtil> { BottomSheetDialogUtilImpl() }
+    factory<InfoFragmentUtil> { InfoFragmentUtilImpl() }
 }

@@ -10,7 +10,7 @@ def appVersionCode =  1000000
 if (System.getenv("GITHUB_REPOSITORY_OWNER") == "minvws") {
     appVersionCode = System.getenv("GITHUB_RUN_NUMBER") != null ? System.getenv("GITHUB_RUN_NUMBER").toInteger() : 1000000
 }
-version = "2.5.0"
+version = "2.6.0"
 archivesBaseName = "verifier-v${version}-${appVersionCode}"
 
 android {
@@ -42,6 +42,9 @@ android {
                         "}"
         buildConfigField "String", "CDN_API_URL", "\"https://verifier-api-cdn.coronacheck.nl/v6/\""
         manifestPlaceholders = [appLabel: "@string/app_name", deepLinkHost: "coronacheck.nl"]
+        ndk {
+            debugSymbolLevel "FULL"
+        }
     }
 
     signingConfigs {
@@ -99,12 +102,17 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            productFlavors.acc.signingConfig signingConfigs.release
             productFlavors.prod.signingConfig signingConfigs.release
         }
     }
 
     compileOptions {
         coreLibraryDesugaringEnabled true
+    }
+
+    packagingOptions {
+        doNotStrip '**/*.so'
     }
 }
 
@@ -137,7 +145,7 @@ dependencies {
     testImplementation("org.robolectric:robolectric:$robolectric_version") {
         exclude group: 'org.bouncycastle'
     }
-    testImplementation("com.schibsted.spain:barista:$barista_version") {
+    testImplementation("com.adevinta.android:barista:$barista_version") {
         exclude group: "org.jetbrains.kotlin"
     }
     testImplementation "io.insert-koin:koin-test-junit4:$koin_version"

@@ -6,6 +6,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.RemoveExpiredEventsUseCase
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteConfigProviders.EventProvider.Companion.PROVIDER_IDENTIFIER_DCC
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginUtil
 import java.time.Clock
@@ -20,6 +21,7 @@ import java.time.ZoneId
  */
 interface CheckNewRecoveryValidityUseCase {
     suspend fun check()
+    suspend fun checkIfNeedToReAllowRecoveryExtensionCheck()
 }
 
 class CheckNewRecoveryValidityUseCaseImpl(
@@ -34,8 +36,8 @@ class CheckNewRecoveryValidityUseCaseImpl(
         val recoveryGreencardRevisedValidityLaunchDateString = cachedAppConfigUseCase.getCachedAppConfig().recoveryGreenCardRevisedValidityLaunchDate
         val recoveryGreencardRevisedValidityLaunchDate = OffsetDateTime.ofInstant(Instant.parse(recoveryGreencardRevisedValidityLaunchDateString), ZoneId.of("UTC"))
 
-        // Only start checking if local flag is set to true and the launch date is after the current date
-        if (persistenceManager.getShouldCheckRecoveryGreenCardRevisedValidity() && recoveryGreencardRevisedValidityLaunchDate.isAfter(
+        // Only start checking if local flag is set to true and the launch date is in the past
+        if (persistenceManager.getShouldCheckRecoveryGreenCardRevisedValidity() && recoveryGreencardRevisedValidityLaunchDate.isBefore(
                 OffsetDateTime.now(clock))) {
 
             val allEvents = holderDatabase.eventGroupDao().getAll()
@@ -44,7 +46,8 @@ class CheckNewRecoveryValidityUseCaseImpl(
             removeExpiredEventsUseCase.execute(allEvents)
 
             // Check if we have a valid recovery event stored, if so it means we are eligible to upgrade our validity
-            val hasRecoveryEvent = allEvents.any { it.type is OriginType.Recovery }
+            // Hotfix: hkvi scans aren’t eligible because the underlying document expires after 180 days
+            val hasRecoveryEvent = allEvents.any { it.type is OriginType.Recovery && !it.providerIdentifier.contains(PROVIDER_IDENTIFIER_DCC) }
 
             // Get our domestic green card (which have multiple origins)
             val domesticGreenCard = holderDatabase
@@ -69,6 +72,28 @@ class CheckNewRecoveryValidityUseCaseImpl(
 
             // Make sure this check only gets executed once
             persistenceManager.setShouldCheckRecoveryGreenCardRevisedValidity(false)
+        }
+    }
+
+    /**
+     * If the user has upgraded to 2.5.1+ and we have done the check already, he will see
+     * the banner to extend his recovery. We need to allow the check again, in order to
+     * prevent showing the banner for the paper recovery certificates.
+     */
+    override suspend fun checkIfNeedToReAllowRecoveryExtensionCheck() {
+        if (persistenceManager.getShouldCheckRecoveryGreenCardRevisedValidity()) {
+            return
+        }
+        val allEvents = holderDatabase.eventGroupDao().getAll()
+
+        removeExpiredEventsUseCase.execute(allEvents)
+
+        val hasPaperRecoveryEvent = allEvents.any { it.type is OriginType.Recovery && it.providerIdentifier.contains(PROVIDER_IDENTIFIER_DCC) }
+
+        if (hasPaperRecoveryEvent) {
+            persistenceManager.setShowExtendDomesticRecoveryInfoCard(false)
+            persistenceManager.setShowRecoverDomesticRecoveryInfoCard(false)
+            persistenceManager.setShouldCheckRecoveryGreenCardRevisedValidity(true)
         }
     }
 }

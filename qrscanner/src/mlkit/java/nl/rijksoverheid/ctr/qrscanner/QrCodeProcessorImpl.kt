@@ -14,7 +14,6 @@ import timber.log.Timber
 class QrCodeProcessorImpl: QrCodeProcessor {
     @SuppressLint("UnsafeOptInUsageError")
     override fun process(
-        isAdded: Boolean,
         binding: FragmentScannerBinding,
         cameraProvider: ProcessCameraProvider,
         cameraFrame: ImageProxy,
@@ -34,10 +33,8 @@ class QrCodeProcessorImpl: QrCodeProcessor {
                     barcodes.firstOrNull()?.rawValue?.let {
                         qrCodeProcessed.invoke(it)
                         cameraProvider.unbindAll()
-                        if (isAdded) {
-                            binding.toolbar.menu.findItem(R.id.flash)
-                                .setIcon(R.drawable.ic_torch)
-                        }
+                        binding.toolbar.menu.findItem(R.id.flash)
+                            .setIcon(R.drawable.ic_torch)
                     }
                 }
                 .addOnFailureListener {

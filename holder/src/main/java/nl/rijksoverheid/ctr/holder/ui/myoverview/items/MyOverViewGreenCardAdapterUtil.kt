@@ -163,10 +163,27 @@ class MyOverViewGreenCardAdapterUtilImpl(
         greenCardType: GreenCardType,
         origin: OriginEntity
     ) {
-        setOriginTitle(
-            descriptionLayout = viewBinding.description,
-            title = context.getString(R.string.qr_card_vaccination_title_domestic),
-        )
+        if (origin.doseNumber == null) {
+            setOriginTitle(
+                descriptionLayout = viewBinding.description,
+                title = context.getString(R.string.qr_card_vaccination_title_domestic),
+            )
+        } else {
+            when (origin.doseNumber) {
+                1 -> {
+                    setOriginTitle(
+                        descriptionLayout = viewBinding.description,
+                        title = context.getString(R.string.qr_card_vaccination_title_domestic_with_dosis, origin.doseNumber.toString()),
+                    )
+                }
+                else -> {
+                    setOriginTitle(
+                        descriptionLayout = viewBinding.description,
+                        title = context.getString(R.string.qr_card_vaccination_title_domestic_with_doses, origin.doseNumber.toString()),
+                    )
+                }
+            }
+        }
 
         setOriginSubtitle(
             descriptionLayout = viewBinding.description,
@@ -270,11 +287,11 @@ class MyOverViewGreenCardAdapterUtilImpl(
     ) {
         setOriginTitle(
             descriptionLayout = viewBinding.description,
-            title = "${context.getString(R.string.qr_card_test_eu)} PCR (${
+            title = "${context.getString(R.string.qr_card_test_eu)} ${
                 credentialUtil.getTestTypeForEuropeanCredentials(
                     greenCard.credentialEntities
                 )
-            })",
+            }",
         )
 
         setOriginSubtitle(

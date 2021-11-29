@@ -14,7 +14,6 @@ class QrCodeProcessorImpl: QrCodeProcessor {
 
     @SuppressLint("UnsafeOptInUsageError")
     override fun process(
-        isAdded: Boolean,
         binding: FragmentScannerBinding,
         cameraProvider: ProcessCameraProvider,
         cameraFrame: ImageProxy,
@@ -45,10 +44,8 @@ class QrCodeProcessorImpl: QrCodeProcessor {
                     val result = reader.decodeWithState(bitmap)
                     qrCodeProcessed.invoke(result.text)
                     cameraProvider.unbindAll()
-                    if (isAdded) {
-                        binding.toolbar.menu.findItem(R.id.flash)
-                            .setIcon(R.drawable.ic_torch)
-                    }
+                    binding.toolbar.menu.findItem(R.id.flash)
+                        .setIcon(R.drawable.ic_torch)
                 } catch (e: NotFoundException) {
                     // try again
                 } catch (e: Exception) {

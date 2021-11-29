@@ -9,14 +9,17 @@
     android:layout_marginHorizontal="16dp"
     android:orientation="vertical"
     android:clipChildren="false"
-    android:clipToPadding="false">
+    android:clipToPadding="false"
+    android:screenReaderFocusable="true"
+    android:focusable="true">
 
     <RelativeLayout
         android:id="@+id/green_cards"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clipToPadding="false"
-        android:clipChildren="false">
+        android:clipChildren="false"
+        android:focusable="false">
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/proof_1"

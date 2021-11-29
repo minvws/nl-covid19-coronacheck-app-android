@@ -5,18 +5,23 @@ import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
+import androidx.test.espresso.ViewAction
+import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.platform.app.InstrumentationRegistry
+import com.adevinta.android.barista.assertion.BaristaBackgroundAssertions
+import com.adevinta.android.barista.assertion.BaristaBackgroundAssertions.assertHasBackground
+import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions
+import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertContains
+import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
+import com.adevinta.android.barista.interaction.BaristaClickInteractions
+import com.adevinta.android.barista.interaction.BaristaClickInteractions.clickOn
+import com.adevinta.android.barista.interaction.BaristaScrollInteractions
+import com.adevinta.android.barista.interaction.BaristaScrollInteractions.scrollTo
+import com.adevinta.android.barista.internal.performActionOnView
 import com.google.android.material.button.MaterialButton
-import com.schibsted.spain.barista.assertion.BaristaAssertions.assertAny
-import com.schibsted.spain.barista.assertion.BaristaBackgroundAssertions.assertHasBackground
-import com.schibsted.spain.barista.assertion.BaristaVisibilityAssertions.assertContains
-import com.schibsted.spain.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
-import com.schibsted.spain.barista.interaction.BaristaClickInteractions.clickOn
-import com.schibsted.spain.barista.interaction.BaristaScrollInteractions
-import com.schibsted.spain.barista.interaction.BaristaScrollInteractions.scrollTo
-import com.schibsted.spain.barista.internal.performActionOnView
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.fakeVerifiedQr
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultInvalidData
@@ -25,6 +30,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
+import com.adevinta.android.barista.assertion.BaristaAssertions.assertAny
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
