@@ -33,7 +33,7 @@ val viewModels = module {
     viewModel<DeviceSecureViewModel> { DeviceSecureViewModelImpl(get(), get()) }
     viewModel<YourEventsViewModel> { YourEventsViewModelImpl(get(), get()) }
     viewModel<GetEventsViewModel> { GetEventsViewModelImpl(get()) }
-    viewModel<PaperProofCodeViewModel> { PaperProofCodeViewModelImpl(get(), get()) }
+    viewModel<PaperProofCodeViewModel> { PaperProofCodeViewModelImpl(get()) }
     viewModel<PaperProofQrScannerViewModel> { PaperProofQrScannerViewModelImpl(get()) }
     viewModel<DashboardViewModel> { DashboardViewModelImpl(get(), get(), get(), get(), get(), get()) }
     viewModel<SyncGreenCardsViewModel> { SyncGreenCardsViewModelImpl(get(), get()) }

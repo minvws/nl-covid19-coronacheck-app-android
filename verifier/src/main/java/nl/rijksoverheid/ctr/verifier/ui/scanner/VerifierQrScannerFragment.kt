@@ -8,8 +8,8 @@ import androidx.navigation.fragment.navArgs
 import com.google.mlkit.vision.barcode.Barcode
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.qrscanner.QrCodeScannerFragment
+import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
-import nl.rijksoverheid.ctr.verifier.BuildConfig
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.VerifierMainActivity
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultInvalidData
@@ -45,7 +45,7 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
             title = getString(R.string.scanner_custom_title),
             message = getString(R.string.scan_qr_instructions_button),
             onMessageClicked = {
-                findNavController().navigate(
+                navigateSafety(
                     VerifierQrScannerFragmentDirections.actionScanInstructions()
                 )
             },
@@ -55,15 +55,6 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
                 okayButtonText = getString(R.string.ok)
             )
         )
-    }
-
-    override fun getBarcodeFormats(): List<Int> {
-        val formats = mutableListOf<Int>()
-        formats.add(Barcode.FORMAT_QR_CODE)
-        if (BuildConfig.FLAVOR == "tst") {
-            formats.add(Barcode.FORMAT_AZTEC)
-        }
-        return formats
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -77,7 +68,7 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
             val (qrResultState, externalReturnAppData) = it
             when (qrResultState) {
                 is VerifiedQrResultState.Valid -> {
-                    findNavController().navigate(
+                    navigateSafety(
                         VerifierQrScannerFragmentDirections.actionScanResultPersonalDetails(
                             validData = ScanResultValidData.Valid(
                                 verifiedQr = qrResultState.verifiedQr,
@@ -87,7 +78,7 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
                     )
                 }
                 is VerifiedQrResultState.Demo -> {
-                    findNavController().navigate(
+                    navigateSafety(
                         VerifierQrScannerFragmentDirections.actionScanResultPersonalDetails(
                             validData = ScanResultValidData.Demo(
                                 verifiedQr = qrResultState.verifiedQr,
@@ -97,7 +88,7 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
                     )
                 }
                 is VerifiedQrResultState.Error -> {
-                    findNavController().navigate(
+                    navigateSafety(
                         VerifierQrScannerFragmentDirections.actionScanResultInvalid(
                             invalidData = ScanResultInvalidData.Error(
                                 error = qrResultState.error

@@ -6,7 +6,11 @@ import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
+import nl.rijksoverheid.ctr.holder.persistence.database.models.DomesticVaccinationRecoveryCombination
+import nl.rijksoverheid.ctr.holder.persistence.database.models.DomesticVaccinationRecoveryCombination.*
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.*
+import nl.rijksoverheid.ctr.holder.persistence.database.util.DomesticVaccinationRecoveryCombinationUtil
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteGreenCards
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
@@ -30,7 +34,8 @@ interface HolderDatabaseSyncer {
     suspend fun sync(
         expectedOriginType: OriginType? = null,
         syncWithRemote: Boolean = true,
-        previousSyncResult: DatabaseSyncerResult? = null): DatabaseSyncerResult
+        previousSyncResult: DatabaseSyncerResult? = null
+    ): DatabaseSyncerResult
 }
 
 class HolderDatabaseSyncerImpl(
@@ -39,7 +44,8 @@ class HolderDatabaseSyncerImpl(
     private val getRemoteGreenCardsUseCase: GetRemoteGreenCardsUseCase,
     private val syncRemoteGreenCardsUseCase: SyncRemoteGreenCardsUseCase,
     private val removeExpiredEventsUseCase: RemoveExpiredEventsUseCase,
-    private val persistenceManager: PersistenceManager
+    private val persistenceManager: PersistenceManager,
+    private val combinationUtil: DomesticVaccinationRecoveryCombinationUtil
 ) : HolderDatabaseSyncer {
 
     private val mutex = Mutex()
@@ -67,26 +73,35 @@ class HolderDatabaseSyncerImpl(
                     when (remoteGreenCardsResult) {
                         is RemoteGreenCardsResult.Success -> {
                             val remoteGreenCards = remoteGreenCardsResult.remoteGreenCards
+                            val combinedVaccinationRecovery =
+                                combinationUtil.getResult(events, remoteGreenCards)
 
                             // If the recover domestic recovery info card has been shown, never show it again after a successful sync
                             // Start showing the info card that says you have recovered
                             if (persistenceManager.getShowRecoverDomesticRecoveryInfoCard()) {
                                 persistenceManager.setShowRecoverDomesticRecoveryInfoCard(false)
-                                persistenceManager.setHasDismissedRecoveredDomesticRecoveryInfoCard(false)
+                                persistenceManager.setHasDismissedRecoveredDomesticRecoveryInfoCard(
+                                    false
+                                )
                             }
 
                             // If the extend domestic recovery info card has been shown, never show it again after a successful sync
                             // Start showing the info card that says you have extended
                             if (persistenceManager.getShowExtendDomesticRecoveryInfoCard()) {
                                 persistenceManager.setShowExtendDomesticRecoveryInfoCard(false)
-                                persistenceManager.setHasDismissedExtendedDomesticRecoveryInfoCard(false)
+                                persistenceManager.setHasDismissedExtendedDomesticRecoveryInfoCard(
+                                    false
+                                )
                             }
 
                             // If we expect the remote green cards to have a certain origin
                             if (expectedOriginType != null && !remoteGreenCards.getAllOrigins()
                                     .contains(expectedOriginType)
                             ) {
-                                return@withContext DatabaseSyncerResult.Success(missingOrigin = true)
+                                return@withContext DatabaseSyncerResult.Success(
+                                    missingOrigin = true,
+                                    combinedVaccinationRecovery
+                                )
                             }
 
                             // Insert green cards in database
@@ -96,7 +111,10 @@ class HolderDatabaseSyncerImpl(
 
                             when (result) {
                                 is SyncRemoteGreenCardsResult.Success -> {
-                                    return@withContext DatabaseSyncerResult.Success(false)
+                                    return@withContext DatabaseSyncerResult.Success(
+                                        false,
+                                        combinedVaccinationRecovery
+                                    )
                                 }
                                 is SyncRemoteGreenCardsResult.Failed -> {
                                     return@withContext DatabaseSyncerResult.Failed.Error(result.errorResult)
@@ -142,14 +160,26 @@ class HolderDatabaseSyncerImpl(
 }
 
 sealed class DatabaseSyncerResult {
-    data class Success(val missingOrigin: Boolean = false) : DatabaseSyncerResult()
+    data class Success(
+        val missingOrigin: Boolean = false,
+        val domesticVaccinationRecovery: DomesticVaccinationRecoveryCombination = NotApplicable
+    ) : DatabaseSyncerResult()
 
-    sealed class Failed(open val errorResult: ErrorResult, open val failedAt: OffsetDateTime): DatabaseSyncerResult() {
-        data class NetworkError(override val errorResult: ErrorResult, val hasGreenCardsWithoutCredentials: Boolean): Failed(errorResult, OffsetDateTime.now())
-        sealed class ServerError(override val errorResult: ErrorResult): Failed(errorResult, OffsetDateTime.now()) {
+    sealed class Failed(open val errorResult: ErrorResult, open val failedAt: OffsetDateTime) :
+        DatabaseSyncerResult() {
+        data class NetworkError(
+            override val errorResult: ErrorResult,
+            val hasGreenCardsWithoutCredentials: Boolean
+        ) : Failed(errorResult, OffsetDateTime.now())
+
+        sealed class ServerError(override val errorResult: ErrorResult) :
+            Failed(errorResult, OffsetDateTime.now()) {
             data class FirstTime(override val errorResult: ErrorResult) : ServerError(errorResult)
-            data class MultipleTimes(override val errorResult: ErrorResult) : ServerError(errorResult)
+            data class MultipleTimes(override val errorResult: ErrorResult) :
+                ServerError(errorResult)
         }
-        data class Error(override val errorResult: ErrorResult): Failed(errorResult, OffsetDateTime.now())
+
+        data class Error(override val errorResult: ErrorResult) :
+            Failed(errorResult, OffsetDateTime.now())
     }
 }

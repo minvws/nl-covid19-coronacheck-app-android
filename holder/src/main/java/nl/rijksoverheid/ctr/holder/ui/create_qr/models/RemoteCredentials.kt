@@ -48,7 +48,8 @@ data class RemoteGreenCards(
         val type: OriginType,
         val eventTime: OffsetDateTime,
         val expirationTime: OffsetDateTime,
-        val validFrom: OffsetDateTime
+        val validFrom: OffsetDateTime,
+        val doseNumber: Int?
     )
 
     fun getAllOrigins(): List<OriginType> {

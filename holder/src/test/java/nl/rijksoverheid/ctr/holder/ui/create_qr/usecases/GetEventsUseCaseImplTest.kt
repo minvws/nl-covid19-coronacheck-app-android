@@ -42,9 +42,9 @@ class GetEventsUseCaseImplTest {
 
     private suspend fun getEvents(): EventsResult {
         val getEventsUseCase = GetEventsUseCaseImpl(configProvidersUseCase, coronaCheckRepository, getEventProvidersWithTokensUseCase, getRemoteEventsUseCase, remoteEventUtil, cachedAppConfigUseCase)
-        return getEventsUseCase.getEvents(jwt, originType)
+        return getEventsUseCase.getEvents(jwt, originType, false)
     }
-    
+
     @Test
     fun `given config providers call returns error then getEvents returns EventsResultError`() = runBlocking {
         coEvery { configProvidersUseCase.eventProviders() } returns EventProvidersResult.Error(
@@ -192,7 +192,7 @@ class GetEventsUseCaseImplTest {
         val exception = (eventsResult as EventsResult.Error).errorResults.first().getException()
         assertTrue(exception is NoProvidersException.Test)
     }
-    
+
     private fun httpError(): NetworkRequestResult.Failed {
         val httpException = HttpException(
             Response.error<String>(

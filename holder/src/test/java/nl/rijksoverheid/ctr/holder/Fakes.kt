@@ -23,6 +23,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
 import nl.rijksoverheid.ctr.holder.ui.myoverview.DashboardViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardSync
+import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardTabItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TokenValidatorUtil
 import nl.rijksoverheid.ctr.introduction.IntroductionData
@@ -34,8 +35,10 @@ import nl.rijksoverheid.ctr.shared.models.*
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import nl.rijksoverheid.ctr.shared.utils.TestResultUtil
 import org.json.JSONObject
+import java.time.Clock
 import java.time.LocalDate
 import java.time.OffsetDateTime
+import java.time.ZoneOffset
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -52,10 +55,11 @@ fun fakeAppConfigViewModel(appStatus: AppStatus = AppStatus.NoActionRequired) =
         }
     }
 
-fun fakeDashboardViewModel() =
+fun fakeDashboardViewModel(tabItems: List<DashboardTabItem> = listOf(fakeDashboardTabItem)) =
     object : DashboardViewModel() {
         override fun refresh(dashboardSync: DashboardSync) {
-
+            (dashboardTabItemsLiveData as MutableLiveData<List<DashboardTabItem>>)
+                .postValue(tabItems)
         }
 
         override fun removeGreenCard(greenCard: GreenCard) {
@@ -76,7 +80,7 @@ fun fakeDashboardViewModel() =
 
     }
 
-fun fakeRemoveExpiredEventsUseCase() = object: RemoveExpiredEventsUseCase {
+fun fakeRemoveExpiredEventsUseCase() = object : RemoveExpiredEventsUseCase {
     override suspend fun execute(events: List<EventGroupEntity>) {
 
     }
@@ -383,7 +387,7 @@ fun fakePersistenceManager(
         }
 
         override fun setHasDismissedUnsecureDeviceDialog(value: Boolean) {
-            
+
         }
 
         override fun hasDismissedSyncedGreenCardsItem(): Boolean {
@@ -458,7 +462,11 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
             return ""
         }
 
-        override fun disclose(secretKey: ByteArray, credential: ByteArray): String {
+        override fun disclose(
+            secretKey: ByteArray,
+            credential: ByteArray,
+            currentTimeMillis: Long
+        ): String {
             return ""
         }
 
@@ -514,7 +522,11 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
 }
 
 fun fakeEventProviderRepository(
-    unomi: ((url: String) -> NetworkRequestResult<RemoteUnomi>) = { NetworkRequestResult.Success(RemoteUnomi("", "", false)) },
+    unomi: ((url: String) -> NetworkRequestResult<RemoteUnomi>) = {
+        NetworkRequestResult.Success(
+            RemoteUnomi("", "", false)
+        )
+    },
     events: ((url: String) -> NetworkRequestResult<SignedResponseWithModel<RemoteProtocol3>>) = {
         NetworkRequestResult.Success(
             SignedResponseWithModel(
@@ -553,7 +565,7 @@ fun fakeGreenCardUtil(
     errorCorrectionLevel: ErrorCorrectionLevel = ErrorCorrectionLevel.H,
     isExpiring: Boolean = false,
     hasNoActiveCredentials: Boolean = false
-) = object: GreenCardUtil {
+) = object : GreenCardUtil {
     override fun isExpired(greenCard: GreenCard): Boolean {
         return isExpired
     }
@@ -575,7 +587,7 @@ fun fakeGreenCardUtil(
     }
 }
 
-fun fakeCredentialUtil(activeCredential: CredentialEntity? = null) = object: CredentialUtil {
+fun fakeCredentialUtil(activeCredential: CredentialEntity? = null) = object : CredentialUtil {
     override fun getActiveCredential(entities: List<CredentialEntity>): CredentialEntity? {
         return activeCredential
     }
@@ -595,14 +607,19 @@ fun fakeCredentialUtil(activeCredential: CredentialEntity? = null) = object: Cre
         return ""
     }
 
-    override fun vaccinationShouldBeHidden(readEuropeanCredential: List<JSONObject>, index: Int): Boolean {
+    override fun vaccinationShouldBeHidden(
+        readEuropeanCredential: List<JSONObject>,
+        index: Int
+    ): Boolean {
         return false
     }
 }
 
-fun fakeGetRemoteGreenCardUseCase(result: RemoteGreenCardsResult = RemoteGreenCardsResult.Success(
-    RemoteGreenCards(null, null)
-)) = object: GetRemoteGreenCardsUseCase {
+fun fakeGetRemoteGreenCardUseCase(
+    result: RemoteGreenCardsResult = RemoteGreenCardsResult.Success(
+        RemoteGreenCards(null, null)
+    )
+) = object : GetRemoteGreenCardsUseCase {
     override suspend fun get(events: List<EventGroupEntity>): RemoteGreenCardsResult {
         return result
     }
@@ -610,7 +627,7 @@ fun fakeGetRemoteGreenCardUseCase(result: RemoteGreenCardsResult = RemoteGreenCa
 
 fun fakeSyncRemoteGreenCardUseCase(
     result: SyncRemoteGreenCardsResult = SyncRemoteGreenCardsResult.Success,
-) = object: SyncRemoteGreenCardsUseCase {
+) = object : SyncRemoteGreenCardsUseCase {
     override suspend fun execute(remoteGreenCards: RemoteGreenCards): SyncRemoteGreenCardsResult {
         return result
     }
@@ -618,7 +635,7 @@ fun fakeSyncRemoteGreenCardUseCase(
 
 fun fakeClockDevationUseCase(
     hasDeviation: Boolean = false
-) = object: ClockDeviationUseCase() {
+) = object : ClockDeviationUseCase() {
     override fun store(serverResponseTimestamp: Long, localReceivedTimestamp: Long) {
 
     }
@@ -626,9 +643,11 @@ fun fakeClockDevationUseCase(
     override fun hasDeviation(): Boolean {
         return hasDeviation
     }
+
+    override fun getAdjustedClock(clock: Clock): Clock = Clock.systemDefaultZone()
 }
 
-fun fakeReadEuropeanCredentialUtil(dosis: String = "") = object: ReadEuropeanCredentialUtil {
+fun fakeReadEuropeanCredentialUtil(dosis: String = "") = object : ReadEuropeanCredentialUtil {
     override fun getDose(readEuropeanCredential: JSONObject): String {
         return dosis
     }
@@ -642,7 +661,7 @@ fun fakeReadEuropeanCredentialUtil(dosis: String = "") = object: ReadEuropeanCre
     }
 }
 
-fun fakeQrCodeUsecase() = object: QrCodeUseCase {
+fun fakeQrCodeUsecase() = object : QrCodeUseCase {
     override suspend fun qrCode(
         credential: ByteArray,
         shouldDisclose: Boolean,
@@ -654,14 +673,20 @@ fun fakeQrCodeUsecase() = object: QrCodeUseCase {
     }
 }
 
-fun fakeEventGroupEntityUtil(remoteEventVaccinations: List<RemoteEventVaccination> = listOf()) = object: EventGroupEntityUtil {
-    override suspend fun amountOfVaccinationEvents(eventGroupEntities: List<EventGroupEntity>): Int {
-        return remoteEventVaccinations.size
+fun fakeEventGroupEntityUtil(remoteEventVaccinations: List<RemoteEventVaccination> = listOf()) =
+    object : EventGroupEntityUtil {
+        override suspend fun amountOfVaccinationEvents(eventGroupEntities: List<EventGroupEntity>): Int {
+            return remoteEventVaccinations.size
+        }
     }
-}
 
 fun fakeRemoteEventUtil(
-    getRemoteEventsFromNonDcc: List<RemoteEvent> = listOf()) = object: RemoteEventUtil {
+    getRemoteEventsFromNonDcc: List<RemoteEvent> = listOf()
+) = object : RemoteEventUtil {
+    override fun isDccEvent(providerIdentifier: String): Boolean {
+        return false
+    }
+
     override fun getHolderFromDcc(dcc: JSONObject): RemoteProtocol3.Holder {
         return RemoteProtocol3.Holder(
             infix = "",
@@ -720,48 +745,57 @@ val fakeGreenCard = GreenCard(
     credentialEntities = listOf()
 )
 
-fun fakeRemoteEventVaccination(date: LocalDate = LocalDate.now()) = RemoteEventVaccination.Vaccination(
-    date = date,
-    hpkCode = "",
-    type = "",
-    brand = "",
-    completedByMedicalStatement = false,
-    completedByPersonalStatement = false,
-    completionReason = "",
-    doseNumber = "",
-    totalDoses = "",
-    country = "",
-    manufacturer = ""
-)
+fun fakeRemoteEventVaccination(date: LocalDate = LocalDate.now()) =
+    RemoteEventVaccination.Vaccination(
+        date = date,
+        hpkCode = "",
+        type = "",
+        brand = "",
+        completedByMedicalStatement = false,
+        completedByPersonalStatement = false,
+        completionReason = "",
+        doseNumber = "",
+        totalDoses = "",
+        country = "",
+        manufacturer = ""
+    )
 
-val fakeEuropeanVaccinationGreenCard = GreenCard(
+fun fakeGreenCard(greenCardType: GreenCardType, originType: OriginType) = GreenCard(
     greenCardEntity = GreenCardEntity(
         id = 0,
         walletId = 0,
-        type = GreenCardType.Eu
+        type = greenCardType
     ),
     origins = listOf(
         OriginEntity(
             id = 0,
             greenCardId = 0,
-            type = OriginType.Vaccination,
+            type = originType,
             eventTime = OffsetDateTime.now(),
             expirationTime = OffsetDateTime.now(),
             validFrom = OffsetDateTime.now()
         )
     ),
-    credentialEntities = listOf(CredentialEntity(
-        id = 0,
-        greenCardId = 0,
-        data = "".toByteArray(),
-        credentialVersion = 0,
-        validFrom = OffsetDateTime.now(),
-        expirationTime = OffsetDateTime.now()
-    ))
+    credentialEntities = listOf(
+        CredentialEntity(
+            id = 0,
+            greenCardId = 0,
+            data = "".toByteArray(),
+            credentialVersion = 0,
+            validFrom = OffsetDateTime.now(),
+            expirationTime = OffsetDateTime.now()
+        )
+    )
 )
 
-fun fakeAppConfigFreshnessUseCase(shouldShowWarning : Boolean = false) = object:
-   AppConfigFreshnessUseCase {
+val fakeDomesticVaccinationGreenCard = fakeGreenCard(GreenCardType.Eu, OriginType.Vaccination)
+val fakeDomesticTestGreenCard = fakeGreenCard(GreenCardType.Eu, OriginType.Test)
+
+val fakeEuropeanVaccinationGreenCard = fakeGreenCard(GreenCardType.Eu, OriginType.Vaccination)
+val fakeEuropeanVaccinationTestCard = fakeGreenCard(GreenCardType.Eu, OriginType.Test)
+
+fun fakeAppConfigFreshnessUseCase(shouldShowWarning: Boolean = false) = object :
+    AppConfigFreshnessUseCase {
     override fun getAppConfigLastFetchedSeconds(): Long {
         return 0
     }
@@ -773,10 +807,53 @@ fun fakeAppConfigFreshnessUseCase(shouldShowWarning : Boolean = false) = object:
     override fun shouldShowConfigFreshnessWarning(): Boolean {
         return shouldShowWarning
     }
-
-
 }
 
+val fakeDashboardTabItem = DashboardTabItem(
+    title = R.string.travel_button_domestic,
+    greenCardType = GreenCardType.Domestic,
+    items = listOf()
+)
+
+fun fakeEventGroupEntity(
+    id: Int = 0,
+    walletId: Int = 1,
+    providerIdentifier: String = "",
+    type: OriginType = OriginType.Vaccination,
+    maxIssuedAt: OffsetDateTime = OffsetDateTime.of(
+        2000, 1, 1, 1, 1, 1, 1, ZoneOffset.ofTotalSeconds(0)
+    ),
+    jsonData: ByteArray = ByteArray(1)
+) = EventGroupEntity(id, walletId, providerIdentifier, type, maxIssuedAt, jsonData)
+
+fun fakeRemoteGreenCards(
+    domesticGreencard: RemoteGreenCards.DomesticGreenCard? = fakeDomesticGreenCard(),
+    euGreencards: List<RemoteGreenCards.EuGreenCard>? = listOf(fakeEuGreenCard())
+) = RemoteGreenCards(domesticGreencard, euGreencards)
+
+fun fakeDomesticGreenCard(
+    origins: List<RemoteGreenCards.Origin> = listOf(fakeOrigin()),
+    createCredentialMessages: ByteArray = ByteArray(1)
+) = RemoteGreenCards.DomesticGreenCard(origins, createCredentialMessages)
+
+fun fakeEuGreenCard(
+    origins: List<RemoteGreenCards.Origin> = listOf(fakeOrigin()),
+    credential: String = "credential"
+) = RemoteGreenCards.EuGreenCard(origins, credential)
+
+fun fakeOrigin(
+    type: OriginType = OriginType.Vaccination,
+    eventTime: OffsetDateTime = OffsetDateTime.of(
+        2000, 1, 1, 1, 1, 1, 1, ZoneOffset.ofTotalSeconds(0)
+    ),
+    expirationTime: OffsetDateTime = OffsetDateTime.of(
+        2000, 1, 1, 1, 1, 1, 1, ZoneOffset.ofTotalSeconds(0)
+    ),
+    validFrom: OffsetDateTime = OffsetDateTime.of(
+        2000, 1, 1, 1, 1, 1, 1, ZoneOffset.ofTotalSeconds(0)
+    ),
+    doseNumber: Int? = 1
+) = RemoteGreenCards.Origin(type, eventTime, expirationTime, validFrom, doseNumber)
 
 
 

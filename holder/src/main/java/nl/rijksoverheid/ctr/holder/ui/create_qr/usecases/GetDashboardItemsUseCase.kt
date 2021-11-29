@@ -71,28 +71,28 @@ class GetDashboardItemsUseCaseImpl(
         )
 
         if (dashboardItemUtil.shouldShowClockDeviationItem(allGreenCards)) {
-            dashboardItems.add(DashboardItem.ClockDeviationItem)
+            dashboardItems.add(DashboardItem.InfoItem.ClockDeviationItem)
         }
 
         if (dashboardItemUtil.shouldShowExtendDomesticRecoveryItem()) {
-            dashboardItems.add(DashboardItem.InfoItem.NonDismissible.ExtendDomesticRecovery)
+            dashboardItems.add(DashboardItem.InfoItem.ExtendDomesticRecovery)
         }
 
         if (dashboardItemUtil.shouldShowRecoverDomesticRecoveryItem()) {
-            dashboardItems.add(DashboardItem.InfoItem.NonDismissible.RecoverDomesticRecovery)
+            dashboardItems.add(DashboardItem.InfoItem.RecoverDomesticRecovery)
         }
 
         if (dashboardItemUtil.shouldShowRecoveredDomesticRecoveryItem()) {
-            dashboardItems.add(DashboardItem.InfoItem.Dismissible.RecoveredDomesticRecovery)
+            dashboardItems.add(DashboardItem.InfoItem.RecoveredDomesticRecovery)
         }
 
         if (dashboardItemUtil.shouldShowExtendedDomesticRecoveryItem()) {
-            dashboardItems.add(DashboardItem.InfoItem.Dismissible.ExtendedDomesticRecovery)
+            dashboardItems.add(DashboardItem.InfoItem.ExtendedDomesticRecovery)
         }
 
         if (dashboardItemUtil.shouldShowConfigFreshnessWarning()) {
             dashboardItems.add(
-                DashboardItem.InfoItem.NonDismissible.ConfigFreshnessWarning(
+                DashboardItem.InfoItem.ConfigFreshnessWarning(
                     maxValidityDate = dashboardItemUtil.getConfigFreshnessMaxValidity()
                 )
             )
@@ -112,6 +112,12 @@ class GetDashboardItemsUseCaseImpl(
         if (dashboardItemUtil.shouldShowPlaceholderItem(allGreenCards)) {
             dashboardItems.add(
                 DashboardItem.PlaceholderCardItem(greenCardType = GreenCardType.Domestic)
+            )
+        }
+
+        if (dashboardItemUtil.shouldShowCoronaMelderItem(domesticGreenCards, databaseSyncerResult)) {
+            dashboardItems.add(
+                DashboardItem.CoronaMelderItem
             )
         }
 
@@ -144,22 +150,22 @@ class GetDashboardItemsUseCaseImpl(
         )
 
         if (dashboardItemUtil.shouldShowClockDeviationItem(allGreenCards)) {
-            dashboardItems.add(DashboardItem.ClockDeviationItem)
+            dashboardItems.add(DashboardItem.InfoItem.ClockDeviationItem)
         }
 
         if (dashboardItemUtil.shouldAddSyncGreenCardsItem(allEventGroupEntities, allGreenCards)) {
             // Enable the ability to show GreenCardsSyncedItem (after successful sync)
             persistenceManager.setHasDismissedSyncedGreenCardsItem(false)
-            dashboardItems.add(DashboardItem.InfoItem.NonDismissible.RefreshEuVaccinations)
+            dashboardItems.add(DashboardItem.InfoItem.RefreshEuVaccinations)
         }
 
         if (dashboardItemUtil.shouldAddGreenCardsSyncedItem(allGreenCards)) {
-            dashboardItems.add(DashboardItem.InfoItem.Dismissible.RefreshedEuVaccinations)
+            dashboardItems.add(DashboardItem.InfoItem.RefreshedEuVaccinations)
         }
 
         if (dashboardItemUtil.shouldShowConfigFreshnessWarning()) {
             dashboardItems.add(
-                DashboardItem.InfoItem.NonDismissible.ConfigFreshnessWarning(
+                DashboardItem.InfoItem.ConfigFreshnessWarning(
                     maxValidityDate = dashboardItemUtil.getConfigFreshnessMaxValidity()
                 )
             )
@@ -179,6 +185,12 @@ class GetDashboardItemsUseCaseImpl(
         if (dashboardItemUtil.shouldShowPlaceholderItem(allGreenCards)) {
             dashboardItems.add(
                 DashboardItem.PlaceholderCardItem(greenCardType = GreenCardType.Eu)
+            )
+        }
+
+        if (dashboardItemUtil.shouldShowCoronaMelderItem(internationalGreenCards, databaseSyncerResult)) {
+            dashboardItems.add(
+                DashboardItem.CoronaMelderItem
             )
         }
 
@@ -202,7 +214,7 @@ class GetDashboardItemsUseCaseImpl(
         val items = greenCardsForSelectedType
             .map { greenCard ->
                 if (greenCardUtil.isExpired(greenCard)) {
-                    DashboardItem.GreenCardExpiredItem(greenCard = greenCard)
+                    DashboardItem.InfoItem.GreenCardExpiredItem(greenCard = greenCard)
                 } else {
                     mapGreenCardsItem(greenCard, isLoadingNewCredentials, databaseSyncerResult)
                 }
@@ -222,13 +234,21 @@ class GetDashboardItemsUseCaseImpl(
         allValidOriginsForUnselectedType.forEach { originForUnselectedType ->
             if (!allValidOriginsForSelectedType.map { it.type }
                     .contains(originForUnselectedType.type)) {
+
                 items.add(
-                    DashboardItem.OriginInfoItem(
-                        greenCardType = greenCardType,
-                        originType = originForUnselectedType.type
-                    )
+                    if (greenCardType == GreenCardType.Domestic
+                        && dashboardItemUtil.shouldShowMissingDutchVaccinationItem(greenCardsForSelectedType, greenCardsForUnselectedType)
+                    ) {
+                        DashboardItem.InfoItem.MissingDutchVaccinationItem
+                    } else {
+                        DashboardItem.InfoItem.OriginInfoItem(
+                            greenCardType = greenCardType,
+                            originType = originForUnselectedType.type
+                        )
+                    }
                 )
             }
+
         }
 
         // Always order by origin type
@@ -237,7 +257,7 @@ class GetDashboardItemsUseCaseImpl(
                 is DashboardItem.CardsItem -> {
                     it.cards.first().originStates.first().origin.type.order
                 }
-                is DashboardItem.OriginInfoItem -> {
+                is DashboardItem.InfoItem.OriginInfoItem -> {
                     it.originType.order
                 }
                 else -> {

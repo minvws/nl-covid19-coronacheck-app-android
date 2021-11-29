@@ -6,6 +6,7 @@ import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteConfigProviders
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventVaccination
 import java.util.*
 
@@ -23,6 +24,7 @@ interface VaccinationInfoScreenUtil {
         fullName: String,
         birthDate: String,
         providerIdentifier: String,
+        isPaperProof: Boolean
     ): InfoScreen
 }
 
@@ -39,8 +41,9 @@ class VaccinationInfoScreenUtilImpl(
         fullName: String,
         birthDate: String,
         providerIdentifier: String,
+        isPaperProof: Boolean
     ): InfoScreen {
-        val title = resources.getString(R.string.your_vaccination_explanation_toolbar_title)
+        val title = if (isPaperProof) resources.getString(R.string.your_vaccination_explanation_toolbar_title) else resources.getString(R.string.your_test_result_explanation_toolbar_title)
 
         val name = resources.getString(R.string.your_vaccination_explanation_name)
 
@@ -84,10 +87,16 @@ class VaccinationInfoScreenUtilImpl(
         val uniqueCode = resources.getString(R.string.your_vaccination_explanation_unique_code)
         val uniqueCodeAnswer = event.unique ?: ""
 
+        val header = if (isPaperProof) {
+            resources.getString(R.string.paper_proof_event_explanation_header)
+        } else {
+            resources.getString(R.string.your_vaccination_explanation_header, providerIdentifier)
+        }
+
         return InfoScreen(
             title = title,
             description = (TextUtils.concat(
-                resources.getString(R.string.your_vaccination_explanation_header, providerIdentifier),
+                header,
                 "<br/><br/>",
                 createdLine(name, fullName),
                 createdLine(birthDateQuestion, birthDate, isOptional = true),
@@ -100,7 +109,8 @@ class VaccinationInfoScreenUtilImpl(
                 createdLine(lastDose, lastDoseAnswer, isOptional = true),
                 createdLine(vaccinationDate, vaccinationDateAnswer, isOptional = true),
                 createdLine(vaccinationCountry, fullCountryName, isOptional = true),
-                createdLine(uniqueCode, uniqueCodeAnswer)
+                createdLine(uniqueCode, uniqueCodeAnswer),
+                if (isPaperProof) "<br/>${resources.getString(R.string.paper_proof_event_explanation_footer)}" else ""
             ) as String)
         )
     }

@@ -17,6 +17,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.migration.TestResultsMig
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.CheckNewRecoveryValidityUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SecretKeyUseCase
 import nl.rijksoverheid.ctr.introduction.introductionModule
+import nl.rijksoverheid.ctr.qrscanner.qrScannerModule
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.SharedApplication
 import nl.rijksoverheid.ctr.shared.sharedModule
@@ -56,9 +57,10 @@ open class HolderApplication : SharedApplication(), Configuration.Provider {
         repositoriesModule,
         qrsModule,
         appModule,
-        errorsModule,
+        errorsModule(BuildConfig.FLAVOR),
         retrofitModule(BuildConfig.BASE_API_URL),
         responsesModule,
+        qrScannerModule
     ).toTypedArray()
 
     override fun onCreate() {

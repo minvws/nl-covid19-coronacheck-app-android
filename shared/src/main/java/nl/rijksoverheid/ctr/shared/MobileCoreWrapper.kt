@@ -29,7 +29,7 @@ interface MobileCoreWrapper {
     fun readDomesticCredential(credential: ByteArray): ReadDomesticCredential
     fun readCredential(credentials: ByteArray): ByteArray
     fun createCommitmentMessage(secretKey: ByteArray, prepareIssueMessage: ByteArray): String
-    fun disclose(secretKey: ByteArray, credential: ByteArray): String
+    fun disclose(secretKey: ByteArray, credential: ByteArray, currentTimeMillis: Long): String
     fun generateHolderSk(): String
     fun createDomesticCredentials(createCredentials: ByteArray): List<DomesticCredential>
     fun readEuropeanCredential(credential: ByteArray): JSONObject
@@ -73,10 +73,11 @@ class MobileCoreWrapperImpl(private val moshi: Moshi) : MobileCoreWrapper {
         return String(result.value)
     }
 
-    override fun disclose(secretKey: ByteArray, credential: ByteArray): String {
-        return Mobilecore.disclose(
+    override fun disclose(secretKey: ByteArray, credential: ByteArray, currentTimeMillis: Long): String {
+        return Mobilecore.discloseWithTime(
             secretKey,
-            credential
+            credential,
+            currentTimeMillis / 1000L
         ).successString()
     }
 

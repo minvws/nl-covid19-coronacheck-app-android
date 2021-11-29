@@ -54,6 +54,14 @@
                 app:popEnterAnim="@anim/slide_in_left"
                 app:popExitAnim="@anim/slide_out_right" />
 
+            <action
+                android:id="@+id/action_missing_dutch_certificate"
+                app:destination="@+id/missing_dutch_certificate"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right" />
+
         </fragment>
 
     </navigation>
@@ -188,7 +196,7 @@
         <fragment
             android:id="@+id/nav_paper_proof_code"
             android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.PaperProofCodeFragment"
-            android:label="@string/add_paper_proof"
+            android:label="@string/add_paper_proof_title"
             tools:layout="@layout/fragment_paper_proof_code">
 
             <action
@@ -204,7 +212,7 @@
         <fragment
             android:id="@+id/nav_paper_proof_consent"
             android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.PaperProofConsentFragment"
-            android:label="@string/add_paper_proof"
+            android:label="@string/add_paper_proof_title"
             tools:layout="@layout/fragment_paper_proof_consent">
 
             <action
@@ -314,12 +322,21 @@
     <fragment
         android:id="@+id/nav_get_events"
         android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.GetEventsFragment"
-        android:label="@string/choose_provider_toolbar"
+        android:label="{toolbarTitle}"
         tools:layout="@layout/fragment_get_events">
 
         <argument
             android:name="originType"
             app:argType="nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType" />
+
+        <argument
+            android:name="afterIncompleteVaccination"
+            android:defaultValue="false"
+            app:argType="boolean" />
+
+        <argument
+            android:name="toolbarTitle"
+            app:argType="string" />
 
         <action
             android:id="@+id/action_your_events"
@@ -369,6 +386,11 @@
             android:name="type"
             app:argType="nl.rijksoverheid.ctr.holder.ui.create_qr.YourEventsFragmentType" />
 
+        <argument
+            android:name="afterIncompleteVaccination"
+            android:defaultValue="false"
+            app:argType="boolean" />
+
         <action
             android:id="@+id/action_show_explanation"
             app:destination="@id/nav_your_event_explanation"
@@ -394,6 +416,16 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/action_certificate_created"
+            app:destination="@id/nav_certificate_created"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit"
+            app:popUpTo="@id/nav_my_overview_tabs"
+            app:popUpToInclusive="false" />
 
     </fragment>
 
@@ -491,5 +523,79 @@
         app:exitAnim="@anim/slide_out_left"
         app:popEnterAnim="@anim/slide_in_left"
         app:popExitAnim="@anim/slide_out_right" />
+
+    <fragment
+        android:id="@+id/nav_info_fragment"
+        android:name="nl.rijksoverheid.ctr.design.fragments.info.InfoFragment"
+        android:label="{toolbarTitle}"
+        tools:layout="@layout/fragment_info">
+
+        <argument
+            android:name="toolbarTitle"
+            app:argType="string" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/missing_dutch_certificate"
+        android:name="nl.rijksoverheid.ctr.holder.ui.myoverview.MissingDutchVaccinationFragment"
+        tools:layout="@layout/fragment_missing_dutch_vaccination_certificate">
+
+        <action
+            android:id="@+id/action_get_events"
+            app:destination="@id/nav_get_events"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
+
+    <action
+        android:id="@+id/action_info_fragment"
+        app:destination="@id/nav_info_fragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
+
+    <action
+        android:id="@+id/action_qr_type"
+        app:destination="@id/nav_qr_code_type"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
+
+    <fragment
+        android:id="@+id/nav_certificate_created"
+        android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.CertificateCreatedFragment"
+        android:label="{toolbarTitle}">
+
+        <argument
+            android:name="toolbarTitle"
+            app:argType="string" />
+
+        <argument
+            android:name="title"
+            app:argType="string" />
+
+        <argument
+            android:name="description"
+            app:argType="string" />
+
+        <argument
+            android:name="shouldShowRetrieveTestButton"
+            android:defaultValue="false"
+            app:argType="boolean" />
+
+        <action
+            android:id="@+id/action_get_events"
+            app:destination="@id/nav_get_events"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
 
 </navigation>

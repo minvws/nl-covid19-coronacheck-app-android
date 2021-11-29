@@ -11,14 +11,12 @@ import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.Flow
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import retrofit2.HttpException
+import java.lang.StringBuilder
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import java.nio.charset.CharacterCodingException
-import javax.net.ssl.SSLHandshakeException
-import javax.net.ssl.SSLKeyException
-import javax.net.ssl.SSLPeerUnverifiedException
-import javax.net.ssl.SSLProtocolException
+import javax.net.ssl.*
 
 /**
  * Generates a String that we can show in the app to point out want went wrong where
@@ -27,20 +25,29 @@ interface ErrorCodeStringFactory {
     fun get(flow: Flow, errorResults: List<ErrorResult>): String
 }
 
-class ErrorCodeStringFactoryImpl : ErrorCodeStringFactory {
+class ErrorCodeStringFactoryImpl(private val isPlayStoreBuild: Boolean = true) : ErrorCodeStringFactory {
+
     override fun get(flow: Flow, errorResults: List<ErrorResult>): String {
         val errorStringBuilders = errorResults.map {
             val stringBuilder = StringBuilder()
-            stringBuilder.append("A")
+            stringBuilder.append(if (isPlayStoreBuild) {
+                "A"
+            } else {
+                "F"
+            })
             stringBuilder.append(" ${flow.code}")
             stringBuilder.append("${errorResults.first().getCurrentStep().code}")
 
-            if (it is NetworkRequestResult.Failed.ProviderHttpError) {
-                stringBuilder.append(" ${it.provider}")
-            } else if (it is NetworkRequestResult.Failed.ProviderError) {
-                stringBuilder.append(" ${it.provider}")
-            } else {
-                stringBuilder.append(" 000")
+            when (it) {
+                is NetworkRequestResult.Failed.ProviderHttpError -> {
+                    stringBuilder.append(" ${it.provider}")
+                }
+                is NetworkRequestResult.Failed.ProviderError -> {
+                    stringBuilder.append(" ${it.provider}")
+                }
+                else -> {
+                    stringBuilder.append(" 000")
+                }
             }
 
             val exceptionErrorCode = when (val exception = it.getException()) {

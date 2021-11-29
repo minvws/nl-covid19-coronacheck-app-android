@@ -13,8 +13,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
-import nl.rijksoverheid.ctr.design.utils.BottomSheetData
-import nl.rijksoverheid.ctr.design.utils.BottomSheetDialogUtil
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
@@ -25,7 +23,9 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.QrInfoScreenUtil
 import nl.rijksoverheid.ctr.appconfig.models.ExternalReturnAppData
-import nl.rijksoverheid.ctr.design.utils.DescriptionData
+import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
+import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
+import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeData
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodesResult
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
@@ -54,7 +54,7 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
     private val personalDetailsUtil: PersonalDetailsUtil by inject()
     private val infoScreenUtil: QrInfoScreenUtil by inject()
     private val dialogUtil: DialogUtil by inject()
-    private val bottomSheetDialogUtil: BottomSheetDialogUtil by inject()
+    private val infoFragmentUtil: InfoFragmentUtil by inject()
     private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
     private lateinit var qrCodePagerAdapter: QrCodePagerAdapter
 
@@ -68,7 +68,7 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (BuildConfig.FLAVOR == "prod") {
+        if (BuildConfig.FLAVOR.lowercase().contains("prod")) {
             requireActivity().window.setFlags(
                 WindowManager.LayoutParams.FLAG_SECURE,
                 WindowManager.LayoutParams.FLAG_SECURE
@@ -214,10 +214,10 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
                                 }
                             }
 
-                            bottomSheetDialogUtil.present(
-                                childFragmentManager, BottomSheetData.TitleDescriptionWithFooter(
+                            infoFragmentUtil.presentAsBottomSheet(
+                                childFragmentManager, InfoFragmentData.TitleDescriptionWithFooter(
                                     title = infoScreen.title,
-                                    descriptionData = DescriptionData(htmlTextString = infoScreen.description),
+                                    descriptionData = DescriptionData(htmlTextString = infoScreen.description, htmlTextColor = R.color.primary_text),
                                     footerText = infoScreen.footer
                                 )
                             )

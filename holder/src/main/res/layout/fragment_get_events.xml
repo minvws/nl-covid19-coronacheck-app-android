@@ -1,72 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ProgressBar
+        android:id="@+id/fullscreenLoading"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clipToPadding="false"
-        android:paddingBottom="32dp">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-        <nl.rijksoverheid.ctr.design.views.AccessibilityHeaderWidget
-            android:id="@+id/title"
-            android:layout_width="0dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/root"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="32dp"
-            tools:text="@string/get_vaccination_title"
-            android:textAppearance="?attr/textAppearanceHeadline5"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:clipToPadding="false"
+            android:paddingBottom="32dp">
 
-        <nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
-            android:id="@+id/description"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            app:enableHtmlLinks="true"
-            tools:htmlText="@string/get_vaccination_description"
-            android:textAppearance="?attr/textAppearanceBody1"
-            app:layout_constraintEnd_toEndOf="@+id/title"
-            app:layout_constraintStart_toStartOf="@+id/title"
-            app:layout_constraintTop_toBottomOf="@+id/title" />
+            <nl.rijksoverheid.ctr.design.views.AccessibilityHeaderWidget
+                android:id="@+id/title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="32dp"
+                android:textAppearance="?attr/textAppearanceHeadline5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@string/get_vaccination_title" />
 
-        <Button
-            android:id="@+id/button"
-            style="@style/Widget.App.Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:text="@string/get_vaccination_button"
-            android:drawableEnd="@drawable/ic_digid_logo"
-            android:drawablePadding="10dp"
-            android:paddingEnd="40dp"
-            app:layout_constraintBottom_toTopOf="@+id/no_digid_button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/description"
-            app:layout_constraintVertical_bias="1"
-            app:layout_constraintVertical_chainStyle="packed"
-            tools:ignore="RtlSymmetry" />
+            <nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
+                android:id="@+id/description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:textAppearance="?attr/textAppearanceBody1"
+                app:enableHtmlLinks="true"
+                app:layout_constraintEnd_toEndOf="@+id/title"
+                app:layout_constraintStart_toStartOf="@+id/title"
+                app:layout_constraintTop_toBottomOf="@+id/title"
+                tools:htmlText="@string/get_vaccination_description" />
 
-        <Button
-            android:id="@+id/no_digid_button"
-            style="?attr/borderlessButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/get_vaccination_no_digid_button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintVertical_bias="1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            <Button
+                android:id="@+id/button"
+                style="@style/Widget.App.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:drawableEnd="@drawable/ic_digid_logo"
+                android:drawablePadding="10dp"
+                android:paddingEnd="40dp"
+                android:text="@string/get_vaccination_button"
+                app:layout_constraintBottom_toTopOf="@+id/no_digid_button"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/description"
+                app:layout_constraintVertical_bias="1"
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:ignore="RtlSymmetry" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <Button
+                android:id="@+id/no_digid_button"
+                style="?attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/get_vaccination_no_digid_button"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/button"
+                app:layout_constraintVertical_bias="1" />
 
-</ScrollView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+</FrameLayout>

@@ -6,8 +6,11 @@ plugins {
     id "androidx.navigation.safeargs.kotlin"
 }
 
-def appVersionCode = System.getenv("GITHUB_RUN_NUMBER") != null ? System.getenv("GITHUB_RUN_NUMBER").toInteger() : 1000000
-version = "2.5.0"
+def appVersionCode =  1000000
+if (System.getenv("GITHUB_REPOSITORY_OWNER") == "minvws") {
+    appVersionCode = System.getenv("GITHUB_RUN_NUMBER") != null ? System.getenv("GITHUB_RUN_NUMBER").toInteger() : 1000000
+}
+version = "2.6.0"
 archivesBaseName = "verifier-v${version}-${appVersionCode}"
 
 android {
@@ -39,6 +42,9 @@ android {
                         "}"
         buildConfigField "String", "CDN_API_URL", "\"https://verifier-api-cdn.coronacheck.nl/v6/\""
         manifestPlaceholders = [appLabel: "@string/app_name", deepLinkHost: "coronacheck.nl"]
+        ndk {
+            debugSymbolLevel "FULL"
+        }
     }
 
     signingConfigs {
@@ -50,32 +56,8 @@ android {
         }
     }
 
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
-        }
-    }
-
     flavorDimensions "environment"
     productFlavors {
-        tst {
-            dimension "environment"
-            versionNameSuffix "-test"
-            applicationIdSuffix ".test"
-            manifestPlaceholders = [appLabel: "@string/app_name_test"]
-            buildConfigField "String", "BASE_API_URL", "\"https://api-ct.bananenhalen.nl/v6/\""
-            buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "false"
-            buildConfigField "boolean", "FEATURE_TEST_PROVIDER_API_CHECKS", "false"
-            buildConfigField "String[]", "CERTIFICATE_PINS",
-                    "{" +
-                            "\"sha256/C5+lpZ7tcVwmwQIMcRtPbsQtWLABXhQzejna0wHFr8M=\"" +
-                            "}"
-            apply plugin: 'com.google.gms.google-services'
-            apply plugin: 'com.google.firebase.crashlytics'
-            manifestPlaceholders = [appLabel: "@string/app_name_acc", deepLinkHost: "web.acc.coronacheck.nl"]
-        }
         acc {
             dimension "environment"
             versionNameSuffix "-acc"
@@ -90,13 +72,47 @@ android {
             apply plugin: 'com.google.gms.google-services'
             apply plugin: 'com.google.firebase.crashlytics'
             manifestPlaceholders = [appLabel: "@string/app_name_acc", deepLinkHost: "web.acc.coronacheck.nl"]
+            matchingFallbacks = ['mlkit']
+        }
+        fdroidAcc {
+            dimension "environment"
+            versionNameSuffix "-acc"
+            applicationIdSuffix ".acc"
+            manifestPlaceholders = [appLabel: "@string/app_name_acc"]
+            buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.acc.coronacheck.nl/v6/\""
+            buildConfigField "String", "CDN_API_URL", "\"https://verifier-api-cdn.acc.coronacheck.nl/v6/\""
+            buildConfigField "String[]", "CERTIFICATE_PINS",
+                    "{" +
+                            "\"sha256/lR7gRvqDMW5nhsCMRPE7TKLq0tJkTWMxQ5HAzHCIfQ0=\"" +
+                            "}"
+            manifestPlaceholders = [appLabel: "@string/app_name_acc", deepLinkHost: "web.acc.coronacheck.nl"]
+            matchingFallbacks = ['zxing']
         }
         prod {
             dimension "environment"
+            matchingFallbacks = ['mlkit']
+        }
+        fdroidProd {
+            dimension "environment"
+            matchingFallbacks = ['zxing']
         }
     }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            productFlavors.acc.signingConfig signingConfigs.release
+            productFlavors.prod.signingConfig signingConfigs.release
+        }
+    }
+
     compileOptions {
         coreLibraryDesugaringEnabled true
+    }
+
+    packagingOptions {
+        doNotStrip '**/*.so'
     }
 }
 
@@ -129,7 +145,7 @@ dependencies {
     testImplementation("org.robolectric:robolectric:$robolectric_version") {
         exclude group: 'org.bouncycastle'
     }
-    testImplementation("com.schibsted.spain:barista:$barista_version") {
+    testImplementation("com.adevinta.android:barista:$barista_version") {
         exclude group: "org.jetbrains.kotlin"
     }
     testImplementation "io.insert-koin:koin-test-junit4:$koin_version"
@@ -137,7 +153,6 @@ dependencies {
 
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$desugar_jdk_version"
 
-    tstImplementation "com.google.firebase:firebase-crashlytics-ktx:$crashlytics_version"
     accImplementation "com.google.firebase:firebase-crashlytics-ktx:$crashlytics_version"
 
     debugImplementation "androidx.fragment:fragment-testing:$fragment_version"

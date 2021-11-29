@@ -31,33 +31,44 @@
                 android:labelFor="@id/unique_code_text"
                 android:textAppearance="?attr/textAppearanceBody1"
                 app:htmlText="@string/add_paper_proof_explanation_description"
-                app:layout_constraintBottom_toTopOf="@id/highlights_container"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/highlights_container"
+            <include
+                android:id="@+id/item_healthcare"
+                layout="@layout/item_paper_proof_explanation"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="24dp"
-                app:cardBackgroundColor="@color/message_container"
-                app:cardCornerRadius="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="40dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/description">
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/description"
+                app:layout_constraintVertical_bias="0" />
 
-                <nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
-                    android:id="@+id/highlights"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="16dp"
-                    android:textAppearance="?attr/textAppearanceBody1"
-                    app:htmlText="@string/add_paper_proof_explanation_highlight"
-                    tools:text="Content" />
+            <include
+                android:id="@+id/item_mail"
+                layout="@layout/item_paper_proof_explanation"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/item_healthcare"
+                app:layout_constraintVertical_bias="0" />
 
-            </androidx.cardview.widget.CardView>
+            <Button
+                android:id="@+id/button"
+                style="?attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="40dp"
+                android:text="@string/add_paper_proof_explanation_self_printed_button"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/item_mail" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

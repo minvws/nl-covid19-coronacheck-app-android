@@ -32,7 +32,7 @@ sealed class EventsResult {
         fun accessTokenSessionExpiredError(): Boolean {
             val accessTokenCallError = errorResults.find { it.getCurrentStep() == HolderStep.AccessTokensNetworkRequest }
             accessTokenCallError?.let {
-                return hasErrorCode(it, 99708)
+                return hasErrorCode(it, 99710)
             }
             return false
         }

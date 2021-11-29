@@ -3,16 +3,19 @@ package nl.rijksoverheid.ctr.holder.ui.myoverview.utils
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.holder.*
+import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem.GreenCardExpiredItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem.CardsItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem.CardsItem.CardItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem.HeaderItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventVaccination
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.DashboardItemUtilImpl
+import nl.rijksoverheid.ctr.shared.models.AppErrorResult
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Test
+import java.lang.IllegalStateException
 import java.time.OffsetDateTime
 import kotlin.test.assertTrue
 
@@ -205,14 +208,13 @@ class DashboardItemUtilImplTest {
             CardsItem(listOf(card1)),
             CardsItem(listOf(createCardItem(OriginType.Recovery))),
             CardsItem(listOf(card2)),
-            GreenCardExpiredItem(mockk()),
             CardsItem(listOf(card3))
         )
 
         val combinedItems = util.combineEuVaccinationItems(items)
 
         // Total size of list smaller because of combined vaccination items
-        assertTrue(combinedItems.size == 5)
+        assertTrue(combinedItems.size == 4)
         assertEquals((combinedItems[2] as CardsItem).cards[0], card1)
         assertEquals((combinedItems[2] as CardsItem).cards[1], card2)
         assertEquals((combinedItems[2] as CardsItem).cards[2], card3)
@@ -368,6 +370,96 @@ class DashboardItemUtilImplTest {
         assertEquals(true, shouldAddGreenCardsSyncedItem)
     }
 
+    @Test
+    fun `shouldShowMissingDutchVaccinationItem returns true if no nl vaccination card and there is a eu vaccination card`() {
+        val util = dashboardItemUtil()
+
+        val shouldShowMissingDutchVaccinationItem = util.shouldShowMissingDutchVaccinationItem(
+            domesticGreenCards = listOf(fakeDomesticTestGreenCard),
+            euGreenCards = listOf(fakeEuropeanVaccinationGreenCard),
+        )
+
+        assertTrue(shouldShowMissingDutchVaccinationItem)
+    }
+
+    @Test
+    fun `shouldShowMissingDutchVaccinationItem returns false if there is a nl vaccination card`() {
+        val util = dashboardItemUtil()
+
+        val shouldShowMissingDutchVaccinationItem = util.shouldShowMissingDutchVaccinationItem(
+            domesticGreenCards = listOf(fakeDomesticVaccinationGreenCard),
+            euGreenCards = listOf(fakeEuropeanVaccinationGreenCard),
+        )
+
+        assertFalse(shouldShowMissingDutchVaccinationItem)
+    }
+
+    @Test
+    fun `shouldShowMissingDutchVaccinationItem returns false if there is no eu vaccination card`() {
+        val util = dashboardItemUtil()
+
+        val shouldShowMissingDutchVaccinationItem = util.shouldShowMissingDutchVaccinationItem(
+            domesticGreenCards = listOf(fakeDomesticTestGreenCard),
+            euGreenCards = listOf(fakeEuropeanVaccinationTestCard),
+        )
+
+        assertFalse(shouldShowMissingDutchVaccinationItem)
+    }
+
+    @Test
+    fun `shouldShowCoronaMelderItem returns false if there are no green cards`() {
+        val util = dashboardItemUtil()
+
+        val shouldShowCoronaMelderItem = util.shouldShowCoronaMelderItem(
+            greenCards = listOf(),
+            databaseSyncerResult = DatabaseSyncerResult.Success()
+        )
+
+        assertFalse(shouldShowCoronaMelderItem)
+    }
+
+    @Test
+    fun `shouldShowCoronaMelderItem returns false if all green cards expired`() {
+        val util = dashboardItemUtil(
+            isExpired = true
+        )
+
+        val shouldShowCoronaMelderItem = util.shouldShowCoronaMelderItem(
+            greenCards = listOf(fakeDomesticVaccinationGreenCard),
+            databaseSyncerResult = DatabaseSyncerResult.Success()
+        )
+
+        assertFalse(shouldShowCoronaMelderItem)
+    }
+
+    @Test
+    fun `shouldShowCoronaMelderItem returns false if green cards but with error DatabaseSyncerResult`() {
+        val util = dashboardItemUtil(
+            isExpired = false
+        )
+
+        val shouldShowCoronaMelderItem = util.shouldShowCoronaMelderItem(
+            greenCards = listOf(fakeDomesticVaccinationGreenCard),
+            databaseSyncerResult = DatabaseSyncerResult.Failed.Error(AppErrorResult(HolderStep.GetCredentialsNetworkRequest, IllegalStateException()))
+        )
+
+        assertFalse(shouldShowCoronaMelderItem)
+    }
+
+    @Test
+    fun `shouldShowCoronaMelderItem returns true if green cards`() {
+        val util = dashboardItemUtil(
+            isExpired = false
+        )
+
+        val shouldShowCoronaMelderItem = util.shouldShowCoronaMelderItem(
+            greenCards = listOf(fakeDomesticVaccinationGreenCard),
+            databaseSyncerResult = DatabaseSyncerResult.Success()
+        )
+
+        assertTrue(shouldShowCoronaMelderItem)
+    }
+
     private fun createCardItem(originType: OriginType) = CardItem(
         greenCard = GreenCard(
             greenCardEntity = fakeGreenCardEntity,
@@ -385,5 +477,17 @@ class DashboardItemUtilImplTest {
         originStates = listOf(),
         credentialState = CardsItem.CredentialState.HasCredential(mockk()),
         databaseSyncerResult = mockk()
+    )
+
+    private fun dashboardItemUtil(isExpired: Boolean = false) = DashboardItemUtilImpl(
+        clockDeviationUseCase = fakeClockDevationUseCase(),
+        greenCardUtil = fakeGreenCardUtil(
+            isExpired = isExpired
+        ),
+        persistenceManager = fakePersistenceManager(
+            hasDismissedUnsecureDeviceDialog = false
+        ),
+        eventGroupEntityUtil = fakeEventGroupEntityUtil(),
+        appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase()
     )
 }

@@ -70,7 +70,7 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
 
     @Test
     fun europeanTest() {
-        every { credentialUtil.getTestTypeForEuropeanCredentials(any()) } returns "NAAT"
+        every { credentialUtil.getTestTypeForEuropeanCredentials(any()) } returns "PCR (NAAT)"
         val greenCard = greenCard(GreenCardType.Eu)
         myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(AdapterCard(greenCard, listOf(OriginState.Valid(greenCard.origins.first())))))
 

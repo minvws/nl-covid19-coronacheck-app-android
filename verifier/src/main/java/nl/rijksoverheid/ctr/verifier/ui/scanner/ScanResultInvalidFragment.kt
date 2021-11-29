@@ -8,9 +8,10 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
-import nl.rijksoverheid.ctr.design.utils.BottomSheetData
-import nl.rijksoverheid.ctr.design.utils.BottomSheetDialogUtil
-import nl.rijksoverheid.ctr.design.utils.DescriptionData
+import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
+import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
+import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
+import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtilImpl
 import nl.rijksoverheid.ctr.shared.ext.getDimensionPixelSize
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.verifier.BuildConfig
@@ -29,7 +30,7 @@ import java.util.concurrent.TimeUnit
  */
 class ScanResultInvalidFragment : Fragment(R.layout.fragment_scan_result_invalid) {
 
-    private val bottomSheetDialogUtil: BottomSheetDialogUtil by inject()
+    private val infoFragmentUtil: InfoFragmentUtil by inject()
 
     private val autoCloseHandler = Handler(Looper.getMainLooper())
     private val autoCloseRunnable = Runnable { navigateToScanner() }
@@ -72,8 +73,8 @@ class ScanResultInvalidFragment : Fragment(R.layout.fragment_scan_result_invalid
             }
             is ScanResultInvalidData.Error -> {
                 binding.bottom.setSecondaryButtonClick {
-                    bottomSheetDialogUtil.present(childFragmentManager,
-                        BottomSheetData.TitleDescription(
+                    infoFragmentUtil.presentAsBottomSheet(childFragmentManager,
+                        InfoFragmentData.TitleDescription(
                             title = getString(R.string.scan_result_invalid_reason_title),
                             descriptionData = DescriptionData(R.string.scan_result_invalid_reason_description),
                         ))

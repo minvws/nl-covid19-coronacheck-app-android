@@ -1,0 +1,22 @@
+NB: this is the FOSS version for F-Droid, which removes non-free images and proprietary dependencies, and uses zxing to scan barcodes instead.
+
+CoronaCheck Scanner is de officiële bewijs scanner van Nederland, ontwikkeld door het Ministerie van Volksgezondheid, Welzijn en Sport. Het is een digitaal hulpmiddel om te controleren of mensen gevaccineerd of getest op corona zijn. Zo kunnen bepaalde locaties in Nederland weer bezoekers toelaten. Ook kunnen Nederlanders weer op reis.
+
+Hoe werkt de app?
+
+- Vraag de bezoeker een coronabewijs te laten zien
+Bij de ingang (of aan de grens) moet de bezoeker bewijzen dat hij of zij gevaccineerd is, op het moment van testen geen corona had of juist al eerder corona heeft gehad. Het bewijs staat in de CoronaCheck-app – in de vorm van een QR-code. Deze kan op veilige afstand gecontroleerd worden.
+
+- Scan QR-code voor toegang
+Met deze app scan je de QR-codes van bezoekers. Bij een groen scherm mag de bezoeker toegang of doorgang krijgen. De QR-code moet binnen 40 uur na het moment van testen gescand zijn. Bij een vaccinatie is de QR-code minstens 1 jaar geldig.
+
+- Check of de QR-code geldig is
+Een groen scherm betekent dat de QR-code geldig is. Oftewel: de bezoeker is gevaccineerd, heeft al corona gehad of is in de afgelopen 40 uur negatief getest (geen corona). Zie je een rood scherm op je toestel? Dan heeft de bezoeker geen geldig bewijs.
+
+Zo gebruikt de app gegevens
+
+Je mag gegevens van de bezoeker alleen gebruiken voor controle van het bewijs
+De gegevens van de bezoeker worden nergens centraal opgeslagen
+Er worden geen locatiegegevens gebruikt of bewaard.
+
+Privacybeleid: https://coronacheck.nl/nl/gebruikersvoorwaarden

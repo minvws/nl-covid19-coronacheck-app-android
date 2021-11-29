@@ -33,7 +33,8 @@ class CreateDomesticGreenCardUseCaseImpl(
                     type = remoteOrigin.type,
                     eventTime = remoteOrigin.eventTime,
                     expirationTime = remoteOrigin.expirationTime,
-                    validFrom = remoteOrigin.validFrom
+                    validFrom = remoteOrigin.validFrom,
+                    doseNumber = remoteOrigin.doseNumber
                 )
             )
         }

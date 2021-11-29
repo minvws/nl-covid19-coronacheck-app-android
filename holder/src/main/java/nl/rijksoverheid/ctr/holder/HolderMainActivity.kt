@@ -68,7 +68,7 @@ class HolderMainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        if (BuildConfig.FLAVOR == "prod") {
+        if (BuildConfig.FLAVOR.lowercase().contains("prod")) {
             window.setFlags(
                 WindowManager.LayoutParams.FLAG_SECURE,
                 WindowManager.LayoutParams.FLAG_SECURE
@@ -118,8 +118,6 @@ class HolderMainActivity : AppCompatActivity() {
                 )
             }
         })
-
-
     }
 
     private fun handleAppStatus(

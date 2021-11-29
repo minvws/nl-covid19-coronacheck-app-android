@@ -23,13 +23,13 @@ class EventGroupEntityUtilImpl(
         try {
             // DCC only has 1 vaccination event inside the group
             val dccVaccinationEvents = eventGroupEntities
-                .filter { it.providerIdentifier == RemoteConfigProviders.EventProvider.PROVIDER_IDENTIFIER_DCC }
+                .filter { it.providerIdentifier.contains(RemoteConfigProviders.EventProvider.PROVIDER_IDENTIFIER_DCC) }
                 .filter { it.type == OriginType.Vaccination }
 
             // Non DCC can have multiple vaccinations inside the group (get it from the stored json)
             val nonDccVaccinationEvents = eventGroupEntities
                 .asSequence()
-                .filter { it.providerIdentifier != RemoteConfigProviders.EventProvider.PROVIDER_IDENTIFIER_DCC }
+                .filter { !it.providerIdentifier.contains(RemoteConfigProviders.EventProvider.PROVIDER_IDENTIFIER_DCC) }
                 .filter { it.type == OriginType.Vaccination }
                 .map { remoteEventUtil.getRemoteEventsFromNonDcc(it) }
                 .flatten()
