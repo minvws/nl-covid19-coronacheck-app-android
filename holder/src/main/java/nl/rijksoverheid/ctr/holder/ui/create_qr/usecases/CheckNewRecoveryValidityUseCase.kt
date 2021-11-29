@@ -47,7 +47,7 @@ class CheckNewRecoveryValidityUseCaseImpl(
 
             // Check if we have a valid recovery event stored, if so it means we are eligible to upgrade our validity
             // Hotfix: hkvi scans aren’t eligible because the underlying document expires after 180 days
-            val hasRecoveryEvent = allEvents.any { it.type is OriginType.Recovery && it.providerIdentifier != PROVIDER_IDENTIFIER_DCC }
+            val hasRecoveryEvent = allEvents.any { it.type is OriginType.Recovery && !it.providerIdentifier.contains(PROVIDER_IDENTIFIER_DCC) }
 
             // Get our domestic green card (which have multiple origins)
             val domesticGreenCard = holderDatabase
@@ -76,9 +76,9 @@ class CheckNewRecoveryValidityUseCaseImpl(
     }
 
     /**
-     * If the user has upgraded to 2.5.1, we have done the check already, so he will see
+     * If the user has upgraded to 2.5.1+ and we have done the check already, he will see
      * the banner to extend his recovery. We need to allow the check again, in order to
-     * prevent showing the banner for the recovery paper certificates.
+     * prevent showing the banner for the paper recovery certificates.
      */
     override suspend fun checkIfNeedToReAllowRecoveryExtensionCheck() {
         if (persistenceManager.getShouldCheckRecoveryGreenCardRevisedValidity()) {
@@ -88,7 +88,7 @@ class CheckNewRecoveryValidityUseCaseImpl(
 
         removeExpiredEventsUseCase.execute(allEvents)
 
-        val hasPaperRecoveryEvent = allEvents.any { it.type is OriginType.Recovery && it.providerIdentifier == PROVIDER_IDENTIFIER_DCC }
+        val hasPaperRecoveryEvent = allEvents.any { it.type is OriginType.Recovery && it.providerIdentifier.contains(PROVIDER_IDENTIFIER_DCC) }
 
         if (hasPaperRecoveryEvent) {
             persistenceManager.setShowExtendDomesticRecoveryInfoCard(false)

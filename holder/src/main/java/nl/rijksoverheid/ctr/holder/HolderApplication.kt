@@ -105,10 +105,8 @@ open class HolderApplication : SharedApplication(), Configuration.Provider {
 
             testResultsMigrationManager.removeOldCredential()
 
-            // only for 2.5.2 hotfix
-            if (BuildConfig.VERSION_NAME.contains("2.5.2") ) {
-                checkNewRecoveryValidityUseCase.checkIfNeedToReAllowRecoveryExtensionCheck()
-            }
+            // check to prevent showing extension option for paper recovery certificates
+            checkNewRecoveryValidityUseCase.checkIfNeedToReAllowRecoveryExtensionCheck()
         }
 
         if (appConfigStorageManager.areConfigFilesPresentInFilesFolder()) {
