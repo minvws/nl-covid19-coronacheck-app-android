@@ -77,7 +77,7 @@ android {
         fdroidAcc {
             dimension "environment"
             versionNameSuffix "-fdroid"
-            applicationIdSuffix ".test"
+            applicationIdSuffix ".fdroid.acc"
             manifestPlaceholders = [appLabel: "@string/app_name_acc"]
             buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.acc.coronacheck.nl/v6/\""
             buildConfigField "String", "CDN_API_URL", "\"https://verifier-api-cdn.acc.coronacheck.nl/v6/\""

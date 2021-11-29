@@ -152,7 +152,7 @@ jobs:
       - name: Distribute holder fdroid acc variant
         run: |
           firebase appdistribution:distribute `ls apks/holder/build/outputs/apk/fdroidAcc/release/holder-*.apk` \
-          --app 1:168257592968:android:cbb6d05f4163e39026493d \
+          --app 1:168257592968:android:28c578809115867926493d \
           --token $FIREBASE_TOKEN \
           --groups testers
 
@@ -173,7 +173,7 @@ jobs:
       - name: Distribute verifier fdroid acc variant
         run: |
           firebase appdistribution:distribute `ls apks/verifier/build/outputs/apk/fdroidAcc/release/verifier-*.apk` \
-          --app 1:168257592968:android:ed609f228437d86f26493d \
+          --app 1:168257592968:android:a5a6c5d5af1c18c726493d \
           --token $FIREBASE_TOKEN \
           --groups testers
 
