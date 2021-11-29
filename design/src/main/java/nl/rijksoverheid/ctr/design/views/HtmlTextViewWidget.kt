@@ -150,7 +150,7 @@ class HtmlTextViewWidget @JvmOverloads constructor(
                 if (htmlTextColor > NO_ID) {
                     context.getColor(htmlTextColor)
                 } else {
-                    context.getColor(R.color.secondary_text)
+                    context.getColor(R.color.primary_text)
                 }
             )
             textView.setLinkTextColor(htmlTextColorLink)
