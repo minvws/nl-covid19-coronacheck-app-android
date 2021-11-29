@@ -295,14 +295,18 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             }
             is DomesticVaccinationRecoveryCombination.OnlyVaccination -> {
                 navigateSafety(
-                    YourEventsFragmentDirections.actionCertificateCreated(
-                        toolbarTitle = getString(R.string.international_certificate_created_toolbar_title),
-                        title = getString(R.string.certificate_created_vaccination_title),
-                        description = getString(
-                            R.string.certificate_created_vaccination_description,
-                            databaseSyncerResult.domesticVaccinationRecovery.recoveryValidityDays.toString()
+                    if (args.afterIncompleteVaccination) {
+                        YourEventsFragmentDirections.actionMyOverview()
+                    } else {
+                        YourEventsFragmentDirections.actionCertificateCreated(
+                            toolbarTitle = getString(R.string.international_certificate_created_toolbar_title),
+                            title = getString(R.string.certificate_created_vaccination_title),
+                            description = getString(
+                                R.string.certificate_created_vaccination_description,
+                                databaseSyncerResult.domesticVaccinationRecovery.recoveryValidityDays.toString()
+                            )
                         )
-                    )
+                    }
                 )
             }
             DomesticVaccinationRecoveryCombination.NotApplicable -> {
