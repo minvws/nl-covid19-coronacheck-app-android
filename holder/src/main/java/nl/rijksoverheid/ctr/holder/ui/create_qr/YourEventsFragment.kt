@@ -281,11 +281,16 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             }
             DomesticVaccinationRecoveryCombination.OnlyRecovery -> {
                 navigateSafety(
-                    YourEventsFragmentDirections.actionCertificateCreated(
-                        toolbarTitle = getString(R.string.international_certificate_created_toolbar_title),
-                        title = getString(R.string.certificate_created_recovery_title),
-                        description = getString(R.string.certificate_created_recovery_description)
-                    )
+                    if (args.afterIncompleteVaccination) {
+                        YourEventsFragmentDirections.actionCertificateCreated(
+                            toolbarTitle = getString(R.string.international_certificate_created_toolbar_title),
+                            title = getString(R.string.certificate_created_recovery_title),
+                            description = getString(R.string.certificate_created_recovery_description)
+                        )
+                    } else {
+                        // When not coming from a vaccination completion flow, navigate directly to dashboard
+                        YourEventsFragmentDirections.actionMyOverview()
+                    }
                 )
             }
             is DomesticVaccinationRecoveryCombination.OnlyVaccination -> {
