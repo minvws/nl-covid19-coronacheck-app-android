@@ -156,7 +156,24 @@ class GetMijnCnEventsUseCaseImplTest {
     }
 
 
+    @Test
+    fun `given getRemoteEvents call returns MijnCnMissingData error then returns EventsResultError`() = runBlocking {
+        val (provider1, provider2) = mockProvidersResult()
+        val httpError = mijnCnMissingData()
+        coEvery { getRemoteEventsUseCase.getRemoteEvents(provider1, any(), any()) } returns RemoteEventsResult.Error(httpError)
+        coEvery { getRemoteEventsUseCase.getRemoteEvents(provider2, any(), any()) } returns RemoteEventsResult.Error(httpError)
 
+        coEvery { configProvidersUseCase.eventProvidersBES() } returns EventProvidersResult.Success(
+            listOf(eventProvider1, eventProvider2))
+
+        val eventsResult = getEvents()
+
+        assertEquals(
+            EventsResult.Error(listOf(httpError, httpError)),
+            eventsResult
+        )
+        assertEquals((eventsResult as EventsResult.Error).isMijnCnMissingDataErrors(), true)
+    }
 
     private fun httpError(): NetworkRequestResult.Failed {
         val httpException = HttpException(
@@ -168,7 +185,17 @@ class GetMijnCnEventsUseCaseImplTest {
             HolderStep.UnomiNetworkRequest, httpException
         )
     }
-    
+
+    private fun mijnCnMissingData(): NetworkRequestResult.Failed {
+        val httpException = HttpException(
+            Response.error<String>(
+                500, "".toResponseBody()
+            )
+        )
+        return NetworkRequestResult.Failed.CoronaCheckWithErrorResponseHttpError(
+            HolderStep.EventNetworkRequest, httpException, CoronaCheckErrorResponse("", 777706)
+        )
+    }
 
     private suspend fun mockProvidersResult(): Pair<RemoteConfigProviders.EventProvider, RemoteConfigProviders.EventProvider> {
         coEvery { configProvidersUseCase.eventProviders() } returns EventProvidersResult.Success(remoteEventProviders)
