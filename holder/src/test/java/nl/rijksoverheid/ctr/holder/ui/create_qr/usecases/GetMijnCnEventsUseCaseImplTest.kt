@@ -102,7 +102,73 @@ class GetMijnCnEventsUseCaseImplTest {
         )
     }
 
+    @Test
+    fun `given getRemoteEvents call returns one missing event and one error then getEvents returns EventsResultHasNoEvents`() = runBlocking {
+        val (provider1, provider2) = mockProvidersResult()
+        val signedModel1: SignedResponseWithModel<RemoteProtocol3> = mockk<SignedResponseWithModel<RemoteProtocol3>>().apply {
+            coEvery { model.events } returns listOf()
+        }
 
+        val httpError = httpError()
+        coEvery { getRemoteEventsUseCase.getRemoteEvents(provider1, any(), any()) } returns RemoteEventsResult.Success(signedModel1)
+        coEvery { getRemoteEventsUseCase.getRemoteEvents(provider2, any(), any()) } returns RemoteEventsResult.Error(httpError)
+        coEvery { configProvidersUseCase.eventProvidersBES() } returns EventProvidersResult.Success(
+            listOf(eventProvider1, eventProvider2))
+
+        val eventsResult = getEvents()
+
+        assertEquals(
+            EventsResult.HasNoEvents(true, listOf(httpError)),
+            eventsResult
+        )
+    }
+
+    @Test
+    fun `given getRemoteEvents call returns two errors then getEvents returns EventsResultError`() = runBlocking {
+        val (provider1, provider2) = mockProvidersResult()
+        coEvery { configProvidersUseCase.eventProvidersBES() } returns EventProvidersResult.Success(
+            listOf(eventProvider1, eventProvider2))
+
+        val httpError = httpError()
+        coEvery { getRemoteEventsUseCase.getRemoteEvents(provider1, any(), any()) } returns RemoteEventsResult.Error(httpError)
+        coEvery { getRemoteEventsUseCase.getRemoteEvents(provider2, any(), any()) } returns RemoteEventsResult.Error(httpError)
+
+        val eventsResult = getEvents()
+
+        assertEquals(
+            EventsResult.Error(listOf(httpError, httpError)),
+            eventsResult
+        )
+    }
+
+    @Test
+    fun `given configProviders with no matching provider identifiers, when getEvents, then returns no provider error`() = runBlocking {
+        val eventProvider = eventProvider1.copy(usage = listOf(""))
+        coEvery { configProvidersUseCase.eventProvidersBES() } returns EventProvidersResult.Success(listOf(eventProvider))
+        val remoteAccessTokens = RemoteAccessTokens(listOf())
+        val tokensResult = NetworkRequestResult.Success(remoteAccessTokens)
+        coEvery { coronaCheckRepository.accessTokens("jwt") } returns tokensResult
+
+        val eventsResult = getEvents()
+
+        val exception = (eventsResult as EventsResult.Error).errorResults.first().getException()
+        assertTrue(exception is NoProvidersException.Test)
+    }
+
+
+
+
+    private fun httpError(): NetworkRequestResult.Failed {
+        val httpException = HttpException(
+            Response.error<String>(
+                404, "".toResponseBody()
+            )
+        )
+        return NetworkRequestResult.Failed.CoronaCheckHttpError(
+            HolderStep.UnomiNetworkRequest, httpException
+        )
+    }
+    
 
     private suspend fun mockProvidersResult(): Pair<RemoteConfigProviders.EventProvider, RemoteConfigProviders.EventProvider> {
         coEvery { configProvidersUseCase.eventProviders() } returns EventProvidersResult.Success(remoteEventProviders)
