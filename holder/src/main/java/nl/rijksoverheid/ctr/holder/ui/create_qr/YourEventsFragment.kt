@@ -296,6 +296,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             is DomesticVaccinationRecoveryCombination.OnlyVaccination -> {
                 navigateSafety(
                     if (args.afterIncompleteVaccination) {
+                        // When coming from a vaccination completion flow, navigate directly to dashboard
                         YourEventsFragmentDirections.actionMyOverview()
                     } else {
                         YourEventsFragmentDirections.actionCertificateCreated(
