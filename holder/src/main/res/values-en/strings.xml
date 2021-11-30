@@ -174,7 +174,7 @@
     <string name="url_privacy_statement">https://coronacheck.nl/en/privacy-in-app</string>
     <string name="url_make_appointment">https://coronacheck.nl/en/testafspraak-in-app</string>
     <string name="dialog_verification_code_title">Didn’t receive a verification code?</string>
-    <string name="dialog_verification_code_message">You receive the verification code via text or e-mail. Didn\'t get one? Click ‘send again’ below for a new code.</string>
+    <string name="dialog_verification_code_message">You receive the verification code via text or email. Didn\'t get one? Click ‘send again’ below for a new code.</string>
     <string name="dialog_verification_code_positive_button">Send again</string>
     <string name="commercial_test_verification_code_description_deeplink">Enter your verification code to retrieve your negative test result.</string>
     <string name="dialog_rooted_device_title">There are security risks</string>
@@ -550,7 +550,7 @@
     <string name="retrieve_test_result_toolbar_title">Retrieve test result</string>
     <string name="retrieve_test_result_title">Retrieve details about your positive test</string>
     <string name="retrieve_test_result_description">Log in with DigiD. Details about your positive test will be retrieved automatically.</string>
-    <string name="dashboard_coronamelder_tip"><![CDATA[<b>Tip:</b> Prevent the spread of coronavirus, <a href="https://coronamelder.nl/app">use CoronaMelder too</a>.]]></string>
+    <string name="dashboard_coronamelder_tip"><![CDATA[<b>Tip:</b> Prevent the spread of coronavirus, use <a href="https://coronamelder.nl/app">CoronaMelder</a> too.]]></string>
     <string name="certificate_created_vaccination_title">Vaccination certificate instead of recovery certificate</string>
     <string name="certificate_created_vaccination_description"><![CDATA[You were tested positive for coronavirus longer than %1s days ago. That is why your test result is no longer valid for creating a recovery certificate.<br><br>Because you were tested positive before your first vaccination, one shot means you’re fully vaccinated. Therefore, a full vaccination certificate has been created instead.<br><br>For more information, please check the <a href="https://coronacheck.nl/en/guidepost"> Guidepost</a>.]]></string>
     <string name="no_certificate_created_toolbar_title">No certificate created</string>
