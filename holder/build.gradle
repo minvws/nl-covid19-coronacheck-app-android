@@ -80,7 +80,8 @@ android {
             buildConfigField "String", "MIJNCN_BASEURL", "\"https://emax.acc.coronacheck.nl\""
             buildConfigField "String[]", "CERTIFICATE_PINS",
                     "{" +
-                            "\"sha256/lR7gRvqDMW5nhsCMRPE7TKLq0tJkTWMxQ5HAzHCIfQ0=\"" +
+                            "\"sha256/lR7gRvqDMW5nhsCMRPE7TKLq0tJkTWMxQ5HAzHCIfQ0=\"," +
+                            "\"sha256/b71OlvKU9MLzlEaRak/ouJnaI+Wjmnyj/JtjmByBQ44=\"" +
                             "}"
             dimension "environment"
             versionNameSuffix "-acc"
@@ -89,7 +90,6 @@ android {
             apply plugin: 'com.google.gms.google-services'
             apply plugin: 'com.google.firebase.crashlytics'
             matchingFallbacks = ['mlkit']
-            buildConfigField "boolean", "FEATURE_TEST_PROVIDER_API_CHECKS", "false"
         }
         fdroidAcc {
             buildConfigField "String", "BASE_API_URL", "\"https://holder-api.acc.coronacheck.nl/v6/\""

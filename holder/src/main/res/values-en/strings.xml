@@ -562,4 +562,11 @@
     <string name="rule_engine_no_test_origin_description_negative_test">negative test result</string>
     <string name="rule_engine_no_test_origin_description_vaccination">vaccination</string>
     <string name="rule_engine_no_test_origin_description_positive_test">positive test result</string>
+    <string name="no_digid_page_title">Ik heb geen DigiD</string>
+    <string name="no_digid_page_description"><![CDATA[Wanneer je in Nederland woont kan je een DigiD aanvragen.<br\><br\>Woon je in Caribisch Nederland? Dan kan je inloggen met MijnCN.]]></string>
+    <string name="no_digid_nodigid_button_title">Ik ben in Nederland ingeschreven </string>
+    <string name="no_digid_nodigid_button_description">DigiD aanvragen</string>
+    <string name="no_digid_mijncn_button_title">Ik ben in Caribisch Nederland ingeschreven</string>
+    <string name="no_digid_mijncn_button_description">Je wordt doorverwezen naar MijnCN</string>
+    <string name="mijncn_error_missing_data_description"><![CDATA[Op dit moment kunnen we geen bewijs maken omdat er gegevens ontbreken.<br/><br/>Neem contact op met je openbaar lichaam en geef de foutcode door. Zij kunnen dan de gegevens controleren.<br/><br/><b>Foutcode:</b><br/>%1s<br/><br/><a href=“#”>Openbaar lichaam Sint Bonaire</a><br/><br/><a href=“#”>Openbaar lichaam Sint Eustatius</a><br/><br/><a href=“#”>Openbaar lichaam Sint Saba</a><br/><br/>]]></string>
 </resources>

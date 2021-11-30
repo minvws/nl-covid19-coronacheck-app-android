@@ -67,7 +67,7 @@ class MijnCNAuthenticationRepository(
         return suspendCoroutine { continuation ->
             when (res) {
                 is NetworkRequestResult.Success -> continuation.resume(res.response.id_token)
-                is NetworkRequestResult.Failed -> continuation.resumeWithException(Exception("We failed"))
+                is NetworkRequestResult.Failed -> continuation.resumeWithException(Exception("Failed to get JWT"))
             }
 
 //            authService.performTokenRequest(authResponse.createTokenExchangeRequest()) { resp, error ->

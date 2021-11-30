@@ -53,7 +53,8 @@ class GetEventsViewModelImpl(
                 } else {
                     mijnCnEventsUsecase.getEvents(
                         jwt = jwt,
-                        originType = originType
+                        originType = originType,
+                        withIncompleteVaccination = withIncompleteVaccination
                     )
                 }
 

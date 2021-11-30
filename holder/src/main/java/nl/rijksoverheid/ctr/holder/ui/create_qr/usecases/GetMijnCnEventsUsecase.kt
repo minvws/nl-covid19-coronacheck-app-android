@@ -4,6 +4,7 @@ import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
+import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.EventProviderRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.RemoteEventUtil
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
@@ -28,6 +29,7 @@ interface GetMijnCnEventsUsecase {
     suspend fun getEvents(
         jwt: String,
         originType: OriginType,
+        withIncompleteVaccination: Boolean
     ): EventsResult
 }
 
@@ -41,6 +43,7 @@ class GetMijnCnEventsUsecaseImpl(
     override suspend fun getEvents(
         jwt: String,
         originType: OriginType,
+        withIncompleteVaccination: Boolean
     ): EventsResult {
         // Fetch event providers
         val eventProvidersResult = configProvidersUseCase.eventProvidersBES()
@@ -63,7 +66,9 @@ class GetMijnCnEventsUsecaseImpl(
 
         return if (eventProviders.isNotEmpty()) {
             // We have received providers that claim to have events for us so we get those events for each provider
-            val eventResults = eventProviders.map { eventProvider ->
+            val filter = EventProviderRepository.getFilter(originType, withIncompleteVaccination)
+
+                val eventResults = eventProviders.map { eventProvider ->
                 getRemoteEventsUseCase.getRemoteEvents(
                     eventProvider = eventProvider,
                     token = RemoteAccessTokens.Token(
@@ -71,7 +76,7 @@ class GetMijnCnEventsUsecaseImpl(
                         unomi = "",
                         event = jwt
                     ),
-                    originType = originType
+                    filter = filter
                 )
             }
 
@@ -102,26 +107,6 @@ class GetMijnCnEventsUsecaseImpl(
                         errorResults = errorResults
                     )
                 } else {
-                    val recoveryEvent =
-                        allEvents.filterIsInstance(RemoteEventRecovery::class.java).firstOrNull()
-                    val positiveTestEvent =
-                        allEvents.filterIsInstance(RemoteEventPositiveTest::class.java)
-                            .firstOrNull()
-
-                    recoveryEvent?.let {
-                        // If we have a recovery event that is expired, it means we cannot create a recovery proof
-                        if (remoteEventUtil.isRecoveryEventExpired(it)) {
-                            return EventsResult.CannotCreateRecovery(cachedAppConfigUseCase.getCachedAppConfig().recoveryEventValidityDays)
-                        }
-                    }
-
-                    positiveTestEvent?.let {
-                        // If we have a positive test event that is expired, it means we cannot create a recovery proof
-                        if (remoteEventUtil.isPositiveTestEventExpired(it)) {
-                            return EventsResult.CannotCreateRecovery(cachedAppConfigUseCase.getCachedAppConfig().recoveryEventValidityDays)
-                        }
-                    }
-
                     // We do have events
                     EventsResult.Success(
                         signedModels = signedModels,

@@ -138,16 +138,6 @@ class NoDigiDFragment : DigiDFragment(R.layout.fragment_no_digid) {
                        Timber.d("MEssed up missingevents")
                     }
                 }
-                is EventsResult.CannotCreateRecovery -> {
-                    presentError(
-                        data = ErrorResultFragmentData(
-                            title = getString(R.string.cannot_create_recovery_proof_title),
-                            description = getString(R.string.cannot_create_recovery_proof_description, it.validityDays.toString()),
-                            buttonTitle = getString(R.string.back_to_overview),
-                            ErrorResultFragmentData.ButtonAction.Destination(R.id.action_my_overview),
-                        )
-                    )
-                }
                 is EventsResult.Error -> {
                     when {
                         it.accessTokenSessionExpiredError() -> {
