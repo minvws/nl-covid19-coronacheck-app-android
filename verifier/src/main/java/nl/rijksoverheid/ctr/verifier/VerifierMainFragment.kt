@@ -26,6 +26,7 @@ import nl.rijksoverheid.ctr.design.ext.isScreenReaderOn
 import nl.rijksoverheid.ctr.design.ext.styleTitle
 import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppData
 import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppFragment
+import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppFragmentDirections
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentMainBinding
 import org.koin.android.ext.android.inject
@@ -125,19 +126,33 @@ class VerifierMainFragment :
                         data = AboutThisAppData(
                             versionName = BuildConfig.VERSION_NAME,
                             versionCode = BuildConfig.VERSION_CODE.toString(),
-                            readMoreItems = listOf(
-                                AboutThisAppData.Url(
-                                    text = getString(R.string.privacy_statement),
-                                    url = getString(R.string.url_terms_of_use),
+                            sections = listOf(
+                                AboutThisAppData.AboutThisAppSection(
+                                    header = R.string.about_this_app_read_more,
+                                    items = listOf(
+                                        AboutThisAppData.Url(
+                                            text = getString(R.string.privacy_statement),
+                                            url = getString(R.string.url_terms_of_use),
+                                        ),
+                                        AboutThisAppData.Url(
+                                            text = getString(R.string.about_this_app_accessibility),
+                                            url = getString(R.string.url_accessibility),
+                                        ),
+                                        AboutThisAppData.Url(
+                                            text = getString(R.string.about_this_app_colofon),
+                                            url = getString(R.string.about_this_app_colofon_url),
+                                        )
+                                    )
                                 ),
-                                AboutThisAppData.Url(
-                                    text = getString(R.string.about_this_app_accessibility),
-                                    url = getString(R.string.url_accessibility),
-                                ),
-                                AboutThisAppData.Url(
-                                    text = getString(R.string.about_this_app_colofon),
-                                    url = getString(R.string.about_this_app_colofon_url),
-                                ),
+                                AboutThisAppData.AboutThisAppSection(
+                                    header = R.string.verifier_about_this_app_law_enforcement,
+                                    items = listOf(
+                                        AboutThisAppData.Destination(
+                                            text = getString(R.string.verifier_about_this_app_scan_log),
+                                            destinationId = R.id.action_scan_log
+                                        )
+                                    )
+                                )
                             ),
                             configVersionHash = cachedAppConfigUseCase.getCachedAppConfigHash(),
                             configVersionTimestamp = appConfigPersistenceManager.getAppConfigLastFetchedSeconds()
