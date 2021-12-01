@@ -150,4 +150,6 @@
     <string name="risk_mode_selection_subtitle_from_menu">Geef aan of je op een hoog of laag risico plek gaat scannen.</string>
     <string name="risk_mode_new_feature_title">Risico instelling: laag en hoog risico</string>
     <string name="risk_mode_new_feature_subtitle">Geef aan of je op een hoog of laag risico plek gaat scannen. Je kunt het niveau later eventueel nog aanpassen.</string>
+    <string name="verifier_about_this_app_scan_log">Scan log</string>
+    <string name="verifier_about_this_app_law_enforcement">Voor handhaving</string>
 </resources>

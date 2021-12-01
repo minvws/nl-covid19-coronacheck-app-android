@@ -26,6 +26,9 @@ data class AboutThisAppData(
     sealed class AboutThisAppItem(open val text: String) : Parcelable
 
     @Parcelize
+    data class Destination(override val text: String, val destinationId: Int) : AboutThisAppItem(text)
+
+    @Parcelize
     data class Url(override val text: String, val url: String) : AboutThisAppItem(text)
 
     @Parcelize

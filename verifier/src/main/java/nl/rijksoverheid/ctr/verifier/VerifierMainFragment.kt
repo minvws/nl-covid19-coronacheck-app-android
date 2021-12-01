@@ -26,6 +26,7 @@ import nl.rijksoverheid.ctr.design.ext.isScreenReaderOn
 import nl.rijksoverheid.ctr.design.ext.styleTitle
 import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppData
 import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppFragment
+import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppFragmentDirections
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentMainBinding
 import org.koin.android.ext.android.inject
@@ -140,6 +141,15 @@ class VerifierMainFragment :
                                         AboutThisAppData.Url(
                                             text = getString(R.string.about_this_app_colofon),
                                             url = getString(R.string.about_this_app_colofon_url),
+                                        )
+                                    )
+                                ),
+                                AboutThisAppData.AboutThisAppSection(
+                                    header = R.string.verifier_about_this_app_law_enforcement,
+                                    items = listOf(
+                                        AboutThisAppData.Destination(
+                                            text = getString(R.string.verifier_about_this_app_scan_log),
+                                            destinationId = R.id.action_scan_log
                                         )
                                     )
                                 )
