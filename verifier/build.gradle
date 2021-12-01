@@ -45,6 +45,13 @@ android {
         ndk {
             debugSymbolLevel "FULL"
         }
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += ["room.schemaLocation":
+                                      "$projectDir/schemas".toString()]
+            }
+        }
     }
 
     signingConfigs {
@@ -136,6 +143,12 @@ dependencies {
     implementation "androidx.security:security-crypto:$security_crypto_version"
     implementation "com.google.mlkit:barcode-scanning:${mlkit_barcode_version}"
     implementation(platform("com.squareup.okhttp3:okhttp-bom:$okhttp_version"))
+    implementation "androidx.room:room-runtime:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
+    implementation "net.zetetic:android-database-sqlcipher:$sqlcypher_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    testImplementation "androidx.room:room-testing:$room_version"
+
 
     testImplementation "androidx.test:runner:$androix_test_version"
     testImplementation "junit:junit:$junit_version"
@@ -156,4 +169,7 @@ dependencies {
     accImplementation "com.google.firebase:firebase-crashlytics-ktx:$crashlytics_version"
 
     debugImplementation "androidx.fragment:fragment-testing:$fragment_version"
+
+    // Needed in order for room to work with Apple Sillicon M1
+    kapt "org.xerial:sqlite-jdbc:$sqlite_jdbc"
 }

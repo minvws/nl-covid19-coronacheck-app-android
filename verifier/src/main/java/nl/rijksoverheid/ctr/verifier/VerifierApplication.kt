@@ -1,5 +1,7 @@
 package nl.rijksoverheid.ctr.verifier
 
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.api.apiModule
 import nl.rijksoverheid.ctr.appconfig.*
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
@@ -10,11 +12,14 @@ import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.SharedApplication
 import nl.rijksoverheid.ctr.shared.sharedModule
 import nl.rijksoverheid.ctr.verifier.modules.*
+import nl.rijksoverheid.ctr.verifier.persistance.database.VerifierDatabase
+import nl.rijksoverheid.ctr.verifier.persistance.usecase.RandomKeyUseCase
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
+import timber.log.Timber
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -27,6 +32,8 @@ open class VerifierApplication : SharedApplication() {
 
     private val appConfigStorageManager: AppConfigStorageManager by inject()
     private val mobileCoreWrapper: MobileCoreWrapper by inject()
+    private val randomKeyUseCase: RandomKeyUseCase by inject()
+    private val verifierDatabase: VerifierDatabase by inject()
 
     override fun onCreate() {
         super.onCreate()
@@ -48,12 +55,19 @@ open class VerifierApplication : SharedApplication() {
                 introductionModule,
                 *getAdditionalModules().toTypedArray(),
                 designModule,
-                qrScannerModule
+                qrScannerModule,
+                storageModule
             )
         }
 
         if (appConfigStorageManager.areConfigFilesPresentInFilesFolder()) {
             mobileCoreWrapper.initializeVerifier(applicationContext.filesDir.path)
+        }
+
+        randomKeyUseCase.persist()
+
+        GlobalScope.launch {
+            Timber.v("AMOUNT: " + verifierDatabase.scanLogDao().getAll().size)
         }
     }
 
