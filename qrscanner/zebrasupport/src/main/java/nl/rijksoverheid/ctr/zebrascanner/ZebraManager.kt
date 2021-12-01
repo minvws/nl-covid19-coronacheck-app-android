@@ -197,7 +197,7 @@ class ZebraManagerImpl(
 
     override fun teardownZebraScanner() {
         if (isZebraDevice() && (zebraIntentSet)) {
-            suspendScanner()
+            // suspendScanner()  // this is now already done in the Fragment.onPause
             context.unregisterReceiver(dataWedgeResultBroadcastReceiver)
             context.unregisterReceiver(dataWedgeProfileResultBroadcastReceiver)
             zebraIntentSet = false

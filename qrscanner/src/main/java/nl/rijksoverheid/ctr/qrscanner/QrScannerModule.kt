@@ -10,9 +10,12 @@ package nl.rijksoverheid.ctr.qrscanner
 
 import nl.rijksoverheid.ctr.zebrascanner.ZebraManager
 import nl.rijksoverheid.ctr.zebrascanner.ZebraManagerImpl
+import nl.rijksoverheid.ctr.honeywellscanner.HoneywellManager
+import nl.rijksoverheid.ctr.honeywellscanner.HoneywellManagerImpl
 import org.koin.dsl.module
 
 val qrScannerModule = module {
     factory<QrCodeProcessor> { QrCodeProcessorImpl() }
     factory<ZebraManager> { ZebraManagerImpl(get()) }
+    factory<HoneywellManager> { HoneywellManagerImpl(get()) }
 }

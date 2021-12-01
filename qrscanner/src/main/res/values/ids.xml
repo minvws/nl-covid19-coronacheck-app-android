@@ -11,4 +11,5 @@
     <item name="accessibility_flash_off" type="string" />
     <item name="back" type="string" />
     <item name="scanner_zebra_footer" type="string" />
+    <item name="scanner_honeywell_footer" type="string" />
 </resources>
