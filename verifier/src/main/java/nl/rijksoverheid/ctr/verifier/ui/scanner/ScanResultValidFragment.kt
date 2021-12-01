@@ -14,6 +14,7 @@ import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.utils.Accessibility
 import nl.rijksoverheid.ctr.shared.ext.setStatusBarTextColorBlack
 import nl.rijksoverheid.ctr.shared.ext.setStatusBarTextColorWhite
+import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.verifier.BuildConfig
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanResultValidBinding
@@ -28,8 +29,8 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
     private val binding get() = _binding!!
 
     private val persistenceManager: PersistenceManager by inject()
-    private val isHighRiskMode: Boolean by lazy {
-        persistenceManager.getHighRiskModeSelected()
+    private val verificationPolicy: VerificationPolicy by lazy {
+        persistenceManager.getVerificationPolicySelected()!!
     }
 
     private val args: ScanResultValidFragmentArgs by navArgs()
@@ -65,7 +66,7 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
             }
             is ScanResultValidData.Valid -> {
                 binding.title.text = getString(R.string.scan_result_valid_title)
-                if (isHighRiskMode) {
+                if (verificationPolicy == VerificationPolicy.VerificationPolicy2G) {
                     val whiteColor = ContextCompat.getColor(requireContext(), R.color.white)
                     val whiteColorStateList = ColorStateList.valueOf(whiteColor)
                     binding.image.imageTintList = whiteColorStateList
@@ -77,7 +78,7 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
                 binding.root.setBackgroundColor(
                     ContextCompat.getColor(
                         requireContext(),
-                        if (isHighRiskMode) {
+                        if (verificationPolicy == VerificationPolicy.VerificationPolicy2G) {
                             R.color.primary_blue
                         } else {
                             R.color.secondary_green

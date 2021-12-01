@@ -34,7 +34,7 @@ class VerifyQrUseCaseImpl(
     ): VerifyQrUseCase.VerifyQrResult = withContext(Dispatchers.IO) {
         try {
             VerifyQrUseCase.VerifyQrResult.Success(
-                mobileCoreWrapper.verify(content.toByteArray(), persistenceManager.getHighRiskModeSelected())
+                mobileCoreWrapper.verify(content.toByteArray(), persistenceManager.getVerificationPolicySelected()!!)
             )
         } catch (e: Exception) {
             VerifyQrUseCase.VerifyQrResult.Failed(e.toString())

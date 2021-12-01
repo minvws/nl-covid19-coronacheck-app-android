@@ -7,9 +7,12 @@ import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
 import com.adevinta.android.barista.assertion.BaristaBackgroundAssertions.assertHasBackground
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
+import io.mockk.every
 import io.mockk.mockk
+import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.fakeVerifiedQr
+import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultValidData
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
 import org.junit.Test
@@ -31,6 +34,9 @@ class ScanResultValidFragmentTest : AutoCloseKoinTest() {
 
     private lateinit var navController: TestNavHostController
     private val scannerUtil: ScannerUtil = mockk(relaxed = true)
+    private val persistenceManager = mockk<PersistenceManager>(relaxed = true).apply {
+        every { getVerificationPolicySelected() } returns VerificationPolicy.VerificationPolicy3G
+    }
 
     @Test
     fun `Screen shows correct content when data is Valid`() {
@@ -66,6 +72,9 @@ class ScanResultValidFragmentTest : AutoCloseKoinTest() {
             module(override = true) {
                 factory {
                     scannerUtil
+                }
+                factory {
+                    persistenceManager
                 }
             }
         )

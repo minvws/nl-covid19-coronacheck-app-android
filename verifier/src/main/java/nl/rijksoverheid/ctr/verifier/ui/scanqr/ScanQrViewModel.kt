@@ -1,6 +1,5 @@
 package nl.rijksoverheid.ctr.verifier.ui.scanqr
 
-import android.os.Bundle
 import androidx.lifecycle.ViewModel
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 
@@ -34,8 +33,8 @@ class ScanQrViewModelImpl(
     override fun getNextScannerScreenState(): NextScannerScreenState {
         return if (!hasSeenScanInstructions()) {
             NextScannerScreenState.Instructions
-        } else if (!persistenceManager.isRiskModeSelectionSet()) {
-            NextScannerScreenState.RiskModeSelection
+        } else if (!persistenceManager.isVerificationPolicySelectionSet()) {
+            NextScannerScreenState.VerificationPolicySelection
         } else {
             NextScannerScreenState.Scanner
         }

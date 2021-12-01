@@ -1,15 +1,10 @@
 package nl.rijksoverheid.ctr.verifier.ui.scanqr
 
 import android.content.Intent
-import android.content.res.ColorStateList
 import android.os.Bundle
 import android.provider.Settings
-import android.util.TypedValue
 import android.view.View
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
-import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
@@ -68,6 +63,11 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
         checkPendingDeeplink()
     }
 
+    // if we opened the scanner app via a deep link from another app
+    // and we haven't went through either the onboarding or
+    // the scan instructions flow, we need to remember the
+    // deep link return uri to return back to the other app
+    // after we're done with scanning
     private fun checkPendingDeeplink() {
         (activity as? VerifierMainActivity)?.returnUri?.let {
             goToNextScreen()
@@ -77,7 +77,7 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
     private fun goToNextScreen() {
         when (scanQrViewModel.getNextScannerScreenState()) {
             NextScannerScreenState.Instructions -> findNavController().navigate(ScanQrFragmentDirections.actionScanInstructions())
-            NextScannerScreenState.RiskModeSelection -> scannerUtil.launchModeSelection(requireActivity())
+            NextScannerScreenState.VerificationPolicySelection -> scannerUtil.launchVerificationPolicySelection(requireActivity())
             NextScannerScreenState.Scanner -> scannerUtil.launchScanner(requireActivity())
         }
     }

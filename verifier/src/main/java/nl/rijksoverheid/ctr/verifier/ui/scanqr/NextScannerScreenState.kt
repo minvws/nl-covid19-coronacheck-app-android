@@ -11,5 +11,5 @@ package nl.rijksoverheid.ctr.verifier.ui.scanqr
 sealed class NextScannerScreenState {
     object Scanner: NextScannerScreenState()
     object Instructions: NextScannerScreenState()
-    object RiskModeSelection: NextScannerScreenState()
+    object VerificationPolicySelection: NextScannerScreenState()
 }

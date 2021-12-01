@@ -5,7 +5,7 @@ import androidx.core.os.bundleOf
 import androidx.navigation.Navigation
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.RootNavDirections
-import nl.rijksoverheid.ctr.verifier.ui.mode.VerificationPolicyFragment
+import nl.rijksoverheid.ctr.verifier.ui.mode.VerificationPolicySelectionFragment
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -16,7 +16,7 @@ import nl.rijksoverheid.ctr.verifier.ui.mode.VerificationPolicyFragment
  */
 interface ScannerUtil {
     fun launchScanner(activity: Activity)
-    fun launchModeSelection(activity: Activity)
+    fun launchVerificationPolicySelection(activity: Activity)
 }
 
 class ScannerUtilImpl : ScannerUtil {
@@ -26,8 +26,8 @@ class ScannerUtilImpl : ScannerUtil {
             .navigate(RootNavDirections.actionScanner())
     }
 
-    override fun launchModeSelection(activity: Activity) {
+    override fun launchVerificationPolicySelection(activity: Activity) {
         Navigation.findNavController(activity, R.id.main_nav_host_fragment)
-            .navigate(R.id.action_mode_select, bundleOf(VerificationPolicyFragment.addToolbarArgument to true))
+            .navigate(R.id.action_mode_select, bundleOf(VerificationPolicySelectionFragment.addToolbarArgument to true))
     }
 }

@@ -78,7 +78,7 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
         if (scanQrViewModel.getNextScannerScreenState() == NextScannerScreenState.Scanner) {
             scannerUtil.launchScanner(requireActivity())
         } else {
-            scannerUtil.launchModeSelection(requireActivity())
+            scannerUtil.launchVerificationPolicySelection(requireActivity())
         }
     }
 

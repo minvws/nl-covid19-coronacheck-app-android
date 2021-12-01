@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.verifier.persistance
 
 import android.content.SharedPreferences
+import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -16,9 +17,9 @@ interface PersistenceManager {
     fun getSecretKeyJson(): String?
     fun saveLocalTestResultJson(localTestResultJson: String)
     fun getLocalTestResultJson(): String?
-    fun setHighRiskModeSelected(highRisk: Boolean)
-    fun getHighRiskModeSelected(): Boolean
-    fun isRiskModeSelectionSet(): Boolean
+    fun setVerificationPolicySelected(policy: VerificationPolicy)
+    fun getVerificationPolicySelected(): VerificationPolicy?
+    fun isVerificationPolicySelectionSet(): Boolean
 }
 
 class SharedPreferencesPersistenceManager(private val sharedPreferences: SharedPreferences) :
@@ -28,7 +29,7 @@ class SharedPreferencesPersistenceManager(private val sharedPreferences: SharedP
         const val SCAN_INSTRUCTIONS_SEEN = "SCAN_INSTRUCTIONS_SEEN"
         const val SECRET_KEY_JSON = "SECRET_KEY_JSON"
         const val LOCAL_TEST_RESULT = "LOCAL_TEST_RESULT"
-        const val RISK_MODE_SET = "RISK_MODE_SET"
+        const val VERIFICATION_POLICY_SET = "VERIFICATION_POLICY_SET"
     }
 
     override fun setScanInstructionsSeen() {
@@ -55,15 +56,20 @@ class SharedPreferencesPersistenceManager(private val sharedPreferences: SharedP
         return sharedPreferences.getString(LOCAL_TEST_RESULT, null)
     }
 
-    override fun setHighRiskModeSelected(isHighRisk: Boolean) {
-        sharedPreferences.edit().putBoolean(RISK_MODE_SET, isHighRisk).apply()
+    override fun setVerificationPolicySelected(policy: VerificationPolicy) {
+        sharedPreferences.edit().putString(VERIFICATION_POLICY_SET, policy.libraryValue).apply()
     }
 
-    override fun getHighRiskModeSelected(): Boolean {
-        return sharedPreferences.getBoolean(RISK_MODE_SET, false)
+    override fun getVerificationPolicySelected(): VerificationPolicy? {
+        return VerificationPolicy.fromString(
+            sharedPreferences.getString(
+                VERIFICATION_POLICY_SET,
+                null
+            )
+        )
     }
 
-    override fun isRiskModeSelectionSet(): Boolean {
-        return sharedPreferences.contains(RISK_MODE_SET)
+    override fun isVerificationPolicySelectionSet(): Boolean {
+        return sharedPreferences.contains(VERIFICATION_POLICY_SET)
     }
 }
