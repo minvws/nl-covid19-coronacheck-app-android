@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.verifier.ui.mode
+package nl.rijksoverheid.ctr.verifier.ui.policy
 
 import android.content.res.ColorStateList
 import android.os.Bundle
