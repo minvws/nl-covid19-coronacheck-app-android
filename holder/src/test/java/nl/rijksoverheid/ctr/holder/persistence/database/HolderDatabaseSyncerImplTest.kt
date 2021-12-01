@@ -9,6 +9,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.dao.EventGroupDao
 import nl.rijksoverheid.ctr.holder.persistence.database.dao.GreenCardDao
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.holder.persistence.database.models.DomesticVaccinationRecoveryCombination.OnlyVaccination
 import nl.rijksoverheid.ctr.holder.persistence.database.models.DomesticVaccinationRecoveryCombination.NotApplicable
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.RemoteGreenCardsResult
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.SyncRemoteGreenCardsResult
@@ -132,6 +133,52 @@ class HolderDatabaseSyncerImplTest {
         )
 
         assertEquals(DatabaseSyncerResult.Success(true), databaseSyncerResult)
+    }
+
+    @Test
+    fun `sync returns Success when expected origin is missing but it's because of an expired recovery to complete a vaccination`() = runBlocking {
+        coEvery { eventGroupDao.getAll() } answers { events }
+
+        val remoteGreenCards = RemoteGreenCards(
+            domesticGreencard = RemoteGreenCards.DomesticGreenCard(
+                origins = listOf(
+                    RemoteGreenCards.Origin(
+                        type = OriginType.Vaccination,
+                        eventTime = OffsetDateTime.now(),
+                        expirationTime = OffsetDateTime.now(),
+                        validFrom = OffsetDateTime.now(),
+                        doseNumber = 1,
+                    )
+                ),
+                createCredentialMessages = "".toByteArray()
+            ),
+            euGreencards = null
+        )
+        val onlyVaccination = OnlyVaccination(365)
+        val holderDatabaseSyncer = HolderDatabaseSyncerImpl(
+            holderDatabase = holderDatabase,
+            greenCardUtil = fakeGreenCardUtil(),
+            getRemoteGreenCardsUseCase = fakeGetRemoteGreenCardUseCase(
+                result = RemoteGreenCardsResult.Success(
+                    remoteGreenCards = remoteGreenCards
+                )
+            ),
+            syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(),
+            removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
+            persistenceManager = fakePersistenceManager(),
+            combinationUtil = mockk {
+                every { getResult(events, remoteGreenCards) } returns onlyVaccination
+            }
+        )
+
+        val databaseSyncerResult = holderDatabaseSyncer.sync(
+            expectedOriginType = OriginType.Recovery,
+            syncWithRemote = true
+        )
+
+        assertEquals(
+            DatabaseSyncerResult.Success(missingOrigin = false, onlyVaccination), databaseSyncerResult
+        )
     }
 
     @Test
