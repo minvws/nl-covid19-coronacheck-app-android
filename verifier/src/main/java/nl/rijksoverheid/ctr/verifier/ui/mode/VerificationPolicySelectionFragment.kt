@@ -1,19 +1,19 @@
 package nl.rijksoverheid.ctr.verifier.ui.mode
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.VISIBLE
+import android.view.View.*
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
-import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
+import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.*
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentVerificationPolicySelectionBinding
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
 import org.koin.android.ext.android.inject
-
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -22,64 +22,119 @@ import org.koin.android.ext.android.inject
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class VerificationPolicySelectionFragment: Fragment(R.layout.fragment_verification_policy_selection) {
+class VerificationPolicySelectionFragment :
+    Fragment(R.layout.fragment_verification_policy_selection) {
+
+    private var _binding: FragmentVerificationPolicySelectionBinding? = null
+    private val binding get() = _binding!!
 
     private val scannerUtil: ScannerUtil by inject()
     private val persistenceManager: PersistenceManager by inject()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        val binding = FragmentVerificationPolicySelectionBinding.inflate(inflater)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentVerificationPolicySelectionBinding.inflate(inflater)
 
         if (arguments?.getBoolean(addToolbarArgument) == true) {
-            setupToolbar(binding)
+            setupToolbar()
         } else {
             binding.subHeader.text = getString(R.string.risk_mode_selection_subtitle_from_menu)
         }
 
-        setupRadioGroup(binding)
+        binding.link.setOnClickListener {
+            // TODO navigate to rijksoverheid link when decided
+        }
+
+        setupRadioGroup(savedInstanceState?.getBoolean(errorStateKey))
 
         return binding.root
     }
 
-    private fun setupToolbar(binding: FragmentVerificationPolicySelectionBinding) {
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        _binding.let {
+            outState.putBoolean(errorStateKey, binding.errorContainer.visibility == VISIBLE)
+        }
+    }
+
+    private fun setupToolbar() {
         binding.toolbar.visibility = VISIBLE
 
         binding.toolbar.setNavigationOnClickListener {
             findNavControllerSafety()?.popBackStack()
         }
-        binding.startScanningButton.visibility = VISIBLE
-        binding.startScanningButton.setOnClickListener {
-            findNavControllerSafety()?.popBackStack()
-            scannerUtil.launchScanner(requireActivity())
+        binding.confirmationButton.setOnClickListener {
+            val modeSelected = binding.verificationPolicyRadioGroup.checkedRadioButtonId != NO_ID
+            if (modeSelected) {
+                findNavControllerSafety()?.popBackStack()
+                storeSelection()
+                scannerUtil.launchScanner(requireActivity())
+            } else {
+                toggleError(true)
+            }
         }
         binding.header.visibility = VISIBLE
     }
 
-    private fun setupRadioGroup(binding: FragmentVerificationPolicySelectionBinding) {
-        if (persistenceManager.isVerificationPolicySelectionSet()) {
-            binding.modeRadioGroup.check(if (persistenceManager.getVerificationPolicySelected() == VerificationPolicy.VerificationPolicy2G) {
-                binding.highRisk.id
+    private fun storeSelection() {
+        persistenceManager.setVerificationPolicySelected(
+            if (binding.verificationPolicyRadioGroup.checkedRadioButtonId == binding.policy2G.id) {
+                VerificationPolicy2G
             } else {
-                binding.lowRisk.id
-            })
+                VerificationPolicy3G
+            }
+        )
+    }
+
+    private fun toggleError(error: Boolean) {
+        if (error) {
+            binding.errorContainer.visibility = VISIBLE
+            binding.policy2G.buttonTintList =
+                ColorStateList.valueOf(requireContext().getColor(R.color.error))
+            binding.policy3G.buttonTintList =
+                ColorStateList.valueOf(requireContext().getColor(R.color.error))
         } else {
-            persistenceManager.setVerificationPolicySelected(VerificationPolicy.VerificationPolicy3G)
+            binding.errorContainer.visibility = GONE
+            binding.policy2G.buttonTintList =
+                ColorStateList.valueOf(requireContext().getColor(R.color.link))
+            binding.policy3G.buttonTintList =
+                ColorStateList.valueOf(requireContext().getColor(R.color.link))
+        }
+    }
+
+    private fun setupRadioGroup(errorOnBeforeScreenRotation: Boolean?) {
+        persistenceManager.getVerificationPolicySelected()?.let {
+            binding.verificationPolicyRadioGroup.check(
+                if (it == VerificationPolicy2G) {
+                    binding.policy2G.id
+                } else {
+                    binding.policy3G.id
+                }
+            )
         }
 
-        binding.modeRadioGroup.setOnCheckedChangeListener { _, checkedId ->
-            val highRiskModeSelected = checkedId == binding.highRisk.id
-            persistenceManager.setVerificationPolicySelected(VerificationPolicy.VerificationPolicy2G)
+        binding.verificationPolicyRadioGroup.setOnCheckedChangeListener { _, _ ->
+            toggleError(false)
         }
 
         binding.subtitle3g.setOnClickListener {
-            binding.modeRadioGroup.check(R.id.lowRisk)
+            binding.verificationPolicyRadioGroup.check(R.id.policy3G)
         }
+
         binding.subtitle2g.setOnClickListener {
-            binding.modeRadioGroup.check(R.id.highRisk)
+            binding.verificationPolicyRadioGroup.check(R.id.policy2G)
+        }
+
+        if (errorOnBeforeScreenRotation == true) {
+            toggleError(true)
         }
     }
 
     companion object {
         const val addToolbarArgument = "ADD_TOOLBAR_ARGUMENT"
+        private const val errorStateKey = "ERROR_STATE_KEY"
     }
 }
