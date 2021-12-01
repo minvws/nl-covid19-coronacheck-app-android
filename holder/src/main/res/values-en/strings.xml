@@ -95,7 +95,7 @@
   <string name="your_negative_test_results_explanation_title">More about test results</string>
   <string name="your_negative_test_results_explanation_paragraph_1"><![CDATA[Your test result states your test result, the time of testing, and a minimum amount of personal data.<br\><br\>Your details consist of: (1) the first letter of your first name, (2) the first letter of your last name, (3) your day of birth and (4) your month of birth.]]></string>
   <string name="your_negative_test_results_explanation_paragraph_2"><![CDATA[<b>Are these details incorrect?</b><br/>Please contact your test location. They can help you change these details.]]></string>
-  <string name="your_negative_test_results_characteristic_format" formatted="false">Characteristic %s is %s</string>
+  <string name="your_negative_test_results_characteristic_format">Characteristic %1$s is %2$s</string>
   <string name="testresult_not_known_title">Test result not yet known</string>
   <string name="testresult_not_known_description">Your test result not yet known. Please try again later. Is this not correct? Contact the test location.</string>
   <string name="testresult_to_qr_code_title">Your test result is now being made into a QR code</string>
@@ -436,7 +436,7 @@
   <string name="your_events_details_button">Details</string>
   <string name="qr_explanation_certificate_issuer">Ministry of Health, Welfare and Sport</string>
   <string name="qr_code_return_app_button">Back to the %s</string>
-  <string name="qr_card_validity_future_from" formatted="false">valid from %1s %2s</string>
+  <string name="qr_card_validity_future_from">valid from %1$s %2$s</string>
   <string name="qr_card_validity_future_until">until %1s</string>
   <string name="your_vaccination_explanation_dose">dose %1s</string>
   <string name="qr_card_validity_future">Becomes valid automatically</string>
