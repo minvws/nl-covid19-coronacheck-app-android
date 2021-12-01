@@ -99,6 +99,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
                     android:paddingHorizontal="56dp"
+                    android:background="?attr/selectableItemBackground"
                     style="@style/App.TextAppearance.MaterialComponents.Body2.Secondary"
                     android:buttonTint="@color/link"
                     android:text="@string/risk_mode_selection_low_risk_subtitle" />
@@ -124,6 +125,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
+                    android:background="?attr/selectableItemBackground"
                     style="@style/App.TextAppearance.MaterialComponents.Body2.Secondary"
                     android:paddingHorizontal="56dp"
                     android:text="@string/risk_mode_selection_high_risk_subtitle" />

@@ -1,28 +1,28 @@
 package nl.rijksoverheid.ctr.verifier.ui.policy
 
-import android.content.SharedPreferences
+import androidx.core.os.bundleOf
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
-import androidx.preference.PreferenceManager
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.platform.app.InstrumentationRegistry
-import com.adevinta.android.barista.interaction.BaristaClickInteractions
-import io.mockk.mockk
-import io.mockk.verify
-import nl.rijksoverheid.ctr.verifier.R
-import nl.rijksoverheid.ctr.verifier.fakeScanQrViewModel
-import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
-import nl.rijksoverheid.ctr.verifier.ui.scanqr.NextScannerScreenState
-import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.scrollTo
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertNotDisplayed
 import com.adevinta.android.barista.interaction.BaristaClickInteractions.clickOn
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verify
+import nl.rijksoverheid.ctr.verifier.R
+import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
+import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionFragment.Companion.addToolbarArgument
+import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.loadKoinModules
 import org.koin.dsl.module
+import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
 
 
@@ -34,10 +34,12 @@ import org.robolectric.RobolectricTestRunner
  *
  */
 @RunWith(RobolectricTestRunner::class)
-class VerificationPolicySelectionFragmentTest {
+class VerificationPolicySelectionFragmentTest : AutoCloseKoinTest() {
 
-    private val scannerUtil: ScannerUtil = mockk(relaxed = true)
-    private val persistenceManager: PersistenceManager = mockk(relaxed = true)
+    private val scannerUtil = mockk<ScannerUtil>(relaxed = true)
+    private val persistenceManager = mockk<PersistenceManager>(relaxed = true).apply {
+        every { getVerificationPolicySelected() } returns null
+    }
 
     private val navController = TestNavHostController(
         ApplicationProvider.getApplicationContext()
@@ -52,6 +54,7 @@ class VerificationPolicySelectionFragmentTest {
 
         clickOn(R.id.confirmationButton)
 
+        onView(withId(R.id.error_container)).perform(scrollTo())
         assertDisplayed(R.id.error_container)
     }
 
@@ -79,7 +82,11 @@ class VerificationPolicySelectionFragmentTest {
             }
         )
 
-        launchFragmentInContainer(themeResId = R.style.AppTheme) {
+        launchFragmentInContainer(
+            bundleOf(
+                addToolbarArgument to true,
+            ), themeResId = R.style.AppTheme
+        ) {
             VerificationPolicySelectionFragment().also {
                 it.viewLifecycleOwnerLiveData.observeForever { viewLifecycleOwner ->
                     if (viewLifecycleOwner != null) {
