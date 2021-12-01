@@ -1,10 +1,16 @@
 import requests, zipfile
 from io import BytesIO
 import os
-import lokalise
 
-if os.getenv('CORONACHECK_LOKALISE_TOKEN') is not None:
-	apikey = os.getenv('CORONACHECK_LOKALISE_TOKEN')
+try:
+	import lokalise
+except ModuleNotFoundError:
+	print("\033[91mYou forgot to install the Lokalise library. Run 'pip install python-lokalise-api' first")
+	exit()
+
+
+if os.getenv('LOKALISE_API_KEY') is not None:
+	apikey = os.getenv('LOKALISE_API_KEY')
 
 	print("Initializing Lokalise client...")
 	client = lokalise.Client(apikey)
@@ -43,7 +49,8 @@ if os.getenv('CORONACHECK_LOKALISE_TOKEN') is not None:
 	print("Finished verifier copy!")
 	print()
 
-	print("All done!")
+	print("\033[92mAll done!")
 else:
-	print("Please set CORONACHECK_LOKALISE_TOKEN")
+	print("\033[91mPlease set LOKALISE_API_KEY before running the script again. ")
+	print("export LOKALISE_API_KEY=......")
 
