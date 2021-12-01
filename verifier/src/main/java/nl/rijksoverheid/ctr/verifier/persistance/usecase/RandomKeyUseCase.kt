@@ -25,7 +25,7 @@ class RandomKeyUseCaseImpl(
     private val persistenceManager: PersistenceManager,
     private val androidUtil: AndroidUtil): RandomKeyUseCase {
     override fun exists(): Boolean {
-        return persistenceManager.getRandomKey() != null
+        return !persistenceManager.getRandomKey().isNullOrEmpty()
     }
 
     override fun get(): String {
