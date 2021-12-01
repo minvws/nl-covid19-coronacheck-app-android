@@ -164,13 +164,19 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                                         title = getString(R.string.rule_engine_no_origin_title),
                                         description = getString(
                                             R.string.rule_engine_no_test_origin_description,
-                                            args.toolbarTitle.lowercase()
+                                            getNoOriginTypeCopy()
                                         ),
                                         buttonTitle = getString(R.string.back_to_overview)
                                     )
                                 )
                             }
-                            else -> navigateToCertificateCreated(databaseSyncerResult)
+                            else -> {
+                                if (args.type is YourEventsFragmentType.DCC) {
+                                    navigateSafety(YourEventsFragmentDirections.actionMyOverview())
+                                } else {
+                                    navigateToCertificateCreated(databaseSyncerResult)
+                                }
+                            }
                         }
                     }
                     is DatabaseSyncerResult.Failed -> {
@@ -206,6 +212,30 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                 }
             }
         )
+    }
+
+    private fun getNoOriginTypeCopy(): String {
+        return when (val type = args.type) {
+            is YourEventsFragmentType.TestResult2 -> {
+                getString(R.string.rule_engine_no_test_origin_description_negative_test)
+            }
+            is YourEventsFragmentType.DCC -> {
+                getString(R.string.rule_engine_no_test_origin_description_scanned_qr_code)
+            }
+            is YourEventsFragmentType.RemoteProtocol3Type -> {
+                return when (type.originType) {
+                    is OriginType.Test -> {
+                        getString(R.string.rule_engine_no_test_origin_description_negative_test)
+                    }
+                    is OriginType.Recovery -> {
+                        getString(R.string.rule_engine_no_test_origin_description_positive_test)
+                    }
+                    is OriginType.Vaccination -> {
+                        getString(R.string.rule_engine_no_test_origin_description_vaccination)
+                    }
+                }
+            }
+        }
     }
 
     private fun navigateToCertificateCreated(databaseSyncerResult: DatabaseSyncerResult.Success) {
@@ -251,23 +281,33 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             }
             DomesticVaccinationRecoveryCombination.OnlyRecovery -> {
                 navigateSafety(
-                    YourEventsFragmentDirections.actionCertificateCreated(
-                        toolbarTitle = getString(R.string.international_certificate_created_toolbar_title),
-                        title = getString(R.string.certificate_created_recovery_title),
-                        description = getString(R.string.certificate_created_recovery_description)
-                    )
+                    if (args.afterIncompleteVaccination) {
+                        YourEventsFragmentDirections.actionCertificateCreated(
+                            toolbarTitle = getString(R.string.international_certificate_created_toolbar_title),
+                            title = getString(R.string.certificate_created_recovery_title),
+                            description = getString(R.string.certificate_created_recovery_description)
+                        )
+                    } else {
+                        // When not coming from a vaccination completion flow, navigate directly to dashboard
+                        YourEventsFragmentDirections.actionMyOverview()
+                    }
                 )
             }
             is DomesticVaccinationRecoveryCombination.OnlyVaccination -> {
                 navigateSafety(
-                    YourEventsFragmentDirections.actionCertificateCreated(
-                        toolbarTitle = getString(R.string.international_certificate_created_toolbar_title),
-                        title = getString(R.string.certificate_created_vaccination_title),
-                        description = getString(
-                            R.string.certificate_created_vaccination_description,
-                            databaseSyncerResult.domesticVaccinationRecovery.recoveryValidityDays.toString()
+                    if (args.afterIncompleteVaccination) {
+                        // When coming from a vaccination completion flow, navigate directly to dashboard
+                        YourEventsFragmentDirections.actionMyOverview()
+                    } else {
+                        YourEventsFragmentDirections.actionCertificateCreated(
+                            toolbarTitle = getString(R.string.international_certificate_created_toolbar_title),
+                            title = getString(R.string.certificate_created_vaccination_title),
+                            description = getString(
+                                R.string.certificate_created_vaccination_description,
+                                databaseSyncerResult.domesticVaccinationRecovery.recoveryValidityDays.toString()
+                            )
                         )
-                    )
+                    }
                 )
             }
             DomesticVaccinationRecoveryCombination.NotApplicable -> {
@@ -639,21 +679,24 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
     }
 
     private fun presentFooter(binding: FragmentYourEventsBinding) {
-        binding.somethingWrongButton.setOnClickListener {
-            val type = args.type
-            infoFragmentUtil.presentAsBottomSheet(
-                childFragmentManager, InfoFragmentData.TitleDescription(
-                    title = getString(R.string.dialog_negative_test_result_something_wrong_title),
-                    descriptionData = DescriptionData(
-                        htmlText = if (type is YourEventsFragmentType.RemoteProtocol3Type && type.originType is OriginType.Vaccination) {
-                            R.string.dialog_vaccination_something_wrong_description
-                        } else {
-                            R.string.dialog_negative_test_result_something_wrong_description
-                        },
-                        htmlLinksEnabled = true,
+        binding.somethingWrongButton.run {
+            visibility = if (args.type is YourEventsFragmentType.DCC) View.GONE else View.VISIBLE
+            setOnClickListener {
+                val type = args.type
+                infoFragmentUtil.presentAsBottomSheet(
+                    childFragmentManager, InfoFragmentData.TitleDescription(
+                        title = getString(R.string.dialog_negative_test_result_something_wrong_title),
+                        descriptionData = DescriptionData(
+                            htmlText = if (type is YourEventsFragmentType.RemoteProtocol3Type && type.originType is OriginType.Vaccination) {
+                                R.string.dialog_vaccination_something_wrong_description
+                            } else {
+                                R.string.dialog_negative_test_result_something_wrong_description
+                            },
+                            htmlLinksEnabled = true,
+                        )
                     )
                 )
-            )
+            }
         }
     }
 

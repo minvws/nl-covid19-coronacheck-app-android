@@ -127,7 +127,12 @@ class VerifierMainActivity : AppCompatActivity() {
         navController: NavController
     ) {
         val bundle = bundleOf(AppStatusFragment.EXTRA_APP_STATUS to appStatus)
-        navController.navigate(R.id.action_app_status, bundle)
+        // don't navigate to the same app status fragment, if it is already open
+        // otherwise, it can open again on top of the previous one looking like a glitch
+        val currentAppStatus = navController.currentBackStackEntry?.arguments?.get(AppStatusFragment.EXTRA_APP_STATUS)
+        if (appStatus != currentAppStatus) {
+            navController.navigate(R.id.action_app_status, bundle)
+        }
     }
 
     private fun showRecommendedUpdateDialog() {

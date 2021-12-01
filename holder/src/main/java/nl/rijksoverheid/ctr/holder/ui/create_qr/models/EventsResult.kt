@@ -23,16 +23,14 @@ sealed class EventsResult {
         EventsResult()
 
     data class HasNoEvents(val missingEvents: Boolean, val errorResults: List<ErrorResult> = emptyList()) : EventsResult()
-
-    data class CannotCreateRecovery(val validityDays: Int): EventsResult()
-
+        
     data class Error constructor(val errorResults: List<ErrorResult>): EventsResult() {
         constructor(errorResult: ErrorResult): this(listOf(errorResult))
 
         fun accessTokenSessionExpiredError(): Boolean {
             val accessTokenCallError = errorResults.find { it.getCurrentStep() == HolderStep.AccessTokensNetworkRequest }
             accessTokenCallError?.let {
-                return hasErrorCode(it, 99708)
+                return hasErrorCode(it, 99710)
             }
             return false
         }

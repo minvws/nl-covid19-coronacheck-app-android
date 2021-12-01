@@ -56,22 +56,22 @@
     <string name="my_overview_no_qr_replace_qr_button">Replace certificate</string>
     <string name="choose_provider_toolbar">Add certificate</string>
     <string name="choose_provider_title">Where were you tested?</string>
-    <string name="choose_provider_description">You can make a QR code out of the test result if the test proves you don\'t have coronavirus at that time. Indicate where you were tested.</string>
+    <string name="choose_provider_description">Does the test point out you don\'t have coronavirus? Then you can use the test result to create a certificate. Please specify where you were tested.</string>
     <string name="choose_provider_commercial_title">Other test location</string>
     <string name="choose_provider_commercial_subtitle">Retrieve test result</string>
     <string name="choose_provider_ggd_title">GGD</string>
-    <string name="choose_provider_ggd_subtitle">You’ll be redirected to DigiD</string>
-    <string name="choose_provider_not_yet_tested">I haven\'t been tested yet</string>
+    <string name="choose_provider_ggd_subtitle">Log in with your DigiD</string>
+    <string name="choose_provider_not_yet_tested">Were you not tested yet?</string>
     <string name="commercial_test_type_title">Retrieve test result</string>
     <string name="commercial_test_type_description">You need a retrieval code to retrieve your test result.</string>
     <string name="commercial_test_type_code_title">I have a retrieval code</string>
     <string name="commercial_test_type_code_toolbar_title">Retrieve test result</string>
     <string name="commercial_test_type_qr_code_title">I have a QR code</string>
-    <string name="commercial_test_type_no_code_title">I don\'t have a code</string>
-    <string name="commercial_test_type_no_code_received_title">I haven\'t received a code</string>
-    <string name="commercial_test_type_no_code_description"><![CDATA[The test location gives you a retrieval code with numbers and letters.<br/><br/>Didn\'t get a code? Or did you lose it? Contact the test location.]]></string>
+    <string name="commercial_test_type_no_code_title">Don\'t have a retrieval code?</string>
+    <string name="commercial_test_type_no_code_received_title">Didn’t receive a verification code?</string>
+    <string name="commercial_test_type_no_code_description"><![CDATA[The test location gives you a retrieval code with numbers and letters.<br/><br/>Didn\'t get a code? Or did you lose it? Contact the test location.<br/><br/>You may need to get tested again.]]></string>
     <string name="commercial_test_code_title">Retrieve test result</string>
-    <string name="commercial_test_code_description">Enter your code. The test location sent it to you.</string>
+    <string name="commercial_test_code_description">Enter your retrieval code. You received it from your test location.</string>
     <string name="commercial_test_unique_code_header">Retrieval code</string>
     <string name="commercial_test_unique_code_hint">E.g.: BRB-YYYYYYYYYY-Z2</string>
     <string name="commercial_test_verification_code_header">Verification code</string>
@@ -84,8 +84,8 @@
     <string name="commercial_test_invalid_qr_message">This QR code isn\'t valid. Scan the QR code given to you by the test location.</string>
     <string name="commercial_test_scanner_custom_title">Scan QR code</string>
     <string name="commercial_test_scanner_custom_message">Point your phone at the QR code the test location gave you.</string>
-    <string name="your_negative_test_results_title">Check your test result</string>
-    <string name="your_negative_test_results_description"><![CDATA[This test result is retrieved from the test location. Are the details correct? Then you can convert the test result into a QR code. This is your certificate.]]></string>
+    <string name="your_negative_test_results_title">Are the details correct?</string>
+    <string name="your_negative_test_results_description"><![CDATA[This test result is retrieved from the test location. If the details are correct, you can create a certificate.]]></string>
     <string name="your_negative_test_results_header">Retrieved test result</string>
     <string name="your_negative_test_results_row_title">Negative test result</string>
     <string name="your_negative_test_results_row_subtitle"><![CDATA[Test date: %1$s<br/>Your details: %2$s]]></string>
@@ -94,7 +94,7 @@
     <string name="your_negative_test_results_row_button">Make certificate</string>
     <string name="your_negative_test_results_explanation_title">More about test results</string>
     <string name="your_negative_test_results_explanation_paragraph_1"><![CDATA[Your test result states your test result, the time of testing, and a minimum amount of personal data.<br\><br\>Your details consist of: (1) the first letter of your first name, (2) the first letter of your last name, (3) your day of birth and (4) your month of birth.]]></string>
-    <string name="your_negative_test_results_explanation_paragraph_2"><![CDATA[<b>Are these details incorrect?</b><br/>Please contact your test location. They can edit your details.]]></string>
+    <string name="your_negative_test_results_explanation_paragraph_2"><![CDATA[<b>Are these details incorrect?</b><br/>Please contact your test location. They can help you change these details.]]></string>
     <string name="your_negative_test_results_characteristic_format">Characteristic %s is %s</string>
     <string name="testresult_not_known_title">Test result not yet known</string>
     <string name="testresult_not_known_description">Your test result not yet known. Please try again later. Is this not correct? Contact the test location.</string>
@@ -173,9 +173,9 @@
     <string name="url_faq">https://coronacheck.nl/en/faq-in-app.html</string>
     <string name="url_privacy_statement">https://coronacheck.nl/en/privacy-in-app</string>
     <string name="url_make_appointment">https://coronacheck.nl/en/testafspraak-in-app</string>
-    <string name="dialog_verification_code_title">Need a new verification code?</string>
-    <string name="dialog_verification_code_message">The test location sends you a verification code via text or e-mail. Didn\'t get one? Then you can request a new code.</string>
-    <string name="dialog_verification_code_positive_button">Send code</string>
+    <string name="dialog_verification_code_title">Didn’t receive a verification code?</string>
+    <string name="dialog_verification_code_message">You receive the verification code via text or email. Didn\'t get one? Click ‘send again’ below for a new code.</string>
+    <string name="dialog_verification_code_positive_button">Send again</string>
     <string name="commercial_test_verification_code_description_deeplink">Enter your verification code to retrieve your negative test result.</string>
     <string name="dialog_rooted_device_title">There are security risks</string>
     <string name="dialog_rooted_device_message">Beware: your device is rooted. Your data may not be secure.</string>
@@ -195,12 +195,12 @@
     <string name="qr_code_type_vaccination_title">Vaccination certificate</string>
     <string name="qr_code_type_vaccination_description">I\'ve had my injection or injections</string>
     <string name="get_vaccination_title">Retrieve vaccination details</string>
-    <string name="get_vaccination_description"><![CDATA[Are the details correct? If the details about your vaccination are correct, you can create a certificate.<br/><br/>]]></string>
+    <string name="get_vaccination_description"><![CDATA[Were you vaccinated? Please log in with DigiD. Details regarding your vaccination will be retrieved automatically.]]></string>
     <string name="get_vaccination_button">Log in with DigiD</string>
     <string name="get_vaccination_no_digid_button">I don\'t have DigiD</string>
     <string name="your_retrieved_vaccinations_title">Your retrieved vaccinations</string>
-    <string name="your_retrieved_vaccinations_description">You can make a QR code of your vaccination. This is your certificate.</string>
-    <string name="your_vaccination_result_toolbar_title">Your vaccinations</string>
+    <string name="your_retrieved_vaccinations_description">Are the details correct? If the details about your vaccination are correct, you can create a certificate.</string>
+    <string name="your_vaccination_result_toolbar_title">Your retrieved vaccinations</string>
     <string name="your_retrieved_vaccinations_toolbar">Retrieve details of your vaccination</string>
     <string name="retrieved_vaccination_title">Vaccination %1$s</string>
     <string name="retrieved_vaccination_dcc_title">Vaccination certificate dose %1$s/%2$s</string>
@@ -214,7 +214,7 @@
     <string name="travel_fragment_footer">The Dutch QR code only contains your initials, your birth month, and your day of birth.</string>
     <string name="travel_fragment_footer_eu">The international QR code contains the following details: your name, date of birth, and information about the vaccine.</string>
     <string name="dialog_negative_test_result_something_wrong_title">Is something wrong?</string>
-    <string name="dialog_negative_test_result_something_wrong_description"><![CDATA[Are these details incorrect? Please contact your test location. They can edit your details.]]></string>
+    <string name="dialog_negative_test_result_something_wrong_description"><![CDATA[Please contact your test location. They can help you change these details.]]></string>
     <string name="validity_type_european_title">International</string>
     <string name="validity_type_dutch_title">The Netherlands</string>
     <string name="qr_explanation_title_domestic">About my Dutch QR code</string>
@@ -251,7 +251,7 @@
     <string name="qr_explanation_icon_label">About your QR code</string>
     <string name="qr_card_expired">Your certificate has expired.</string>
     <string name="qr_card_vaccination_title_domestic">Vaccination certificate:</string>
-    <string name="qr_card_vaccination_title_domestic_with_dosis">Vaccination certificate (%1$s doses):</string>
+    <string name="qr_card_vaccination_title_domestic_with_dosis">Vaccination certificate (%1$s dose):</string>
     <string name="qr_card_test_domestic">Test certificate:</string>
     <string name="qr_card_test_eu">Test type:</string>
     <string name="qr_card_recovery_title_domestic">Recovery certificate:</string>
@@ -263,7 +263,7 @@
     <string name="qr_card_validity_future_day">automatically becomes valid in %1$s day</string>
     <string name="qr_card_validity_future_hours">automatically becomes valid in %1$s hours</string>
     <string name="qr_card_vaccination_doses">Dose %1$s/%2$s</string>
-    <string name="your_test_result_explanation_toolbar_title">What was retrieved?</string>
+    <string name="your_test_result_explanation_toolbar_title">Details</string>
     <string name="your_test_result_explanation_description"><![CDATA[The following details were retrieved at the test location:<br\><br\>Your details: <b>%1$s<b/><br/>Test type: <b>%2$s</b><br/>Test date: <b>%3$s</b><br/>Test result: <b>%4$s</b><br/>Unique test identifier: <b>%5$s</b>]]></string>
     <string name="your_test_result_explanation_negative_test_result">Negative (no coronavirus)</string>
     <string name="your_test_result_explanation_description_header">The following details were retrieved at the test location:</string>
@@ -312,14 +312,14 @@
     <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_test"><![CDATA[Your test certificate isn\'t valid internationally. That\'s why only a Dutch certificate was made.<br/><br/>It\'s possible your type of test isn\'t accepted abroad. Get tested again.]]></string>
     <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_vaccination"><![CDATA[Your vaccination certificate isn\'t valid internationally. That\'s why only a Dutch certificate was made.<br/><br/>It\'s possible your type of vaccination isn\'t accepted abroad.]]></string>
     <string name="rule_engine_no_origin_title">We can\'t make a certificate</string>
-    <string name="rule_engine_no_test_origin_description"><![CDATA[At this moment, we can\'t make a certificate from %1$s. This can have various causes.  Find more information on the <a href="https://www.coronacheck.nl//en/guidepost">Guidepost.</a>]]></string>
+    <string name="rule_engine_no_test_origin_description"><![CDATA[At this moment, we can\'t make a certificate from your %1$s. This can have various causes.  Find more information on the <a href="https://www.coronacheck.nl//en/guidepost">Guidepost.</a>]]></string>
     <string name="back_to_overview">To my certificates</string>
     <string name="no_vaccinations_title">Vaccinations not available</string>
     <string name="no_vaccinations_description"><![CDATA[There is no available vaccination data. This can have various causes. Read the <a href="https://www.coronacheck.nl/en/guidepost">Guidepost</a> for more information.<br/><br/>Got vaccinated recently? It can take a few hours until your details are available. Try again later.]]></string>
     <string name="no_test_results_title">No test result available</string>
     <string name="no_test_results_description"><![CDATA[There is no available data of your test result. This can have various causes. Read the <a href="https://www.coronacheck.nl/en/guidepost"> Guidepost</a> for more information.<br/><br/>Already got a negative test result from the GGD? It can take a few hours until your details are available. Try again later.]]></string>
-    <string name="not_yet_tested_title">I haven\'t been tested yet</string>
-    <string name="not_yet_tested_description"><![CDATA[For a test certificate, you must take a test first. Does the test prove you don\'t have coronavirus? Then you can make your QR code.]]></string>
+    <string name="not_yet_tested_title">Were you not tested yet?</string>
+    <string name="not_yet_tested_description"><![CDATA[For a test certificate, you must take a test first at an affiliated test location. Does the test prove you don\'t have coronavirus? Then you can make a certificate.]]></string>
     <string name="not_yet_tested_button">Make an appointment</string>
     <string name="privacy_policy_3"><![CDATA[The QR code contains a minimum amount of <b>personal data</b>.]]></string>
     <string name="choose_provider_no_digid">I don\'t have DigiD</string>
@@ -345,7 +345,7 @@
     <string name="your_positive_test_description">Are the details correct? If the details about your test are correct, you can create a certificate.</string>
     <string name="positive_test_title">Positive test result</string>
     <string name="get_recovery_title">Retrieve recovery details</string>
-    <string name="get_recovery_description"><![CDATA[Have you had coronavirus? Then you can make a recovery certificate of the positive test result. Login with DigiD to retrieve your test result.<br/><br/>Your recovery certificate will be valid 11 days after the positive test result. You also need to be free of symptoms.]]></string>
+    <string name="get_recovery_description"><![CDATA[Have you had coronavirus? Then you can make a recovery certificate of the positive test result. Log in with DigiD to retrieve your test result.]]></string>
     <string name="no_positive_test_result_title">No positive test result available</string>
     <string name="no_positive_test_result_description"><![CDATA[Have you just been tested? It may take a few hours before your result is available. Please try again later.<br/><br/>Were you tested longer ago? Please contact your test location to verify if your details were entered into the system correctly.]]></string>
     <string name="qr_code_type_recovery_title">Recovery certificate</string>
@@ -395,7 +395,7 @@
     <string name="add_paper_proof_input_not_6_chars">Enter the 6-letter combination.</string>
     <string name="add_paper_proof_no_letter_combination_button">No letter combination?</string>
     <string name="no_letter_combination_dialog_title">No letter combination?</string>
-    <string name="no_letter_combination_dialog_description"><![CDATA[Then you won\'t be able to add your certificates to the app this way.<br/>You only have a letter combination if you requested your paper certificates from your healthcare provider, or had them delivered by mail.<br/><br/><b>Did you print your certificate yourself?</b>Then you can add your certificates to the app using DigiD.]]></string>
+    <string name="no_letter_combination_dialog_description"><![CDATA[Then you won\'t be able to add your certificates to the app this way.<br/><br/>You only have a letter combination if you requested your paper certificates from your healthcare provider, or had them delivered by mail.<br/><br/><b>Did you print your certificate yourself?</b><br/>Then you can add your certificates to the app using DigiD.]]></string>
     <string name="add_paper_proof_explanation_description"><![CDATA[You can add paper certificates to the app if you received them in one of the following ways:]]></string>
     <string name="add_paper_proof_explanation_healthcare_item_title">From your healthcare provider</string>
     <string name="add_paper_proof_explanation_healthcare_item_subtitle">Your general practitioner or another healthcare provider has printed your certificates for you</string>
@@ -426,9 +426,9 @@
     <string name="add_paper_proof_no_camera_error_description"><![CDATA[Your phone doesn\'t have a camera. This means you cannot scan the paper certificate and add it to your phone.<br><br>Please use the paper certificate you received from the healthcare provider.]]></string>
     <string name="your_dcc_event_description">You can create a certificate with these details.</string>
     <string name="your_dcc_event_toolbar_title">Scanned details</string>
-    <string name="your_events_block_back_dialog_title">Are you sure you want to stop?</string>
-    <string name="your_events_block_back_dialog_description">You can try to add this QR code in the app again later.</string>
-    <string name="your_events_block_back_dialog_positive_button">Yes, stop</string>
+    <string name="your_events_block_back_dialog_title">Are you sure you want to go back?</string>
+    <string name="your_events_block_back_dialog_description">Doing so will stop the process of adding a certificate.</string>
+    <string name="your_events_block_back_dialog_positive_button">Yes, go back</string>
     <string name="your_events_block_back_dialog_negative_button">No, continue</string>
     <string name="your_events_replace_dialog_title">Want to replace your certificate?</string>
     <string name="your_events_replace_dialog_message">You created a certificate earlier. The details on it differ from those that have just been retrieved. Therefore you can only replace it.</string>
@@ -523,12 +523,12 @@
     <string name="accessibility_flash_on">Turn the flashlight on.</string>
     <string name="recover_domestic_recovery_green_card_button">Restore certificate</string>
     <string name="cannot_create_recovery_proof_title">Positive test result no longer valid</string>
-    <string name="cannot_create_recovery_proof_description"><![CDATA[It has been more than %1s days since you tested positive for coronavirus. Therefore, your test result is no longer valid. Unfortunately, you cannot create a recovery certificate.<br/><br/>Find more information on the <a href="https://www.coronacheck.nl//en/guidepost">Guidepost</a>.]]></string>
+    <string name="cannot_create_recovery_proof_description"><![CDATA[It has been too long ago since you tested positive for coronavirus. Therefore, your test result is no longer valid. Unfortunately, you cannot create a recovery certificate.<br/><br/>Find more information on the <a href="https://www.coronacheck.nl//en/guidepost">Guidepost</a>.]]></string>
     <string name="your_vaccination_dcc_row_subtitle"><![CDATA[Name: %1$s<br/>Date of birth: %2$s]]></string>
     <string name="qr_card_vaccination_title_domestic_with_doses">Vaccination certificate (%1$s doses):</string>
     <string name="add_paper_proof_why_only_international_title">Why only international?</string>
     <string name="add_paper_proof_why_only_international_description">You can use the details in international QR codes to immediately create a Dutch certificate as well. This way you won\'t have to scan them both.</string>
-    <string name="international_certificate_created_description"><![CDATA[You don\'t have a Dutch vaccination certificate. To obtain this, you have to either be fully vaccinated, or have recovered from coronavirus before you received your first vaccination.<br><br><b>Still have to get a second vaccination?</b><br>Please add a vaccination certificate again after getting your vaccination. You will also receive a Dutch certificate then.<br><br><b>Had coronavirus before your first vaccination?</b>Retrieve your positive test result. You will also receive a Dutch certificate then.]]></string>
+    <string name="international_certificate_created_description"><![CDATA[You don\'t have a Dutch vaccination certificate. To obtain this, you have to either be fully vaccinated, or have recovered from coronavirus before you received your first vaccination.<br/><br/><b>Still have to get a second vaccination?</b><br/>Please add a vaccination certificate again after getting your vaccination. You will also receive a Dutch certificate then.<br/><br/><b>Had coronavirus before your first vaccination?</b><br/>Retrieve your positive test result. You will also receive a Dutch certificate then.]]></string>
     <string name="international_certificate_created_title">Only an international certificate was created</string>
     <string name="international_certificate_created_toolbar_title">Certificate created</string>
     <string name="international_certificate_created_retrieve_test_button">Retrieve my test result</string>
@@ -539,7 +539,7 @@
     <string name="missing_dutch_certificate_retrieve_vaccination_button">Retrieve my vaccinations</string>
     <string name="missing_dutch_certificate_positive_text_explanation"><![CDATA[<b>Had coronavirus before your first vaccination?</b><br/>Retrieve your positive test result. You will also receive a Dutch certificate then.]]></string>
     <string name="missing_dutch_certificate_retrieve_test_button">Retrieve my test result</string>
-    <string name="missing_dutch_certificate_explanation_more"><![CDATA[<b>Want to know more?</b><br/>Read <a href="https://coronacheck.nl/en/faq/2-4-ik-heb-wel-een-internationale-qr-code-maar-geen-nederlandse/">the frequently asked questions</a> for other possible reasons.]]></string>
+    <string name="missing_dutch_certificate_explanation_more"><![CDATA[<b>Want to know more?</b><br/>Read the <a href="https://coronacheck.nl/en/faq/2-4-ik-heb-wel-een-internationale-qr-code-maar-geen-nederlandse/">frequently asked questions</a> for other possible reasons.]]></string>
     <string name="certificate_created_toolbar_title">Certificate created</string>
     <string name="certificate_created_vaccination_recovery_title">Created vaccination and recovery certificates</string>
     <string name="certificate_created_vaccination_recovery_description"><![CDATA[A Dutch vaccination certificate has been created.<br><br>You tested positive less than %1s days ago. Therefore a recovery certificate has also been created.]]></string>
@@ -550,12 +550,16 @@
     <string name="retrieve_test_result_toolbar_title">Retrieve test result</string>
     <string name="retrieve_test_result_title">Retrieve details about your positive test</string>
     <string name="retrieve_test_result_description">Log in with DigiD. Details about your positive test will be retrieved automatically.</string>
-    <string name="dashboard_coronamelder_tip"><![CDATA[<b>Tip:</b> Prevent the spread of coronavirus, <a href="https://coronamelder.nl/app">use CoronaMelder too</a>.]]></string>
+    <string name="dashboard_coronamelder_tip"><![CDATA[<b>Tip:</b> Prevent the spread of coronavirus, use <a href="https://coronamelder.nl/app">CoronaMelder</a> too.]]></string>
     <string name="certificate_created_vaccination_title">Vaccination certificate instead of recovery certificate</string>
     <string name="certificate_created_vaccination_description"><![CDATA[You were tested positive for coronavirus longer than %1s days ago. That is why your test result is no longer valid for creating a recovery certificate.<br><br>Because you were tested positive before your first vaccination, one shot means you’re fully vaccinated. Therefore, a full vaccination certificate has been created instead.<br><br>For more information, please check the <a href="https://coronacheck.nl/en/guidepost"> Guidepost</a>.]]></string>
     <string name="no_certificate_created_toolbar_title">No certificate created</string>
     <string name="certificate_created_recovery_after_vaccination_description"><![CDATA[A recovery certificate has been created.<br><br>Because you were tested positive before your first vaccination, one shot means you\'re fully vaccinated. Therefore, a full vaccination certificate has been created as well.]]></string>
     <string name="paper_proof_event_explanation_header">These details are in your paper certificate:</string>
-    <string name="paper_proof_event_explanation_footer"><![CDATA[<b>Are your details incorrect?:</b><br/>Please contact the healthcare provider who vaccinated or tested you. This can be the GGD, your general practitioner or doctor. They can help you change these details.]]></string>
+    <string name="paper_proof_event_explanation_footer"><![CDATA[<b>Are your details incorrect?</b><br/>Please contact the healthcare provider who vaccinated or tested you. This can be the GGD, your general practitioner or doctor. They can help you change these details.]]></string>
     <string name="certificate_created_recovery_after_vaccination_title">Recovery and vaccination certificates created</string>
+    <string name="rule_engine_no_test_origin_description_scanned_qr_code">scanned QR code</string>
+    <string name="rule_engine_no_test_origin_description_negative_test">negative test result</string>
+    <string name="rule_engine_no_test_origin_description_vaccination">vaccination</string>
+    <string name="rule_engine_no_test_origin_description_positive_test">positive test result</string>
 </resources>

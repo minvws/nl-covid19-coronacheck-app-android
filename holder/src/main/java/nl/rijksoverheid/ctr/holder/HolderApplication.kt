@@ -14,6 +14,7 @@ import nl.rijksoverheid.ctr.holder.persistence.WorkerManagerWrapper
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
 import nl.rijksoverheid.ctr.holder.persistence.database.migration.TestResultsMigrationManager
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.CheckNewRecoveryValidityUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SecretKeyUseCase
 import nl.rijksoverheid.ctr.introduction.introductionModule
 import nl.rijksoverheid.ctr.qrscanner.qrScannerModule
@@ -42,6 +43,7 @@ open class HolderApplication : SharedApplication(), Configuration.Provider {
     private val appConfigStorageManager: AppConfigStorageManager by inject()
     private val mobileCoreWrapper: MobileCoreWrapper by inject()
     private val workerManagerWrapper: WorkerManagerWrapper by inject()
+    private val checkNewRecoveryValidityUseCase: CheckNewRecoveryValidityUseCase by inject()
 
     private val holderModules = listOf(
         storageModule,
@@ -102,6 +104,9 @@ open class HolderApplication : SharedApplication(), Configuration.Provider {
             }
 
             testResultsMigrationManager.removeOldCredential()
+
+            // check to prevent showing extension option for paper recovery certificates
+            checkNewRecoveryValidityUseCase.checkIfNeedToReAllowRecoveryExtensionCheck()
         }
 
         if (appConfigStorageManager.areConfigFilesPresentInFilesFolder()) {

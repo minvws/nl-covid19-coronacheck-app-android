@@ -34,7 +34,7 @@ val eventsUseCasesModule = module {
             clockDeviationUseCase.getAdjustedClock(Clock.systemDefaultZone())
         )
     }
-    factory<GetEventsUseCase> { GetEventsUseCaseImpl(get(), get(), get(), get(), get(), get()) }
+    factory<GetEventsUseCase> { GetEventsUseCaseImpl(get(), get(), get(), get()) }
     factory<SaveEventsUseCase> { SaveEventsUseCaseImpl(get(), get()) }
     factory<ValidatePaperProofUseCase> {
         ValidatePaperProofUseCaseImpl(get(), get())

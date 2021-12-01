@@ -40,7 +40,10 @@ class YourEventExplanationAdapter(private val dataSet: Array<InfoScreen>) :
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        viewHolder.htmlTextViewWidget.setHtmlText(dataSet[position].description)
+        viewHolder.htmlTextViewWidget.setHtmlText(
+            htmlText = dataSet[position].description,
+            htmlTextColor = R.color.primary_text,
+        )
     }
 
     override fun getItemCount() = dataSet.size

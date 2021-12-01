@@ -21,14 +21,10 @@ interface RemoteEventUtil {
     fun getRemoteRecoveryFromDcc(dcc: JSONObject): RemoteEventRecovery?
     fun getRemoteTestFromDcc(dcc: JSONObject): RemoteEventNegativeTest?
     fun getRemoteEventsFromNonDcc(eventGroupEntity: EventGroupEntity): List<RemoteEvent>
-    fun isRecoveryEventExpired(remoteEventRecovery: RemoteEventRecovery): Boolean
-    fun isPositiveTestEventExpired(remoteEventPositiveTest: RemoteEventPositiveTest): Boolean
 }
 
 class RemoteEventUtilImpl(
-    private val clock: Clock,
-    private val moshi: Moshi,
-    private val cachedAppConfigUseCase: CachedAppConfigUseCase): RemoteEventUtil {
+    private val moshi: Moshi): RemoteEventUtil {
 
     /**
      * Only remove duplicate events for vaccination events
@@ -124,14 +120,6 @@ class RemoteEventUtilImpl(
             .fromJson(String(eventGroupEntity.jsonData))?.payload
         val decodedPayload = String(Base64.decode(payload, Base64.DEFAULT))
         return moshi.adapter(RemoteProtocol3::class.java).fromJson(decodedPayload)?.events ?: listOf()
-    }
-
-    override fun isRecoveryEventExpired(remoteEventRecovery: RemoteEventRecovery): Boolean {
-        return OffsetDateTime.now(clock).minusDays(cachedAppConfigUseCase.getCachedAppConfig().recoveryEventValidityDays.toLong()) >= remoteEventRecovery.getDate()
-    }
-
-    override fun isPositiveTestEventExpired(remoteEventPositiveTest: RemoteEventPositiveTest): Boolean {
-        return OffsetDateTime.now(clock).minusDays(cachedAppConfigUseCase.getCachedAppConfig().recoveryEventValidityDays.toLong()) >= remoteEventPositiveTest.getDate()
     }
 
     private fun getEventByType(dcc: JSONObject, key: String) = try {

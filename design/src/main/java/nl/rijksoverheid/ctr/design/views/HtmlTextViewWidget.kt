@@ -7,7 +7,6 @@ import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.BulletSpan
 import android.util.AttributeSet
-import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import android.widget.LinearLayout
@@ -17,7 +16,10 @@ import androidx.core.text.getSpans
 import androidx.core.view.ViewCompat
 import androidx.core.view.children
 import nl.rijksoverheid.ctr.design.R
-import nl.rijksoverheid.ctr.design.ext.*
+import nl.rijksoverheid.ctr.design.ext.enableCustomLinks
+import nl.rijksoverheid.ctr.design.ext.enableHtmlLinks
+import nl.rijksoverheid.ctr.design.ext.getAttrColor
+import nl.rijksoverheid.ctr.design.ext.isHeading
 import nl.rijksoverheid.ctr.design.spans.BulletPointSpan
 
 /**
@@ -41,10 +43,6 @@ class HtmlTextViewWidget @JvmOverloads constructor(
     private val PARAGRAPH_MARGIN_MULTIPLIER = 1.0f
     private val HEADING_MARGIN_MULTIPLIER = 1.0f
     private val LIST_ITEM_MARGIN_MULTIPLIER = 0.25f
-
-    private val textColorPrimary by lazy {
-        context.getAttrColor(android.R.attr.textColorPrimary)
-    }
 
     private val textColorLink by lazy {
         context.getAttrColor(android.R.attr.textColorLink)
@@ -73,12 +71,30 @@ class HtmlTextViewWidget @JvmOverloads constructor(
                 if (htmlText?.isNotEmpty() == true) {
                     setHtmlText(
                         htmlText = htmlText.toString(),
-                        htmlTextColor = getColor(R.styleable.HtmlTextViewWidget_htmlTextColor, textColorPrimary),
-                        htmlTextColorLink = getColor(R.styleable.HtmlTextViewWidget_htmlTextColorLink, textColorLink),
-                        htmlLinksEnabled = getBoolean(R.styleable.HtmlTextViewWidget_enableHtmlLinks, HTML_LINKS_ENABLED),
-                        paragraphMarginMultiplier = getFloat(R.styleable.HtmlTextViewWidget_enableHtmlLinks, PARAGRAPH_MARGIN_MULTIPLIER),
-                        headingMarginMultiplier = getFloat(R.styleable.HtmlTextViewWidget_enableHtmlLinks, HEADING_MARGIN_MULTIPLIER),
-                        listItemMarginMultiplier = getFloat(R.styleable.HtmlTextViewWidget_enableHtmlLinks, LIST_ITEM_MARGIN_MULTIPLIER),
+                        htmlTextColor = getColor(
+                            R.styleable.HtmlTextViewWidget_htmlTextColor,
+                            NO_ID
+                        ),
+                        htmlTextColorLink = getColor(
+                            R.styleable.HtmlTextViewWidget_htmlTextColorLink,
+                            textColorLink
+                        ),
+                        htmlLinksEnabled = getBoolean(
+                            R.styleable.HtmlTextViewWidget_enableHtmlLinks,
+                            HTML_LINKS_ENABLED
+                        ),
+                        paragraphMarginMultiplier = getFloat(
+                            R.styleable.HtmlTextViewWidget_enableHtmlLinks,
+                            PARAGRAPH_MARGIN_MULTIPLIER
+                        ),
+                        headingMarginMultiplier = getFloat(
+                            R.styleable.HtmlTextViewWidget_enableHtmlLinks,
+                            HEADING_MARGIN_MULTIPLIER
+                        ),
+                        listItemMarginMultiplier = getFloat(
+                            R.styleable.HtmlTextViewWidget_enableHtmlLinks,
+                            LIST_ITEM_MARGIN_MULTIPLIER
+                        ),
                         textSize = getDimension(R.styleable.HtmlTextViewWidget_textSize, -1f),
                     )
                 }
@@ -106,7 +122,7 @@ class HtmlTextViewWidget @JvmOverloads constructor(
     fun setHtmlText(
         htmlText: String,
         htmlLinksEnabled: Boolean = HTML_LINKS_ENABLED,
-        htmlTextColor: Int = textColorPrimary,
+        htmlTextColor: Int = NO_ID,
         htmlTextColorLink: Int = textColorLink,
         paragraphMarginMultiplier: Float = PARAGRAPH_MARGIN_MULTIPLIER,
         headingMarginMultiplier: Float = HEADING_MARGIN_MULTIPLIER,
@@ -130,7 +146,13 @@ class HtmlTextViewWidget @JvmOverloads constructor(
         // Step 3: Add a HtmlTextView for each part of the Spannable
         parts.forEachIndexed { index, part ->
             val textView = HtmlTextView(context)
-            textView.setTextColor(context.getColor(R.color.secondary_text))
+            textView.setTextColor(
+                if (htmlTextColor > NO_ID) {
+                    context.getColor(htmlTextColor)
+                } else {
+                    context.getColor(R.color.primary_text)
+                }
+            )
             textView.setLinkTextColor(htmlTextColorLink)
             textView.text = part
 
