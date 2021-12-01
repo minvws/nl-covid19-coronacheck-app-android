@@ -152,4 +152,6 @@
     <string name="risk_mode_new_feature_subtitle">Geef aan of je op een hoog of laag risico plek gaat scannen. Je kunt het niveau later eventueel nog aanpassen.</string>
     <string name="verification_policy_selection_confirmation_button">Bevestigen</string>
     <string name="verification_policy_selection_error_message">Maak een keuze om door te gaan</string>
+    <string name="verifier_about_this_app_scan_log">Scan log</string>
+    <string name="verifier_about_this_app_law_enforcement">Voor handhaving</string>
 </resources>
