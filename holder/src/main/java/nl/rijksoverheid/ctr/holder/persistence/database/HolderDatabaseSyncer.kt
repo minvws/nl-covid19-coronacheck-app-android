@@ -10,6 +10,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.models.DomesticVaccinati
 import nl.rijksoverheid.ctr.holder.persistence.database.models.DomesticVaccinationRecoveryCombination.*
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.*
 import nl.rijksoverheid.ctr.holder.persistence.database.util.DomesticVaccinationRecoveryCombinationUtil
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteGreenCards
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
@@ -93,11 +94,9 @@ class HolderDatabaseSyncerImpl(
                                 )
                             }
 
-                            // If we expect the remote green cards to have a certain origin.
-                            // Exception is fetching an expired recovery to complete a vaccination.
-                            if (expectedOriginType != null
-                                && !remoteGreenCards.getAllOrigins().contains(expectedOriginType)
-                                && combinedVaccinationRecovery !is OnlyVaccination
+                            // If we expect the remote green cards to have a certain origin
+                            if (expectedOriginType != null && !remoteGreenCards.getAllOrigins()
+                                    .contains(expectedOriginType)
                             ) {
                                 return@withContext DatabaseSyncerResult.Success(
                                     missingOrigin = true,
