@@ -17,6 +17,10 @@ import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 import nl.rijksoverheid.ctr.verifier.persistance.SharedPreferencesPersistenceManager
 import nl.rijksoverheid.ctr.verifier.persistance.usecase.RandomKeyUseCase
 import nl.rijksoverheid.ctr.verifier.persistance.usecase.RandomKeyUseCaseImpl
+import nl.rijksoverheid.ctr.verifier.ui.scanlog.ScanLogViewModel
+import nl.rijksoverheid.ctr.verifier.ui.scanlog.ScanLogViewModelImpl
+import nl.rijksoverheid.ctr.verifier.ui.scanlog.usecase.GetScanLogItemsUseCase
+import nl.rijksoverheid.ctr.verifier.ui.scanlog.usecase.GetScanLogItemsUseCaseImpl
 import nl.rijksoverheid.ctr.verifier.ui.scanner.ScannerViewModel
 import nl.rijksoverheid.ctr.verifier.ui.scanner.ScannerViewModelImpl
 import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.TestResultValidUseCase
@@ -56,6 +60,7 @@ fun verifierModule(path: String) = module {
     }
     factory<ReturnToExternalAppUseCase> { ReturnToExternalAppUseCaseImpl(get()) }
     factory<RandomKeyUseCase> { RandomKeyUseCaseImpl(get(), get()) }
+    factory<GetScanLogItemsUseCase> { GetScanLogItemsUseCaseImpl() }
 
     // Utils
     factory<ScannerUtil> { ScannerUtilImpl() }
@@ -63,6 +68,7 @@ fun verifierModule(path: String) = module {
     // ViewModels
     viewModel<ScanQrViewModel> { ScanQrViewModelImpl(get()) }
     viewModel<ScannerViewModel> { ScannerViewModelImpl(get(), get()) }
+    viewModel<ScanLogViewModel> { ScanLogViewModelImpl(get()) }
 
     single {
         get<Moshi.Builder>(Moshi.Builder::class)

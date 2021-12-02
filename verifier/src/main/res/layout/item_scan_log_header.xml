@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/description"
+    style="@style/App.TextAppearance.MaterialComponents.Body1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginTop="24dp"
+    app:htmlText="@string/scan_log_message"
+    app:enableHtmlLinks="true"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
