@@ -16,7 +16,6 @@ import nl.rijksoverheid.ctr.verifier.databinding.FragmentVerificationPolicySetti
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 import org.koin.android.ext.android.inject
 
-
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
  *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
