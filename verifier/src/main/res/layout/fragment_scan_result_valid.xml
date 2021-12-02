@@ -66,7 +66,7 @@
         android:textAppearance="?attr/textAppearanceBody1"
         android:textAlignment="center"
         android:visibility="invisible"
-        android:text="@string/risk_mode_valid_high_risk_location"/>
+        android:text="@string/verifier_result_access_title_highrisk"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

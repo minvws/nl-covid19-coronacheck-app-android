@@ -29,13 +29,13 @@
     </fragment>
 
     <action
-        android:id="@+id/action_mode_select"
-        app:destination="@+id/nav_mode_select" />
+        android:id="@+id/action_policy_selection"
+        app:destination="@+id/nav_policy_selection" />
 
     <fragment
-        android:id="@+id/nav_mode_select"
-        android:name="nl.rijksoverheid.ctr.verifier.ui.mode.VerificationPolicySelectionFragment"
-        android:label="Risico instelling"
+        android:id="@+id/nav_policy_selection"
+        android:name="nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionFragment"
+        android:label="@string/verifier_menu_risksetting"
         tools:layout="@layout/fragment_verification_policy_selection" />
 
     <action
@@ -46,7 +46,23 @@
         android:id="@+id/nav_about_this_app"
         android:name="nl.rijksoverheid.ctr.design.menu.about.AboutThisAppFragment"
         android:label="@string/about_this_app"
-        tools:layout="@layout/fragment_about_app" />
+        tools:layout="@layout/fragment_about_app">
+
+        <action
+            android:id="@+id/action_scan_log"
+            app:destination="@id/nav_scan_log"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_scan_log"
+        android:name="nl.rijksoverheid.ctr.verifier.ui.scanlog.ScanLogFragment"
+        android:label="Scan Log"
+        tools:layout="@layout/fragment_scan_log"/>
 
     <include app:graph="@navigation/verifier_nav_graph_scanner" />
 

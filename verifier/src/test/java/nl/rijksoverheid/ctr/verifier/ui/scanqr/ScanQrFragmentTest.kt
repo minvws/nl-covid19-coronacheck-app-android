@@ -7,10 +7,13 @@ import androidx.navigation.testing.TestNavHostController
 import androidx.preference.PreferenceManager
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.platform.app.InstrumentationRegistry
-import com.adevinta.android.barista.interaction.BaristaClickInteractions
+import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
+import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertNotDisplayed
 import com.adevinta.android.barista.interaction.BaristaClickInteractions.clickOn
+import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.fakeScanQrViewModel
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
@@ -22,6 +25,7 @@ import org.koin.core.context.loadKoinModules
 import org.koin.dsl.module
 import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
+import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -69,9 +73,37 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
         verify { scannerUtil.launchScanner(any()) }
     }
 
+    @Test
+    fun `given no policy is set, no policy indication is shown`() {
+        launchScanQrFragment()
+
+        assertNotDisplayed(R.id.indicationContainer)
+    }
+
+    @Test
+    fun `given 2g policy is set, 2g policy indication is shown`() {
+        launchScanQrFragment(
+            policy = VerificationPolicy.VerificationPolicy2G
+        )
+
+        assertDisplayed(R.id.indicationContainer)
+        assertDisplayed(R.id.policyIndicatorText, R.string.verifier_start_scan_qr_policy_indication_2g)
+    }
+
+    @Test
+    fun `given 3g policy is set, 3g policy indication is shown`() {
+        launchScanQrFragment(
+            policy = VerificationPolicy.VerificationPolicy3G
+        )
+
+        assertDisplayed(R.id.indicationContainer)
+        assertDisplayed(R.id.policyIndicatorText, R.string.verifier_start_scan_qr_policy_indication_3g)
+    }
+
     private fun launchScanQrFragment(
         hasSeenScanInstructions: Boolean = true,
         nextScannerScreenState: NextScannerScreenState = NextScannerScreenState.Scanner,
+        policy: VerificationPolicy? = null,
     ) {
         loadKoinModules(
             module(override = true) {
@@ -81,6 +113,12 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
 
                 factory {
                     scannerUtil
+                }
+
+                factory {
+                    mockk<PersistenceManager>().apply {
+                        every { getVerificationPolicySelected() } returns policy
+                    }
                 }
 
                 viewModel {

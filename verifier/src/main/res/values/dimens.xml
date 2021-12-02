@@ -2,10 +2,4 @@
 <resources>
     <dimen name="onboarding_item_indicator_spacing">6dp</dimen>
     <dimen name="long_button_title_padding_horizontal">8dp</dimen>
-    <dimen name="home_risk_mode_button_text_size">12sp</dimen>
-    <dimen name="home_risk_mode_button_icon_size">12dp</dimen>
-    <dimen name="home_risk_mode_button_horizontal_margin">45dp</dimen>
-    <dimen name="home_risk_mode_button_horizontal_padding">16dp</dimen>
-    <dimen name="home_risk_mode_button_vertical_padding">8dp</dimen>
-    <dimen name="home_risk_mode_button_height">32dp</dimen>
 </resources>
