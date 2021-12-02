@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <resources>
     <string name="app_name_test">Scanner (Test)</string>
     <string name="app_name_acc">Scanner (Acc)</string>
@@ -16,7 +16,7 @@
     <string name="onboarding_finish">Aan de slag</string>
     <string name="onboarding_step">Stap %1$s</string>
     <string name="privacy_policy_title">Voorwaarden voor gebruik</string>
-    <string name="privacy_policy_description"><![CDATA[In de <a href="https://coronacheck.nl/nl/gebruikersvoorwaarden-in-app">gebruiksvoorwaarden</a> staat hoe CoronaCheck Scanner werkt en wat je rechten zijn.]]></string>
+    <string name="privacy_policy_description"><![CDATA[In de <a href=\"https://coronacheck.nl/nl/gebruikersvoorwaarden-in-app\">gebruiksvoorwaarden</a> staat hoe CoronaCheck Scanner werkt en wat je rechten zijn.]]></string>
     <string name="privacy_policy_1"><![CDATA[Er worden <b>geen locatiegegevens</b> gebruikt of bewaard]]></string>
     <string name="privacy_policy_2"><![CDATA[Je mag gegevens van de bezoeker alleen gebruiken voor <b>controle van het bewijs</b>]]></string>
     <string name="privacy_policy_3"><![CDATA[Gegevens van de bezoeker worden <b>nergens centraal opgeslagen</b>]]></string>
@@ -69,7 +69,6 @@
     <string name="camera_rationale_dialog_description">Zo kan de app QR-codes scannen</string>
     <string name="scanner_zebra_footer">Liever laserscannen?\nGebruik de gele toetsen op je toestel.</string>
     <string name="app_setup_text">We starten de app voor je op…</string>
-    <!-- App Status strings -->
     <string name="app_status_deactivated_title">App buiten werking</string>
     <string name="app_status_deactivated_message">Op dit moment is de app niet in gebruik. Ga voor meer informatie naar CoronaCheck.nl</string>
     <string name="app_status_deactivated_action">Lees meer</string>
@@ -102,7 +101,7 @@
     <string name="menu_close">Sluiten</string>
     <string name="new_terms_title">Onze voorwaarden zijn vernieuwd</string>
     <string name="new_terms_highlights"><![CDATA[<b>Dit is veranderd</b><br/><br/><ul><li>Beschrijving van gebruiksregels</li><li>Uitleg over gebruik van de app</li><li>Toestemming voor gebruik camera</li></ul>]]></string>
-    <string name="new_terms"><![CDATA[Lees <a href="https://coronacheck.nl/nl/gebruikersvoorwaarden-in-app">hier</a> de volledige gebruikersvoorwaarden.]]></string>
+    <string name="new_terms"><![CDATA[Lees <a href=\"https://coronacheck.nl/nl/gebruikersvoorwaarden-in-app\">hier</a> de volledige gebruikersvoorwaarden.]]></string>
     <string name="new_terms_consent_button">Volgende</string>
     <string name="new_terms_consent_needed_positive_button">Akkoord</string>
     <string name="new_terms_consent_needed_negative_button">Niet akkoord</string>
@@ -134,10 +133,36 @@
     <string name="clockdeviation_card_message">Controleer de tijd van je telefoon. Mogelijk staat deze niet goed ingesteld.</string>
     <string name="clockdeviation_card_button">Lees meer</string>
     <string name="clockdeviation_page_title">Controleer de tijd van je telefoon</string>
-    <string name="clockdeviation_page_message"><![CDATA[Om de CoronaCheck Scanner-app goed te kunnen gebruiken, is het belangrijk dat de tijd op je telefoon goed staat ingesteld. Loopt je telefoon bijvoorbeeld een paar minuten voor? Dan kan er een fout ontstaan tijdens de controle van een coronabewijs.<br/><br/><a href="#">Ga naar de instellingen</a> van je telefoon en zet de datum en tijd op \'automatisch instellen\'.]]></string>
+    <string name="clockdeviation_page_message"><![CDATA[Om de CoronaCheck Scanner-app goed te kunnen gebruiken, is het belangrijk dat de tijd op je telefoon goed staat ingesteld. Loopt je telefoon bijvoorbeeld een paar minuten voor? Dan kan er een fout ontstaan tijdens de controle van een coronabewijs.<br/><br/><a href=\"#\">Ga naar de instellingen</a> van je telefoon en zet de datum en tijd op \'automatisch instellen\'.]]></string>
     <string name="privacy_policy_checkbox_error">Ga akkoord om verder te kunnen</string>
     <string name="scan_instructions_5_title">Rood scherm, wat nu?</string>
     <string name="scan_instructions_5_description">Kleurt je scherm rood met een kruis? Dan krijg je uitleg om de bezoeker te helpen. Blijft het scherm rood? Dan mag je de bezoeker geen toegang geven.</string>
+    <string name="verifier_about_this_app_scan_log">Scan log</string>
+    <string name="verifier_about_this_app_law_enforcement">Voor handhaving</string>
+    <string name="verification_policy_selection_confirmation_button">Bevestigen</string>
+    <string name="verification_policy_selection_error_message">Maak een keuze om door te gaan</string>
+    <string name="scan_log_title">Scan log</string>
+    <string name="scan_log_message"><![CDATA[<p>De scan log houdt bij welke regels er zijn gebruikt tijdens het scannen. Een BOA kan vragen om dit scherm te laten zien.</p><p>Om privacy redenen worden alleen de scan regels van laatste 60 minuten opgeslagen op deze telefoon. Er worden geen persoonsgevens opgeslagen. Lees meer in de <a href=\"https://coronacheck.nl/nl/faq-scanner-in-app\">meestgestelde vragen</a>.</p>]]></string>
+    <string name="scan_log_list_header">Laatste %@ minuten</string>
+    <string name="scan_log_list_no_items">Geen bewijzen gescand</string>
+    <string name="scan_log_list_now">nu</string>
+    <string name="scan_log_list_entry" formatted="false">%@ tot %@ bewijzen gescand</string>
+    <string name="scan_log_list_highrisk">2G</string>
+    <string name="scan_log_list_lowrisk">3G</string>
+    <string name="scan_log_footer_in_use">App in gebruik sinds %@</string>
+    <string name="scan_log_footer_long_time">App langer dan een maand in gebruik</string>
+    <string name="scan_log_list_clock_skew_detected">Verkeerde tijd ingesteld</string>
+    <string name="verifier_menu_risksetting">Scan-instelling</string>
+    <string name="verifier_result_access_title_highrisk">2G controle klaar</string>
+    <string name="verifier_risksetting_active_title">Scan-instelling aanpassen</string>
+    <string name="verifier_risksetting_lowrisk_title">3G-toegang</string>
+    <string name="verifier_risksetting_lowrisk_subtitle">Je kunt QR-codes scannen van bezoekers met een vaccinatie-, herstel-, of testbewijs.</string>
+    <string name="verifier_risksetting_highrisk_title">2G-toegang</string>
+    <string name="verifier_risksetting_highrisk_subtitle">Je kunt alleen QR-codes scannen van bezoekers met een vaccinatie- of herstelbewijs.</string>
+    <string name="verifier_risksetting_readmore">Welk soort toegang mag ik geven?</string>
+    <string name="verifier_risksetting_readmore_url">https://coronacheck.nl/nl/faq-scanner-in-app</string>
+    <string name="verifier_risksetting_firsttimeuse_title">Kies je scan-instelling</string>
+    <string name="verifier_risksetting_firsttimeuse_header">Stel in of je 2G- of 3G-toegang gaat geven. Controleer voordat je gaat scannen altijd welk soort toegang jouw locatie mag geven.</string>
     <string name="risk_mode_selection_title">Kies je scan-instelling</string>
     <string name="risk_mode_selection_subtitle">Stel in of je 2G- of 3G-toegang gaat geven. Controleer voordat je gaat scannen altijd welke toegang jouw locatie mag geven.</string>
     <string name="risk_mode_selection_high_risk_title">2G-toegang</string>
@@ -149,9 +174,5 @@
     <string name="risk_mode_menu_title">Risico instelling</string>
     <string name="risk_mode_selection_subtitle_from_menu">Geef aan of je op een hoog of laag risico plek gaat scannen.</string>
     <string name="risk_mode_new_feature_title">Risico instelling: laag en hoog risico</string>
-    <string name="risk_mode_new_feature_subtitle">Geef aan of je op een hoog of laag risico plek gaat scannen. Je kunt het niveau later eventueel nog aanpassen.</string>
-    <string name="verification_policy_selection_confirmation_button">Bevestigen</string>
-    <string name="verification_policy_selection_error_message">Maak een keuze om door te gaan</string>
-    <string name="verifier_about_this_app_scan_log">Scan log</string>
-    <string name="verifier_about_this_app_law_enforcement">Voor handhaving</string>
+    <string name="risk_mode_new_feature_subtitle">Geef aan of je op een hoog of laag risico plek gaat scannen. Je kunt het niveau later eventueel nog aanpassen.</string
 </resources>

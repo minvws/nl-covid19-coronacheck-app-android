@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <resources>
     <string name="app_name_test">Scanner (Test)</string>
     <string name="app_name_acc">Scanner (Acc)</string>
@@ -16,7 +16,7 @@
     <string name="onboarding_finish">Get started</string>
     <string name="onboarding_step">Step %1$s</string>
     <string name="privacy_policy_title">Acceptable use policy</string>
-    <string name="privacy_policy_description"><![CDATA[The <a href="https://coronacheck.nl/en/gebruikersvoorwaarden-in-app">acceptable use policy</a> details how CoronaCheck Scanner uses your data and what your rights are.]]></string>
+    <string name="privacy_policy_description"><![CDATA[The <a href=\"https://coronacheck.nl/en/gebruikersvoorwaarden-in-app\">acceptable use policy</a> details how CoronaCheck Scanner uses your data and what your rights are.]]></string>
     <string name="privacy_policy_1"><![CDATA[Location data are <b>not saved or used</b>]]></string>
     <string name="privacy_policy_2"><![CDATA[You\'re only allowed to use this data to <b>check the certificate</b>]]></string>
     <string name="privacy_policy_3"><![CDATA[The visitor\'s data is <b>not centrally stored anywhere</b>]]></string>
@@ -69,7 +69,6 @@
     <string name="camera_rationale_dialog_description">So the app can scan QR codes</string>
     <string name="scanner_zebra_footer">Prefer laser scanning?\n\nUse the yellow buttons on your device.</string>
     <string name="app_setup_text">We\'re starting the app…</string>
-    <!-- App Status strings -->
     <string name="app_status_deactivated_title">App out of order</string>
     <string name="app_status_deactivated_message">The app is not in use at the moment. For more information, go to CoronaCheck.nl</string>
     <string name="app_status_deactivated_action">Read more</string>
@@ -102,7 +101,7 @@
     <string name="menu_close">Close</string>
     <string name="new_terms_title">We\'ve updated our policy</string>
     <string name="new_terms_highlights"><![CDATA[<b>Here\'s what changed</b><br/>br/><ul><li>Description of acceptable use policy</li><li>App usage explanation</li><li>Camera usage permission</li></ul>]]></string>
-    <string name="new_terms"><![CDATA[Read the full acceptable use policy <a href="https://coronacheck.nl/en/gebruikersvoorwaarden-in-app">here</a>.]]></string>
+    <string name="new_terms"><![CDATA[Read the full acceptable use policy <a href=\"https://coronacheck.nl/en/gebruikersvoorwaarden-in-app\">here</a>.]]></string>
     <string name="new_terms_consent_button">Next</string>
     <string name="new_terms_consent_needed_positive_button">Agree</string>
     <string name="new_terms_consent_needed_negative_button">Don\'t agree</string>
@@ -134,24 +133,34 @@
     <string name="clockdeviation_card_message">Check your phone\'s time settings. They might be incorrect.</string>
     <string name="clockdeviation_card_button">Read more</string>
     <string name="clockdeviation_page_title">Check your phone\'s time settings</string>
-    <string name="clockdeviation_page_message"><![CDATA[In order to properly use the CoronaCheck Scanner app, it is important that the time on your phone is set correctly. For example, if the clock on your phone is a few minutes ahead, an error might occur while verifying a coronavirus pass.<br/><br/><a href="#">Go to your phone\'s settings</a> and set Date & Time to \'set automatically\'.]]></string>
+    <string name="clockdeviation_page_message"><![CDATA[In order to properly use the CoronaCheck Scanner app, it is important that the time on your phone is set correctly. For example, if the clock on your phone is a few minutes ahead, an error might occur while verifying a coronavirus pass.<br/><br/><a href=\"#\">Go to your phone\'s settings</a> and set Date & Time to \'set automatically\'.]]></string>
     <string name="privacy_policy_checkbox_error">To continue, please agree</string>
     <string name="scan_instructions_5_title">Red screen - what happens next?</string>
     <string name="scan_instructions_5_description">Does your screen turn red and show a cross? In that case, you\'ll receive information to assist the visitor. If the screen stays red, you cannot grant the visitor access.</string>
-    <string name="risk_mode_selection_title">Kies je scan-instelling</string>
-    <string name="risk_mode_selection_subtitle">Stel in of je 2G- of 3G-toegang gaat geven. Controleer voordat je gaat scannen altijd welke toegang jouw locatie mag geven.</string>
-    <string name="risk_mode_selection_high_risk_title">2G-toegang</string>
-    <string name="risk_mode_selection_high_risk_subtitle">Bijvoorbeeld een bar, nachtclub of plek waar veel mensen dichtbij elkaar komen</string>
-    <string name="risk_mode_selection_low_risk_title">3G-toegang</string>
-    <string name="risk_mode_selection_low_risk_subtitle">Je kunt QR-codes scannen van bezoekers met een vaccinatie-, herstel-, of testbewijs.</string>
-    <string name="risk_mode_selection_explanation_button">Welk soort toegang mag ik geven?</string>
-    <string name="risk_mode_valid_high_risk_location">2G controle klaar</string>
-    <string name="risk_mode_menu_title">Risico instelling</string>
-    <string name="risk_mode_selection_subtitle_from_menu">Geef aan of je op een hoog of laag risico plek gaat scannen.</string>
-    <string name="risk_mode_new_feature_title">Risico instelling: laag en hoog risico</string>
-    <string name="risk_mode_new_feature_subtitle">Geef aan of je op een hoog of laag risico plek gaat scannen. Je kunt het niveau later eventueel nog aanpassen.</string>
+    <string name="verifier_about_this_app_scan_log"></string>
+    <string name="verifier_about_this_app_law_enforcement"></string>
     <string name="verification_policy_selection_confirmation_button">Bevestigen</string>
     <string name="verification_policy_selection_error_message">Maak een keuze om door te gaan</string>
-    <string name="verifier_about_this_app_scan_log">Scan log</string>
-    <string name="verifier_about_this_app_law_enforcement">Voor handhaving</string>
+    <string name="scan_log_title"></string>
+    <string name="scan_log_message"></string>
+    <string name="scan_log_list_header"></string>
+    <string name="scan_log_list_no_items"></string>
+    <string name="scan_log_list_now"></string>
+    <string name="scan_log_list_entry"></string>
+    <string name="scan_log_list_highrisk"></string>
+    <string name="scan_log_list_lowrisk"></string>
+    <string name="scan_log_footer_in_use"></string>
+    <string name="scan_log_footer_long_time"></string>
+    <string name="scan_log_list_clock_skew_detected"></string>
+    <string name="verifier_menu_risksetting"></string>
+    <string name="verifier_result_access_title_highrisk"></string>
+    <string name="verifier_risksetting_active_title"></string>
+    <string name="verifier_risksetting_lowrisk_title"></string>
+    <string name="verifier_risksetting_lowrisk_subtitle"></string>
+    <string name="verifier_risksetting_highrisk_title"></string>
+    <string name="verifier_risksetting_highrisk_subtitle"></string>
+    <string name="verifier_risksetting_readmore"></string>
+    <string name="verifier_risksetting_readmore_url"></string>
+    <string name="verifier_risksetting_firsttimeuse_title"></string>
+    <string name="verifier_risksetting_firsttimeuse_header"></string>
 </resources>
