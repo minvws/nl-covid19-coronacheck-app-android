@@ -6,7 +6,7 @@ plugins {
     id "androidx.navigation.safeargs.kotlin"
 }
 
-def appVersionCode =  1000000
+def appVersionCode = 1000000
 if (System.getenv("GITHUB_REPOSITORY_OWNER") == "minvws") {
     appVersionCode = System.getenv("GITHUB_RUN_NUMBER") != null ? System.getenv("GITHUB_RUN_NUMBER").toInteger() : 1000000
 }
@@ -33,8 +33,8 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField "String", "SIGNATURE_CERTIFICATE_CN_MATCH", '".coronatester.nl"'
-        buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "false"
-        buildConfigField "boolean", "FEATURE_TEST_PROVIDER_API_CHECKS", "false"
+        buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "true"
+        buildConfigField "boolean", "FEATURE_TEST_PROVIDER_API_CHECKS", "true"
         buildConfigField "String", "DIGI_D_REDIRECT_URI", "\"https://coronacheck.nl/app/auth2\""
         buildConfigField "String", "BASE_API_URL", "\"https://holder-api.coronacheck.nl/v6/\""
         buildConfigField "String", "DIGI_D_BASE_URL", "\"https://tvs.coronacheck.nl\""
@@ -80,8 +80,7 @@ android {
             buildConfigField "String", "MIJNCN_BASEURL", "\"https://emax.acc.coronacheck.nl\""
             buildConfigField "String[]", "CERTIFICATE_PINS",
                     "{" +
-                            "\"sha256/lR7gRvqDMW5nhsCMRPE7TKLq0tJkTWMxQ5HAzHCIfQ0=\"," +
-                            "\"sha256/b71OlvKU9MLzlEaRak/ouJnaI+Wjmnyj/JtjmByBQ44=\"" +
+                            "\"sha256/lR7gRvqDMW5nhsCMRPE7TKLq0tJkTWMxQ5HAzHCIfQ0=\"" +
                             "}"
             dimension "environment"
             versionNameSuffix "-acc"

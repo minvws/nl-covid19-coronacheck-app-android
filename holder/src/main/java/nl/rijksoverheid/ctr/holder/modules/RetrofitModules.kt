@@ -1,9 +1,6 @@
 package nl.rijksoverheid.ctr.holder.modules
 
-import nl.rijksoverheid.ctr.api.signing.certificates.DIGICERT_BTC_ROOT_CA
-import nl.rijksoverheid.ctr.api.signing.certificates.EV_ROOT_CA
-import nl.rijksoverheid.ctr.api.signing.certificates.PRIVATE_ROOT_CA
-import nl.rijksoverheid.ctr.api.signing.certificates.ROOT_CA_G3
+import nl.rijksoverheid.ctr.api.signing.certificates.*
 import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.HolderApiClient
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.TestProviderApiClient
@@ -32,6 +29,8 @@ fun retrofitModule(baseUrl: String) = module {
                         .addTrustedCertificate(EV_ROOT_CA.decodeCertificatePem())
                         .addTrustedCertificate(PRIVATE_ROOT_CA.decodeCertificatePem())
                         .addTrustedCertificate(DIGICERT_BTC_ROOT_CA.decodeCertificatePem())
+                        .addTrustedCertificate(EMAX_ROOT_CA.decodeCertificatePem())
+                        .addTrustedCertificate(BEARINGPOINT_ROOT_CA.decodeCertificatePem())
                         .build()
 
                     sslSocketFactory(
