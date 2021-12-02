@@ -163,4 +163,16 @@
     <string name="verifier_risksetting_readmore_url"></string>
     <string name="verifier_risksetting_firsttimeuse_title"></string>
     <string name="verifier_risksetting_firsttimeuse_header"></string>
+    <string name="risk_mode_selection_title">Kies je scan-instelling</string>
+    <string name="risk_mode_selection_subtitle">Stel in of je 2G- of 3G-toegang gaat geven. Controleer voordat je gaat scannen altijd welke toegang jouw locatie mag geven.</string>
+    <string name="risk_mode_selection_high_risk_title">2G-toegang</string>
+    <string name="risk_mode_selection_high_risk_subtitle">Bijvoorbeeld een bar, nachtclub of plek waar veel mensen dichtbij elkaar komen</string>
+    <string name="risk_mode_selection_low_risk_title">3G-toegang</string>
+    <string name="risk_mode_selection_low_risk_subtitle">Je kunt QR-codes scannen van bezoekers met een vaccinatie-, herstel-, of testbewijs.</string>
+    <string name="risk_mode_selection_explanation_button">Welk soort toegang mag ik geven?</string>
+    <string name="risk_mode_valid_high_risk_location">2G controle klaar</string>
+    <string name="risk_mode_menu_title">Risico instelling</string>
+    <string name="risk_mode_selection_subtitle_from_menu">Geef aan of je op een hoog of laag risico plek gaat scannen.</string>
+    <string name="risk_mode_new_feature_title">Risico instelling: laag en hoog risico</string>
+    <string name="risk_mode_new_feature_subtitle">Geef aan of je op een hoog of laag risico plek gaat scannen. Je kunt het niveau later eventueel nog aanpassen.</string>
 </resources>
