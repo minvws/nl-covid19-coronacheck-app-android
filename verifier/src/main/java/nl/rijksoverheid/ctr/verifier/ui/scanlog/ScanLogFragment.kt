@@ -12,6 +12,7 @@ import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanLogBinding
 import nl.rijksoverheid.ctr.verifier.ui.scanlog.items.ScanLogHeaderAdapterItem
 import nl.rijksoverheid.ctr.verifier.ui.scanlog.items.ScanLogItem
+import nl.rijksoverheid.ctr.verifier.ui.scanlog.items.ScanLogListAdapterItem
 import nl.rijksoverheid.ctr.verifier.ui.scanlog.items.ScanLogListHeaderAdapterItem
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -60,6 +61,7 @@ class ScanLogFragment: Fragment(R.layout.fragment_scan_log) {
             when (scanLogItem) {
                 is ScanLogItem.HeaderItem -> adapterItems.add(ScanLogHeaderAdapterItem(scanLogItem))
                 is ScanLogItem.ListHeaderItem -> adapterItems.add(ScanLogListHeaderAdapterItem(scanLogItem))
+                is ScanLogItem.ScanLogListItem -> adapterItems.add(ScanLogListAdapterItem(scanLogItem))
             }
         }
 

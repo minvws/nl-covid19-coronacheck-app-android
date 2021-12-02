@@ -143,7 +143,7 @@
   <string name="scan_log_list_header"></string>
   <string name="scan_log_list_no_items"></string>
   <string name="scan_log_list_now"></string>
-  <string name="scan_log_list_entry"></string>
+  <string name="scan_log_list_entry">%1$d tot %2$d bewijzen gescand</string>
   <string name="scan_log_list_highrisk"></string>
   <string name="scan_log_list_lowrisk"></string>
   <string name="scan_log_footer_in_use"></string>

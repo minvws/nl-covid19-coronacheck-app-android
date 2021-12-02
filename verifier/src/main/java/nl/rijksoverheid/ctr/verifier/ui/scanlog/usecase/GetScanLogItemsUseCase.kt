@@ -1,7 +1,11 @@
 package nl.rijksoverheid.ctr.verifier.ui.scanlog.usecase
 
+import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
+import nl.rijksoverheid.ctr.verifier.persistance.database.entities.ScanLogEntity
 import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.verifier.ui.scanlog.items.ScanLogItem
+import nl.rijksoverheid.ctr.verifier.ui.scanlog.models.ScanLog
+import java.time.OffsetDateTime
 import java.util.concurrent.TimeUnit
 
 /*
@@ -22,6 +26,14 @@ class GetScanLogItemsUseCaseImpl(
         val scanLogStorageMinutes = TimeUnit.SECONDS.toMinutes(verifierCachedAppConfigUseCase.getCachedAppConfig().scanLogStorageSeconds.toLong())
         val headerItem = ScanLogItem.HeaderItem(scanLogStorageMinutes)
         val listHeaderItem = ScanLogItem.ListHeaderItem(scanLogStorageMinutes)
-        return listOf(headerItem, listHeaderItem)
+        val dummyListItem = ScanLogItem.ScanLogListItem(ScanLog(
+            policy = VerificationPolicy.VerificationPolicy2G,
+            countFrom = 0,
+            countTo = 10,
+            skew = true,
+            from = ScanLog.ScanLogDate.Date(OffsetDateTime.now().minusHours(5)),
+            to = ScanLog.ScanLogDate.Now
+        ))
+        return listOf(headerItem, listHeaderItem, dummyListItem)
     }
 }
