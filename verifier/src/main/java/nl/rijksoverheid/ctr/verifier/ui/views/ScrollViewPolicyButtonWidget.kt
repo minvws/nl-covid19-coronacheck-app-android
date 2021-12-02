@@ -9,7 +9,6 @@ import android.view.ViewTreeObserver
 import android.widget.ScrollView
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
-import com.airbnb.lottie.SimpleColorFilter
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.verifier.databinding.WidgetScrollViewPolicyButtonBinding
@@ -88,15 +87,18 @@ class ScrollViewPolicyButtonWidget @JvmOverloads constructor(
     }
 
     fun setPolicy(policy: VerificationPolicy) {
-        binding.policyIndicator.background =
-            ContextCompat.getDrawable(context, R.drawable.verification_policy_indicator_circle)?.apply {
-                colorFilter = SimpleColorFilter(
-                    when (policy) {
-                        VerificationPolicy.VerificationPolicy2G -> R.color.secondary_green
-                        VerificationPolicy.VerificationPolicy3G -> R.color.primary_blue
-                    }
-                )
+        binding.policyIndicator.setBackgroundTintList(ColorStateList.valueOf(context.getColor(
+            when (policy) {
+                VerificationPolicy.VerificationPolicy2G -> R.color.primary_blue
+                VerificationPolicy.VerificationPolicy3G -> R.color.secondary_green
             }
+        )))
+        binding.policyIndicatorText.setText(
+            when (policy) {
+                VerificationPolicy.VerificationPolicy2G -> R.string.scan_qr_policy_indication_2g
+                VerificationPolicy.VerificationPolicy3G -> R.string.scan_qr_policy_indication_3g
+            }
+        )
     }
 
 }

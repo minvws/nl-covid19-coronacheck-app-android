@@ -14,6 +14,7 @@ import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
+import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.VerificationPolicy2G
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.VerifierMainActivity
@@ -50,6 +51,7 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
             goToNextScreen()
         }
 
+        persistentManager.setVerificationPolicySelected(VerificationPolicy.VerificationPolicy3G)
         val policy = persistentManager.getVerificationPolicySelected()
         binding.image.background = ContextCompat.getDrawable(
             requireContext(), if (policy != null) {
@@ -57,11 +59,11 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
                 if (policy == VerificationPolicy2G) {
                     R.drawable.illustration_scanner_get_started_2g
                 } else {
-                    R.drawable.illustration_scanner_get_started
+                    R.drawable.illustration_scanner_get_started_3g
                 }
             } else {
                 binding.bottom.hidePolicyIndication()
-                R.drawable.illustration_scanner_get_started
+                R.drawable.illustration_scanner_get_started_3g
             }
         )
 

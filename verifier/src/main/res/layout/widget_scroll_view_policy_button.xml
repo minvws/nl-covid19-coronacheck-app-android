@@ -30,12 +30,12 @@
                 android:background="@drawable/verification_policy_indicator_circle" />
 
             <TextView
+                android:id="@+id/policyIndicatorText"
+                android:textAppearance="?attr/textAppearanceSubtitle2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
                 android:layout_gravity="center_vertical"
-                style="@style/App.TextAppearance.MaterialComponents.Body2.Secondary"
-                android:text="3G-toegang ingesteld" />
+                android:layout_marginStart="8dp" />
 
         </LinearLayout>
 
@@ -50,9 +50,9 @@
             android:layout_marginBottom="2dp"
             android:gravity="center"
             android:text="@string/scan_qr_button"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/indicationContainer" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
