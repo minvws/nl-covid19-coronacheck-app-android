@@ -73,7 +73,7 @@ class MyOverviewInfoCardItem(
                 viewBinding.text.text = viewBinding.text.context.getString(R.string.missing_dutch_certificate_info_card_text)
             }
             DashboardItem.InfoItem.TestCertificate3GValidity -> {
-                viewBinding.text.text = "Je Nederlandse testbewijs is alleen geldig voor 3G-toegang"
+                viewBinding.text.text = viewBinding.text.context.getString(R.string.holder_my_overview_3g_test_validity_card)
             }
         }
 

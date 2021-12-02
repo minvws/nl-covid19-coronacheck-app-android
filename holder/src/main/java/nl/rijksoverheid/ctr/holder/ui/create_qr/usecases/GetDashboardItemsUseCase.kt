@@ -4,6 +4,7 @@ import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItems
@@ -98,7 +99,10 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
-        dashboardItems.add(DashboardItem.InfoItem.TestCertificate3GValidity)
+        // TODO: add category check
+        if (hasTests(domesticGreenCards)) {
+            dashboardItems.add(DashboardItem.InfoItem.TestCertificate3GValidity)
+        }
 
         dashboardItems.addAll(
             getGreenCardItems(
@@ -117,7 +121,11 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
-        if (dashboardItemUtil.shouldShowCoronaMelderItem(domesticGreenCards, databaseSyncerResult)) {
+        if (dashboardItemUtil.shouldShowCoronaMelderItem(
+                domesticGreenCards,
+                databaseSyncerResult
+            )
+        ) {
             dashboardItems.add(
                 DashboardItem.CoronaMelderItem
             )
@@ -128,6 +136,12 @@ class GetDashboardItemsUseCaseImpl(
         )
 
         return dashboardItems
+    }
+
+    private fun hasTests(domesticGreenCards: List<GreenCard>): Boolean {
+        return domesticGreenCards.any { greenCard ->
+            greenCard.origins.any { it.type == OriginType.Test }
+        }
     }
 
     private suspend fun getInternationalItems(
@@ -190,7 +204,11 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
-        if (dashboardItemUtil.shouldShowCoronaMelderItem(internationalGreenCards, databaseSyncerResult)) {
+        if (dashboardItemUtil.shouldShowCoronaMelderItem(
+                internationalGreenCards,
+                databaseSyncerResult
+            )
+        ) {
             dashboardItems.add(
                 DashboardItem.CoronaMelderItem
             )
@@ -239,7 +257,10 @@ class GetDashboardItemsUseCaseImpl(
 
                 items.add(
                     if (greenCardType == GreenCardType.Domestic
-                        && dashboardItemUtil.shouldShowMissingDutchVaccinationItem(greenCardsForSelectedType, greenCardsForUnselectedType)
+                        && dashboardItemUtil.shouldShowMissingDutchVaccinationItem(
+                            greenCardsForSelectedType,
+                            greenCardsForUnselectedType
+                        )
                     ) {
                         DashboardItem.InfoItem.MissingDutchVaccinationItem
                     } else {

@@ -192,9 +192,9 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
         infoFragmentUtil.presentAsBottomSheet(
             myOverviewFragment.childFragmentManager,
             InfoFragmentData.TitleDescription(
-                title = "Testbewijs alleen geldig voor 3G-toegang",
+                title = myOverviewFragment.getString(R.string.holder_my_overview_3g_test_validity_bottom_sheet_title),
                 descriptionData = DescriptionData(
-                    R.string.extended_domestic_recovery_green_card_bottomsheet_description,
+                    R.string.holder_my_overview_3g_test_validity_bottom_sheet_body,
                     htmlLinksEnabled = true
                 ),
             )
