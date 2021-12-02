@@ -8,9 +8,8 @@ import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.widget.ScrollView
 import androidx.cardview.widget.CardView
-import androidx.core.content.ContextCompat
-import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
+import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.WidgetScrollViewPolicyButtonBinding
 
 /*
@@ -41,7 +40,10 @@ class ScrollViewPolicyButtonWidget @JvmOverloads constructor(
         ).apply {
             try {
                 attachToScrollViewId =
-                    getResourceId(R.styleable.ScrollViewPolicyButtonWidget_attachToScrollView, NO_ID)
+                    getResourceId(
+                        R.styleable.ScrollViewPolicyButtonWidget_attachToScrollView,
+                        NO_ID
+                    )
             } finally {
                 recycle()
             }
@@ -87,12 +89,16 @@ class ScrollViewPolicyButtonWidget @JvmOverloads constructor(
     }
 
     fun setPolicy(policy: VerificationPolicy) {
-        binding.policyIndicator.setBackgroundTintList(ColorStateList.valueOf(context.getColor(
-            when (policy) {
-                VerificationPolicy.VerificationPolicy2G -> R.color.primary_blue
-                VerificationPolicy.VerificationPolicy3G -> R.color.secondary_green
-            }
-        )))
+        binding.policyIndicator.setBackgroundTintList(
+            ColorStateList.valueOf(
+                context.getColor(
+                    when (policy) {
+                        VerificationPolicy.VerificationPolicy2G -> R.color.primary_blue
+                        VerificationPolicy.VerificationPolicy3G -> R.color.secondary_green
+                    }
+                )
+            )
+        )
         binding.policyIndicatorText.setText(
             when (policy) {
                 VerificationPolicy.VerificationPolicy2G -> R.string.verifier_start_scan_qr_policy_indication_2g
