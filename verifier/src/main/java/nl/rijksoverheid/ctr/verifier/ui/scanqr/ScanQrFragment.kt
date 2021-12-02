@@ -51,7 +51,6 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
             goToNextScreen()
         }
 
-        persistentManager.setVerificationPolicySelected(VerificationPolicy.VerificationPolicy3G)
         val policy = persistentManager.getVerificationPolicySelected()
         binding.image.background = ContextCompat.getDrawable(
             requireContext(), if (policy != null) {
