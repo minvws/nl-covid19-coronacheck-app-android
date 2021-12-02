@@ -15,7 +15,7 @@ import nl.rijksoverheid.ctr.verifier.databinding.ItemScanLogHeaderBinding
 class ScanLogHeaderAdapterItem(val item: ScanLogItem.HeaderItem): BindableItem<ItemScanLogHeaderBinding>(R.layout.item_scan_log_header.toLong()) {
 
     override fun bind(viewBinding: ItemScanLogHeaderBinding, position: Int) {
-        viewBinding.description.setHtmlText(viewBinding.root.context.getString(R.string.scan_log_message, item.scanLogStorageMinutes), true)
+        viewBinding.text.setHtmlText(viewBinding.root.context.getString(R.string.scan_log_message, item.scanLogStorageMinutes), true)
     }
 
     override fun getLayout(): Int {

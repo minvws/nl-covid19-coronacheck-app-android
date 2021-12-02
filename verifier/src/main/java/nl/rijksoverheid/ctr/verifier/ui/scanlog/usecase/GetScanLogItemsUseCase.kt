@@ -21,6 +21,7 @@ class GetScanLogItemsUseCaseImpl(
     override fun getItems(): List<ScanLogItem> {
         val scanLogStorageMinutes = TimeUnit.SECONDS.toMinutes(verifierCachedAppConfigUseCase.getCachedAppConfig().scanLogStorageSeconds.toLong())
         val headerItem = ScanLogItem.HeaderItem(scanLogStorageMinutes)
-        return listOf(headerItem)
+        val listHeaderItem = ScanLogItem.ListHeaderItem(scanLogStorageMinutes)
+        return listOf(headerItem, listHeaderItem)
     }
 }
