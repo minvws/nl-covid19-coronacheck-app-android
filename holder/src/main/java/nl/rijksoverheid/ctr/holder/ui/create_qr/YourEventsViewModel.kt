@@ -59,8 +59,7 @@ class YourEventsViewModelImpl(
         viewModelScope.launch {
             try {
                 // Save the event in the database
-                when (val result =
-                    saveEventsUseCase.saveNegativeTest2(negativeTest2, rawResponse)) {
+                when (val result = saveEventsUseCase.saveNegativeTest2(negativeTest2, rawResponse)) {
                     is SaveEventsUseCaseImpl.SaveEventResult.Success -> {
                         // Send all events to database and create green cards, origins and credentials
                         val databaseSyncerResult = holderDatabaseSyncer.sync(
@@ -72,8 +71,7 @@ class YourEventsViewModelImpl(
                         )
                     }
                     is SaveEventsUseCaseImpl.SaveEventResult.Failed -> {
-                        (yourEventsResult as MutableLiveData).value =
-                            Event(DatabaseSyncerResult.Failed.Error(result.errorResult))
+                        (yourEventsResult as MutableLiveData).value = Event(DatabaseSyncerResult.Failed.Error(result.errorResult))
                     }
                 }
             } catch (e: Exception) {
@@ -131,8 +129,7 @@ class YourEventsViewModelImpl(
                         )
                     }
                     is SaveEventsUseCaseImpl.SaveEventResult.Failed -> {
-                        (yourEventsResult as MutableLiveData).value =
-                            Event(DatabaseSyncerResult.Failed.Error(result.errorResult))
+                        (yourEventsResult as MutableLiveData).value = Event(DatabaseSyncerResult.Failed.Error(result.errorResult))
                     }
                 }
             } catch (e: Exception) {
