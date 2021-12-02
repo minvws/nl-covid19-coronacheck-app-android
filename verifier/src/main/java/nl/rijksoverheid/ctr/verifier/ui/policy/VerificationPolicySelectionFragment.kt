@@ -41,7 +41,7 @@ class VerificationPolicySelectionFragment :
         if (arguments?.getBoolean(addToolbarArgument) == true) {
             setupToolbar()
         } else {
-            binding.subHeader.text = getString(R.string.risk_mode_selection_subtitle_from_menu)
+            binding.subHeader.text = getString(R.string.verifier_menu_risksetting)
         }
 
         binding.link.setOnClickListener {

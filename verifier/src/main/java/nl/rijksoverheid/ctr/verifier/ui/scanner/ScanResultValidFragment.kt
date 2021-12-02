@@ -71,7 +71,7 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
                     val whiteColorStateList = ColorStateList.valueOf(whiteColor)
                     binding.image.imageTintList = whiteColorStateList
                     binding.title.setTextColor(whiteColorStateList)
-                    binding.title.text = getString(R.string.risk_mode_valid_high_risk_location)
+                    binding.title.text = getString(R.string.verifier_result_access_title_highrisk)
                     binding.toolbar.navigationIcon?.setTintList(whiteColorStateList)
                     binding.root.setStatusBarTextColorWhite()
                 }

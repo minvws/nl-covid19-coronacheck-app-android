@@ -46,8 +46,8 @@ val verifierIntroductionModule = module {
             newFeatures = listOf(
                 NewFeatureItem(
                     R.drawable.common_full_open_on_phone,
-                    R.string.risk_mode_new_feature_title,
-                    R.string.risk_mode_new_feature_subtitle,
+                    R.string.new_in_app_risksetting_title,
+                    R.string.new_in_app_risksetting_subtitle,
                     R.color.primary_blue,
                     R.color.light_blue,
                 )

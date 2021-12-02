@@ -35,7 +35,7 @@
                 android:id="@+id/header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/risk_mode_selection_title"
+                android:text="@string/verifier_risksetting_firsttimeuse_title"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 android:paddingHorizontal="18dp"
@@ -55,14 +55,14 @@
                 android:layout_marginTop="24dp"
                 android:textColor="@color/black"
                 style="@style/App.TextAppearance.MaterialComponents.Body2.Secondary"
-                android:text="@string/risk_mode_selection_subtitle" />
+                android:text="@string/verifier_risksetting_firsttimeuse_header" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/link"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="12sp"
-                android:text="@string/risk_mode_selection_explanation_button"
+                android:text="@string/verifier_risksetting_readmore"
                 style="@style/Widget.App.Button.Toggle"
                 android:layout_marginStart="10dp"
                 app:layout_constraintTop_toBottomOf="@id/subHeader"
@@ -91,7 +91,7 @@
                     android:layout_height="20dp"
                     style="@style/App.TextAppearance.MaterialComponents.Body1"
                     android:textStyle="bold"
-                    android:text="@string/risk_mode_selection_low_risk_title" />
+                    android:text="@string/verifier_risksetting_lowrisk_title" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/subtitle_3g"
@@ -102,7 +102,7 @@
                     android:background="?attr/selectableItemBackground"
                     style="@style/App.TextAppearance.MaterialComponents.Body2.Secondary"
                     android:buttonTint="@color/link"
-                    android:text="@string/risk_mode_selection_low_risk_subtitle" />
+                    android:text="@string/verifier_risksetting_lowrisk_subtitle" />
 
                 <View
                     android:layout_width="match_parent"
@@ -118,7 +118,7 @@
                     android:paddingHorizontal="8dp"
                     style="@style/App.TextAppearance.MaterialComponents.Body1"
                     android:textStyle="bold"
-                    android:text="@string/risk_mode_selection_high_risk_title" />
+                    android:text="@string/verifier_risksetting_highrisk_title" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/subtitle_2g"
@@ -128,7 +128,7 @@
                     android:background="?attr/selectableItemBackground"
                     style="@style/App.TextAppearance.MaterialComponents.Body2.Secondary"
                     android:paddingHorizontal="56dp"
-                    android:text="@string/risk_mode_selection_high_risk_subtitle" />
+                    android:text="@string/verifier_risksetting_highrisk_subtitle" />
 
                 <View
                     android:layout_width="match_parent"
