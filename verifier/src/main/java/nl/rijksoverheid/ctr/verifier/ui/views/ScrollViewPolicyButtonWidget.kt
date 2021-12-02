@@ -95,8 +95,8 @@ class ScrollViewPolicyButtonWidget @JvmOverloads constructor(
         )))
         binding.policyIndicatorText.setText(
             when (policy) {
-                VerificationPolicy.VerificationPolicy2G -> R.string.scan_qr_policy_indication_2g
-                VerificationPolicy.VerificationPolicy3G -> R.string.scan_qr_policy_indication_3g
+                VerificationPolicy.VerificationPolicy2G -> R.string.verifier_start_scan_qr_policy_indication_2g
+                VerificationPolicy.VerificationPolicy3G -> R.string.verifier_start_scan_qr_policy_indication_3g
             }
         )
     }

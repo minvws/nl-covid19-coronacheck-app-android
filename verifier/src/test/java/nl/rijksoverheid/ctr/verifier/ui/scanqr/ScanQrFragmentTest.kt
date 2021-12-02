@@ -87,7 +87,7 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
         )
 
         assertDisplayed(R.id.indicationContainer)
-        assertDisplayed(R.id.policyIndicatorText, R.string.scan_qr_policy_indication_2g)
+        assertDisplayed(R.id.policyIndicatorText, R.string.verifier_start_scan_qr_policy_indication_2g)
     }
 
     @Test
@@ -97,7 +97,7 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
         )
 
         assertDisplayed(R.id.indicationContainer)
-        assertDisplayed(R.id.policyIndicatorText, R.string.scan_qr_policy_indication_3g)
+        assertDisplayed(R.id.policyIndicatorText, R.string.verifier_start_scan_qr_policy_indication_3g)
     }
 
     private fun launchScanQrFragment(
