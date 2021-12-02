@@ -22,6 +22,7 @@ if os.getenv('LOKALISE_API_KEY') is not None:
 		"original_filenames": True,
 		"replace_breaks": False,
 		"filter_langs" : ["en","nl"],
+		"export_empty_as" :"skip",
 		"export_sort" : "first_added"
 	})
 	req = requests.get(response['bundle_url'])
@@ -39,6 +40,7 @@ if os.getenv('LOKALISE_API_KEY') is not None:
 		"original_filenames": True,
 		"replace_breaks": False,
 		"filter_langs" : ["en","nl"],
+		"export_empty_as" :"skip",
 		"export_sort" : "first_added"
 	})
 	req = requests.get(response['bundle_url'])
