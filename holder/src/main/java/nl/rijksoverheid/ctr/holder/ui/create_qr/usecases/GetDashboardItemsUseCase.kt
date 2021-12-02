@@ -98,6 +98,8 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
+        dashboardItems.add(DashboardItem.InfoItem.TestCertificate3GValidity)
+
         dashboardItems.addAll(
             getGreenCardItems(
                 greenCardType = GreenCardType.Domestic,

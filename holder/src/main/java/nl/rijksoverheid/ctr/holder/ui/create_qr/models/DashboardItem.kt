@@ -48,6 +48,8 @@ sealed class DashboardItem {
 
         data class GreenCardExpiredItem(val greenCard: GreenCard) :
             InfoItem(isDismissible = true, hasReadMore = false)
+
+        object TestCertificate3GValidity : InfoItem(isDismissible = false, hasReadMore = true)
     }
 
     object CoronaMelderItem : DashboardItem()

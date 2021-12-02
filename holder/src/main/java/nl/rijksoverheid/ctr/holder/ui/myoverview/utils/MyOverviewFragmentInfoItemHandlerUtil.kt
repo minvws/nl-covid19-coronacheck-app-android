@@ -72,6 +72,9 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
             }
             is DashboardItem.InfoItem.MissingDutchVaccinationItem ->
                 onMissingDutchVaccinationItemClicked(myOverviewFragment)
+            DashboardItem.InfoItem.TestCertificate3GValidity -> {
+                onTestCertificate3GValidityClicked(myOverviewFragment)
+            }
         }
     }
 
@@ -179,6 +182,20 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
                 descriptionData = DescriptionData(
                     R.string.clock_deviation_explanation_description,
                     customLinkIntent = Intent(Settings.ACTION_DATE_SETTINGS)
+                ),
+            )
+        )
+    }
+
+
+    private fun onTestCertificate3GValidityClicked(myOverviewFragment: MyOverviewFragment) {
+        infoFragmentUtil.presentAsBottomSheet(
+            myOverviewFragment.childFragmentManager,
+            InfoFragmentData.TitleDescription(
+                title = "Testbewijs alleen geldig voor 3G-toegang",
+                descriptionData = DescriptionData(
+                    R.string.extended_domestic_recovery_green_card_bottomsheet_description,
+                    htmlLinksEnabled = true
                 ),
             )
         )

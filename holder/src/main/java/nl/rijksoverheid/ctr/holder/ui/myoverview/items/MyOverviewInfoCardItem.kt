@@ -72,6 +72,9 @@ class MyOverviewInfoCardItem(
             is DashboardItem.InfoItem.MissingDutchVaccinationItem -> {
                 viewBinding.text.text = viewBinding.text.context.getString(R.string.missing_dutch_certificate_info_card_text)
             }
+            DashboardItem.InfoItem.TestCertificate3GValidity -> {
+                viewBinding.text.text = "Je Nederlandse testbewijs is alleen geldig voor 3G-toegang"
+            }
         }
 
         viewBinding.button.setOnClickListener {
