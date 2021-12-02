@@ -7,10 +7,12 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
 import com.xwray.groupie.viewbinding.BindableItem
+import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanLogBinding
 import nl.rijksoverheid.ctr.verifier.ui.scanlog.items.ScanLogHeaderAdapterItem
 import nl.rijksoverheid.ctr.verifier.ui.scanlog.items.ScanLogItem
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /*
@@ -53,9 +55,9 @@ class ScanLogFragment: Fragment(R.layout.fragment_scan_log) {
         scanLogItems: List<ScanLogItem>
     ) {
         val adapterItems = mutableListOf<BindableItem<*>>()
-        scanLogItems.forEach { dashboardItem ->
-            when (dashboardItem) {
-                is ScanLogItem.HeaderItem -> adapterItems.add(ScanLogHeaderAdapterItem())
+        scanLogItems.forEach { scanLogItem ->
+            when (scanLogItem) {
+                is ScanLogItem.HeaderItem -> adapterItems.add(ScanLogHeaderAdapterItem(scanLogItem))
             }
         }
 

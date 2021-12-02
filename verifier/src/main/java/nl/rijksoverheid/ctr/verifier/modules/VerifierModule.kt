@@ -17,6 +17,8 @@ import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 import nl.rijksoverheid.ctr.verifier.persistance.SharedPreferencesPersistenceManager
 import nl.rijksoverheid.ctr.verifier.persistance.usecase.RandomKeyUseCase
 import nl.rijksoverheid.ctr.verifier.persistance.usecase.RandomKeyUseCaseImpl
+import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCase
+import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCaseImpl
 import nl.rijksoverheid.ctr.verifier.ui.scanlog.ScanLogViewModel
 import nl.rijksoverheid.ctr.verifier.ui.scanlog.ScanLogViewModelImpl
 import nl.rijksoverheid.ctr.verifier.ui.scanlog.usecase.GetScanLogItemsUseCase
@@ -60,7 +62,12 @@ fun verifierModule(path: String) = module {
     }
     factory<ReturnToExternalAppUseCase> { ReturnToExternalAppUseCaseImpl(get()) }
     factory<RandomKeyUseCase> { RandomKeyUseCaseImpl(get(), get()) }
-    factory<GetScanLogItemsUseCase> { GetScanLogItemsUseCaseImpl() }
+    factory<GetScanLogItemsUseCase> { GetScanLogItemsUseCaseImpl(get()) }
+    factory<VerifierCachedAppConfigUseCase> {
+        VerifierCachedAppConfigUseCaseImpl(
+            get()
+        )
+    }
 
     // Utils
     factory<ScannerUtil> { ScannerUtilImpl() }

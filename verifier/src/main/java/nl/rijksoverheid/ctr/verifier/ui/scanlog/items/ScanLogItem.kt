@@ -8,5 +8,5 @@ package nl.rijksoverheid.ctr.verifier.ui.scanlog.items
  *
  */
 sealed class ScanLogItem {
-    object HeaderItem: ScanLogItem()
+    data class HeaderItem(val scanLogStorageMinutes: Long): ScanLogItem()
 }

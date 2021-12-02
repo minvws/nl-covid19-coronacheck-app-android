@@ -140,7 +140,6 @@
   <string name="verifier_about_this_app_scan_log"></string>
   <string name="verifier_about_this_app_law_enforcement"></string>
   <string name="scan_log_title"></string>
-  <string name="scan_log_message"></string>
   <string name="scan_log_list_header"></string>
   <string name="scan_log_list_no_items"></string>
   <string name="scan_log_list_now"></string>
@@ -164,4 +163,5 @@
   <string name="new_in_app_risksetting_title">2G- of 3G-toegang geven</string>
   <string name="new_in_app_risksetting_subtitle">2G-toegang krijgen alleen bezoekers met een vaccinatie- of herstelbewijs. 3G-toegang krijgen ook bezoekers met een testbewijs. Check van tevoren welk soort toegang jouw locatie mag geven.</string>
   <string name="verification_policy_selection_error_message">Maak een keuze om door te gaan</string>
+  <string name="scan_log_message"><![CDATA[De scan log houdt bij welke regels er zijn gebruikt tijdens het scannen. Een BOA kan vragen om dit scherm te laten zien.<br/><br/>Om privacy redenen worden alleen de scan regels van laatste %d minuten opgeslagen op deze telefoon. Er worden geen persoonsgevens opgeslagen. Lees meer in de <a href=\"https://coronacheck.nl/nl/faq-scanner-in-app\">meestgestelde vragen</a>]]></string>
 </resources>
