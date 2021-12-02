@@ -89,6 +89,8 @@ android {
             apply plugin: 'com.google.gms.google-services'
             apply plugin: 'com.google.firebase.crashlytics'
             matchingFallbacks = ['mlkit']
+            buildConfigField "boolean", "FEATURE_TEST_PROVIDER_API_CHECKS", "false"
+            buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "false"
         }
         fdroidAcc {
             buildConfigField "String", "BASE_API_URL", "\"https://holder-api.acc.coronacheck.nl/v6/\""
