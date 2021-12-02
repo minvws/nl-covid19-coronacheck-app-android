@@ -34,7 +34,7 @@ class ScanLogDataMapperImpl: ScanLogDataMapper {
                 }
             }
             currentTime = entity.date
-            currentScanLogBuilder?.count = currentScanLogBuilder?.count ?: 0 + 1
+            currentScanLogBuilder?.count = (currentScanLogBuilder?.count ?: 0) + 1
 
             if (currentScanLogBuilder?.to == null) {
                 currentScanLogBuilder?.to = entity.date

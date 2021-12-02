@@ -9,18 +9,6 @@
     android:screenReaderFocusable="true"
     tools:background="@color/white">
 
-    <View
-        android:id="@+id/divider_top"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginHorizontal="16dp"
-        android:background="@color/grey_4"
-        android:focusable="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <TextView
         android:id="@+id/amount"
         android:layout_width="wrap_content"
@@ -31,7 +19,7 @@
         android:text="@string/scan_log_list_no_items"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/divider_top"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/divider_bottom"
         app:layout_constraintEnd_toEndOf="parent"/>
 
