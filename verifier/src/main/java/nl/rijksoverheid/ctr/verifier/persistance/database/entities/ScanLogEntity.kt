@@ -16,7 +16,7 @@ import java.time.OffsetDateTime
     tableName = "scan_log",
 )
 data class ScanLogEntity(
-    @PrimaryKey(autoGenerate = true) val id: Int,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val policy: VerificationPolicy,
     val date: OffsetDateTime
 )
