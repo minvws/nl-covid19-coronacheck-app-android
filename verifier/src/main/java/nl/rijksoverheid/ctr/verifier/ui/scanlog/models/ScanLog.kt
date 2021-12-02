@@ -12,14 +12,8 @@ import java.time.OffsetDateTime
  */
 data class ScanLog(
     val policy: VerificationPolicy,
-    val countFrom: Int,
-    val countTo: Int,
+    val count: Int,
     val skew: Boolean,
-    val from: ScanLogDate,
-    val to: ScanLogDate
-) {
-    sealed class ScanLogDate {
-        object Now: ScanLogDate()
-        data class Date(val date: OffsetDateTime): ScanLogDate()
-    }
-}
+    val from: OffsetDateTime,
+    val to: OffsetDateTime
+)

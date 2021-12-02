@@ -1,17 +1,15 @@
 package nl.rijksoverheid.ctr.verifier.ui.scanlog.items
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.view.View
 import com.xwray.groupie.viewbinding.BindableItem
-import nl.rijksoverheid.ctr.design.ext.formatDateTime
-import nl.rijksoverheid.ctr.design.ext.formatTime
 import nl.rijksoverheid.ctr.design.ext.tintDrawable
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.verifier.R
-import nl.rijksoverheid.ctr.verifier.databinding.ItemScanLogListHeaderBinding
 import nl.rijksoverheid.ctr.verifier.databinding.ItemScanLogListItemBinding
-import nl.rijksoverheid.ctr.verifier.ui.scanlog.models.ScanLog
+import nl.rijksoverheid.ctr.verifier.ui.scanlog.items.util.ScanLogListAdapterItemUtil
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -21,7 +19,9 @@ import nl.rijksoverheid.ctr.verifier.ui.scanlog.models.ScanLog
  *
  */
 class ScanLogListAdapterItem(val item: ScanLogItem.ScanLogListItem): BindableItem<ItemScanLogListItemBinding>(
-    R.layout.item_scan_log_list_item.toLong()) {
+    R.layout.item_scan_log_list_item.toLong()), KoinComponent {
+
+    private val util: ScanLogListAdapterItemUtil by inject()
 
     @SuppressLint("SetTextI18n")
     override fun bind(viewBinding: ItemScanLogListItemBinding, position: Int) {
@@ -35,25 +35,13 @@ class ScanLogListAdapterItem(val item: ScanLogItem.ScanLogListItem): BindableIte
             is VerificationPolicy.VerificationPolicy2G -> context.getString(R.string.scan_log_list_lowrisk)
             is VerificationPolicy.VerificationPolicy3G -> context.getString(R.string.scan_log_list_highrisk)
         }
-        viewBinding.time.text = "${getTimeString(context, scanLog.from)} - ${getTimeString(context, scanLog.to)}"
-        viewBinding.amount.text = context.getString(R.string.scan_log_list_entry, scanLog.countFrom, scanLog.countTo)
+        viewBinding.time.text = util.getTimeString(context, scanLog.from, scanLog.to, item.isFirstItem)
+        viewBinding.amount.text = util.getAmountString(context, scanLog.count)
 
         if (scanLog.skew) {
             viewBinding.skew.visibility = View.VISIBLE
         } else {
             viewBinding.skew.visibility = View.GONE
-        }
-    }
-
-    private fun getTimeString(context: Context,
-                              date: ScanLog.ScanLogDate): String {
-        return when (date) {
-            is ScanLog.ScanLogDate.Now -> {
-                context.getString(R.string.scan_log_list_now)
-            }
-            is ScanLog.ScanLogDate.Date -> {
-                date.date.formatTime(context)
-            }
         }
     }
 

@@ -13,5 +13,6 @@ import nl.rijksoverheid.ctr.verifier.ui.scanlog.models.ScanLog
 sealed class ScanLogItem {
     data class HeaderItem(val scanLogStorageMinutes: Long): ScanLogItem()
     data class ListHeaderItem(val scanLogStorageMinutes: Long): ScanLogItem()
-    data class ScanLogListItem(val scanLog: ScanLog): ScanLogItem()
+    data class ScanLogListItem(val scanLog: ScanLog, val isFirstItem: Boolean): ScanLogItem()
+    object ListEmptyItem: ScanLogItem()
 }

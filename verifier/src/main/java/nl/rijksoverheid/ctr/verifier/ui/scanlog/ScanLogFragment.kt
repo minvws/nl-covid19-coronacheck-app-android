@@ -10,10 +10,7 @@ import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanLogBinding
-import nl.rijksoverheid.ctr.verifier.ui.scanlog.items.ScanLogHeaderAdapterItem
-import nl.rijksoverheid.ctr.verifier.ui.scanlog.items.ScanLogItem
-import nl.rijksoverheid.ctr.verifier.ui.scanlog.items.ScanLogListAdapterItem
-import nl.rijksoverheid.ctr.verifier.ui.scanlog.items.ScanLogListHeaderAdapterItem
+import nl.rijksoverheid.ctr.verifier.ui.scanlog.items.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -62,6 +59,7 @@ class ScanLogFragment: Fragment(R.layout.fragment_scan_log) {
                 is ScanLogItem.HeaderItem -> adapterItems.add(ScanLogHeaderAdapterItem(scanLogItem))
                 is ScanLogItem.ListHeaderItem -> adapterItems.add(ScanLogListHeaderAdapterItem(scanLogItem))
                 is ScanLogItem.ScanLogListItem -> adapterItems.add(ScanLogListAdapterItem(scanLogItem))
+                is ScanLogItem.ListEmptyItem -> adapterItems.add(ScanLogEmptyListAdapterItem())
             }
         }
 

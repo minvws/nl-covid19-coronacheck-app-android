@@ -1,11 +1,8 @@
 package nl.rijksoverheid.ctr.verifier.ui.scanlog.usecase
 
-import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
-import nl.rijksoverheid.ctr.verifier.persistance.database.entities.ScanLogEntity
 import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.verifier.ui.scanlog.items.ScanLogItem
-import nl.rijksoverheid.ctr.verifier.ui.scanlog.models.ScanLog
-import java.time.OffsetDateTime
+import nl.rijksoverheid.ctr.verifier.ui.scanlog.repositories.ScanLogRepository
 import java.util.concurrent.TimeUnit
 
 /*
@@ -16,24 +13,29 @@ import java.util.concurrent.TimeUnit
  *
  */
 interface GetScanLogItemsUseCase {
-    fun getItems(): List<ScanLogItem>
+    suspend fun getItems(): List<ScanLogItem>
 }
 
 class GetScanLogItemsUseCaseImpl(
+    private val scanLogRepository: ScanLogRepository,
     private val verifierCachedAppConfigUseCase: VerifierCachedAppConfigUseCase,
 ): GetScanLogItemsUseCase {
-    override fun getItems(): List<ScanLogItem> {
+    override suspend fun getItems(): List<ScanLogItem> {
+        val scanLogs = scanLogRepository.getAll().reversed()
         val scanLogStorageMinutes = TimeUnit.SECONDS.toMinutes(verifierCachedAppConfigUseCase.getCachedAppConfig().scanLogStorageSeconds.toLong())
-        val headerItem = ScanLogItem.HeaderItem(scanLogStorageMinutes)
-        val listHeaderItem = ScanLogItem.ListHeaderItem(scanLogStorageMinutes)
-        val dummyListItem = ScanLogItem.ScanLogListItem(ScanLog(
-            policy = VerificationPolicy.VerificationPolicy2G,
-            countFrom = 0,
-            countTo = 10,
-            skew = true,
-            from = ScanLog.ScanLogDate.Date(OffsetDateTime.now().minusHours(5)),
-            to = ScanLog.ScanLogDate.Now
-        ))
-        return listOf(headerItem, listHeaderItem, dummyListItem)
+        val scanLogItems = mutableListOf<ScanLogItem>()
+
+        scanLogItems.add(ScanLogItem.HeaderItem(scanLogStorageMinutes))
+        scanLogItems.add(ScanLogItem.ListHeaderItem(scanLogStorageMinutes))
+
+        if (scanLogs.isEmpty()) {
+            scanLogItems.add(ScanLogItem.ListEmptyItem)
+        } else {
+            scanLogs.forEachIndexed { index, scanLog ->
+                scanLogItems.add(ScanLogItem.ScanLogListItem(scanLog, index == 0))
+            }
+        }
+
+        return scanLogItems
     }
 }
