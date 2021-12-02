@@ -5,10 +5,12 @@ import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.os.Build
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import android.security.keystore.StrongBoxUnavailableException
 import androidx.security.crypto.MasterKeys
+import java.security.SecureRandom
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -23,6 +25,7 @@ interface AndroidUtil {
     fun isFirstInstall(): Boolean
     fun isNetworkAvailable(): Boolean
     fun getConnectivityManager() : ConnectivityManager
+    fun generateRandomKey(): ByteArray
 }
 
 class AndroidUtilImpl(private val context: Context) : AndroidUtil {
@@ -80,4 +83,11 @@ class AndroidUtilImpl(private val context: Context) : AndroidUtil {
         return context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     }
 
+    override fun generateRandomKey(): ByteArray = ByteArray(32).apply {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            SecureRandom.getInstanceStrong().nextBytes(this)
+        } else {
+            SecureRandom().nextBytes(this)
+        }
+    }
 }

@@ -208,6 +208,10 @@ class NetworkRequestResultFactoryTest {
             override fun getConnectivityManager(): ConnectivityManager {
                 TODO("Not yet implemented")
             }
+
+            override fun generateRandomKey(): ByteArray {
+                return "".toByteArray()
+            }
         }
     }
 }

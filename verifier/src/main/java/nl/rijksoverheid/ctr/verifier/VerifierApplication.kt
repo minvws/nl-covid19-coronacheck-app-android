@@ -10,6 +10,7 @@ import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.SharedApplication
 import nl.rijksoverheid.ctr.shared.sharedModule
 import nl.rijksoverheid.ctr.verifier.modules.*
+import nl.rijksoverheid.ctr.verifier.persistance.usecase.RandomKeyUseCase
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
@@ -27,6 +28,7 @@ open class VerifierApplication : SharedApplication() {
 
     private val appConfigStorageManager: AppConfigStorageManager by inject()
     private val mobileCoreWrapper: MobileCoreWrapper by inject()
+    private val randomKeyUseCase: RandomKeyUseCase by inject()
 
     override fun onCreate() {
         super.onCreate()
@@ -48,13 +50,16 @@ open class VerifierApplication : SharedApplication() {
                 introductionModule,
                 *getAdditionalModules().toTypedArray(),
                 designModule,
-                qrScannerModule
+                qrScannerModule,
+                storageModule
             )
         }
 
         if (appConfigStorageManager.areConfigFilesPresentInFilesFolder()) {
             mobileCoreWrapper.initializeVerifier(applicationContext.filesDir.path)
         }
+
+        randomKeyUseCase.persist()
     }
 
     override fun getAdditionalModules(): List<Module> {

@@ -15,6 +15,8 @@ import nl.rijksoverheid.ctr.appconfig.usecases.ReturnToExternalAppUseCaseImpl
 import nl.rijksoverheid.ctr.introduction.ui.new_terms.models.NewTerms
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 import nl.rijksoverheid.ctr.verifier.persistance.SharedPreferencesPersistenceManager
+import nl.rijksoverheid.ctr.verifier.persistance.usecase.RandomKeyUseCase
+import nl.rijksoverheid.ctr.verifier.persistance.usecase.RandomKeyUseCaseImpl
 import nl.rijksoverheid.ctr.verifier.ui.scanner.ScannerViewModel
 import nl.rijksoverheid.ctr.verifier.ui.scanner.ScannerViewModelImpl
 import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.TestResultValidUseCase
@@ -53,6 +55,7 @@ fun verifierModule(path: String) = module {
         TestResultValidUseCaseImpl(get())
     }
     factory<ReturnToExternalAppUseCase> { ReturnToExternalAppUseCaseImpl(get()) }
+    factory<RandomKeyUseCase> { RandomKeyUseCaseImpl(get(), get()) }
 
     // Utils
     factory<ScannerUtil> { ScannerUtilImpl() }

@@ -20,6 +20,8 @@ interface PersistenceManager {
     fun setVerificationPolicySelected(policy: VerificationPolicy)
     fun getVerificationPolicySelected(): VerificationPolicy?
     fun isVerificationPolicySelectionSet(): Boolean
+    fun getRandomKey(): String?
+    fun saveRandomKey(key: String)
 }
 
 class SharedPreferencesPersistenceManager(private val sharedPreferences: SharedPreferences) :
@@ -30,6 +32,7 @@ class SharedPreferencesPersistenceManager(private val sharedPreferences: SharedP
         const val SECRET_KEY_JSON = "SECRET_KEY_JSON"
         const val LOCAL_TEST_RESULT = "LOCAL_TEST_RESULT"
         const val VERIFICATION_POLICY_SET = "VERIFICATION_POLICY_SET"
+        const val RANDOM_KEY = "RANDOM_KEY"
     }
 
     override fun setScanInstructionsSeen() {
@@ -71,5 +74,13 @@ class SharedPreferencesPersistenceManager(private val sharedPreferences: SharedP
 
     override fun isVerificationPolicySelectionSet(): Boolean {
         return sharedPreferences.contains(VERIFICATION_POLICY_SET)
+    }
+
+    override fun getRandomKey(): String? {
+        return sharedPreferences.getString(RANDOM_KEY, "")
+    }
+
+    override fun saveRandomKey(key: String) {
+        sharedPreferences.edit().putString(RANDOM_KEY, key).apply()
     }
 }
