@@ -10,17 +10,6 @@
     android:screenReaderFocusable="true"
     tools:background="@color/white">
 
-    <View
-        android:id="@+id/divider_top"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginTop="16dp"
-        android:background="@color/grey_4"
-        android:focusable="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <TextView
         style="@style/TextAppearance.MaterialComponents.Body2"
         android:id="@+id/time"
@@ -29,10 +18,10 @@
         android:textColor="@color/secondary_text"
         android:layout_marginHorizontal="32dp"
         android:layout_marginTop="24dp"
-        android:text="22:02 - nu"
+        tools:text="22:02 - nu"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toEndOf="@+id/type"
-        app:layout_constraintTop_toBottomOf="@+id/divider_top"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/skew"
         app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -61,7 +50,7 @@
         android:layout_marginHorizontal="32dp"
         android:layout_marginTop="8dp"
         android:textAppearance="?textAppearanceBody1"
-        android:text="1 tot 10 bewijzen gescand"
+        tools:text="1 tot 10 bewijzen gescand"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toEndOf="@+id/type"
         app:layout_constraintTop_toBottomOf="@+id/skew"
@@ -79,7 +68,7 @@
         android:text="3G"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/divider_top"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/divider_bottom"/>
 
     <View
