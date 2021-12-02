@@ -164,4 +164,6 @@
   <string name="new_in_app_risksetting_subtitle">2G-toegang krijgen alleen bezoekers met een vaccinatie- of herstelbewijs. 3G-toegang krijgen ook bezoekers met een testbewijs. Check van tevoren welk soort toegang jouw locatie mag geven.</string>
   <string name="verification_policy_selection_error_message">Maak een keuze om door te gaan</string>
   <string name="scan_log_message"><![CDATA[De scan log houdt bij welke regels er zijn gebruikt tijdens het scannen. Een BOA kan vragen om dit scherm te laten zien.<br/><br/>Om privacy redenen worden alleen de scan regels van laatste %d minuten opgeslagen op deze telefoon. Er worden geen persoonsgevens opgeslagen. Lees meer in de <a href=\"https://coronacheck.nl/nl/faq-scanner-in-app\">meestgestelde vragen</a>]]></string>
+  <string name="verifier_start_scan_qr_policy_indication_3g">3G-toegang ingesteld</string>
+  <string name="verifier_start_scan_qr_policy_indication_2g">2G-toegang ingesteld</string>
 </resources>
