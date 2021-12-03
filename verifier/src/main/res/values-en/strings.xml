@@ -147,7 +147,7 @@
   <string name="scan_log_list_highrisk"></string>
   <string name="scan_log_list_lowrisk"></string>
   <string name="scan_log_footer_in_use">App in gebruik sinds %s</string>
-  <string name="scan_log_footer_long_time"></string>
+  <string name="scan_log_footer_long_time">App langer dan een maand in gebruik</string>
   <string name="scan_log_list_clock_skew_detected"></string>
   <string name="verifier_menu_risksetting"></string>
   <string name="verifier_result_access_title_highrisk"></string>
