@@ -9,6 +9,7 @@ import nl.rijksoverheid.ctr.design.ext.formatDateTime
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthTime
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
 import nl.rijksoverheid.ctr.design.ext.formatDayShortMonthYear
+import nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
@@ -348,9 +349,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
         showTime: Boolean,
         subtitle: String,
     ) {
-        val textView = TextView(context).apply {
-            setTextAppearance(R.style.App_TextAppearance_MaterialComponents_Body1)
-        }
+        val textView = HtmlTextViewWidget(context)
 
         when (originState) {
             is OriginState.Future -> {
@@ -362,20 +361,22 @@ class MyOverViewGreenCardAdapterUtilImpl(
                 } else {
                     validFromDateTime.toLocalDate().formatDayMonthYear()
                 }
-                textView.text = context.getString(
-                    R.string.qr_card_validity_future_from, validFrom, if (showUntil) {
-                        val until =
-                            originState.origin.expirationTime.toLocalDate().formatDayMonthYear()
-                        context.getString(R.string.qr_card_validity_future_until, until)
-                    } else {
-                        ""
-                    }
+                textView.setHtmlText(
+                    context.getString(
+                        R.string.qr_card_validity_future_from, validFrom, if (showUntil) {
+                            val until =
+                                originState.origin.expirationTime.toLocalDate().formatDayMonthYear()
+                            context.getString(R.string.qr_card_validity_future_until, until)
+                        } else {
+                            ""
+                        }
+                    )
                 )
 
                 textView.visibility = View.VISIBLE
             }
             is OriginState.Valid -> {
-                textView.text = subtitle
+                textView.setHtmlText(subtitle)
                 textView.visibility = View.VISIBLE
             }
             is OriginState.Expired -> {
