@@ -65,7 +65,7 @@
         android:layout_marginTop="4dp"
         android:textAppearance="?textAppearanceBody1"
         android:textStyle="bold"
-        android:text="3G"
+        tools:text="3G"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
