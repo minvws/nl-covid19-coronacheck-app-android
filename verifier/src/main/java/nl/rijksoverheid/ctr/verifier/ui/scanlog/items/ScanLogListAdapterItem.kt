@@ -18,7 +18,7 @@ import org.koin.core.component.inject
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class ScanLogListAdapterItem(val item: ScanLogItem.ScanLogListItem): BindableItem<ItemScanLogListItemBinding>(
+class ScanLogListAdapterItem(val item: ScanLogItem.ListScanLogItem): BindableItem<ItemScanLogListItemBinding>(
     R.layout.item_scan_log_list_item.toLong()), KoinComponent {
 
     private val util: ScanLogListAdapterItemUtil by inject()

@@ -58,7 +58,7 @@ class ScanLogFragment: Fragment(R.layout.fragment_scan_log) {
             when (scanLogItem) {
                 is ScanLogItem.HeaderItem -> adapterItems.add(ScanLogHeaderAdapterItem(scanLogItem))
                 is ScanLogItem.ListHeaderItem -> adapterItems.add(ScanLogListHeaderAdapterItem(scanLogItem))
-                is ScanLogItem.ScanLogListItem -> adapterItems.add(ScanLogListAdapterItem(scanLogItem))
+                is ScanLogItem.ListScanLogItem -> adapterItems.add(ScanLogListAdapterItem(scanLogItem))
                 is ScanLogItem.ListEmptyItem -> adapterItems.add(ScanLogEmptyListAdapterItem())
             }
         }
