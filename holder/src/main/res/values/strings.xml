@@ -563,6 +563,6 @@
   <string name="rule_engine_no_test_origin_description_positive_test">positieve testuitslag</string>
   <string name="holder_my_overview_3g_test_validity_card">Je testbewijs is alleen geldig voor 3G-toegang in Nederland</string>
   <string name="holder_my_overview_3g_test_validity_bottom_sheet_title">Testbewijs alleen geldig voor 3G-toegang</string>
-  <string name="holder_my_overview_3g_test_validity_bottom_sheet_body">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</string>
-  <string name="holder_my_overview_test_result_validity_3g">geldig tot %1$s voor 3G-toegang</string>
+  <string name="holder_my_overview_3g_test_validity_bottom_sheet_body"><![CDATA[Een Nederlands testbewijs is alleen geldig op plekken met 3G-toegang. Dit betekent dat je met je testbewijs geen toegang krijgt tot plekken waar 2G geldt.<br><br><b>Wat is het verschil tussen 3G en 2G?</b><br>De ‘G’ staat voor Getest, Gevaccineerd, of Genezen (hersteld van corona).<br><br>•	3G-toegang krijg je met een test-, vaccinatie- of herstelbewijs.<br>•	2G-toegang krijg je niet met een testbewijs. Hiervoor heb je een vaccinatie- of herstelbewijs nodig.<br><br>Lees hier meer over 3G en 2G.]]></string>
+  <string name="holder_my_overview_test_result_validity_3g"><![CDATA[geldig tot %1$s <font color="#7708BE">"voor 3G-toegang</font>]]></string>
 </resources>
