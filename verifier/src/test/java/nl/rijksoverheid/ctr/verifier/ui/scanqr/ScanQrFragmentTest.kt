@@ -26,6 +26,7 @@ import org.koin.dsl.module
 import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
+import org.robolectric.annotation.Config
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -35,6 +36,7 @@ import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
  *
  */
 @RunWith(RobolectricTestRunner::class)
+@Config(qualifiers = "nl-land")
 class ScanQrFragmentTest : AutoCloseKoinTest() {
 
     private val scannerUtil: ScannerUtil = mockk(relaxed = true)

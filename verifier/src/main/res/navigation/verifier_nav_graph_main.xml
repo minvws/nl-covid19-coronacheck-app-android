@@ -38,6 +38,20 @@
         android:label="@string/verifier_menu_risksetting"
         tools:layout="@layout/fragment_verification_policy_selection" />
 
+    <fragment
+        android:id="@+id/nav_policy_settings"
+        android:name="nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySettingsFragment"
+        android:label="@string/verifier_menu_risksetting"
+        tools:layout="@layout/fragment_verification_policy_settings" />
+
+    <action
+        android:id="@+id/action_policy_settings"
+        app:destination="@+id/nav_policy_settings"
+        app:enterAnim="@anim/fragment_open_enter"
+        app:exitAnim="@anim/fragment_open_exit"
+        app:popEnterAnim="@anim/fragment_close_enter"
+        app:popExitAnim="@anim/fragment_close_exit" />
+
     <action
         android:id="@+id/action_about_this_app"
         app:destination="@id/nav_about_this_app" />
@@ -61,7 +75,7 @@
     <fragment
         android:id="@+id/nav_scan_log"
         android:name="nl.rijksoverheid.ctr.verifier.ui.scanlog.ScanLogFragment"
-        android:label="Scan Log"
+        android:label="@string/verifier_about_this_app_scan_log"
         tools:layout="@layout/fragment_scan_log"/>
 
     <include app:graph="@navigation/verifier_nav_graph_scanner" />

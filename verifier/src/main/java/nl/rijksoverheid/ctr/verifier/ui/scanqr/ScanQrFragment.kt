@@ -14,7 +14,6 @@ import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
-import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.VerificationPolicy2G
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.VerifierMainActivity

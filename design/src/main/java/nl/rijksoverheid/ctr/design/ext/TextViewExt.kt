@@ -1,8 +1,13 @@
 package nl.rijksoverheid.ctr.design.ext
 
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.text.method.LinkMovementMethod
 import android.widget.TextView
+import androidx.annotation.ColorRes
+import androidx.core.content.ContextCompat
 import nl.rijksoverheid.ctr.design.spans.LinkTransformationMethod
+
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -19,4 +24,16 @@ fun TextView.enableHtmlLinks() {
 fun TextView.enableCustomLinks(onLinkClick: () -> Unit) {
     this.transformationMethod = LinkTransformationMethod(method = LinkTransformationMethod.Method.CustomLinks(onLinkClick))
     this.movementMethod = LinkMovementMethod.getInstance()
+}
+
+fun TextView.tintDrawable(@ColorRes color: Int) {
+    for (drawable in compoundDrawablesRelative) {
+        if (drawable != null) {
+            drawable.colorFilter =
+                PorterDuffColorFilter(
+                    ContextCompat.getColor(context, color),
+                    PorterDuff.Mode.SRC_IN
+                )
+        }
+    }
 }

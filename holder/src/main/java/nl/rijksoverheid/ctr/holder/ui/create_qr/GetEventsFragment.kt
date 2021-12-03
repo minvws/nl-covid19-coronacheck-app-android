@@ -82,7 +82,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
 
         getEventsViewModel.loading.observe(viewLifecycleOwner, EventObserver {
             binding.button.isEnabled = !it
-            if (!args.afterIncompleteVaccination) {
+            if (binding.fullscreenLoading.visibility != View.VISIBLE) {
                 (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
             }
         })
