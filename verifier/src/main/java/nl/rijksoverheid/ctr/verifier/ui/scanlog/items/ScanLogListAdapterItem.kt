@@ -35,7 +35,7 @@ class ScanLogListAdapterItem(val item: ScanLogItem.ListScanLogItem): BindableIte
             is VerificationPolicy.VerificationPolicy2G -> context.getString(R.string.scan_log_list_highrisk)
             is VerificationPolicy.VerificationPolicy3G -> context.getString(R.string.scan_log_list_lowrisk)
         }
-        viewBinding.time.text = util.getTimeString(context, scanLog.from, scanLog.to, item.isFirstItem)
+        viewBinding.time.text = util.getTimeString(context, scanLog.from, scanLog.to, item.index == 0)
         viewBinding.amount.text = util.getAmountString(context, scanLog.count)
 
         if (scanLog.skew) {

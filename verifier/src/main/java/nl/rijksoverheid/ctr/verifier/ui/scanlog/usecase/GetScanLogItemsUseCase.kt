@@ -32,7 +32,7 @@ class GetScanLogItemsUseCaseImpl(
             scanLogItems.add(ScanLogItem.ListEmptyItem)
         } else {
             scanLogs.forEachIndexed { index, scanLog ->
-                scanLogItems.add(ScanLogItem.ListScanLogItem(scanLog, index == 0))
+                scanLogItems.add(ScanLogItem.ListScanLogItem(scanLog, index))
             }
         }
 
