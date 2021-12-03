@@ -58,6 +58,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="32dp"
+        android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="@+id/preview_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
