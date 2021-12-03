@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.verifier.ui.policy
 
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.*
@@ -61,13 +62,14 @@ class VerificationPolicySelectionFragment :
     }
 
     private fun setupScreenForSettingsFlow() {
-        binding.subHeader.setText(
+        binding.subHeader.text = Html.fromHtml(getString(
             if (persistenceManager.isVerificationPolicySelectionSet()) {
                 R.string.verifier_risksetting_menu_scan_settings_selected_title
             } else {
                 R.string.verifier_risksetting_menu_scan_settings_unselected_title
             }
-        )
+        ))
+        binding.link.visibility = GONE
     }
 
     private fun setupScreenForScanQrFlow() {
@@ -126,8 +128,13 @@ class VerificationPolicySelectionFragment :
             )
         }
 
+        val settingsFlow = binding.header.visibility == GONE
         binding.verificationPolicyRadioGroup.setOnCheckedChangeListener { _, _ ->
             toggleError(false)
+
+            if (settingsFlow) {
+                binding.subHeader.text = Html.fromHtml(getString(R.string.verifier_risksetting_menu_scan_settings_selected_title))
+            }
         }
 
         binding.subtitle3g.setOnClickListener {
