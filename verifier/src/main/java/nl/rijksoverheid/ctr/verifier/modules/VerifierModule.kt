@@ -23,6 +23,8 @@ import nl.rijksoverheid.ctr.verifier.ui.scanlog.ScanLogViewModel
 import nl.rijksoverheid.ctr.verifier.ui.scanlog.ScanLogViewModelImpl
 import nl.rijksoverheid.ctr.verifier.ui.scanlog.datamapper.ScanLogDataMapper
 import nl.rijksoverheid.ctr.verifier.ui.scanlog.datamapper.ScanLogDataMapperImpl
+import nl.rijksoverheid.ctr.verifier.ui.scanlog.items.util.ScanLogFirstInstallTimeAdapterItemUtil
+import nl.rijksoverheid.ctr.verifier.ui.scanlog.items.util.ScanLogFirstInstallTimeAdapterItemUtilImpl
 import nl.rijksoverheid.ctr.verifier.ui.scanlog.items.util.ScanLogListAdapterItemUtil
 import nl.rijksoverheid.ctr.verifier.ui.scanlog.items.util.ScanLogListAdapterItemUtilImpl
 import nl.rijksoverheid.ctr.verifier.ui.scanlog.repositories.ScanLogRepository
@@ -68,7 +70,7 @@ fun verifierModule(path: String) = module {
     }
     factory<ReturnToExternalAppUseCase> { ReturnToExternalAppUseCaseImpl(get()) }
     factory<RandomKeyUseCase> { RandomKeyUseCaseImpl(get(), get()) }
-    factory<GetScanLogItemsUseCase> { GetScanLogItemsUseCaseImpl(get(), get()) }
+    factory<GetScanLogItemsUseCase> { GetScanLogItemsUseCaseImpl(get(), get(), get()) }
     factory<VerifierCachedAppConfigUseCase> {
         VerifierCachedAppConfigUseCaseImpl(
             get()
@@ -78,6 +80,7 @@ fun verifierModule(path: String) = module {
     // Utils
     factory<ScannerUtil> { ScannerUtilImpl() }
     factory<ScanLogListAdapterItemUtil> { ScanLogListAdapterItemUtilImpl() }
+    factory<ScanLogFirstInstallTimeAdapterItemUtil> { ScanLogFirstInstallTimeAdapterItemUtilImpl(get()) }
 
     // ViewModels
     viewModel<ScanQrViewModel> { ScanQrViewModelImpl(get()) }

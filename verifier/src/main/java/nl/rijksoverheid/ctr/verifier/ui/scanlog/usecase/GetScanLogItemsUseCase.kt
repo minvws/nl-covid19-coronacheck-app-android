@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.verifier.ui.scanlog.usecase
 
+import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.verifier.ui.scanlog.items.ScanLogItem
 import nl.rijksoverheid.ctr.verifier.ui.scanlog.repositories.ScanLogRepository
@@ -17,11 +18,13 @@ interface GetScanLogItemsUseCase {
 }
 
 class GetScanLogItemsUseCaseImpl(
+    private val androidUtil: AndroidUtil,
     private val scanLogRepository: ScanLogRepository,
     private val verifierCachedAppConfigUseCase: VerifierCachedAppConfigUseCase,
 ): GetScanLogItemsUseCase {
     override suspend fun getItems(): List<ScanLogItem> {
         val scanLogs = scanLogRepository.getAll().reversed()
+        val firstInstallTime = androidUtil.getFirstInstallTime()
         val scanLogStorageMinutes = TimeUnit.SECONDS.toMinutes(verifierCachedAppConfigUseCase.getCachedAppConfig().scanLogStorageSeconds.toLong())
         val scanLogItems = mutableListOf<ScanLogItem>()
 
@@ -35,6 +38,10 @@ class GetScanLogItemsUseCaseImpl(
                 scanLogItems.add(ScanLogItem.ListScanLogItem(scanLog, index))
             }
         }
+
+        scanLogItems.add(
+            ScanLogItem.FirstInstallTimeItem(firstInstallTime)
+        )
 
         return scanLogItems
     }

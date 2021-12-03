@@ -60,6 +60,7 @@ class ScanLogFragment: Fragment(R.layout.fragment_scan_log) {
                 is ScanLogItem.ListHeaderItem -> adapterItems.add(ScanLogListHeaderAdapterItem(scanLogItem))
                 is ScanLogItem.ListScanLogItem -> adapterItems.add(ScanLogListAdapterItem(scanLogItem))
                 is ScanLogItem.ListEmptyItem -> adapterItems.add(ScanLogEmptyListAdapterItem())
+                is ScanLogItem.FirstInstallTimeItem -> adapterItems.add(ScanLogFirstInstallTimeAdapterItem(scanLogItem))
             }
         }
 
