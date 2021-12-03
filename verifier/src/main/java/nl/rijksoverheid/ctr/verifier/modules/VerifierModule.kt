@@ -17,6 +17,18 @@ import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 import nl.rijksoverheid.ctr.verifier.persistance.SharedPreferencesPersistenceManager
 import nl.rijksoverheid.ctr.verifier.persistance.usecase.RandomKeyUseCase
 import nl.rijksoverheid.ctr.verifier.persistance.usecase.RandomKeyUseCaseImpl
+import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCase
+import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCaseImpl
+import nl.rijksoverheid.ctr.verifier.ui.scanlog.ScanLogViewModel
+import nl.rijksoverheid.ctr.verifier.ui.scanlog.ScanLogViewModelImpl
+import nl.rijksoverheid.ctr.verifier.ui.scanlog.datamapper.ScanLogDataMapper
+import nl.rijksoverheid.ctr.verifier.ui.scanlog.datamapper.ScanLogDataMapperImpl
+import nl.rijksoverheid.ctr.verifier.ui.scanlog.items.util.ScanLogListAdapterItemUtil
+import nl.rijksoverheid.ctr.verifier.ui.scanlog.items.util.ScanLogListAdapterItemUtilImpl
+import nl.rijksoverheid.ctr.verifier.ui.scanlog.repositories.ScanLogRepository
+import nl.rijksoverheid.ctr.verifier.ui.scanlog.repositories.ScanLogRepositoryImpl
+import nl.rijksoverheid.ctr.verifier.ui.scanlog.usecase.GetScanLogItemsUseCase
+import nl.rijksoverheid.ctr.verifier.ui.scanlog.usecase.GetScanLogItemsUseCaseImpl
 import nl.rijksoverheid.ctr.verifier.ui.scanner.ScannerViewModel
 import nl.rijksoverheid.ctr.verifier.ui.scanner.ScannerViewModelImpl
 import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.TestResultValidUseCase
@@ -56,13 +68,27 @@ fun verifierModule(path: String) = module {
     }
     factory<ReturnToExternalAppUseCase> { ReturnToExternalAppUseCaseImpl(get()) }
     factory<RandomKeyUseCase> { RandomKeyUseCaseImpl(get(), get()) }
+    factory<GetScanLogItemsUseCase> { GetScanLogItemsUseCaseImpl(get(), get()) }
+    factory<VerifierCachedAppConfigUseCase> {
+        VerifierCachedAppConfigUseCaseImpl(
+            get()
+        )
+    }
 
     // Utils
     factory<ScannerUtil> { ScannerUtilImpl() }
+    factory<ScanLogListAdapterItemUtil> { ScanLogListAdapterItemUtilImpl() }
 
     // ViewModels
     viewModel<ScanQrViewModel> { ScanQrViewModelImpl(get()) }
     viewModel<ScannerViewModel> { ScannerViewModelImpl(get(), get()) }
+    viewModel<ScanLogViewModel> { ScanLogViewModelImpl(get()) }
+
+    // Repositories
+    factory<ScanLogRepository> { ScanLogRepositoryImpl(get(), get()) }
+
+    // Data mappers
+    factory<ScanLogDataMapper> { ScanLogDataMapperImpl() }
 
     single {
         get<Moshi.Builder>(Moshi.Builder::class)
