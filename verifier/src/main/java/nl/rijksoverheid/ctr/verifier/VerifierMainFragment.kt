@@ -115,7 +115,7 @@ class VerifierMainFragment :
     private fun navigationItemSelectedListener(item: MenuItem) {
         when (item.itemId) {
             R.id.nav_policy_selection -> {
-                navController.navigate(R.id.action_policy_selection)
+                navController.navigate(R.id.action_policy_settings)
             }
             R.id.nav_support -> {
                 getString(R.string.url_faq).launchUrl(requireActivity())

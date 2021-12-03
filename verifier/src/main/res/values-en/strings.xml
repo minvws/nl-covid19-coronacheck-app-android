@@ -170,4 +170,5 @@
   <string name="verifier_risksetting_start_header">Stel in of je 2G- of 3G-toegang gaat geven. Controleer voordat je gaat scannen altijd welk soort toegang jouw locatie mag geven.</string>
   <string name="verifier_risksetting_setting_button">Instellen</string>
   <string name="verifier_risksetting_start_readmore">Welk soort toegang mag ik geven?</string>
+  <string name="verifier_risksetting_start_readmore_url">https://coronacheck.nl/nl/faq-scanner-in-app</string>
 </resources>
