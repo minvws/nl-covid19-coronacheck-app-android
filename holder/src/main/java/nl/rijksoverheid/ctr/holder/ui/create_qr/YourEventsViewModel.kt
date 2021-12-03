@@ -7,8 +7,10 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.holder.HolderStep
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
+import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.holder.persistence.database.util.DomesticVaccinationRecoveryCombinationUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEvent
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
@@ -39,11 +41,17 @@ abstract class YourEventsViewModel : ViewModel() {
     abstract fun checkForConflictingEvents(remoteProtocols3: Map<RemoteProtocol3, ByteArray>)
 }
 
-data class RemoteEventInformation(val providerIdentifier: String, val holder: RemoteProtocol3.Holder?, val remoteEvent: RemoteEvent)
+data class RemoteEventInformation(
+    val providerIdentifier: String,
+    val holder: RemoteProtocol3.Holder?,
+    val remoteEvent: RemoteEvent
+)
 
 class YourEventsViewModelImpl(
     private val saveEventsUseCase: SaveEventsUseCase,
     private val holderDatabaseSyncer: HolderDatabaseSyncer,
+    private val holderDatabase: HolderDatabase,
+    private val combinationUtil: DomesticVaccinationRecoveryCombinationUtil
 ) : YourEventsViewModel() {
 
     override fun saveNegativeTest2(negativeTest2: RemoteTestResult2, rawResponse: ByteArray) {
@@ -113,7 +121,7 @@ class YourEventsViewModelImpl(
                     is SaveEventsUseCaseImpl.SaveEventResult.Success -> {
                         // Send all events to database and create green cards, origins and credentials
                         val databaseSyncerResult = holderDatabaseSyncer.sync(
-                            expectedOriginType = originType
+                            expectedOriginType = getExpectedOriginType(originType)
                         )
 
                         (yourEventsResult as MutableLiveData).value = Event(
@@ -132,5 +140,18 @@ class YourEventsViewModelImpl(
                 loading.value = Event(false)
             }
         }
+    }
+
+    /**
+     * The expected origin for the green cards is the origin of which events were fetched.
+     * In the case of an expired recovery event to complete vaccination there should no expected origin
+     * since the the origins could be combined into a single vaccination.
+     *
+     * @param[originType] origin type of events fetched
+     * @return origin type to be expected from signer or null if it's not expected
+     */
+    private suspend fun getExpectedOriginType(originType: OriginType): OriginType? {
+        val events = holderDatabase.eventGroupDao().getAll()
+        return if (!combinationUtil.hasVaccinationAndRecoveryEvents(events)) originType else null
     }
 }
