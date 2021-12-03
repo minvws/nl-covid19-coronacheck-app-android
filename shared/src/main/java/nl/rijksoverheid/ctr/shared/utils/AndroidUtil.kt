@@ -11,6 +11,9 @@ import android.security.keystore.KeyProperties
 import android.security.keystore.StrongBoxUnavailableException
 import androidx.security.crypto.MasterKeys
 import java.security.SecureRandom
+import java.time.Instant
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -26,6 +29,7 @@ interface AndroidUtil {
     fun isNetworkAvailable(): Boolean
     fun getConnectivityManager() : ConnectivityManager
     fun generateRandomKey(): ByteArray
+    fun getFirstInstallTime(): OffsetDateTime
 }
 
 class AndroidUtilImpl(private val context: Context) : AndroidUtil {
@@ -89,5 +93,10 @@ class AndroidUtilImpl(private val context: Context) : AndroidUtil {
         } else {
             SecureRandom().nextBytes(this)
         }
+    }
+
+    override fun getFirstInstallTime(): OffsetDateTime {
+        val millis = context.packageManager.getPackageInfo(context.packageName, 0).firstInstallTime
+        return OffsetDateTime.ofInstant(Instant.ofEpochMilli(millis), ZoneOffset.UTC)
     }
 }
