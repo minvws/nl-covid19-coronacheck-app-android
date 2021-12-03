@@ -39,9 +39,9 @@ class VerificationPolicySelectionFragment :
         _binding = FragmentVerificationPolicySelectionBinding.inflate(inflater)
 
         if (arguments?.getBoolean(addToolbarArgument) == true) {
-            setupToolbar()
+            setupScreenForScanQrFlow()
         } else {
-            binding.subHeader.text = getString(R.string.verifier_menu_risksetting)
+            setupScreenForSettingsFlow()
         }
 
         binding.link.setOnClickListener {
@@ -60,7 +60,17 @@ class VerificationPolicySelectionFragment :
         }
     }
 
-    private fun setupToolbar() {
+    private fun setupScreenForSettingsFlow() {
+        binding.subHeader.setText(
+            if (persistenceManager.isVerificationPolicySelectionSet()) {
+                R.string.verifier_risksetting_menu_scan_settings_selected_title
+            } else {
+                R.string.verifier_risksetting_menu_scan_settings_unselected_title
+            }
+        )
+    }
+
+    private fun setupScreenForScanQrFlow() {
         binding.toolbar.visibility = VISIBLE
 
         binding.toolbar.setNavigationOnClickListener {
