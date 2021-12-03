@@ -47,3 +47,11 @@ fun OffsetDateTime.formatDayMonthYearTime(context: Context): String =
             if (DateFormat.is24HourFormat(context)) "EEEE d MMMM yyyy HH:mm" else "EEEE d MMMM yyyy hh:mm"
         )
     ).withLocale(Locale.getDefault()).withZone(ZoneId.of("CET")).format(this)
+
+fun OffsetDateTime.formatTime(context: Context): String =
+    DateTimeFormatter.ofPattern(
+        DateFormat.getBestDateTimePattern(
+            Locale.getDefault(),
+            if (DateFormat.is24HourFormat(context)) "HH:mm" else "hh:mm"
+        )
+    ).withLocale(Locale.getDefault()).withZone(ZoneId.of("CET")).format(this)

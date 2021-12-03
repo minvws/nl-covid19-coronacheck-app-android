@@ -75,7 +75,7 @@
     <fragment
         android:id="@+id/nav_scan_log"
         android:name="nl.rijksoverheid.ctr.verifier.ui.scanlog.ScanLogFragment"
-        android:label="Scan Log"
+        android:label="@string/verifier_about_this_app_scan_log"
         tools:layout="@layout/fragment_scan_log"/>
 
     <include app:graph="@navigation/verifier_nav_graph_scanner" />
