@@ -564,4 +564,5 @@
   <string name="holder_my_overview_3g_test_validity_card">Je testbewijs is alleen geldig voor 3G-toegang in Nederland</string>
   <string name="holder_my_overview_3g_test_validity_bottom_sheet_title">Testbewijs alleen geldig voor 3G-toegang</string>
   <string name="holder_my_overview_3g_test_validity_bottom_sheet_body">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</string>
+  <string name="holder_my_overview_test_result_validity_3g">geldig tot %1$s voor 3G-toegang</string>
 </resources>

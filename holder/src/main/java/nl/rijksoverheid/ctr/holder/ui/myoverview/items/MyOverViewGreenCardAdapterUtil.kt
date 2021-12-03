@@ -151,7 +151,11 @@ class MyOverViewGreenCardAdapterUtilImpl(
             originState = originState,
             showTime = shouldShowTimeSubtitle(originState, greenCardType),
             subtitle = context.getString(
-                R.string.qr_card_validity_valid,
+                if (origin.type == OriginType.Test) {
+                    R.string.holder_my_overview_test_result_validity_3g
+                } else {
+                    R.string.qr_card_validity_valid
+                },
                 origin.expirationTime.formatDateTime(context)
             )
         )
@@ -173,13 +177,19 @@ class MyOverViewGreenCardAdapterUtilImpl(
                 1 -> {
                     setOriginTitle(
                         descriptionLayout = viewBinding.description,
-                        title = context.getString(R.string.qr_card_vaccination_title_domestic_with_dosis, origin.doseNumber.toString()),
+                        title = context.getString(
+                            R.string.qr_card_vaccination_title_domestic_with_dosis,
+                            origin.doseNumber.toString()
+                        ),
                     )
                 }
                 else -> {
                     setOriginTitle(
                         descriptionLayout = viewBinding.description,
-                        title = context.getString(R.string.qr_card_vaccination_title_domestic_with_doses, origin.doseNumber.toString()),
+                        title = context.getString(
+                            R.string.qr_card_vaccination_title_domestic_with_doses,
+                            origin.doseNumber.toString()
+                        ),
                     )
                 }
             }
