@@ -12,5 +12,6 @@ data class ReadDomesticCredential(
     val lastNameInitial: String,
     val isPaperProof: String,
     val validForHours: String,
-    val validFrom: String
+    val validFrom: String,
+    val category: Int
 )

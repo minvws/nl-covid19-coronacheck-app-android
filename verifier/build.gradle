@@ -35,12 +35,12 @@ android {
         buildConfigField "String", "SIGNATURE_CERTIFICATE_CN_MATCH", '".coronatester.nl"'
         buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "true"
         buildConfigField "boolean", "FEATURE_TEST_PROVIDER_API_CHECKS", "true"
-        buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.coronacheck.nl/v6/\""
+        buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.coronacheck.nl/v7/\""
         buildConfigField "String[]", "CERTIFICATE_PINS",
                 "{" +
                         "\"sha256/lR7gRvqDMW5nhsCMRPE7TKLq0tJkTWMxQ5HAzHCIfQ0=\"" +
                         "}"
-        buildConfigField "String", "CDN_API_URL", "\"https://verifier-api-cdn.coronacheck.nl/v6/\""
+        buildConfigField "String", "CDN_API_URL", "\"https://verifier-api-cdn.coronacheck.nl/v7/\""
         manifestPlaceholders = [appLabel: "@string/app_name", deepLinkHost: "coronacheck.nl"]
         ndk {
             debugSymbolLevel "FULL"
@@ -70,8 +70,8 @@ android {
             versionNameSuffix "-acc"
             applicationIdSuffix ".acc"
             manifestPlaceholders = [appLabel: "@string/app_name_acc"]
-            buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.acc.coronacheck.nl/v6/\""
-            buildConfigField "String", "CDN_API_URL", "\"https://verifier-api-cdn.acc.coronacheck.nl/v6/\""
+            buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.acc.coronacheck.nl/v7/\""
+            buildConfigField "String", "CDN_API_URL", "\"https://verifier-api-cdn.acc.coronacheck.nl/v7/\""
             buildConfigField "String[]", "CERTIFICATE_PINS",
                     "{" +
                             "\"sha256/lR7gRvqDMW5nhsCMRPE7TKLq0tJkTWMxQ5HAzHCIfQ0=\"" +
@@ -86,8 +86,8 @@ android {
             versionNameSuffix "-fdroid"
             applicationIdSuffix ".fdroid.acc"
             manifestPlaceholders = [appLabel: "@string/app_name_acc"]
-            buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.acc.coronacheck.nl/v6/\""
-            buildConfigField "String", "CDN_API_URL", "\"https://verifier-api-cdn.acc.coronacheck.nl/v6/\""
+            buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.acc.coronacheck.nl/v7/\""
+            buildConfigField "String", "CDN_API_URL", "\"https://verifier-api-cdn.acc.coronacheck.nl/v7/\""
             buildConfigField "String[]", "CERTIFICATE_PINS",
                     "{" +
                             "\"sha256/lR7gRvqDMW5nhsCMRPE7TKLq0tJkTWMxQ5HAzHCIfQ0=\"" +

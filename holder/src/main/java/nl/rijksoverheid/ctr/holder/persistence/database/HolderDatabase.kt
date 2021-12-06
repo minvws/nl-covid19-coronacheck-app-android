@@ -25,9 +25,15 @@ val MIGRATION_1_2 = object : Migration(1, 2) {
     }
 }
 
+val MIGRATION_2_3 = object : Migration(2, 3) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL("ALTER TABLE credential ADD COLUMN category INTEGER")
+    }
+}
+
 @Database(
     entities = [WalletEntity::class, EventGroupEntity::class, GreenCardEntity::class, CredentialEntity::class, OriginEntity::class],
-    version = 2
+    version = 3
 )
 @TypeConverters(HolderDatabaseConverter::class)
 abstract class HolderDatabase : RoomDatabase() {
@@ -43,7 +49,7 @@ abstract class HolderDatabase : RoomDatabase() {
                 SupportFactory(SQLiteDatabase.getBytes(secretKeyUseCase.json().toCharArray()))
             return Room
                 .databaseBuilder(context, HolderDatabase::class.java, "holder-database")
-                .addMigrations(MIGRATION_1_2)
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
                 .apply {
                     if (isProd) {
                         openHelperFactory(supportFactory)
