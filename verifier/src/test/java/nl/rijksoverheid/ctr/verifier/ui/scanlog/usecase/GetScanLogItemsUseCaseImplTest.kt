@@ -1,13 +1,18 @@
 package nl.rijksoverheid.ctr.verifier.ui.scanlog.usecase
 
+import io.mockk.coEvery
+import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.appconfig.api.model.VerifierConfig
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
+import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 import nl.rijksoverheid.ctr.verifier.fakeAndroidUtil
 import nl.rijksoverheid.ctr.verifier.fakeScanLogRepository
 import nl.rijksoverheid.ctr.verifier.fakeVerifierCachedAppConfigUseCase
+import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.verifier.ui.scanlog.items.ScanLogItem
 import nl.rijksoverheid.ctr.verifier.ui.scanlog.models.ScanLog
+import nl.rijksoverheid.ctr.verifier.ui.scanlog.repositories.ScanLogRepository
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.time.Instant
@@ -25,19 +30,18 @@ class GetScanLogItemsUseCaseImplTest {
         val scanLogs = listOf<ScanLog>()
         val scanLogStorageSeconds = 120
 
-        val usecase = GetScanLogItemsUseCaseImpl(
-            androidUtil = fakeAndroidUtil(
-                firstInstallTime = firstInstallTime
-            ),
-            scanLogRepository = fakeScanLogRepository(
-                scanLogs = scanLogs
-            ),
-            verifierCachedAppConfigUseCase = fakeVerifierCachedAppConfigUseCase(
-                verifierConfig = VerifierConfig.default(
-                    scanLogStorageSeconds = scanLogStorageSeconds
-                )
-            )
-        )
+        val androidUtil = mockk<AndroidUtil>()
+        coEvery { androidUtil.getFirstInstallTime() } answers { firstInstallTime }
+
+        val scanLogRepository = mockk<ScanLogRepository>()
+        coEvery { scanLogRepository.getAll() } answers { scanLogs }
+
+        val verifierCachedAppConfigUseCase = mockk<VerifierCachedAppConfigUseCase>()
+        coEvery { verifierCachedAppConfigUseCase.getCachedAppConfig() } answers { VerifierConfig.default(
+            scanLogStorageSeconds = scanLogStorageSeconds
+        ) }
+
+        val usecase = GetScanLogItemsUseCaseImpl(androidUtil, scanLogRepository, verifierCachedAppConfigUseCase)
 
         val items = usecase.getItems()
         val expectedItems = listOf(
@@ -92,19 +96,18 @@ class GetScanLogItemsUseCaseImplTest {
         )
         val scanLogStorageSeconds = 120
 
-        val usecase = GetScanLogItemsUseCaseImpl(
-            androidUtil = fakeAndroidUtil(
-                firstInstallTime = firstInstallTime
-            ),
-            scanLogRepository = fakeScanLogRepository(
-                scanLogs = scanLogs
-            ),
-            verifierCachedAppConfigUseCase = fakeVerifierCachedAppConfigUseCase(
-                verifierConfig = VerifierConfig.default(
-                    scanLogStorageSeconds = scanLogStorageSeconds
-                )
-            )
-        )
+        val androidUtil = mockk<AndroidUtil>()
+        coEvery { androidUtil.getFirstInstallTime() } answers { firstInstallTime }
+
+        val scanLogRepository = mockk<ScanLogRepository>()
+        coEvery { scanLogRepository.getAll() } answers { scanLogs }
+
+        val verifierCachedAppConfigUseCase = mockk<VerifierCachedAppConfigUseCase>()
+        coEvery { verifierCachedAppConfigUseCase.getCachedAppConfig() } answers { VerifierConfig.default(
+            scanLogStorageSeconds = scanLogStorageSeconds
+        ) }
+
+        val usecase = GetScanLogItemsUseCaseImpl(androidUtil, scanLogRepository, verifierCachedAppConfigUseCase)
 
         val items = usecase.getItems()
         val expectedItems = listOf(
