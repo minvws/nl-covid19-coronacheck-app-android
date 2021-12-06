@@ -6,9 +6,6 @@ import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.appconfig.api.model.VerifierConfig
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
-import nl.rijksoverheid.ctr.verifier.fakeAndroidUtil
-import nl.rijksoverheid.ctr.verifier.fakeScanLogRepository
-import nl.rijksoverheid.ctr.verifier.fakeVerifierCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.verifier.ui.scanlog.items.ScanLogItem
 import nl.rijksoverheid.ctr.verifier.ui.scanlog.models.ScanLog
