@@ -31,6 +31,7 @@ class VerifierMainActivity : AppCompatActivity() {
 
     private val introductionViewModel: IntroductionViewModel by viewModel()
     private val appConfigViewModel: AppConfigViewModel by viewModel()
+    private val verifierMainActivityViewModel: VerifierMainActivityViewModel by viewModel()
     private val mobileCoreWrapper: MobileCoreWrapper by inject()
     private val dialogUtil: DialogUtil by inject()
     private val intentUtil: IntentUtil by inject()
@@ -63,6 +64,7 @@ class VerifierMainActivity : AppCompatActivity() {
             }
             isFreshStart = false
         }
+        verifierMainActivityViewModel.cleanup()
     }
 
     private fun observeStatuses() {
