@@ -61,6 +61,8 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
 
         scanQrViewModel.liveData.observe(viewLifecycleOwner, ::onStateUpdated)
 
+        scanQrViewModel.timerLiveData.observe(viewLifecycleOwner, ::updateTitle)
+
         binding.clockdeviationView.clockdeviationButton.setOnClickListener {
             infoFragmentUtil.presentAsBottomSheet(
                 childFragmentManager, InfoFragmentData.TitleDescription(
@@ -105,8 +107,8 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
         )
 
         when (state.lock) {
-            VerificationPolicySwitchState.Locked -> lockScanner()
-            VerificationPolicySwitchState.Unlocked -> unlockScanner()
+            is VerificationPolicySwitchState.Locked -> lockScanner()
+            is VerificationPolicySwitchState.Unlocked -> unlockScanner()
         }
     }
 
@@ -150,7 +152,6 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
     private fun lockScanner() {
         binding.instructionsButton.visibility = GONE
         binding.clockdeviationView.root.visibility = GONE
-        binding.title.setText(R.string.verifier_home_countdown_title)
         binding.description.setText(R.string.verifier_home_countdown_subtitle)
         binding.bottom.lock()
     }
@@ -161,5 +162,9 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
         binding.instructionsButton.visibility = VISIBLE
         binding.clockdeviationView.root.visibility = VISIBLE
         binding.bottom.unlock()
+    }
+
+    private fun updateTitle(timeLeft: String) {
+        binding.title.text = getString(R.string.verifier_home_countdown_title, timeLeft)
     }
 }

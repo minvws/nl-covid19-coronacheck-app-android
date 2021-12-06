@@ -5,6 +5,7 @@ import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCase
 import java.time.Clock
 import java.time.Instant
+import java.time.OffsetDateTime
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -17,6 +18,7 @@ interface VerificationPolicyUseCase {
     fun get(): VerificationPolicyState
     fun store(verificationPolicy: VerificationPolicy)
     fun getSwitchState(): VerificationPolicySwitchState
+    fun getRemainingSecondsLocked(): Long
 }
 
 class VerificationPolicyUseCaseImpl(
@@ -54,7 +56,18 @@ class VerificationPolicyUseCaseImpl(
 
         return when {
             policyChangeIsAllowed -> VerificationPolicySwitchState.Unlocked
-            else -> VerificationPolicySwitchState.Locked
+            else -> VerificationPolicySwitchState.Locked(lastScanLockTimeSeconds)
         }
+    }
+
+    override fun getRemainingSecondsLocked(): Long {
+        val now = OffsetDateTime.now(clock).toEpochSecond()
+        val lockSeconds = cachedAppConfigUseCase.getCachedAppConfig().scanLockSeconds.toLong()
+
+        val lastScanLockTimeSeconds = persistenceManager.getLastScanLockTimeSeconds()
+
+        val remainingSeconds = lockSeconds + lastScanLockTimeSeconds - now
+
+        return remainingSeconds
     }
 }

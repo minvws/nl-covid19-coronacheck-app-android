@@ -55,3 +55,11 @@ fun OffsetDateTime.formatTime(context: Context): String =
             if (DateFormat.is24HourFormat(context)) "HH:mm" else "hh:mm"
         )
     ).withLocale(Locale.getDefault()).withZone(ZoneId.of("CET")).format(this)
+
+fun OffsetDateTime.formatCountdownTimer(context: Context): String =
+    DateTimeFormatter.ofPattern(
+        DateFormat.getBestDateTimePattern(
+            Locale.getDefault(),
+            "hh:mm"
+        )
+    ).withLocale(Locale.getDefault()).withZone(ZoneId.of("CET")).format(this)

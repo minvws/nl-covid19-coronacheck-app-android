@@ -8,6 +8,6 @@ package nl.rijksoverheid.ctr.verifier.ui.policy
  *
  */
 sealed class VerificationPolicySwitchState() {
-    object Locked: VerificationPolicySwitchState()
+    class Locked(val lastScanLockTimeSeconds: Long): VerificationPolicySwitchState()
     object Unlocked: VerificationPolicySwitchState()
 }
