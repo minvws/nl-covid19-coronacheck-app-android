@@ -31,4 +31,3 @@ class ScanLogsCleanupUseCaseImpl(
         verifierDatabase.scanLogDao().delete(scanLogsToRemove)
     }
 }
-
