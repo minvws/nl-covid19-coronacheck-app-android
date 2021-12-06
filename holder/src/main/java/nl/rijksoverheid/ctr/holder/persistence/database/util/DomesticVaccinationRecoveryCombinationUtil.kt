@@ -23,6 +23,8 @@ interface DomesticVaccinationRecoveryCombinationUtil {
         events: List<EventGroupEntity>,
         remoteGreenCards: RemoteGreenCards
     ): DomesticVaccinationRecoveryCombination
+
+    fun hasVaccinationAndRecoveryEvents(events: List<EventGroupEntity>): Boolean
 }
 
 class DomesticVaccinationRecoveryCombinationUtilImpl(
@@ -81,7 +83,7 @@ class DomesticVaccinationRecoveryCombinationUtilImpl(
                 remoteGreenCards.domesticGreencard?.origins?.any { it.type == OriginType.Recovery } ?: false
     }
 
-    private fun hasVaccinationAndRecoveryEvents(events: List<EventGroupEntity>) =
+    override fun hasVaccinationAndRecoveryEvents(events: List<EventGroupEntity>) =
         events.any { it.type == OriginType.Vaccination } && events.any { it.type == OriginType.Recovery }
 
     private fun isNoneWithoutRecovery(

@@ -14,8 +14,8 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.view.forEachIndexed
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import nl.rijksoverheid.ctr.design.ext.formatDateTime
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
+import nl.rijksoverheid.ctr.design.ext.formatDayMonthYearTime
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
@@ -477,7 +477,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             val testDate = OffsetDateTime.ofInstant(
                 Instant.ofEpochSecond(result.sampleDate.toEpochSecond()),
                 ZoneOffset.UTC
-            ).formatDateTime(requireContext())
+            ).formatDayMonthYearTime(requireContext())
 
             val infoScreen = infoScreenUtil.getForRemoteTestResult2(
                 result = remoteProtocol2.result,
@@ -564,7 +564,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         event: RemoteEventNegativeTest
     ) {
         val testDate =
-            event.negativeTest?.sampleDate?.formatDateTime(requireContext()) ?: ""
+            event.negativeTest?.sampleDate?.formatDayMonthYearTime(requireContext()) ?: ""
 
         val infoScreen = infoScreenUtil.getForNegativeTest(
             event = event,
@@ -603,7 +603,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         event: RemoteEventPositiveTest
     ) {
         val testDate =
-            event.positiveTest?.sampleDate?.formatDateTime(requireContext()) ?: ""
+            event.positiveTest?.sampleDate?.formatDayMonthYearTime(requireContext()) ?: ""
 
         val infoScreen = infoScreenUtil.getForPositiveTest(
             event = event,
