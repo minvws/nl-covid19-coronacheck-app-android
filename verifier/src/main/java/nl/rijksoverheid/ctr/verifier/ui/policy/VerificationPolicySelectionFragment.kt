@@ -2,7 +2,6 @@ package nl.rijksoverheid.ctr.verifier.ui.policy
 
 import android.content.res.ColorStateList
 import android.os.Bundle
-import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.*
@@ -66,14 +65,12 @@ class VerificationPolicySelectionFragment :
     }
 
     private fun setupScreenForSettingsFlow(verificationPolicyState: VerificationPolicyState) {
-        binding.subHeader.text = Html.fromHtml(
-            getString(
-                if (verificationPolicyState != VerificationPolicyState.None) {
-                    R.string.verifier_risksetting_menu_scan_settings_selected_title
-                } else {
-                    R.string.verifier_risksetting_menu_scan_settings_unselected_title
-                }
-            )
+        binding.subHeader.setHtmlText(
+            if (verificationPolicyState != VerificationPolicyState.None) {
+                R.string.verifier_risksetting_menu_scan_settings_selected_title
+            } else {
+                R.string.verifier_risksetting_menu_scan_settings_unselected_title
+            }
         )
         binding.link.visibility = GONE
         binding.confirmationButton.setOnClickListener {
@@ -157,8 +154,7 @@ class VerificationPolicySelectionFragment :
             toggleError(false)
 
             if (flow is VerificationPolicyFlow.Settings) {
-                binding.subHeader.text =
-                    Html.fromHtml(getString(R.string.verifier_risksetting_menu_scan_settings_selected_title))
+                binding.subHeader.setHtmlText(R.string.verifier_risksetting_menu_scan_settings_selected_title)
             }
         }
 

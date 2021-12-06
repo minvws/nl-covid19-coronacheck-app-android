@@ -45,7 +45,7 @@
                 android:visibility="gone"
                 android:textAppearance="?attr/textAppearanceHeadline5" />
 
-            <com.google.android.material.textview.MaterialTextView
+            <nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
                 android:id="@+id/subHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
