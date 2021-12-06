@@ -6,7 +6,6 @@ import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfig
 import java.time.Clock
 import java.time.Instant
 
-
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
  *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
@@ -15,7 +14,7 @@ import java.time.Instant
  *
  */
 interface VerificationPolicyUseCase {
-    fun get(): VerificationPolicy?
+    fun get(): VerificationPolicyState
     fun store(verificationPolicy: VerificationPolicy)
     fun getSwitchState(): VerificationPolicySwitchState
 }
@@ -26,8 +25,12 @@ class VerificationPolicyUseCaseImpl(
     private val cachedAppConfigUseCase: VerifierCachedAppConfigUseCase,
 ): VerificationPolicyUseCase {
 
-    override fun get(): VerificationPolicy? {
-        return persistenceManager.getVerificationPolicySelected()
+    override fun get(): VerificationPolicyState {
+        return when (persistenceManager.getVerificationPolicySelected()) {
+            VerificationPolicy.VerificationPolicy2G -> VerificationPolicyState.Policy2G
+            VerificationPolicy.VerificationPolicy3G -> VerificationPolicyState.Policy3G
+            else -> VerificationPolicyState.None
+        }
     }
 
     override fun store(verificationPolicy: VerificationPolicy) {
