@@ -40,9 +40,7 @@ class GetEventsUseCaseImpl(
     private val configProvidersUseCase: ConfigProvidersUseCase,
     private val coronaCheckRepository: CoronaCheckRepository,
     private val getEventProvidersWithTokensUseCase: GetEventProvidersWithTokensUseCase,
-    private val getRemoteEventsUseCase: GetRemoteEventsUseCase,
-    private val remoteEventUtil: RemoteEventUtil,
-    private val cachedAppConfigUseCase: CachedAppConfigUseCase
+    private val getRemoteEventsUseCase: GetRemoteEventsUseCase
 ) : GetEventsUseCase {
 
     override suspend fun getEvents(
@@ -132,20 +130,6 @@ class GetEventsUseCaseImpl(
                     val positiveTestEvent =
                         allEvents.filterIsInstance(RemoteEventPositiveTest::class.java)
                             .firstOrNull()
-
-                    recoveryEvent?.let {
-                        // If we have a recovery event that is expired, it means we cannot create a recovery proof
-                        if (remoteEventUtil.isRecoveryEventExpired(it)) {
-                            return EventsResult.CannotCreateRecovery(cachedAppConfigUseCase.getCachedAppConfig().recoveryEventValidityDays)
-                        }
-                    }
-
-                    positiveTestEvent?.let {
-                        // If we have a positive test event that is expired, it means we cannot create a recovery proof
-                        if (remoteEventUtil.isPositiveTestEventExpired(it)) {
-                            return EventsResult.CannotCreateRecovery(cachedAppConfigUseCase.getCachedAppConfig().recoveryEventValidityDays)
-                        }
-                    }
 
                     // We do have events
                     EventsResult.Success(

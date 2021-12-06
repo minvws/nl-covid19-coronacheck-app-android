@@ -106,7 +106,7 @@ jobs:
           KEYSTORE_KEY_ALIAS: ${{ secrets.KEYSTORE_KEY_ALIAS }}
           KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-        run: ./gradlew assemAccRelease assemProdRelease bundleProdRelease
+        run: ./gradlew assemFdroidAccRelease assemAccRelease assemProdRelease bundleProdRelease
       - name: Clean up key store
         if: ${{github.event.repository.name != 'nl-covid19-coronacheck-app-android'}}
         run: rm keystore.jks
@@ -141,10 +141,18 @@ jobs:
 
       - name: Install firebase-cli
         run: npm install -g firebase-tools
+
       - name: Distribute holder acc variant
         run: |
           firebase appdistribution:distribute `ls apks/holder/build/outputs/apk/acc/release/holder-*.apk` \
           --app 1:168257592968:android:5df6b2057b90a30826493d \
+          --token $FIREBASE_TOKEN \
+          --groups testers
+
+      - name: Distribute holder fdroid acc variant
+        run: |
+          firebase appdistribution:distribute `ls apks/holder/build/outputs/apk/fdroidAcc/release/holder-*.apk` \
+          --app 1:168257592968:android:28c578809115867926493d \
           --token $FIREBASE_TOKEN \
           --groups testers
 
@@ -159,6 +167,13 @@ jobs:
         run: |
           firebase appdistribution:distribute `ls apks/verifier/build/outputs/apk/acc/release/verifier-*.apk` \
           --app 1:168257592968:android:e9d445c4115a5c9d26493d \
+          --token $FIREBASE_TOKEN \
+          --groups testers
+
+      - name: Distribute verifier fdroid acc variant
+        run: |
+          firebase appdistribution:distribute `ls apks/verifier/build/outputs/apk/fdroidAcc/release/verifier-*.apk` \
+          --app 1:168257592968:android:a5a6c5d5af1c18c726493d \
           --token $FIREBASE_TOKEN \
           --groups testers
 

@@ -4,11 +4,9 @@ import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.holder.HolderStep
-import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.RemoteEventUtil
 import nl.rijksoverheid.ctr.shared.exceptions.NoProvidersException
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import okhttp3.ResponseBody.Companion.toResponseBody
@@ -30,8 +28,6 @@ class GetEventsUseCaseImplTest {
     private val coronaCheckRepository: CoronaCheckRepository =  mockk()
     private val getEventProvidersWithTokensUseCase: GetEventProvidersWithTokensUseCase =  mockk()
     private val getRemoteEventsUseCase: GetRemoteEventsUseCase =  mockk()
-    private val remoteEventUtil: RemoteEventUtil = mockk()
-    private val cachedAppConfigUseCase: CachedAppConfigUseCase = mockk()
 
     private val eventsError = mockk<NetworkRequestResult.Failed.Error>()
     private val jwt = "jwt"
@@ -41,7 +37,7 @@ class GetEventsUseCaseImplTest {
     val eventProviders = remoteEventProviders.map { EventProvider(it.providerIdentifier, it.name) }
 
     private suspend fun getEvents(): EventsResult {
-        val getEventsUseCase = GetEventsUseCaseImpl(configProvidersUseCase, coronaCheckRepository, getEventProvidersWithTokensUseCase, getRemoteEventsUseCase, remoteEventUtil, cachedAppConfigUseCase)
+        val getEventsUseCase = GetEventsUseCaseImpl(configProvidersUseCase, coronaCheckRepository, getEventProvidersWithTokensUseCase, getRemoteEventsUseCase)
         return getEventsUseCase.getEvents(jwt, originType, false)
     }
 
