@@ -5,12 +5,14 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.Space
 import android.widget.TextView
+import mobilecore.Mobilecore
 import nl.rijksoverheid.ctr.design.ext.formatDateTime
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthTime
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
 import nl.rijksoverheid.ctr.design.ext.formatDayShortMonthYear
 import nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.CredentialEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
@@ -90,7 +92,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
                                     viewBinding, originState, greenCardType, origin
                                 )
                                 is OriginType.Test -> setDomesticTestOrigin(
-                                    viewBinding, originState, greenCardType, origin
+                                    viewBinding, originState, greenCardType, origin, it.credentialEntities
                                 )
                             }
                         }
@@ -140,7 +142,8 @@ class MyOverViewGreenCardAdapterUtilImpl(
         viewBinding: ViewBindingWrapper,
         originState: OriginState,
         greenCardType: GreenCardType,
-        origin: OriginEntity
+        origin: OriginEntity,
+        credentialEntities: List<CredentialEntity>
     ) {
         setOriginTitle(
             descriptionLayout = viewBinding.description,
@@ -152,7 +155,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
             originState = originState,
             showTime = shouldShowTimeSubtitle(originState, greenCardType),
             subtitle = context.getString(
-                if (origin.type == OriginType.Test) {
+                if (credentialEntities.any { it.category == Mobilecore.VERIFICATION_POLICY_3G }) {
                     R.string.holder_my_overview_test_result_validity_3g
                 } else {
                     R.string.qr_card_validity_valid

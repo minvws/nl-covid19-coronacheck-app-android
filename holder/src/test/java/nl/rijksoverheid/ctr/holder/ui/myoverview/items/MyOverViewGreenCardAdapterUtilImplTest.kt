@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.test.core.app.ApplicationProvider
 import io.mockk.every
 import io.mockk.mockk
+import nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CredentialUtil
@@ -75,7 +76,7 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
         myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(AdapterCard(greenCard, listOf(OriginState.Valid(greenCard.origins.first())))))
 
         assertEquals("Type test: PCR (NAAT)", (viewBinding.description.getChildAt(0) as TextView).text)
-        assertEquals("Testdatum: dinsdag 27 juli 11:10", (viewBinding.description.getChildAt(1) as TextView).text)
+        assertEquals("Testdatum: dinsdag 27 juli 11:10", (viewBinding.description.getChildAt(1) as HtmlTextViewWidget).text)
     }
 
     @Test
@@ -84,7 +85,7 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
         myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(AdapterCard(greenCard, listOf(OriginState.Valid(greenCard.origins.first())))))
 
         assertEquals("Testbewijs:", (viewBinding.description.getChildAt(0) as TextView).text)
-        assertEquals("geldig tot woensdag 28 juli 21:06", (viewBinding.description.getChildAt(1) as TextView).text)
+        assertEquals("geldig tot woensdag 28 juli 21:06", (viewBinding.description.getChildAt(1) as HtmlTextViewWidget).text)
     }
 
     @Test
@@ -94,7 +95,7 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
         myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(AdapterCard(greenCard, listOf(OriginState.Valid(greenCard.origins.first())))))
 
         assertEquals("dosis 2 van 2", (viewBinding.description.getChildAt(0) as TextView).text)
-        assertEquals("Vaccinatiedatum: 27 juli 2021", (viewBinding.description.getChildAt(1) as TextView).text)
+        assertEquals("Vaccinatiedatum: 27 juli 2021", (viewBinding.description.getChildAt(1) as HtmlTextViewWidget).text)
     }
 
     @Test
@@ -104,7 +105,7 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
         myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(AdapterCard(greenCard, listOf(OriginState.Valid(greenCard.origins.first())))))
 
         assertEquals("dosis 2 van 2", (viewBinding.description.getChildAt(0) as TextView).text)
-        assertEquals("Vaccinatiedatum: 27 juli 2021", (viewBinding.description.getChildAt(1) as TextView).text)
+        assertEquals("Vaccinatiedatum: 27 juli 2021", (viewBinding.description.getChildAt(1) as HtmlTextViewWidget).text)
         assertEquals(View.GONE, viewBinding.expiresIn.visibility)
     }
 
@@ -114,7 +115,7 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
         myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(AdapterCard(greenCard, listOf(OriginState.Valid(greenCard.origins.first())))))
 
         assertEquals("Vaccinatiebewijs:", (viewBinding.description.getChildAt(0) as TextView).text)
-        assertEquals("geldig vanaf 27 juli 2021 ", (viewBinding.description.getChildAt(1) as TextView).text)
+        assertEquals("geldig vanaf 27 juli 2021 ", (viewBinding.description.getChildAt(1) as HtmlTextViewWidget).text)
         assertEquals(View.GONE, viewBinding.expiresIn.visibility)
     }
 
@@ -124,7 +125,7 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
         myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(AdapterCard(greenCard, listOf(OriginState.Future(greenCard.origins.first())))))
 
         assertEquals("Vaccinatiebewijs:", (viewBinding.description.getChildAt(0) as TextView).text)
-        assertEquals("geldig vanaf 27 juli 11:11 ", (viewBinding.description.getChildAt(1) as TextView).text)
+        assertEquals("geldig vanaf 27 juli 11:11 ", (viewBinding.description.getChildAt(1) as HtmlTextViewWidget).text)
         assertEquals("Wordt automatisch geldig", viewBinding.expiresIn.text)
         assertEquals(View.VISIBLE, viewBinding.expiresIn.visibility)
     }
@@ -134,7 +135,7 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
         val greenCard = greenCard(GreenCardType.Eu, OriginType.Recovery)
         myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(AdapterCard(greenCard, listOf(OriginState.Valid(greenCard.origins.first())))))
 
-        assertEquals("geldig tot 28 jul 2021", (viewBinding.description.getChildAt(1) as TextView).text)
+        assertEquals("geldig tot 28 jul 2021", (viewBinding.description.getChildAt(1) as HtmlTextViewWidget).text)
         assertEquals(View.GONE, viewBinding.expiresIn.visibility)
     }
 
@@ -143,7 +144,7 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
         val greenCard = greenCard(GreenCardType.Eu, OriginType.Recovery)
         myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(AdapterCard(greenCard, listOf(OriginState.Future(greenCard.origins.first())))))
 
-        assertEquals("geldig vanaf 27 juli 11:11 t/m 28 juli 2021", (viewBinding.description.getChildAt(1) as TextView).text)
+        assertEquals("geldig vanaf 27 juli 11:11 t/m 28 juli 2021", (viewBinding.description.getChildAt(1) as HtmlTextViewWidget).text)
         assertEquals(View.VISIBLE, viewBinding.expiresIn.visibility)
     }
 
@@ -153,7 +154,7 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
         myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(AdapterCard(greenCard, listOf(OriginState.Valid(greenCard.origins.first())))))
 
         assertEquals("Herstelbewijs:", (viewBinding.description.getChildAt(0) as TextView).text)
-        assertEquals("geldig tot 28 jul 2021", (viewBinding.description.getChildAt(1) as TextView).text)
+        assertEquals("geldig tot 28 jul 2021", (viewBinding.description.getChildAt(1) as HtmlTextViewWidget).text)
         assertEquals(View.GONE, viewBinding.expiresIn.visibility)
     }
 
@@ -163,7 +164,7 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
         myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(AdapterCard(greenCard, listOf(OriginState.Future(greenCard.origins.first())))))
 
         assertEquals("Herstelbewijs:", (viewBinding.description.getChildAt(0) as TextView).text)
-        assertEquals("geldig vanaf 27 juli 11:11 t/m 28 juli 2021", (viewBinding.description.getChildAt(1) as TextView).text)
+        assertEquals("geldig vanaf 27 juli 11:11 t/m 28 juli 2021", (viewBinding.description.getChildAt(1) as HtmlTextViewWidget).text)
         assertEquals(View.VISIBLE, viewBinding.expiresIn.visibility)
     }
 
@@ -177,7 +178,7 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
         myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(AdapterCard(greenCard, listOf(OriginState.Valid(greenCard.origins.first())))))
 
         assertEquals("Testbewijs:", (viewBinding.description.getChildAt(0) as TextView).text)
-        assertEquals("geldig tot woensdag 28 juli 21:06", (viewBinding.description.getChildAt(1) as TextView).text)
+        assertEquals("geldig tot woensdag 28 juli 21:06", (viewBinding.description.getChildAt(1) as HtmlTextViewWidget).text)
         assertEquals(View.VISIBLE, viewBinding.expiresIn.visibility)
         assertEquals("Verloopt in 1 uur 1 min", viewBinding.expiresIn.text)
     }
@@ -237,7 +238,7 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
         )
         assertEquals(
             "Vaccinatiedatum: 27 juli 2021",
-            (viewBinding.description.getChildAt(1) as TextView).text
+            (viewBinding.description.getChildAt(1) as HtmlTextViewWidget).text
         )
         assertEquals(
             "dosis 2 van 2",
@@ -245,7 +246,7 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
         )
         assertEquals(
             "Vaccinatiedatum: 27 juli 2021",
-            (viewBinding.description.getChildAt(3) as TextView).text
+            (viewBinding.description.getChildAt(3) as HtmlTextViewWidget).text
         )
         assertEquals(
             "dosis 2 van 2",
@@ -253,7 +254,7 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
         )
         assertEquals(
             "Vaccinatiedatum: 27 juli 2021",
-            (viewBinding.description.getChildAt(5) as TextView).text
+            (viewBinding.description.getChildAt(5) as HtmlTextViewWidget).text
         )
     }
 
@@ -277,6 +278,7 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
             credentialVersion = 2,
             validFrom = validFrom,
             expirationTime = expirationTime,
+            category = "2"
         )
 
         val originEntity = OriginEntity(

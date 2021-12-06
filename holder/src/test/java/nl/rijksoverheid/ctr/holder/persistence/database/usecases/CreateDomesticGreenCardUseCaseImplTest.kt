@@ -79,7 +79,8 @@ class CreateDomesticGreenCardUseCaseImplTest: AutoCloseKoinTest() {
                     lastNameInitial = "N",
                     isPaperProof = "0",
                     validForHours = 100,
-                    validFrom = firstJanuaryDate.toEpochSecond()
+                    validFrom = firstJanuaryDate.toEpochSecond(),
+                    category = "2"
                 )
             )
         )
