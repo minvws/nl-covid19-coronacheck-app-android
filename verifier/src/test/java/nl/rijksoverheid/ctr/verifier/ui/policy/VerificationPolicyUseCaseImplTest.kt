@@ -26,7 +26,7 @@ class VerificationPolicyUseCaseImplTest {
     fun `a stored 2G policy returns 2G state`() {
         every { persistenceManager.getVerificationPolicySelected() } returns VerificationPolicy.VerificationPolicy2G
 
-        val actualPolicy = useCase.get()
+        val actualPolicy = useCase.getState()
 
         assertEquals(VerificationPolicyState.Policy2G, actualPolicy)
     }
@@ -35,7 +35,7 @@ class VerificationPolicyUseCaseImplTest {
     fun `a stored 3G policy returns 3G state`() {
         every { persistenceManager.getVerificationPolicySelected() } returns VerificationPolicy.VerificationPolicy3G
 
-        val actualPolicy = useCase.get()
+        val actualPolicy = useCase.getState()
 
         assertEquals(VerificationPolicyState.Policy3G, actualPolicy)
     }
@@ -44,7 +44,7 @@ class VerificationPolicyUseCaseImplTest {
     fun `no stored policy returns no state`() {
         every { persistenceManager.getVerificationPolicySelected() } returns null
 
-        val actualPolicy = useCase.get()
+        val actualPolicy = useCase.getState()
 
         assertEquals(VerificationPolicyState.None, actualPolicy)
     }

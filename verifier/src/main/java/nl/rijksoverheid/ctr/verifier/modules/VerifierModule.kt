@@ -13,6 +13,8 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import nl.rijksoverheid.ctr.appconfig.usecases.ReturnToExternalAppUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ReturnToExternalAppUseCaseImpl
 import nl.rijksoverheid.ctr.introduction.ui.new_terms.models.NewTerms
+import nl.rijksoverheid.ctr.verifier.VerifierMainActivityViewModel
+import nl.rijksoverheid.ctr.verifier.VerifierMainActivityViewModelImpl
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 import nl.rijksoverheid.ctr.verifier.persistance.SharedPreferencesPersistenceManager
 import nl.rijksoverheid.ctr.verifier.persistance.usecase.RandomKeyUseCase
@@ -32,6 +34,8 @@ import nl.rijksoverheid.ctr.verifier.ui.scanlog.repositories.ScanLogRepository
 import nl.rijksoverheid.ctr.verifier.ui.scanlog.repositories.ScanLogRepositoryImpl
 import nl.rijksoverheid.ctr.verifier.ui.scanlog.usecase.GetScanLogItemsUseCase
 import nl.rijksoverheid.ctr.verifier.ui.scanlog.usecase.GetScanLogItemsUseCaseImpl
+import nl.rijksoverheid.ctr.verifier.ui.scanlog.usecase.ScanLogsCleanupUseCase
+import nl.rijksoverheid.ctr.verifier.ui.scanlog.usecase.ScanLogsCleanupUseCaseImpl
 import nl.rijksoverheid.ctr.verifier.ui.scanner.ScannerViewModel
 import nl.rijksoverheid.ctr.verifier.ui.scanner.ScannerViewModelImpl
 import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.TestResultValidUseCase
@@ -79,6 +83,7 @@ fun verifierModule(path: String) = module {
             get()
         )
     }
+    factory<ScanLogsCleanupUseCase> { ScanLogsCleanupUseCaseImpl(get(), get(), get()) }
 
     // Utils
     factory<ScannerUtil> { ScannerUtilImpl() }
@@ -86,6 +91,7 @@ fun verifierModule(path: String) = module {
     factory<ScanLogFirstInstallTimeAdapterItemUtil> { ScanLogFirstInstallTimeAdapterItemUtilImpl(get()) }
 
     // ViewModels
+    viewModel<VerifierMainActivityViewModel> { VerifierMainActivityViewModelImpl(get()) }
     viewModel<ScanQrViewModel> { ScanQrViewModelImpl(get(), get(), get()) }
     viewModel<ScannerViewModel> { ScannerViewModelImpl(get(), get()) }
     viewModel<ScanLogViewModel> { ScanLogViewModelImpl(get()) }

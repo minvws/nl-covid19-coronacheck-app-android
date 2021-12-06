@@ -15,7 +15,17 @@ import java.time.OffsetDateTime
  *
  */
 interface VerificationPolicyUseCase {
-    fun get(): VerificationPolicyState
+    /**
+     * Get the current state of the verification policy that is set
+     * This can be [VerificationPolicyState.None] if nothing is set
+     */
+    fun getState(): VerificationPolicyState
+
+    /**
+     * Get the verification policy that is set
+     * @throws IllegalStateException when nothing has been set
+     */
+    fun get(): VerificationPolicy
     fun store(verificationPolicy: VerificationPolicy)
     fun getSwitchState(): VerificationPolicySwitchState
     fun getRemainingSecondsLocked(): Long
@@ -27,12 +37,16 @@ class VerificationPolicyUseCaseImpl(
     private val cachedAppConfigUseCase: VerifierCachedAppConfigUseCase,
 ): VerificationPolicyUseCase {
 
-    override fun get(): VerificationPolicyState {
+    override fun getState(): VerificationPolicyState {
         return when (persistenceManager.getVerificationPolicySelected()) {
             VerificationPolicy.VerificationPolicy2G -> VerificationPolicyState.Policy2G
             VerificationPolicy.VerificationPolicy3G -> VerificationPolicyState.Policy3G
             else -> VerificationPolicyState.None
         }
+    }
+
+    override fun get(): VerificationPolicy {
+        return persistenceManager.getVerificationPolicySelected() ?: error ("VerificationPolicy cannot be empty")
     }
 
     override fun store(verificationPolicy: VerificationPolicy) {

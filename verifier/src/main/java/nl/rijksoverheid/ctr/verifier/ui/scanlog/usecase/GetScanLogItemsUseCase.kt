@@ -23,7 +23,7 @@ class GetScanLogItemsUseCaseImpl(
     private val verifierCachedAppConfigUseCase: VerifierCachedAppConfigUseCase,
 ): GetScanLogItemsUseCase {
     override suspend fun getItems(): List<ScanLogItem> {
-        val scanLogs = scanLogRepository.getAll().reversed()
+        val scanLogs = scanLogRepository.getAll()
         val firstInstallTime = androidUtil.getFirstInstallTime()
         val scanLogStorageMinutes = TimeUnit.SECONDS.toMinutes(verifierCachedAppConfigUseCase.getCachedAppConfig().scanLogStorageSeconds.toLong())
         val scanLogItems = mutableListOf<ScanLogItem>()
