@@ -1,8 +1,6 @@
 package nl.rijksoverheid.ctr.verifier
 
-import android.net.ConnectivityManager
 import androidx.lifecycle.MutableLiveData
-import io.mockk.mockk
 import mobilecore.Mobilecore
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
@@ -15,12 +13,7 @@ import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.*
-import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 import nl.rijksoverheid.ctr.shared.utils.TestResultUtil
-import nl.rijksoverheid.ctr.verifier.persistance.database.entities.ScanLogEntity
-import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCase
-import nl.rijksoverheid.ctr.verifier.ui.scanlog.models.ScanLog
-import nl.rijksoverheid.ctr.verifier.ui.scanlog.repositories.ScanLogRepository
 import nl.rijksoverheid.ctr.verifier.ui.scanner.ScannerViewModel
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.VerifiedQrResultState
 import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.TestResultValidUseCase
@@ -31,9 +24,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody
 import okio.BufferedSource
 import org.json.JSONObject
-import java.time.Instant
 import java.time.OffsetDateTime
-import java.time.ZoneId
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
