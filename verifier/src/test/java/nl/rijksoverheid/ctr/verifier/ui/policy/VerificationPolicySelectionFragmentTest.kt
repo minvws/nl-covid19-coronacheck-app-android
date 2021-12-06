@@ -73,7 +73,7 @@ class VerificationPolicySelectionFragmentTest : AutoCloseKoinTest() {
     private fun launchFragment() {
 
         verificationPolicyUseCase = mockk<VerificationPolicyUseCase>(relaxed = true).apply {
-            every { get() } returns VerificationPolicyState.None
+            every { getState() } returns VerificationPolicyState.None
         }
 
         loadKoinModules(

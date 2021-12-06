@@ -24,7 +24,7 @@ class VerificationPolicySelectionViewModelImpl(
 ) : VerificationPolicySelectionViewModel() {
 
     init {
-        val policyState = verificationPolicyUseCase.get()
+        val policyState = verificationPolicyUseCase.getState()
 
         (liveData as MutableLiveData).postValue(
             if (isScanQRFlow) {

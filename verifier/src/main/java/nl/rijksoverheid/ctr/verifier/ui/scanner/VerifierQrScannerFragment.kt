@@ -56,12 +56,12 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
             verificationPolicy = verificationPolicyUseCase.get().let {
                 Copy.VerificationPolicy(
                     title = when (it) {
-                        Policy2G -> R.string.verifier_scanner_policy_indication_2g
-                        else -> R.string.verifier_scanner_policy_indication_3g
+                        VerificationPolicy2G -> R.string.verifier_scanner_policy_indication_2g
+                        VerificationPolicy3G -> R.string.verifier_scanner_policy_indication_3g
                     },
                     indicatorColor = when (it) {
-                        Policy2G -> R.color.primary_blue
-                        else -> R.color.secondary_green
+                        VerificationPolicy2G -> R.color.primary_blue
+                        VerificationPolicy3G -> R.color.secondary_green
                     }
                 )
             }
