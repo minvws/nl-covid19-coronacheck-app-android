@@ -40,6 +40,8 @@ import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.VerifyQrUseCase
 import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.VerifyQrUseCaseImpl
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtilImpl
+import nl.rijksoverheid.ctr.verifier.ui.scanqr.NextScannerScreenUseCase
+import nl.rijksoverheid.ctr.verifier.ui.scanqr.NextScannerScreenUseCaseImpl
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrViewModel
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrViewModelImpl
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -84,7 +86,7 @@ fun verifierModule(path: String) = module {
     factory<ScanLogFirstInstallTimeAdapterItemUtil> { ScanLogFirstInstallTimeAdapterItemUtilImpl(get()) }
 
     // ViewModels
-    viewModel<ScanQrViewModel> { ScanQrViewModelImpl(get()) }
+    viewModel<ScanQrViewModel> { ScanQrViewModelImpl(get(), get(), get()) }
     viewModel<ScannerViewModel> { ScannerViewModelImpl(get(), get()) }
     viewModel<ScanLogViewModel> { ScanLogViewModelImpl(get()) }
 
@@ -100,6 +102,7 @@ fun verifierModule(path: String) = module {
     }
 
     factory<VerificationPolicyUseCase> { VerificationPolicyUseCaseImpl(get(), get(), get()) }
+    factory<NextScannerScreenUseCase> { NextScannerScreenUseCaseImpl(get()) }
 
     viewModel<VerificationPolicySelectionViewModel> { (isScanQRFlow: Boolean) -> VerificationPolicySelectionViewModelImpl(get(), isScanQRFlow) }
 }

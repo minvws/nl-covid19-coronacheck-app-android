@@ -1,7 +1,9 @@
 package nl.rijksoverheid.ctr.verifier.ui.scanqr
 
 import android.content.SharedPreferences
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.fragment.app.testing.launchFragmentInContainer
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.preference.PreferenceManager
@@ -10,9 +12,8 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertNotDisplayed
 import com.adevinta.android.barista.interaction.BaristaClickInteractions.clickOn
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verify
+import io.mockk.*
+import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.fakeScanQrViewModel
@@ -26,6 +27,9 @@ import org.koin.dsl.module
 import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
+import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyState
+import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySwitchState
+import org.junit.Rule
 import org.robolectric.annotation.Config
 
 /*
@@ -47,6 +51,9 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
         it.setGraph(R.navigation.verifier_nav_graph_main)
         it.setCurrentDestination(R.id.nav_scan_qr)
     }
+
+    @get:Rule
+    val rule = InstantTaskExecutorRule()
 
     @Test
     fun `Clicking instruction button navigates to scan instructions`() {
@@ -70,7 +77,10 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
      */
     @Test
     fun `Given instructions seen and policy set, Clicking start scan opens scanner`() {
-        launchScanQrFragment()
+        launchScanQrFragment(
+            policy = VerificationPolicy.VerificationPolicy2G,
+            nextScannerScreenState = NextScannerScreenState.Scanner,
+        )
         clickOn(R.id.button)
         verify { scannerUtil.launchScanner(any()) }
     }
@@ -104,9 +114,30 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
 
     private fun launchScanQrFragment(
         hasSeenScanInstructions: Boolean = true,
-        nextScannerScreenState: NextScannerScreenState = NextScannerScreenState.Scanner,
+        nextScannerScreenState: NextScannerScreenState? = null,
         policy: VerificationPolicy? = null,
     ) {
+
+        val viewModel = fakeScanQrViewModel(
+            scanInstructionsSeen = hasSeenScanInstructions,
+            nextScannerScreenState = nextScannerScreenState ?: NextScannerScreenState.Scanner,
+        )
+
+        (viewModel.liveData as MutableLiveData).postValue(
+            ScanQRState(
+                policy = when (policy) {
+                    VerificationPolicy.VerificationPolicy2G -> VerificationPolicyState.Policy2G
+                    VerificationPolicy.VerificationPolicy3G -> VerificationPolicyState.Policy3G
+                    null -> VerificationPolicyState.None
+                },
+                lock = VerificationPolicySwitchState.Unlocked
+            )
+        )
+
+        nextScannerScreenState?.let {
+            (viewModel.nextScreenEvent as MutableLiveData).postValue(Event(it))
+        }
+
         loadKoinModules(
             module(override = true) {
                 factory<SharedPreferences> {
@@ -124,10 +155,7 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
                 }
 
                 viewModel {
-                    fakeScanQrViewModel(
-                        scanInstructionsSeen = hasSeenScanInstructions,
-                        nextScannerScreenState = nextScannerScreenState,
-                    )
+                    viewModel
                 }
             }
         )

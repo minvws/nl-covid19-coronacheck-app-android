@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
@@ -13,12 +15,15 @@ import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
+import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.VerificationPolicy2G
+import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.VerificationPolicy3G
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.VerifierMainActivity
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanQrBinding
-import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
+import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyState
+import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySwitchState
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -32,38 +37,29 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  */
 class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
 
+    private var _binding: FragmentScanQrBinding? = null
+    private val binding get() = _binding!!
+
     private val scanQrViewModel: ScanQrViewModel by viewModel()
     private val scannerUtil: ScannerUtil by inject()
     private val clockDeviationUseCase: ClockDeviationUseCase by inject()
     private val infoFragmentUtil: InfoFragmentUtil by inject()
-    private val persistentManager: PersistenceManager by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val binding = FragmentScanQrBinding.bind(view)
+        _binding = FragmentScanQrBinding.bind(view)
         binding.instructionsButton.setOnClickListener {
             navigateSafety(R.id.nav_scan_qr, ScanQrFragmentDirections.actionScanInstructions())
         }
 
         binding.bottom.setButtonClick {
-            goToNextScreen()
+            scanQrViewModel.nextScreen()
         }
 
-        val policy = persistentManager.getVerificationPolicySelected()
-        binding.image.background = ContextCompat.getDrawable(
-            requireContext(), if (policy != null) {
-                binding.bottom.setPolicy(policy)
-                if (policy == VerificationPolicy2G) {
-                    R.drawable.illustration_scanner_get_started_2g
-                } else {
-                    R.drawable.illustration_scanner_get_started_3g
-                }
-            } else {
-                binding.bottom.hidePolicyIndication()
-                R.drawable.illustration_scanner_get_started_3g
-            }
-        )
+        scanQrViewModel.nextScreenEvent.observe(viewLifecycleOwner, ::goToNextScreen)
+
+        scanQrViewModel.liveData.observe(viewLifecycleOwner, ::onStateUpdated)
 
         binding.clockdeviationView.clockdeviationButton.setOnClickListener {
             infoFragmentUtil.presentAsBottomSheet(
@@ -77,10 +73,41 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
             )
         }
         // Handle clock deviation view
-        observeServerTimeSynced(binding)
-        showDeviationViewIfNeeded(binding)
+        observeServerTimeSynced()
+        showDeviationViewIfNeeded()
+
+        scanQrViewModel.onViewCreated()
 
         checkPendingDeeplink()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun onStateUpdated(state: ScanQRState) {
+        binding.image.background = ContextCompat.getDrawable(
+            requireContext(), when (state.policy) {
+                VerificationPolicyState.None -> {
+                    binding.bottom.hidePolicyIndication()
+                    R.drawable.illustration_scanner_get_started_3g
+                }
+                VerificationPolicyState.Policy2G -> {
+                    binding.bottom.setPolicy(VerificationPolicy2G)
+                    R.drawable.illustration_scanner_get_started_2g
+                }
+                VerificationPolicyState.Policy3G -> {
+                    binding.bottom.setPolicy(VerificationPolicy3G)
+                    R.drawable.illustration_scanner_get_started_3g
+                }
+            }
+        )
+
+        when (state.lock) {
+            VerificationPolicySwitchState.Locked -> lockScanner()
+            VerificationPolicySwitchState.Unlocked -> unlockScanner()
+        }
     }
 
     // if we opened the scanner app via a deep link from another app
@@ -90,12 +117,12 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
     // after we're done with scanning
     private fun checkPendingDeeplink() {
         (activity as? VerifierMainActivity)?.returnUri?.let {
-            goToNextScreen()
+            scanQrViewModel.nextScreen()
         }
     }
 
-    private fun goToNextScreen() {
-        when (scanQrViewModel.getNextScannerScreenState()) {
+    private fun goToNextScreen(nextScreenEvent: Event<NextScannerScreenState>) {
+        when (nextScreenEvent.peekContent()) {
             NextScannerScreenState.Instructions -> findNavController().navigate(
                 ScanQrFragmentDirections.actionScanInstructions()
             )
@@ -110,15 +137,29 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
      * Whenever the server time is synced we want to check
      * if we want to inform the user that the clock is not correct
      */
-    private fun observeServerTimeSynced(binding: FragmentScanQrBinding) {
+    private fun observeServerTimeSynced() {
         clockDeviationUseCase.serverTimeSyncedLiveData.observe(viewLifecycleOwner, EventObserver {
-            showDeviationViewIfNeeded(binding)
+            showDeviationViewIfNeeded()
         })
     }
 
-    private fun showDeviationViewIfNeeded(binding: FragmentScanQrBinding) {
+    private fun showDeviationViewIfNeeded() {
         binding.clockdeviationView.root.isGone = !clockDeviationUseCase.hasDeviation()
     }
+
+    private fun lockScanner() {
+        binding.instructionsButton.visibility = GONE
+        binding.clockdeviationView.root.visibility = GONE
+        binding.title.setText(R.string.verifier_home_countdown_title)
+        binding.description.setText(R.string.verifier_home_countdown_subtitle)
+        binding.bottom.lock()
+    }
+
+    private fun unlockScanner() {
+        binding.title.setText(R.string.scan_qr_header)
+        binding.description.setText(R.string.scan_qr_description)
+        binding.instructionsButton.visibility = VISIBLE
+        binding.clockdeviationView.root.visibility = VISIBLE
+        binding.bottom.unlock()
+    }
 }
-
-

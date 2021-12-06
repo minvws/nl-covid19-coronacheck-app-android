@@ -81,6 +81,14 @@ fun fakeScanQrViewModel(
     override fun getNextScannerScreenState(): NextScannerScreenState {
         return nextScannerScreenState
     }
+
+    override fun onViewCreated() {
+
+    }
+
+    override fun nextScreen() {
+
+    }
 }
 
 fun fakeScannerViewModel(
