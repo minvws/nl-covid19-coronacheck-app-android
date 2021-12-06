@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.verifier.ui.scanner
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
+import io.mockk.coVerify
 import io.mockk.mockk
 import io.mockk.verify
 import io.mockk.verifyOrder
@@ -13,6 +14,7 @@ import nl.rijksoverheid.ctr.appconfig.models.ExternalReturnAppData
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.verifier.fakeTestResultValidUseCase
 import nl.rijksoverheid.ctr.verifier.fakeVerifiedQr
+import nl.rijksoverheid.ctr.verifier.ui.scanlog.usecase.LogScanUseCase
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.VerifiedQrResultState
 import org.junit.Before
 import org.junit.Rule
@@ -42,7 +44,10 @@ class ScannerViewModelImplTest {
     @Test
     fun `Validating test result delegates to correct livedatas`() = runBlocking {
         val viewModel =
-            ScannerViewModelImpl(testResultValidUseCase = fakeTestResultValidUseCase(), mockk(relaxed = true))
+            ScannerViewModelImpl(
+                testResultValidUseCase = fakeTestResultValidUseCase(),
+                mockk(relaxed = true),
+                mockk(relaxed = true))
 
         viewModel.loadingLiveData.observeForever(loadingMockedObserver)
         viewModel.qrResultLiveData.observeForever(validatedQrObserver)
@@ -61,5 +66,19 @@ class ScannerViewModelImplTest {
                 )
             )
         }
+    }
+
+    @Test
+    fun `Log delegates to correct usecase`() = runBlocking {
+        val logScanUseCase = mockk<LogScanUseCase>()
+
+        val viewModel =
+            ScannerViewModelImpl(
+                testResultValidUseCase = fakeTestResultValidUseCase(),
+                mockk(relaxed = true),
+                logScanUseCase)
+
+        viewModel.log()
+        coVerify { logScanUseCase.log() }
     }
 }
