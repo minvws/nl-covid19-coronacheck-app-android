@@ -216,4 +216,3 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
         }
     }
 }
-
