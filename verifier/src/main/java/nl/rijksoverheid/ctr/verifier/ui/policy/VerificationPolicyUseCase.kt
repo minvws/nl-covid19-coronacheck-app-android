@@ -39,7 +39,8 @@ class VerificationPolicyUseCaseImpl(
         val nowSeconds = Instant.now(clock).epochSecond
 
         // don't store a lock change the first time policy is set
-        if (persistenceManager.isVerificationPolicySelectionSet()) {
+        // or there is no change in the policy set
+        if (persistenceManager.isVerificationPolicySelectionSet() && persistenceManager.getVerificationPolicySelected() != verificationPolicy) {
             persistenceManager.storeLastScanLockTimeSeconds(nowSeconds)
         }
 
