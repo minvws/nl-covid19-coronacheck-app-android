@@ -21,6 +21,7 @@ import nl.rijksoverheid.ctr.verifier.persistance.usecase.RandomKeyUseCase
 import nl.rijksoverheid.ctr.verifier.persistance.usecase.RandomKeyUseCaseImpl
 import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCaseImpl
+import nl.rijksoverheid.ctr.verifier.ui.policy.*
 import nl.rijksoverheid.ctr.verifier.ui.scanlog.ScanLogViewModel
 import nl.rijksoverheid.ctr.verifier.ui.scanlog.ScanLogViewModelImpl
 import nl.rijksoverheid.ctr.verifier.ui.scanlog.datamapper.ScanLogDataMapper
@@ -103,4 +104,8 @@ fun verifierModule(path: String) = module {
         get<Moshi.Builder>(Moshi.Builder::class)
             .add(KotlinJsonAdapterFactory()).build()
     }
+
+    factory<VerificationPolicyUseCase> { VerificationPolicyUseCaseImpl(get(), get(), get()) }
+
+    viewModel<VerificationPolicySelectionViewModel> { (isScanQRFlow: Boolean) -> VerificationPolicySelectionViewModelImpl(get(), isScanQRFlow) }
 }
