@@ -1,6 +1,8 @@
 package nl.rijksoverheid.ctr.verifier
 
+import android.net.ConnectivityManager
 import androidx.lifecycle.MutableLiveData
+import io.mockk.mockk
 import mobilecore.Mobilecore
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
@@ -13,7 +15,12 @@ import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.*
+import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 import nl.rijksoverheid.ctr.shared.utils.TestResultUtil
+import nl.rijksoverheid.ctr.verifier.persistance.database.entities.ScanLogEntity
+import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCase
+import nl.rijksoverheid.ctr.verifier.ui.scanlog.models.ScanLog
+import nl.rijksoverheid.ctr.verifier.ui.scanlog.repositories.ScanLogRepository
 import nl.rijksoverheid.ctr.verifier.ui.scanner.ScannerViewModel
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.VerifiedQrResultState
 import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.TestResultValidUseCase
@@ -24,7 +31,9 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody
 import okio.BufferedSource
 import org.json.JSONObject
+import java.time.Instant
 import java.time.OffsetDateTime
+import java.time.ZoneId
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -214,6 +223,58 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
                 ""
             )
         }
+    }
+}
+
+fun fakeAndroidUtil(
+    firstInstallTime: OffsetDateTime = OffsetDateTime.ofInstant(
+        Instant.parse("2021-01-01T00:00:00.00Z"),
+        ZoneId.of("UTC")
+    )
+) = object: AndroidUtil {
+    override fun isSmallScreen(): Boolean {
+        return false
+    }
+
+    override fun getMasterKeyAlias(): String {
+        return ""
+    }
+
+    override fun isFirstInstall(): Boolean {
+        return false
+    }
+
+    override fun isNetworkAvailable(): Boolean {
+        return true
+    }
+
+    override fun getConnectivityManager(): ConnectivityManager {
+        return mockk()
+    }
+
+    override fun generateRandomKey(): ByteArray {
+        return "".toByteArray()
+    }
+
+    override fun getFirstInstallTime(): OffsetDateTime {
+        return firstInstallTime
+    }
+}
+
+fun fakeScanLogRepository(scanLogs: List<ScanLog>) = object: ScanLogRepository {
+    override suspend fun insert(entity: ScanLogEntity) {
+
+    }
+
+    override suspend fun getAll(): List<ScanLog> {
+        return scanLogs
+    }
+}
+
+fun fakeVerifierCachedAppConfigUseCase(
+    verifierConfig: VerifierConfig = VerifierConfig.default()) = object: VerifierCachedAppConfigUseCase {
+    override fun getCachedAppConfig(): VerifierConfig {
+        return verifierConfig
     }
 }
 
