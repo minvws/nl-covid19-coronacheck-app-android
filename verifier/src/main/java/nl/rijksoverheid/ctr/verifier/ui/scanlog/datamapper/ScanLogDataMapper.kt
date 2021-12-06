@@ -49,7 +49,7 @@ class ScanLogDataMapperImpl: ScanLogDataMapper {
                 currentScanLogBuilder?.from = entity.date
             } else {
                 currentScanLogBuilder?.to = listOfNotNull(
-                    currentScanLogBuilder?.from,
+                    currentScanLogBuilder?.to,
                     entity.date
                 ).minOf { it }
             }
@@ -59,6 +59,6 @@ class ScanLogDataMapperImpl: ScanLogDataMapper {
             scanLogs.add(it.build())
         }
 
-        return scanLogs
+        return scanLogs.reversed()
     }
 }

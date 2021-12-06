@@ -39,6 +39,6 @@ class ScanLogViewModelImplTest {
 
         viewModel.getItems()
 
-        assertEquals(viewModel.scanLogItemsLiveData.value, scanLogItems)
+        assertEquals(scanLogItems, viewModel.scanLogItemsLiveData.value)
     }
 }
