@@ -11,11 +11,14 @@ package nl.rijksoverheid.ctr.qrscanner
 import android.Manifest
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
+import android.content.res.ColorStateList
 import android.graphics.Paint
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.ColorRes
+import androidx.annotation.StringRes
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
@@ -54,7 +57,7 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
         private const val RATIO_4_3_VALUE = 4.0 / 3.0
         private const val RATIO_16_9_VALUE = 16.0 / 9.0
     }
-    
+
     private val qrCodeProcessor: QrCodeProcessor by inject()
 
     private val requestPermissionLauncher =
@@ -75,7 +78,7 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
         super.onViewCreated(view, savedInstanceState)
 
         _binding = FragmentScannerBinding.bind(view)
-        if(zebraManager?.isZebraDevice() == true){
+        if (zebraManager?.isZebraDevice() == true) {
             // Setup Zebra scanner
             zebraManager.setupZebraScanner(onDatawedgeResultListener = {
                 onQrScanned(it)
@@ -115,6 +118,13 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
             set.setGuidelineBegin(binding.headerGuideline.id, binding.overlay.bottomOfOverlayWindow)
             set.applyTo(binding.root)
         }
+
+        getCopy().verificationPolicy?.let {
+            binding.policyRiskWidget.visibility = View.VISIBLE
+            binding.policyText.text = getString(it.title)
+            binding.policyIndicator.backgroundTintList =
+                ColorStateList.valueOf(requireContext().getColor(it.indicatorColor))
+        } ?: run { binding.policyRiskWidget.visibility = View.GONE }
     }
 
     override fun onStart() {
@@ -380,12 +390,18 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
         val title: String,
         val message: String,
         val rationaleDialog: RationaleDialog? = null,
-        val onMessageClicked: (() -> Unit)? = null
+        val onMessageClicked: (() -> Unit)? = null,
+        val verificationPolicy: VerificationPolicy? = null
     ) {
         data class RationaleDialog(
             val title: String,
             val description: String,
             val okayButtonText: String
+        )
+
+        data class VerificationPolicy(
+            @StringRes val title: Int,
+            @ColorRes val indicatorColor: Int
         )
     }
 }
