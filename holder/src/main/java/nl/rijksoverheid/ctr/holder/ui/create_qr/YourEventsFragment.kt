@@ -251,8 +251,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                         },
                         description = if (args.afterIncompleteVaccination) {
                             getString(
-                                R.string.certificate_created_vaccination_recovery_description,
-                                databaseSyncerResult.domesticVaccinationRecovery.recoveryValidityDays.toString()
+                                R.string.certificate_created_vaccination_recovery_description
                             )
                         } else {
                             getString(R.string.certificate_created_recovery_after_vaccination_description)
