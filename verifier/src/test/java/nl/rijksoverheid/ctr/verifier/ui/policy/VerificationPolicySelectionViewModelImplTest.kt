@@ -11,7 +11,7 @@ import org.junit.Test
 class VerificationPolicySelectionViewModelImplTest {
 
     private val verificationPolicyUseCase = mockk<VerificationPolicyUseCase>().apply {
-        every { get() } returns VerificationPolicyState.Policy2G
+        every { getState() } returns VerificationPolicyState.Policy2G
         every { store(VerificationPolicy.VerificationPolicy3G) } returns Unit
     }
 

@@ -32,7 +32,7 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
 
     private val verificationPolicyUseCase: VerificationPolicyUseCase by inject()
     private val verificationPolicyState: VerificationPolicyState by lazy {
-        verificationPolicyUseCase.get()
+        verificationPolicyUseCase.getState()
     }
 
     private val args: ScanResultValidFragmentArgs by navArgs()
