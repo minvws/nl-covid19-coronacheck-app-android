@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.verifier.ui.policy
 
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.*
@@ -39,9 +40,9 @@ class VerificationPolicySelectionFragment :
         _binding = FragmentVerificationPolicySelectionBinding.inflate(inflater)
 
         if (arguments?.getBoolean(addToolbarArgument) == true) {
-            setupToolbar()
+            setupScreenForScanQrFlow()
         } else {
-            binding.subHeader.text = getString(R.string.verifier_menu_risksetting)
+            setupScreenForSettingsFlow()
         }
 
         binding.link.setOnClickListener {
@@ -60,7 +61,18 @@ class VerificationPolicySelectionFragment :
         }
     }
 
-    private fun setupToolbar() {
+    private fun setupScreenForSettingsFlow() {
+        binding.subHeader.text = Html.fromHtml(getString(
+            if (persistenceManager.isVerificationPolicySelectionSet()) {
+                R.string.verifier_risksetting_menu_scan_settings_selected_title
+            } else {
+                R.string.verifier_risksetting_menu_scan_settings_unselected_title
+            }
+        ))
+        binding.link.visibility = GONE
+    }
+
+    private fun setupScreenForScanQrFlow() {
         binding.toolbar.visibility = VISIBLE
 
         binding.toolbar.setNavigationOnClickListener {
@@ -116,8 +128,13 @@ class VerificationPolicySelectionFragment :
             )
         }
 
+        val settingsFlow = binding.header.visibility == GONE
         binding.verificationPolicyRadioGroup.setOnCheckedChangeListener { _, _ ->
             toggleError(false)
+
+            if (settingsFlow) {
+                binding.subHeader.text = Html.fromHtml(getString(R.string.verifier_risksetting_menu_scan_settings_selected_title))
+            }
         }
 
         binding.subtitle3g.setOnClickListener {
