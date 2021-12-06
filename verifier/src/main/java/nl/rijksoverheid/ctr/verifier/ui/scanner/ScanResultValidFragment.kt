@@ -18,19 +18,21 @@ import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.verifier.BuildConfig
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanResultValidBinding
-import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultValidData
 import java.util.concurrent.TimeUnit
 import org.koin.android.ext.android.inject
+import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyUseCase
+import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyState
+import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyState.Policy2G
 
 class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
 
     private var _binding: FragmentScanResultValidBinding? = null
     private val binding get() = _binding!!
 
-    private val persistenceManager: PersistenceManager by inject()
-    private val verificationPolicy: VerificationPolicy by lazy {
-        persistenceManager.getVerificationPolicySelected()!!
+    private val verificationPolicyUseCase: VerificationPolicyUseCase by inject()
+    private val verificationPolicyState: VerificationPolicyState by lazy {
+        verificationPolicyUseCase.getState()
     }
 
     private val args: ScanResultValidFragmentArgs by navArgs()
@@ -66,7 +68,7 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
             }
             is ScanResultValidData.Valid -> {
                 binding.title.text = getString(R.string.scan_result_valid_title)
-                if (verificationPolicy == VerificationPolicy.VerificationPolicy2G) {
+                if (verificationPolicyState is VerificationPolicyState.Policy2G) {
                     val whiteColor = ContextCompat.getColor(requireContext(), R.color.white)
                     val whiteColorStateList = ColorStateList.valueOf(whiteColor)
                     binding.image.imageTintList = whiteColorStateList
@@ -78,7 +80,7 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
                 binding.root.setBackgroundColor(
                     ContextCompat.getColor(
                         requireContext(),
-                        if (verificationPolicy == VerificationPolicy.VerificationPolicy2G) {
+                        if (verificationPolicyState == VerificationPolicyState.Policy2G) {
                             R.color.primary_blue
                         } else {
                             R.color.secondary_green

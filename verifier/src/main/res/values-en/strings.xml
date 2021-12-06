@@ -175,4 +175,9 @@
   <string name="verifier_risksetting_menu_scan_settings_selected_title"><![CDATA[Kies een instelling waarin je wilt scannen.<br/><br/><b>Let op:</b> Als je tijdens het scannen wisselt van scan-instelling moet je 5 minuten wachten voordat je weer kunt scannen.]]></string>
   <string name="verifier_scanner_policy_indication_3g">3G-toegang</string>
   <string name="verifier_scanner_policy_indication_2g">2G-toegang</string>
+  <string name="verifier_risksetting_confirmation_button">Bevestigen</string>
+  <string name="verifier_risksetting_confirmation_dialog_title">Weet je zeker dat je de  instelling wilt aanpassen?</string>
+  <string name="verifier_risksetting_confirmation_dialog_message">Als je wisselt van scan-instelling moet je 5 minuten wachten voordat je weer kunt scannen.</string>
+  <string name="verifier_risksetting_confirmation_dialog_positive_button">Ja, aanpassen</string>
+  <string name="verifier_risksetting_confirmation_dialog_negative_button">Nee, terug</string>
 </resources>
