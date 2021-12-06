@@ -55,7 +55,7 @@ class ScanQrViewModelImpl(
         val switchState = useCase.getSwitchState()
         (liveData as MutableLiveData).postValue(
             ScanQRState(
-                policy = useCase.get(),
+                policy = useCase.getState(),
                 lock = useCase.getSwitchState(),
             )
         )
@@ -77,7 +77,7 @@ class ScanQrViewModelImpl(
                     override fun onFinish() {
                         liveData.postValue(
                             ScanQRState(
-                                policy = useCase.get(),
+                                policy = useCase.getState(),
                                 lock = VerificationPolicySwitchState.Unlocked,
                             )
                         )

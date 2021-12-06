@@ -81,8 +81,6 @@ class VerificationPolicyUseCaseImpl(
 
         val lastScanLockTimeSeconds = persistenceManager.getLastScanLockTimeSeconds()
 
-        val remainingSeconds = lockSeconds + lastScanLockTimeSeconds - now
-
-        return remainingSeconds
+        return lockSeconds + lastScanLockTimeSeconds - now
     }
 }

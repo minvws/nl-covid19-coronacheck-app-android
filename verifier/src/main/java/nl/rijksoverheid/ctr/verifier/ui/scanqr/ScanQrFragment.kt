@@ -89,21 +89,23 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
     }
 
     private fun onStateUpdated(state: ScanQRState) {
-        binding.image.background = ContextCompat.getDrawable(
-            requireContext(), when (state.policy) {
-                VerificationPolicyState.None -> {
-                    binding.bottom.hidePolicyIndication()
-                    R.drawable.illustration_scanner_get_started_3g
+        binding.image.setImageDrawable(
+            ContextCompat.getDrawable(
+                requireContext(), when (state.policy) {
+                    VerificationPolicyState.None -> {
+                        binding.bottom.hidePolicyIndication()
+                        R.drawable.illustration_scanner_get_started_3g
+                    }
+                    VerificationPolicyState.Policy2G -> {
+                        binding.bottom.setPolicy(VerificationPolicy2G)
+                        R.drawable.illustration_scanner_get_started_2g
+                    }
+                    VerificationPolicyState.Policy3G -> {
+                        binding.bottom.setPolicy(VerificationPolicy3G)
+                        R.drawable.illustration_scanner_get_started_3g
+                    }
                 }
-                VerificationPolicyState.Policy2G -> {
-                    binding.bottom.setPolicy(VerificationPolicy2G)
-                    R.drawable.illustration_scanner_get_started_2g
-                }
-                VerificationPolicyState.Policy3G -> {
-                    binding.bottom.setPolicy(VerificationPolicy3G)
-                    R.drawable.illustration_scanner_get_started_3g
-                }
-            }
+            )
         )
 
         when (state.lock) {
@@ -160,7 +162,7 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
         binding.title.setText(R.string.scan_qr_header)
         binding.description.setText(R.string.scan_qr_description)
         binding.instructionsButton.visibility = VISIBLE
-        binding.clockdeviationView.root.visibility = VISIBLE
+        showDeviationViewIfNeeded()
         binding.bottom.unlock()
     }
 
