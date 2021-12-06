@@ -22,6 +22,8 @@ interface PersistenceManager {
     fun isVerificationPolicySelectionSet(): Boolean
     fun getRandomKey(): String?
     fun saveRandomKey(key: String)
+    fun getLastScanLockTimeSeconds(): Long
+    fun storeLastScanLockTimeSeconds(seconds: Long)
 }
 
 class SharedPreferencesPersistenceManager(private val sharedPreferences: SharedPreferences) :
@@ -33,6 +35,7 @@ class SharedPreferencesPersistenceManager(private val sharedPreferences: SharedP
         const val LOCAL_TEST_RESULT = "LOCAL_TEST_RESULT"
         const val VERIFICATION_POLICY_SET = "VERIFICATION_POLICY_SET"
         const val RANDOM_KEY = "RANDOM_KEY"
+        const val LAST_SCAN_LOCK_TIME_SECONDS = "LAST_SCAN_LOCK_TIME_SECONDS"
     }
 
     override fun setScanInstructionsSeen() {
@@ -82,5 +85,13 @@ class SharedPreferencesPersistenceManager(private val sharedPreferences: SharedP
 
     override fun saveRandomKey(key: String) {
         sharedPreferences.edit().putString(RANDOM_KEY, key).apply()
+    }
+
+    override fun getLastScanLockTimeSeconds(): Long {
+        return sharedPreferences.getLong(LAST_SCAN_LOCK_TIME_SECONDS, 0L)
+    }
+
+    override fun storeLastScanLockTimeSeconds(seconds: Long) {
+        sharedPreferences.edit().putLong(LAST_SCAN_LOCK_TIME_SECONDS, seconds).apply()
     }
 }

@@ -171,4 +171,8 @@
   <string name="verifier_risksetting_setting_button">Instellen</string>
   <string name="verifier_risksetting_start_readmore">Welk soort toegang mag ik geven?</string>
   <string name="verifier_risksetting_start_readmore_url">https://coronacheck.nl/nl/faq-scanner-in-app</string>
+  <string name="verifier_risksetting_menu_scan_settings_unselected_title">Kies een instelling waarin je wilt scannen.</string>
+  <string name="verifier_risksetting_menu_scan_settings_selected_title"><![CDATA[Kies een instelling waarin je wilt scannen.<br/><br/><b>Let op:</b> Als je tijdens het scannen wisselt van scan-instelling moet je 5 minuten wachten voordat je weer kunt scannen.]]></string>
+  <string name="verifier_scanner_policy_indication_3g">3G-toegang</string>
+  <string name="verifier_scanner_policy_indication_2g">2G-toegang</string>
 </resources>
