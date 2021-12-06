@@ -391,7 +391,7 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
         val message: String,
         val rationaleDialog: RationaleDialog? = null,
         val onMessageClicked: (() -> Unit)? = null,
-        val verificationPolicy: VerificationPolicy,
+        val verificationPolicy: VerificationPolicy? = null,
     ) {
         data class RationaleDialog(
             val title: String,
