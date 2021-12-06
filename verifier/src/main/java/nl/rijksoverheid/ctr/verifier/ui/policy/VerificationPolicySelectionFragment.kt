@@ -8,13 +8,18 @@ import android.view.View
 import android.view.View.*
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
-import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.*
+import nl.rijksoverheid.ctr.shared.ext.launchUrl
+import nl.rijksoverheid.ctr.shared.ext.navigateSafety
+import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.VerificationPolicy2G
+import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.VerificationPolicy3G
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentVerificationPolicySelectionBinding
-import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -30,7 +35,11 @@ class VerificationPolicySelectionFragment :
     private val binding get() = _binding!!
 
     private val scannerUtil: ScannerUtil by inject()
-    private val persistenceManager: PersistenceManager by inject()
+    private val viewModel: VerificationPolicySelectionViewModel by viewModel {
+        parametersOf(arguments?.getBoolean(isScanQRFlow) == true)
+    }
+
+    private val dialogUtil: DialogUtil by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,37 +48,48 @@ class VerificationPolicySelectionFragment :
     ): View {
         _binding = FragmentVerificationPolicySelectionBinding.inflate(inflater)
 
-        if (arguments?.getBoolean(addToolbarArgument) == true) {
-            setupScreenForScanQrFlow()
-        } else {
-            setupScreenForSettingsFlow()
-        }
-
         binding.link.setOnClickListener {
-            // TODO navigate to rijksoverheid link when decided
+            getString(R.string.verifier_risksetting_start_readmore_url).launchUrl(requireContext())
         }
 
-        setupRadioGroup(savedInstanceState?.getBoolean(errorStateKey))
+        viewModel.liveData.observe(viewLifecycleOwner, ::onVerificationFlowUpdate)
 
         return binding.root
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        _binding.let {
-            outState.putBoolean(errorStateKey, binding.errorContainer.visibility == VISIBLE)
+    private fun onVerificationFlowUpdate(flow: VerificationPolicyFlow) {
+        when (flow) {
+            is VerificationPolicyFlow.ScanQR -> setupScreenForScanQrFlow()
+            is VerificationPolicyFlow.Settings -> setupScreenForSettingsFlow(flow.state)
         }
+        setupRadioGroup(flow)
     }
 
-    private fun setupScreenForSettingsFlow() {
-        binding.subHeader.text = Html.fromHtml(getString(
-            if (persistenceManager.isVerificationPolicySelectionSet()) {
-                R.string.verifier_risksetting_menu_scan_settings_selected_title
-            } else {
-                R.string.verifier_risksetting_menu_scan_settings_unselected_title
-            }
-        ))
+    private fun setupScreenForSettingsFlow(verificationPolicyState: VerificationPolicyState) {
+        binding.subHeader.text = Html.fromHtml(
+            getString(
+                if (verificationPolicyState != VerificationPolicyState.None) {
+                    R.string.verifier_risksetting_menu_scan_settings_selected_title
+                } else {
+                    R.string.verifier_risksetting_menu_scan_settings_unselected_title
+                }
+            )
+        )
         binding.link.visibility = GONE
+        binding.confirmationButton.setOnClickListener {
+            dialogUtil.presentDialog(
+                context = requireContext(),
+                title = R.string.verifier_risksetting_confirmation_dialog_title,
+                message = getString(R.string.verifier_risksetting_confirmation_dialog_message),
+                positiveButtonText = R.string.verifier_risksetting_confirmation_dialog_positive_button,
+                positiveButtonCallback = {
+                    onConfirmationButtonClicked {
+                        navigateSafety(R.id.nav_scan_qr)
+                    }
+                },
+                negativeButtonText = R.string.verifier_risksetting_confirmation_dialog_negative_button
+            )
+        }
     }
 
     private fun setupScreenForScanQrFlow() {
@@ -78,21 +98,28 @@ class VerificationPolicySelectionFragment :
         binding.toolbar.setNavigationOnClickListener {
             findNavControllerSafety()?.popBackStack()
         }
+        binding.confirmationButton.setText(R.string.verifier_risksetting_confirmation_button)
         binding.confirmationButton.setOnClickListener {
-            val modeSelected = binding.verificationPolicyRadioGroup.checkedRadioButtonId != NO_ID
-            if (modeSelected) {
+            onConfirmationButtonClicked {
                 findNavControllerSafety()?.popBackStack()
-                storeSelection()
                 scannerUtil.launchScanner(requireActivity())
-            } else {
-                toggleError(true)
             }
         }
         binding.header.visibility = VISIBLE
     }
 
+    private fun onConfirmationButtonClicked(navigationAction: () -> Unit) {
+        val policySelected = binding.verificationPolicyRadioGroup.checkedRadioButtonId != NO_ID
+        if (policySelected) {
+            storeSelection()
+            navigationAction()
+        } else {
+            toggleError(true)
+        }
+    }
+
     private fun storeSelection() {
-        persistenceManager.setVerificationPolicySelected(
+        viewModel.storeSelection(
             if (binding.verificationPolicyRadioGroup.checkedRadioButtonId == binding.policy2G.id) {
                 VerificationPolicy2G
             } else {
@@ -117,23 +144,21 @@ class VerificationPolicySelectionFragment :
         }
     }
 
-    private fun setupRadioGroup(errorOnBeforeScreenRotation: Boolean?) {
-        persistenceManager.getVerificationPolicySelected()?.let {
-            binding.verificationPolicyRadioGroup.check(
-                if (it == VerificationPolicy2G) {
-                    binding.policy2G.id
-                } else {
-                    binding.policy3G.id
-                }
-            )
-        }
+    private fun setupRadioGroup(flow: VerificationPolicyFlow) {
+        binding.verificationPolicyRadioGroup.check(
+            when (flow.state) {
+                VerificationPolicyState.Policy2G -> binding.policy2G.id
+                VerificationPolicyState.Policy3G -> binding.policy3G.id
+                VerificationPolicyState.None -> NO_ID
+            }
+        )
 
-        val settingsFlow = binding.header.visibility == GONE
         binding.verificationPolicyRadioGroup.setOnCheckedChangeListener { _, _ ->
             toggleError(false)
 
-            if (settingsFlow) {
-                binding.subHeader.text = Html.fromHtml(getString(R.string.verifier_risksetting_menu_scan_settings_selected_title))
+            if (flow is VerificationPolicyFlow.Settings) {
+                binding.subHeader.text =
+                    Html.fromHtml(getString(R.string.verifier_risksetting_menu_scan_settings_selected_title))
             }
         }
 
@@ -144,14 +169,9 @@ class VerificationPolicySelectionFragment :
         binding.subtitle2g.setOnClickListener {
             binding.verificationPolicyRadioGroup.check(R.id.policy2G)
         }
-
-        if (errorOnBeforeScreenRotation == true) {
-            toggleError(true)
-        }
     }
 
     companion object {
-        const val addToolbarArgument = "ADD_TOOLBAR_ARGUMENT"
-        private const val errorStateKey = "ERROR_STATE_KEY"
+        const val isScanQRFlow = "IS_SCAN_QR_FLOW"
     }
 }

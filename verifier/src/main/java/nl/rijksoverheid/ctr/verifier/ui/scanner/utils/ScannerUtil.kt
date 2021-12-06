@@ -28,6 +28,6 @@ class ScannerUtilImpl : ScannerUtil {
 
     override fun launchVerificationPolicySelection(activity: Activity) {
         Navigation.findNavController(activity, R.id.main_nav_host_fragment)
-            .navigate(R.id.action_policy_selection, bundleOf(VerificationPolicySelectionFragment.addToolbarArgument to true))
+            .navigate(R.id.action_policy_selection, bundleOf(VerificationPolicySelectionFragment.isScanQRFlow to true))
     }
 }

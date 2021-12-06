@@ -1,23 +1,23 @@
 package nl.rijksoverheid.ctr.verifier.ui.policy
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.core.os.bundleOf
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.scrollTo
-import androidx.test.espresso.matcher.ViewMatchers.withId
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertNotDisplayed
 import com.adevinta.android.barista.interaction.BaristaClickInteractions.clickOn
+import com.adevinta.android.barista.interaction.BaristaScrollInteractions.scrollTo
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.verifier.R
-import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
-import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionFragment.Companion.addToolbarArgument
+import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionFragment.Companion.isScanQRFlow
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.core.context.loadKoinModules
@@ -35,11 +35,11 @@ import org.robolectric.RobolectricTestRunner
  */
 @RunWith(RobolectricTestRunner::class)
 class VerificationPolicySelectionFragmentTest : AutoCloseKoinTest() {
+    @get:Rule
+    val rule = InstantTaskExecutorRule()
 
     private val scannerUtil = mockk<ScannerUtil>(relaxed = true)
-    private val persistenceManager = mockk<PersistenceManager>(relaxed = true).apply {
-        every { getVerificationPolicySelected() } returns null
-    }
+    private lateinit var verificationPolicyUseCase: VerificationPolicyUseCase
 
     private val navController = TestNavHostController(
         ApplicationProvider.getApplicationContext()
@@ -54,7 +54,7 @@ class VerificationPolicySelectionFragmentTest : AutoCloseKoinTest() {
 
         clickOn(R.id.confirmationButton)
 
-        onView(withId(R.id.error_container)).perform(scrollTo())
+        scrollTo(R.id.error_container)
         assertDisplayed(R.id.error_container)
     }
 
@@ -67,13 +67,19 @@ class VerificationPolicySelectionFragmentTest : AutoCloseKoinTest() {
 
         assertNotDisplayed(R.id.error_container)
         verify { scannerUtil.launchScanner(any()) }
+        verify { verificationPolicyUseCase.store(VerificationPolicy.VerificationPolicy2G) }
     }
 
     private fun launchFragment() {
+
+        verificationPolicyUseCase = mockk<VerificationPolicyUseCase>(relaxed = true).apply {
+            every { get() } returns null
+        }
+
         loadKoinModules(
             module(override = true) {
                 factory {
-                    persistenceManager
+                    verificationPolicyUseCase
                 }
 
                 factory {
@@ -84,7 +90,7 @@ class VerificationPolicySelectionFragmentTest : AutoCloseKoinTest() {
 
         launchFragmentInContainer(
             bundleOf(
-                addToolbarArgument to true,
+                isScanQRFlow to true,
             ), themeResId = R.style.AppTheme
         ) {
             VerificationPolicySelectionFragment().also {
