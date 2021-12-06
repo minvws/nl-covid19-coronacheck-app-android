@@ -30,7 +30,7 @@ data class CredentialEntity(
     val credentialVersion: Int,
     val validFrom: OffsetDateTime,
     val expirationTime: OffsetDateTime,
-    val category: Int? = null
+    val category: String? = null
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
+import mobilecore.Mobilecore
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
@@ -99,8 +100,7 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
-        // TODO: add category check
-        if (hasTests(domesticGreenCards)) {
+        if (has3GTests(domesticGreenCards)) {
             dashboardItems.add(DashboardItem.InfoItem.TestCertificate3GValidity)
         }
 
@@ -138,9 +138,10 @@ class GetDashboardItemsUseCaseImpl(
         return dashboardItems
     }
 
-    private fun hasTests(domesticGreenCards: List<GreenCard>): Boolean {
+    private fun has3GTests(domesticGreenCards: List<GreenCard>): Boolean {
         return domesticGreenCards.any { greenCard ->
             greenCard.origins.any { it.type == OriginType.Test }
+                    && greenCard.credentialEntities.any { it.category == Mobilecore.VERIFICATION_POLICY_3G }
         }
     }
 
