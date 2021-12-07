@@ -5,11 +5,14 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.Space
 import android.widget.TextView
+import mobilecore.Mobilecore
 import nl.rijksoverheid.ctr.design.ext.formatDateTime
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthTime
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
 import nl.rijksoverheid.ctr.design.ext.formatDayShortMonthYear
+import nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.CredentialEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
@@ -89,7 +92,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
                                     viewBinding, originState, greenCardType, origin
                                 )
                                 is OriginType.Test -> setDomesticTestOrigin(
-                                    viewBinding, originState, greenCardType, origin
+                                    viewBinding, originState, greenCardType, origin, it.credentialEntities
                                 )
                             }
                         }
@@ -139,7 +142,8 @@ class MyOverViewGreenCardAdapterUtilImpl(
         viewBinding: ViewBindingWrapper,
         originState: OriginState,
         greenCardType: GreenCardType,
-        origin: OriginEntity
+        origin: OriginEntity,
+        credentialEntities: List<CredentialEntity>
     ) {
         setOriginTitle(
             descriptionLayout = viewBinding.description,
@@ -151,7 +155,11 @@ class MyOverViewGreenCardAdapterUtilImpl(
             originState = originState,
             showTime = shouldShowTimeSubtitle(originState, greenCardType),
             subtitle = context.getString(
-                R.string.qr_card_validity_valid,
+                if (credentialEntities.any { it.category == Mobilecore.VERIFICATION_POLICY_3G }) {
+                    R.string.holder_my_overview_test_result_validity_3g
+                } else {
+                    R.string.qr_card_validity_valid
+                },
                 origin.expirationTime.formatDateTime(context)
             )
         )
@@ -173,13 +181,19 @@ class MyOverViewGreenCardAdapterUtilImpl(
                 1 -> {
                     setOriginTitle(
                         descriptionLayout = viewBinding.description,
-                        title = context.getString(R.string.qr_card_vaccination_title_domestic_with_dosis, origin.doseNumber.toString()),
+                        title = context.getString(
+                            R.string.qr_card_vaccination_title_domestic_with_dosis,
+                            origin.doseNumber.toString()
+                        ),
                     )
                 }
                 else -> {
                     setOriginTitle(
                         descriptionLayout = viewBinding.description,
-                        title = context.getString(R.string.qr_card_vaccination_title_domestic_with_doses, origin.doseNumber.toString()),
+                        title = context.getString(
+                            R.string.qr_card_vaccination_title_domestic_with_doses,
+                            origin.doseNumber.toString()
+                        ),
                     )
                 }
             }
@@ -338,9 +352,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
         showTime: Boolean,
         subtitle: String,
     ) {
-        val textView = TextView(context).apply {
-            setTextAppearance(R.style.App_TextAppearance_MaterialComponents_Body1)
-        }
+        val textView = HtmlTextViewWidget(context)
 
         when (originState) {
             is OriginState.Future -> {
@@ -352,20 +364,22 @@ class MyOverViewGreenCardAdapterUtilImpl(
                 } else {
                     validFromDateTime.toLocalDate().formatDayMonthYear()
                 }
-                textView.text = context.getString(
-                    R.string.qr_card_validity_future_from, validFrom, if (showUntil) {
-                        val until =
-                            originState.origin.expirationTime.toLocalDate().formatDayMonthYear()
-                        context.getString(R.string.qr_card_validity_future_until, until)
-                    } else {
-                        ""
-                    }
+                textView.setHtmlText(
+                    context.getString(
+                        R.string.qr_card_validity_future_from, validFrom, if (showUntil) {
+                            val until =
+                                originState.origin.expirationTime.toLocalDate().formatDayMonthYear()
+                            context.getString(R.string.qr_card_validity_future_until, until)
+                        } else {
+                            ""
+                        }
+                    )
                 )
 
                 textView.visibility = View.VISIBLE
             }
             is OriginState.Valid -> {
-                textView.text = subtitle
+                textView.setHtmlText(subtitle)
                 textView.visibility = View.VISIBLE
             }
             is OriginState.Expired -> {

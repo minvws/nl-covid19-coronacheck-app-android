@@ -541,7 +541,7 @@
   <string name="missing_dutch_certificate_explanation_more"><![CDATA[<br/><b>Meer weten?</b><br/>Bekijk de  <a href=\"https://coronacheck.nl/nl/faq/2-4-ik-heb-wel-een-internationale-qr-code-maar-geen-nederlandse/\">meestgestelde vragen</a> voor andere mogelijke oorzaken.]]></string>
   <string name="certificate_created_toolbar_title">Bewijs gemaakt</string>
   <string name="certificate_created_vaccination_recovery_title">Vaccinatiebewijs en herstelbewijs gemaakt</string>
-  <string name="certificate_created_vaccination_recovery_description"><![CDATA[Er is een Nederlands vaccinatiebewijs gemaakt.<br><br>Je positieve test is minder dan %1s dagen geleden afgenomen. Daarom is er ook een herstelbewijs gemaakt.]]></string>
+  <string name="certificate_created_vaccination_recovery_description"><![CDATA[Er is een Nederlands vaccinatiebewijs gemaakt.<br><br>Van je positieve testuitslag kon ook een herstelbewijs gemaakt worden.]]></string>
   <string name="certificate_created_recovery_title">Alleen een herstelbewijs gemaakt</string>
   <string name="certificate_created_recovery_description"><![CDATA[Je bent positief getest ná je eerste vaccinatie. Daardoor is je testuitslag niet geschikt om een Nederlands vaccinatiebewijs van te maken. Er is wel een herstelbewijs gemaakt.<br><br>Kijk voor meer informatie bij de <a href=\"https://coronacheck.nl/nl/faq/2-4-ik-heb-wel-een-internationale-qr-code-maar-geen-nederlandse/\">meestgestelde vragen</a>.]]></string>
   <string name="certificate_created_recovery_unsuitable_title">Positieve testuitslag is niet geschikt</string>
@@ -551,7 +551,7 @@
   <string name="retrieve_test_result_description">Log in met DigiD. De gegevens van je positieve test worden dan automatisch opgehaald.</string>
   <string name="dashboard_coronamelder_tip"><![CDATA[<b>Tip:</b> Voorkom verspreiding van het coronavirus, gebruik ook <a href=\"https://coronamelder.nl/app\">CoronaMelder</a>.]]></string>
   <string name="certificate_created_vaccination_title">Geen herstelbewijs, wel een vaccinatiebewijs</string>
-  <string name="certificate_created_vaccination_description"><![CDATA[Het is langer dan %1s dagen geleden dat je positief getest bent op corona. Daardoor is je testuitslag niet meer geldig om een herstelbewijs van te maken.<br><br>Omdat je positief getest bent vóór je eerste prik, ben je met één prik volledig gevaccineerd. Daarom is er wel een volledig vaccinatiebewijs gemaakt.<br><br>Kijk voor meer informatie op de <a href=\"https://www.coronacheck.nl/wegwijzer\">Wegwijzer</a>.]]></string>
+  <string name="certificate_created_vaccination_description"><![CDATA[Het is te lang geleden dat je positief getest bent op corona. Daardoor is je testuitslag niet meer geldig om een herstelbewijs van te maken.<br><br>Omdat je positief getest bent vóór je eerste prik, ben je met één prik volledig gevaccineerd. Daarom is er wel een volledig vaccinatiebewijs gemaakt.<br><br>Kijk voor meer informatie op de <a href=\"https://www.coronacheck.nl/wegwijzer\">Wegwijzer</a>.]]></string>
   <string name="no_certificate_created_toolbar_title">Geen bewijs gemaakt</string>
   <string name="certificate_created_recovery_after_vaccination_description"><![CDATA[Er is een herstelbewijs gemaakt.<br><br>Omdat je positief getest bent vóór je eerste prik, ben je met één prik volledig gevaccineerd. Daarom is er ook een volledig vaccinatiebewijs gemaakt.]]></string>
   <string name="paper_proof_event_explanation_header">Deze gegevens staan in je papieren bewijs:</string>
@@ -561,4 +561,8 @@
   <string name="rule_engine_no_test_origin_description_negative_test">negatieve testuitslag</string>
   <string name="rule_engine_no_test_origin_description_vaccination">vaccinatie</string>
   <string name="rule_engine_no_test_origin_description_positive_test">positieve testuitslag</string>
+  <string name="holder_my_overview_3g_test_validity_card">Je testbewijs is alleen geldig voor 3G-toegang in Nederland</string>
+  <string name="holder_my_overview_3g_test_validity_bottom_sheet_title">Testbewijs alleen geldig voor 3G-toegang</string>
+  <string name="holder_my_overview_3g_test_validity_bottom_sheet_body"><![CDATA[Een Nederlands testbewijs is alleen geldig op plekken met 3G-toegang. Dit betekent dat je met je testbewijs geen toegang krijgt tot plekken waar 2G geldt.<br><br><b>Wat is het verschil tussen 3G en 2G?</b><br>De ‘G’ staat voor Getest, Gevaccineerd, of Genezen (hersteld van corona).<br><br>•	3G-toegang krijg je met een test-, vaccinatie- of herstelbewijs.<br>•	2G-toegang krijg je niet met een testbewijs. Hiervoor heb je een vaccinatie- of herstelbewijs nodig.<br><br>Lees hier meer over 3G en 2G.]]></string>
+  <string name="holder_my_overview_test_result_validity_3g"><![CDATA[geldig tot %1$s <font color=\"#7708BE\">voor 3G-toegang</font>]]></string>
 </resources>

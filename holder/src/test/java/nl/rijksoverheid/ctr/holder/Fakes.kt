@@ -488,6 +488,7 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
                         isPaperProof = "0",
                         validForHours = 24,
                         validFrom = 1622731645L,
+                        category = "2"
                     ),
                 )
             )
@@ -515,7 +516,8 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
                 "",
                 "",
                 "24",
-                "1622731645"
+                "1622731645",
+                "2"
             )
         }
     }

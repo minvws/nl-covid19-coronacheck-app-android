@@ -72,6 +72,9 @@ class MyOverviewInfoCardItem(
             is DashboardItem.InfoItem.MissingDutchVaccinationItem -> {
                 viewBinding.text.text = viewBinding.text.context.getString(R.string.missing_dutch_certificate_info_card_text)
             }
+            DashboardItem.InfoItem.TestCertificate3GValidity -> {
+                viewBinding.text.text = viewBinding.text.context.getString(R.string.holder_my_overview_3g_test_validity_card)
+            }
         }
 
         viewBinding.button.setOnClickListener {

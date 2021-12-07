@@ -210,7 +210,8 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
                 "",
                 "",
                 "",
-                ""
+                "",
+                "2"
             )
         }
     }
