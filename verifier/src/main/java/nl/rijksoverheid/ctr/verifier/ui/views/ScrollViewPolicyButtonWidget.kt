@@ -107,4 +107,12 @@ class ScrollViewPolicyButtonWidget @JvmOverloads constructor(
         )
     }
 
+    fun lock() {
+        binding.button.visibility = GONE
+    }
+
+    fun unlock() {
+        binding.button.visibility = VISIBLE
+    }
+
 }

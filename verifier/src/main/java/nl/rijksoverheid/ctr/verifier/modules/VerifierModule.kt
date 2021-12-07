@@ -41,8 +41,7 @@ import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.VerifyQrUseCase
 import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.VerifyQrUseCaseImpl
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtilImpl
-import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrViewModel
-import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrViewModelImpl
+import nl.rijksoverheid.ctr.verifier.ui.scanqr.*
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import java.time.Clock
@@ -89,7 +88,7 @@ fun verifierModule(path: String) = module {
 
     // ViewModels
     viewModel<VerifierMainActivityViewModel> { VerifierMainActivityViewModelImpl(get()) }
-    viewModel<ScanQrViewModel> { ScanQrViewModelImpl(get()) }
+    viewModel<ScanQrViewModel> { ScanQrViewModelImpl(get(), get(), get()) }
     viewModel<ScannerViewModel> { ScannerViewModelImpl(get(), get(), get()) }
     viewModel<ScanLogViewModel> { ScanLogViewModelImpl(get()) }
 
@@ -105,6 +104,7 @@ fun verifierModule(path: String) = module {
     }
 
     factory<VerificationPolicyUseCase> { VerificationPolicyUseCaseImpl(get(), get(), get()) }
+    factory<ScannerNavigationStateUseCase> { ScannerNavigationStateUseCaseImpl(get()) }
 
     viewModel<VerificationPolicySelectionViewModel> { (isScanQRFlow: Boolean) -> VerificationPolicySelectionViewModelImpl(get(), isScanQRFlow) }
 }

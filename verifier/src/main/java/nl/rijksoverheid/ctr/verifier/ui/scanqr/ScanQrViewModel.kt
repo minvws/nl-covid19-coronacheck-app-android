@@ -1,7 +1,12 @@
 package nl.rijksoverheid.ctr.verifier.ui.scanqr
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
+import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySwitchState
+import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyUseCase
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -12,14 +17,21 @@ import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
  */
 
 abstract class ScanQrViewModel : ViewModel() {
-    abstract fun hasSeenScanInstructions() : Boolean
+    val liveData: LiveData<ScanQRState> = MutableLiveData()
+    val startupStateEvent: LiveData<Event<ScannerNavigationState>> = MutableLiveData()
+    abstract fun hasSeenScanInstructions(): Boolean
     abstract fun setScanInstructionsSeen()
-    abstract fun getNextScannerScreenState(): NextScannerScreenState
+    abstract fun getNextScannerScreenState(): ScannerNavigationState
+    abstract fun onViewCreated()
+    abstract fun nextScreen()
 }
 
 class ScanQrViewModelImpl(
-    private val persistenceManager: PersistenceManager
+    private val persistenceManager: PersistenceManager,
+    private val useCase: VerificationPolicyUseCase,
+    private val scannerNavigationStateUseCase: ScannerNavigationStateUseCase,
 ) : ScanQrViewModel() {
+
     override fun hasSeenScanInstructions(): Boolean {
         return persistenceManager.getScanInstructionsSeen()
     }
@@ -30,13 +42,26 @@ class ScanQrViewModelImpl(
         }
     }
 
-    override fun getNextScannerScreenState(): NextScannerScreenState {
-        return if (!hasSeenScanInstructions()) {
-            NextScannerScreenState.Instructions
-        } else if (!persistenceManager.isVerificationPolicySelectionSet()) {
-            NextScannerScreenState.VerificationPolicySelection
-        } else {
-            NextScannerScreenState.Scanner
+    override fun getNextScannerScreenState(): ScannerNavigationState {
+        return scannerNavigationStateUseCase.get()
+    }
+
+    override fun onViewCreated() {
+        (liveData as MutableLiveData).postValue(
+            ScanQRState(
+                policy = useCase.getState(),
+                lock = useCase.getSwitchState(),
+            )
+        )
+    }
+
+    override fun nextScreen() {
+        val nextScreenState = getNextScannerScreenState()
+        val isScannerUnlocked = useCase.getSwitchState() !is VerificationPolicySwitchState.Locked
+        if (isScannerUnlocked ||
+            (nextScreenState !is ScannerNavigationState.Scanner)
+        ) {
+            (startupStateEvent as MutableLiveData).postValue(Event(getNextScannerScreenState()))
         }
     }
 }

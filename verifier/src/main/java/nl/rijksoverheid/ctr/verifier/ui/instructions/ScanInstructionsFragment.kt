@@ -13,7 +13,7 @@ import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.VerifierMainFragment
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanInstructionsBinding
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
-import nl.rijksoverheid.ctr.verifier.ui.scanqr.NextScannerScreenState
+import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScannerNavigationState
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrViewModel
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -75,7 +75,7 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
 
     private fun closeInstructionsAndOpenNextScreen() {
         findNavControllerSafety()?.popBackStack()
-        if (scanQrViewModel.getNextScannerScreenState() == NextScannerScreenState.Scanner) {
+        if (scanQrViewModel.getNextScannerScreenState() == ScannerNavigationState.Scanner) {
             scannerUtil.launchScanner(requireActivity())
         } else {
             scannerUtil.launchVerificationPolicySelection(requireActivity())
@@ -128,7 +128,7 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
 
                 if (position == adapter.itemCount - 1) {
                     clearToolbar()
-                    binding.button.text = getString(if (scanQrViewModel.getNextScannerScreenState() == NextScannerScreenState.Scanner) {
+                    binding.button.text = getString(if (scanQrViewModel.getNextScannerScreenState() == ScannerNavigationState.Scanner) {
                         R.string.scan_qr_button
                     } else {
                         R.string.onboarding_next
