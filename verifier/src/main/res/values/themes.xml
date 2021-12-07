@@ -15,7 +15,7 @@
     </style>
 
     <style name="AppTheme.Scanner.Demo" parent="AppTheme">
-        <item name="android:background">@color/primary_blue</item>
+        <item name="android:background">@color/grey_2</item>
     </style>
 
 </resources>
