@@ -78,20 +78,24 @@ class VerificationPolicySelectionFragment :
         )
         binding.link.visibility = GONE
         binding.confirmationButton.setOnClickListener {
-            dialogUtil.presentDialog(
-                context = requireContext(),
-                title = R.string.verifier_risksetting_confirmation_dialog_title,
-                message = getString(R.string.verifier_risksetting_confirmation_dialog_message,
-                    TimeUnit.SECONDS.toMinutes(verifierCachedAppConfigUseCase.getCachedAppConfig().scanLockSeconds.toLong())),
-                positiveButtonText = R.string.verifier_risksetting_confirmation_dialog_positive_button,
-                positiveButtonCallback = {
-                    onConfirmationButtonClicked {
-                        navigateSafety(R.id.nav_scan_qr)
-                    }
-                },
-                negativeButtonText = R.string.verifier_risksetting_confirmation_dialog_negative_button
-            )
+            onConfirmationButtonClicked {
+                presentWarningDialog()
+            }
         }
+    }
+
+    private fun presentWarningDialog() {
+        dialogUtil.presentDialog(
+            context = requireContext(),
+            title = R.string.verifier_risksetting_confirmation_dialog_title,
+            message = getString(R.string.verifier_risksetting_confirmation_dialog_message,
+                TimeUnit.SECONDS.toMinutes(verifierCachedAppConfigUseCase.getCachedAppConfig().scanLockSeconds.toLong())),
+            positiveButtonText = R.string.verifier_risksetting_confirmation_dialog_positive_button,
+            positiveButtonCallback = {
+                navigateSafety(R.id.nav_scan_qr)
+            },
+            negativeButtonText = R.string.verifier_risksetting_confirmation_dialog_negative_button
+        )
     }
 
     private fun setupScreenForScanQrFlow() {
@@ -109,11 +113,11 @@ class VerificationPolicySelectionFragment :
         binding.header.visibility = VISIBLE
     }
 
-    private fun onConfirmationButtonClicked(navigationAction: () -> Unit) {
-        val policySelected = binding.verificationPolicyRadioGroup.checkedRadioButtonId != NO_ID
+    private fun onConfirmationButtonClicked(onClick: () -> Unit) {
+        val policySelected = binding.policy3G.isChecked || binding.policy2G.isChecked
         if (policySelected) {
             storeSelection()
-            navigationAction()
+            onClick()
         } else {
             toggleError(true)
         }
@@ -121,7 +125,7 @@ class VerificationPolicySelectionFragment :
 
     private fun storeSelection() {
         viewModel.storeSelection(
-            if (binding.verificationPolicyRadioGroup.checkedRadioButtonId == binding.policy2G.id) {
+            if (binding.policy2G.isChecked) {
                 VerificationPolicy2G
             } else {
                 VerificationPolicy3G
@@ -153,35 +157,59 @@ class VerificationPolicySelectionFragment :
     }
 
     private fun setupRadioGroup(flow: VerificationPolicyFlow) {
-        binding.verificationPolicyRadioGroup.check(
-            when (flow.state) {
-                VerificationPolicyState.Policy2G -> binding.policy2G.id
-                VerificationPolicyState.Policy3G -> binding.policy3G.id
-                VerificationPolicyState.None -> NO_ID
-            }
-        )
+        policySelected(flow.state)
 
-        viewModel.radioButtonLiveData.observe(viewLifecycleOwner) {
-            binding.verificationPolicyRadioGroup.check(it)
-        }
-
-        binding.verificationPolicyRadioGroup.setOnCheckedChangeListener { _, checkedId ->
-            toggleError(false)
-
-            if (flow is VerificationPolicyFlow.Settings) {
-                binding.subHeader.setHtmlText(htmlText = getString(R.string.verifier_risksetting_menu_scan_settings_selected_title,
-                    TimeUnit.SECONDS.toMinutes(verifierCachedAppConfigUseCase.getCachedAppConfig().scanLockSeconds.toLong())))
-            }
-            viewModel.updateRadioButton(checkedId)
+        when (viewModel.radioButtonSelected) {
+            binding.policy2G.id -> policy2GSelected(flow)
+            binding.policy3G.id -> policy3GSelected(flow)
         }
 
         binding.policy3GContainer.setOnClickListener {
-            binding.verificationPolicyRadioGroup.check(R.id.policy3G)
+            policy3GSelected(flow)
         }
 
         binding.policy2GContainer.setOnClickListener {
-            binding.verificationPolicyRadioGroup.check(R.id.policy2G)
+            policy2GSelected(flow)
         }
+    }
+
+    private fun policy2GSelected(flow: VerificationPolicyFlow) {
+        binding.policy2G.isChecked = true
+        policyChecked(flow, binding.policy2G.id)
+        policySelected(VerificationPolicyState.Policy2G)
+    }
+
+    private fun policy3GSelected(flow: VerificationPolicyFlow) {
+        binding.policy3G.isChecked = true
+        policyChecked(flow, binding.policy3G.id)
+        policySelected(VerificationPolicyState.Policy3G)
+    }
+
+    private fun policySelected(state: VerificationPolicyState) {
+        when (state) {
+            VerificationPolicyState.Policy2G -> {
+                binding.policy2G.isChecked = true
+                binding.policy3G.isChecked = false
+            }
+            VerificationPolicyState.Policy3G -> {
+                binding.policy2G.isChecked = false
+                binding.policy3G.isChecked = true
+            }
+            VerificationPolicyState.None -> {
+                binding.policy2G.isChecked = false
+                binding.policy3G.isChecked = false
+            }
+        }
+    }
+
+    private fun policyChecked(flow: VerificationPolicyFlow, checkedId: Int) {
+        toggleError(false)
+
+        if (flow is VerificationPolicyFlow.Settings) {
+            binding.subHeader.setHtmlText(htmlText = getString(R.string.verifier_risksetting_menu_scan_settings_selected_title,
+                TimeUnit.SECONDS.toMinutes(verifierCachedAppConfigUseCase.getCachedAppConfig().scanLockSeconds.toLong())))
+        }
+        viewModel.updateRadioButton(checkedId)
     }
 
     companion object {
