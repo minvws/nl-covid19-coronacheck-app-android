@@ -54,7 +54,6 @@ class VerificationPolicySelectionFragmentTest : AutoCloseKoinTest() {
 
         clickOn(R.id.confirmationButton)
 
-        scrollTo(R.id.error_container)
         assertDisplayed(R.id.error_container)
     }
 

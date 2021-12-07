@@ -21,6 +21,7 @@
         app:navigationIcon="@drawable/ic_back" />
 
     <ScrollView
+        android:id="@+id/scroll"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:clipToPadding="false"
@@ -80,7 +81,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginBottom="10dp"
                     android:background="@color/grey_4" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
@@ -88,7 +89,7 @@
                     android:layout_width="wrap_content"
                     android:layout_marginHorizontal="16dp"
                     android:paddingHorizontal="16dp"
-                    android:layout_height="20dp"
+                    android:layout_height="wrap_content"
                     android:textAppearance="?attr/textAppearanceBody1"
                     android:textStyle="bold"
                     android:textSize="16sp"
@@ -99,7 +100,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="12dp"
                     android:paddingStart="56dp"
                     android:background="?attr/selectableItemBackground"
                     android:textSize="16sp"
@@ -111,13 +111,14 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginVertical="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="10dp"
                     android:background="@color/grey_4" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
                     android:id="@+id/policy2G"
                     android:layout_width="wrap_content"
-                    android:layout_height="20dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
                     android:paddingHorizontal="16dp"
                     android:textAppearance="?attr/textAppearanceBody1"
@@ -130,7 +131,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="12dp"
                     android:background="?attr/selectableItemBackground"
                     android:textAppearance="?attr/textAppearanceBody1"
                     android:textColor="@color/secondary_text"

@@ -51,7 +51,7 @@ class VerificationPolicySelectionFragment :
             getString(R.string.verifier_risksetting_start_readmore_url).launchUrl(requireContext())
         }
 
-        viewModel.liveData.observe(viewLifecycleOwner, ::onVerificationFlowUpdate)
+        viewModel.policyFlowLiveData.observe(viewLifecycleOwner, ::onVerificationFlowUpdate)
 
         return binding.root
     }
@@ -95,7 +95,6 @@ class VerificationPolicySelectionFragment :
         binding.toolbar.setNavigationOnClickListener {
             findNavControllerSafety()?.popBackStack()
         }
-        binding.confirmationButton.setText(R.string.verifier_risksetting_confirmation_button)
         binding.confirmationButton.setOnClickListener {
             onConfirmationButtonClicked {
                 findNavControllerSafety()?.popBackStack()
@@ -132,6 +131,13 @@ class VerificationPolicySelectionFragment :
                 ColorStateList.valueOf(requireContext().getColor(R.color.error))
             binding.policy3G.buttonTintList =
                 ColorStateList.valueOf(requireContext().getColor(R.color.error))
+
+            // scroll all the way down so the user notices the error
+            binding.scroll.post {
+                if (isAdded) {
+                    binding.scroll.fullScroll(FOCUS_DOWN)
+                }
+            }
         } else {
             binding.errorContainer.visibility = GONE
             binding.policy2G.buttonTintList =
@@ -150,12 +156,17 @@ class VerificationPolicySelectionFragment :
             }
         )
 
-        binding.verificationPolicyRadioGroup.setOnCheckedChangeListener { _, _ ->
+        viewModel.radioButtonLiveData.observe(viewLifecycleOwner) {
+            binding.verificationPolicyRadioGroup.check(it)
+        }
+
+        binding.verificationPolicyRadioGroup.setOnCheckedChangeListener { _, checkedId ->
             toggleError(false)
 
             if (flow is VerificationPolicyFlow.Settings) {
                 binding.subHeader.setHtmlText(R.string.verifier_risksetting_menu_scan_settings_selected_title)
             }
+            viewModel.updateRadioButton(checkedId)
         }
 
         binding.subtitle3g.setOnClickListener {
