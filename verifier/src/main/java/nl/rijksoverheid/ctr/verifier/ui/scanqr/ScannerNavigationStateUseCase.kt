@@ -1,6 +1,8 @@
 package nl.rijksoverheid.ctr.verifier.ui.scanqr
 
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
+import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySwitchState
+import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyUseCase
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -15,6 +17,7 @@ interface ScannerNavigationStateUseCase {
 
 class ScannerNavigationStateUseCaseImpl(
     private val persistenceManager: PersistenceManager,
+    private val verificationPolicyUseCase: VerificationPolicyUseCase
 ): ScannerNavigationStateUseCase {
     override fun get(): ScannerNavigationState {
         return if (!persistenceManager.getScanInstructionsSeen()) {
@@ -22,7 +25,7 @@ class ScannerNavigationStateUseCaseImpl(
         } else if (!persistenceManager.isVerificationPolicySelectionSet()) {
             ScannerNavigationState.VerificationPolicySelection
         } else {
-            ScannerNavigationState.Scanner
+            ScannerNavigationState.Scanner(verificationPolicyUseCase.getSwitchState() is VerificationPolicySwitchState.Locked)
         }
     }
 }

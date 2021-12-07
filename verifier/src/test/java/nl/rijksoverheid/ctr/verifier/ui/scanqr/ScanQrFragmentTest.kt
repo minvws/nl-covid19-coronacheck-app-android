@@ -80,7 +80,7 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
     fun `Given instructions seen and policy set, Clicking start scan opens scanner`() {
         launchScanQrFragment(
             policy = VerificationPolicy.VerificationPolicy2G,
-            scannerNavigationState = ScannerNavigationState.Scanner,
+            scannerNavigationState = ScannerNavigationState.Scanner(false),
         )
         clickOn(R.id.button)
         verify { scannerUtil.launchScanner(any()) }
@@ -121,7 +121,7 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
 
         val viewModel = fakeScanQrViewModel(
             scanInstructionsSeen = hasSeenScanInstructions,
-            scannerNavigationState = scannerNavigationState ?: ScannerNavigationState.Scanner,
+            scannerNavigationState = scannerNavigationState ?: ScannerNavigationState.Scanner(false),
         )
 
         (viewModel.liveData as MutableLiveData).postValue(

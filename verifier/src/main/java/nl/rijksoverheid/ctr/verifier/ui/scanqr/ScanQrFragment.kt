@@ -164,13 +164,11 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
 
     private fun goToNextScreen(scannerNavigationState: ScannerNavigationState) {
         when (scannerNavigationState) {
-            ScannerNavigationState.Instructions -> findNavController().navigate(
-                ScanQrFragmentDirections.actionScanInstructions()
-            )
-            ScannerNavigationState.VerificationPolicySelection -> scannerUtil.launchVerificationPolicySelection(
+            is ScannerNavigationState.Instructions -> findNavController().navigate(ScanQrFragmentDirections.actionScanInstructions())
+            is ScannerNavigationState.VerificationPolicySelection -> scannerUtil.launchVerificationPolicySelection(
                 requireActivity()
             )
-            ScannerNavigationState.Scanner -> scannerUtil.launchScanner(requireActivity())
+            is ScannerNavigationState.Scanner -> scannerUtil.launchScanner(requireActivity())
         }
     }
 

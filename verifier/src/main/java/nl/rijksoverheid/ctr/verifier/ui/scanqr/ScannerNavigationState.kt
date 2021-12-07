@@ -9,7 +9,7 @@ package nl.rijksoverheid.ctr.verifier.ui.scanqr
  *
  */
 sealed class ScannerNavigationState {
-    object Scanner: ScannerNavigationState()
+    data class Scanner(val isLocked: Boolean): ScannerNavigationState()
     object Instructions: ScannerNavigationState()
     object VerificationPolicySelection: ScannerNavigationState()
 }
