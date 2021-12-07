@@ -6,9 +6,11 @@ import androidx.lifecycle.ViewModel
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 
 abstract class VerificationPolicySelectionViewModel: ViewModel() {
-    val liveData: LiveData<VerificationPolicyFlow> = MutableLiveData()
+    val policyFlowLiveData: LiveData<VerificationPolicyFlow> = MutableLiveData()
+    val radioButtonLiveData: LiveData<Int> = MutableLiveData()
 
     abstract fun storeSelection(verificationPolicy: VerificationPolicy)
+    abstract fun updateRadioButton(checkedId: Int)
 }
 
 /*
@@ -26,7 +28,7 @@ class VerificationPolicySelectionViewModelImpl(
     init {
         val policyState = verificationPolicyUseCase.getState()
 
-        (liveData as MutableLiveData).postValue(
+        (policyFlowLiveData as MutableLiveData).postValue(
             if (isScanQRFlow) {
                 VerificationPolicyFlow.ScanQR(policyState)
             } else {
@@ -37,5 +39,9 @@ class VerificationPolicySelectionViewModelImpl(
 
     override fun storeSelection(verificationPolicy: VerificationPolicy) {
         verificationPolicyUseCase.store(verificationPolicy)
+    }
+
+    override fun updateRadioButton(checkedId: Int) {
+        (radioButtonLiveData as MutableLiveData).postValue(checkedId)
     }
 }

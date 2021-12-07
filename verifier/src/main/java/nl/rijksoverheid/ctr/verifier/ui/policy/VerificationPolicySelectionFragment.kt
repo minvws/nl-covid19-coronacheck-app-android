@@ -51,7 +51,7 @@ class VerificationPolicySelectionFragment :
             getString(R.string.verifier_risksetting_start_readmore_url).launchUrl(requireContext())
         }
 
-        viewModel.liveData.observe(viewLifecycleOwner, ::onVerificationFlowUpdate)
+        viewModel.policyFlowLiveData.observe(viewLifecycleOwner, ::onVerificationFlowUpdate)
 
         return binding.root
     }
@@ -156,12 +156,17 @@ class VerificationPolicySelectionFragment :
             }
         )
 
-        binding.verificationPolicyRadioGroup.setOnCheckedChangeListener { _, _ ->
+        viewModel.radioButtonLiveData.observe(viewLifecycleOwner) {
+            binding.verificationPolicyRadioGroup.check(it)
+        }
+
+        binding.verificationPolicyRadioGroup.setOnCheckedChangeListener { _, checkedId ->
             toggleError(false)
 
             if (flow is VerificationPolicyFlow.Settings) {
                 binding.subHeader.setHtmlText(R.string.verifier_risksetting_menu_scan_settings_selected_title)
             }
+            viewModel.updateRadioButton(checkedId)
         }
 
         binding.subtitle3g.setOnClickListener {
