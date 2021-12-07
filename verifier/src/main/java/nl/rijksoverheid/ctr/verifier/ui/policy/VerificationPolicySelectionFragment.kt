@@ -131,6 +131,13 @@ class VerificationPolicySelectionFragment :
                 ColorStateList.valueOf(requireContext().getColor(R.color.error))
             binding.policy3G.buttonTintList =
                 ColorStateList.valueOf(requireContext().getColor(R.color.error))
+
+            // scroll all the way down so the user notices the error
+            binding.scroll.post {
+                if (isAdded) {
+                    binding.scroll.fullScroll(FOCUS_DOWN)
+                }
+            }
         } else {
             binding.errorContainer.visibility = GONE
             binding.policy2G.buttonTintList =

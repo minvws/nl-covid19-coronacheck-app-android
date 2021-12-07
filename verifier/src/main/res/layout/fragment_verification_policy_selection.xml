@@ -21,6 +21,7 @@
         app:navigationIcon="@drawable/ic_back" />
 
     <ScrollView
+        android:id="@+id/scroll"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:clipToPadding="false"
