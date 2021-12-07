@@ -16,7 +16,6 @@ import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionFragme
  */
 interface ScannerUtil {
     fun launchScanner(activity: Activity)
-    fun launchVerificationPolicySelection(activity: Activity)
 }
 
 class ScannerUtilImpl : ScannerUtil {
@@ -24,10 +23,5 @@ class ScannerUtilImpl : ScannerUtil {
     override fun launchScanner(activity: Activity) {
         Navigation.findNavController(activity, R.id.main_nav_host_fragment)
             .navigate(RootNavDirections.actionScanner())
-    }
-
-    override fun launchVerificationPolicySelection(activity: Activity) {
-        Navigation.findNavController(activity, R.id.main_nav_host_fragment)
-            .navigate(R.id.action_policy_selection, bundleOf(VerificationPolicySelectionFragment.isScanQRFlow to true))
     }
 }

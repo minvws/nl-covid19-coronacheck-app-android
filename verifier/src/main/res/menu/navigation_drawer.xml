@@ -14,7 +14,7 @@
             android:title="@string/scan_instructions_menu_title" />
 
         <item
-            android:id="@+id/nav_policy_selection"
+            android:id="@+id/nav_policy_settings"
             android:checkable="false"
             android:title="@string/verifier_menu_risksetting" />
     </group>

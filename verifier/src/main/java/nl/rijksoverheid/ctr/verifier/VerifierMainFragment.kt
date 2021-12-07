@@ -32,7 +32,7 @@ import nl.rijksoverheid.ctr.verifier.databinding.FragmentMainBinding
 import org.koin.android.ext.android.inject
 
 class VerifierMainFragment :
-    BaseMainFragment(R.layout.fragment_main, setOf(R.id.nav_scan_qr, R.id.nav_about_this_app, R.id.nav_policy_selection)) {
+    BaseMainFragment(R.layout.fragment_main, setOf(R.id.nav_scan_qr, R.id.nav_about_this_app, R.id.nav_policy_settings, R.id.nav_scan_instructions)) {
 
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
@@ -100,7 +100,7 @@ class VerifierMainFragment :
             .styleTitle(context, R.attr.textAppearanceHeadline6)
         binding.navView.menu.findItem(R.id.nav_scan_instructions)
             .styleTitle(context, R.attr.textAppearanceHeadline6)
-        binding.navView.menu.findItem(R.id.nav_policy_selection)
+        binding.navView.menu.findItem(R.id.nav_policy_settings)
                 .styleTitle(context, R.attr.textAppearanceHeadline6)
         binding.navView.menu.findItem(R.id.nav_support)
             .styleTitle(context, R.attr.textAppearanceBody1)
@@ -114,9 +114,6 @@ class VerifierMainFragment :
 
     private fun navigationItemSelectedListener(item: MenuItem) {
         when (item.itemId) {
-            R.id.nav_policy_selection -> {
-                navController.navigate(R.id.action_policy_settings)
-            }
             R.id.nav_support -> {
                 getString(R.string.url_faq).launchUrl(requireActivity())
             }
