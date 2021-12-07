@@ -17,7 +17,7 @@ import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyUseCase
  */
 
 abstract class ScanQrViewModel : ViewModel() {
-    val liveData: LiveData<ScanQRState> = MutableLiveData()
+    val liveData: LiveData<Event<ScanQRState>> = MutableLiveData()
     val startupStateEvent: LiveData<Event<ScannerNavigationState>> = MutableLiveData()
     abstract fun hasSeenScanInstructions(): Boolean
     abstract fun setScanInstructionsSeen()
@@ -48,10 +48,10 @@ class ScanQrViewModelImpl(
 
     override fun onViewCreated() {
         (liveData as MutableLiveData).postValue(
-            ScanQRState(
+            Event(ScanQRState(
                 policy = useCase.getState(),
                 lock = useCase.getSwitchState(),
-            )
+            ))
         )
     }
 
