@@ -6,7 +6,9 @@ import android.content.res.ColorStateList
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
@@ -14,9 +16,7 @@ import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.utils.Accessibility
 import nl.rijksoverheid.ctr.shared.ext.setStatusBarTextColorBlack
 import nl.rijksoverheid.ctr.shared.ext.setStatusBarTextColorWhite
-import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.verifier.BuildConfig
-import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanResultValidBinding
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultValidData
 import java.util.concurrent.TimeUnit
@@ -24,33 +24,58 @@ import org.koin.android.ext.android.inject
 import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyUseCase
 import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyState
 import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyState.Policy2G
+import android.view.ContextThemeWrapper
+import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
+import nl.rijksoverheid.ctr.verifier.R
 
-class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
+
+class ScanResultValidFragment : Fragment() {
 
     private var _binding: FragmentScanResultValidBinding? = null
     private val binding get() = _binding!!
 
     private val verificationPolicyUseCase: VerificationPolicyUseCase by inject()
-    private val verificationPolicyState: VerificationPolicyState by lazy {
-        verificationPolicyUseCase.getState()
+    private val verificationPolicy: VerificationPolicy by lazy {
+        verificationPolicyUseCase.get()
     }
 
     private val args: ScanResultValidFragmentArgs by navArgs()
 
     private val autoCloseHandler = Handler(Looper.getMainLooper())
     private val autoCloseRunnable = Runnable {
-        binding.root.setStatusBarTextColorBlack()
         navigateSafety(
             R.id.nav_scan_result_valid,
             ScanResultValidFragmentDirections.actionNavQrScanner()
         )
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        val theme = if (args.validData is ScanResultValidData.Demo) {
+            R.style.AppTheme_Scanner_Demo
+        } else {
+            when (verificationPolicy) {
+                is VerificationPolicy.VerificationPolicy3G -> {
+                    R.style.AppTheme_Scanner_3G
+                }
+                is VerificationPolicy.VerificationPolicy2G -> {
+                    R.style.AppTheme_Scanner_2G
+                }
+            }
+        }
+
+        val context = ContextThemeWrapper(requireContext(), theme)
+        val layoutInflater = inflater.cloneInContext(context)
+        _binding = FragmentScanResultValidBinding.inflate(layoutInflater, container, false)
+        return binding.root
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        _binding = FragmentScanResultValidBinding.bind(view)
 
         binding.toolbar.setNavigationOnClickListener {
             navigateSafety(ScanResultValidFragmentDirections.actionNavQrScanner())
@@ -59,34 +84,17 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
         when (args.validData) {
             is ScanResultValidData.Demo -> {
                 binding.title.text = getString(R.string.scan_result_demo_title)
-                binding.root.setBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.grey_2
-                    )
-                )
             }
             is ScanResultValidData.Valid -> {
-                binding.title.text = getString(R.string.scan_result_valid_title)
-                if (verificationPolicyState is VerificationPolicyState.Policy2G) {
-                    val whiteColor = ContextCompat.getColor(requireContext(), R.color.white)
-                    val whiteColorStateList = ColorStateList.valueOf(whiteColor)
-                    binding.image.imageTintList = whiteColorStateList
-                    binding.title.setTextColor(whiteColorStateList)
-                    binding.title.text = getString(R.string.verifier_result_access_title_highrisk)
-                    binding.toolbar.navigationIcon?.setTintList(whiteColorStateList)
-                    binding.root.setStatusBarTextColorWhite()
+                val text = when (verificationPolicy) {
+                    is VerificationPolicy.VerificationPolicy2G -> {
+                        getString(R.string.verifier_result_access_title_highrisk)
+                    }
+                    is VerificationPolicy.VerificationPolicy3G -> {
+                        getString(R.string.scan_result_valid_title)
+                    }
                 }
-                binding.root.setBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        if (verificationPolicyState == VerificationPolicyState.Policy2G) {
-                            R.color.primary_blue
-                        } else {
-                            R.color.secondary_green
-                        }
-                    )
-                )
+                binding.title.text = text
             }
         }
         Accessibility.announce(requireContext(), binding.title.text.toString())
