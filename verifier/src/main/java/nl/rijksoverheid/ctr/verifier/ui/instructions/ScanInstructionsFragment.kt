@@ -76,10 +76,15 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
 
     private fun closeInstructionsAndOpenNextScreen() {
         findNavControllerSafety()?.popBackStack()
-        if (scanQrViewModel.getNextScannerScreenState() == ScannerNavigationState.Scanner) {
-            scannerUtil.launchScanner(requireActivity())
-        } else {
-            scannerUtil.launchVerificationPolicySelection(requireActivity())
+        when (val state = scanQrViewModel.getNextScannerScreenState()) {
+            is ScannerNavigationState.Scanner -> {
+                if (!state.isLocked) {
+                    scannerUtil.launchScanner(requireActivity())
+                }
+            }
+            else -> {
+                scannerUtil.launchVerificationPolicySelection(requireActivity())
+            }
         }
     }
 

@@ -7,7 +7,7 @@ package nl.rijksoverheid.ctr.verifier.ui.policy
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-sealed class VerificationPolicySwitchState() {
+sealed class VerificationPolicySwitchState {
     data class Locked(val lastScanLockTimeSeconds: Long): VerificationPolicySwitchState()
     object Unlocked: VerificationPolicySwitchState()
 }
