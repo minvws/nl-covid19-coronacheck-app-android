@@ -25,7 +25,7 @@ class ScanLogsCleanupUseCaseImpl(
         val scanLogsStorageSeconds = verifierCachedAppConfigUseCase.getCachedAppConfig().scanLogStorageSeconds
 
         val scanLogsToRemove = scanLogs.filter {
-            it.date.plusSeconds(scanLogsStorageSeconds.toLong()).isAfter(OffsetDateTime.now(clock))
+            it.date.plusSeconds(scanLogsStorageSeconds.toLong()).isBefore(OffsetDateTime.now(clock))
         }
 
         verifierDatabase.scanLogDao().delete(scanLogsToRemove)

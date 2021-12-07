@@ -45,6 +45,7 @@ import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrViewModel
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrViewModelImpl
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
+import java.time.Clock
 
 /**
  * Configure app config dependencies
@@ -78,13 +79,13 @@ fun verifierModule(path: String) = module {
             get()
         )
     }
-    factory<ScanLogsCleanupUseCase> { ScanLogsCleanupUseCaseImpl(get(), get(), get()) }
-    factory<LogScanUseCase> { LogScanUseCaseImpl(get(), get(), get()) }
+    factory<ScanLogsCleanupUseCase> { ScanLogsCleanupUseCaseImpl(Clock.systemUTC(), get(), get()) }
+    factory<LogScanUseCase> { LogScanUseCaseImpl(Clock.systemUTC(), get(), get()) }
 
     // Utils
     factory<ScannerUtil> { ScannerUtilImpl() }
     factory<ScanLogListAdapterItemUtil> { ScanLogListAdapterItemUtilImpl() }
-    factory<ScanLogFirstInstallTimeAdapterItemUtil> { ScanLogFirstInstallTimeAdapterItemUtilImpl(get()) }
+    factory<ScanLogFirstInstallTimeAdapterItemUtil> { ScanLogFirstInstallTimeAdapterItemUtilImpl(Clock.systemUTC()) }
 
     // ViewModels
     viewModel<VerifierMainActivityViewModel> { VerifierMainActivityViewModelImpl(get()) }

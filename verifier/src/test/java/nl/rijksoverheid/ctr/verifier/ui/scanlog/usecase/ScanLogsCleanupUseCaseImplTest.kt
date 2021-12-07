@@ -47,15 +47,15 @@ class ScanLogsCleanupUseCaseImplTest {
         )
 
         val entitiesToRemove = listOf(
-            entities[2],
-            entities[3]
+            entities[0],
+            entities[1]
         )
 
         val verifierDatabase = mockk<VerifierDatabase>(relaxed = true)
         coEvery { verifierDatabase.scanLogDao().getAll() } answers { entities }
 
         val verifierCachedAppConfigUseCase = mockk<VerifierCachedAppConfigUseCase>(relaxed = true)
-        coEvery { verifierCachedAppConfigUseCase.getCachedAppConfig().scanLogStorageSeconds } answers { 600 }
+        coEvery { verifierCachedAppConfigUseCase.getCachedAppConfig().scanLogStorageSeconds } answers { 599 }
 
         val usecase = ScanLogsCleanupUseCaseImpl(
             clock = Clock.fixed(Instant.parse("2021-01-01T00:20:00.00Z"), ZoneId.of("UTC")),
