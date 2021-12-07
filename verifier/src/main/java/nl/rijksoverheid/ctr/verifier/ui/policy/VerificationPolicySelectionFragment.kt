@@ -15,10 +15,12 @@ import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.VerificationPolicy2
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.VerificationPolicy3G
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentVerificationPolicySelectionBinding
+import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import java.util.concurrent.TimeUnit
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -39,6 +41,7 @@ class VerificationPolicySelectionFragment :
     }
 
     private val dialogUtil: DialogUtil by inject()
+    private val verifierCachedAppConfigUseCase: VerifierCachedAppConfigUseCase by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,11 +68,12 @@ class VerificationPolicySelectionFragment :
     }
 
     private fun setupScreenForSettingsFlow(verificationPolicyState: VerificationPolicyState) {
-        binding.subHeader.setHtmlText(
+        binding.subHeader.setHtmlText(htmlText =
             if (verificationPolicyState != VerificationPolicyState.None) {
-                R.string.verifier_risksetting_menu_scan_settings_selected_title
+                getString(R.string.verifier_risksetting_menu_scan_settings_selected_title,
+                    TimeUnit.SECONDS.toMinutes(verifierCachedAppConfigUseCase.getCachedAppConfig().scanLockSeconds.toLong()))
             } else {
-                R.string.verifier_risksetting_menu_scan_settings_unselected_title
+                getString(R.string.verifier_risksetting_menu_scan_settings_unselected_title)
             }
         )
         binding.link.visibility = GONE
@@ -77,7 +81,8 @@ class VerificationPolicySelectionFragment :
             dialogUtil.presentDialog(
                 context = requireContext(),
                 title = R.string.verifier_risksetting_confirmation_dialog_title,
-                message = getString(R.string.verifier_risksetting_confirmation_dialog_message),
+                message = getString(R.string.verifier_risksetting_confirmation_dialog_message,
+                    TimeUnit.SECONDS.toMinutes(verifierCachedAppConfigUseCase.getCachedAppConfig().scanLockSeconds.toLong())),
                 positiveButtonText = R.string.verifier_risksetting_confirmation_dialog_positive_button,
                 positiveButtonCallback = {
                     onConfirmationButtonClicked {
@@ -164,7 +169,8 @@ class VerificationPolicySelectionFragment :
             toggleError(false)
 
             if (flow is VerificationPolicyFlow.Settings) {
-                binding.subHeader.setHtmlText(R.string.verifier_risksetting_menu_scan_settings_selected_title)
+                binding.subHeader.setHtmlText(htmlText = getString(R.string.verifier_risksetting_menu_scan_settings_selected_title,
+                    TimeUnit.SECONDS.toMinutes(verifierCachedAppConfigUseCase.getCachedAppConfig().scanLockSeconds.toLong())))
             }
             viewModel.updateRadioButton(checkedId)
         }

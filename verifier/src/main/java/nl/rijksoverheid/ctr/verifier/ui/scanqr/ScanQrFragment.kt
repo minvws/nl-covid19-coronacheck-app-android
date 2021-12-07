@@ -22,12 +22,14 @@ import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.VerificationPolicy3
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.VerifierMainActivity
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanQrBinding
+import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyState
 import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySwitchState
 import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyUseCase
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.concurrent.TimeUnit
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -46,6 +48,7 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
     private val clockDeviationUseCase: ClockDeviationUseCase by inject()
     private val infoFragmentUtil: InfoFragmentUtil by inject()
     private val verificationPolicyUseCase: VerificationPolicyUseCase by inject()
+    private val verifierCachedAppConfigUseCase: VerifierCachedAppConfigUseCase by inject()
 
     private var switchCountDownTimer: SwitchCountDownTimer? = null
 
@@ -189,7 +192,8 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
     private fun lockScanner() {
         binding.instructionsButton.visibility = GONE
         binding.clockdeviationView.root.visibility = GONE
-        binding.description.setText(R.string.verifier_home_countdown_subtitle)
+        binding.description.text = getString(R.string.verifier_home_countdown_subtitle,
+            TimeUnit.SECONDS.toMinutes(verifierCachedAppConfigUseCase.getCachedAppConfig().scanLockSeconds.toLong()))
         binding.bottom.lock()
     }
 
