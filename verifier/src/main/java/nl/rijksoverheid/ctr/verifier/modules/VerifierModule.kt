@@ -32,10 +32,7 @@ import nl.rijksoverheid.ctr.verifier.ui.scanlog.items.util.ScanLogListAdapterIte
 import nl.rijksoverheid.ctr.verifier.ui.scanlog.items.util.ScanLogListAdapterItemUtilImpl
 import nl.rijksoverheid.ctr.verifier.ui.scanlog.repositories.ScanLogRepository
 import nl.rijksoverheid.ctr.verifier.ui.scanlog.repositories.ScanLogRepositoryImpl
-import nl.rijksoverheid.ctr.verifier.ui.scanlog.usecase.GetScanLogItemsUseCase
-import nl.rijksoverheid.ctr.verifier.ui.scanlog.usecase.GetScanLogItemsUseCaseImpl
-import nl.rijksoverheid.ctr.verifier.ui.scanlog.usecase.ScanLogsCleanupUseCase
-import nl.rijksoverheid.ctr.verifier.ui.scanlog.usecase.ScanLogsCleanupUseCaseImpl
+import nl.rijksoverheid.ctr.verifier.ui.scanlog.usecase.*
 import nl.rijksoverheid.ctr.verifier.ui.scanner.ScannerViewModel
 import nl.rijksoverheid.ctr.verifier.ui.scanner.ScannerViewModelImpl
 import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.TestResultValidUseCase
@@ -82,6 +79,7 @@ fun verifierModule(path: String) = module {
         )
     }
     factory<ScanLogsCleanupUseCase> { ScanLogsCleanupUseCaseImpl(get(), get(), get()) }
+    factory<LogScanUseCase> { LogScanUseCaseImpl(get(), get(), get()) }
 
     // Utils
     factory<ScannerUtil> { ScannerUtilImpl() }
@@ -91,7 +89,7 @@ fun verifierModule(path: String) = module {
     // ViewModels
     viewModel<VerifierMainActivityViewModel> { VerifierMainActivityViewModelImpl(get()) }
     viewModel<ScanQrViewModel> { ScanQrViewModelImpl(get()) }
-    viewModel<ScannerViewModel> { ScannerViewModelImpl(get(), get()) }
+    viewModel<ScannerViewModel> { ScannerViewModelImpl(get(), get(), get()) }
     viewModel<ScanLogViewModel> { ScanLogViewModelImpl(get()) }
 
     // Repositories
