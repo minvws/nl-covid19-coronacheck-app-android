@@ -29,6 +29,7 @@ import org.robolectric.RobolectricTestRunner
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyState
 import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySwitchState
+import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyUseCase
 import org.junit.Rule
 import org.robolectric.annotation.Config
 
@@ -151,7 +152,12 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
                 factory {
                     mockk<PersistenceManager>().apply {
                         every { getVerificationPolicySelected() } returns policy
+                        every { getLastScanLockTimeSeconds() } returns 0L
                     }
+                }
+
+                factory {
+                    mockk<VerificationPolicyUseCase>(relaxed = true)
                 }
 
                 viewModel {
