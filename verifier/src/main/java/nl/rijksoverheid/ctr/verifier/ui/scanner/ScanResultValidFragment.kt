@@ -55,14 +55,14 @@ class ScanResultValidFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val theme = if (args.validData is ScanResultValidData.Demo) {
-            R.style.AppTheme_Scanner_Demo
+            R.style.AppTheme_Scanner_Valid_Demo
         } else {
             when (verificationPolicy) {
                 is VerificationPolicy.VerificationPolicy3G -> {
-                    R.style.AppTheme_Scanner_3G
+                    R.style.AppTheme_Scanner_Valid_3G
                 }
                 is VerificationPolicy.VerificationPolicy2G -> {
-                    R.style.AppTheme_Scanner_2G
+                    R.style.AppTheme_Scanner_Valid_2G
                 }
             }
         }
