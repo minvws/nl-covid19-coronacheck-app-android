@@ -82,9 +82,13 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
             scanQrViewModel.nextScreen()
         }
 
-        scanQrViewModel.startupStateEvent.observe(viewLifecycleOwner, ::goToNextScreen)
+        scanQrViewModel.startupStateEvent.observe(viewLifecycleOwner, EventObserver {
+            goToNextScreen(it)
+        })
 
-        scanQrViewModel.liveData.observe(viewLifecycleOwner, ::onStateUpdated)
+        scanQrViewModel.liveData.observe(viewLifecycleOwner, EventObserver {
+            onStateUpdated(it)
+        })
 
         binding.clockdeviationView.clockdeviationButton.setOnClickListener {
             infoFragmentUtil.presentAsBottomSheet(
@@ -158,8 +162,8 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
         }
     }
 
-    private fun goToNextScreen(startupStateEvent: Event<ScannerNavigationState>) {
-        when (startupStateEvent.peekContent()) {
+    private fun goToNextScreen(scannerNavigationState: ScannerNavigationState) {
+        when (scannerNavigationState) {
             ScannerNavigationState.Instructions -> findNavController().navigate(
                 ScanQrFragmentDirections.actionScanInstructions()
             )
