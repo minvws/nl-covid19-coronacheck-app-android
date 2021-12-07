@@ -125,14 +125,14 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
         )
 
         (viewModel.liveData as MutableLiveData).postValue(
-            ScanQRState(
+            Event(ScanQRState(
                 policy = when (policy) {
                     VerificationPolicy.VerificationPolicy2G -> VerificationPolicyState.Policy2G
                     VerificationPolicy.VerificationPolicy3G -> VerificationPolicyState.Policy3G
                     null -> VerificationPolicyState.None
                 },
                 lock = VerificationPolicySwitchState.Unlocked
-            )
+            ))
         )
 
         scannerNavigationState?.let {
