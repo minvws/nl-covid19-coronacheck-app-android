@@ -61,7 +61,7 @@ class VerificationPolicySelectionFragmentTest : AutoCloseKoinTest() {
     fun `given policy selected, when click to continue, then error is shown`() {
         launchFragment()
 
-        clickOn(R.id.policy2G)
+        clickOn(R.id.policy2G_container)
         clickOn(R.id.confirmationButton)
 
         assertNotDisplayed(R.id.error_container)
