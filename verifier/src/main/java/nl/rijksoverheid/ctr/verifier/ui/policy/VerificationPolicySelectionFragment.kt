@@ -95,7 +95,6 @@ class VerificationPolicySelectionFragment :
         binding.toolbar.setNavigationOnClickListener {
             findNavControllerSafety()?.popBackStack()
         }
-        binding.confirmationButton.setText(R.string.verifier_risksetting_confirmation_button)
         binding.confirmationButton.setOnClickListener {
             onConfirmationButtonClicked {
                 findNavControllerSafety()?.popBackStack()
