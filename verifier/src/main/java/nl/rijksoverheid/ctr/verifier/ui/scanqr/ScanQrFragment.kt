@@ -14,6 +14,7 @@ import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
+import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
@@ -23,6 +24,7 @@ import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.VerifierMainActivity
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanQrBinding
 import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCase
+import nl.rijksoverheid.ctr.verifier.ui.instructions.ScanInstructionsFragmentDirections
 import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyState
 import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySwitchState
 import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyUseCase
@@ -168,9 +170,8 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
     private fun goToNextScreen(scannerNavigationState: ScannerNavigationState) {
         when (scannerNavigationState) {
             is ScannerNavigationState.Instructions -> findNavController().navigate(ScanQrFragmentDirections.actionScanInstructions())
-            is ScannerNavigationState.VerificationPolicySelection -> scannerUtil.launchVerificationPolicySelection(
-                requireActivity()
-            )
+            is ScannerNavigationState.VerificationPolicySelection -> findNavControllerSafety()?.navigate(
+                ScanInstructionsFragmentDirections.actionPolicySelection())
             is ScannerNavigationState.Scanner -> scannerUtil.launchScanner(requireActivity())
         }
     }

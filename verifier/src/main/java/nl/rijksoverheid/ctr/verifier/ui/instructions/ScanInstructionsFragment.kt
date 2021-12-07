@@ -83,7 +83,7 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
                 }
             }
             else -> {
-                scannerUtil.launchVerificationPolicySelection(requireActivity())
+                findNavControllerSafety()?.navigate(ScanInstructionsFragmentDirections.actionPolicySelection())
             }
         }
     }
