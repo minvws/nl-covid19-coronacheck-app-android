@@ -88,7 +88,7 @@ fun verifierModule(path: String) = module {
     // ViewModels
     viewModel<VerifierMainActivityViewModel> { VerifierMainActivityViewModelImpl(get()) }
     viewModel<ScanQrViewModel> { ScanQrViewModelImpl(get(), get(), get()) }
-    viewModel<ScannerViewModel> { ScannerViewModelImpl(get(), get()) }
+    viewModel<ScannerViewModel> { ScannerViewModelImpl(get(), get(), get()) }
     viewModel<ScanLogViewModel> { ScanLogViewModelImpl(get()) }
 
     // Repositories
