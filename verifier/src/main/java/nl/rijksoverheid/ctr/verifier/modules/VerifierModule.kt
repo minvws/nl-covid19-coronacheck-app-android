@@ -21,6 +21,8 @@ import nl.rijksoverheid.ctr.verifier.persistance.usecase.RandomKeyUseCase
 import nl.rijksoverheid.ctr.verifier.persistance.usecase.RandomKeyUseCaseImpl
 import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCaseImpl
+import nl.rijksoverheid.ctr.verifier.ui.instructions.ScanInstructionsButtonUtil
+import nl.rijksoverheid.ctr.verifier.ui.instructions.ScanInstructionsButtonUtilImpl
 import nl.rijksoverheid.ctr.verifier.ui.policy.*
 import nl.rijksoverheid.ctr.verifier.ui.scanlog.ScanLogViewModel
 import nl.rijksoverheid.ctr.verifier.ui.scanlog.ScanLogViewModelImpl
@@ -85,6 +87,7 @@ fun verifierModule(path: String) = module {
     factory<ScannerUtil> { ScannerUtilImpl() }
     factory<ScanLogListAdapterItemUtil> { ScanLogListAdapterItemUtilImpl() }
     factory<ScanLogFirstInstallTimeAdapterItemUtil> { ScanLogFirstInstallTimeAdapterItemUtilImpl(Clock.systemUTC()) }
+    factory<ScanInstructionsButtonUtil> { ScanInstructionsButtonUtilImpl(get()) }
 
     // ViewModels
     viewModel<VerifierMainActivityViewModel> { VerifierMainActivityViewModelImpl(get()) }
@@ -104,7 +107,7 @@ fun verifierModule(path: String) = module {
     }
 
     factory<VerificationPolicyUseCase> { VerificationPolicyUseCaseImpl(get(), get(), get()) }
-    factory<ScannerNavigationStateUseCase> { ScannerNavigationStateUseCaseImpl(get()) }
+    factory<ScannerNavigationStateUseCase> { ScannerNavigationStateUseCaseImpl(get(), get()) }
 
     viewModel<VerificationPolicySelectionViewModel> { (isScanQRFlow: Boolean) -> VerificationPolicySelectionViewModelImpl(get(), isScanQRFlow) }
 }

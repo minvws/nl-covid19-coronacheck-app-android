@@ -69,7 +69,7 @@ fun fakeIntroductionViewModel(
 
 fun fakeScanQrViewModel(
     scanInstructionsSeen: Boolean,
-    scannerNavigationState: ScannerNavigationState = ScannerNavigationState.Scanner,
+    scannerNavigationState: ScannerNavigationState = ScannerNavigationState.Scanner(false),
 ) = object : ScanQrViewModel() {
     override fun hasSeenScanInstructions(): Boolean {
         return scanInstructionsSeen

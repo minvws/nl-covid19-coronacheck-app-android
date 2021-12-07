@@ -29,6 +29,7 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
 
     private val scannerUtil: ScannerUtil by inject()
     private val scanQrViewModel: ScanQrViewModel by viewModel()
+    private val scanInstructionsButtonUtil: ScanInstructionsButtonUtil by inject()
     private var _binding: FragmentScanInstructionsBinding? = null
     private val binding get() = _binding!!
 
@@ -75,10 +76,15 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
 
     private fun closeInstructionsAndOpenNextScreen() {
         findNavControllerSafety()?.popBackStack()
-        if (scanQrViewModel.getNextScannerScreenState() == ScannerNavigationState.Scanner) {
-            scannerUtil.launchScanner(requireActivity())
-        } else {
-            scannerUtil.launchVerificationPolicySelection(requireActivity())
+        when (val state = scanQrViewModel.getNextScannerScreenState()) {
+            is ScannerNavigationState.Scanner -> {
+                if (!state.isLocked) {
+                    scannerUtil.launchScanner(requireActivity())
+                }
+            }
+            else -> {
+                scannerUtil.launchVerificationPolicySelection(requireActivity())
+            }
         }
     }
 
@@ -125,18 +131,13 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
                     (position + 1).toString(),
                     adapter.itemCount.toString()
                 )
-
-                if (position == adapter.itemCount - 1) {
+                val isLastItem = position == adapter.itemCount - 1
+                if (isLastItem) {
                     clearToolbar()
-                    binding.button.text = getString(if (scanQrViewModel.getNextScannerScreenState() == ScannerNavigationState.Scanner) {
-                        R.string.scan_qr_button
-                    } else {
-                        R.string.onboarding_next
-                    })
                 } else {
                     setupToolbarMenu()
-                    binding.button.text = getString(R.string.onboarding_next)
                 }
+                binding.button.text = getString(scanInstructionsButtonUtil.getButtonText(isLastItem))
 
                 // Apply bottom elevation if the view inside the viewpager is scrollable
                 val scrollView =

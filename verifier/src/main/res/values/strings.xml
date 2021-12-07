@@ -182,4 +182,5 @@
   <string name="verifier_risksetting_confirmation_dialog_message">Als je wisselt van scan-instelling moet je 5 minuten wachten voordat je weer kunt scannen.</string>
   <string name="verifier_risksetting_confirmation_dialog_positive_button">Ja, aanpassen</string>
   <string name="verifier_risksetting_confirmation_dialog_negative_button">Nee, terug</string>
+  <string name="verifier_scan_instructions_back_to_start">Terug naar start</string>
 </resources>
