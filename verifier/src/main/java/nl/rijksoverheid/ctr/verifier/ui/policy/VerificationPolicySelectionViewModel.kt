@@ -7,7 +7,8 @@ import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 
 abstract class VerificationPolicySelectionViewModel: ViewModel() {
     val policyFlowLiveData: LiveData<VerificationPolicyFlow> = MutableLiveData()
-    val radioButtonLiveData: LiveData<Int> = MutableLiveData()
+
+    var radioButtonSelected: Int? = null
 
     abstract fun storeSelection(verificationPolicy: VerificationPolicy)
     abstract fun updateRadioButton(checkedId: Int)
@@ -42,6 +43,6 @@ class VerificationPolicySelectionViewModelImpl(
     }
 
     override fun updateRadioButton(checkedId: Int) {
-        (radioButtonLiveData as MutableLiveData).postValue(checkedId)
+        radioButtonSelected = checkedId
     }
 }
