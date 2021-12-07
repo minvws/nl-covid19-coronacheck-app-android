@@ -174,13 +174,11 @@ class VerificationPolicySelectionFragment :
     }
 
     private fun policy2GSelected(flow: VerificationPolicyFlow) {
-        binding.policy2G.isChecked = true
         policyChecked(flow, binding.policy2G.id)
         policySelected(VerificationPolicyState.Policy2G)
     }
 
     private fun policy3GSelected(flow: VerificationPolicyFlow) {
-        binding.policy3G.isChecked = true
         policyChecked(flow, binding.policy3G.id)
         policySelected(VerificationPolicyState.Policy3G)
     }
