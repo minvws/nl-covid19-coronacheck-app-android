@@ -24,6 +24,7 @@ import nl.rijksoverheid.ctr.verifier.VerifierMainActivity
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanQrBinding
 import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyState
 import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySwitchState
+import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyUseCase
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -44,6 +45,30 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
     private val scannerUtil: ScannerUtil by inject()
     private val clockDeviationUseCase: ClockDeviationUseCase by inject()
     private val infoFragmentUtil: InfoFragmentUtil by inject()
+    private val verificationPolicyUseCase: VerificationPolicyUseCase by inject()
+
+    private var switchCountDownTimer: SwitchCountDownTimer? = null
+
+    private fun onTimerFinish(verificationPolicyState: VerificationPolicyState) {
+        onStateUpdated(
+            ScanQRState(
+                policy = verificationPolicyState,
+                lock = VerificationPolicySwitchState.Unlocked,
+            )
+        )
+    }
+
+    private fun startTimer() {
+        stopTimer()
+        val lockTimer = SwitchCountDownTimer(verificationPolicyUseCase, ::updateTitle, ::onTimerFinish)
+        lockTimer.start()
+        switchCountDownTimer = lockTimer
+    }
+
+    private fun stopTimer() {
+        switchCountDownTimer?.cancel()
+        switchCountDownTimer = null
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -60,8 +85,6 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
         scanQrViewModel.nextScreenEvent.observe(viewLifecycleOwner, ::goToNextScreen)
 
         scanQrViewModel.liveData.observe(viewLifecycleOwner, ::onStateUpdated)
-
-        scanQrViewModel.timerLiveData.observe(viewLifecycleOwner, ::updateTitle)
 
         binding.clockdeviationView.clockdeviationButton.setOnClickListener {
             infoFragmentUtil.presentAsBottomSheet(
@@ -81,6 +104,16 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
         scanQrViewModel.onViewCreated()
 
         checkPendingDeeplink()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        startTimer()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        stopTimer()
     }
 
     override fun onDestroyView() {

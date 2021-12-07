@@ -44,10 +44,7 @@ import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.VerifyQrUseCase
 import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.VerifyQrUseCaseImpl
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtilImpl
-import nl.rijksoverheid.ctr.verifier.ui.scanqr.NextScannerScreenUseCase
-import nl.rijksoverheid.ctr.verifier.ui.scanqr.NextScannerScreenUseCaseImpl
-import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrViewModel
-import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrViewModelImpl
+import nl.rijksoverheid.ctr.verifier.ui.scanqr.*
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
