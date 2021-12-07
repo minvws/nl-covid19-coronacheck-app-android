@@ -66,7 +66,7 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
     fun `First time clicking start scan first opens scan instructions`() {
         launchScanQrFragment(
             hasSeenScanInstructions = false,
-            nextScannerScreenState = NextScannerScreenState.Instructions
+            scannerNavigationState = ScannerNavigationState.Instructions
         )
         clickOn(R.id.button)
         assertEquals(navController.currentDestination?.id, R.id.nav_scan_instructions)
@@ -79,7 +79,7 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
     fun `Given instructions seen and policy set, Clicking start scan opens scanner`() {
         launchScanQrFragment(
             policy = VerificationPolicy.VerificationPolicy2G,
-            nextScannerScreenState = NextScannerScreenState.Scanner,
+            scannerNavigationState = ScannerNavigationState.Scanner,
         )
         clickOn(R.id.button)
         verify { scannerUtil.launchScanner(any()) }
@@ -114,13 +114,13 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
 
     private fun launchScanQrFragment(
         hasSeenScanInstructions: Boolean = true,
-        nextScannerScreenState: NextScannerScreenState? = null,
+        scannerNavigationState: ScannerNavigationState? = null,
         policy: VerificationPolicy? = null,
     ) {
 
         val viewModel = fakeScanQrViewModel(
             scanInstructionsSeen = hasSeenScanInstructions,
-            nextScannerScreenState = nextScannerScreenState ?: NextScannerScreenState.Scanner,
+            scannerNavigationState = scannerNavigationState ?: ScannerNavigationState.Scanner,
         )
 
         (viewModel.liveData as MutableLiveData).postValue(
@@ -134,8 +134,8 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
             )
         )
 
-        nextScannerScreenState?.let {
-            (viewModel.nextScreenEvent as MutableLiveData).postValue(Event(it))
+        scannerNavigationState?.let {
+            (viewModel.startupStateEvent as MutableLiveData).postValue(Event(it))
         }
 
         loadKoinModules(

@@ -27,7 +27,7 @@ class ScanQrViewModelImplTest {
 
     private val persistenceManager: PersistenceManager = mockk(relaxed = true)
     private val verificationPolicyUseCase: VerificationPolicyUseCase = mockk(relaxed = true)
-    private val nextScannerScreenUseCase: NextScannerScreenUseCase = mockk(relaxed = true)
+    private val scannerNavigationStateUseCase: ScannerNavigationStateUseCase = mockk(relaxed = true)
 
     @Before
     fun setup() {
@@ -36,7 +36,7 @@ class ScanQrViewModelImplTest {
 
     @Test
     fun `scanInstructionsSeen persist value if not persisted before`() {
-        val viewModel = ScanQrViewModelImpl(persistenceManager, verificationPolicyUseCase, nextScannerScreenUseCase)
+        val viewModel = ScanQrViewModelImpl(persistenceManager, verificationPolicyUseCase, scannerNavigationStateUseCase)
 
         every { persistenceManager.getScanInstructionsSeen() } answers { false }
         viewModel.setScanInstructionsSeen()
@@ -46,7 +46,7 @@ class ScanQrViewModelImplTest {
 
     @Test
     fun `scanInstructionsSeen does not persist value if persisted before`() {
-        val viewModel = ScanQrViewModelImpl(persistenceManager, verificationPolicyUseCase, nextScannerScreenUseCase)
+        val viewModel = ScanQrViewModelImpl(persistenceManager, verificationPolicyUseCase, scannerNavigationStateUseCase)
 
         every { persistenceManager.getScanInstructionsSeen() } answers { true }
         viewModel.setScanInstructionsSeen()

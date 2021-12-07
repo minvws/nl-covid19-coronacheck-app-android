@@ -18,10 +18,10 @@ import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyUseCase
 
 abstract class ScanQrViewModel : ViewModel() {
     val liveData: LiveData<ScanQRState> = MutableLiveData()
-    val nextScreenEvent: LiveData<Event<NextScannerScreenState>> = MutableLiveData()
+    val startupStateEvent: LiveData<Event<ScannerNavigationState>> = MutableLiveData()
     abstract fun hasSeenScanInstructions(): Boolean
     abstract fun setScanInstructionsSeen()
-    abstract fun getNextScannerScreenState(): NextScannerScreenState
+    abstract fun getNextScannerScreenState(): ScannerNavigationState
     abstract fun onViewCreated()
     abstract fun nextScreen()
 }
@@ -29,7 +29,7 @@ abstract class ScanQrViewModel : ViewModel() {
 class ScanQrViewModelImpl(
     private val persistenceManager: PersistenceManager,
     private val useCase: VerificationPolicyUseCase,
-    private val nextScannerScreenUseCase: NextScannerScreenUseCase,
+    private val scannerNavigationStateUseCase: ScannerNavigationStateUseCase,
 ) : ScanQrViewModel() {
 
     override fun hasSeenScanInstructions(): Boolean {
@@ -42,8 +42,8 @@ class ScanQrViewModelImpl(
         }
     }
 
-    override fun getNextScannerScreenState(): NextScannerScreenState {
-        return nextScannerScreenUseCase.get()
+    override fun getNextScannerScreenState(): ScannerNavigationState {
+        return scannerNavigationStateUseCase.get()
     }
 
     override fun onViewCreated() {
@@ -59,9 +59,9 @@ class ScanQrViewModelImpl(
         val nextScreenState = getNextScannerScreenState()
         val isScannerUnlocked = useCase.getSwitchState() !is VerificationPolicySwitchState.Locked
         if (isScannerUnlocked ||
-            (nextScreenState !is NextScannerScreenState.Scanner)
+            (nextScreenState !is ScannerNavigationState.Scanner)
         ) {
-            (nextScreenEvent as MutableLiveData).postValue(Event(getNextScannerScreenState()))
+            (startupStateEvent as MutableLiveData).postValue(Event(getNextScannerScreenState()))
         }
     }
 }

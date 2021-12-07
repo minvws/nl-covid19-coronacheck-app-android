@@ -9,20 +9,20 @@ import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-interface NextScannerScreenUseCase {
-    fun get(): NextScannerScreenState
+interface ScannerNavigationStateUseCase {
+    fun get(): ScannerNavigationState
 }
 
-class NextScannerScreenUseCaseImpl(
+class ScannerNavigationStateUseCaseImpl(
     private val persistenceManager: PersistenceManager,
-): NextScannerScreenUseCase {
-    override fun get(): NextScannerScreenState {
+): ScannerNavigationStateUseCase {
+    override fun get(): ScannerNavigationState {
         return if (!persistenceManager.getScanInstructionsSeen()) {
-            NextScannerScreenState.Instructions
+            ScannerNavigationState.Instructions
         } else if (!persistenceManager.isVerificationPolicySelectionSet()) {
-            NextScannerScreenState.VerificationPolicySelection
+            ScannerNavigationState.VerificationPolicySelection
         } else {
-            NextScannerScreenState.Scanner
+            ScannerNavigationState.Scanner
         }
     }
 }

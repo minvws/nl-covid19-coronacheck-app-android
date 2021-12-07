@@ -8,8 +8,8 @@ package nl.rijksoverheid.ctr.verifier.ui.scanqr
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-sealed class NextScannerScreenState {
-    object Scanner: NextScannerScreenState()
-    object Instructions: NextScannerScreenState()
-    object VerificationPolicySelection: NextScannerScreenState()
+sealed class ScannerNavigationState {
+    object Scanner: ScannerNavigationState()
+    object Instructions: ScannerNavigationState()
+    object VerificationPolicySelection: ScannerNavigationState()
 }

@@ -18,7 +18,7 @@ import nl.rijksoverheid.ctr.verifier.ui.scanner.ScannerViewModel
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.VerifiedQrResultState
 import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.TestResultValidUseCase
 import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.VerifyQrUseCase
-import nl.rijksoverheid.ctr.verifier.ui.scanqr.NextScannerScreenState
+import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScannerNavigationState
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrViewModel
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody
@@ -69,7 +69,7 @@ fun fakeIntroductionViewModel(
 
 fun fakeScanQrViewModel(
     scanInstructionsSeen: Boolean,
-    nextScannerScreenState: NextScannerScreenState = NextScannerScreenState.Scanner,
+    scannerNavigationState: ScannerNavigationState = ScannerNavigationState.Scanner,
 ) = object : ScanQrViewModel() {
     override fun hasSeenScanInstructions(): Boolean {
         return scanInstructionsSeen
@@ -78,8 +78,8 @@ fun fakeScanQrViewModel(
     override fun setScanInstructionsSeen() {
     }
 
-    override fun getNextScannerScreenState(): NextScannerScreenState {
-        return nextScannerScreenState
+    override fun getNextScannerScreenState(): ScannerNavigationState {
+        return scannerNavigationState
     }
 
     override fun onViewCreated() {

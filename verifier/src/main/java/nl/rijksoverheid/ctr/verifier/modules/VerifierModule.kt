@@ -105,7 +105,7 @@ fun verifierModule(path: String) = module {
     }
 
     factory<VerificationPolicyUseCase> { VerificationPolicyUseCaseImpl(get(), get(), get()) }
-    factory<NextScannerScreenUseCase> { NextScannerScreenUseCaseImpl(get()) }
+    factory<ScannerNavigationStateUseCase> { ScannerNavigationStateUseCaseImpl(get()) }
 
     viewModel<VerificationPolicySelectionViewModel> { (isScanQRFlow: Boolean) -> VerificationPolicySelectionViewModelImpl(get(), isScanQRFlow) }
 }

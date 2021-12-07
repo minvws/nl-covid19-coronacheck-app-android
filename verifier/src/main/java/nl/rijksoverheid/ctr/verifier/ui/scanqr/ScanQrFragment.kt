@@ -82,7 +82,7 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
             scanQrViewModel.nextScreen()
         }
 
-        scanQrViewModel.nextScreenEvent.observe(viewLifecycleOwner, ::goToNextScreen)
+        scanQrViewModel.startupStateEvent.observe(viewLifecycleOwner, ::goToNextScreen)
 
         scanQrViewModel.liveData.observe(viewLifecycleOwner, ::onStateUpdated)
 
@@ -158,15 +158,15 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
         }
     }
 
-    private fun goToNextScreen(nextScreenEvent: Event<NextScannerScreenState>) {
-        when (nextScreenEvent.peekContent()) {
-            NextScannerScreenState.Instructions -> findNavController().navigate(
+    private fun goToNextScreen(startupStateEvent: Event<ScannerNavigationState>) {
+        when (startupStateEvent.peekContent()) {
+            ScannerNavigationState.Instructions -> findNavController().navigate(
                 ScanQrFragmentDirections.actionScanInstructions()
             )
-            NextScannerScreenState.VerificationPolicySelection -> scannerUtil.launchVerificationPolicySelection(
+            ScannerNavigationState.VerificationPolicySelection -> scannerUtil.launchVerificationPolicySelection(
                 requireActivity()
             )
-            NextScannerScreenState.Scanner -> scannerUtil.launchScanner(requireActivity())
+            ScannerNavigationState.Scanner -> scannerUtil.launchScanner(requireActivity())
         }
     }
 
