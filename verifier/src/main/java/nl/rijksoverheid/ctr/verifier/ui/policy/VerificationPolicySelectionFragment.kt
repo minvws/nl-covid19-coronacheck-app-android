@@ -169,11 +169,11 @@ class VerificationPolicySelectionFragment :
             viewModel.updateRadioButton(checkedId)
         }
 
-        binding.subtitle3g.setOnClickListener {
+        binding.policy3GContainer.setOnClickListener {
             binding.verificationPolicyRadioGroup.check(R.id.policy3G)
         }
 
-        binding.subtitle2g.setOnClickListener {
+        binding.policy2GContainer.setOnClickListener {
             binding.verificationPolicyRadioGroup.check(R.id.policy2G)
         }
     }
