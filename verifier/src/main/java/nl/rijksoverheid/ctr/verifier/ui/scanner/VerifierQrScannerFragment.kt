@@ -33,6 +33,7 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
     private val verificationPolicyUseCase: VerificationPolicyUseCase by inject()
 
     override fun onQrScanned(content: String) {
+        scannerViewModel.log()
         scannerViewModel.validate(
             qrContent = content,
             returnUri = arguments?.getString("returnUri"),
