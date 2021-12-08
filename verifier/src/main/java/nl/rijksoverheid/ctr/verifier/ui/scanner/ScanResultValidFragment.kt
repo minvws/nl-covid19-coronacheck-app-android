@@ -2,31 +2,25 @@ package nl.rijksoverheid.ctr.verifier.ui.scanner
 
 import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
-import android.content.res.ColorStateList
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
-import nl.rijksoverheid.ctr.shared.utils.Accessibility
-import nl.rijksoverheid.ctr.shared.ext.setStatusBarTextColorBlack
-import nl.rijksoverheid.ctr.shared.ext.setStatusBarTextColorWhite
-import nl.rijksoverheid.ctr.verifier.BuildConfig
-import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanResultValidBinding
-import nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultValidData
-import java.util.concurrent.TimeUnit
-import org.koin.android.ext.android.inject
-import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyUseCase
-import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyState
-import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyState.Policy2G
-import android.view.ContextThemeWrapper
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
+import nl.rijksoverheid.ctr.shared.utils.Accessibility
+import nl.rijksoverheid.ctr.verifier.BuildConfig
 import nl.rijksoverheid.ctr.verifier.R
+import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanResultValidBinding
+import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyUseCase
+import nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultValidData
+import org.koin.android.ext.android.inject
+import java.util.concurrent.TimeUnit
 
 
 class ScanResultValidFragment : Fragment() {

@@ -2,8 +2,6 @@ package nl.rijksoverheid.ctr.verifier.ui.scanqr
 
 import nl.rijksoverheid.ctr.verifier.models.ScannerState
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
-import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySwitchState
-import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyUseCase
 import nl.rijksoverheid.ctr.verifier.usecase.ScannerStateUseCase
 
 /*

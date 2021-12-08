@@ -44,6 +44,8 @@ import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.VerifyQrUseCaseImpl
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtilImpl
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.*
+import nl.rijksoverheid.ctr.verifier.ui.scanqr.util.ScannerStateCountdownUtil
+import nl.rijksoverheid.ctr.verifier.ui.scanqr.util.ScannerStateCountdownUtilImpl
 import nl.rijksoverheid.ctr.verifier.usecase.ScannerStateUseCase
 import nl.rijksoverheid.ctr.verifier.usecase.ScannerStateUseCaseImpl
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -112,6 +114,7 @@ fun verifierModule(path: String) = module {
     factory<VerificationPolicyStateUseCase> { VerificationPolicyStateUseCaseImpl(get()) }
     factory<ScannerNavigationStateUseCase> { ScannerNavigationStateUseCaseImpl(get(), get()) }
     factory<ScannerStateUseCase> { ScannerStateUseCaseImpl(get(), get(), get(), get()) }
+    factory<ScannerStateCountdownUtil> { ScannerStateCountdownUtilImpl(get(), get(), get()) }
 
     viewModel<VerificationPolicySelectionViewModel> { VerificationPolicySelectionViewModelImpl(get(), get()) }
 }

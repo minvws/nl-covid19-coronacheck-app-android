@@ -13,6 +13,7 @@ import java.time.Instant
  *
  */
 interface VerificationPolicyUseCase {
+    fun get(): VerificationPolicy
     fun store(verificationPolicy: VerificationPolicy)
 }
 
@@ -20,6 +21,11 @@ class VerificationPolicyUseCaseImpl(
     private val persistenceManager: PersistenceManager,
     private val clock: Clock,
 ): VerificationPolicyUseCase {
+
+    // use only when the policy is set already
+    override fun get(): VerificationPolicy {
+        return persistenceManager.getVerificationPolicySelected() ?: VerificationPolicy.VerificationPolicy3G
+    }
 
     override fun store(verificationPolicy: VerificationPolicy) {
         val nowSeconds = Instant.now(clock).epochSecond

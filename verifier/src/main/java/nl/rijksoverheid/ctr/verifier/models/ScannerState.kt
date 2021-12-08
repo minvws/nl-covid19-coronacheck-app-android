@@ -1,5 +1,7 @@
 package nl.rijksoverheid.ctr.verifier.models
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyState
 
 /*
@@ -9,12 +11,14 @@ import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyState
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-sealed class ScannerState(open val verificationPolicyState: VerificationPolicyState) {
+sealed class ScannerState(open val verificationPolicyState: VerificationPolicyState): Parcelable {
 
+    @Parcelize
     data class Locked(val lastScanLockTimeSeconds: Long,
                       override val verificationPolicyState: VerificationPolicyState
     ): ScannerState(verificationPolicyState)
 
+    @Parcelize
     data class Unlocked(override val verificationPolicyState: VerificationPolicyState
     ): ScannerState(verificationPolicyState)
 }

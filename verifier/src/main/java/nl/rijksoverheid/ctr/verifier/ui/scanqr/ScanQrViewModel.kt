@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import nl.rijksoverheid.ctr.shared.livedata.Event
+import nl.rijksoverheid.ctr.verifier.models.ScannerState
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
-import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySwitchState
-import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyUseCase
+import nl.rijksoverheid.ctr.verifier.usecase.ScannerStateUseCase
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -17,7 +17,7 @@ import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyUseCase
  */
 
 abstract class ScanQrViewModel : ViewModel() {
-    val liveData: LiveData<Event<ScanQRState>> = MutableLiveData()
+    val liveData: LiveData<Event<ScannerState>> = MutableLiveData()
     val startupStateEvent: LiveData<Event<ScannerNavigationState>> = MutableLiveData()
     abstract fun hasSeenScanInstructions(): Boolean
     abstract fun setScanInstructionsSeen()
@@ -28,8 +28,8 @@ abstract class ScanQrViewModel : ViewModel() {
 
 class ScanQrViewModelImpl(
     private val persistenceManager: PersistenceManager,
-    private val useCase: VerificationPolicyUseCase,
     private val scannerNavigationStateUseCase: ScannerNavigationStateUseCase,
+    private val scannerStateUseCase: ScannerStateUseCase,
 ) : ScanQrViewModel() {
 
     override fun hasSeenScanInstructions(): Boolean {
@@ -48,16 +48,13 @@ class ScanQrViewModelImpl(
 
     override fun checkPolicyUpdate() {
         (liveData as MutableLiveData).postValue(
-            Event(ScanQRState(
-                policy = useCase.getState(),
-                lock = useCase.getSwitchState(),
-            ))
+            Event(scannerStateUseCase.get())
         )
     }
 
     override fun nextScreen() {
         val nextScreenState = getNextScannerScreenState()
-        val isScannerUnlocked = useCase.getSwitchState() !is VerificationPolicySwitchState.Locked
+        val isScannerUnlocked = scannerStateUseCase.get() !is ScannerState.Locked
         if (isScannerUnlocked ||
             (nextScreenState !is ScannerNavigationState.Scanner)
         ) {

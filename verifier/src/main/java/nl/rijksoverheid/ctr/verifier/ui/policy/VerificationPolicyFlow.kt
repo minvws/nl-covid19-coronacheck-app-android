@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.verifier.ui.policy
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
+import nl.rijksoverheid.ctr.verifier.models.ScannerState
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -10,9 +11,9 @@ import kotlinx.parcelize.Parcelize
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-sealed class VerificationPolicyFlow(val state: VerificationPolicyState): Parcelable {
+sealed class VerificationPolicyFlow(val state: ScannerState): Parcelable {
     @Parcelize
-    class FirstTimeUse(val policyState: VerificationPolicyState) : VerificationPolicyFlow(policyState)
+    class FirstTimeUse(val scannerState: ScannerState) : VerificationPolicyFlow(scannerState)
     @Parcelize
-    class Info(val policyState: VerificationPolicyState) : VerificationPolicyFlow(policyState)
+    class Info(val scannerState: ScannerState) : VerificationPolicyFlow(scannerState)
 }

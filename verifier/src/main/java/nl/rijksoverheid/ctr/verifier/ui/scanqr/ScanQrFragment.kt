@@ -22,11 +22,12 @@ import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.VerificationPolicy3
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.VerifierMainActivity
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanQrBinding
+import nl.rijksoverheid.ctr.verifier.models.ScannerState
 import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCase
-import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyState
-import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySwitchState
-import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyUseCase
+import nl.rijksoverheid.ctr.verifier.ui.policy.*
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
+import nl.rijksoverheid.ctr.verifier.ui.scanqr.util.ScannerStateCountdownUtil
+import nl.rijksoverheid.ctr.verifier.usecase.ScannerStateUseCase
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.concurrent.TimeUnit
@@ -47,30 +48,28 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
     private val scannerUtil: ScannerUtil by inject()
     private val clockDeviationUseCase: ClockDeviationUseCase by inject()
     private val infoFragmentUtil: InfoFragmentUtil by inject()
-    private val verificationPolicyUseCase: VerificationPolicyUseCase by inject()
+    private val scannerStateCountdownUtil: ScannerStateCountdownUtil by inject()
     private val verifierCachedAppConfigUseCase: VerifierCachedAppConfigUseCase by inject()
+    private val scannerStateUseCase: ScannerStateUseCase by inject()
 
-    private var switchCountDownTimer: ScannerStateCountDownTimer? = null
+    private var scannerStateCountDownTimer: ScannerStateCountDownTimer? = null
 
-    private fun onTimerFinish(verificationPolicyState: VerificationPolicyState) {
+    private fun onTimerFinish() {
         onStateUpdated(
-            ScanQRState(
-                policy = verificationPolicyState,
-                lock = VerificationPolicySwitchState.Unlocked,
-            )
+            scannerStateUseCase.get()
         )
     }
 
     private fun startTimer() {
         stopTimer()
-        val lockTimer = ScannerStateCountDownTimer(verificationPolicyUseCase, ::updateTitle, ::onTimerFinish)
+        val lockTimer = ScannerStateCountDownTimer(scannerStateCountdownUtil, ::updateTitle, ::onTimerFinish)
         lockTimer.start()
-        switchCountDownTimer = lockTimer
+        scannerStateCountDownTimer = lockTimer
     }
 
     private fun stopTimer() {
-        switchCountDownTimer?.cancel()
-        switchCountDownTimer = null
+        scannerStateCountDownTimer?.cancel()
+        scannerStateCountDownTimer = null
     }
 
     override fun onStart() {
@@ -131,10 +130,10 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
         _binding = null
     }
 
-    private fun onStateUpdated(state: ScanQRState) {
+    private fun onStateUpdated(scannerState: ScannerState) {
         binding.image.setImageDrawable(
             ContextCompat.getDrawable(
-                requireContext(), when (state.policy) {
+                requireContext(), when (scannerState.verificationPolicyState) {
                     VerificationPolicyState.None -> {
                         binding.bottom.hidePolicyIndication()
                         R.drawable.illustration_scanner_get_started_3g
@@ -151,9 +150,9 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
             )
         )
 
-        when (state.lock) {
-            is VerificationPolicySwitchState.Locked -> lockScanner()
-            is VerificationPolicySwitchState.Unlocked -> unlockScanner()
+        when (scannerState) {
+            is ScannerState.Locked -> lockScanner()
+            is ScannerState.Unlocked -> unlockScanner()
         }
     }
 
@@ -171,7 +170,11 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
     private fun goToNextScreen(scannerNavigationState: ScannerNavigationState) {
         when (scannerNavigationState) {
             is ScannerNavigationState.Instructions -> findNavController().navigate(ScanQrFragmentDirections.actionScanInstructions())
-            is ScannerNavigationState.VerificationPolicySelection -> findNavControllerSafety()?.navigate(ScanQrFragmentDirections.actionPolicySelection(true))
+            is ScannerNavigationState.VerificationPolicySelection -> findNavControllerSafety()?.navigate(
+                ScanQrFragmentDirections.actionPolicySelection(
+                    VerificationPolicyFlow.FirstTimeUse(scannerStateUseCase.get())
+                )
+            )
             is ScannerNavigationState.Scanner -> scannerUtil.launchScanner(requireActivity())
         }
     }

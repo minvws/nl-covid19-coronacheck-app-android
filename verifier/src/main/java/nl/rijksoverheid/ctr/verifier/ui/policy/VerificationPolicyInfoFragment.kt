@@ -11,6 +11,7 @@ import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentVerificationPolicyInfoBinding
+import nl.rijksoverheid.ctr.verifier.usecase.ScannerStateUseCase
 import org.koin.android.ext.android.inject
 
 /*
@@ -25,7 +26,7 @@ class VerificationPolicyInfoFragment : Fragment(R.layout.fragment_verification_p
     private var _binding: FragmentVerificationPolicyInfoBinding? = null
     private val binding get() = _binding!!
 
-    private val verificationPolicyStateUseCase: VerificationPolicyStateUseCase by inject()
+    private val scannerStateUseCase: ScannerStateUseCase by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,7 +45,9 @@ class VerificationPolicyInfoFragment : Fragment(R.layout.fragment_verification_p
 
     private fun setupButtons() {
         binding.adjustButton.setOnClickListener {
-            navigateSafety(VerificationPolicyInfoFragmentDirections.actionPolicySelection())
+            navigateSafety(VerificationPolicyInfoFragmentDirections.actionPolicySelection(
+                VerificationPolicyFlow.Info(scannerStateUseCase.get())
+            ))
         }
 
         binding.readMoreButton.setOnClickListener {
@@ -52,7 +55,9 @@ class VerificationPolicyInfoFragment : Fragment(R.layout.fragment_verification_p
         }
 
         binding.bottom.setButtonClick {
-            navigateSafety(VerificationPolicyInfoFragmentDirections.actionPolicySelection())
+            navigateSafety(VerificationPolicyInfoFragmentDirections.actionPolicySelection(
+                VerificationPolicyFlow.Info(scannerStateUseCase.get())
+            ))
         }
     }
 
@@ -68,7 +73,7 @@ class VerificationPolicyInfoFragment : Fragment(R.layout.fragment_verification_p
     }
 
     private fun setupPolicy() {
-        when (verificationPolicyStateUseCase.get()) {
+        when (scannerStateUseCase.get().verificationPolicyState) {
             VerificationPolicyState.None -> {}
             VerificationPolicyState.Policy2G -> {
                 displayPolicyViews(R.string.verifier_start_scan_qr_policy_indication_2g, R.string.verifier_risksetting_highrisk_subtitle)

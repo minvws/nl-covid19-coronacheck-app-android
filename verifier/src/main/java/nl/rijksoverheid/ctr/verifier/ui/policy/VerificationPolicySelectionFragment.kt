@@ -64,7 +64,7 @@ class VerificationPolicySelectionFragment :
     private fun onVerificationFlowUpdate(flow: VerificationPolicyFlow) {
         when (flow) {
             is VerificationPolicyFlow.FirstTimeUse -> setupScreenForScanQrFlow()
-            is VerificationPolicyFlow.Info -> setupScreenForSettingsFlow(flow.state)
+            is VerificationPolicyFlow.Info -> setupScreenForSettingsFlow(flow.state.verificationPolicyState)
         }
         setupRadioGroup(flow)
     }
@@ -192,7 +192,7 @@ class VerificationPolicySelectionFragment :
     }
 
     private fun setupRadioGroup(flow: VerificationPolicyFlow) {
-        policySelected(flow.state)
+        policySelected(flow.state.verificationPolicyState)
 
         when (viewModel.radioButtonSelected) {
             binding.policy2G.id -> policy2GSelected(flow)

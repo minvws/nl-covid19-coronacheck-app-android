@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
+import nl.rijksoverheid.ctr.verifier.usecase.ScannerStateUseCase
 
 abstract class VerificationPolicySelectionViewModel: ViewModel() {
     val policyFlowLiveData: LiveData<VerificationPolicyFlow> = MutableLiveData()
@@ -24,11 +25,11 @@ abstract class VerificationPolicySelectionViewModel: ViewModel() {
  */
 class VerificationPolicySelectionViewModelImpl(
     private val verificationPolicyUseCase: VerificationPolicyUseCase,
-    private val verificationPolicyStateUseCase: VerificationPolicyStateUseCase,
+    private val scannerStateUseCase: ScannerStateUseCase,
 ) : VerificationPolicySelectionViewModel() {
 
     override fun init(verificationPolicyFlow: VerificationPolicyFlow) {
-        val policyState = verificationPolicyStateUseCase.get()
+        val policyState = scannerStateUseCase.get()
 
         (policyFlowLiveData as MutableLiveData).postValue(
             when (verificationPolicyFlow) {
