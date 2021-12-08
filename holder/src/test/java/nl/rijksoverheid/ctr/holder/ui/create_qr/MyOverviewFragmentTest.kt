@@ -192,7 +192,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                     DashboardItem.CardsItem(
                         listOf(
                             DashboardItem.CardsItem.CardItem(
-                                greenCard = fakeGreenCard,
+                                greenCard = fakeGreenCard(),
                                 originStates = listOf(),
                                 credentialState = DashboardItem.CardsItem.CredentialState.NoCredential,
                                 databaseSyncerResult = DatabaseSyncerResult.Success()
@@ -238,19 +238,19 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                     DashboardItem.CardsItem(
                         listOf(
                             DashboardItem.CardsItem.CardItem(
-                                greenCard = fakeGreenCard,
+                                greenCard = fakeGreenCard(),
                                 originStates = listOf(),
                                 credentialState = DashboardItem.CardsItem.CredentialState.NoCredential,
                                 databaseSyncerResult = DatabaseSyncerResult.Success()
                             ),
                             DashboardItem.CardsItem.CardItem(
-                                greenCard = fakeGreenCard,
+                                greenCard = fakeGreenCard(),
                                 originStates = listOf(),
                                 credentialState = DashboardItem.CardsItem.CredentialState.NoCredential,
                                 databaseSyncerResult = DatabaseSyncerResult.Success()
                             ),
                             DashboardItem.CardsItem.CardItem(
-                                greenCard = fakeGreenCard,
+                                greenCard = fakeGreenCard(),
                                 originStates = listOf(),
                                 credentialState = DashboardItem.CardsItem.CredentialState.NoCredential,
                                 databaseSyncerResult = DatabaseSyncerResult.Success()
@@ -286,7 +286,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                 title = R.string.travel_button_domestic,
                 greenCardType = GreenCardType.Domestic,
                 items = listOf(
-                    DashboardItem.InfoItem.GreenCardExpiredItem(fakeGreenCard)
+                    DashboardItem.InfoItem.GreenCardExpiredItem(fakeGreenCard())
                 )
             )
         )
@@ -367,6 +367,30 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
         performActionOnView(ViewMatchers.withId(R.id.addQrButton), ViewActions.click())
 
         Assert.assertEquals(navController.currentDestination?.id, R.id.nav_qr_code_type)
+    }
+
+    @Test
+    fun `3G validity card cannot be dismissed and should have a read more`() {
+        startFragment(
+            DashboardTabItem(
+                title = R.string.travel_button_domestic,
+                greenCardType = GreenCardType.Domestic,
+                items = listOf(
+                    DashboardItem.InfoItem.TestCertificate3GValidity
+                )
+            )
+        )
+
+        assertCustomAssertionAtPosition(
+            listId = R.id.recyclerView,
+            position = 0,
+            targetViewId = R.id.dashboardItemInfoRoot,
+            viewAssertion = ViewAssertion { view, _ ->
+                assertTrue { view is CardView }
+            }
+        )
+        assertNotDisplayed(R.id.close)
+        assertDisplayed(R.id.button)
     }
 
     private fun startFragment(tabItem: DashboardTabItem): FragmentScenario<MyOverviewTabsFragment> {

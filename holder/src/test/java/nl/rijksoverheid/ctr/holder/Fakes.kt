@@ -733,12 +733,6 @@ val fakeGreenCardEntity = GreenCardEntity(
     type = GreenCardType.Domestic
 )
 
-val fakeGreenCard = GreenCard(
-    greenCardEntity = fakeGreenCardEntity,
-    origins = listOf(),
-    credentialEntities = listOf()
-)
-
 fun fakeRemoteEventVaccination(date: LocalDate = LocalDate.now()) =
     RemoteEventVaccination.Vaccination(
         date = date,
@@ -754,7 +748,14 @@ fun fakeRemoteEventVaccination(date: LocalDate = LocalDate.now()) =
         manufacturer = ""
     )
 
-fun fakeGreenCard(greenCardType: GreenCardType, originType: OriginType) = GreenCard(
+fun fakeGreenCard(
+    greenCardType: GreenCardType = GreenCardType.Domestic,
+    originType: OriginType = OriginType.Vaccination,
+    eventTime: OffsetDateTime = OffsetDateTime.now(),
+    expirationTime: OffsetDateTime = OffsetDateTime.now(),
+    validFrom: OffsetDateTime = OffsetDateTime.now(),
+    category: String? = null
+) = GreenCard(
     greenCardEntity = GreenCardEntity(
         id = 0,
         walletId = 0,
@@ -765,9 +766,9 @@ fun fakeGreenCard(greenCardType: GreenCardType, originType: OriginType) = GreenC
             id = 0,
             greenCardId = 0,
             type = originType,
-            eventTime = OffsetDateTime.now(),
-            expirationTime = OffsetDateTime.now(),
-            validFrom = OffsetDateTime.now()
+            eventTime = eventTime,
+            expirationTime = expirationTime,
+            validFrom = validFrom
         )
     ),
     credentialEntities = listOf(
@@ -776,8 +777,9 @@ fun fakeGreenCard(greenCardType: GreenCardType, originType: OriginType) = GreenC
             greenCardId = 0,
             data = "".toByteArray(),
             credentialVersion = 0,
-            validFrom = OffsetDateTime.now(),
-            expirationTime = OffsetDateTime.now()
+            validFrom = validFrom,
+            expirationTime = expirationTime,
+            category = category
         )
     )
 )
