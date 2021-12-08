@@ -7,7 +7,6 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
 import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -24,7 +23,6 @@ import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.VerifierMainActivity
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanQrBinding
 import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCase
-import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionFragment
 import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyState
 import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySwitchState
 import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyUseCase
@@ -52,7 +50,7 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
     private val verificationPolicyUseCase: VerificationPolicyUseCase by inject()
     private val verifierCachedAppConfigUseCase: VerifierCachedAppConfigUseCase by inject()
 
-    private var switchCountDownTimer: SwitchCountDownTimer? = null
+    private var switchCountDownTimer: ScannerStateCountDownTimer? = null
 
     private fun onTimerFinish(verificationPolicyState: VerificationPolicyState) {
         onStateUpdated(
@@ -65,7 +63,7 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
 
     private fun startTimer() {
         stopTimer()
-        val lockTimer = SwitchCountDownTimer(verificationPolicyUseCase, ::updateTitle, ::onTimerFinish)
+        val lockTimer = ScannerStateCountDownTimer(verificationPolicyUseCase, ::updateTitle, ::onTimerFinish)
         lockTimer.start()
         switchCountDownTimer = lockTimer
     }

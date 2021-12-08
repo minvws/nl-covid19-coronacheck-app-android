@@ -13,7 +13,7 @@ import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyUseCase
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class SwitchCountDownTimer(
+class ScannerStateCountDownTimer(
     private val verificationPolicyUseCase: VerificationPolicyUseCase,
     private val onTick: (String) -> Unit,
     private val onFinish: (VerificationPolicyState) -> Unit,
