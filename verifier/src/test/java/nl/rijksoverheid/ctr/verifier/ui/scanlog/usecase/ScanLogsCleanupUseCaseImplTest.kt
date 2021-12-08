@@ -18,31 +18,19 @@ class ScanLogsCleanupUseCaseImplTest {
         val entities = listOf(
             ScanLogEntity(
                 policy = VerificationPolicy.VerificationPolicy2G,
-                date = OffsetDateTime.ofInstant(
-                    Instant.parse("2021-01-01T00:00:00.00Z"),
-                    ZoneId.of("UTC")
-                )
+                date = Instant.parse("2021-01-01T00:00:00.00Z")
             ),
             ScanLogEntity(
                 policy = VerificationPolicy.VerificationPolicy2G,
-                date = OffsetDateTime.ofInstant(
-                    Instant.parse("2021-01-01T00:10:00.00Z"),
-                    ZoneId.of("UTC")
-                )
+                date = Instant.parse("2021-01-01T00:10:00.00Z")
             ),
             ScanLogEntity(
                 policy = VerificationPolicy.VerificationPolicy2G,
-                date = OffsetDateTime.ofInstant(
-                    Instant.parse("2021-01-01T00:20:00.00Z"),
-                    ZoneId.of("UTC")
-                )
+                date = Instant.parse("2021-01-01T00:20:00.00Z")
             ),
             ScanLogEntity(
                 policy = VerificationPolicy.VerificationPolicy2G,
-                date = OffsetDateTime.ofInstant(
-                    Instant.parse("2021-01-01T00:30:00.00Z"),
-                    ZoneId.of("UTC")
-                )
+                date = Instant.parse("2021-01-01T00:30:00.00Z")
             )
         )
 

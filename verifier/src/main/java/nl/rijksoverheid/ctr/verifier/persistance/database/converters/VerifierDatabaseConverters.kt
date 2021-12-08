@@ -3,8 +3,6 @@ package nl.rijksoverheid.ctr.verifier.persistance.database.converters
 import androidx.room.TypeConverter
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import java.time.Instant
-import java.time.OffsetDateTime
-import java.time.ZoneOffset
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -15,13 +13,13 @@ import java.time.ZoneOffset
  */
 class VerifierDatabaseConverters {
     @TypeConverter
-    fun fromTimestampToOffsetDateTime(value: Long?): OffsetDateTime? {
-        return value?.let { OffsetDateTime.ofInstant(Instant.ofEpochSecond(it), ZoneOffset.UTC) }
+    fun fromTimestampToInstant(value: Long?): Instant? {
+        return value?.let { Instant.ofEpochMilli(it) }
     }
 
     @TypeConverter
-    fun offsetDateTimeToTimestamp(date: OffsetDateTime?): Long? {
-        return date?.toEpochSecond()
+    fun instantToTimestamp(instant: Instant?): Long? {
+        return instant?.toEpochMilli()
     }
 
     @TypeConverter

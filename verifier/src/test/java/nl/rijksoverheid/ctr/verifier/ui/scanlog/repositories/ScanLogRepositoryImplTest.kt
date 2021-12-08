@@ -28,10 +28,7 @@ class ScanLogRepositoryImplTest {
         val entity = ScanLogEntity(
             id = 0,
             policy = VerificationPolicy.VerificationPolicy2G,
-            date = OffsetDateTime.ofInstant(
-                Instant.parse("2021-01-01T00:00:00.00Z"),
-                ZoneId.of("UTC")
-            )
+            date = Instant.parse("2021-01-01T00:00:00.00Z")
         )
 
         repository.insert(
@@ -54,10 +51,7 @@ class ScanLogRepositoryImplTest {
         val entity = ScanLogEntity(
             id = 0,
             policy = VerificationPolicy.VerificationPolicy2G,
-            date = OffsetDateTime.ofInstant(
-                Instant.parse("2021-01-01T00:00:00.00Z"),
-                ZoneId.of("UTC")
-            )
+            date = Instant.parse("2021-01-01T00:00:00.00Z")
         )
 
         coEvery { verifierDatabase.scanLogDao().getAll() } answers { listOf(entity) }

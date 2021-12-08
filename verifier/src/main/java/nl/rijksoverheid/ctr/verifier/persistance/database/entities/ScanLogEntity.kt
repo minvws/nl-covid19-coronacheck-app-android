@@ -3,7 +3,7 @@ package nl.rijksoverheid.ctr.verifier.persistance.database.entities
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
-import java.time.OffsetDateTime
+import java.time.Instant
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -18,5 +18,5 @@ import java.time.OffsetDateTime
 data class ScanLogEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val policy: VerificationPolicy,
-    val date: OffsetDateTime
+    val date: Instant
 )

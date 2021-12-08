@@ -2,8 +2,7 @@ package nl.rijksoverheid.ctr.verifier.ui.scanlog.usecase
 
 import nl.rijksoverheid.ctr.verifier.persistance.database.VerifierDatabase
 import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCase
-import java.time.Clock
-import java.time.OffsetDateTime
+import java.time.*
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -25,7 +24,8 @@ class ScanLogsCleanupUseCaseImpl(
         val scanLogsStorageSeconds = verifierCachedAppConfigUseCase.getCachedAppConfig().scanLogStorageSeconds
 
         val scanLogsToRemove = scanLogs.filter {
-            it.date.plusSeconds(scanLogsStorageSeconds.toLong()).isBefore(OffsetDateTime.now(clock))
+            val scanLogExpiration = it.date.plusSeconds(scanLogsStorageSeconds.toLong())
+            scanLogExpiration.isBefore(Instant.now(clock))
         }
 
         verifierDatabase.scanLogDao().delete(scanLogsToRemove)
