@@ -80,6 +80,7 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
         when (val state = scanQrViewModel.getNextScannerScreenState()) {
             is ScannerNavigationState.Scanner -> {
                 if (!state.isLocked) {
+                    findNavControllerSafety()?.popBackStack(R.id.nav_scan_qr, false)
                     scannerUtil.launchScanner(requireActivity())
                 }
             }
