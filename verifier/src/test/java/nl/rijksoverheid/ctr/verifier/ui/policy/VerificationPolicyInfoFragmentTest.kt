@@ -85,6 +85,7 @@ class VerificationPolicyInfoFragmentTest : AutoCloseKoinTest() {
                 factory {
                     mockk<PersistenceManager>().apply {
                         every { getVerificationPolicySelected() } returns policy
+                        every { getLastScanLockTimeSeconds() } returns 0L
                     }
                 }
             }

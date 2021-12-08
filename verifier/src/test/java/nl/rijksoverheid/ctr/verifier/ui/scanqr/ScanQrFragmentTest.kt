@@ -12,13 +12,20 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertNotDisplayed
 import com.adevinta.android.barista.interaction.BaristaClickInteractions.clickOn
-import io.mockk.*
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verify
 import nl.rijksoverheid.ctr.shared.livedata.Event
-import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.fakeScanQrViewModel
+import nl.rijksoverheid.ctr.verifier.models.ScannerState
+import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
+import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyState
+import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyUseCase
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
+import nl.rijksoverheid.ctr.verifier.usecase.ScannerStateUseCase
 import org.junit.Assert.assertEquals
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -26,11 +33,6 @@ import org.koin.core.context.loadKoinModules
 import org.koin.dsl.module
 import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
-import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
-import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyState
-import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySwitchState
-import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyUseCase
-import org.junit.Rule
 import org.robolectric.annotation.Config
 
 /*
@@ -79,7 +81,7 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
     @Test
     fun `Given instructions seen and policy set, Clicking start scan opens scanner`() {
         launchScanQrFragment(
-            policy = VerificationPolicy.VerificationPolicy2G,
+            policyState = VerificationPolicyState.Policy2G,
             scannerNavigationState = ScannerNavigationState.Scanner(false),
         )
         clickOn(R.id.button)
@@ -96,7 +98,7 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
     @Test
     fun `given 2g policy is set, 2g policy indication is shown`() {
         launchScanQrFragment(
-            policy = VerificationPolicy.VerificationPolicy2G
+            policyState = VerificationPolicyState.Policy2G
         )
 
         assertDisplayed(R.id.indicationContainer)
@@ -106,7 +108,7 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
     @Test
     fun `given 3g policy is set, 3g policy indication is shown`() {
         launchScanQrFragment(
-            policy = VerificationPolicy.VerificationPolicy3G
+            policyState = VerificationPolicyState.Policy3G
         )
 
         assertDisplayed(R.id.indicationContainer)
@@ -116,7 +118,7 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
     private fun launchScanQrFragment(
         hasSeenScanInstructions: Boolean = true,
         scannerNavigationState: ScannerNavigationState? = null,
-        policy: VerificationPolicy? = null,
+        policyState: VerificationPolicyState = VerificationPolicyState.None,
     ) {
 
         val viewModel = fakeScanQrViewModel(
@@ -125,14 +127,9 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
         )
 
         (viewModel.liveData as MutableLiveData).postValue(
-            Event(ScanQRState(
-                policy = when (policy) {
-                    VerificationPolicy.VerificationPolicy2G -> VerificationPolicyState.Policy2G
-                    VerificationPolicy.VerificationPolicy3G -> VerificationPolicyState.Policy3G
-                    null -> VerificationPolicyState.None
-                },
-                lock = VerificationPolicySwitchState.Unlocked
-            ))
+            Event(
+                ScannerState.Unlocked(policyState)
+            )
         )
 
         scannerNavigationState?.let {
@@ -151,13 +148,18 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
 
                 factory {
                     mockk<PersistenceManager>().apply {
-                        every { getVerificationPolicySelected() } returns policy
                         every { getLastScanLockTimeSeconds() } returns 0L
                     }
                 }
 
                 factory {
                     mockk<VerificationPolicyUseCase>(relaxed = true)
+                }
+                
+                factory {
+                    mockk<ScannerStateUseCase>().apply { 
+                        every { get() } returns ScannerState.Unlocked(policyState)
+                    }
                 }
 
                 viewModel {

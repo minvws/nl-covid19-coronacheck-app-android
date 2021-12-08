@@ -14,6 +14,7 @@ import io.mockk.mockk
 import io.mockk.verify
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.verifier.R
+import nl.rijksoverheid.ctr.verifier.models.ScannerState
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
 import org.junit.Rule
 import org.junit.Test
@@ -66,11 +67,15 @@ class VerificationPolicySelectionFragmentTest : AutoCloseKoinTest() {
         verify { verificationPolicyUseCase.store(VerificationPolicy.VerificationPolicy2G) }
     }
 
-    private fun launchFragment() {
+    private fun launchFragment(
+        policyState: VerificationPolicyState = VerificationPolicyState.None,
+    ) {
 
-        verificationPolicyUseCase = mockk<VerificationPolicyUseCase>(relaxed = true).apply {
-            every { getState() } returns VerificationPolicyState.None
+        val verificationPolicyStateUseCase = mockk<VerificationPolicyStateUseCase>(relaxed = true).apply {
+            every { get() } returns policyState
         }
+
+        verificationPolicyUseCase = mockk(relaxed = true)
 
         loadKoinModules(
             module(override = true) {
@@ -81,12 +86,16 @@ class VerificationPolicySelectionFragmentTest : AutoCloseKoinTest() {
                 factory {
                     scannerUtil
                 }
+
+                factory {
+                    verificationPolicyStateUseCase
+                }
             }
         )
 
         launchFragmentInContainer(
             bundleOf(
-                "flow" to true,
+                "flow" to VerificationPolicyFlow.FirstTimeUse(ScannerState.Unlocked(policyState)),
             ), themeResId = R.style.AppTheme
         ) {
             VerificationPolicySelectionFragment().also {
