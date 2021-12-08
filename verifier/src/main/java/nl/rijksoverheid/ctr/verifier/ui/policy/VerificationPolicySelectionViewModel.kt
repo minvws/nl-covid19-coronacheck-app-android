@@ -10,6 +10,7 @@ abstract class VerificationPolicySelectionViewModel: ViewModel() {
 
     var radioButtonSelected: Int? = null
 
+    abstract fun init(verificationPolicyFlow: VerificationPolicyFlow)
     abstract fun storeSelection(verificationPolicy: VerificationPolicy)
     abstract fun updateRadioButton(checkedId: Int)
 }
@@ -23,17 +24,16 @@ abstract class VerificationPolicySelectionViewModel: ViewModel() {
  */
 class VerificationPolicySelectionViewModelImpl(
     private val verificationPolicyUseCase: VerificationPolicyUseCase,
-    private val isScanQRFlow: Boolean,
+    private val verificationPolicyStateUseCase: VerificationPolicyStateUseCase,
 ) : VerificationPolicySelectionViewModel() {
 
-    init {
-        val policyState = verificationPolicyUseCase.getState()
+    override fun init(verificationPolicyFlow: VerificationPolicyFlow) {
+        val policyState = verificationPolicyStateUseCase.get()
 
         (policyFlowLiveData as MutableLiveData).postValue(
-            if (isScanQRFlow) {
-                VerificationPolicyFlow.ScanQR(policyState)
-            } else {
-                VerificationPolicyFlow.Settings(policyState)
+            when (verificationPolicyFlow) {
+                is VerificationPolicyFlow.FirstTimeUse -> VerificationPolicyFlow.FirstTimeUse(policyState)
+                is VerificationPolicyFlow.Info -> VerificationPolicyFlow.Info(policyState)
             }
         )
     }

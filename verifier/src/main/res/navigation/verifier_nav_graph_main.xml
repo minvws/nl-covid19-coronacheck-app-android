@@ -51,9 +51,9 @@
             app:popExitAnim="@anim/slide_out_right" />
 
         <argument
-            android:name="isScanQrFlow"
-            android:defaultValue="false"
-            app:argType="boolean"/>
+            android:name="flow"
+            app:nullable="false"
+            app:argType="nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyFlow"/>
 
     </fragment>
 

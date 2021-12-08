@@ -22,14 +22,14 @@ class VerificationPolicySelectionViewModelImplTest {
     fun `init on scanQR flow with right state`() {
         val viewModel = VerificationPolicySelectionViewModelImpl(verificationPolicyUseCase, true)
 
-        assertEquals(VerificationPolicyState.Policy2G, (viewModel.policyFlowLiveData.value as VerificationPolicyFlow.ScanQR).state)
+        assertEquals(VerificationPolicyState.Policy2G, (viewModel.policyFlowLiveData.value as VerificationPolicyFlow.FirstTimeUse).state)
     }
 
     @Test
     fun `init on settings flow with right state`() {
         val viewModel = VerificationPolicySelectionViewModelImpl(verificationPolicyUseCase, false)
 
-        assertEquals(VerificationPolicyState.Policy2G, (viewModel.policyFlowLiveData.value as VerificationPolicyFlow.Settings).state)
+        assertEquals(VerificationPolicyState.Policy2G, (viewModel.policyFlowLiveData.value as VerificationPolicyFlow.Info).state)
     }
 
     @Test

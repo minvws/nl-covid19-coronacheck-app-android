@@ -86,7 +86,7 @@ class VerificationPolicySelectionFragmentTest : AutoCloseKoinTest() {
 
         launchFragmentInContainer(
             bundleOf(
-                "isScanQrFlow" to true,
+                "flow" to true,
             ), themeResId = R.style.AppTheme
         ) {
             VerificationPolicySelectionFragment().also {
