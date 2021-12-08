@@ -5,26 +5,12 @@
     android:fitsSystemWindows="true"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <nl.rijksoverheid.ctr.design.views.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:visibility="gone"
-        android:elevation="16dp"
-        app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="@string/back"
-        app:title="@string/verifier_risksetting_start_title"
-        app:navigationIcon="@drawable/ic_back" />
-
     <ScrollView
         android:id="@+id/scroll"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:clipToPadding="false"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@id/confirmationButton">

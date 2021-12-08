@@ -7,16 +7,20 @@ import android.view.View
 import android.view.View.*
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.VerificationPolicy2G
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.VerificationPolicy3G
+import nl.rijksoverheid.ctr.verifier.MainNavDirections
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentVerificationPolicySelectionBinding
 import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
+import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScannerNavigationState
+import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScannerNavigationStateUseCase
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -35,13 +39,16 @@ class VerificationPolicySelectionFragment :
     private var _binding: FragmentVerificationPolicySelectionBinding? = null
     private val binding get() = _binding!!
 
+    private val args: VerificationPolicySelectionFragmentArgs by navArgs()
     private val scannerUtil: ScannerUtil by inject()
     private val viewModel: VerificationPolicySelectionViewModel by viewModel {
-        parametersOf(arguments?.getBoolean(isScanQRFlow) == true)
+        parametersOf(args.isScanQrFlow)
     }
 
     private val dialogUtil: DialogUtil by inject()
     private val verifierCachedAppConfigUseCase: VerifierCachedAppConfigUseCase by inject()
+    private val verificationPolicyUseCase: VerificationPolicyUseCase by inject()
+    private val scannerNavigationStateUseCase: ScannerNavigationStateUseCase by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -68,10 +75,13 @@ class VerificationPolicySelectionFragment :
     }
 
     private fun setupScreenForSettingsFlow(verificationPolicyState: VerificationPolicyState) {
-        binding.subHeader.setHtmlText(htmlText =
+        binding.subHeader.setHtmlText(
+            htmlText =
             if (verificationPolicyState != VerificationPolicyState.None) {
-                getString(R.string.verifier_risksetting_menu_scan_settings_selected_title,
-                    TimeUnit.SECONDS.toMinutes(verifierCachedAppConfigUseCase.getCachedAppConfig().scanLockSeconds.toLong()))
+                getString(
+                    R.string.verifier_risksetting_menu_scan_settings_selected_title,
+                    TimeUnit.SECONDS.toMinutes(verifierCachedAppConfigUseCase.getCachedAppConfig().scanLockSeconds.toLong())
+                )
             } else {
                 getString(R.string.verifier_risksetting_menu_scan_settings_unselected_title)
             }
@@ -85,28 +95,55 @@ class VerificationPolicySelectionFragment :
     }
 
     private fun presentWarningDialog() {
-        dialogUtil.presentDialog(
-            context = requireContext(),
-            title = R.string.verifier_risksetting_confirmation_dialog_title,
-            message = getString(R.string.verifier_risksetting_confirmation_dialog_message,
-                TimeUnit.SECONDS.toMinutes(verifierCachedAppConfigUseCase.getCachedAppConfig().scanLockSeconds.toLong())),
-            positiveButtonText = R.string.verifier_risksetting_confirmation_dialog_positive_button,
-            positiveButtonCallback = {
-                navigateSafety(R.id.nav_scan_qr)
-            },
-            negativeButtonText = R.string.verifier_risksetting_confirmation_dialog_negative_button
-        )
+        val currentPolicyState = verificationPolicyUseCase.getState()
+        val policyHasNotChanged = currentPolicyState is VerificationPolicyState.Policy2G && binding.policy2G.isChecked ||
+                currentPolicyState is VerificationPolicyState.Policy3G && binding.policy3G.isChecked
+        when {
+            currentPolicyState is VerificationPolicyState.None -> {
+                storeSelection()
+                goToNextScreen()
+            }
+            policyHasNotChanged -> goToNextScreen()
+            else -> dialogUtil.presentDialog(
+                context = requireContext(),
+                title = R.string.verifier_risksetting_confirmation_dialog_title,
+                message = getString(
+                    R.string.verifier_risksetting_confirmation_dialog_message,
+                    TimeUnit.SECONDS.toMinutes(verifierCachedAppConfigUseCase.getCachedAppConfig().scanLockSeconds.toLong())
+                ),
+                positiveButtonText = R.string.verifier_risksetting_confirmation_dialog_positive_button,
+                positiveButtonCallback = {
+                    storeSelection()
+                    goToNextScreen()
+                },
+                negativeButtonText = R.string.verifier_risksetting_confirmation_dialog_negative_button
+            )
+        }
+    }
+
+    private fun goToNextScreen() {
+        when (scannerNavigationStateUseCase.get()) {
+            ScannerNavigationState.Instructions -> {
+                navigateSafety(VerificationPolicySelectionFragmentDirections.actionScanInstructions())
+            }
+            is ScannerNavigationState.Scanner -> {
+                when (verificationPolicyUseCase.getSwitchState()) {
+                    is VerificationPolicySwitchState.Locked -> navigateSafety(R.id.nav_scan_qr)
+                    VerificationPolicySwitchState.Unlocked -> {
+                        findNavControllerSafety()?.popBackStack(R.id.nav_scan_qr, false)
+                        scannerUtil.launchScanner(requireActivity())
+                    }
+                }
+            }
+        }
     }
 
     private fun setupScreenForScanQrFlow() {
-        binding.toolbar.visibility = VISIBLE
-
-        binding.toolbar.setNavigationOnClickListener {
-            findNavControllerSafety()?.popBackStack()
-        }
+        binding.subHeader.setHtmlText(R.string.verifier_risksetting_firsttimeuse_header)
         binding.confirmationButton.setOnClickListener {
             onConfirmationButtonClicked {
-                findNavControllerSafety()?.popBackStack()
+                storeSelection()
+                findNavControllerSafety()?.popBackStack(R.id.nav_scan_qr, false)
                 scannerUtil.launchScanner(requireActivity())
             }
         }
@@ -116,7 +153,6 @@ class VerificationPolicySelectionFragment :
     private fun onConfirmationButtonClicked(onClick: () -> Unit) {
         val policySelected = binding.policy3G.isChecked || binding.policy2G.isChecked
         if (policySelected) {
-            storeSelection()
             onClick()
         } else {
             toggleError(true)
@@ -204,13 +240,13 @@ class VerificationPolicySelectionFragment :
         toggleError(false)
 
         if (flow is VerificationPolicyFlow.Settings) {
-            binding.subHeader.setHtmlText(htmlText = getString(R.string.verifier_risksetting_menu_scan_settings_selected_title,
-                TimeUnit.SECONDS.toMinutes(verifierCachedAppConfigUseCase.getCachedAppConfig().scanLockSeconds.toLong())))
+            binding.subHeader.setHtmlText(
+                htmlText = getString(
+                    R.string.verifier_risksetting_menu_scan_settings_selected_title,
+                    TimeUnit.SECONDS.toMinutes(verifierCachedAppConfigUseCase.getCachedAppConfig().scanLockSeconds.toLong())
+                )
+            )
         }
         viewModel.updateRadioButton(checkedId)
-    }
-
-    companion object {
-        const val isScanQRFlow = "IS_SCAN_QR_FLOW"
     }
 }

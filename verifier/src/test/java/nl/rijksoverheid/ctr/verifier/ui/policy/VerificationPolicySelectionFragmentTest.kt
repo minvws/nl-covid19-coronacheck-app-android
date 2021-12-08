@@ -9,13 +9,11 @@ import androidx.test.core.app.ApplicationProvider
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertNotDisplayed
 import com.adevinta.android.barista.interaction.BaristaClickInteractions.clickOn
-import com.adevinta.android.barista.interaction.BaristaScrollInteractions.scrollTo
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.verifier.R
-import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionFragment.Companion.isScanQRFlow
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
 import org.junit.Rule
 import org.junit.Test
@@ -24,7 +22,6 @@ import org.koin.core.context.loadKoinModules
 import org.koin.dsl.module
 import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
-
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -89,7 +86,7 @@ class VerificationPolicySelectionFragmentTest : AutoCloseKoinTest() {
 
         launchFragmentInContainer(
             bundleOf(
-                isScanQRFlow to true,
+                "isScanQrFlow" to true,
             ), themeResId = R.style.AppTheme
         ) {
             VerificationPolicySelectionFragment().also {

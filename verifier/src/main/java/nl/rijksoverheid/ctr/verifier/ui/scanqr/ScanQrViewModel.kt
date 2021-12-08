@@ -22,7 +22,7 @@ abstract class ScanQrViewModel : ViewModel() {
     abstract fun hasSeenScanInstructions(): Boolean
     abstract fun setScanInstructionsSeen()
     abstract fun getNextScannerScreenState(): ScannerNavigationState
-    abstract fun onViewCreated()
+    abstract fun checkPolicyUpdate()
     abstract fun nextScreen()
 }
 
@@ -46,7 +46,7 @@ class ScanQrViewModelImpl(
         return scannerNavigationStateUseCase.get()
     }
 
-    override fun onViewCreated() {
+    override fun checkPolicyUpdate() {
         (liveData as MutableLiveData).postValue(
             Event(ScanQRState(
                 policy = useCase.getState(),

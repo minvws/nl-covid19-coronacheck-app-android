@@ -47,7 +47,7 @@ class VerificationPolicySettingsFragment : Fragment(R.layout.fragment_verificati
 
     private fun setupButtons() {
         binding.adjustButton.setOnClickListener {
-            navigateSafety(MainNavDirections.actionPolicySelection())
+            navigateSafety(VerificationPolicySettingsFragmentDirections.actionPolicySelection())
         }
 
         binding.readMoreButton.setOnClickListener {
@@ -55,7 +55,7 @@ class VerificationPolicySettingsFragment : Fragment(R.layout.fragment_verificati
         }
 
         binding.bottom.setButtonClick {
-            navigateSafety(MainNavDirections.actionPolicySelection())
+            navigateSafety(VerificationPolicySettingsFragmentDirections.actionPolicySelection())
         }
     }
 
