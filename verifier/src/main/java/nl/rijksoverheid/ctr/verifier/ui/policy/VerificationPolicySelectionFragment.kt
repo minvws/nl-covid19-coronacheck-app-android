@@ -143,7 +143,7 @@ class VerificationPolicySelectionFragment :
         binding.confirmationButton.setOnClickListener {
             onConfirmationButtonClicked {
                 storeSelection()
-                findNavControllerSafety()?.popBackStack()
+                findNavControllerSafety()?.popBackStack(R.id.nav_scan_qr, false)
                 scannerUtil.launchScanner(requireActivity())
             }
         }
@@ -248,9 +248,5 @@ class VerificationPolicySelectionFragment :
             )
         }
         viewModel.updateRadioButton(checkedId)
-    }
-
-    companion object {
-        const val isScanQRFlow = "IS_SCAN_QR_FLOW"
     }
 }
