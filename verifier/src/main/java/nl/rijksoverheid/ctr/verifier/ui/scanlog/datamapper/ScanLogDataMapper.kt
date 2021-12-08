@@ -5,8 +5,6 @@ import nl.rijksoverheid.ctr.verifier.persistance.database.entities.ScanLogEntity
 import nl.rijksoverheid.ctr.verifier.ui.scanlog.models.ScanLog
 import nl.rijksoverheid.ctr.verifier.ui.scanlog.models.ScanLogBuilder
 import java.time.Instant
-import java.time.OffsetDateTime
-import java.time.ZoneId
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
