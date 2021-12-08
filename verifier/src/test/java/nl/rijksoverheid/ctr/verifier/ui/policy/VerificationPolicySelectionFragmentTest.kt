@@ -95,7 +95,7 @@ class VerificationPolicySelectionFragmentTest : AutoCloseKoinTest() {
 
         launchFragmentInContainer(
             bundleOf(
-                "flow" to VerificationPolicySelectionType.FirstTimeUse(ScannerState.Unlocked(policyState)),
+                "selectionType" to VerificationPolicySelectionType.FirstTimeUse(ScannerState.Unlocked(policyState)),
             ), themeResId = R.style.AppTheme
         ) {
             VerificationPolicySelectionFragment().also {
