@@ -7,6 +7,7 @@ import android.view.View
 import android.view.View.*
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
@@ -38,9 +39,10 @@ class VerificationPolicySelectionFragment :
     private var _binding: FragmentVerificationPolicySelectionBinding? = null
     private val binding get() = _binding!!
 
+    private val args: VerificationPolicySelectionFragmentArgs by navArgs()
     private val scannerUtil: ScannerUtil by inject()
     private val viewModel: VerificationPolicySelectionViewModel by viewModel {
-        parametersOf(arguments?.getBoolean(isScanQRFlow) == true)
+        parametersOf(args.isScanQrFlow)
     }
 
     private val dialogUtil: DialogUtil by inject()
