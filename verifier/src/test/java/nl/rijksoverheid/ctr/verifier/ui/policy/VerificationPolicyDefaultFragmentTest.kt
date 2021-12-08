@@ -26,7 +26,7 @@ import org.robolectric.RobolectricTestRunner
  *
  */
 @RunWith(RobolectricTestRunner::class)
-class VerificationPolicyInfoFragmentTest : AutoCloseKoinTest() {
+class VerificationPolicyDefaultFragmentTest : AutoCloseKoinTest() {
     private val navController = TestNavHostController(
         ApplicationProvider.getApplicationContext()
     ).also {

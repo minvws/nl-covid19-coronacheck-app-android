@@ -172,7 +172,7 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
             is ScannerNavigationState.Instructions -> findNavController().navigate(ScanQrFragmentDirections.actionScanInstructions())
             is ScannerNavigationState.VerificationPolicySelection -> findNavControllerSafety()?.navigate(
                 ScanQrFragmentDirections.actionPolicySelection(
-                    VerificationPolicyFlow.FirstTimeUse(scannerStateUseCase.get())
+                    VerificationPolicySelectionType.FirstTimeUse(scannerStateUseCase.get())
                 )
             )
             is ScannerNavigationState.Scanner -> scannerUtil.launchScanner(requireActivity())

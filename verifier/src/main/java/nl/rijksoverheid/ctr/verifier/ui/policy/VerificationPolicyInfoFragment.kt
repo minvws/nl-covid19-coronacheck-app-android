@@ -1,11 +1,9 @@
 package nl.rijksoverheid.ctr.verifier.ui.policy
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
@@ -28,25 +26,20 @@ class VerificationPolicyInfoFragment : Fragment(R.layout.fragment_verification_p
 
     private val scannerStateUseCase: ScannerStateUseCase by inject()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        _binding = FragmentVerificationPolicyInfoBinding.inflate(inflater)
+        _binding = FragmentVerificationPolicyInfoBinding.bind(view)
 
         setupButtons()
 
         setupPolicy()
-
-        return binding.root
     }
 
     private fun setupButtons() {
         binding.adjustButton.setOnClickListener {
             navigateSafety(VerificationPolicyInfoFragmentDirections.actionPolicySelection(
-                VerificationPolicyFlow.Info(scannerStateUseCase.get())
+                VerificationPolicySelectionType.Default(scannerStateUseCase.get())
             ))
         }
 
@@ -56,7 +49,7 @@ class VerificationPolicyInfoFragment : Fragment(R.layout.fragment_verification_p
 
         binding.bottom.setButtonClick {
             navigateSafety(VerificationPolicyInfoFragmentDirections.actionPolicySelection(
-                VerificationPolicyFlow.Info(scannerStateUseCase.get())
+                VerificationPolicySelectionType.Default(scannerStateUseCase.get())
             ))
         }
     }

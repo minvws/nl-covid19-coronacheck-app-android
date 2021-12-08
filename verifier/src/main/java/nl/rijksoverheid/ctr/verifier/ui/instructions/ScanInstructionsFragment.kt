@@ -14,7 +14,7 @@ import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.VerifierMainFragment
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanInstructionsBinding
 import nl.rijksoverheid.ctr.verifier.models.ScannerState
-import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyFlow
+import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionType
 import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyState
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrViewModel
@@ -92,7 +92,7 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
             else -> {
                 findNavControllerSafety()?.navigate(
                     ScanInstructionsFragmentDirections.actionPolicySelection(
-                        VerificationPolicyFlow.FirstTimeUse(ScannerState.Unlocked(VerificationPolicyState.None))
+                        VerificationPolicySelectionType.FirstTimeUse(ScannerState.Unlocked(VerificationPolicyState.None))
                     )
                 )
             }

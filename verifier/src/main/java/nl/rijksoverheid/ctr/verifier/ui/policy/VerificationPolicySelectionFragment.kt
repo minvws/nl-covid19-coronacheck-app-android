@@ -56,19 +56,19 @@ class VerificationPolicySelectionFragment :
             getString(R.string.verifier_risksetting_start_readmore_url).launchUrl(requireContext())
         }
 
-        setupScreenBasedOnFlow()
+        setupScreenBasedOnType()
     }
 
-    private fun setupScreenBasedOnFlow() {
-        val flow = args.flow
-        when (flow) {
-            is VerificationPolicyFlow.FirstTimeUse -> setupScreenForScanQrFlow()
-            is VerificationPolicyFlow.Info -> setupScreenForSettingsFlow(flow.state.verificationPolicyState)
+    private fun setupScreenBasedOnType() {
+        val selectionType = args.selectionType
+        when (selectionType) {
+            is VerificationPolicySelectionType.FirstTimeUse -> setupScreenForFirstTimeUse()
+            is VerificationPolicySelectionType.Default -> setupScreenForDefaultSelectionType(selectionType.state.verificationPolicyState)
         }
-        setupRadioGroup(flow)
+        setupRadioGroup(selectionType)
     }
 
-    private fun setupScreenForSettingsFlow(verificationPolicyState: VerificationPolicyState) {
+    private fun setupScreenForDefaultSelectionType(verificationPolicyState: VerificationPolicyState) {
         binding.subHeader.setHtmlText(
             htmlText =
             if (verificationPolicyState != VerificationPolicyState.None) {
@@ -136,7 +136,7 @@ class VerificationPolicySelectionFragment :
         }
     }
 
-    private fun setupScreenForScanQrFlow() {
+    private fun setupScreenForFirstTimeUse() {
         binding.subHeader.setHtmlText(R.string.verifier_risksetting_firsttimeuse_header)
         binding.confirmationButton.setOnClickListener {
             onConfirmationButtonClicked {
@@ -190,30 +190,30 @@ class VerificationPolicySelectionFragment :
         }
     }
 
-    private fun setupRadioGroup(flow: VerificationPolicyFlow) {
-        policySelected(flow.state.verificationPolicyState)
+    private fun setupRadioGroup(selectionType: VerificationPolicySelectionType) {
+        policySelected(selectionType.state.verificationPolicyState)
 
         when (viewModel.radioButtonSelected) {
-            binding.policy2G.id -> policy2GSelected(flow)
-            binding.policy3G.id -> policy3GSelected(flow)
+            binding.policy2G.id -> policy2GSelected(selectionType)
+            binding.policy3G.id -> policy3GSelected(selectionType)
         }
 
         binding.policy3GContainer.setOnClickListener {
-            policy3GSelected(flow)
+            policy3GSelected(selectionType)
         }
 
         binding.policy2GContainer.setOnClickListener {
-            policy2GSelected(flow)
+            policy2GSelected(selectionType)
         }
     }
 
-    private fun policy2GSelected(flow: VerificationPolicyFlow) {
-        policyChecked(flow, binding.policy2G.id)
+    private fun policy2GSelected(selectionType: VerificationPolicySelectionType) {
+        policyChecked(selectionType, binding.policy2G.id)
         policySelected(VerificationPolicyState.Policy2G)
     }
 
-    private fun policy3GSelected(flow: VerificationPolicyFlow) {
-        policyChecked(flow, binding.policy3G.id)
+    private fun policy3GSelected(selectionType: VerificationPolicySelectionType) {
+        policyChecked(selectionType, binding.policy3G.id)
         policySelected(VerificationPolicyState.Policy3G)
     }
 
@@ -234,10 +234,10 @@ class VerificationPolicySelectionFragment :
         }
     }
 
-    private fun policyChecked(flow: VerificationPolicyFlow, checkedId: Int) {
+    private fun policyChecked(selectionType: VerificationPolicySelectionType, checkedId: Int) {
         toggleError(false)
 
-        if (flow is VerificationPolicyFlow.Info) {
+        if (selectionType is VerificationPolicySelectionType.Default) {
             binding.subHeader.setHtmlText(
                 htmlText = getString(
                     R.string.verifier_risksetting_menu_scan_settings_selected_title,
