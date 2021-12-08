@@ -7,6 +7,13 @@ import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyStateUseCase
 import java.time.Clock
 import java.time.Instant
 
+/*
+ *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+ *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+ *
+ *   SPDX-License-Identifier: EUPL-1.2
+ *
+ */
 interface ScannerStateUseCase {
     fun get(): ScannerState
 }

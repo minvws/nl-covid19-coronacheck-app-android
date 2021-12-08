@@ -126,14 +126,14 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
             scannerNavigationState = scannerNavigationState ?: ScannerNavigationState.Scanner(false),
         )
 
-        (viewModel.liveData as MutableLiveData).postValue(
+        (viewModel.scannerStateLiveData as MutableLiveData).postValue(
             Event(
                 ScannerState.Unlocked(policyState)
             )
         )
 
         scannerNavigationState?.let {
-            (viewModel.startupStateEvent as MutableLiveData).postValue(Event(it))
+            (viewModel.scannerNavigationStateEvent as MutableLiveData).postValue(Event(it))
         }
 
         loadKoinModules(

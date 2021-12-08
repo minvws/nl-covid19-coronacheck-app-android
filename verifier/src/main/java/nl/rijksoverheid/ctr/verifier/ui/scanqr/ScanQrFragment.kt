@@ -89,11 +89,11 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
             scanQrViewModel.nextScreen()
         }
 
-        scanQrViewModel.startupStateEvent.observe(viewLifecycleOwner, EventObserver {
+        scanQrViewModel.scannerNavigationStateEvent.observe(viewLifecycleOwner, EventObserver {
             goToNextScreen(it)
         })
 
-        scanQrViewModel.liveData.observe(viewLifecycleOwner, EventObserver {
+        scanQrViewModel.scannerStateLiveData.observe(viewLifecycleOwner, EventObserver {
             onStateUpdated(it)
         })
 

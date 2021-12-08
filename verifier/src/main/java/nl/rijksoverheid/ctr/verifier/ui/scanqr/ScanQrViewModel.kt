@@ -17,11 +17,10 @@ import nl.rijksoverheid.ctr.verifier.usecase.ScannerStateUseCase
  */
 
 abstract class ScanQrViewModel : ViewModel() {
-    val liveData: LiveData<Event<ScannerState>> = MutableLiveData()
-    val startupStateEvent: LiveData<Event<ScannerNavigationState>> = MutableLiveData()
+    val scannerStateLiveData: LiveData<Event<ScannerState>> = MutableLiveData()
+    val scannerNavigationStateEvent: LiveData<Event<ScannerNavigationState>> = MutableLiveData()
     abstract fun hasSeenScanInstructions(): Boolean
     abstract fun setScanInstructionsSeen()
-    abstract fun getNextScannerScreenState(): ScannerNavigationState
     abstract fun checkPolicyUpdate()
     abstract fun nextScreen()
 }
@@ -42,23 +41,19 @@ class ScanQrViewModelImpl(
         }
     }
 
-    override fun getNextScannerScreenState(): ScannerNavigationState {
-        return scannerNavigationStateUseCase.get()
-    }
-
     override fun checkPolicyUpdate() {
-        (liveData as MutableLiveData).postValue(
+        (scannerStateLiveData as MutableLiveData).postValue(
             Event(scannerStateUseCase.get())
         )
     }
 
     override fun nextScreen() {
-        val nextScreenState = getNextScannerScreenState()
+        val nextScreenState = scannerNavigationStateUseCase.get()
         val isScannerUnlocked = scannerStateUseCase.get() !is ScannerState.Locked
         if (isScannerUnlocked ||
             (nextScreenState !is ScannerNavigationState.Scanner)
         ) {
-            (startupStateEvent as MutableLiveData).postValue(Event(getNextScannerScreenState()))
+            (scannerNavigationStateEvent as MutableLiveData).postValue(Event(nextScreenState))
         }
     }
 }

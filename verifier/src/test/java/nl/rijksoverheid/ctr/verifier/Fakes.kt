@@ -78,10 +78,6 @@ fun fakeScanQrViewModel(
     override fun setScanInstructionsSeen() {
     }
 
-    override fun getNextScannerScreenState(): ScannerNavigationState {
-        return scannerNavigationState
-    }
-
     override fun checkPolicyUpdate() {
 
     }
