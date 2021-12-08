@@ -1,9 +1,10 @@
 package nl.rijksoverheid.ctr.verifier.ui.scanlog.datamapper
 
+import nl.rijksoverheid.ctr.design.ext.toOffsetDateTimeUtc
 import nl.rijksoverheid.ctr.verifier.persistance.database.entities.ScanLogEntity
 import nl.rijksoverheid.ctr.verifier.ui.scanlog.models.ScanLog
 import nl.rijksoverheid.ctr.verifier.ui.scanlog.models.ScanLogBuilder
-import java.time.OffsetDateTime
+import java.time.Instant
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -18,7 +19,7 @@ interface ScanLogDataMapper {
 
 class ScanLogDataMapperImpl: ScanLogDataMapper {
     override fun transform(entities: List<ScanLogEntity>): List<ScanLog> {
-        var currentTime: OffsetDateTime? = null
+        var currentTime: Instant? = null
         var currentScanLogBuilder: ScanLogBuilder? = null
         val scanLogs = mutableListOf<ScanLog>()
 
@@ -37,20 +38,20 @@ class ScanLogDataMapperImpl: ScanLogDataMapper {
             currentScanLogBuilder?.count = (currentScanLogBuilder?.count ?: 0) + 1
 
             if (currentScanLogBuilder?.to == null) {
-                currentScanLogBuilder?.to = entity.date
+                currentScanLogBuilder?.to = entity.date.toOffsetDateTimeUtc()
             } else {
                 currentScanLogBuilder?.to = listOfNotNull(
                     currentScanLogBuilder?.to,
-                    entity.date
+                    entity.date.toOffsetDateTimeUtc()
                 ).maxOf { it }
             }
 
             if (currentScanLogBuilder?.from == null) {
-                currentScanLogBuilder?.from = entity.date
+                currentScanLogBuilder?.from = entity.date.toOffsetDateTimeUtc()
             } else {
                 currentScanLogBuilder?.to = listOfNotNull(
                     currentScanLogBuilder?.to,
-                    entity.date
+                    entity.date.toOffsetDateTimeUtc()
                 ).minOf { it }
             }
         }

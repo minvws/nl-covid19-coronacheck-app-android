@@ -18,45 +18,27 @@ class ScanLogDataMapperImplTest {
         val entities = listOf(
             ScanLogEntity(
                 policy = VerificationPolicy.VerificationPolicy2G,
-                date = OffsetDateTime.ofInstant(
-                    Instant.parse("2021-01-01T00:00:00.00Z"),
-                    ZoneId.of("UTC")
-                )
+                date = Instant.parse("2021-01-01T00:00:00.00Z")
             ),
             ScanLogEntity(
                 policy = VerificationPolicy.VerificationPolicy2G,
-                date = OffsetDateTime.ofInstant(
-                    Instant.parse("2021-01-01T00:05:00.00Z"),
-                    ZoneId.of("UTC")
-                )
+                date = Instant.parse("2021-01-01T00:05:00.00Z")
             ),
             ScanLogEntity(
                 policy = VerificationPolicy.VerificationPolicy2G,
-                date = OffsetDateTime.ofInstant(
-                    Instant.parse("2021-01-01T00:10:00.00Z"),
-                    ZoneId.of("UTC")
-                )
+                date = Instant.parse("2021-01-01T00:10:00.00Z")
             ),
             ScanLogEntity(
                 policy = VerificationPolicy.VerificationPolicy3G,
-                date = OffsetDateTime.ofInstant(
-                    Instant.parse("2021-01-01T00:15:00.00Z"),
-                    ZoneId.of("UTC")
-                )
+                date = Instant.parse("2021-01-01T00:15:00.00Z")
             ),
             ScanLogEntity(
                 policy = VerificationPolicy.VerificationPolicy3G,
-                date = OffsetDateTime.ofInstant(
-                    Instant.parse("2021-01-01T00:12:00.00Z"),
-                    ZoneId.of("UTC")
-                )
+                date = Instant.parse("2021-01-01T00:12:00.00Z")
             ),
             ScanLogEntity(
                 policy = VerificationPolicy.VerificationPolicy2G,
-                date = OffsetDateTime.ofInstant(
-                    Instant.parse("2021-01-01T00:20:00.00Z"),
-                    ZoneId.of("UTC")
-                )
+                date = Instant.parse("2021-01-01T00:20:00.00Z")
             ),
         )
 

@@ -47,12 +47,12 @@ class HolderDatabaseTest : AutoCloseKoinTest() {
     fun `Creating scan log works as expected`() = runBlocking {
         val scanLogToInsert1 = ScanLogEntity(
             policy = VerificationPolicy.VerificationPolicy2G,
-            date = OffsetDateTime.ofInstant(Instant.ofEpochSecond(0), ZoneOffset.UTC)
+            date = Instant.ofEpochSecond(0)
         )
 
         val scanLogToInsert2 = ScanLogEntity(
             policy = VerificationPolicy.VerificationPolicy3G,
-            date = OffsetDateTime.ofInstant(Instant.ofEpochSecond(1), ZoneOffset.UTC)
+            date = Instant.ofEpochSecond(1)
         )
 
         db.scanLogDao().insert(scanLogToInsert1)
@@ -61,13 +61,13 @@ class HolderDatabaseTest : AutoCloseKoinTest() {
         val expectedScanLog1 = ScanLogEntity(
             id = 1,
             policy = VerificationPolicy.VerificationPolicy2G,
-            date = OffsetDateTime.ofInstant(Instant.ofEpochSecond(0), ZoneOffset.UTC)
+            date = Instant.ofEpochSecond(0)
         )
 
         val expectedScanLog2 = ScanLogEntity(
             id = 2,
             policy = VerificationPolicy.VerificationPolicy3G,
-            date = OffsetDateTime.ofInstant(Instant.ofEpochSecond(1), ZoneOffset.UTC)
+            date = Instant.ofEpochSecond(1)
         )
 
         val scanLogsFromDb = db.scanLogDao().getAll()
@@ -80,12 +80,12 @@ class HolderDatabaseTest : AutoCloseKoinTest() {
     fun `Deleting scan log works as expected`() = runBlocking {
         val scanLogToInsert1 = ScanLogEntity(
             policy = VerificationPolicy.VerificationPolicy2G,
-            date = OffsetDateTime.ofInstant(Instant.ofEpochSecond(0), ZoneOffset.UTC)
+            date = Instant.ofEpochSecond(0)
         )
 
         val scanLogToInsert2 = ScanLogEntity(
             policy = VerificationPolicy.VerificationPolicy3G,
-            date = OffsetDateTime.ofInstant(Instant.ofEpochSecond(1), ZoneOffset.UTC)
+            date = Instant.ofEpochSecond(1)
         )
 
         db.scanLogDao().insert(scanLogToInsert1)
@@ -95,7 +95,7 @@ class HolderDatabaseTest : AutoCloseKoinTest() {
         val expectedScanLog2 = ScanLogEntity(
             id = 2,
             policy = VerificationPolicy.VerificationPolicy3G,
-            date = OffsetDateTime.ofInstant(Instant.ofEpochSecond(1), ZoneOffset.UTC)
+            date = Instant.ofEpochSecond(1)
         )
 
         val scanLogsFromDb = db.scanLogDao().getAll()
