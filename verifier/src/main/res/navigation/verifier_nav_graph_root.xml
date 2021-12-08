@@ -83,20 +83,6 @@
         app:argType="boolean"
         android:defaultValue="false" />
 
-    <fragment
-        android:id="@+id/nav_policy_selection"
-        android:name="nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionFragment"
-        android:label="Risico instelling"
-        tools:layout="@layout/fragment_verification_policy_selection" />
-
-    <action
-        android:id="@+id/action_policy_selection"
-        app:destination="@+id/nav_policy_selection"
-        app:enterAnim="@anim/fragment_open_enter"
-        app:exitAnim="@anim/fragment_open_exit"
-        app:popEnterAnim="@anim/fragment_close_enter"
-        app:popExitAnim="@anim/fragment_close_exit" />
-
     <include app:graph="@navigation/verifier_nav_graph_scanner" />
     <include app:graph="@navigation/verifier_nav_graph_main" />
 

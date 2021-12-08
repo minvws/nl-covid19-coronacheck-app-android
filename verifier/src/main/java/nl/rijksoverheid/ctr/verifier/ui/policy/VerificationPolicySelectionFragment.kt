@@ -122,7 +122,7 @@ class VerificationPolicySelectionFragment :
     private fun goToNextScreen() {
         when (scannerNavigationStateUseCase.get()) {
             ScannerNavigationState.Instructions -> {
-                navigateSafety(MainNavDirections.actionScanInstructions())
+                navigateSafety(VerificationPolicySelectionFragmentDirections.actionScanInstructions())
             }
             is ScannerNavigationState.Scanner -> {
                 when (verificationPolicyUseCase.getSwitchState()) {

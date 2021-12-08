@@ -28,33 +28,42 @@
 
     </fragment>
 
-    <action
-        android:id="@+id/action_policy_selection"
-        app:destination="@+id/nav_policy_selection"
-        app:enterAnim="@anim/slide_in_right"
-        app:exitAnim="@anim/slide_out_left"
-        app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right"/>
-
     <fragment
         android:id="@+id/nav_policy_selection"
         android:name="nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionFragment"
         android:label="@string/verifier_menu_risksetting"
-        tools:layout="@layout/fragment_verification_policy_selection" />
+        tools:layout="@layout/fragment_verification_policy_selection">
+
+        <action
+            android:id="@+id/action_scan_instructions"
+            app:destination="@id/nav_scan_instructions"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <argument
+            android:name="isScanQrFlow"
+            android:defaultValue="false"
+            app:argType="boolean"/>
+
+    </fragment>
 
     <fragment
         android:id="@+id/nav_policy_settings"
         android:name="nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySettingsFragment"
         android:label="@string/verifier_menu_risksetting"
-        tools:layout="@layout/fragment_verification_policy_settings" />
+        tools:layout="@layout/fragment_verification_policy_settings">
 
-    <action
-        android:id="@+id/action_policy_settings"
-        app:destination="@+id/nav_policy_settings"
-        app:enterAnim="@anim/fragment_open_enter"
-        app:exitAnim="@anim/fragment_open_exit"
-        app:popEnterAnim="@anim/fragment_close_enter"
-        app:popExitAnim="@anim/fragment_close_exit" />
+        <action
+            android:id="@+id/action_policy_selection"
+            app:destination="@id/nav_policy_selection"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
 
     <action
         android:id="@+id/action_about_this_app"
@@ -89,15 +98,15 @@
         android:name="nl.rijksoverheid.ctr.verifier.ui.instructions.ScanInstructionsFragment"
         android:label="@string/scan_instructions"
         tools:layout="@layout/fragment_scan_instructions">
-    </fragment>
 
-    <action
-        android:id="@+id/action_scan_instructions"
-        app:destination="@id/nav_scan_instructions"
-        app:enterAnim="@anim/slide_in_right"
-        app:exitAnim="@anim/slide_out_left"
-        app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right"
-        app:popUpTo="@+id/nav_scan_qr" />
+        <action
+            android:id="@+id/action_policy_selection"
+            app:destination="@+id/nav_policy_selection"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
+
+    </fragment>
 
 </navigation>

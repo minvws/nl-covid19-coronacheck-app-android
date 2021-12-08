@@ -32,7 +32,7 @@ import nl.rijksoverheid.ctr.verifier.databinding.FragmentMainBinding
 import org.koin.android.ext.android.inject
 
 class VerifierMainFragment :
-    BaseMainFragment(R.layout.fragment_main, setOf(R.id.nav_scan_qr, R.id.nav_about_this_app, R.id.nav_policy_settings, R.id.nav_scan_instructions)) {
+    BaseMainFragment(R.layout.fragment_main, setOf(R.id.nav_scan_qr, R.id.nav_about_this_app, R.id.nav_policy_settings)) {
 
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
