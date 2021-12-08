@@ -13,10 +13,13 @@ import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.VerificationPolicy2G
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.VerificationPolicy3G
+import nl.rijksoverheid.ctr.verifier.MainNavDirections
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentVerificationPolicySelectionBinding
 import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
+import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScannerNavigationState
+import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScannerNavigationStateUseCase
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -43,6 +46,7 @@ class VerificationPolicySelectionFragment :
     private val dialogUtil: DialogUtil by inject()
     private val verifierCachedAppConfigUseCase: VerifierCachedAppConfigUseCase by inject()
     private val verificationPolicyUseCase: VerificationPolicyUseCase by inject()
+    private val scannerNavigationStateUseCase: ScannerNavigationStateUseCase by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -95,9 +99,9 @@ class VerificationPolicySelectionFragment :
         when {
             currentPolicyState is VerificationPolicyState.None -> {
                 storeSelection()
-                navigateSafety(R.id.nav_scan_qr)
+                goToNextScreen()
             }
-            policyHasNotChanged -> navigateSafety(R.id.nav_scan_qr)
+            policyHasNotChanged -> goToNextScreen()
             else -> dialogUtil.presentDialog(
                 context = requireContext(),
                 title = R.string.verifier_risksetting_confirmation_dialog_title,
@@ -108,10 +112,27 @@ class VerificationPolicySelectionFragment :
                 positiveButtonText = R.string.verifier_risksetting_confirmation_dialog_positive_button,
                 positiveButtonCallback = {
                     storeSelection()
-                    navigateSafety(R.id.nav_scan_qr)
+                    goToNextScreen()
                 },
                 negativeButtonText = R.string.verifier_risksetting_confirmation_dialog_negative_button
             )
+        }
+    }
+
+    private fun goToNextScreen() {
+        when (scannerNavigationStateUseCase.get()) {
+            ScannerNavigationState.Instructions -> {
+                navigateSafety(MainNavDirections.actionScanInstructions())
+            }
+            is ScannerNavigationState.Scanner -> {
+                when (verificationPolicyUseCase.getSwitchState()) {
+                    is VerificationPolicySwitchState.Locked -> navigateSafety(R.id.nav_scan_qr)
+                    VerificationPolicySwitchState.Unlocked -> {
+                        findNavControllerSafety()?.popBackStack(R.id.nav_scan_qr, false)
+                        scannerUtil.launchScanner(requireActivity())
+                    }
+                }
+            }
         }
     }
 

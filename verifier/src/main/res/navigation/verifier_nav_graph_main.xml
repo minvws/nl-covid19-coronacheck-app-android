@@ -91,4 +91,13 @@
         tools:layout="@layout/fragment_scan_instructions">
     </fragment>
 
+    <action
+        android:id="@+id/action_scan_instructions"
+        app:destination="@id/nav_scan_instructions"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        app:popUpTo="@+id/nav_scan_qr" />
+
 </navigation>
