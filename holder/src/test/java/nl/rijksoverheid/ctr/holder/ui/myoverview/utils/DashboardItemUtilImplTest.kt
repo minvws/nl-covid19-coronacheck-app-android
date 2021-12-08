@@ -35,7 +35,7 @@ class DashboardItemUtilImplTest {
 
         val headerText = util.getHeaderItemText(
             greenCardType = GreenCardType.Domestic,
-            allGreenCards = listOf(fakeGreenCard)
+            allGreenCards = listOf(fakeGreenCard())
         )
 
         assertEquals(R.string.my_overview_description, headerText)
@@ -75,7 +75,7 @@ class DashboardItemUtilImplTest {
 
         val headerText = util.getHeaderItemText(
             greenCardType = GreenCardType.Eu,
-            allGreenCards = listOf(fakeGreenCard)
+            allGreenCards = listOf(fakeGreenCard())
         )
 
         assertEquals(R.string.my_overview_description_eu, headerText)
@@ -114,7 +114,7 @@ class DashboardItemUtilImplTest {
         )
 
         val shouldShowClockDeviationItem = util.shouldShowClockDeviationItem(
-            allGreenCards = listOf(fakeGreenCard)
+            allGreenCards = listOf(fakeGreenCard())
         )
 
         assertEquals(true, shouldShowClockDeviationItem)
@@ -135,7 +135,7 @@ class DashboardItemUtilImplTest {
         )
 
         val shouldShowClockDeviationItem = util.shouldShowClockDeviationItem(
-            allGreenCards = listOf(fakeGreenCard)
+            allGreenCards = listOf(fakeGreenCard())
         )
 
         assertEquals(true, shouldShowClockDeviationItem)
@@ -171,7 +171,7 @@ class DashboardItemUtilImplTest {
         )
 
         val shouldShowHeaderItem = util.shouldShowPlaceholderItem(
-            allGreenCards = listOf(fakeGreenCard)
+            allGreenCards = listOf(fakeGreenCard())
         )
 
         assertEquals(true, shouldShowHeaderItem)

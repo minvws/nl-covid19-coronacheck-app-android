@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.fakeGreenCard
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
@@ -47,25 +48,12 @@ class GetDashboardItemsUseCaseImplTest : AutoCloseKoinTest() {
 
     @Test
     fun `getItems returns correct models for single domestic green card`() = runBlocking {
-        val domesticGreenCardEntity = GreenCardEntity(
-            id = 1,
-            walletId = 1,
-            type = GreenCardType.Domestic
-        )
-
-        val domesticGreenCard = GreenCard(
-            greenCardEntity = domesticGreenCardEntity,
-            origins = listOf(
-                OriginEntity(
-                    id = 1,
-                    greenCardId = 1,
-                    type = OriginType.Vaccination,
-                    eventTime = OffsetDateTime.now().minusHours(1),
-                    expirationTime = OffsetDateTime.now().plusHours(5),
-                    validFrom = OffsetDateTime.now().minusHours(5)
-                )
-            ),
-            credentialEntities = listOf()
+        val domesticGreenCard = fakeGreenCard(
+            greenCardType = GreenCardType.Domestic,
+            originType = OriginType.Vaccination,
+            eventTime = OffsetDateTime.now().minusHours(1),
+            expirationTime = OffsetDateTime.now().plusHours(5),
+            validFrom = OffsetDateTime.now().minusHours(5)
         )
 
         val dashboardItems = usecase.getItems(
@@ -91,25 +79,12 @@ class GetDashboardItemsUseCaseImplTest : AutoCloseKoinTest() {
     fun `getItems returns correct models for single international green card`() = runBlocking {
         loadKoinModules(fakeDashboardItemUtilModule())
 
-        val internationalGreenCardEntity = GreenCardEntity(
-            id = 1,
-            walletId = 1,
-            type = GreenCardType.Eu
-        )
-
-        val internationalGreenCard = GreenCard(
-            greenCardEntity = internationalGreenCardEntity,
-            origins = listOf(
-                OriginEntity(
-                    id = 1,
-                    greenCardId = 1,
-                    type = OriginType.Vaccination,
-                    eventTime = OffsetDateTime.now().minusHours(1),
-                    expirationTime = OffsetDateTime.now().plusHours(5),
-                    validFrom = OffsetDateTime.now().minusHours(5)
-                )
-            ),
-            credentialEntities = listOf()
+        val internationalGreenCard = fakeGreenCard(
+            greenCardType = GreenCardType.Eu,
+            originType = OriginType.Vaccination,
+            eventTime = OffsetDateTime.now().minusHours(1),
+            expirationTime = OffsetDateTime.now().plusHours(5),
+            validFrom = OffsetDateTime.now().minusHours(5)
         )
 
         val dashboardItems = usecase.getItems(
@@ -135,46 +110,20 @@ class GetDashboardItemsUseCaseImplTest : AutoCloseKoinTest() {
         runBlocking {
             loadKoinModules(fakeDashboardItemUtilModule())
 
-            val domesticGreenCardEntity = GreenCardEntity(
-                id = 1,
-                walletId = 1,
-                type = GreenCardType.Domestic
+            val domesticGreenCard = fakeGreenCard(
+                greenCardType = GreenCardType.Domestic,
+                originType = OriginType.Vaccination,
+                eventTime = OffsetDateTime.now().minusHours(1),
+                expirationTime = OffsetDateTime.now().plusHours(5),
+                validFrom = OffsetDateTime.now().minusHours(5)
             )
 
-            val domesticGreenCard = GreenCard(
-                greenCardEntity = domesticGreenCardEntity,
-                origins = listOf(
-                    OriginEntity(
-                        id = 1,
-                        greenCardId = 1,
-                        type = OriginType.Vaccination,
-                        eventTime = OffsetDateTime.now().minusHours(1),
-                        expirationTime = OffsetDateTime.now().plusHours(5),
-                        validFrom = OffsetDateTime.now().minusHours(5)
-                    )
-                ),
-                credentialEntities = listOf()
-            )
-
-            val internationalGreenCardEntity = GreenCardEntity(
-                id = 1,
-                walletId = 1,
-                type = GreenCardType.Eu
-            )
-
-            val internationalGreenCard = GreenCard(
-                greenCardEntity = internationalGreenCardEntity,
-                origins = listOf(
-                    OriginEntity(
-                        id = 1,
-                        greenCardId = 1,
-                        type = OriginType.Vaccination,
-                        eventTime = OffsetDateTime.now().minusHours(1),
-                        expirationTime = OffsetDateTime.now().plusHours(5),
-                        validFrom = OffsetDateTime.now().minusHours(5)
-                    )
-                ),
-                credentialEntities = listOf()
+            val internationalGreenCard = fakeGreenCard(
+                greenCardType = GreenCardType.Eu,
+                originType = OriginType.Vaccination,
+                eventTime = OffsetDateTime.now().minusHours(1),
+                expirationTime = OffsetDateTime.now().plusHours(5),
+                validFrom = OffsetDateTime.now().minusHours(5)
             )
 
             val dashboardItems = usecase.getItems(
@@ -198,46 +147,20 @@ class GetDashboardItemsUseCaseImplTest : AutoCloseKoinTest() {
     @Test
     fun `getItems returns correct models for domestic and international green cards`() =
         runBlocking {
-            val domesticGreenCardEntity = GreenCardEntity(
-                id = 1,
-                walletId = 1,
-                type = GreenCardType.Domestic
+            val domesticGreenCard = fakeGreenCard(
+                greenCardType = GreenCardType.Domestic,
+                originType = OriginType.Vaccination,
+                eventTime = OffsetDateTime.now().minusHours(1),
+                expirationTime = OffsetDateTime.now().plusHours(5),
+                validFrom = OffsetDateTime.now().minusHours(5)
             )
 
-            val domesticGreenCard = GreenCard(
-                greenCardEntity = domesticGreenCardEntity,
-                origins = listOf(
-                    OriginEntity(
-                        id = 1,
-                        greenCardId = 1,
-                        type = OriginType.Vaccination,
-                        eventTime = OffsetDateTime.now().minusHours(1),
-                        expirationTime = OffsetDateTime.now().plusHours(5),
-                        validFrom = OffsetDateTime.now().minusHours(5)
-                    )
-                ),
-                credentialEntities = listOf()
-            )
-
-            val internationalGreenCardEntity = GreenCardEntity(
-                id = 1,
-                walletId = 1,
-                type = GreenCardType.Eu
-            )
-
-            val internationalGreenCard = GreenCard(
-                greenCardEntity = internationalGreenCardEntity,
-                origins = listOf(
-                    OriginEntity(
-                        id = 1,
-                        greenCardId = 1,
-                        type = OriginType.Vaccination,
-                        eventTime = OffsetDateTime.now().minusHours(1),
-                        expirationTime = OffsetDateTime.now().plusHours(5),
-                        validFrom = OffsetDateTime.now().minusHours(5)
-                    )
-                ),
-                credentialEntities = listOf()
+            val internationalGreenCard = fakeGreenCard(
+                greenCardType = GreenCardType.Eu,
+                originType = OriginType.Vaccination,
+                eventTime = OffsetDateTime.now().minusHours(1),
+                expirationTime = OffsetDateTime.now().plusHours(5),
+                validFrom = OffsetDateTime.now().minusHours(5)
             )
 
             val dashboardItems = usecase.getItems(
@@ -265,46 +188,20 @@ class GetDashboardItemsUseCaseImplTest : AutoCloseKoinTest() {
         runBlocking {
             loadKoinModules(fakeClockDeviationModule(hasDeviation = true))
 
-            val domesticGreenCardEntity = GreenCardEntity(
-                id = 1,
-                walletId = 1,
-                type = GreenCardType.Domestic
+            val domesticGreenCard = fakeGreenCard(
+                greenCardType = GreenCardType.Domestic,
+                originType = OriginType.Vaccination,
+                eventTime = OffsetDateTime.now().minusHours(1),
+                expirationTime = OffsetDateTime.now().plusHours(5),
+                validFrom = OffsetDateTime.now().minusHours(5)
             )
 
-            val domesticGreenCard = GreenCard(
-                greenCardEntity = domesticGreenCardEntity,
-                origins = listOf(
-                    OriginEntity(
-                        id = 1,
-                        greenCardId = 1,
-                        type = OriginType.Vaccination,
-                        eventTime = OffsetDateTime.now().minusHours(1),
-                        expirationTime = OffsetDateTime.now().plusHours(5),
-                        validFrom = OffsetDateTime.now().minusHours(5)
-                    )
-                ),
-                credentialEntities = listOf()
-            )
-
-            val internationalGreenCardEntity = GreenCardEntity(
-                id = 1,
-                walletId = 1,
-                type = GreenCardType.Eu
-            )
-
-            val internationalGreenCard = GreenCard(
-                greenCardEntity = internationalGreenCardEntity,
-                origins = listOf(
-                    OriginEntity(
-                        id = 1,
-                        greenCardId = 1,
-                        type = OriginType.Vaccination,
-                        eventTime = OffsetDateTime.now().minusHours(1),
-                        expirationTime = OffsetDateTime.now().plusHours(5),
-                        validFrom = OffsetDateTime.now().minusHours(5)
-                    )
-                ),
-                credentialEntities = listOf()
+            val internationalGreenCard = fakeGreenCard(
+                greenCardType = GreenCardType.Eu,
+                originType = OriginType.Vaccination,
+                eventTime = OffsetDateTime.now().minusHours(1),
+                expirationTime = OffsetDateTime.now().plusHours(5),
+                validFrom = OffsetDateTime.now().minusHours(5)
             )
 
             val dashboardItems = usecase.getItems(
@@ -331,25 +228,12 @@ class GetDashboardItemsUseCaseImplTest : AutoCloseKoinTest() {
 
     @Test
     fun `getItems returns correct models for expired domestic green card`() = runBlocking {
-        val domesticGreenCardEntity = GreenCardEntity(
-            id = 1,
-            walletId = 1,
-            type = GreenCardType.Domestic
-        )
-
-        val domesticGreenCard = GreenCard(
-            greenCardEntity = domesticGreenCardEntity,
-            origins = listOf(
-                OriginEntity(
-                    id = 1,
-                    greenCardId = 1,
-                    type = OriginType.Vaccination,
-                    eventTime = OffsetDateTime.now().minusHours(1),
-                    expirationTime = OffsetDateTime.now().minusHours(5),
-                    validFrom = OffsetDateTime.now().minusHours(5)
-                )
-            ),
-            credentialEntities = listOf()
+        val domesticGreenCard = fakeGreenCard(
+            greenCardType = GreenCardType.Domestic,
+            originType = OriginType.Vaccination,
+            eventTime = OffsetDateTime.now().minusHours(1),
+            expirationTime = OffsetDateTime.now().minusHours(5),
+            validFrom = OffsetDateTime.now().minusHours(5)
         )
 
         val dashboardItems = usecase.getItems(
@@ -373,25 +257,12 @@ class GetDashboardItemsUseCaseImplTest : AutoCloseKoinTest() {
 
     @Test
     fun `getItems returns correct models for expired international green card`() = runBlocking {
-        val internationalGreenCardEntity = GreenCardEntity(
-            id = 1,
-            walletId = 1,
-            type = GreenCardType.Eu
-        )
-
-        val internationalGreenCard = GreenCard(
-            greenCardEntity = internationalGreenCardEntity,
-            origins = listOf(
-                OriginEntity(
-                    id = 1,
-                    greenCardId = 1,
-                    type = OriginType.Vaccination,
-                    eventTime = OffsetDateTime.now().minusHours(1),
-                    expirationTime = OffsetDateTime.now().minusHours(5),
-                    validFrom = OffsetDateTime.now().minusHours(5)
-                )
-            ),
-            credentialEntities = listOf()
+        val internationalGreenCard = fakeGreenCard(
+            greenCardType = GreenCardType.Eu,
+            originType = OriginType.Vaccination,
+            eventTime = OffsetDateTime.now().minusHours(1),
+            expirationTime = OffsetDateTime.now().minusHours(5),
+            validFrom = OffsetDateTime.now().minusHours(5)
         )
 
         val dashboardItems = usecase.getItems(
@@ -416,34 +287,10 @@ class GetDashboardItemsUseCaseImplTest : AutoCloseKoinTest() {
     @Test
     fun `getItems returns 3g validity card when there is a test origin and 3g policy`() =
         runBlocking {
-            val domesticGreenCardEntity = GreenCardEntity(
-                id = 1,
-                walletId = 1,
-                type = GreenCardType.Domestic
-            )
-
-            val domesticGreenCard = GreenCard(
-                greenCardEntity = domesticGreenCardEntity,
-                origins = listOf(
-                    OriginEntity(
-                        id = 1,
-                        greenCardId = 1,
-                        type = OriginType.Test,
-                        eventTime = OffsetDateTime.now(),
-                        expirationTime = OffsetDateTime.now(),
-                        validFrom = OffsetDateTime.now()
-                    )
-                ),
-                credentialEntities = listOf(
-                    CredentialEntity(
-                        greenCardId = 1,
-                        data = ByteArray(1),
-                        credentialVersion = 1,
-                        validFrom = OffsetDateTime.now(),
-                        expirationTime = OffsetDateTime.now(),
-                        category = "3"
-                    )
-                )
+            val domesticGreenCard = fakeGreenCard(
+                greenCardType = GreenCardType.Domestic,
+                originType = OriginType.Test,
+                category = "3"
             )
 
             val dashboardItems = usecase.getItems(
@@ -454,6 +301,63 @@ class GetDashboardItemsUseCaseImplTest : AutoCloseKoinTest() {
             )
 
             assertTrue(dashboardItems.domesticItems.any { it is DashboardItem.InfoItem.TestCertificate3GValidity })
+        }
+
+    @Test
+    fun `getItems gives no 3g validity card when there is no test origin and 3g policy`() =
+        runBlocking {
+            val domesticGreenCard = fakeGreenCard(
+                greenCardType = GreenCardType.Domestic,
+                originType = OriginType.Vaccination,
+                category = "3"
+            )
+
+            val dashboardItems = usecase.getItems(
+                allGreenCards = listOf(domesticGreenCard),
+                databaseSyncerResult = DatabaseSyncerResult.Success(),
+                isLoadingNewCredentials = false,
+                allEventGroupEntities = listOf()
+            )
+
+            assertTrue(dashboardItems.domesticItems.none { it is DashboardItem.InfoItem.TestCertificate3GValidity })
+        }
+
+    @Test
+    fun `getItems gives no 3g validity card when there a test origin and 2g policy`() =
+        runBlocking {
+            val domesticGreenCard = fakeGreenCard(
+                greenCardType = GreenCardType.Domestic,
+                originType = OriginType.Test,
+                category = "2"
+            )
+
+            val dashboardItems = usecase.getItems(
+                allGreenCards = listOf(domesticGreenCard),
+                databaseSyncerResult = DatabaseSyncerResult.Success(),
+                isLoadingNewCredentials = false,
+                allEventGroupEntities = listOf()
+            )
+
+            assertTrue(dashboardItems.domesticItems.none { it is DashboardItem.InfoItem.TestCertificate3GValidity })
+        }
+
+    @Test
+    fun `getItems gives no 3g validity card for international green cards`() =
+        runBlocking {
+            val euGreenCard = fakeGreenCard(
+                greenCardType = GreenCardType.Eu,
+                originType = OriginType.Test,
+                category = "3"
+            )
+
+            val dashboardItems = usecase.getItems(
+                allGreenCards = listOf(euGreenCard),
+                databaseSyncerResult = DatabaseSyncerResult.Success(),
+                isLoadingNewCredentials = false,
+                allEventGroupEntities = listOf()
+            )
+
+            assertTrue(dashboardItems.domesticItems.none { it is DashboardItem.InfoItem.TestCertificate3GValidity })
         }
 
     private fun fakeClockDeviationModule(hasDeviation: Boolean) = module(override = true) {
