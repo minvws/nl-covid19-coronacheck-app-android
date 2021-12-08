@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.verifier.ui.scanlog.datamapper
 
+import nl.rijksoverheid.ctr.design.ext.toOffsetDateTimeUtc
 import nl.rijksoverheid.ctr.verifier.persistance.database.entities.ScanLogEntity
 import nl.rijksoverheid.ctr.verifier.ui.scanlog.models.ScanLog
 import nl.rijksoverheid.ctr.verifier.ui.scanlog.models.ScanLogBuilder
@@ -39,20 +40,20 @@ class ScanLogDataMapperImpl: ScanLogDataMapper {
             currentScanLogBuilder?.count = (currentScanLogBuilder?.count ?: 0) + 1
 
             if (currentScanLogBuilder?.to == null) {
-                currentScanLogBuilder?.to = OffsetDateTime.ofInstant(entity.date, ZoneId.of("UTC"))
+                currentScanLogBuilder?.to = entity.date.toOffsetDateTimeUtc()
             } else {
                 currentScanLogBuilder?.to = listOfNotNull(
                     currentScanLogBuilder?.to,
-                    OffsetDateTime.ofInstant(entity.date, ZoneId.of("UTC"))
+                    entity.date.toOffsetDateTimeUtc()
                 ).maxOf { it }
             }
 
             if (currentScanLogBuilder?.from == null) {
-                currentScanLogBuilder?.from = OffsetDateTime.ofInstant(entity.date, ZoneId.of("UTC"))
+                currentScanLogBuilder?.from = entity.date.toOffsetDateTimeUtc()
             } else {
                 currentScanLogBuilder?.to = listOfNotNull(
                     currentScanLogBuilder?.to,
-                    OffsetDateTime.ofInstant(entity.date, ZoneId.of("UTC"))
+                    entity.date.toOffsetDateTimeUtc()
                 ).minOf { it }
             }
         }
