@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ScrollView
 import androidx.activity.OnBackPressedCallback
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import nl.rijksoverheid.ctr.introduction.ui.onboarding.OnboardingPagerAdapter
@@ -12,6 +13,7 @@ import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.VerifierMainFragment
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanInstructionsBinding
+import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionFragment
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScannerNavigationState
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrViewModel
@@ -83,7 +85,7 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
                 }
             }
             else -> {
-                findNavControllerSafety()?.navigate(ScanInstructionsFragmentDirections.actionPolicySelection())
+                findNavControllerSafety()?.navigate(R.id.action_policy_selection, bundleOf(VerificationPolicySelectionFragment.isScanQRFlow to true))
             }
         }
     }

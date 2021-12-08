@@ -82,7 +82,7 @@ fun fakeScanQrViewModel(
         return scannerNavigationState
     }
 
-    override fun onViewCreated() {
+    override fun checkPolicyUpdate() {
 
     }
 

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -16,7 +17,6 @@ import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
-import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.VerificationPolicy2G
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.VerificationPolicy3G
@@ -24,7 +24,7 @@ import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.VerifierMainActivity
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanQrBinding
 import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCase
-import nl.rijksoverheid.ctr.verifier.ui.instructions.ScanInstructionsFragmentDirections
+import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionFragment
 import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyState
 import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySwitchState
 import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyUseCase
@@ -75,6 +75,11 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
         switchCountDownTimer = null
     }
 
+    override fun onStart() {
+        super.onStart()
+        scanQrViewModel.checkPolicyUpdate()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -109,8 +114,6 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
         // Handle clock deviation view
         observeServerTimeSynced()
         showDeviationViewIfNeeded()
-
-        scanQrViewModel.onViewCreated()
 
         checkPendingDeeplink()
     }
@@ -171,7 +174,8 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
         when (scannerNavigationState) {
             is ScannerNavigationState.Instructions -> findNavController().navigate(ScanQrFragmentDirections.actionScanInstructions())
             is ScannerNavigationState.VerificationPolicySelection -> findNavControllerSafety()?.navigate(
-                ScanInstructionsFragmentDirections.actionPolicySelection())
+                R.id.action_policy_selection, bundleOf(VerificationPolicySelectionFragment.isScanQRFlow to true)
+            )
             is ScannerNavigationState.Scanner -> scannerUtil.launchScanner(requireActivity())
         }
     }
