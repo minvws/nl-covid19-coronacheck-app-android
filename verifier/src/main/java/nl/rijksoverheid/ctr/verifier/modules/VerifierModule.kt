@@ -116,5 +116,5 @@ fun verifierModule(path: String) = module {
     factory<ScannerStateUseCase> { ScannerStateUseCaseImpl(get(), get(), get(), get()) }
     factory<ScannerStateCountdownUtil> { ScannerStateCountdownUtilImpl(get(), get(), get()) }
 
-    viewModel<VerificationPolicySelectionViewModel> { VerificationPolicySelectionViewModelImpl(get(), get()) }
+    viewModel<VerificationPolicySelectionViewModel> { VerificationPolicySelectionViewModelImpl(get()) }
 }

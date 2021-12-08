@@ -56,12 +56,11 @@ class VerificationPolicySelectionFragment :
             getString(R.string.verifier_risksetting_start_readmore_url).launchUrl(requireContext())
         }
 
-        viewModel.init(args.flow)
-
-        viewModel.policyFlowLiveData.observe(viewLifecycleOwner, ::onVerificationFlowUpdate)
+        setupScreenBasedOnFlow()
     }
 
-    private fun onVerificationFlowUpdate(flow: VerificationPolicyFlow) {
+    private fun setupScreenBasedOnFlow() {
+        val flow = args.flow
         when (flow) {
             is VerificationPolicyFlow.FirstTimeUse -> setupScreenForScanQrFlow()
             is VerificationPolicyFlow.Info -> setupScreenForSettingsFlow(flow.state.verificationPolicyState)
