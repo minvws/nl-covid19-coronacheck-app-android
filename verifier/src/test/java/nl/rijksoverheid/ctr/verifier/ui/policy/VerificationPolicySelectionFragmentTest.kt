@@ -3,15 +3,15 @@ package nl.rijksoverheid.ctr.verifier.ui.policy
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.core.os.bundleOf
 import androidx.fragment.app.testing.launchFragmentInContainer
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertNotDisplayed
 import com.adevinta.android.barista.interaction.BaristaClickInteractions.clickOn
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verify
+import io.mockk.*
+import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.models.ScannerState
@@ -19,6 +19,7 @@ import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.loadKoinModules
 import org.koin.dsl.module
 import org.koin.test.AutoCloseKoinTest
@@ -37,7 +38,7 @@ class VerificationPolicySelectionFragmentTest : AutoCloseKoinTest() {
     val rule = InstantTaskExecutorRule()
 
     private val scannerUtil = mockk<ScannerUtil>(relaxed = true)
-    private lateinit var verificationPolicyUseCase: VerificationPolicyUseCase
+    private lateinit var verificationPolicySelectionViewModel: VerificationPolicySelectionViewModel
 
     private val navController = TestNavHostController(
         ApplicationProvider.getApplicationContext()
@@ -57,14 +58,16 @@ class VerificationPolicySelectionFragmentTest : AutoCloseKoinTest() {
 
     @Test
     fun `given policy selected, when click to continue, then error is shown`() {
-        launchFragment()
+        launchFragment(
+            policyState = VerificationPolicyState.Policy2G
+        )
 
         clickOn(R.id.policy2G_container)
         clickOn(R.id.confirmationButton)
 
         assertNotDisplayed(R.id.error_container)
         verify { scannerUtil.launchScanner(any()) }
-        verify { verificationPolicyUseCase.store(VerificationPolicy.VerificationPolicy2G) }
+        verify { verificationPolicySelectionViewModel.storeSelection(VerificationPolicy.VerificationPolicy2G) }
     }
 
     private fun launchFragment(
@@ -75,14 +78,24 @@ class VerificationPolicySelectionFragmentTest : AutoCloseKoinTest() {
             every { get() } returns policyState
         }
 
-        verificationPolicyUseCase = mockk(relaxed = true)
+        val recentScanLogsLiveDataEvent = MutableLiveData<Event<Boolean>>()
+
+        verificationPolicySelectionViewModel =  mockk<VerificationPolicySelectionViewModel>().apply {
+            coEvery { recentScanLogsLiveData } returns recentScanLogsLiveDataEvent
+            coEvery { checkForRecentScanLogs() }  answers {
+                recentScanLogsLiveDataEvent.postValue(Event(true))
+            }
+            coEvery { radioButtonSelected } returns when (policyState) {
+                VerificationPolicyState.None -> null
+                VerificationPolicyState.Policy2G -> R.id.policy2G
+                VerificationPolicyState.Policy3G -> R.id.policy3G
+            }
+            coEvery { updateRadioButton(any()) } returns Unit
+            coEvery { storeSelection(any()) } returns Unit
+        }
 
         loadKoinModules(
             module(override = true) {
-                factory {
-                    verificationPolicyUseCase
-                }
-
                 factory {
                     scannerUtil
                 }
@@ -90,6 +103,9 @@ class VerificationPolicySelectionFragmentTest : AutoCloseKoinTest() {
                 factory {
                     verificationPolicyStateUseCase
                 }
+
+
+                viewModel { verificationPolicySelectionViewModel }
             }
         )
 
