@@ -19,7 +19,7 @@ class VerificationPolicySelectionViewModelImplTest {
 
     @Test
     fun `policy selected is stored`() {
-        val viewModel = VerificationPolicySelectionViewModelImpl(verificationPolicyUseCase)
+        val viewModel = VerificationPolicySelectionViewModelImpl(verificationPolicyUseCase, mockk())
 
         viewModel.storeSelection(VerificationPolicy.VerificationPolicy3G)
 
