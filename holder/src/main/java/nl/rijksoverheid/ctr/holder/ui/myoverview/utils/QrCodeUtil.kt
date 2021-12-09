@@ -16,11 +16,21 @@ import java.util.*
  *
  */
 interface QrCodeUtil {
-    fun createQrCode(qrCodeContent: String, width: Int, height: Int, errorCorrectionLevel: ErrorCorrectionLevel): Bitmap
+    fun createQrCode(
+        qrCodeContent: String,
+        width: Int,
+        height: Int,
+        errorCorrectionLevel: ErrorCorrectionLevel
+    ): Bitmap
 }
 
 class QrCodeUtilImpl : QrCodeUtil {
-    override fun createQrCode(qrCodeContent: String, width: Int, height: Int, errorCorrectionLevel: ErrorCorrectionLevel): Bitmap {
+    override fun createQrCode(
+        qrCodeContent: String,
+        width: Int,
+        height: Int,
+        errorCorrectionLevel: ErrorCorrectionLevel
+    ): Bitmap {
         val multiFormatWriter = MultiFormatWriter()
         val hints: MutableMap<EncodeHintType, Any> = EnumMap(
             EncodeHintType::class.java
@@ -39,11 +49,14 @@ class QrCodeUtilImpl : QrCodeUtil {
             height,
             Bitmap.Config.RGB_565
         )
-        for (i in 0 until width) {
-            for (j in 0 until height) {
-                bitmap.setPixel(i, j, if (bitMatrix[i, j]) Color.BLACK else Color.WHITE)
+        val pixels = IntArray(width * height)
+        for (y in 0 until height) {
+            val offset = y * width
+            for (x in 0 until width) {
+                pixels[offset + x] = if (bitMatrix.get(x, y)) Color.BLACK else Color.WHITE
             }
         }
+        bitmap.setPixels(pixels, 0, width, 0, 0, width, height)
         return bitmap
     }
 }
