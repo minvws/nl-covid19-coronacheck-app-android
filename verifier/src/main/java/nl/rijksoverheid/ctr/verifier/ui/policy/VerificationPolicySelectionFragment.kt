@@ -10,6 +10,7 @@ import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
+import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.VerificationPolicy2G
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.VerificationPolicy3G
 import nl.rijksoverheid.ctr.verifier.R
@@ -54,22 +55,26 @@ class VerificationPolicySelectionFragment :
             getString(R.string.verifier_risksetting_start_readmore_url).launchUrl(requireContext())
         }
 
-        setupScreenBasedOnType()
+        viewModel.scannerUsedRecentlyLiveData.observe(viewLifecycleOwner, EventObserver {
+            setupScreenBasedOnType(it)
+        })
+
+        viewModel.didScanRecently()
     }
 
-    private fun setupScreenBasedOnType() {
+    private fun setupScreenBasedOnType(scanUsedRecently: Boolean) {
         val selectionType = args.selectionType
         when (selectionType) {
             is VerificationPolicySelectionType.FirstTimeUse -> setupScreenForFirstTimeUse()
-            is VerificationPolicySelectionType.Default -> setupScreenForDefaultSelectionType(selectionType.state.verificationPolicyState)
+            is VerificationPolicySelectionType.Default -> setupScreenForDefaultSelectionType(selectionType.state.verificationPolicyState, scanUsedRecently)
         }
         setupRadioGroup(selectionType)
     }
 
-    private fun setupScreenForDefaultSelectionType(verificationPolicyState: VerificationPolicyState) {
+    private fun setupScreenForDefaultSelectionType(verificationPolicyState: VerificationPolicyState, scanUsedRecently: Boolean) {
         binding.subHeader.setHtmlText(
             htmlText =
-            if (verificationPolicyState != VerificationPolicyState.None) {
+            if (verificationPolicyState != VerificationPolicyState.None && scanUsedRecently) {
                 getString(
                     R.string.verifier_risksetting_menu_scan_settings_selected_title,
                     TimeUnit.SECONDS.toMinutes(verifierCachedAppConfigUseCase.getCachedAppConfig().scanLockSeconds.toLong())
@@ -187,26 +192,26 @@ class VerificationPolicySelectionFragment :
         policySelected(selectionType.state.verificationPolicyState)
 
         when (viewModel.radioButtonSelected) {
-            binding.policy2G.id -> policy2GSelected(selectionType)
-            binding.policy3G.id -> policy3GSelected(selectionType)
+            binding.policy2G.id -> policy2GSelected()
+            binding.policy3G.id -> policy3GSelected()
         }
 
         binding.policy3GContainer.setOnClickListener {
-            policy3GSelected(selectionType)
+            policy3GSelected()
         }
 
         binding.policy2GContainer.setOnClickListener {
-            policy2GSelected(selectionType)
+            policy2GSelected()
         }
     }
 
-    private fun policy2GSelected(selectionType: VerificationPolicySelectionType) {
-        policyChecked(selectionType, binding.policy2G.id)
+    private fun policy2GSelected() {
+        policyChecked(binding.policy2G.id)
         policySelected(VerificationPolicyState.Policy2G)
     }
 
-    private fun policy3GSelected(selectionType: VerificationPolicySelectionType) {
-        policyChecked(selectionType, binding.policy3G.id)
+    private fun policy3GSelected() {
+        policyChecked(binding.policy3G.id)
         policySelected(VerificationPolicyState.Policy3G)
     }
 
@@ -227,17 +232,9 @@ class VerificationPolicySelectionFragment :
         }
     }
 
-    private fun policyChecked(selectionType: VerificationPolicySelectionType, checkedId: Int) {
+    private fun policyChecked(checkedId: Int) {
         toggleError(false)
 
-        if (selectionType is VerificationPolicySelectionType.Default) {
-            binding.subHeader.setHtmlText(
-                htmlText = getString(
-                    R.string.verifier_risksetting_menu_scan_settings_selected_title,
-                    TimeUnit.SECONDS.toMinutes(verifierCachedAppConfigUseCase.getCachedAppConfig().scanLockSeconds.toLong())
-                )
-            )
-        }
         viewModel.updateRadioButton(checkedId)
     }
 }

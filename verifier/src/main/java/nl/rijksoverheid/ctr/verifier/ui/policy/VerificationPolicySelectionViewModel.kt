@@ -3,14 +3,18 @@ package nl.rijksoverheid.ctr.verifier.ui.policy
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
+import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
-import nl.rijksoverheid.ctr.verifier.usecase.ScannerStateUseCase
 
 abstract class VerificationPolicySelectionViewModel: ViewModel() {
     var radioButtonSelected: Int? = null
+    val scannerUsedRecentlyLiveData: LiveData<Event<Boolean>> = MutableLiveData()
 
     abstract fun storeSelection(verificationPolicy: VerificationPolicy)
     abstract fun updateRadioButton(checkedId: Int)
+    abstract fun didScanRecently()
 }
 
 /*
@@ -22,6 +26,7 @@ abstract class VerificationPolicySelectionViewModel: ViewModel() {
  */
 class VerificationPolicySelectionViewModelImpl(
     private val verificationPolicyUseCase: VerificationPolicyUseCase,
+    private val scannerUsedRecentlyUseCase: ScannerUsedRecentlyUseCase,
 ) : VerificationPolicySelectionViewModel() {
 
     override fun storeSelection(verificationPolicy: VerificationPolicy) {
@@ -30,5 +35,15 @@ class VerificationPolicySelectionViewModelImpl(
 
     override fun updateRadioButton(checkedId: Int) {
         radioButtonSelected = checkedId
+    }
+
+    override fun didScanRecently() {
+        viewModelScope.launch {
+            (scannerUsedRecentlyLiveData as MutableLiveData).postValue(
+                Event(
+                    scannerUsedRecentlyUseCase.get()
+                )
+            )
+        }
     }
 }
