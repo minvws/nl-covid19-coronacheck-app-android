@@ -3,8 +3,7 @@ package nl.rijksoverheid.ctr.verifier.ui.scanqr
 import android.os.CountDownTimer
 import android.text.format.DateUtils
 import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyState
-import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyUseCase
-
+import nl.rijksoverheid.ctr.verifier.ui.scanqr.util.ScannerStateCountdownUtil
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -13,12 +12,12 @@ import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyUseCase
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class SwitchCountDownTimer(
-    private val verificationPolicyUseCase: VerificationPolicyUseCase,
+class ScannerStateCountDownTimer(
+    private val scannerStateCountdownUtil: ScannerStateCountdownUtil,
     private val onTick: (String) -> Unit,
-    private val onFinish: (VerificationPolicyState) -> Unit,
+    private val onFinished: () -> Unit,
 ) : CountDownTimer(
-    verificationPolicyUseCase.getRemainingSecondsLocked() * timerIntervalMs,
+    scannerStateCountdownUtil.getRemainingSecondsLocked() * timerIntervalMs,
     timerIntervalMs
 ) {
     override fun onTick(millisUntilFinished: Long) {
@@ -30,7 +29,7 @@ class SwitchCountDownTimer(
     }
 
     override fun onFinish() {
-        onFinish(verificationPolicyUseCase.getState())
+        onFinished()
     }
 
     companion object {

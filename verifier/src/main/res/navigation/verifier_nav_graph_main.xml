@@ -51,17 +51,17 @@
             app:popExitAnim="@anim/slide_out_right" />
 
         <argument
-            android:name="isScanQrFlow"
-            android:defaultValue="false"
-            app:argType="boolean"/>
+            android:name="selectionType"
+            app:nullable="false"
+            app:argType="nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionType"/>
 
     </fragment>
 
     <fragment
         android:id="@+id/nav_policy_settings"
-        android:name="nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySettingsFragment"
+        android:name="nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyInfoFragment"
         android:label="@string/verifier_menu_risksetting"
-        tools:layout="@layout/fragment_verification_policy_settings">
+        tools:layout="@layout/fragment_verification_policy_info">
 
         <action
             android:id="@+id/action_policy_selection"

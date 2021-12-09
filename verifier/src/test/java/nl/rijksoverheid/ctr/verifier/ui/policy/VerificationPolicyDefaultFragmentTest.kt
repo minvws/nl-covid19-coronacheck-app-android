@@ -26,7 +26,7 @@ import org.robolectric.RobolectricTestRunner
  *
  */
 @RunWith(RobolectricTestRunner::class)
-class VerificationPolicySettingsFragmentTest : AutoCloseKoinTest() {
+class VerificationPolicyDefaultFragmentTest : AutoCloseKoinTest() {
     private val navController = TestNavHostController(
         ApplicationProvider.getApplicationContext()
     ).also {
@@ -85,6 +85,7 @@ class VerificationPolicySettingsFragmentTest : AutoCloseKoinTest() {
                 factory {
                     mockk<PersistenceManager>().apply {
                         every { getVerificationPolicySelected() } returns policy
+                        every { getLastScanLockTimeSeconds() } returns 0L
                     }
                 }
             }
@@ -93,7 +94,7 @@ class VerificationPolicySettingsFragmentTest : AutoCloseKoinTest() {
         launchFragmentInContainer(
             themeResId = R.style.AppTheme
         ) {
-            VerificationPolicySettingsFragment().also {
+            VerificationPolicyInfoFragment().also {
                 it.viewLifecycleOwnerLiveData.observeForever { viewLifecycleOwner ->
                     if (viewLifecycleOwner != null) {
                         Navigation.setViewNavController(it.requireView(), navController)

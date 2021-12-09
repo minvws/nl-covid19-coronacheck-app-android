@@ -4,10 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
+import nl.rijksoverheid.ctr.verifier.usecase.ScannerStateUseCase
 
 abstract class VerificationPolicySelectionViewModel: ViewModel() {
-    val policyFlowLiveData: LiveData<VerificationPolicyFlow> = MutableLiveData()
-
     var radioButtonSelected: Int? = null
 
     abstract fun storeSelection(verificationPolicy: VerificationPolicy)
@@ -23,20 +22,7 @@ abstract class VerificationPolicySelectionViewModel: ViewModel() {
  */
 class VerificationPolicySelectionViewModelImpl(
     private val verificationPolicyUseCase: VerificationPolicyUseCase,
-    private val isScanQRFlow: Boolean,
 ) : VerificationPolicySelectionViewModel() {
-
-    init {
-        val policyState = verificationPolicyUseCase.getState()
-
-        (policyFlowLiveData as MutableLiveData).postValue(
-            if (isScanQRFlow) {
-                VerificationPolicyFlow.ScanQR(policyState)
-            } else {
-                VerificationPolicyFlow.Settings(policyState)
-            }
-        )
-    }
 
     override fun storeSelection(verificationPolicy: VerificationPolicy) {
         verificationPolicyUseCase.store(verificationPolicy)

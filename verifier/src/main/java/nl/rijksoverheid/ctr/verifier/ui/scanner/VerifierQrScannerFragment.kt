@@ -16,8 +16,6 @@ import nl.rijksoverheid.ctr.verifier.ui.scanner.models.VerifiedQrResultState
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyUseCase
-import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyState
-import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyState.Policy2G
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -57,12 +55,12 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
             verificationPolicy = verificationPolicyUseCase.get().let {
                 Copy.VerificationPolicy(
                     title = when (it) {
-                        VerificationPolicy2G -> R.string.verifier_scanner_policy_indication_2g
-                        VerificationPolicy3G -> R.string.verifier_scanner_policy_indication_3g
+                        is VerificationPolicy2G -> R.string.verifier_scanner_policy_indication_2g
+                        is VerificationPolicy3G -> R.string.verifier_scanner_policy_indication_3g
                     },
                     indicatorColor = when (it) {
-                        VerificationPolicy2G -> R.color.primary_blue
-                        VerificationPolicy3G -> R.color.secondary_green
+                        is VerificationPolicy2G -> R.color.primary_blue
+                        is VerificationPolicy3G -> R.color.secondary_green
                     }
                 )
             }
