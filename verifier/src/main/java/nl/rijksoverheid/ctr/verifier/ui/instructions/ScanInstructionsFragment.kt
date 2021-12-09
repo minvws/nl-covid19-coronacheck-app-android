@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import nl.rijksoverheid.ctr.introduction.ui.onboarding.OnboardingPagerAdapter
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
+import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.VerifierMainFragment
@@ -17,6 +18,7 @@ import nl.rijksoverheid.ctr.verifier.models.ScannerState
 import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionType
 import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyState
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
+import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrFragmentDirections
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrViewModel
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScannerNavigationState
 import org.koin.android.ext.android.inject
@@ -87,10 +89,12 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
                 if (!state.isLocked) {
                     findNavControllerSafety()?.popBackStack(R.id.nav_scan_qr, false)
                     scannerUtil.launchScanner(requireActivity())
+                } else {
+                    navigateSafety(R.id.nav_scan_qr)
                 }
             }
             else -> {
-                findNavControllerSafety()?.navigate(
+                navigateSafety(
                     ScanInstructionsFragmentDirections.actionPolicySelection(
                         VerificationPolicySelectionType.FirstTimeUse(ScannerState.Unlocked(VerificationPolicyState.None))
                     )

@@ -49,11 +49,6 @@ class ScanQrViewModelImpl(
 
     override fun nextScreen() {
         val nextScreenState = scannerNavigationStateUseCase.get()
-        val isScannerUnlocked = scannerStateUseCase.get() !is ScannerState.Locked
-        if (isScannerUnlocked ||
-            (nextScreenState !is ScannerNavigationState.Scanner)
-        ) {
-            (scannerNavigationStateEvent as MutableLiveData).postValue(Event(nextScreenState))
-        }
+        (scannerNavigationStateEvent as MutableLiveData).postValue(Event(nextScreenState))
     }
 }
