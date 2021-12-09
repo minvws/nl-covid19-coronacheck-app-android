@@ -86,6 +86,7 @@ class VerificationPolicySelectionFragment :
                 presentWarningDialog()
             }
         }
+        binding.confirmationButton.text = getString(R.string.verifier_risksetting_confirmation_button)
     }
 
     private fun presentWarningDialog() {
@@ -138,6 +139,7 @@ class VerificationPolicySelectionFragment :
 
     private fun setupScreenForFirstTimeUse() {
         binding.subHeader.setHtmlText(R.string.verifier_risksetting_firsttimeuse_header)
+        binding.confirmationButton.text = getString(R.string.scan_qr_button)
         binding.confirmationButton.setOnClickListener {
             onConfirmationButtonClicked {
                 storeSelection()
