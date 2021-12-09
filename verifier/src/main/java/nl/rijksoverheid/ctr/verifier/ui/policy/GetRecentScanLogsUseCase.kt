@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.verifier.ui.policy
 
+import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.verifier.ui.scanlog.repositories.ScanLogRepository
 import java.time.Clock
 import java.time.OffsetDateTime
@@ -12,14 +13,15 @@ import java.time.OffsetDateTime
  *
  */
 interface GetRecentScanLogsUseCase {
-    suspend fun scanUsedRecently(): Boolean
+    suspend fun get(): Boolean
 }
 
 class GetRecentScanLogsUseCaseImpl(
     private val scanLogRepository: ScanLogRepository,
     private val clock: Clock,
+    private val cachedAppConfigUseCase: VerifierCachedAppConfigUseCase,
 ): GetRecentScanLogsUseCase {
-    override suspend fun scanUsedRecently(): Boolean {
-        return scanLogRepository.getAll().any { it.from.isAfter(OffsetDateTime.now(clock).minusHours(1L)) }
+    override suspend fun get(): Boolean {
+        return scanLogRepository.getAll().any { it.from.isAfter(OffsetDateTime.now(clock).minusSeconds(cachedAppConfigUseCase.getCachedAppConfig().scanLogStorageSeconds.toLong())) }
     }
 }

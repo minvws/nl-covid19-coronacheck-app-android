@@ -41,7 +41,7 @@ class VerificationPolicySelectionViewModelImpl(
         viewModelScope.launch {
             (recentScanLogsLiveData as MutableLiveData).postValue(
                 Event(
-                    getRecentScanLogsUseCase.scanUsedRecently()
+                    getRecentScanLogsUseCase.get()
                 )
             )
         }
