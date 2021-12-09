@@ -81,8 +81,8 @@ class VerificationPolicySelectionFragmentTest : AutoCloseKoinTest() {
         val recentScanLogsLiveDataEvent = MutableLiveData<Event<Boolean>>()
 
         verificationPolicySelectionViewModel =  mockk<VerificationPolicySelectionViewModel>().apply {
-            coEvery { recentScanLogsLiveData } returns recentScanLogsLiveDataEvent
-            coEvery { checkForRecentScanLogs() }  answers {
+            coEvery { scannerUsedRecentlyLiveData } returns recentScanLogsLiveDataEvent
+            coEvery { didScanRecently() }  answers {
                 recentScanLogsLiveDataEvent.postValue(Event(true))
             }
             coEvery { radioButtonSelected } returns when (policyState) {

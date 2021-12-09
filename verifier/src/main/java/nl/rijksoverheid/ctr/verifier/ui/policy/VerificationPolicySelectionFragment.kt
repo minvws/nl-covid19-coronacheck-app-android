@@ -57,11 +57,11 @@ class VerificationPolicySelectionFragment :
             getString(R.string.verifier_risksetting_start_readmore_url).launchUrl(requireContext())
         }
 
-        viewModel.recentScanLogsLiveData.observe(viewLifecycleOwner, EventObserver {
+        viewModel.scannerUsedRecentlyLiveData.observe(viewLifecycleOwner, EventObserver {
             setupScreenBasedOnType(it)
         })
 
-        viewModel.checkForRecentScanLogs()
+        viewModel.didScanRecently()
     }
 
     private fun setupScreenBasedOnType(scanUsedRecently: Boolean) {

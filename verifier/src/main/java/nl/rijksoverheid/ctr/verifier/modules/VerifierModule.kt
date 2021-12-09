@@ -86,7 +86,7 @@ fun verifierModule(path: String) = module {
     }
     factory<ScanLogsCleanupUseCase> { ScanLogsCleanupUseCaseImpl(Clock.systemUTC(), get(), get()) }
     factory<LogScanUseCase> { LogScanUseCaseImpl(Clock.systemUTC(), get(), get()) }
-    factory<GetRecentScanLogsUseCase> { GetRecentScanLogsUseCaseImpl(get(), get()) }
+    factory<ScannerUsedRecentlyUseCase> { ScannerUsedRecentlyUseCaseImpl(get(), get(), get()) }
 
     // Utils
     factory<ScannerUtil> { ScannerUtilImpl() }

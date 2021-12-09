@@ -12,15 +12,15 @@ import java.time.OffsetDateTime
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-interface GetRecentScanLogsUseCase {
+interface ScannerUsedRecentlyUseCase {
     suspend fun get(): Boolean
 }
 
-class GetRecentScanLogsUseCaseImpl(
+class ScannerUsedRecentlyUseCaseImpl(
     private val scanLogRepository: ScanLogRepository,
     private val clock: Clock,
     private val cachedAppConfigUseCase: VerifierCachedAppConfigUseCase,
-): GetRecentScanLogsUseCase {
+): ScannerUsedRecentlyUseCase {
     override suspend fun get(): Boolean {
         return scanLogRepository.getAll().any { it.from.isAfter(OffsetDateTime.now(clock).minusSeconds(cachedAppConfigUseCase.getCachedAppConfig().scanLogStorageSeconds.toLong())) }
     }
