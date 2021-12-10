@@ -12,7 +12,7 @@
 
     <TextView
         android:id="@+id/time"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textColor="@color/secondary_text"
         android:layout_marginHorizontal="32dp"
@@ -27,7 +27,7 @@
 
     <TextView
         android:id="@+id/skew"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textColor="@color/error"
         android:layout_marginHorizontal="32dp"
@@ -45,7 +45,7 @@
 
     <TextView
         android:id="@+id/amount"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="32dp"
         android:layout_marginTop="8dp"
