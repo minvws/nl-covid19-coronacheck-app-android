@@ -9,17 +9,13 @@ import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
-import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.VerificationPolicy2G
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.VerificationPolicy3G
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentVerificationPolicySelectionBinding
-import nl.rijksoverheid.ctr.verifier.models.ScannerState
 import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
-import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScannerNavigationStateUseCase
-import nl.rijksoverheid.ctr.verifier.usecase.ScannerStateUseCase
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.concurrent.TimeUnit
@@ -44,7 +40,6 @@ class VerificationPolicySelectionFragment :
     private val dialogUtil: DialogUtil by inject()
     private val verifierCachedAppConfigUseCase: VerifierCachedAppConfigUseCase by inject()
     private val verificationPolicyStateUseCase: VerificationPolicyStateUseCase by inject()
-    private val scannerStateUseCase: ScannerStateUseCase by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -121,16 +116,6 @@ class VerificationPolicySelectionFragment :
 
     private fun closeScreen() {
         findNavControllerSafety()?.popBackStack(R.id.nav_policy_settings, true)
-    }
-
-    private fun launchScanner() {
-        when (scannerStateUseCase.get()) {
-            is ScannerState.Locked -> navigateSafety(R.id.nav_scan_qr)
-            is ScannerState.Unlocked -> {
-                findNavControllerSafety()?.popBackStack(R.id.nav_scan_qr, false)
-                scannerUtil.launchScanner(requireActivity())
-            }
-        }
     }
 
     private fun setupScreenForFirstTimeUse() {
