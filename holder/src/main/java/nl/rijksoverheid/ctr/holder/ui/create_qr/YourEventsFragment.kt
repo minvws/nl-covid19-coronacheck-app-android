@@ -706,7 +706,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                 if (isAdded) {
                     MaterialAlertDialogBuilder(requireContext())
                         .setTitle(R.string.your_events_block_back_dialog_title)
-                        .setMessage(R.string.your_events_block_back_dialog_description)
+                        .setMessage(getCancelDialogDescription())
                         .setPositiveButton(R.string.your_events_block_back_dialog_positive_button) { _, _ ->
                             navigateSafety(
                                 YourEventsFragmentDirections.actionMyOverview()
@@ -717,6 +717,18 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                 }
             }
         })
+    }
+
+    private fun getCancelDialogDescription() = when (val type = args.type) {
+        is YourEventsFragmentType.DCC -> R.string.holder_dcc_alert_message
+        is YourEventsFragmentType.TestResult2 -> R.string.holder_test_alert_message
+        is YourEventsFragmentType.RemoteProtocol3Type -> {
+            when (type.originType) {
+                is OriginType.Test -> R.string.holder_test_alert_message
+                is OriginType.Recovery -> R.string.holder_recovery_alert_message
+                is OriginType.Vaccination -> R.string.holder_vaccination_alert_message
+            }
+        }
     }
 
     private fun getFullName(holder: RemoteProtocol3.Holder?): String = holder?.let {
