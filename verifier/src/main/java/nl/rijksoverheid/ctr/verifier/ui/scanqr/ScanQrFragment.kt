@@ -19,6 +19,7 @@ import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.VerificationPolicy2G
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.VerificationPolicy3G
+import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.VerifierMainActivity
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanQrBinding
@@ -51,6 +52,7 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
     private val scannerStateCountdownUtil: ScannerStateCountdownUtil by inject()
     private val verifierCachedAppConfigUseCase: VerifierCachedAppConfigUseCase by inject()
     private val scannerStateUseCase: ScannerStateUseCase by inject()
+    private val androidUtil: AndroidUtil by inject()
 
     private var scannerStateCountDownTimer: ScannerStateCountDownTimer? = null
 
@@ -97,6 +99,12 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
             onStateUpdated(it)
         })
 
+        setupClockDeviation()
+
+        checkPendingDeeplink()
+    }
+
+    private fun setupClockDeviation() {
         binding.clockdeviationView.clockdeviationButton.setOnClickListener {
             infoFragmentUtil.presentAsBottomSheet(
                 childFragmentManager, InfoFragmentData.TitleDescription(
@@ -111,8 +119,6 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
         // Handle clock deviation view
         observeServerTimeSynced()
         showDeviationViewIfNeeded()
-
-        checkPendingDeeplink()
     }
 
     override fun onResume() {
@@ -131,24 +137,29 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
     }
 
     private fun onStateUpdated(scannerState: ScannerState) {
-        binding.image.setImageDrawable(
-            ContextCompat.getDrawable(
-                requireContext(), when (scannerState.verificationPolicyState) {
-                    VerificationPolicyState.None -> {
-                        binding.bottom.hidePolicyIndication()
-                        R.drawable.illustration_scanner_get_started_3g
-                    }
-                    VerificationPolicyState.Policy2G -> {
-                        binding.bottom.setPolicy(VerificationPolicy2G)
-                        R.drawable.illustration_scanner_get_started_2g
-                    }
-                    VerificationPolicyState.Policy3G -> {
-                        binding.bottom.setPolicy(VerificationPolicy3G)
-                        R.drawable.illustration_scanner_get_started_3g
-                    }
-                }
+        val imageDrawable = when (scannerState.verificationPolicyState) {
+            VerificationPolicyState.None -> {
+                binding.bottom.hidePolicyIndication()
+                R.drawable.illustration_scanner_get_started_3g
+            }
+            VerificationPolicyState.Policy2G -> {
+                binding.bottom.setPolicy(VerificationPolicy2G)
+                R.drawable.illustration_scanner_get_started_2g
+            }
+            VerificationPolicyState.Policy3G -> {
+                binding.bottom.setPolicy(VerificationPolicy3G)
+                R.drawable.illustration_scanner_get_started_3g
+            }
+        }
+
+        // hide the image on landscape
+        if (!androidUtil.isSmallScreen()) {
+            binding.image.setImageDrawable(
+                ContextCompat.getDrawable(
+                    requireContext(), imageDrawable
+                )
             )
-        )
+        }
 
         when (scannerState) {
             is ScannerState.Locked -> lockScanner()
