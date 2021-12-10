@@ -138,6 +138,9 @@ class VerifierMainFragment :
                                         AboutThisAppData.Url(
                                             text = getString(R.string.about_this_app_colofon),
                                             url = getString(R.string.about_this_app_colofon_url),
+                                        ),
+                                        AboutThisAppData.ClearAppData(
+                                            text = getString(R.string.about_this_clear_data)
                                         )
                                     )
                                 ),

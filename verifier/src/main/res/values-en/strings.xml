@@ -188,4 +188,9 @@ Visitors can create a coronavirus pass with a QR code of their vaccination, nega
   <string name="verifier_risksetting_changeselection_3g">Set to 3G access</string>
   <string name="verifier_risksetting_changeselection_2g">Set to 2G access</string>
   <string name="verifier_scan_instructions_back_to_start">Back to start</string>
+  <string name="about_this_clear_data">Clear data</string>
+  <string name="about_this_app_clear_data_title">Clear all data?</string>
+  <string name="about_this_app_clear_data_description">Clearing will delete all data and certificates from the app and will close the app. You can simply restart it afterwards.</string>
+  <string name="about_this_app_clear_data_cancel">Cancel</string>
+  <string name="about_this_app_clear_data_confirm">Clear data</string>
 </resources>

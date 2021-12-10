@@ -188,4 +188,9 @@ Bezoekers maken een coronabewijs met een QR-code van hun vaccinatie, negatieve t
   <string name="verifier_risksetting_changeselection_3g">3G-toegang ingesteld</string>
   <string name="verifier_risksetting_changeselection_2g">2G-toegang ingesteld</string>
   <string name="verifier_scan_instructions_back_to_start">Terug naar start</string>
+  <string name="about_this_clear_data">Wis gegevens</string>
+  <string name="about_this_app_clear_data_title">Alle gegevens wissen?</string>
+  <string name="about_this_app_clear_data_description">Bij het wissen worden alle gegevens en bewijzen uit de app verwijderd en wordt de app afgesloten. Je kunt de app daarna gewoon weer opstarten.</string>
+  <string name="about_this_app_clear_data_cancel">Annuleer</string>
+  <string name="about_this_app_clear_data_confirm">Wis gegevens</string>
 </resources>
