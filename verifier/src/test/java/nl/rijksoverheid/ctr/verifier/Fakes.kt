@@ -67,26 +67,6 @@ fun fakeIntroductionViewModel(
     }
 }
 
-fun fakeScanQrViewModel(
-    scanInstructionsSeen: Boolean,
-    scannerNavigationState: ScannerNavigationState = ScannerNavigationState.Scanner(false),
-) = object : ScanQrViewModel() {
-    override fun hasSeenScanInstructions(): Boolean {
-        return scanInstructionsSeen
-    }
-
-    override fun setScanInstructionsSeen() {
-    }
-
-    override fun checkPolicyUpdate() {
-
-    }
-
-    override fun nextScreen() {
-
-    }
-}
-
 fun fakeTestResultValidUseCase(
     result: VerifiedQrResultState = VerifiedQrResultState.Valid(
         verifiedQr = fakeVerifiedQr()
