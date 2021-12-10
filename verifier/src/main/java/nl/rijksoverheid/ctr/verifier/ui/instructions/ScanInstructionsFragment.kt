@@ -111,8 +111,6 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
                 if (currentItem == 0) {
                     findNavControllerSafety()?.popBackStack()
                     clearToolbar()
-                    // Instructions have been opened, set as seen
-                    scanQrViewModel.setScanInstructionsSeen()
                 } else {
                     binding.viewPager.currentItem = binding.viewPager.currentItem - 1
                 }
