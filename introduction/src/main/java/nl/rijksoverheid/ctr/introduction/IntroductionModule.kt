@@ -20,6 +20,6 @@ val introductionModule = module {
             get()
         )
     }
-    factory<IntroductionStatusUseCase> { IntroductionStatusUseCaseImpl(get(), get()) }
+    factory<IntroductionStatusUseCase> { IntroductionStatusUseCaseImpl(get(), get(), get()) }
     viewModel<IntroductionViewModel> { IntroductionViewModelImpl(get(), get()) }
 }

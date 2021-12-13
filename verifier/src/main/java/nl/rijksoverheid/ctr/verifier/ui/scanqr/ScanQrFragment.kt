@@ -11,6 +11,7 @@ import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
+import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
@@ -53,6 +54,7 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
     private val verifierCachedAppConfigUseCase: VerifierCachedAppConfigUseCase by inject()
     private val scannerStateUseCase: ScannerStateUseCase by inject()
     private val androidUtil: AndroidUtil by inject()
+    private val featureFlagUseCase: FeatureFlagUseCase by inject()
 
     private var scannerStateCountDownTimer: ScannerStateCountDownTimer? = null
 
@@ -214,7 +216,7 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
 
     private fun unlockScanner() {
         binding.title.setText(R.string.scan_qr_header)
-        binding.description.setText(R.string.scan_qr_description)
+        binding.description.setText(if (featureFlagUseCase.isVerificationPolicyEnabled()) R.string.scan_qr_description_2G else R.string.scan_qr_description)
         binding.instructionsButton.visibility = VISIBLE
         showDeviationViewIfNeeded()
         binding.bottom.unlock()
