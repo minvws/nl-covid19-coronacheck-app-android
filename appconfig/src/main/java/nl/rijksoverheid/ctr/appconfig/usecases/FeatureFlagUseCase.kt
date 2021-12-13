@@ -1,14 +1,25 @@
+/*
+ *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+ *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+ *
+ *   SPDX-License-Identifier: EUPL-1.2
+ *
+ */
+
 package nl.rijksoverheid.ctr.appconfig.usecases
 
+import nl.rijksoverheid.ctr.shared.BuildConfigUseCase
+
 interface FeatureFlagUseCase {
-    fun isVerificationPolicyEnabled(appBuildVersion: Int): Boolean
+    fun isVerificationPolicyEnabled(): Boolean
 }
 
 class FeatureFlagUseCaseImpl(
-    private val appConfigUseCase: CachedAppConfigUseCase
+    private val buildConfigUseCase: BuildConfigUseCase,
+    private val appConfigUseCase: CachedAppConfigUseCase,
 ): FeatureFlagUseCase {
 
-    override fun isVerificationPolicyEnabled(appBuildVersion: Int): Boolean {
-        return appBuildVersion >= appConfigUseCase.getCachedAppConfig().enableVerificationPolicyVersion
+    override fun isVerificationPolicyEnabled(): Boolean {
+        return buildConfigUseCase.getVersionCode() >= appConfigUseCase.getCachedAppConfig().enableVerificationPolicyVersion
     }
 }
