@@ -12,7 +12,7 @@ import nl.rijksoverheid.ctr.verifier.R
  *
  */
 
-val instructionsExplanationData: IntroductionData by lazy {
+fun instructionsExplanationData(isVerificationPolicyEnabled: Boolean): IntroductionData =
     IntroductionData(
         onboardingItems = listOf(
             OnboardingItem(
@@ -35,8 +35,8 @@ val instructionsExplanationData: IntroductionData by lazy {
             ),
             OnboardingItem(
                 animationResource = R.raw.scaninstructions_4,
-                titleResource = R.string.scan_instructions_4_title,
-                description = R.string.scan_instructions_4_description,
+                titleResource = if (isVerificationPolicyEnabled) R.string.scan_instructions_4_title_2G else R.string.scan_instructions_4_title,
+                description = if (isVerificationPolicyEnabled) R.string.scan_instructions_4_description_2G else R.string.scan_instructions_4_description_2G,
                 position = 4
             ),
             OnboardingItem(
@@ -47,4 +47,3 @@ val instructionsExplanationData: IntroductionData by lazy {
             ),
         )
     )
-}
