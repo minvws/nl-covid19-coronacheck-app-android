@@ -39,8 +39,12 @@
     <fragment
         android:id="@+id/nav_policy_selection"
         android:name="nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionFragment"
-        android:label="@string/verifier_menu_risksetting"
+        android:label="{toolbarTitle}"
         tools:layout="@layout/fragment_verification_policy_selection">
+
+        <argument
+            android:name="toolbarTitle"
+            app:argType="string" />
 
         <action
             android:id="@+id/action_scan_instructions"
