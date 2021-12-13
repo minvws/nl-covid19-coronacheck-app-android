@@ -460,6 +460,44 @@ class DashboardItemUtilImplTest {
         assertTrue(shouldShowCoronaMelderItem)
     }
 
+    @Test
+    fun `shouldShowTestCertificate3GValidityItem returns false if test has 2g category`() {
+        val util = dashboardItemUtil(
+            isExpired = false
+        )
+
+        val greenCard = fakeGreenCard(
+            greenCardType = GreenCardType.Domestic,
+            originType = OriginType.Test,
+            category = "2"
+        )
+
+        val shouldShowTestCertificate3GValidityItem = util.shouldShowTestCertificate3GValidityItem(
+            domesticGreenCards = listOf(greenCard)
+        )
+
+        assertFalse(shouldShowTestCertificate3GValidityItem)
+    }
+
+    @Test
+    fun `shouldShowTestCertificate3GValidityItem returns true if test has 3g category`() {
+        val util = dashboardItemUtil(
+            isExpired = false
+        )
+
+        val greenCard = fakeGreenCard(
+            greenCardType = GreenCardType.Domestic,
+            originType = OriginType.Test,
+            category = "3"
+        )
+
+        val shouldShowTestCertificate3GValidityItem = util.shouldShowTestCertificate3GValidityItem(
+            domesticGreenCards = listOf(greenCard)
+        )
+
+        assertTrue(shouldShowTestCertificate3GValidityItem)
+    }
+
     private fun createCardItem(originType: OriginType) = CardItem(
         greenCard = GreenCard(
             greenCardEntity = fakeGreenCardEntity,
@@ -472,7 +510,7 @@ class DashboardItemUtilImplTest {
                     validFrom = OffsetDateTime.now()
                 )
             ),
-            credentialEntities = emptyList()
+            credentialEntities = listOf()
         ),
         originStates = listOf(),
         credentialState = CardsItem.CredentialState.HasCredential(mockk()),

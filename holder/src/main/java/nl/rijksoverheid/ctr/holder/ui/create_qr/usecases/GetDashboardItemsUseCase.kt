@@ -100,7 +100,7 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
-        if (has3GTests(domesticGreenCards)) {
+        if (dashboardItemUtil.shouldShowTestCertificate3GValidityItem(domesticGreenCards)) {
             dashboardItems.add(DashboardItem.InfoItem.TestCertificate3GValidity)
         }
 
@@ -136,13 +136,6 @@ class GetDashboardItemsUseCaseImpl(
         )
 
         return dashboardItems
-    }
-
-    private fun has3GTests(domesticGreenCards: List<GreenCard>): Boolean {
-        return domesticGreenCards.any { greenCard ->
-            greenCard.origins.any { it.type == OriginType.Test }
-                    && greenCard.credentialEntities.any { it.category == Mobilecore.VERIFICATION_POLICY_3G }
-        }
     }
 
     private suspend fun getInternationalItems(

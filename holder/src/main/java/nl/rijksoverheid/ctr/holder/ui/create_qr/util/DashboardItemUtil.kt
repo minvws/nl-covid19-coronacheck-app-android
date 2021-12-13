@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
+import mobilecore.Mobilecore
 import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigFreshnessUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.holder.R
@@ -43,6 +44,9 @@ interface DashboardItemUtil {
     fun shouldShowCoronaMelderItem(
         greenCards: List<GreenCard>,
         databaseSyncerResult: DatabaseSyncerResult
+    ): Boolean
+    fun shouldShowTestCertificate3GValidityItem(
+        domesticGreenCards: List<GreenCard>
     ): Boolean
 }
 
@@ -175,5 +179,12 @@ class DashboardItemUtilImpl(
         return greenCards.isNotEmpty()
                 && !greenCards.all { greenCardUtil.isExpired(it) }
                 && databaseSyncerResult is DatabaseSyncerResult.Success
+    }
+
+    override fun shouldShowTestCertificate3GValidityItem(domesticGreenCards: List<GreenCard>): Boolean {
+        return domesticGreenCards.any { greenCard ->
+            greenCard.origins.any { it.type == OriginType.Test }
+                    && greenCard.credentialEntities.any { it.category == Mobilecore.VERIFICATION_POLICY_3G }
+        }
     }
 }
