@@ -28,7 +28,8 @@ class VerifierConfig(
     @Json(name = "configAlmostOutOfDateWarningSeconds") val verifierConfigAlmostOutOfDateWarningSeconds : Int,
     @Json(name = "scanLockWarningSeconds") val scanLockWarningSeconds: Int,
     @Json(name = "scanLockSeconds") val scanLockSeconds: Int,
-    @Json(name = "scanLogStorageSeconds") val scanLogStorageSeconds: Int
+    @Json(name = "scanLogStorageSeconds") val scanLogStorageSeconds: Int,
+    @Json(name = "androidEnableVerificationPolicyVersion") val verifierEnableVerificationPolicyVersion: Int
 ) : AppConfig(
     verifierAppDeactivated,
     verifierInformationURL,
@@ -40,7 +41,8 @@ class VerifierConfig(
     upgradeRecommendationIntervalHours,
     verifierDeeplinkDomains,
     verifierClockDeviationThresholdSeconds,
-    verifierConfigAlmostOutOfDateWarningSeconds
+    verifierConfigAlmostOutOfDateWarningSeconds,
+    verifierEnableVerificationPolicyVersion
 ) {
     companion object {
         fun default(
@@ -76,7 +78,8 @@ class VerifierConfig(
             verifierConfigAlmostOutOfDateWarningSeconds = verifierConfigAlmostOutOfDateWarningSeconds,
             scanLockWarningSeconds = scanLockWarningSeconds,
             scanLockSeconds = scanLockSeconds,
-            scanLogStorageSeconds = scanLogStorageSeconds
+            scanLogStorageSeconds = scanLogStorageSeconds,
+            verifierEnableVerificationPolicyVersion = 0
         )
     }
 }

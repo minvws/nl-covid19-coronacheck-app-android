@@ -10,6 +10,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 import android.app.Application
 import android.os.Build
 import android.text.TextUtils
+import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYearNumerical
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
@@ -33,6 +34,7 @@ class QrInfoScreenUtilImpl(
     private val application: Application,
     private val readEuropeanCredentialUtil: ReadEuropeanCredentialUtil,
     private val countryUtil: CountryUtil,
+    private val featureFlagUseCase: FeatureFlagUseCase,
     cachedAppConfigUseCase: CachedAppConfigUseCase
 ) : QrInfoScreenUtil {
 
@@ -40,8 +42,9 @@ class QrInfoScreenUtilImpl(
 
     override fun getForDomesticQr(personalDetails: PersonalDetails): QrInfoScreen {
         val title = application.getString(R.string.qr_explanation_title_domestic)
+
         val description = application.getString(
-            R.string.qr_explanation_description_domestic,
+            if (featureFlagUseCase.isVerificationPolicyEnabled()) R.string.qr_explanation_description_domestic_2G else R.string.qr_explanation_description_domestic,
             "${personalDetails.firstNameInitial} ${personalDetails.lastNameInitial} ${personalDetails.birthDay} ${personalDetails.birthMonth}"
         )
 

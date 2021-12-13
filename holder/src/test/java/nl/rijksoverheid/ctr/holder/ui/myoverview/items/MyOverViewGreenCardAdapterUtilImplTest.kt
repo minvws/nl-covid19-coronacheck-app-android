@@ -8,6 +8,7 @@ import androidx.test.core.app.ApplicationProvider
 import io.mockk.every
 import io.mockk.mockk
 import mobilecore.Mobilecore
+import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.fakeGreenCard
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
@@ -47,10 +48,11 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
     private val credentialUtil = mockk<CredentialUtil>(relaxed = true)
     private val testResultAdapterItemUtil: TestResultAdapterItemUtil = mockk(relaxed = true)
     private val greenCardUtil: GreenCardUtil = mockk(relaxed = true)
+    private val featureFlagUseCase: FeatureFlagUseCase = mockk(relaxed = true)
 
     private val myOverViewGreenCardAdapterUtil: MyOverViewGreenCardAdapterUtil by lazy {
         MyOverViewGreenCardAdapterUtilImpl(
-            context, credentialUtil, testResultAdapterItemUtil, greenCardUtil
+            context, credentialUtil, testResultAdapterItemUtil, greenCardUtil, featureFlagUseCase
         )
     }
 
@@ -72,6 +74,8 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
     fun setup() {
         viewBinding.description.removeAllViews()
         viewBinding.expiresIn.visibility = View.GONE
+
+        every { featureFlagUseCase.isVerificationPolicyEnabled() } answers { true }
     }
 
     @Test
@@ -273,7 +277,7 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
         val greenCard = greenCard(GreenCardType.Domestic)
         every { greenCardUtil.getExpireDate(greenCard) } returns greenCard.credentialEntities.first().expirationTime
         val myOverViewGreenCardAdapterUtil = MyOverViewGreenCardAdapterUtilImpl(
-            context, credentialUtil, testResultAdapterItemUtil, greenCardUtil
+            context, credentialUtil, testResultAdapterItemUtil, greenCardUtil, featureFlagUseCase
         )
 
         myOverViewGreenCardAdapterUtil.setContent(
@@ -399,6 +403,7 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
     fun `domestic test with 3G validity`() {
         val greenCard =
             greenCard(GreenCardType.Domestic, category = Mobilecore.VERIFICATION_POLICY_3G)
+
         myOverViewGreenCardAdapterUtil.setContent(
             viewBinding,
             listOf(AdapterCard(greenCard, listOf(OriginState.Valid(greenCard.origins.first()))))

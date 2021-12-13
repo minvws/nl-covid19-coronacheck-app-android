@@ -424,6 +424,10 @@ class GetDashboardItemsUseCaseImplTest : AutoCloseKoinTest() {
                     greenCards: List<GreenCard>,
                     databaseSyncerResult: DatabaseSyncerResult
                 ): Boolean = false
+
+                override fun shouldShowTestCertificate3GValidityItem(domesticGreenCards: List<GreenCard>): Boolean {
+                    return false
+                }
             }
         }
     }

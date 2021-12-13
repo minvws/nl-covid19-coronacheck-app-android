@@ -26,6 +26,7 @@ val utilsModule = module {
             androidContext(),
             get(),
             get(),
+            get(),
             get()
         )
     }
@@ -36,7 +37,7 @@ val utilsModule = module {
     factory<RemoteProtocol3Util> { RemoteProtocol3UtilImpl() }
     factory<RemoteEventUtil> { RemoteEventUtilImpl(get()) }
     factory<ReadEuropeanCredentialUtil> { ReadEuropeanCredentialUtilImpl(get()) }
-    factory<DashboardItemUtil> { DashboardItemUtilImpl(get(), get(), get(), get(), get()) }
+    factory<DashboardItemUtil> { DashboardItemUtilImpl(get(), get(), get(), get(), get(), get()) }
     factory<CountryUtil> { CountryUtilImpl() }
     factory<MultipleQrCodesUtil> { MultipleQrCodesUtilImpl() }
     factory<EventGroupEntityUtil> { EventGroupEntityUtilImpl(get()) }

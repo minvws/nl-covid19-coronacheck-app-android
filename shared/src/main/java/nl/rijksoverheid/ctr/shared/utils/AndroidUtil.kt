@@ -38,7 +38,7 @@ class AndroidUtilImpl(private val context: Context) : AndroidUtil {
     }
 
     override fun getMasterKeyAlias(): String =
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             try {
                 MasterKeys.getOrCreate(
                     KeyGenParameterSpec.Builder(

@@ -13,6 +13,7 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import nl.rijksoverheid.ctr.appconfig.usecases.ReturnToExternalAppUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ReturnToExternalAppUseCaseImpl
 import nl.rijksoverheid.ctr.introduction.ui.new_terms.models.NewTerms
+import nl.rijksoverheid.ctr.shared.BuildConfigUseCase
 import nl.rijksoverheid.ctr.verifier.VerifierMainActivityViewModel
 import nl.rijksoverheid.ctr.verifier.VerifierMainActivityViewModelImpl
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
@@ -46,6 +47,7 @@ import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtilImpl
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.*
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.util.ScannerStateCountdownUtil
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.util.ScannerStateCountdownUtilImpl
+import nl.rijksoverheid.ctr.verifier.usecase.BuildConfigUseCaseImpl
 import nl.rijksoverheid.ctr.verifier.usecase.ScannerStateUseCase
 import nl.rijksoverheid.ctr.verifier.usecase.ScannerStateUseCaseImpl
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -118,4 +120,8 @@ fun verifierModule(path: String) = module {
     factory<ScannerStateCountdownUtil> { ScannerStateCountdownUtilImpl(get(), get(), get()) }
 
     viewModel<VerificationPolicySelectionViewModel> { VerificationPolicySelectionViewModelImpl(get(), get()) }
+
+    factory<BuildConfigUseCase> {
+        BuildConfigUseCaseImpl()
+    }
 }

@@ -6,6 +6,7 @@ import android.widget.LinearLayout
 import android.widget.Space
 import android.widget.TextView
 import mobilecore.Mobilecore
+import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.design.ext.formatDateTime
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthTime
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
@@ -40,6 +41,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
     private val credentialUtil: CredentialUtil,
     private val testResultAdapterItemUtil: TestResultAdapterItemUtil,
     private val greenCardUtil: GreenCardUtil,
+    private val featureFlagUseCase: FeatureFlagUseCase
 ) : MyOverViewGreenCardAdapterUtil {
 
     override fun setContent(
@@ -154,7 +156,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
             originState = originState,
             showTime = shouldShowTimeSubtitle(originState, greenCardType),
             subtitle = context.getString(
-                if (credentialEntities.any { it.category == Mobilecore.VERIFICATION_POLICY_3G }) {
+                if (credentialEntities.any { it.category == Mobilecore.VERIFICATION_POLICY_3G } && featureFlagUseCase.isVerificationPolicyEnabled()) {
                     R.string.holder_my_overview_test_result_validity_3g
                 } else {
                     R.string.qr_card_validity_valid
