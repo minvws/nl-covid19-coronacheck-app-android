@@ -32,7 +32,6 @@
   <string name="scan_qr_description">Is the QR code valid and are the details the same as on the proof of identity? Then you can give the visitor access.</string>
   <string name="scan_qr_button">Start scanning</string>
   <string name="scan_result_demo_title">Demo QR code scanned</string>
-  <string name="scan_result_valid_title">Check done</string>
   <string name="scan_result_valid_last_name">Last name</string>
   <string name="scan_result_valid_first_name">First name</string>
   <string name="scan_result_valid_birth_day">Day of birth</string>
