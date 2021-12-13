@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 import mobilecore.Mobilecore
 import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigFreshnessUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
+import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
@@ -55,7 +56,8 @@ class DashboardItemUtilImpl(
     private val greenCardUtil: GreenCardUtil,
     private val persistenceManager: PersistenceManager,
     private val eventGroupEntityUtil: EventGroupEntityUtil,
-    private val appConfigFreshnessUseCase: AppConfigFreshnessUseCase
+    private val appConfigFreshnessUseCase: AppConfigFreshnessUseCase,
+    private val featureFlagUseCase: FeatureFlagUseCase
 ) : DashboardItemUtil {
 
     override fun getHeaderItemText(greenCardType: GreenCardType, allGreenCards: List<GreenCard>): Int {
@@ -182,9 +184,11 @@ class DashboardItemUtilImpl(
     }
 
     override fun shouldShowTestCertificate3GValidityItem(domesticGreenCards: List<GreenCard>): Boolean {
-        return domesticGreenCards.any { greenCard ->
+        val isFeatureEnabled = featureFlagUseCase.isVerificationPolicyEnabled()
+        val has3GTest = domesticGreenCards.any { greenCard ->
             greenCard.origins.any { it.type == OriginType.Test }
                     && greenCard.credentialEntities.any { it.category == Mobilecore.VERIFICATION_POLICY_3G }
         }
+        return isFeatureEnabled && has3GTest
     }
 }
