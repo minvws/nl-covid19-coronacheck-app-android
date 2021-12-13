@@ -210,7 +210,6 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                     dialogUtil.presentDialog(
                         context = requireContext(),
                         title = R.string.dialog_no_browser_title,
-                        // remove the https prefix to make it more eye friendsly
                         message = getString(R.string.dialog_no_browser_message_digid),
                         positiveButtonText = R.string.ok,
                         positiveButtonCallback = {},
