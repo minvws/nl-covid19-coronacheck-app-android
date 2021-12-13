@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.verifier.ui.policy
 
+import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.core.os.bundleOf
 import androidx.fragment.app.testing.launchFragmentInContainer
@@ -7,15 +8,18 @@ import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertNotDisplayed
 import com.adevinta.android.barista.interaction.BaristaClickInteractions.clickOn
 import io.mockk.*
+import nl.rijksoverheid.ctr.design.utils.DialogUtilImpl
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.models.ScannerState
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
+import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -47,8 +51,12 @@ class VerificationPolicySelectionFragmentTest : AutoCloseKoinTest() {
         it.setCurrentDestination(R.id.nav_scan_qr)
     }
 
+    private val context: Context by lazy {
+        ApplicationProvider.getApplicationContext()
+    }
+
     @Test
-    fun `given no policy selected, when click to continue, then error is shown`() {
+    fun `given first time use and no policy selected, when click to continue, then error is shown`() {
         launchFragment()
 
         clickOn(R.id.confirmationButton)
@@ -57,7 +65,7 @@ class VerificationPolicySelectionFragmentTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `given policy selected, when click to continue, then error is shown`() {
+    fun `given first time use and policy selected, when click to continue, then no error is shown, selection is stored and scanner is launched`() {
         launchFragment(
             policyState = VerificationPolicyState.Policy2G
         )
@@ -70,8 +78,25 @@ class VerificationPolicySelectionFragmentTest : AutoCloseKoinTest() {
         verify { verificationPolicySelectionViewModel.storeSelection(VerificationPolicy.VerificationPolicy2G) }
     }
 
+    @Test
+    fun `given default policy selection fragment and stored 2g selection, when confirming 3g selection, then confirmation dialog shows up`() {
+        launchFragment(
+            policyState = VerificationPolicyState.Policy2G,
+            selectionType = VerificationPolicySelectionType.Default(ScannerState.Unlocked(VerificationPolicyState.Policy2G)),
+        )
+
+        clickOn(R.id.policy3G_container)
+        clickOn(R.id.confirmationButton)
+    }
+
+    @Test
+    fun `given default policy selection fragment and stored 2g selection, when confirming 2g selection, then goes to home screen`() {
+
+    }
+
     private fun launchFragment(
         policyState: VerificationPolicyState = VerificationPolicyState.None,
+        selectionType: VerificationPolicySelectionType = VerificationPolicySelectionType.FirstTimeUse(ScannerState.Unlocked(policyState)),
     ) {
 
         val verificationPolicyStateUseCase = mockk<VerificationPolicyStateUseCase>(relaxed = true).apply {
@@ -104,6 +129,9 @@ class VerificationPolicySelectionFragmentTest : AutoCloseKoinTest() {
                     verificationPolicyStateUseCase
                 }
 
+                factory {
+                    DialogUtilImpl()
+                }
 
                 viewModel { verificationPolicySelectionViewModel }
             }
@@ -111,7 +139,7 @@ class VerificationPolicySelectionFragmentTest : AutoCloseKoinTest() {
 
         launchFragmentInContainer(
             bundleOf(
-                "selectionType" to VerificationPolicySelectionType.FirstTimeUse(ScannerState.Unlocked(policyState)),
+                "selectionType" to selectionType,
             ), themeResId = R.style.AppTheme
         ) {
             VerificationPolicySelectionFragment().also {
