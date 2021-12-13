@@ -26,6 +26,7 @@ val utilsModule = module {
             androidContext(),
             get(),
             get(),
+            get(),
             get()
         )
     }
