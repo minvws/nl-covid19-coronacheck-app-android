@@ -21,6 +21,7 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.design.BaseMainFragment
 import nl.rijksoverheid.ctr.design.ext.isScreenReaderOn
 import nl.rijksoverheid.ctr.design.ext.styleTitle
@@ -41,6 +42,7 @@ class VerifierMainFragment :
 
     private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
     private val appConfigPersistenceManager: AppConfigPersistenceManager by inject()
+    private val featureFLagUseCase: FeatureFlagUseCase by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -73,6 +75,8 @@ class VerifierMainFragment :
                 }
             }
         })
+
+        binding.navView.menu.findItem(R.id.nav_policy_settings).isVisible = featureFLagUseCase.isVerificationPolicyEnabled()
     }
 
     override fun onDestroyView() {
