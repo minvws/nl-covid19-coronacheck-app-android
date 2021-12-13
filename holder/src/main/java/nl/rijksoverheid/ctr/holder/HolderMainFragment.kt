@@ -100,7 +100,7 @@ class HolderMainFragment : BaseMainFragment(
                                 sections = listOf(
                                     AboutThisAppData.AboutThisAppSection(
                                         header = R.string.about_this_app_read_more,
-                                        items = listOf(
+                                        items = mutableListOf<AboutThisAppData.AboutThisAppItem>(
                                             AboutThisAppData.Url(
                                                 text = getString(R.string.privacy_statement),
                                                 url = getString(R.string.url_privacy_statement),

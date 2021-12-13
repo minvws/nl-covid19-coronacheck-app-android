@@ -126,7 +126,7 @@ class VerifierMainFragment :
                             sections = listOf(
                                 AboutThisAppData.AboutThisAppSection(
                                     header = R.string.about_this_app_read_more,
-                                    items = listOf(
+                                    items = mutableListOf<AboutThisAppData.AboutThisAppItem>(
                                         AboutThisAppData.Url(
                                             text = getString(R.string.privacy_statement),
                                             url = getString(R.string.url_terms_of_use),
@@ -138,8 +138,14 @@ class VerifierMainFragment :
                                         AboutThisAppData.Url(
                                             text = getString(R.string.about_this_app_colofon),
                                             url = getString(R.string.about_this_app_colofon_url),
-                                        )
-                                    )
+                                        ),
+                                    ).apply {
+                                        if (!BuildConfig.FLAVOR.lowercase().contains("prod")) {
+                                            add(AboutThisAppData.ClearAppData(
+                                                text = getString(R.string.about_this_clear_data)
+                                            ))
+                                        }
+                                    }
                                 ),
                                 AboutThisAppData.AboutThisAppSection(
                                     header = R.string.verifier_about_this_app_law_enforcement,
