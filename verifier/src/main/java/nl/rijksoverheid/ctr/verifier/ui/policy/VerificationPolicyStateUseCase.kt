@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.verifier.ui.policy
 
+import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 
@@ -16,13 +17,18 @@ interface VerificationPolicyStateUseCase {
 
 class VerificationPolicyStateUseCaseImpl(
     private val persistenceManager: PersistenceManager,
+    private val featureFlagUseCase: FeatureFlagUseCase
 ): VerificationPolicyStateUseCase {
 
     override fun get(): VerificationPolicyState {
-        return when (persistenceManager.getVerificationPolicySelected()) {
-            VerificationPolicy.VerificationPolicy2G -> VerificationPolicyState.Policy2G
-            VerificationPolicy.VerificationPolicy3G -> VerificationPolicyState.Policy3G
-            else -> VerificationPolicyState.None
+        return if (featureFlagUseCase.isVerificationPolicyEnabled()) {
+            when (persistenceManager.getVerificationPolicySelected()) {
+                VerificationPolicy.VerificationPolicy2G -> VerificationPolicyState.Policy2G
+                VerificationPolicy.VerificationPolicy3G -> VerificationPolicyState.Policy3G
+                else -> VerificationPolicyState.None
+            }
+        } else {
+            VerificationPolicyState.None
         }
     }
 }

@@ -29,7 +29,7 @@ class VerifierConfig(
     @Json(name = "scanLockWarningSeconds") val scanLockWarningSeconds: Int,
     @Json(name = "scanLockSeconds") val scanLockSeconds: Int,
     @Json(name = "scanLogStorageSeconds") val scanLogStorageSeconds: Int,
-    @Json(name = "androidEnableVerificationPolicyVersion") val verifierEnableVerificationPolicyVersion: Int
+    @Json(name = "androidEnableVerificationPolicyVersion") val verifierEnableVerificationPolicyVersion: Int = 0
 ) : AppConfig(
     verifierAppDeactivated,
     verifierInformationURL,
@@ -61,7 +61,8 @@ class VerifierConfig(
             verifierConfigAlmostOutOfDateWarningSeconds: Int = 300,
             scanLockWarningSeconds: Int = 3600,
             scanLockSeconds: Int = 300,
-            scanLogStorageSeconds: Int = 3600
+            scanLogStorageSeconds: Int = 3600,
+            verifierEnableVerificationPolicyVersion: Int = 0
         ) = VerifierConfig(
             verifierMinimumVersion = verifierMinimumVersion,
             verifierMinimumVersionMessage = verifierMinimumVersionMessage,
@@ -79,7 +80,7 @@ class VerifierConfig(
             scanLockWarningSeconds = scanLockWarningSeconds,
             scanLockSeconds = scanLockSeconds,
             scanLogStorageSeconds = scanLogStorageSeconds,
-            verifierEnableVerificationPolicyVersion = 0
+            verifierEnableVerificationPolicyVersion = verifierEnableVerificationPolicyVersion
         )
     }
 }

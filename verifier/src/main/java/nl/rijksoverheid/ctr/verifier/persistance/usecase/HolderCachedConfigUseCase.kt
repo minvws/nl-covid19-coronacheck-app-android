@@ -1,6 +1,5 @@
 package nl.rijksoverheid.ctr.verifier.persistance.usecase
 
-import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.VerifierConfig
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 
