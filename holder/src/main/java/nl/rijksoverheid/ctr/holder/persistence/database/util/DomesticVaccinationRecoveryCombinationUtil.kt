@@ -11,7 +11,9 @@
 package nl.rijksoverheid.ctr.holder.persistence.database.util
 
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.DomesticVaccinationRecoveryCombination
 import nl.rijksoverheid.ctr.holder.persistence.database.models.DomesticVaccinationRecoveryCombination.*
@@ -19,7 +21,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteGreenCards
 
 interface DomesticVaccinationRecoveryCombinationUtil {
 
-    fun getResult(
+    suspend fun getResult(
         events: List<EventGroupEntity>,
         remoteGreenCards: RemoteGreenCards
     ): DomesticVaccinationRecoveryCombination
@@ -28,15 +30,17 @@ interface DomesticVaccinationRecoveryCombinationUtil {
 }
 
 class DomesticVaccinationRecoveryCombinationUtilImpl(
-    private val appConfigUseCase: CachedAppConfigUseCase
+    private val appConfigUseCase: CachedAppConfigUseCase,
+    private val database: HolderDatabase
 ) : DomesticVaccinationRecoveryCombinationUtil {
 
-    override fun getResult(
+    override suspend fun getResult(
         events: List<EventGroupEntity>,
         remoteGreenCards: RemoteGreenCards
     ): DomesticVaccinationRecoveryCombination {
         val recoveryValidityDays = appConfigUseCase.getCachedAppConfig().recoveryEventValidityDays
         return when {
+            hasDomesticVaccination() -> NotApplicable
             isNoneWithoutRecovery(events, remoteGreenCards) -> NoneWithoutRecovery
             isOnlyVaccination(events, remoteGreenCards) -> OnlyVaccination(recoveryValidityDays)
             isOnlyRecovery(events, remoteGreenCards) -> OnlyRecovery
@@ -46,6 +50,14 @@ class DomesticVaccinationRecoveryCombinationUtilImpl(
             )
             else -> NotApplicable
         }
+    }
+
+    private suspend fun hasDomesticVaccination(): Boolean {
+        return database.greenCardDao().getAll()
+            .filter { it.greenCardEntity.type == GreenCardType.Domestic }
+            .any { greenCard ->
+                greenCard.origins.any { it.type == OriginType.Vaccination }
+            }
     }
 
     private fun isNoneWithRecovery(
