@@ -3,9 +3,8 @@ package nl.rijksoverheid.ctr.verifier.ui.scanner.usecases
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
-import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.shared.models.VerificationResult
-import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
+import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyUseCase
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -27,7 +26,7 @@ interface VerifyQrUseCase {
 
 class VerifyQrUseCaseImpl(
     private val mobileCoreWrapper: MobileCoreWrapper,
-    private val persistenceManager: PersistenceManager,
+    private val verificationPolicyUseCase: VerificationPolicyUseCase,
 ) : VerifyQrUseCase {
 
     override suspend fun get(
@@ -35,7 +34,7 @@ class VerifyQrUseCaseImpl(
     ): VerifyQrUseCase.VerifyQrResult = withContext(Dispatchers.IO) {
         try {
             VerifyQrUseCase.VerifyQrResult.Success(
-                mobileCoreWrapper.verify(content.toByteArray(), persistenceManager.getVerificationPolicySelected() ?: VerificationPolicy.VerificationPolicy3G)
+                mobileCoreWrapper.verify(content.toByteArray(), verificationPolicyUseCase.get())
             )
         } catch (e: Exception) {
             VerifyQrUseCase.VerifyQrResult.Failed(e.toString())
