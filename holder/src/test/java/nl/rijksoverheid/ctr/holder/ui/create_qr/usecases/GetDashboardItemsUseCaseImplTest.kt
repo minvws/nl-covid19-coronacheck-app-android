@@ -1,7 +1,10 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
+import io.mockk.every
+import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
+import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.fakeGreenCard
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
@@ -11,6 +14,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.DashboardItemUtil
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.core.context.loadKoinModules
@@ -25,6 +29,19 @@ import java.time.OffsetDateTime
 class GetDashboardItemsUseCaseImplTest : AutoCloseKoinTest() {
 
     private val usecase: GetDashboardItemsUseCase by inject()
+
+    @Before
+    fun setup() {
+        loadKoinModules(
+            module(override = true) {
+                factory {
+                    mockk<FeatureFlagUseCase>().apply {
+                        every { isVerificationPolicyEnabled() } answers { true }
+                    }
+                }
+            }
+        )
+    }
 
     @Test
     fun `getItems returns correct models when no green cards`() = runBlocking {
