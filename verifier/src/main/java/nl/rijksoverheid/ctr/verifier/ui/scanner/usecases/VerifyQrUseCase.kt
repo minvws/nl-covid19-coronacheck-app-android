@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.verifier.ui.scanner.usecases
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
+import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.shared.models.VerificationResult
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 
@@ -34,7 +35,7 @@ class VerifyQrUseCaseImpl(
     ): VerifyQrUseCase.VerifyQrResult = withContext(Dispatchers.IO) {
         try {
             VerifyQrUseCase.VerifyQrResult.Success(
-                mobileCoreWrapper.verify(content.toByteArray(), persistenceManager.getVerificationPolicySelected()!!)
+                mobileCoreWrapper.verify(content.toByteArray(), persistenceManager.getVerificationPolicySelected() ?: VerificationPolicy.VerificationPolicy3G)
             )
         } catch (e: Exception) {
             VerifyQrUseCase.VerifyQrResult.Failed(e.toString())
