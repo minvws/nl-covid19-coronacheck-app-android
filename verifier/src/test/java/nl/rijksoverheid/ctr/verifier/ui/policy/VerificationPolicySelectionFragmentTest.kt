@@ -201,6 +201,7 @@ class VerificationPolicySelectionFragmentTest : AutoCloseKoinTest() {
         launchFragmentInContainer(
             bundleOf(
                 "selectionType" to selectionType,
+                "toolbarTitle" to "Scan settings",
             ), themeResId = R.style.AppTheme
         ) {
             VerificationPolicySelectionFragment().also {

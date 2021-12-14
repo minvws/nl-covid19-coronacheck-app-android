@@ -13,6 +13,7 @@ import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.VerificationPolicy2G
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.VerificationPolicy3G
 import nl.rijksoverheid.ctr.verifier.R
+import nl.rijksoverheid.ctr.verifier.VerifierMainFragment
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentVerificationPolicySelectionBinding
 import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
