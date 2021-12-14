@@ -16,23 +16,25 @@ interface ScanInstructionsButtonUtil {
 }
 
 class ScanInstructionsButtonUtilImpl(
-    private val scannerNavigationStateUseCase: ScannerNavigationStateUseCase
+    private val instructionsNavigateStateUseCase: InstructionsNavigateStateUseCase
 ): ScanInstructionsButtonUtil {
 
     override fun getButtonText(isFinalScreen: Boolean): Int {
-        val scannerNavigationState = scannerNavigationStateUseCase.get()
         return if (isFinalScreen) {
-            if (scannerNavigationState is ScannerNavigationState.Scanner) {
-                if (scannerNavigationState.isLocked) {
-                    R.string.verifier_scan_instructions_back_to_start
-                } else {
-                    R.string.scan_qr_button
-                }
-            } else {
-                R.string.onboarding_next
-            }
+            finalScreenCopy()
         } else {
             R.string.onboarding_next
+        }
+    }
+
+    private fun finalScreenCopy(): Int {
+        return when (val instructionsNavigationState = instructionsNavigateStateUseCase.get()) {
+            is InstructionsNavigateState.Scanner -> if (instructionsNavigationState.isLocked) {
+                R.string.verifier_scan_instructions_back_to_start
+            } else {
+                R.string.scan_qr_button
+            }
+            InstructionsNavigateState.VerificationPolicySelection -> R.string.onboarding_next
         }
     }
 }
