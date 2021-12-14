@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.verifier.ui.scanner
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.StringRes
+import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.qrscanner.QrCodeScannerFragment
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
@@ -29,6 +30,7 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
     private val scannerViewModel: ScannerViewModel by viewModel()
     private val dialogUtil: DialogUtil by inject()
     private val verificationPolicyUseCase: VerificationPolicyUseCase by inject()
+    private val featureFlagUseCase: FeatureFlagUseCase by inject()
 
     override fun onQrScanned(content: String) {
         scannerViewModel.log()
@@ -53,16 +55,20 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
                 okayButtonText = getString(R.string.ok)
             ),
             verificationPolicy = verificationPolicyUseCase.get().let {
-                Copy.VerificationPolicy(
-                    title = when (it) {
-                        is VerificationPolicy2G -> R.string.verifier_scanner_policy_indication_2g
-                        is VerificationPolicy3G -> R.string.verifier_scanner_policy_indication_3g
-                    },
-                    indicatorColor = when (it) {
-                        is VerificationPolicy2G -> R.color.primary_blue
-                        is VerificationPolicy3G -> R.color.secondary_green
-                    }
-                )
+                if (featureFlagUseCase.isVerificationPolicyEnabled()) {
+                    Copy.VerificationPolicy(
+                        title = when (it) {
+                            is VerificationPolicy2G -> R.string.verifier_scanner_policy_indication_2g
+                            is VerificationPolicy3G -> R.string.verifier_scanner_policy_indication_3g
+                        },
+                        indicatorColor = when (it) {
+                            is VerificationPolicy2G -> R.color.primary_blue
+                            is VerificationPolicy3G -> R.color.secondary_green
+                        }
+                    )
+                } else {
+                    null
+                }
             }
         )
     }

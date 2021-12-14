@@ -32,7 +32,6 @@
   <string name="scan_qr_description">Is de QR-code geldig en zijn de gegevens hetzelfde als op het identiteitsbewijs? Dan mag je de bezoeker toegang geven.</string>
   <string name="scan_qr_button">Start scannen</string>
   <string name="scan_result_demo_title">Demo QR-code gescand</string>
-  <string name="scan_result_valid_title">Controle klaar</string>
   <string name="scan_result_valid_last_name">Achternaam</string>
   <string name="scan_result_valid_first_name">Voornaam</string>
   <string name="scan_result_valid_birth_day">Geboortedag</string>

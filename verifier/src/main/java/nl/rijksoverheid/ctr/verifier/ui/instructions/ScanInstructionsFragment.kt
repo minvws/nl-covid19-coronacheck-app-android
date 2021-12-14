@@ -7,6 +7,7 @@ import android.widget.ScrollView
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
+import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.introduction.ui.onboarding.OnboardingPagerAdapter
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
@@ -18,7 +19,6 @@ import nl.rijksoverheid.ctr.verifier.models.ScannerState
 import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionType
 import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyState
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
-import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrFragmentDirections
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrViewModel
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScannerNavigationState
 import org.koin.android.ext.android.inject
@@ -36,8 +36,12 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
     private val scannerUtil: ScannerUtil by inject()
     private val scanQrViewModel: ScanQrViewModel by viewModel()
     private val scanInstructionsButtonUtil: ScanInstructionsButtonUtil by inject()
+    private val featureFlagUseCase: FeatureFlagUseCase by inject()
     private var _binding: FragmentScanInstructionsBinding? = null
     private val binding get() = _binding!!
+
+    private val onboardingItems by lazy { instructionsExplanationData(featureFlagUseCase.isVerificationPolicyEnabled()).onboardingItems }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -48,10 +52,10 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
             OnboardingPagerAdapter(
                 childFragmentManager,
                 lifecycle,
-                instructionsExplanationData.onboardingItems
+                onboardingItems
             )
 
-        if (instructionsExplanationData.onboardingItems.isNotEmpty()) {
+        if (onboardingItems.isNotEmpty()) {
             binding.indicators.initIndicator(adapter.itemCount)
             initViewPager(binding, adapter, savedInstanceState?.getInt(indicatorPositionKey))
         }
@@ -131,7 +135,7 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
         adapter: OnboardingPagerAdapter,
         startingItem: Int? = null,
     ) {
-        binding.viewPager.offscreenPageLimit = instructionsExplanationData.onboardingItems.size
+        binding.viewPager.offscreenPageLimit = onboardingItems.size
         binding.viewPager.adapter = adapter
         binding.viewPager.registerOnPageChangeCallback(object :
             ViewPager2.OnPageChangeCallback() {

@@ -21,6 +21,7 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.design.BaseMainFragment
 import nl.rijksoverheid.ctr.design.ext.isScreenReaderOn
 import nl.rijksoverheid.ctr.design.ext.styleTitle
@@ -41,6 +42,7 @@ class VerifierMainFragment :
 
     private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
     private val appConfigPersistenceManager: AppConfigPersistenceManager by inject()
+    private val featureFlagUseCase: FeatureFlagUseCase by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -73,6 +75,8 @@ class VerifierMainFragment :
                 }
             }
         })
+
+        binding.navView.menu.findItem(R.id.nav_policy_settings).isVisible = featureFlagUseCase.isVerificationPolicyEnabled()
     }
 
     override fun onDestroyView() {
@@ -123,7 +127,7 @@ class VerifierMainFragment :
                         data = AboutThisAppData(
                             versionName = BuildConfig.VERSION_NAME,
                             versionCode = BuildConfig.VERSION_CODE.toString(),
-                            sections = listOf(
+                            sections = mutableListOf(
                                 AboutThisAppData.AboutThisAppSection(
                                     header = R.string.about_this_app_read_more,
                                     items = mutableListOf<AboutThisAppData.AboutThisAppItem>(
@@ -146,17 +150,20 @@ class VerifierMainFragment :
                                             ))
                                         }
                                     }
-                                ),
-                                AboutThisAppData.AboutThisAppSection(
-                                    header = R.string.verifier_about_this_app_law_enforcement,
-                                    items = listOf(
-                                        AboutThisAppData.Destination(
-                                            text = getString(R.string.verifier_about_this_app_scan_log),
-                                            destinationId = R.id.action_scan_log
-                                        )
-                                    )
                                 )
-                            ),
+                            ).apply {
+                                if (featureFlagUseCase.isVerificationPolicyEnabled()) {
+                                    add(AboutThisAppData.AboutThisAppSection(
+                                        header = R.string.verifier_about_this_app_law_enforcement,
+                                        items = listOf(
+                                            AboutThisAppData.Destination(
+                                                text = getString(R.string.verifier_about_this_app_scan_log),
+                                                destinationId = R.id.action_scan_log
+                                            )
+                                        )
+                                    ))
+                                }
+                            },
                             configVersionHash = cachedAppConfigUseCase.getCachedAppConfigHash(),
                             configVersionTimestamp = appConfigPersistenceManager.getAppConfigLastFetchedSeconds()
                         )

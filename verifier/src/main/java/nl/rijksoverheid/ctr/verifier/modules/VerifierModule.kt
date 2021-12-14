@@ -114,8 +114,8 @@ fun verifierModule(path: String) = module {
     }
 
     factory<VerificationPolicyUseCase> { VerificationPolicyUseCaseImpl(get(), get()) }
-    factory<VerificationPolicyStateUseCase> { VerificationPolicyStateUseCaseImpl(get()) }
-    factory<ScannerNavigationStateUseCase> { ScannerNavigationStateUseCaseImpl(get(), get()) }
+    factory<VerificationPolicyStateUseCase> { VerificationPolicyStateUseCaseImpl(get(), get()) }
+    factory<ScannerNavigationStateUseCase> { ScannerNavigationStateUseCaseImpl(get(), get(), get()) }
     factory<ScannerStateUseCase> { ScannerStateUseCaseImpl(get(), get(), get(), get()) }
     factory<ScannerStateCountdownUtil> { ScannerStateCountdownUtilImpl(get(), get(), get()) }
 

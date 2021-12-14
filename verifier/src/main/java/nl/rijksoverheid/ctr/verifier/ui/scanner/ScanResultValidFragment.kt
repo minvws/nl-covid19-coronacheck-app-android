@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
+import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.shared.utils.Accessibility
@@ -34,6 +35,7 @@ class ScanResultValidFragment : Fragment() {
     }
 
     private val args: ScanResultValidFragmentArgs by navArgs()
+    private val featureFlagUseCase: FeatureFlagUseCase by inject()
 
     private val autoCloseHandler = Handler(Looper.getMainLooper())
     private val autoCloseRunnable = Runnable {
@@ -51,13 +53,17 @@ class ScanResultValidFragment : Fragment() {
         val theme = if (args.validData is ScanResultValidData.Demo) {
             R.style.AppTheme_Scanner_Valid_Demo
         } else {
-            when (verificationPolicy) {
-                is VerificationPolicy.VerificationPolicy3G -> {
-                    R.style.AppTheme_Scanner_Valid_3G
+            if (featureFlagUseCase.isVerificationPolicyEnabled()) {
+                when (verificationPolicy) {
+                    is VerificationPolicy.VerificationPolicy3G -> {
+                        R.style.AppTheme_Scanner_Valid_3G
+                    }
+                    is VerificationPolicy.VerificationPolicy2G -> {
+                        R.style.AppTheme_Scanner_Valid_2G
+                    }
                 }
-                is VerificationPolicy.VerificationPolicy2G -> {
-                    R.style.AppTheme_Scanner_Valid_2G
-                }
+            } else {
+                R.style.AppTheme_Scanner_Valid_3G
             }
         }
 
@@ -80,13 +86,17 @@ class ScanResultValidFragment : Fragment() {
                 binding.title.text = getString(R.string.scan_result_demo_title)
             }
             is ScanResultValidData.Valid -> {
-                val text = when (verificationPolicy) {
-                    is VerificationPolicy.VerificationPolicy2G -> {
-                        getString(R.string.verifier_result_access_title_highrisk)
+                val text = if (featureFlagUseCase.isVerificationPolicyEnabled()) {
+                    when (verificationPolicy) {
+                        is VerificationPolicy.VerificationPolicy2G -> {
+                            getString(R.string.verifier_result_access_title_highrisk)
+                        }
+                        is VerificationPolicy.VerificationPolicy3G -> {
+                            getString(R.string.verifier_result_access_title_lowrisk)
+                        }
                     }
-                    is VerificationPolicy.VerificationPolicy3G -> {
-                        getString(R.string.scan_result_valid_title)
-                    }
+                } else {
+                    getString(R.string.verifier_result_access_title)
                 }
                 binding.title.text = text
             }
