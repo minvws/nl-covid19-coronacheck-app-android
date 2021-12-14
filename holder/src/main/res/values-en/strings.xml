@@ -518,6 +518,7 @@
   <string name="recover_domestic_recovery_green_card_toolbar_title">Restore certificate</string>
   <string name="dialog_no_browser_title">Couldn’t find browser</string>
   <string name="dialog_no_browser_message">No internet browser was found on this phone to open %1s. Download a browser to open the link.</string>
+  <string name="dialog_no_browser_message_digid">No internet browser was found on this phone to open DigiD. Download a browser to open the link.</string>
   <string name="about_this_app_clear_data_title">Clear all data?</string>
   <string name="about_this_app_clear_data_description">Clearing will delete all data and certificates from the app and will close the app. You can simply restart it afterwards.</string>
   <string name="about_this_app_clear_data_cancel">Cancel</string>

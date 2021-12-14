@@ -59,7 +59,7 @@ class HolderDatabaseSyncerImplTest {
             syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
             persistenceManager = fakePersistenceManager(),
-            combinationUtil = mockk { every { getResult(any(), any()) } returns NotApplicable}
+            combinationUtil = mockk { every { getResult(any(), any(), any()) } returns NotApplicable}
         )
 
         val databaseSyncerResult = holderDatabaseSyncer.sync(
@@ -85,7 +85,7 @@ class HolderDatabaseSyncerImplTest {
             syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
             persistenceManager = fakePersistenceManager(),
-            combinationUtil = mockk { every { getResult(any(), any()) } returns NotApplicable }
+            combinationUtil = mockk { every { getResult(any(), any(), any()) } returns NotApplicable }
         )
 
         val databaseSyncerResult = holderDatabaseSyncer.sync(
@@ -123,7 +123,7 @@ class HolderDatabaseSyncerImplTest {
             syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
             persistenceManager = fakePersistenceManager(),
-            combinationUtil = mockk { every { getResult(any(), any()) } returns NotApplicable }
+            combinationUtil = mockk { every { getResult(any(), any(), any()) } returns NotApplicable }
         )
 
         val databaseSyncerResult = holderDatabaseSyncer.sync(
@@ -149,7 +149,7 @@ class HolderDatabaseSyncerImplTest {
             ),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
             persistenceManager = fakePersistenceManager(),
-            combinationUtil = mockk { every { getResult(any(), any()) } returns NotApplicable }
+            combinationUtil = mockk { every { getResult(any(), any(), any()) } returns NotApplicable }
         )
 
         val databaseSyncerResult = holderDatabaseSyncer.sync(
@@ -179,7 +179,7 @@ class HolderDatabaseSyncerImplTest {
             ),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
             persistenceManager = fakePersistenceManager(),
-            combinationUtil = mockk { every { getResult(any(), any()) } returns NotApplicable }
+            combinationUtil = mockk { every { getResult(any(), any(), any()) } returns NotApplicable }
         )
 
         val databaseSyncerResult = holderDatabaseSyncer.sync(
@@ -205,7 +205,7 @@ class HolderDatabaseSyncerImplTest {
             ),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
             persistenceManager = fakePersistenceManager(),
-            combinationUtil = mockk { every { getResult(any(), any()) } returns NotApplicable }
+            combinationUtil = mockk { every { getResult(any(), any(), any()) } returns NotApplicable }
         )
 
         val databaseSyncerResult = holderDatabaseSyncer.sync(
@@ -245,7 +245,7 @@ class HolderDatabaseSyncerImplTest {
             ),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
             persistenceManager = fakePersistenceManager(),
-            combinationUtil = mockk { every { getResult(any(), any()) } returns NotApplicable }
+            combinationUtil = mockk { every { getResult(any(), any(), any()) } returns NotApplicable }
         )
 
         val databaseSyncerResult = holderDatabaseSyncer.sync(
