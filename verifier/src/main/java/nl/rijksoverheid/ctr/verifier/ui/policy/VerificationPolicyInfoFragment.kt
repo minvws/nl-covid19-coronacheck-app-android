@@ -25,6 +25,7 @@ class VerificationPolicyInfoFragment : Fragment(R.layout.fragment_verification_p
     private val binding get() = _binding!!
 
     private val scannerStateUseCase: ScannerStateUseCase by inject()
+    private val verificationPolicyStateUseCase: VerificationPolicyStateUseCase by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -38,9 +39,7 @@ class VerificationPolicyInfoFragment : Fragment(R.layout.fragment_verification_p
 
     private fun setupButtons() {
         binding.adjustButton.setOnClickListener {
-            navigateSafety(VerificationPolicyInfoFragmentDirections.actionPolicySelection(
-                VerificationPolicySelectionType.Default(scannerStateUseCase.get())
-            ))
+            openPolicySelection()
         }
 
         binding.readMoreButton.setOnClickListener {
@@ -48,10 +47,22 @@ class VerificationPolicyInfoFragment : Fragment(R.layout.fragment_verification_p
         }
 
         binding.bottom.setButtonClick {
-            navigateSafety(VerificationPolicyInfoFragmentDirections.actionPolicySelection(
-                VerificationPolicySelectionType.Default(scannerStateUseCase.get())
-            ))
+            openPolicySelection()
         }
+    }
+
+    private fun openPolicySelection() {
+        val policySelectionAction = VerificationPolicyInfoFragmentDirections.actionPolicySelection(
+            selectionType = VerificationPolicySelectionType.Default(scannerStateUseCase.get()),
+            toolbarTitle = getString(
+                if (verificationPolicyStateUseCase.get() != VerificationPolicyState.None) {
+                    R.string.verifier_risksetting_changeselection_title
+                } else {
+                    R.string.verifier_menu_risksetting
+                }
+            ),
+        )
+        navigateSafety(policySelectionAction)
     }
 
     private fun displayPolicyViews(headerTextStringId: Int, bodyTextStringId: Int) {
@@ -67,12 +78,19 @@ class VerificationPolicyInfoFragment : Fragment(R.layout.fragment_verification_p
 
     private fun setupPolicy() {
         when (scannerStateUseCase.get().verificationPolicyState) {
-            VerificationPolicyState.None -> {}
+            VerificationPolicyState.None -> {
+            }
             VerificationPolicyState.Policy2G -> {
-                displayPolicyViews(R.string.verifier_start_scan_qr_policy_indication_2g, R.string.verifier_risksetting_highrisk_subtitle)
+                displayPolicyViews(
+                    R.string.verifier_start_scan_qr_policy_indication_2g,
+                    R.string.verifier_risksetting_highrisk_subtitle
+                )
             }
             VerificationPolicyState.Policy3G -> {
-                displayPolicyViews(R.string.verifier_start_scan_qr_policy_indication_3g, R.string.verifier_risksetting_lowrisk_subtitle)
+                displayPolicyViews(
+                    R.string.verifier_start_scan_qr_policy_indication_3g,
+                    R.string.verifier_risksetting_lowrisk_subtitle
+                )
             }
         }
     }

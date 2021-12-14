@@ -7,4 +7,5 @@ sealed class DigidResult {
     data class Failed(val errorResult: ErrorResult): DigidResult()
     object Cancelled: DigidResult()
     object TokenUnavailable: DigidResult()
+    object NoBrowserFound: DigidResult()
 }

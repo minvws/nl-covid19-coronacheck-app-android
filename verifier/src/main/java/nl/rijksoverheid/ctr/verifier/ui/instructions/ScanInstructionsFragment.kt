@@ -100,7 +100,8 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
             else -> {
                 navigateSafety(
                     ScanInstructionsFragmentDirections.actionPolicySelection(
-                        VerificationPolicySelectionType.FirstTimeUse(ScannerState.Unlocked(VerificationPolicyState.None))
+                        selectionType = VerificationPolicySelectionType.FirstTimeUse(ScannerState.Unlocked(VerificationPolicyState.None)),
+                        toolbarTitle = getString(R.string.verifier_menu_risksetting),
                     )
                 )
             }
