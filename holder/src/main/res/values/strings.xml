@@ -518,7 +518,6 @@
   <string name="recover_domestic_recovery_green_card_toolbar_title">Bewijs terugzetten</string>
   <string name="dialog_no_browser_title">Geen browser gevonden</string>
   <string name="dialog_no_browser_message">Er is op deze telefoon geen internetbrowser gevonden waarmee %1s geopend kan worden. Download een browser om de link te kunnen openen.</string>
-  <string name="dialog_no_browser_message_digid">Er is op deze telefoon geen internetbrowser gevonden waarmee DigiD geopend kan worden. Download een browser om de link te kunnen openen.</string>
   <string name="about_this_app_clear_data_title">Alle gegevens wissen?</string>
   <string name="about_this_app_clear_data_description">Bij het wissen worden alle gegevens en bewijzen uit de app verwijderd en wordt de app afgesloten. Je kunt de app daarna gewoon weer opstarten.</string>
   <string name="about_this_app_clear_data_cancel">Annuleer</string>
