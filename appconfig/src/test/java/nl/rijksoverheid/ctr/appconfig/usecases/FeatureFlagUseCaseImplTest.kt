@@ -62,4 +62,19 @@ class FeatureFlagUseCaseImplTest {
 
         assertTrue(usecase.isVerificationPolicyEnabled())
     }
+
+    @Test
+    fun `isVerificationPolicyEnabled returns false if enableVerificationPolicyVersion is 0`() {
+        val buildConfigUseCase = mockk<BuildConfigUseCase>()
+        every { buildConfigUseCase.getVersionCode() } answers { 10 }
+        val cachedAppConfigUseCase = mockk<CachedAppConfigUseCase>()
+        every { cachedAppConfigUseCase.getCachedAppConfig().enableVerificationPolicyVersion } answers { 0 }
+
+        val usecase = FeatureFlagUseCaseImpl(
+            buildConfigUseCase,
+            cachedAppConfigUseCase
+        )
+
+        assertFalse(usecase.isVerificationPolicyEnabled())
+    }
 }

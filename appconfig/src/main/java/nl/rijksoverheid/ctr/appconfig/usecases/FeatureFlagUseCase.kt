@@ -20,6 +20,10 @@ class FeatureFlagUseCaseImpl(
 ): FeatureFlagUseCase {
 
     override fun isVerificationPolicyEnabled(): Boolean {
-        return buildConfigUseCase.getVersionCode() >= appConfigUseCase.getCachedAppConfig().enableVerificationPolicyVersion
+        return if (appConfigUseCase.getCachedAppConfig().enableVerificationPolicyVersion == 0) {
+            false
+        } else {
+            buildConfigUseCase.getVersionCode() >= appConfigUseCase.getCachedAppConfig().enableVerificationPolicyVersion
+        }
     }
 }
