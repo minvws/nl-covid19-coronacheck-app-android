@@ -72,7 +72,7 @@ class GetEventsUseCaseImpl(
             return EventsResult.Error.noProvidersError(originType)
         }
 
-        val filter = EventProviderRepository.getFilter(originType, withIncompleteVaccination)
+        val filter = EventProviderRepository.getFilter(originType)
 
         // Fetch event providers that have events for us
         val eventProviderWithTokensResults = getEventProvidersWithTokensUseCase.get(
