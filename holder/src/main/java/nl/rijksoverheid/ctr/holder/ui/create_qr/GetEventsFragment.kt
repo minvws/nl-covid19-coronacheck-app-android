@@ -206,6 +206,15 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                     binding.root.visibility = View.VISIBLE
                     binding.fullscreenLoading.visibility = View.GONE
                 }
+                DigidResult.NoBrowserFound -> {
+                    dialogUtil.presentDialog(
+                        context = requireContext(),
+                        title = R.string.dialog_no_browser_title,
+                        message = getString(R.string.dialog_no_browser_message_digid),
+                        positiveButtonText = R.string.ok,
+                        positiveButtonCallback = {},
+                    )
+                }
             }
         })
     }
