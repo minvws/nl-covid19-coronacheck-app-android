@@ -22,18 +22,13 @@ interface EventProviderRepository {
         /**
          * Get filter for backend endpoints
          */
-        fun getFilter(originType: OriginType, withIncompleteVaccination: Boolean): String {
+        fun getFilter(originType: OriginType): String {
             return when (originType) {
                 is OriginType.Vaccination -> {
                     "vaccination"
                 }
                 is OriginType.Recovery -> {
-                    // Only fetch positive tests when completing an incomplete 1/X vaccination into a 1/1
-                    if (withIncompleteVaccination) {
-                        "positivetest"
-                    } else {
-                        "positivetest,recovery"
-                    }
+                    "positivetest,recovery"
                 }
                 is OriginType.Test -> {
                     "negativetest"
