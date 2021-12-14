@@ -578,4 +578,6 @@
   <string name="no_digid_mijncn_button_description">Je wordt doorverwezen naar MijnCN</string>
   <string name="mijncn_error_missing_data_description"><![CDATA[Op dit moment kunnen we geen bewijs maken omdat er gegevens ontbreken.<br/><br/>Neem contact op met je openbaar lichaam en geef de foutcode door. Zij kunnen dan de gegevens controleren.<br/><br/><b>Foutcode:</b><br/>%1s<br/><br/><a href=“#”>Openbaar lichaam Sint Bonaire</a><br/><br/><a href=“#”>Openbaar lichaam Sint Eustatius</a><br/><br/><a href=“#”>Openbaar lichaam Sint Saba</a><br/><br/>]]></string>
   <string name="qr_explanation_description_domestic_2G"><![CDATA[In jouw Nederlandse QR-code staat dat je een geldig testbewijs hebt en minimale gegevens.<br/><br/>De controleur ziet alleen de eerste letter van je voornaam en van je achternaam, je geboortedag en geboortemaand. Dit is om zeker te zijn dat de QR-code bij jou hoort.<br/><br/>Jouw gegevens*: <b>%1$s</b><br/><br/>* Soms vallen gegevens weg om je privacy te beschermen. Je ziet dan een streepje (_).]]></string>
+  <string name="your_negative_test_results_toolbar">Opgehaalde testuitslag</string>
+  <string name="dialog_no_browser_message_digid">Er is op deze telefoon geen internetbrowser gevonden waarmee DigiD geopend kan worden. Download een browser om de link te kunnen openen.</string>
 </resources>
