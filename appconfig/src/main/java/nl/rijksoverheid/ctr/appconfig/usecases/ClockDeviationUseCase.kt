@@ -70,9 +70,13 @@ class ClockDeviationUseCaseImpl(
     }
 
     override fun getAdjustedClock(clock: Clock): Clock {
-        return Clock.offset(
-            clock,
-            Duration.ofMillis(-calculateServerTimeOffsetMillis())
-        )
+        return if (localResponseReceivedTimeStamp == 0L && localServerResponseTimeStamp == 0L) {
+            clock
+        } else {
+            Clock.offset(
+                clock,
+                Duration.ofMillis(-calculateServerTimeOffsetMillis())
+            )
+        }
     }
 }
