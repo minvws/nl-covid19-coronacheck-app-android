@@ -39,7 +39,6 @@ class VerifierMainActivity : AppCompatActivity() {
     private var isFreshStart: Boolean = true // track if this is a fresh start of the app
 
     var returnUri: String? = null // return uri to external app given as argument from deeplink
-    private var hasHandledDeeplink: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
@@ -84,7 +83,6 @@ class VerifierMainActivity : AppCompatActivity() {
             if (destination.id == R.id.nav_main) {
                 // Persist deeplink return uri in case it's not used immediately because of onboarding
                 arguments?.getString("returnUri")?.let { returnUri = it }
-                navigateDeeplink(navController)
             }
 
             // verifier can stay active for a long time, so it is not sufficient
@@ -96,17 +94,7 @@ class VerifierMainActivity : AppCompatActivity() {
                 isFreshStart = false
             }
         }
-    }
 
-    private fun navigateDeeplink(navController: NavController) {
-        if (returnUri != null && !hasHandledDeeplink && isIntroductionFinished()) {
-            // If there is an unhandled scanner deeplink, go to [ScanQrFragment]
-            // which is aware of the risk mode and the scanner instructions, which
-            // need to be set and displayed first before opening the scanner for the
-            // the first time.
-            navController.navigate(R.id.action_scan_qr)
-        }
-        hasHandledDeeplink = true
     }
 
     private fun isIntroductionFinished() =
