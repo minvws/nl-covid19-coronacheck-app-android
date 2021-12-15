@@ -8,6 +8,7 @@ import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assert
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertNotDisplayed
 import io.mockk.every
 import io.mockk.mockk
+import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
@@ -86,6 +87,11 @@ class VerificationPolicyDefaultFragmentTest : AutoCloseKoinTest() {
                     mockk<PersistenceManager>().apply {
                         every { getVerificationPolicySelected() } returns policy
                         every { getLastScanLockTimeSeconds() } returns 0L
+                    }
+                }
+                factory {
+                    mockk<FeatureFlagUseCase>().apply {
+                        every { isVerificationPolicyEnabled() } answers { true }
                     }
                 }
             }

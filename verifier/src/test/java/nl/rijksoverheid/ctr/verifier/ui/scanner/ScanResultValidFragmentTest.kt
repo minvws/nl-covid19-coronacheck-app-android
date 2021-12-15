@@ -9,6 +9,7 @@ import com.adevinta.android.barista.assertion.BaristaBackgroundAssertions.assert
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
 import io.mockk.every
 import io.mockk.mockk
+import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.fakeVerifiedQr
@@ -75,6 +76,11 @@ class ScanResultValidFragmentTest : AutoCloseKoinTest() {
                 }
                 factory {
                     persistenceManager
+                }
+                factory {
+                    mockk<FeatureFlagUseCase>().apply {
+                        every { isVerificationPolicyEnabled() } answers { true }
+                    }
                 }
             }
         )
