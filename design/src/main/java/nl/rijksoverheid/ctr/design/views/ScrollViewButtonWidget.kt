@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.design.views
 
 import android.content.Context
+import android.graphics.Canvas
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -65,6 +66,22 @@ class ScrollViewButtonWidget @JvmOverloads constructor(
             } finally {
                 recycle()
             }
+        }
+    }
+
+    override fun onDraw(canvas: Canvas?) {
+        super.onDraw(canvas)
+        setEqualWidthButtons()
+    }
+
+    /**
+     * buttons should be set to equal widths of the widest button
+     */
+    private fun setEqualWidthButtons() {
+        val largestWidth = maxOf(binding.button.width, binding.secondaryButton.width)
+        binding.run {
+            if (button.width != largestWidth) button.width = largestWidth
+            if (secondaryButton.width != largestWidth) secondaryButton.width = largestWidth
         }
     }
 
