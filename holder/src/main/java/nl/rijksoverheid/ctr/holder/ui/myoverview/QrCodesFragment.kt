@@ -190,7 +190,8 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
                                     )
 
                                     infoScreenUtil.getForDomesticQr(
-                                        personalDetails = personalDetails
+                                        personalDetails = personalDetails,
+                                        category = qrCodeData.readDomesticCredential.category
                                     )
                                 }
                                 is QrCodeData.European -> {
