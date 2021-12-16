@@ -55,12 +55,6 @@ class ScanResultInvalidFragment : Fragment(R.layout.fragment_scan_result_invalid
             it.run {
                 setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
                 strokeColor = ContextCompat.getColorStateList(requireContext(), R.color.black)
-                setPadding(
-                    getDimensionPixelSize(R.dimen.long_button_title_padding_horizontal),
-                    paddingTop,
-                    getDimensionPixelSize(R.dimen.long_button_title_padding_horizontal),
-                    paddingBottom,
-                )
             }
         }
 
