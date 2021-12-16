@@ -35,11 +35,9 @@ class VerifierMainActivity : AppCompatActivity() {
     private val mobileCoreWrapper: MobileCoreWrapper by inject()
     private val dialogUtil: DialogUtil by inject()
     private val intentUtil: IntentUtil by inject()
+    private val deeplinkManager: DeeplinkManager by inject()
 
     private var isFreshStart: Boolean = true // track if this is a fresh start of the app
-
-    var returnUri: String? = null // return uri to external app given as argument from deeplink
-    private var hasHandledDeeplink: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
@@ -83,8 +81,10 @@ class VerifierMainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, arguments ->
             if (destination.id == R.id.nav_main) {
                 // Persist deeplink return uri in case it's not used immediately because of onboarding
-                arguments?.getString("returnUri")?.let { returnUri = it }
-                navigateDeeplink(navController)
+                arguments?.getString("returnUri")?.let {
+                    deeplinkManager.set(it)
+                    arguments.remove("returnUri")
+                }
             }
 
             // verifier can stay active for a long time, so it is not sufficient
@@ -96,17 +96,7 @@ class VerifierMainActivity : AppCompatActivity() {
                 isFreshStart = false
             }
         }
-    }
 
-    private fun navigateDeeplink(navController: NavController) {
-        if (returnUri != null && !hasHandledDeeplink && isIntroductionFinished()) {
-            // If there is an unhandled scanner deeplink, go to [ScanQrFragment]
-            // which is aware of the risk mode and the scanner instructions, which
-            // need to be set and displayed first before opening the scanner for the
-            // the first time.
-            navController.navigate(R.id.action_scan_qr)
-        }
-        hasHandledDeeplink = true
     }
 
     private fun isIntroductionFinished() =

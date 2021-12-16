@@ -12,11 +12,23 @@
     android:id="@+id/main_nav"
     app:startDestination="@+id/nav_scan_qr">
 
+    <argument
+        android:name="returnUri"
+        android:defaultValue="@null"
+        app:argType="string"
+        app:nullable="true" />
+
     <fragment
         android:id="@+id/nav_scan_qr"
         android:name="nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrFragment"
         android:label="@string/scan_qr_title"
         tools:layout="@layout/fragment_scan_qr">
+
+        <argument
+            android:name="returnUri"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
 
         <action
             android:id="@+id/action_scan_instructions"
@@ -45,6 +57,12 @@
         <argument
             android:name="toolbarTitle"
             app:argType="string" />
+
+        <argument
+            android:name="returnUri"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
 
         <action
             android:id="@+id/action_scan_instructions"
@@ -110,6 +128,12 @@
         android:name="nl.rijksoverheid.ctr.verifier.ui.instructions.ScanInstructionsFragment"
         android:label="@string/scan_instructions"
         tools:layout="@layout/fragment_scan_instructions">
+
+        <argument
+            android:name="returnUri"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
 
         <action
             android:id="@+id/action_policy_selection"

@@ -10,7 +10,6 @@ import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.*
 import nl.rijksoverheid.ctr.verifier.R
-import nl.rijksoverheid.ctr.verifier.VerifierMainActivity
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultInvalidData
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultValidData
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.VerifiedQrResultState
@@ -122,13 +121,6 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
                 )
             }
         })
-
-        // consume return uri if open via a deep link
-        // and reset it in order not to mess with other navigation logic
-        (activity as? VerifierMainActivity)?.returnUri?.let {
-            arguments?.putString("returnUri", it)
-            (activity as? VerifierMainActivity)?.returnUri = null
-        }
     }
 
     private fun presentDialog(@StringRes title: Int, message: String) {
