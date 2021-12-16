@@ -26,12 +26,12 @@ val eventsUseCasesModule = module {
         GetRemoteEventsUseCaseImpl(get())
     }
     factory<QrCodeUseCase> {
-        val clockDeviationUseCase = get<ClockDeviationUseCase>()
         QrCodeUseCaseImpl(
             get(),
             get(),
             get(),
-            clockDeviationUseCase.getAdjustedClock(Clock.systemDefaultZone())
+            get(),
+            get()
         )
     }
     factory<GetEventsUseCase> { GetEventsUseCaseImpl(get(), get(), get(), get()) }
