@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
 import kotlinx.coroutines.runBlocking
+import nl.rijksoverheid.ctr.appconfig.models.ServerInfo
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
@@ -413,7 +414,7 @@ class GetDashboardItemsUseCaseImplTest: AutoCloseKoinTest() {
     private fun fakeClockDeviationModule(hasDeviation: Boolean) = module(override = true) {
         factory<ClockDeviationUseCase> {
             object: ClockDeviationUseCase() {
-                override fun store(serverResponseTimestamp: Long, localReceivedTimestamp: Long) {
+                override fun store(serverInfo: ServerInfo) {
 
                 }
 
@@ -421,7 +422,9 @@ class GetDashboardItemsUseCaseImplTest: AutoCloseKoinTest() {
                     return hasDeviation
                 }
 
-                override fun getAdjustedClock(clock: Clock): Clock = Clock.systemDefaultZone()
+                override fun calculateServerTimeOffsetMillis(): Long {
+                    return 0L
+                }
             }
         }
     }
