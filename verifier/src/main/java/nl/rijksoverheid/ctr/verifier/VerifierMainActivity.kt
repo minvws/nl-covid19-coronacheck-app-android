@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
-import androidx.navigation.NavArgument
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
@@ -65,8 +64,6 @@ class VerifierMainActivity : AppCompatActivity() {
         }
         verifierMainActivityViewModel.cleanup()
     }
-
-    private var returnUri: String? = null
 
     private fun observeStatuses() {
         val navHostFragment =

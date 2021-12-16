@@ -16,6 +16,10 @@ interface DeeplinkManager {
     fun remove()
 }
 
+/**
+ * store here a return uri if app opened via a deeplink
+ * and we want to go back there after finished scanning
+ */
 class DeeplinkManagerImpl(
     private val introductionPersistenceManager: IntroductionPersistenceManager
 ) : DeeplinkManager {
