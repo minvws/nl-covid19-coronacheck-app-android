@@ -57,11 +57,11 @@ class ClockDeviationUseCaseImpl(
                 val currentUptime = SystemClock.elapsedRealtime()
                 val currentMillis = clock.instant().toEpochMilli()
 
-                val localUptimeSinceLaunch = currentMillis - currentUptime
-                val serverInfoUptimeSinceLaunch = serverInfo.localTimeMillis - serverInfo.uptime
+                val systemStartMillis = currentMillis - currentUptime
+                val responseStartMillis = serverInfo.localTimeMillis - serverInfo.uptime
 
                 val responseTimeDelta = serverInfo.localTimeMillis - serverInfo.serverTimeMillis
-                val systemUptimeDelta = localUptimeSinceLaunch - serverInfoUptimeSinceLaunch
+                val systemUptimeDelta = systemStartMillis - responseStartMillis
 
                 return systemUptimeDelta + responseTimeDelta
             }
