@@ -566,4 +566,6 @@
   <string name="rule_engine_no_test_origin_description_negative_test">negatieve testuitslag</string>
   <string name="rule_engine_no_test_origin_description_vaccination">vaccinatie</string>
   <string name="rule_engine_no_test_origin_description_positive_test">positieve testuitslag</string>
+  <string name="holder_negativetest_ggd_title">Testuitslag ophalen</string>
+  <string name="holder_negativetest_ggd_message">Is je uitslag bekend? Log in met DigiD om je testuitslag bij de GGD op te halen.</string>
 </resources>
