@@ -566,4 +566,6 @@
   <string name="rule_engine_no_test_origin_description_negative_test">negative test result</string>
   <string name="rule_engine_no_test_origin_description_vaccination">vaccination</string>
   <string name="rule_engine_no_test_origin_description_positive_test">positive test result</string>
+  <string name="holder_negativetest_ggd_title">Retrieve test result</string>
+  <string name="holder_negativetest_ggd_message">Is your result in? Log in with DigiD to retrieve your test result from the GGD.</string>
 </resources>
