@@ -3,11 +3,9 @@ package nl.rijksoverheid.ctr.verifier.ui.scanqr
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
-import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
@@ -17,7 +15,6 @@ import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
-import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
@@ -107,7 +104,7 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
 
         setupClockDeviation()
 
-        if (deeplinkManager.get() != null) {
+        if (deeplinkManager.getReturnUri() != null) {
             scanQrViewModel.nextScreen()
         }
     }
@@ -176,8 +173,8 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
     }
 
     private fun deeplinkReturnUri(): String? {
-        return deeplinkManager.get().apply {
-            deeplinkManager.remove()
+        return deeplinkManager.getReturnUri().apply {
+            deeplinkManager.removeReturnUri()
         }
     }
 
