@@ -3,9 +3,11 @@ package nl.rijksoverheid.ctr.verifier.ui.scanqr
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
+import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
@@ -15,14 +17,15 @@ import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
+import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.VerificationPolicy2G
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.VerificationPolicy3G
 import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
+import nl.rijksoverheid.ctr.verifier.DeeplinkManager
 import nl.rijksoverheid.ctr.verifier.R
-import nl.rijksoverheid.ctr.verifier.VerifierMainActivity
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanQrBinding
 import nl.rijksoverheid.ctr.verifier.models.ScannerState
 import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCase
@@ -55,6 +58,7 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
     private val scannerStateUseCase: ScannerStateUseCase by inject()
     private val androidUtil: AndroidUtil by inject()
     private val featureFlagUseCase: FeatureFlagUseCase by inject()
+    private val deeplinkManager: DeeplinkManager by inject()
 
     private var scannerStateCountDownTimer: ScannerStateCountDownTimer? = null
 
@@ -103,7 +107,9 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
 
         setupClockDeviation()
 
-        checkPendingDeeplink()
+        if (deeplinkManager.get() != null) {
+            scanQrViewModel.nextScreen()
+        }
     }
 
     private fun setupClockDeviation() {
@@ -169,27 +175,25 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
         }
     }
 
-    // if we opened the scanner app via a deep link from another app
-    // and we haven't went through either the onboarding or
-    // the scan instructions flow, we need to remember the
-    // deep link return uri to return back to the other app
-    // after we're done with scanning
-    private fun checkPendingDeeplink() {
-        (activity as? VerifierMainActivity)?.returnUri?.let {
-            scanQrViewModel.nextScreen()
+    private fun deeplinkReturnUri(): String? {
+        return deeplinkManager.get().apply {
+            deeplinkManager.remove()
         }
     }
 
     private fun goToNextScreen(scannerNavigationState: ScannerNavigationState) {
         when (scannerNavigationState) {
-            is ScannerNavigationState.Instructions -> findNavController().navigate(ScanQrFragmentDirections.actionScanInstructions())
+            is ScannerNavigationState.Instructions -> findNavController().navigate(ScanQrFragmentDirections.actionScanInstructions(
+                returnUri = deeplinkReturnUri()
+            ))
             is ScannerNavigationState.VerificationPolicySelection -> findNavControllerSafety()?.navigate(
                 ScanQrFragmentDirections.actionPolicySelection(
                     selectionType = VerificationPolicySelectionType.FirstTimeUse(scannerStateUseCase.get()),
                     toolbarTitle = getString(R.string.verifier_menu_risksetting),
+                    returnUri = deeplinkReturnUri(),
                 )
             )
-            is ScannerNavigationState.Scanner -> scannerUtil.launchScanner(requireActivity())
+            is ScannerNavigationState.Scanner -> scannerUtil.launchScanner(requireActivity(), deeplinkReturnUri())
         }
     }
 

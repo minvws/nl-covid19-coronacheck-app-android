@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ScrollView
 import androidx.activity.OnBackPressedCallback
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
@@ -92,9 +93,9 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
             is ScannerNavigationState.Scanner -> {
                 if (!state.isLocked) {
                     findNavControllerSafety()?.popBackStack(R.id.nav_scan_qr, false)
-                    scannerUtil.launchScanner(requireActivity())
+                    scannerUtil.launchScanner(requireActivity(), arguments?.getString("returnUri"))
                 } else {
-                    navigateSafety(R.id.nav_scan_qr)
+                    navigateSafety(R.id.nav_scan_qr, bundleOf("returnUri" to arguments?.getString("returnUri")))
                 }
             }
             else -> {
@@ -102,6 +103,7 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
                     ScanInstructionsFragmentDirections.actionPolicySelection(
                         selectionType = VerificationPolicySelectionType.FirstTimeUse(ScannerState.Unlocked(VerificationPolicyState.None)),
                         toolbarTitle = getString(R.string.verifier_menu_risksetting),
+                        returnUri = arguments?.getString("returnUri"),
                     )
                 )
             }

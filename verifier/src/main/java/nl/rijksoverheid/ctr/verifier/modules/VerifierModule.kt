@@ -14,6 +14,8 @@ import nl.rijksoverheid.ctr.appconfig.usecases.ReturnToExternalAppUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ReturnToExternalAppUseCaseImpl
 import nl.rijksoverheid.ctr.introduction.ui.new_terms.models.NewTerms
 import nl.rijksoverheid.ctr.shared.BuildConfigUseCase
+import nl.rijksoverheid.ctr.verifier.DeeplinkManager
+import nl.rijksoverheid.ctr.verifier.DeeplinkManagerImpl
 import nl.rijksoverheid.ctr.verifier.VerifierMainActivityViewModel
 import nl.rijksoverheid.ctr.verifier.VerifierMainActivityViewModelImpl
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
@@ -127,4 +129,6 @@ fun verifierModule(path: String) = module {
     factory<BuildConfigUseCase> {
         BuildConfigUseCaseImpl()
     }
+
+    single<DeeplinkManager> { DeeplinkManagerImpl(get()) }
 }

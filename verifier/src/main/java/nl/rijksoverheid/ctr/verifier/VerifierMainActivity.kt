@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
+import androidx.navigation.NavArgument
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
@@ -35,10 +36,9 @@ class VerifierMainActivity : AppCompatActivity() {
     private val mobileCoreWrapper: MobileCoreWrapper by inject()
     private val dialogUtil: DialogUtil by inject()
     private val intentUtil: IntentUtil by inject()
+    private val deeplinkManager: DeeplinkManager by inject()
 
     private var isFreshStart: Boolean = true // track if this is a fresh start of the app
-
-    var returnUri: String? = null // return uri to external app given as argument from deeplink
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
@@ -66,6 +66,8 @@ class VerifierMainActivity : AppCompatActivity() {
         verifierMainActivityViewModel.cleanup()
     }
 
+    private var returnUri: String? = null
+
     private fun observeStatuses() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment
@@ -82,7 +84,10 @@ class VerifierMainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, arguments ->
             if (destination.id == R.id.nav_main) {
                 // Persist deeplink return uri in case it's not used immediately because of onboarding
-                arguments?.getString("returnUri")?.let { returnUri = it }
+                arguments?.getString("returnUri")?.let {
+                    deeplinkManager.set(it)
+                    arguments.remove("returnUri")
+                }
             }
 
             // verifier can stay active for a long time, so it is not sufficient
