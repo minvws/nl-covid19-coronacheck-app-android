@@ -9,8 +9,7 @@
 package nl.rijksoverheid.ctr.appconfig.usecases
 
 import nl.rijksoverheid.ctr.appconfig.fakeCachedAppConfigUseCase
-import nl.rijksoverheid.ctr.appconfig.models.ServerInfo
-import org.junit.Assert.assertEquals
+import nl.rijksoverheid.ctr.appconfig.models.ServerTime
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -18,8 +17,6 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import java.time.Clock
 import java.time.Duration
-import java.time.Instant
-import java.time.ZoneId
 
 @RunWith(RobolectricTestRunner::class)
 class ClockDeviationUseCaseImplTest {
@@ -31,7 +28,7 @@ class ClockDeviationUseCaseImplTest {
             defaultClock, fakeCachedAppConfigUseCase()
         )
         clockDeviationUseCase.store(
-            ServerInfo.Available(
+            ServerTime.Available(
                 serverTimeMillis = defaultClock.millis(),
                 localTimeMillis = defaultClock.millis()
             )
@@ -47,7 +44,7 @@ class ClockDeviationUseCaseImplTest {
             deviatedClock, fakeCachedAppConfigUseCase()
         )
         clockDeviationUseCase.store(
-            ServerInfo.Available(
+            ServerTime.Available(
                 serverTimeMillis = defaultClock.millis(),
                 localTimeMillis = deviatedClock.millis()
             )
@@ -63,7 +60,7 @@ class ClockDeviationUseCaseImplTest {
             deviatedClock, fakeCachedAppConfigUseCase()
         )
         clockDeviationUseCase.store(
-            ServerInfo.Available(
+            ServerTime.Available(
                 serverTimeMillis = defaultClock.millis(),
                 localTimeMillis = deviatedClock.millis()
             )
@@ -79,7 +76,7 @@ class ClockDeviationUseCaseImplTest {
             deviatedClock, fakeCachedAppConfigUseCase()
         )
         clockDeviationUseCase.store(
-            ServerInfo.Available(
+            ServerTime.Available(
                 serverTimeMillis = defaultClock.millis(),
                 localTimeMillis = deviatedClock.millis()
             )
