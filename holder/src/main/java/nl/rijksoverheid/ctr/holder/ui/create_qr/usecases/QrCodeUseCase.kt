@@ -4,8 +4,8 @@ import android.graphics.Bitmap
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.QrCodeUtil
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import java.time.Clock
@@ -25,8 +25,11 @@ class QrCodeUseCaseImpl(
     private val persistenceManager: PersistenceManager,
     private val qrCodeUtil: QrCodeUtil,
     private val mobileCoreWrapper: MobileCoreWrapper,
-    private val clock: Clock
+    clock: Clock,
+    clockDeviationUseCase: ClockDeviationUseCase
 ) : QrCodeUseCase {
+
+    private val adjustedCurrentMillis: Long = clock.millis() - clockDeviationUseCase.calculateServerTimeOffsetMillis()
 
     override suspend fun qrCode(
         credential: ByteArray,
@@ -42,7 +45,7 @@ class QrCodeUseCaseImpl(
             val qrCodeContent = if (shouldDisclose) mobileCoreWrapper.disclose(
                 secretKey.toByteArray(),
                 credential,
-                clock.millis()
+                adjustedCurrentMillis
             ) else String(credential)
 
             qrCodeUtil.createQrCode(

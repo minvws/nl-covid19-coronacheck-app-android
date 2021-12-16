@@ -12,6 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.models.ConfigResult
+import nl.rijksoverheid.ctr.appconfig.models.ServerInfo
 import nl.rijksoverheid.ctr.appconfig.repositories.ConfigRepository
 import retrofit2.HttpException
 import java.io.IOException
@@ -51,11 +52,11 @@ class AppConfigUseCaseImpl(
             val serverDateMillis = config.headers.getDate("date")?.time ?: clock.millis()
             val serverAgeSeconds = config.headers["Age"]?.toInt() ?: 0
             val serverAgeMillis = serverAgeSeconds * 1000
-            clockDeviationUseCase.store(
-                serverResponseTimestamp = serverDateMillis + serverAgeMillis,
-                localReceivedTimestamp = clock.millis()
+            val serverInfo = ServerInfo.Available(
+                serverTimeMillis = serverDateMillis + serverAgeMillis,
+                localTimeMillis = clock.millis()
             )
-
+            clockDeviationUseCase.store(serverInfo)
             appConfigPersistenceManager.saveAppConfigLastFetchedSeconds(
                 OffsetDateTime.now(clock).toEpochSecond()
             )
