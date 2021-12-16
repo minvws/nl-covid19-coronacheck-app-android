@@ -69,22 +69,6 @@ class ScrollViewButtonWidget @JvmOverloads constructor(
         }
     }
 
-    override fun onDraw(canvas: Canvas?) {
-        super.onDraw(canvas)
-        setEqualWidthButtons()
-    }
-
-    /**
-     * buttons should be set to equal widths of the widest button
-     */
-    private fun setEqualWidthButtons() {
-        val largestWidth = maxOf(binding.button.width, binding.secondaryButton.width)
-        binding.run {
-            if (button.width != largestWidth) button.width = largestWidth
-            if (secondaryButton.width != largestWidth) secondaryButton.width = largestWidth
-        }
-    }
-
     fun setIcon(@DrawableRes drawable: Int) {
         binding.button.run {
             setCompoundDrawablesWithIntrinsicBounds(
