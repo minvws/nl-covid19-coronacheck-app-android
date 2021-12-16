@@ -8,6 +8,7 @@ import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.QrCodeUtil
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
+import timber.log.Timber
 import java.time.Clock
 
 /*
