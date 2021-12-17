@@ -12,6 +12,7 @@ runs:
       with:
         java-version: 11
     - name: Show java version
+      shell: bash
       run: java -version
     - name: Validate checksum gradle wrapper
       uses: gradle/wrapper-validation-action@v1
