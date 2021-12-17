@@ -1,10 +1,15 @@
 name: Build, test and distribute
-on: [push]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - id: setup
         uses: ./scripts
       - name: Test
@@ -19,11 +24,12 @@ jobs:
       KEYSTORE_KEY_ALIAS: ${{ secrets.KEYSTORE_KEY_ALIAS }}
       KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
       KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-      GENERATE_FDROID_BUILDS: ${{ contains(github.event.pull_request.labels.*.name, 'generate-fdroid-builds') }}
+      GENERATE_FDROID_BUILDS: ${{ github.event.repository.name != 'nl-covid19-coronacheck-app-android' && contains(github.event.pull_request.labels.*.name, 'generate-fdroid-builds') }}
     runs-on: ubuntu-latest
     needs: [ "build-and-test" ]
 
     steps:
+      - uses: actions/checkout@v2
       - id: setup
         uses: ./scripts
       - name: Build mobilecore.aar
