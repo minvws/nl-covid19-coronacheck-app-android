@@ -21,7 +21,7 @@ import org.robolectric.RobolectricTestRunner
 import java.time.OffsetDateTime
 
 @RunWith(RobolectricTestRunner::class)
-class GetDashboardItemsUseCaseImplTest: AutoCloseKoinTest() {
+class GetDashboardItemsUseCaseImplTest : AutoCloseKoinTest() {
 
     private val usecase: GetDashboardItemsUseCase by inject()
 
@@ -410,9 +410,24 @@ class GetDashboardItemsUseCaseImplTest: AutoCloseKoinTest() {
         assertTrue(dashboardItems.internationalItems[3] is DashboardItem.AddQrButtonItem)
     }
 
+    @Test
+    fun `getItems returns app update card when update is available`() = runBlocking {
+        loadKoinModules(fakeDashboardItemUtilModule(isAppUpdateAvailable = true))
+
+        val dashboardItems = usecase.getItems(
+            allGreenCards = listOf(),
+            databaseSyncerResult = DatabaseSyncerResult.Success(),
+            isLoadingNewCredentials = false,
+            allEventGroupEntities = listOf()
+        )
+
+        assertTrue(dashboardItems.domesticItems.any { it is DashboardItem.InfoItem.AppUpdate})
+        assertTrue(dashboardItems.internationalItems.any { it is DashboardItem.InfoItem.AppUpdate})
+    }
+
     private fun fakeClockDeviationModule(hasDeviation: Boolean) = module(override = true) {
         factory<ClockDeviationUseCase> {
-            object: ClockDeviationUseCase() {
+            object : ClockDeviationUseCase() {
                 override fun store(serverTime: ServerTime) {
 
                 }
@@ -428,9 +443,11 @@ class GetDashboardItemsUseCaseImplTest: AutoCloseKoinTest() {
         }
     }
 
-    private fun fakeDashboardItemUtilModule() = module(override = true) {
+    private fun fakeDashboardItemUtilModule(
+        isAppUpdateAvailable: Boolean = false
+    ) = module(override = true) {
         factory<DashboardItemUtil> {
-            object: DashboardItemUtil {
+            object : DashboardItemUtil {
                 override fun getHeaderItemText(
                     greenCardType: GreenCardType,
                     allGreenCards: List<GreenCard>
@@ -442,8 +459,13 @@ class GetDashboardItemsUseCaseImplTest: AutoCloseKoinTest() {
 
                 override fun shouldAddQrButtonItem(allGreenCards: List<GreenCard>) = false
 
-                override fun combineEuVaccinationItems(items: List<DashboardItem>) = listOf(DashboardItem.CardsItem(
-                    emptyList()))
+                override fun isAppUpdateAvailable() = isAppUpdateAvailable
+
+                override fun combineEuVaccinationItems(items: List<DashboardItem>) = listOf(
+                    DashboardItem.CardsItem(
+                        emptyList()
+                    )
+                )
 
                 override suspend fun shouldAddSyncGreenCardsItem(
                     allEventGroupEntities: List<EventGroupEntity>,
