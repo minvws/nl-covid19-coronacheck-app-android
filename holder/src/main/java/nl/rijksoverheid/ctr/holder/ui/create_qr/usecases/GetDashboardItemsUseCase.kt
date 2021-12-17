@@ -70,6 +70,8 @@ class GetDashboardItemsUseCaseImpl(
             DashboardItem.HeaderItem(text = headerText)
         )
 
+        dashboardItems.add(DashboardItem.InfoItem.AppUpdate)
+
         if (dashboardItemUtil.shouldShowClockDeviationItem(allGreenCards)) {
             dashboardItems.add(DashboardItem.InfoItem.ClockDeviationItem)
         }
@@ -148,6 +150,8 @@ class GetDashboardItemsUseCaseImpl(
         dashboardItems.add(
             DashboardItem.HeaderItem(text = headerText)
         )
+
+        dashboardItems.add(DashboardItem.InfoItem.AppUpdate)
 
         if (dashboardItemUtil.shouldShowClockDeviationItem(allGreenCards)) {
             dashboardItems.add(DashboardItem.InfoItem.ClockDeviationItem)

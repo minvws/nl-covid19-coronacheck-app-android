@@ -35,7 +35,10 @@ class MyOverviewInfoCardItem(
             viewBinding.close.visibility = View.GONE
         }
 
-        viewBinding.button.visibility = if (infoItem.hasReadMore) View.VISIBLE else View.GONE
+        viewBinding.button.run {
+            visibility = if (infoItem.hasButton) View.VISIBLE else View.GONE
+            infoItem.buttonText?.let { setText(it) }
+        }
 
         when (infoItem) {
             is DashboardItem.InfoItem.RefreshEuVaccinations -> {
@@ -71,6 +74,9 @@ class MyOverviewInfoCardItem(
             }
             is DashboardItem.InfoItem.MissingDutchVaccinationItem -> {
                 viewBinding.text.text = viewBinding.text.context.getString(R.string.missing_dutch_certificate_info_card_text)
+            }
+            is DashboardItem.InfoItem.AppUpdate -> {
+                viewBinding.text.setText(R.string.recommended_update_card_description)
             }
         }
 

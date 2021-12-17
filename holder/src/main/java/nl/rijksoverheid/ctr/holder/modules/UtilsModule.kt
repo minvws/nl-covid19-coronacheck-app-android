@@ -40,7 +40,7 @@ val utilsModule = module {
     factory<CountryUtil> { CountryUtilImpl() }
     factory<MultipleQrCodesUtil> { MultipleQrCodesUtilImpl() }
     factory<EventGroupEntityUtil> { EventGroupEntityUtilImpl(get()) }
-    factory<MyOverviewFragmentInfoItemHandlerUtil> { MyOverviewFragmentInfoItemHandlerUtilImpl(get()) }
+    factory<MyOverviewFragmentInfoItemHandlerUtil> { MyOverviewFragmentInfoItemHandlerUtilImpl(get(), get()) }
     factory<DomesticVaccinationRecoveryCombinationUtil> {
         DomesticVaccinationRecoveryCombinationUtilImpl(get())
     }
