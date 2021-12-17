@@ -51,7 +51,7 @@ open class HolderApplication : SharedApplication(), Configuration.Provider {
         eventsUseCasesModule,
         secretUseCasesModule,
         testProvidersUseCasesModule,
-        utilsModule,
+        utilsModule(BuildConfig.VERSION_CODE),
         viewModels,
         cardUtilsModule,
         repositoriesModule,

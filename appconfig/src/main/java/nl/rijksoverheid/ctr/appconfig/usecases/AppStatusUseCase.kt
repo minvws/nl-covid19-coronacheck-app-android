@@ -69,7 +69,7 @@ class AppStatusUseCaseImpl(
         return when {
             appConfig.appDeactivated -> AppStatus.Deactivated(appConfig.informationURL)
             currentVersionCode < appConfig.minimumVersion -> AppStatus.UpdateRequired
-            1 < appConfig.recommendedVersion -> getUpdateRecommendedStatus(appConfig)
+            currentVersionCode < appConfig.recommendedVersion -> getUpdateRecommendedStatus(appConfig)
             else -> AppStatus.NoActionRequired
         }
     }
