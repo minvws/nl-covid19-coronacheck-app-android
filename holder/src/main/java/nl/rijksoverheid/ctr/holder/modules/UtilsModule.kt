@@ -5,10 +5,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.util.DomesticVaccination
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverViewGreenCardAdapterUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverViewGreenCardAdapterUtilImpl
-import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.MyOverviewFragmentInfoItemHandlerUtil
-import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.MyOverviewFragmentInfoItemHandlerUtilImpl
-import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TokenValidatorUtil
-import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TokenValidatorUtilImpl
+import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import java.time.Clock
@@ -44,4 +41,5 @@ fun utilsModule(versionCode: Int) = module {
     factory<DomesticVaccinationRecoveryCombinationUtil> {
         DomesticVaccinationRecoveryCombinationUtilImpl(get())
     }
+    factory<QrCodesFragmentUtil> { QrCodesFragmentUtilImpl(Clock.systemUTC()) }
 }
