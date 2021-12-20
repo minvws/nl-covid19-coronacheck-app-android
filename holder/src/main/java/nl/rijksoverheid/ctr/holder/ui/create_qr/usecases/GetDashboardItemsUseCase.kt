@@ -66,9 +66,11 @@ class GetDashboardItemsUseCaseImpl(
             allGreenCards = allGreenCards
         )
 
-        dashboardItems.add(
-            DashboardItem.HeaderItem(text = headerText)
-        )
+        dashboardItems.add(DashboardItem.HeaderItem(text = headerText))
+
+        if (dashboardItemUtil.isAppUpdateAvailable()) {
+            dashboardItems.add(DashboardItem.InfoItem.AppUpdate)
+        }
 
         if (dashboardItemUtil.shouldShowClockDeviationItem(allGreenCards)) {
             dashboardItems.add(DashboardItem.InfoItem.ClockDeviationItem)
@@ -148,6 +150,10 @@ class GetDashboardItemsUseCaseImpl(
         dashboardItems.add(
             DashboardItem.HeaderItem(text = headerText)
         )
+
+        if (dashboardItemUtil.isAppUpdateAvailable()) {
+            dashboardItems.add(DashboardItem.InfoItem.AppUpdate)
+        }
 
         if (dashboardItemUtil.shouldShowClockDeviationItem(allGreenCards)) {
             dashboardItems.add(DashboardItem.InfoItem.ClockDeviationItem)
@@ -237,7 +243,9 @@ class GetDashboardItemsUseCaseImpl(
 
                 items.add(
                     if (greenCardType == GreenCardType.Domestic
-                        && dashboardItemUtil.shouldShowMissingDutchVaccinationItem(greenCardsForSelectedType, greenCardsForUnselectedType)
+                        && dashboardItemUtil.shouldShowMissingDutchVaccinationItem(
+                            greenCardsForSelectedType, greenCardsForUnselectedType
+                        )
                     ) {
                         DashboardItem.InfoItem.MissingDutchVaccinationItem
                     } else {
