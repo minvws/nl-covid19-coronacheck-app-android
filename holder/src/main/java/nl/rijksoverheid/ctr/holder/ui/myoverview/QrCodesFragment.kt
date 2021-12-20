@@ -29,6 +29,7 @@ import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeData
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodesResult
+import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.QrCodesFragmentUtil
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -57,12 +58,13 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
     private val dialogUtil: DialogUtil by inject()
     private val infoFragmentUtil: InfoFragmentUtil by inject()
     private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
+    private val qrCodesFragmentUtil: QrCodesFragmentUtil by inject()
     private lateinit var qrCodePagerAdapter: QrCodePagerAdapter
 
     private val qrCodeHandler = Handler(Looper.getMainLooper())
     private val qrCodeRunnable = Runnable {
         generateQrCodes()
-        checkIfCredentialExpired()
+        checkShouldAutomaticallyClose()
     }
 
     private val qrCodeViewModel: QrCodesViewModel by viewModel()
@@ -334,6 +336,7 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
     }
 
     private fun generateQrCodes() {
+        checkShouldAutomaticallyClose()
         qrCodeViewModel.generateQrCodes(
             greenCardType = args.data.type,
             originType = args.data.originType,
@@ -349,15 +352,11 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
     }
 
     /**
-     * If the QR is expired we close this fragment
-     * The [MyOverviewFragment] should correctly handle new or expired credentials
+     * Checks if this fragment should automatically close
      */
-    private fun checkIfCredentialExpired() {
-        val expirationTime = OffsetDateTime.ofInstant(
-            Instant.ofEpochSecond(args.data.credentialExpirationTimeSeconds),
-            ZoneOffset.UTC
-        )
-        if (OffsetDateTime.now(ZoneOffset.UTC).isAfter(expirationTime)) {
+    private fun checkShouldAutomaticallyClose() {
+        val shouldClose = qrCodesFragmentUtil.shouldClose(args.data.credentialExpirationTimeSeconds)
+        if (shouldClose) {
             findNavController().popBackStack()
         }
     }
