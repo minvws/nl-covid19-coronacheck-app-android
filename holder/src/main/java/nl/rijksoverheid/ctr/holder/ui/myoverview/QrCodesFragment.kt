@@ -64,7 +64,6 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
     private val qrCodeHandler = Handler(Looper.getMainLooper())
     private val qrCodeRunnable = Runnable {
         generateQrCodes()
-        checkShouldAutomaticallyClose()
     }
 
     private val qrCodeViewModel: QrCodesViewModel by viewModel()
