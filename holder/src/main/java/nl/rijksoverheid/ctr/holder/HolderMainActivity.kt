@@ -57,7 +57,7 @@ class HolderMainActivity : AppCompatActivity() {
     private val connectivityChangeCallback =
         object : ConnectivityManager.NetworkCallback() {
             override fun onAvailable(network: Network) {
-                appConfigViewModel.refresh(mobileCoreWrapper)
+                appConfigViewModel.refresh(mobileCoreWrapper, true)
             }
         }
     private val networkChangeFilter = NetworkRequest.Builder().build() // blank filter for all networks

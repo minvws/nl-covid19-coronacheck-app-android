@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
+import nl.rijksoverheid.ctr.appconfig.models.ServerTime
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.holder.R
@@ -22,7 +23,6 @@ import org.koin.dsl.module
 import org.koin.test.AutoCloseKoinTest
 import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
-import java.time.Clock
 import java.time.OffsetDateTime
 
 @RunWith(RobolectricTestRunner::class)
@@ -377,10 +377,24 @@ class GetDashboardItemsUseCaseImplTest : AutoCloseKoinTest() {
             assertTrue(dashboardItems.domesticItems.none { it is DashboardItem.InfoItem.TestCertificate3GValidity })
         }
 
+    fun `getItems returns app update card when update is available`() = runBlocking {
+        loadKoinModules(fakeDashboardItemUtilModule(isAppUpdateAvailable = true))
+
+        val dashboardItems = usecase.getItems(
+            allGreenCards = listOf(),
+            databaseSyncerResult = DatabaseSyncerResult.Success(),
+            isLoadingNewCredentials = false,
+            allEventGroupEntities = listOf()
+        )
+
+        assertTrue(dashboardItems.domesticItems.any { it is DashboardItem.InfoItem.AppUpdate})
+        assertTrue(dashboardItems.internationalItems.any { it is DashboardItem.InfoItem.AppUpdate})
+    }
+
     private fun fakeClockDeviationModule(hasDeviation: Boolean) = module(override = true) {
         factory<ClockDeviationUseCase> {
             object : ClockDeviationUseCase() {
-                override fun store(serverResponseTimestamp: Long, localReceivedTimestamp: Long) {
+                override fun store(serverTime: ServerTime) {
 
                 }
 
@@ -388,12 +402,16 @@ class GetDashboardItemsUseCaseImplTest : AutoCloseKoinTest() {
                     return hasDeviation
                 }
 
-                override fun getAdjustedClock(clock: Clock): Clock = Clock.systemDefaultZone()
+                override fun calculateServerTimeOffsetMillis(): Long {
+                    return 0L
+                }
             }
         }
     }
 
-    private fun fakeDashboardItemUtilModule() = module(override = true) {
+    private fun fakeDashboardItemUtilModule(
+        isAppUpdateAvailable: Boolean = false
+    ) = module(override = true) {
         factory<DashboardItemUtil> {
             object : DashboardItemUtil {
                 override fun getHeaderItemText(
@@ -406,6 +424,8 @@ class GetDashboardItemsUseCaseImplTest : AutoCloseKoinTest() {
                 override fun shouldShowPlaceholderItem(allGreenCards: List<GreenCard>) = false
 
                 override fun shouldAddQrButtonItem(allGreenCards: List<GreenCard>) = false
+
+                override fun isAppUpdateAvailable() = isAppUpdateAvailable
 
                 override fun combineEuVaccinationItems(items: List<DashboardItem>) = listOf(
                     DashboardItem.CardsItem(

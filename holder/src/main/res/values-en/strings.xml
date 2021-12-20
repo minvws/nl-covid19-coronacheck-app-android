@@ -9,13 +9,13 @@
   <string name="app_name">CoronaCheck</string>
   <string name="onboarding_title">Onboarding</string>
   <string name="onboarding_screen_1_title">Only access with a certificate</string>
-  <string name="onboarding_screen_1_description">\"Your and other people’s health matters. That is why some countries and places ask for a coronavirus pass. You’re only allowed to enter carrying this pass.\"</string>
+  <string name="onboarding_screen_1_description">Your and other people’s health matters. That is why some countries and places ask for a coronavirus pass. You’re only allowed to enter carrying this pass.</string>
   <string name="onboarding_screen_2_title">Certificate of test or vaccination</string>
   <string name="onboarding_screen_2_description"><![CDATA[You can generate a coronavirus pass if:<ul><li>You have been vaccinated</li><li>A test result confirms you don’t have corona</li><li>A test result confirms you\'ve had coronavirus and are recovered</li></ul>]]></string>
   <string name="onboarding_screen_4_title">QR code = your proof</string>
   <string name="onboarding_screen_4_description">This app generates a QR code with your vaccination, test result or recovery. That is your certificate. This QR code will be checked at the entrance of places or activities or at the border.</string>
   <string name="onboarding_screen_3_title">QR codes for the Netherlands and international</string>
-  <string name="onboarding_screen_3_description">\"This app generates a QR code for the Netherlands and one for other countries. You can find both QR codes in the app. Travelling outside of the Netherlands? Then use your international QR code.\"</string>
+  <string name="onboarding_screen_3_description">This app generates a QR code for the Netherlands and one for other countries. You can find both QR codes in the app. Travelling outside of the Netherlands? Then use your international QR code.</string>
   <string name="onboarding_next">Next</string>
   <string name="onboarding_finish">Get started</string>
   <string name="privacy_policy_title">This is how the app uses your data</string>
@@ -203,7 +203,7 @@
   <string name="get_vaccination_no_digid_button">I don\'t have DigiD</string>
   <string name="your_retrieved_vaccinations_title">Your retrieved vaccinations</string>
   <string name="your_retrieved_vaccinations_description">Are the details correct? If the details about your vaccination are correct, you can create a certificate.</string>
-  <string name="your_vaccination_result_toolbar_title">Your retrieved vaccinations</string>
+  <string name="your_vaccination_result_toolbar_title">Retrieved vaccinations</string>
   <string name="your_retrieved_vaccinations_toolbar">Retrieve details of your vaccination</string>
   <string name="retrieved_vaccination_title">Vaccination %1$s</string>
   <string name="retrieved_vaccination_dcc_title">Vaccination certificate dose %1$s/%2$s</string>
@@ -221,7 +221,7 @@
   <string name="validity_type_european_title">International</string>
   <string name="validity_type_dutch_title">The Netherlands</string>
   <string name="qr_explanation_title_domestic">About my Dutch QR code</string>
-  <string name="qr_explanation_description_domestic"><![CDATA[Your Dutch QR code contains minimal information. While it states that your certificate is valid, it doesn\'t specify if you\'ve been tested or vaccinated.<br/><br/>The QR code also contains the first letter of your first and last name and your date and month of birth. This is to make sure the QR code belongs to you.<br/><br/>Your information*: <b>%1$s</b><br/><br/>* Information can sometimes disappear to protect your privacy. In that case, you will see a dash (_).]]></string>
+  <string name="qr_explanation_description_domestic"><![CDATA[Your Dutch QR code contains minimal information. While it states that your certificate is valid, it doesn\'t specify if you\'ve been tested, recovered or vaccinated.<br/><br/>The QR code also contains the first letter of your first and last name and your date and month of birth. This is to make sure the QR code belongs to you.<br/><br/>Your information*: <b>%1$s</b><br/><br/>* Information can sometimes disappear to protect your privacy. In that case, you will see a dash (_).]]></string>
   <string name="qr_explanation_title_eu">About my international QR code</string>
   <string name="qr_explanation_title_eu_vaccination">About your dose %1s</string>
   <string name="qr_explanation_description_eu_vaccination_header">Are you abroad, or planning to cross the border? This requires more data. That\'s why the international QR code contains the following details:</string>
@@ -451,10 +451,10 @@
   <string name="clock_deviation_explanation_title">Please check your phone’s time settings</string>
   <string name="clock_deviation_explanation_description"><![CDATA[Your phone’s time settings may be incorrect. Your phone may be a few minutes ahead. To make the best use of the CoronaCheck app, it is important that the time is set correctly.<br/><br/><a href=\"#\">Go to settings</a> on your phone and set date and time to ‘set automatically’.]]></string>
   <string name="domestic_qr_code_title">Dutch QR</string>
-  <string name="app_status_update_recommended_title">Want to update the app?</string>
-  <string name="app_status_update_recommended_message">There\'s a new version of the app available.</string>
-  <string name="app_status_update_recommended_dismiss_action">No, I\'ll do it later</string>
-  <string name="app_status_update_recommended_action">Install update</string>
+  <string name="app_status_update_recommended_title">Update your app in advance</string>
+  <string name="app_status_update_recommended_message">Want to prevent having to update when you\'re entering a place, or crossing the border? Then update to a newer version now.</string>
+  <string name="app_status_update_recommended_dismiss_action">I\'ll do it later</string>
+  <string name="app_status_update_recommended_action">Update now</string>
   <string name="error_something_went_wrong_title">Sorry, something went wrong</string>
   <string name="error_something_went_wrong_http_error_description"><![CDATA[We are working hard to solve this problem. Could you please try again later?<br/><br/><b>Error code:</b><br/>%1s]]></string>
   <string name="error_something_went_wrong_making_proof_description"><![CDATA[Something is going wrong while creating your certificate. Could you please try again later?<br/><br/><b>Error code:</b><br/>%1s]]></string>
@@ -580,4 +580,8 @@
   <string name="qr_explanation_description_domestic_2G"><![CDATA[Your Dutch QR code says you have a valid test certificate, and contains minimal data.<br/><br/>The scanner sees only the first letter of your first and last name, and your date and month of birth. This is to make sure the QR code belongs to you.<br/><br/>Your information*: <b>%1$s</b><br/><br/>* Information can sometimes disappear to protect your privacy. In that case, you will see a dash (_).]]></string>
   <string name="your_negative_test_results_toolbar">Retrieved test result</string>
   <string name="dialog_no_browser_message_digid">No internet browser was found on this phone to open DigiD. Download a browser to open the link.</string>
+  <string name="holder_negativetest_ggd_title">Retrieve test result</string>
+  <string name="holder_negativetest_ggd_message">Is your result in? Log in with DigiD to retrieve your test result from the GGD.</string>
+  <string name="recommended_update_card_description">You can update your app to a newer version now</string>
+  <string name="recommended_update_card_action">Update now</string>
 </resources>

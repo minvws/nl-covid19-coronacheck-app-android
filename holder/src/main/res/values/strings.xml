@@ -9,13 +9,13 @@
   <string name="app_name">CoronaCheck</string>
   <string name="onboarding_title">Onboarding</string>
   <string name="onboarding_screen_1_title">Alleen toegang met een bewijs</string>
-  <string name="onboarding_screen_1_description">\"Jouw gezondheid en die van anderen is belangrijk. Daarom vragen sommige landen of plekken om een coronabewijs. Alleen met dit bewijs krijg je toegang.\"</string>
+  <string name="onboarding_screen_1_description">Jouw gezondheid en die van anderen is belangrijk. Daarom vragen sommige landen of plekken om een coronabewijs. Alleen met dit bewijs krijg je toegang.</string>
   <string name="onboarding_screen_2_title">Bewijs van test of vaccinatie</string>
   <string name="onboarding_screen_2_description"><![CDATA[De app kan een coronabewijs voor jou maken als:<ul><li>Je bent gevaccineerd</li><li>Uit een test blijkt dat je geen corona hebt</li><li>Uit een test blijkt dat je corona hebt gehad en bent hersteld</li></ul>]]></string>
   <string name="onboarding_screen_4_title">QR-code = jouw bewijs</string>
   <string name="onboarding_screen_4_description">Deze app maakt van jouw vaccinatie, testuitslag of herstel een QR-code. Dat is jouw bewijs. De QR-code wordt gecheckt bij de ingang van plekken en activiteiten. Of aan de grens.</string>
   <string name="onboarding_screen_3_title">QR-codes voor Nederland en internationaal</string>
-  <string name="onboarding_screen_3_description">\"De app maakt twee QR-codes: een QR-code voor Nederland en een internationale. Beide QR-codes vind je in de app. Reis je buiten Nederland? Gebruik dan je internationale QR-code.\"</string>
+  <string name="onboarding_screen_3_description">De app maakt twee QR-codes: een QR-code voor Nederland en een internationale. Beide QR-codes vind je in de app. Reis je buiten Nederland? Gebruik dan je internationale QR-code.</string>
   <string name="onboarding_next">Volgende</string>
   <string name="onboarding_finish">Aan de slag</string>
   <string name="privacy_policy_title">Zo gebruikt de app jouw gegevens</string>
@@ -203,7 +203,7 @@
   <string name="get_vaccination_no_digid_button">Ik heb geen DigiD</string>
   <string name="your_retrieved_vaccinations_title">Jouw opgehaalde vaccinaties</string>
   <string name="your_retrieved_vaccinations_description">Kloppen de gegevens? Als de gegevens van je vaccinatie kloppen kun je een bewijs maken.</string>
-  <string name="your_vaccination_result_toolbar_title">Jouw opgehaalde vaccinaties</string>
+  <string name="your_vaccination_result_toolbar_title">Opgehaalde vaccinaties</string>
   <string name="your_retrieved_vaccinations_toolbar">Gegevens van je vaccinatie ophalen</string>
   <string name="retrieved_vaccination_title">Vaccinatie %1$s</string>
   <string name="retrieved_vaccination_dcc_title">Vaccinatiebewijs dosis %1$s/%2$s</string>
@@ -221,7 +221,7 @@
   <string name="validity_type_european_title">Internationaal</string>
   <string name="validity_type_dutch_title">Nederland</string>
   <string name="qr_explanation_title_domestic">Over mijn Nederlandse QR-code</string>
-  <string name="qr_explanation_description_domestic"><![CDATA[In jouw Nederlandse QR-code staan minimale gegevens. Er staat wel dat je een geldig bewijs hebt, maar niet of je een test hebt gedaan of gevaccineerd bent.<br/><br/>In de QR-code staat ook de eerste letter van je voornaam en van je achternaam, je geboortedag en geboortemaand. Dit is om zeker te zijn dat de QR-code bij jou hoort.<br/><br/>Jouw gegevens*: <b>%1$s</b><br/><br/>* Soms vallen gegevens weg om je privacy te beschermen. Je ziet dan een streepje (_).]]></string>
+  <string name="qr_explanation_description_domestic"><![CDATA[In jouw Nederlandse QR-code staan minimale gegevens. Er staat wel dat je een geldig bewijs hebt, maar niet of je een test hebt gedaan, hersteld of gevaccineerd bent.<br/><br/>In de QR-code staat ook de eerste letter van je voornaam en van je achternaam, je geboortedag en geboortemaand. Dit is om zeker te zijn dat de QR-code bij jou hoort.<br/><br/>Jouw gegevens*: <b>%1$s</b><br/><br/>* Soms vallen gegevens weg om je privacy te beschermen. Je ziet dan een streepje (_).]]></string>
   <string name="qr_explanation_title_eu">Over mijn internationale QR-code</string>
   <string name="qr_explanation_title_eu_vaccination">Over je dosis %1s</string>
   <string name="qr_explanation_description_eu_vaccination_header">Ben je in het buitenland of ga je de grens over? Dan zijn er meer gegevens nodig dan in Nederland. Daarom staan in jouw internationale QR-code de volgende gegevens:</string>
@@ -451,10 +451,10 @@
   <string name="clock_deviation_explanation_title">Controleer de tijd van je telefoon</string>
   <string name="clock_deviation_explanation_description"><![CDATA[De tijd van jouw telefoon lijkt niet te kloppen. Het kan bijvoorbeeld zijn dat je telefoon een paar minuten voor loopt. Om de CoronaCheck-app goed te kunnen gebruiken is het belangrijk dat de tijd juist staat ingesteld.<br/><br/><a href=\"#\">Ga naar de instellingen</a> van jouw telefoon en zet de datum en tijd op ‘automatisch instellen’.]]></string>
   <string name="domestic_qr_code_title">Nederlandse QR</string>
-  <string name="app_status_update_recommended_title">Wil je de app updaten?</string>
-  <string name="app_status_update_recommended_message">Er is een nieuwe versie van de app beschikbaar.</string>
-  <string name="app_status_update_recommended_dismiss_action">Nee, doe ik later</string>
-  <string name="app_status_update_recommended_action">Installeer update</string>
+  <string name="app_status_update_recommended_title">Update alvast je app</string>
+  <string name="app_status_update_recommended_message">Voorkomen dat je moet updaten als je ergens naar binnen wilt of de grens over gaat? Update nu al naar een nieuwere versie.</string>
+  <string name="app_status_update_recommended_dismiss_action">Doe ik later</string>
+  <string name="app_status_update_recommended_action">Nu updaten</string>
   <string name="error_something_went_wrong_title">Sorry, er gaat iets mis</string>
   <string name="error_something_went_wrong_http_error_description"><![CDATA[We zijn bezig om dit probleem op te lossen. Wil je het later nog eens proberen?<br/><br/><b>Foutcode:</b><br/>%1s]]></string>
   <string name="error_something_went_wrong_making_proof_description"><![CDATA[Er gaat iets mis bij het maken van je bewijs. Wil je het later nog eens proberen?<br/><br/><b>Foutcode:</b><br/>%1s]]></string>
@@ -580,4 +580,8 @@
   <string name="qr_explanation_description_domestic_2G"><![CDATA[In jouw Nederlandse QR-code staat dat je een geldig testbewijs hebt en minimale gegevens.<br/><br/>De controleur ziet alleen de eerste letter van je voornaam en van je achternaam, je geboortedag en geboortemaand. Dit is om zeker te zijn dat de QR-code bij jou hoort.<br/><br/>Jouw gegevens*: <b>%1$s</b><br/><br/>* Soms vallen gegevens weg om je privacy te beschermen. Je ziet dan een streepje (_).]]></string>
   <string name="your_negative_test_results_toolbar">Opgehaalde testuitslag</string>
   <string name="dialog_no_browser_message_digid">Er is op deze telefoon geen internetbrowser gevonden waarmee DigiD geopend kan worden. Download een browser om de link te kunnen openen.</string>
+  <string name="holder_negativetest_ggd_title">Testuitslag ophalen</string>
+  <string name="holder_negativetest_ggd_message">Is je uitslag bekend? Log in met DigiD om je testuitslag bij de GGD op te halen.</string>
+  <string name="recommended_update_card_description">Je kunt de app al naar een nieuwere versie updaten</string>
+  <string name="recommended_update_card_action">Nu updaten</string>
 </resources>

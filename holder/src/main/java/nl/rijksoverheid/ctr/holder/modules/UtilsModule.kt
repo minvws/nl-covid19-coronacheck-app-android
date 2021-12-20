@@ -5,10 +5,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.util.DomesticVaccination
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverViewGreenCardAdapterUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverViewGreenCardAdapterUtilImpl
-import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.MyOverviewFragmentInfoItemHandlerUtil
-import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.MyOverviewFragmentInfoItemHandlerUtilImpl
-import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TokenValidatorUtil
-import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TokenValidatorUtilImpl
+import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import java.time.Clock
@@ -20,7 +17,7 @@ import java.time.Clock
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-val utilsModule = module {
+fun utilsModule(versionCode: Int) = module {
     factory<MyOverViewGreenCardAdapterUtil> {
         MyOverViewGreenCardAdapterUtilImpl(
             androidContext(),
@@ -37,12 +34,13 @@ val utilsModule = module {
     factory<RemoteProtocol3Util> { RemoteProtocol3UtilImpl() }
     factory<RemoteEventUtil> { RemoteEventUtilImpl(get()) }
     factory<ReadEuropeanCredentialUtil> { ReadEuropeanCredentialUtilImpl(get()) }
-    factory<DashboardItemUtil> { DashboardItemUtilImpl(get(), get(), get(), get(), get(), get()) }
+    factory<DashboardItemUtil> { DashboardItemUtilImpl(get(), get(), get(), get(), get(), get(), get(), versionCode) }
     factory<CountryUtil> { CountryUtilImpl() }
     factory<MultipleQrCodesUtil> { MultipleQrCodesUtilImpl() }
     factory<EventGroupEntityUtil> { EventGroupEntityUtilImpl(get()) }
-    factory<MyOverviewFragmentInfoItemHandlerUtil> { MyOverviewFragmentInfoItemHandlerUtilImpl(get()) }
+    factory<MyOverviewFragmentInfoItemHandlerUtil> { MyOverviewFragmentInfoItemHandlerUtilImpl(get(), get()) }
     factory<DomesticVaccinationRecoveryCombinationUtil> {
         DomesticVaccinationRecoveryCombinationUtilImpl(get())
     }
+    factory<QrCodesFragmentUtil> { QrCodesFragmentUtilImpl(Clock.systemUTC()) }
 }

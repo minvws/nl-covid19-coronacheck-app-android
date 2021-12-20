@@ -2,7 +2,6 @@ package nl.rijksoverheid.ctr.holder.ui.myoverview.utils
 
 import android.content.Intent
 import android.provider.Settings
-import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthTime
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
@@ -15,8 +14,8 @@ import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewFragment
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewFragmentDirections
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewTabsFragmentDirections
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewInfoCardItem
-import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
+import nl.rijksoverheid.ctr.shared.utils.IntentUtil
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -38,7 +37,8 @@ interface MyOverviewFragmentInfoItemHandlerUtil {
 }
 
 class MyOverviewFragmentInfoItemHandlerUtilImpl(
-    private val infoFragmentUtil: InfoFragmentUtil
+    private val infoFragmentUtil: InfoFragmentUtil,
+    private val intentUtil: IntentUtil
 ) : MyOverviewFragmentInfoItemHandlerUtil {
 
     /**
@@ -72,10 +72,17 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
             }
             is DashboardItem.InfoItem.MissingDutchVaccinationItem ->
                 onMissingDutchVaccinationItemClicked(myOverviewFragment)
-            DashboardItem.InfoItem.TestCertificate3GValidity -> {
+            is DashboardItem.InfoItem.TestCertificate3GValidity -> {
                 onTestCertificate3GValidityClicked(myOverviewFragment)
             }
+            is DashboardItem.InfoItem.AppUpdate -> {
+                openPlayStore(myOverviewFragment)
+            }
         }
+    }
+
+    private fun openPlayStore(myOverviewFragment: MyOverviewFragment) {
+        intentUtil.openPlayStore(myOverviewFragment.requireContext())
     }
 
     private fun onMissingDutchVaccinationItemClicked(myOverviewFragment: MyOverviewFragment) {

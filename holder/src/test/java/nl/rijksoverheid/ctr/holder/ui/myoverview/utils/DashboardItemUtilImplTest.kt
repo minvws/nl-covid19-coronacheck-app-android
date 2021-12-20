@@ -33,7 +33,9 @@ class DashboardItemUtilImplTest {
             persistenceManager = fakePersistenceManager(),
             eventGroupEntityUtil = fakeEventGroupEntityUtil(),
             appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase(),
-            featureFlagUseCase = mockk()
+            featureFlagUseCase = mockk(),
+            appConfigUseCase = mockk(),
+            versionCode = 1
         )
 
         val headerText = util.getHeaderItemText(
@@ -54,7 +56,9 @@ class DashboardItemUtilImplTest {
             persistenceManager = fakePersistenceManager(),
             eventGroupEntityUtil = fakeEventGroupEntityUtil(),
             appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase(),
-            featureFlagUseCase = mockk()
+            featureFlagUseCase = mockk(),
+            appConfigUseCase = mockk(),
+            versionCode = 1
         )
 
         val headerText = util.getHeaderItemText(
@@ -75,7 +79,9 @@ class DashboardItemUtilImplTest {
             persistenceManager = fakePersistenceManager(),
             eventGroupEntityUtil = fakeEventGroupEntityUtil(),
             appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase(),
-            featureFlagUseCase = mockk()
+            featureFlagUseCase = mockk(),
+            appConfigUseCase = mockk(),
+            versionCode = 1
         )
 
         val headerText = util.getHeaderItemText(
@@ -96,7 +102,9 @@ class DashboardItemUtilImplTest {
             persistenceManager = fakePersistenceManager(),
             eventGroupEntityUtil = fakeEventGroupEntityUtil(),
             appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase(),
-            featureFlagUseCase = mockk()
+            featureFlagUseCase = mockk(),
+            appConfigUseCase = mockk(),
+            versionCode = 1
         )
 
         val headerText = util.getHeaderItemText(
@@ -117,7 +125,9 @@ class DashboardItemUtilImplTest {
             persistenceManager = fakePersistenceManager(),
             eventGroupEntityUtil = fakeEventGroupEntityUtil(),
             appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase(),
-            featureFlagUseCase = mockk()
+            featureFlagUseCase = mockk(),
+            appConfigUseCase = mockk(),
+            versionCode = 1
         )
 
         val shouldShowClockDeviationItem = util.shouldShowClockDeviationItem(
@@ -139,7 +149,9 @@ class DashboardItemUtilImplTest {
             persistenceManager = fakePersistenceManager(),
             eventGroupEntityUtil = fakeEventGroupEntityUtil(),
             appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase(),
-            featureFlagUseCase = mockk()
+            featureFlagUseCase = mockk(),
+            appConfigUseCase = mockk(),
+            versionCode = 1
         )
 
         val shouldShowClockDeviationItem = util.shouldShowClockDeviationItem(
@@ -157,7 +169,9 @@ class DashboardItemUtilImplTest {
             persistenceManager = fakePersistenceManager(),
             eventGroupEntityUtil = fakeEventGroupEntityUtil(),
             appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase(),
-            featureFlagUseCase = mockk()
+            featureFlagUseCase = mockk(),
+            appConfigUseCase = mockk(),
+            versionCode = 1
         )
 
         val shouldShowHeaderItem = util.shouldShowPlaceholderItem(
@@ -177,7 +191,9 @@ class DashboardItemUtilImplTest {
             persistenceManager = fakePersistenceManager(),
             eventGroupEntityUtil = fakeEventGroupEntityUtil(),
             appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase(),
-            featureFlagUseCase = mockk()
+            featureFlagUseCase = mockk(),
+            appConfigUseCase = mockk(),
+            versionCode = 1
         )
 
         val shouldShowHeaderItem = util.shouldShowPlaceholderItem(
@@ -195,7 +211,9 @@ class DashboardItemUtilImplTest {
             persistenceManager = fakePersistenceManager(),
             eventGroupEntityUtil = fakeEventGroupEntityUtil(),
             appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase(),
-            featureFlagUseCase = mockk()
+            featureFlagUseCase = mockk(),
+            appConfigUseCase = mockk(),
+            versionCode = 1
         )
 
         val shouldAddQrButtonItem = util.shouldAddQrButtonItem(
@@ -207,7 +225,8 @@ class DashboardItemUtilImplTest {
 
     @Test
     fun `multiple vaccination card items should be combined into 1`() {
-        val util = DashboardItemUtilImpl(mockk(), mockk(), mockk(), mockk(),mockk(),mockk())
+
+        val util = DashboardItemUtilImpl(mockk(), mockk(), mockk(), mockk(),mockk(), mockk(), mockk(),1)
 
         val card1 = createCardItem(OriginType.Vaccination)
         val card2 = createCardItem(OriginType.Vaccination)
@@ -241,7 +260,9 @@ class DashboardItemUtilImplTest {
                 remoteEventVaccinations = listOf()
             ),
             appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase(),
-            featureFlagUseCase = mockk()
+            featureFlagUseCase = mockk(),
+            appConfigUseCase = mockk(),
+            versionCode = 1
         )
 
         val shouldAddSyncGreenCardsItem = util.shouldAddSyncGreenCardsItem(
@@ -268,7 +289,9 @@ class DashboardItemUtilImplTest {
                 )
             ),
             appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase(),
-            featureFlagUseCase = mockk()
+            featureFlagUseCase = mockk(),
+            appConfigUseCase = mockk(),
+            versionCode = 1
         )
 
         val shouldAddSyncGreenCardsItem = util.shouldAddSyncGreenCardsItem(
@@ -300,7 +323,9 @@ class DashboardItemUtilImplTest {
                 )
             ),
             appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase(),
-            featureFlagUseCase = mockk()
+            featureFlagUseCase = mockk(),
+            appConfigUseCase = mockk(),
+            versionCode = 1
         )
 
         val shouldAddSyncGreenCardsItem = util.shouldAddSyncGreenCardsItem(
@@ -332,7 +357,9 @@ class DashboardItemUtilImplTest {
                 )
             ),
             appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase(),
-            featureFlagUseCase = mockk()
+            featureFlagUseCase = mockk(),
+            appConfigUseCase = mockk(),
+            versionCode = 1
         )
 
         val shouldAddSyncGreenCardsItem = util.shouldAddSyncGreenCardsItem(
@@ -355,7 +382,9 @@ class DashboardItemUtilImplTest {
             ),
             eventGroupEntityUtil = fakeEventGroupEntityUtil(),
             appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase(),
-            featureFlagUseCase = mockk()
+            featureFlagUseCase = mockk(),
+            appConfigUseCase = mockk(),
+            versionCode = 1
         )
 
         val shouldAddGreenCardsSyncedItem = util.shouldAddGreenCardsSyncedItem(
@@ -377,7 +406,9 @@ class DashboardItemUtilImplTest {
             ),
             eventGroupEntityUtil = fakeEventGroupEntityUtil(),
             appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase(),
-            featureFlagUseCase = mockk()
+            featureFlagUseCase = mockk(),
+            appConfigUseCase = mockk(),
+            versionCode = 1
         )
 
         val shouldAddGreenCardsSyncedItem = util.shouldAddGreenCardsSyncedItem(
@@ -546,6 +577,51 @@ class DashboardItemUtilImplTest {
         assertFalse(shouldShowTestCertificate3GValidityItem)
     }
 
+    @Test
+    fun `App update is available when the recommended version is higher than current version`() {
+        val featureFlagUseCase: FeatureFlagUseCase = mockk()
+        every { featureFlagUseCase.isVerificationPolicyEnabled() } answers { false }
+
+        val util = DashboardItemUtilImpl(
+            mockk(), mockk(), mockk(), mockk(), mockk(),
+            appConfigUseCase = mockk { every { getCachedAppConfig().recommendedVersion } returns 2 },
+            featureFlagUseCase = featureFlagUseCase,
+            versionCode = 1
+        )
+
+        assertTrue(util.isAppUpdateAvailable())
+    }
+
+    @Test
+    fun `App update is not available when the recommended version is current version`() {
+        val featureFlagUseCase: FeatureFlagUseCase = mockk()
+        every { featureFlagUseCase.isVerificationPolicyEnabled() } answers { false }
+
+        val util = DashboardItemUtilImpl(
+            mockk(), mockk(), mockk(), mockk(), mockk(),
+            appConfigUseCase = mockk { every { getCachedAppConfig().recommendedVersion } returns 1 },
+            versionCode = 1,
+            featureFlagUseCase = featureFlagUseCase
+        )
+
+        assertFalse(util.isAppUpdateAvailable())
+    }
+
+    @Test
+    fun `App update is not available when the recommended version lower is current version`() {
+        val featureFlagUseCase: FeatureFlagUseCase = mockk()
+        every { featureFlagUseCase.isVerificationPolicyEnabled() } answers { false }
+
+        val util = DashboardItemUtilImpl(
+            mockk(), mockk(), mockk(), mockk(), mockk(),
+            appConfigUseCase = mockk { every { getCachedAppConfig().recommendedVersion } returns 1 },
+            featureFlagUseCase = featureFlagUseCase,
+            versionCode = 2,
+        )
+
+        assertFalse(util.isAppUpdateAvailable())
+    }
+
     private fun createCardItem(originType: OriginType) = CardItem(
         greenCard = GreenCard(
             greenCardEntity = fakeGreenCardEntity,
@@ -577,6 +653,8 @@ class DashboardItemUtilImplTest {
         ),
         eventGroupEntityUtil = fakeEventGroupEntityUtil(),
         appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase(),
-        featureFlagUseCase = featureFlagUseCase
+        featureFlagUseCase = featureFlagUseCase,
+        appConfigUseCase = mockk(),
+        versionCode = 1
     )
 }

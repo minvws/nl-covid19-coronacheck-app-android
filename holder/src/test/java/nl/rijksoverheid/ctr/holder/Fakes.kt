@@ -7,6 +7,7 @@ import io.mockk.mockk
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
+import nl.rijksoverheid.ctr.appconfig.models.ServerTime
 import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigFreshnessUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
@@ -35,7 +36,6 @@ import nl.rijksoverheid.ctr.shared.models.*
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import nl.rijksoverheid.ctr.shared.utils.TestResultUtil
 import org.json.JSONObject
-import java.time.Clock
 import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -638,7 +638,7 @@ fun fakeSyncRemoteGreenCardUseCase(
 fun fakeClockDevationUseCase(
     hasDeviation: Boolean = false
 ) = object : ClockDeviationUseCase() {
-    override fun store(serverResponseTimestamp: Long, localReceivedTimestamp: Long) {
+    override fun store(serverTime: ServerTime) {
 
     }
 
@@ -646,7 +646,9 @@ fun fakeClockDevationUseCase(
         return hasDeviation
     }
 
-    override fun getAdjustedClock(clock: Clock): Clock = Clock.systemDefaultZone()
+    override fun calculateServerTimeOffsetMillis(): Long {
+        return 0L
+    }
 }
 
 fun fakeReadEuropeanCredentialUtil(dosis: String = "") = object : ReadEuropeanCredentialUtil {

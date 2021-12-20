@@ -300,6 +300,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                 assertTrue { view is CardView }
             }
         )
+
         assertNotDisplayed(R.id.button)
 
         // dismiss card
